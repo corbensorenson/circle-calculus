@@ -61,6 +61,9 @@ The project is complete only when all of these are true:
 - Every paper has sidecars for Lean and, where useful, Python executable examples.
 - Paper manifests link papers to theorem ids, dictionary ids, and sidecar paths.
 - Phase III Living Book source pages, widgets, generated data, and checks exist once that phase begins, and they do not upgrade proof status beyond the manifests.
+- Phase IV wide/deep theorem discovery has audited every dimension and application area for missing theorem targets, weak papers, proof gaps, and better formal spines.
+- Phase V edge problem-space exploration has identified hard or unusual problem spaces where Circle Calculus might give practical leverage, with experiments and claims kept honest.
+- Phase VI global sweep has cleaned the whole corpus for correctness, soundness, prose quality, link integrity, proof status, and reader usability.
 - `make check` passes.
 - Living Book checks and `quarto render site` pass once the Quarto site exists, unless Quarto is explicitly unavailable and the blocker is documented.
 - Dimension-specific checks pass once the dimension scaffolding exists.
@@ -117,6 +120,9 @@ Prefer this order. Only skip ahead when blocked and record the blocker. During l
 13. Add future `S15` roadmap only after `S7` foundations are stable.
 14. After the `S15` horizon, stop treating dimension climbing as the main objective. Pivot to Phase II: maps, bundles, spectra, Bott/Clifford periodicity, boundaries, proof-carrying glyphs, data applications, and compute applications.
 15. Build Phase III: a Quarto-based Circle Calculus Living Book generated from manifests, dictionary entries, papers, Python reference models, and Lean proof metadata. Start with static S1 interactives and do not let the site drift from proof status.
+16. Build Phase IV: go wide and deep across all dimensional levels, looking for additional theorem targets, stronger proof spines, missing dictionary terms, and paper improvements.
+17. Build Phase V: search edge problem spaces where Circle Calculus might do something hard, awkward, or unavailable in ordinary presentations, and turn promising leads into honest experiments, papers, models, or theorem targets.
+18. Build Phase VI: sweep the entire project for correctness, clarity, style, consistency, proof status, broken links, missing citations, and overclaims.
 
 ## Stage D0: Dimensional Scaffolding
 
@@ -554,6 +560,97 @@ Phase III guardrails:
 - [x] Widget math is minimal, auditable, and checked against Python reference behavior where practical.
 - [x] The site must not duplicate theorem status or dictionary definitions manually when generated data can provide them.
 - [x] Quarto/Lean Web/Jupyter integrations never replace local `lake build` as the formal verification command.
+
+## Phase IV: Wide And Deep Theorem Discovery
+
+Goal:
+Expand coverage at every dimensional level by deliberately looking for missing theorems, stronger formal statements, cleaner proof spines, and paper improvements. This phase is not a license to invent unsupported claims; it is a structured audit for what the project should prove next.
+
+Required sweep:
+
+- [ ] Audit `S0` for sign, opposition, involution, parity, and antipodal vocabulary that should be made explicit.
+- [ ] Audit `S1` for additional finite cyclic-group, rotation, coil, winding, scaling, factor, fiber, quotient, and normal-form theorems.
+- [ ] Audit `S2` for suspended-circle, sphere-grid, pole/equator, latitude/longitude, antipode, axis, cell-count, and inherited-coil theorem gaps.
+- [ ] Audit `S3` for finite hypersphere, quaternion algebra, unit-quaternion, Hopf-coordinate, phase-action, spin, and quotient-warning theorem gaps.
+- [ ] Audit `S4-S6` for suspension/Euler parity, quaternionic Hopf base, complex projective bridge, octonion-shadow, and warning theorem gaps.
+- [ ] Audit `S7` and `S15` for topological suspension, quaternionic Hopf, octonionic algebra, nonassociativity, future horizon, and non-overclaim theorem gaps.
+- [ ] Audit Phase II and applications for stable-sphere, Bott/Clifford seed, bundle, boundary/cobordism, proof-glyph, data-analysis, compute, rendering, systems, and AI theorem gaps.
+- [ ] For each promising theorem target, add or update a manifest entry before claiming it in prose.
+- [ ] Prove low-risk targets in Lean first, then update paper text, Python sidecars, theorem cards, and Living Book links.
+- [ ] Record blocked or long-horizon targets as `blocked`, `deferred`, `planned`, `lean_stated`, or `exploratory_python` with a useful blocker or next-step note.
+- [ ] Keep lower dimensions independent of higher dimensions.
+
+Outputs:
+
+- [ ] A broader theorem target list represented in manifests, not a loose report.
+- [ ] Improved paper sections where proofs already exist or where planned status needs clearer wording.
+- [ ] Additional Lean sidecars and Python parity examples where they strengthen the formal spine.
+- [ ] Updated dictionary terms for recurring vocabulary discovered during the sweep.
+- [ ] Updated Living Book pages or index data when new proved or planned theorem ids land.
+
+Completion criteria:
+
+- [ ] Each dimension and application folder has been inspected for missing theorem/paper/proof opportunities.
+- [ ] Every accepted new target has a manifest entry and an honest status.
+- [ ] No speculative target is presented as proved.
+- [ ] `make check` and relevant Living Book checks pass.
+
+## Phase V: Edge Problem-Space Search
+
+Goal:
+Search for problem spaces near the edge of the project where Circle Calculus may offer leverage that is difficult, awkward, or unavailable in ordinary presentations. The standard is not hype; the standard is whether the circle/provenance/glyph/proof-carrying organization produces a concrete artifact, explanation, compression, benchmark, search improvement, or formal interface that would be hard to get otherwise.
+
+Search areas:
+
+- [ ] Proof-carrying diagrams and glyphs: can diagrams compile to theorem ids, Lean declarations, and checked status without drifting?
+- [ ] Proof search and theorem discovery: can coil/glyph normal forms expose useful theorem candidates or reduce search friction in bounded domains?
+- [ ] Number provenance and symbolic compression: can first-class construction histories improve explanation, simplification, proof compression, or theorem navigation?
+- [ ] Cyclic and periodic data analysis: can coil signatures, closure profiles, prime-lag scans, and period lattices add value beyond standard baselines?
+- [ ] AI/ML inductive bias: can phase channels, coil attention, cyclic memory, MultiCoil RoPE, or adapter scheduling create measurable gains on tasks with real periodic or rotational structure?
+- [ ] Compute and rendering: can circular layouts, stride scheduling, sampling, stencils, or NTT-like structures improve locality, explainability, or verification?
+- [ ] Robotics/orientation and physics-adjacent models: can quaternion/Hopf/fiber language make orientation, phase ambiguity, gauge-like redundancy, or spin easier to verify or debug?
+- [ ] Education and public understanding: can the Living Book make formal cyclic and dimensional ideas easier to learn without weakening rigor?
+
+Required discipline:
+
+- [ ] Define a baseline before claiming an improvement.
+- [ ] Separate mathematical proof, executable example, benchmark, and speculative interpretation.
+- [ ] Use MLX/Mac-first language for local AI/compute work; CUDA references remain portability or external-baseline notes.
+- [ ] Add papers, sidecars, or application manifests only when the experiment or theorem target is concrete enough to track.
+- [ ] Reject or defer directions that become metaphor-only.
+
+Outputs:
+
+- [ ] A short list of concrete edge experiments with acceptance criteria.
+- [ ] At least one experiment-ready paper or application note for each accepted edge direction.
+- [ ] Python/MLX or other executable sidecars where the claim is computational.
+- [ ] Lean theorem targets where the claim is formal.
+- [ ] Living Book pages or widgets only when they can stay downstream of manifests and source artifacts.
+
+## Phase VI: Global Correctness, Clarity, And Polish Sweep
+
+Goal:
+Make the entire project cleaner, more correct, easier to consume, and harder to misread. This is the final wide sweep over writing, proofs, manifests, dictionary entries, site pages, examples, links, and repository ergonomics.
+
+Sweep checklist:
+
+- [ ] Re-read every paper for overclaims, missing theorem ids, unclear status language, duplicated definitions, and weak exposition.
+- [ ] Re-run every theorem manifest against Lean declarations and paper references.
+- [ ] Re-run every dictionary entry against actual usage in papers, Lean, Python, and the Living Book.
+- [ ] Check every sidecar for stale examples, missing tests, weak names, and mismatch with paper claims.
+- [ ] Check every Living Book page for status drift, broken generated data, stale source links, mobile readability, and widget correctness.
+- [ ] Check README, roadmap, GitHub Pages docs, and policy docs for actual current state.
+- [ ] Remove transient caches, reports, and generated clutter from git while keeping durable source and generated data that the repo intentionally tracks.
+- [ ] Run `make check`, `make living-book-check`, and `quarto render site`.
+- [ ] Inspect GitHub CI once before each push and fix known failures before sending the next batch.
+
+Completion criteria:
+
+- [ ] No known paper theorem claim lacks a theorem id or explicit non-proof label.
+- [ ] No manifest-proved theorem lacks a compiled Lean declaration.
+- [ ] No Living Book theorem card or widget caption upgrades status beyond the manifest.
+- [ ] No major broken links remain in README, papers, docs, or site pages.
+- [ ] The public repo can be consumed by a new reader through README, papers, theorem index, dictionary index, and Living Book without needing hidden context.
 
 ## Verification Checklist
 

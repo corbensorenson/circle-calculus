@@ -46,7 +46,7 @@ Future dimensional work is split into two related ladders:
 
 The repository rule for that expansion is strict: higher dimensions may depend on lower dimensions, but lower dimensions must not import or rely on higher dimensions. The first dimensional implementation stage should be scaffolding only: dimension manifests, dictionary files, paper folders, Lean/Python roots, and import-check scripts, with all future theorem statuses kept planned, deferred, or exploratory until proofs exist.
 
-See `docs/COMPLETION_ROADMAP.md`, `docs/DIMENSIONAL_LADDER.md`, `docs/PHASE2_AND_APPLICATIONS.md`, and `circle_calculus_dimensional_handoff/` for the detailed roadmap and guardrails.
+See `docs/COMPLETION_ROADMAP.md`, `docs/DIMENSIONAL_LADDER.md`, `docs/PHASE2_AND_APPLICATIONS.md`, `docs/GITHUB_PAGES.md`, and `circle_calculus_dimensional_handoff/` for the detailed roadmap and guardrails.
 
 ## Current Status
 
@@ -96,7 +96,9 @@ The D0 dimensional scaffold is also in place: dimension manifests, dimension dic
 
 Phase II and application scaffolds are also in place under `papers/phase2/`, `papers/applications/`, `manifests/theories/`, and `manifests/applications/`. `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_05_PROOF_CARRYING_GLYPHS`, `PAPER_APP_01_COIL_DATA_ANALYSIS`, `PAPER_COMP_01` through `PAPER_COMP_04`, and `PAPER_AI_01` through `PAPER_AI_03` now have proved seeds. The 2026-06-05 compute-applications handoff is preserved in `docs/PHASE2_AND_APPLICATIONS.md` and `circle_calculus_codex_handoff/source_logs/04_compute_applications_browser_note.md`. Benchmark claims remain benchmark work, not proof claims.
 
-Phase III is now planned as the Circle Calculus Living Book: a Quarto-based interactive explainer site generated from manifests, dictionary entries, papers, Python reference models, and Lean proof metadata. Its policy and roadmap live in `docs/LIVING_BOOK_POLICY.md`, `docs/LIVING_BOOK_ROADMAP.md`, and `docs/LIVING_BOOK_WIDGETS.md`; the source browser handoff is archived at `circle_calculus_codex_handoff/source_logs/05_living_book_browser_note.md`. The Living Book is an explanation layer, not a proof layer.
+Phase III is now implemented as the first Circle Calculus Living Book milestone: a Quarto-based interactive explainer site generated from manifests, dictionary entries, papers, Python reference models, and Lean proof metadata. Its policy and roadmap live in `docs/LIVING_BOOK_POLICY.md`, `docs/LIVING_BOOK_ROADMAP.md`, and `docs/LIVING_BOOK_WIDGETS.md`; the source browser handoff is archived at `circle_calculus_codex_handoff/source_logs/05_living_book_browser_note.md`. The Living Book is an explanation layer, not a proof layer.
+
+The next project phases are intentionally wide and deep: Phase IV audits every dimensional level and application area for missing theorem targets and stronger proof spines; Phase V searches edge problem spaces where Circle Calculus may provide leverage beyond ordinary presentations; Phase VI sweeps the whole corpus for correctness, clarity, proof-status integrity, and reader usability.
 
 The README is updated after meaningful proof batches, paper batches, roadmap changes, or application-context additions. Tiny internal-only edits should update the relevant source files without creating README churn.
 
