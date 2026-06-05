@@ -10,6 +10,7 @@ This paper defines topological/combinatorial `S^7` by iterated finite suspension
 
 - `S7C-T0001`: `Circle.S7.iteratedSuspensionModel`
 - `S7C-T0002`: `Circle.S7.eulerCharacteristic`
+- `S7C-T0003`: `Circle.S7.iteratedSuspensionModel_eq_suspension_s6`
 
 ## Model
 
@@ -23,6 +24,8 @@ Circle.S7.iteratedSuspensionModel(n) =
 ## Proved Core
 
 `S7C-T0001` is implemented by `Circle.S7.iteratedSuspensionModel`.
+`S7C-T0003` proves that this finite model is exactly the suspension of the
+finite `S^6` counts.
 
 `S7C-T0002` is proved by `Circle.S7.eulerCharacteristic`.
 

@@ -10,6 +10,7 @@ This file re-exports the finite topological S7 declarations used by
 namespace Circle.PaperS701
 
 #check Circle.S7.iteratedSuspensionModel
+#check Circle.S7.iteratedSuspensionModel_eq_suspension_s6
 #check Circle.S7.eulerCharacteristic
 
 end Circle.PaperS701

@@ -8,6 +8,10 @@ def dimension : Nat := 7
 def iteratedSuspensionModel (n : Nat) : List Nat :=
   Circle.Common.suspensionCounts (Circle.S6.counts n)
 
+theorem iteratedSuspensionModel_eq_suspension_s6 (n : Nat) :
+    iteratedSuspensionModel n = Circle.Common.suspensionCounts (Circle.S6.counts n) := by
+  rfl
+
 theorem eulerCharacteristic (n : Nat) :
     Circle.Common.eulerCharacteristic (iteratedSuspensionModel n) = 0 := by
   unfold iteratedSuspensionModel
