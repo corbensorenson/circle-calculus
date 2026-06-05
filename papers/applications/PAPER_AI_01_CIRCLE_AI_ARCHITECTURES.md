@@ -18,6 +18,7 @@ for positive periods. This is a feature-index primitive, not evidence of model q
 
 - `AIA-T0001`: for positive period, the phase channel is bounded by the period. Lean declaration: `Circle.Applications.phaseChannel_lt_period`.
 - `AIA-T0002`: for positive period, adding one full period preserves the phase channel. Lean declaration: `Circle.Applications.phaseChannel_add_period`.
+- `AIA-T0003`: the phase channel at zero is zero. Lean declaration: `Circle.Applications.phaseChannel_zero`.
 
 The Python sidecar checks the same finite examples. Architecture claims still need MLX/Mac-compatible benchmarks against strong baselines.
 

@@ -18,6 +18,7 @@ for positive memory-bank sizes. This is a memory indexing primitive, not a retri
 
 - `AIM-T0001`: for positive bank size, the memory slot is bounded by the bank size. Lean declaration: `Circle.Applications.memorySlot_lt_bankSize`.
 - `AIM-T0002`: for positive bank size, adding one full bank size preserves the memory slot. Lean declaration: `Circle.Applications.memorySlot_add_bankSize`.
+- `AIM-T0003`: the memory slot at zero is zero. Lean declaration: `Circle.Applications.memorySlot_zero`.
 
 The Python sidecar checks the same finite examples. Coil Attention and CoilKV claims still require synthetic long-context retrieval benchmarks and comparisons against full attention, sparse attention, long convolution, and state-space baselines.
 

@@ -13,3 +13,8 @@ def test_round_robin_slot_closes_after_slot_count() -> None:
     for slot_count in range(1, 65):
         for tick in range(0, 512):
             assert round_robin_slot(slot_count, tick + slot_count) == round_robin_slot(slot_count, tick)
+
+
+def test_round_robin_slot_zero() -> None:
+    for slot_count in range(1, 65):
+        assert round_robin_slot(slot_count, 0) == 0

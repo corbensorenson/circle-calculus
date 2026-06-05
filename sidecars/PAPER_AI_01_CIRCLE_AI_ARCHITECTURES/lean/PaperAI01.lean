@@ -12,5 +12,6 @@ namespace Circle.PaperAI01
 #check Circle.Applications.phaseChannel
 #check Circle.Applications.phaseChannel_lt_period
 #check Circle.Applications.phaseChannel_add_period
+#check Circle.Applications.phaseChannel_zero
 
 end Circle.PaperAI01

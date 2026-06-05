@@ -18,6 +18,7 @@ for positive bin counts. This is a queue/sampler indexing primitive, not a claim
 
 - `COMPR-T0001`: for positive bin count, the direction-bin schedule is bounded by the bin count. Lean declaration: `Circle.Applications.directionBin_lt_binCount`.
 - `COMPR-T0002`: for positive bin count, adding one full bin count preserves the direction-bin schedule. Lean declaration: `Circle.Applications.directionBin_add_binCount`.
+- `COMPR-T0003`: the direction-bin schedule at zero is zero. Lean declaration: `Circle.Applications.directionBin_zero`.
 
 The Python sidecar checks the same finite examples. Rendering claims still require scene benchmarks, baseline wavefront path tracing, direction bucketing, spherical-coil bucketing, and measurements such as rays per second, divergence, cache behavior, traversal time, noise, and frame time.
 

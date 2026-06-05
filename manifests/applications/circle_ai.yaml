@@ -20,6 +20,10 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.phaseChannel_add_period
     dictionary_dependencies: ["COMMON-0026", "COMMON-0027"]
+  - id: AIA-T0003
+    status: lean_proved
+    lean_name: Circle.Applications.phaseChannel_zero
+    dictionary_dependencies: ["COMMON-0026"]
   - id: AIM-T0001
     status: lean_proved
     lean_name: Circle.Applications.memorySlot_lt_bankSize
@@ -28,6 +32,10 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.memorySlot_add_bankSize
     dictionary_dependencies: ["COMMON-0028", "COMMON-0029"]
+  - id: AIM-T0003
+    status: lean_proved
+    lean_name: Circle.Applications.memorySlot_zero
+    dictionary_dependencies: ["COMMON-0028"]
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize
@@ -36,6 +44,10 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_add_blockSize
     dictionary_dependencies: ["COMMON-0030", "COMMON-0031"]
+  - id: AIRA-T0003
+    status: lean_proved
+    lean_name: Circle.Applications.adapterBlock_zero
+    dictionary_dependencies: ["COMMON-0030"]
 next_targets:
   - "Run MLX/Mac-compatible synthetic benchmarks before making model-quality or speed claims."
   - "Compare against dense, LoRA, block-circulant, standard RoPE, full attention, sparse attention, Hyena-like, and state-space baselines as appropriate."

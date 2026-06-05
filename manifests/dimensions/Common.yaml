@@ -222,6 +222,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["phase_coordinate(period, step + period) == phase_coordinate(period, step)"]
     blocker: ""
+  - id: APPD-T0003
+    status: lean_proved
+    lean_name: Circle.Applications.phaseCoordinate_zero
+    informal_statement: "The finite phase coordinate at zero is zero."
+    formal_statement: "forall period : Nat, phaseCoordinate period 0 = 0"
+    dictionary_dependencies: ["COMMON-0016"]
+    paper_refs: ["papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["phase_coordinate(period, 0) == 0"]
+    blocker: ""
   - id: COMPC-T0001
     status: lean_proved
     lean_name: Circle.Applications.cyclicAddress_lt_size
@@ -286,6 +299,19 @@ theorems:
       lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["direction_bin(bin_count, sample + bin_count) == direction_bin(bin_count, sample)"]
+    blocker: ""
+  - id: COMPR-T0003
+    status: lean_proved
+    lean_name: Circle.Applications.directionBin_zero
+    informal_statement: "The finite direction-bin schedule at zero is zero."
+    formal_statement: "forall binCount : Nat, directionBin binCount 0 = 0"
+    dictionary_dependencies: ["COMMON-0020"]
+    paper_refs: ["papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["direction_bin(bin_count, 0) == 0"]
     blocker: ""
   - id: COMPL-T0001
     status: lean_proved
@@ -365,6 +391,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["round_robin_slot(slot_count, tick + slot_count) == round_robin_slot(slot_count, tick)"]
     blocker: ""
+  - id: COMPS-T0003
+    status: lean_proved
+    lean_name: Circle.Applications.roundRobinSlot_zero
+    informal_statement: "The round-robin slot at zero is zero."
+    formal_statement: "forall slotCount : Nat, roundRobinSlot slotCount 0 = 0"
+    dictionary_dependencies: ["COMMON-0024"]
+    paper_refs: ["papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["round_robin_slot(slot_count, 0) == 0"]
+    blocker: ""
   - id: AIA-T0001
     status: lean_proved
     lean_name: Circle.Applications.phaseChannel_lt_period
@@ -390,6 +429,19 @@ theorems:
       lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["phase_channel(period, position + period) == phase_channel(period, position)"]
+    blocker: ""
+  - id: AIA-T0003
+    status: lean_proved
+    lean_name: Circle.Applications.phaseChannel_zero
+    informal_statement: "The AI phase channel at zero is zero."
+    formal_statement: "forall period : Nat, phaseChannel period 0 = 0"
+    dictionary_dependencies: ["COMMON-0026"]
+    paper_refs: ["papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["phase_channel(period, 0) == 0"]
     blocker: ""
   - id: AIM-T0001
     status: lean_proved
@@ -417,6 +469,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["memory_slot(bank_size, token + bank_size) == memory_slot(bank_size, token)"]
     blocker: ""
+  - id: AIM-T0003
+    status: lean_proved
+    lean_name: Circle.Applications.memorySlot_zero
+    informal_statement: "The cyclic memory slot at zero is zero."
+    formal_statement: "forall bankSize : Nat, memorySlot bankSize 0 = 0"
+    dictionary_dependencies: ["COMMON-0028"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["memory_slot(bank_size, 0) == 0"]
+    blocker: ""
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize
@@ -442,5 +507,18 @@ theorems:
       lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["adapter_block(block_size, channel + block_size) == adapter_block(block_size, channel)"]
+    blocker: ""
+  - id: AIRA-T0003
+    status: lean_proved
+    lean_name: Circle.Applications.adapterBlock_zero
+    informal_statement: "The adapter block index at zero is zero."
+    formal_statement: "forall blockSize : Nat, adapterBlock blockSize 0 = 0"
+    dictionary_dependencies: ["COMMON-0030"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["adapter_block(block_size, 0) == 0"]
     blocker: ""
 warnings: []

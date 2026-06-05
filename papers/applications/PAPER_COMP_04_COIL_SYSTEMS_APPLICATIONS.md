@@ -18,6 +18,7 @@ for positive slot counts. This is a `CoilSched`-style schedule primitive, not a 
 
 - `COMPS-T0001`: for positive slot count, the round-robin slot is bounded by the slot count. Lean declaration: `Circle.Applications.roundRobinSlot_lt_slotCount`.
 - `COMPS-T0002`: for positive slot count, adding one full slot count preserves the round-robin slot. Lean declaration: `Circle.Applications.roundRobinSlot_add_slotCount`.
+- `COMPS-T0003`: the round-robin slot at zero is zero. Lean declaration: `Circle.Applications.roundRobinSlot_zero`.
 
 The Python sidecar checks the same finite examples. Fairness, starvation-freedom, load balancing, and domain-specific systems claims still require explicit models and tests.
 

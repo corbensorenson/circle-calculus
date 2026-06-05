@@ -21,4 +21,9 @@ theorem roundRobinSlot_add_slotCount {slotCount : Nat} (h : 0 < slotCount) (tick
   rw [Nat.add_mod, Nat.mod_self, Nat.add_zero]
   exact Nat.mod_eq_of_lt (Nat.mod_lt tick h)
 
+theorem roundRobinSlot_zero (slotCount : Nat) :
+    roundRobinSlot slotCount 0 = 0 := by
+  unfold roundRobinSlot
+  simp
+
 end Circle.Applications

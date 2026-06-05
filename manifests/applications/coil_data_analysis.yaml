@@ -14,6 +14,10 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.phaseCoordinate_add_period
     dictionary_dependencies: ["COMMON-0016", "COMMON-0017"]
+  - id: APPD-T0003
+    status: lean_proved
+    lean_name: Circle.Applications.phaseCoordinate_zero
+    dictionary_dependencies: ["COMMON-0016"]
 next_targets:
   - "Add synthetic periodic-data generators and compare coil signatures against ordinary period baselines."
   - "Keep real-data claims exploratory until benchmarked."

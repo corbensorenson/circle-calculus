@@ -22,6 +22,11 @@ theorem phaseChannel_add_period {period : Nat} (h : 0 < period) (position : Nat)
   rw [Nat.add_mod, Nat.mod_self, Nat.add_zero]
   exact Nat.mod_eq_of_lt (Nat.mod_lt position h)
 
+theorem phaseChannel_zero (period : Nat) :
+    phaseChannel period 0 = 0 := by
+  unfold phaseChannel
+  simp
+
 def memorySlot (bankSize token : Nat) : Nat :=
   token % bankSize
 
@@ -36,6 +41,11 @@ theorem memorySlot_add_bankSize {bankSize : Nat} (h : 0 < bankSize) (token : Nat
   rw [Nat.add_mod, Nat.mod_self, Nat.add_zero]
   exact Nat.mod_eq_of_lt (Nat.mod_lt token h)
 
+theorem memorySlot_zero (bankSize : Nat) :
+    memorySlot bankSize 0 = 0 := by
+  unfold memorySlot
+  simp
+
 def adapterBlock (blockSize channel : Nat) : Nat :=
   channel % blockSize
 
@@ -49,5 +59,10 @@ theorem adapterBlock_add_blockSize {blockSize : Nat} (h : 0 < blockSize) (channe
   unfold adapterBlock
   rw [Nat.add_mod, Nat.mod_self, Nat.add_zero]
   exact Nat.mod_eq_of_lt (Nat.mod_lt channel h)
+
+theorem adapterBlock_zero (blockSize : Nat) :
+    adapterBlock blockSize 0 = 0 := by
+  unfold adapterBlock
+  simp
 
 end Circle.Applications

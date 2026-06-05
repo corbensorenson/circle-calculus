@@ -12,5 +12,6 @@ namespace Circle.PaperComp02
 #check Circle.Applications.directionBin
 #check Circle.Applications.directionBin_lt_binCount
 #check Circle.Applications.directionBin_add_binCount
+#check Circle.Applications.directionBin_zero
 
 end Circle.PaperComp02

@@ -273,28 +273,28 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: `P2G-T0001` through `P2G-T0003` are Lean-proved proof-glyph certificate projection facts; glyph syntax, normal forms, semantics, dependency correctness, and proof search remain future work.
 - [x] `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md`
   - Program: coil signatures, closure profiles, prime-lag recurrence, antinode maps, and periodic-data benchmarks.
-  - Status: `APPD-T0001` and `APPD-T0002` are Lean-proved finite phase-coordinate facts with Python examples; real-data and benchmark claims remain future work.
+  - Status: `APPD-T0001` through `APPD-T0003` are Lean-proved finite phase-coordinate facts with Python examples; real-data and benchmark claims remain future work.
 - [x] `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md`
   - Program: certified cyclic/circulant/orbit structure lowered to FFT/NTT/permutation backends and benchmarked.
   - Status: `COMPC-T0001` through `COMPC-T0003` are Lean-proved cyclic-address facts with Python examples; backend lowering and performance claims remain benchmark work.
 - [x] `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md`
   - Program: `CoilRay Sort`, `CoilSampler`, `CoilNoise`, `CoilSTIR`, BRDF/lighting angular compression, spherical-coil ray queues, procedural placement/dithering, and rendering benchmarks.
-  - Status: `COMPR-T0001` and `COMPR-T0002` are Lean-proved direction-bin schedule facts with Python examples; rendering performance, coherence, and sampling-quality claims remain benchmark work.
+  - Status: `COMPR-T0001` through `COMPR-T0003` are Lean-proved direction-bin schedule facts with Python examples; rendering performance, coherence, and sampling-quality claims remain benchmark work.
 - [x] `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md`
   - Program: `CoilLayout`, `CoilStencil`, `CoilNTT`, gcd-cycle memory layouts, verified periodic boundaries, exact finite transforms, and MLX/Mac-compatible prototypes where relevant.
   - Status: `COMPL-T0001` through `COMPL-T0004` are Lean-proved stride-address facts with Python examples; layout, stencil, FFT, NTT, MLX/backend, and performance claims remain future work.
 - [x] `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md`
   - Program: `CoilHash`, `CoilMotion`, `CoilPRM`, `CoilCodec`, `CoilANN`, `CoilAcquire`, `CoilCAM`, `CoilTorsion`, `CoilDetect`, `CoilSched`, and `CoilQ` as benchmarked or domain-tested application roadmaps.
-  - Status: `COMPS-T0001` and `COMPS-T0002` are Lean-proved round-robin schedule facts with Python examples; fairness, load balancing, robotics, codec, ANN, acquisition, CAM, torsion, detection, and quantum claims remain future domain work.
+  - Status: `COMPS-T0001` through `COMPS-T0003` are Lean-proved round-robin schedule facts with Python examples; fairness, load balancing, robotics, codec, ANN, acquisition, CAM, torsion, detection, and quantum claims remain future domain work.
 - [x] `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md`
   - Program: disciplined Circle AI thesis covering phase, recurrence, rotation, sparse cyclic mixing, circular memory, harmonic transforms, geometry-aware models, and proof-carrying model components.
-  - Status: `AIA-T0001` and `AIA-T0002` are Lean-proved phase-channel facts with Python examples; model-quality and speed claims remain benchmark work.
+  - Status: `AIA-T0001` through `AIA-T0003` are Lean-proved phase-channel facts with Python examples; model-quality and speed claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`
   - Program: Coil Attention, CoilKV, long-context retrieval, alias control, stride/orbit coverage, and comparisons against full attention, sparse attention, Hyena-like mixers, and S4/Mamba-like baselines.
-  - Status: `AIM-T0001` and `AIM-T0002` are Lean-proved cyclic-memory-slot facts with Python examples; retrieval quality, alias control, and attention replacement claims remain benchmark work.
+  - Status: `AIM-T0001` through `AIM-T0003` are Lean-proved cyclic-memory-slot facts with Python examples; retrieval quality, alias control, and attention replacement claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md`
   - Program: CoilLinear, CoilRA, MultiCoil RoPE, periodic activations, and MLX-first benchmarks against dense, LoRA, block-circulant, and standard RoPE baselines.
-  - Status: `AIRA-T0001` and `AIRA-T0002` are Lean-proved adapter-block facts with Python examples; CoilRA, MultiCoil RoPE, model quality, parameter efficiency, and runtime claims remain benchmark work.
+  - Status: `AIRA-T0001` through `AIRA-T0003` are Lean-proved adapter-block facts with Python examples; CoilRA, MultiCoil RoPE, model quality, parameter efficiency, and runtime claims remain benchmark work.
 
 Created planned manifest families:
 
@@ -340,23 +340,29 @@ Application guardrails:
 - [x] `P2G-T0003`: proof glyph certificate exposes its glyph id.
 - [x] `APPD-T0001`: finite phase coordinate is bounded by a positive period.
 - [x] `APPD-T0002`: finite phase coordinate closes after adding one full period.
+- [x] `APPD-T0003`: finite phase coordinate at zero is zero.
 - [x] `COMPC-T0001`: cyclic address is bounded by a positive circular buffer size.
 - [x] `COMPC-T0002`: cyclic address is unchanged after adding one full buffer size.
 - [x] `COMPC-T0003`: cyclic address at zero is zero.
 - [x] `COMPR-T0001`: direction-bin schedule is bounded by a positive bin count.
 - [x] `COMPR-T0002`: direction-bin schedule closes after one full pass through the bins.
+- [x] `COMPR-T0003`: direction-bin schedule at zero is zero.
 - [x] `COMPL-T0001`: stride address is bounded by a positive circular size.
 - [x] `COMPL-T0002`: stride address closes after one full pass through the circular step horizon.
 - [x] `COMPL-T0003`: zero step has zero stride address.
 - [x] `COMPL-T0004`: zero stride has zero stride address.
 - [x] `COMPS-T0001`: round-robin slot schedule is bounded by a positive slot count.
 - [x] `COMPS-T0002`: round-robin slot schedule closes after one full pass through the slots.
+- [x] `COMPS-T0003`: round-robin slot schedule at zero is zero.
 - [x] `AIA-T0001`: AI phase channel is bounded by a positive period.
 - [x] `AIA-T0002`: AI phase channel closes after one full period.
+- [x] `AIA-T0003`: AI phase channel at zero is zero.
 - [x] `AIM-T0001`: cyclic memory slot is bounded by a positive bank size.
 - [x] `AIM-T0002`: cyclic memory slot closes after one full bank pass.
+- [x] `AIM-T0003`: cyclic memory slot at zero is zero.
 - [x] `AIRA-T0001`: adapter block index is bounded by a positive block size.
 - [x] `AIRA-T0002`: adapter block index closes after one full block pass.
+- [x] `AIRA-T0003`: adapter block index at zero is zero.
 
 ## Current S1 Proof Status
 

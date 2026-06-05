@@ -21,4 +21,9 @@ theorem directionBin_add_binCount {binCount : Nat} (h : 0 < binCount) (sample : 
   rw [Nat.add_mod, Nat.mod_self, Nat.add_zero]
   exact Nat.mod_eq_of_lt (Nat.mod_lt sample h)
 
+theorem directionBin_zero (binCount : Nat) :
+    directionBin binCount 0 = 0 := by
+  unfold directionBin
+  simp
+
 end Circle.Applications

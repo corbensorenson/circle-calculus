@@ -18,6 +18,7 @@ for positive block sizes. This is a block/cyclic channel-index primitive, not a 
 
 - `AIRA-T0001`: for positive block size, the adapter block index is bounded by the block size. Lean declaration: `Circle.Applications.adapterBlock_lt_blockSize`.
 - `AIRA-T0002`: for positive block size, adding one full block size preserves the adapter block index. Lean declaration: `Circle.Applications.adapterBlock_add_blockSize`.
+- `AIRA-T0003`: the adapter block index at zero is zero. Lean declaration: `Circle.Applications.adapterBlock_zero`.
 
 The Python sidecar checks the same finite examples. CoilRA, CoilLinear, MultiCoil RoPE, and periodic-activation claims still require MLX-first benchmarks against dense adapters, LoRA, block-circulant layers, and standard RoPE.
 

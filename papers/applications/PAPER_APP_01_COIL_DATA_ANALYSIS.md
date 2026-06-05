@@ -18,6 +18,7 @@ for positive periods. This is a synthetic-data primitive, not a detector for unk
 
 - `APPD-T0001`: for positive period, the phase coordinate is bounded by the period. Lean declaration: `Circle.Applications.phaseCoordinate_lt_period`.
 - `APPD-T0002`: for positive period, adding one full period preserves phase. Lean declaration: `Circle.Applications.phaseCoordinate_add_period`.
+- `APPD-T0003`: the phase coordinate at zero is zero. Lean declaration: `Circle.Applications.phaseCoordinate_zero`.
 
 The Python sidecar checks the same synthetic examples for boundedness and closure. These checks support examples and future benchmarks; the Lean declarations are the formal proof layer.
 
