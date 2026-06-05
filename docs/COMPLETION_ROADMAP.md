@@ -171,8 +171,9 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
 
 ### S2: Sphere Calculus
 
-- [ ] `papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md`
+- [x] `papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md`
   - Proof targets: `S2-T0001`, `S2-T0002`
+  - Status: suspended-circle counts and Euler characteristic are Lean-proved in `Circle/S2/Scaffold.lean`.
   - Main model: `SuspC(n)`, with `V=n+2`, `E=3n`, `F=2n`, `chi=2`.
 - [ ] `papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md`
   - Proof targets: `S2-T0003` through `S2-T0007`

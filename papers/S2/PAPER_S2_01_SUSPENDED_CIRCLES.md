@@ -1,6 +1,6 @@
 # Circle Calculus S2.1: Suspended Circles and the First Finite Sphere
 
-Status: planned scaffold.
+Status: draft scaffold with the suspended-circle count and Euler facts proved.
 
 ## Aim
 
@@ -23,6 +23,20 @@ F = 2n
 chi = 2
 ```
 
+## Proved Core
+
+`S2-T0001` is proved by `Circle.S2.suspendedCircle_counts`.
+
+For every finite circle size `n`, the suspended-circle cell-count list is
+
+```text
+[n + 2, 3n, 2n]
+```
+
+The intended geometric use remains `n >= 3`, but the arithmetic cell-count identity is valid for all natural `n`.
+
+`S2-T0002` is proved by `Circle.S2.suspendedCircle_chi`: applying `Circle.Common.eulerCharacteristic` to those counts gives `2`.
+
 ## Dictionary Targets
 
 - `S2-0001`: suspended finite circle
@@ -33,4 +47,3 @@ chi = 2
 ## Notes
 
 This paper should be finite and combinatorial first. Continuous sphere geometry can be added only after the finite proof spine is stable.
-

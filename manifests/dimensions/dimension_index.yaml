@@ -45,7 +45,7 @@ dimensions:
     display_name: "Sphere"
     sphere_notation: "S^2"
     role: "finite suspended-circle and sphere-grid calculus"
-    status: planned
+    status: active
     lean_namespace: "Circle.S2"
     lean_root: "Circle/S2"
     python_root: "circle_math/dimensions"

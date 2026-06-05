@@ -1,11 +1,11 @@
 dimension: S2
-status: planned
+status: active
 theorems:
   - id: S2-T0001
-    status: planned
+    status: lean_proved
     lean_name: Circle.S2.suspendedCircle_counts
     informal_statement: "For n>=3, the suspended finite circle has V=n+2, E=3n, and F=2n."
-    formal_statement: "deferred formal statement"
+    formal_statement: "forall n : Nat, Circle.S2.suspendedCircleCounts n = [n+2, 3*n, 2*n]"
     dictionary_dependencies: ["S2-0001", "COMMON-0001"]
     paper_refs: ["papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md"]
     imports_allowed: ["Common", "S1"]
@@ -15,10 +15,10 @@ theorems:
       python_property_tests: ["suspended_circle_counts(n)==(n+2,3*n,2*n)"]
     blocker: ""
   - id: S2-T0002
-    status: planned
+    status: lean_proved
     lean_name: Circle.S2.suspendedCircle_chi
     informal_statement: "For n>=3, the suspended finite circle has Euler characteristic 2."
-    formal_statement: "deferred formal statement"
+    formal_statement: "forall n : Nat, Circle.Common.eulerCharacteristic (Circle.S2.suspendedCircleCounts n) = 2"
     dictionary_dependencies: ["S2-0001", "COMMON-0002"]
     paper_refs: ["papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md"]
     imports_allowed: ["Common", "S1"]
@@ -108,4 +108,3 @@ warnings:
     dictionary_dependencies: ["S2-W0003"]
     paper_refs: ["papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"]
     statement: "S^2 does not have the natural group structure used for S^1 or S^3."
-
