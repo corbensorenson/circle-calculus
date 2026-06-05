@@ -118,6 +118,32 @@ theorems:
       no_sorry_required: true
       python_property_tests: []
     blocker: ""
+  - id: S2-T0010
+    status: lean_proved
+    lean_name: Circle.S2.suspendedCircleAntipode_preservesPoleSet
+    informal_statement: "The suspended-circle antipode preserves the finite pole subset."
+    formal_statement: "forall n : Nat, forall point : Circle.S2.SuspendedCirclePoint n, Circle.S2.isSuspendedPole (Circle.S2.suspendedCircleAntipode n point) iff Circle.S2.isSuspendedPole point"
+    dictionary_dependencies: ["S2-0005", "S2-0006"]
+    paper_refs: ["papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
+  - id: S2-T0011
+    status: lean_proved
+    lean_name: Circle.S2.suspendedCircleAntipode_preservesEquatorSet
+    informal_statement: "The suspended-circle antipode preserves the finite equator subset."
+    formal_statement: "forall n : Nat, forall point : Circle.S2.SuspendedCirclePoint n, Circle.S2.isSuspendedEquator (Circle.S2.suspendedCircleAntipode n point) iff Circle.S2.isSuspendedEquator point"
+    dictionary_dependencies: ["S2-0005"]
+    paper_refs: ["papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
 warnings:
   - id: S2-W0001
     status: active

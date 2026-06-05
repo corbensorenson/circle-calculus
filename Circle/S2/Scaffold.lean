@@ -25,6 +25,16 @@ def suspendedCircleAntipode (n : Nat) : SuspendedCirclePoint n -> SuspendedCircl
   | SuspendedCirclePoint.south => SuspendedCirclePoint.north
   | SuspendedCirclePoint.equator node => SuspendedCirclePoint.equator (-node)
 
+def isSuspendedPole {n : Nat} : SuspendedCirclePoint n -> Prop
+  | SuspendedCirclePoint.north => True
+  | SuspendedCirclePoint.south => True
+  | SuspendedCirclePoint.equator _ => False
+
+def isSuspendedEquator {n : Nat} : SuspendedCirclePoint n -> Prop
+  | SuspendedCirclePoint.north => False
+  | SuspendedCirclePoint.south => False
+  | SuspendedCirclePoint.equator _ => True
+
 theorem suspendedCircleAntipode_swapsPoles (n : Nat) :
     suspendedCircleAntipode n SuspendedCirclePoint.north = SuspendedCirclePoint.south ∧
       suspendedCircleAntipode n SuspendedCirclePoint.south = SuspendedCirclePoint.north := by
@@ -33,6 +43,16 @@ theorem suspendedCircleAntipode_swapsPoles (n : Nat) :
 theorem suspendedCircleAntipode_involutive (n : Nat) (point : SuspendedCirclePoint n) :
     suspendedCircleAntipode n (suspendedCircleAntipode n point) = point := by
   cases point <;> simp [suspendedCircleAntipode]
+
+theorem suspendedCircleAntipode_preservesPoleSet (n : Nat)
+    (point : SuspendedCirclePoint n) :
+    isSuspendedPole (suspendedCircleAntipode n point) ↔ isSuspendedPole point := by
+  cases point <;> simp [isSuspendedPole, suspendedCircleAntipode]
+
+theorem suspendedCircleAntipode_preservesEquatorSet (n : Nat)
+    (point : SuspendedCirclePoint n) :
+    isSuspendedEquator (suspendedCircleAntipode n point) ↔ isSuspendedEquator point := by
+  cases point <;> simp [isSuspendedEquator, suspendedCircleAntipode]
 
 def suspendedCircleCounts (n : Nat) : List Nat :=
   Circle.Common.suspensionCounts [n, n]
