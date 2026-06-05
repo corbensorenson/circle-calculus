@@ -92,4 +92,43 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["(dimension + 8) % 8 == dimension % 8"]
     blocker: ""
+  - id: P2BU-T0001
+    status: lean_proved
+    lean_name: Circle.Phase2.trivialBundleProjection_point
+    informal_statement: "In the trivial product-bundle seed, projecting a built point returns its base coordinate."
+    formal_statement: "forall base fiber, trivialBundleProjection (trivialBundlePoint base fiber) = base"
+    dictionary_dependencies: ["COMMON-0007", "COMMON-0008"]
+    paper_refs: ["papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["projection((base,fiber)) == base"]
+    blocker: ""
+  - id: P2BU-T0002
+    status: lean_proved
+    lean_name: Circle.Phase2.trivialBundleFiber_point
+    informal_statement: "In the trivial product-bundle seed, reading a built point's fiber coordinate returns its fiber value."
+    formal_statement: "forall base fiber, trivialBundleFiber (trivialBundlePoint base fiber) = fiber"
+    dictionary_dependencies: ["COMMON-0007", "COMMON-0009"]
+    paper_refs: ["papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["fiber((base,fiber)) == fiber"]
+    blocker: ""
+  - id: P2BU-T0003
+    status: lean_proved
+    lean_name: Circle.Phase2.trivialBundleProjection_forgetsFiber
+    informal_statement: "In the trivial product-bundle seed, changing only the fiber value does not change the projected base."
+    formal_statement: "forall base left right, trivialBundleProjection (trivialBundlePoint base left) = trivialBundleProjection (trivialBundlePoint base right)"
+    dictionary_dependencies: ["COMMON-0007", "COMMON-0008", "COMMON-0009"]
+    paper_refs: ["papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["projection((base,left)) == projection((base,right))"]
+    blocker: ""
 warnings: []

@@ -262,6 +262,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: `P2B-T0001` and `P2B-T0002` are Lean-proved finite period-8 clock facts; Clifford algebras, K-theory, KO-theory, and Bott periodicity remain future formalization work.
 - [x] `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md`
   - Program: base, fiber, total space, projection, transition functions, connection, curvature, holonomy, and hidden proof provenance.
+  - Status: `P2BU-T0001` through `P2BU-T0003` are Lean-proved trivial product-bundle projection/fiber facts; nontrivial bundles, transition functions, connections, curvature, and holonomy remain future work.
 - [x] `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md`
   - Program: boundaries, `boundary(boundary)=0`, cobordisms, fields, and proofs as transformations.
 - [x] `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md`
@@ -317,6 +318,9 @@ Application guardrails:
 - [x] `P2S-T0002`: finite four-suspension iteration preserves Euler characteristic.
 - [x] `P2B-T0001`: finite period-8 dimension clock index is below 8.
 - [x] `P2B-T0002`: finite period-8 dimension clock is invariant under adding 8.
+- [x] `P2BU-T0001`: trivial-bundle projection returns the base coordinate.
+- [x] `P2BU-T0002`: trivial-bundle fiber coordinate returns the fiber value.
+- [x] `P2BU-T0003`: trivial-bundle projection is invariant under changing only the fiber.
 
 ## Current S1 Proof Status
 

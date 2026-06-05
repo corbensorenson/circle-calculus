@@ -1,5 +1,23 @@
 id: bundle_calculus
-status: planned
+status: active
 papers:
   - papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md
+sidecars:
+  - sidecars/PAPER_P2_03_BUNDLE_CALCULUS/lean/PaperP203.lean
+theorems:
+  - id: P2BU-T0001
+    status: lean_proved
+    lean_name: Circle.Phase2.trivialBundleProjection_point
+    dictionary_dependencies: ["COMMON-0007", "COMMON-0008"]
+  - id: P2BU-T0002
+    status: lean_proved
+    lean_name: Circle.Phase2.trivialBundleFiber_point
+    dictionary_dependencies: ["COMMON-0007", "COMMON-0009"]
+  - id: P2BU-T0003
+    status: lean_proved
+    lean_name: Circle.Phase2.trivialBundleProjection_forgetsFiber
+    dictionary_dependencies: ["COMMON-0007", "COMMON-0008", "COMMON-0009"]
+next_targets:
+  - "Add transition functions only after choosing a nontrivial bundle representation."
+  - "Connect Hopf-coordinate papers as motivating examples, not as completed bundle formalizations."
 guardrail: "Do not treat twisted bundles as global products."

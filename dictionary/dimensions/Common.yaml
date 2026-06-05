@@ -67,3 +67,37 @@ entries:
       - "A proof of Bott periodicity."
       - "A proof about real Clifford algebras."
       - "A K-theory or KO-theory theorem."
+  - id: COMMON-0007
+    name: "Trivial product bundle"
+    kind: object
+    symbol: "Base x Fiber"
+    formal_definition: "A product object with a visible base coordinate and a fiber coordinate, modeled in Lean by Circle.Phase2.TrivialBundle."
+    intuition: "The safe first bundle model: base and hidden fiber are tracked separately, without claiming any twisting."
+    dependencies: []
+    introduced_in: "PAPER_P2_03_BUNDLE_CALCULUS"
+    forbidden_meanings:
+      - "A proof that every bundle is globally trivial."
+      - "A Hopf fibration formalization."
+      - "A transition-function or connection model."
+  - id: COMMON-0008
+    name: "Bundle projection"
+    kind: operation
+    symbol: "pi"
+    formal_definition: "The map that returns the base coordinate from the trivial product-bundle seed."
+    intuition: "The visible part of a base/fiber state."
+    dependencies: ["COMMON-0007"]
+    introduced_in: "PAPER_P2_03_BUNDLE_CALCULUS"
+    forbidden_meanings:
+      - "A projection from an arbitrary bundle without a separate formal model."
+      - "A quotient map."
+  - id: COMMON-0009
+    name: "Fiber coordinate"
+    kind: operation
+    symbol: "fiber"
+    formal_definition: "The map that returns the fiber coordinate from the trivial product-bundle seed."
+    intuition: "The hidden or phase-like part of a base/fiber state in the product model."
+    dependencies: ["COMMON-0007"]
+    introduced_in: "PAPER_P2_03_BUNDLE_CALCULUS"
+    forbidden_meanings:
+      - "A proof of fiber transport."
+      - "A connection, curvature, holonomy, or transition-function model."

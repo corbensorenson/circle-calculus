@@ -334,10 +334,16 @@ papers:
 
   - id: PAPER_P2_03_BUNDLE_CALCULUS
     title: "Circle Calculus Phase II.3: Bundle Calculus"
-    status: planned
-    sidecar: ""
-    theorem_ids: []
-    dictionary_ids: []
+    status: draft
+    sidecar: sidecars/PAPER_P2_03_BUNDLE_CALCULUS
+    theorem_ids:
+      - P2BU-T0001
+      - P2BU-T0002
+      - P2BU-T0003
+    dictionary_ids:
+      - COMMON-0007
+      - COMMON-0008
+      - COMMON-0009
 
   - id: PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS
     title: "Circle Calculus Phase II.4: Boundary and Cobordism Calculus"
