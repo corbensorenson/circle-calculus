@@ -4,6 +4,7 @@ papers:
   - papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md
 sidecars:
   - sidecars/PAPER_P2_01_STABLE_SPHERE_CALCULUS/lean/PaperP201.lean
+  - sidecars/PAPER_P2_01_STABLE_SPHERE_CALCULUS/python/test_stable_sphere_examples.py
 theorems:
   - id: P2S-T0001
     status: lean_proved

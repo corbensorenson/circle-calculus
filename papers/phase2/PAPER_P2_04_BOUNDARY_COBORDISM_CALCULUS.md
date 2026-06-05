@@ -28,6 +28,8 @@ reverse(interval) = [target -> source]
 
 These are Lean-proved finite interval facts. They support the boundary-calculus vocabulary, but they do not prove a general chain-complex theorem, a cobordism theorem, TQFT structure, or a physics boundary law.
 
+The Python sidecar checks the same directed-interval boundary examples. Those examples are executable support, not a general cobordism or physics theorem.
+
 ## Next Program
 
 - Start with finite combinatorial boundary models where Lean support is lightweight.

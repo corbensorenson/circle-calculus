@@ -22,6 +22,8 @@ This clock is useful because later Bott/Clifford work is organized by eight-step
 
 These are Lean-proved finite arithmetic facts. They support dimension-indexed organization, but they do not prove any Clifford algebra, K-theory, KO-theory, or Bott periodicity theorem.
 
+The Python sidecar checks the same period-8 clock examples. Those examples are executable support, not a proof of Bott periodicity.
+
 ## Next Program
 
 - Choose a formal Clifford algebra representation before adding Clifford-periodicity theorem ids.

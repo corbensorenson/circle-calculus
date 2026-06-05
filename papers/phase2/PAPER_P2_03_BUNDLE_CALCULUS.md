@@ -30,6 +30,8 @@ TrivialBundle(Base,Fiber)
 
 These are Lean-proved product-bundle facts. They support base/fiber terminology for later proof-carrying glyph and Hopf-style examples, but they do not formalize nontrivial bundles, transition functions, connections, curvature, or holonomy.
 
+The Python sidecar checks the same trivial base/fiber projection examples. Those examples are executable support, not evidence that nontrivial bundles are globally products.
+
 ## Next Program
 
 - Use the Hopf papers as motivating examples, not as completed bundle formalizations.

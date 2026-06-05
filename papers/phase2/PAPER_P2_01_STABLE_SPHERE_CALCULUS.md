@@ -28,6 +28,8 @@ counts
 
 These are Lean-proved finite cell-count theorems. They provide a verified seed for stable-sphere calculus, but they do not prove any statement about spectra, stable maps, or stable homotopy groups.
 
+The Python sidecar checks the same finite suspension-count identities on representative examples. Those examples are executable support, not substitutes for the Lean proofs.
+
 ## Next Program
 
 - Define a bounded stable-map representation before adding map-composition theorems.

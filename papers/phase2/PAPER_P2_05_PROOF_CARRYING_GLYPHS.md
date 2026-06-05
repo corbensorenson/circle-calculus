@@ -24,6 +24,8 @@ This is not a diagram normalizer yet. It is the checked metadata contract that a
 
 These are Lean-proved certificate projection facts. They support the future glyph interface, but they do not prove glyph semantics, diagram normalization, theorem dependency correctness, or proof search.
 
+The Python sidecar checks the same certificate-field projections on a finite-circle glyph example. Those examples are executable support, not proof-carrying diagram semantics.
+
 ## Next Program
 
 - Begin with finite-circle diagrams such as `C_13` stride `5` and `C_36` stride `8`.

@@ -258,19 +258,19 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
 
 - [x] `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md`
   - Program: suspension, stable maps, spectra, and stable invariants.
-  - Status: `P2S-T0001` through `P2S-T0003` are Lean-proved finite double/four suspension facts; stable maps, spectra, and stable homotopy claims remain future work.
+  - Status: `P2S-T0001` through `P2S-T0003` are Lean-proved finite double/four suspension facts with Python examples; stable maps, spectra, and stable homotopy claims remain future work.
 - [x] `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md`
   - Program: Clifford algebras, spinors, Bott periodicity, and dimension clocks.
-  - Status: `P2B-T0001` through `P2B-T0003` are Lean-proved finite period-8 clock facts; Clifford algebras, K-theory, KO-theory, and Bott periodicity remain future formalization work.
+  - Status: `P2B-T0001` through `P2B-T0003` are Lean-proved finite period-8 clock facts with Python examples; Clifford algebras, K-theory, KO-theory, and Bott periodicity remain future formalization work.
 - [x] `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md`
   - Program: base, fiber, total space, projection, transition functions, connection, curvature, holonomy, and hidden proof provenance.
-  - Status: `P2BU-T0001` through `P2BU-T0004` are Lean-proved trivial product-bundle projection/fiber facts; nontrivial bundles, transition functions, connections, curvature, and holonomy remain future work.
+  - Status: `P2BU-T0001` through `P2BU-T0004` are Lean-proved trivial product-bundle projection/fiber facts with Python examples; nontrivial bundles, transition functions, connections, curvature, and holonomy remain future work.
 - [x] `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md`
   - Program: boundaries, `boundary(boundary)=0`, cobordisms, fields, and proofs as transformations.
-  - Status: `P2BC-T0001` through `P2BC-T0004` are Lean-proved directed-interval boundary facts; general chain complexes, cobordisms, TQFT, and physics-adjacent claims remain future work.
+  - Status: `P2BC-T0001` through `P2BC-T0004` are Lean-proved directed-interval boundary facts with Python examples; general chain complexes, cobordisms, TQFT, and physics-adjacent claims remain future work.
 - [x] `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md`
   - Program: glyphs with formal syntax, normal forms, theorem dependencies, proof certificates, semantic models, and projection views.
-  - Status: `P2G-T0001` through `P2G-T0003` are Lean-proved proof-glyph certificate projection facts; glyph syntax, normal forms, semantics, dependency correctness, and proof search remain future work.
+  - Status: `P2G-T0001` through `P2G-T0003` are Lean-proved proof-glyph certificate projection facts with Python examples; glyph syntax, normal forms, semantics, dependency correctness, and proof search remain future work.
 - [x] `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md`
   - Program: coil signatures, closure profiles, prime-lag recurrence, antinode maps, and periodic-data benchmarks.
   - Status: `APPD-T0001` through `APPD-T0003` are Lean-proved finite phase-coordinate facts with Python examples; real-data and benchmark claims remain future work.

@@ -4,6 +4,7 @@ papers:
   - papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md
 sidecars:
   - sidecars/PAPER_P2_03_BUNDLE_CALCULUS/lean/PaperP203.lean
+  - sidecars/PAPER_P2_03_BUNDLE_CALCULUS/python/test_trivial_bundle_examples.py
 theorems:
   - id: P2BU-T0001
     status: lean_proved

@@ -76,11 +76,11 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md` | draft/partial proof | `S7QH-T0001` and `S7QH-T0002` are Lean-proved coordinate theorems; full fibration topology remains future work |
 | `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md` | draft/proved spine | `S7O-T0001` through `S7O-T0006` are Lean-proved in a bounded Cayley-Dickson coordinate model |
 | `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | draft/partial proof | `S15-T0001` is a Lean roadmap marker; `S15-T0002` through `S15-T0004` are Lean-proved topological/coordinate landing facts |
-| `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md` | draft/proved finite seed | `P2S-T0001` through `P2S-T0003` are Lean-proved double/four suspension facts |
-| `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md` | draft/proved finite seed | `P2B-T0001` through `P2B-T0003` are Lean-proved period-8 clock facts; Bott/Clifford periodicity remains future work |
-| `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md` | draft/proved trivial seed | `P2BU-T0001` through `P2BU-T0004` are Lean-proved product-bundle projection/fiber facts |
-| `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md` | draft/proved finite seed | `P2BC-T0001` through `P2BC-T0004` are Lean-proved directed-interval boundary facts |
-| `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md` | draft/proved certificate seed | `P2G-T0001` through `P2G-T0003` are Lean-proved proof-glyph projection facts |
+| `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md` | draft/proved finite seed | `P2S-T0001` through `P2S-T0003` are Lean-proved double/four suspension facts with Python examples |
+| `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md` | draft/proved finite seed | `P2B-T0001` through `P2B-T0003` are Lean-proved period-8 clock facts with Python examples; Bott/Clifford periodicity remains future work |
+| `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md` | draft/proved trivial seed | `P2BU-T0001` through `P2BU-T0004` are Lean-proved product-bundle projection/fiber facts with Python examples |
+| `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md` | draft/proved finite seed | `P2BC-T0001` through `P2BC-T0004` are Lean-proved directed-interval boundary facts with Python examples |
+| `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md` | draft/proved certificate seed | `P2G-T0001` through `P2G-T0003` are Lean-proved proof-glyph projection facts with Python examples |
 | `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md` | draft/proved finite seed | `APPD-T0001` through `APPD-T0003` are Lean-proved phase-coordinate facts with Python examples |
 | `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md` | draft/proved finite seed | `COMPC-T0001` through `COMPC-T0003` are Lean-proved cyclic-address facts with Python examples |
 | `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md` | draft/proved finite seed | `COMPR-T0001` through `COMPR-T0003` are Lean-proved direction-bin schedule facts with Python examples |

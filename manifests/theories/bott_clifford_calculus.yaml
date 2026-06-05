@@ -4,6 +4,7 @@ papers:
   - papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md
 sidecars:
   - sidecars/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY/lean/PaperP202.lean
+  - sidecars/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY/python/test_bott_clock_examples.py
 theorems:
   - id: P2B-T0001
     status: lean_proved

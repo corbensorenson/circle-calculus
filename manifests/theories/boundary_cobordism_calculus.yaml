@@ -4,6 +4,7 @@ papers:
   - papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md
 sidecars:
   - sidecars/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS/lean/PaperP204.lean
+  - sidecars/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS/python/test_boundary_examples.py
 theorems:
   - id: P2BC-T0001
     status: lean_proved
