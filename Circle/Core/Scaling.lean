@@ -8,6 +8,19 @@ namespace Circle
 def scale (n k : Nat) (x : C n) : C n :=
   (k : ZMod n) * x
 
+def scaleAddMonoidHom (n k : Nat) : C n →+ C n where
+  toFun := scale n k
+  map_zero' := by
+    unfold scale
+    simp
+  map_add' := by
+    intro x y
+    unfold scale
+    rw [mul_add]
+
+def scaleKernelSubgroup (n k : Nat) : AddSubgroup (C n) :=
+  (scaleAddMonoidHom n k).ker
+
 theorem scale_zero_factor (n : Nat) (x : C n) :
     scale n 0 x = 0 := by
   unfold scale
@@ -131,6 +144,15 @@ theorem scale_nat_eq_zero_iff_period_dvd {n k x : Nat} (hn : n ≠ 0) :
       exact h1b
     rw [hn_decomp]
     exact h1a
+
+theorem mem_scaleKernelSubgroup_iff {n k : Nat} (x : C n) :
+    x ∈ scaleKernelSubgroup n k ↔ scale n k x = 0 := by
+  rfl
+
+theorem nat_mem_scaleKernelSubgroup_iff_period_dvd {n k x : Nat} (hn : n ≠ 0) :
+    ((x : Nat) : C n) ∈ scaleKernelSubgroup n k ↔ period n k ∣ x := by
+  rw [mem_scaleKernelSubgroup_iff]
+  exact scale_nat_eq_zero_iff_period_dvd hn
 
 theorem scale_period_multiple_zero {n k m : Nat} (hn : n ≠ 0) :
     scale n k ((m * period n k : Nat) : C n) = 0 := by

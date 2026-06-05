@@ -575,6 +575,22 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["len({x | 0 <= x < n and scale(n,k,x)=scale(n,k,r)}) == gcd(n,k) over positive moduli in bounded tests"]
 
+  - id: CC-T0045
+    name: Scaling kernel subgroup membership is period divisibility
+    status: proved
+    lean_name: Circle.nat_mem_scaleKernelSubgroup_iff_period_dvd
+    informal_statement: "For a nonzero circle size, a natural representative lies in the additive kernel subgroup of scaling by k exactly when the stride period divides that representative."
+    formal_statement: "forall {n k x : Nat}, n != 0 -> ((x : Nat) : Circle.C n) in Circle.scaleKernelSubgroup n k iff Circle.period n k divides x"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_kernel_subgroup_membership_matches_period_divisibility"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean by defining scaling as an additive hom, taking its kernel subgroup, and reusing CC-T0030."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["scale(n,k,x)==0 iff period(n,k) divides x over positive moduli in bounded tests"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

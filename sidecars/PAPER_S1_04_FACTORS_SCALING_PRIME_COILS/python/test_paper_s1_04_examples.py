@@ -114,6 +114,15 @@ def test_scale_zero_period_divisibility_examples() -> None:
                 assert (circle.scale(x, k) == 0) == (x % period == 0)
 
 
+def test_scale_kernel_subgroup_membership_examples() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for k in range(0, 33):
+            period = circle.period(k)
+            for x in range(0, 65):
+                assert (circle.scale(x, k) == 0) == (x % period == 0)
+
+
 def test_scale_period_multiple_zero_examples() -> None:
     for n in range(1, 65):
         circle = Circle(n)

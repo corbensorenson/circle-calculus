@@ -10,6 +10,8 @@ The canonical theorem ids live in `manifests/theorem_manifest.yaml`.
 namespace Circle.PaperS104
 
 #check Circle.scale
+#check Circle.scaleAddMonoidHom
+#check Circle.scaleKernelSubgroup
 #check Circle.scale_zero_factor
 #check Circle.scale_one
 #check Circle.scale_comp
@@ -23,6 +25,8 @@ namespace Circle.PaperS104
 #check Circle.scale_add_cofactor_multiple
 #check Circle.scale_nat_eq_zero_iff_dvd_mul
 #check Circle.scale_nat_eq_zero_iff_period_dvd
+#check Circle.mem_scaleKernelSubgroup_iff
+#check Circle.nat_mem_scaleKernelSubgroup_iff_period_dvd
 #check Circle.scale_period_multiple_zero
 #check Circle.scale_add_period_multiple
 #check Circle.scale_nat_period_normalForm
