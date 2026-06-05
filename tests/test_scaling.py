@@ -85,3 +85,11 @@ def test_scale_add_cofactor_multiple_for_divisors() -> None:
                 for x in range(0, 33):
                     for m in range(0, 9):
                         assert circle.scale(x + m * cofactor, k) == circle.scale(x, k)
+
+
+def test_scale_zero_iff_modulus_divides_product() -> None:
+    for n in range(1, 129):
+        circle = Circle(n)
+        for k in range(0, 65):
+            for x in range(0, 129):
+                assert (circle.scale(x, k) == 0) == ((k * x) % n == 0)

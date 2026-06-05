@@ -80,3 +80,11 @@ def test_add_cofactor_multiple_examples() -> None:
                 for x in range(0, 17):
                     for m in range(0, 7):
                         assert circle.scale(x + m * cofactor, k) == circle.scale(x, k)
+
+
+def test_scale_zero_divisibility_examples() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for k in range(0, 33):
+            for x in range(0, 65):
+                assert (circle.scale(x, k) == 0) == ((k * x) % n == 0)

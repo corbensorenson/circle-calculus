@@ -255,6 +255,22 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["if k divides n and n>0, then scale(n,k,x+m*(n//k))==scale(n,k,x) over bounded examples"]
 
+  - id: CC-T0025
+    name: Scaling zero iff modulus divides product
+    status: proved
+    lean_name: Circle.scale_nat_eq_zero_iff_dvd_mul
+    informal_statement: "A natural address x maps to zero under scaling by k exactly when n divides k*x."
+    formal_statement: "forall (n k x : Nat), Circle.scale n k ((x : Nat) : Circle.C n) = 0 iff n divides k*x"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0202"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_zero_iff_modulus_divides_product"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean by reducing scale to the cast of k*x in ZMod and applying CharP.cast_eq_zero_iff."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["scale(n,k,x)==0 iff (k*x)%n==0 over positive moduli in bounded tests"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

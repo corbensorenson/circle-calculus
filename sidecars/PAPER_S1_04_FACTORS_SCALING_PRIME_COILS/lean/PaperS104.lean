@@ -19,5 +19,6 @@ namespace Circle.PaperS104
 #check Circle.scale_cofactor_zero
 #check Circle.scale_cofactor_multiple_zero
 #check Circle.scale_add_cofactor_multiple
+#check Circle.scale_nat_eq_zero_iff_dvd_mul
 
 end Circle.PaperS104

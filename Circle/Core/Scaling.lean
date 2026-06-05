@@ -79,4 +79,10 @@ theorem scale_add_cofactor_multiple {n k x m : Nat} (hkn : k ∣ n) :
   rw [hzero]
   simp
 
+theorem scale_nat_eq_zero_iff_dvd_mul (n k x : Nat) :
+    scale n k ((x : Nat) : C n) = 0 ↔ n ∣ k * x := by
+  unfold scale
+  rw [← Nat.cast_mul]
+  exact CharP.cast_eq_zero_iff (ZMod n) n (k * x)
+
 end Circle
