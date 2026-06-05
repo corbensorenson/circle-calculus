@@ -399,6 +399,22 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["scale(n,k,x+m*period(n,k))==scale(n,k,x) over positive moduli in bounded tests"]
 
+  - id: CC-T0034
+    name: Scaling has period normal form
+    status: proved
+    lean_name: Circle.scale_nat_period_normalForm
+    informal_statement: "For a nonzero circle size, scaling a natural address has the same value as scaling its residue modulo the stride period."
+    formal_statement: "forall {n k x : Nat}, n != 0 -> Circle.scale n k ((x : Nat) : Circle.C n) = Circle.scale n k (((x % Circle.period n k) : Nat) : Circle.C n)"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_period_normal_form"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean from CC-T0033 and Nat.mod_add_div."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["scale(n,k,x)==scale(n,k,x%period(n,k)) over positive moduli in bounded tests"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

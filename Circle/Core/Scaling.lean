@@ -147,6 +147,21 @@ theorem scale_add_period_multiple {n k x m : Nat} (hn : n ≠ 0) :
   rw [hzero]
   simp
 
+theorem scale_nat_period_normalForm {n k x : Nat} (hn : n ≠ 0) :
+    scale n k ((x : Nat) : C n) = scale n k (((x % period n k) : Nat) : C n) := by
+  let p := period n k
+  have hdecomp : x = x % p + (x / p) * p := by
+    have h0 := Nat.mod_add_div x p
+    rw [Nat.mul_comm p (x / p)] at h0
+    exact h0.symm
+  calc
+    scale n k ((x : Nat) : C n) = scale n k (((x % p + (x / p) * p) : Nat) : C n) := by
+      exact congrArg (fun t : Nat => scale n k ((t : Nat) : C n)) hdecomp
+    _ = scale n k (((x % p) : Nat) : C n) := by
+      exact scale_add_period_multiple (n := n) (k := k) (x := x % p) (m := x / p) hn
+    _ = scale n k (((x % period n k) : Nat) : C n) := by
+      rfl
+
 theorem scale_nat_eq_iff_mul_modEq (n k x y : Nat) :
     scale n k ((x : Nat) : C n) = scale n k ((y : Nat) : C n) ↔
       k * x ≡ k * y [MOD n] := by

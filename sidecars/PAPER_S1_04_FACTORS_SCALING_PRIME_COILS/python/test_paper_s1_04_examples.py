@@ -133,6 +133,15 @@ def test_scale_add_period_multiple_examples() -> None:
                     assert circle.scale(x + m * period, k) == circle.scale(x, k)
 
 
+def test_scale_period_normal_form_examples() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for k in range(0, 33):
+            period = circle.period(k)
+            for x in range(0, 129):
+                assert circle.scale(x, k) == circle.scale(x % period, k)
+
+
 def test_scale_equality_congruence_examples() -> None:
     for n in range(1, 33):
         circle = Circle(n)
