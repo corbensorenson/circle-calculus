@@ -32,6 +32,14 @@ structure HopfBase5 where
   x3 : ℝ
   x4 : ℝ
 
+theorem hopfBase5_ext {p q : HopfBase5}
+    (h0 : p.x0 = q.x0) (h1 : p.x1 = q.x1) (h2 : p.x2 = q.x2)
+    (h3 : p.x3 = q.x3) (h4 : p.x4 = q.x4) : p = q := by
+  cases p
+  cases q
+  simp at h0 h1 h2 h3 h4
+  simp [h0, h1, h2, h3, h4]
+
 def quaternionCoordNormSq (q : QuaternionCoord) : ℝ :=
   q.r * q.r + q.i * q.i + q.j * q.j + q.k * q.k
 
@@ -50,8 +58,19 @@ def quaternionMulCoord (a b : QuaternionCoord) : QuaternionCoord where
 def quaternionPairNormSq (p : QuaternionPair) : ℝ :=
   quaternionCoordNormSq p.q0 + quaternionCoordNormSq p.q1
 
+def quaternionPairRightPhase (p : QuaternionPair) (u : QuaternionCoord) : QuaternionPair where
+  q0 := quaternionMulCoord p.q0 u
+  q1 := quaternionMulCoord p.q1 u
+
 def hopfBase5NormSq (p : HopfBase5) : ℝ :=
   p.x0 * p.x0 + p.x1 * p.x1 + p.x2 * p.x2 + p.x3 * p.x3 + p.x4 * p.x4
+
+def hopfBase5Scale (s : ℝ) (p : HopfBase5) : HopfBase5 where
+  x0 := s * p.x0
+  x1 := s * p.x1
+  x2 := s * p.x2
+  x3 := s * p.x3
+  x4 := s * p.x4
 
 def quaternionicHopfMap (p : QuaternionPair) : HopfBase5 :=
   let product := quaternionMulCoord p.q0 (quaternionConjCoord p.q1)
@@ -87,6 +106,23 @@ theorem quaternionicHopf_lands_sphere (p : QuaternionPair)
     hopfBase5NormSq (quaternionicHopfMap p) = 1 := by
   rw [quaternionicHopfBaseNormSq_hopfMap, h]
   ring
+
+theorem quaternionicHopfMap_rightPhase_scaled (p : QuaternionPair) (u : QuaternionCoord) :
+    quaternionicHopfMap (quaternionPairRightPhase p u) =
+      hopfBase5Scale (quaternionCoordNormSq u) (quaternionicHopfMap p) := by
+  rcases p with ⟨⟨a, b, c, d⟩, ⟨e, f, g, h⟩⟩
+  rcases u with ⟨ur, ui, uj, uk⟩
+  apply hopfBase5_ext <;>
+    simp [quaternionicHopfMap, quaternionPairRightPhase, hopfBase5Scale,
+      quaternionCoordNormSq, quaternionConjCoord, quaternionMulCoord] <;>
+    ring
+
+theorem quaternionicPhaseInvariance (p : QuaternionPair) (u : QuaternionCoord)
+    (hu : quaternionCoordNormSq u = 1) :
+    quaternionicHopfMap (quaternionPairRightPhase p u) = quaternionicHopfMap p := by
+  rw [quaternionicHopfMap_rightPhase_scaled, hu]
+  rcases quaternionicHopfMap p with ⟨x0, x1, x2, x3, x4⟩
+  simp [hopfBase5Scale]
 
 def octonionTrackName : String :=
   "S7O"

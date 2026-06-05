@@ -41,18 +41,18 @@ theorems:
       python_property_tests: ["sidecars/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION/python/test_paper_s7_02_examples.py::test_quaternionic_hopf_map_lands_on_s4_for_normalized_pair"]
     blocker: ""
   - id: S7QH-T0002
-    status: exploratory_python
+    status: lean_proved
     lean_name: Circle.S7.quaternionicPhaseInvariance
     informal_statement: "Quaternionic phase invariance is the S^7 analog of Hopf phase invariance."
-    formal_statement: "Python exploratory model: right multiplication of both quaternion coordinates by the same unit quaternion phase preserves quaternionic_hopf_map."
+    formal_statement: "forall (p : Circle.S7.QuaternionPair) (u : Circle.S7.QuaternionCoord), Circle.S7.quaternionCoordNormSq u = 1 -> Circle.S7.quaternionicHopfMap (Circle.S7.quaternionPairRightPhase p u) = Circle.S7.quaternionicHopfMap p"
     dictionary_dependencies: ["S7QH-0001", "S3Q-0002"]
     paper_refs: ["papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"]
     imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
     verification:
-      lean_build_required: false
+      lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["sidecars/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION/python/test_paper_s7_02_examples.py::test_quaternionic_hopf_right_phase_invariant"]
-    blocker: "Lean proof deferred until a quaternionic projective/Hopf formalization path is selected."
+    blocker: ""
   - id: S7O-T0001
     status: exploratory_python
     lean_name: Circle.S7.octonionBasis

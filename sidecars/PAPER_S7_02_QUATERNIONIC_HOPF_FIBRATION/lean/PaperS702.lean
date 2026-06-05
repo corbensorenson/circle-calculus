@@ -16,11 +16,15 @@ namespace Circle.PaperS702
 #check Circle.S7.quaternionConjCoord
 #check Circle.S7.quaternionMulCoord
 #check Circle.S7.quaternionPairNormSq
+#check Circle.S7.quaternionPairRightPhase
 #check Circle.S7.hopfBase5NormSq
+#check Circle.S7.hopfBase5Scale
 #check Circle.S7.quaternionicHopfMap
 #check Circle.S7.quaternionCoordNormSq_mul
 #check Circle.S7.quaternionCoordNormSq_conj
 #check Circle.S7.quaternionicHopfBaseNormSq_hopfMap
 #check Circle.S7.quaternionicHopf_lands_sphere
+#check Circle.S7.quaternionicHopfMap_rightPhase_scaled
+#check Circle.S7.quaternionicPhaseInvariance
 
 end Circle.PaperS702

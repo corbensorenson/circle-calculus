@@ -73,7 +73,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md` | draft | `S5-T0001` proved |
 | `papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md` | draft | `S6-T0001` proved; `S6-W0001` warning tracked |
 | `papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md` | draft | `S7C-T0001` and `S7C-T0002` proved |
-| `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md` | draft/exploratory | `S7QH-T0001` and `S7QH-T0002` have Python sidecar checks; Lean formalization is deferred |
+| `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md` | draft/partial proof | `S7QH-T0001` and `S7QH-T0002` are Lean-proved coordinate theorems; full fibration topology remains future work |
 | `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md` | draft/exploratory | `S7O-T0001` through `S7O-T0006` have Python sidecar checks; Lean formalization is deferred |
 | `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | roadmap | `S15-T0001` has a Lean roadmap marker; formal proof is deferred |
 
@@ -251,7 +251,7 @@ Executable exploratory spine:
 - `S3H-T0002`: common unit-phase rotation preserves the Hopf base point in Lean and Python checks
 - `S3H-T0003`: the sampled Hopf fiber phase orbit stays normalized, preserves the base point, and closes numerically after `2*pi`
 - `S7QH-T0001`: coordinate quaternionic Hopf map sends normalized quaternion pairs to the unit five-coordinate base equation
-- `S7QH-T0002`: shared right unit-quaternion phase rotation preserves the quaternionic Hopf map in Python checks
+- `S7QH-T0002`: shared right unit-quaternion phase rotation preserves the quaternionic Hopf map
 - `S7O-T0001` through `S7O-T0006`: exploratory octonion basis, conjugate/norm, sample norm multiplication, sample unit closure, noncommutativity, and nonassociativity checks
 - `S15-T0001`: roadmap marker for the future `S7 -> S15 -> S8` octonionic Hopf horizon
 

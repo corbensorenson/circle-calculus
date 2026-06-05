@@ -234,7 +234,7 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
 - [x] `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md`
   - Targets: `S7QH-T0001`, `S7QH-T0002`
   - Keep roadmap/exploratory until `S3` quaternion calculus and `S4` base are stable.
-  - Status: `S7QH-T0001` is a Lean-proved coordinate landing theorem; `S7QH-T0002` remains an executable Python right-phase invariance check until the quotient/fibration layer is formalized.
+  - Status: `S7QH-T0001` and `S7QH-T0002` are Lean-proved coordinate theorems; quaternionic projective space, quotient topology, and full fibration formalization remain future work.
 - [x] `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md`
   - Targets: `S7O-T0001` through `S7O-T0006`
   - Warning targets: `S7O-W0001`, `S7O-W0002`
