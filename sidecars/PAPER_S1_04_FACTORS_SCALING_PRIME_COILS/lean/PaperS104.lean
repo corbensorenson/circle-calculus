@@ -53,6 +53,7 @@ namespace Circle.PaperS104
 #check Circle.scaleTargetFiberRepresentativeSet_eq_empty_of_not_mem_scaleCircleImage
 #check Circle.scaleTargetFiberRepresentativeSet_card_of_mem_scaleCircleImage
 #check Circle.scaleCircleImage_card_mul_targetFiberRepresentativeSet_card
+#check Circle.scaleCircleImage_card_mul_scaleKernelRepresentativeSet_card
 #check Circle.scale_nat_eq_iff_nat_modEq_of_coprime
 #check Circle.scale_factor_modEq
 

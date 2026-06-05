@@ -304,6 +304,15 @@ def test_scale_image_card_times_target_fiber_card() -> None:
                 assert len(image) * len(fiber) == n
 
 
+def test_scale_image_card_times_kernel_card() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for k in range(0, 33):
+            image = {circle.scale(x, k) for x in range(n)}
+            kernel = {x for x in range(n) if circle.scale(x, k) == 0}
+            assert len(image) * len(kernel) == n
+
+
 def test_coprime_scale_equality_iff_addresses_congruent() -> None:
     for n in range(1, 65):
         circle = Circle(n)

@@ -639,6 +639,22 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["if target in {scale(n,k,x) | 0 <= x < n}, then len(image) * len(target_fiber) == n"]
 
+  - id: CC-T0049
+    name: Scaling image and kernel cardinalities factor the circle
+    status: proved
+    lean_name: Circle.scaleCircleImage_card_mul_scaleKernelRepresentativeSet_card
+    informal_statement: "For a nonzero circle size, the finite scaling image cardinality times the canonical kernel representative cardinality equals the circle size."
+    formal_statement: "forall {n k : Nat}, n != 0 -> (Circle.scaleCircleImage n k).card * (Circle.scaleKernelRepresentativeSet n k).card = n"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_image_card_times_kernel_card"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean from CC-T0040, CC-T0042, and the factorization n = gcd(n,k) * period(n,k)."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["len({scale(n,k,x) | 0 <= x < n}) * len({x | 0 <= x < n and scale(n,k,x)=0}) == n"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved
