@@ -1,0 +1,12 @@
+---
+title: "S0: Opposition"
+---
+
+S0 is the two-point opposition layer. It is included as a small finite base for sign and antipodal language.
+
+<div class="theorem-box" data-theorem-id="S0-T0001"></div>
+<div class="dictionary-box" data-dictionary-id="S0-0001"></div>
+
+See [Opposition](opposition.qmd).
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

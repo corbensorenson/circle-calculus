@@ -1,0 +1,9 @@
+---
+title: "Quaternion Coils"
+---
+
+This placeholder links the quaternion theorem spine. It must not treat all S3 structure as a product of lower-dimensional circles.
+
+<div class="theorem-box" data-theorem-id="S3Q-T0002"></div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

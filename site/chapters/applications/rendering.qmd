@@ -1,0 +1,9 @@
+---
+title: "Rendering"
+---
+
+Rendering applications are scaffolded. They should remain exploratory until benchmarks, papers, and manifests specify stronger claims.
+
+<div class="warning-box">Rendering demos are not proof artifacts.</div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

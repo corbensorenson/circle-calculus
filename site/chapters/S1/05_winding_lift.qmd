@@ -1,0 +1,28 @@
+---
+title: "Winding Lift"
+---
+
+Winding keeps full-turn information that ordinary residues forget. A lifted node records a winding count `q` and residue `r` so that the represented value is `q*n + r`.
+
+<div class="warning-box">
+Do not read residue-only diagrams as natural-number proofs. The lift layer is what stores full turns.
+</div>
+
+<div class="dictionary-box" data-dictionary-id="CC-0301"></div>
+
+<div class="theorem-box" data-theorem-id="CC-T0009"></div>
+
+<div class="widget-panel" data-widget="winding_lift_explorer" data-theorem-id="CC-T0009" data-dictionary-ids="CC-0301"></div>
+
+Python reference model:
+
+```python
+from circle_math.winding import lift
+
+lift(5, 17)  # winding=3, residue=2
+```
+
+<p data-paper-ref="papers/PAPER_02_WINDING_NATURALS.md">Paper source: [Circle Calculus II](../../../papers/PAPER_02_WINDING_NATURALS.md)</p>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>
+<script type="module" src="../../widgets/S1/winding_lift_explorer.js"></script>

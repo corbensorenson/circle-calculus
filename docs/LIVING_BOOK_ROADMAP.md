@@ -2,6 +2,8 @@
 
 The Living Book is Phase III of the project: a public-facing Quarto website/e-textbook generated from papers, theorem manifests, dictionary entries, Lean proof metadata, and Python reference models.
 
+Current milestone status as of 2026-06-05: Phase 0 and the first S1 interactive source milestone are implemented. Higher dimensions and applications are scaffolded as placeholders only.
+
 ## Phase 0: Skeleton And Data
 
 - Create `site/` with `_quarto.yml`, `index.qmd`, `about.qmd`, and `roadmap.qmd`.
@@ -77,13 +79,13 @@ Each chapter must distinguish intuition, example, Python model, and formal theor
 
 ## First Milestone Acceptance Criteria
 
-- `site/` exists as a Quarto project.
-- `site/index.qmd` renders.
-- S1 chapters 01 through 04 exist.
-- S1 widgets `finite_circle_rotator`, `rotation_composition`, `coil_orbit_explorer`, `period_gcd_visualizer`, and `prime_full_coil_explorer` exist.
-- Site data exports from manifests and dictionary files.
-- Theorem boxes and dictionary boxes display generated data.
-- Status badges derive from manifest status.
-- `sitecheck` passes.
-- `quarto render site` succeeds, unless Quarto is unavailable and documented as a blocker.
-- Existing Lean, pytest, manifest, dictionary, paper, and dimension checks still pass.
+- [x] `site/` exists as a Quarto project.
+- [x] `site/index.qmd` renders.
+- [x] S1 chapters 01 through 04 exist.
+- [x] S1 widgets `finite_circle_rotator`, `rotation_composition`, `coil_orbit_explorer`, `period_gcd_visualizer`, and `prime_full_coil_explorer` exist.
+- [x] Site data exports from manifests and dictionary files.
+- [x] Theorem boxes and dictionary boxes display generated data.
+- [x] Status badges derive from manifest status.
+- [x] `sitecheck` passes.
+- [x] `quarto render site` succeeds.
+- [x] Existing Lean, pytest, manifest, dictionary, paper, and dimension checks still pass after the Living Book commit.

@@ -1,0 +1,9 @@
+---
+title: "Stable Sphere Calculus"
+---
+
+Placeholder for stable finite-sphere calculus.
+
+<div class="theorem-box" data-theorem-id="P2S-T0002"></div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

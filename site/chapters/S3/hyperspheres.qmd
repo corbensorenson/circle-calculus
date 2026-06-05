@@ -1,0 +1,9 @@
+---
+title: "Finite Hyperspheres"
+---
+
+This placeholder links the finite suspended-surface S3 model. Future widgets should keep topological claims separate from finite cell-count claims.
+
+<div class="theorem-box" data-theorem-id="S3C-T0001"></div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

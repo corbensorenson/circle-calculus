@@ -46,6 +46,16 @@ The first implementation must work as a static Quarto site suitable for GitHub P
 
 If Quarto is not installed, do not fake a successful render. Keep non-render site checks functional and report the render blocker clearly.
 
+Local render commands:
+
+```bash
+make site-data
+make sitecheck
+make site-render
+```
+
+On this workstation, Quarto is available through a local extracted install under `.tools/` when no system `quarto` command exists. Fresh clones can install Quarto with the standard Quarto installer or a package manager, then run the same Make targets.
+
 ## Deferred Media And Runtime Layers
 
 Do not implement Manim, TTS, narration, video rendering, or a long movie until the static Living Book skeleton and S1 interactives are stable. Jupyter/Thebe/JupyterLite and Lean Web links are optional later layers; they do not replace local `lake build`.

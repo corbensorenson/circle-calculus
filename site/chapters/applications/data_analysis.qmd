@@ -1,0 +1,9 @@
+---
+title: "Data Analysis"
+---
+
+The data-analysis page will track coil signatures, circular coordinates, period scans, and explanation layers.
+
+<div class="theorem-box" data-theorem-id="APPD-T0002"></div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

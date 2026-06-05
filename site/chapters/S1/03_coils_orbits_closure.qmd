@@ -1,0 +1,33 @@
+---
+title: "Coils, Orbits, And Closure"
+---
+
+A coil is the orbit traced by repeatedly applying the same rotation. Closure means the repeated motion has returned to its starting address.
+
+<div class="warning-box">
+The widget output is a finite computation. It helps explain the theorem but is not a formal proof.
+</div>
+
+<div class="dictionary-box" data-dictionary-id="CC-0201"></div>
+<div class="dictionary-box" data-dictionary-id="CC-0202"></div>
+<div class="dictionary-box" data-dictionary-id="CC-0205"></div>
+
+<div class="theorem-box" data-theorem-id="CC-T0004"></div>
+<div class="theorem-box" data-theorem-id="CC-T0005"></div>
+
+<div class="widget-panel" data-widget="coil_orbit_explorer" data-theorem-id="CC-T0005" data-dictionary-ids="CC-0201 CC-0202 CC-0205"></div>
+
+Python reference model:
+
+```python
+from circle_math.finite import Circle
+
+C = Circle(12)
+C.orbit(start=0, stride=4)  # [0, 4, 8]
+C.period(4)                # 3
+```
+
+<p data-paper-ref="papers/PAPER_01_FINITE_CIRCLES.md">Paper source: [Circle Calculus I](../../../papers/PAPER_01_FINITE_CIRCLES.md)</p>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>
+<script type="module" src="../../widgets/S1/coil_orbit_explorer.js"></script>

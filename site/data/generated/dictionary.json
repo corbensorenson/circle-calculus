@@ -1,0 +1,1846 @@
+{
+  "entries": [
+    {
+      "dependencies": [],
+      "examples": [
+        "C_12 as a clock",
+        "C_13 as a prime circle"
+      ],
+      "forbidden_meanings": [
+        "A Euclidean metric circle in v0.",
+        "A set of planar points at fixed radius in v0."
+      ],
+      "formal_definition": "In v0, C_n is the finite cyclic address space modeled as ZMod n, with n > 0 for finite marked circles.",
+      "formal_models": [
+        "ZMod n",
+        "integers modulo n",
+        "finite cyclic group"
+      ],
+      "id": "CC-0001",
+      "introduced_in": "Paper 1",
+      "intuition": "A closed address space whose positions wrap around.",
+      "kind": "object",
+      "lean_declarations": [
+        "Circle.C"
+      ],
+      "name": "Circle",
+      "python_objects": [
+        "circle_math.finite.Circle"
+      ],
+      "rewrite_rules": [],
+      "source_dictionary": "dictionary/circle_dictionary.yaml",
+      "symbol": "C_n"
+    },
+    {
+      "dependencies": [
+        "CC-0001"
+      ],
+      "examples": [
+        "node(12,14)=node(12,2)"
+      ],
+      "forbidden_meanings": [
+        "A geometric point in a plane unless a later geometry model is explicitly active."
+      ],
+      "formal_definition": "An element of C_n, represented by the residue class of i modulo n.",
+      "formal_models": [
+        "element of ZMod n"
+      ],
+      "id": "CC-0002",
+      "introduced_in": "Paper 1",
+      "intuition": "A marked address on the circle.",
+      "kind": "object",
+      "lean_declarations": [
+        "Circle.Node"
+      ],
+      "name": "Node",
+      "python_objects": [
+        "Circle.node"
+      ],
+      "rewrite_rules": [
+        "node(n,i) = node(n, i mod n)"
+      ],
+      "source_dictionary": "dictionary/circle_dictionary.yaml",
+      "symbol": "node(n,i)"
+    },
+    {
+      "dependencies": [
+        "CC-0001",
+        "CC-0002"
+      ],
+      "examples": [
+        "rot(12,5)(8)=1"
+      ],
+      "forbidden_meanings": [
+        "Physical spinning unless a later model interprets it physically."
+      ],
+      "formal_definition": "rot(n,k)(x) = x + k in C_n.",
+      "formal_models": [
+        "addition by k in ZMod n"
+      ],
+      "id": "CC-0101",
+      "introduced_in": "Paper 1",
+      "intuition": "Move k steps around the circle.",
+      "kind": "operation",
+      "lean_declarations": [
+        "Circle.rot",
+        "Circle.rot_zero",
+        "Circle.rot_comp"
+      ],
+      "name": "Rotation",
+      "python_objects": [
+        "Circle.rot"
+      ],
+      "rewrite_rules": [
+        "rot(n,0)=identity",
+        "rot(n,a) after rot(n,b)=rot(n,a+b)",
+        "rot(n,k+n)=rot(n,k)"
+      ],
+      "source_dictionary": "dictionary/circle_dictionary.yaml",
+      "symbol": "rot(n,k)"
+    },
+    {
+      "dependencies": [
+        "CC-0001",
+        "CC-0002"
+      ],
+      "examples": [
+        "scale(12,0)(7)=0",
+        "scale(12,5)(7)=11",
+        "scale(12,17)=scale(12,5) because 17 is congruent to 5 mod 12",
+        "scale(12,4)(3)=coil_step(12,4,0,3)",
+        "scale(12,4) is not invertible",
+        "scale(13,5) is invertible because 13 is prime and 1<=5<13",
+        "scale(12,4)(3)=0 because 4 divides 12",
+        "scale(12,4)(6)=0 as a second cofactor multiple",
+        "scale(12,4)(8)=scale(12,4)(5) because 8=5+1*(12/4)",
+        "scale(12,4)(9)=0 because 12 divides 4*9",
+        "scale(12,4)(x)=0 exactly when period(12,4)=3 divides x",
+        "scale(12,4)(6)=0 because 6=2*period(12,4)",
+        "scale(12,4)(8)=scale(12,4)(5) because 8=5+period(12,4)",
+        "scale(12,4)(20)=scale(12,4)(20 mod period(12,4))",
+        "scale(12,4)(2)=scale(12,4)(5) exactly because 2 and 5 are congruent mod period(12,4)=3",
+        "on representatives 0,1,2 below period(12,4)=3, scale(12,4) is injective",
+        "scale_period_representative_image(12,4) has card 3",
+        "every scale(12,4)(x) lands in scale_period_representative_image(12,4)",
+        "scale_circle_image(12,4)=scale_period_representative_image(12,4)",
+        "scale_circle_image(12,4) has card 3",
+        "scale_kernel_representative_set(12,4)={0,3,6,9}",
+        "scale_kernel_representative_set(12,4) has card gcd(12,4)=4",
+        "scale_fiber_representative_set(12,4,2)={2,5,8,11}",
+        "scale_fiber_representative_set(12,4,2) has card gcd(12,4)=4",
+        "scale_fiber_representative_set(12,4,0)=scale_kernel_representative_set(12,4)",
+        "scale_target_fiber_representative_set(12,4,scale(12,4,2))=scale_fiber_representative_set(12,4,2)",
+        "scale_fiber_representative_set(12,4,2)=scale_fiber_representative_set(12,4,5) because both representatives scale to 8",
+        "scale_fiber_representative_set(12,4,2)=scale_fiber_representative_set(12,4,5) because 2 and 5 are congruent mod period(12,4)=3",
+        "natural x lies in scale_kernel_subgroup(12,4) exactly when 3 divides x",
+        "target 1 is outside scale_circle_image(12,4), so its target fiber is empty",
+        "target 8 is inside scale_circle_image(12,4), so its target fiber has card 4",
+        "scale_circle_image(12,4) has card 3 and the target 8 fiber has card 4, so 3*4=12",
+        "scale_circle_image(12,4) has card 3 and scale_kernel_representative_set(12,4) has card 4, so 3*4=12",
+        "scale(12,4)(2)=scale(12,4)(5) because 8 and 20 are congruent mod 12",
+        "scale(12,5)(2)=scale(12,5)(14) exactly because 2 and 14 are congruent mod 12"
+      ],
+      "forbidden_meanings": [
+        "A geometric dilation unless a later geometry model explicitly interprets it that way.",
+        "A proof of multiplication laws not linked to a theorem id."
+      ],
+      "formal_definition": "scale(n,k)(x) = k*x in C_n.",
+      "formal_models": [
+        "left multiplication by (k : ZMod n)"
+      ],
+      "id": "CC-0105",
+      "introduced_in": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+      "intuition": "Multiply every circle address by the same factor.",
+      "kind": "operation",
+      "lean_declarations": [
+        "Circle.scale",
+        "Circle.scaleAddMonoidHom",
+        "Circle.scaleKernelSubgroup",
+        "Circle.scale_zero_factor",
+        "Circle.scale_one",
+        "Circle.scale_comp",
+        "Circle.scale_rot",
+        "Circle.scale_coilStep",
+        "Circle.scale_nat_to_coilStep",
+        "Circle.scale_invertible_iff_coprime",
+        "Circle.prime_scale_bijective",
+        "Circle.scale_cofactor_zero",
+        "Circle.scale_cofactor_multiple_zero",
+        "Circle.scale_add_cofactor_multiple",
+        "Circle.scale_nat_eq_zero_iff_dvd_mul",
+        "Circle.scale_nat_eq_zero_iff_period_dvd",
+        "Circle.mem_scaleKernelSubgroup_iff",
+        "Circle.nat_mem_scaleKernelSubgroup_iff_period_dvd",
+        "Circle.scale_period_multiple_zero",
+        "Circle.scale_add_period_multiple",
+        "Circle.scale_nat_period_normalForm",
+        "Circle.scale_nat_eq_iff_mul_modEq",
+        "Circle.scale_nat_eq_iff_period_modEq",
+        "Circle.scale_nat_period_representatives_injective",
+        "Circle.scalePeriodRepresentativeImage",
+        "Circle.scalePeriodRepresentativeImage_card",
+        "Circle.scale_nat_mem_scalePeriodRepresentativeImage",
+        "Circle.scaleCircleImage",
+        "Circle.scaleCircleImage_eq_scalePeriodRepresentativeImage",
+        "Circle.scaleCircleImage_card",
+        "Circle.scaleKernelRepresentativeSet",
+        "Circle.scalePeriodKernelRepresentatives",
+        "Circle.scalePeriodKernelRepresentatives_card",
+        "Circle.scaleKernelRepresentativeSet_eq_periodMultiples",
+        "Circle.scaleKernelRepresentativeSet_card",
+        "Circle.scaleFiberRepresentativeSet",
+        "Circle.scalePeriodFiberRepresentatives",
+        "Circle.scalePeriodFiberRepresentatives_card",
+        "Circle.scaleFiberRepresentativeSet_eq_periodFibers",
+        "Circle.scaleFiberRepresentativeSet_card",
+        "Circle.scaleFiberRepresentativeSet_zero_eq_scaleKernelRepresentativeSet",
+        "Circle.scaleFiberRepresentativeSet_eq_iff_scaled_eq_of_lt",
+        "Circle.scaleFiberRepresentativeSet_eq_iff_period_modEq_of_lt",
+        "Circle.scaleTargetFiberRepresentativeSet",
+        "Circle.scaleTargetFiberRepresentativeSet_scaled_eq_scaleFiberRepresentativeSet",
+        "Circle.scaleTargetFiberRepresentativeSet_eq_empty_of_not_mem_scaleCircleImage",
+        "Circle.scaleTargetFiberRepresentativeSet_card_of_mem_scaleCircleImage",
+        "Circle.scaleCircleImage_card_mul_targetFiberRepresentativeSet_card",
+        "Circle.scaleCircleImage_card_mul_scaleKernelRepresentativeSet_card",
+        "Circle.scale_nat_eq_iff_nat_modEq_of_coprime",
+        "Circle.scale_factor_modEq"
+      ],
+      "name": "Scaling",
+      "python_objects": [
+        "Circle.scale",
+        "Circle.scale_is_permutation"
+      ],
+      "rewrite_rules": [
+        "scale(n,0)=zero map",
+        "scale(n,1)=identity",
+        "scale(n,a) after scale(n,b)=scale(n,a*b)",
+        "if k and l are congruent mod n, then scale(n,k)=scale(n,l)",
+        "scale(n,k) after rot(n,stride)=rot(n,k*stride) after scale(n,k)",
+        "scale(n,k) maps coil(n,stride,start) steps to coil(n,k*stride,k*start) steps",
+        "scale(n,k)(steps)=coil_step(n,k,0,steps) for natural step representatives",
+        "scale(n,k) is invertible iff gcd(n,k)=1",
+        "if p is prime and 1<=k<p, then scale(p,k) is bijective",
+        "if k divides n, then scale(n,k)(n/k)=0 in C_n",
+        "if k divides n, then scale(n,k)(m*(n/k))=0 in C_n",
+        "if k divides n, then scale(n,k)(x+m*(n/k))=scale(n,k)(x)",
+        "scale(n,k)(x)=0 iff n divides k*x for natural representatives",
+        "for n != 0, scale(n,k)(x)=0 iff period(n,k) divides x for natural representatives",
+        "for n != 0, scale(n,k)(m*period(n,k))=0",
+        "for n != 0, scale(n,k)(x+m*period(n,k))=scale(n,k)(x)",
+        "for n != 0, scale(n,k)(x)=scale(n,k)(x mod period(n,k))",
+        "scale(n,k)(x)=scale(n,k)(y) iff k*x and k*y are congruent mod n for natural representatives",
+        "for n != 0, scale(n,k)(x)=scale(n,k)(y) iff x and y are congruent mod period(n,k)",
+        "for n != 0 and x,y < period(n,k), scale(n,k)(x)=scale(n,k)(y) iff x=y",
+        "for n != 0, card(scale_period_representative_image(n,k))=period(n,k)",
+        "for n != 0, scale(n,k)(x) belongs to scale_period_representative_image(n,k)",
+        "for n != 0, scale_circle_image(n,k)=scale_period_representative_image(n,k)",
+        "for n != 0, card(scale_circle_image(n,k))=period(n,k)",
+        "for n != 0, scale_kernel_representative_set(n,k)=scale_period_kernel_representatives(n,k)",
+        "for n != 0, card(scale_kernel_representative_set(n,k))=gcd(n,k)",
+        "for n != 0, scale_fiber_representative_set(n,k,r)=scale_period_fiber_representatives(n,k,r)",
+        "for n != 0, card(scale_fiber_representative_set(n,k,r))=gcd(n,k)",
+        "scale_fiber_representative_set(n,k,0)=scale_kernel_representative_set(n,k)",
+        "scale_target_fiber_representative_set(n,k,scale(n,k,r))=scale_fiber_representative_set(n,k,r)",
+        "for r < n, scale_fiber_representative_set(n,k,r)=scale_fiber_representative_set(n,k,s) iff scale(n,k,r)=scale(n,k,s)",
+        "for n != 0 and r < n, scale_fiber_representative_set(n,k,r)=scale_fiber_representative_set(n,k,s) iff r and s are congruent mod period(n,k)",
+        "for n != 0, natural representative x lies in scale_kernel_subgroup(n,k) iff period(n,k) divides x",
+        "if target is not in scale_circle_image(n,k), then scale_target_fiber_representative_set(n,k,target) is empty",
+        "for n != 0 and target in scale_circle_image(n,k), card(scale_target_fiber_representative_set(n,k,target))=gcd(n,k)",
+        "for n != 0 and target in scale_circle_image(n,k), card(scale_circle_image(n,k))*card(scale_target_fiber_representative_set(n,k,target))=n",
+        "for n != 0, card(scale_circle_image(n,k))*card(scale_kernel_representative_set(n,k))=n",
+        "if gcd(n,k)=1, then scale(n,k)(x)=scale(n,k)(y) iff x and y are congruent mod n"
+      ],
+      "source_dictionary": "dictionary/circle_dictionary.yaml",
+      "symbol": "scale(n,k)"
+    },
+    {
+      "dependencies": [
+        "CC-0101"
+      ],
+      "examples": [
+        "coil(12,4,0) = 0 -> 4 -> 8 -> 0"
+      ],
+      "forbidden_meanings": [
+        "A visual spiral without a formal orbit rule."
+      ],
+      "formal_definition": "The orbit {start + t*k mod n | t in Nat}.",
+      "formal_models": [
+        "additive orbit in ZMod n"
+      ],
+      "id": "CC-0201",
+      "introduced_in": "Paper 1",
+      "intuition": "The path traced by repeatedly applying the same rotation.",
+      "kind": "object",
+      "lean_declarations": [
+        "Circle.coilStep"
+      ],
+      "name": "Coil",
+      "python_objects": [
+        "Circle.orbit"
+      ],
+      "rewrite_rules": [],
+      "source_dictionary": "dictionary/circle_dictionary.yaml",
+      "symbol": "coil(n,k,start)"
+    },
+    {
+      "dependencies": [
+        "CC-0201"
+      ],
+      "examples": [
+        "stride 4 on C_12 closes after 3 steps"
+      ],
+      "forbidden_meanings": [
+        "Topological closure in v0."
+      ],
+      "formal_definition": "A coil closes at step m when start + m*k = start in C_n.",
+      "formal_models": [
+        "zero multiple condition in ZMod n"
+      ],
+      "id": "CC-0202",
+      "introduced_in": "Paper 1",
+      "intuition": "The repeated motion has returned to its start address.",
+      "kind": "relation",
+      "lean_declarations": [
+        "Circle.closesAt",
+        "Circle.closesAt_iff_stride_multiple_zero"
+      ],
+      "name": "Closure",
+      "python_objects": [
+        "Circle.orbit"
+      ],
+      "rewrite_rules": [
+        "start + m*k = start iff m*k = 0 in C_n"
+      ],
+      "source_dictionary": "dictionary/circle_dictionary.yaml",
+      "symbol": "closed(coil)"
+    },
+    {
+      "dependencies": [
+        "CC-0201",
+        "CC-0202"
+      ],
+      "examples": [
+        "period(12,4)=3",
+        "period(13,5)=13"
+      ],
+      "forbidden_meanings": [
+        "The length of a drawn curve."
+      ],
+      "formal_definition": "The least positive m such that m*k = 0 in C_n; in Lean v0, addOrderOf (k : ZMod n).",
+      "formal_models": [
+        "additive order in ZMod n"
+      ],
+      "id": "CC-0205",
+      "introduced_in": "Paper 1",
+      "intuition": "How many steps before the coil returns.",
+      "kind": "relation",
+      "lean_declarations": [
+        "Circle.period"
+      ],
+      "name": "Period",
+      "python_objects": [
+        "Circle.period"
+      ],
+      "rewrite_rules": [
+        "period(n,k)=n/gcd(n,k) for n != 0"
+      ],
+      "source_dictionary": "dictionary/circle_dictionary.yaml",
+      "symbol": "period(n,k)"
+    },
+    {
+      "dependencies": [
+        "CC-0201",
+        "CC-0205"
+      ],
+      "examples": [
+        "stride 5 on C_13 is a full coil"
+      ],
+      "forbidden_meanings": [
+        "A visually dense continuous curve."
+      ],
+      "formal_definition": "A stride-k coil is full when its period is n, equivalently when it visits every node before returning.",
+      "formal_models": [
+        "generator of a cyclic additive group"
+      ],
+      "id": "CC-0206",
+      "introduced_in": "Paper 1",
+      "intuition": "One repeated stride covers the whole circle.",
+      "kind": "relation",
+      "lean_declarations": [
+        "Circle.fullCoil"
+      ],
+      "name": "Full Coil",
+      "python_objects": [
+        "Circle.is_full_coil"
+      ],
+      "rewrite_rules": [
+        "full_coil(n,k) iff period(n,k)=n"
+      ],
+      "source_dictionary": "dictionary/circle_dictionary.yaml",
+      "symbol": "full_coil(n,k)"
+    },
+    {
+      "dependencies": [
+        "CC-0001",
+        "CC-0101",
+        "CC-0201"
+      ],
+      "examples": [
+        "stride 4 on C_12 has four orbit classes"
+      ],
+      "forbidden_meanings": [
+        "A connected component of a topological space.",
+        "A visual cycle without the generated-subgroup equivalence relation."
+      ],
+      "formal_definition": "In v0, a stride-k orbit class is a coset of the additive subgroup generated by k in C_n.",
+      "formal_models": [
+        "quotient of ZMod n by AddSubgroup.zmultiples (k : ZMod n)"
+      ],
+      "id": "CC-0207",
+      "introduced_in": "Paper 1",
+      "intuition": "One of the disjoint cycles produced by repeatedly moving by the same stride.",
+      "kind": "object",
+      "lean_declarations": [
+        "Circle.orbitSubgroup",
+        "Circle.orbitClassQuotient"
+      ],
+      "name": "Orbit Class",
+      "python_objects": [
+        "Circle.orbit_decomposition"
+      ],
+      "rewrite_rules": [
+        "two nodes lie in the same orbit class iff their difference is an integer multiple of the stride in C_n"
+      ],
+      "source_dictionary": "dictionary/circle_dictionary.yaml",
+      "symbol": "C_n / orbitSubgroup(n,k)"
+    },
+    {
+      "dependencies": [
+        "CC-0205",
+        "CC-0207"
+      ],
+      "examples": [
+        "orbit_class_count(12,4)=4",
+        "orbit_class_count(13,5)=1"
+      ],
+      "forbidden_meanings": [
+        "The length of one orbit.",
+        "The number of rendered arrows in a diagram."
+      ],
+      "formal_definition": "The number of cosets of the additive subgroup generated by k in C_n.",
+      "formal_models": [
+        "Nat.card (C_n quotient AddSubgroup.zmultiples stride)"
+      ],
+      "id": "CC-0208",
+      "introduced_in": "Paper 1",
+      "intuition": "How many disjoint stride cycles the circle splits into.",
+      "kind": "relation",
+      "lean_declarations": [
+        "Circle.orbitClassCount",
+        "Circle.orbit_decomposition_count"
+      ],
+      "name": "Orbit Class Count",
+      "python_objects": [
+        "Circle.orbit_decomposition"
+      ],
+      "rewrite_rules": [
+        "orbit_class_count(n,k)=gcd(n,k) for n != 0"
+      ],
+      "source_dictionary": "dictionary/circle_dictionary.yaml",
+      "symbol": "orbit_class_count(n,k)"
+    },
+    {
+      "dependencies": [
+        "CC-0001",
+        "CC-0002"
+      ],
+      "examples": [
+        "17 steps around C_5 = lifted_node(5,3,2)"
+      ],
+      "forbidden_meanings": [
+        "A continuous spiral coordinate in v0."
+      ],
+      "formal_definition": "A lifted node records q full rotations and residue r, representing q*n+r.",
+      "formal_models": [
+        "Euclidean division by n"
+      ],
+      "id": "CC-0301",
+      "introduced_in": "Paper 2",
+      "intuition": "Counting without losing full-turn information modulo n.",
+      "kind": "object",
+      "lean_declarations": [
+        "Circle.LiftedNode",
+        "Circle.LiftedNode.value",
+        "Circle.liftWinding",
+        "Circle.liftResidue",
+        "Circle.lift_unique"
+      ],
+      "name": "Winding",
+      "python_objects": [
+        "circle_math.winding.LiftedNode",
+        "circle_math.winding.lift"
+      ],
+      "rewrite_rules": [
+        "value(lifted_node(n,q,r)) = q*n+r"
+      ],
+      "source_dictionary": "dictionary/circle_dictionary.yaml",
+      "symbol": "lifted_node(n,q,r)"
+    },
+    {
+      "dependencies": [
+        "CC-0301"
+      ],
+      "examples": [
+        "succ_lift(5,17) = lifted_node(5,3,3)",
+        "succ_lift(5,19) = lifted_node(5,4,0)"
+      ],
+      "forbidden_meanings": [
+        "Integer successor with negative orientation.",
+        "A physical jump between geometric points without the quotient/remainder rule."
+      ],
+      "formal_definition": "The lifted successor operation increments the residue by one and carries into the winding when the residue crosses the modulus.",
+      "formal_models": [
+        "successor expressed through quotient/remainder arithmetic"
+      ],
+      "id": "CC-0302",
+      "introduced_in": "Paper 2",
+      "intuition": "One more step around the finite circle, preserving full-turn count.",
+      "kind": "operation",
+      "lean_declarations": [
+        "Circle.liftSuccCarry",
+        "Circle.liftSuccWinding",
+        "Circle.liftSuccResidue",
+        "Circle.lift_successor_decomposition"
+      ],
+      "name": "Successor With Carry",
+      "python_objects": [
+        "circle_math.winding.lift_successor"
+      ],
+      "rewrite_rules": [
+        "succ_lift(n,value).value = value + 1 for n != 0",
+        "succ_lift(n,value).residue = (residue(value)+1) mod n",
+        "succ_lift(n,value).winding = winding(value) + ((residue(value)+1) / n)"
+      ],
+      "source_dictionary": "dictionary/circle_dictionary.yaml",
+      "symbol": "succ_lift(n,value)"
+    },
+    {
+      "dependencies": [
+        "CC-0301"
+      ],
+      "examples": [
+        "add_lift(5,17,8) = lifted_node(5,5,0)"
+      ],
+      "forbidden_meanings": [
+        "Integer addition with negative orientation.",
+        "Vector addition in a geometric plane."
+      ],
+      "formal_definition": "Lifted addition concatenates two natural path counts by adding their winding components, adding their residues, and carrying residue overflow into the winding count.",
+      "formal_models": [
+        "natural-number addition expressed through quotient/remainder arithmetic"
+      ],
+      "id": "CC-0303",
+      "introduced_in": "Paper 2",
+      "intuition": "Walk one lifted path, then keep walking the second; full turns and leftover address combine with carry.",
+      "kind": "operation",
+      "lean_declarations": [
+        "Circle.liftAddCarry",
+        "Circle.liftAddWinding",
+        "Circle.liftAddResidue",
+        "Circle.lift_add_decomposition",
+        "Circle.lift_add_zero_right",
+        "Circle.lift_add_zero_left",
+        "Circle.lift_add_assoc_value"
+      ],
+      "name": "Lifted Addition",
+      "python_objects": [
+        "circle_math.winding.lift_add"
+      ],
+      "rewrite_rules": [
+        "add_lift(n,left,right).value = left + right for n != 0",
+        "add_lift(n,left,right).residue = (residue(left)+residue(right)) mod n",
+        "add_lift(n,left,right).winding = winding(left)+winding(right)+((residue(left)+residue(right))/n)",
+        "add_lift(n,value,0) = lifted_node(n,winding(value),residue(value))",
+        "add_lift(n,0,value) = lifted_node(n,winding(value),residue(value))"
+      ],
+      "source_dictionary": "dictionary/circle_dictionary.yaml",
+      "symbol": "add_lift(n,left,right)"
+    },
+    {
+      "dependencies": [
+        "CC-0301",
+        "CC-0302"
+      ],
+      "examples": [
+        "iter_succ_lift(5,17,8) = lifted_node(5,5,0)"
+      ],
+      "forbidden_meanings": [
+        "Transfinite induction.",
+        "Continuous-time flow."
+      ],
+      "formal_definition": "Repeated application of the lifted successor transition to a valid winding/residue state.",
+      "formal_models": [
+        "primitive recursion over Nat using quotient/remainder successor"
+      ],
+      "id": "CC-0304",
+      "introduced_in": "Paper 2",
+      "intuition": "Induction as taking one unit step at a time around the lifted circle.",
+      "kind": "operation",
+      "lean_declarations": [
+        "Circle.liftSuccPair",
+        "Circle.liftIterSuccPair",
+        "Circle.lift_succ_pair_decomposition",
+        "Circle.lift_iter_successor_decomposition"
+      ],
+      "name": "Iterated Lifted Successor",
+      "python_objects": [
+        "circle_math.winding.lift_iter_successor"
+      ],
+      "rewrite_rules": [
+        "iter_succ_lift(n,value,steps).value = value + steps for n != 0",
+        "iter_succ_lift(n,value,steps).residue < n for n != 0"
+      ],
+      "source_dictionary": "dictionary/circle_dictionary.yaml",
+      "symbol": "iter_succ_lift(n,value,steps)"
+    },
+    {
+      "dependencies": [],
+      "examples": [
+        "CC-T0001 maps to Circle.rot_zero"
+      ],
+      "forbidden_meanings": [
+        "A proof by itself."
+      ],
+      "formal_definition": "The source-of-truth metadata file for theorem ids, Lean names, proof status, paper references, dictionary dependencies, and verification requirements.",
+      "formal_models": [
+        "YAML theorem registry"
+      ],
+      "id": "CC-9001",
+      "introduced_in": "Stage 0",
+      "intuition": "The ledger that prevents papers from outrunning proofs.",
+      "kind": "model",
+      "lean_declarations": [],
+      "name": "Theorem Manifest",
+      "python_objects": [
+        "scripts.check_manifest"
+      ],
+      "rewrite_rules": [],
+      "source_dictionary": "dictionary/circle_dictionary.yaml",
+      "symbol": "theorem_manifest.yaml"
+    },
+    {
+      "dependencies": [
+        "CC-9001"
+      ],
+      "examples": [
+        "sidecars/PAPER_01_FINITE_CIRCLES/lean/Paper01.lean"
+      ],
+      "forbidden_meanings": [
+        "An informal appendix with no proof checker."
+      ],
+      "formal_definition": "A per-paper directory containing Lean files that state, check, or re-export the formal declarations cited by that paper.",
+      "formal_models": [
+        "Lean source files"
+      ],
+      "id": "CC-9002",
+      "introduced_in": "Stage 0",
+      "intuition": "The machine-checkable companion to a paper.",
+      "kind": "model",
+      "lean_declarations": [],
+      "name": "Proof Sidecar",
+      "python_objects": [],
+      "rewrite_rules": [],
+      "source_dictionary": "dictionary/circle_dictionary.yaml",
+      "symbol": "sidecars/PAPER_ID/lean"
+    },
+    {
+      "dependencies": [
+        "CC-9001"
+      ],
+      "examples": [
+        "sidecars/PAPER_01_FINITE_CIRCLES/python/test_paper_01_examples.py"
+      ],
+      "forbidden_meanings": [
+        "A formal proof sidecar."
+      ],
+      "formal_definition": "A per-paper directory containing executable examples, tests, and diagram-generation code that supports but does not prove the paper's claims.",
+      "formal_models": [
+        "Python tests and scripts"
+      ],
+      "id": "CC-9003",
+      "introduced_in": "Stage 0",
+      "intuition": "The runnable intuition layer beside the proof layer.",
+      "kind": "model",
+      "lean_declarations": [],
+      "name": "Python Sidecar",
+      "python_objects": [],
+      "rewrite_rules": [],
+      "source_dictionary": "dictionary/circle_dictionary.yaml",
+      "symbol": "sidecars/PAPER_ID/python"
+    },
+    {
+      "dependencies": [],
+      "examples": [
+        "Godel coil numbering must be treated as arithmetization, not escape."
+      ],
+      "forbidden_meanings": [
+        "A proof that Circle Calculus is complete for all arithmetic truth."
+      ],
+      "formal_definition": "The invalid claim that a new encoding avoids incompleteness merely by changing notation or representation.",
+      "formal_models": [
+        "metatheory warning"
+      ],
+      "id": "CC-W005",
+      "introduced_in": "Paper 9",
+      "intuition": "Circle encodings can arithmetize syntax, but they do not evade Godel boundaries.",
+      "kind": "warning",
+      "lean_declarations": [],
+      "name": "Godel Escape Fallacy",
+      "python_objects": [],
+      "rewrite_rules": [],
+      "source_dictionary": "dictionary/circle_dictionary.yaml",
+      "symbol": ""
+    },
+    {
+      "dependencies": [],
+      "forbidden_meanings": [
+        "A proof of geometric realization.",
+        "A smooth manifold model."
+      ],
+      "formal_definition": "A finite list whose i-th entry counts i-dimensional cells in a combinatorial model.",
+      "id": "COMMON-0001",
+      "introduced_in": "D0 dimensional scaffolding",
+      "intuition": "The bookkeeping vector behind Euler characteristic and suspension formulas.",
+      "kind": "object",
+      "name": "Finite cell-count list",
+      "source_dictionary": "dictionary/dimensions/Common.yaml"
+    },
+    {
+      "dependencies": [
+        "COMMON-0001"
+      ],
+      "forbidden_meanings": [
+        "A homeomorphism classification by itself.",
+        "A replacement for all topology."
+      ],
+      "formal_definition": "The alternating sum of a finite cell-count list.",
+      "id": "COMMON-0002",
+      "introduced_in": "D0 dimensional scaffolding",
+      "intuition": "A dimension-sensitive count invariant for finite combinatorial models.",
+      "kind": "operation",
+      "name": "Euler characteristic",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "chi"
+    },
+    {
+      "dependencies": [
+        "COMMON-0001"
+      ],
+      "forbidden_meanings": [
+        "A continuous suspension proof without a separate formal model.",
+        "A picture of a suspension treated as a proof."
+      ],
+      "formal_definition": "The finite suspension count transform that adds two poles and cones each cell dimension to the next dimension.",
+      "id": "COMMON-0003",
+      "introduced_in": "D0 dimensional scaffolding",
+      "intuition": "The finite combinatorial move used to climb the sphere ladder.",
+      "kind": "operation",
+      "name": "Suspension cell-count transform",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "Susp"
+    },
+    {
+      "dependencies": [
+        "COMMON-0002",
+        "COMMON-0003"
+      ],
+      "forbidden_meanings": [
+        "A proof of a general stable homotopy equivalence.",
+        "A spectrum construction.",
+        "A claim that all stable invariants are Euler characteristic."
+      ],
+      "formal_definition": "The operation that applies the finite suspension cell-count transform twice, preserving Euler characteristic in the finite-count model.",
+      "id": "COMMON-0004",
+      "introduced_in": "PAPER_P2_01_STABLE_SPHERE_CALCULUS",
+      "intuition": "The smallest stable-sphere seed in the current finite model: two suspension moves return the Euler characteristic to its starting value.",
+      "kind": "operation",
+      "name": "Double suspension Euler stabilizer",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "Susp^2"
+    },
+    {
+      "dependencies": [
+        "COMMON-0002",
+        "COMMON-0003",
+        "COMMON-0004"
+      ],
+      "forbidden_meanings": [
+        "Bott periodicity.",
+        "A Clifford periodicity theorem.",
+        "A statement about spectra without a separate formal model."
+      ],
+      "formal_definition": "The operation that applies the finite double-suspension Euler stabilizer twice.",
+      "id": "COMMON-0005",
+      "introduced_in": "PAPER_P2_01_STABLE_SPHERE_CALCULUS",
+      "intuition": "A first iterated stable-clock check: two double-suspension steps still preserve the finite Euler characteristic.",
+      "kind": "operation",
+      "name": "Four suspension Euler stabilizer",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "Susp^4"
+    },
+    {
+      "dependencies": [],
+      "forbidden_meanings": [
+        "A proof of Bott periodicity.",
+        "A proof about real Clifford algebras.",
+        "A K-theory or KO-theory theorem."
+      ],
+      "formal_definition": "The finite clock index dimension % 8 used as a bookkeeping layer for future Bott and Clifford periodicity work.",
+      "id": "COMMON-0006",
+      "introduced_in": "PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY",
+      "intuition": "A safe way to talk about an eight-step dimension cycle before formalizing Clifford algebras or Bott periodicity.",
+      "kind": "operation",
+      "name": "Period-eight dimension clock",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "dim mod 8"
+    },
+    {
+      "dependencies": [],
+      "forbidden_meanings": [
+        "A proof that every bundle is globally trivial.",
+        "A Hopf fibration formalization.",
+        "A transition-function or connection model."
+      ],
+      "formal_definition": "A product object with a visible base coordinate and a fiber coordinate, modeled in Lean by Circle.Phase2.TrivialBundle.",
+      "id": "COMMON-0007",
+      "introduced_in": "PAPER_P2_03_BUNDLE_CALCULUS",
+      "intuition": "The safe first bundle model: base and hidden fiber are tracked separately, without claiming any twisting.",
+      "kind": "object",
+      "name": "Trivial product bundle",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "Base x Fiber"
+    },
+    {
+      "dependencies": [
+        "COMMON-0007"
+      ],
+      "forbidden_meanings": [
+        "A projection from an arbitrary bundle without a separate formal model.",
+        "A quotient map."
+      ],
+      "formal_definition": "The map that returns the base coordinate from the trivial product-bundle seed.",
+      "id": "COMMON-0008",
+      "introduced_in": "PAPER_P2_03_BUNDLE_CALCULUS",
+      "intuition": "The visible part of a base/fiber state.",
+      "kind": "operation",
+      "name": "Bundle projection",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "pi"
+    },
+    {
+      "dependencies": [
+        "COMMON-0007"
+      ],
+      "forbidden_meanings": [
+        "A proof of fiber transport.",
+        "A connection, curvature, holonomy, or transition-function model."
+      ],
+      "formal_definition": "The map that returns the fiber coordinate from the trivial product-bundle seed.",
+      "id": "COMMON-0009",
+      "introduced_in": "PAPER_P2_03_BUNDLE_CALCULUS",
+      "intuition": "The hidden or phase-like part of a base/fiber state in the product model.",
+      "kind": "operation",
+      "name": "Fiber coordinate",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "fiber"
+    },
+    {
+      "dependencies": [],
+      "forbidden_meanings": [
+        "A smooth manifold.",
+        "A general chain complex.",
+        "A cobordism theorem."
+      ],
+      "formal_definition": "A finite one-dimensional oriented interval with integer source and target coordinates.",
+      "id": "COMMON-0010",
+      "introduced_in": "PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS",
+      "intuition": "The smallest boundary-calculus object: an oriented segment whose boundary is target minus source.",
+      "kind": "object",
+      "name": "Directed interval",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "[source -> target]"
+    },
+    {
+      "dependencies": [
+        "COMMON-0010"
+      ],
+      "forbidden_meanings": [
+        "A full singular, cellular, or simplicial boundary operator.",
+        "A proof of homology theory.",
+        "A physics boundary condition."
+      ],
+      "formal_definition": "In the directed-interval seed, intervalBoundary maps an interval to target minus source, and pointBoundary maps zero-dimensional boundary chains to zero.",
+      "id": "COMMON-0011",
+      "introduced_in": "PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS",
+      "intuition": "A tiny checked model of the boundary-after-boundary-is-zero slogan.",
+      "kind": "operation",
+      "name": "Boundary operator seed",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "boundary"
+    },
+    {
+      "dependencies": [
+        "COMMON-0010",
+        "COMMON-0011"
+      ],
+      "forbidden_meanings": [
+        "A general orientation theorem.",
+        "A cobordism equivalence."
+      ],
+      "formal_definition": "The operation that swaps the source and target of a directed interval.",
+      "id": "COMMON-0012",
+      "introduced_in": "PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS",
+      "intuition": "Turning an oriented segment around reverses the sign of its boundary.",
+      "kind": "operation",
+      "name": "Interval orientation reversal",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "reverse"
+    },
+    {
+      "dependencies": [],
+      "forbidden_meanings": [
+        "A proof by drawing alone.",
+        "A rendered diagram with no theorem id.",
+        "A normalized glyph language."
+      ],
+      "formal_definition": "A certificate record carrying a glyph id, theorem id, and Lean declaration name.",
+      "id": "COMMON-0013",
+      "introduced_in": "PAPER_P2_05_PROOF_CARRYING_GLYPHS",
+      "intuition": "The smallest proof-carrying diagram contract: a visual object must point to formal identifiers.",
+      "kind": "object",
+      "name": "Proof glyph certificate",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "glyph -> theorem -> Lean"
+    },
+    {
+      "dependencies": [
+        "COMMON-0013"
+      ],
+      "forbidden_meanings": [
+        "A proof that the theorem id is semantically correct.",
+        "A theorem dependency graph."
+      ],
+      "formal_definition": "The projection that reads the theorem id carried by a proof glyph certificate.",
+      "id": "COMMON-0014",
+      "introduced_in": "PAPER_P2_05_PROOF_CARRYING_GLYPHS",
+      "intuition": "The paper can ask which theorem a glyph claims to represent.",
+      "kind": "operation",
+      "name": "Glyph theorem-id projection",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "glyph.theorem_id"
+    },
+    {
+      "dependencies": [
+        "COMMON-0013"
+      ],
+      "forbidden_meanings": [
+        "A proof that the Lean declaration proves the intended semantic diagram.",
+        "A rendered proof certificate."
+      ],
+      "formal_definition": "The projection that reads the Lean declaration name carried by a proof glyph certificate.",
+      "id": "COMMON-0015",
+      "introduced_in": "PAPER_P2_05_PROOF_CARRYING_GLYPHS",
+      "intuition": "The paper can ask which checked Lean declaration a glyph points to.",
+      "kind": "operation",
+      "name": "Glyph Lean-name projection",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "glyph.lean_name"
+    },
+    {
+      "dependencies": [],
+      "forbidden_meanings": [
+        "A discovered period in real data.",
+        "A Fourier transform.",
+        "A benchmark result."
+      ],
+      "formal_definition": "The residue step % period for a positive finite period.",
+      "id": "COMMON-0016",
+      "introduced_in": "PAPER_APP_01_COIL_DATA_ANALYSIS",
+      "intuition": "The simplest coordinate for synthetic periodic data: where a sample lies inside its current cycle.",
+      "kind": "operation",
+      "name": "Finite phase coordinate",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "phase(period, step)"
+    },
+    {
+      "dependencies": [
+        "COMMON-0016"
+      ],
+      "forbidden_meanings": [
+        "A claim that an arbitrary dataset has this period.",
+        "A noise-robust period detector."
+      ],
+      "formal_definition": "The finite phase coordinate is unchanged after adding one positive period.",
+      "id": "COMMON-0017",
+      "introduced_in": "PAPER_APP_01_COIL_DATA_ANALYSIS",
+      "intuition": "One full cycle returns a periodic coordinate to the same phase.",
+      "kind": "relation",
+      "name": "Phase closure",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "phase(step + period) = phase(step)"
+    },
+    {
+      "dependencies": [],
+      "forbidden_meanings": [
+        "A memory-safety proof for an implementation language.",
+        "A benchmark result.",
+        "A cache-locality claim."
+      ],
+      "formal_definition": "The finite wraparound address index % size for a positive circular buffer size.",
+      "id": "COMMON-0018",
+      "introduced_in": "PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION",
+      "intuition": "The proof-carrying address rewrite behind ring buffers, circular queues, and cyclic kernels.",
+      "kind": "operation",
+      "name": "Cyclic address",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "addr(size,index)"
+    },
+    {
+      "dependencies": [
+        "COMMON-0018"
+      ],
+      "forbidden_meanings": [
+        "A proof that a backend is faster.",
+        "A proof that arbitrary strided memory is coalesced."
+      ],
+      "formal_definition": "The cyclic address is unchanged after adding one positive circular buffer size.",
+      "id": "COMMON-0019",
+      "introduced_in": "PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION",
+      "intuition": "A legal rewrite for circular computation: one full wrap returns to the same address.",
+      "kind": "relation",
+      "name": "Cyclic address wraparound",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "addr(i + size) = addr(i)"
+    },
+    {
+      "dependencies": [],
+      "forbidden_meanings": [
+        "A spherical geometry proof.",
+        "A BVH coherence theorem.",
+        "A rendering benchmark result."
+      ],
+      "formal_definition": "The finite schedule sample % bin_count for assigning samples or rays to direction bins.",
+      "id": "COMMON-0020",
+      "introduced_in": "PAPER_COMP_02_COIL_RAY_AND_SAMPLING",
+      "intuition": "A minimal checked address for ray queues, hemisphere samples, and spherical-coil buckets.",
+      "kind": "operation",
+      "name": "Direction-bin schedule",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "bin(bin_count,sample)"
+    },
+    {
+      "dependencies": [
+        "COMMON-0020"
+      ],
+      "forbidden_meanings": [
+        "A proof that binning improves ray coherence.",
+        "A statement about noise quality or visual convergence."
+      ],
+      "formal_definition": "The direction-bin schedule is unchanged after adding one positive bin count.",
+      "id": "COMMON-0021",
+      "introduced_in": "PAPER_COMP_02_COIL_RAY_AND_SAMPLING",
+      "intuition": "A finite queue/sampler schedule repeats after one full pass through the bins.",
+      "kind": "relation",
+      "name": "Direction-bin closure",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "bin(sample + bin_count) = bin(sample)"
+    },
+    {
+      "dependencies": [
+        "COMMON-0018"
+      ],
+      "forbidden_meanings": [
+        "A proof of cache coalescing.",
+        "A proof of FFT or NTT correctness.",
+        "A claim that a layout is faster."
+      ],
+      "formal_definition": "The finite address (step * stride) % size for a circular stride schedule.",
+      "id": "COMMON-0022",
+      "introduced_in": "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT",
+      "intuition": "The address pattern behind orbit-order layout, periodic stencils, and finite transform passes.",
+      "kind": "operation",
+      "name": "Stride address",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "addr(size,stride,step)"
+    },
+    {
+      "dependencies": [
+        "COMMON-0022"
+      ],
+      "forbidden_meanings": [
+        "A proof of full traversal.",
+        "A gcd-cycle decomposition theorem.",
+        "A benchmark result."
+      ],
+      "formal_definition": "The finite stride address is unchanged after adding one full circular size to the step count.",
+      "id": "COMMON-0023",
+      "introduced_in": "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT",
+      "intuition": "A stride schedule repeats after one full pass through the circular step horizon.",
+      "kind": "relation",
+      "name": "Stride schedule closure",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "addr(step + size) = addr(step)"
+    },
+    {
+      "dependencies": [],
+      "forbidden_meanings": [
+        "A proof of scheduler fairness.",
+        "A load-balancing theorem.",
+        "A real-time systems guarantee."
+      ],
+      "formal_definition": "The finite schedule tick % slot_count for a positive number of scheduler slots.",
+      "id": "COMMON-0024",
+      "introduced_in": "PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS",
+      "intuition": "A systems-facing cyclic schedule primitive for runtimes, queues, timers, and load rotation.",
+      "kind": "operation",
+      "name": "Round-robin slot",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "slot(slot_count,tick)"
+    },
+    {
+      "dependencies": [
+        "COMMON-0024"
+      ],
+      "forbidden_meanings": [
+        "A starvation-freedom theorem.",
+        "A throughput benchmark."
+      ],
+      "formal_definition": "The round-robin slot is unchanged after adding one positive slot count.",
+      "id": "COMMON-0025",
+      "introduced_in": "PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS",
+      "intuition": "After a full pass through all slots, the schedule returns to the same slot.",
+      "kind": "relation",
+      "name": "Round-robin closure",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "slot(tick + slot_count) = slot(tick)"
+    },
+    {
+      "dependencies": [],
+      "forbidden_meanings": [
+        "A proof of better model quality.",
+        "A RoPE theorem.",
+        "A learned representation guarantee."
+      ],
+      "formal_definition": "The finite phase channel position % period for a positive AI phase period.",
+      "id": "COMMON-0026",
+      "introduced_in": "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES",
+      "intuition": "A simple periodic feature-index primitive for Circle AI architecture experiments.",
+      "kind": "operation",
+      "name": "AI phase channel",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "phase_channel(period,position)"
+    },
+    {
+      "dependencies": [
+        "COMMON-0026"
+      ],
+      "forbidden_meanings": [
+        "A benchmark result.",
+        "A claim that circles improve all AI."
+      ],
+      "formal_definition": "The AI phase channel is unchanged after adding one positive phase period.",
+      "id": "COMMON-0027",
+      "introduced_in": "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES",
+      "intuition": "A periodic feature-index returns to the same phase after one full period.",
+      "kind": "relation",
+      "name": "AI phase-channel closure",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "phase_channel(position + period) = phase_channel(position)"
+    },
+    {
+      "dependencies": [],
+      "forbidden_meanings": [
+        "A retrieval-quality guarantee.",
+        "A proof that cyclic memory replaces attention."
+      ],
+      "formal_definition": "The finite memory-bank slot token % bank_size for a positive bank size.",
+      "id": "COMMON-0028",
+      "introduced_in": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+      "intuition": "A CoilKV-style cyclic address for memory-bank experiments.",
+      "kind": "operation",
+      "name": "Cyclic memory slot",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "memory_slot(bank_size,token)"
+    },
+    {
+      "dependencies": [
+        "COMMON-0028"
+      ],
+      "forbidden_meanings": [
+        "A no-aliasing theorem.",
+        "A long-context retrieval benchmark."
+      ],
+      "formal_definition": "The cyclic memory slot is unchanged after adding one positive bank size.",
+      "id": "COMMON-0029",
+      "introduced_in": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+      "intuition": "A token returns to the same memory slot after one full pass through a cyclic bank.",
+      "kind": "relation",
+      "name": "Cyclic memory-slot closure",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "memory_slot(token + bank_size) = memory_slot(token)"
+    },
+    {
+      "dependencies": [],
+      "forbidden_meanings": [
+        "A LoRA replacement theorem.",
+        "A parameter-efficiency benchmark.",
+        "A hardware speedup claim."
+      ],
+      "formal_definition": "The finite adapter block channel % block_size for a positive block size.",
+      "id": "COMMON-0030",
+      "introduced_in": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+      "intuition": "A block/cyclic channel index for CoilRA and block-structured adapter experiments.",
+      "kind": "operation",
+      "name": "Adapter block index",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "adapter_block(block_size,channel)"
+    },
+    {
+      "dependencies": [
+        "COMMON-0030"
+      ],
+      "forbidden_meanings": [
+        "A MultiCoil RoPE theorem.",
+        "A model-quality benchmark."
+      ],
+      "formal_definition": "The adapter block index is unchanged after adding one positive block size.",
+      "id": "COMMON-0031",
+      "introduced_in": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+      "intuition": "A block-structured adapter index repeats after one full pass through the block.",
+      "kind": "relation",
+      "name": "Adapter block closure",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "adapter_block(channel + block_size) = adapter_block(channel)"
+    },
+    {
+      "dependencies": [],
+      "forbidden_meanings": [
+        "The one-node circle C_1.",
+        "A degenerate finite circle."
+      ],
+      "formal_definition": "The finite S^0 model consisting of exactly two opposed points, represented in Lean by Circle.S0.Sign.",
+      "id": "S0-0001",
+      "introduced_in": "PAPER_S0_01_TWO_POINT_OPPOSITION",
+      "intuition": "The smallest sphere-like opposition pair.",
+      "kind": "object",
+      "name": "Two-point opposition",
+      "source_dictionary": "dictionary/dimensions/S0.yaml",
+      "symbol": "S^0"
+    },
+    {
+      "dependencies": [
+        "S0-0001"
+      ],
+      "forbidden_meanings": [
+        "A rotation on C_1.",
+        "A continuous sphere map without a finite model."
+      ],
+      "formal_definition": "The finite map Circle.S0.antipode that swaps the two points of S^0.",
+      "id": "S0-0002",
+      "introduced_in": "PAPER_S0_01_TWO_POINT_OPPOSITION",
+      "intuition": "Opposition as an involutive flip.",
+      "kind": "operation",
+      "name": "S0 antipode",
+      "source_dictionary": "dictionary/dimensions/S0.yaml"
+    },
+    {
+      "dependencies": [
+        "S0-0001",
+        "CC-0001"
+      ],
+      "forbidden_meanings": [
+        "Identifying one point with two opposed points."
+      ],
+      "formal_definition": "C_1 is a one-node finite cyclic address object; S^0 is a two-point opposition object.",
+      "id": "S0-W0001",
+      "introduced_in": "PAPER_S0_01_TWO_POINT_OPPOSITION",
+      "intuition": "The topological base sphere and the degenerate one-node circle are different objects.",
+      "kind": "warning",
+      "name": "C1 is not S0 warning",
+      "source_dictionary": "dictionary/dimensions/S0.yaml"
+    },
+    {
+      "dependencies": [
+        "CC-0001",
+        "CC-0101",
+        "CC-0201",
+        "CC-0301"
+      ],
+      "forbidden_meanings": [
+        "A continuous metric circle unless a later model explicitly activates that interpretation.",
+        "A higher-dimensional sphere."
+      ],
+      "formal_definition": "The active finite circle core modeled by C_n, rotations, coils, period, orbit decomposition, and lifted winding.",
+      "id": "S1-0001",
+      "introduced_in": "PAPER_S1_01_FINITE_CIRCLES",
+      "intuition": "The dimension-one foundation from which higher-dimensional finite models inherit cyclic behavior.",
+      "kind": "model",
+      "name": "S1 finite circle core",
+      "source_dictionary": "dictionary/dimensions/S1.yaml",
+      "symbol": "S^1"
+    },
+    {
+      "dependencies": [
+        "S1-0001",
+        "CC-0101"
+      ],
+      "forbidden_meanings": [
+        "A new circle object separate from C_n."
+      ],
+      "formal_definition": "`Circle.S1.signedRot n k x = x + (k : ZMod n)` for integer stride `k`.",
+      "id": "S1-0002",
+      "introduced_in": "PAPER_S1_03_INTEGERS_ORIENTATION",
+      "intuition": "Clockwise and counterclockwise motion are the same finite circle operation with signed stride.",
+      "kind": "operation",
+      "name": "Signed rotation",
+      "source_dictionary": "dictionary/dimensions/S1.yaml"
+    },
+    {
+      "dependencies": [
+        "S1-0002"
+      ],
+      "forbidden_meanings": [
+        "A proof of all integer arithmetic by itself."
+      ],
+      "formal_definition": "`Circle.S1.signedRot_inverse` proves that moving by `k` and then by `-k` returns to the starting node.",
+      "id": "S1-0003",
+      "introduced_in": "PAPER_S1_03_INTEGERS_ORIENTATION",
+      "intuition": "Orientation adds reversibility to the finite-circle motion model.",
+      "kind": "relation",
+      "name": "Reversible signed motion",
+      "source_dictionary": "dictionary/dimensions/S1.yaml"
+    },
+    {
+      "dependencies": [
+        "S7O-0001"
+      ],
+      "forbidden_meanings": [
+        "A completed proof of the full octonionic Hopf fibration or quotient topology."
+      ],
+      "formal_definition": "The roadmap target recorded by `Circle.Future.S15.octonionicHopfRoadmap` for the future structure S^7 -> S^15 -> S^8.",
+      "id": "S15-0001",
+      "introduced_in": "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
+      "intuition": "The post-S7 horizon now anchored by bounded topological and coordinate Hopf facts.",
+      "kind": "paper",
+      "name": "Future octonionic Hopf horizon",
+      "source_dictionary": "dictionary/dimensions/S15.yaml"
+    },
+    {
+      "dependencies": [
+        "S7C-0001",
+        "COMMON-0003"
+      ],
+      "forbidden_meanings": [
+        "A smooth or analytic model of S15."
+      ],
+      "formal_definition": "`Circle.Future.S15.topologicalModel`, obtained by suspending the finite S7 model eight more times, with Euler characteristic proved by `Circle.Future.S15.topologicalModel_eulerCharacteristic`.",
+      "id": "S15-0002",
+      "introduced_in": "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
+      "intuition": "A bounded topological anchor for the S15 horizon.",
+      "kind": "object",
+      "name": "Finite S15 suspension model",
+      "source_dictionary": "dictionary/dimensions/S15.yaml"
+    },
+    {
+      "dependencies": [
+        "S7O-0001",
+        "S15-0002"
+      ],
+      "forbidden_meanings": [
+        "A proof of octonionic phase quotient, global bundle structure, or S7 fiber action."
+      ],
+      "formal_definition": "`Circle.Future.S15.octonionicHopf_lands_sphere`, proving that normalized octonion pairs land on the unit nine-coordinate base equation under the bounded coordinate Hopf map.",
+      "id": "S15-0003",
+      "introduced_in": "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
+      "intuition": "The coordinate landing equation for the octonionic Hopf horizon before full fibration topology.",
+      "kind": "theorem",
+      "name": "Bounded octonionic Hopf landing",
+      "source_dictionary": "dictionary/dimensions/S15.yaml"
+    },
+    {
+      "dependencies": [
+        "CC-0001",
+        "COMMON-0003"
+      ],
+      "forbidden_meanings": [
+        "A smooth round sphere.",
+        "A drawing treated as a proof."
+      ],
+      "formal_definition": "A finite S^2 count model formed by suspending a finite circle C_n with north and south poles.",
+      "id": "S2-0001",
+      "introduced_in": "PAPER_S2_01_SUSPENDED_CIRCLES",
+      "intuition": "The first sphere surface obtained by coning a finite circle from two poles.",
+      "kind": "object",
+      "name": "Suspended finite circle",
+      "source_dictionary": "dictionary/dimensions/S2.yaml",
+      "symbol": "SuspC(n)"
+    },
+    {
+      "dependencies": [
+        "CC-0001",
+        "S2-0001"
+      ],
+      "forbidden_meanings": [
+        "A Cartesian product C_n x C_m.",
+        "A torus-like two-cycle grid."
+      ],
+      "formal_definition": "A finite S^2 grid model with two collapsed poles and r latitude rings, each with n cyclic addresses.",
+      "id": "S2-0002",
+      "introduced_in": "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+      "intuition": "Latitude rings carry S1 behavior while poles handle sphere collapse.",
+      "kind": "object",
+      "name": "Sphere grid",
+      "source_dictionary": "dictionary/dimensions/S2.yaml",
+      "symbol": "SphereGrid(n,r)"
+    },
+    {
+      "dependencies": [
+        "S2-0002",
+        "CC-0001"
+      ],
+      "forbidden_meanings": [
+        "A separate sphere.",
+        "A longitude coordinate at a pole."
+      ],
+      "formal_definition": "A non-pole ring inside SphereGrid(n,r), modeled as C_n in the finite latitude-ring theorem.",
+      "id": "S2-0003",
+      "introduced_in": "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+      "intuition": "A horizontal cyclic slice of the finite sphere grid.",
+      "kind": "object",
+      "name": "Latitude ring",
+      "source_dictionary": "dictionary/dimensions/S2.yaml"
+    },
+    {
+      "dependencies": [
+        "S2-0002"
+      ],
+      "forbidden_meanings": [
+        "A second cyclic coordinate at the poles."
+      ],
+      "formal_definition": "The relation that identifies all north cone tips as one pole and all south cone tips as one pole in the finite sphere model.",
+      "id": "S2-0004",
+      "introduced_in": "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+      "intuition": "The mechanism that makes a sphere grid sphere-like rather than torus-like.",
+      "kind": "relation",
+      "name": "Pole collapse",
+      "source_dictionary": "dictionary/dimensions/S2.yaml"
+    },
+    {
+      "dependencies": [
+        "S2-0001",
+        "S2-0004"
+      ],
+      "forbidden_meanings": [
+        "A full continuous antipodal map on every sphere model."
+      ],
+      "formal_definition": "`Circle.S2.suspendedCircleAntipode` swaps the poles of a suspended finite circle and negates the equator coordinate.",
+      "id": "S2-0005",
+      "introduced_in": "PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE",
+      "intuition": "Opposite surface points in the finite suspended-circle model.",
+      "kind": "operation",
+      "name": "Suspended-circle antipode",
+      "source_dictionary": "dictionary/dimensions/S2.yaml"
+    },
+    {
+      "dependencies": [
+        "S2-0005"
+      ],
+      "forbidden_meanings": [
+        "A chosen longitude at a collapsed pole."
+      ],
+      "formal_definition": "The north/south pole pair swapped by `Circle.S2.suspendedCircleAntipode_swapsPoles`.",
+      "id": "S2-0006",
+      "introduced_in": "PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE",
+      "intuition": "The simplest axis structure in the finite suspended sphere.",
+      "kind": "relation",
+      "name": "Pole axis",
+      "source_dictionary": "dictionary/dimensions/S2.yaml"
+    },
+    {
+      "dependencies": [
+        "S2-0002"
+      ],
+      "forbidden_meanings": [
+        "Calling a product of circles a sphere."
+      ],
+      "formal_definition": "C_n x C_m has two cyclic directions and is torus-like, not sphere-like.",
+      "id": "S2-W0001",
+      "introduced_in": "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+      "intuition": "A finite sphere grid requires pole collapse.",
+      "kind": "warning",
+      "name": "Torus confusion warning",
+      "source_dictionary": "dictionary/dimensions/S2.yaml"
+    },
+    {
+      "dependencies": [
+        "S2-0004"
+      ],
+      "forbidden_meanings": [
+        "Assigning independent longitude addresses to a collapsed pole."
+      ],
+      "formal_definition": "Longitude is not a meaningful coordinate at a collapsed pole.",
+      "id": "S2-W0002",
+      "introduced_in": "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+      "intuition": "All longitudes meet at each pole.",
+      "kind": "warning",
+      "name": "Pole singularity warning",
+      "source_dictionary": "dictionary/dimensions/S2.yaml"
+    },
+    {
+      "dependencies": [
+        "S2-0001"
+      ],
+      "forbidden_meanings": [
+        "Using group APIs for S^2 points without a separate proven structure."
+      ],
+      "formal_definition": "S^2 does not have the same natural pointwise multiplication structure as S^1 or unit-quaternion S^3.",
+      "id": "S2-W0003",
+      "introduced_in": "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+      "intuition": "The sphere surface is geometric here, not a cyclic or quaternionic group.",
+      "kind": "warning",
+      "name": "S2 group fallacy warning",
+      "source_dictionary": "dictionary/dimensions/S2.yaml"
+    },
+    {
+      "dependencies": [
+        "COMMON-0003",
+        "S2-0001"
+      ],
+      "forbidden_meanings": [
+        "A visual 4D projection treated as a proof."
+      ],
+      "formal_definition": "The finite S^3 suspension count model `Circle.S3.suspendedSuspendedCircleCounts`, with Euler characteristic proved by `Circle.S3.suspendedSuspendedCircle_chi`.",
+      "id": "S3C-0001",
+      "introduced_in": "PAPER_S3_01_FINITE_HYPERSPHERES",
+      "intuition": "The combinatorial topological S^3 layer before quaternion algebra.",
+      "kind": "object",
+      "name": "Finite 3-sphere suspension model",
+      "source_dictionary": "dictionary/dimensions/S3.yaml"
+    },
+    {
+      "dependencies": [
+        "S3Q-0001",
+        "S2-0001"
+      ],
+      "forbidden_meanings": [
+        "A proof that S^3 is globally S^2 x S^1."
+      ],
+      "formal_definition": "The coordinate map `Circle.S3.hopfMap : Circle.S3.HopfPair -> Circle.S3.HopfBasePoint`, with `Circle.S3.hopfMap_lands_sphere` proving that normalized pairs land on the unit base equation.",
+      "id": "S3H-0001",
+      "introduced_in": "PAPER_S3_03_HOPF_COILS",
+      "intuition": "A visible S^2 base with hidden S^1 phase fibers.",
+      "kind": "operation",
+      "name": "Hopf map",
+      "source_dictionary": "dictionary/dimensions/S3.yaml"
+    },
+    {
+      "dependencies": [
+        "S3H-0001",
+        "S1-0001"
+      ],
+      "forbidden_meanings": [
+        "A global product decomposition."
+      ],
+      "formal_definition": "The common unit-phase action `Circle.S3.phaseRotatePair`; `Circle.S3.hopfMap_phase_invariant` proves it preserves Hopf base coordinates, and `Circle.S3.hopfFiber_circle_like` proves it also preserves normalized Hopf pairs.",
+      "id": "S3H-0002",
+      "introduced_in": "PAPER_S3_03_HOPF_COILS",
+      "intuition": "The hidden circle above each visible base point.",
+      "kind": "object",
+      "name": "Hopf phase fiber",
+      "source_dictionary": "dictionary/dimensions/S3.yaml"
+    },
+    {
+      "dependencies": [
+        "S3H-0001"
+      ],
+      "forbidden_meanings": [
+        "Declaring S^3 equal to S^2 x S^1."
+      ],
+      "formal_definition": "The Hopf fibration is locally product-like but S^3 is not globally S^2 x S^1.",
+      "id": "S3H-W0001",
+      "introduced_in": "PAPER_S3_03_HOPF_COILS",
+      "intuition": "Hidden phase is twisted globally.",
+      "kind": "warning",
+      "name": "Hopf not product warning",
+      "source_dictionary": "dictionary/dimensions/S3.yaml"
+    },
+    {
+      "dependencies": [],
+      "forbidden_meanings": [
+        "A commutative multiplication system.",
+        "An octonion model."
+      ],
+      "formal_definition": "The algebraic S^3 track using real quaternions `Circle.S3.RealQuaternion = Quaternion \u211d` and the norm-square map `Circle.S3.quaternionNorm`.",
+      "id": "S3Q-0001",
+      "introduced_in": "PAPER_S3_02_QUATERNION_COILS",
+      "intuition": "S^3 as the first higher sphere with native associative but noncommutative multiplication.",
+      "kind": "model",
+      "name": "Quaternion model",
+      "source_dictionary": "dictionary/dimensions/S3.yaml"
+    },
+    {
+      "dependencies": [
+        "S3Q-0001"
+      ],
+      "forbidden_meanings": [
+        "An arbitrary non-unit quaternion."
+      ],
+      "formal_definition": "A real quaternion bundled with a proof that `Circle.S3.quaternionNorm q = 1`.",
+      "id": "S3Q-0002",
+      "introduced_in": "PAPER_S3_02_QUATERNION_COILS",
+      "intuition": "A point of the algebraic S^3 model.",
+      "kind": "object",
+      "name": "Unit quaternion",
+      "source_dictionary": "dictionary/dimensions/S3.yaml"
+    },
+    {
+      "dependencies": [
+        "S3Q-0001"
+      ],
+      "forbidden_meanings": [
+        "Nonassociativity."
+      ],
+      "formal_definition": "The formal example `Circle.S3.quaternion_noncommutative_example`, proving that `i*j != j*i` in integer quaternions.",
+      "id": "S3Q-0003",
+      "introduced_in": "PAPER_S3_02_QUATERNION_COILS",
+      "intuition": "S^3: order matters.",
+      "kind": "relation",
+      "name": "Quaternion noncommutativity",
+      "source_dictionary": "dictionary/dimensions/S3.yaml"
+    },
+    {
+      "dependencies": [
+        "S3Q-0001",
+        "S3Q-0002"
+      ],
+      "forbidden_meanings": [
+        "A complete SO(3) formalization by itself."
+      ],
+      "formal_definition": "The real-quaternion action `Circle.S3.quaternionConjugationAction q v = q * v * star q`.",
+      "id": "S3S-0001",
+      "introduced_in": "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP",
+      "intuition": "The algebraic core of rotating by conjugation before quotienting signs.",
+      "kind": "operation",
+      "name": "Quaternion conjugation action",
+      "source_dictionary": "dictionary/dimensions/S3.yaml"
+    },
+    {
+      "dependencies": [
+        "S3S-0001"
+      ],
+      "forbidden_meanings": [
+        "A claim that `q = -q`."
+      ],
+      "formal_definition": "`q` and `-q` give the same value under `Circle.S3.quaternionConjugationAction`.",
+      "id": "S3S-0002",
+      "introduced_in": "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP",
+      "intuition": "The first formal shadow of the spin double cover: opposite unit quaternions act the same.",
+      "kind": "relation",
+      "name": "Quaternion sign ambiguity",
+      "source_dictionary": "dictionary/dimensions/S3.yaml"
+    },
+    {
+      "dependencies": [
+        "S456-0001"
+      ],
+      "forbidden_meanings": [
+        "A proved quaternionic Hopf formalization by itself."
+      ],
+      "formal_definition": "The finite S4 count model `Circle.S4.counts`, with Euler characteristic proved by `Circle.S4.eulerCharacteristic`, kept visible as the future base of S^3 -> S^7 -> S^4.",
+      "id": "S4-0001",
+      "introduced_in": "PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF",
+      "intuition": "The geometric base needed before quaternionic Hopf claims.",
+      "kind": "object",
+      "name": "S4 quaternionic Hopf base",
+      "source_dictionary": "dictionary/dimensions/S4_S6.yaml"
+    },
+    {
+      "dependencies": [
+        "COMMON-0002",
+        "COMMON-0003"
+      ],
+      "forbidden_meanings": [
+        "A claim about every smooth structure on every sphere."
+      ],
+      "formal_definition": "The finite-suspension result represented by `Circle.S4.iteratedSuspensionEulerParity`: the S4/S5/S6 iterated suspension counts have Euler characteristics 2, 0, and 2.",
+      "id": "S456-0001",
+      "introduced_in": "PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY",
+      "intuition": "The bridge that carries S^4, S^5, and S^6 without skipping dimensions.",
+      "kind": "relation",
+      "name": "Iterated suspension Euler parity",
+      "source_dictionary": "dictionary/dimensions/S4_S6.yaml"
+    },
+    {
+      "dependencies": [
+        "S456-0001"
+      ],
+      "forbidden_meanings": [
+        "A completed projective geometry formalization."
+      ],
+      "formal_definition": "The finite S5 count model `Circle.S5.counts`, with Euler characteristic proved by `Circle.S5.eulerCharacteristic`, kept as a bridge toward future projective and circle-bundle structures.",
+      "id": "S5-0001",
+      "introduced_in": "PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE",
+      "intuition": "A higher odd sphere that remains part of the geometric ladder.",
+      "kind": "model",
+      "name": "S5 complex projective bridge",
+      "source_dictionary": "dictionary/dimensions/S4_S6.yaml"
+    },
+    {
+      "dependencies": [
+        "S456-0001"
+      ],
+      "forbidden_meanings": [
+        "A resolved complex-structure claim."
+      ],
+      "formal_definition": "The finite S6 count model `Circle.S6.counts`, with Euler characteristic proved by `Circle.S6.eulerCharacteristic`, kept as the warning layer near octonionic geometry.",
+      "id": "S6-0001",
+      "introduced_in": "PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS",
+      "intuition": "A geometric warning layer before S^7 octonions.",
+      "kind": "model",
+      "name": "S6 octonion shadow",
+      "source_dictionary": "dictionary/dimensions/S4_S6.yaml"
+    },
+    {
+      "dependencies": [
+        "S6-0001"
+      ],
+      "forbidden_meanings": [
+        "Settling the S^6 complex-structure problem by roadmap language."
+      ],
+      "formal_definition": "Claims about integrable complex structures on S^6 are not project assumptions unless formalized from accepted foundations.",
+      "id": "S6-W0001",
+      "introduced_in": "PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS",
+      "intuition": "Do not build on delicate unresolved S^6 claims.",
+      "kind": "warning",
+      "name": "S6 complex-structure warning",
+      "source_dictionary": "dictionary/dimensions/S4_S6.yaml"
+    },
+    {
+      "dependencies": [
+        "S456-0001"
+      ],
+      "forbidden_meanings": [
+        "An octonion proof by itself."
+      ],
+      "formal_definition": "The finite S7 model `Circle.S7.iteratedSuspensionModel`, built by suspending `Circle.S6.counts` and proved to have Euler characteristic 0 by `Circle.S7.eulerCharacteristic`.",
+      "id": "S7C-0001",
+      "introduced_in": "PAPER_S7_01_TOPOLOGICAL_7SPHERE",
+      "intuition": "The topological S^7 layer before octonion algebra.",
+      "kind": "object",
+      "name": "Topological S7 suspension model",
+      "source_dictionary": "dictionary/dimensions/S7.yaml"
+    },
+    {
+      "dependencies": [],
+      "forbidden_meanings": [
+        "A group model.",
+        "An associative algebra model."
+      ],
+      "formal_definition": "The bounded Cayley-Dickson coordinate model `Circle.S7.OctonionCoord`, with Lean proofs for basis unit norm, conjugate norm, norm multiplicativity, unit closure by norm, noncommutativity, and nonassociativity.",
+      "id": "S7O-0001",
+      "introduced_in": "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS",
+      "intuition": "S^7: order and grouping matter.",
+      "kind": "model",
+      "name": "Octonion model",
+      "source_dictionary": "dictionary/dimensions/S7.yaml"
+    },
+    {
+      "dependencies": [
+        "S7O-0001"
+      ],
+      "forbidden_meanings": [
+        "An element of a group under ordinary octonion multiplication."
+      ],
+      "formal_definition": "An octonion with squared norm one in the coordinate model; `Circle.S7.unitOctonion_mul_closed` proves products of norm-one octonions remain norm-one, without implying associativity or a group API.",
+      "id": "S7O-0002",
+      "introduced_in": "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS",
+      "intuition": "A unit element of the nonassociative octonion layer.",
+      "kind": "object",
+      "name": "Unit octonion",
+      "source_dictionary": "dictionary/dimensions/S7.yaml"
+    },
+    {
+      "dependencies": [
+        "S7O-0001",
+        "S7O-0002"
+      ],
+      "forbidden_meanings": [
+        "Using group APIs without a separate formal justification."
+      ],
+      "formal_definition": "Unit octonions are nonassociative under ordinary multiplication and must not be treated as a group.",
+      "id": "S7O-W0001",
+      "introduced_in": "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS",
+      "intuition": "The S^7 algebraic jump changes the proof rules.",
+      "kind": "warning",
+      "name": "Unit octonions are not a group warning",
+      "source_dictionary": "dictionary/dimensions/S7.yaml"
+    },
+    {
+      "dependencies": [
+        "S7O-0001"
+      ],
+      "forbidden_meanings": [
+        "Silently reassociating octonion products."
+      ],
+      "formal_definition": "In octonion calculus, operation grouping is part of the statement because multiplication is nonassociative.",
+      "id": "S7O-W0002",
+      "introduced_in": "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS",
+      "intuition": "Parentheses matter.",
+      "kind": "warning",
+      "name": "Octonion bracketing warning",
+      "source_dictionary": "dictionary/dimensions/S7.yaml"
+    },
+    {
+      "dependencies": [
+        "S3Q-0001",
+        "S4-0001"
+      ],
+      "forbidden_meanings": [
+        "A completed proof before S3 and S4 foundations are stable."
+      ],
+      "formal_definition": "The coordinate quaternionic Hopf model `Circle.S7.quaternionicHopfMap`, with `Circle.S7.quaternionicHopf_lands_sphere` proving that normalized quaternion pairs land on the unit five-coordinate base equation and `Circle.S7.quaternionicPhaseInvariance` proving right unit-quaternion phase invariance.",
+      "id": "S7QH-0001",
+      "introduced_in": "PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION",
+      "intuition": "The higher hidden-phase analog of Hopf coils.",
+      "kind": "model",
+      "name": "Quaternionic Hopf roadmap",
+      "source_dictionary": "dictionary/dimensions/S7.yaml"
+    },
+    {
+      "dependencies": [],
+      "forbidden_meanings": [
+        "A rhetorical claim that substitutes for formal verification."
+      ],
+      "formal_definition": "A theorem must not be described as proved unless its manifest status and Lean declaration support that claim.",
+      "id": "WARN-0001",
+      "introduced_in": "D0 dimensional scaffolding",
+      "intuition": "The papers are allowed to be ambitious, but proof status must be exact.",
+      "kind": "warning",
+      "name": "Proof status honesty",
+      "source_dictionary": "dictionary/dimensions/warnings.yaml"
+    },
+    {
+      "dependencies": [],
+      "forbidden_meanings": [
+        "Treating a projection or diagram as a proof object."
+      ],
+      "formal_definition": "Diagrams, projections, and rendered examples explain a construction but do not prove it.",
+      "id": "WARN-0002",
+      "introduced_in": "D0 dimensional scaffolding",
+      "intuition": "Visual artifacts support papers; Lean carries formal proof status.",
+      "kind": "warning",
+      "name": "Pictures are not proofs",
+      "source_dictionary": "dictionary/dimensions/warnings.yaml"
+    }
+  ]
+}

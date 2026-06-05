@@ -1,0 +1,25 @@
+---
+title: "Roadmap"
+---
+
+The dimensional ladder is organized so lower-dimensional material does not rely on higher-dimensional claims.
+
+| Layer | Role | Current site status |
+| --- | --- | --- |
+| S0 | Opposition and sign | <span class="status-badge status-active">active</span> |
+| S1 | Finite cyclic address core | <span class="status-badge status-active">active</span> |
+| S2 | Suspended circles and sphere grids | <span class="status-badge status-scaffold">scaffolded</span> |
+| S3 | Hyperspheres, quaternions, Hopf coils | <span class="status-badge status-scaffold">scaffolded</span> |
+| S4-S6 | Suspension/Euler bridge and warnings | <span class="status-badge status-scaffold">scaffolded</span> |
+| S7 | Topological and octonionic layer | <span class="status-badge status-scaffold">scaffolded</span> |
+| S15 | Future Hopf horizon | <span class="status-badge status-future">future</span> |
+| Phase II | Stable spheres, bundles, glyphs | <span class="status-badge status-scaffold">scaffolded</span> |
+| Applications | AI, compute, rendering, data analysis | <span class="status-badge status-scaffold">scaffolded</span> |
+
+Higher-dimensional pages may be present before their interactive chapters are mature. A placeholder page is not a proof claim.
+
+<div class="warning-box">
+The Living Book must not say a theorem is proved unless the theorem id is proved in the generated theorem data and resolves to compiled Lean.
+</div>
+
+<script type="module" src="widgets/shared/widget_base.js"></script>

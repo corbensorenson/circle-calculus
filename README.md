@@ -124,7 +124,7 @@ dictionary/                     Shared Circle Calculus vocabulary
 docs/                           Proof policy and foundational notes
 manifests/                      Paper and theorem metadata
 papers/                         Human-readable papers
-site/                           Planned Phase III Quarto Living Book
+site/                           Phase III Quarto Living Book source
 scripts/                        Repository validation scripts
 sidecars/                       Per-paper Lean, Python, and diagram artifacts
 tests/                          Python regression/property tests
@@ -169,6 +169,10 @@ make paperlinks  # verify papers cite known theorem ids
 make dimensioncheck # validate dimension manifests, imports, and paper links
 make nofake      # reject forbidden proof placeholders
 make examples    # regenerate current example diagrams
+make site-data   # export Living Book JSON from manifests/dictionaries/papers
+make sitecheck   # validate Living Book structure, ids, links, status, and widgets
+make site-render # render the Quarto Living Book into site/_site
+make living-book-check # run core checks plus Living Book checks and render
 make check       # run the full suite
 ```
 
@@ -192,6 +196,7 @@ Start with:
 8. `docs/DIMENSIONAL_LADDER.md`
 9. `docs/PHASE2_AND_APPLICATIONS.md`
 10. `docs/LIVING_BOOK_ROADMAP.md`
+11. `site/index.qmd`
 
 The papers give the conceptual path. The sidecars show the proof links. The dictionary fixes vocabulary so later papers reuse the same meanings instead of drifting.
 

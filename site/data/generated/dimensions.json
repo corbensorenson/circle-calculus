@@ -1,0 +1,262 @@
+{
+  "dimensions": [
+    {
+      "allowed_import_dimensions": [],
+      "dictionary_file": "dictionary/dimensions/Common.yaml",
+      "display_name": "Common finite combinatorics",
+      "forbidden_import_dimensions": [
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "Future"
+      ],
+      "id": "Common",
+      "lean_namespace": "Circle.Common",
+      "lean_root": "Circle/Common",
+      "paper_root": "docs",
+      "python_root": "circle_math/dimensions",
+      "role": "shared cell-count and suspension infrastructure",
+      "sphere_notation": "",
+      "status": "active",
+      "theorem_manifest": "manifests/dimensions/Common.yaml"
+    },
+    {
+      "allowed_import_dimensions": [
+        "Common"
+      ],
+      "dictionary_file": "dictionary/dimensions/S0.yaml",
+      "display_name": "Opposition and sign",
+      "forbidden_import_dimensions": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "Future"
+      ],
+      "id": "S0",
+      "lean_namespace": "Circle.S0",
+      "lean_root": "Circle/S0",
+      "paper_root": "papers/S0",
+      "python_root": "circle_math/dimensions",
+      "role": "two-point opposition backfill",
+      "sphere_notation": "S^0",
+      "status": "active",
+      "theorem_manifest": "manifests/dimensions/S0_opposition.yaml"
+    },
+    {
+      "allowed_import_dimensions": [
+        "Common",
+        "S0"
+      ],
+      "dictionary_file": "dictionary/dimensions/S1.yaml",
+      "display_name": "Circle",
+      "forbidden_import_dimensions": [
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "Future"
+      ],
+      "id": "S1",
+      "lean_namespace": "Circle.S1",
+      "lean_root": "Circle/S1",
+      "paper_root": "papers/S1",
+      "python_root": "circle_math",
+      "role": "finite cyclic address core",
+      "sphere_notation": "S^1",
+      "status": "active",
+      "theorem_manifest": "manifests/dimensions/S1_circle.yaml"
+    },
+    {
+      "allowed_import_dimensions": [
+        "Common",
+        "S0",
+        "S1"
+      ],
+      "dictionary_file": "dictionary/dimensions/S2.yaml",
+      "display_name": "Sphere",
+      "forbidden_import_dimensions": [
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "Future"
+      ],
+      "id": "S2",
+      "lean_namespace": "Circle.S2",
+      "lean_root": "Circle/S2",
+      "paper_root": "papers/S2",
+      "python_root": "circle_math/dimensions",
+      "role": "finite suspended-circle and sphere-grid calculus",
+      "sphere_notation": "S^2",
+      "status": "active",
+      "theorem_manifest": "manifests/dimensions/S2_sphere.yaml"
+    },
+    {
+      "allowed_import_dimensions": [
+        "Common",
+        "S0",
+        "S1",
+        "S2"
+      ],
+      "dictionary_file": "dictionary/dimensions/S3.yaml",
+      "display_name": "Hypersphere",
+      "forbidden_import_dimensions": [
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "Future"
+      ],
+      "id": "S3",
+      "lean_namespace": "Circle.S3",
+      "lean_root": "Circle/S3",
+      "paper_root": "papers/S3",
+      "python_root": "circle_math/dimensions",
+      "role": "finite 3-spheres, quaternions, and Hopf coils",
+      "sphere_notation": "S^3",
+      "status": "active",
+      "theorem_manifest": "manifests/dimensions/S3_hypersphere.yaml"
+    },
+    {
+      "allowed_import_dimensions": [
+        "Common",
+        "S0",
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "dictionary_file": "dictionary/dimensions/S4_S6.yaml",
+      "display_name": "4-sphere",
+      "forbidden_import_dimensions": [
+        "S5",
+        "S6",
+        "S7",
+        "Future"
+      ],
+      "id": "S4",
+      "lean_namespace": "Circle.S4",
+      "lean_root": "Circle/S4",
+      "paper_root": "papers/S4_S6",
+      "python_root": "circle_math/dimensions",
+      "role": "geometric bridge and quaternionic Hopf base",
+      "sphere_notation": "S^4",
+      "status": "active",
+      "theorem_manifest": "manifests/dimensions/S4_4sphere.yaml"
+    },
+    {
+      "allowed_import_dimensions": [
+        "Common",
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "dictionary_file": "dictionary/dimensions/S4_S6.yaml",
+      "display_name": "5-sphere",
+      "forbidden_import_dimensions": [
+        "S6",
+        "S7",
+        "Future"
+      ],
+      "id": "S5",
+      "lean_namespace": "Circle.S5",
+      "lean_root": "Circle/S5",
+      "paper_root": "papers/S4_S6",
+      "python_root": "circle_math/dimensions",
+      "role": "complex projective bridge",
+      "sphere_notation": "S^5",
+      "status": "active",
+      "theorem_manifest": "manifests/dimensions/S5_5sphere.yaml"
+    },
+    {
+      "allowed_import_dimensions": [
+        "Common",
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5"
+      ],
+      "dictionary_file": "dictionary/dimensions/S4_S6.yaml",
+      "display_name": "6-sphere",
+      "forbidden_import_dimensions": [
+        "S7",
+        "Future"
+      ],
+      "id": "S6",
+      "lean_namespace": "Circle.S6",
+      "lean_root": "Circle/S6",
+      "paper_root": "papers/S4_S6",
+      "python_root": "circle_math/dimensions",
+      "role": "octonion shadow and warning layer",
+      "sphere_notation": "S^6",
+      "status": "active",
+      "theorem_manifest": "manifests/dimensions/S6_6sphere.yaml"
+    },
+    {
+      "allowed_import_dimensions": [
+        "Common",
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6"
+      ],
+      "dictionary_file": "dictionary/dimensions/S7.yaml",
+      "display_name": "7-sphere",
+      "forbidden_import_dimensions": [
+        "Future"
+      ],
+      "id": "S7",
+      "lean_namespace": "Circle.S7",
+      "lean_root": "Circle/S7",
+      "paper_root": "papers/S7",
+      "python_root": "circle_math/dimensions",
+      "role": "topological, quaternionic-Hopf, and octonionic layer",
+      "sphere_notation": "S^7",
+      "status": "active",
+      "theorem_manifest": "manifests/dimensions/S7_octonionic.yaml"
+    },
+    {
+      "allowed_import_dimensions": [
+        "Common",
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "dictionary_file": "dictionary/dimensions/S15.yaml",
+      "display_name": "Future S15 horizon",
+      "forbidden_import_dimensions": [],
+      "id": "Future",
+      "lean_namespace": "Circle.Future.S15",
+      "lean_root": "Circle/Future/S15",
+      "paper_root": "papers/future/S15",
+      "python_root": "circle_math/dimensions",
+      "role": "long-horizon octonionic Hopf roadmap",
+      "sphere_notation": "S^15",
+      "status": "future",
+      "theorem_manifest": "manifests/dimensions/S15_future.yaml"
+    }
+  ]
+}

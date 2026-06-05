@@ -1,0 +1,10 @@
+---
+title: "Sphere Grids"
+---
+
+This placeholder records the future sphere-grid interactive layer. It does not claim continuous sphere geometry beyond the finite models already represented by theorem ids.
+
+<div class="theorem-box" data-theorem-id="S2-T0003"></div>
+<div class="dictionary-box" data-dictionary-id="S2-0002"></div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

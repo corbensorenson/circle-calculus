@@ -1,0 +1,9 @@
+---
+title: "Applications"
+---
+
+Application pages are scaffolded for AI, compute, rendering, systems, and data analysis. Benchmark claims must stay separate from Lean proof status.
+
+<div class="theorem-box" data-theorem-id="APPD-T0001"></div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

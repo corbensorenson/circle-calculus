@@ -1,0 +1,12 @@
+---
+title: "Compute"
+---
+
+The compute page will track proof-carrying circular computation, CoilRay, sampling, layout, stencil, NTT, and systems applications.
+
+<div class="theorem-box" data-theorem-id="COMPC-T0001"></div>
+<div class="theorem-box" data-theorem-id="COMPR-T0001"></div>
+<div class="theorem-box" data-theorem-id="COMPL-T0001"></div>
+<div class="theorem-box" data-theorem-id="COMPS-T0001"></div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

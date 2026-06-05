@@ -1,0 +1,33 @@
+---
+title: "Circle Calculus Living Book"
+---
+
+Circle Calculus is a proof-linked, executable, interactive living book for finite circular address spaces, coils, winding, and the dimension-indexed sphere ladder.
+
+The site is an explanation layer generated from repository artifacts. It does not replace the formal project.
+
+```text
+Lean proofs -> theorem manifests -> dictionary -> Python models -> papers -> interactive site
+```
+
+## Reading Modes
+
+**Intuition Mode**
+
+Use the widgets and diagrams to build a geometric picture. These are explanations, not proofs.
+
+**Formal Mode**
+
+Open theorem cards, Lean declaration names, manifests, and paper links. A theorem is treated as proved only when the manifest and Lean build say so.
+
+**Code Mode**
+
+Compare widget behavior against the Python reference models and tests. Python examples are executable support, not formal proof.
+
+## Start
+
+- Begin with [S1 finite circles](chapters/S1/index.qmd).
+- Inspect the [project roadmap](roadmap.qmd).
+- Read the proof-status policy in [Living Book Policy](../docs/LIVING_BOOK_POLICY.md).
+
+<script type="module" src="widgets/shared/widget_base.js"></script>

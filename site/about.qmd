@@ -1,0 +1,13 @@
+---
+title: "About"
+---
+
+The Living Book is the public-facing explanation layer for Circle Calculus. It connects papers, theorem ids, dictionary entries, Python examples, and Lean declarations without changing their meaning.
+
+The theorem manifests are the source of truth for proof status. Lean is the formal proof source. Python and browser widgets are executable and visual aids.
+
+## Attribution
+
+Circle Calculus is released under the MIT License. If you use the project, cite Corben Sorenson and the public repository. See `CITATION.cff` at the repository root.
+
+<script type="module" src="widgets/shared/widget_base.js"></script>

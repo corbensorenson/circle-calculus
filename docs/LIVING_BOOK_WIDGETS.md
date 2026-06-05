@@ -14,7 +14,7 @@ Widgets are deterministic browser-native explanation tools. They are not proofs.
 
 ## Shared Files
 
-Planned shared JavaScript:
+Implemented shared JavaScript:
 
 - `site/widgets/shared/circle_math_core.js`
 - `site/widgets/shared/svg_helpers.js`
@@ -74,7 +74,7 @@ These should be visibly marked placeholder/exploratory until implemented and lin
 
 ## Validation Strategy
 
-Planned checker: `scripts/site/check_widget_python_parity.py`.
+Checker: `scripts/site/check_widget_python_parity.py`.
 
 Minimum parity cases:
 

@@ -1,0 +1,9 @@
+---
+title: "Boundary And Cobordism"
+---
+
+Placeholder for directed-boundary seeds and future cobordism language.
+
+<div class="theorem-box" data-theorem-id="P2BC-T0001"></div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

@@ -1,0 +1,9 @@
+---
+title: "S15: Future Hopf Horizon"
+---
+
+S15 is a future horizon. Current pages should treat it as roadmap material unless a generated theorem card reports a certified finite seed.
+
+<div class="theorem-box" data-theorem-id="S15-T0001"></div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

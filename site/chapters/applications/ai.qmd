@@ -1,0 +1,11 @@
+---
+title: "AI"
+---
+
+The AI application page will track phase channels, coil attention, cyclic memory, and adapter/block indexing. Local compute language should be MLX/Mac-first.
+
+<div class="theorem-box" data-theorem-id="AIA-T0001"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0001"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0001"></div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

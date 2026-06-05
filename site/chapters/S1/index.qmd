@@ -1,0 +1,19 @@
+---
+title: "S1: Finite Circle Core"
+---
+
+The S1 core uses finite `C_n` objects as cyclic address spaces. In v0, these are combinatorial circles, not Euclidean metric circles.
+
+The first S1 sequence is:
+
+1. finite circles and nodes,
+2. rotations as modular addition,
+3. coils, orbits, closure, and period,
+4. gcd decomposition and prime full coils,
+5. winding lift as a separate residue-plus-turns layer.
+
+<div class="dimension-banner" data-dimension-id="S1">S1 finite cyclic address core</div>
+
+<div class="dictionary-box" data-dictionary-id="S1-0001"></div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

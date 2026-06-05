@@ -1,0 +1,9 @@
+---
+title: "Octonionic Layer"
+---
+
+The octonionic layer is warning-sensitive: unit octonions do not form a group. The Living Book must keep nonassociative facts explicit.
+
+<div class="theorem-box" data-theorem-id="S7O-T0006"></div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

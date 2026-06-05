@@ -1,0 +1,33 @@
+---
+title: "Period, GCD, And Prime Full Coils"
+---
+
+For positive `n`, the period of stride `k` on `C_n` is `n / gcd(n,k)`. The same gcd counts the number of disjoint stride cycles.
+
+<div class="dictionary-box" data-dictionary-id="CC-0205"></div>
+<div class="dictionary-box" data-dictionary-id="CC-0206"></div>
+<div class="dictionary-box" data-dictionary-id="CC-0207"></div>
+<div class="dictionary-box" data-dictionary-id="CC-0208"></div>
+
+<div class="theorem-box" data-theorem-id="CC-T0005"></div>
+<div class="theorem-box" data-theorem-id="CC-T0006"></div>
+<div class="theorem-box" data-theorem-id="CC-T0007"></div>
+
+<div class="widget-panel" data-widget="period_gcd_visualizer" data-theorem-id="CC-T0006" data-dictionary-ids="CC-0205 CC-0207 CC-0208"></div>
+
+<div class="widget-panel" data-widget="prime_full_coil_explorer" data-theorem-id="CC-T0007" data-dictionary-ids="CC-0206"></div>
+
+Python reference model:
+
+```python
+from circle_math.finite import Circle
+
+C = Circle(13)
+all(C.is_full_coil(k) for k in range(1, 13))
+```
+
+<p data-paper-ref="papers/PAPER_01_FINITE_CIRCLES.md">Paper source: [Circle Calculus I](../../../papers/PAPER_01_FINITE_CIRCLES.md)</p>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>
+<script type="module" src="../../widgets/S1/period_gcd_visualizer.js"></script>
+<script type="module" src="../../widgets/S1/prime_full_coil_explorer.js"></script>

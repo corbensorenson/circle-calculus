@@ -1,0 +1,29 @@
+---
+title: "Rotation As Addition"
+---
+
+A rotation `rot(n,k)` moves a node by adding `k` in `C_n`.
+
+<div class="dictionary-box" data-dictionary-id="CC-0101"></div>
+
+<div class="theorem-box" data-theorem-id="CC-T0001"></div>
+<div class="theorem-box" data-theorem-id="CC-T0002"></div>
+<div class="theorem-box" data-theorem-id="CC-T0003"></div>
+
+<div class="widget-panel" data-widget="rotation_composition" data-theorem-id="CC-T0002" data-dictionary-ids="CC-0101"></div>
+
+## Source Links
+
+<p data-paper-ref="papers/PAPER_01_FINITE_CIRCLES.md">Paper source: [Circle Calculus I](../../../papers/PAPER_01_FINITE_CIRCLES.md)</p>
+
+Python reference model:
+
+```python
+from circle_math.finite import Circle
+
+C = Circle(12)
+C.rot(C.rot(8, 5), 7) == C.rot(8, 12)
+```
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>
+<script type="module" src="../../widgets/S1/rotation_composition.js"></script>

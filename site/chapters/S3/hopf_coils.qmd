@@ -1,0 +1,11 @@
+---
+title: "Hopf Coils"
+---
+
+This placeholder links bounded Hopf coordinate facts. Full fibration topology remains future work unless future manifests and Lean declarations say otherwise.
+
+<div class="theorem-box" data-theorem-id="S3H-T0001"></div>
+<div class="widget-panel" data-widget="hopf_placeholder"></div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>
+<script type="module" src="../../widgets/S3/hopf_placeholder.js"></script>

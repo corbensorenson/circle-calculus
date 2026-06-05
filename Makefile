@@ -1,6 +1,7 @@
 LAKE := $(shell command -v lake 2>/dev/null || printf "%s/.elan/bin/lake" "$$HOME")
+QUARTO := $(shell if command -v quarto >/dev/null 2>&1; then command -v quarto; elif [ -x ".tools/quarto-pkg/quarto-core.pkg/Payload/bin/quarto" ]; then printf ".tools/quarto-pkg/quarto-core.pkg/Payload/bin/quarto"; else printf "quarto"; fi)
 
-.PHONY: check lean sidecarlean test manifest dictionary papermanifest paperlinks dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples
+.PHONY: check lean sidecarlean test manifest dictionary papermanifest paperlinks dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples site-data sitecheck site-render site-preview living-book-check
 
 check: lean sidecarlean test manifest dictionary papermanifest paperlinks dimensioncheck nofake
 
@@ -44,3 +45,22 @@ nofake:
 
 examples:
 	python scripts/render_examples.py
+
+site-data:
+	python scripts/site/export_site_data.py
+
+sitecheck: site-data
+	python scripts/site/check_quarto_structure.py
+	python scripts/site/check_site_manifest_links.py
+	python scripts/site/check_site_dictionary_links.py
+	python scripts/site/check_site_theorem_status.py
+	python scripts/site/check_site_paper_links.py
+	python scripts/site/check_widget_python_parity.py
+
+site-render: site-data
+	$(QUARTO) render site
+
+site-preview: site-data
+	$(QUARTO) preview site
+
+living-book-check: lean sidecarlean test manifest dictionary papermanifest paperlinks dimensioncheck nofake sitecheck site-render

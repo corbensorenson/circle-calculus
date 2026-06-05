@@ -1,0 +1,9 @@
+---
+title: "Bundle Calculus"
+---
+
+Placeholder for trivial product-bundle seeds and future bundle calculus.
+
+<div class="theorem-box" data-theorem-id="P2BU-T0001"></div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

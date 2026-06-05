@@ -1,0 +1,73 @@
+{
+  "widgets": [
+    {
+      "dictionary_ids": [
+        "CC-0001",
+        "CC-0002"
+      ],
+      "id": "finite_circle_rotator",
+      "path": "site/widgets/S1/finite_circle_rotator.js",
+      "python_reference": "circle_math.finite.Circle.node",
+      "theorem_ids": []
+    },
+    {
+      "dictionary_ids": [
+        "CC-0101"
+      ],
+      "id": "rotation_composition",
+      "path": "site/widgets/S1/rotation_composition.js",
+      "python_reference": "circle_math.finite.Circle.rot",
+      "theorem_ids": [
+        "CC-T0002"
+      ]
+    },
+    {
+      "dictionary_ids": [
+        "CC-0201",
+        "CC-0202",
+        "CC-0205"
+      ],
+      "id": "coil_orbit_explorer",
+      "path": "site/widgets/S1/coil_orbit_explorer.js",
+      "python_reference": "circle_math.finite.Circle.orbit",
+      "theorem_ids": [
+        "CC-T0005"
+      ]
+    },
+    {
+      "dictionary_ids": [
+        "CC-0205",
+        "CC-0207",
+        "CC-0208"
+      ],
+      "id": "period_gcd_visualizer",
+      "path": "site/widgets/S1/period_gcd_visualizer.js",
+      "python_reference": "circle_math.finite.Circle.orbit_decomposition",
+      "theorem_ids": [
+        "CC-T0006"
+      ]
+    },
+    {
+      "dictionary_ids": [
+        "CC-0206"
+      ],
+      "id": "prime_full_coil_explorer",
+      "path": "site/widgets/S1/prime_full_coil_explorer.js",
+      "python_reference": "circle_math.finite.Circle.is_full_coil",
+      "theorem_ids": [
+        "CC-T0007"
+      ]
+    },
+    {
+      "dictionary_ids": [
+        "CC-0301"
+      ],
+      "id": "winding_lift_explorer",
+      "path": "site/widgets/S1/winding_lift_explorer.js",
+      "python_reference": "circle_math.winding.lift",
+      "theorem_ids": [
+        "CC-T0009"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+---
+title: "Two-Point Opposition"
+---
+
+The S0 chapter records the finite two-point opposition model. It is intentionally small: a two-point type and an operation that swaps its two points.
+
+<div class="theorem-box" data-theorem-id="S0-T0002"></div>
+<div class="dictionary-box" data-dictionary-id="S0-0002"></div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

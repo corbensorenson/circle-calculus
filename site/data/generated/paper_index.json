@@ -1,0 +1,669 @@
+{
+  "papers": [
+    {
+      "dictionary_ids": [
+        "S0-0001",
+        "S0-0002",
+        "S0-W0001"
+      ],
+      "id": "PAPER_S0_01_TWO_POINT_OPPOSITION",
+      "path": "papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md",
+      "sidecar": "sidecars/PAPER_S0_01_TWO_POINT_OPPOSITION",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "S0-T0001",
+        "S0-T0002"
+      ],
+      "title": "Circle Calculus S0.1: Two-Point Opposition"
+    },
+    {
+      "dictionary_ids": [
+        "CC-0001",
+        "CC-0002",
+        "CC-0101",
+        "CC-0201",
+        "CC-0202",
+        "CC-0205",
+        "CC-0206",
+        "CC-0207",
+        "CC-0208"
+      ],
+      "id": "PAPER_01_FINITE_CIRCLES",
+      "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+      "sidecar": "sidecars/PAPER_01_FINITE_CIRCLES",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "CC-T0001",
+        "CC-T0002",
+        "CC-T0003",
+        "CC-T0004",
+        "CC-T0005",
+        "CC-T0006",
+        "CC-T0007"
+      ],
+      "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+    },
+    {
+      "dictionary_ids": [
+        "CC-0301",
+        "CC-0302",
+        "CC-0303",
+        "CC-0304"
+      ],
+      "id": "PAPER_02_WINDING_NATURALS",
+      "path": "papers/PAPER_02_WINDING_NATURALS.md",
+      "sidecar": "sidecars/PAPER_02_WINDING_NATURALS",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "CC-T0009",
+        "CC-T0010",
+        "CC-T0011",
+        "CC-T0012",
+        "CC-T0013",
+        "CC-T0014",
+        "CC-T0015",
+        "CC-T0016"
+      ],
+      "title": "Circle Calculus II: Winding, Lifted Circles, and Natural Numbers"
+    },
+    {
+      "dictionary_ids": [
+        "S1-0001",
+        "CC-0105"
+      ],
+      "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+      "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+      "sidecar": "sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "CC-T0008",
+        "CC-T0017",
+        "CC-T0018",
+        "CC-T0019",
+        "CC-T0020",
+        "CC-T0021",
+        "CC-T0022",
+        "CC-T0023",
+        "CC-T0024",
+        "CC-T0025",
+        "CC-T0026",
+        "CC-T0027",
+        "CC-T0028",
+        "CC-T0029",
+        "CC-T0030",
+        "CC-T0031",
+        "CC-T0032",
+        "CC-T0033",
+        "CC-T0034",
+        "CC-T0035",
+        "CC-T0036",
+        "CC-T0037",
+        "CC-T0038",
+        "CC-T0039",
+        "CC-T0040",
+        "CC-T0041",
+        "CC-T0042",
+        "CC-T0043",
+        "CC-T0044",
+        "CC-T0045",
+        "CC-T0046",
+        "CC-T0047",
+        "CC-T0048",
+        "CC-T0049",
+        "CC-T0050",
+        "CC-T0051",
+        "CC-T0052",
+        "CC-T0053"
+      ],
+      "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+    },
+    {
+      "dictionary_ids": [
+        "S1-0001",
+        "CC-0001",
+        "CC-0101",
+        "CC-0201",
+        "CC-0205"
+      ],
+      "id": "PAPER_S1_01_FINITE_CIRCLES",
+      "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+      "sidecar": "sidecars/PAPER_S1_01_FINITE_CIRCLES",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "CC-T0001",
+        "CC-T0002",
+        "CC-T0003",
+        "CC-T0004",
+        "CC-T0005",
+        "CC-T0006",
+        "CC-T0007"
+      ],
+      "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+    },
+    {
+      "dictionary_ids": [
+        "S1-0001",
+        "CC-0301",
+        "CC-0302",
+        "CC-0303",
+        "CC-0304"
+      ],
+      "id": "PAPER_S1_02_WINDING_NATURALS",
+      "path": "papers/S1/PAPER_S1_02_WINDING_NATURALS.md",
+      "sidecar": "sidecars/PAPER_S1_02_WINDING_NATURALS",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "CC-T0009",
+        "CC-T0010",
+        "CC-T0011",
+        "CC-T0012",
+        "CC-T0013",
+        "CC-T0014",
+        "CC-T0015",
+        "CC-T0016"
+      ],
+      "title": "Circle Calculus S1.2: Winding, Lifted Circles, and Natural Numbers"
+    },
+    {
+      "dictionary_ids": [
+        "S1-0002",
+        "S1-0003"
+      ],
+      "id": "PAPER_S1_03_INTEGERS_ORIENTATION",
+      "path": "papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md",
+      "sidecar": "sidecars/PAPER_S1_03_INTEGERS_ORIENTATION",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "S1O-T0001",
+        "S1O-T0002",
+        "S1O-T0003"
+      ],
+      "title": "Circle Calculus S1.3: Integers, Orientation, and Reversible Motion"
+    },
+    {
+      "dictionary_ids": [
+        "S2-0001",
+        "COMMON-0001",
+        "COMMON-0002",
+        "COMMON-0003"
+      ],
+      "id": "PAPER_S2_01_SUSPENDED_CIRCLES",
+      "path": "papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md",
+      "sidecar": "sidecars/PAPER_S2_01_SUSPENDED_CIRCLES",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "S2-T0001",
+        "S2-T0002"
+      ],
+      "title": "Circle Calculus S2.1: Suspended Circles and the First Finite Sphere"
+    },
+    {
+      "dictionary_ids": [
+        "S2-0002",
+        "S2-0003",
+        "S2-0004",
+        "S2-W0001",
+        "S2-W0002",
+        "S2-W0003"
+      ],
+      "id": "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+      "path": "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md",
+      "sidecar": "sidecars/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "S2-T0003",
+        "S2-T0004",
+        "S2-T0005",
+        "S2-T0006",
+        "S2-T0007"
+      ],
+      "title": "Circle Calculus S2.2: Sphere Grids, Latitude Rings, and Pole Collapse"
+    },
+    {
+      "dictionary_ids": [
+        "S2-0005",
+        "S2-0006"
+      ],
+      "id": "PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE",
+      "path": "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md",
+      "sidecar": "sidecars/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "S2-T0008",
+        "S2-T0009",
+        "S2-T0010",
+        "S2-T0011",
+        "S2-T0012",
+        "S2-T0013",
+        "S2-T0014",
+        "S2-T0015"
+      ],
+      "title": "Circle Calculus S2.3: Antipodes, Axes, Surface Closure, and Antinodes"
+    },
+    {
+      "dictionary_ids": [
+        "S3C-0001",
+        "COMMON-0002",
+        "COMMON-0003",
+        "S2-0001"
+      ],
+      "id": "PAPER_S3_01_FINITE_HYPERSPHERES",
+      "path": "papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md",
+      "sidecar": "sidecars/PAPER_S3_01_FINITE_HYPERSPHERES",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "S3C-T0001",
+        "S3C-T0002",
+        "S3C-T0003",
+        "S3C-T0004"
+      ],
+      "title": "Circle Calculus S3.1: Finite 3-Spheres by Suspending Spheres"
+    },
+    {
+      "dictionary_ids": [
+        "S3Q-0001",
+        "S3Q-0002",
+        "S3Q-0003"
+      ],
+      "id": "PAPER_S3_02_QUATERNION_COILS",
+      "path": "papers/S3/PAPER_S3_02_QUATERNION_COILS.md",
+      "sidecar": "sidecars/PAPER_S3_02_QUATERNION_COILS",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "S3Q-T0001",
+        "S3Q-T0002",
+        "S3Q-T0003",
+        "S3Q-T0004",
+        "S3Q-T0005"
+      ],
+      "title": "Circle Calculus S3.2: Quaternion Coils and Unit-Quaternion Hypersphere"
+    },
+    {
+      "dictionary_ids": [
+        "S3H-0001",
+        "S3H-0002",
+        "S3H-W0001"
+      ],
+      "id": "PAPER_S3_03_HOPF_COILS",
+      "path": "papers/S3/PAPER_S3_03_HOPF_COILS.md",
+      "sidecar": "sidecars/PAPER_S3_03_HOPF_COILS",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "S3H-T0001",
+        "S3H-T0002",
+        "S3H-T0003",
+        "S3H-T0004",
+        "S3H-T0005"
+      ],
+      "title": "Circle Calculus S3.3: Hopf Coils"
+    },
+    {
+      "dictionary_ids": [
+        "S3S-0001",
+        "S3S-0002"
+      ],
+      "id": "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP",
+      "path": "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md",
+      "sidecar": "sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "S3S-T0001",
+        "S3S-T0002",
+        "S3S-T0003"
+      ],
+      "title": "Circle Calculus S3.4: Spin, Double Covers, and Rotation Quotients"
+    },
+    {
+      "dictionary_ids": [
+        "COMMON-0001",
+        "COMMON-0002",
+        "COMMON-0003",
+        "S456-0001"
+      ],
+      "id": "PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY",
+      "path": "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md",
+      "sidecar": "sidecars/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "COMMON-T0001",
+        "COMMON-T0002",
+        "COMMON-T0003",
+        "S456-T0001"
+      ],
+      "title": "Circle Calculus S456.1: General Suspension and Euler Parity"
+    },
+    {
+      "dictionary_ids": [
+        "S4-0001",
+        "S456-0001"
+      ],
+      "id": "PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF",
+      "path": "papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md",
+      "sidecar": "sidecars/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "S4-T0001",
+        "S4-T0002"
+      ],
+      "title": "Circle Calculus S4.1: S4 as Base of Quaternionic Hopf Structure"
+    },
+    {
+      "dictionary_ids": [
+        "S5-0001",
+        "S456-0001"
+      ],
+      "id": "PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE",
+      "path": "papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md",
+      "sidecar": "sidecars/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "S5-T0001",
+        "S5-T0002"
+      ],
+      "title": "Circle Calculus S5.1: Complex Projective Bridge"
+    },
+    {
+      "dictionary_ids": [
+        "S6-0001",
+        "S6-W0001",
+        "S456-0001"
+      ],
+      "id": "PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS",
+      "path": "papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md",
+      "sidecar": "sidecars/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "S6-T0001",
+        "S6-T0002"
+      ],
+      "title": "Circle Calculus S6.1: Octonion Shadow and Warnings"
+    },
+    {
+      "dictionary_ids": [
+        "S7C-0001",
+        "S456-0001"
+      ],
+      "id": "PAPER_S7_01_TOPOLOGICAL_7SPHERE",
+      "path": "papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md",
+      "sidecar": "sidecars/PAPER_S7_01_TOPOLOGICAL_7SPHERE",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "S7C-T0001",
+        "S7C-T0002",
+        "S7C-T0003"
+      ],
+      "title": "Circle Calculus S7.1: Topological 7-Sphere by Iterated Suspension"
+    },
+    {
+      "dictionary_ids": [
+        "S7QH-0001",
+        "S3Q-0001",
+        "S4-0001"
+      ],
+      "id": "PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION",
+      "path": "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md",
+      "sidecar": "sidecars/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "S7QH-T0001",
+        "S7QH-T0002"
+      ],
+      "title": "Circle Calculus S7.2: Quaternionic Hopf Fibration"
+    },
+    {
+      "dictionary_ids": [
+        "S7O-0001",
+        "S7O-0002",
+        "S7O-W0001",
+        "S7O-W0002"
+      ],
+      "id": "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS",
+      "path": "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md",
+      "sidecar": "sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "S7O-T0001",
+        "S7O-T0002",
+        "S7O-T0003",
+        "S7O-T0004",
+        "S7O-T0005",
+        "S7O-T0006"
+      ],
+      "title": "Circle Calculus S7.3: Octonionic Units and Nonassociative Coils"
+    },
+    {
+      "dictionary_ids": [
+        "S15-0001",
+        "S15-0002",
+        "S15-0003",
+        "S7O-0001"
+      ],
+      "id": "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
+      "path": "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md",
+      "sidecar": "sidecars/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "S15-T0001",
+        "S15-T0002",
+        "S15-T0003",
+        "S15-T0004"
+      ],
+      "title": "Circle Calculus S15.1: Octonionic Hopf Roadmap"
+    },
+    {
+      "dictionary_ids": [
+        "COMMON-0002",
+        "COMMON-0003",
+        "COMMON-0004",
+        "COMMON-0005"
+      ],
+      "id": "PAPER_P2_01_STABLE_SPHERE_CALCULUS",
+      "path": "papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md",
+      "sidecar": "sidecars/PAPER_P2_01_STABLE_SPHERE_CALCULUS",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "P2S-T0001",
+        "P2S-T0002",
+        "P2S-T0003"
+      ],
+      "title": "Circle Calculus Phase II.1: Stable Sphere Calculus"
+    },
+    {
+      "dictionary_ids": [
+        "COMMON-0006"
+      ],
+      "id": "PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY",
+      "path": "papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md",
+      "sidecar": "sidecars/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "P2B-T0001",
+        "P2B-T0002",
+        "P2B-T0003"
+      ],
+      "title": "Circle Calculus Phase II.2: Bott and Clifford Periodicity"
+    },
+    {
+      "dictionary_ids": [
+        "COMMON-0007",
+        "COMMON-0008",
+        "COMMON-0009"
+      ],
+      "id": "PAPER_P2_03_BUNDLE_CALCULUS",
+      "path": "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md",
+      "sidecar": "sidecars/PAPER_P2_03_BUNDLE_CALCULUS",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "P2BU-T0001",
+        "P2BU-T0002",
+        "P2BU-T0003",
+        "P2BU-T0004"
+      ],
+      "title": "Circle Calculus Phase II.3: Bundle Calculus"
+    },
+    {
+      "dictionary_ids": [
+        "COMMON-0010",
+        "COMMON-0011",
+        "COMMON-0012"
+      ],
+      "id": "PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS",
+      "path": "papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md",
+      "sidecar": "sidecars/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "P2BC-T0001",
+        "P2BC-T0002",
+        "P2BC-T0003",
+        "P2BC-T0004"
+      ],
+      "title": "Circle Calculus Phase II.4: Boundary and Cobordism Calculus"
+    },
+    {
+      "dictionary_ids": [
+        "COMMON-0013",
+        "COMMON-0014",
+        "COMMON-0015"
+      ],
+      "id": "PAPER_P2_05_PROOF_CARRYING_GLYPHS",
+      "path": "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md",
+      "sidecar": "sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "P2G-T0001",
+        "P2G-T0002",
+        "P2G-T0003"
+      ],
+      "title": "Circle Calculus Phase II.5: Proof-Carrying Glyphs"
+    },
+    {
+      "dictionary_ids": [
+        "COMMON-0016",
+        "COMMON-0017"
+      ],
+      "id": "PAPER_APP_01_COIL_DATA_ANALYSIS",
+      "path": "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md",
+      "sidecar": "sidecars/PAPER_APP_01_COIL_DATA_ANALYSIS",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "APPD-T0001",
+        "APPD-T0002",
+        "APPD-T0003"
+      ],
+      "title": "Circle Calculus Application 1: Coil Data Analysis"
+    },
+    {
+      "dictionary_ids": [
+        "COMMON-0018",
+        "COMMON-0019"
+      ],
+      "id": "PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION",
+      "path": "papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md",
+      "sidecar": "sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "COMPC-T0001",
+        "COMPC-T0002",
+        "COMPC-T0003"
+      ],
+      "title": "Circle Calculus Compute 1: Proof-Carrying Circular Computation"
+    },
+    {
+      "dictionary_ids": [
+        "COMMON-0020",
+        "COMMON-0021"
+      ],
+      "id": "PAPER_COMP_02_COIL_RAY_AND_SAMPLING",
+      "path": "papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md",
+      "sidecar": "sidecars/PAPER_COMP_02_COIL_RAY_AND_SAMPLING",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "COMPR-T0001",
+        "COMPR-T0002",
+        "COMPR-T0003"
+      ],
+      "title": "Circle Calculus Compute 2: CoilRay and CoilSampler"
+    },
+    {
+      "dictionary_ids": [
+        "COMMON-0022",
+        "COMMON-0023"
+      ],
+      "id": "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT",
+      "path": "papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md",
+      "sidecar": "sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "COMPL-T0001",
+        "COMPL-T0002",
+        "COMPL-T0003",
+        "COMPL-T0004"
+      ],
+      "title": "Circle Calculus Compute 3: CoilLayout, CoilStencil, and CoilNTT"
+    },
+    {
+      "dictionary_ids": [
+        "COMMON-0024",
+        "COMMON-0025"
+      ],
+      "id": "PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS",
+      "path": "papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md",
+      "sidecar": "sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "COMPS-T0001",
+        "COMPS-T0002",
+        "COMPS-T0003"
+      ],
+      "title": "Circle Calculus Compute 4: Coil Systems Applications"
+    },
+    {
+      "dictionary_ids": [
+        "COMMON-0026",
+        "COMMON-0027"
+      ],
+      "id": "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES",
+      "path": "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md",
+      "sidecar": "sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "AIA-T0001",
+        "AIA-T0002",
+        "AIA-T0003"
+      ],
+      "title": "Circle Calculus AI 1: Circle AI Architectures"
+    },
+    {
+      "dictionary_ids": [
+        "COMMON-0028",
+        "COMMON-0029"
+      ],
+      "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+      "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+      "sidecar": "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "AIM-T0001",
+        "AIM-T0002",
+        "AIM-T0003"
+      ],
+      "title": "Circle Calculus AI 2: Coil Attention and Memory"
+    },
+    {
+      "dictionary_ids": [
+        "COMMON-0030",
+        "COMMON-0031"
+      ],
+      "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+      "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+      "sidecar": "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "AIRA-T0001",
+        "AIRA-T0002",
+        "AIRA-T0003"
+      ],
+      "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+    }
+  ]
+}

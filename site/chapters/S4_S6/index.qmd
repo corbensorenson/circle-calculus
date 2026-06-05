@@ -1,0 +1,9 @@
+---
+title: "S4-S6: Suspension And Warning Layer"
+---
+
+These pages are scaffolded for finite suspension/Euler parity and warning-aware higher-dimensional material.
+
+<div class="theorem-box" data-theorem-id="S456-T0001"></div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

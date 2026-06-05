@@ -1,0 +1,11 @@
+---
+title: "Suspended Circles"
+---
+
+This placeholder will connect the suspended-circle paper, finite cell-count formulas, and future S2 interactives.
+
+<div class="theorem-box" data-theorem-id="S2-T0002"></div>
+<div class="widget-panel" data-widget="sphere_grid_placeholder"></div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>
+<script type="module" src="../../widgets/S2/sphere_grid_placeholder.js"></script>

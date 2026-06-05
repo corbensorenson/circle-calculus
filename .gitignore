@@ -7,6 +7,9 @@ dist/
 __pycache__/
 .pytest_cache/
 .mypy_cache/
+.tools/
+site/_site/
+site/.quarto/
 .venv/
 venv/
 .env

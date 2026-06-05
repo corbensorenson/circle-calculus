@@ -1,0 +1,11 @@
+---
+title: "Suspension Euler Parity"
+---
+
+The finite S4-S6 ladder currently tracks suspension-count and Euler-parity facts. This page is a placeholder for interactive expansion.
+
+<div class="theorem-box" data-theorem-id="S4-T0001"></div>
+<div class="theorem-box" data-theorem-id="S5-T0001"></div>
+<div class="theorem-box" data-theorem-id="S6-T0001"></div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

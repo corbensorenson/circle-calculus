@@ -1,0 +1,111 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "Circle Calculus Living Book"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Start
+      - href: roadmap.qmd
+        text: Roadmap
+      - href: about.qmd
+        text: About
+  sidebar:
+    style: docked
+    contents:
+      - href: index.qmd
+        text: Start
+      - href: roadmap.qmd
+        text: Roadmap
+      - section: "S0"
+        contents:
+          - href: chapters/S0/index.qmd
+            text: Overview
+          - href: chapters/S0/opposition.qmd
+            text: Opposition
+      - section: "S1"
+        contents:
+          - href: chapters/S1/index.qmd
+            text: Overview
+          - href: chapters/S1/01_finite_circles.qmd
+            text: Finite Circles
+          - href: chapters/S1/02_rotation_as_addition.qmd
+            text: Rotation As Addition
+          - href: chapters/S1/03_coils_orbits_closure.qmd
+            text: Coils And Closure
+          - href: chapters/S1/04_period_gcd_prime_full_coils.qmd
+            text: Period And Primes
+          - href: chapters/S1/05_winding_lift.qmd
+            text: Winding Lift
+      - section: "S2"
+        contents:
+          - href: chapters/S2/index.qmd
+            text: Overview
+          - href: chapters/S2/suspended_circles.qmd
+            text: Suspended Circles
+          - href: chapters/S2/sphere_grids.qmd
+            text: Sphere Grids
+      - section: "S3"
+        contents:
+          - href: chapters/S3/index.qmd
+            text: Overview
+          - href: chapters/S3/hyperspheres.qmd
+            text: Hyperspheres
+          - href: chapters/S3/quaternions.qmd
+            text: Quaternions
+          - href: chapters/S3/hopf_coils.qmd
+            text: Hopf Coils
+      - section: "S4-S6"
+        contents:
+          - href: chapters/S4_S6/index.qmd
+            text: Overview
+          - href: chapters/S4_S6/suspension_euler_parity.qmd
+            text: Suspension Euler Parity
+      - section: "S7"
+        contents:
+          - href: chapters/S7/index.qmd
+            text: Overview
+          - href: chapters/S7/octonionic_layer.qmd
+            text: Octonionic Layer
+      - section: "S15"
+        contents:
+          - href: chapters/S15/index.qmd
+            text: Overview
+          - href: chapters/S15/future_hopf_horizon.qmd
+            text: Future Hopf Horizon
+      - section: "Phase II"
+        contents:
+          - href: chapters/phase2/index.qmd
+            text: Overview
+          - href: chapters/phase2/stable_sphere_calculus.qmd
+            text: Stable Spheres
+          - href: chapters/phase2/bundle_calculus.qmd
+            text: Bundles
+          - href: chapters/phase2/bott_clifford_periodicity.qmd
+            text: Bott And Clifford
+          - href: chapters/phase2/boundary_cobordism.qmd
+            text: Boundary Cobordism
+      - section: "Applications"
+        contents:
+          - href: chapters/applications/index.qmd
+            text: Overview
+          - href: chapters/applications/ai.qmd
+            text: AI
+          - href: chapters/applications/compute.qmd
+            text: Compute
+          - href: chapters/applications/rendering.qmd
+            text: Rendering
+          - href: chapters/applications/data_analysis.qmd
+            text: Data Analysis
+
+format:
+  html:
+    theme: cosmo
+    css: assets/css/living-book.css
+    toc: true
+    code-copy: true
+
+execute:
+  enabled: false
