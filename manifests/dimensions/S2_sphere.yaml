@@ -170,6 +170,32 @@ theorems:
       no_sorry_required: true
       python_property_tests: []
     blocker: ""
+  - id: S2-T0014
+    status: lean_proved
+    lean_name: Circle.S2.suspendedCircleAntipodalPair_self_antipode
+    informal_statement: "Every suspended-circle point forms a finite antipodal pair with its antipode."
+    formal_statement: "forall n : Nat, forall point : Circle.S2.SuspendedCirclePoint n, Circle.S2.suspendedCircleAntipodalPair n point (Circle.S2.suspendedCircleAntipode n point)"
+    dictionary_dependencies: ["S2-0005"]
+    paper_refs: ["papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
+  - id: S2-T0015
+    status: lean_proved
+    lean_name: Circle.S2.suspendedCircleAntipodalPair_symmetric
+    informal_statement: "The finite suspended-circle antipodal-pair relation is symmetric."
+    formal_statement: "forall n : Nat, forall p q : Circle.S2.SuspendedCirclePoint n, Circle.S2.suspendedCircleAntipodalPair n p q iff Circle.S2.suspendedCircleAntipodalPair n q p"
+    dictionary_dependencies: ["S2-0005"]
+    paper_refs: ["papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
 warnings:
   - id: S2-W0001
     status: active

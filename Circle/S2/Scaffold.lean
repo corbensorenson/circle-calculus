@@ -35,6 +35,10 @@ def isSuspendedEquator {n : Nat} : SuspendedCirclePoint n -> Prop
   | SuspendedCirclePoint.south => False
   | SuspendedCirclePoint.equator _ => True
 
+def suspendedCircleAntipodalPair (n : Nat)
+    (p q : SuspendedCirclePoint n) : Prop :=
+  suspendedCircleAntipode n p = q
+
 theorem suspendedCircleAntipode_swapsPoles (n : Nat) :
     suspendedCircleAntipode n SuspendedCirclePoint.north = SuspendedCirclePoint.south ∧
       suspendedCircleAntipode n SuspendedCirclePoint.south = SuspendedCirclePoint.north := by
@@ -53,6 +57,23 @@ theorem suspendedCircleAntipode_preservesEquatorSet (n : Nat)
     (point : SuspendedCirclePoint n) :
     isSuspendedEquator (suspendedCircleAntipode n point) ↔ isSuspendedEquator point := by
   cases point <;> simp [isSuspendedEquator, suspendedCircleAntipode]
+
+theorem suspendedCircleAntipodalPair_self_antipode (n : Nat)
+    (point : SuspendedCirclePoint n) :
+    suspendedCircleAntipodalPair n point (suspendedCircleAntipode n point) := by
+  rfl
+
+theorem suspendedCircleAntipodalPair_symmetric (n : Nat)
+    (p q : SuspendedCirclePoint n) :
+    suspendedCircleAntipodalPair n p q ↔ suspendedCircleAntipodalPair n q p := by
+  unfold suspendedCircleAntipodalPair
+  constructor
+  · intro hpq
+    rw [← hpq]
+    exact suspendedCircleAntipode_involutive n p
+  · intro hqp
+    rw [← hqp]
+    exact suspendedCircleAntipode_involutive n q
 
 def suspendedCircleCounts (n : Nat) : List Nat :=
   Circle.Common.suspensionCounts [n, n]

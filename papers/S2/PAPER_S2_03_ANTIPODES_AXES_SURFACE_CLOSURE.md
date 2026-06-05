@@ -14,6 +14,8 @@ This `S^2` paper adds the first conservative antipode and axis structure after t
 - `S2-T0011`: `Circle.S2.suspendedCircleAntipode_preservesEquatorSet`
 - `S2-T0012`: `Circle.S2.longitudeRotation_preservesLatitudeCoordinate`
 - `S2-T0013`: `Circle.S2.longitudeRotation_advancesLongitudeCoordinate`
+- `S2-T0014`: `Circle.S2.suspendedCircleAntipodalPair_self_antipode`
+- `S2-T0015`: `Circle.S2.suspendedCircleAntipodalPair_symmetric`
 
 ## Model
 
@@ -60,6 +62,12 @@ longitude_coordinate(south)=none
 longitude_coordinate(ring(latitude,node))=some(node)
 ```
 
+The finite antipodal-pair relation is intentionally simple:
+
+```text
+antipodal_pair(p,q) iff antipode(p)=q
+```
+
 ## Proved Core
 
 `S2-T0008` is proved by `Circle.S2.suspendedCircleAntipode_swapsPoles`: the antipode swaps the two poles.
@@ -74,6 +82,10 @@ longitude_coordinate(ring(latitude,node))=some(node)
 
 `S2-T0013` is proved by `Circle.S2.longitudeRotation_advancesLongitudeCoordinate`: a longitude rotation advances a ring point's longitude coordinate by `Circle.rot(n,stride)` and leaves pole longitude coordinates empty.
 
+`S2-T0014` is proved by `Circle.S2.suspendedCircleAntipodalPair_self_antipode`: every point forms an antipodal pair with its antipode.
+
+`S2-T0015` is proved by `Circle.S2.suspendedCircleAntipodalPair_symmetric`: the finite antipodal-pair relation is symmetric.
+
 Surface closure remains tied to the already proved Euler facts `Circle.S2.suspendedCircle_chi` and `Circle.S2.sphereGrid_chi`.
 
 ## Dictionary Targets
@@ -83,4 +95,4 @@ Surface closure remains tied to the already proved Euler facts `Circle.S2.suspen
 
 ## Notes
 
-Do not force continuous geometry too early. Antinodes and continuous surface geometry remain future refinements after the finite antipode, pole-subset, equator-subset, and coordinate-projection spine is stable.
+Do not force continuous geometry too early. Continuous surface geometry remains a future refinement after the finite antipode, pole-subset, equator-subset, coordinate-projection, and antipodal-pair spine is stable.

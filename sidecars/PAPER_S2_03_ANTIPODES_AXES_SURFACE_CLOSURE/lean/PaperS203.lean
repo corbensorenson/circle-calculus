@@ -13,10 +13,13 @@ namespace Circle.PaperS203
 #check Circle.S2.suspendedCircleAntipode
 #check Circle.S2.isSuspendedPole
 #check Circle.S2.isSuspendedEquator
+#check Circle.S2.suspendedCircleAntipodalPair
 #check Circle.S2.suspendedCircleAntipode_swapsPoles
 #check Circle.S2.suspendedCircleAntipode_involutive
 #check Circle.S2.suspendedCircleAntipode_preservesPoleSet
 #check Circle.S2.suspendedCircleAntipode_preservesEquatorSet
+#check Circle.S2.suspendedCircleAntipodalPair_self_antipode
+#check Circle.S2.suspendedCircleAntipodalPair_symmetric
 #check Circle.S2.sphereGridLatitudeCoordinate
 #check Circle.S2.sphereGridLongitudeCoordinate
 #check Circle.S2.longitudeRotation_preservesLatitudeCoordinate
