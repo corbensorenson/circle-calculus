@@ -513,6 +513,16 @@ theorem scaleTargetFiberRepresentativeSet_card_of_mem_scaleCircleImage
   rw [hset]
   exact scaleFiberRepresentativeSet_card hn
 
+theorem scaleCircleImage_card_mul_targetFiberRepresentativeSet_card
+    {n k : Nat} (hn : n ≠ 0) {target : C n} (hmem : target ∈ scaleCircleImage n k) :
+    (scaleCircleImage n k).card *
+      (scaleTargetFiberRepresentativeSet n k target).card = n := by
+  rw [scaleCircleImage_card hn]
+  rw [scaleTargetFiberRepresentativeSet_card_of_mem_scaleCircleImage hn hmem]
+  rw [period_eq_n_div_gcd hn]
+  rw [Nat.mul_comm]
+  exact Nat.mul_div_cancel' (Nat.gcd_dvd_left n k)
+
 theorem scale_nat_eq_iff_nat_modEq_of_coprime {n k x y : Nat} (hcop : Nat.Coprime n k) :
     scale n k ((x : Nat) : C n) = scale n k ((y : Nat) : C n) ↔ x ≡ y [MOD n] := by
   have hbij : Function.Bijective (scale n k) := (scale_invertible_iff_coprime n k).mpr hcop

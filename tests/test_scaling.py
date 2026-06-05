@@ -294,6 +294,16 @@ def test_scale_target_fiber_card_inside_image() -> None:
                 assert len(fiber) == gcd(n, k)
 
 
+def test_scale_image_card_times_target_fiber_card() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for k in range(0, 33):
+            image = {circle.scale(x, k) for x in range(n)}
+            for target in image:
+                fiber = {x for x in range(n) if circle.scale(x, k) == target}
+                assert len(image) * len(fiber) == n
+
+
 def test_coprime_scale_equality_iff_addresses_congruent() -> None:
     for n in range(1, 65):
         circle = Circle(n)
