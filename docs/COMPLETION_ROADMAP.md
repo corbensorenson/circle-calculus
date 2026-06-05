@@ -171,11 +171,11 @@ Goal: make the executable examples line up with the Lean-backed papers without d
 - [x] `papers/S1/PAPER_S1_01_FINITE_CIRCLES.md`
   - Current source: `papers/PAPER_01_FINITE_CIRCLES.md`
   - Proof targets: `CC-T0001` through `CC-T0007`
-  - Status: proved theorem spine exists; paper should be polished and relocated or linked through the dimension layout.
+  - Status: polished dimension guide draft links the proved theorem spine into the dimension layout while keeping the root paper as the detailed source.
 - [x] `papers/S1/PAPER_S1_02_WINDING_NATURALS.md`
   - Current source: `papers/PAPER_02_WINDING_NATURALS.md`
   - Proof targets: `CC-T0009` through `CC-T0016`
-  - Status: proved theorem spine exists; paper should be polished and relocated or linked through the dimension layout.
+  - Status: polished dimension guide draft links the proved theorem spine into the dimension layout while keeping the root paper as the detailed source.
 - [x] `papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md`
   - Proof targets: oriented winding, signed residues, integer addition, additive inverse, reversible motion.
   - Status: signed zero, composition, and inverse motion are Lean-proved as `S1O-T0001` through `S1O-T0003`.

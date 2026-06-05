@@ -102,7 +102,7 @@ papers:
 
   - id: PAPER_S1_01_FINITE_CIRCLES
     title: "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
-    status: adapter
+    status: draft
     sidecar: sidecars/PAPER_S1_01_FINITE_CIRCLES
     theorem_ids:
       - CC-T0001
@@ -121,7 +121,7 @@ papers:
 
   - id: PAPER_S1_02_WINDING_NATURALS
     title: "Circle Calculus S1.2: Winding, Lifted Circles, and Natural Numbers"
-    status: adapter
+    status: draft
     sidecar: sidecars/PAPER_S1_02_WINDING_NATURALS
     theorem_ids:
       - CC-T0009
