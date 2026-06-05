@@ -8,6 +8,11 @@ namespace Circle
 def scale (n k : Nat) (x : C n) : C n :=
   (k : ZMod n) * x
 
+theorem scale_zero_factor (n : Nat) (x : C n) :
+    scale n 0 x = 0 := by
+  unfold scale
+  simp
+
 theorem scale_one (n : Nat) (x : C n) :
     scale n 1 x = x := by
   unfold scale
@@ -103,5 +108,12 @@ theorem scale_nat_eq_iff_nat_modEq_of_coprime {n k x y : Nat} (hcop : Nat.Coprim
     have hxy : ((x : Nat) : C n) = ((y : Nat) : C n) :=
       (ZMod.natCast_eq_natCast_iff x y n).mpr h
     exact congrArg (scale n k) hxy
+
+theorem scale_factor_modEq {n k l : Nat} (h : k ≡ l [MOD n]) (x : C n) :
+    scale n k x = scale n l x := by
+  unfold scale
+  have hcast : ((k : Nat) : ZMod n) = ((l : Nat) : ZMod n) :=
+    (ZMod.natCast_eq_natCast_iff k l n).mpr h
+  rw [hcast]
 
 end Circle

@@ -22,6 +22,13 @@ def test_scaling_reversible_iff_coprime_small_range() -> None:
             assert circle.scale_is_permutation(k) == (gcd(n, k) == 1)
 
 
+def test_scale_zero_factor_examples() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for i in range(0, 129):
+            assert circle.scale(i, 0) == 0
+
+
 def test_scaling_identity_and_composition_examples() -> None:
     circle = Circle(12)
     assert circle.scale(7, 1) == 7
@@ -111,3 +118,13 @@ def test_coprime_scale_equality_examples() -> None:
                         assert (circle.scale(x, k) == circle.scale(y, k)) == (
                             x % n == y % n
                         )
+
+
+def test_scale_factor_mod_equivalent_examples() -> None:
+    for n in range(1, 33):
+        circle = Circle(n)
+        for k in range(0, 33):
+            for m in range(0, 9):
+                equivalent = k + m * n
+                for x in range(0, 33):
+                    assert circle.scale(x, k) == circle.scale(x, equivalent)

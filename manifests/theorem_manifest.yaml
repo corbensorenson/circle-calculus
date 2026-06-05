@@ -303,6 +303,38 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["if gcd(n,k)==1, then scale(n,k,x)==scale(n,k,y) iff x%n==y%n over bounded tests"]
 
+  - id: CC-T0028
+    name: Scaling by zero collapses to zero
+    status: proved
+    lean_name: Circle.scale_zero_factor
+    informal_statement: "Scaling by zero sends every finite-circle address to zero."
+    formal_statement: "forall (n : Nat) (x : Circle.C n), Circle.scale n 0 x = 0"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_zero_factor"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean by reducing scale-by-zero to zero multiplication in ZMod."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["scale(n,0,x)==0 over positive moduli in bounded tests"]
+
+  - id: CC-T0029
+    name: Congruent scale factors act identically
+    status: proved
+    lean_name: Circle.scale_factor_modEq
+    informal_statement: "Scale factors that are congruent modulo n define the same scaling map on C_n."
+    formal_statement: "forall {n k l : Nat}, k congruent to l mod n -> forall x : Circle.C n, Circle.scale n k x = Circle.scale n l x"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0202"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_factor_mod_equivalent"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean by casting scale factors into ZMod and applying ZMod.natCast_eq_natCast_iff."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["scale(n,k,x)==scale(n,k+m*n,x) over positive moduli in bounded tests"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

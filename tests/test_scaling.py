@@ -14,6 +14,13 @@ def test_scale_permutation_iff_coprime() -> None:
             assert c.scale_is_permutation(k) == (gcd(n, k) == 1)
 
 
+def test_scale_zero_factor() -> None:
+    for n in range(1, 129):
+        c = Circle(n)
+        for i in range(0, 257):
+            assert c.scale(i, 0) == 0
+
+
 def test_scale_one_identity() -> None:
     for n in range(1, 129):
         c = Circle(n)
@@ -116,3 +123,13 @@ def test_coprime_scale_equality_iff_addresses_congruent() -> None:
                         assert (circle.scale(x, k) == circle.scale(y, k)) == (
                             x % n == y % n
                         )
+
+
+def test_scale_factor_mod_equivalent() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for k in range(0, 65):
+            for m in range(0, 17):
+                equivalent = k + m * n
+                for x in range(0, 65):
+                    assert circle.scale(x, k) == circle.scale(x, equivalent)
