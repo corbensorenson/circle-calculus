@@ -29,7 +29,7 @@ theorems:
     blocker: ""
 warnings:
   - id: S0-W0001
-    status: planned
+    status: active
     dictionary_dependencies: ["S0-W0001"]
     paper_refs: ["papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md"]
     statement: "C_1 is a one-node degenerate circle/address object, not S^0."

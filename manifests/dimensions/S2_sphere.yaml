@@ -120,17 +120,17 @@ theorems:
     blocker: ""
 warnings:
   - id: S2-W0001
-    status: planned
+    status: active
     dictionary_dependencies: ["S2-W0001"]
     paper_refs: ["papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"]
     statement: "C_n x C_m is torus-like, not a sphere."
   - id: S2-W0002
-    status: planned
+    status: active
     dictionary_dependencies: ["S2-W0002"]
     paper_refs: ["papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"]
     statement: "Longitude is not meaningful at collapsed poles."
   - id: S2-W0003
-    status: planned
+    status: active
     dictionary_dependencies: ["S2-W0003"]
     paper_refs: ["papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"]
     statement: "S^2 does not have the natural group structure used for S^1 or S^3."

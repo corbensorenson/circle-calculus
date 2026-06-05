@@ -16,7 +16,7 @@ theorems:
     blocker: ""
 warnings:
   - id: S6-W0001
-    status: planned
+    status: active
     dictionary_dependencies: ["S6-W0001"]
     paper_refs: ["papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md"]
     statement: "Do not rely on unresolved S^6 complex-structure claims."

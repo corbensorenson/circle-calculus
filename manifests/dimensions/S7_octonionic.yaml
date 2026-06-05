@@ -133,12 +133,12 @@ theorems:
     blocker: ""
 warnings:
   - id: S7O-W0001
-    status: planned
+    status: active
     dictionary_dependencies: ["S7O-W0001"]
     paper_refs: ["papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"]
     statement: "Unit octonions are not a group."
   - id: S7O-W0002
-    status: planned
+    status: active
     dictionary_dependencies: ["S7O-W0002"]
     paper_refs: ["papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"]
     statement: "Bracketing matters in octonion calculus."

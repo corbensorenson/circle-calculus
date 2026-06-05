@@ -172,7 +172,7 @@ theorems:
     blocker: ""
 warnings:
   - id: S3H-W0001
-    status: planned
+    status: active
     dictionary_dependencies: ["S3H-W0001"]
     paper_refs: ["papers/S3/PAPER_S3_03_HOPF_COILS.md"]
     statement: "S^3 is not globally S^2 x S^1."

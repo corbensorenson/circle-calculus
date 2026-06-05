@@ -59,7 +59,7 @@ dimensions:
     display_name: "Hypersphere"
     sphere_notation: "S^3"
     role: "finite 3-spheres, quaternions, and Hopf coils"
-    status: planned
+    status: active
     lean_namespace: "Circle.S3"
     lean_root: "Circle/S3"
     python_root: "circle_math/dimensions"
@@ -73,7 +73,7 @@ dimensions:
     display_name: "4-sphere"
     sphere_notation: "S^4"
     role: "geometric bridge and quaternionic Hopf base"
-    status: planned
+    status: active
     lean_namespace: "Circle.S4"
     lean_root: "Circle/S4"
     python_root: "circle_math/dimensions"
@@ -87,7 +87,7 @@ dimensions:
     display_name: "5-sphere"
     sphere_notation: "S^5"
     role: "complex projective bridge"
-    status: planned
+    status: active
     lean_namespace: "Circle.S5"
     lean_root: "Circle/S5"
     python_root: "circle_math/dimensions"
@@ -101,7 +101,7 @@ dimensions:
     display_name: "6-sphere"
     sphere_notation: "S^6"
     role: "octonion shadow and warning layer"
-    status: planned
+    status: active
     lean_namespace: "Circle.S6"
     lean_root: "Circle/S6"
     python_root: "circle_math/dimensions"
@@ -115,7 +115,7 @@ dimensions:
     display_name: "7-sphere"
     sphere_notation: "S^7"
     role: "topological, quaternionic-Hopf, and octonionic layer"
-    status: planned
+    status: active
     lean_namespace: "Circle.S7"
     lean_root: "Circle/S7"
     python_root: "circle_math/dimensions"
