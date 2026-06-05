@@ -17,3 +17,4 @@ import Circle.Phase2.GlyphProof
 import Circle.Applications.CoilData
 import Circle.Applications.CoilCompute
 import Circle.Applications.CoilRendering
+import Circle.Applications.CoilSystems

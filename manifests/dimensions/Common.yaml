@@ -287,4 +287,30 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["stride_address(size, stride, step + size) == stride_address(size, stride, step)"]
     blocker: ""
+  - id: COMPS-T0001
+    status: lean_proved
+    lean_name: Circle.Applications.roundRobinSlot_lt_slotCount
+    informal_statement: "For a positive slot count, a round-robin schedule returns a slot below the slot count."
+    formal_statement: "forall {slotCount : Nat}, 0 < slotCount -> forall tick : Nat, roundRobinSlot slotCount tick < slotCount"
+    dictionary_dependencies: ["COMMON-0024"]
+    paper_refs: ["papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["0 <= round_robin_slot(slot_count, tick) < slot_count"]
+    blocker: ""
+  - id: COMPS-T0002
+    status: lean_proved
+    lean_name: Circle.Applications.roundRobinSlot_add_slotCount
+    informal_statement: "For a positive slot count, adding one full slot count preserves the round-robin slot."
+    formal_statement: "forall {slotCount : Nat}, 0 < slotCount -> forall tick : Nat, roundRobinSlot slotCount (tick + slotCount) = roundRobinSlot slotCount tick"
+    dictionary_dependencies: ["COMMON-0024", "COMMON-0025"]
+    paper_refs: ["papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["round_robin_slot(slot_count, tick + slot_count) == round_robin_slot(slot_count, tick)"]
+    blocker: ""
 warnings: []

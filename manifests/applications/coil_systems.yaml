@@ -1,5 +1,20 @@
 id: coil_systems
-status: planned
+status: active
 papers:
   - papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md
+sidecars:
+  - sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/lean/PaperComp04.lean
+  - sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py
+theorems:
+  - id: COMPS-T0001
+    status: lean_proved
+    lean_name: Circle.Applications.roundRobinSlot_lt_slotCount
+    dictionary_dependencies: ["COMMON-0024"]
+  - id: COMPS-T0002
+    status: lean_proved
+    lean_name: Circle.Applications.roundRobinSlot_add_slotCount
+    dictionary_dependencies: ["COMMON-0024", "COMMON-0025"]
+next_targets:
+  - "Add fairness/starvation statements only after choosing an explicit scheduler model."
+  - "Benchmark or domain-test each systems hypothesis before claiming usefulness."
 guardrail: "Systems applications are hypotheses until benchmarked or domain-tested."

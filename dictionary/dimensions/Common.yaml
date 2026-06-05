@@ -263,3 +263,26 @@ entries:
       - "A proof of full traversal."
       - "A gcd-cycle decomposition theorem."
       - "A benchmark result."
+  - id: COMMON-0024
+    name: "Round-robin slot"
+    kind: operation
+    symbol: "slot(slot_count,tick)"
+    formal_definition: "The finite schedule tick % slot_count for a positive number of scheduler slots."
+    intuition: "A systems-facing cyclic schedule primitive for runtimes, queues, timers, and load rotation."
+    dependencies: []
+    introduced_in: "PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS"
+    forbidden_meanings:
+      - "A proof of scheduler fairness."
+      - "A load-balancing theorem."
+      - "A real-time systems guarantee."
+  - id: COMMON-0025
+    name: "Round-robin closure"
+    kind: relation
+    symbol: "slot(tick + slot_count) = slot(tick)"
+    formal_definition: "The round-robin slot is unchanged after adding one positive slot count."
+    intuition: "After a full pass through all slots, the schedule returns to the same slot."
+    dependencies: ["COMMON-0024"]
+    introduced_in: "PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS"
+    forbidden_meanings:
+      - "A starvation-freedom theorem."
+      - "A throughput benchmark."

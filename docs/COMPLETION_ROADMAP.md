@@ -283,6 +283,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: `COMPL-T0001` and `COMPL-T0002` are Lean-proved stride-address facts with Python examples; layout, stencil, FFT, NTT, MLX/backend, and performance claims remain future work.
 - [x] `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md`
   - Program: `CoilHash`, `CoilMotion`, `CoilPRM`, `CoilCodec`, `CoilANN`, `CoilAcquire`, `CoilCAM`, `CoilTorsion`, `CoilDetect`, `CoilSched`, and `CoilQ` as benchmarked or domain-tested application roadmaps.
+  - Status: `COMPS-T0001` and `COMPS-T0002` are Lean-proved round-robin schedule facts with Python examples; fairness, load balancing, robotics, codec, ANN, acquisition, CAM, torsion, detection, and quantum claims remain future domain work.
 - [x] `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md`
   - Program: disciplined Circle AI thesis covering phase, recurrence, rotation, sparse cyclic mixing, circular memory, harmonic transforms, geometry-aware models, and proof-carrying model components.
 - [x] `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`
@@ -339,6 +340,8 @@ Application guardrails:
 - [x] `COMPR-T0002`: direction-bin schedule closes after one full pass through the bins.
 - [x] `COMPL-T0001`: stride address is bounded by a positive circular size.
 - [x] `COMPL-T0002`: stride address closes after one full pass through the circular step horizon.
+- [x] `COMPS-T0001`: round-robin slot schedule is bounded by a positive slot count.
+- [x] `COMPS-T0002`: round-robin slot schedule closes after one full pass through the slots.
 
 ## Current S1 Proof Status
 

@@ -415,10 +415,14 @@ papers:
 
   - id: PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS
     title: "Circle Calculus Compute 4: Coil Systems Applications"
-    status: planned
-    sidecar: ""
-    theorem_ids: []
-    dictionary_ids: []
+    status: draft
+    sidecar: sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS
+    theorem_ids:
+      - COMPS-T0001
+      - COMPS-T0002
+    dictionary_ids:
+      - COMMON-0024
+      - COMMON-0025
 
   - id: PAPER_AI_01_CIRCLE_AI_ARCHITECTURES
     title: "Circle Calculus AI 1: Circle AI Architectures"
