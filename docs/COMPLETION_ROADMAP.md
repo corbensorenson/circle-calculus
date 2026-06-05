@@ -17,6 +17,7 @@ Build a dimension-organized corpus in which every planned concept has:
 - Lean declarations and proofs where feasible,
 - Python sidecars/examples where useful,
 - paper-to-theorem links,
+- a downstream Living Book explanation layer where appropriate,
 - passing repository checks,
 - updated README and peripheral docs.
 
@@ -59,7 +60,9 @@ The project is complete only when all of these are true:
 - Every dictionary term used as project vocabulary is registered.
 - Every paper has sidecars for Lean and, where useful, Python executable examples.
 - Paper manifests link papers to theorem ids, dictionary ids, and sidecar paths.
+- Phase III Living Book source pages, widgets, generated data, and checks exist once that phase begins, and they do not upgrade proof status beyond the manifests.
 - `make check` passes.
+- Living Book checks and `quarto render site` pass once the Quarto site exists, unless Quarto is explicitly unavailable and the blocker is documented.
 - Dimension-specific checks pass once the dimension scaffolding exists.
 - `README.md`, `docs/DIMENSIONAL_LADDER.md`, and this file describe the actual current state.
 
@@ -75,6 +78,8 @@ The project is complete only when all of these are true:
 - Do not claim unit octonions form a group.
 - Do not rely on unresolved `S^6` complex-structure claims.
 - Do not let diagrams, projections, examples, or Python tests stand in for proofs.
+- Do not let Living Book pages, widgets, theorem boxes, status badges, or captions present a theorem as proved unless the manifest and compiled Lean declaration say so.
+- Do not introduce Manim, TTS, narration, video rendering, or a heavy frontend framework before the static Quarto Living Book and S1 widgets are stable.
 - Do not clutter the repo with transient reports.
 
 ## Repository Sources Of Truth
@@ -89,6 +94,8 @@ The project is complete only when all of these are true:
 - Paper registry: `manifests/paper_manifest.yaml`
 - Dimensional plan: `docs/DIMENSIONAL_LADDER.md`
 - Deferred Phase II and applications context: `docs/PHASE2_AND_APPLICATIONS.md`
+- Phase III Living Book plan: `docs/LIVING_BOOK_POLICY.md`, `docs/LIVING_BOOK_ROADMAP.md`, and `docs/LIVING_BOOK_WIDGETS.md`
+- Living Book source once implemented: `site/`
 - Completion control: this file
 
 ## Work Order
@@ -109,6 +116,7 @@ Prefer this order. Only skip ahead when blocked and record the blocker. During l
 12. Add `S7` octonion exploratory algebra and formalize only robust targets.
 13. Add future `S15` roadmap only after `S7` foundations are stable.
 14. After the `S15` horizon, stop treating dimension climbing as the main objective. Pivot to Phase II: maps, bundles, spectra, Bott/Clifford periodicity, boundaries, proof-carrying glyphs, data applications, and compute applications.
+15. Build Phase III: a Quarto-based Circle Calculus Living Book generated from manifests, dictionary entries, papers, Python reference models, and Lean proof metadata. Start with static S1 interactives and do not let the site drift from proof status.
 
 ## Stage D0: Dimensional Scaffolding
 
@@ -302,13 +310,13 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `COMPS-T0001` through `COMPS-T0003` are Lean-proved round-robin schedule facts with Python examples; fairness, load balancing, robotics, codec, ANN, acquisition, CAM, torsion, detection, and quantum claims remain future domain work.
 - [x] `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md`
   - Program: disciplined Circle AI thesis covering phase, recurrence, rotation, sparse cyclic mixing, circular memory, harmonic transforms, geometry-aware models, and proof-carrying model components.
-  - Status: `AIA-T0001` through `AIA-T0003` are Lean-proved phase-channel facts with Python examples; model-quality and speed claims remain benchmark work.
+  - Status: polished draft; `AIA-T0001` through `AIA-T0003` are Lean-proved phase-channel facts with Python examples; model-quality and speed claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`
   - Program: Coil Attention, CoilKV, long-context retrieval, alias control, stride/orbit coverage, and comparisons against full attention, sparse attention, Hyena-like mixers, and S4/Mamba-like baselines.
-  - Status: `AIM-T0001` through `AIM-T0003` are Lean-proved cyclic-memory-slot facts with Python examples; retrieval quality, alias control, and attention replacement claims remain benchmark work.
+  - Status: polished draft; `AIM-T0001` through `AIM-T0003` are Lean-proved cyclic-memory-slot facts with Python examples; retrieval quality, alias control, and attention replacement claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md`
   - Program: CoilLinear, CoilRA, MultiCoil RoPE, periodic activations, and MLX-first benchmarks against dense, LoRA, block-circulant, and standard RoPE baselines.
-  - Status: `AIRA-T0001` through `AIRA-T0003` are Lean-proved adapter-block facts with Python examples; CoilRA, MultiCoil RoPE, model quality, parameter efficiency, and runtime claims remain benchmark work.
+  - Status: polished draft; `AIRA-T0001` through `AIRA-T0003` are Lean-proved adapter-block facts with Python examples; CoilRA, MultiCoil RoPE, model quality, parameter efficiency, and runtime claims remain benchmark work.
 
 Created planned manifest families:
 
@@ -455,6 +463,97 @@ The 2026-06-05 compute handoff is preserved in `docs/PHASE2_AND_APPLICATIONS.md`
 - [x] Preserve the `CoilIR` meta-application: dictionary-detected circular structure, Lean-proved rewrites, backend selection, and benchmark validation.
 - [x] When application work resumes, start with small MLX/Mac-compatible benchmarks where possible; keep CUDA/NVIDIA references as external baselines or future portability notes. Current starter: `sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/benchmark_coil_layout.py` times natural versus gcd-cycle circular-stride traversal on CPU and optionally MLX.
 - [x] Do not present ray tracing, GPU layout, stencil, NTT, hashing, robotics, codec, ANN, acquisition, CAM, torsion, detection, scheduler, or quantum ideas as proved until they have explicit models, manifests, sidecars, and checks. Current papers and manifests label these as benchmark/domain tracks unless a Lean theorem id and checked sidecar exist.
+
+## Phase III: Circle Calculus Living Book
+
+The 2026-06-05 Living Book handoff is preserved in `circle_calculus_codex_handoff/source_logs/05_living_book_browser_note.md`. The curated operating docs are:
+
+- [x] `docs/LIVING_BOOK_POLICY.md`
+- [x] `docs/LIVING_BOOK_ROADMAP.md`
+- [x] `docs/LIVING_BOOK_WIDGETS.md`
+
+Goal:
+Build a Quarto-based interactive explainer website/e-textbook generated from the existing repository artifacts. The Living Book is the public-facing explanation layer: readers should be able to change parameters, watch circles/coils update, read theorem-linked explanations, and open the corresponding Lean, Python, manifest, dictionary, and paper sources.
+
+Source-of-truth rule:
+The Living Book is downstream of the formal project. The theorem manifests remain the source of truth for proof status, Lean remains the formal proof source, Python remains the executable reference/modeling layer, and widgets/diagrams remain intuition/exploration only.
+
+Core proof-status rule:
+No page, theorem box, widget caption, status badge, or chapter text may present a theorem as proved unless the theorem id is marked `proved` or `lean_proved` in the relevant manifest and resolves to a compiled Lean declaration with no forbidden proof shortcuts.
+
+Architecture:
+
+- [ ] Create `site/` as a Quarto project with `_quarto.yml`, landing page, roadmap page, S1 chapters, higher-dimensional placeholders, application placeholders, CSS, components, widgets, and generated data.
+- [ ] Keep the first version static-site compatible for GitHub Pages. Do not require a live Python server for core interactivity.
+- [ ] Use Quarto `.qmd` files, static HTML/SVG/JavaScript widgets, Python data exporters, and generated JSON from manifests/dictionaries/papers.
+- [ ] Avoid React/Next/Svelte/Vue and other heavy frontend frameworks unless a future need is explicit and justified.
+- [ ] Do not implement Manim, TTS, narration, video rendering, or a long movie in this phase. Those are later optional media layers.
+
+Required first milestone:
+
+- [ ] `site/` exists as a Quarto project.
+- [ ] `site/index.qmd` renders.
+- [ ] S1 chapters 01 through 04 exist:
+  - `site/chapters/S1/01_finite_circles.qmd`
+  - `site/chapters/S1/02_rotation_as_addition.qmd`
+  - `site/chapters/S1/03_coils_orbits_closure.qmd`
+  - `site/chapters/S1/04_period_gcd_prime_full_coils.qmd`
+- [ ] S1 widgets exist:
+  - `finite_circle_rotator`
+  - `rotation_composition`
+  - `coil_orbit_explorer`
+  - `period_gcd_visualizer`
+  - `prime_full_coil_explorer`
+- [ ] `winding_lift_explorer` exists or is scaffolded with honest theorem status.
+- [ ] Generated data exists under `site/data/generated/`:
+  - `theorem_manifest.json`
+  - `dictionary.json`
+  - `dimensions.json`
+  - `paper_index.json`
+  - `widget_index.json`
+- [ ] Theorem boxes and dictionary boxes display generated data rather than hand-copied proof status.
+- [ ] Status badges are generated from manifest status.
+- [ ] Higher dimensions and applications are scaffolded as placeholders without looking complete.
+- [ ] `sitecheck` passes.
+- [ ] `quarto render site` succeeds, unless Quarto is unavailable and the blocker is documented.
+- [ ] `lake build`, `python -m pytest`, manifest checks, and dictionary checks still pass.
+
+Required first scripts:
+
+- [ ] `scripts/site/export_site_data.py`
+- [ ] `scripts/site/check_quarto_structure.py`
+- [ ] `scripts/site/check_site_manifest_links.py`
+- [ ] `scripts/site/check_site_dictionary_links.py`
+- [ ] `scripts/site/check_site_theorem_status.py`
+- [ ] `scripts/site/check_site_paper_links.py`
+- [ ] `scripts/site/check_widget_python_parity.py`
+
+Required first tests:
+
+- [ ] `tests/site/test_export_site_data.py`
+- [ ] `tests/site/test_site_manifest_links.py`
+- [ ] `tests/site/test_site_dictionary_links.py`
+- [ ] `tests/site/test_site_theorem_status.py`
+- [ ] `tests/site/test_widget_python_parity.py`
+
+Required Make targets once implementation begins:
+
+- [ ] `make site-data`
+- [ ] `make sitecheck`
+- [ ] `make site-render`
+- [ ] `make site-preview`
+- [ ] `make living-book-check`
+
+Phase III guardrails:
+
+- [ ] v0 circles are finite cyclic address spaces, not Euclidean metric circles.
+- [ ] Diagrams are explanations, not proofs.
+- [ ] Python examples are executable references, not formal proofs.
+- [ ] Widgets are deterministic and browser-native for the S1 milestone.
+- [ ] Widgets do not fetch remote resources at runtime.
+- [ ] Widget math is minimal, auditable, and checked against Python reference behavior where practical.
+- [ ] The site must not duplicate theorem status or dictionary definitions manually when generated data can provide them.
+- [ ] Quarto/Lean Web/Jupyter integrations never replace local `lake build` as the formal verification command.
 
 ## Verification Checklist
 

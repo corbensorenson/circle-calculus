@@ -1,0 +1,87 @@
+# Circle Calculus Living Book Widgets
+
+Widgets are deterministic browser-native explanation tools. They are not proofs. Their formulas should be small, auditable, and parity-checked against Python reference behavior where practical.
+
+## Shared Constraints
+
+- No backend server for first-milestone S1 widgets.
+- No remote resource fetches at runtime.
+- Plain HTML/SVG/JavaScript preferred.
+- Inputs must have labels.
+- Do not communicate status by color alone.
+- SVG nodes should have labels or accessible descriptions where practical.
+- Widget captions must not call output a proof.
+
+## Shared Files
+
+Planned shared JavaScript:
+
+- `site/widgets/shared/circle_math_core.js`
+- `site/widgets/shared/svg_helpers.js`
+- `site/widgets/shared/widget_base.js`
+
+## S1 Widgets
+
+### finite_circle_rotator
+
+- Inputs: `n`, selected node `i`.
+- Outputs: SVG finite circle `C_n`, highlighted node, residue label `i mod n`.
+- Dictionary ids: Circle and Node entries where available.
+- Validation: node reduction agrees with `circle_math` finite-circle reference behavior.
+
+### rotation_composition
+
+- Inputs: `n`, start `x`, stride `a`, stride `b`.
+- Outputs: `rot(n,b)(x)`, `rot(n,a)(rot(n,b)(x))`, and `rot(n,a+b)(x)`.
+- Theorem ids: rotation composition theorem when available in manifests.
+- Validation: JavaScript formula agrees with Python rotation behavior.
+
+### coil_orbit_explorer
+
+- Inputs: `n`, stride `k`, start.
+- Outputs: orbit sequence, visited nodes, closed-loop visualization, `gcd(n,k)`, predicted period `n/gcd(n,k)`, actual orbit length.
+- Theorem ids: orbit/period theorem when available.
+- Validation: orbit sequence and period agree with Python reference behavior.
+
+### period_gcd_visualizer
+
+- Inputs: `n`, `k`.
+- Outputs: `gcd(n,k)`, number of cycles, cycle length, decomposition into `gcd(n,k)` orbits.
+- Theorem ids: period/gcd theorem when available.
+- Validation: gcd orbit count and cycle decomposition agree with Python reference behavior.
+
+### prime_full_coil_explorer
+
+- Inputs: `n`.
+- Outputs: which strides `1 <= k < n` are full coils; prime/composite behavior; theorem status for prime full-coil behavior when available.
+- Guardrail: do not imply primality behavior is Lean-proved unless the manifest says so.
+- Validation: full-coil stride list agrees with Python reference behavior.
+
+### winding_lift_explorer
+
+- Inputs: base `n`, step count `t`.
+- Outputs: quotient `q = t div n`, residue `r = t mod n`, lifted coordinate `(q,r)`, visual distinction between residue and winding.
+- Theorem ids: winding/lift theorem ids when available.
+- Guardrail: mark as planned/draft if the corresponding Lean theorem is not proved.
+- Validation: quotient/residue decomposition agrees with Python reference behavior.
+
+## Future Placeholders
+
+- `site/widgets/S2/sphere_grid_placeholder.js`
+- `site/widgets/S3/hopf_placeholder.js`
+
+These should be visibly marked placeholder/exploratory until implemented and linked to checked theorem status.
+
+## Validation Strategy
+
+Planned checker: `scripts/site/check_widget_python_parity.py`.
+
+Minimum parity cases:
+
+- node reduction;
+- rotation;
+- rotation composition;
+- orbit sequence;
+- period `n/gcd(n,k)`;
+- gcd orbit count;
+- winding/residue decomposition.

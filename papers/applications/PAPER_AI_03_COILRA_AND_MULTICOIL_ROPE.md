@@ -1,10 +1,10 @@
 # Circle Calculus AI 3: CoilRA and MultiCoil RoPE
 
-Status: draft with a proved adapter-block seed.
+Status: polished draft with a proved adapter-block seed.
 
 ## Aim
 
-Explore CoilLinear, CoilRA, MultiCoil RoPE, periodic activations, and MLX-first benchmarks.
+This paper tracks CoilLinear, CoilRA, MultiCoil RoPE, periodic activations, and MLX-first benchmarks. The shared idea is to use cyclic or block-cyclic structure where a model already has phase, channel grouping, low-rank adaptation, or positional rotation structure.
 
 The current formal seed is `COMMON-0030`, the adapter block index
 
@@ -16,18 +16,33 @@ for positive block sizes. This is a block/cyclic channel-index primitive, not a 
 
 ## Theorem Spine
 
-- `AIRA-T0001`: for positive block size, the adapter block index is bounded by the block size. Lean declaration: `Circle.Applications.adapterBlock_lt_blockSize`.
-- `AIRA-T0002`: for positive block size, adding one full block size preserves the adapter block index. Lean declaration: `Circle.Applications.adapterBlock_add_blockSize`.
-- `AIRA-T0003`: the adapter block index at zero is zero. Lean declaration: `Circle.Applications.adapterBlock_zero`.
+- `AIRA-T0001`: `Circle.Applications.adapterBlock_lt_blockSize`
+- `AIRA-T0002`: `Circle.Applications.adapterBlock_add_blockSize`
+- `AIRA-T0003`: `Circle.Applications.adapterBlock_zero`
 
-The Python sidecar checks the same finite examples. CoilRA, CoilLinear, MultiCoil RoPE, and periodic-activation claims still require MLX-first benchmarks against dense adapters, LoRA, block-circulant layers, and standard RoPE.
+## Proved Core
+
+`AIRA-T0001` proves that the adapter block index is bounded by the positive block size. `AIRA-T0002` proves closure after one full block pass, and `AIRA-T0003` proves the zero anchor. The Python sidecar checks the same finite examples.
+
+These facts certify only block indexing. They do not prove parameter efficiency, better fine-tuning, RoPE improvement, periodic-activation value, or runtime gains.
+
+## Prototype Program
+
+`CoilLinear` should test circulant and block-circulant layers against dense layers on tasks where convolutional or periodic structure is plausible.
+
+`CoilRA` should test cyclic/block-cyclic adapters against dense adapters, LoRA, and block-circulant baselines. Metrics should include quality, parameter count, inference cost, training stability, and MLX runtime on this Mac.
+
+`MultiCoil RoPE` should test multiple periods, coprime phases, winding-aware features, and torus-valued position views against standard RoPE and learned positional baselines.
+
+Periodic activations should be evaluated on signal, coordinate, and neural-field tasks where periodicity is real.
 
 ## Next Program
 
-- Compare against dense adapters, LoRA, block-circulant layers, and standard RoPE.
-- Measure quality, parameter count, inference cost, and runtime.
-- Keep octonion AI exploratory until the S7 algebra and benchmarks justify it.
+- Start with small MLX prototypes and synthetic tasks.
+- Compare against dense, LoRA, block-circulant, and standard RoPE baselines.
+- Measure quality and runtime together; parameter reduction alone is not enough.
+- Keep spherical/quaternion AI separate and keep octonion AI exploratory.
 
 ## Guardrail
 
-Prime/coprime reasoning must be balanced with hardware-friendly sizes.
+Prime and coprime reasoning must be balanced with hardware-friendly smooth sizes. Do not optimize mathematical elegance at the expense of kernels that can actually run well.

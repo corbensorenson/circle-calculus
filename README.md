@@ -86,15 +86,17 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md` | polished draft/proved finite seed | `COMPR-T0001` through `COMPR-T0003` are Lean-proved direction-bin schedule facts with Python examples |
 | `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md` | polished draft/proved finite seed | `COMPL-T0001` through `COMPL-T0004` are Lean-proved stride-address facts with Python examples and a starter CoilLayout benchmark harness |
 | `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md` | polished draft/proved finite seed | `COMPS-T0001` through `COMPS-T0003` are Lean-proved round-robin schedule facts with Python examples |
-| `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md` | draft/proved finite seed | `AIA-T0001` through `AIA-T0003` are Lean-proved phase-channel facts with Python examples |
-| `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md` | draft/proved finite seed | `AIM-T0001` through `AIM-T0003` are Lean-proved cyclic-memory-slot facts with Python examples |
-| `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md` | draft/proved finite seed | `AIRA-T0001` through `AIRA-T0003` are Lean-proved adapter-block facts with Python examples |
+| `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md` | polished draft/proved finite seed | `AIA-T0001` through `AIA-T0003` are Lean-proved phase-channel facts with Python examples |
+| `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md` | polished draft/proved finite seed | `AIM-T0001` through `AIM-T0003` are Lean-proved cyclic-memory-slot facts with Python examples |
+| `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md` | polished draft/proved finite seed | `AIRA-T0001` through `AIRA-T0003` are Lean-proved adapter-block facts with Python examples |
 
 The theorem manifest also includes `CC-T0008`, `CC-T0017`, `CC-T0018`, `CC-T0019`, `CC-T0020`, `CC-T0021`, `CC-T0022`, `CC-T0023`, `CC-T0024`, `CC-T0025`, `CC-T0026`, `CC-T0027`, `CC-T0028`, `CC-T0029`, `CC-T0030`, `CC-T0031`, `CC-T0032`, `CC-T0033`, `CC-T0034`, `CC-T0035`, `CC-T0036`, `CC-T0037`, `CC-T0038`, `CC-T0039`, `CC-T0040`, `CC-T0041`, `CC-T0042`, `CC-T0043`, `CC-T0044`, `CC-T0045`, `CC-T0046`, `CC-T0047`, `CC-T0048`, `CC-T0049`, `CC-T0050`, `CC-T0051`, `CC-T0052`, and `CC-T0053`, proving the first scaling spine: invertibility iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, the scaling-to-coil image bridge, bijectivity of nonzero scaling on prime circles, divisor-cofactor collapse to zero, cofactor-multiple collapse to zero, period-multiple collapse to zero, cofactor-shift and period-shift address collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and gcd cardinality, zero-fiber/kernel and scaled-target/fiber bridges, fiber-set equality modulo scaled value and stride period, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, the exact divisibility and period-divisibility criteria for scaling to zero, the exact product-congruence criterion for scaled-address equality, and coprime reflection of address congruence.
 
 The D0 dimensional scaffold is also in place: dimension manifests, dimension dictionaries, planned paper stubs, Lean/Python scaffolds, and dimension validation scripts. Future-dimension claims remain planned, deferred, exploratory, or stated until actual Lean proofs exist.
 
 Phase II and application scaffolds are also in place under `papers/phase2/`, `papers/applications/`, `manifests/theories/`, and `manifests/applications/`. `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_05_PROOF_CARRYING_GLYPHS`, `PAPER_APP_01_COIL_DATA_ANALYSIS`, `PAPER_COMP_01` through `PAPER_COMP_04`, and `PAPER_AI_01` through `PAPER_AI_03` now have proved seeds. The 2026-06-05 compute-applications handoff is preserved in `docs/PHASE2_AND_APPLICATIONS.md` and `circle_calculus_codex_handoff/source_logs/04_compute_applications_browser_note.md`. Benchmark claims remain benchmark work, not proof claims.
+
+Phase III is now planned as the Circle Calculus Living Book: a Quarto-based interactive explainer site generated from manifests, dictionary entries, papers, Python reference models, and Lean proof metadata. Its policy and roadmap live in `docs/LIVING_BOOK_POLICY.md`, `docs/LIVING_BOOK_ROADMAP.md`, and `docs/LIVING_BOOK_WIDGETS.md`; the source browser handoff is archived at `circle_calculus_codex_handoff/source_logs/05_living_book_browser_note.md`. The Living Book is an explanation layer, not a proof layer.
 
 The README is updated after meaningful proof batches, paper batches, roadmap changes, or application-context additions. Tiny internal-only edits should update the relevant source files without creating README churn.
 
@@ -122,6 +124,7 @@ dictionary/                     Shared Circle Calculus vocabulary
 docs/                           Proof policy and foundational notes
 manifests/                      Paper and theorem metadata
 papers/                         Human-readable papers
+site/                           Planned Phase III Quarto Living Book
 scripts/                        Repository validation scripts
 sidecars/                       Per-paper Lean, Python, and diagram artifacts
 tests/                          Python regression/property tests
@@ -182,6 +185,7 @@ Start with:
 7. `docs/COMPLETION_ROADMAP.md`
 8. `docs/DIMENSIONAL_LADDER.md`
 9. `docs/PHASE2_AND_APPLICATIONS.md`
+10. `docs/LIVING_BOOK_ROADMAP.md`
 
 The papers give the conceptual path. The sidecars show the proof links. The dictionary fixes vocabulary so later papers reuse the same meanings instead of drifting.
 
@@ -375,3 +379,5 @@ This repository does not currently claim to have rebuilt all of mathematics from
 It also does not claim that Python tests are proofs, that diagrams are proofs, that `S^2` has a natural group structure, that `S^3` is globally `S^2 x S^1`, that unit octonions form a group, or that formalization bypasses foundational limitations. See `docs/GODEL_AND_LIMITATIONS.md` for the current limitations note.
 
 For the deferred application and compute tracks, see `docs/PHASE2_AND_APPLICATIONS.md`. Local compute experiments should be MLX/Mac-first; CUDA-specific references are future portability notes or external benchmark baselines.
+
+For the planned interactive explanation layer, see `docs/LIVING_BOOK_POLICY.md`, `docs/LIVING_BOOK_ROADMAP.md`, and `docs/LIVING_BOOK_WIDGETS.md`. The Living Book must derive theorem status from manifests and must not treat widgets, diagrams, or Python examples as proofs.
