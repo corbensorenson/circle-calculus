@@ -165,7 +165,7 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
   - Status: signed zero, composition, and inverse motion are Lean-proved as `S1O-T0001` through `S1O-T0003`.
 - [x] `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md`
   - Proof targets: `CC-T0008`, multiplication as repeated rotation/scaling, invertibility iff coprime, factor structure, prime/full-coil refinements.
-  - Status: scaling invertible iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, prime-circle scaling bijectivity, divisor-cofactor collapse, cofactor-multiple collapse, cofactor-shift address collapse, scaling-zero divisibility, period-level kernel divisibility, scaled-address equality congruence, and coprime scaling reflection are Lean-proved as `CC-T0008`, `CC-T0028`, `CC-T0017`, `CC-T0018`, `CC-T0029`, `CC-T0019`, `CC-T0020`, `CC-T0021`, `CC-T0022`, `CC-T0023`, `CC-T0024`, `CC-T0025`, `CC-T0030`, `CC-T0026`, and `CC-T0027`; deeper factor/orbit refinements remain future extensions.
+  - Status: scaling invertible iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, scaling natural steps into coil traversal, prime-circle scaling bijectivity, divisor-cofactor collapse, cofactor-multiple collapse, cofactor-shift address collapse, scaling-zero divisibility, period-level kernel divisibility, scaled-address equality congruence, and coprime scaling reflection are Lean-proved as `CC-T0008`, `CC-T0028`, `CC-T0017`, `CC-T0018`, `CC-T0029`, `CC-T0019`, `CC-T0020`, `CC-T0031`, `CC-T0021`, `CC-T0022`, `CC-T0023`, `CC-T0024`, `CC-T0025`, `CC-T0030`, `CC-T0026`, and `CC-T0027`; deeper factor/orbit refinements remain future extensions.
 
 ### S0: Opposition And Sign
 
@@ -370,6 +370,7 @@ Already proved and linked:
 - [x] `CC-T0029`: congruent scale factors act identically
 - [x] `CC-T0019`: scaling transports rotation stride
 - [x] `CC-T0020`: scaling transports finite coil steps
+- [x] `CC-T0031`: scaling a natural step index gives the matching coil step from zero
 - [x] `CC-T0021`: nonzero scaling below a prime circle size is bijective
 - [x] `CC-T0022`: scaling sends a divisor cofactor to zero
 - [x] `CC-T0023`: scaling sends divisor cofactor multiples to zero
@@ -389,7 +390,7 @@ Already proved and linked:
 
 Still planned:
 
-- Scaling/factor refinements beyond `CC-T0030`: kernel cardinality, image size, composite orbit refinements, and factor-lattice/provenance links.
+- Scaling/factor refinements beyond `CC-T0031`: kernel cardinality, image size, composite orbit refinements, and factor-lattice/provenance links.
 
 ## Verification Checklist
 

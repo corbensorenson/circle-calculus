@@ -53,6 +53,14 @@ def test_scaling_identity_and_composition_examples() -> None:
                     )
 
 
+def test_scale_natural_step_to_coil_examples() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for k in range(0, 33):
+            for steps in range(0, 65):
+                assert circle.scale(steps, k) == coil_step(n, k, 0, steps)
+
+
 def test_prime_scaling_examples() -> None:
     for p in [2, 3, 5, 7, 11, 13, 17, 19]:
         circle = Circle(p)

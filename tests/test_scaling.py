@@ -58,6 +58,14 @@ def test_scale_transports_coil_step() -> None:
                         )
 
 
+def test_scale_natural_step_to_coil_step() -> None:
+    for n in range(1, 129):
+        c = Circle(n)
+        for k in range(0, 65):
+            for steps in range(0, 129):
+                assert c.scale(steps, k) == coil_step(n, k, 0, steps)
+
+
 def test_prime_scale_bijective() -> None:
     for p in [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31]:
         circle = Circle(p)

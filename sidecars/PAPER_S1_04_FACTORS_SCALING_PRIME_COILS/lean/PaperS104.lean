@@ -15,6 +15,7 @@ namespace Circle.PaperS104
 #check Circle.scale_comp
 #check Circle.scale_rot
 #check Circle.scale_coilStep
+#check Circle.scale_nat_to_coilStep
 #check Circle.scale_invertible_iff_coprime
 #check Circle.prime_scale_bijective
 #check Circle.scale_cofactor_zero

@@ -39,6 +39,11 @@ theorem scale_coilStep (n k stride start steps : Nat) :
   · norm_num
   · norm_num [Nat.mul_assoc, Nat.mul_comm, Nat.mul_left_comm]
 
+theorem scale_nat_to_coilStep (n k steps : Nat) :
+    scale n k ((steps : Nat) : C n) = coilStep n k 0 steps := by
+  unfold scale coilStep
+  simp [Nat.mul_comm]
+
 theorem scale_invertible_iff_coprime (n k : Nat) :
     Function.Bijective (scale n k) ↔ Nat.Coprime n k := by
   change Function.Bijective (fun x : ZMod n => (k : ZMod n) * x) ↔ Nat.Coprime n k

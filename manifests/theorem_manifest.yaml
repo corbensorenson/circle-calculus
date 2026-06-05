@@ -351,6 +351,22 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["scale(n,k,x)==0 iff x%period(n,k)==0 over positive moduli in bounded tests"]
 
+  - id: CC-T0031
+    name: Scaling a step index gives the matching coil step
+    status: proved
+    lean_name: Circle.scale_nat_to_coilStep
+    informal_statement: "Scaling a natural step index by stride k gives the same address as walking k for that many coil steps from zero."
+    formal_statement: "forall (n k steps : Nat), Circle.scale n k ((steps : Nat) : Circle.C n) = Circle.coilStep n k 0 steps"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0201"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_natural_step_to_coil_step"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean by unfolding scale and coilStep and normalizing natural multiplication in ZMod."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["scale(n,k,steps)==coil_step(n,k,0,steps) over positive moduli in bounded tests"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved
