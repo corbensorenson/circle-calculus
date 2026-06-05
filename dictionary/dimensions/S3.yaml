@@ -2,7 +2,7 @@ entries:
   - id: S3C-0001
     name: "Finite 3-sphere suspension model"
     kind: object
-    formal_definition: "A planned finite S^3 model obtained by suspending a finite S^2 cell-count model."
+    formal_definition: "The finite S^3 suspension count model `Circle.S3.suspendedSuspendedCircleCounts`, with Euler characteristic proved by `Circle.S3.suspendedSuspendedCircle_chi`."
     intuition: "The combinatorial topological S^3 layer before quaternion algebra."
     dependencies: ["COMMON-0003", "S2-0001"]
     introduced_in: "PAPER_S3_01_FINITE_HYPERSPHERES"
@@ -30,7 +30,7 @@ entries:
   - id: S3Q-0003
     name: "Quaternion noncommutativity"
     kind: relation
-    formal_definition: "The planned formal fact that some quaternion products depend on order."
+    formal_definition: "The formal example `Circle.S3.quaternion_noncommutative_example`, proving that `i*j != j*i` in integer quaternions."
     intuition: "S^3: order matters."
     dependencies: ["S3Q-0001"]
     introduced_in: "PAPER_S3_02_QUATERNION_COILS"
@@ -39,7 +39,7 @@ entries:
   - id: S3H-0001
     name: "Hopf map"
     kind: operation
-    formal_definition: "The planned complex-pair map from normalized S^3 coordinates to S^2 coordinates."
+    formal_definition: "The coordinate map `Circle.S3.hopfMap : Circle.S3.HopfPair -> Circle.S3.HopfBasePoint`, with `Circle.S3.hopfMap_lands_sphere` proving that normalized pairs land on the unit base equation."
     intuition: "A visible S^2 base with hidden S^1 phase fibers."
     dependencies: ["S3Q-0001", "S2-0001"]
     introduced_in: "PAPER_S3_03_HOPF_COILS"
@@ -48,7 +48,7 @@ entries:
   - id: S3H-0002
     name: "Hopf phase fiber"
     kind: object
-    formal_definition: "The planned S^1-like phase orbit over a Hopf base point."
+    formal_definition: "The common unit-phase action `Circle.S3.phaseRotatePair`; `Circle.S3.hopfMap_phase_invariant` proves it preserves the Hopf base coordinates."
     intuition: "The hidden circle above each visible base point."
     dependencies: ["S3H-0001", "S1-0001"]
     introduced_in: "PAPER_S3_03_HOPF_COILS"

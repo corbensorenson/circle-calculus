@@ -204,7 +204,7 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
   - Proof/model targets: `S3H-T0001` through `S3H-T0003`
   - Warning target: `S3H-W0001`, not globally `S^2 x S^1`
   - Start with Python numeric models if Lean analysis support is too heavy.
-  - Status: Hopf map, phase invariance, and circle-like fiber orbit have executable Python sidecar checks; Lean formalization remains deferred.
+  - Status: `S3H-T0001` and `S3H-T0002` are Lean-proved coordinate Hopf facts; `S3H-T0003` remains an executable Python fiber-orbit check until the topological fibration layer is formalized.
 - [x] `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md`
   - Proof target: `S3S-T0001`
   - Status: quaternion conjugation action is Lean-proved invariant under replacing `q` by `-q`; full `SO(3)` quotient remains future work.

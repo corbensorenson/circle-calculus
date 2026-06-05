@@ -101,6 +101,82 @@ theorem quaternionConjugation_neg (q v : RealQuaternion) :
     quaternionConjugationAction (-q) v = quaternionConjugationAction q v := by
   ext <;> simp [quaternionConjugationAction] <;> ring
 
+structure HopfPair where
+  z0re : ℝ
+  z0im : ℝ
+  z1re : ℝ
+  z1im : ℝ
+
+structure HopfBasePoint where
+  x : ℝ
+  y : ℝ
+  z : ℝ
+
+theorem hopfBasePoint_ext {p q : HopfBasePoint}
+    (hx : p.x = q.x) (hy : p.y = q.y) (hz : p.z = q.z) : p = q := by
+  cases p
+  cases q
+  simp at hx hy hz
+  simp [hx, hy, hz]
+
+def hopfPairNormSq (p : HopfPair) : ℝ :=
+  p.z0re * p.z0re + p.z0im * p.z0im + p.z1re * p.z1re + p.z1im * p.z1im
+
+def hopfBaseNormSq (p : HopfBasePoint) : ℝ :=
+  p.x * p.x + p.y * p.y + p.z * p.z
+
+def hopfMap (p : HopfPair) : HopfBasePoint where
+  x := 2 * (p.z0re * p.z1re + p.z0im * p.z1im)
+  y := 2 * (p.z0im * p.z1re - p.z0re * p.z1im)
+  z := p.z0re * p.z0re + p.z0im * p.z0im - (p.z1re * p.z1re + p.z1im * p.z1im)
+
+theorem hopfBaseNormSq_hopfMap (p : HopfPair) :
+    hopfBaseNormSq (hopfMap p) = hopfPairNormSq p * hopfPairNormSq p := by
+  cases p
+  simp [hopfBaseNormSq, hopfMap, hopfPairNormSq]
+  ring
+
+theorem hopfMap_lands_sphere (p : HopfPair) (h : hopfPairNormSq p = 1) :
+    hopfBaseNormSq (hopfMap p) = 1 := by
+  rw [hopfBaseNormSq_hopfMap, h]
+  ring
+
+def phaseRotatePair (u v : ℝ) (p : HopfPair) : HopfPair where
+  z0re := u * p.z0re - v * p.z0im
+  z0im := v * p.z0re + u * p.z0im
+  z1re := u * p.z1re - v * p.z1im
+  z1im := v * p.z1re + u * p.z1im
+
+theorem phaseRotatePair_norm_sq (u v : ℝ) (p : HopfPair) :
+    hopfPairNormSq (phaseRotatePair u v p) =
+      (u * u + v * v) * hopfPairNormSq p := by
+  cases p
+  simp [hopfPairNormSq, phaseRotatePair]
+  ring
+
+theorem hopfMap_phase_invariant (u v : ℝ) (huv : u * u + v * v = 1) (p : HopfPair) :
+    hopfMap (phaseRotatePair u v p) = hopfMap p := by
+  have huv_sq : u ^ 2 + v ^ 2 = 1 := by nlinarith [huv]
+  rcases p with ⟨a, b, c, d⟩
+  apply hopfBasePoint_ext
+  · simp [hopfMap, phaseRotatePair]
+    calc
+      (u * a - v * b) * (u * c - v * d) + (v * a + u * b) * (v * c + u * d) =
+          (u ^ 2 + v ^ 2) * (a * c + b * d) := by ring
+      _ = a * c + b * d := by rw [huv_sq]; ring
+  · simp [hopfMap, phaseRotatePair]
+    calc
+      (v * a + u * b) * (u * c - v * d) - (u * a - v * b) * (v * c + u * d) =
+          (u ^ 2 + v ^ 2) * (b * c - a * d) := by ring
+      _ = b * c - a * d := by rw [huv_sq]; ring
+  · simp [hopfMap, phaseRotatePair]
+    calc
+      (u * a - v * b) * (u * a - v * b) + (v * a + u * b) * (v * a + u * b) -
+          ((u * c - v * d) * (u * c - v * d) + (v * c + u * d) * (v * c + u * d)) =
+          (u ^ 2 + v ^ 2) * (a * a + b * b) -
+            (u ^ 2 + v ^ 2) * (c * c + d * d) := by ring
+      _ = a * a + b * b - (c * c + d * d) := by rw [huv_sq]; ring
+
 def quaternionTrackName : String :=
   "S3Q"
 

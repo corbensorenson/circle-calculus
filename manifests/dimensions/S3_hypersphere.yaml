@@ -119,31 +119,31 @@ theorems:
       python_property_tests: []
     blocker: ""
   - id: S3H-T0001
-    status: exploratory_python
+    status: lean_proved
     lean_name: Circle.S3.hopfMap_lands_sphere
-    informal_statement: "The complex-pair Hopf map sends normalized S^3 points to S^2."
-    formal_statement: "Python exploratory model: if |z0|^2 + |z1|^2 = 1, then ||hopf_map(z0,z1)||^2 = 1."
+    informal_statement: "The coordinate Hopf map sends normalized S^3 pairs to the unit S^2 equation."
+    formal_statement: "forall p : Circle.S3.HopfPair, Circle.S3.hopfPairNormSq p = 1 -> Circle.S3.hopfBaseNormSq (Circle.S3.hopfMap p) = 1"
     dictionary_dependencies: ["S3H-0001"]
     paper_refs: ["papers/S3/PAPER_S3_03_HOPF_COILS.md"]
     imports_allowed: ["Common", "S1", "S2"]
     verification:
-      lean_build_required: false
+      lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py::test_hopf_map_lands_on_unit_sphere_for_normalized_pair"]
-    blocker: "Lean proof deferred until real/complex analysis support is selected."
+    blocker: ""
   - id: S3H-T0002
-    status: exploratory_python
+    status: lean_proved
     lean_name: Circle.S3.hopfMap_phase_invariant
-    informal_statement: "Simultaneous S^1 phase rotation preserves the Hopf map."
-    formal_statement: "Python exploratory model: hopf_map(exp(i*theta)*z0, exp(i*theta)*z1) = hopf_map(z0,z1)."
+    informal_statement: "Simultaneous unit phase rotation preserves the Hopf map."
+    formal_statement: "forall (u v : ℝ) (p : Circle.S3.HopfPair), u*u+v*v=1 -> Circle.S3.hopfMap (Circle.S3.phaseRotatePair u v p) = Circle.S3.hopfMap p"
     dictionary_dependencies: ["S3H-0001", "S3H-0002"]
     paper_refs: ["papers/S3/PAPER_S3_03_HOPF_COILS.md"]
     imports_allowed: ["Common", "S1", "S2"]
     verification:
-      lean_build_required: false
+      lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py::test_hopf_map_phase_invariant"]
-    blocker: "Lean proof deferred until real/complex analysis support is selected."
+    blocker: ""
   - id: S3H-T0003
     status: exploratory_python
     lean_name: Circle.S3.hopfFiber_circle_like

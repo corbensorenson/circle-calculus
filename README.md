@@ -66,7 +66,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md` | draft | `S2-T0008` and `S2-T0009` proved |
 | `papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md` | draft | `S3C-T0001` through `S3C-T0004` proved |
 | `papers/S3/PAPER_S3_02_QUATERNION_COILS.md` | draft | `S3Q-T0001` through `S3Q-T0005` proved |
-| `papers/S3/PAPER_S3_03_HOPF_COILS.md` | draft/exploratory | `S3H-T0001` through `S3H-T0003` have Python sidecar checks; Lean formalization is deferred |
+| `papers/S3/PAPER_S3_03_HOPF_COILS.md` | draft/partial proof | `S3H-T0001` and `S3H-T0002` are Lean-proved coordinate Hopf facts; `S3H-T0003` remains Python exploratory |
 | `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md` | draft | `S3S-T0001` proved |
 | `papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md` | draft | `COMMON-T0001` through `COMMON-T0003` and `S456-T0001` proved |
 | `papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md` | draft | `S4-T0001` proved |
@@ -247,8 +247,8 @@ Proved common and dimensional spine:
 
 Executable exploratory spine:
 
-- `S3H-T0001`: Hopf map lands on the unit sphere for normalized complex-pair examples
-- `S3H-T0002`: common phase rotation preserves the Hopf base point in Python checks
+- `S3H-T0001`: coordinate Hopf map lands on the unit base equation for normalized pairs
+- `S3H-T0002`: common unit-phase rotation preserves the Hopf base point in Lean and Python checks
 - `S3H-T0003`: the sampled Hopf fiber phase orbit stays normalized, preserves the base point, and closes numerically after `2*pi`
 - `S7QH-T0001`: quaternionic Hopf map sends normalized quaternion-pair examples to S4-like five-coordinate points
 - `S7QH-T0002`: shared right unit-quaternion phase rotation preserves the quaternionic Hopf map in Python checks
