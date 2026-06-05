@@ -62,7 +62,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S1/PAPER_S1_02_WINDING_NATURALS.md` | polished dimension guide draft | `CC-T0009` through `CC-T0016` linked in dimension layout |
 | `papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md` | polished draft | `S1O-T0001` through `S1O-T0003` proved with Python examples |
 | `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md` | polished draft | `CC-T0008`, `CC-T0017`, `CC-T0018`, `CC-T0019`, `CC-T0020`, `CC-T0021`, `CC-T0022`, `CC-T0023`, `CC-T0024`, `CC-T0025`, `CC-T0026`, `CC-T0027`, `CC-T0028`, `CC-T0029`, `CC-T0030`, `CC-T0031`, `CC-T0032`, `CC-T0033`, `CC-T0034`, `CC-T0035`, `CC-T0036`, `CC-T0037`, `CC-T0038`, `CC-T0039`, `CC-T0040`, `CC-T0041`, `CC-T0042`, `CC-T0043`, `CC-T0044`, `CC-T0045`, `CC-T0046`, `CC-T0047`, `CC-T0048`, `CC-T0049`, `CC-T0050`, `CC-T0051`, `CC-T0052`, and `CC-T0053` proved |
-| `papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md` | polished draft | `S0-T0001` and `S0-T0002` proved with Python examples |
+| `papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md` | polished draft | `S0-T0001` through `S0-T0004` proved with Python examples |
 | `papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md` | polished draft | `S2-T0001` and `S2-T0002` proved with Python examples |
 | `papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md` | polished draft | `S2-T0003` through `S2-T0007` proved with Python examples |
 | `papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md` | polished draft | `S2-T0008` through `S2-T0015` proved with Python examples |
@@ -333,7 +333,9 @@ Proved common and dimensional spine:
 - `AIRA-T0002`: adapter block index closes after one full block pass
 - `AIRA-T0003`: adapter block index at zero is zero
 - `S0-T0001`: the finite `S^0` opposition type has two points
-- `S0-T0002`: opposition swaps the two `S^0` points
+- `S0-T0002`: the opposition antipode is involutive
+- `S0-T0003`: the opposition antipode has no fixed point
+- `S0-T0004`: the opposition antipode swaps the two named signs
 - `S2-T0001`: suspended-circle cell counts
 - `S2-T0002`: suspended-circle Euler characteristic
 - `S2-T0003`: sphere-grid cell counts

@@ -35,4 +35,11 @@ theorem card_sign : Nat.card Sign = 2 :=
 theorem antipode_involutive (x : Sign) : antipode (antipode x) = x := by
   cases x <;> rfl
 
+theorem antipode_ne (x : Sign) : antipode x ≠ x := by
+  cases x <;> intro h <;> cases h
+
+theorem antipode_swaps :
+    antipode Sign.neg = Sign.pos ∧ antipode Sign.pos = Sign.neg := by
+  constructor <;> rfl
+
 end Circle.S0

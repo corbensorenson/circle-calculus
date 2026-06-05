@@ -56,6 +56,8 @@ make site-render
 
 On this workstation, Quarto is available through a local extracted install under `.tools/` when no system `quarto` command exists. Fresh clones can install Quarto with the standard Quarto installer or a package manager, then run the same Make targets.
 
+The Makefile sets Quarto's `HOME` and `DENO_DIR` to ignored repo-local paths under `.tools/` for render and preview targets. This keeps Quarto's Sass/Deno cache writes out of user-specific cache directories and makes sandboxed autonomous runs reproducible.
+
 ## Deferred Media And Runtime Layers
 
 Do not implement Manim, TTS, narration, video rendering, or a long movie until the static Living Book skeleton and S1 interactives are stable. Jupyter/Thebe/JupyterLite and Lean Web links are optional later layers; they do not replace local `lake build`.

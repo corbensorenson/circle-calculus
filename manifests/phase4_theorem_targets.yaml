@@ -2,27 +2,29 @@ targets:
   - id: P4-S0-001
     layer: S0
     priority: high
-    status: planned
+    status: promoted
+    promoted_theorem_id: S0-T0003
     claim_type: theorem
     title: "S0 antipode has no fixed point"
     target_statement: "For every S0 point x, antipode x is distinct from x."
     candidate_formalization: "forall x : Circle.S0.Sign, Circle.S0.antipode x != x"
     paper_refs: ["papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md"]
     dictionary_dependencies: ["S0-0001", "S0-0002"]
-    next_action: "Prove directly by cases in Circle/S0/Scaffold.lean and add a sidecar theorem."
+    next_action: "Promoted to S0-T0003 and Lean-proved as Circle.S0.antipode_ne."
     guardrail: "Do not identify S0 with C_1."
 
   - id: P4-S0-002
     layer: S0
     priority: medium
-    status: planned
+    status: promoted
+    promoted_theorem_id: S0-T0004
     claim_type: theorem
     title: "S0 antipode swaps the two named signs"
     target_statement: "The S0 antipode sends each named sign to the other sign."
-    candidate_formalization: "Circle.S0.antipode Circle.S0.Sign.pos = Circle.S0.Sign.neg and Circle.S0.antipode Circle.S0.Sign.neg = Circle.S0.Sign.pos"
+    candidate_formalization: "Circle.S0.antipode Circle.S0.Sign.neg = Circle.S0.Sign.pos and Circle.S0.antipode Circle.S0.Sign.pos = Circle.S0.Sign.neg"
     paper_refs: ["papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md"]
     dictionary_dependencies: ["S0-0001", "S0-0002"]
-    next_action: "Check the current constructor names and expose named swap lemmas."
+    next_action: "Promoted to S0-T0004 and Lean-proved as Circle.S0.antipode_swaps."
     guardrail: "Keep this as finite opposition, not a cyclic rotation claim."
 
   - id: P4-S1-001

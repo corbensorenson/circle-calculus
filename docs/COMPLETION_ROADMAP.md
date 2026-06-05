@@ -170,7 +170,7 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
 Goal: make the executable examples line up with the Lean-backed papers without duplicating adapter-only material. The sidecars remain support artifacts; they never turn an unproved statement into a proved theorem.
 
 - [x] Root `S1` finite-circle and winding papers already have Python examples through `sidecars/PAPER_01_FINITE_CIRCLES/python/test_paper_01_examples.py` and `sidecars/PAPER_02_WINDING_NATURALS/python/test_paper_02_examples.py`.
-- [x] `papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md` has Python examples for the two-point model, antipode involution, and `C_1` warning.
+- [x] `papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md` has Python examples for the two-point model, antipode involution, no-fixed-point flip, named sign swap, and `C_1` warning.
 - [x] `papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md` has Python examples for zero signed rotation, signed composition, and inverse motion.
 - [x] `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md` already has Python examples for the scaling/factor spine.
 - [x] Backfill `S2` Python examples for suspended circles, sphere grids, antipodes, and finite coordinate rotations.
@@ -201,8 +201,8 @@ Goal: make the executable examples line up with the Lean-backed papers without d
 ### S0: Opposition And Sign
 
 - [x] `papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md`
-  - Proof targets: `S0-T0001`, `S0-T0002`
-  - Status: polished draft; both finite opposition facts are Lean-proved in `Circle/S0/Scaffold.lean`.
+  - Proof targets: `S0-T0001` through `S0-T0004`
+  - Status: polished draft; the finite opposition cardinality, involution, no-fixed-point, and named-swap facts are Lean-proved in `Circle/S0/Scaffold.lean`.
   - Warning target: `S0-W0001`, `C_1` is not `S^0`.
 
 ### S2: Sphere Calculus

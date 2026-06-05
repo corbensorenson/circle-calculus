@@ -1,5 +1,8 @@
 LAKE := $(shell command -v lake 2>/dev/null || printf "%s/.elan/bin/lake" "$$HOME")
 QUARTO := $(shell if command -v quarto >/dev/null 2>&1; then command -v quarto; elif [ -x ".tools/quarto-pkg/quarto-core.pkg/Payload/bin/quarto" ]; then printf ".tools/quarto-pkg/quarto-core.pkg/Payload/bin/quarto"; else printf "quarto"; fi)
+QUARTO_HOME ?= $(CURDIR)/.tools/quarto-home
+QUARTO_DENO_DIR ?= $(CURDIR)/.tools/quarto-deno
+QUARTO_ENV := HOME="$(QUARTO_HOME)" DENO_DIR="$(QUARTO_DENO_DIR)"
 
 .PHONY: check lean sidecarlean test manifest dictionary papermanifest paperlinks phase4targets dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples site-data sitecheck site-render site-preview living-book-check
 
@@ -61,9 +64,9 @@ sitecheck: site-data
 	python scripts/site/check_widget_python_parity.py
 
 site-render: site-data
-	$(QUARTO) render site
+	$(QUARTO_ENV) $(QUARTO) render site
 
 site-preview: site-data
-	$(QUARTO) preview site
+	$(QUARTO_ENV) $(QUARTO) preview site
 
 living-book-check: lean sidecarlean test manifest dictionary papermanifest paperlinks dimensioncheck nofake sitecheck site-render

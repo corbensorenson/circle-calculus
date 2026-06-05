@@ -1,6 +1,6 @@
 # Circle Calculus S0.1: Two-Point Opposition
 
-Status: polished draft with the two finite opposition facts Lean-proved and Python examples linked.
+Status: polished draft with four finite opposition facts Lean-proved and Python examples linked.
 
 ## Aim
 
@@ -29,6 +29,8 @@ There is no hidden geometry here. This is not a metric sphere, a smooth manifold
 
 - `S0-T0001`: `Circle.S0.card_sign`
 - `S0-T0002`: `Circle.S0.antipode_involutive`
+- `S0-T0003`: `Circle.S0.antipode_ne`
+- `S0-T0004`: `Circle.S0.antipode_swaps`
 - `S0-W0001`: `C_1` is not `S^0`
 
 ## Proved Core
@@ -37,7 +39,11 @@ There is no hidden geometry here. This is not a metric sphere, a smooth manifold
 
 `S0-T0002` is proved by `Circle.S0.antipode_involutive`: applying the antipode twice returns the original sign.
 
-The Python sidecar checks the same two-point model, the antipode involution, and the guardrail that the one-node circle `C_1` is not `S^0`. These examples are executable support, not a replacement for the Lean proofs.
+`S0-T0003` is proved by `Circle.S0.antipode_ne`: no sign is fixed by the antipode.
+
+`S0-T0004` is proved by `Circle.S0.antipode_swaps`: the named constructors are swapped exactly, with `neg` sent to `pos` and `pos` sent to `neg`.
+
+The Python sidecar checks the same two-point model, the antipode involution, the no-fixed-point fact, the named swap fact, and the guardrail that the one-node circle `C_1` is not `S^0`. These examples are executable support, not a replacement for the Lean proofs.
 
 ## Why This Is Not C1
 
@@ -80,6 +86,6 @@ Third, it prevents notation drift. Without `S0-W0001`, a reader could collapse t
 
 ## Guardrails
 
-This paper does not prove a general theory of antipodal maps. It proves a finite two-point model and its involution. Continuous antipodal geometry belongs to later papers only when the needed formal model exists.
+This paper does not prove a general theory of antipodal maps. It proves a finite two-point model, its involution, its fixed-point-free flip, and its named constructor swap. Continuous antipodal geometry belongs to later papers only when the needed formal model exists.
 
 The warning `S0-W0001` remains active because confusing `S^0` with `C_1` would break the dimension-indexed vocabulary from the start.

@@ -13,5 +13,7 @@ namespace Circle.PaperS001
 #check Circle.S0.antipode
 #check Circle.S0.card_sign
 #check Circle.S0.antipode_involutive
+#check Circle.S0.antipode_ne
+#check Circle.S0.antipode_swaps
 
 end Circle.PaperS001

@@ -2769,6 +2769,66 @@
       }
     },
     {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S0-0001",
+        "S0-0002"
+      ],
+      "formal_statement": "forall x : Circle.S0.Sign, Circle.S0.antipode x != x",
+      "id": "S0-T0003",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "The antipodal map on S^0 has no fixed point.",
+      "lean_name": "Circle.S0.antipode_ne",
+      "lean_source": "Circle/S0/Scaffold.lean",
+      "lean_source_line": 38,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md"
+      ],
+      "source_manifest": "manifests/dimensions/S0_opposition.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_S0_01_TWO_POINT_OPPOSITION/python/test_s0_opposition_examples.py"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S0-0001",
+        "S0-0002"
+      ],
+      "formal_statement": "Circle.S0.antipode Circle.S0.Sign.neg = Circle.S0.Sign.pos and Circle.S0.antipode Circle.S0.Sign.pos = Circle.S0.Sign.neg",
+      "id": "S0-T0004",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "The antipodal map on S^0 swaps the two named signs.",
+      "lean_name": "Circle.S0.antipode_swaps",
+      "lean_source": "Circle/S0/Scaffold.lean",
+      "lean_source_line": 41,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md"
+      ],
+      "source_manifest": "manifests/dimensions/S0_opposition.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_S0_01_TWO_POINT_OPPOSITION/python/test_s0_opposition_examples.py"
+        ]
+      }
+    },
+    {
       "blocker": "Roadmap marker only. It is not a proof of the full octonionic Hopf fibration.",
       "canonical_status": "planned",
       "dictionary_dependencies": [

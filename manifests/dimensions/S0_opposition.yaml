@@ -29,6 +29,34 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_S0_01_TWO_POINT_OPPOSITION/python/test_s0_opposition_examples.py
     blocker: ""
+  - id: S0-T0003
+    status: lean_proved
+    lean_name: Circle.S0.antipode_ne
+    informal_statement: "The antipodal map on S^0 has no fixed point."
+    formal_statement: "forall x : Circle.S0.Sign, Circle.S0.antipode x != x"
+    dictionary_dependencies: ["S0-0001", "S0-0002"]
+    paper_refs: ["papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_S0_01_TWO_POINT_OPPOSITION/python/test_s0_opposition_examples.py
+    blocker: ""
+  - id: S0-T0004
+    status: lean_proved
+    lean_name: Circle.S0.antipode_swaps
+    informal_statement: "The antipodal map on S^0 swaps the two named signs."
+    formal_statement: "Circle.S0.antipode Circle.S0.Sign.neg = Circle.S0.Sign.pos and Circle.S0.antipode Circle.S0.Sign.pos = Circle.S0.Sign.neg"
+    dictionary_dependencies: ["S0-0001", "S0-0002"]
+    paper_refs: ["papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_S0_01_TWO_POINT_OPPOSITION/python/test_s0_opposition_examples.py
+    blocker: ""
 warnings:
   - id: S0-W0001
     status: active
