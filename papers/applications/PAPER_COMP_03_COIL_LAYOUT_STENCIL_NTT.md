@@ -18,6 +18,8 @@ for circular stride schedules. This is the address-level spine for future `CoilL
 
 - `COMPL-T0001`: for positive circular size, a stride address is bounded by the size. Lean declaration: `Circle.Applications.strideAddress_lt_size`.
 - `COMPL-T0002`: adding one full circular size to the step count preserves the stride address. Lean declaration: `Circle.Applications.strideAddress_add_size_steps`.
+- `COMPL-T0003`: zero step has zero stride address. Lean declaration: `Circle.Applications.strideAddress_zero_step`.
+- `COMPL-T0004`: zero stride has zero stride address. Lean declaration: `Circle.Applications.strideAddress_zero_stride`.
 
 The Python sidecar checks the same finite stride examples. Layout, stencil, FFT, NTT, and MLX/backend claims still require explicit algorithms and benchmarks.
 

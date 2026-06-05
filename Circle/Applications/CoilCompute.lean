@@ -21,6 +21,11 @@ theorem cyclicAddress_add_size {size : Nat} (h : 0 < size) (index : Nat) :
   rw [Nat.add_mod, Nat.mod_self, Nat.add_zero]
   exact Nat.mod_eq_of_lt (Nat.mod_lt index h)
 
+theorem cyclicAddress_zero (size : Nat) :
+    cyclicAddress size 0 = 0 := by
+  unfold cyclicAddress
+  simp
+
 def strideAddress (size stride step : Nat) : Nat :=
   (step * stride) % size
 
@@ -34,5 +39,15 @@ theorem strideAddress_add_size_steps (size stride step : Nat) :
   unfold strideAddress
   rw [Nat.add_mul]
   exact Nat.add_mul_mod_self_left (step * stride) size stride
+
+theorem strideAddress_zero_step (size stride : Nat) :
+    strideAddress size stride 0 = 0 := by
+  unfold strideAddress
+  simp
+
+theorem strideAddress_zero_stride (size step : Nat) :
+    strideAddress size 0 step = 0 := by
+  unfold strideAddress
+  simp
 
 end Circle.Applications

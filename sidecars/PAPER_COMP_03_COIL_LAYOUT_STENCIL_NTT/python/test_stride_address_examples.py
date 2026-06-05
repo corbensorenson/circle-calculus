@@ -15,3 +15,15 @@ def test_stride_address_closes_after_size_steps() -> None:
         for stride in range(0, 33):
             for step in range(0, 128):
                 assert stride_address(size, stride, step + size) == stride_address(size, stride, step)
+
+
+def test_stride_address_zero_step() -> None:
+    for size in range(1, 33):
+        for stride in range(0, 33):
+            assert stride_address(size, stride, 0) == 0
+
+
+def test_stride_address_zero_stride() -> None:
+    for size in range(1, 33):
+        for step in range(0, 128):
+            assert stride_address(size, 0, step) == 0

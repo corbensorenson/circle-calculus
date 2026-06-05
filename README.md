@@ -82,9 +82,9 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md` | draft/proved finite seed | `P2BC-T0001` and `P2BC-T0002` are Lean-proved directed-interval boundary facts |
 | `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md` | draft/proved certificate seed | `P2G-T0001` through `P2G-T0003` are Lean-proved proof-glyph projection facts |
 | `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md` | draft/proved finite seed | `APPD-T0001` and `APPD-T0002` are Lean-proved phase-coordinate facts with Python examples |
-| `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md` | draft/proved finite seed | `COMPC-T0001` and `COMPC-T0002` are Lean-proved cyclic-address facts with Python examples |
+| `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md` | draft/proved finite seed | `COMPC-T0001` through `COMPC-T0003` are Lean-proved cyclic-address facts with Python examples |
 | `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md` | draft/proved finite seed | `COMPR-T0001` and `COMPR-T0002` are Lean-proved direction-bin schedule facts with Python examples |
-| `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md` | draft/proved finite seed | `COMPL-T0001` and `COMPL-T0002` are Lean-proved stride-address facts with Python examples |
+| `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md` | draft/proved finite seed | `COMPL-T0001` through `COMPL-T0004` are Lean-proved stride-address facts with Python examples |
 | `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md` | draft/proved finite seed | `COMPS-T0001` and `COMPS-T0002` are Lean-proved round-robin schedule facts with Python examples |
 | `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md` | draft/proved finite seed | `AIA-T0001` and `AIA-T0002` are Lean-proved phase-channel facts with Python examples |
 | `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md` | draft/proved finite seed | `AIM-T0001` and `AIM-T0002` are Lean-proved cyclic-memory-slot facts with Python examples |
@@ -281,10 +281,13 @@ Proved common and dimensional spine:
 - `APPD-T0002`: finite phase coordinate closes after adding one full period
 - `COMPC-T0001`: cyclic address is bounded by a positive circular buffer size
 - `COMPC-T0002`: cyclic address is unchanged after adding one full buffer size
+- `COMPC-T0003`: cyclic address at zero is zero
 - `COMPR-T0001`: direction-bin schedule is bounded by a positive bin count
 - `COMPR-T0002`: direction-bin schedule closes after one full pass through the bins
 - `COMPL-T0001`: stride address is bounded by a positive circular size
 - `COMPL-T0002`: stride address closes after one full pass through the circular step horizon
+- `COMPL-T0003`: zero step has zero stride address
+- `COMPL-T0004`: zero stride has zero stride address
 - `COMPS-T0001`: round-robin slot schedule is bounded by a positive slot count
 - `COMPS-T0002`: round-robin slot schedule closes after one full pass through the slots
 - `AIA-T0001`: AI phase channel is bounded by a positive period

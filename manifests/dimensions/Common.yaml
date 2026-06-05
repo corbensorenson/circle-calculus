@@ -248,6 +248,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["cyclic_address(size, index + size) == cyclic_address(size, index)"]
     blocker: ""
+  - id: COMPC-T0003
+    status: lean_proved
+    lean_name: Circle.Applications.cyclicAddress_zero
+    informal_statement: "The cyclic address at zero is zero."
+    formal_statement: "forall size : Nat, cyclicAddress size 0 = 0"
+    dictionary_dependencies: ["COMMON-0018"]
+    paper_refs: ["papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["cyclic_address(size, 0) == 0"]
+    blocker: ""
   - id: COMPR-T0001
     status: lean_proved
     lean_name: Circle.Applications.directionBin_lt_binCount
@@ -299,6 +312,32 @@ theorems:
       lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["stride_address(size, stride, step + size) == stride_address(size, stride, step)"]
+    blocker: ""
+  - id: COMPL-T0003
+    status: lean_proved
+    lean_name: Circle.Applications.strideAddress_zero_step
+    informal_statement: "The stride address at zero step is zero."
+    formal_statement: "forall size stride : Nat, strideAddress size stride 0 = 0"
+    dictionary_dependencies: ["COMMON-0022"]
+    paper_refs: ["papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["stride_address(size, stride, 0) == 0"]
+    blocker: ""
+  - id: COMPL-T0004
+    status: lean_proved
+    lean_name: Circle.Applications.strideAddress_zero_stride
+    informal_statement: "A zero stride always has zero stride address."
+    formal_statement: "forall size step : Nat, strideAddress size 0 step = 0"
+    dictionary_dependencies: ["COMMON-0022"]
+    paper_refs: ["papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["stride_address(size, 0, step) == 0"]
     blocker: ""
   - id: COMPS-T0001
     status: lean_proved

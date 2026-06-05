@@ -18,6 +18,7 @@ for positive circular buffer sizes. This is a proof-carrying rewrite primitive, 
 
 - `COMPC-T0001`: for positive size, the cyclic address is bounded by the size. Lean declaration: `Circle.Applications.cyclicAddress_lt_size`.
 - `COMPC-T0002`: for positive size, adding one full size preserves the cyclic address. Lean declaration: `Circle.Applications.cyclicAddress_add_size`.
+- `COMPC-T0003`: cyclic address at zero is zero. Lean declaration: `Circle.Applications.cyclicAddress_zero`.
 
 The Python sidecar checks the same wraparound examples. These examples support implementation intuition; performance claims still require benchmarks against direct, dense, FFT, NTT, and layout baselines.
 

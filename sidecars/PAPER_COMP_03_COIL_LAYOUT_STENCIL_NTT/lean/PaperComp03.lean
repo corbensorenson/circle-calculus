@@ -12,5 +12,7 @@ namespace Circle.PaperComp03
 #check Circle.Applications.strideAddress
 #check Circle.Applications.strideAddress_lt_size
 #check Circle.Applications.strideAddress_add_size_steps
+#check Circle.Applications.strideAddress_zero_step
+#check Circle.Applications.strideAddress_zero_stride
 
 end Circle.PaperComp03

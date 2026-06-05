@@ -440,6 +440,7 @@ papers:
     theorem_ids:
       - COMPC-T0001
       - COMPC-T0002
+      - COMPC-T0003
     dictionary_ids:
       - COMMON-0018
       - COMMON-0019
@@ -462,6 +463,8 @@ papers:
     theorem_ids:
       - COMPL-T0001
       - COMPL-T0002
+      - COMPL-T0003
+      - COMPL-T0004
     dictionary_ids:
       - COMMON-0022
       - COMMON-0023
