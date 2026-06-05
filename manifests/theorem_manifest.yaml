@@ -335,6 +335,22 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["scale(n,k,x)==scale(n,k+m*n,x) over positive moduli in bounded tests"]
 
+  - id: CC-T0030
+    name: Scaling kernel is period divisibility
+    status: proved
+    lean_name: Circle.scale_nat_eq_zero_iff_period_dvd
+    informal_statement: "For a nonzero circle size, a natural address scales to zero exactly when the stride period divides that address."
+    formal_statement: "forall {n k x : Nat}, n != 0 -> Circle.scale n k ((x : Nat) : Circle.C n) = 0 iff Circle.period n k divides x"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_zero_iff_period_divides_address"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean from CC-T0025, CC-T0005, gcd reduction, and coprime divisibility cancellation."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["scale(n,k,x)==0 iff x%period(n,k)==0 over positive moduli in bounded tests"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

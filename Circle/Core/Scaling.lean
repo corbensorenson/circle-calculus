@@ -1,4 +1,4 @@
-import Circle.Core.Coil
+import Circle.Core.Period
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.ZMod.Units
 
@@ -89,6 +89,43 @@ theorem scale_nat_eq_zero_iff_dvd_mul (n k x : Nat) :
   unfold scale
   rw [← Nat.cast_mul]
   exact CharP.cast_eq_zero_iff (ZMod n) n (k * x)
+
+theorem scale_nat_eq_zero_iff_period_dvd {n k x : Nat} (hn : n ≠ 0) :
+    scale n k ((x : Nat) : C n) = 0 ↔ period n k ∣ x := by
+  rw [period_eq_n_div_gcd hn]
+  have hnpos : 0 < n := Nat.pos_of_ne_zero hn
+  rw [scale_nat_eq_zero_iff_dvd_mul]
+  let g := Nat.gcd n k
+  have hgpos : 0 < g := Nat.gcd_pos_of_pos_left k hnpos
+  have hgn : g ∣ n := Nat.gcd_dvd_left n k
+  have hgk : g ∣ k := Nat.gcd_dvd_right n k
+  have hn_decomp : n = g * (n / g) := by
+    rw [Nat.mul_div_cancel' hgn]
+  have hk_decomp : k = g * (k / g) := by
+    rw [Nat.mul_div_cancel' hgk]
+  have hcop : Nat.Coprime (n / g) (k / g) := Nat.coprime_div_gcd_div_gcd hgpos
+  constructor
+  · intro h
+    have h1a : g * (n / g) ∣ k * x := by
+      rw [← hn_decomp]
+      exact h
+    have h1b : g * (n / g) ∣ (g * (k / g)) * x := by
+      rw [← hk_decomp]
+      exact h1a
+    have h1 : g * (n / g) ∣ g * ((k / g) * x) := by
+      simpa [Nat.mul_assoc] using h1b
+    have h2 : n / g ∣ (k / g) * x := (Nat.mul_dvd_mul_iff_left hgpos).mp h1
+    exact hcop.dvd_of_dvd_mul_left h2
+  · intro h
+    have h2 : n / g ∣ (k / g) * x := dvd_mul_of_dvd_right h (k / g)
+    have h1 : g * (n / g) ∣ g * ((k / g) * x) := (Nat.mul_dvd_mul_iff_left hgpos).mpr h2
+    have h1b : g * (n / g) ∣ (g * (k / g)) * x := by
+      simpa [Nat.mul_assoc] using h1
+    have h1a : g * (n / g) ∣ k * x := by
+      rw [hk_decomp]
+      exact h1b
+    rw [hn_decomp]
+    exact h1a
 
 theorem scale_nat_eq_iff_mul_modEq (n k x y : Nat) :
     scale n k ((x : Nat) : C n) = scale n k ((y : Nat) : C n) ↔
