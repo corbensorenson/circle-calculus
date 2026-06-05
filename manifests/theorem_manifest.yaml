@@ -687,6 +687,38 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["{x | 0 <= x < n and scale(n,k,x)=target} == {x | 0 <= x < n and scale(n,k,x)=scale(n,k,r)} for target=scale(n,k,r)"]
 
+  - id: CC-T0052
+    name: Scaling representative fibers are equal iff scaled representatives are equal
+    status: proved
+    lean_name: Circle.scaleFiberRepresentativeSet_eq_iff_scaled_eq_of_lt
+    informal_statement: "For a canonical representative r below n, its scaling fiber equals the fiber of s exactly when scale(r) equals scale(s)."
+    formal_statement: "forall {n k r s : Nat}, r < n -> (Circle.scaleFiberRepresentativeSet n k r = Circle.scaleFiberRepresentativeSet n k s iff Circle.scale n k ((r : Nat) : Circle.C n) = Circle.scale n k ((s : Nat) : Circle.C n))"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_fiber_sets_equal_iff_scaled_representatives_equal"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean by using membership of the canonical representative r in its own fiber and by extensional equality of the filters."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["for 0 <= r < n, fiber(r)==fiber(s) iff scale(n,k,r)==scale(n,k,s)"]
+
+  - id: CC-T0053
+    name: Scaling representative fibers are equal iff representatives are period-congruent
+    status: proved
+    lean_name: Circle.scaleFiberRepresentativeSet_eq_iff_period_modEq_of_lt
+    informal_statement: "For nonzero n and a canonical representative r below n, its scaling fiber equals the fiber of s exactly when r and s are congruent modulo period(n,k)."
+    formal_statement: "forall {n k r s : Nat}, n != 0 -> r < n -> (Circle.scaleFiberRepresentativeSet n k r = Circle.scaleFiberRepresentativeSet n k s iff r congruent s modulo Circle.period n k)"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_fiber_sets_equal_iff_period_congruent"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean from CC-T0052 and the period-congruence equality theorem CC-T0035."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["for n > 0 and 0 <= r < n, fiber(r)==fiber(s) iff r % period(n,k) == s % period(n,k)"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

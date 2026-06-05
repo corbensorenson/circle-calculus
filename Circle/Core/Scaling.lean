@@ -487,6 +487,38 @@ theorem scaleFiberRepresentativeSet_zero_eq_scaleKernelRepresentativeSet (n k : 
   unfold scaleFiberRepresentativeSet scaleKernelRepresentativeSet
   simp [scale]
 
+theorem scaleFiberRepresentativeSet_eq_iff_scaled_eq_of_lt
+    {n k r s : Nat} (hr : r < n) :
+    scaleFiberRepresentativeSet n k r = scaleFiberRepresentativeSet n k s ↔
+      scale n k ((r : Nat) : C n) = scale n k ((s : Nat) : C n) := by
+  constructor
+  · intro hset
+    have hrmem : r ∈ scaleFiberRepresentativeSet n k r := by
+      unfold scaleFiberRepresentativeSet
+      exact Finset.mem_filter.mpr ⟨Finset.mem_range.mpr hr, rfl⟩
+    have hmem : r ∈ scaleFiberRepresentativeSet n k s := by
+      rwa [hset] at hrmem
+    exact (Finset.mem_filter.mp hmem).2
+  · intro hscale
+    unfold scaleFiberRepresentativeSet
+    apply Finset.ext
+    intro x
+    constructor
+    · intro hx
+      rcases Finset.mem_filter.mp hx with ⟨hxn, hxscale⟩
+      exact Finset.mem_filter.mpr ⟨hxn, hxscale.trans hscale⟩
+    · intro hx
+      rcases Finset.mem_filter.mp hx with ⟨hxn, hxscale⟩
+      exact Finset.mem_filter.mpr ⟨hxn, hxscale.trans hscale.symm⟩
+
+theorem scaleFiberRepresentativeSet_eq_iff_period_modEq_of_lt
+    {n k r s : Nat} (hn : n ≠ 0) (hr : r < n) :
+    scaleFiberRepresentativeSet n k r = scaleFiberRepresentativeSet n k s ↔
+      r ≡ s [MOD period n k] := by
+  rw [scaleFiberRepresentativeSet_eq_iff_scaled_eq_of_lt
+    (n := n) (k := k) (r := r) (s := s) hr]
+  exact scale_nat_eq_iff_period_modEq (n := n) (k := k) (x := r) (y := s) hn
+
 noncomputable def scaleTargetFiberRepresentativeSet (n k : Nat) (target : C n) :
     Finset Nat :=
   (Finset.range n).filter (fun x : Nat => scale n k ((x : Nat) : C n) = target)

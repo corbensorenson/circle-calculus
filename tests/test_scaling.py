@@ -324,6 +324,47 @@ def test_scale_target_fiber_over_scaled_representative_equals_representative_fib
                 assert target_fiber == representative_fiber
 
 
+def test_scale_fiber_sets_equal_iff_scaled_representatives_equal() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for k in range(0, 33):
+            fibers = {
+                s: {
+                    x
+                    for x in range(n)
+                    if circle.scale(x, k) == circle.scale(s, k)
+                }
+                for s in range(0, 65)
+            }
+            for r in range(n):
+                fiber_r = fibers[r]
+                for s in range(0, 65):
+                    fiber_s = fibers[s]
+                    assert (fiber_r == fiber_s) == (
+                        circle.scale(r, k) == circle.scale(s, k)
+                    )
+
+
+def test_scale_fiber_sets_equal_iff_period_congruent() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for k in range(0, 33):
+            period = circle.period(k)
+            fibers = {
+                s: {
+                    x
+                    for x in range(n)
+                    if circle.scale(x, k) == circle.scale(s, k)
+                }
+                for s in range(0, 65)
+            }
+            for r in range(n):
+                fiber_r = fibers[r]
+                for s in range(0, 65):
+                    fiber_s = fibers[s]
+                    assert (fiber_r == fiber_s) == (r % period == s % period)
+
+
 def test_scale_image_card_times_target_fiber_card() -> None:
     for n in range(1, 65):
         circle = Circle(n)

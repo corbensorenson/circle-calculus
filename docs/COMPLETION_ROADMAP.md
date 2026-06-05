@@ -167,7 +167,7 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
   - Status: signed zero, composition, and inverse motion are Lean-proved as `S1O-T0001` through `S1O-T0003`.
 - [x] `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md`
   - Proof targets: `CC-T0008`, multiplication as repeated rotation/scaling, invertibility iff coprime, factor structure, prime/full-coil refinements.
-  - Status: scaling invertible iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, scaling natural steps into coil traversal, prime-circle scaling bijectivity, divisor-cofactor collapse, cofactor-multiple collapse, cofactor-shift address collapse, scaling-zero divisibility, period-level kernel divisibility, period-multiple collapse, period-shift collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and cardinality, zero-fiber/kernel and scaled-target/fiber bridges, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, scaled-address product congruence, and coprime scaling reflection are Lean-proved as `CC-T0008`, `CC-T0028`, `CC-T0017`, `CC-T0018`, `CC-T0029`, `CC-T0019`, `CC-T0020`, `CC-T0031`, `CC-T0021`, `CC-T0022`, `CC-T0023`, `CC-T0024`, `CC-T0025`, `CC-T0030`, `CC-T0032`, `CC-T0033`, `CC-T0034`, `CC-T0035`, `CC-T0036`, `CC-T0037`, `CC-T0038`, `CC-T0039`, `CC-T0040`, `CC-T0041`, `CC-T0042`, `CC-T0043`, `CC-T0044`, `CC-T0050`, `CC-T0045`, `CC-T0051`, `CC-T0046`, `CC-T0047`, `CC-T0048`, `CC-T0049`, `CC-T0026`, and `CC-T0027`; composite orbit refinements and factor-lattice/provenance links remain future extensions.
+  - Status: scaling invertible iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, scaling natural steps into coil traversal, prime-circle scaling bijectivity, divisor-cofactor collapse, cofactor-multiple collapse, cofactor-shift address collapse, scaling-zero divisibility, period-level kernel divisibility, period-multiple collapse, period-shift collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and cardinality, zero-fiber/kernel and scaled-target/fiber bridges, fiber-set equality modulo scaled value and stride period, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, scaled-address product congruence, and coprime scaling reflection are Lean-proved as `CC-T0008`, `CC-T0028`, `CC-T0017`, `CC-T0018`, `CC-T0029`, `CC-T0019`, `CC-T0020`, `CC-T0031`, `CC-T0021`, `CC-T0022`, `CC-T0023`, `CC-T0024`, `CC-T0025`, `CC-T0030`, `CC-T0032`, `CC-T0033`, `CC-T0034`, `CC-T0035`, `CC-T0036`, `CC-T0037`, `CC-T0038`, `CC-T0039`, `CC-T0040`, `CC-T0041`, `CC-T0042`, `CC-T0043`, `CC-T0044`, `CC-T0050`, `CC-T0052`, `CC-T0053`, `CC-T0045`, `CC-T0051`, `CC-T0046`, `CC-T0047`, `CC-T0048`, `CC-T0049`, `CC-T0026`, and `CC-T0027`; composite orbit refinements and factor-lattice/provenance links remain future extensions.
 
 ### S0: Opposition And Sign
 
@@ -393,6 +393,8 @@ Already proved and linked:
 - [x] `CC-T0043`: canonical scaling-fiber representatives are offset period multiples
 - [x] `CC-T0044`: canonical scaling-fiber representative sets have cardinality `gcd(n,k)`
 - [x] `CC-T0050`: the scaled zero fiber is the canonical kernel representative set
+- [x] `CC-T0052`: canonical representative fibers are equal iff the scaled representatives are equal
+- [x] `CC-T0053`: canonical representative fibers are equal iff representatives are congruent modulo the stride period
 - [x] `CC-T0045`: natural representatives lie in the scaling kernel subgroup exactly when the stride period divides them
 - [x] `CC-T0051`: the target fiber over a scaled representative is that representative's canonical fiber
 - [x] `CC-T0046`: target fibers are empty for target nodes outside the scaling image
@@ -412,7 +414,7 @@ Already proved and linked:
 
 Still planned:
 
-- Scaling/factor refinements beyond `CC-T0051`: composite orbit refinements and factor-lattice/provenance links.
+- Scaling/factor refinements beyond `CC-T0053`: additional factor-lattice/provenance links and any higher-level composite orbit packaging.
 
 ## Latest Application Handoff Queue
 
