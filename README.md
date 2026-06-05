@@ -84,7 +84,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md` | draft/proved finite seed | `APPD-T0001` through `APPD-T0003` are Lean-proved phase-coordinate facts with Python examples |
 | `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md` | draft/proved finite seed | `COMPC-T0001` through `COMPC-T0003` are Lean-proved cyclic-address facts with Python examples |
 | `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md` | draft/proved finite seed | `COMPR-T0001` through `COMPR-T0003` are Lean-proved direction-bin schedule facts with Python examples |
-| `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md` | draft/proved finite seed | `COMPL-T0001` through `COMPL-T0004` are Lean-proved stride-address facts with Python examples |
+| `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md` | draft/proved finite seed | `COMPL-T0001` through `COMPL-T0004` are Lean-proved stride-address facts with Python examples and a starter CoilLayout benchmark harness |
 | `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md` | draft/proved finite seed | `COMPS-T0001` through `COMPS-T0003` are Lean-proved round-robin schedule facts with Python examples |
 | `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md` | draft/proved finite seed | `AIA-T0001` through `AIA-T0003` are Lean-proved phase-channel facts with Python examples |
 | `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md` | draft/proved finite seed | `AIM-T0001` through `AIM-T0003` are Lean-proved cyclic-memory-slot facts with Python examples |

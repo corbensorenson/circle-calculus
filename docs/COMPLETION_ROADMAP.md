@@ -439,8 +439,8 @@ The 2026-06-05 compute handoff is preserved in `docs/PHASE2_AND_APPLICATIONS.md`
 - [x] Record the strongest current prototype priorities: `CoilRay Sort`, `CoilLayout`, and `CoilNTT`.
 - [x] Preserve the broader top-ten prototype queue: `CoilRay Sort`, `CoilSampler`, `CoilLayout`, `CoilStencil`, `CoilNTT`, `CoilHash`, `CoilMotion`, `CoilPRM`, `CoilCodec`, and `CoilANN`.
 - [x] Preserve the `CoilIR` meta-application: dictionary-detected circular structure, Lean-proved rewrites, backend selection, and benchmark validation.
-- [ ] When application work resumes, start with small MLX/Mac-compatible benchmarks where possible; keep CUDA/NVIDIA references as external baselines or future portability notes.
-- [ ] Do not present ray tracing, GPU layout, stencil, NTT, hashing, robotics, codec, ANN, acquisition, CAM, torsion, detection, scheduler, or quantum ideas as proved until they have explicit models, manifests, sidecars, and checks.
+- [x] When application work resumes, start with small MLX/Mac-compatible benchmarks where possible; keep CUDA/NVIDIA references as external baselines or future portability notes. Current starter: `sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/benchmark_coil_layout.py` times natural versus gcd-cycle circular-stride traversal on CPU and optionally MLX.
+- [x] Do not present ray tracing, GPU layout, stencil, NTT, hashing, robotics, codec, ANN, acquisition, CAM, torsion, detection, scheduler, or quantum ideas as proved until they have explicit models, manifests, sidecars, and checks. Current papers and manifests label these as benchmark/domain tracks unless a Lean theorem id and checked sidecar exist.
 
 ## Verification Checklist
 

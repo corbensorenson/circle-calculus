@@ -21,13 +21,14 @@ for circular stride schedules. This is the address-level spine for future `CoilL
 - `COMPL-T0003`: zero step has zero stride address. Lean declaration: `Circle.Applications.strideAddress_zero_step`.
 - `COMPL-T0004`: zero stride has zero stride address. Lean declaration: `Circle.Applications.strideAddress_zero_stride`.
 
-The Python sidecar checks the same finite stride examples. Layout, stencil, FFT, NTT, and MLX/backend claims still require explicit algorithms and benchmarks.
+The Python test sidecar checks the same finite stride examples. The benchmark sidecar `benchmark_coil_layout.py` is a small Mac-compatible harness for natural-order versus gcd-cycle circular-stride traversal, with an optional MLX backend when `mlx.core` is available. Layout, stencil, FFT, NTT, and MLX/backend claims still require explicit algorithms and benchmark evidence.
 
 ## Next Program
 
 - `CoilLayout`: reorder `i -> i+k mod n` access into orbit order.
 - `CoilStencil`: identify periodic axes and choose direct, FFT, or block-circulant backends.
 - `CoilNTT`: model exact cyclic convolution, roots, moduli, and butterfly layouts.
+- Extend the CoilLayout benchmark from traversal timing into workload-specific kernels only after the baseline harness is reproducible.
 
 ## Guardrail
 

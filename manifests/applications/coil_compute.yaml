@@ -8,6 +8,7 @@ sidecars:
   - sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py
   - sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/lean/PaperComp03.lean
   - sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py
+  - sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/benchmark_coil_layout.py
 theorems:
   - id: COMPC-T0001
     status: lean_proved
