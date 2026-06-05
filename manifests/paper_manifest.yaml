@@ -250,6 +250,8 @@ papers:
     sidecar: sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP
     theorem_ids:
       - S3S-T0001
+      - S3S-T0002
+      - S3S-T0003
     dictionary_ids:
       - S3S-0001
       - S3S-0002

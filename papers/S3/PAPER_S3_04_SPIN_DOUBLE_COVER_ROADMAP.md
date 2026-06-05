@@ -1,6 +1,6 @@
 # Circle Calculus S3.4: Spin, Double Covers, and Rotation Quotients
 
-Status: draft scaffold with the first spin sign-cancellation theorem proved.
+Status: draft scaffold with the first spin action and sign-cancellation theorems proved.
 
 ## Aim
 
@@ -9,6 +9,8 @@ This paper begins the connection from unit quaternions to 3D rotations and the d
 ## Target Spine
 
 - `S3S-T0001`: `Circle.S3.quaternionConjugation_neg`
+- `S3S-T0002`: `Circle.S3.quaternionConjugation_one`
+- `S3S-T0003`: `Circle.S3.quaternionConjugation_zero_vector`
 
 ## Model
 
@@ -22,6 +24,10 @@ For unit quaternions, `star q` is the inverse of `q` by `Circle.S3.unitQuaternio
 
 ## Proved Core
 
+`S3S-T0002` is proved by `Circle.S3.quaternionConjugation_one`: conjugation by the identity quaternion fixes every input.
+
+`S3S-T0003` is proved by `Circle.S3.quaternionConjugation_zero_vector`: conjugation sends the zero input quaternion to zero.
+
 `S3S-T0001` is proved by `Circle.S3.quaternionConjugation_neg`.
 
 For every real quaternion `q` and every real quaternion input `v`,
@@ -31,7 +37,7 @@ quaternionConjugationAction (-q) v =
 quaternionConjugationAction q v
 ```
 
-This is the first formal shadow of the spin double-cover story: changing a quaternion representative by sign does not change the conjugation action.
+Together these are the first formal shadow of the spin double-cover story: the action has an identity case, fixes zero, and changing a quaternion representative by sign does not change the conjugation action.
 
 ## Dictionary Targets
 
@@ -40,4 +46,4 @@ This is the first formal shadow of the spin double-cover story: changing a quate
 
 ## Notes
 
-The safe claim is sign cancellation for the conjugation action. The stronger geometric claim that unit quaternions double-cover `SO(3)` should remain a later target until the rotation quotient has been formally modeled.
+The safe claim is the algebraic conjugation-action spine: identity action, zero preservation, and sign cancellation. The stronger geometric claim that unit quaternions double-cover `SO(3)` should remain a later target until the rotation quotient has been formally modeled.

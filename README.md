@@ -67,7 +67,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md` | draft | `S3C-T0001` through `S3C-T0004` proved |
 | `papers/S3/PAPER_S3_02_QUATERNION_COILS.md` | draft | `S3Q-T0001` through `S3Q-T0005` proved |
 | `papers/S3/PAPER_S3_03_HOPF_COILS.md` | draft/proved spine | `S3H-T0001` through `S3H-T0005` are Lean-proved bounded Hopf coordinate and phase-action facts; full fibration topology remains future work |
-| `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md` | draft | `S3S-T0001` proved |
+| `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md` | draft | `S3S-T0001` through `S3S-T0003` proved |
 | `papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md` | draft | `COMMON-T0001` through `COMMON-T0003` and `S456-T0001` proved |
 | `papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md` | draft | `S4-T0001` proved |
 | `papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md` | draft | `S5-T0001` proved |
@@ -324,6 +324,8 @@ Proved common and dimensional spine:
 - `S3H-T0004`: identity phase leaves every Hopf pair unchanged
 - `S3H-T0005`: composed Hopf phase rotations follow complex multiplication
 - `S3S-T0001`: quaternion conjugation action is invariant under replacing `q` by `-q`
+- `S3S-T0002`: identity quaternion conjugation fixes every input
+- `S3S-T0003`: quaternion conjugation sends zero to zero
 - `S456-T0001`: iterated finite suspensions give S4/S5/S6 Euler characteristics 2, 0, and 2
 - `S4-T0001`: finite S4 suspension model has Euler characteristic 2
 - `S5-T0001`: finite S5 suspension model has Euler characteristic 0
