@@ -1,0 +1,5 @@
+id: glyph_proof_interface
+status: planned
+papers:
+  - papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md
+guardrail: "Diagrams are proof interfaces, not proof substitutes."

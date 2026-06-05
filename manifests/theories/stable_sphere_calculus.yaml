@@ -1,0 +1,5 @@
+id: stable_sphere_calculus
+status: planned
+papers:
+  - papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md
+guardrail: "No false Hopf/division-algebra continuation beyond S15."

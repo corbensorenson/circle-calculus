@@ -1,0 +1,5 @@
+id: coil_systems
+status: planned
+papers:
+  - papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md
+guardrail: "Systems applications are hypotheses until benchmarked or domain-tested."

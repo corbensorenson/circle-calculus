@@ -1,0 +1,10 @@
+id: coil_rendering
+status: planned
+papers:
+  - papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md
+guardrail: "CoilRay claims require rendering benchmarks."
+keywords:
+  - CoilRay Sort
+  - CoilSampler
+  - CoilNoise
+  - CoilSTIR

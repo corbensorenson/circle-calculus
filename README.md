@@ -81,6 +81,8 @@ The theorem manifest also includes `CC-T0008`, proving that scaling by `k` is in
 
 The D0 dimensional scaffold is also in place: dimension manifests, dimension dictionaries, planned paper stubs, Lean/Python scaffolds, and dimension validation scripts. Future-dimension theorems remain planned, deferred, exploratory, or stated until actual Lean proofs exist.
 
+Phase II and application scaffolds are also in place under `papers/phase2/`, `papers/applications/`, `manifests/theories/`, and `manifests/applications/`. These are roadmap/benchmark scaffolds, not proof claims.
+
 The README is updated after meaningful proof batches, paper batches, roadmap changes, or application-context additions. Tiny internal-only edits should update the relevant source files without creating README churn.
 
 ## Proof Standard

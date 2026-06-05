@@ -1,0 +1,5 @@
+id: bundle_calculus
+status: planned
+papers:
+  - papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md
+guardrail: "Do not treat twisted bundles as global products."

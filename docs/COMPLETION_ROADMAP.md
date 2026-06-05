@@ -254,57 +254,57 @@ This section records deferred work from the browser handoffs. It is not active p
 
 Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra continuation such as `S^15 -> S^31 -> S^16`. Higher spheres should move into general suspension, stable homotopy, or spectrum machinery instead.
 
-- [ ] `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md`
+- [x] `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md`
   - Program: suspension, stable maps, spectra, and stable invariants.
-- [ ] `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md`
+- [x] `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md`
   - Program: Clifford algebras, spinors, Bott periodicity, and dimension clocks.
-- [ ] `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md`
+- [x] `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md`
   - Program: base, fiber, total space, projection, transition functions, connection, curvature, holonomy, and hidden proof provenance.
-- [ ] `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md`
+- [x] `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md`
   - Program: boundaries, `boundary(boundary)=0`, cobordisms, fields, and proofs as transformations.
-- [ ] `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md`
+- [x] `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md`
   - Program: glyphs with formal syntax, normal forms, theorem dependencies, proof certificates, semantic models, and projection views.
-- [ ] `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md`
+- [x] `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md`
   - Program: coil signatures, closure profiles, prime-lag recurrence, antinode maps, and periodic-data benchmarks.
-- [ ] `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md`
+- [x] `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md`
   - Program: certified cyclic/circulant/orbit structure lowered to FFT/NTT/permutation backends and benchmarked.
-- [ ] `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md`
-  - Program: `CoilRay Sort`, `CoilSampler`, `CoilSTIR`, BRDF/lighting angular compression, spherical-coil ray queues, and rendering benchmarks.
-- [ ] `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md`
+- [x] `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md`
+  - Program: `CoilRay Sort`, `CoilSampler`, `CoilNoise`, `CoilSTIR`, BRDF/lighting angular compression, spherical-coil ray queues, procedural placement/dithering, and rendering benchmarks.
+- [x] `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md`
   - Program: `CoilLayout`, `CoilStencil`, `CoilNTT`, gcd-cycle memory layouts, verified periodic boundaries, exact finite transforms, and MLX/Mac-compatible prototypes where relevant.
-- [ ] `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md`
+- [x] `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md`
   - Program: `CoilHash`, `CoilMotion`, `CoilPRM`, `CoilCodec`, `CoilANN`, `CoilAcquire`, `CoilCAM`, `CoilTorsion`, `CoilDetect`, `CoilSched`, and `CoilQ` as benchmarked or domain-tested application roadmaps.
-- [ ] `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md`
+- [x] `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md`
   - Program: disciplined Circle AI thesis covering phase, recurrence, rotation, sparse cyclic mixing, circular memory, harmonic transforms, geometry-aware models, and proof-carrying model components.
-- [ ] `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`
+- [x] `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`
   - Program: Coil Attention, CoilKV, long-context retrieval, alias control, stride/orbit coverage, and comparisons against full attention, sparse attention, Hyena-like mixers, and S4/Mamba-like baselines.
-- [ ] `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md`
+- [x] `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md`
   - Program: CoilLinear, CoilRA, MultiCoil RoPE, periodic activations, and MLX-first benchmarks against dense, LoRA, block-circulant, and standard RoPE baselines.
 
-Deferred manifest families:
+Created planned manifest families:
 
-- [ ] `manifests/theories/stable_sphere_calculus.yaml`
-- [ ] `manifests/theories/bott_clifford_calculus.yaml`
-- [ ] `manifests/theories/bundle_calculus.yaml`
-- [ ] `manifests/theories/boundary_cobordism_calculus.yaml`
-- [ ] `manifests/theories/glyph_proof_interface.yaml`
-- [ ] `manifests/applications/coil_data_analysis.yaml`
-- [ ] `manifests/applications/coil_compute.yaml`
-- [ ] `manifests/applications/coil_rendering.yaml`
-- [ ] `manifests/applications/coil_systems.yaml`
-- [ ] `manifests/applications/circle_ai.yaml`
+- [x] `manifests/theories/stable_sphere_calculus.yaml`
+- [x] `manifests/theories/bott_clifford_calculus.yaml`
+- [x] `manifests/theories/bundle_calculus.yaml`
+- [x] `manifests/theories/boundary_cobordism_calculus.yaml`
+- [x] `manifests/theories/glyph_proof_interface.yaml`
+- [x] `manifests/applications/coil_data_analysis.yaml`
+- [x] `manifests/applications/coil_compute.yaml`
+- [x] `manifests/applications/coil_rendering.yaml`
+- [x] `manifests/applications/coil_systems.yaml`
+- [x] `manifests/applications/circle_ai.yaml`
 
 Application guardrails:
 
-- [ ] Keep novelty claims disciplined: known mathematics is background; the possible contribution is the proof-carrying interface, dictionary, manifests, glyph/provenance layer, and tested applications.
-- [ ] Treat proof-carrying diagrams as a first demonstrator: glyph/diagram to theorem id, Lean declaration, proof certificate, Python example, and paper section.
-- [ ] Treat number provenance as first-class only after the finite-circle factor/orbit spine is stable.
-- [ ] For local compute work, use MLX/Mac-compatible acceleration first. CUDA/cuFFT references are future portability notes or external baselines, not the active backend on this machine.
-- [ ] Benchmark compute claims against ordinary dense/direct baselines before presenting any speedup as real.
-- [ ] Prioritize `CoilRay Sort`, `CoilLayout`, and `CoilNTT` as the first non-AI compute prototypes after the dimensional proof spine is stable enough.
-- [ ] Treat ray tracing, periodic simulations, crypto/ZK transforms, systems scheduling, and vector indexing as applications to benchmark, not as automatic proof-theorem consequences.
-- [ ] Keep Circle AI claims benchmark-driven: no claim that circles improve all AI; only target cyclic, periodic, convolutional, rotational, harmonic, memory-like, or proof-search-like structure.
-- [ ] Stage AI work in this order when the proof/math spine is ready: CoilLinear/CoilRA prototypes, MultiCoil RoPE, Coil Attention plus CoilKV, activation-coil interpretability, then spherical/quaternion models. Keep octonion AI exploratory.
+- [x] Keep novelty claims disciplined: known mathematics is background; the possible contribution is the proof-carrying interface, dictionary, manifests, glyph/provenance layer, and tested applications.
+- [x] Treat proof-carrying diagrams as a first demonstrator: glyph/diagram to theorem id, Lean declaration, proof certificate, Python example, and paper section.
+- [x] Treat number provenance as first-class only after the finite-circle factor/orbit spine is stable.
+- [x] For local compute work, use MLX/Mac-compatible acceleration first. CUDA/cuFFT references are future portability notes or external baselines, not the active backend on this machine.
+- [x] Benchmark compute claims against ordinary dense/direct baselines before presenting any speedup as real.
+- [x] Prioritize `CoilRay Sort`, `CoilLayout`, and `CoilNTT` as the first non-AI compute prototypes after the dimensional proof spine is stable enough.
+- [x] Treat ray tracing, periodic simulations, crypto/ZK transforms, systems scheduling, and vector indexing as applications to benchmark, not as automatic proof-theorem consequences.
+- [x] Keep Circle AI claims benchmark-driven: no claim that circles improve all AI; only target cyclic, periodic, convolutional, rotational, harmonic, memory-like, or proof-search-like structure.
+- [x] Stage AI work in this order when the proof/math spine is ready: CoilLinear/CoilRA prototypes, MultiCoil RoPE, Coil Attention plus CoilKV, activation-coil interpretability, then spherical/quaternion models. Keep octonion AI exploratory.
 
 ## Common Proof Targets
 
@@ -356,17 +356,17 @@ python scripts/check_dimension_paper_links.py
 
 Before any push:
 
-- [ ] previous GitHub CI result inspected once, with any known failure fixed in this commit
-- [ ] `lake build`
-- [ ] Lean sidecars compile
-- [ ] Python tests pass
-- [ ] theorem manifest validates
-- [ ] dictionary validates
-- [ ] paper theorem links validate
-- [ ] no fake proof markers
-- [ ] dimension checks pass if present
-- [ ] `README.md` describes current state
-- [ ] no transient reports, caches, build artifacts, or local secrets are staged
+- [x] previous GitHub CI result inspected once, with any known failure fixed in this commit
+- [x] `lake build`
+- [x] Lean sidecars compile
+- [x] Python tests pass
+- [x] theorem manifest validates
+- [x] dictionary validates
+- [x] paper theorem links validate
+- [x] no fake proof markers
+- [x] dimension checks pass if present
+- [x] `README.md` describes current state
+- [x] no transient reports, caches, build artifacts, or local secrets are staged
 
 ## Wake-Up State
 

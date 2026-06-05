@@ -1,0 +1,5 @@
+id: bott_clifford_calculus
+status: planned
+papers:
+  - papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md
+guardrail: "Periodicity claims need checked formal statements or explicit background status."

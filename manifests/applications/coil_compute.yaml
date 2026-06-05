@@ -1,0 +1,6 @@
+id: coil_compute
+status: planned
+papers:
+  - papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md
+  - papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md
+guardrail: "Benchmarks decide performance claims."

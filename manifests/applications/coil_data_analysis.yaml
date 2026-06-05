@@ -1,0 +1,5 @@
+id: coil_data_analysis
+status: planned
+papers:
+  - papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md
+guardrail: "Benchmark against ordinary periodic baselines."

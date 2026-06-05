@@ -133,6 +133,7 @@ Most promising prototype families:
 
 - `CoilRay Sort`: ray/path tracing reordering by spherical-coil direction bins, material class, and approximate BVH region to improve ray coherence.
 - `CoilSampler`: deterministic circle/sphere/hemisphere sampling through golden-angle, spherical Fibonacci, and coprime latitude/longitude schedules with explicit coverage and alias diagnostics.
+- `CoilNoise`: procedural placement, dithering, particle emission, starfields, lens sampling, and other deterministic progressive sample sequences generated from irrational or coprime orbits.
 - `CoilLayout`: memory layouts for strided circular updates `i -> i + k mod n`, using orbit order and gcd-cycle decomposition.
 - `CoilStencil`: periodic-boundary stencil compilation that can choose direct stencil, FFT, block-circulant, or coil-layout backends with verified wraparound.
 - `CoilNTT`: exact finite-circle transform tooling for cyclic convolution, polynomial rings, FHE, ZK systems, and NTT butterfly layouts.
@@ -237,9 +238,9 @@ Circle AI guardrails:
 - Do not claim general AI improvement. The target is cheaper, more interpretable, or more geometry-aware components in domains where cyclic or harmonic structure is real.
 - Use MLX/Mac-compatible prototypes first in this local project. CUDA references remain external baselines or future portability notes.
 
-## Deferred Scaffolding
+## Planned Scaffolds Created
 
-Do not create these until the `S^1` through `S^15` horizon is stable or the active roadmap explicitly advances to Phase II.
+These files exist so later Phase II and application work has stable paper and manifest anchors. They are planned scaffolds, not proof claims, and should remain benchmark/proof roadmaps until the active proof corpus advances into them.
 
 Planned manifests:
 

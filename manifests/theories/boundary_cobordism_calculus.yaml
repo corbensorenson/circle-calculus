@@ -1,0 +1,5 @@
+id: boundary_cobordism_calculus
+status: planned
+papers:
+  - papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md
+guardrail: "Physics-adjacent claims remain roadmap material until formalized."

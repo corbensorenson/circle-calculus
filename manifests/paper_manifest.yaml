@@ -304,3 +304,94 @@ papers:
     dictionary_ids:
       - S15-0001
       - S7O-0001
+
+  - id: PAPER_P2_01_STABLE_SPHERE_CALCULUS
+    title: "Circle Calculus Phase II.1: Stable Sphere Calculus"
+    status: planned
+    sidecar: ""
+    theorem_ids: []
+    dictionary_ids: []
+
+  - id: PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY
+    title: "Circle Calculus Phase II.2: Bott and Clifford Periodicity"
+    status: planned
+    sidecar: ""
+    theorem_ids: []
+    dictionary_ids: []
+
+  - id: PAPER_P2_03_BUNDLE_CALCULUS
+    title: "Circle Calculus Phase II.3: Bundle Calculus"
+    status: planned
+    sidecar: ""
+    theorem_ids: []
+    dictionary_ids: []
+
+  - id: PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS
+    title: "Circle Calculus Phase II.4: Boundary and Cobordism Calculus"
+    status: planned
+    sidecar: ""
+    theorem_ids: []
+    dictionary_ids: []
+
+  - id: PAPER_P2_05_PROOF_CARRYING_GLYPHS
+    title: "Circle Calculus Phase II.5: Proof-Carrying Glyphs"
+    status: planned
+    sidecar: ""
+    theorem_ids: []
+    dictionary_ids: []
+
+  - id: PAPER_APP_01_COIL_DATA_ANALYSIS
+    title: "Circle Calculus Application 1: Coil Data Analysis"
+    status: planned
+    sidecar: ""
+    theorem_ids: []
+    dictionary_ids: []
+
+  - id: PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION
+    title: "Circle Calculus Compute 1: Proof-Carrying Circular Computation"
+    status: planned
+    sidecar: ""
+    theorem_ids: []
+    dictionary_ids: []
+
+  - id: PAPER_COMP_02_COIL_RAY_AND_SAMPLING
+    title: "Circle Calculus Compute 2: CoilRay and CoilSampler"
+    status: planned
+    sidecar: ""
+    theorem_ids: []
+    dictionary_ids: []
+
+  - id: PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT
+    title: "Circle Calculus Compute 3: CoilLayout, CoilStencil, and CoilNTT"
+    status: planned
+    sidecar: ""
+    theorem_ids: []
+    dictionary_ids: []
+
+  - id: PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS
+    title: "Circle Calculus Compute 4: Coil Systems Applications"
+    status: planned
+    sidecar: ""
+    theorem_ids: []
+    dictionary_ids: []
+
+  - id: PAPER_AI_01_CIRCLE_AI_ARCHITECTURES
+    title: "Circle Calculus AI 1: Circle AI Architectures"
+    status: planned
+    sidecar: ""
+    theorem_ids: []
+    dictionary_ids: []
+
+  - id: PAPER_AI_02_COIL_ATTENTION_AND_MEMORY
+    title: "Circle Calculus AI 2: Coil Attention and Memory"
+    status: planned
+    sidecar: ""
+    theorem_ids: []
+    dictionary_ids: []
+
+  - id: PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE
+    title: "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+    status: planned
+    sidecar: ""
+    theorem_ids: []
+    dictionary_ids: []
