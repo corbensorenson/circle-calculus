@@ -1,0 +1,9 @@
+---
+title: "Paper Index"
+---
+
+This index is generated from the paper manifest and links papers to their current status and sidecar roots.
+
+<div class="paper-index" data-paper-index="all"></div>
+
+<script type="module" src="widgets/shared/widget_base.js"></script>

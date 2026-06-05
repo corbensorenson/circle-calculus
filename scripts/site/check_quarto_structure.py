@@ -12,6 +12,8 @@ REQUIRED = [
     "site/roadmap.qmd",
     "site/status.qmd",
     "site/dictionary.qmd",
+    "site/theorems.qmd",
+    "site/papers.qmd",
     "site/chapters/S1/index.qmd",
     "site/chapters/S1/01_finite_circles.qmd",
     "site/chapters/S1/02_rotation_as_addition.qmd",

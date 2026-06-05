@@ -17,6 +17,10 @@ website:
         text: Status
       - href: dictionary.qmd
         text: Dictionary
+      - href: theorems.qmd
+        text: Theorems
+      - href: papers.qmd
+        text: Papers
       - href: about.qmd
         text: About
   sidebar:
@@ -30,6 +34,10 @@ website:
         text: Theorem Status
       - href: dictionary.qmd
         text: Dictionary Index
+      - href: theorems.qmd
+        text: Theorem Index
+      - href: papers.qmd
+        text: Paper Index
       - section: "S0"
         contents:
           - href: chapters/S0/index.qmd

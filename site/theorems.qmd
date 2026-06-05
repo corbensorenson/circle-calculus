@@ -1,0 +1,9 @@
+---
+title: "Theorem Index"
+---
+
+This index is generated from theorem manifests. It is a navigation layer, not a proof layer.
+
+<div class="theorem-index" data-theorem-index="all"></div>
+
+<script type="module" src="widgets/shared/widget_base.js"></script>

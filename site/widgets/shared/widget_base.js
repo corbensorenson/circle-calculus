@@ -164,6 +164,82 @@ async function hydrateDictionaryIndexes() {
   }
 }
 
+async function hydrateTheoremIndexes() {
+  const data = await loadJson("../../data/generated/theorem_manifest.json");
+  for (const target of document.querySelectorAll(".theorem-index[data-theorem-index]")) {
+    const table = document.createElement("table");
+    table.className = "theorem-index-table";
+    const thead = document.createElement("thead");
+    thead.innerHTML = "<tr><th>Id</th><th>Status</th><th>Name</th><th>Lean</th><th>Source</th></tr>";
+    const tbody = document.createElement("tbody");
+    for (const theorem of data.theorems) {
+      const tr = document.createElement("tr");
+
+      const id = document.createElement("td");
+      id.textContent = theorem.id;
+      tr.appendChild(id);
+
+      const status = document.createElement("td");
+      const badge = document.createElement("span");
+      badge.className = statusClass(theorem);
+      badge.textContent = statusLabel(theorem);
+      status.appendChild(badge);
+      tr.appendChild(status);
+
+      const name = document.createElement("td");
+      name.textContent = theorem.name || theorem.informal_statement || "";
+      tr.appendChild(name);
+
+      const lean = document.createElement("td");
+      if (theorem.lean_name && theorem.lean_source) {
+        const link = document.createElement("a");
+        link.href = githubSourceLink(theorem.lean_source, theorem.lean_source_line);
+        link.textContent = theorem.lean_name;
+        lean.appendChild(link);
+      } else {
+        lean.textContent = theorem.lean_name || "";
+      }
+      tr.appendChild(lean);
+
+      const source = document.createElement("td");
+      source.textContent = theorem.source_manifest || "";
+      tr.appendChild(source);
+
+      tbody.appendChild(tr);
+    }
+    table.append(thead, tbody);
+    target.replaceChildren(table);
+  }
+}
+
+async function hydratePaperIndexes() {
+  const data = await loadJson("../../data/generated/paper_index.json");
+  for (const target of document.querySelectorAll(".paper-index[data-paper-index]")) {
+    const table = document.createElement("table");
+    table.className = "paper-index-table";
+    const thead = document.createElement("thead");
+    thead.innerHTML = "<tr><th>Id</th><th>Status</th><th>Title</th><th>Path</th><th>Sidecar</th></tr>";
+    const tbody = document.createElement("tbody");
+    for (const paper of data.papers) {
+      const tr = document.createElement("tr");
+      for (const value of [
+        paper.id || "",
+        paper.status || "",
+        paper.title || "",
+        paper.path || "",
+        paper.sidecar || "",
+      ]) {
+        const td = document.createElement("td");
+        td.textContent = value;
+        tr.appendChild(td);
+      }
+      tbody.appendChild(tr);
+    }
+    table.append(thead, tbody);
+    target.replaceChildren(table);
+  }
+}
+
 export function mountWidgets(name, mount) {
   for (const target of document.querySelectorAll(`[data-widget="${name}"]`)) {
     mount(target);
@@ -174,4 +250,6 @@ window.addEventListener("DOMContentLoaded", () => {
   hydrateTheorems().catch((error) => console.error(error));
   hydrateDictionary().catch((error) => console.error(error));
   hydrateDictionaryIndexes().catch((error) => console.error(error));
+  hydrateTheoremIndexes().catch((error) => console.error(error));
+  hydratePaperIndexes().catch((error) => console.error(error));
 });
