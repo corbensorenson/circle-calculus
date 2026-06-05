@@ -1,5 +1,19 @@
 id: stable_sphere_calculus
-status: planned
+status: active
 papers:
   - papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md
+sidecars:
+  - sidecars/PAPER_P2_01_STABLE_SPHERE_CALCULUS/lean/PaperP201.lean
+theorems:
+  - id: P2S-T0001
+    status: lean_proved
+    lean_name: Circle.Phase2.doubleSuspensionEuler
+    dictionary_dependencies: ["COMMON-0002", "COMMON-0003", "COMMON-0004"]
+  - id: P2S-T0002
+    status: lean_proved
+    lean_name: Circle.Phase2.fourSuspensionEuler
+    dictionary_dependencies: ["COMMON-0002", "COMMON-0003", "COMMON-0004", "COMMON-0005"]
+next_targets:
+  - "Define a bounded stable-map representation before claiming stable homotopy facts."
+  - "Keep spectra, generalized cohomology, and Bott/Clifford periodicity as explicit future layers."
 guardrail: "No false Hopf/division-algebra continuation beyond S15."

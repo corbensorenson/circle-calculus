@@ -250,12 +250,13 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
 
 ### Phase II: Structured Transformations After S15
 
-This section records deferred work from the browser handoffs. It is not active proof status. The detailed context lives in `docs/PHASE2_AND_APPLICATIONS.md`.
+This section records deferred and active Phase II work from the browser handoffs. The detailed context lives in `docs/PHASE2_AND_APPLICATIONS.md`; proof status still comes only from Lean-linked theorem ids and manifests.
 
 Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra continuation such as `S^15 -> S^31 -> S^16`. Higher spheres should move into general suspension, stable homotopy, or spectrum machinery instead.
 
 - [x] `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md`
   - Program: suspension, stable maps, spectra, and stable invariants.
+  - Status: `P2S-T0001` and `P2S-T0002` are Lean-proved finite double/four suspension Euler facts; stable maps, spectra, and stable homotopy claims remain future work.
 - [x] `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md`
   - Program: Clifford algebras, spinors, Bott periodicity, and dimension clocks.
 - [x] `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md`
@@ -311,6 +312,8 @@ Application guardrails:
 - [x] `COMMON-T0001`: Euler characteristic of a finite cell-count list.
 - [x] `COMMON-T0002`: suspension cell-count transform.
 - [x] `COMMON-T0003`: suspension Euler transform, `chi(Susp(K)) = 2 - chi(K)`.
+- [x] `P2S-T0001`: finite double suspension preserves Euler characteristic.
+- [x] `P2S-T0002`: finite four-suspension iteration preserves Euler characteristic.
 
 ## Current S1 Proof Status
 

@@ -82,6 +82,11 @@ Phase II programs:
 - Proof-carrying glyph interface: visual, symbolic, executable, searchable, and formally checked theorem objects.
 - Compositional systems layer: categories and functors connecting circles, coils, spheres, bundles, glyphs, proofs, fields, and data shapes.
 
+Current active Phase II proof seed:
+
+- `PAPER_P2_01_STABLE_SPHERE_CALCULUS` proves the finite double/four suspension Euler facts `P2S-T0001` and `P2S-T0002` in Lean through `Circle.Phase2.doubleSuspensionEuler` and `Circle.Phase2.fourSuspensionEuler`.
+- This is deliberately finite cell-count bookkeeping. It is the entry point for stable-sphere calculus, not a proof of spectra, stable maps, Bott periodicity, or stable homotopy groups.
+
 ## Compute Track
 
 The compute thesis is narrow:
@@ -157,6 +162,8 @@ The strongest first three from the handoff are:
 1. `CoilRay Sort`, because ray coherence is a real rendering bottleneck.
 2. `CoilLayout`, because memory-layout improvements are practical and measurable.
 3. `CoilNTT`, because exact cyclic transforms are core workloads in cryptography, FHE, ZK systems, and polynomial computation.
+
+The latest compute handoff also ranks `CoilSampler`, `CoilStencil`, `CoilHash`, `CoilMotion`, `CoilPRM`, `CoilCodec`, and `CoilANN` as worth prototyping after the first three. Keep these as benchmark tracks until a specific workload, baseline, and measurement plan exist.
 
 First rendering experiment:
 
@@ -238,9 +245,9 @@ Circle AI guardrails:
 - Do not claim general AI improvement. The target is cheaper, more interpretable, or more geometry-aware components in domains where cyclic or harmonic structure is real.
 - Use MLX/Mac-compatible prototypes first in this local project. CUDA references remain external baselines or future portability notes.
 
-## Planned Scaffolds Created
+## Planned And Active Scaffolds Created
 
-These files exist so later Phase II and application work has stable paper and manifest anchors. They are planned scaffolds, not proof claims, and should remain benchmark/proof roadmaps until the active proof corpus advances into them.
+These files exist so later Phase II and application work has stable paper and manifest anchors. Most remain planned scaffolds rather than proof claims; `PAPER_P2_01_STABLE_SPHERE_CALCULUS` is the first active Phase II proof seed.
 
 Planned manifests:
 
@@ -255,7 +262,7 @@ Planned manifests:
 - `manifests/applications/coil_systems.yaml`
 - `manifests/applications/circle_ai.yaml`
 
-Planned papers:
+Planned and active paper anchors:
 
 - `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md`
 - `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md`

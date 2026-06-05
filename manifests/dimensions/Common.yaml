@@ -40,4 +40,30 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["euler_characteristic(suspension_counts(counts)) == 2-euler_characteristic(counts)"]
     blocker: ""
+  - id: P2S-T0001
+    status: lean_proved
+    lean_name: Circle.Phase2.doubleSuspensionEuler
+    informal_statement: "Applying the finite suspension cell-count transform twice preserves Euler characteristic."
+    formal_statement: "forall counts : List Nat, eulerCharacteristic (doubleSuspensionCounts counts) = eulerCharacteristic counts"
+    dictionary_dependencies: ["COMMON-0002", "COMMON-0003", "COMMON-0004"]
+    paper_refs: ["papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["chi(Susp(Susp(counts))) == chi(counts)"]
+    blocker: ""
+  - id: P2S-T0002
+    status: lean_proved
+    lean_name: Circle.Phase2.fourSuspensionEuler
+    informal_statement: "Four finite suspensions preserve Euler characteristic as two double-suspension steps."
+    formal_statement: "forall counts : List Nat, eulerCharacteristic (fourSuspensionCounts counts) = eulerCharacteristic counts"
+    dictionary_dependencies: ["COMMON-0002", "COMMON-0003", "COMMON-0004", "COMMON-0005"]
+    paper_refs: ["papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["chi(Susp^4(counts)) == chi(counts)"]
+    blocker: ""
 warnings: []

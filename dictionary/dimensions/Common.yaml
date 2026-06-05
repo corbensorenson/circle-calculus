@@ -31,4 +31,27 @@ entries:
     forbidden_meanings:
       - "A continuous suspension proof without a separate formal model."
       - "A picture of a suspension treated as a proof."
-
+  - id: COMMON-0004
+    name: "Double suspension Euler stabilizer"
+    kind: operation
+    symbol: "Susp^2"
+    formal_definition: "The operation that applies the finite suspension cell-count transform twice, preserving Euler characteristic in the finite-count model."
+    intuition: "The smallest stable-sphere seed in the current finite model: two suspension moves return the Euler characteristic to its starting value."
+    dependencies: ["COMMON-0002", "COMMON-0003"]
+    introduced_in: "PAPER_P2_01_STABLE_SPHERE_CALCULUS"
+    forbidden_meanings:
+      - "A proof of a general stable homotopy equivalence."
+      - "A spectrum construction."
+      - "A claim that all stable invariants are Euler characteristic."
+  - id: COMMON-0005
+    name: "Four suspension Euler stabilizer"
+    kind: operation
+    symbol: "Susp^4"
+    formal_definition: "The operation that applies the finite double-suspension Euler stabilizer twice."
+    intuition: "A first iterated stable-clock check: two double-suspension steps still preserve the finite Euler characteristic."
+    dependencies: ["COMMON-0002", "COMMON-0003", "COMMON-0004"]
+    introduced_in: "PAPER_P2_01_STABLE_SPHERE_CALCULUS"
+    forbidden_meanings:
+      - "Bott periodicity."
+      - "A Clifford periodicity theorem."
+      - "A statement about spectra without a separate formal model."

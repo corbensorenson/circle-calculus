@@ -311,10 +311,16 @@ papers:
 
   - id: PAPER_P2_01_STABLE_SPHERE_CALCULUS
     title: "Circle Calculus Phase II.1: Stable Sphere Calculus"
-    status: planned
-    sidecar: ""
-    theorem_ids: []
-    dictionary_ids: []
+    status: draft
+    sidecar: sidecars/PAPER_P2_01_STABLE_SPHERE_CALCULUS
+    theorem_ids:
+      - P2S-T0001
+      - P2S-T0002
+    dictionary_ids:
+      - COMMON-0002
+      - COMMON-0003
+      - COMMON-0004
+      - COMMON-0005
 
   - id: PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY
     title: "Circle Calculus Phase II.2: Bott and Clifford Periodicity"
