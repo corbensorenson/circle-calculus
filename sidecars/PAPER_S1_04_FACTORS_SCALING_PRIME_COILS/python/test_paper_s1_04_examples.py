@@ -175,6 +175,15 @@ def test_scale_period_representatives_injective_examples() -> None:
                     assert (circle.scale(x, k) == circle.scale(y, k)) == (x == y)
 
 
+def test_scale_period_representative_image_card_examples() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for k in range(0, 33):
+            period = circle.period(k)
+            image = {circle.scale(r, k) for r in range(period)}
+            assert len(image) == period
+
+
 def test_coprime_scale_equality_examples() -> None:
     for n in range(1, 33):
         circle = Circle(n)

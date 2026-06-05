@@ -447,6 +447,22 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["for 0<=x,y<period(n,k), scale(n,k,x)==scale(n,k,y) iff x==y over positive moduli in bounded tests"]
 
+  - id: CC-T0037
+    name: Scaling period-representative image has period cardinality
+    status: proved
+    lean_name: Circle.scalePeriodRepresentativeImage_card
+    informal_statement: "For a nonzero circle size, the finite image of one full set of stride-period representatives under scaling has cardinality equal to the stride period."
+    formal_statement: "forall {n k : Nat}, n != 0 -> (Circle.scalePeriodRepresentativeImage n k).card = Circle.period n k"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_period_representative_image_card"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean from CC-T0036 and Finset.card_image_of_injective over Fin (period n k)."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["len({scale(n,k,r) | 0 <= r < period(n,k)}) == period(n,k) over positive moduli in bounded tests"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

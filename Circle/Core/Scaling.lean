@@ -222,6 +222,19 @@ theorem scale_nat_period_representatives_injective {n k x y : Nat} (hn : n ≠ 0
   · intro h
     rw [h]
 
+noncomputable def scalePeriodRepresentativeImage (n k : Nat) : Finset (C n) :=
+  Finset.univ.image (fun r : Fin (period n k) => scale n k ((r : Nat) : C n))
+
+theorem scalePeriodRepresentativeImage_card {n k : Nat} (hn : n ≠ 0) :
+    (scalePeriodRepresentativeImage n k).card = period n k := by
+  unfold scalePeriodRepresentativeImage
+  rw [Finset.card_image_of_injective]
+  · exact Fintype.card_fin (period n k)
+  · intro a b h
+    apply Fin.ext
+    exact (scale_nat_period_representatives_injective (n := n) (k := k)
+      (x := a.val) (y := b.val) hn a.isLt b.isLt).mp h
+
 theorem scale_nat_eq_iff_nat_modEq_of_coprime {n k x y : Nat} (hcop : Nat.Coprime n k) :
     scale n k ((x : Nat) : C n) = scale n k ((y : Nat) : C n) ↔ x ≡ y [MOD n] := by
   have hbij : Function.Bijective (scale n k) := (scale_invertible_iff_coprime n k).mpr hcop
