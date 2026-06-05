@@ -1,0 +1,18 @@
+---
+title: "Theorem Status Legend"
+---
+
+The Living Book uses theorem-status labels from generated theorem data. Page prose, widgets, and diagrams do not upgrade theorem status.
+
+| Label | Meaning |
+| --- | --- |
+| <span class="status-badge status-proved">Lean-proved</span> | The theorem id has status `proved` or `lean_proved` and resolves to a Lean declaration. |
+| <span class="status-badge status-planned">Planned theorem</span> | The statement is planned, stated, or awaiting formal proof. |
+| <span class="status-badge status-draft">Draft</span> | The surrounding exposition or paper track is draft-level and not a Lean proof claim. |
+| <span class="status-badge status-exploratory">Exploratory</span> | Python, widget, or experimental support exists without formal theorem status. |
+| <span class="status-badge status-blocked">Blocked</span> | The manifest records a blocker. |
+| <span class="status-badge status-deferred">Deferred</span> | Long-horizon work deliberately left for later. |
+
+The formal verification command remains `lake build`, supported by manifest, dictionary, paper-link, sidecar, and fake-proof checks.
+
+<script type="module" src="widgets/shared/widget_base.js"></script>

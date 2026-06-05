@@ -137,6 +137,33 @@ async function hydrateDictionary() {
   }
 }
 
+async function hydrateDictionaryIndexes() {
+  const data = await loadJson("../../data/generated/dictionary.json");
+  for (const target of document.querySelectorAll(".dictionary-index[data-dictionary-index]")) {
+    const table = document.createElement("table");
+    table.className = "dictionary-index-table";
+    const thead = document.createElement("thead");
+    thead.innerHTML = "<tr><th>Id</th><th>Term</th><th>Kind</th><th>Source</th></tr>";
+    const tbody = document.createElement("tbody");
+    for (const entry of data.entries) {
+      const tr = document.createElement("tr");
+      for (const value of [
+        entry.id,
+        entry.name || "",
+        entry.kind || "",
+        entry.source_dictionary || "",
+      ]) {
+        const td = document.createElement("td");
+        td.textContent = value;
+        tr.appendChild(td);
+      }
+      tbody.appendChild(tr);
+    }
+    table.append(thead, tbody);
+    target.replaceChildren(table);
+  }
+}
+
 export function mountWidgets(name, mount) {
   for (const target of document.querySelectorAll(`[data-widget="${name}"]`)) {
     mount(target);
@@ -146,4 +173,5 @@ export function mountWidgets(name, mount) {
 window.addEventListener("DOMContentLoaded", () => {
   hydrateTheorems().catch((error) => console.error(error));
   hydrateDictionary().catch((error) => console.error(error));
+  hydrateDictionaryIndexes().catch((error) => console.error(error));
 });

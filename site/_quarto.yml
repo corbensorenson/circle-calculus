@@ -13,6 +13,10 @@ website:
         text: Start
       - href: roadmap.qmd
         text: Roadmap
+      - href: status.qmd
+        text: Status
+      - href: dictionary.qmd
+        text: Dictionary
       - href: about.qmd
         text: About
   sidebar:
@@ -22,6 +26,10 @@ website:
         text: Start
       - href: roadmap.qmd
         text: Roadmap
+      - href: status.qmd
+        text: Theorem Status
+      - href: dictionary.qmd
+        text: Dictionary Index
       - section: "S0"
         contents:
           - href: chapters/S0/index.qmd

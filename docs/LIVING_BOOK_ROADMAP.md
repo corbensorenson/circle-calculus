@@ -2,7 +2,7 @@
 
 The Living Book is Phase III of the project: a public-facing Quarto website/e-textbook generated from papers, theorem manifests, dictionary entries, Lean proof metadata, and Python reference models.
 
-Current milestone status as of 2026-06-05: Phase 0 and the first S1 interactive source milestone are implemented. Higher dimensions and applications are scaffolded as placeholders only.
+Current milestone status as of 2026-06-05: Phase 0 and the first S1 interactive source milestone are implemented, including a theorem-status legend and dictionary index. Higher dimensions and applications are scaffolded as placeholders only.
 
 ## Phase 0: Skeleton And Data
 

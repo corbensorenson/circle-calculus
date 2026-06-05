@@ -197,6 +197,8 @@ Start with:
 9. `docs/PHASE2_AND_APPLICATIONS.md`
 10. `docs/LIVING_BOOK_ROADMAP.md`
 11. `site/index.qmd`
+12. `site/status.qmd`
+13. `site/dictionary.qmd`
 
 The papers give the conceptual path. The sidecars show the proof links. The dictionary fixes vocabulary so later papers reuse the same meanings instead of drifting.
 
