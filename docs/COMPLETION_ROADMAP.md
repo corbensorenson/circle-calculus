@@ -165,7 +165,7 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
   - Status: signed zero, composition, and inverse motion are Lean-proved as `S1O-T0001` through `S1O-T0003`.
 - [x] `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md`
   - Proof targets: `CC-T0008`, multiplication as repeated rotation/scaling, invertibility iff coprime, factor structure, prime/full-coil refinements.
-  - Status: scaling invertible iff coprime is Lean-proved; deeper factor refinements remain future extensions.
+  - Status: scaling invertible iff coprime, scale-by-one identity, and scaling composition are Lean-proved as `CC-T0008`, `CC-T0017`, and `CC-T0018`; deeper factor/orbit refinements remain future extensions.
 
 ### S0: Opposition And Sign
 
@@ -364,6 +364,8 @@ Already proved and linked:
 - [x] `CC-T0006`: orbit decomposition count
 - [x] `CC-T0007`: prime full coil
 - [x] `CC-T0008`: scaling invertible iff coprime
+- [x] `CC-T0017`: scaling by one is identity
+- [x] `CC-T0018`: scaling maps compose by multiplying scale factors
 - [x] `CC-T0009`: unique winding/residue lift
 - [x] `CC-T0010`: lifted addition decomposition
 - [x] `CC-T0011`: lifted existence
@@ -375,7 +377,7 @@ Already proved and linked:
 
 Still planned:
 
-- Scaling/factor refinements beyond `CC-T0008`: multiplication as repeated scaling, factor structure, and prime/full-coil refinements.
+- Scaling/factor refinements beyond `CC-T0018`: factor structure and prime/full-coil refinements.
 
 ## Verification Checklist
 

@@ -16,3 +16,17 @@ def test_scaling_reversible_iff_coprime_small_range() -> None:
         circle = Circle(n)
         for k in range(0, 65):
             assert circle.scale_is_permutation(k) == (gcd(n, k) == 1)
+
+
+def test_scaling_identity_and_composition_examples() -> None:
+    circle = Circle(12)
+    assert circle.scale(7, 1) == 7
+    assert circle.scale(circle.scale(7, 5), 3) == circle.scale(7, 15)
+
+    for n in range(1, 33):
+        circle = Circle(n)
+        for i in range(0, 65):
+            assert circle.scale(i, 1) == circle.node(i)
+            for a in range(0, 17):
+                for b in range(0, 17):
+                    assert circle.scale(circle.scale(i, b), a) == circle.scale(i, a * b)

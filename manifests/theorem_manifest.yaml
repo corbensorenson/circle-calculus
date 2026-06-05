@@ -127,6 +127,38 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["scale is permutation iff gcd(n,k)==1"]
 
+  - id: CC-T0017
+    name: Scaling by one identity
+    status: proved
+    lean_name: Circle.scale_one
+    informal_statement: "Scaling by one leaves every node unchanged."
+    formal_statement: "forall (n : Nat) (x : Circle.C n), Circle.scale n 1 x = x"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_one_identity"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean by reducing scale-by-one to one multiplication in ZMod."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["scale(n,1,i)==i%n"]
+
+  - id: CC-T0018
+    name: Scaling composition
+    status: proved
+    lean_name: Circle.scale_comp
+    informal_statement: "Composing scaling maps multiplies their scale factors."
+    formal_statement: "forall (n a b : Nat) (x : Circle.C n), Circle.scale n a (Circle.scale n b x) = Circle.scale n (a*b) x"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_composition"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean from associativity and natural-number multiplication casting into ZMod."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["scale(n,a,scale(n,b,i))==scale(n,a*b,i)"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

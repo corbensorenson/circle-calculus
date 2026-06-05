@@ -59,6 +59,8 @@ papers:
     sidecar: sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS
     theorem_ids:
       - CC-T0008
+      - CC-T0017
+      - CC-T0018
     dictionary_ids:
       - S1-0001
       - CC-0105

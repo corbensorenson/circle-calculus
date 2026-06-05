@@ -1,6 +1,6 @@
 # Circle Calculus S1.4: Factors, Scaling, and Prime Coils
 
-Status: draft scaffold with the first scaling theorem proved.
+Status: draft with the first scaling theorem spine proved.
 
 ## Aim
 
@@ -9,12 +9,25 @@ This paper will connect multiplication, scaling, factors, invertibility, and pri
 ## Target Spine
 
 - `CC-T0008`: `Circle.scale_invertible_iff_coprime`
+- `CC-T0017`: `Circle.scale_one`
+- `CC-T0018`: `Circle.scale_comp`
 - multiplication as repeated rotation or scaling
 - scaling invertibility iff coprime
 - factor structure through orbit decomposition
 - prime rings as full-cycle systems
 
 ## Proved Core
+
+`CC-T0017` is proved by `Circle.scale_one`: scaling by one is the identity map on every finite circle.
+
+`CC-T0018` is proved by `Circle.scale_comp`: scaling by `b` and then scaling by `a` is the same as scaling once by `a*b`.
+
+Together these two theorems make scaling into a checked multiplicative action on finite-circle addresses:
+
+```text
+scale(n,1)(x) = x
+scale(n,a)(scale(n,b)(x)) = scale(n,a*b)(x)
+```
 
 `CC-T0008` is proved by `Circle.scale_invertible_iff_coprime`.
 
@@ -39,4 +52,4 @@ The Lean proof reduces scaling to left multiplication by `(k : ZMod n)`. Mathlib
 
 ## Notes
 
-This paper is the immediate missing `S^1` theorem target after the already green finite-circle and winding spines.
+The remaining factor-structure targets should build on `CC-T0008`, `CC-T0017`, and `CC-T0018` without claiming more than the current finite-circle model proves.
