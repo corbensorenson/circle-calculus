@@ -28,10 +28,10 @@ theorems:
       python_property_tests: ["v-e+f == 2"]
     blocker: ""
   - id: S2-T0003
-    status: planned
+    status: lean_proved
     lean_name: Circle.S2.sphereGrid_counts
     informal_statement: "For n>=3 and r>=1, SphereGrid(n,r) has V=nr+2, E=n(2r+1), and F=n(r+1)."
-    formal_statement: "deferred formal statement"
+    formal_statement: "forall n r : Nat, Circle.S2.sphereGridCounts n r = [n*r+2, n*r+n*(r+1), n*(r+1)]"
     dictionary_dependencies: ["S2-0002", "COMMON-0001"]
     paper_refs: ["papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"]
     imports_allowed: ["Common", "S1"]
@@ -41,10 +41,10 @@ theorems:
       python_property_tests: ["sphere_grid_counts(n,r)==(n*r+2,n*(2*r+1),n*(r+1))"]
     blocker: ""
   - id: S2-T0004
-    status: planned
+    status: lean_proved
     lean_name: Circle.S2.sphereGrid_chi
     informal_statement: "For n>=3 and r>=1, SphereGrid(n,r) has Euler characteristic 2."
-    formal_statement: "deferred formal statement"
+    formal_statement: "forall n r : Nat, Circle.Common.eulerCharacteristic (Circle.S2.sphereGridCounts n r) = 2"
     dictionary_dependencies: ["S2-0002", "COMMON-0002"]
     paper_refs: ["papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"]
     imports_allowed: ["Common", "S1"]

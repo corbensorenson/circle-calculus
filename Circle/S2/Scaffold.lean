@@ -26,4 +26,16 @@ theorem suspendedCircle_chi (n : Nat) :
   simp [Circle.Common.eulerCharacteristic]
   omega
 
+def sphereGridCounts (n r : Nat) : List Nat :=
+  [n * r + 2, n * r + n * (r + 1), n * (r + 1)]
+
+theorem sphereGrid_counts (n r : Nat) :
+    sphereGridCounts n r = [n * r + 2, n * r + n * (r + 1), n * (r + 1)] := by
+  rfl
+
+theorem sphereGrid_chi (n r : Nat) :
+    Circle.Common.eulerCharacteristic (sphereGridCounts n r) = 2 := by
+  rw [sphereGrid_counts]
+  simp [Circle.Common.eulerCharacteristic]
+
 end Circle.S2

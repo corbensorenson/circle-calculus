@@ -14,8 +14,10 @@ Current upstream proved facts:
 
 - `S2-T0001`: `Circle.S2.suspendedCircle_counts`
 - `S2-T0002`: `Circle.S2.suspendedCircle_chi`
+- `S2-T0003`: `Circle.S2.sphereGrid_counts`
+- `S2-T0004`: `Circle.S2.sphereGrid_chi`
 
-Still-planned upstream facts include the sphere-grid and latitude-ring targets `S2-T0003` through `S2-T0007`.
+Still-planned upstream facts include the latitude-ring and pole-collapse targets `S2-T0005` through `S2-T0007`.
 
 ## Notes
 

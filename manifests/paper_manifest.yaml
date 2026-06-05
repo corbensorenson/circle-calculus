@@ -76,6 +76,21 @@ papers:
       - COMMON-0002
       - COMMON-0003
 
+  - id: PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS
+    title: "Circle Calculus S2.2: Sphere Grids, Latitude Rings, and Pole Collapse"
+    status: draft
+    sidecar: sidecars/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS
+    theorem_ids:
+      - S2-T0003
+      - S2-T0004
+    dictionary_ids:
+      - S2-0002
+      - S2-0003
+      - S2-0004
+      - S2-W0001
+      - S2-W0002
+      - S2-W0003
+
   - id: PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY
     title: "Circle Calculus S456.1: General Suspension and Euler Parity"
     status: draft
