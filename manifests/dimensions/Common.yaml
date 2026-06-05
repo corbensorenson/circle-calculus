@@ -1,11 +1,11 @@
 dimension: Common
-status: planned
+status: active
 theorems:
   - id: COMMON-T0001
-    status: planned
+    status: lean_proved
     lean_name: Circle.Common.eulerCharacteristic
     informal_statement: "The Euler characteristic of a finite cell-count list is the alternating sum of its cell counts."
-    formal_statement: "deferred formal statement"
+    formal_statement: "def eulerCharacteristic : List Nat -> Int, with [] = 0 and count :: rest = count - eulerCharacteristic rest"
     dictionary_dependencies: ["COMMON-0001", "COMMON-0002"]
     paper_refs: ["docs/COMPLETION_ROADMAP.md#common-proof-targets"]
     imports_allowed: ["Common"]
@@ -15,10 +15,10 @@ theorems:
       python_property_tests: ["euler_characteristic([v,e,f]) == v-e+f"]
     blocker: ""
   - id: COMMON-T0002
-    status: planned
+    status: lean_proved
     lean_name: Circle.Common.suspensionCounts
     informal_statement: "Suspension transforms finite cell counts by adding two poles and coning adjacent dimensions."
-    formal_statement: "deferred formal statement"
+    formal_statement: "def suspensionCounts : List Nat -> List Nat, with [] = [2] and count :: rest = (count + 2) :: suspensionTail count rest"
     dictionary_dependencies: ["COMMON-0001", "COMMON-0003"]
     paper_refs: ["docs/COMPLETION_ROADMAP.md#common-proof-targets"]
     imports_allowed: ["Common"]
@@ -31,7 +31,7 @@ theorems:
     status: planned
     lean_name: Circle.Common.suspensionEuler
     informal_statement: "Suspension changes Euler characteristic by chi(Susp K)=2-chi(K)."
-    formal_statement: "deferred formal statement"
+    formal_statement: "forall counts : List Nat, eulerCharacteristic (suspensionCounts counts) = 2 - eulerCharacteristic counts"
     dictionary_dependencies: ["COMMON-0002", "COMMON-0003"]
     paper_refs: ["docs/COMPLETION_ROADMAP.md#common-proof-targets"]
     imports_allowed: ["Common"]
@@ -39,6 +39,5 @@ theorems:
       lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["euler_characteristic(suspension_counts(counts)) == 2-euler_characteristic(counts)"]
-    blocker: ""
+    blocker: "Needs a lightweight Lean proof of the integer alternating-sum identity without importing the broad Mathlib.Tactic stack."
 warnings: []
-

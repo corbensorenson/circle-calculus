@@ -62,3 +62,17 @@ papers:
     dictionary_ids:
       - S1-0001
       - CC-0105
+
+  - id: PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY
+    title: "Circle Calculus S456.1: General Suspension and Euler Parity"
+    status: draft
+    sidecar: sidecars/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY
+    theorem_ids:
+      - COMMON-T0001
+      - COMMON-T0002
+      - COMMON-T0003
+    dictionary_ids:
+      - COMMON-0001
+      - COMMON-0002
+      - COMMON-0003
+      - S456-0001

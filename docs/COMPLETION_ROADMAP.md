@@ -251,6 +251,12 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Program: coil signatures, closure profiles, prime-lag recurrence, antinode maps, and periodic-data benchmarks.
 - [ ] `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md`
   - Program: certified cyclic/circulant/orbit structure lowered to FFT/NTT/permutation backends and benchmarked.
+- [ ] `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md`
+  - Program: disciplined Circle AI thesis covering phase, recurrence, rotation, sparse cyclic mixing, circular memory, harmonic transforms, geometry-aware models, and proof-carrying model components.
+- [ ] `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`
+  - Program: Coil Attention, CoilKV, long-context retrieval, alias control, stride/orbit coverage, and comparisons against full attention, sparse attention, Hyena-like mixers, and S4/Mamba-like baselines.
+- [ ] `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md`
+  - Program: CoilLinear, CoilRA, MultiCoil RoPE, periodic activations, and MLX-first benchmarks against dense, LoRA, block-circulant, and standard RoPE baselines.
 
 Deferred manifest families:
 
@@ -261,6 +267,7 @@ Deferred manifest families:
 - [ ] `manifests/theories/glyph_proof_interface.yaml`
 - [ ] `manifests/applications/coil_data_analysis.yaml`
 - [ ] `manifests/applications/coil_compute.yaml`
+- [ ] `manifests/applications/circle_ai.yaml`
 
 Application guardrails:
 
@@ -269,12 +276,15 @@ Application guardrails:
 - [ ] Treat number provenance as first-class only after the finite-circle factor/orbit spine is stable.
 - [ ] For local compute work, use MLX/Mac-compatible acceleration first. CUDA/cuFFT references are future portability notes or external baselines, not the active backend on this machine.
 - [ ] Benchmark compute claims against ordinary dense/direct baselines before presenting any speedup as real.
+- [ ] Keep Circle AI claims benchmark-driven: no claim that circles improve all AI; only target cyclic, periodic, convolutional, rotational, harmonic, memory-like, or proof-search-like structure.
+- [ ] Stage AI work in this order when the proof/math spine is ready: CoilLinear/CoilRA prototypes, MultiCoil RoPE, Coil Attention plus CoilKV, activation-coil interpretability, then spherical/quaternion models. Keep octonion AI exploratory.
 
 ## Common Proof Targets
 
-- [ ] `COMMON-T0001`: Euler characteristic of a finite cell-count list.
-- [ ] `COMMON-T0002`: suspension cell-count transform.
+- [x] `COMMON-T0001`: Euler characteristic of a finite cell-count list.
+- [x] `COMMON-T0002`: suspension cell-count transform.
 - [ ] `COMMON-T0003`: suspension Euler transform, `chi(Susp(K)) = 2 - chi(K)`.
+  - Blocker: needs a lightweight Lean proof of the integer alternating-sum identity without broad tactic imports.
 
 ## Current S1 Proof Status
 
