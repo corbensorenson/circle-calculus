@@ -1,0 +1,70 @@
+entries:
+  - id: S2-0001
+    name: "Suspended finite circle"
+    kind: object
+    symbol: "SuspC(n)"
+    formal_definition: "A planned finite S^2 model formed by suspending a finite circle C_n with north and south poles."
+    intuition: "The first sphere surface obtained by coning a finite circle from two poles."
+    dependencies: ["CC-0001", "COMMON-0003"]
+    introduced_in: "PAPER_S2_01_SUSPENDED_CIRCLES"
+    forbidden_meanings:
+      - "A smooth round sphere."
+      - "A drawing treated as a proof."
+  - id: S2-0002
+    name: "Sphere grid"
+    kind: object
+    symbol: "SphereGrid(n,r)"
+    formal_definition: "A planned finite S^2 grid with two collapsed poles and r latitude rings, each with n cyclic addresses."
+    intuition: "Latitude rings carry S1 behavior while poles handle sphere collapse."
+    dependencies: ["CC-0001", "S2-0001"]
+    introduced_in: "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS"
+    forbidden_meanings:
+      - "A Cartesian product C_n x C_m."
+      - "A torus-like two-cycle grid."
+  - id: S2-0003
+    name: "Latitude ring"
+    kind: object
+    formal_definition: "A non-pole ring inside SphereGrid(n,r), planned to be C_n-like."
+    intuition: "A horizontal cyclic slice of the finite sphere grid."
+    dependencies: ["S2-0002", "CC-0001"]
+    introduced_in: "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS"
+    forbidden_meanings:
+      - "A separate sphere."
+      - "A longitude coordinate at a pole."
+  - id: S2-0004
+    name: "Pole collapse"
+    kind: relation
+    formal_definition: "The relation that identifies all north cone tips as one pole and all south cone tips as one pole in the finite sphere model."
+    intuition: "The mechanism that makes a sphere grid sphere-like rather than torus-like."
+    dependencies: ["S2-0002"]
+    introduced_in: "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS"
+    forbidden_meanings:
+      - "A second cyclic coordinate at the poles."
+  - id: S2-W0001
+    name: "Torus confusion warning"
+    kind: warning
+    formal_definition: "C_n x C_m has two cyclic directions and is torus-like, not sphere-like."
+    intuition: "A finite sphere grid requires pole collapse."
+    dependencies: ["S2-0002"]
+    introduced_in: "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS"
+    forbidden_meanings:
+      - "Calling a product of circles a sphere."
+  - id: S2-W0002
+    name: "Pole singularity warning"
+    kind: warning
+    formal_definition: "Longitude is not a meaningful coordinate at a collapsed pole."
+    intuition: "All longitudes meet at each pole."
+    dependencies: ["S2-0004"]
+    introduced_in: "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS"
+    forbidden_meanings:
+      - "Assigning independent longitude addresses to a collapsed pole."
+  - id: S2-W0003
+    name: "S2 group fallacy warning"
+    kind: warning
+    formal_definition: "S^2 does not have the same natural pointwise multiplication structure as S^1 or unit-quaternion S^3."
+    intuition: "The sphere surface is geometric here, not a cyclic or quaternionic group."
+    dependencies: ["S2-0001"]
+    introduced_in: "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS"
+    forbidden_meanings:
+      - "Using group APIs for S^2 points without a separate proven structure."
+

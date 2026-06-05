@@ -1,0 +1,44 @@
+dimension: Common
+status: planned
+theorems:
+  - id: COMMON-T0001
+    status: planned
+    lean_name: Circle.Common.eulerCharacteristic
+    informal_statement: "The Euler characteristic of a finite cell-count list is the alternating sum of its cell counts."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["COMMON-0001", "COMMON-0002"]
+    paper_refs: ["docs/COMPLETION_ROADMAP.md#common-proof-targets"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["euler_characteristic([v,e,f]) == v-e+f"]
+    blocker: ""
+  - id: COMMON-T0002
+    status: planned
+    lean_name: Circle.Common.suspensionCounts
+    informal_statement: "Suspension transforms finite cell counts by adding two poles and coning adjacent dimensions."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["COMMON-0001", "COMMON-0003"]
+    paper_refs: ["docs/COMPLETION_ROADMAP.md#common-proof-targets"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["suspension_counts([v,e,f]) == [v+2,e+2*v,f+2*e,2*f]"]
+    blocker: ""
+  - id: COMMON-T0003
+    status: planned
+    lean_name: Circle.Common.suspensionEuler
+    informal_statement: "Suspension changes Euler characteristic by chi(Susp K)=2-chi(K)."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["COMMON-0002", "COMMON-0003"]
+    paper_refs: ["docs/COMPLETION_ROADMAP.md#common-proof-targets"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["euler_characteristic(suspension_counts(counts)) == 2-euler_characteristic(counts)"]
+    blocker: ""
+warnings: []
+

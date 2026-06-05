@@ -1,0 +1,47 @@
+entries:
+  - id: S456-0001
+    name: "Iterated suspension Euler parity"
+    kind: relation
+    formal_definition: "The planned finite-suspension result chi(S^d)=1+(-1)^d for iterated sphere models."
+    intuition: "The bridge that carries S^4, S^5, and S^6 without skipping dimensions."
+    dependencies: ["COMMON-0002", "COMMON-0003"]
+    introduced_in: "PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY"
+    forbidden_meanings:
+      - "A claim about every smooth structure on every sphere."
+  - id: S4-0001
+    name: "S4 quaternionic Hopf base"
+    kind: object
+    formal_definition: "The planned S^4 role as base of the quaternionic Hopf structure S^3 -> S^7 -> S^4."
+    intuition: "The geometric base needed before quaternionic Hopf claims."
+    dependencies: ["S456-0001"]
+    introduced_in: "PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF"
+    forbidden_meanings:
+      - "A proved quaternionic Hopf formalization by itself."
+  - id: S5-0001
+    name: "S5 complex projective bridge"
+    kind: model
+    formal_definition: "The planned S^5 bridge toward complex projective and circle-bundle structures."
+    intuition: "A higher odd sphere that remains part of the geometric ladder."
+    dependencies: ["S456-0001"]
+    introduced_in: "PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE"
+    forbidden_meanings:
+      - "A completed projective geometry formalization."
+  - id: S6-0001
+    name: "S6 octonion shadow"
+    kind: model
+    formal_definition: "The planned S^6 bridge layer near octonionic geometry and warning topics."
+    intuition: "A geometric warning layer before S^7 octonions."
+    dependencies: ["S456-0001"]
+    introduced_in: "PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS"
+    forbidden_meanings:
+      - "A resolved complex-structure claim."
+  - id: S6-W0001
+    name: "S6 complex-structure warning"
+    kind: warning
+    formal_definition: "Claims about integrable complex structures on S^6 are not project assumptions unless formalized from accepted foundations."
+    intuition: "Do not build on delicate unresolved S^6 claims."
+    dependencies: ["S6-0001"]
+    introduced_in: "PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS"
+    forbidden_meanings:
+      - "Settling the S^6 complex-structure problem by roadmap language."
+

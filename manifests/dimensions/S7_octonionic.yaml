@@ -1,0 +1,145 @@
+dimension: S7
+status: planned
+theorems:
+  - id: S7C-T0001
+    status: planned
+    lean_name: Circle.S7.iteratedSuspensionModel
+    informal_statement: "S^7 is constructed as a finite iterated-suspension model."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["S7C-0001", "S456-0001"]
+    paper_refs: ["papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
+  - id: S7C-T0002
+    status: planned
+    lean_name: Circle.S7.eulerCharacteristic
+    informal_statement: "The finite iterated-suspension model of S^7 has Euler characteristic 0."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["S7C-0001", "COMMON-0002"]
+    paper_refs: ["papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
+  - id: S7QH-T0001
+    status: deferred
+    lean_name: Circle.S7.quaternionicHopfRoadmap
+    informal_statement: "The quaternionic Hopf roadmap has intended structure S^3 -> S^7 -> S^4."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["S7QH-0001", "S3Q-0001", "S4-0001"]
+    paper_refs: ["papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
+    verification:
+      lean_build_required: false
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: "Deferred until S3 quaternion calculus and S4 base model are stable."
+  - id: S7QH-T0002
+    status: deferred
+    lean_name: Circle.S7.quaternionicPhaseInvariance
+    informal_statement: "Quaternionic phase invariance is the S^7 analog of Hopf phase invariance."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["S7QH-0001", "S3Q-0002"]
+    paper_refs: ["papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
+    verification:
+      lean_build_required: false
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: "Deferred until S3 quaternion calculus and S4 base model are stable."
+  - id: S7O-T0001
+    status: planned
+    lean_name: Circle.S7.octonionBasis
+    informal_statement: "Define or import the octonion basis and multiplication table."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["S7O-0001"]
+    paper_refs: ["papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
+  - id: S7O-T0002
+    status: planned
+    lean_name: Circle.S7.octonionConjugateNorm
+    informal_statement: "Define octonion conjugate and norm."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["S7O-0001", "S7O-0002"]
+    paper_refs: ["papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
+  - id: S7O-T0003
+    status: planned
+    lean_name: Circle.S7.octonionNormMul
+    informal_statement: "Octonion norm is multiplicative."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["S7O-0002"]
+    paper_refs: ["papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
+  - id: S7O-T0004
+    status: planned
+    lean_name: Circle.S7.unitOctonion_mul_closed
+    informal_statement: "Unit octonions are closed under multiplication, without forming a group."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["S7O-0002", "S7O-W0001"]
+    paper_refs: ["papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
+  - id: S7O-T0005
+    status: planned
+    lean_name: Circle.S7.octonion_noncommutative_example
+    informal_statement: "Octonion multiplication is noncommutative by a formal example."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["S7O-0001"]
+    paper_refs: ["papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
+  - id: S7O-T0006
+    status: planned
+    lean_name: Circle.S7.octonion_nonassociative_example
+    informal_statement: "Octonion multiplication is nonassociative by a formal example."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["S7O-0001", "S7O-W0002"]
+    paper_refs: ["papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
+warnings:
+  - id: S7O-W0001
+    status: planned
+    dictionary_dependencies: ["S7O-W0001"]
+    paper_refs: ["papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"]
+    statement: "Unit octonions are not a group."
+  - id: S7O-W0002
+    status: planned
+    dictionary_dependencies: ["S7O-W0002"]
+    paper_refs: ["papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"]
+    statement: "Bracketing matters in octonion calculus."
+

@@ -59,6 +59,8 @@ This is an early public research scaffold with two promoted papers and a working
 
 The theorem manifest currently marks `CC-T0008` as planned for the later scaling/multiplication paper.
 
+The D0 dimensional scaffold is also in place: dimension manifests, dimension dictionaries, planned paper stubs, Lean/Python scaffolds, and dimension validation scripts. Future-dimension theorems remain planned, deferred, exploratory, or stated until actual Lean proofs exist.
+
 ## Proof Standard
 
 A theorem is treated as proved only when all of the following are true:
@@ -123,6 +125,7 @@ make test        # run Python tests
 make manifest    # validate theorem metadata
 make dictionary  # validate dictionary metadata
 make paperlinks  # verify papers cite known theorem ids
+make dimensioncheck # validate dimension manifests, imports, and paper links
 make nofake      # reject forbidden proof placeholders
 make examples    # regenerate current example diagrams
 make check       # run the full suite

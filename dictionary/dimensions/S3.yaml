@@ -1,0 +1,66 @@
+entries:
+  - id: S3C-0001
+    name: "Finite 3-sphere suspension model"
+    kind: object
+    formal_definition: "A planned finite S^3 model obtained by suspending a finite S^2 cell-count model."
+    intuition: "The combinatorial topological S^3 layer before quaternion algebra."
+    dependencies: ["COMMON-0003", "S2-0001"]
+    introduced_in: "PAPER_S3_01_FINITE_HYPERSPHERES"
+    forbidden_meanings:
+      - "A visual 4D projection treated as a proof."
+  - id: S3Q-0001
+    name: "Quaternion model"
+    kind: model
+    formal_definition: "The planned algebraic S^3 model using unit quaternions."
+    intuition: "S^3 as the first higher sphere with native associative but noncommutative multiplication."
+    dependencies: []
+    introduced_in: "PAPER_S3_02_QUATERNION_COILS"
+    forbidden_meanings:
+      - "A commutative multiplication system."
+      - "An octonion model."
+  - id: S3Q-0002
+    name: "Unit quaternion"
+    kind: object
+    formal_definition: "A quaternion whose norm is one."
+    intuition: "A point of the algebraic S^3 model."
+    dependencies: ["S3Q-0001"]
+    introduced_in: "PAPER_S3_02_QUATERNION_COILS"
+    forbidden_meanings:
+      - "An arbitrary non-unit quaternion."
+  - id: S3Q-0003
+    name: "Quaternion noncommutativity"
+    kind: relation
+    formal_definition: "The planned formal fact that some quaternion products depend on order."
+    intuition: "S^3: order matters."
+    dependencies: ["S3Q-0001"]
+    introduced_in: "PAPER_S3_02_QUATERNION_COILS"
+    forbidden_meanings:
+      - "Nonassociativity."
+  - id: S3H-0001
+    name: "Hopf map"
+    kind: operation
+    formal_definition: "The planned complex-pair map from normalized S^3 coordinates to S^2 coordinates."
+    intuition: "A visible S^2 base with hidden S^1 phase fibers."
+    dependencies: ["S3Q-0001", "S2-0001"]
+    introduced_in: "PAPER_S3_03_HOPF_COILS"
+    forbidden_meanings:
+      - "A proof that S^3 is globally S^2 x S^1."
+  - id: S3H-0002
+    name: "Hopf phase fiber"
+    kind: object
+    formal_definition: "The planned S^1-like phase orbit over a Hopf base point."
+    intuition: "The hidden circle above each visible base point."
+    dependencies: ["S3H-0001", "S1-0001"]
+    introduced_in: "PAPER_S3_03_HOPF_COILS"
+    forbidden_meanings:
+      - "A global product decomposition."
+  - id: S3H-W0001
+    name: "Hopf not product warning"
+    kind: warning
+    formal_definition: "The Hopf fibration is locally product-like but S^3 is not globally S^2 x S^1."
+    intuition: "Hidden phase is twisted globally."
+    dependencies: ["S3H-0001"]
+    introduced_in: "PAPER_S3_03_HOPF_COILS"
+    forbidden_meanings:
+      - "Declaring S^3 equal to S^2 x S^1."
+

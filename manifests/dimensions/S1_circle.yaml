@@ -1,0 +1,7 @@
+dimension: S1
+status: active
+source_manifest: manifests/theorem_manifest.yaml
+notes: "S1 keeps the existing CC-T theorem ids and root theorem manifest as the active proof registry."
+theorems: []
+warnings: []
+

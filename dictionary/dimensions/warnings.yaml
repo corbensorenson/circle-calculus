@@ -1,0 +1,20 @@
+entries:
+  - id: WARN-0001
+    name: "Proof status honesty"
+    kind: warning
+    formal_definition: "A theorem must not be described as proved unless its manifest status and Lean declaration support that claim."
+    intuition: "The papers are allowed to be ambitious, but proof status must be exact."
+    dependencies: []
+    introduced_in: "D0 dimensional scaffolding"
+    forbidden_meanings:
+      - "A rhetorical claim that substitutes for formal verification."
+  - id: WARN-0002
+    name: "Pictures are not proofs"
+    kind: warning
+    formal_definition: "Diagrams, projections, and rendered examples explain a construction but do not prove it."
+    intuition: "Visual artifacts support papers; Lean carries formal proof status."
+    dependencies: []
+    introduced_in: "D0 dimensional scaffolding"
+    forbidden_meanings:
+      - "Treating a projection or diagram as a proof object."
+

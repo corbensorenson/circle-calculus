@@ -1,0 +1,57 @@
+entries:
+  - id: S7C-0001
+    name: "Topological S7 suspension model"
+    kind: object
+    formal_definition: "The planned finite S^7 model built by iterated suspension."
+    intuition: "The topological S^7 layer before octonion algebra."
+    dependencies: ["S456-0001"]
+    introduced_in: "PAPER_S7_01_TOPOLOGICAL_7SPHERE"
+    forbidden_meanings:
+      - "An octonion proof by itself."
+  - id: S7QH-0001
+    name: "Quaternionic Hopf roadmap"
+    kind: model
+    formal_definition: "The planned quaternionic Hopf structure with fiber S^3, total S^7, and base S^4."
+    intuition: "The higher hidden-phase analog of Hopf coils."
+    dependencies: ["S3Q-0001", "S4-0001"]
+    introduced_in: "PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION"
+    forbidden_meanings:
+      - "A completed proof before S3 and S4 foundations are stable."
+  - id: S7O-0001
+    name: "Octonion model"
+    kind: model
+    formal_definition: "The planned S^7 algebraic layer using unit octonions when formal support is robust."
+    intuition: "S^7: order and grouping matter."
+    dependencies: []
+    introduced_in: "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS"
+    forbidden_meanings:
+      - "A group model."
+      - "An associative algebra model."
+  - id: S7O-0002
+    name: "Unit octonion"
+    kind: object
+    formal_definition: "An octonion with norm one, planned as an S^7 algebraic point."
+    intuition: "A unit element of the nonassociative octonion layer."
+    dependencies: ["S7O-0001"]
+    introduced_in: "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS"
+    forbidden_meanings:
+      - "An element of a group under ordinary octonion multiplication."
+  - id: S7O-W0001
+    name: "Unit octonions are not a group warning"
+    kind: warning
+    formal_definition: "Unit octonions are nonassociative under ordinary multiplication and must not be treated as a group."
+    intuition: "The S^7 algebraic jump changes the proof rules."
+    dependencies: ["S7O-0001", "S7O-0002"]
+    introduced_in: "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS"
+    forbidden_meanings:
+      - "Using group APIs without a separate formal justification."
+  - id: S7O-W0002
+    name: "Octonion bracketing warning"
+    kind: warning
+    formal_definition: "In octonion calculus, operation grouping is part of the statement because multiplication is nonassociative."
+    intuition: "Parentheses matter."
+    dependencies: ["S7O-0001"]
+    introduced_in: "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS"
+    forbidden_meanings:
+      - "Silently reassociating octonion products."
+

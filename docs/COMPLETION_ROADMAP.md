@@ -104,33 +104,39 @@ Prefer this order. Only skip ahead when blocked and record the blocker.
 
 Goal: organize the future without changing proved `S1` mathematics.
 
+Status: implemented as scaffolding. The dimension checks are now part of `make check`.
+
 Required artifacts:
 
-- `manifests/dimensions/dimension_index.yaml`
-- `manifests/dimensions/S0_opposition.yaml`
-- `manifests/dimensions/S1_circle.yaml` or an adapter to the existing manifest
-- `manifests/dimensions/S2_sphere.yaml`
-- `manifests/dimensions/S3_hypersphere.yaml`
-- `manifests/dimensions/S4_4sphere.yaml`
-- `manifests/dimensions/S5_5sphere.yaml`
-- `manifests/dimensions/S6_6sphere.yaml`
-- `manifests/dimensions/S7_octonionic.yaml`
-- `manifests/dimensions/S15_future.yaml`
-- `dictionary/dimensions/S0.yaml`
-- `dictionary/dimensions/S1.yaml`
-- `dictionary/dimensions/S2.yaml`
-- `dictionary/dimensions/S3.yaml`
-- `dictionary/dimensions/S4_S6.yaml`
-- `dictionary/dimensions/S7.yaml`
-- `dictionary/dimensions/warnings.yaml`
-- `papers/S1/`, `papers/S2/`, `papers/S3/`, `papers/S4_S6/`, `papers/S7/`, `papers/future/S15/`
-- `Circle/Common/`, `Circle/S0/`, `Circle/S1/`, `Circle/S2/`, `Circle/S3/`, `Circle/S4/`, `Circle/S5/`, `Circle/S6/`, `Circle/S7/`, `Circle/Future/S15/`
-- `circle_math/dimensions/`
-- dimension check scripts:
-  - `scripts/check_dimension_index.py`
-  - `scripts/check_dimension_imports.py`
-  - `scripts/check_dimension_manifests.py`
-  - `scripts/check_dimension_paper_links.py`
+- [x] `manifests/dimensions/dimension_index.yaml`
+- [x] `manifests/dimensions/Common.yaml`
+- [x] `manifests/dimensions/S0_opposition.yaml`
+- [x] `manifests/dimensions/S1_circle.yaml` or an adapter to the existing manifest
+- [x] `manifests/dimensions/S2_sphere.yaml`
+- [x] `manifests/dimensions/S3_hypersphere.yaml`
+- [x] `manifests/dimensions/S4_4sphere.yaml`
+- [x] `manifests/dimensions/S5_5sphere.yaml`
+- [x] `manifests/dimensions/S6_6sphere.yaml`
+- [x] `manifests/dimensions/S7_octonionic.yaml`
+- [x] `manifests/dimensions/S15_future.yaml`
+- [x] `dictionary/dimensions/Common.yaml`
+- [x] `dictionary/dimensions/S0.yaml`
+- [x] `dictionary/dimensions/S1.yaml`
+- [x] `dictionary/dimensions/S2.yaml`
+- [x] `dictionary/dimensions/S3.yaml`
+- [x] `dictionary/dimensions/S4_S6.yaml`
+- [x] `dictionary/dimensions/S7.yaml`
+- [x] `dictionary/dimensions/S15.yaml`
+- [x] `dictionary/dimensions/warnings.yaml`
+- [x] planned paper stubs under `papers/S0/`, `papers/S1/`, `papers/S2/`, `papers/S3/`, `papers/S4_S6/`, `papers/S7/`, `papers/future/S15/`
+- [x] `Circle/Common/`, `Circle/S0/`, `Circle/S1/`, `Circle/S2/`, `Circle/S3/`, `Circle/S4/`, `Circle/S5/`, `Circle/S6/`, `Circle/S7/`, `Circle/Future/S15/`
+- [x] `circle_math/dimensions/`
+- [x] `tests/dimensions/`
+- [x] dimension check scripts:
+  - [x] `scripts/check_dimension_index.py`
+  - [x] `scripts/check_dimension_imports.py`
+  - [x] `scripts/check_dimension_manifests.py`
+  - [x] `scripts/check_dimension_paper_links.py`
 
 All future theorem statuses must remain planned, deferred, exploratory_python, or lean_stated until actual proofs exist.
 
@@ -257,7 +263,7 @@ Run these whenever relevant:
 make check
 ```
 
-Once dimension checks exist, `make check` or a new `make dimensioncheck` should also cover:
+Dimension checks are included in `make check` and can also be run directly:
 
 ```bash
 python scripts/check_dimension_index.py
@@ -289,4 +295,3 @@ If the whole corpus is not finished by the time work pauses, the repo should sti
 - Papers do not claim planned/blocked theorems are proved.
 - The README points to the current stage.
 - The public GitHub repo has the latest clean commit pushed when appropriate.
-

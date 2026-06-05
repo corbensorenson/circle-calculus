@@ -1,0 +1,36 @@
+dimension: S0
+status: planned
+theorems:
+  - id: S0-T0001
+    status: planned
+    lean_name: Circle.S0.card_sign
+    informal_statement: "The S^0 opposition model has exactly two points."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["S0-0001"]
+    paper_refs: ["papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
+  - id: S0-T0002
+    status: planned
+    lean_name: Circle.S0.antipode_involutive
+    informal_statement: "The antipodal map on S^0 has order two."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["S0-0001", "S0-0002"]
+    paper_refs: ["papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
+warnings:
+  - id: S0-W0001
+    status: planned
+    dictionary_dependencies: ["S0-W0001"]
+    paper_refs: ["papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md"]
+    statement: "C_1 is a one-node degenerate circle/address object, not S^0."
+

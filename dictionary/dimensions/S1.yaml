@@ -1,0 +1,13 @@
+entries:
+  - id: S1-0001
+    name: "S1 finite circle core"
+    kind: model
+    symbol: "S^1"
+    formal_definition: "The active finite circle core modeled by C_n, rotations, coils, period, orbit decomposition, and lifted winding."
+    intuition: "The dimension-one foundation from which higher-dimensional finite models inherit cyclic behavior."
+    dependencies: ["CC-0001", "CC-0101", "CC-0201", "CC-0301"]
+    introduced_in: "PAPER_S1_01_FINITE_CIRCLES"
+    forbidden_meanings:
+      - "A continuous metric circle unless a later model explicitly activates that interpretation."
+      - "A higher-dimensional sphere."
+

@@ -70,4 +70,4 @@ The project should not jump from `S^3` to `S^7` and ignore `S^4`, `S^5`, and `S^
 
 ## First Expansion Goal
 
-The safest next implementation step after the current `S^1` core remains green is `D0`: add dimension manifests, dictionary files, paper directories, Lean/Python scaffolding, and dimension check scripts. All `S^2` through `S^7` theorem statuses should remain planned, deferred, or exploratory until actual proofs exist. Track that work in `docs/COMPLETION_ROADMAP.md`.
+The D0 scaffold now exists: dimension manifests, dictionary files, paper stubs, Lean/Python scaffolding, and dimension check scripts. All `S^2` through `S^7` theorem statuses remain planned, deferred, exploratory, or stated until actual proofs exist. Track the next implementation stages in `docs/COMPLETION_ROADMAP.md`.

@@ -1,0 +1,111 @@
+dimension: S2
+status: planned
+theorems:
+  - id: S2-T0001
+    status: planned
+    lean_name: Circle.S2.suspendedCircle_counts
+    informal_statement: "For n>=3, the suspended finite circle has V=n+2, E=3n, and F=2n."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["S2-0001", "COMMON-0001"]
+    paper_refs: ["papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["suspended_circle_counts(n)==(n+2,3*n,2*n)"]
+    blocker: ""
+  - id: S2-T0002
+    status: planned
+    lean_name: Circle.S2.suspendedCircle_chi
+    informal_statement: "For n>=3, the suspended finite circle has Euler characteristic 2."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["S2-0001", "COMMON-0002"]
+    paper_refs: ["papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["v-e+f == 2"]
+    blocker: ""
+  - id: S2-T0003
+    status: planned
+    lean_name: Circle.S2.sphereGrid_counts
+    informal_statement: "For n>=3 and r>=1, SphereGrid(n,r) has V=nr+2, E=n(2r+1), and F=n(r+1)."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["S2-0002", "COMMON-0001"]
+    paper_refs: ["papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["sphere_grid_counts(n,r)==(n*r+2,n*(2*r+1),n*(r+1))"]
+    blocker: ""
+  - id: S2-T0004
+    status: planned
+    lean_name: Circle.S2.sphereGrid_chi
+    informal_statement: "For n>=3 and r>=1, SphereGrid(n,r) has Euler characteristic 2."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["S2-0002", "COMMON-0002"]
+    paper_refs: ["papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["v-e+f == 2"]
+    blocker: ""
+  - id: S2-T0005
+    status: planned
+    lean_name: Circle.S2.latitudeRing_isCircle
+    informal_statement: "Every non-pole latitude ring in a sphere grid is C_n-like."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["S2-0002", "S2-0003", "CC-0001"]
+    paper_refs: ["papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
+  - id: S2-T0006
+    status: planned
+    lean_name: Circle.S2.longitudeRotation_fixesPoles
+    informal_statement: "A latitude rotation acts on ring nodes and fixes the collapsed poles."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["S2-0002", "S2-0004"]
+    paper_refs: ["papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
+  - id: S2-T0007
+    status: planned
+    lean_name: Circle.S2.latitudeCoil_period
+    informal_statement: "A fixed latitude ring inherits the S1 coil period n/gcd(n,k)."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["S2-0003", "CC-0205"]
+    paper_refs: ["papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["period(n,k)==n//gcd(n,k) on each latitude ring"]
+    blocker: ""
+warnings:
+  - id: S2-W0001
+    status: planned
+    dictionary_dependencies: ["S2-W0001"]
+    paper_refs: ["papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"]
+    statement: "C_n x C_m is torus-like, not a sphere."
+  - id: S2-W0002
+    status: planned
+    dictionary_dependencies: ["S2-W0002"]
+    paper_refs: ["papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"]
+    statement: "Longitude is not meaningful at collapsed poles."
+  - id: S2-W0003
+    status: planned
+    dictionary_dependencies: ["S2-W0003"]
+    paper_refs: ["papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"]
+    statement: "S^2 does not have the natural group structure used for S^1 or S^3."
+

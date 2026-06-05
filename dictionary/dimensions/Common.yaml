@@ -1,0 +1,34 @@
+entries:
+  - id: COMMON-0001
+    name: "Finite cell-count list"
+    kind: object
+    formal_definition: "A finite list whose i-th entry counts i-dimensional cells in a combinatorial model."
+    intuition: "The bookkeeping vector behind Euler characteristic and suspension formulas."
+    dependencies: []
+    introduced_in: "D0 dimensional scaffolding"
+    forbidden_meanings:
+      - "A proof of geometric realization."
+      - "A smooth manifold model."
+  - id: COMMON-0002
+    name: "Euler characteristic"
+    kind: operation
+    symbol: "chi"
+    formal_definition: "The alternating sum of a finite cell-count list."
+    intuition: "A dimension-sensitive count invariant for finite combinatorial models."
+    dependencies: ["COMMON-0001"]
+    introduced_in: "D0 dimensional scaffolding"
+    forbidden_meanings:
+      - "A homeomorphism classification by itself."
+      - "A replacement for all topology."
+  - id: COMMON-0003
+    name: "Suspension cell-count transform"
+    kind: operation
+    symbol: "Susp"
+    formal_definition: "A planned transform that adds two poles and cones each cell dimension to the next dimension."
+    intuition: "The finite combinatorial move used to climb the sphere ladder."
+    dependencies: ["COMMON-0001"]
+    introduced_in: "D0 dimensional scaffolding"
+    forbidden_meanings:
+      - "A continuous suspension proof without a separate formal model."
+      - "A picture of a suspension treated as a proof."
+
