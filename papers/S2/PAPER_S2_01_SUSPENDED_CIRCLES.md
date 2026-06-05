@@ -37,6 +37,8 @@ The intended geometric use remains `n >= 3`, but the arithmetic cell-count ident
 
 `S2-T0002` is proved by `Circle.S2.suspendedCircle_chi`: applying `Circle.Common.eulerCharacteristic` to those counts gives `2`.
 
+The Python sidecar checks the same finite count formula and Euler characteristic on ordinary integer examples. It is executable support for the paper, not a replacement for the Lean theorem spine.
+
 ## Dictionary Targets
 
 - `S2-0001`: suspended finite circle

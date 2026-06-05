@@ -88,6 +88,8 @@ antipodal_pair(p,q) iff antipode(p)=q
 
 Surface closure remains tied to the already proved Euler facts `Circle.S2.suspendedCircle_chi` and `Circle.S2.sphereGrid_chi`.
 
+The Python sidecar checks the same finite antipode, pole/equator predicate, longitude-coordinate, latitude-coordinate, and antipodal-pair examples. Continuous surface geometry remains future work.
+
 ## Dictionary Targets
 
 - `S2-0005`: suspended-circle antipode

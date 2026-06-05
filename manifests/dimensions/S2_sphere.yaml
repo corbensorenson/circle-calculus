@@ -12,7 +12,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: ["suspended_circle_counts(n)==(n+2,3*n,2*n)"]
+      python_property_tests:
+        - sidecars/PAPER_S2_01_SUSPENDED_CIRCLES/python/test_suspended_circle_examples.py
     blocker: ""
   - id: S2-T0002
     status: lean_proved
@@ -25,7 +26,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: ["v-e+f == 2"]
+      python_property_tests:
+        - sidecars/PAPER_S2_01_SUSPENDED_CIRCLES/python/test_suspended_circle_examples.py
     blocker: ""
   - id: S2-T0003
     status: lean_proved
@@ -38,7 +40,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: ["sphere_grid_counts(n,r)==(n*r+2,n*(2*r+1),n*(r+1))"]
+      python_property_tests:
+        - sidecars/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS/python/test_sphere_grid_examples.py
     blocker: ""
   - id: S2-T0004
     status: lean_proved
@@ -51,7 +54,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: ["v-e+f == 2"]
+      python_property_tests:
+        - sidecars/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS/python/test_sphere_grid_examples.py
     blocker: ""
   - id: S2-T0005
     status: lean_proved
@@ -64,7 +68,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS/python/test_sphere_grid_examples.py
     blocker: ""
   - id: S2-T0006
     status: lean_proved
@@ -77,7 +82,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS/python/test_sphere_grid_examples.py
     blocker: ""
   - id: S2-T0007
     status: lean_proved
@@ -90,7 +96,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: ["period(n,k)==n//gcd(n,k) on each latitude ring"]
+      python_property_tests:
+        - sidecars/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS/python/test_sphere_grid_examples.py
     blocker: ""
   - id: S2-T0008
     status: lean_proved
@@ -103,7 +110,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE/python/test_s2_antipode_examples.py
     blocker: ""
   - id: S2-T0009
     status: lean_proved
@@ -116,7 +124,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE/python/test_s2_antipode_examples.py
     blocker: ""
   - id: S2-T0010
     status: lean_proved
@@ -129,7 +138,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE/python/test_s2_antipode_examples.py
     blocker: ""
   - id: S2-T0011
     status: lean_proved
@@ -142,7 +152,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE/python/test_s2_antipode_examples.py
     blocker: ""
   - id: S2-T0012
     status: lean_proved
@@ -155,7 +166,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE/python/test_s2_antipode_examples.py
     blocker: ""
   - id: S2-T0013
     status: lean_proved
@@ -168,7 +180,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE/python/test_s2_antipode_examples.py
     blocker: ""
   - id: S2-T0014
     status: lean_proved
@@ -181,7 +194,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE/python/test_s2_antipode_examples.py
     blocker: ""
   - id: S2-T0015
     status: lean_proved
@@ -194,7 +208,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE/python/test_s2_antipode_examples.py
     blocker: ""
 warnings:
   - id: S2-W0001

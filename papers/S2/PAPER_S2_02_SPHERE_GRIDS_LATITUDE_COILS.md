@@ -55,6 +55,8 @@ The intended geometric use remains `n >= 3` and `r >= 1`, but the arithmetic cel
 
 `S2-T0007` is proved by `Circle.S2.latitudeCoil_period`: a latitude ring inherits the existing `S^1` period theorem `Circle.period_eq_n_div_gcd`.
 
+The Python sidecar checks the same sphere-grid counts, Euler characteristic, pole-fixing longitude rotations, latitude preservation on ring points, and inherited period formula on finite examples.
+
 ## Dictionary Targets
 
 - `S2-0002`: sphere grid
