@@ -37,6 +37,9 @@ Higher dimensions may depend on lower dimensions. Lower dimensions must not impo
 
 Verification rule:
 After each meaningful stage, run the relevant checks. Before stopping, run make check and any dimension-specific checks that exist.
+
+GitHub CI rule:
+Treat local `make check` as the pre-commit/push gate. After a push, do not sit and wait on GitHub CI unless debugging a known failure. Push and continue working. Before the next push, inspect the previous GitHub CI result once; if it failed, fix that failure in the next commit before sending more work.
 ```
 
 ## Definition Of Done
@@ -317,6 +320,7 @@ python scripts/check_dimension_paper_links.py
 
 Before any push:
 
+- [ ] previous GitHub CI result inspected once, with any known failure fixed in this commit
 - [ ] `lake build`
 - [ ] Lean sidecars compile
 - [ ] Python tests pass
