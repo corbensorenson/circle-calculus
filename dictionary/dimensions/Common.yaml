@@ -136,3 +136,37 @@ entries:
     forbidden_meanings:
       - "A general orientation theorem."
       - "A cobordism equivalence."
+  - id: COMMON-0013
+    name: "Proof glyph certificate"
+    kind: object
+    symbol: "glyph -> theorem -> Lean"
+    formal_definition: "A certificate record carrying a glyph id, theorem id, and Lean declaration name."
+    intuition: "The smallest proof-carrying diagram contract: a visual object must point to formal identifiers."
+    dependencies: []
+    introduced_in: "PAPER_P2_05_PROOF_CARRYING_GLYPHS"
+    forbidden_meanings:
+      - "A proof by drawing alone."
+      - "A rendered diagram with no theorem id."
+      - "A normalized glyph language."
+  - id: COMMON-0014
+    name: "Glyph theorem-id projection"
+    kind: operation
+    symbol: "glyph.theorem_id"
+    formal_definition: "The projection that reads the theorem id carried by a proof glyph certificate."
+    intuition: "The paper can ask which theorem a glyph claims to represent."
+    dependencies: ["COMMON-0013"]
+    introduced_in: "PAPER_P2_05_PROOF_CARRYING_GLYPHS"
+    forbidden_meanings:
+      - "A proof that the theorem id is semantically correct."
+      - "A theorem dependency graph."
+  - id: COMMON-0015
+    name: "Glyph Lean-name projection"
+    kind: operation
+    symbol: "glyph.lean_name"
+    formal_definition: "The projection that reads the Lean declaration name carried by a proof glyph certificate."
+    intuition: "The paper can ask which checked Lean declaration a glyph points to."
+    dependencies: ["COMMON-0013"]
+    introduced_in: "PAPER_P2_05_PROOF_CARRYING_GLYPHS"
+    forbidden_meanings:
+      - "A proof that the Lean declaration proves the intended semantic diagram."
+      - "A rendered proof certificate."

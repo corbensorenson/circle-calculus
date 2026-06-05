@@ -1,5 +1,19 @@
 id: glyph_proof_interface
-status: planned
+status: active
 papers:
   - papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md
+sidecars:
+  - sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/lean/PaperP205.lean
+theorems:
+  - id: P2G-T0001
+    status: lean_proved
+    lean_name: Circle.Phase2.proofGlyphTheoremId_mk
+    dictionary_dependencies: ["COMMON-0013", "COMMON-0014"]
+  - id: P2G-T0002
+    status: lean_proved
+    lean_name: Circle.Phase2.proofGlyphLeanName_mk
+    dictionary_dependencies: ["COMMON-0013", "COMMON-0015"]
+next_targets:
+  - "Add glyph normal forms only after defining a syntax tree and semantics."
+  - "Use finite-circle orbit diagrams as the first proof-carrying demonstrator."
 guardrail: "Diagrams are proof interfaces, not proof substitutes."

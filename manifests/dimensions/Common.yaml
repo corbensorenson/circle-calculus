@@ -157,4 +157,30 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["boundary(reverse(interval)) == -boundary(interval)"]
     blocker: ""
+  - id: P2G-T0001
+    status: lean_proved
+    lean_name: Circle.Phase2.proofGlyphTheoremId_mk
+    informal_statement: "A constructed proof glyph exposes the theorem id it carries."
+    formal_statement: "forall glyphId theoremId leanName : String, proofGlyphTheoremId (proofGlyph glyphId theoremId leanName) = theoremId"
+    dictionary_dependencies: ["COMMON-0013", "COMMON-0014"]
+    paper_refs: ["papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["glyph.theorem_id == theorem_id"]
+    blocker: ""
+  - id: P2G-T0002
+    status: lean_proved
+    lean_name: Circle.Phase2.proofGlyphLeanName_mk
+    informal_statement: "A constructed proof glyph exposes the Lean declaration name it carries."
+    formal_statement: "forall glyphId theoremId leanName : String, proofGlyphLeanName (proofGlyph glyphId theoremId leanName) = leanName"
+    dictionary_dependencies: ["COMMON-0013", "COMMON-0015"]
+    paper_refs: ["papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["glyph.lean_name == lean_name"]
+    blocker: ""
 warnings: []

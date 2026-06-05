@@ -359,10 +359,15 @@ papers:
 
   - id: PAPER_P2_05_PROOF_CARRYING_GLYPHS
     title: "Circle Calculus Phase II.5: Proof-Carrying Glyphs"
-    status: planned
-    sidecar: ""
-    theorem_ids: []
-    dictionary_ids: []
+    status: draft
+    sidecar: sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS
+    theorem_ids:
+      - P2G-T0001
+      - P2G-T0002
+    dictionary_ids:
+      - COMMON-0013
+      - COMMON-0014
+      - COMMON-0015
 
   - id: PAPER_APP_01_COIL_DATA_ANALYSIS
     title: "Circle Calculus Application 1: Coil Data Analysis"

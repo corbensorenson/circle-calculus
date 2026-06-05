@@ -92,6 +92,8 @@ Current active Phase II proof seed:
 - This is base/fiber vocabulary for later work, not a proof that Hopf fibrations or other twisted bundles are globally products.
 - `PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS` proves the directed-interval boundary facts `P2BC-T0001` and `P2BC-T0002` in Lean through `Circle.Phase2.boundaryBoundaryInterval_zero` and `Circle.Phase2.intervalBoundary_reverse`.
 - This is finite boundary bookkeeping, not a proof of general chain complexes, cobordism, TQFT, or physics boundary laws.
+- `PAPER_P2_05_PROOF_CARRYING_GLYPHS` proves the proof-glyph certificate projection facts `P2G-T0001` and `P2G-T0002` in Lean through `Circle.Phase2.proofGlyphTheoremId_mk` and `Circle.Phase2.proofGlyphLeanName_mk`.
+- This is the metadata contract for proof-carrying diagrams, not a proof of glyph semantics, normal forms, dependency correctness, or proof search.
 
 ## Compute Track
 
@@ -253,7 +255,7 @@ Circle AI guardrails:
 
 ## Planned And Active Scaffolds Created
 
-These files exist so later Phase II and application work has stable paper and manifest anchors. Most remain planned scaffolds rather than proof claims; `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS` are the first active Phase II proof seeds.
+These files exist so later Phase II and application work has stable paper and manifest anchors. Most application tracks remain planned scaffolds rather than proof claims; `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_05_PROOF_CARRYING_GLYPHS` are active Phase II proof seeds.
 
 Planned manifests:
 
