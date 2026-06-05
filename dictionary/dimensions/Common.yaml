@@ -55,3 +55,15 @@ entries:
       - "Bott periodicity."
       - "A Clifford periodicity theorem."
       - "A statement about spectra without a separate formal model."
+  - id: COMMON-0006
+    name: "Period-eight dimension clock"
+    kind: operation
+    symbol: "dim mod 8"
+    formal_definition: "The finite clock index dimension % 8 used as a bookkeeping layer for future Bott and Clifford periodicity work."
+    intuition: "A safe way to talk about an eight-step dimension cycle before formalizing Clifford algebras or Bott periodicity."
+    dependencies: []
+    introduced_in: "PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY"
+    forbidden_meanings:
+      - "A proof of Bott periodicity."
+      - "A proof about real Clifford algebras."
+      - "A K-theory or KO-theory theorem."

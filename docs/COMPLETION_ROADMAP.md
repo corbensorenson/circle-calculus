@@ -259,6 +259,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: `P2S-T0001` and `P2S-T0002` are Lean-proved finite double/four suspension Euler facts; stable maps, spectra, and stable homotopy claims remain future work.
 - [x] `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md`
   - Program: Clifford algebras, spinors, Bott periodicity, and dimension clocks.
+  - Status: `P2B-T0001` and `P2B-T0002` are Lean-proved finite period-8 clock facts; Clifford algebras, K-theory, KO-theory, and Bott periodicity remain future formalization work.
 - [x] `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md`
   - Program: base, fiber, total space, projection, transition functions, connection, curvature, holonomy, and hidden proof provenance.
 - [x] `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md`
@@ -314,6 +315,8 @@ Application guardrails:
 - [x] `COMMON-T0003`: suspension Euler transform, `chi(Susp(K)) = 2 - chi(K)`.
 - [x] `P2S-T0001`: finite double suspension preserves Euler characteristic.
 - [x] `P2S-T0002`: finite four-suspension iteration preserves Euler characteristic.
+- [x] `P2B-T0001`: finite period-8 dimension clock index is below 8.
+- [x] `P2B-T0002`: finite period-8 dimension clock is invariant under adding 8.
 
 ## Current S1 Proof Status
 

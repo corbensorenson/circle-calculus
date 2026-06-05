@@ -37,7 +37,7 @@ The expanded long-horizon plan is dimension-organized:
 S^0 -> S^1 -> S^2 -> S^3 -> S^4/S^5/S^6 -> S^7 -> Future/S^15
 ```
 
-The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, scaling invertibility, and signed reversible rotation; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle, sphere-grid, and antipode theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; the first `S^3` spin sign-cancellation theorem; the finite `S^4` through `S^6` suspension Euler bridge; the finite topological `S^7` suspension model; and the first Phase II finite stable-sphere double/four suspension Euler seed.
+The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, scaling invertibility, and signed reversible rotation; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle, sphere-grid, and antipode theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; the first `S^3` spin sign-cancellation theorem; the finite `S^4` through `S^6` suspension Euler bridge; the finite topological `S^7` suspension model; and the first Phase II finite stable-sphere and period-8 clock seeds.
 
 Future dimensional work is split into two related ladders:
 
@@ -77,12 +77,13 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md` | draft/proved spine | `S7O-T0001` through `S7O-T0006` are Lean-proved in a bounded Cayley-Dickson coordinate model |
 | `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | draft/partial proof | `S15-T0001` is a Lean roadmap marker; `S15-T0002` and `S15-T0003` are Lean-proved topological/coordinate landing facts |
 | `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md` | draft/proved finite seed | `P2S-T0001` and `P2S-T0002` are Lean-proved double/four suspension Euler facts |
+| `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md` | draft/proved finite seed | `P2B-T0001` and `P2B-T0002` are Lean-proved period-8 clock facts; Bott/Clifford periodicity remains future work |
 
 The theorem manifest also includes `CC-T0008`, proving that scaling by `k` is invertible on `C_n` exactly when `n` and `k` are coprime.
 
 The D0 dimensional scaffold is also in place: dimension manifests, dimension dictionaries, planned paper stubs, Lean/Python scaffolds, and dimension validation scripts. Future-dimension claims remain planned, deferred, exploratory, or stated until actual Lean proofs exist.
 
-Phase II and application scaffolds are also in place under `papers/phase2/`, `papers/applications/`, `manifests/theories/`, and `manifests/applications/`. `PAPER_P2_01_STABLE_SPHERE_CALCULUS` now has a proved finite seed; the other Phase II and application tracks remain roadmap/benchmark scaffolds, not proof claims.
+Phase II and application scaffolds are also in place under `papers/phase2/`, `papers/applications/`, `manifests/theories/`, and `manifests/applications/`. `PAPER_P2_01_STABLE_SPHERE_CALCULUS` and `PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY` now have proved finite seeds; the other Phase II and application tracks remain roadmap/benchmark scaffolds, not proof claims.
 
 The README is updated after meaningful proof batches, paper batches, roadmap changes, or application-context additions. Tiny internal-only edits should update the relevant source files without creating README churn.
 
@@ -217,6 +218,8 @@ Proved common and dimensional spine:
 - `COMMON-T0003`: finite suspension Euler theorem
 - `P2S-T0001`: finite double suspension preserves Euler characteristic
 - `P2S-T0002`: finite four-suspension iteration preserves Euler characteristic
+- `P2B-T0001`: finite period-8 dimension clock index is below 8
+- `P2B-T0002`: finite period-8 dimension clock is invariant under adding 8
 - `S0-T0001`: the finite `S^0` opposition type has two points
 - `S0-T0002`: opposition swaps the two `S^0` points
 - `S2-T0001`: suspended-circle cell counts

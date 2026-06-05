@@ -66,4 +66,30 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["chi(Susp^4(counts)) == chi(counts)"]
     blocker: ""
+  - id: P2B-T0001
+    status: lean_proved
+    lean_name: Circle.Phase2.bottClockIndex_lt_eight
+    informal_statement: "The finite period-8 dimension clock always returns an index below 8."
+    formal_statement: "forall dimension : Nat, bottClockIndex dimension < 8"
+    dictionary_dependencies: ["COMMON-0006"]
+    paper_refs: ["papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["0 <= dimension % 8 < 8"]
+    blocker: ""
+  - id: P2B-T0002
+    status: lean_proved
+    lean_name: Circle.Phase2.bottClockIndex_add_eight
+    informal_statement: "Adding eight dimensions preserves the finite period-8 clock index."
+    formal_statement: "forall dimension : Nat, bottClockIndex (dimension + 8) = bottClockIndex dimension"
+    dictionary_dependencies: ["COMMON-0006"]
+    paper_refs: ["papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["(dimension + 8) % 8 == dimension % 8"]
+    blocker: ""
 warnings: []

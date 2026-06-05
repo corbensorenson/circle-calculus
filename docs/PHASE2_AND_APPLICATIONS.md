@@ -86,6 +86,8 @@ Current active Phase II proof seed:
 
 - `PAPER_P2_01_STABLE_SPHERE_CALCULUS` proves the finite double/four suspension Euler facts `P2S-T0001` and `P2S-T0002` in Lean through `Circle.Phase2.doubleSuspensionEuler` and `Circle.Phase2.fourSuspensionEuler`.
 - This is deliberately finite cell-count bookkeeping. It is the entry point for stable-sphere calculus, not a proof of spectra, stable maps, Bott periodicity, or stable homotopy groups.
+- `PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY` proves the finite period-8 clock facts `P2B-T0001` and `P2B-T0002` in Lean through `Circle.Phase2.bottClockIndex_lt_eight` and `Circle.Phase2.bottClockIndex_add_eight`.
+- This clock is roadmap bookkeeping for future Clifford/Bott work, not a proof of Clifford algebras, K-theory, KO-theory, or Bott periodicity.
 
 ## Compute Track
 
@@ -247,7 +249,7 @@ Circle AI guardrails:
 
 ## Planned And Active Scaffolds Created
 
-These files exist so later Phase II and application work has stable paper and manifest anchors. Most remain planned scaffolds rather than proof claims; `PAPER_P2_01_STABLE_SPHERE_CALCULUS` is the first active Phase II proof seed.
+These files exist so later Phase II and application work has stable paper and manifest anchors. Most remain planned scaffolds rather than proof claims; `PAPER_P2_01_STABLE_SPHERE_CALCULUS` and `PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY` are the first active Phase II proof seeds.
 
 Planned manifests:
 

@@ -324,10 +324,13 @@ papers:
 
   - id: PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY
     title: "Circle Calculus Phase II.2: Bott and Clifford Periodicity"
-    status: planned
-    sidecar: ""
-    theorem_ids: []
-    dictionary_ids: []
+    status: draft
+    sidecar: sidecars/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY
+    theorem_ids:
+      - P2B-T0001
+      - P2B-T0002
+    dictionary_ids:
+      - COMMON-0006
 
   - id: PAPER_P2_03_BUNDLE_CALCULUS
     title: "Circle Calculus Phase II.3: Bundle Calculus"

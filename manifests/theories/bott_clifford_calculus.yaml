@@ -1,5 +1,19 @@
 id: bott_clifford_calculus
-status: planned
+status: active
 papers:
   - papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md
+sidecars:
+  - sidecars/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY/lean/PaperP202.lean
+theorems:
+  - id: P2B-T0001
+    status: lean_proved
+    lean_name: Circle.Phase2.bottClockIndex_lt_eight
+    dictionary_dependencies: ["COMMON-0006"]
+  - id: P2B-T0002
+    status: lean_proved
+    lean_name: Circle.Phase2.bottClockIndex_add_eight
+    dictionary_dependencies: ["COMMON-0006"]
+next_targets:
+  - "Choose a formal Clifford algebra path before registering Clifford periodicity theorems."
+  - "Keep Bott/K-theory claims as cited background until Lean declarations exist."
 guardrail: "Periodicity claims need checked formal statements or explicit background status."
