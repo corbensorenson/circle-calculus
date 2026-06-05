@@ -1,4 +1,4 @@
-import Circle.Common.Scaffold
+import Circle.S4.Scaffold
 
 /-!
 S456.1 sidecar.
@@ -12,5 +12,6 @@ namespace Circle.PaperS45601
 #check Circle.Common.eulerCharacteristic
 #check Circle.Common.suspensionCounts
 #check Circle.Common.suspensionEuler
+#check Circle.S4.iteratedSuspensionEulerParity
 
 end Circle.PaperS45601

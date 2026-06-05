@@ -37,7 +37,7 @@ The expanded long-horizon plan is dimension-organized:
 S^0 -> S^1 -> S^2 -> S^3 -> S^4/S^5/S^6 -> S^7 -> Future/S^15
 ```
 
-The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, and scaling invertibility; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle and sphere-grid theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; and the first `S^3` spin sign-cancellation theorem.
+The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, and scaling invertibility; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle and sphere-grid theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; the first `S^3` spin sign-cancellation theorem; and the finite `S^4` through `S^6` suspension Euler bridge.
 
 Future dimensional work is split into two related ladders:
 
@@ -63,7 +63,10 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S3/PAPER_S3_02_QUATERNION_COILS.md` | draft | `S3Q-T0001` through `S3Q-T0005` proved |
 | `papers/S3/PAPER_S3_03_HOPF_COILS.md` | draft/exploratory | `S3H-T0001` through `S3H-T0003` have Python sidecar checks; Lean formalization is deferred |
 | `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md` | draft | `S3S-T0001` proved |
-| `papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md` | scaffold | `COMMON-T0001` through `COMMON-T0003` proved as shared finite-cell suspension facts |
+| `papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md` | draft | `COMMON-T0001` through `COMMON-T0003` and `S456-T0001` proved |
+| `papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md` | draft | `S4-T0001` proved |
+| `papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md` | draft | `S5-T0001` proved |
+| `papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md` | draft | `S6-T0001` proved; `S6-W0001` warning tracked |
 
 The theorem manifest also includes `CC-T0008`, proving that scaling by `k` is invertible on `C_n` exactly when `n` and `k` are coprime.
 
@@ -219,6 +222,10 @@ Proved common and dimensional spine:
 - `S3Q-T0004`: quaternion multiplication is noncommutative by exact example
 - `S3Q-T0005`: quaternion multiplication is associative
 - `S3S-T0001`: quaternion conjugation action is invariant under replacing `q` by `-q`
+- `S456-T0001`: iterated finite suspensions give S4/S5/S6 Euler characteristics 2, 0, and 2
+- `S4-T0001`: finite S4 suspension model has Euler characteristic 2
+- `S5-T0001`: finite S5 suspension model has Euler characteristic 0
+- `S6-T0001`: finite S6 suspension model has Euler characteristic 2
 
 Executable exploratory spine:
 

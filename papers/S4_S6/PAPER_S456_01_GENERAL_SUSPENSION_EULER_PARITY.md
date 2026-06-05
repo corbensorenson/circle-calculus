@@ -1,17 +1,17 @@
 # Circle Calculus S456.1: General Suspension and Euler Parity
 
-Status: draft scaffold with the common suspension/Euler spine proved.
+Status: draft scaffold with the common suspension/Euler spine and S4-S6 parity theorem proved.
 
 ## Aim
 
-This paper will prove the general finite suspension Euler parity bridge across `S^4`, `S^5`, and `S^6`.
+This paper proves the finite suspension Euler parity bridge across `S^4`, `S^5`, and `S^6`.
 
 ## Target Spine
 
 - `COMMON-T0001`: `Circle.Common.eulerCharacteristic`
 - `COMMON-T0002`: `Circle.Common.suspensionCounts`
 - `COMMON-T0003`: `Circle.Common.suspensionEuler`
-- `S456-T0001`: iterated suspension Euler parity
+- `S456-T0001`: `Circle.S4.iteratedSuspensionEulerParity`
 
 ## Proved Common Core
 
@@ -25,7 +25,21 @@ This paper will prove the general finite suspension Euler parity bridge across `
 chi(Susp(K)) = 2 - chi(K)
 ```
 
-This supplies the shared algebraic step needed before the dimension-specific `S456-T0001` parity theorem is stated.
+This supplies the shared algebraic step for the dimension-specific parity theorem.
+
+## Proved S4-S6 Parity
+
+`S456-T0001` is proved by `Circle.S4.iteratedSuspensionEulerParity`.
+
+Starting from the finite `S^3` suspension model with Euler characteristic `0`, the next three suspensions have Euler characteristics:
+
+```text
+chi(S4) = 2
+chi(S5) = 0
+chi(S6) = 2
+```
+
+This is the finite-count version of the parity pattern `chi(S^d)=1+(-1)^d` for the dimensions currently in this bridge.
 
 ## Dictionary Targets
 

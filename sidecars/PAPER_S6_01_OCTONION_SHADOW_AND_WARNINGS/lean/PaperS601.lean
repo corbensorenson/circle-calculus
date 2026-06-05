@@ -1,0 +1,15 @@
+import Circle.S6.Scaffold
+
+/-!
+S6.1 sidecar.
+
+This file re-exports the finite S6 Euler declaration used by
+`papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md`.
+-/
+
+namespace Circle.PaperS601
+
+#check Circle.S6.counts
+#check Circle.S6.eulerCharacteristic
+
+end Circle.PaperS601

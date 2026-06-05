@@ -208,18 +208,19 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
 
 ### S4-S6: Geometric Bridge
 
-- [ ] `papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md`
+- [x] `papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md`
   - Proof target: `S456-T0001`
   - Main result: `chi(S^d)=1+(-1)^d` for finite iterated suspension models.
-- [ ] `papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md`
+- [x] `papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md`
   - Proof target: `S4-T0001`
   - Roadmap target: role of `S^4` as base of `S^3 -> S^7 -> S^4`.
-- [ ] `papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md`
+- [x] `papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md`
   - Proof target: `S5-T0001`
   - Keep projective geometry exploratory unless formalized.
-- [ ] `papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md`
+- [x] `papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md`
   - Proof target: `S6-T0001`
   - Warning target: `S6-W0001`
+  - Status: S4/S5/S6 finite suspension Euler characteristics are Lean-proved; projective, quaternionic Hopf, and S6 complex-structure topics remain roadmap/warning material.
 
 ### S7: Topological, Quaternionic Hopf, Octonionic
 

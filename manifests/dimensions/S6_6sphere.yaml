@@ -1,11 +1,11 @@
 dimension: S6
-status: planned
+status: active
 theorems:
   - id: S6-T0001
-    status: planned
+    status: lean_proved
     lean_name: Circle.S6.eulerCharacteristic
     informal_statement: "The finite iterated-suspension model of S^6 has Euler characteristic 2."
-    formal_statement: "deferred formal statement"
+    formal_statement: "forall n : Nat, Circle.Common.eulerCharacteristic (Circle.S6.counts n) = 2"
     dictionary_dependencies: ["S6-0001", "S456-0001", "COMMON-0002"]
     paper_refs: ["papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md"]
     imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5"]
@@ -20,4 +20,3 @@ warnings:
     dictionary_dependencies: ["S6-W0001"]
     paper_refs: ["papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md"]
     statement: "Do not rely on unresolved S^6 complex-structure claims."
-
