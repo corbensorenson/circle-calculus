@@ -95,6 +95,7 @@ The project is complete only when all of these are true:
 - Dictionary: `dictionary/circle_dictionary.yaml` and future `dictionary/dimensions/`
 - Theorem registry: `manifests/theorem_manifest.yaml` and future `manifests/dimensions/`
 - Paper registry: `manifests/paper_manifest.yaml`
+- Phase IV theorem target registry: `manifests/phase4_theorem_targets.yaml`
 - Dimensional plan: `docs/DIMENSIONAL_LADDER.md`
 - Deferred Phase II and applications context: `docs/PHASE2_AND_APPLICATIONS.md`
 - Phase III Living Book plan: `docs/LIVING_BOOK_POLICY.md`, `docs/LIVING_BOOK_ROADMAP.md`, and `docs/LIVING_BOOK_WIDGETS.md`
@@ -582,7 +583,7 @@ Required sweep:
 
 Outputs:
 
-- [ ] A broader theorem target list represented in manifests, not a loose report.
+- [x] A broader theorem target list represented in manifests, not a loose report.
 - [ ] Improved paper sections where proofs already exist or where planned status needs clearer wording.
 - [ ] Additional Lean sidecars and Python parity examples where they strengthen the formal spine.
 - [ ] Updated dictionary terms for recurring vocabulary discovered during the sweep.

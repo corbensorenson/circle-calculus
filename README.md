@@ -10,6 +10,8 @@ The long-term aim is not just to write essays. The aim is to keep every serious 
 - a shared dictionary in `dictionary/circle_dictionary.yaml`, and
 - theorem metadata in `manifests/theorem_manifest.yaml`.
 
+The Phase IV wide/deep theorem-target audit is tracked in `manifests/phase4_theorem_targets.yaml` and validated by `scripts/check_phase4_targets.py`.
+
 The rule is simple: papers are allowed to be ambitious, but claimed theorems must be traceable.
 
 ## What This Project Aims To Prove
@@ -168,6 +170,7 @@ make manifest    # validate theorem metadata
 make dictionary  # validate dictionary metadata
 make papermanifest # validate paper-to-sidecar/theorem/dictionary links
 make paperlinks  # verify papers cite known theorem ids
+make phase4targets # validate the wide/deep theorem target registry
 make dimensioncheck # validate dimension manifests, imports, and paper links
 make nofake      # reject forbidden proof placeholders
 make examples    # regenerate current example diagrams

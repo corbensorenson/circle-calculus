@@ -1,9 +1,9 @@
 LAKE := $(shell command -v lake 2>/dev/null || printf "%s/.elan/bin/lake" "$$HOME")
 QUARTO := $(shell if command -v quarto >/dev/null 2>&1; then command -v quarto; elif [ -x ".tools/quarto-pkg/quarto-core.pkg/Payload/bin/quarto" ]; then printf ".tools/quarto-pkg/quarto-core.pkg/Payload/bin/quarto"; else printf "quarto"; fi)
 
-.PHONY: check lean sidecarlean test manifest dictionary papermanifest paperlinks dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples site-data sitecheck site-render site-preview living-book-check
+.PHONY: check lean sidecarlean test manifest dictionary papermanifest paperlinks phase4targets dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples site-data sitecheck site-render site-preview living-book-check
 
-check: lean sidecarlean test manifest dictionary papermanifest paperlinks dimensioncheck nofake sitecheck
+check: lean sidecarlean test manifest dictionary papermanifest paperlinks phase4targets dimensioncheck nofake sitecheck
 
 lean:
 	$(LAKE) build
@@ -25,6 +25,9 @@ papermanifest:
 
 paperlinks:
 	python scripts/check_paper_theorem_links.py
+
+phase4targets:
+	python scripts/check_phase4_targets.py
 
 dimensioncheck: dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks
 
