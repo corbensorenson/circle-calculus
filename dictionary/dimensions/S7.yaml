@@ -20,7 +20,7 @@ entries:
   - id: S7O-0001
     name: "Octonion model"
     kind: model
-    formal_definition: "The exploratory Cayley-Dickson octonion model in `circle_math.dimensions.octonion`, with basis, multiplication, conjugation, squared norm, and explicit noncommutative/nonassociative examples tested in Python."
+    formal_definition: "The bounded Cayley-Dickson coordinate model `Circle.S7.OctonionCoord`, with Lean proofs for basis unit norm, conjugate norm, noncommutativity, and nonassociativity; norm multiplicativity and unit closure remain Python-exploratory."
     intuition: "S^7: order and grouping matter."
     dependencies: []
     introduced_in: "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS"
@@ -30,7 +30,7 @@ entries:
   - id: S7O-0002
     name: "Unit octonion"
     kind: object
-    formal_definition: "An octonion with squared norm one in the exploratory Python model."
+    formal_definition: "An octonion with squared norm one in the coordinate model; basis elements are Lean-proved unit examples, while general unit multiplication closure remains exploratory."
     intuition: "A unit element of the nonassociative octonion layer."
     dependencies: ["S7O-0001"]
     introduced_in: "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS"

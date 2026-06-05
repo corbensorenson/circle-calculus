@@ -54,31 +54,31 @@ theorems:
       python_property_tests: ["sidecars/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION/python/test_paper_s7_02_examples.py::test_quaternionic_hopf_right_phase_invariant"]
     blocker: ""
   - id: S7O-T0001
-    status: exploratory_python
+    status: lean_proved
     lean_name: Circle.S7.octonionBasis
-    informal_statement: "Define or import the octonion basis and multiplication table."
-    formal_statement: "Python exploratory model: octonion_basis returns eight unit coordinate basis elements for a Cayley-Dickson octonion product."
+    informal_statement: "Each coordinate octonion basis element has squared norm one."
+    formal_statement: "forall idx : Fin 8, Circle.S7.octonionCoordNormSq (Circle.S7.octonionBasisCoord idx) = 1"
     dictionary_dependencies: ["S7O-0001"]
     paper_refs: ["papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"]
     imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
     verification:
-      lean_build_required: false
+      lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS/python/test_paper_s7_03_examples.py::test_octonion_basis_has_eight_unit_elements"]
-    blocker: "Lean proof deferred until robust octonion support or a small verified Cayley-Dickson model is selected."
+    blocker: ""
   - id: S7O-T0002
-    status: exploratory_python
+    status: lean_proved
     lean_name: Circle.S7.octonionConjugateNorm
     informal_statement: "Define octonion conjugate and norm."
-    formal_statement: "Python exploratory model: x * conjugate(x) has real part equal to squared_norm(x) and zero imaginary coordinates on tested samples."
+    formal_statement: "forall o : Circle.S7.OctonionCoord, Circle.S7.octonionMulCoord o (Circle.S7.octonionConjCoord o) = Circle.S7.octonionRealCoord (Circle.S7.octonionCoordNormSq o)"
     dictionary_dependencies: ["S7O-0001", "S7O-0002"]
     paper_refs: ["papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"]
     imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
     verification:
-      lean_build_required: false
+      lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS/python/test_paper_s7_03_examples.py::test_octonion_conjugate_norm_returns_real_norm_square"]
-    blocker: "Lean proof deferred until robust octonion support or a small verified Cayley-Dickson model is selected."
+    blocker: ""
   - id: S7O-T0003
     status: exploratory_python
     lean_name: Circle.S7.octonionNormMul
@@ -106,31 +106,31 @@ theorems:
       python_property_tests: ["sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS/python/test_paper_s7_03_examples.py::test_unit_octonion_product_stays_unit_on_sample_values"]
     blocker: "Lean proof deferred until robust octonion support or a small verified Cayley-Dickson model is selected."
   - id: S7O-T0005
-    status: exploratory_python
+    status: lean_proved
     lean_name: Circle.S7.octonion_noncommutative_example
     informal_statement: "Octonion multiplication is noncommutative by a formal example."
-    formal_statement: "Python exploratory model: basis elements e1 and e2 do not commute."
+    formal_statement: "Circle.S7.octonionMulCoord (Circle.S7.octonionBasisCoord ⟨1, by norm_num⟩) (Circle.S7.octonionBasisCoord ⟨2, by norm_num⟩) != Circle.S7.octonionMulCoord (Circle.S7.octonionBasisCoord ⟨2, by norm_num⟩) (Circle.S7.octonionBasisCoord ⟨1, by norm_num⟩)"
     dictionary_dependencies: ["S7O-0001"]
     paper_refs: ["papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"]
     imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
     verification:
-      lean_build_required: false
+      lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS/python/test_paper_s7_03_examples.py::test_octonion_multiplication_is_noncommutative"]
-    blocker: "Lean proof deferred until robust octonion support or a small verified Cayley-Dickson model is selected."
+    blocker: ""
   - id: S7O-T0006
-    status: exploratory_python
+    status: lean_proved
     lean_name: Circle.S7.octonion_nonassociative_example
     informal_statement: "Octonion multiplication is nonassociative by a formal example."
-    formal_statement: "Python exploratory model: (e1*e2)*e4 and e1*(e2*e4) differ."
+    formal_statement: "Circle.S7.octonionMulCoord (Circle.S7.octonionMulCoord (Circle.S7.octonionBasisCoord ⟨1, by norm_num⟩) (Circle.S7.octonionBasisCoord ⟨2, by norm_num⟩)) (Circle.S7.octonionBasisCoord ⟨4, by norm_num⟩) != Circle.S7.octonionMulCoord (Circle.S7.octonionBasisCoord ⟨1, by norm_num⟩) (Circle.S7.octonionMulCoord (Circle.S7.octonionBasisCoord ⟨2, by norm_num⟩) (Circle.S7.octonionBasisCoord ⟨4, by norm_num⟩))"
     dictionary_dependencies: ["S7O-0001", "S7O-W0002"]
     paper_refs: ["papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"]
     imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
     verification:
-      lean_build_required: false
+      lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS/python/test_paper_s7_03_examples.py::test_octonion_multiplication_is_nonassociative"]
-    blocker: "Lean proof deferred until robust octonion support or a small verified Cayley-Dickson model is selected."
+    blocker: ""
 warnings:
   - id: S7O-W0001
     status: planned

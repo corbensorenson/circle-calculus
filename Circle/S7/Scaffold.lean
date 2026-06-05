@@ -124,6 +124,87 @@ theorem quaternionicPhaseInvariance (p : QuaternionPair) (u : QuaternionCoord)
   rcases quaternionicHopfMap p with ⟨x0, x1, x2, x3, x4⟩
   simp [hopfBase5Scale]
 
+def quaternionAddCoord (a b : QuaternionCoord) : QuaternionCoord where
+  r := a.r + b.r
+  i := a.i + b.i
+  j := a.j + b.j
+  k := a.k + b.k
+
+def quaternionNegCoord (a : QuaternionCoord) : QuaternionCoord where
+  r := -a.r
+  i := -a.i
+  j := -a.j
+  k := -a.k
+
+def quaternionSubCoord (a b : QuaternionCoord) : QuaternionCoord :=
+  quaternionAddCoord a (quaternionNegCoord b)
+
+structure OctonionCoord where
+  left : QuaternionCoord
+  right : QuaternionCoord
+
+def octonionCoordNormSq (o : OctonionCoord) : ℝ :=
+  quaternionCoordNormSq o.left + quaternionCoordNormSq o.right
+
+def octonionConjCoord (o : OctonionCoord) : OctonionCoord where
+  left := quaternionConjCoord o.left
+  right := quaternionNegCoord o.right
+
+def octonionRealCoord (s : ℝ) : OctonionCoord where
+  left := { r := s, i := 0, j := 0, k := 0 }
+  right := { r := 0, i := 0, j := 0, k := 0 }
+
+def octonionMulCoord (a b : OctonionCoord) : OctonionCoord where
+  left :=
+    quaternionSubCoord
+      (quaternionMulCoord a.left b.left)
+      (quaternionMulCoord (quaternionConjCoord b.right) a.right)
+  right :=
+    quaternionAddCoord
+      (quaternionMulCoord b.right a.left)
+      (quaternionMulCoord a.right (quaternionConjCoord b.left))
+
+def octonionBasisCoord (idx : Fin 8) : OctonionCoord :=
+  match idx.val with
+  | 0 => octonionRealCoord 1
+  | 1 => { left := { r := 0, i := 1, j := 0, k := 0 }, right := { r := 0, i := 0, j := 0, k := 0 } }
+  | 2 => { left := { r := 0, i := 0, j := 1, k := 0 }, right := { r := 0, i := 0, j := 0, k := 0 } }
+  | 3 => { left := { r := 0, i := 0, j := 0, k := 1 }, right := { r := 0, i := 0, j := 0, k := 0 } }
+  | 4 => { left := { r := 0, i := 0, j := 0, k := 0 }, right := { r := 1, i := 0, j := 0, k := 0 } }
+  | 5 => { left := { r := 0, i := 0, j := 0, k := 0 }, right := { r := 0, i := 1, j := 0, k := 0 } }
+  | 6 => { left := { r := 0, i := 0, j := 0, k := 0 }, right := { r := 0, i := 0, j := 1, k := 0 } }
+  | _ => { left := { r := 0, i := 0, j := 0, k := 0 }, right := { r := 0, i := 0, j := 0, k := 1 } }
+
+theorem octonionBasis (idx : Fin 8) :
+    octonionCoordNormSq (octonionBasisCoord idx) = 1 := by
+  fin_cases idx <;> norm_num [octonionBasisCoord, octonionCoordNormSq,
+    quaternionCoordNormSq, octonionRealCoord]
+
+theorem octonionConjugateNorm (o : OctonionCoord) :
+    octonionMulCoord o (octonionConjCoord o) = octonionRealCoord (octonionCoordNormSq o) := by
+  rcases o with ⟨⟨a, b, c, d⟩, ⟨e, f, g, h⟩⟩
+  simp [octonionMulCoord, octonionConjCoord, octonionRealCoord, octonionCoordNormSq,
+    quaternionCoordNormSq, quaternionConjCoord, quaternionMulCoord, quaternionAddCoord,
+    quaternionNegCoord, quaternionSubCoord]
+  ring_nf
+  tauto
+
+theorem octonion_noncommutative_example :
+    octonionMulCoord (octonionBasisCoord ⟨1, by norm_num⟩) (octonionBasisCoord ⟨2, by norm_num⟩) ≠
+      octonionMulCoord (octonionBasisCoord ⟨2, by norm_num⟩) (octonionBasisCoord ⟨1, by norm_num⟩) := by
+  norm_num [octonionBasisCoord, octonionMulCoord, quaternionMulCoord, quaternionConjCoord,
+    quaternionAddCoord, quaternionNegCoord, quaternionSubCoord]
+
+theorem octonion_nonassociative_example :
+    octonionMulCoord
+        (octonionMulCoord (octonionBasisCoord ⟨1, by norm_num⟩) (octonionBasisCoord ⟨2, by norm_num⟩))
+        (octonionBasisCoord ⟨4, by norm_num⟩) ≠
+      octonionMulCoord
+        (octonionBasisCoord ⟨1, by norm_num⟩)
+        (octonionMulCoord (octonionBasisCoord ⟨2, by norm_num⟩) (octonionBasisCoord ⟨4, by norm_num⟩)) := by
+  norm_num [octonionBasisCoord, octonionMulCoord, quaternionMulCoord, quaternionConjCoord,
+    quaternionAddCoord, quaternionNegCoord, quaternionSubCoord]
+
 def octonionTrackName : String :=
   "S7O"
 
