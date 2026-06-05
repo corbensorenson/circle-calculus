@@ -132,6 +132,21 @@ theorem scale_nat_eq_zero_iff_period_dvd {n k x : Nat} (hn : n ≠ 0) :
     rw [hn_decomp]
     exact h1a
 
+theorem scale_period_multiple_zero {n k m : Nat} (hn : n ≠ 0) :
+    scale n k ((m * period n k : Nat) : C n) = 0 := by
+  rw [scale_nat_eq_zero_iff_period_dvd hn]
+  exact Nat.dvd_mul_left (period n k) m
+
+theorem scale_add_period_multiple {n k x m : Nat} (hn : n ≠ 0) :
+    scale n k (((x + m * period n k) : Nat) : C n) = scale n k ((x : Nat) : C n) := by
+  unfold scale
+  rw [Nat.cast_add]
+  rw [mul_add]
+  have hzero := scale_period_multiple_zero (n := n) (k := k) (m := m) hn
+  unfold scale at hzero
+  rw [hzero]
+  simp
+
 theorem scale_nat_eq_iff_mul_modEq (n k x y : Nat) :
     scale n k ((x : Nat) : C n) = scale n k ((y : Nat) : C n) ↔
       k * x ≡ k * y [MOD n] := by

@@ -367,6 +367,38 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["scale(n,k,steps)==coil_step(n,k,0,steps) over positive moduli in bounded tests"]
 
+  - id: CC-T0032
+    name: Scaling period multiples gives zero
+    status: proved
+    lean_name: Circle.scale_period_multiple_zero
+    informal_statement: "For a nonzero circle size, every natural multiple of the stride period maps to zero under scaling by that stride."
+    formal_statement: "forall {n k m : Nat}, n != 0 -> Circle.scale n k ((m * Circle.period n k : Nat) : Circle.C n) = 0"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_period_multiples_zero"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean from CC-T0030 and divisibility of a multiple by its factor."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["scale(n,k,m*period(n,k))==0 over positive moduli in bounded tests"]
+
+  - id: CC-T0033
+    name: Scaling collapses period-shifted addresses
+    status: proved
+    lean_name: Circle.scale_add_period_multiple
+    informal_statement: "For a nonzero circle size, adding any natural multiple of the stride period to an address does not change its scaled value."
+    formal_statement: "forall {n k x m : Nat}, n != 0 -> Circle.scale n k (((x + m * Circle.period n k) : Nat) : Circle.C n) = Circle.scale n k ((x : Nat) : Circle.C n)"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_add_period_multiple"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean from CC-T0032, CC-T0025, and modular addition congruence."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["scale(n,k,x+m*period(n,k))==scale(n,k,x) over positive moduli in bounded tests"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved
