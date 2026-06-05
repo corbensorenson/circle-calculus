@@ -63,6 +63,8 @@ This is the formal version of the slogan `S^3: order matters`.
 
 `S3Q-T0005` is proved by `Circle.S3.quaternion_mul_assoc`: quaternion multiplication is associative.
 
+The Python sidecar checks the same executable quaternion norm, unit multiplication, conjugate-inverse, noncommutativity, and associativity examples. It is a computational model aligned with the Lean theorem spine, not a substitute for mathlib's formal quaternion proofs.
+
 ## Dictionary Targets
 
 - `S3Q-0001`: quaternion model

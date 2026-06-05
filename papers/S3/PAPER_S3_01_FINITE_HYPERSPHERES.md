@@ -78,6 +78,8 @@ For every natural `V`, `E`, and `F`, the finite suspended-surface count list is
 
 `S3C-T0004` is proved by `Circle.S3.suspendedSuspendedCircle_chi`: applying `Circle.Common.eulerCharacteristic` to those counts gives `0`.
 
+The Python sidecar checks the same suspension count transform, chi-zero implication on sphere-like surfaces, suspended-suspended-circle counts, and Euler characteristic examples.
+
 ## Dictionary Targets
 
 - `S3C-0001`: finite 3-sphere suspension model

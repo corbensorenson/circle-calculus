@@ -12,7 +12,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: ["suspension_counts([v,e,f]) == [v+2,e+2*v,f+2*e,2*f]"]
+      python_property_tests:
+        - sidecars/PAPER_S3_01_FINITE_HYPERSPHERES/python/test_finite_hypersphere_examples.py
     blocker: ""
   - id: S3C-T0002
     status: lean_proved
@@ -25,7 +26,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: ["chi(surface)==2 implies chi(susp(surface))==0"]
+      python_property_tests:
+        - sidecars/PAPER_S3_01_FINITE_HYPERSPHERES/python/test_finite_hypersphere_examples.py
     blocker: ""
   - id: S3C-T0003
     status: lean_proved
@@ -38,7 +40,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S3_01_FINITE_HYPERSPHERES/python/test_finite_hypersphere_examples.py
     blocker: ""
   - id: S3C-T0004
     status: lean_proved
@@ -51,7 +54,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S3_01_FINITE_HYPERSPHERES/python/test_finite_hypersphere_examples.py
     blocker: ""
   - id: S3Q-T0001
     status: lean_proved
@@ -64,7 +68,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py
     blocker: ""
   - id: S3Q-T0002
     status: lean_proved
@@ -77,7 +82,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py
     blocker: ""
   - id: S3Q-T0003
     status: lean_proved
@@ -90,7 +96,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py
     blocker: ""
   - id: S3Q-T0004
     status: lean_proved
@@ -103,7 +110,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py
     blocker: ""
   - id: S3Q-T0005
     status: lean_proved
@@ -116,7 +124,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py
     blocker: ""
   - id: S3H-T0001
     status: lean_proved
@@ -194,7 +203,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py
     blocker: ""
   - id: S3S-T0002
     status: lean_proved
@@ -207,7 +217,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py
     blocker: ""
   - id: S3S-T0003
     status: lean_proved
@@ -220,7 +231,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py
     blocker: ""
 warnings:
   - id: S3H-W0001

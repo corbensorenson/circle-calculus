@@ -64,10 +64,10 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md` | draft | `S2-T0001` and `S2-T0002` proved with Python examples |
 | `papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md` | draft | `S2-T0003` through `S2-T0007` proved with Python examples |
 | `papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md` | draft | `S2-T0008` through `S2-T0015` proved with Python examples |
-| `papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md` | draft | `S3C-T0001` through `S3C-T0004` proved |
-| `papers/S3/PAPER_S3_02_QUATERNION_COILS.md` | draft | `S3Q-T0001` through `S3Q-T0005` proved |
+| `papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md` | draft | `S3C-T0001` through `S3C-T0004` proved with Python examples |
+| `papers/S3/PAPER_S3_02_QUATERNION_COILS.md` | draft | `S3Q-T0001` through `S3Q-T0005` proved with Python examples |
 | `papers/S3/PAPER_S3_03_HOPF_COILS.md` | draft/proved spine | `S3H-T0001` through `S3H-T0005` are Lean-proved bounded Hopf coordinate and phase-action facts; full fibration topology remains future work |
-| `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md` | draft | `S3S-T0001` through `S3S-T0003` proved |
+| `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md` | draft | `S3S-T0001` through `S3S-T0003` proved with Python examples |
 | `papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md` | draft | `COMMON-T0001` through `COMMON-T0003` and `S456-T0001` proved |
 | `papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md` | draft | `S4-T0001` and `S4-T0002` proved |
 | `papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md` | draft | `S5-T0001` and `S5-T0002` proved |

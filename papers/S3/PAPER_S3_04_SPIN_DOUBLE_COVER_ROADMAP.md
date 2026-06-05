@@ -39,6 +39,8 @@ quaternionConjugationAction q v
 
 Together these are the first formal shadow of the spin double-cover story: the action has an identity case, fixes zero, and changing a quaternion representative by sign does not change the conjugation action.
 
+The Python sidecar checks the same algebraic conjugation-action examples for identity action, zero preservation, and sign cancellation. It does not assert the full `SO(3)` quotient.
+
 ## Dictionary Targets
 
 - `S3S-0001`: quaternion conjugation action
