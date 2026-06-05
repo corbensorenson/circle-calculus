@@ -92,4 +92,16 @@ theorem scale_nat_eq_iff_mul_modEq (n k x y : Nat) :
   rw [← Nat.cast_mul, ← Nat.cast_mul]
   exact ZMod.natCast_eq_natCast_iff (k * x) (k * y) n
 
+theorem scale_nat_eq_iff_nat_modEq_of_coprime {n k x y : Nat} (hcop : Nat.Coprime n k) :
+    scale n k ((x : Nat) : C n) = scale n k ((y : Nat) : C n) ↔ x ≡ y [MOD n] := by
+  have hbij : Function.Bijective (scale n k) := (scale_invertible_iff_coprime n k).mpr hcop
+  constructor
+  · intro h
+    have hxy : ((x : Nat) : C n) = ((y : Nat) : C n) := hbij.1 h
+    exact (ZMod.natCast_eq_natCast_iff x y n).mp hxy
+  · intro h
+    have hxy : ((x : Nat) : C n) = ((y : Nat) : C n) :=
+      (ZMod.natCast_eq_natCast_iff x y n).mpr h
+    exact congrArg (scale n k) hxy
+
 end Circle

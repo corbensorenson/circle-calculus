@@ -70,14 +70,15 @@ entries:
       - "if k divides n, then scale(n,k)(x+m*(n/k))=scale(n,k)(x)"
       - "scale(n,k)(x)=0 iff n divides k*x for natural representatives"
       - "scale(n,k)(x)=scale(n,k)(y) iff k*x and k*y are congruent mod n for natural representatives"
+      - "if gcd(n,k)=1, then scale(n,k)(x)=scale(n,k)(y) iff x and y are congruent mod n"
     formal_models: ["left multiplication by (k : ZMod n)"]
-    lean_declarations: ["Circle.scale", "Circle.scale_one", "Circle.scale_comp", "Circle.scale_rot", "Circle.scale_coilStep", "Circle.scale_invertible_iff_coprime", "Circle.prime_scale_bijective", "Circle.scale_cofactor_zero", "Circle.scale_cofactor_multiple_zero", "Circle.scale_add_cofactor_multiple", "Circle.scale_nat_eq_zero_iff_dvd_mul", "Circle.scale_nat_eq_iff_mul_modEq"]
+    lean_declarations: ["Circle.scale", "Circle.scale_one", "Circle.scale_comp", "Circle.scale_rot", "Circle.scale_coilStep", "Circle.scale_invertible_iff_coprime", "Circle.prime_scale_bijective", "Circle.scale_cofactor_zero", "Circle.scale_cofactor_multiple_zero", "Circle.scale_add_cofactor_multiple", "Circle.scale_nat_eq_zero_iff_dvd_mul", "Circle.scale_nat_eq_iff_mul_modEq", "Circle.scale_nat_eq_iff_nat_modEq_of_coprime"]
     python_objects: ["Circle.scale", "Circle.scale_is_permutation"]
     introduced_in: "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS"
     forbidden_meanings:
       - "A geometric dilation unless a later geometry model explicitly interprets it that way."
       - "A proof of multiplication laws not linked to a theorem id."
-    examples: ["scale(12,5)(7)=11", "scale(12,4) is not invertible", "scale(13,5) is invertible because 13 is prime and 1<=5<13", "scale(12,4)(3)=0 because 4 divides 12", "scale(12,4)(6)=0 as a second cofactor multiple", "scale(12,4)(8)=scale(12,4)(5) because 8=5+1*(12/4)", "scale(12,4)(9)=0 because 12 divides 4*9", "scale(12,4)(2)=scale(12,4)(5) because 8 and 20 are congruent mod 12"]
+    examples: ["scale(12,5)(7)=11", "scale(12,4) is not invertible", "scale(13,5) is invertible because 13 is prime and 1<=5<13", "scale(12,4)(3)=0 because 4 divides 12", "scale(12,4)(6)=0 as a second cofactor multiple", "scale(12,4)(8)=scale(12,4)(5) because 8=5+1*(12/4)", "scale(12,4)(9)=0 because 12 divides 4*9", "scale(12,4)(2)=scale(12,4)(5) because 8 and 20 are congruent mod 12", "scale(12,5)(2)=scale(12,5)(14) exactly because 2 and 14 are congruent mod 12"]
 
   - id: CC-0201
     name: Coil

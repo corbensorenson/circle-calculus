@@ -21,5 +21,6 @@ namespace Circle.PaperS104
 #check Circle.scale_add_cofactor_multiple
 #check Circle.scale_nat_eq_zero_iff_dvd_mul
 #check Circle.scale_nat_eq_iff_mul_modEq
+#check Circle.scale_nat_eq_iff_nat_modEq_of_coprime
 
 end Circle.PaperS104

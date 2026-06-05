@@ -104,3 +104,15 @@ def test_scale_equality_iff_scaled_products_congruent() -> None:
                     assert (circle.scale(x, k) == circle.scale(y, k)) == (
                         (k * x) % n == (k * y) % n
                     )
+
+
+def test_coprime_scale_equality_iff_addresses_congruent() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for k in range(0, 65):
+            if gcd(n, k) == 1:
+                for x in range(0, 65):
+                    for y in range(0, 65):
+                        assert (circle.scale(x, k) == circle.scale(y, k)) == (
+                            x % n == y % n
+                        )
