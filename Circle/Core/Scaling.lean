@@ -69,4 +69,14 @@ theorem scale_cofactor_multiple_zero {n k m : Nat} (hkn : k ∣ n) :
   rw [CharP.cast_eq_zero (ZMod n) n]
   simp
 
+theorem scale_add_cofactor_multiple {n k x m : Nat} (hkn : k ∣ n) :
+    scale n k (((x + m * (n / k)) : Nat) : C n) = scale n k ((x : Nat) : C n) := by
+  unfold scale
+  rw [Nat.cast_add]
+  rw [mul_add]
+  have hzero := scale_cofactor_multiple_zero (n := n) (k := k) (m := m) hkn
+  unfold scale at hzero
+  rw [hzero]
+  simp
+
 end Circle

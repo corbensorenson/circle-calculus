@@ -18,5 +18,6 @@ namespace Circle.PaperS104
 #check Circle.prime_scale_bijective
 #check Circle.scale_cofactor_zero
 #check Circle.scale_cofactor_multiple_zero
+#check Circle.scale_add_cofactor_multiple
 
 end Circle.PaperS104

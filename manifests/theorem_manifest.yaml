@@ -239,6 +239,22 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["if k divides n and n>0, then for m in a bounded range scale(n,k,m*(n//k))==0"]
 
+  - id: CC-T0024
+    name: Scaling collapses cofactor-shifted addresses
+    status: proved
+    lean_name: Circle.scale_add_cofactor_multiple
+    informal_statement: "If k divides n, then adding any multiple of n/k to an address does not change its scaled value under k."
+    formal_statement: "forall {n k x m : Nat}, k divides n -> Circle.scale n k (((x + m*(n/k)) : Nat) : Circle.C n) = Circle.scale n k ((x : Nat) : Circle.C n)"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0201", "CC-0207"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_add_cofactor_multiple_for_divisors"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean from CC-T0023, distributivity of multiplication over addition, and additive zero simplification in ZMod."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["if k divides n and n>0, then scale(n,k,x+m*(n//k))==scale(n,k,x) over bounded examples"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved
