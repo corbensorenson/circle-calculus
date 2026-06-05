@@ -49,3 +49,10 @@ def test_scale_transports_coil_step() -> None:
                         assert c.scale(coil_step(n, stride, start, steps), k) == coil_step(
                             n, k * stride, k * start, steps
                         )
+
+
+def test_prime_scale_bijective() -> None:
+    for p in [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31]:
+        circle = Circle(p)
+        for k in range(1, p):
+            assert circle.scale_is_permutation(k)

@@ -191,6 +191,22 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["scale(n,k,coil_step(n,stride,start,steps))==coil_step(n,k*stride,k*start,steps)"]
 
+  - id: CC-T0021
+    name: Prime scaling is bijective
+    status: proved
+    lean_name: Circle.prime_scale_bijective
+    informal_statement: "Every nonzero multiplier below a prime circle size gives a reversible scaling map."
+    formal_statement: "forall {p k : Nat}, Nat.Prime p -> 0 < k -> k < p -> Function.Bijective (Circle.scale p k)"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0206"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_prime_scale_bijective"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean from CC-T0008 and Nat.coprime_of_lt_prime."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["for prime p and 1<=k<p: scale(p,k) is a permutation"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

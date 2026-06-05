@@ -1,4 +1,5 @@
 import Circle.Core.Coil
+import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.ZMod.Units
 
 namespace Circle
@@ -39,5 +40,10 @@ theorem scale_invertible_iff_coprime (n k : Nat) :
   rw [← IsUnit.isUnit_iff_mulLeft_bijective]
   rw [ZMod.isUnit_iff_coprime]
   exact ⟨Nat.Coprime.symm, Nat.Coprime.symm⟩
+
+theorem prime_scale_bijective {p k : Nat} (hp : Nat.Prime p) (hk0 : 0 < k) (hkp : k < p) :
+    Function.Bijective (scale p k) := by
+  rw [scale_invertible_iff_coprime]
+  exact Nat.coprime_of_lt_prime hk0.ne' hkp hp
 
 end Circle

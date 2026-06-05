@@ -37,7 +37,7 @@ The expanded long-horizon plan is dimension-organized:
 S^0 -> S^1 -> S^2 -> S^3 -> S^4/S^5/S^6 -> S^7 -> Future/S^15
 ```
 
-The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, scaling invertibility, and signed reversible rotation; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle, sphere-grid, and antipode theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; the first `S^3` spin sign-cancellation theorem; the finite `S^4` through `S^6` suspension Euler bridge; the finite topological `S^7` suspension model; the first Phase II finite stable-sphere, period-8 clock, trivial-bundle, directed-boundary, and proof-glyph certificate seeds; and the first application finite phase-coordinate, cyclic-address, direction-bin, stride-address, round-robin schedule, and Circle AI indexing seeds.
+The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, scaling invertibility, prime-circle scaling, and signed reversible rotation; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle, sphere-grid, and antipode theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; the first `S^3` spin sign-cancellation theorem; the finite `S^4` through `S^6` suspension Euler bridge; the finite topological `S^7` suspension model; the first Phase II finite stable-sphere, period-8 clock, trivial-bundle, directed-boundary, and proof-glyph certificate seeds; and the first application finite phase-coordinate, cyclic-address, direction-bin, stride-address, round-robin schedule, and Circle AI indexing seeds.
 
 Future dimensional work is split into two related ladders:
 
@@ -59,7 +59,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S1/PAPER_S1_01_FINITE_CIRCLES.md` | adapter | `CC-T0001` through `CC-T0007` linked in dimension layout |
 | `papers/S1/PAPER_S1_02_WINDING_NATURALS.md` | adapter | `CC-T0009` through `CC-T0016` linked in dimension layout |
 | `papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md` | draft | `S1O-T0001` through `S1O-T0003` proved |
-| `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md` | draft | `CC-T0008`, `CC-T0017`, `CC-T0018`, `CC-T0019`, and `CC-T0020` proved |
+| `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md` | draft | `CC-T0008`, `CC-T0017`, `CC-T0018`, `CC-T0019`, `CC-T0020`, and `CC-T0021` proved |
 | `papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md` | draft | `S0-T0001` and `S0-T0002` proved |
 | `papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md` | draft | `S2-T0001` and `S2-T0002` proved |
 | `papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md` | draft | `S2-T0003` through `S2-T0007` proved |
@@ -90,7 +90,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md` | draft/proved finite seed | `AIM-T0001` and `AIM-T0002` are Lean-proved cyclic-memory-slot facts with Python examples |
 | `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md` | draft/proved finite seed | `AIRA-T0001` and `AIRA-T0002` are Lean-proved adapter-block facts with Python examples |
 
-The theorem manifest also includes `CC-T0008`, `CC-T0017`, `CC-T0018`, `CC-T0019`, and `CC-T0020`, proving the first scaling spine: invertibility iff coprime, scale-by-one identity, scaling composition, scaling transport of rotation stride, and scaling transport of finite coil steps.
+The theorem manifest also includes `CC-T0008`, `CC-T0017`, `CC-T0018`, `CC-T0019`, `CC-T0020`, and `CC-T0021`, proving the first scaling spine: invertibility iff coprime, scale-by-one identity, scaling composition, scaling transport of rotation stride, scaling transport of finite coil steps, and bijectivity of nonzero scaling on prime circles.
 
 The D0 dimensional scaffold is also in place: dimension manifests, dimension dictionaries, planned paper stubs, Lean/Python scaffolds, and dimension validation scripts. Future-dimension claims remain planned, deferred, exploratory, or stated until actual Lean proofs exist.
 
@@ -215,6 +215,7 @@ Proved finite-circle core:
 - `CC-T0018`: scaling maps compose by multiplying scale factors
 - `CC-T0019`: scaling transports rotation stride
 - `CC-T0020`: scaling transports finite coil steps
+- `CC-T0021`: nonzero scaling below a prime circle size is bijective
 
 Proved winding/natural-number core:
 

@@ -44,3 +44,10 @@ def test_scaling_identity_and_composition_examples() -> None:
                     assert circle.scale(coil_step(n, stride, i, 5), k) == coil_step(
                         n, k * stride, k * i, 5
                     )
+
+
+def test_prime_scaling_examples() -> None:
+    for p in [2, 3, 5, 7, 11, 13, 17, 19]:
+        circle = Circle(p)
+        for k in range(1, p):
+            assert circle.scale_is_permutation(k)
