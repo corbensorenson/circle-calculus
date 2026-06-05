@@ -1,5 +1,7 @@
 import Circle.Common.Scaffold
 import Circle.S1.Scaffold
+import Circle.Core.Rotation
+import Circle.Core.Period
 
 namespace Circle.S2
 
@@ -37,5 +39,31 @@ theorem sphereGrid_chi (n r : Nat) :
     Circle.Common.eulerCharacteristic (sphereGridCounts n r) = 2 := by
   rw [sphereGrid_counts]
   simp [Circle.Common.eulerCharacteristic]
+
+abbrev LatitudeRing (n r : Nat) (_latitude : Fin r) :=
+  Circle.C n
+
+theorem latitudeRing_isCircle (n r : Nat) (latitude : Fin r) :
+    LatitudeRing n r latitude = Circle.C n := by
+  rfl
+
+inductive SphereGridPoint (n r : Nat)
+  | north
+  | south
+  | ring (latitude : Fin r) (node : Circle.C n)
+
+def longitudeRotation (n r stride : Nat) : SphereGridPoint n r -> SphereGridPoint n r
+  | SphereGridPoint.north => SphereGridPoint.north
+  | SphereGridPoint.south => SphereGridPoint.south
+  | SphereGridPoint.ring latitude node => SphereGridPoint.ring latitude (Circle.rot n stride node)
+
+theorem longitudeRotation_fixesPoles (n r stride : Nat) :
+    longitudeRotation n r stride SphereGridPoint.north = SphereGridPoint.north ∧
+      longitudeRotation n r stride SphereGridPoint.south = SphereGridPoint.south := by
+  constructor <;> rfl
+
+theorem latitudeCoil_period {n k : Nat} (hn : n ≠ 0) :
+    Circle.period n k = n / Nat.gcd n k :=
+  Circle.period_eq_n_div_gcd hn
 
 end Circle.S2

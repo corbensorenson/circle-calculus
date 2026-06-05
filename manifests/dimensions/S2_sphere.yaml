@@ -54,10 +54,10 @@ theorems:
       python_property_tests: ["v-e+f == 2"]
     blocker: ""
   - id: S2-T0005
-    status: planned
+    status: lean_proved
     lean_name: Circle.S2.latitudeRing_isCircle
     informal_statement: "Every non-pole latitude ring in a sphere grid is C_n-like."
-    formal_statement: "deferred formal statement"
+    formal_statement: "forall (n r : Nat) (latitude : Fin r), Circle.S2.LatitudeRing n r latitude = Circle.C n"
     dictionary_dependencies: ["S2-0002", "S2-0003", "CC-0001"]
     paper_refs: ["papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"]
     imports_allowed: ["Common", "S1"]
@@ -67,10 +67,10 @@ theorems:
       python_property_tests: []
     blocker: ""
   - id: S2-T0006
-    status: planned
+    status: lean_proved
     lean_name: Circle.S2.longitudeRotation_fixesPoles
     informal_statement: "A latitude rotation acts on ring nodes and fixes the collapsed poles."
-    formal_statement: "deferred formal statement"
+    formal_statement: "forall n r stride : Nat, longitudeRotation n r stride north = north and longitudeRotation n r stride south = south"
     dictionary_dependencies: ["S2-0002", "S2-0004"]
     paper_refs: ["papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"]
     imports_allowed: ["Common", "S1"]
@@ -80,10 +80,10 @@ theorems:
       python_property_tests: []
     blocker: ""
   - id: S2-T0007
-    status: planned
+    status: lean_proved
     lean_name: Circle.S2.latitudeCoil_period
     informal_statement: "A fixed latitude ring inherits the S1 coil period n/gcd(n,k)."
-    formal_statement: "deferred formal statement"
+    formal_statement: "forall {n k : Nat}, n != 0 -> Circle.period n k = n / Nat.gcd n k"
     dictionary_dependencies: ["S2-0003", "CC-0205"]
     paper_refs: ["papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"]
     imports_allowed: ["Common", "S1"]

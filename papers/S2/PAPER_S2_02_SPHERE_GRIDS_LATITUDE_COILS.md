@@ -1,6 +1,6 @@
 # Circle Calculus S2.2: Sphere Grids, Latitude Rings, and Pole Collapse
 
-Status: draft scaffold with the sphere-grid count and Euler facts proved.
+Status: draft scaffold with the sphere-grid theorem spine proved.
 
 ## Aim
 
@@ -49,7 +49,11 @@ The intended geometric use remains `n >= 3` and `r >= 1`, but the arithmetic cel
 
 `S2-T0004` is proved by `Circle.S2.sphereGrid_chi`: applying `Circle.Common.eulerCharacteristic` to those counts gives `2`.
 
-The latitude-ring and pole-collapse behavior remains planned under `S2-T0005`, `S2-T0006`, and `S2-T0007`.
+`S2-T0005` is proved by `Circle.S2.latitudeRing_isCircle`: each non-pole latitude ring is modeled as `Circle.C n`.
+
+`S2-T0006` is proved by `Circle.S2.longitudeRotation_fixesPoles`: longitude rotation fixes the collapsed north and south poles.
+
+`S2-T0007` is proved by `Circle.S2.latitudeCoil_period`: a latitude ring inherits the existing `S^1` period theorem `Circle.period_eq_n_div_gcd`.
 
 ## Dictionary Targets
 

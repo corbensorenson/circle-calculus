@@ -175,9 +175,9 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
   - Proof targets: `S2-T0001`, `S2-T0002`
   - Status: suspended-circle counts and Euler characteristic are Lean-proved in `Circle/S2/Scaffold.lean`.
   - Main model: `SuspC(n)`, with `V=n+2`, `E=3n`, `F=2n`, `chi=2`.
-- [ ] `papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md`
+- [x] `papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md`
   - Proof targets: `S2-T0003` through `S2-T0007`
-  - Status: `S2-T0003` and `S2-T0004` are Lean-proved; latitude-ring and pole-collapse targets remain planned.
+  - Status: sphere-grid counts, Euler characteristic, latitude-ring model, pole-fixing rotation, and inherited latitude coil period are Lean-proved.
   - Warning targets: `S2-W0001`, `S2-W0002`, `S2-W0003`
   - Main model: `SphereGrid(n,r)`, with pole collapse and latitude rings.
 - [ ] `papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md`

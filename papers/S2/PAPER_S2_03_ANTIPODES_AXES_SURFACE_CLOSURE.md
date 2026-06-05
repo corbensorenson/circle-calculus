@@ -16,8 +16,11 @@ Current upstream proved facts:
 - `S2-T0002`: `Circle.S2.suspendedCircle_chi`
 - `S2-T0003`: `Circle.S2.sphereGrid_counts`
 - `S2-T0004`: `Circle.S2.sphereGrid_chi`
+- `S2-T0005`: `Circle.S2.latitudeRing_isCircle`
+- `S2-T0006`: `Circle.S2.longitudeRotation_fixesPoles`
+- `S2-T0007`: `Circle.S2.latitudeCoil_period`
 
-Still-planned upstream facts include the latitude-ring and pole-collapse targets `S2-T0005` through `S2-T0007`.
+The surface-structure theorem ids for this paper should be added after those upstream finite-grid facts are used to define antipodes, axes, meridians, surface closure, and antinodes.
 
 ## Notes
 
