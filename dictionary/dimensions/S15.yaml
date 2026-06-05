@@ -2,9 +2,27 @@ entries:
   - id: S15-0001
     name: "Future octonionic Hopf horizon"
     kind: paper
-    formal_definition: "The roadmap target recorded by `Circle.Future.S15.octonionicHopfRoadmap` for the future structure S^7 -> S^15 -> S^8; formal proof remains deferred."
-    intuition: "A future horizon after S^7 foundations are stable."
+    formal_definition: "The roadmap target recorded by `Circle.Future.S15.octonionicHopfRoadmap` for the future structure S^7 -> S^15 -> S^8."
+    intuition: "The post-S7 horizon now anchored by bounded topological and coordinate Hopf facts."
     dependencies: ["S7O-0001"]
     introduced_in: "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP"
     forbidden_meanings:
-      - "An active proof target before S7 is stable."
+      - "A completed proof of the full octonionic Hopf fibration or quotient topology."
+  - id: S15-0002
+    name: "Finite S15 suspension model"
+    kind: object
+    formal_definition: "`Circle.Future.S15.topologicalModel`, obtained by suspending the finite S7 model eight more times, with Euler characteristic proved by `Circle.Future.S15.topologicalModel_eulerCharacteristic`."
+    intuition: "A bounded topological anchor for the S15 horizon."
+    dependencies: ["S7C-0001", "COMMON-0003"]
+    introduced_in: "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP"
+    forbidden_meanings:
+      - "A smooth or analytic model of S15."
+  - id: S15-0003
+    name: "Bounded octonionic Hopf landing"
+    kind: theorem
+    formal_definition: "`Circle.Future.S15.octonionicHopf_lands_sphere`, proving that normalized octonion pairs land on the unit nine-coordinate base equation under the bounded coordinate Hopf map."
+    intuition: "The coordinate landing equation for the octonionic Hopf horizon before full fibration topology."
+    dependencies: ["S7O-0001", "S15-0002"]
+    introduced_in: "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP"
+    forbidden_meanings:
+      - "A proof of octonionic phase quotient, global bundle structure, or S7 fiber action."

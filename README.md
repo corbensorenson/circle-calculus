@@ -75,11 +75,11 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md` | draft | `S7C-T0001` and `S7C-T0002` proved |
 | `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md` | draft/partial proof | `S7QH-T0001` and `S7QH-T0002` are Lean-proved coordinate theorems; full fibration topology remains future work |
 | `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md` | draft/proved spine | `S7O-T0001` through `S7O-T0006` are Lean-proved in a bounded Cayley-Dickson coordinate model |
-| `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | roadmap | `S15-T0001` has a Lean roadmap marker; formal proof is deferred |
+| `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | draft/partial proof | `S15-T0001` is a Lean roadmap marker; `S15-T0002` and `S15-T0003` are Lean-proved topological/coordinate landing facts |
 
 The theorem manifest also includes `CC-T0008`, proving that scaling by `k` is invertible on `C_n` exactly when `n` and `k` are coprime.
 
-The D0 dimensional scaffold is also in place: dimension manifests, dimension dictionaries, planned paper stubs, Lean/Python scaffolds, and dimension validation scripts. Future-dimension theorems remain planned, deferred, exploratory, or stated until actual Lean proofs exist.
+The D0 dimensional scaffold is also in place: dimension manifests, dimension dictionaries, planned paper stubs, Lean/Python scaffolds, and dimension validation scripts. Future-dimension claims remain planned, deferred, exploratory, or stated until actual Lean proofs exist.
 
 Phase II and application scaffolds are also in place under `papers/phase2/`, `papers/applications/`, `manifests/theories/`, and `manifests/applications/`. These are roadmap/benchmark scaffolds, not proof claims.
 
@@ -253,7 +253,8 @@ Executable exploratory spine:
 - `S7QH-T0001`: coordinate quaternionic Hopf map sends normalized quaternion pairs to the unit five-coordinate base equation
 - `S7QH-T0002`: shared right unit-quaternion phase rotation preserves the quaternionic Hopf map
 - `S7O-T0001` through `S7O-T0006`: bounded Cayley-Dickson basis, conjugate norm, norm multiplicativity, unit closure by norm, noncommutativity, and nonassociativity facts in Lean
-- `S15-T0001`: roadmap marker for the future `S7 -> S15 -> S8` octonionic Hopf horizon
+- `S15-T0001`: Lean roadmap marker for the octonionic Hopf horizon
+- `S15-T0002`, `S15-T0003`: finite S15 Euler theorem and bounded octonionic Hopf landing theorem
 
 ## What This Does Not Claim Yet
 

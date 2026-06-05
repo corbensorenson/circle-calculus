@@ -13,5 +13,31 @@ theorems:
       lean_build_required: true
       no_sorry_required: true
       python_property_tests: []
-    blocker: "Roadmap marker only. Formal octonionic Hopf proof is deferred until S7 octonionic foundations are Lean-formalized."
+    blocker: "Roadmap marker only. It is not a proof of the full octonionic Hopf fibration."
+  - id: S15-T0002
+    status: lean_proved
+    lean_name: Circle.Future.S15.topologicalModel_eulerCharacteristic
+    informal_statement: "The finite topological S15 suspension model has Euler characteristic 0."
+    formal_statement: "forall n : Nat, Circle.Common.eulerCharacteristic (Circle.Future.S15.topologicalModel n) = 0"
+    dictionary_dependencies: ["S15-0002", "S7C-0001", "COMMON-0002"]
+    paper_refs: ["papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6", "S7"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
+  - id: S15-T0003
+    status: lean_proved
+    lean_name: Circle.Future.S15.octonionicHopf_lands_sphere
+    informal_statement: "The bounded octonionic Hopf coordinate map sends normalized octonion pairs to the unit nine-coordinate base equation."
+    formal_statement: "forall p : Circle.Future.S15.OctonionPair, Circle.Future.S15.octonionPairNormSq p = 1 -> Circle.Future.S15.hopfBase9NormSq (Circle.Future.S15.octonionicHopfMap p) = 1"
+    dictionary_dependencies: ["S15-0003", "S7O-0001"]
+    paper_refs: ["papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6", "S7"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
 warnings: []

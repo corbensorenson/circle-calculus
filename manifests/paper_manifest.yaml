@@ -297,12 +297,16 @@ papers:
 
   - id: PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP
     title: "Circle Calculus S15.1: Octonionic Hopf Roadmap"
-    status: roadmap
+    status: draft
     sidecar: sidecars/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP
     theorem_ids:
       - S15-T0001
+      - S15-T0002
+      - S15-T0003
     dictionary_ids:
       - S15-0001
+      - S15-0002
+      - S15-0003
       - S7O-0001
 
   - id: PAPER_P2_01_STABLE_SPHERE_CALCULUS
