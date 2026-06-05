@@ -229,17 +229,17 @@ Goal: make the executable examples line up with the Lean-backed papers without d
 
 - [x] `papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md`
   - Proof target: `S456-T0001`
-  - Main result: `chi(S^d)=1+(-1)^d` for finite iterated suspension models.
+  - Status: polished draft proves the finite suspension/Euler parity bridge `chi(S^d)=1+(-1)^d` for the current `S^4` through `S^6` models.
 - [x] `papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md`
   - Proof targets: `S4-T0001`, `S4-T0002`
-  - Roadmap target: role of `S^4` as base of `S^3 -> S^7 -> S^4`.
+  - Status: polished draft proves the finite `S^4` suspension/Euler anchor and records the future role of `S^4` as base of `S^3 -> S^7 -> S^4`.
 - [x] `papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md`
   - Proof targets: `S5-T0001`, `S5-T0002`
-  - Keep projective geometry exploratory unless formalized.
+  - Status: polished draft proves the finite `S^5` suspension/Euler anchor and keeps projective geometry exploratory unless formalized.
 - [x] `papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md`
   - Proof targets: `S6-T0001`, `S6-T0002`
   - Warning target: `S6-W0001`
-  - Status: S4/S5/S6 finite suspension links and Euler characteristics are Lean-proved; projective, quaternionic Hopf, and S6 complex-structure topics remain roadmap/warning material.
+  - Status: polished draft proves the finite `S^6` suspension/Euler anchor and keeps the `S^6` complex-structure warning explicit.
 
 ### S7: Topological, Quaternionic Hopf, Octonionic
 
