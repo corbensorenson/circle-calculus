@@ -240,9 +240,10 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
 
 ### Future S15
 
-- [ ] `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md`
+- [x] `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md`
   - Future target: `S15-T0001`
   - Do not implement before `S7` is stable.
+  - Status: roadmap paper and Lean marker exist; formal octonionic Hopf proof remains deferred until S7 octonions are Lean-formalized.
 
 ### Phase II: Structured Transformations After S15
 

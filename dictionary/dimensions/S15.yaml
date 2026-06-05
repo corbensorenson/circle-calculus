@@ -2,10 +2,9 @@ entries:
   - id: S15-0001
     name: "Future octonionic Hopf horizon"
     kind: paper
-    formal_definition: "The deferred roadmap target for structures such as S^7 -> S^15 -> S^8."
+    formal_definition: "The roadmap target recorded by `Circle.Future.S15.octonionicHopfRoadmap` for the future structure S^7 -> S^15 -> S^8; formal proof remains deferred."
     intuition: "A future horizon after S^7 foundations are stable."
     dependencies: ["S7O-0001"]
     introduced_in: "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP"
     forbidden_meanings:
       - "An active proof target before S7 is stable."
-

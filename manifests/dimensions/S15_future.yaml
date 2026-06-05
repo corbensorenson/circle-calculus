@@ -2,17 +2,16 @@ dimension: Future
 status: future
 theorems:
   - id: S15-T0001
-    status: deferred
+    status: lean_stated
     lean_name: Circle.Future.S15.octonionicHopfRoadmap
     informal_statement: "The future octonionic Hopf horizon has intended structure S^7 -> S^15 -> S^8."
-    formal_statement: "deferred formal statement"
+    formal_statement: "def octonionicHopfRoadmap : String := \"S7 -> S15 -> S8\""
     dictionary_dependencies: ["S15-0001", "S7O-0001"]
     paper_refs: ["papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md"]
     imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6", "S7"]
     verification:
-      lean_build_required: false
+      lean_build_required: true
       no_sorry_required: true
       python_property_tests: []
-    blocker: "Deferred until S7 topological and octonionic foundations are stable."
+    blocker: "Roadmap marker only. Formal octonionic Hopf proof is deferred until S7 octonionic foundations are Lean-formalized."
 warnings: []
-
