@@ -46,7 +46,7 @@ Future dimensional work is split into two related ladders:
 
 The repository rule for that expansion is strict: higher dimensions may depend on lower dimensions, but lower dimensions must not import or rely on higher dimensions. The first dimensional implementation stage should be scaffolding only: dimension manifests, dictionary files, paper folders, Lean/Python roots, and import-check scripts, with all future theorem statuses kept planned, deferred, or exploratory until proofs exist.
 
-See `docs/DIMENSIONAL_LADDER.md` and `circle_calculus_dimensional_handoff/` for the detailed roadmap and guardrails.
+See `docs/COMPLETION_ROADMAP.md`, `docs/DIMENSIONAL_LADDER.md`, and `circle_calculus_dimensional_handoff/` for the detailed roadmap and guardrails.
 
 ## Current Status
 
@@ -138,7 +138,8 @@ Start with:
 4. `sidecars/PAPER_02_WINDING_NATURALS/lean/Paper02.lean`
 5. `dictionary/circle_dictionary.yaml`
 6. `manifests/theorem_manifest.yaml`
-7. `docs/DIMENSIONAL_LADDER.md`
+7. `docs/COMPLETION_ROADMAP.md`
+8. `docs/DIMENSIONAL_LADDER.md`
 
 The papers give the conceptual path. The sidecars show the proof links. The dictionary fixes vocabulary so later papers reuse the same meanings instead of drifting.
 

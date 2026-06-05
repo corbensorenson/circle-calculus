@@ -1,6 +1,6 @@
 # Dimensional Ladder
 
-This note summarizes the expanded post-`S^1` roadmap. The detailed planning pack lives in `circle_calculus_dimensional_handoff/`.
+This note summarizes the expanded post-`S^1` roadmap. The active completion checklist lives in `docs/COMPLETION_ROADMAP.md`, and the detailed planning pack lives in `circle_calculus_dimensional_handoff/`.
 
 The current proved core is still the finite `S^1`/circle layer. Higher-dimensional work should extend it without contaminating it.
 
@@ -70,5 +70,4 @@ The project should not jump from `S^3` to `S^7` and ignore `S^4`, `S^5`, and `S^
 
 ## First Expansion Goal
 
-The safest next implementation step after the current `S^1` core remains green is `D0`: add dimension manifests, dictionary files, paper directories, Lean/Python scaffolding, and dimension check scripts. All `S^2` through `S^7` theorem statuses should remain planned, deferred, or exploratory until actual proofs exist.
-
+The safest next implementation step after the current `S^1` core remains green is `D0`: add dimension manifests, dictionary files, paper directories, Lean/Python scaffolding, and dimension check scripts. All `S^2` through `S^7` theorem statuses should remain planned, deferred, or exploratory until actual proofs exist. Track that work in `docs/COMPLETION_ROADMAP.md`.
