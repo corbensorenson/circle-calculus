@@ -24,3 +24,12 @@ def test_scale_composition() -> None:
             for a in range(0, 33):
                 for b in range(0, 33):
                     assert c.scale(c.scale(i, b), a) == c.scale(i, a * b)
+
+
+def test_scale_transports_rotation_stride() -> None:
+    for n in range(1, 65):
+        c = Circle(n)
+        for i in range(0, 129):
+            for k in range(0, 33):
+                for stride in range(0, 33):
+                    assert c.scale(c.rot(i, stride), k) == c.rot(c.scale(i, k), k * stride)

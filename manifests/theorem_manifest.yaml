@@ -159,6 +159,22 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["scale(n,a,scale(n,b,i))==scale(n,a*b,i)"]
 
+  - id: CC-T0019
+    name: Scaling transports rotation stride
+    status: proved
+    lean_name: Circle.scale_rot
+    informal_statement: "Scaling a rotated node equals rotating the scaled node by the scaled stride."
+    formal_statement: "forall (n k stride : Nat) (x : Circle.C n), Circle.scale n k (Circle.rot n stride x) = Circle.rot n (k*stride) (Circle.scale n k x)"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0101", "CC-0105", "CC-0201"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_transports_rotation_stride"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean by distributivity of multiplication over addition in ZMod."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["scale(n,k,rot(n,stride,i))==rot(n,k*stride,scale(n,k,i))"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

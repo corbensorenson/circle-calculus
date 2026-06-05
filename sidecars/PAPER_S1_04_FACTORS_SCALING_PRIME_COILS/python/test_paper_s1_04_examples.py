@@ -22,6 +22,7 @@ def test_scaling_identity_and_composition_examples() -> None:
     circle = Circle(12)
     assert circle.scale(7, 1) == 7
     assert circle.scale(circle.scale(7, 5), 3) == circle.scale(7, 15)
+    assert circle.scale(circle.rot(7, 4), 5) == circle.rot(circle.scale(7, 5), 20)
 
     for n in range(1, 33):
         circle = Circle(n)
@@ -30,3 +31,8 @@ def test_scaling_identity_and_composition_examples() -> None:
             for a in range(0, 17):
                 for b in range(0, 17):
                     assert circle.scale(circle.scale(i, b), a) == circle.scale(i, a * b)
+            for k in range(0, 17):
+                for stride in range(0, 17):
+                    assert circle.scale(circle.rot(i, stride), k) == circle.rot(
+                        circle.scale(i, k), k * stride
+                    )

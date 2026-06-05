@@ -1,4 +1,4 @@
-import Circle.Core.Finite
+import Circle.Core.Rotation
 import Mathlib.Data.ZMod.Units
 
 namespace Circle
@@ -16,6 +16,12 @@ theorem scale_comp (n a b : Nat) (x : C n) :
     scale n a (scale n b x) = scale n (a * b) x := by
   unfold scale
   rw [← mul_assoc]
+  norm_num
+
+theorem scale_rot (n k stride : Nat) (x : C n) :
+    scale n k (rot n stride x) = rot n (k * stride) (scale n k x) := by
+  unfold scale rot
+  rw [mul_add]
   norm_num
 
 theorem scale_invertible_iff_coprime (n k : Nat) :
