@@ -165,7 +165,7 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
   - Status: signed zero, composition, and inverse motion are Lean-proved as `S1O-T0001` through `S1O-T0003`.
 - [x] `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md`
   - Proof targets: `CC-T0008`, multiplication as repeated rotation/scaling, invertibility iff coprime, factor structure, prime/full-coil refinements.
-  - Status: scaling invertible iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, scaling natural steps into coil traversal, prime-circle scaling bijectivity, divisor-cofactor collapse, cofactor-multiple collapse, cofactor-shift address collapse, scaling-zero divisibility, period-level kernel divisibility, period-multiple collapse, period-shift collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality, scaled-address product congruence, and coprime scaling reflection are Lean-proved as `CC-T0008`, `CC-T0028`, `CC-T0017`, `CC-T0018`, `CC-T0029`, `CC-T0019`, `CC-T0020`, `CC-T0031`, `CC-T0021`, `CC-T0022`, `CC-T0023`, `CC-T0024`, `CC-T0025`, `CC-T0030`, `CC-T0032`, `CC-T0033`, `CC-T0034`, `CC-T0035`, `CC-T0036`, `CC-T0037`, `CC-T0026`, and `CC-T0027`; deeper factor/orbit refinements remain future extensions.
+  - Status: scaling invertible iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, scaling natural steps into coil traversal, prime-circle scaling bijectivity, divisor-cofactor collapse, cofactor-multiple collapse, cofactor-shift address collapse, scaling-zero divisibility, period-level kernel divisibility, period-multiple collapse, period-shift collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, scaled-address product congruence, and coprime scaling reflection are Lean-proved as `CC-T0008`, `CC-T0028`, `CC-T0017`, `CC-T0018`, `CC-T0029`, `CC-T0019`, `CC-T0020`, `CC-T0031`, `CC-T0021`, `CC-T0022`, `CC-T0023`, `CC-T0024`, `CC-T0025`, `CC-T0030`, `CC-T0032`, `CC-T0033`, `CC-T0034`, `CC-T0035`, `CC-T0036`, `CC-T0037`, `CC-T0038`, `CC-T0026`, and `CC-T0027`; deeper factor/orbit refinements remain future extensions.
 
 ### S0: Opposition And Sign
 
@@ -383,6 +383,7 @@ Already proved and linked:
 - [x] `CC-T0035`: scaled natural addresses are equal iff they are congruent modulo the coil period
 - [x] `CC-T0036`: scaling is injective on representatives below the coil period
 - [x] `CC-T0037`: the scaled image of one period of representatives has cardinality equal to the coil period
+- [x] `CC-T0038`: every scaled natural address lands in the period-representative image
 - [x] `CC-T0026`: scaled natural addresses are equal iff their scaled products are congruent modulo the circle size
 - [x] `CC-T0027`: coprime scaling reflects ordinary address congruence
 - [x] `CC-T0009`: unique winding/residue lift
@@ -396,7 +397,7 @@ Already proved and linked:
 
 Still planned:
 
-- Scaling/factor refinements beyond `CC-T0037`: full map-image/cardinality packaging, kernel/fiber cardinality, composite orbit refinements, and factor-lattice/provenance links.
+- Scaling/factor refinements beyond `CC-T0038`: full map-image/cardinality packaging, kernel/fiber cardinality, composite orbit refinements, and factor-lattice/provenance links.
 
 ## Verification Checklist
 

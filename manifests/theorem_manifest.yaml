@@ -463,6 +463,22 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["len({scale(n,k,r) | 0 <= r < period(n,k)}) == period(n,k) over positive moduli in bounded tests"]
 
+  - id: CC-T0038
+    name: Scaled addresses land in period-representative image
+    status: proved
+    lean_name: Circle.scale_nat_mem_scalePeriodRepresentativeImage
+    informal_statement: "For a nonzero circle size, every scaled natural address lies in the scaled image of one full set of stride-period representatives."
+    formal_statement: "forall {n k x : Nat}, n != 0 -> Circle.scale n k ((x : Nat) : Circle.C n) in Circle.scalePeriodRepresentativeImage n k"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scaled_addresses_lie_in_period_representative_image"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean from CC-T0034 by choosing the Fin representative x % period(n,k)."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["scale(n,k,x) is in {scale(n,k,r) | 0 <= r < period(n,k)} over positive moduli in bounded tests"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

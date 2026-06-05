@@ -235,6 +235,18 @@ theorem scalePeriodRepresentativeImage_card {n k : Nat} (hn : n ≠ 0) :
     exact (scale_nat_period_representatives_injective (n := n) (k := k)
       (x := a.val) (y := b.val) hn a.isLt b.isLt).mp h
 
+theorem scale_nat_mem_scalePeriodRepresentativeImage {n k x : Nat} (hn : n ≠ 0) :
+    scale n k ((x : Nat) : C n) ∈ scalePeriodRepresentativeImage n k := by
+  unfold scalePeriodRepresentativeImage
+  have hnpos : 0 < n := Nat.pos_of_ne_zero hn
+  have hgpos : 0 < Nat.gcd n k := Nat.gcd_pos_of_pos_left k hnpos
+  have hp : 0 < period n k := by
+    rw [period_eq_n_div_gcd hn]
+    exact Nat.div_pos (Nat.gcd_le_left k hnpos) hgpos
+  rw [scale_nat_period_normalForm (n := n) (k := k) (x := x) hn]
+  exact Finset.mem_image.mpr
+    ⟨⟨x % period n k, Nat.mod_lt x hp⟩, Finset.mem_univ _, rfl⟩
+
 theorem scale_nat_eq_iff_nat_modEq_of_coprime {n k x y : Nat} (hcop : Nat.Coprime n k) :
     scale n k ((x : Nat) : C n) = scale n k ((y : Nat) : C n) ↔ x ≡ y [MOD n] := by
   have hbij : Function.Bijective (scale n k) := (scale_invertible_iff_coprime n k).mpr hcop

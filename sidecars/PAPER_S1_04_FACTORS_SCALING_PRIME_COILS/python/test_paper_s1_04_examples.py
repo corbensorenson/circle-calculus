@@ -184,6 +184,16 @@ def test_scale_period_representative_image_card_examples() -> None:
             assert len(image) == period
 
 
+def test_scaled_addresses_lie_in_period_representative_image_examples() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for k in range(0, 33):
+            period = circle.period(k)
+            image = {circle.scale(r, k) for r in range(period)}
+            for x in range(0, 129):
+                assert circle.scale(x, k) in image
+
+
 def test_coprime_scale_equality_examples() -> None:
     for n in range(1, 33):
         circle = Circle(n)
