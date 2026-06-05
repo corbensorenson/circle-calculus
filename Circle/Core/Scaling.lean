@@ -85,4 +85,11 @@ theorem scale_nat_eq_zero_iff_dvd_mul (n k x : Nat) :
   rw [← Nat.cast_mul]
   exact CharP.cast_eq_zero_iff (ZMod n) n (k * x)
 
+theorem scale_nat_eq_iff_mul_modEq (n k x y : Nat) :
+    scale n k ((x : Nat) : C n) = scale n k ((y : Nat) : C n) ↔
+      k * x ≡ k * y [MOD n] := by
+  unfold scale
+  rw [← Nat.cast_mul, ← Nat.cast_mul]
+  exact ZMod.natCast_eq_natCast_iff (k * x) (k * y) n
+
 end Circle

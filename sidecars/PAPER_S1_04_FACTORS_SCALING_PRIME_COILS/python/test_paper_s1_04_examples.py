@@ -88,3 +88,14 @@ def test_scale_zero_divisibility_examples() -> None:
         for k in range(0, 33):
             for x in range(0, 65):
                 assert (circle.scale(x, k) == 0) == ((k * x) % n == 0)
+
+
+def test_scale_equality_congruence_examples() -> None:
+    for n in range(1, 33):
+        circle = Circle(n)
+        for k in range(0, 17):
+            for x in range(0, 33):
+                for y in range(0, 33):
+                    assert (circle.scale(x, k) == circle.scale(y, k)) == (
+                        (k * x) % n == (k * y) % n
+                    )

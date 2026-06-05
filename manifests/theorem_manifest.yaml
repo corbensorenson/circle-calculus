@@ -271,6 +271,22 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["scale(n,k,x)==0 iff (k*x)%n==0 over positive moduli in bounded tests"]
 
+  - id: CC-T0026
+    name: Scaling equality iff scaled products are congruent
+    status: proved
+    lean_name: Circle.scale_nat_eq_iff_mul_modEq
+    informal_statement: "Two natural addresses have equal scaled values exactly when their scaled products are congruent modulo n."
+    formal_statement: "forall (n k x y : Nat), Circle.scale n k ((x : Nat) : Circle.C n) = Circle.scale n k ((y : Nat) : Circle.C n) iff k*x is congruent to k*y mod n"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0202", "CC-0207"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_equality_iff_scaled_products_congruent"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean by rewriting both scaled natural addresses as casts of k*x and k*y, then applying ZMod.natCast_eq_natCast_iff."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["scale(n,k,x)==scale(n,k,y) iff (k*x)%n==(k*y)%n over positive moduli in bounded tests"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved
