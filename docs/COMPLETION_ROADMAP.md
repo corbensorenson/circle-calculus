@@ -277,6 +277,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: `COMPC-T0001` and `COMPC-T0002` are Lean-proved cyclic-address facts with Python examples; backend lowering and performance claims remain benchmark work.
 - [x] `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md`
   - Program: `CoilRay Sort`, `CoilSampler`, `CoilNoise`, `CoilSTIR`, BRDF/lighting angular compression, spherical-coil ray queues, procedural placement/dithering, and rendering benchmarks.
+  - Status: `COMPR-T0001` and `COMPR-T0002` are Lean-proved direction-bin schedule facts with Python examples; rendering performance, coherence, and sampling-quality claims remain benchmark work.
 - [x] `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md`
   - Program: `CoilLayout`, `CoilStencil`, `CoilNTT`, gcd-cycle memory layouts, verified periodic boundaries, exact finite transforms, and MLX/Mac-compatible prototypes where relevant.
 - [x] `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md`
@@ -333,6 +334,8 @@ Application guardrails:
 - [x] `APPD-T0002`: finite phase coordinate closes after adding one full period.
 - [x] `COMPC-T0001`: cyclic address is bounded by a positive circular buffer size.
 - [x] `COMPC-T0002`: cyclic address is unchanged after adding one full buffer size.
+- [x] `COMPR-T0001`: direction-bin schedule is bounded by a positive bin count.
+- [x] `COMPR-T0002`: direction-bin schedule closes after one full pass through the bins.
 
 ## Current S1 Proof Status
 

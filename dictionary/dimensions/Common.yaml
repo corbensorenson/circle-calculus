@@ -216,3 +216,26 @@ entries:
     forbidden_meanings:
       - "A proof that a backend is faster."
       - "A proof that arbitrary strided memory is coalesced."
+  - id: COMMON-0020
+    name: "Direction-bin schedule"
+    kind: operation
+    symbol: "bin(bin_count,sample)"
+    formal_definition: "The finite schedule sample % bin_count for assigning samples or rays to direction bins."
+    intuition: "A minimal checked address for ray queues, hemisphere samples, and spherical-coil buckets."
+    dependencies: []
+    introduced_in: "PAPER_COMP_02_COIL_RAY_AND_SAMPLING"
+    forbidden_meanings:
+      - "A spherical geometry proof."
+      - "A BVH coherence theorem."
+      - "A rendering benchmark result."
+  - id: COMMON-0021
+    name: "Direction-bin closure"
+    kind: relation
+    symbol: "bin(sample + bin_count) = bin(sample)"
+    formal_definition: "The direction-bin schedule is unchanged after adding one positive bin count."
+    intuition: "A finite queue/sampler schedule repeats after one full pass through the bins."
+    dependencies: ["COMMON-0020"]
+    introduced_in: "PAPER_COMP_02_COIL_RAY_AND_SAMPLING"
+    forbidden_meanings:
+      - "A proof that binning improves ray coherence."
+      - "A statement about noise quality or visual convergence."

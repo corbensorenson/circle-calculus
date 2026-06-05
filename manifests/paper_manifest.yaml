@@ -393,10 +393,14 @@ papers:
 
   - id: PAPER_COMP_02_COIL_RAY_AND_SAMPLING
     title: "Circle Calculus Compute 2: CoilRay and CoilSampler"
-    status: planned
-    sidecar: ""
-    theorem_ids: []
-    dictionary_ids: []
+    status: draft
+    sidecar: sidecars/PAPER_COMP_02_COIL_RAY_AND_SAMPLING
+    theorem_ids:
+      - COMPR-T0001
+      - COMPR-T0002
+    dictionary_ids:
+      - COMMON-0020
+      - COMMON-0021
 
   - id: PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT
     title: "Circle Calculus Compute 3: CoilLayout, CoilStencil, and CoilNTT"

@@ -1,12 +1,27 @@
 # Circle Calculus Compute 2: CoilRay and CoilSampler
 
-Status: planned compute scaffold.
+Status: draft with a proved direction-bin schedule seed.
 
 ## Aim
 
 Explore `CoilRay Sort`, `CoilSampler`, `CoilNoise`, `CoilSTIR`, and angular lighting/sampling compression for rendering and procedural workloads.
 
-## Program
+The current formal seed is `COMMON-0020`, the finite direction-bin schedule
+
+```text
+bin(bin_count,sample) = sample mod bin_count
+```
+
+for positive bin counts. This is a queue/sampler indexing primitive, not a claim that ray binning improves rendering performance.
+
+## Theorem Spine
+
+- `COMPR-T0001`: for positive bin count, the direction-bin schedule is bounded by the bin count. Lean declaration: `Circle.Applications.directionBin_lt_binCount`.
+- `COMPR-T0002`: for positive bin count, adding one full bin count preserves the direction-bin schedule. Lean declaration: `Circle.Applications.directionBin_add_binCount`.
+
+The Python sidecar checks the same finite examples. Rendering claims still require scene benchmarks, baseline wavefront path tracing, direction bucketing, spherical-coil bucketing, and measurements such as rays per second, divergence, cache behavior, traversal time, noise, and frame time.
+
+## Next Program
 
 - Compare baseline wavefront path tracing, direction bucketing, and spherical-coil bucketing.
 - Measure rays per second, cache behavior, divergence, BVH traversal time, noise per sample, and frame time.
