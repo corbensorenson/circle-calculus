@@ -26,6 +26,7 @@ papers:
       - CC-T0006
       - CC-T0007
       - CC-T0054
+      - CC-T0055
     dictionary_ids:
       - CC-0001
       - CC-0002
@@ -117,6 +118,7 @@ papers:
       - CC-T0006
       - CC-T0007
       - CC-T0054
+      - CC-T0055
     dictionary_ids:
       - S1-0001
       - CC-0001

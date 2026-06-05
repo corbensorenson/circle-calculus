@@ -185,7 +185,7 @@ Goal: make the executable examples line up with the Lean-backed papers without d
 
 - [x] `papers/S1/PAPER_S1_01_FINITE_CIRCLES.md`
   - Current source: `papers/PAPER_01_FINITE_CIRCLES.md`
-  - Proof targets: `CC-T0001` through `CC-T0007`, plus `CC-T0054`
+  - Proof targets: `CC-T0001` through `CC-T0007`, plus `CC-T0054` and `CC-T0055`
   - Status: polished dimension guide draft links the proved theorem spine into the dimension layout while keeping the root paper as the detailed source.
 - [x] `papers/S1/PAPER_S1_02_WINDING_NATURALS.md`
   - Current source: `papers/PAPER_02_WINDING_NATURALS.md`
@@ -408,6 +408,7 @@ Already proved and linked:
 - [x] `CC-T0004`: closure condition
 - [x] `CC-T0005`: period equals `n / gcd(n,k)`
 - [x] `CC-T0006`: orbit decomposition count
+- [x] `CC-T0055`: same orbit iff the node difference lies in the stride subgroup
 - [x] `CC-T0007`: prime full coil
 - [x] `CC-T0054`: full coil iff coprime
 - [x] `CC-T0008`: scaling invertible iff coprime

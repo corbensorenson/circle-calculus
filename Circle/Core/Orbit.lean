@@ -11,6 +11,18 @@ noncomputable def orbitSubgroup (n k : Nat) : AddSubgroup (C n) :=
 abbrev orbitClassQuotient (n k : Nat) :=
   (C n) ⧸ orbitSubgroup n k
 
+/-- Two nodes are in the same stride-orbit class when they agree in the orbit quotient. -/
+noncomputable def sameOrbit (n k : Nat) (x y : C n) : Prop :=
+  QuotientAddGroup.mk' (orbitSubgroup n k) x =
+    QuotientAddGroup.mk' (orbitSubgroup n k) y
+
+/-- Same-orbit equality is exactly difference membership in the stride-generated subgroup. -/
+theorem sameOrbit_iff_difference_mem_orbitSubgroup (n k : Nat) (x y : C n) :
+    sameOrbit n k x y ↔ x - y ∈ orbitSubgroup n k := by
+  unfold sameOrbit
+  simpa using
+    (QuotientAddGroup.eq_iff_sub_mem (N := orbitSubgroup n k) (x := x) (y := y))
+
 /-- The number of stride-orbit classes on `C n`. -/
 noncomputable def orbitClassCount (n k : Nat) : Nat :=
   Nat.card (orbitClassQuotient n k)
@@ -43,4 +55,3 @@ theorem orbit_decomposition_count {n k : Nat} (hn : n ≠ 0) :
   exact Nat.mul_right_cancel hqpos (hlag'.trans hg_mul_q.symm)
 
 end Circle
-

@@ -45,13 +45,14 @@ targets:
     layer: S1
     priority: high
     status: planned
+    supporting_theorem_ids: ["CC-T0055"]
     claim_type: theorem
     title: "Orbit membership by gcd congruence"
     target_statement: "Two nodes lie in the same stride-k orbit exactly when their representatives differ by a multiple of gcd(n,k)."
     candidate_formalization: "n != 0 -> sameOrbit n k x y iff Nat.gcd n k divides representative_difference x y"
     paper_refs: ["papers/PAPER_01_FINITE_CIRCLES.md", "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md"]
     dictionary_dependencies: ["CC-0201", "CC-0207", "CC-0208"]
-    next_action: "Choose a representative-difference API before formalizing."
+    next_action: "Use CC-T0055 as the quotient-level sameOrbit API, then prove the representative theorem with Nat.ModEq modulo Nat.gcd(n,k)."
     guardrail: "Avoid ad hoc integer representatives that are not tied to ZMod equality."
 
   - id: P4-S1-003

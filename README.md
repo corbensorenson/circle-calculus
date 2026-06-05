@@ -39,7 +39,7 @@ The expanded long-horizon plan is dimension-organized:
 S^0 -> S^1 -> S^2 -> S^3 -> S^4/S^5/S^6 -> S^7 -> Future/S^15
 ```
 
-The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, full-coil iff coprime, winding, lifted natural-number arithmetic, scaling invertibility, scale-factor normalization, scaling-to-coil image bridge, prime-circle scaling, divisor/cofactor scaling collapse, period-kernel collapse, period-normal scaling representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and cardinality, zero-fiber/kernel and scaled-target/fiber bridges, fiber-set equality modulo scaled value and stride period, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, cofactor-shift collapse, exact scaling-zero and period-divisibility criteria, scaled-address equality congruence, coprime scaling reflection, and signed reversible rotation; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle, sphere-grid, antipode, pole/equator subset, latitude/longitude coordinate, and antipodal-pair theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; the first `S^3` Hopf coordinate and phase-action spine; the first `S^3` spin sign-cancellation theorem; the finite `S^4` through `S^6` suspension-count and Euler bridge; the finite topological `S^7` suspension-count and Euler model; the first Phase II finite stable-sphere, period-8 clock, trivial-bundle, directed-boundary, and proof-glyph certificate seeds; and the first application finite phase-coordinate, cyclic-address, direction-bin, stride-address, round-robin schedule, and Circle AI indexing seeds.
+The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, same-orbit quotient membership, prime full coils, full-coil iff coprime, winding, lifted natural-number arithmetic, scaling invertibility, scale-factor normalization, scaling-to-coil image bridge, prime-circle scaling, divisor/cofactor scaling collapse, period-kernel collapse, period-normal scaling representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and cardinality, zero-fiber/kernel and scaled-target/fiber bridges, fiber-set equality modulo scaled value and stride period, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, cofactor-shift collapse, exact scaling-zero and period-divisibility criteria, scaled-address equality congruence, coprime scaling reflection, and signed reversible rotation; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle, sphere-grid, antipode, pole/equator subset, latitude/longitude coordinate, and antipodal-pair theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; the first `S^3` Hopf coordinate and phase-action spine; the first `S^3` spin sign-cancellation theorem; the finite `S^4` through `S^6` suspension-count and Euler bridge; the finite topological `S^7` suspension-count and Euler model; the first Phase II finite stable-sphere, period-8 clock, trivial-bundle, directed-boundary, and proof-glyph certificate seeds; and the first application finite phase-coordinate, cyclic-address, direction-bin, stride-address, round-robin schedule, and Circle AI indexing seeds.
 
 Future dimensional work is split into two related ladders:
 
@@ -56,9 +56,9 @@ This is an early public research scaffold with a working verification pipeline a
 
 | Paper | Status | Formal spine |
 | --- | --- | --- |
-| `papers/PAPER_01_FINITE_CIRCLES.md` | polished draft | `CC-T0001` through `CC-T0007` plus `CC-T0054` proved |
+| `papers/PAPER_01_FINITE_CIRCLES.md` | polished draft | `CC-T0001` through `CC-T0007` plus `CC-T0054` and `CC-T0055` proved |
 | `papers/PAPER_02_WINDING_NATURALS.md` | polished draft | `CC-T0009` through `CC-T0016` proved |
-| `papers/S1/PAPER_S1_01_FINITE_CIRCLES.md` | polished dimension guide draft | `CC-T0001` through `CC-T0007` plus `CC-T0054` linked in dimension layout |
+| `papers/S1/PAPER_S1_01_FINITE_CIRCLES.md` | polished dimension guide draft | `CC-T0001` through `CC-T0007` plus `CC-T0054` and `CC-T0055` linked in dimension layout |
 | `papers/S1/PAPER_S1_02_WINDING_NATURALS.md` | polished dimension guide draft | `CC-T0009` through `CC-T0016` linked in dimension layout |
 | `papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md` | polished draft | `S1O-T0001` through `S1O-T0003` proved with Python examples |
 | `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md` | polished draft | `CC-T0008` and `CC-T0017` through `CC-T0054` proved |
@@ -234,6 +234,7 @@ Proved finite-circle core:
 - `CC-T0004`: closure condition
 - `CC-T0005`: period equals `n / gcd(n,k)`
 - `CC-T0006`: orbit decomposition count
+- `CC-T0055`: same orbit iff the node difference lies in the stride subgroup
 - `CC-T0007`: prime full coil
 - `CC-T0054`: full coil iff coprime
 - `CC-T0008`: scaling invertible iff coprime
