@@ -21,6 +21,7 @@ ALLOWED_STATUSES = {
     "planned",
     "roadmap",
     "outline",
+    "polished_draft",
     "adapter",
     "draft",
     "complete",

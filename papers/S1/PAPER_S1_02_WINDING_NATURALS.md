@@ -1,6 +1,6 @@
 # Circle Calculus S1.2: Winding, Lifted Circles, and Natural Numbers
 
-Status: dimension guide draft with the winding theorem spine linked to the root Paper 2 artifacts.
+Status: polished dimension guide draft with the winding theorem spine linked to the root Paper 2 artifacts.
 
 ## Aim
 

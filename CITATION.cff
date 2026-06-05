@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use Circle Calculus, please cite the project and credit Corben Sorenson."
+title: "Circle Calculus"
+authors:
+  - family-names: "Sorenson"
+    given-names: "Corben"
+repository-code: "https://github.com/corbensorenson/circle-calculus"
+license: "MIT"
+date-released: "2026-06-05"

@@ -1,7 +1,7 @@
 papers:
   - id: PAPER_S0_01_TWO_POINT_OPPOSITION
     title: "Circle Calculus S0.1: Two-Point Opposition"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S0_01_TWO_POINT_OPPOSITION
     theorem_ids:
       - S0-T0001
@@ -13,7 +13,7 @@ papers:
 
   - id: PAPER_01_FINITE_CIRCLES
     title: "Circle Calculus I: Finite Circles, Rotations, and Coils"
-    status: outline
+    status: polished_draft
     sidecar: sidecars/PAPER_01_FINITE_CIRCLES
     theorem_ids:
       - CC-T0001
@@ -36,7 +36,7 @@ papers:
 
   - id: PAPER_02_WINDING_NATURALS
     title: "Circle Calculus II: Winding, Lifted Circles, and Natural Numbers"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_02_WINDING_NATURALS
     theorem_ids:
       - CC-T0009
@@ -55,7 +55,7 @@ papers:
 
   - id: PAPER_S1_04_FACTORS_SCALING_PRIME_COILS
     title: "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS
     theorem_ids:
       - CC-T0008
@@ -102,7 +102,7 @@ papers:
 
   - id: PAPER_S1_01_FINITE_CIRCLES
     title: "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S1_01_FINITE_CIRCLES
     theorem_ids:
       - CC-T0001
@@ -121,7 +121,7 @@ papers:
 
   - id: PAPER_S1_02_WINDING_NATURALS
     title: "Circle Calculus S1.2: Winding, Lifted Circles, and Natural Numbers"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S1_02_WINDING_NATURALS
     theorem_ids:
       - CC-T0009
@@ -141,7 +141,7 @@ papers:
 
   - id: PAPER_S1_03_INTEGERS_ORIENTATION
     title: "Circle Calculus S1.3: Integers, Orientation, and Reversible Motion"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S1_03_INTEGERS_ORIENTATION
     theorem_ids:
       - S1O-T0001
@@ -153,7 +153,7 @@ papers:
 
   - id: PAPER_S2_01_SUSPENDED_CIRCLES
     title: "Circle Calculus S2.1: Suspended Circles and the First Finite Sphere"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S2_01_SUSPENDED_CIRCLES
     theorem_ids:
       - S2-T0001
@@ -166,7 +166,7 @@ papers:
 
   - id: PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS
     title: "Circle Calculus S2.2: Sphere Grids, Latitude Rings, and Pole Collapse"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS
     theorem_ids:
       - S2-T0003
@@ -184,7 +184,7 @@ papers:
 
   - id: PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE
     title: "Circle Calculus S2.3: Antipodes, Axes, Surface Closure, and Antinodes"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE
     theorem_ids:
       - S2-T0008
@@ -201,7 +201,7 @@ papers:
 
   - id: PAPER_S3_01_FINITE_HYPERSPHERES
     title: "Circle Calculus S3.1: Finite 3-Spheres by Suspending Spheres"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S3_01_FINITE_HYPERSPHERES
     theorem_ids:
       - S3C-T0001
@@ -216,7 +216,7 @@ papers:
 
   - id: PAPER_S3_02_QUATERNION_COILS
     title: "Circle Calculus S3.2: Quaternion Coils and Unit-Quaternion Hypersphere"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S3_02_QUATERNION_COILS
     theorem_ids:
       - S3Q-T0001
@@ -231,7 +231,7 @@ papers:
 
   - id: PAPER_S3_03_HOPF_COILS
     title: "Circle Calculus S3.3: Hopf Coils"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S3_03_HOPF_COILS
     theorem_ids:
       - S3H-T0001
@@ -246,7 +246,7 @@ papers:
 
   - id: PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP
     title: "Circle Calculus S3.4: Spin, Double Covers, and Rotation Quotients"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP
     theorem_ids:
       - S3S-T0001
@@ -258,7 +258,7 @@ papers:
 
   - id: PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY
     title: "Circle Calculus S456.1: General Suspension and Euler Parity"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY
     theorem_ids:
       - COMMON-T0001
@@ -273,7 +273,7 @@ papers:
 
   - id: PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF
     title: "Circle Calculus S4.1: S4 as Base of Quaternionic Hopf Structure"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF
     theorem_ids:
       - S4-T0001
@@ -284,7 +284,7 @@ papers:
 
   - id: PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE
     title: "Circle Calculus S5.1: Complex Projective Bridge"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE
     theorem_ids:
       - S5-T0001
@@ -295,7 +295,7 @@ papers:
 
   - id: PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS
     title: "Circle Calculus S6.1: Octonion Shadow and Warnings"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS
     theorem_ids:
       - S6-T0001
@@ -307,7 +307,7 @@ papers:
 
   - id: PAPER_S7_01_TOPOLOGICAL_7SPHERE
     title: "Circle Calculus S7.1: Topological 7-Sphere by Iterated Suspension"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S7_01_TOPOLOGICAL_7SPHERE
     theorem_ids:
       - S7C-T0001
@@ -319,7 +319,7 @@ papers:
 
   - id: PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION
     title: "Circle Calculus S7.2: Quaternionic Hopf Fibration"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION
     theorem_ids:
       - S7QH-T0001
@@ -331,7 +331,7 @@ papers:
 
   - id: PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS
     title: "Circle Calculus S7.3: Octonionic Units and Nonassociative Coils"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS
     theorem_ids:
       - S7O-T0001
@@ -348,7 +348,7 @@ papers:
 
   - id: PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP
     title: "Circle Calculus S15.1: Octonionic Hopf Roadmap"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP
     theorem_ids:
       - S15-T0001
@@ -363,7 +363,7 @@ papers:
 
   - id: PAPER_P2_01_STABLE_SPHERE_CALCULUS
     title: "Circle Calculus Phase II.1: Stable Sphere Calculus"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_P2_01_STABLE_SPHERE_CALCULUS
     theorem_ids:
       - P2S-T0001
@@ -377,7 +377,7 @@ papers:
 
   - id: PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY
     title: "Circle Calculus Phase II.2: Bott and Clifford Periodicity"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY
     theorem_ids:
       - P2B-T0001
@@ -388,7 +388,7 @@ papers:
 
   - id: PAPER_P2_03_BUNDLE_CALCULUS
     title: "Circle Calculus Phase II.3: Bundle Calculus"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_P2_03_BUNDLE_CALCULUS
     theorem_ids:
       - P2BU-T0001
@@ -402,7 +402,7 @@ papers:
 
   - id: PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS
     title: "Circle Calculus Phase II.4: Boundary and Cobordism Calculus"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS
     theorem_ids:
       - P2BC-T0001
@@ -416,7 +416,7 @@ papers:
 
   - id: PAPER_P2_05_PROOF_CARRYING_GLYPHS
     title: "Circle Calculus Phase II.5: Proof-Carrying Glyphs"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS
     theorem_ids:
       - P2G-T0001
@@ -429,7 +429,7 @@ papers:
 
   - id: PAPER_APP_01_COIL_DATA_ANALYSIS
     title: "Circle Calculus Application 1: Coil Data Analysis"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_APP_01_COIL_DATA_ANALYSIS
     theorem_ids:
       - APPD-T0001
@@ -441,7 +441,7 @@ papers:
 
   - id: PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION
     title: "Circle Calculus Compute 1: Proof-Carrying Circular Computation"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION
     theorem_ids:
       - COMPC-T0001
@@ -453,7 +453,7 @@ papers:
 
   - id: PAPER_COMP_02_COIL_RAY_AND_SAMPLING
     title: "Circle Calculus Compute 2: CoilRay and CoilSampler"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_COMP_02_COIL_RAY_AND_SAMPLING
     theorem_ids:
       - COMPR-T0001
@@ -465,7 +465,7 @@ papers:
 
   - id: PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT
     title: "Circle Calculus Compute 3: CoilLayout, CoilStencil, and CoilNTT"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT
     theorem_ids:
       - COMPL-T0001
@@ -478,7 +478,7 @@ papers:
 
   - id: PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS
     title: "Circle Calculus Compute 4: Coil Systems Applications"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS
     theorem_ids:
       - COMPS-T0001
@@ -490,7 +490,7 @@ papers:
 
   - id: PAPER_AI_01_CIRCLE_AI_ARCHITECTURES
     title: "Circle Calculus AI 1: Circle AI Architectures"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES
     theorem_ids:
       - AIA-T0001
@@ -502,7 +502,7 @@ papers:
 
   - id: PAPER_AI_02_COIL_ATTENTION_AND_MEMORY
     title: "Circle Calculus AI 2: Coil Attention and Memory"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY
     theorem_ids:
       - AIM-T0001
@@ -514,7 +514,7 @@ papers:
 
   - id: PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE
     title: "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
-    status: draft
+    status: polished_draft
     sidecar: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE
     theorem_ids:
       - AIRA-T0001

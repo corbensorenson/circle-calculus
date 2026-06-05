@@ -1,6 +1,6 @@
 # Circle Calculus S1.1: Finite Circles, Rotations, and Coils
 
-Status: dimension guide draft with the finite-circle theorem spine linked to the root Paper 1 artifacts.
+Status: polished dimension guide draft with the finite-circle theorem spine linked to the root Paper 1 artifacts.
 
 ## Aim
 
