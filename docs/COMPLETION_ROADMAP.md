@@ -280,6 +280,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: `COMPR-T0001` and `COMPR-T0002` are Lean-proved direction-bin schedule facts with Python examples; rendering performance, coherence, and sampling-quality claims remain benchmark work.
 - [x] `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md`
   - Program: `CoilLayout`, `CoilStencil`, `CoilNTT`, gcd-cycle memory layouts, verified periodic boundaries, exact finite transforms, and MLX/Mac-compatible prototypes where relevant.
+  - Status: `COMPL-T0001` and `COMPL-T0002` are Lean-proved stride-address facts with Python examples; layout, stencil, FFT, NTT, MLX/backend, and performance claims remain future work.
 - [x] `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md`
   - Program: `CoilHash`, `CoilMotion`, `CoilPRM`, `CoilCodec`, `CoilANN`, `CoilAcquire`, `CoilCAM`, `CoilTorsion`, `CoilDetect`, `CoilSched`, and `CoilQ` as benchmarked or domain-tested application roadmaps.
 - [x] `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md`
@@ -336,6 +337,8 @@ Application guardrails:
 - [x] `COMPC-T0002`: cyclic address is unchanged after adding one full buffer size.
 - [x] `COMPR-T0001`: direction-bin schedule is bounded by a positive bin count.
 - [x] `COMPR-T0002`: direction-bin schedule closes after one full pass through the bins.
+- [x] `COMPL-T0001`: stride address is bounded by a positive circular size.
+- [x] `COMPL-T0002`: stride address closes after one full pass through the circular step horizon.
 
 ## Current S1 Proof Status
 

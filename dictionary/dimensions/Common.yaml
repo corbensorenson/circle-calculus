@@ -239,3 +239,27 @@ entries:
     forbidden_meanings:
       - "A proof that binning improves ray coherence."
       - "A statement about noise quality or visual convergence."
+  - id: COMMON-0022
+    name: "Stride address"
+    kind: operation
+    symbol: "addr(size,stride,step)"
+    formal_definition: "The finite address (step * stride) % size for a circular stride schedule."
+    intuition: "The address pattern behind orbit-order layout, periodic stencils, and finite transform passes."
+    dependencies: ["COMMON-0018"]
+    introduced_in: "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT"
+    forbidden_meanings:
+      - "A proof of cache coalescing."
+      - "A proof of FFT or NTT correctness."
+      - "A claim that a layout is faster."
+  - id: COMMON-0023
+    name: "Stride schedule closure"
+    kind: relation
+    symbol: "addr(step + size) = addr(step)"
+    formal_definition: "The finite stride address is unchanged after adding one full circular size to the step count."
+    intuition: "A stride schedule repeats after one full pass through the circular step horizon."
+    dependencies: ["COMMON-0022"]
+    introduced_in: "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT"
+    forbidden_meanings:
+      - "A proof of full traversal."
+      - "A gcd-cycle decomposition theorem."
+      - "A benchmark result."

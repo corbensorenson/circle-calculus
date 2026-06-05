@@ -100,6 +100,8 @@ Current active Phase II proof seed:
 - This is a proof-carrying rewrite primitive, not evidence that any backend is faster.
 - `PAPER_COMP_02_COIL_RAY_AND_SAMPLING` proves the direction-bin schedule facts `COMPR-T0001` and `COMPR-T0002` in Lean through `Circle.Applications.directionBin_lt_binCount` and `Circle.Applications.directionBin_add_binCount`, with matching Python examples.
 - This is finite queue/sampler indexing, not evidence of ray-coherence speedup, lower noise, or better frame time.
+- `PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT` proves the stride-address facts `COMPL-T0001` and `COMPL-T0002` in Lean through `Circle.Applications.strideAddress_lt_size` and `Circle.Applications.strideAddress_add_size_steps`, with matching Python examples.
+- This is address-level structure, not a proof of cache locality, stencil correctness, NTT correctness, or backend speed.
 
 ## Compute Track
 
@@ -261,7 +263,7 @@ Circle AI guardrails:
 
 ## Planned And Active Scaffolds Created
 
-These files exist so later Phase II and application work has stable paper and manifest anchors. Most application tracks remain planned scaffolds rather than proof claims; `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_05_PROOF_CARRYING_GLYPHS`, `PAPER_APP_01_COIL_DATA_ANALYSIS`, `PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION`, and `PAPER_COMP_02_COIL_RAY_AND_SAMPLING` are active proof seeds.
+These files exist so later Phase II and application work has stable paper and manifest anchors. Most application tracks remain planned scaffolds rather than proof claims; `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_05_PROOF_CARRYING_GLYPHS`, `PAPER_APP_01_COIL_DATA_ANALYSIS`, and `PAPER_COMP_01` through `PAPER_COMP_03` are active proof seeds.
 
 Planned manifests:
 

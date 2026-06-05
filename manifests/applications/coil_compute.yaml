@@ -6,6 +6,8 @@ papers:
 sidecars:
   - sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/lean/PaperComp01.lean
   - sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py
+  - sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/lean/PaperComp03.lean
+  - sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py
 theorems:
   - id: COMPC-T0001
     status: lean_proved
@@ -15,6 +17,14 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.cyclicAddress_add_size
     dictionary_dependencies: ["COMMON-0018", "COMMON-0019"]
+  - id: COMPL-T0001
+    status: lean_proved
+    lean_name: Circle.Applications.strideAddress_lt_size
+    dictionary_dependencies: ["COMMON-0022"]
+  - id: COMPL-T0002
+    status: lean_proved
+    lean_name: Circle.Applications.strideAddress_add_size_steps
+    dictionary_dependencies: ["COMMON-0022", "COMMON-0023"]
 next_targets:
   - "Extend from cyclic addresses to stride/orbit layouts before claiming layout wins."
   - "Benchmark direct, dense, FFT, NTT, and layout backends before making performance claims."
