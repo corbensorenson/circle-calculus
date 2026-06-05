@@ -347,10 +347,15 @@ papers:
 
   - id: PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS
     title: "Circle Calculus Phase II.4: Boundary and Cobordism Calculus"
-    status: planned
-    sidecar: ""
-    theorem_ids: []
-    dictionary_ids: []
+    status: draft
+    sidecar: sidecars/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS
+    theorem_ids:
+      - P2BC-T0001
+      - P2BC-T0002
+    dictionary_ids:
+      - COMMON-0010
+      - COMMON-0011
+      - COMMON-0012
 
   - id: PAPER_P2_05_PROOF_CARRYING_GLYPHS
     title: "Circle Calculus Phase II.5: Proof-Carrying Glyphs"

@@ -131,4 +131,30 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["projection((base,left)) == projection((base,right))"]
     blocker: ""
+  - id: P2BC-T0001
+    status: lean_proved
+    lean_name: Circle.Phase2.boundaryBoundaryInterval_zero
+    informal_statement: "In the directed-interval seed, taking point-boundary after interval-boundary gives zero."
+    formal_statement: "forall interval : DirectedInterval, pointBoundary (intervalBoundary interval) = 0"
+    dictionary_dependencies: ["COMMON-0010", "COMMON-0011"]
+    paper_refs: ["papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["boundary_0(boundary_1(interval)) == 0"]
+    blocker: ""
+  - id: P2BC-T0002
+    status: lean_proved
+    lean_name: Circle.Phase2.intervalBoundary_reverse
+    informal_statement: "Reversing a directed interval negates its boundary."
+    formal_statement: "forall interval : DirectedInterval, intervalBoundary (reverseInterval interval) = -intervalBoundary interval"
+    dictionary_dependencies: ["COMMON-0010", "COMMON-0011", "COMMON-0012"]
+    paper_refs: ["papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["boundary(reverse(interval)) == -boundary(interval)"]
+    blocker: ""
 warnings: []

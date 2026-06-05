@@ -101,3 +101,38 @@ entries:
     forbidden_meanings:
       - "A proof of fiber transport."
       - "A connection, curvature, holonomy, or transition-function model."
+  - id: COMMON-0010
+    name: "Directed interval"
+    kind: object
+    symbol: "[source -> target]"
+    formal_definition: "A finite one-dimensional oriented interval with integer source and target coordinates."
+    intuition: "The smallest boundary-calculus object: an oriented segment whose boundary is target minus source."
+    dependencies: []
+    introduced_in: "PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS"
+    forbidden_meanings:
+      - "A smooth manifold."
+      - "A general chain complex."
+      - "A cobordism theorem."
+  - id: COMMON-0011
+    name: "Boundary operator seed"
+    kind: operation
+    symbol: "boundary"
+    formal_definition: "In the directed-interval seed, intervalBoundary maps an interval to target minus source, and pointBoundary maps zero-dimensional boundary chains to zero."
+    intuition: "A tiny checked model of the boundary-after-boundary-is-zero slogan."
+    dependencies: ["COMMON-0010"]
+    introduced_in: "PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS"
+    forbidden_meanings:
+      - "A full singular, cellular, or simplicial boundary operator."
+      - "A proof of homology theory."
+      - "A physics boundary condition."
+  - id: COMMON-0012
+    name: "Interval orientation reversal"
+    kind: operation
+    symbol: "reverse"
+    formal_definition: "The operation that swaps the source and target of a directed interval."
+    intuition: "Turning an oriented segment around reverses the sign of its boundary."
+    dependencies: ["COMMON-0010", "COMMON-0011"]
+    introduced_in: "PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS"
+    forbidden_meanings:
+      - "A general orientation theorem."
+      - "A cobordism equivalence."

@@ -90,6 +90,8 @@ Current active Phase II proof seed:
 - This clock is roadmap bookkeeping for future Clifford/Bott work, not a proof of Clifford algebras, K-theory, KO-theory, or Bott periodicity.
 - `PAPER_P2_03_BUNDLE_CALCULUS` proves the trivial product-bundle projection/fiber facts `P2BU-T0001` through `P2BU-T0003` in Lean through `Circle.Phase2.trivialBundleProjection_point`, `Circle.Phase2.trivialBundleFiber_point`, and `Circle.Phase2.trivialBundleProjection_forgetsFiber`.
 - This is base/fiber vocabulary for later work, not a proof that Hopf fibrations or other twisted bundles are globally products.
+- `PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS` proves the directed-interval boundary facts `P2BC-T0001` and `P2BC-T0002` in Lean through `Circle.Phase2.boundaryBoundaryInterval_zero` and `Circle.Phase2.intervalBoundary_reverse`.
+- This is finite boundary bookkeeping, not a proof of general chain complexes, cobordism, TQFT, or physics boundary laws.
 
 ## Compute Track
 
@@ -251,7 +253,7 @@ Circle AI guardrails:
 
 ## Planned And Active Scaffolds Created
 
-These files exist so later Phase II and application work has stable paper and manifest anchors. Most remain planned scaffolds rather than proof claims; `PAPER_P2_01_STABLE_SPHERE_CALCULUS`, `PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY`, and `PAPER_P2_03_BUNDLE_CALCULUS` are the first active Phase II proof seeds.
+These files exist so later Phase II and application work has stable paper and manifest anchors. Most remain planned scaffolds rather than proof claims; `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS` are the first active Phase II proof seeds.
 
 Planned manifests:
 

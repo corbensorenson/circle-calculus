@@ -37,7 +37,7 @@ The expanded long-horizon plan is dimension-organized:
 S^0 -> S^1 -> S^2 -> S^3 -> S^4/S^5/S^6 -> S^7 -> Future/S^15
 ```
 
-The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, scaling invertibility, and signed reversible rotation; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle, sphere-grid, and antipode theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; the first `S^3` spin sign-cancellation theorem; the finite `S^4` through `S^6` suspension Euler bridge; the finite topological `S^7` suspension model; and the first Phase II finite stable-sphere, period-8 clock, and trivial-bundle seeds.
+The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, scaling invertibility, and signed reversible rotation; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle, sphere-grid, and antipode theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; the first `S^3` spin sign-cancellation theorem; the finite `S^4` through `S^6` suspension Euler bridge; the finite topological `S^7` suspension model; and the first Phase II finite stable-sphere, period-8 clock, trivial-bundle, and directed-boundary seeds.
 
 Future dimensional work is split into two related ladders:
 
@@ -79,12 +79,13 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md` | draft/proved finite seed | `P2S-T0001` and `P2S-T0002` are Lean-proved double/four suspension Euler facts |
 | `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md` | draft/proved finite seed | `P2B-T0001` and `P2B-T0002` are Lean-proved period-8 clock facts; Bott/Clifford periodicity remains future work |
 | `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md` | draft/proved trivial seed | `P2BU-T0001` through `P2BU-T0003` are Lean-proved product-bundle projection/fiber facts |
+| `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md` | draft/proved finite seed | `P2BC-T0001` and `P2BC-T0002` are Lean-proved directed-interval boundary facts |
 
 The theorem manifest also includes `CC-T0008`, proving that scaling by `k` is invertible on `C_n` exactly when `n` and `k` are coprime.
 
 The D0 dimensional scaffold is also in place: dimension manifests, dimension dictionaries, planned paper stubs, Lean/Python scaffolds, and dimension validation scripts. Future-dimension claims remain planned, deferred, exploratory, or stated until actual Lean proofs exist.
 
-Phase II and application scaffolds are also in place under `papers/phase2/`, `papers/applications/`, `manifests/theories/`, and `manifests/applications/`. `PAPER_P2_01_STABLE_SPHERE_CALCULUS`, `PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY`, and `PAPER_P2_03_BUNDLE_CALCULUS` now have proved seeds; the other Phase II and application tracks remain roadmap/benchmark scaffolds, not proof claims.
+Phase II and application scaffolds are also in place under `papers/phase2/`, `papers/applications/`, `manifests/theories/`, and `manifests/applications/`. `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS` now have proved seeds; the other Phase II and application tracks remain roadmap/benchmark scaffolds, not proof claims.
 
 The README is updated after meaningful proof batches, paper batches, roadmap changes, or application-context additions. Tiny internal-only edits should update the relevant source files without creating README churn.
 
@@ -224,6 +225,8 @@ Proved common and dimensional spine:
 - `P2BU-T0001`: trivial-bundle projection returns the base coordinate
 - `P2BU-T0002`: trivial-bundle fiber coordinate returns the fiber value
 - `P2BU-T0003`: trivial-bundle projection is invariant under changing only the fiber
+- `P2BC-T0001`: point-boundary after interval-boundary is zero in the directed-interval seed
+- `P2BC-T0002`: reversing a directed interval negates its boundary
 - `S0-T0001`: the finite `S^0` opposition type has two points
 - `S0-T0002`: opposition swaps the two `S^0` points
 - `S2-T0001`: suspended-circle cell counts

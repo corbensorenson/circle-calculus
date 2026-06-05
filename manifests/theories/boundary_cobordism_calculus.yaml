@@ -1,5 +1,19 @@
 id: boundary_cobordism_calculus
-status: planned
+status: active
 papers:
   - papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md
+sidecars:
+  - sidecars/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS/lean/PaperP204.lean
+theorems:
+  - id: P2BC-T0001
+    status: lean_proved
+    lean_name: Circle.Phase2.boundaryBoundaryInterval_zero
+    dictionary_dependencies: ["COMMON-0010", "COMMON-0011"]
+  - id: P2BC-T0002
+    status: lean_proved
+    lean_name: Circle.Phase2.intervalBoundary_reverse
+    dictionary_dependencies: ["COMMON-0010", "COMMON-0011", "COMMON-0012"]
+next_targets:
+  - "Generalize from directed intervals to finite chains only after selecting a representation."
+  - "Keep cobordism, TQFT, and physics-adjacent claims as roadmap material until formalized."
 guardrail: "Physics-adjacent claims remain roadmap material until formalized."

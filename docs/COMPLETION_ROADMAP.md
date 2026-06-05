@@ -265,6 +265,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: `P2BU-T0001` through `P2BU-T0003` are Lean-proved trivial product-bundle projection/fiber facts; nontrivial bundles, transition functions, connections, curvature, and holonomy remain future work.
 - [x] `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md`
   - Program: boundaries, `boundary(boundary)=0`, cobordisms, fields, and proofs as transformations.
+  - Status: `P2BC-T0001` and `P2BC-T0002` are Lean-proved directed-interval boundary facts; general chain complexes, cobordisms, TQFT, and physics-adjacent claims remain future work.
 - [x] `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md`
   - Program: glyphs with formal syntax, normal forms, theorem dependencies, proof certificates, semantic models, and projection views.
 - [x] `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md`
@@ -321,6 +322,8 @@ Application guardrails:
 - [x] `P2BU-T0001`: trivial-bundle projection returns the base coordinate.
 - [x] `P2BU-T0002`: trivial-bundle fiber coordinate returns the fiber value.
 - [x] `P2BU-T0003`: trivial-bundle projection is invariant under changing only the fiber.
+- [x] `P2BC-T0001`: point-boundary after interval-boundary is zero in the directed-interval seed.
+- [x] `P2BC-T0002`: reversing a directed interval negates its boundary.
 
 ## Current S1 Proof Status
 
