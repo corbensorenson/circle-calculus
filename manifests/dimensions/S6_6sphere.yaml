@@ -14,6 +14,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: []
     blocker: ""
+  - id: S6-T0002
+    status: lean_proved
+    lean_name: Circle.S6.counts_eq_suspension_s5
+    informal_statement: "The finite S6 counts are defined as the suspension of the finite S5 counts."
+    formal_statement: "forall n : Nat, Circle.S6.counts n = Circle.Common.suspensionCounts (Circle.S5.counts n)"
+    dictionary_dependencies: ["S6-0001", "S456-0001", "COMMON-0002"]
+    paper_refs: ["papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
 warnings:
   - id: S6-W0001
     status: active

@@ -4,6 +4,8 @@ This note preserves the application and post-`S^15` context from the browser han
 
 None of this file changes proof status. A claim is proved only when it has a compiled Lean declaration and passes the repository proof checks.
 
+The exact 2026-06-05 compute-applications browser note is archived at `circle_calculus_codex_handoff/source_logs/04_compute_applications_browser_note.md`; this file keeps the actionable project context curated.
+
 ## Novelty Position
 
 Circle Math should be honest about what is known and what may be new.

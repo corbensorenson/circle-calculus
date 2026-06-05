@@ -277,6 +277,7 @@ papers:
     sidecar: sidecars/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF
     theorem_ids:
       - S4-T0001
+      - S4-T0002
     dictionary_ids:
       - S4-0001
       - S456-0001
@@ -287,6 +288,7 @@ papers:
     sidecar: sidecars/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE
     theorem_ids:
       - S5-T0001
+      - S5-T0002
     dictionary_ids:
       - S5-0001
       - S456-0001
@@ -297,6 +299,7 @@ papers:
     sidecar: sidecars/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS
     theorem_ids:
       - S6-T0001
+      - S6-T0002
     dictionary_ids:
       - S6-0001
       - S6-W0001

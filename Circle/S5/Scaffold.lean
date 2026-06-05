@@ -8,6 +8,10 @@ def dimension : Nat := 5
 def counts (n : Nat) : List Nat :=
   Circle.Common.suspensionCounts (Circle.S4.counts n)
 
+theorem counts_eq_suspension_s4 (n : Nat) :
+    counts n = Circle.Common.suspensionCounts (Circle.S4.counts n) := by
+  rfl
+
 theorem eulerCharacteristic (n : Nat) :
     Circle.Common.eulerCharacteristic (counts n) = 0 := by
   unfold counts

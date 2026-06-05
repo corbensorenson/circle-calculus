@@ -10,6 +10,7 @@ This file re-exports the finite S4 Euler declaration used by
 namespace Circle.PaperS401
 
 #check Circle.S4.counts
+#check Circle.S4.counts_eq_suspension_s3
 #check Circle.S4.eulerCharacteristic
 
 end Circle.PaperS401

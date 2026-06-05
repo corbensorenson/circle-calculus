@@ -9,6 +9,7 @@ This paper keeps `S^5` visible in the geometric ladder and records its future ro
 ## Target Spine
 
 - `S5-T0001`: `Circle.S5.eulerCharacteristic`
+- `S5-T0002`: `Circle.S5.counts_eq_suspension_s4`
 
 ## Model
 
@@ -21,7 +22,9 @@ Circle.S5.counts(n) =
 
 ## Proved Core
 
-`S5-T0001` is proved by `Circle.S5.eulerCharacteristic`.
+`S5-T0002` proves that the finite `S^5` counts are exactly the suspension
+of the finite `S^4` counts. `S5-T0001` is then proved by
+`Circle.S5.eulerCharacteristic`.
 
 For every natural `n`,
 

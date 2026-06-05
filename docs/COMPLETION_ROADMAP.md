@@ -217,15 +217,15 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
   - Proof target: `S456-T0001`
   - Main result: `chi(S^d)=1+(-1)^d` for finite iterated suspension models.
 - [x] `papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md`
-  - Proof target: `S4-T0001`
+  - Proof targets: `S4-T0001`, `S4-T0002`
   - Roadmap target: role of `S^4` as base of `S^3 -> S^7 -> S^4`.
 - [x] `papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md`
-  - Proof target: `S5-T0001`
+  - Proof targets: `S5-T0001`, `S5-T0002`
   - Keep projective geometry exploratory unless formalized.
 - [x] `papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md`
-  - Proof target: `S6-T0001`
+  - Proof targets: `S6-T0001`, `S6-T0002`
   - Warning target: `S6-W0001`
-  - Status: S4/S5/S6 finite suspension Euler characteristics are Lean-proved; projective, quaternionic Hopf, and S6 complex-structure topics remain roadmap/warning material.
+  - Status: S4/S5/S6 finite suspension links and Euler characteristics are Lean-proved; projective, quaternionic Hopf, and S6 complex-structure topics remain roadmap/warning material.
 
 ### S7: Topological, Quaternionic Hopf, Octonionic
 
@@ -418,7 +418,7 @@ Still planned:
 
 ## Latest Application Handoff Queue
 
-The 2026-06-05 compute handoff is preserved in `docs/PHASE2_AND_APPLICATIONS.md`. Keep these additions at the end of the roadmap so the proof-first dimensional work can continue without losing application context:
+The 2026-06-05 compute handoff is preserved in `docs/PHASE2_AND_APPLICATIONS.md` and `circle_calculus_codex_handoff/source_logs/04_compute_applications_browser_note.md`. Keep these additions at the end of the roadmap so the proof-first dimensional work can continue without losing application context:
 
 - [x] Preserve the disciplined rule: Circle Math helps compute only when the workload has real cyclic, periodic, angular, spherical, toroidal, rotational, circulant, ring-buffer, or fibered structure.
 - [x] Record the strongest current prototype priorities: `CoilRay Sort`, `CoilLayout`, and `CoilNTT`.

@@ -9,6 +9,7 @@ This paper keeps `S^6` in the geometric ladder and records the warnings needed b
 ## Target Spine
 
 - `S6-T0001`: `Circle.S6.eulerCharacteristic`
+- `S6-T0002`: `Circle.S6.counts_eq_suspension_s5`
 - `S6-W0001`: S6 complex-structure warning
 
 ## Model
@@ -22,7 +23,9 @@ Circle.S6.counts(n) =
 
 ## Proved Core
 
-`S6-T0001` is proved by `Circle.S6.eulerCharacteristic`.
+`S6-T0002` proves that the finite `S^6` counts are exactly the suspension
+of the finite `S^5` counts. `S6-T0001` is then proved by
+`Circle.S6.eulerCharacteristic`.
 
 For every natural `n`,
 

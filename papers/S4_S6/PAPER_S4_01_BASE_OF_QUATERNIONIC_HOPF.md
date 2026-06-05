@@ -9,6 +9,7 @@ This paper establishes the finite `S^4` count model needed for the quaternionic 
 ## Target Spine
 
 - `S4-T0001`: `Circle.S4.eulerCharacteristic`
+- `S4-T0002`: `Circle.S4.counts_eq_suspension_s3`
 
 ## Model
 
@@ -21,7 +22,9 @@ Circle.S4.counts(n) =
 
 ## Proved Core
 
-`S4-T0001` is proved by `Circle.S4.eulerCharacteristic`.
+`S4-T0002` proves that the finite `S^4` counts are exactly the suspension
+of the finite `S^3` counts. `S4-T0001` is then proved by
+`Circle.S4.eulerCharacteristic`.
 
 For every natural `n`,
 

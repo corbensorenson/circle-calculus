@@ -10,6 +10,7 @@ This file re-exports the finite S5 Euler declaration used by
 namespace Circle.PaperS501
 
 #check Circle.S5.counts
+#check Circle.S5.counts_eq_suspension_s4
 #check Circle.S5.eulerCharacteristic
 
 end Circle.PaperS501
