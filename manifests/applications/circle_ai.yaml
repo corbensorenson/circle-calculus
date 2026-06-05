@@ -1,7 +1,42 @@
 id: circle_ai
-status: planned
+status: active
 papers:
   - papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md
   - papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md
   - papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md
+sidecars:
+  - sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/lean/PaperAI01.lean
+  - sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/test_phase_channel_examples.py
+  - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/lean/PaperAI02.lean
+  - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py
+  - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/lean/PaperAI03.lean
+  - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py
+theorems:
+  - id: AIA-T0001
+    status: lean_proved
+    lean_name: Circle.Applications.phaseChannel_lt_period
+    dictionary_dependencies: ["COMMON-0026"]
+  - id: AIA-T0002
+    status: lean_proved
+    lean_name: Circle.Applications.phaseChannel_add_period
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0027"]
+  - id: AIM-T0001
+    status: lean_proved
+    lean_name: Circle.Applications.memorySlot_lt_bankSize
+    dictionary_dependencies: ["COMMON-0028"]
+  - id: AIM-T0002
+    status: lean_proved
+    lean_name: Circle.Applications.memorySlot_add_bankSize
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029"]
+  - id: AIRA-T0001
+    status: lean_proved
+    lean_name: Circle.Applications.adapterBlock_lt_blockSize
+    dictionary_dependencies: ["COMMON-0030"]
+  - id: AIRA-T0002
+    status: lean_proved
+    lean_name: Circle.Applications.adapterBlock_add_blockSize
+    dictionary_dependencies: ["COMMON-0030", "COMMON-0031"]
+next_targets:
+  - "Run MLX/Mac-compatible synthetic benchmarks before making model-quality or speed claims."
+  - "Compare against dense, LoRA, block-circulant, standard RoPE, full attention, sparse attention, Hyena-like, and state-space baselines as appropriate."
 guardrail: "No claim that circles improve all AI."

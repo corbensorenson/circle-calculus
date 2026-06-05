@@ -313,4 +313,82 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["round_robin_slot(slot_count, tick + slot_count) == round_robin_slot(slot_count, tick)"]
     blocker: ""
+  - id: AIA-T0001
+    status: lean_proved
+    lean_name: Circle.Applications.phaseChannel_lt_period
+    informal_statement: "For a positive AI phase period, a phase channel is bounded by that period."
+    formal_statement: "forall {period : Nat}, 0 < period -> forall position : Nat, phaseChannel period position < period"
+    dictionary_dependencies: ["COMMON-0026"]
+    paper_refs: ["papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["0 <= phase_channel(period, position) < period"]
+    blocker: ""
+  - id: AIA-T0002
+    status: lean_proved
+    lean_name: Circle.Applications.phaseChannel_add_period
+    informal_statement: "For a positive AI phase period, adding one full period preserves the phase channel."
+    formal_statement: "forall {period : Nat}, 0 < period -> forall position : Nat, phaseChannel period (position + period) = phaseChannel period position"
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0027"]
+    paper_refs: ["papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["phase_channel(period, position + period) == phase_channel(period, position)"]
+    blocker: ""
+  - id: AIM-T0001
+    status: lean_proved
+    lean_name: Circle.Applications.memorySlot_lt_bankSize
+    informal_statement: "For a positive cyclic memory-bank size, a memory slot is bounded by the bank size."
+    formal_statement: "forall {bankSize : Nat}, 0 < bankSize -> forall token : Nat, memorySlot bankSize token < bankSize"
+    dictionary_dependencies: ["COMMON-0028"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["0 <= memory_slot(bank_size, token) < bank_size"]
+    blocker: ""
+  - id: AIM-T0002
+    status: lean_proved
+    lean_name: Circle.Applications.memorySlot_add_bankSize
+    informal_statement: "For a positive cyclic memory-bank size, adding one full bank size preserves the memory slot."
+    formal_statement: "forall {bankSize : Nat}, 0 < bankSize -> forall token : Nat, memorySlot bankSize (token + bankSize) = memorySlot bankSize token"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["memory_slot(bank_size, token + bank_size) == memory_slot(bank_size, token)"]
+    blocker: ""
+  - id: AIRA-T0001
+    status: lean_proved
+    lean_name: Circle.Applications.adapterBlock_lt_blockSize
+    informal_statement: "For a positive adapter block size, an adapter block index is bounded by the block size."
+    formal_statement: "forall {blockSize : Nat}, 0 < blockSize -> forall channel : Nat, adapterBlock blockSize channel < blockSize"
+    dictionary_dependencies: ["COMMON-0030"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["0 <= adapter_block(block_size, channel) < block_size"]
+    blocker: ""
+  - id: AIRA-T0002
+    status: lean_proved
+    lean_name: Circle.Applications.adapterBlock_add_blockSize
+    informal_statement: "For a positive adapter block size, adding one full block size preserves the adapter block index."
+    formal_statement: "forall {blockSize : Nat}, 0 < blockSize -> forall channel : Nat, adapterBlock blockSize (channel + blockSize) = adapterBlock blockSize channel"
+    dictionary_dependencies: ["COMMON-0030", "COMMON-0031"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["adapter_block(block_size, channel + block_size) == adapter_block(block_size, channel)"]
+    blocker: ""
 warnings: []

@@ -286,3 +286,71 @@ entries:
     forbidden_meanings:
       - "A starvation-freedom theorem."
       - "A throughput benchmark."
+  - id: COMMON-0026
+    name: "AI phase channel"
+    kind: operation
+    symbol: "phase_channel(period,position)"
+    formal_definition: "The finite phase channel position % period for a positive AI phase period."
+    intuition: "A simple periodic feature-index primitive for Circle AI architecture experiments."
+    dependencies: []
+    introduced_in: "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES"
+    forbidden_meanings:
+      - "A proof of better model quality."
+      - "A RoPE theorem."
+      - "A learned representation guarantee."
+  - id: COMMON-0027
+    name: "AI phase-channel closure"
+    kind: relation
+    symbol: "phase_channel(position + period) = phase_channel(position)"
+    formal_definition: "The AI phase channel is unchanged after adding one positive phase period."
+    intuition: "A periodic feature-index returns to the same phase after one full period."
+    dependencies: ["COMMON-0026"]
+    introduced_in: "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES"
+    forbidden_meanings:
+      - "A benchmark result."
+      - "A claim that circles improve all AI."
+  - id: COMMON-0028
+    name: "Cyclic memory slot"
+    kind: operation
+    symbol: "memory_slot(bank_size,token)"
+    formal_definition: "The finite memory-bank slot token % bank_size for a positive bank size."
+    intuition: "A CoilKV-style cyclic address for memory-bank experiments."
+    dependencies: []
+    introduced_in: "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+    forbidden_meanings:
+      - "A retrieval-quality guarantee."
+      - "A proof that cyclic memory replaces attention."
+  - id: COMMON-0029
+    name: "Cyclic memory-slot closure"
+    kind: relation
+    symbol: "memory_slot(token + bank_size) = memory_slot(token)"
+    formal_definition: "The cyclic memory slot is unchanged after adding one positive bank size."
+    intuition: "A token returns to the same memory slot after one full pass through a cyclic bank."
+    dependencies: ["COMMON-0028"]
+    introduced_in: "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+    forbidden_meanings:
+      - "A no-aliasing theorem."
+      - "A long-context retrieval benchmark."
+  - id: COMMON-0030
+    name: "Adapter block index"
+    kind: operation
+    symbol: "adapter_block(block_size,channel)"
+    formal_definition: "The finite adapter block channel % block_size for a positive block size."
+    intuition: "A block/cyclic channel index for CoilRA and block-structured adapter experiments."
+    dependencies: []
+    introduced_in: "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
+    forbidden_meanings:
+      - "A LoRA replacement theorem."
+      - "A parameter-efficiency benchmark."
+      - "A hardware speedup claim."
+  - id: COMMON-0031
+    name: "Adapter block closure"
+    kind: relation
+    symbol: "adapter_block(channel + block_size) = adapter_block(channel)"
+    formal_definition: "The adapter block index is unchanged after adding one positive block size."
+    intuition: "A block-structured adapter index repeats after one full pass through the block."
+    dependencies: ["COMMON-0030"]
+    introduced_in: "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
+    forbidden_meanings:
+      - "A MultiCoil RoPE theorem."
+      - "A model-quality benchmark."

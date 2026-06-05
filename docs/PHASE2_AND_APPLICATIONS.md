@@ -104,6 +104,10 @@ Current active Phase II proof seed:
 - This is address-level structure, not a proof of cache locality, stencil correctness, NTT correctness, or backend speed.
 - `PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS` proves the round-robin schedule facts `COMPS-T0001` and `COMPS-T0002` in Lean through `Circle.Applications.roundRobinSlot_lt_slotCount` and `Circle.Applications.roundRobinSlot_add_slotCount`, with matching Python examples.
 - This is a finite scheduler primitive, not a fairness, load-balancing, robotics, ANN, codec, acquisition, CAM, torsion, detection, or quantum-computing theorem.
+- `PAPER_AI_01_CIRCLE_AI_ARCHITECTURES` proves the phase-channel facts `AIA-T0001` and `AIA-T0002` in Lean through `Circle.Applications.phaseChannel_lt_period` and `Circle.Applications.phaseChannel_add_period`, with matching Python examples.
+- `PAPER_AI_02_COIL_ATTENTION_AND_MEMORY` proves the cyclic-memory-slot facts `AIM-T0001` and `AIM-T0002` in Lean through `Circle.Applications.memorySlot_lt_bankSize` and `Circle.Applications.memorySlot_add_bankSize`, with matching Python examples.
+- `PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE` proves the adapter-block facts `AIRA-T0001` and `AIRA-T0002` in Lean through `Circle.Applications.adapterBlock_lt_blockSize` and `Circle.Applications.adapterBlock_add_blockSize`, with matching Python examples.
+- These are finite indexing primitives for AI prototypes, not model-quality, parameter-efficiency, attention-replacement, RoPE, or runtime claims.
 
 ## Compute Track
 
@@ -265,7 +269,7 @@ Circle AI guardrails:
 
 ## Planned And Active Scaffolds Created
 
-These files exist so later Phase II and application work has stable paper and manifest anchors. AI tracks remain planned scaffolds rather than proof claims; `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_05_PROOF_CARRYING_GLYPHS`, `PAPER_APP_01_COIL_DATA_ANALYSIS`, and `PAPER_COMP_01` through `PAPER_COMP_04` are active proof seeds.
+These files exist so later Phase II and application work has stable paper and manifest anchors. `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_05_PROOF_CARRYING_GLYPHS`, `PAPER_APP_01_COIL_DATA_ANALYSIS`, `PAPER_COMP_01` through `PAPER_COMP_04`, and `PAPER_AI_01` through `PAPER_AI_03` are active proof seeds; benchmark claims still require benchmark artifacts.
 
 Planned manifests:
 

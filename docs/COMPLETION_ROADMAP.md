@@ -286,10 +286,13 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: `COMPS-T0001` and `COMPS-T0002` are Lean-proved round-robin schedule facts with Python examples; fairness, load balancing, robotics, codec, ANN, acquisition, CAM, torsion, detection, and quantum claims remain future domain work.
 - [x] `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md`
   - Program: disciplined Circle AI thesis covering phase, recurrence, rotation, sparse cyclic mixing, circular memory, harmonic transforms, geometry-aware models, and proof-carrying model components.
+  - Status: `AIA-T0001` and `AIA-T0002` are Lean-proved phase-channel facts with Python examples; model-quality and speed claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`
   - Program: Coil Attention, CoilKV, long-context retrieval, alias control, stride/orbit coverage, and comparisons against full attention, sparse attention, Hyena-like mixers, and S4/Mamba-like baselines.
+  - Status: `AIM-T0001` and `AIM-T0002` are Lean-proved cyclic-memory-slot facts with Python examples; retrieval quality, alias control, and attention replacement claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md`
   - Program: CoilLinear, CoilRA, MultiCoil RoPE, periodic activations, and MLX-first benchmarks against dense, LoRA, block-circulant, and standard RoPE baselines.
+  - Status: `AIRA-T0001` and `AIRA-T0002` are Lean-proved adapter-block facts with Python examples; CoilRA, MultiCoil RoPE, model quality, parameter efficiency, and runtime claims remain benchmark work.
 
 Created planned manifest families:
 
@@ -342,6 +345,12 @@ Application guardrails:
 - [x] `COMPL-T0002`: stride address closes after one full pass through the circular step horizon.
 - [x] `COMPS-T0001`: round-robin slot schedule is bounded by a positive slot count.
 - [x] `COMPS-T0002`: round-robin slot schedule closes after one full pass through the slots.
+- [x] `AIA-T0001`: AI phase channel is bounded by a positive period.
+- [x] `AIA-T0002`: AI phase channel closes after one full period.
+- [x] `AIM-T0001`: cyclic memory slot is bounded by a positive bank size.
+- [x] `AIM-T0002`: cyclic memory slot closes after one full bank pass.
+- [x] `AIRA-T0001`: adapter block index is bounded by a positive block size.
+- [x] `AIRA-T0002`: adapter block index closes after one full block pass.
 
 ## Current S1 Proof Status
 

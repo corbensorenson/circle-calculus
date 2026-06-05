@@ -37,7 +37,7 @@ The expanded long-horizon plan is dimension-organized:
 S^0 -> S^1 -> S^2 -> S^3 -> S^4/S^5/S^6 -> S^7 -> Future/S^15
 ```
 
-The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, scaling invertibility, and signed reversible rotation; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle, sphere-grid, and antipode theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; the first `S^3` spin sign-cancellation theorem; the finite `S^4` through `S^6` suspension Euler bridge; the finite topological `S^7` suspension model; the first Phase II finite stable-sphere, period-8 clock, trivial-bundle, directed-boundary, and proof-glyph certificate seeds; and the first application finite phase-coordinate, cyclic-address, direction-bin, stride-address, and round-robin schedule seeds.
+The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, scaling invertibility, and signed reversible rotation; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle, sphere-grid, and antipode theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; the first `S^3` spin sign-cancellation theorem; the finite `S^4` through `S^6` suspension Euler bridge; the finite topological `S^7` suspension model; the first Phase II finite stable-sphere, period-8 clock, trivial-bundle, directed-boundary, and proof-glyph certificate seeds; and the first application finite phase-coordinate, cyclic-address, direction-bin, stride-address, round-robin schedule, and Circle AI indexing seeds.
 
 Future dimensional work is split into two related ladders:
 
@@ -86,12 +86,15 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md` | draft/proved finite seed | `COMPR-T0001` and `COMPR-T0002` are Lean-proved direction-bin schedule facts with Python examples |
 | `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md` | draft/proved finite seed | `COMPL-T0001` and `COMPL-T0002` are Lean-proved stride-address facts with Python examples |
 | `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md` | draft/proved finite seed | `COMPS-T0001` and `COMPS-T0002` are Lean-proved round-robin schedule facts with Python examples |
+| `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md` | draft/proved finite seed | `AIA-T0001` and `AIA-T0002` are Lean-proved phase-channel facts with Python examples |
+| `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md` | draft/proved finite seed | `AIM-T0001` and `AIM-T0002` are Lean-proved cyclic-memory-slot facts with Python examples |
+| `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md` | draft/proved finite seed | `AIRA-T0001` and `AIRA-T0002` are Lean-proved adapter-block facts with Python examples |
 
 The theorem manifest also includes `CC-T0008`, proving that scaling by `k` is invertible on `C_n` exactly when `n` and `k` are coprime.
 
 The D0 dimensional scaffold is also in place: dimension manifests, dimension dictionaries, planned paper stubs, Lean/Python scaffolds, and dimension validation scripts. Future-dimension claims remain planned, deferred, exploratory, or stated until actual Lean proofs exist.
 
-Phase II and application scaffolds are also in place under `papers/phase2/`, `papers/applications/`, `manifests/theories/`, and `manifests/applications/`. `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_05_PROOF_CARRYING_GLYPHS`, `PAPER_APP_01_COIL_DATA_ANALYSIS`, and `PAPER_COMP_01` through `PAPER_COMP_04` now have proved seeds; the remaining AI application tracks are roadmap/benchmark scaffolds, not proof claims.
+Phase II and application scaffolds are also in place under `papers/phase2/`, `papers/applications/`, `manifests/theories/`, and `manifests/applications/`. `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_05_PROOF_CARRYING_GLYPHS`, `PAPER_APP_01_COIL_DATA_ANALYSIS`, `PAPER_COMP_01` through `PAPER_COMP_04`, and `PAPER_AI_01` through `PAPER_AI_03` now have proved seeds. Benchmark claims remain benchmark work, not proof claims.
 
 The README is updated after meaningful proof batches, paper batches, roadmap changes, or application-context additions. Tiny internal-only edits should update the relevant source files without creating README churn.
 
@@ -245,6 +248,12 @@ Proved common and dimensional spine:
 - `COMPL-T0002`: stride address closes after one full pass through the circular step horizon
 - `COMPS-T0001`: round-robin slot schedule is bounded by a positive slot count
 - `COMPS-T0002`: round-robin slot schedule closes after one full pass through the slots
+- `AIA-T0001`: AI phase channel is bounded by a positive period
+- `AIA-T0002`: AI phase channel closes after one full period
+- `AIM-T0001`: cyclic memory slot is bounded by a positive bank size
+- `AIM-T0002`: cyclic memory slot closes after one full bank pass
+- `AIRA-T0001`: adapter block index is bounded by a positive block size
+- `AIRA-T0002`: adapter block index closes after one full block pass
 - `S0-T0001`: the finite `S^0` opposition type has two points
 - `S0-T0002`: opposition swaps the two `S^0` points
 - `S2-T0001`: suspended-circle cell counts

@@ -426,21 +426,33 @@ papers:
 
   - id: PAPER_AI_01_CIRCLE_AI_ARCHITECTURES
     title: "Circle Calculus AI 1: Circle AI Architectures"
-    status: planned
-    sidecar: ""
-    theorem_ids: []
-    dictionary_ids: []
+    status: draft
+    sidecar: sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES
+    theorem_ids:
+      - AIA-T0001
+      - AIA-T0002
+    dictionary_ids:
+      - COMMON-0026
+      - COMMON-0027
 
   - id: PAPER_AI_02_COIL_ATTENTION_AND_MEMORY
     title: "Circle Calculus AI 2: Coil Attention and Memory"
-    status: planned
-    sidecar: ""
-    theorem_ids: []
-    dictionary_ids: []
+    status: draft
+    sidecar: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY
+    theorem_ids:
+      - AIM-T0001
+      - AIM-T0002
+    dictionary_ids:
+      - COMMON-0028
+      - COMMON-0029
 
   - id: PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE
     title: "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
-    status: planned
-    sidecar: ""
-    theorem_ids: []
-    dictionary_ids: []
+    status: draft
+    sidecar: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE
+    theorem_ids:
+      - AIRA-T0001
+      - AIRA-T0002
+    dictionary_ids:
+      - COMMON-0030
+      - COMMON-0031

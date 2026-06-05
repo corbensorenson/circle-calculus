@@ -18,3 +18,4 @@ import Circle.Applications.CoilData
 import Circle.Applications.CoilCompute
 import Circle.Applications.CoilRendering
 import Circle.Applications.CoilSystems
+import Circle.Applications.CircleAI
