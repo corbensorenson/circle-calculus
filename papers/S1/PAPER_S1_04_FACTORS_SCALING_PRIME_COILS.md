@@ -12,6 +12,7 @@ This paper will connect multiplication, scaling, factors, invertibility, and pri
 - `CC-T0017`: `Circle.scale_one`
 - `CC-T0018`: `Circle.scale_comp`
 - `CC-T0019`: `Circle.scale_rot`
+- `CC-T0020`: `Circle.scale_coilStep`
 - multiplication as repeated rotation or scaling
 - scaling invertibility iff coprime
 - factor structure through orbit decomposition
@@ -25,12 +26,16 @@ This paper will connect multiplication, scaling, factors, invertibility, and pri
 
 `CC-T0019` is proved by `Circle.scale_rot`: scaling transports rotation/coils by multiplying the stride. Scaling a node after one stride step is the same as scaling the node first and then rotating by the scaled stride.
 
-Together these two theorems make scaling into a checked multiplicative action on finite-circle addresses:
+`CC-T0020` is proved by `Circle.scale_coilStep`: scaling transports any finite coil step to the corresponding coil step with both start and stride scaled.
+
+Together these theorems make scaling into a checked multiplicative action on finite-circle addresses and finite coil steps:
 
 ```text
 scale(n,1)(x) = x
 scale(n,a)(scale(n,b)(x)) = scale(n,a*b)(x)
 scale(n,k)(rot(n,stride)(x)) = rot(n,k*stride)(scale(n,k)(x))
+scale(n,k)(coil_step(n,stride,start,steps))
+  = coil_step(n,k*stride,k*start,steps)
 ```
 
 `CC-T0008` is proved by `Circle.scale_invertible_iff_coprime`.
@@ -56,4 +61,4 @@ The Lean proof reduces scaling to left multiplication by `(k : ZMod n)`. Mathlib
 
 ## Notes
 
-The remaining factor-structure targets should build on `CC-T0008`, `CC-T0017`, `CC-T0018`, and `CC-T0019` without claiming more than the current finite-circle model proves.
+The remaining factor-structure targets should build on `CC-T0008`, `CC-T0017`, `CC-T0018`, `CC-T0019`, and `CC-T0020` without claiming more than the current finite-circle model proves.

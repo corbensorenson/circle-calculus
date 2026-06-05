@@ -62,9 +62,10 @@ entries:
       - "scale(n,1)=identity"
       - "scale(n,a) after scale(n,b)=scale(n,a*b)"
       - "scale(n,k) after rot(n,stride)=rot(n,k*stride) after scale(n,k)"
+      - "scale(n,k) maps coil(n,stride,start) steps to coil(n,k*stride,k*start) steps"
       - "scale(n,k) is invertible iff gcd(n,k)=1"
     formal_models: ["left multiplication by (k : ZMod n)"]
-    lean_declarations: ["Circle.scale", "Circle.scale_one", "Circle.scale_comp", "Circle.scale_rot", "Circle.scale_invertible_iff_coprime"]
+    lean_declarations: ["Circle.scale", "Circle.scale_one", "Circle.scale_comp", "Circle.scale_rot", "Circle.scale_coilStep", "Circle.scale_invertible_iff_coprime"]
     python_objects: ["Circle.scale", "Circle.scale_is_permutation"]
     introduced_in: "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS"
     forbidden_meanings:

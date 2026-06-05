@@ -5,6 +5,10 @@ from math import gcd
 from circle_math import Circle
 
 
+def coil_step(n: int, stride: int, start: int, steps: int) -> int:
+    return (start + steps * stride) % n
+
+
 def test_scaling_reversible_examples() -> None:
     assert Circle(12).scale_is_permutation(5)
     assert not Circle(12).scale_is_permutation(4)
@@ -23,6 +27,7 @@ def test_scaling_identity_and_composition_examples() -> None:
     assert circle.scale(7, 1) == 7
     assert circle.scale(circle.scale(7, 5), 3) == circle.scale(7, 15)
     assert circle.scale(circle.rot(7, 4), 5) == circle.rot(circle.scale(7, 5), 20)
+    assert circle.scale(coil_step(12, 4, 7, 3), 5) == coil_step(12, 20, 35, 3)
 
     for n in range(1, 33):
         circle = Circle(n)
@@ -35,4 +40,7 @@ def test_scaling_identity_and_composition_examples() -> None:
                 for stride in range(0, 17):
                     assert circle.scale(circle.rot(i, stride), k) == circle.rot(
                         circle.scale(i, k), k * stride
+                    )
+                    assert circle.scale(coil_step(n, stride, i, 5), k) == coil_step(
+                        n, k * stride, k * i, 5
                     )

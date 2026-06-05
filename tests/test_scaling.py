@@ -3,6 +3,10 @@ from math import gcd
 from circle_math import Circle
 
 
+def coil_step(n: int, stride: int, start: int, steps: int) -> int:
+    return (start + steps * stride) % n
+
+
 def test_scale_permutation_iff_coprime() -> None:
     for n in range(1, 129):
         c = Circle(n)
@@ -33,3 +37,15 @@ def test_scale_transports_rotation_stride() -> None:
             for k in range(0, 33):
                 for stride in range(0, 33):
                     assert c.scale(c.rot(i, stride), k) == c.rot(c.scale(i, k), k * stride)
+
+
+def test_scale_transports_coil_step() -> None:
+    for n in range(1, 33):
+        c = Circle(n)
+        for start in range(0, 33):
+            for steps in range(0, 17):
+                for k in range(0, 9):
+                    for stride in range(0, 9):
+                        assert c.scale(coil_step(n, stride, start, steps), k) == coil_step(
+                            n, k * stride, k * start, steps
+                        )

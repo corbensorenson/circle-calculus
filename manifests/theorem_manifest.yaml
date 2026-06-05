@@ -175,6 +175,22 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["scale(n,k,rot(n,stride,i))==rot(n,k*stride,scale(n,k,i))"]
 
+  - id: CC-T0020
+    name: Scaling transports coil steps
+    status: proved
+    lean_name: Circle.scale_coilStep
+    informal_statement: "Scaling a finite coil step gives the matching coil step with scaled start and scaled stride."
+    formal_statement: "forall (n k stride start steps : Nat), Circle.scale n k (Circle.coilStep n stride start steps) = Circle.coilStep n (k*stride) (k*start) steps"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0201"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_transports_coil_step"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean from distributivity and natural-number multiplication normalization inside ZMod."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["scale(n,k,coil_step(n,stride,start,steps))==coil_step(n,k*stride,k*start,steps)"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

@@ -1,4 +1,4 @@
-import Circle.Core.Rotation
+import Circle.Core.Coil
 import Mathlib.Data.ZMod.Units
 
 namespace Circle
@@ -23,6 +23,15 @@ theorem scale_rot (n k stride : Nat) (x : C n) :
   unfold scale rot
   rw [mul_add]
   norm_num
+
+theorem scale_coilStep (n k stride start steps : Nat) :
+    scale n k (coilStep n stride start steps) =
+      coilStep n (k * stride) (k * start) steps := by
+  unfold scale coilStep
+  rw [mul_add]
+  congr 1
+  · norm_num
+  · norm_num [Nat.mul_assoc, Nat.mul_comm, Nat.mul_left_comm]
 
 theorem scale_invertible_iff_coprime (n k : Nat) :
     Function.Bijective (scale n k) ↔ Nat.Coprime n k := by
