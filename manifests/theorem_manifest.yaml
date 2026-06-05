@@ -719,6 +719,22 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["for n > 0 and 0 <= r < n, fiber(r)==fiber(s) iff r % period(n,k) == s % period(n,k)"]
 
+  - id: CC-T0054
+    name: Full coil iff coprime
+    status: proved
+    lean_name: Circle.fullCoil_iff_coprime
+    informal_statement: "For a nonzero finite circle size, a stride is a full coil exactly when it is coprime to the circle size."
+    formal_statement: "forall {n k : Nat}, n != 0 -> (Circle.fullCoil n k iff Nat.Coprime n k)"
+    dictionary_dependencies: ["CC-0201", "CC-0205", "CC-0206"]
+    paper_refs: ["PAPER_01_FINITE_CIRCLES.section.prime", "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md", "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_prime_coils.py::test_full_coil_iff_coprime", "sidecars/PAPER_01_FINITE_CIRCLES/python/test_paper_01_examples.py::test_full_coil_iff_coprime_examples", "sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py::test_full_coil_iff_coprime_examples"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Prime.lean from CC-T0005 and Nat.div_eq_self."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["n > 0 implies fullCoil(n,k) iff gcd(n,k)==1"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

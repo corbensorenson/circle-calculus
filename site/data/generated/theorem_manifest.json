@@ -366,7 +366,7 @@
       "informal_statement": "Every nonzero stride smaller than a prime circle size generates a full coil.",
       "lean_name": "Circle.prime_full_coil",
       "lean_source": "Circle/Core/Prime.lean",
-      "lean_source_line": 10,
+      "lean_source_line": 24,
       "name": "Prime full coil",
       "original_status": "proved",
       "paper_refs": [
@@ -1931,6 +1931,43 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "for n > 0 and 0 <= r < n, fiber(r)==fiber(s) iff r % period(n,k) == s % period(n,k)"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0205",
+        "CC-0206"
+      ],
+      "formal_statement": "forall {n k : Nat}, n != 0 -> (Circle.fullCoil n k iff Nat.Coprime n k)",
+      "id": "CC-T0054",
+      "informal_statement": "For a nonzero finite circle size, a stride is a full coil exactly when it is coprime to the circle size.",
+      "lean_name": "Circle.fullCoil_iff_coprime",
+      "lean_source": "Circle/Core/Prime.lean",
+      "lean_source_line": 10,
+      "name": "Full coil iff coprime",
+      "original_status": "proved",
+      "paper_refs": [
+        "PAPER_01_FINITE_CIRCLES.section.prime",
+        "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+        "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/Prime.lean from CC-T0005 and Nat.div_eq_self.",
+      "python_tests": [
+        "tests/test_prime_coils.py::test_full_coil_iff_coprime",
+        "sidecars/PAPER_01_FINITE_CIRCLES/python/test_paper_01_examples.py::test_full_coil_iff_coprime_examples",
+        "sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py::test_full_coil_iff_coprime_examples"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "n > 0 implies fullCoil(n,k) iff gcd(n,k)==1"
         ]
       }
     },

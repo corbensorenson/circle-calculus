@@ -50,12 +50,13 @@
       "guardrail": "Do not restrict the result to prime n; prime full-coil is only the common corollary.",
       "id": "P4-S1-001",
       "layer": "S1",
-      "next_action": "Derive from period_eq_n_div_gcd and arithmetic lemmas.",
+      "next_action": "Promoted to CC-T0054 and Lean-proved as Circle.fullCoil_iff_coprime.",
       "paper_refs": [
         "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"
       ],
       "priority": "high",
-      "status": "planned",
+      "promoted_theorem_id": "CC-T0054",
+      "status": "promoted",
       "target_statement": "On a positive finite circle, stride k is a full coil exactly when gcd(n,k)=1.",
       "title": "Full coil iff coprime"
     },

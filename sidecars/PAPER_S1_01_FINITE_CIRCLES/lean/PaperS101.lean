@@ -16,6 +16,7 @@ namespace Circle.PaperS101
 #check Circle.closesAt_iff_stride_multiple_zero
 #check Circle.period_eq_n_div_gcd
 #check Circle.orbit_decomposition_count
+#check Circle.fullCoil_iff_coprime
 #check Circle.prime_full_coil
 
 end Circle.PaperS101

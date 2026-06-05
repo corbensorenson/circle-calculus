@@ -19,10 +19,17 @@ def test_prime_full_coils() -> None:
             assert len(c.orbit(0, k)) == p
 
 
+def test_full_coil_iff_coprime() -> None:
+    for n in range(1, 258):
+        c = Circle(n)
+        for k in range(0, 2 * n + 1):
+            assert c.is_full_coil(k) == (gcd(n, k) == 1)
+            assert (c.period(k) == n) == (gcd(n, k) == 1)
+
+
 def test_composites_have_non_full_stride() -> None:
     for n in range(2, 257):
         if is_prime(n):
             continue
         c = Circle(n)
         assert any(gcd(n, k) != 1 and not c.is_full_coil(k) for k in range(1, n))
-

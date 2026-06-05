@@ -185,7 +185,7 @@ Goal: make the executable examples line up with the Lean-backed papers without d
 
 - [x] `papers/S1/PAPER_S1_01_FINITE_CIRCLES.md`
   - Current source: `papers/PAPER_01_FINITE_CIRCLES.md`
-  - Proof targets: `CC-T0001` through `CC-T0007`
+  - Proof targets: `CC-T0001` through `CC-T0007`, plus `CC-T0054`
   - Status: polished dimension guide draft links the proved theorem spine into the dimension layout while keeping the root paper as the detailed source.
 - [x] `papers/S1/PAPER_S1_02_WINDING_NATURALS.md`
   - Current source: `papers/PAPER_02_WINDING_NATURALS.md`
@@ -195,8 +195,8 @@ Goal: make the executable examples line up with the Lean-backed papers without d
   - Proof targets: oriented winding, signed residues, integer addition, additive inverse, reversible motion.
   - Status: polished draft; signed zero, composition, and inverse motion are Lean-proved as `S1O-T0001` through `S1O-T0003`.
 - [x] `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md`
-  - Proof targets: `CC-T0008`, multiplication as repeated rotation/scaling, invertibility iff coprime, factor structure, prime/full-coil refinements.
-  - Status: polished draft; scaling invertible iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, scaling natural steps into coil traversal, prime-circle scaling bijectivity, divisor-cofactor collapse, cofactor-multiple collapse, cofactor-shift address collapse, scaling-zero divisibility, period-level kernel divisibility, period-multiple collapse, period-shift collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and cardinality, zero-fiber/kernel and scaled-target/fiber bridges, fiber-set equality modulo scaled value and stride period, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, scaled-address product congruence, and coprime scaling reflection are Lean-proved as `CC-T0008`, `CC-T0028`, `CC-T0017`, `CC-T0018`, `CC-T0029`, `CC-T0019`, `CC-T0020`, `CC-T0031`, `CC-T0021`, `CC-T0022`, `CC-T0023`, `CC-T0024`, `CC-T0025`, `CC-T0030`, `CC-T0032`, `CC-T0033`, `CC-T0034`, `CC-T0035`, `CC-T0036`, `CC-T0037`, `CC-T0038`, `CC-T0039`, `CC-T0040`, `CC-T0041`, `CC-T0042`, `CC-T0043`, `CC-T0044`, `CC-T0050`, `CC-T0052`, `CC-T0053`, `CC-T0045`, `CC-T0051`, `CC-T0046`, `CC-T0047`, `CC-T0048`, `CC-T0049`, `CC-T0026`, and `CC-T0027`; composite orbit refinements and factor-lattice/provenance links remain future extensions.
+  - Proof targets: `CC-T0008`, `CC-T0017` through `CC-T0054`, multiplication as repeated rotation/scaling, invertibility iff coprime, factor structure, prime/full-coil refinements.
+  - Status: polished draft; scaling invertible iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, scaling natural steps into coil traversal, prime-circle scaling bijectivity, divisor/cofactor collapse, cofactor-multiple collapse, cofactor-shift address collapse, scaling-zero divisibility, period-level kernel divisibility, period-multiple collapse, period-shift collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and cardinality, zero-fiber/kernel and scaled-target/fiber bridges, fiber-set equality modulo scaled value and stride period, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, scaled-address product congruence, coprime scaling reflection, and full-coil iff coprime are Lean-proved; composite orbit refinements and factor-lattice/provenance links remain future extensions.
 
 ### S0: Opposition And Sign
 
@@ -409,6 +409,7 @@ Already proved and linked:
 - [x] `CC-T0005`: period equals `n / gcd(n,k)`
 - [x] `CC-T0006`: orbit decomposition count
 - [x] `CC-T0007`: prime full coil
+- [x] `CC-T0054`: full coil iff coprime
 - [x] `CC-T0008`: scaling invertible iff coprime
 - [x] `CC-T0028`: scaling by zero collapses to zero
 - [x] `CC-T0017`: scaling by one is identity
@@ -458,7 +459,7 @@ Already proved and linked:
 
 Still planned:
 
-- Scaling/factor refinements beyond `CC-T0053`: additional factor-lattice/provenance links and any higher-level composite orbit packaging.
+- Scaling/factor refinements beyond `CC-T0054`: additional factor-lattice/provenance links and any higher-level composite orbit packaging.
 
 ## Latest Application Handoff Queue
 

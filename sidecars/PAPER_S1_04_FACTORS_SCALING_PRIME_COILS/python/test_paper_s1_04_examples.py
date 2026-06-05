@@ -22,6 +22,14 @@ def test_scaling_reversible_iff_coprime_small_range() -> None:
             assert circle.scale_is_permutation(k) == (gcd(n, k) == 1)
 
 
+def test_full_coil_iff_coprime_examples() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for k in range(0, 65):
+            assert circle.is_full_coil(k) == (gcd(n, k) == 1)
+            assert (circle.period(k) == n) == (gcd(n, k) == 1)
+
+
 def test_scale_zero_factor_examples() -> None:
     for n in range(1, 65):
         circle = Circle(n)

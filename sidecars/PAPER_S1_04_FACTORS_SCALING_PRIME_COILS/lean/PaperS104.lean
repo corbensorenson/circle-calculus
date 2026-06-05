@@ -60,5 +60,6 @@ namespace Circle.PaperS104
 #check Circle.scaleCircleImage_card_mul_scaleKernelRepresentativeSet_card
 #check Circle.scale_nat_eq_iff_nat_modEq_of_coprime
 #check Circle.scale_factor_modEq
+#check Circle.fullCoil_iff_coprime
 
 end Circle.PaperS104

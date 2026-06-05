@@ -4,7 +4,7 @@ Status: polished dimension guide draft with the finite-circle theorem spine link
 
 ## Aim
 
-This paper is the `S^1` home for the finite circle core. It organizes the first Circle Calculus layer around cyclic address spaces, rotations, coils, closure, period, orbit decomposition, and prime full-coil behavior.
+This paper is the `S^1` home for the finite circle core. It organizes the first Circle Calculus layer around cyclic address spaces, rotations, coils, closure, period, orbit decomposition, the full-coil coprime criterion, and prime full-coil behavior.
 
 The detailed root paper remains `papers/PAPER_01_FINITE_CIRCLES.md`. This dimension paper gives the ladder-facing version: why these results are the `S^1` base layer, which theorem ids they carry, and how later dimensions depend on them.
 
@@ -60,8 +60,9 @@ These declarations are ordinary modular arithmetic in Lean. The Circle Calculus 
 - `CC-T0005`: `Circle.period_eq_n_div_gcd`, the period is `n / gcd(n,k)` when `n != 0`.
 - `CC-T0006`: `Circle.orbit_decomposition_count`, the stride partitions `C_n` into `gcd(n,k)` orbit classes.
 - `CC-T0007`: `Circle.prime_full_coil`, every nonzero stride on a prime circle is a full coil.
+- `CC-T0054`: `Circle.fullCoil_iff_coprime`, for nonzero `n`, a stride is a full coil exactly when it is coprime to `n`.
 
-All seven theorem ids are registered in `manifests/theorem_manifest.yaml`, checked by Lean, and linked through the paper manifest.
+All eight theorem ids are registered in `manifests/theorem_manifest.yaml`, checked by Lean, and linked through the paper manifest.
 
 ## Proof And Sidecars
 

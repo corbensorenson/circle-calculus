@@ -30,14 +30,15 @@ targets:
   - id: P4-S1-001
     layer: S1
     priority: high
-    status: planned
+    status: promoted
+    promoted_theorem_id: CC-T0054
     claim_type: theorem
     title: "Full coil iff coprime"
     target_statement: "On a positive finite circle, stride k is a full coil exactly when gcd(n,k)=1."
     candidate_formalization: "n != 0 -> (Circle.period n k = n iff Nat.gcd n k = 1)"
     paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
     dictionary_dependencies: ["CC-0205", "CC-0206"]
-    next_action: "Derive from period_eq_n_div_gcd and arithmetic lemmas."
+    next_action: "Promoted to CC-T0054 and Lean-proved as Circle.fullCoil_iff_coprime."
     guardrail: "Do not restrict the result to prime n; prime full-coil is only the common corollary."
 
   - id: P4-S1-002

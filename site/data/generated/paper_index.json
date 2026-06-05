@@ -12,7 +12,9 @@
       "status": "polished_draft",
       "theorem_ids": [
         "S0-T0001",
-        "S0-T0002"
+        "S0-T0002",
+        "S0-T0003",
+        "S0-T0004"
       ],
       "title": "Circle Calculus S0.1: Two-Point Opposition"
     },
@@ -39,7 +41,8 @@
         "CC-T0004",
         "CC-T0005",
         "CC-T0006",
-        "CC-T0007"
+        "CC-T0007",
+        "CC-T0054"
       ],
       "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
     },
@@ -113,7 +116,8 @@
         "CC-T0050",
         "CC-T0051",
         "CC-T0052",
-        "CC-T0053"
+        "CC-T0053",
+        "CC-T0054"
       ],
       "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
     },
@@ -136,7 +140,8 @@
         "CC-T0004",
         "CC-T0005",
         "CC-T0006",
-        "CC-T0007"
+        "CC-T0007",
+        "CC-T0054"
       ],
       "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
     },
