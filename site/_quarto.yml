@@ -1,6 +1,9 @@
 project:
   type: website
   output-dir: _site
+  resources:
+    - data/generated/*.json
+    - widgets/**/*.js
 
 website:
   title: "Circle Calculus Living Book"

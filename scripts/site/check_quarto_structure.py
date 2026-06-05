@@ -35,6 +35,11 @@ REQUIRED = [
     "docs/LIVING_BOOK_WIDGETS.md",
 ]
 
+REQUIRED_QUARTO_RESOURCES = [
+    "data/generated/*.json",
+    "widgets/**/*.js",
+]
+
 
 def main() -> int:
     missing = [path for path in REQUIRED if not (ROOT / path).exists()]
@@ -42,6 +47,15 @@ def main() -> int:
         print("missing required Living Book files:", file=sys.stderr)
         for path in missing:
             print(path, file=sys.stderr)
+        return 1
+    quarto_config = (ROOT / "site" / "_quarto.yml").read_text()
+    missing_resources = [
+        resource for resource in REQUIRED_QUARTO_RESOURCES if resource not in quarto_config
+    ]
+    if missing_resources:
+        print("missing required Quarto resources:", file=sys.stderr)
+        for resource in missing_resources:
+            print(resource, file=sys.stderr)
         return 1
     print("quarto structure ok")
     return 0
