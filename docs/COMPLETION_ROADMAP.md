@@ -80,6 +80,7 @@ The project is complete only when all of these are true:
 - Theorem registry: `manifests/theorem_manifest.yaml` and future `manifests/dimensions/`
 - Paper registry: `manifests/paper_manifest.yaml`
 - Dimensional plan: `docs/DIMENSIONAL_LADDER.md`
+- Deferred Phase II and applications context: `docs/PHASE2_AND_APPLICATIONS.md`
 - Completion control: this file
 
 ## Work Order
@@ -99,6 +100,7 @@ Prefer this order. Only skip ahead when blocked and record the blocker.
 11. Add `S7` quaternionic Hopf roadmap/models.
 12. Add `S7` octonion exploratory algebra and formalize only robust targets.
 13. Add future `S15` roadmap only after `S7` foundations are stable.
+14. After the `S15` horizon, stop treating dimension climbing as the main objective. Pivot to Phase II: maps, bundles, spectra, Bott/Clifford periodicity, boundaries, proof-carrying glyphs, data applications, and compute applications.
 
 ## Stage D0: Dimensional Scaffolding
 
@@ -225,6 +227,45 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
   - Future target: `S15-T0001`
   - Do not implement before `S7` is stable.
 
+### Phase II: Structured Transformations After S15
+
+This section records deferred work from the browser handoffs. It is not active proof status. The detailed context lives in `docs/PHASE2_AND_APPLICATIONS.md`.
+
+Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra continuation such as `S^15 -> S^31 -> S^16`. Higher spheres should move into general suspension, stable homotopy, or spectrum machinery instead.
+
+- [ ] `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md`
+  - Program: suspension, stable maps, spectra, and stable invariants.
+- [ ] `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md`
+  - Program: Clifford algebras, spinors, Bott periodicity, and dimension clocks.
+- [ ] `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md`
+  - Program: base, fiber, total space, projection, transition functions, connection, curvature, holonomy, and hidden proof provenance.
+- [ ] `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md`
+  - Program: boundaries, `boundary(boundary)=0`, cobordisms, fields, and proofs as transformations.
+- [ ] `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md`
+  - Program: glyphs with formal syntax, normal forms, theorem dependencies, proof certificates, semantic models, and projection views.
+- [ ] `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md`
+  - Program: coil signatures, closure profiles, prime-lag recurrence, antinode maps, and periodic-data benchmarks.
+- [ ] `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md`
+  - Program: certified cyclic/circulant/orbit structure lowered to FFT/NTT/permutation backends and benchmarked.
+
+Deferred manifest families:
+
+- [ ] `manifests/theories/stable_sphere_calculus.yaml`
+- [ ] `manifests/theories/bott_clifford_calculus.yaml`
+- [ ] `manifests/theories/bundle_calculus.yaml`
+- [ ] `manifests/theories/boundary_cobordism_calculus.yaml`
+- [ ] `manifests/theories/glyph_proof_interface.yaml`
+- [ ] `manifests/applications/coil_data_analysis.yaml`
+- [ ] `manifests/applications/coil_compute.yaml`
+
+Application guardrails:
+
+- [ ] Keep novelty claims disciplined: known mathematics is background; the possible contribution is the proof-carrying interface, dictionary, manifests, glyph/provenance layer, and tested applications.
+- [ ] Treat proof-carrying diagrams as a first demonstrator: glyph/diagram to theorem id, Lean declaration, proof certificate, Python example, and paper section.
+- [ ] Treat number provenance as first-class only after the finite-circle factor/orbit spine is stable.
+- [ ] For local compute work, use MLX/Mac-compatible acceleration first. CUDA/cuFFT references are future portability notes or external baselines, not the active backend on this machine.
+- [ ] Benchmark compute claims against ordinary dense/direct baselines before presenting any speedup as real.
+
 ## Common Proof Targets
 
 - [ ] `COMMON-T0001`: Euler characteristic of a finite cell-count list.
@@ -242,6 +283,7 @@ Already proved and linked:
 - [x] `CC-T0005`: period equals `n / gcd(n,k)`
 - [x] `CC-T0006`: orbit decomposition count
 - [x] `CC-T0007`: prime full coil
+- [x] `CC-T0008`: scaling invertible iff coprime
 - [x] `CC-T0009`: unique winding/residue lift
 - [x] `CC-T0010`: lifted addition decomposition
 - [x] `CC-T0011`: lifted existence
@@ -253,7 +295,7 @@ Already proved and linked:
 
 Still planned:
 
-- [ ] `CC-T0008`: scaling invertible iff coprime
+- Scaling/factor refinements beyond `CC-T0008`: multiplication as repeated scaling, factor structure, and prime/full-coil refinements.
 
 ## Verification Checklist
 

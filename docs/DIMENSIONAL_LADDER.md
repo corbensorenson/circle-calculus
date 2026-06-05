@@ -1,6 +1,6 @@
 # Dimensional Ladder
 
-This note summarizes the expanded post-`S^1` roadmap. The active completion checklist lives in `docs/COMPLETION_ROADMAP.md`, and the detailed planning pack lives in `circle_calculus_dimensional_handoff/`.
+This note summarizes the expanded post-`S^1` roadmap. The active completion checklist lives in `docs/COMPLETION_ROADMAP.md`, the deferred Phase II/application context lives in `docs/PHASE2_AND_APPLICATIONS.md`, and the detailed planning pack lives in `circle_calculus_dimensional_handoff/`.
 
 The current proved core is still the finite `S^1`/circle layer. Higher-dimensional work should extend it without contaminating it.
 
@@ -55,6 +55,7 @@ The project should not jump from `S^3` to `S^7` and ignore `S^4`, `S^5`, and `S^
 9. `S7.2`: quaternionic Hopf roadmap `S^3 -> S^7 -> S^4`.
 10. `S7.3`: octonion exploratory algebra, with nonassociativity made explicit.
 11. `S15`: future octonionic Hopf horizon.
+12. `Phase II`: after the `S^15` horizon, pivot from special sphere objects to maps, bundles, spectra, Bott/Clifford periodicity, boundaries, proof-carrying glyphs, data applications, and compute applications.
 
 ## Guardrails
 
@@ -65,8 +66,28 @@ The project should not jump from `S^3` to `S^7` and ignore `S^4`, `S^5`, and `S^
 - Continuous geometry, real analysis, smooth manifolds, Hopf fibrations, quaternions, and octonions should be staged after finite combinatorial models.
 - Slices, projections, and pictures are explanations, not proofs.
 - Unit octonions are not a group; bracketing matters.
+- Do not claim a classical Hopf/division-algebra continuation `S^15 -> S^31 -> S^16`.
 - Claims about `S^6` complex structures must stay warning/speculative unless formalized from accepted foundations.
 - No future theorem may be marked proved without a compiled Lean declaration and the repository proof checks.
+
+## Post-S15 Rule
+
+`S^15` is the exceptional Hopf/division-algebra horizon. Higher spheres may still appear through suspension, stable homotopy, or spectrum machinery, but the roadmap should not keep climbing dimensions as if the same division-algebra pattern continues.
+
+After `S^15`, the project should move from dimension-specific objects to structured transformations:
+
+```text
+maps
+fibers
+bundles
+boundaries
+fields
+spectra
+proof-carrying glyphs
+applications
+```
+
+See `docs/PHASE2_AND_APPLICATIONS.md` for the deferred Phase II and MLX-first compute tracks.
 
 ## First Expansion Goal
 

@@ -51,6 +51,24 @@ entries:
       - "Physical spinning unless a later model interprets it physically."
     examples: ["rot(12,5)(8)=1"]
 
+  - id: CC-0105
+    name: Scaling
+    kind: operation
+    symbol: "scale(n,k)"
+    formal_definition: "scale(n,k)(x) = k*x in C_n."
+    intuition: "Multiply every circle address by the same factor."
+    dependencies: ["CC-0001", "CC-0002"]
+    rewrite_rules:
+      - "scale(n,k) is invertible iff gcd(n,k)=1"
+    formal_models: ["left multiplication by (k : ZMod n)"]
+    lean_declarations: ["Circle.scale", "Circle.scale_invertible_iff_coprime"]
+    python_objects: ["Circle.scale", "Circle.scale_is_permutation"]
+    introduced_in: "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS"
+    forbidden_meanings:
+      - "A geometric dilation unless a later geometry model explicitly interprets it that way."
+      - "A proof of multiplication laws not linked to a theorem id."
+    examples: ["scale(12,5)(7)=11", "scale(12,4) is not invertible", "scale(13,5) is invertible"]
+
   - id: CC-0201
     name: Coil
     kind: object

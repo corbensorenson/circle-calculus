@@ -46,7 +46,7 @@ Future dimensional work is split into two related ladders:
 
 The repository rule for that expansion is strict: higher dimensions may depend on lower dimensions, but lower dimensions must not import or rely on higher dimensions. The first dimensional implementation stage should be scaffolding only: dimension manifests, dictionary files, paper folders, Lean/Python roots, and import-check scripts, with all future theorem statuses kept planned, deferred, or exploratory until proofs exist.
 
-See `docs/COMPLETION_ROADMAP.md`, `docs/DIMENSIONAL_LADDER.md`, and `circle_calculus_dimensional_handoff/` for the detailed roadmap and guardrails.
+See `docs/COMPLETION_ROADMAP.md`, `docs/DIMENSIONAL_LADDER.md`, `docs/PHASE2_AND_APPLICATIONS.md`, and `circle_calculus_dimensional_handoff/` for the detailed roadmap and guardrails.
 
 ## Current Status
 
@@ -57,7 +57,7 @@ This is an early public research scaffold with two promoted papers and a working
 | `papers/PAPER_01_FINITE_CIRCLES.md` | outline/draft | `CC-T0001` through `CC-T0007` proved |
 | `papers/PAPER_02_WINDING_NATURALS.md` | draft | `CC-T0009` through `CC-T0016` proved |
 
-The theorem manifest currently marks `CC-T0008` as planned for the later scaling/multiplication paper.
+The theorem manifest also includes `CC-T0008`, proving that scaling by `k` is invertible on `C_n` exactly when `n` and `k` are coprime.
 
 The D0 dimensional scaffold is also in place: dimension manifests, dimension dictionaries, planned paper stubs, Lean/Python scaffolds, and dimension validation scripts. Future-dimension theorems remain planned, deferred, exploratory, or stated until actual Lean proofs exist.
 
@@ -171,6 +171,7 @@ Proved finite-circle core:
 - `CC-T0005`: period equals `n / gcd(n,k)`
 - `CC-T0006`: orbit decomposition count
 - `CC-T0007`: prime full coil
+- `CC-T0008`: scaling invertible iff coprime
 
 Proved winding/natural-number core:
 
@@ -183,12 +184,10 @@ Proved winding/natural-number core:
 - `CC-T0015`: lifted addition left zero identity
 - `CC-T0016`: iterated lifted successor
 
-Planned:
-
-- `CC-T0008`: scaling invertible iff coprime
-
 ## What This Does Not Claim Yet
 
 This repository does not currently claim to have rebuilt all of mathematics from circles. It contains a verified starting spine and an explicit roadmap for growing it.
 
 It also does not claim that Python tests are proofs, that diagrams are proofs, that `S^2` has a natural group structure, that `S^3` is globally `S^2 x S^1`, that unit octonions form a group, or that formalization bypasses foundational limitations. See `docs/GODEL_AND_LIMITATIONS.md` for the current limitations note.
+
+For the deferred application and compute tracks, see `docs/PHASE2_AND_APPLICATIONS.md`. Local compute experiments should be MLX/Mac-first; CUDA-specific references are future portability notes or external benchmark baselines.

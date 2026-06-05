@@ -1,4 +1,5 @@
 import Circle.Core.Finite
+import Mathlib.Data.ZMod.Units
 
 namespace Circle
 
@@ -6,5 +7,11 @@ namespace Circle
 def scale (n k : Nat) (x : C n) : C n :=
   (k : ZMod n) * x
 
-end Circle
+theorem scale_invertible_iff_coprime (n k : Nat) :
+    Function.Bijective (scale n k) ↔ Nat.Coprime n k := by
+  change Function.Bijective (fun x : ZMod n => (k : ZMod n) * x) ↔ Nat.Coprime n k
+  rw [← IsUnit.isUnit_iff_mulLeft_bijective]
+  rw [ZMod.isUnit_iff_coprime]
+  exact ⟨Nat.Coprime.symm, Nat.Coprime.symm⟩
 
+end Circle

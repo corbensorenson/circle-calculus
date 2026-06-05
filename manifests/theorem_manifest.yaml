@@ -113,14 +113,14 @@ theorems:
 
   - id: CC-T0008
     name: Scaling invertible iff coprime
-    status: planned
+    status: proved
     lean_name: Circle.scale_invertible_iff_coprime
     informal_statement: "Scaling by k is invertible on C_n exactly when gcd(n,k)=1."
-    formal_statement: "deferred formal statement"
-    dictionary_dependencies: ["CC-0001", "CC-0002"]
-    paper_refs: ["PAPER_04_MULTIPLICATION_SCALING.section.scaling"]
+    formal_statement: "forall (n k : Nat), Function.Bijective (Circle.scale n k) iff Nat.Coprime n k"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
     python_tests: ["tests/test_scaling.py::test_scale_permutation_iff_coprime"]
-    proof_notes: "Later Paper 4 target."
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean using ZMod.isUnit_iff_coprime and IsUnit.isUnit_iff_mulLeft_bijective."
     blocker: ""
     verification:
       lean_build_required: true

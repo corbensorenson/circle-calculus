@@ -40,3 +40,13 @@ papers:
       - CC-0302
       - CC-0303
       - CC-0304
+
+  - id: PAPER_S1_04_FACTORS_SCALING_PRIME_COILS
+    title: "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+    status: draft
+    sidecar: sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS
+    theorem_ids:
+      - CC-T0008
+    dictionary_ids:
+      - S1-0001
+      - CC-0105
