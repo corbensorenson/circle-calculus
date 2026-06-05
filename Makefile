@@ -1,8 +1,8 @@
 LAKE := $(shell command -v lake 2>/dev/null || printf "%s/.elan/bin/lake" "$$HOME")
 
-.PHONY: check lean sidecarlean test manifest dictionary paperlinks dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples
+.PHONY: check lean sidecarlean test manifest dictionary papermanifest paperlinks dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples
 
-check: lean sidecarlean test manifest dictionary paperlinks dimensioncheck nofake
+check: lean sidecarlean test manifest dictionary papermanifest paperlinks dimensioncheck nofake
 
 lean:
 	$(LAKE) build
@@ -18,6 +18,9 @@ manifest:
 
 dictionary:
 	python scripts/check_dictionary.py
+
+papermanifest:
+	python scripts/check_paper_manifest.py
 
 paperlinks:
 	python scripts/check_paper_theorem_links.py

@@ -402,6 +402,7 @@ Before any push:
 - [x] Python tests pass
 - [x] theorem manifest validates
 - [x] dictionary validates
+- [x] paper manifest validates
 - [x] paper theorem links validate
 - [x] no fake proof markers
 - [x] dimension checks pass if present

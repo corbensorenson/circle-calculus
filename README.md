@@ -102,9 +102,9 @@ The README is updated after meaningful proof batches, paper batches, roadmap cha
 
 A theorem is treated as proved only when all of the following are true:
 
-1. It has a theorem id in `manifests/theorem_manifest.yaml`.
+1. It has a theorem id in `manifests/theorem_manifest.yaml` or the appropriate dimension manifest under `manifests/dimensions/`.
 2. It has an exact Lean declaration name.
-3. Its manifest status is `proved`.
+3. Its manifest status is `proved` or `lean_proved`.
 4. `lake build` succeeds.
 5. `scripts/check_no_fake_proofs.py` finds no forbidden proof placeholders.
 
@@ -161,6 +161,7 @@ make sidecarlean # check all per-paper Lean sidecars
 make test        # run Python tests
 make manifest    # validate theorem metadata
 make dictionary  # validate dictionary metadata
+make papermanifest # validate paper-to-sidecar/theorem/dictionary links
 make paperlinks  # verify papers cite known theorem ids
 make dimensioncheck # validate dimension manifests, imports, and paper links
 make nofake      # reject forbidden proof placeholders
