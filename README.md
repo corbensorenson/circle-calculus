@@ -206,6 +206,7 @@ Start with:
 13. `site/dictionary.qmd`
 14. `site/theorems.qmd`
 15. `site/papers.qmd`
+16. `site/targets.qmd`
 
 The papers give the conceptual path. The sidecars show the proof links. The dictionary fixes vocabulary so later papers reuse the same meanings instead of drifting.
 

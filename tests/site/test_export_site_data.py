@@ -28,6 +28,7 @@ def test_export_site_data_writes_required_indexes() -> None:
         "dimensions.json",
         "paper_index.json",
         "widget_index.json",
+        "phase4_targets.json",
     ]:
         assert (generated / name).exists()
 
@@ -46,3 +47,8 @@ def test_export_site_data_writes_required_indexes() -> None:
     widget_ids = {item["id"] for item in widgets["widgets"]}
     assert "finite_circle_rotator" in widget_ids
     assert "prime_full_coil_explorer" in widget_ids
+
+    targets = json.loads((generated / "phase4_targets.json").read_text())
+    target_ids = {item["id"] for item in targets["targets"]}
+    assert "P4-S1-001" in target_ids
+    assert "P4-APP-002" in target_ids

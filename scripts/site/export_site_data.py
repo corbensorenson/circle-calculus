@@ -176,12 +176,21 @@ def export_widget_index() -> dict:
     return {"widgets": widgets}
 
 
+def export_phase4_targets() -> dict:
+    path = ROOT / "manifests" / "phase4_theorem_targets.yaml"
+    if not path.exists():
+        return {"targets": []}
+    data = load_yaml(path)
+    return {"targets": data.get("targets", [])}
+
+
 def export_all() -> None:
     write_json(GENERATED / "theorem_manifest.json", export_theorems())
     write_json(GENERATED / "dictionary.json", export_dictionary())
     write_json(GENERATED / "dimensions.json", export_dimensions())
     write_json(GENERATED / "paper_index.json", export_papers())
     write_json(GENERATED / "widget_index.json", export_widget_index())
+    write_json(GENERATED / "phase4_targets.json", export_phase4_targets())
 
 
 def main() -> int:

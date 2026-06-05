@@ -21,6 +21,8 @@ website:
         text: Theorems
       - href: papers.qmd
         text: Papers
+      - href: targets.qmd
+        text: Targets
       - href: about.qmd
         text: About
   sidebar:
@@ -38,6 +40,8 @@ website:
         text: Theorem Index
       - href: papers.qmd
         text: Paper Index
+      - href: targets.qmd
+        text: Phase IV Targets
       - section: "S0"
         contents:
           - href: chapters/S0/index.qmd

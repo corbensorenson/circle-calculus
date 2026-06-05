@@ -240,6 +240,35 @@ async function hydratePaperIndexes() {
   }
 }
 
+async function hydrateTargetIndexes() {
+  const data = await loadJson("../../data/generated/phase4_targets.json");
+  for (const target of document.querySelectorAll(".target-index[data-target-index]")) {
+    const table = document.createElement("table");
+    table.className = "target-index-table";
+    const thead = document.createElement("thead");
+    thead.innerHTML = "<tr><th>Id</th><th>Layer</th><th>Status</th><th>Priority</th><th>Title</th><th>Next Action</th></tr>";
+    const tbody = document.createElement("tbody");
+    for (const item of data.targets) {
+      const tr = document.createElement("tr");
+      for (const value of [
+        item.id || "",
+        item.layer || "",
+        item.status || "",
+        item.priority || "",
+        item.title || "",
+        item.next_action || "",
+      ]) {
+        const td = document.createElement("td");
+        td.textContent = value;
+        tr.appendChild(td);
+      }
+      tbody.appendChild(tr);
+    }
+    table.append(thead, tbody);
+    target.replaceChildren(table);
+  }
+}
+
 export function mountWidgets(name, mount) {
   for (const target of document.querySelectorAll(`[data-widget="${name}"]`)) {
     mount(target);
@@ -252,4 +281,5 @@ window.addEventListener("DOMContentLoaded", () => {
   hydrateDictionaryIndexes().catch((error) => console.error(error));
   hydrateTheoremIndexes().catch((error) => console.error(error));
   hydratePaperIndexes().catch((error) => console.error(error));
+  hydrateTargetIndexes().catch((error) => console.error(error));
 });

@@ -587,7 +587,7 @@ Outputs:
 - [ ] Improved paper sections where proofs already exist or where planned status needs clearer wording.
 - [ ] Additional Lean sidecars and Python parity examples where they strengthen the formal spine.
 - [ ] Updated dictionary terms for recurring vocabulary discovered during the sweep.
-- [ ] Updated Living Book pages or index data when new proved or planned theorem ids land.
+- [x] Updated Living Book pages or index data when new proved or planned theorem ids land.
 
 Completion criteria:
 

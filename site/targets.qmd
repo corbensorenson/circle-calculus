@@ -1,0 +1,13 @@
+---
+title: "Phase IV Target Index"
+---
+
+This index is generated from `manifests/phase4_theorem_targets.yaml`. These are planned theorem, proof, paper, and experiment targets. They are not proved theorem claims.
+
+<div class="warning-box">
+Target status is intentionally weaker than theorem status. A target becomes a proved theorem only after a theorem id, Lean declaration, manifest status, and checks support it.
+</div>
+
+<div class="target-index" data-target-index="phase4"></div>
+
+<script type="module" src="widgets/shared/widget_base.js"></script>

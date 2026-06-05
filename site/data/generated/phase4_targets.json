@@ -1,0 +1,398 @@
+{
+  "targets": [
+    {
+      "candidate_formalization": "forall x : Circle.S0.Sign, Circle.S0.antipode x != x",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S0-0001",
+        "S0-0002"
+      ],
+      "guardrail": "Do not identify S0 with C_1.",
+      "id": "P4-S0-001",
+      "layer": "S0",
+      "next_action": "Prove directly by cases in Circle/S0/Scaffold.lean and add a sidecar theorem.",
+      "paper_refs": [
+        "papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md"
+      ],
+      "priority": "high",
+      "status": "planned",
+      "target_statement": "For every S0 point x, antipode x is distinct from x.",
+      "title": "S0 antipode has no fixed point"
+    },
+    {
+      "candidate_formalization": "Circle.S0.antipode Circle.S0.Sign.pos = Circle.S0.Sign.neg and Circle.S0.antipode Circle.S0.Sign.neg = Circle.S0.Sign.pos",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S0-0001",
+        "S0-0002"
+      ],
+      "guardrail": "Keep this as finite opposition, not a cyclic rotation claim.",
+      "id": "P4-S0-002",
+      "layer": "S0",
+      "next_action": "Check the current constructor names and expose named swap lemmas.",
+      "paper_refs": [
+        "papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md"
+      ],
+      "priority": "medium",
+      "status": "planned",
+      "target_statement": "The S0 antipode sends each named sign to the other sign.",
+      "title": "S0 antipode swaps the two named signs"
+    },
+    {
+      "candidate_formalization": "n != 0 -> (Circle.period n k = n iff Nat.gcd n k = 1)",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "CC-0205",
+        "CC-0206"
+      ],
+      "guardrail": "Do not restrict the result to prime n; prime full-coil is only the common corollary.",
+      "id": "P4-S1-001",
+      "layer": "S1",
+      "next_action": "Derive from period_eq_n_div_gcd and arithmetic lemmas.",
+      "paper_refs": [
+        "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"
+      ],
+      "priority": "high",
+      "status": "planned",
+      "target_statement": "On a positive finite circle, stride k is a full coil exactly when gcd(n,k)=1.",
+      "title": "Full coil iff coprime"
+    },
+    {
+      "candidate_formalization": "n != 0 -> sameOrbit n k x y iff Nat.gcd n k divides representative_difference x y",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0207",
+        "CC-0208"
+      ],
+      "guardrail": "Avoid ad hoc integer representatives that are not tied to ZMod equality.",
+      "id": "P4-S1-002",
+      "layer": "S1",
+      "next_action": "Choose a representative-difference API before formalizing.",
+      "paper_refs": [
+        "papers/PAPER_01_FINITE_CIRCLES.md",
+        "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md"
+      ],
+      "priority": "high",
+      "status": "planned",
+      "target_statement": "Two nodes lie in the same stride-k orbit exactly when their representatives differ by a multiple of gcd(n,k).",
+      "title": "Orbit membership by gcd congruence"
+    },
+    {
+      "candidate_formalization": "Nat.Coprime n a -> Function.Bijective (fun x => Circle.rot n b (Circle.scale n a x)) plus a composition normal form",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "CC-0101",
+        "CC-0105"
+      ],
+      "guardrail": "Do not claim all endomorphisms are affine unless the classification is separately proved.",
+      "id": "P4-S1-003",
+      "layer": "S1",
+      "next_action": "First prove the forward bijection and composition lemmas; leave classification for later.",
+      "paper_refs": [
+        "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"
+      ],
+      "priority": "medium",
+      "status": "planned",
+      "target_statement": "Every map built as a rotation after coprime scaling is a finite-circle bijection, and composition follows affine modular arithmetic.",
+      "title": "Affine circle automorphism normal form"
+    },
+    {
+      "candidate_formalization": "suspendedCircleAntipode n (longitudeRotation n stride p) = longitudeRotation n (-stride) (suspendedCircleAntipode n p)",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S2-0005",
+        "S2-0006",
+        "CC-0101"
+      ],
+      "guardrail": "Do not assign independent longitude coordinates to poles.",
+      "id": "P4-S2-001",
+      "layer": "S2",
+      "next_action": "Confirm signed or modular stride API for S2 longitude rotation.",
+      "paper_refs": [
+        "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
+      ],
+      "priority": "high",
+      "status": "planned",
+      "target_statement": "On equator coordinates, rotating longitude and then taking the antipode agrees with taking the antipode and rotating by the opposite stride.",
+      "title": "Longitude rotation commutes with suspended-circle antipode"
+    },
+    {
+      "candidate_formalization": "For each latitude ring, orbitClassCount n k = Nat.gcd n k",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S2-0002",
+        "S2-0003",
+        "CC-0208"
+      ],
+      "guardrail": "Do not turn the whole sphere grid into a product of two circles.",
+      "id": "P4-S2-002",
+      "layer": "S2",
+      "next_action": "Package the inherited S1 orbit theorem as an S2 latitude theorem.",
+      "paper_refs": [
+        "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"
+      ],
+      "priority": "medium",
+      "status": "planned",
+      "target_statement": "Each non-pole latitude ring decomposes under a stride into gcd(n,k) finite cycles.",
+      "title": "Latitude-ring orbit decomposition inherits S1 orbit count"
+    },
+    {
+      "candidate_formalization": "one_mul, mul_one, and inverse equations for Circle.S3.UnitQuaternion",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S3Q-0001",
+        "S3Q-0002"
+      ],
+      "guardrail": "Keep noncommutativity explicit.",
+      "id": "P4-S3-001",
+      "layer": "S3",
+      "next_action": "Expose a multiplication API on UnitQuaternion after the current closure theorem.",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
+      ],
+      "priority": "high",
+      "status": "planned",
+      "target_statement": "Unit quaternions have an identity element and conjugate inverse under multiplication.",
+      "title": "Unit quaternion identity and inverse laws"
+    },
+    {
+      "candidate_formalization": "Package S3H-T0004 and S3H-T0005 into a right-action interface for normalized Hopf pairs.",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S3H-0001",
+        "S3H-0002"
+      ],
+      "guardrail": "Do not claim S3 is globally S2 x S1.",
+      "id": "P4-S3-002",
+      "layer": "S3",
+      "next_action": "Define a finite action record or theorem bundle without claiming global product structure.",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_03_HOPF_COILS.md"
+      ],
+      "priority": "high",
+      "status": "planned",
+      "target_statement": "Identity phase fixes Hopf pairs and phase composition agrees with complex multiplication.",
+      "title": "Hopf phase action is a right action"
+    },
+    {
+      "candidate_formalization": "Setoid UnitQuaternion generated by q and -q",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S3S-0001",
+        "S3S-0002"
+      ],
+      "guardrail": "Do not claim a complete SO(3) formalization without quotient topology and rotation action proofs.",
+      "id": "P4-S3-003",
+      "layer": "S3",
+      "next_action": "Define the quotient relation before claiming SO(3) coverage.",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
+      ],
+      "priority": "medium",
+      "status": "planned",
+      "target_statement": "The relation q ~ -q is reflexive, symmetric, and transitive on unit quaternions.",
+      "title": "Spin sign quotient equivalence relation"
+    },
+    {
+      "candidate_formalization": "eulerCharacteristic (iterate suspensionCounts m counts) = if m is even then chi counts else 2 - chi counts",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S456-0001",
+        "COMMON-0002",
+        "COMMON-0003"
+      ],
+      "guardrail": "Keep this finite-cell-count only, not a smooth classification theorem.",
+      "id": "P4-S456-001",
+      "layer": "S4-S6",
+      "next_action": "Generalize the proved S4/S5/S6 finite calculation to an iteration theorem.",
+      "paper_refs": [
+        "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md"
+      ],
+      "priority": "high",
+      "status": "planned",
+      "target_statement": "Iterated finite suspensions alternate Euler characteristic according to suspension parity.",
+      "title": "General iterated suspension Euler parity"
+    },
+    {
+      "candidate_formalization": "A manifest/paper theorem boundary rather than a Lean mathematical theorem.",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S6-0001",
+        "S6-W0001"
+      ],
+      "guardrail": "Do not imply the project settles the S6 complex-structure problem.",
+      "id": "P4-S456-002",
+      "layer": "S4-S6",
+      "next_action": "Add an explicit warning card or paper lemma tying S6-W0001 to the paper status.",
+      "paper_refs": [
+        "papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md"
+      ],
+      "priority": "medium",
+      "status": "planned",
+      "target_statement": "The current S6 finite model proves only cell-count and Euler facts, not complex-structure claims.",
+      "title": "S6 warning theorem boundary"
+    },
+    {
+      "candidate_formalization": "quaternionicPhaseRotate (p * q) = quaternionicPhaseRotate q after quaternionicPhaseRotate p, plus base invariance",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S7QH-0001",
+        "S3Q-0001",
+        "S4-0001"
+      ],
+      "guardrail": "Do not claim full fibration topology.",
+      "id": "P4-S7-001",
+      "layer": "S7",
+      "next_action": "Define the right-phase action API around existing S7QH-T0001 and S7QH-T0002.",
+      "paper_refs": [
+        "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"
+      ],
+      "priority": "high",
+      "status": "planned",
+      "target_statement": "Right multiplication by unit quaternion phases composes according to quaternion multiplication and preserves the quaternionic Hopf base point.",
+      "title": "Quaternionic Hopf right phase action composition"
+    },
+    {
+      "candidate_formalization": "forall o, normSq o = 1 -> (conj o) * o = 1 and o * (conj o) = 1",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S7O-0001",
+        "S7O-0002",
+        "S7O-W0002"
+      ],
+      "guardrail": "Do not introduce a group API for unit octonions.",
+      "id": "P4-S7-002",
+      "layer": "S7",
+      "next_action": "Prove only bracket-explicit identities already supported by the coordinate model.",
+      "paper_refs": [
+        "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
+      ],
+      "priority": "high",
+      "status": "planned",
+      "target_statement": "For a norm-one octonion, conjugation gives left and right inverse equations with explicit bracketing.",
+      "title": "Unit octonion inverse equations with bracketing"
+    },
+    {
+      "candidate_formalization": "octonionicHopfMap (x*u, y*u) = octonionicHopfMap (x,y) under norm-one and bracketed assumptions",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S15-0001",
+        "S15-0003",
+        "S7O-0001",
+        "S7O-W0002"
+      ],
+      "guardrail": "Do not claim full octonionic Hopf fibration or quotient topology.",
+      "id": "P4-S15-001",
+      "layer": "S15",
+      "next_action": "Keep as planned until the octonionic bracketing and inverse lemmas are proved.",
+      "paper_refs": [
+        "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md"
+      ],
+      "priority": "medium",
+      "status": "planned",
+      "target_statement": "Shared right unit-octonion phase should preserve the bounded octonionic Hopf landing coordinates where the nonassociative formula is explicitly bracketed.",
+      "title": "Octonionic Hopf phase-invariance target"
+    },
+    {
+      "candidate_formalization": "Validity predicate over generated theorem metadata and proof glyph fields.",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "COMMON-0013",
+        "COMMON-0014",
+        "COMMON-0015"
+      ],
+      "guardrail": "A glyph is a proof interface, not a proof substitute.",
+      "id": "P4-P2-001",
+      "layer": "PhaseII",
+      "next_action": "Define a finite metadata model before connecting to generated JSON.",
+      "paper_refs": [
+        "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md"
+      ],
+      "priority": "high",
+      "status": "planned",
+      "target_statement": "A proof-carrying glyph certificate is valid only if its theorem id resolves to a manifest entry and its Lean name matches generated theorem data.",
+      "title": "Glyph certificate resolves theorem manifest entry"
+    },
+    {
+      "candidate_formalization": "Transition maps over a finite base with cocycle-like compatibility on triple overlaps.",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "COMMON-0007",
+        "COMMON-0008",
+        "COMMON-0009"
+      ],
+      "guardrail": "Do not treat twisted bundles as global products.",
+      "id": "P4-P2-002",
+      "layer": "PhaseII",
+      "next_action": "Choose finite overlap data before registering as a theorem id.",
+      "paper_refs": [
+        "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md"
+      ],
+      "priority": "medium",
+      "status": "planned",
+      "target_statement": "Future nontrivial bundle transition functions must preserve base coordinates and compose on overlaps.",
+      "title": "Bundle transition sanity target"
+    },
+    {
+      "candidate_formalization": "Executable benchmark protocol plus bounded phase-coordinate theorem links.",
+      "claim_type": "experiment",
+      "dictionary_dependencies": [
+        "COMMON-0016",
+        "COMMON-0017"
+      ],
+      "guardrail": "Benchmark results are not Lean proofs.",
+      "id": "P4-APP-001",
+      "layer": "Applications",
+      "next_action": "Add deterministic synthetic generators and benchmark fixtures.",
+      "paper_refs": [
+        "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md"
+      ],
+      "priority": "high",
+      "status": "planned",
+      "target_statement": "Coil signatures should be compared against standard periodogram/autocorrelation baselines on synthetic periodic data before usefulness claims.",
+      "title": "Coil signatures versus ordinary period baselines"
+    },
+    {
+      "candidate_formalization": "MLX benchmark harness plus finite index theorems already present in AI manifests.",
+      "claim_type": "experiment",
+      "dictionary_dependencies": [
+        "COMMON-0026",
+        "COMMON-0028",
+        "COMMON-0030"
+      ],
+      "guardrail": "No claim that circles improve all AI.",
+      "id": "P4-APP-002",
+      "layer": "Applications",
+      "next_action": "Create a tiny deterministic MLX-compatible benchmark before claiming speed or quality.",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md",
+        "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+        "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md"
+      ],
+      "priority": "high",
+      "status": "planned",
+      "target_statement": "Phase-channel, cyclic-memory, and adapter-block AI ideas should be benchmarked on Mac/MLX against standard baselines before making model-quality claims.",
+      "title": "MLX phase-channel benchmark target"
+    },
+    {
+      "candidate_formalization": "Extend benchmark_coil_layout.py with reproducible fixtures and record results without overclaiming.",
+      "claim_type": "experiment",
+      "dictionary_dependencies": [
+        "COMMON-0022",
+        "COMMON-0023"
+      ],
+      "guardrail": "Performance claims require benchmarks.",
+      "id": "P4-APP-003",
+      "layer": "Applications",
+      "next_action": "Add benchmark parameter grid and expected-output checks.",
+      "paper_refs": [
+        "papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md"
+      ],
+      "priority": "medium",
+      "status": "planned",
+      "target_statement": "Circular/stride layout claims should be benchmarked against dense, direct, FFT, and layout baselines.",
+      "title": "Coil layout memory-locality benchmark"
+    }
+  ]
+}
