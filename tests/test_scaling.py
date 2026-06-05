@@ -56,3 +56,11 @@ def test_prime_scale_bijective() -> None:
         circle = Circle(p)
         for k in range(1, p):
             assert circle.scale_is_permutation(k)
+
+
+def test_scale_cofactor_zero_for_divisors() -> None:
+    for n in range(1, 129):
+        circle = Circle(n)
+        for k in range(1, n + 1):
+            if n % k == 0:
+                assert circle.scale(n // k, k) == 0

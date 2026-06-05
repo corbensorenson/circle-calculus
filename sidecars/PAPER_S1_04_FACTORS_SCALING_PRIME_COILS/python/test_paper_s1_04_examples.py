@@ -51,3 +51,11 @@ def test_prime_scaling_examples() -> None:
         circle = Circle(p)
         for k in range(1, p):
             assert circle.scale_is_permutation(k)
+
+
+def test_cofactor_zero_examples() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for k in range(1, n + 1):
+            if n % k == 0:
+                assert circle.scale(n // k, k) == 0

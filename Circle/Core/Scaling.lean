@@ -46,4 +46,12 @@ theorem prime_scale_bijective {p k : Nat} (hp : Nat.Prime p) (hk0 : 0 < k) (hkp 
   rw [scale_invertible_iff_coprime]
   exact Nat.coprime_of_lt_prime hk0.ne' hkp hp
 
+theorem scale_cofactor_zero {n k : Nat} (hkn : k ∣ n) :
+    scale n k ((n / k : Nat) : C n) = 0 := by
+  unfold scale
+  rw [← Nat.cast_mul]
+  have hmul : k * (n / k) = n := Nat.mul_div_cancel' hkn
+  rw [hmul]
+  exact CharP.cast_eq_zero (ZMod n) n
+
 end Circle

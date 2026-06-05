@@ -165,7 +165,7 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
   - Status: signed zero, composition, and inverse motion are Lean-proved as `S1O-T0001` through `S1O-T0003`.
 - [x] `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md`
   - Proof targets: `CC-T0008`, multiplication as repeated rotation/scaling, invertibility iff coprime, factor structure, prime/full-coil refinements.
-  - Status: scaling invertible iff coprime, scale-by-one identity, scaling composition, scaling transport of rotation stride, scaling transport of finite coil steps, and prime-circle scaling bijectivity are Lean-proved as `CC-T0008`, `CC-T0017`, `CC-T0018`, `CC-T0019`, `CC-T0020`, and `CC-T0021`; deeper factor/orbit refinements remain future extensions.
+  - Status: scaling invertible iff coprime, scale-by-one identity, scaling composition, scaling transport of rotation stride, scaling transport of finite coil steps, prime-circle scaling bijectivity, and divisor-cofactor collapse are Lean-proved as `CC-T0008`, `CC-T0017`, `CC-T0018`, `CC-T0019`, `CC-T0020`, `CC-T0021`, and `CC-T0022`; deeper factor/orbit refinements remain future extensions.
 
 ### S0: Opposition And Sign
 
@@ -369,6 +369,7 @@ Already proved and linked:
 - [x] `CC-T0019`: scaling transports rotation stride
 - [x] `CC-T0020`: scaling transports finite coil steps
 - [x] `CC-T0021`: nonzero scaling below a prime circle size is bijective
+- [x] `CC-T0022`: scaling sends a divisor cofactor to zero
 - [x] `CC-T0009`: unique winding/residue lift
 - [x] `CC-T0010`: lifted addition decomposition
 - [x] `CC-T0011`: lifted existence
@@ -380,7 +381,7 @@ Already proved and linked:
 
 Still planned:
 
-- Scaling/factor refinements beyond `CC-T0021`: composite-kernel/factor structure and orbit refinements.
+- Scaling/factor refinements beyond `CC-T0022`: kernel counting, image size, composite orbit refinements, and factor-lattice/provenance links.
 
 ## Verification Checklist
 

@@ -14,6 +14,7 @@ This paper will connect multiplication, scaling, factors, invertibility, and pri
 - `CC-T0019`: `Circle.scale_rot`
 - `CC-T0020`: `Circle.scale_coilStep`
 - `CC-T0021`: `Circle.prime_scale_bijective`
+- `CC-T0022`: `Circle.scale_cofactor_zero`
 - multiplication as repeated rotation or scaling
 - scaling invertibility iff coprime
 - factor structure through orbit decomposition
@@ -31,6 +32,8 @@ This paper will connect multiplication, scaling, factors, invertibility, and pri
 
 `CC-T0021` is proved by `Circle.prime_scale_bijective`: if the circle size `p` is prime and the multiplier satisfies `1 <= k < p`, then scaling by `k` is a bijection on `C_p`.
 
+`CC-T0022` is proved by `Circle.scale_cofactor_zero`: if `k` divides `n`, then the cofactor address `n/k` is sent to zero by scaling with `k`.
+
 Together these theorems make scaling into a checked multiplicative action on finite-circle addresses and finite coil steps:
 
 ```text
@@ -40,6 +43,7 @@ scale(n,k)(rot(n,stride)(x)) = rot(n,k*stride)(scale(n,k)(x))
 scale(n,k)(coil_step(n,stride,start,steps))
   = coil_step(n,k*stride,k*start,steps)
 prime(p) and 1 <= k < p imply scale(p,k) is bijective
+k divides n implies scale(n,k)(n/k) = 0
 ```
 
 `CC-T0008` is proved by `Circle.scale_invertible_iff_coprime`.
@@ -54,6 +58,8 @@ is a bijection exactly when `Nat.Coprime n k`. In ordinary gcd language, scaling
 
 The prime-circle theorem is the first checked specialization of that criterion. For a prime modulus, every nonzero residue below the modulus is coprime to it, so every such multiplier gives a reversible readdressing of the circle.
 
+The cofactor-zero theorem is the first checked composite-factor collapse fact. It does not yet count the whole kernel of the scaling map. It certifies the basic divisor witness: when `n = k * (n/k)`, multiplying the cofactor by `k` lands at the zero address of `C_n`.
+
 The Lean proof reduces scaling to left multiplication by `(k : ZMod n)`. Mathlib then supplies the two standard bridges:
 
 - left multiplication is bijective exactly when the multiplier is a unit;
@@ -67,4 +73,4 @@ The Lean proof reduces scaling to left multiplication by `(k : ZMod n)`. Mathlib
 
 ## Notes
 
-The remaining factor-structure targets should build on `CC-T0008`, `CC-T0017`, `CC-T0018`, `CC-T0019`, `CC-T0020`, and `CC-T0021` without claiming more than the current finite-circle model proves.
+The remaining factor-structure targets should build on `CC-T0008`, `CC-T0017`, `CC-T0018`, `CC-T0019`, `CC-T0020`, `CC-T0021`, and `CC-T0022` without claiming more than the current finite-circle model proves.

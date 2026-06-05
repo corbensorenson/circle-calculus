@@ -207,6 +207,22 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["for prime p and 1<=k<p: scale(p,k) is a permutation"]
 
+  - id: CC-T0022
+    name: Scaling sends a divisor cofactor to zero
+    status: proved
+    lean_name: Circle.scale_cofactor_zero
+    informal_statement: "If k divides n, then scaling the cofactor address n/k by k lands at zero in C_n."
+    formal_statement: "forall {n k : Nat}, k divides n -> Circle.scale n k ((n/k : Nat) : Circle.C n) = 0"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_cofactor_zero_for_divisors"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean using Nat.mul_div_cancel' and the ZMod characteristic cast-to-zero fact."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["if k divides n and n>0, then scale(n,k,n//k)==0"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved
