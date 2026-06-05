@@ -275,6 +275,81 @@ theorem scaleCircleImage_card {n k : Nat} (hn : n ≠ 0) :
   rw [scaleCircleImage_eq_scalePeriodRepresentativeImage hn]
   exact scalePeriodRepresentativeImage_card hn
 
+noncomputable def scaleKernelRepresentativeSet (n k : Nat) : Finset Nat :=
+  (Finset.range n).filter (fun x : Nat => scale n k ((x : Nat) : C n) = 0)
+
+noncomputable def scalePeriodKernelRepresentatives (n k : Nat) : Finset Nat :=
+  Finset.univ.image (fun m : Fin (Nat.gcd n k) => (m : Nat) * period n k)
+
+theorem scalePeriodKernelRepresentatives_card {n k : Nat} (hn : n ≠ 0) :
+    (scalePeriodKernelRepresentatives n k).card = Nat.gcd n k := by
+  unfold scalePeriodKernelRepresentatives
+  rw [Finset.card_image_of_injective]
+  · exact Fintype.card_fin (Nat.gcd n k)
+  · intro a b h
+    apply Fin.ext
+    have hnpos : 0 < n := Nat.pos_of_ne_zero hn
+    have hgpos : 0 < Nat.gcd n k := Nat.gcd_pos_of_pos_left k hnpos
+    have hp : 0 < period n k := by
+      rw [period_eq_n_div_gcd hn]
+      exact Nat.div_pos (Nat.gcd_le_left k hnpos) hgpos
+    exact Nat.mul_right_cancel hp h
+
+theorem scaleKernelRepresentativeSet_eq_periodMultiples {n k : Nat} (hn : n ≠ 0) :
+    scaleKernelRepresentativeSet n k = scalePeriodKernelRepresentatives n k := by
+  apply Finset.ext
+  intro x
+  constructor
+  · intro hx
+    unfold scaleKernelRepresentativeSet at hx
+    rcases Finset.mem_filter.mp hx with ⟨hxn, hzero⟩
+    have hdvd : period n k ∣ x := (scale_nat_eq_zero_iff_period_dvd hn).mp hzero
+    rcases hdvd with ⟨m, hm⟩
+    unfold scalePeriodKernelRepresentatives
+    have hnpos : 0 < n := Nat.pos_of_ne_zero hn
+    have hgpos : 0 < Nat.gcd n k := Nat.gcd_pos_of_pos_left k hnpos
+    have hp : 0 < period n k := by
+      rw [period_eq_n_div_gcd hn]
+      exact Nat.div_pos (Nat.gcd_le_left k hnpos) hgpos
+    have hg_mul_p : Nat.gcd n k * period n k = n := by
+      rw [period_eq_n_div_gcd hn]
+      exact Nat.mul_div_cancel' (Nat.gcd_dvd_left n k)
+    have hlt : m * period n k < Nat.gcd n k * period n k := by
+      rw [hg_mul_p]
+      rw [hm] at hxn
+      simpa [Nat.mul_comm] using hxn
+    have hm_lt : m < Nat.gcd n k := (Nat.mul_lt_mul_right hp).mp hlt
+    exact Finset.mem_image.mpr
+      ⟨⟨m, hm_lt⟩, Finset.mem_univ _, by simp [hm, Nat.mul_comm]⟩
+  · intro hx
+    unfold scalePeriodKernelRepresentatives at hx
+    rcases Finset.mem_image.mp hx with ⟨m, _, hm⟩
+    unfold scaleKernelRepresentativeSet
+    exact Finset.mem_filter.mpr
+      ⟨by
+        have hnpos : 0 < n := Nat.pos_of_ne_zero hn
+        have hgpos : 0 < Nat.gcd n k := Nat.gcd_pos_of_pos_left k hnpos
+        have hp : 0 < period n k := by
+          rw [period_eq_n_div_gcd hn]
+          exact Nat.div_pos (Nat.gcd_le_left k hnpos) hgpos
+        have hg_mul_p : Nat.gcd n k * period n k = n := by
+          rw [period_eq_n_div_gcd hn]
+          exact Nat.mul_div_cancel' (Nat.gcd_dvd_left n k)
+        have hlt : (m : Nat) * period n k < Nat.gcd n k * period n k :=
+          (Nat.mul_lt_mul_right hp).mpr m.isLt
+        exact Finset.mem_range.mpr (by
+          rw [← hm]
+          exact lt_of_lt_of_eq hlt hg_mul_p),
+       by
+        rw [← hm]
+        simpa [Nat.mul_comm] using
+          scale_period_multiple_zero (n := n) (k := k) (m := (m : Nat)) hn⟩
+
+theorem scaleKernelRepresentativeSet_card {n k : Nat} (hn : n ≠ 0) :
+    (scaleKernelRepresentativeSet n k).card = Nat.gcd n k := by
+  rw [scaleKernelRepresentativeSet_eq_periodMultiples hn]
+  exact scalePeriodKernelRepresentatives_card hn
+
 theorem scale_nat_eq_iff_nat_modEq_of_coprime {n k x y : Nat} (hcop : Nat.Coprime n k) :
     scale n k ((x : Nat) : C n) = scale n k ((y : Nat) : C n) ↔ x ≡ y [MOD n] := by
   have hbij : Function.Bijective (scale n k) := (scale_invertible_iff_coprime n k).mpr hcop

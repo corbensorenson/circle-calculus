@@ -511,6 +511,38 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["len({scale(n,k,x) | 0 <= x < n}) == period(n,k) over positive moduli in bounded tests"]
 
+  - id: CC-T0041
+    name: Scaling kernel representatives are period multiples
+    status: proved
+    lean_name: Circle.scaleKernelRepresentativeSet_eq_periodMultiples
+    informal_statement: "For a nonzero circle size, the canonical representatives that map to zero under scaling are exactly the multiples of the stride period indexed below gcd(n,k)."
+    formal_statement: "forall {n k : Nat}, n != 0 -> Circle.scaleKernelRepresentativeSet n k = Circle.scalePeriodKernelRepresentatives n k"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_kernel_representatives_equal_period_multiples"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean from CC-T0030 and the factorization n = gcd(n,k) * period(n,k)."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["{x | 0 <= x < n and scale(n,k,x)=0} == {m*period(n,k) | 0 <= m < gcd(n,k)} over positive moduli in bounded tests"]
+
+  - id: CC-T0042
+    name: Scaling kernel representative set has gcd cardinality
+    status: proved
+    lean_name: Circle.scaleKernelRepresentativeSet_card
+    informal_statement: "For a nonzero circle size, the finite set of canonical representatives that map to zero under scaling has cardinality gcd(n,k)."
+    formal_statement: "forall {n k : Nat}, n != 0 -> (Circle.scaleKernelRepresentativeSet n k).card = Nat.gcd n k"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_kernel_representative_card"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean from CC-T0041 and injective enumeration of period multiples below gcd(n,k)."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["len({x | 0 <= x < n and scale(n,k,x)=0}) == gcd(n,k) over positive moduli in bounded tests"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

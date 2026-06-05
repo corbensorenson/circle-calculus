@@ -35,6 +35,11 @@ namespace Circle.PaperS104
 #check Circle.scaleCircleImage
 #check Circle.scaleCircleImage_eq_scalePeriodRepresentativeImage
 #check Circle.scaleCircleImage_card
+#check Circle.scaleKernelRepresentativeSet
+#check Circle.scalePeriodKernelRepresentatives
+#check Circle.scalePeriodKernelRepresentatives_card
+#check Circle.scaleKernelRepresentativeSet_eq_periodMultiples
+#check Circle.scaleKernelRepresentativeSet_card
 #check Circle.scale_nat_eq_iff_nat_modEq_of_coprime
 #check Circle.scale_factor_modEq
 

@@ -213,6 +213,24 @@ def test_scale_circle_image_card_examples() -> None:
             assert len(circle_image) == period
 
 
+def test_scale_kernel_representatives_equal_period_multiples_examples() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for k in range(0, 33):
+            period = circle.period(k)
+            kernel = {x for x in range(n) if circle.scale(x, k) == 0}
+            period_multiples = {m * period for m in range(gcd(n, k))}
+            assert kernel == period_multiples
+
+
+def test_scale_kernel_representative_card_examples() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for k in range(0, 33):
+            kernel = {x for x in range(n) if circle.scale(x, k) == 0}
+            assert len(kernel) == gcd(n, k)
+
+
 def test_coprime_scale_equality_examples() -> None:
     for n in range(1, 33):
         circle = Circle(n)
