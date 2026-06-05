@@ -14,6 +14,26 @@ structure SphereGridSpec where
   latitudes : Nat
 deriving DecidableEq, Repr
 
+inductive SuspendedCirclePoint (n : Nat)
+  | north
+  | south
+  | equator (node : Circle.C n)
+deriving DecidableEq
+
+def suspendedCircleAntipode (n : Nat) : SuspendedCirclePoint n -> SuspendedCirclePoint n
+  | SuspendedCirclePoint.north => SuspendedCirclePoint.south
+  | SuspendedCirclePoint.south => SuspendedCirclePoint.north
+  | SuspendedCirclePoint.equator node => SuspendedCirclePoint.equator (-node)
+
+theorem suspendedCircleAntipode_swapsPoles (n : Nat) :
+    suspendedCircleAntipode n SuspendedCirclePoint.north = SuspendedCirclePoint.south ∧
+      suspendedCircleAntipode n SuspendedCirclePoint.south = SuspendedCirclePoint.north := by
+  constructor <;> rfl
+
+theorem suspendedCircleAntipode_involutive (n : Nat) (point : SuspendedCirclePoint n) :
+    suspendedCircleAntipode n (suspendedCircleAntipode n point) = point := by
+  cases point <;> simp [suspendedCircleAntipode]
+
 def suspendedCircleCounts (n : Nat) : List Nat :=
   Circle.Common.suspensionCounts [n, n]
 

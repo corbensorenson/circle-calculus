@@ -185,9 +185,10 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
   - Status: sphere-grid counts, Euler characteristic, latitude-ring model, pole-fixing rotation, and inherited latitude coil period are Lean-proved.
   - Warning targets: `S2-W0001`, `S2-W0002`, `S2-W0003`
   - Main model: `SphereGrid(n,r)`, with pole collapse and latitude rings.
-- [ ] `papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md`
+- [x] `papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md`
   - Proof targets to add as the model matures: antipodal map, axis, meridians, surface closure, antinodes.
   - Do not force continuous geometry too early.
+  - Status: suspended-circle antipode pole swap and involution are Lean-proved; meridians and antinodes remain future refinements.
 
 ### S3: Hypersphere, Quaternions, Hopf
 

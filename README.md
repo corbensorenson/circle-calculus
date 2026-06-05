@@ -37,7 +37,7 @@ The expanded long-horizon plan is dimension-organized:
 S^0 -> S^1 -> S^2 -> S^3 -> S^4/S^5/S^6 -> S^7 -> Future/S^15
 ```
 
-The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, scaling invertibility, and signed reversible rotation; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle and sphere-grid theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; the first `S^3` spin sign-cancellation theorem; the finite `S^4` through `S^6` suspension Euler bridge; and the finite topological `S^7` suspension model.
+The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, scaling invertibility, and signed reversible rotation; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle, sphere-grid, and antipode theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; the first `S^3` spin sign-cancellation theorem; the finite `S^4` through `S^6` suspension Euler bridge; and the finite topological `S^7` suspension model.
 
 Future dimensional work is split into two related ladders:
 
@@ -63,6 +63,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md` | draft | `S0-T0001` and `S0-T0002` proved |
 | `papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md` | draft | `S2-T0001` and `S2-T0002` proved |
 | `papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md` | draft | `S2-T0003` through `S2-T0007` proved |
+| `papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md` | draft | `S2-T0008` and `S2-T0009` proved |
 | `papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md` | draft | `S3C-T0001` through `S3C-T0004` proved |
 | `papers/S3/PAPER_S3_02_QUATERNION_COILS.md` | draft | `S3Q-T0001` through `S3Q-T0005` proved |
 | `papers/S3/PAPER_S3_03_HOPF_COILS.md` | draft/exploratory | `S3H-T0001` through `S3H-T0003` have Python sidecar checks; Lean formalization is deferred |
@@ -220,6 +221,8 @@ Proved common and dimensional spine:
 - `S2-T0005`: latitude rings are finite circles
 - `S2-T0006`: longitude rotation fixes poles
 - `S2-T0007`: latitude coil period inherits the finite-circle period theorem
+- `S2-T0008`: suspended-circle antipode swaps the poles
+- `S2-T0009`: suspended-circle antipode is involutive
 - `S3C-T0001`: suspended-surface cell counts
 - `S3C-T0002`: suspended-surface Euler characteristic is zero when the surface has Euler characteristic two
 - `S3C-T0003`: suspended-suspended-circle cell counts

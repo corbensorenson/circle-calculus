@@ -145,6 +145,17 @@ papers:
       - S2-W0002
       - S2-W0003
 
+  - id: PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE
+    title: "Circle Calculus S2.3: Antipodes, Axes, Surface Closure, and Antinodes"
+    status: draft
+    sidecar: sidecars/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE
+    theorem_ids:
+      - S2-T0008
+      - S2-T0009
+    dictionary_ids:
+      - S2-0005
+      - S2-0006
+
   - id: PAPER_S3_01_FINITE_HYPERSPHERES
     title: "Circle Calculus S3.1: Finite 3-Spheres by Suspending Spheres"
     status: draft

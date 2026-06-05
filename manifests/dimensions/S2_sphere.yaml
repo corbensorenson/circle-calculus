@@ -92,6 +92,32 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["period(n,k)==n//gcd(n,k) on each latitude ring"]
     blocker: ""
+  - id: S2-T0008
+    status: lean_proved
+    lean_name: Circle.S2.suspendedCircleAntipode_swapsPoles
+    informal_statement: "The suspended-circle antipode swaps the north and south poles."
+    formal_statement: "forall n : Nat, suspendedCircleAntipode n north = south and suspendedCircleAntipode n south = north"
+    dictionary_dependencies: ["S2-0005", "S2-0006"]
+    paper_refs: ["papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
+  - id: S2-T0009
+    status: lean_proved
+    lean_name: Circle.S2.suspendedCircleAntipode_involutive
+    informal_statement: "Applying the suspended-circle antipode twice returns the original point."
+    formal_statement: "forall n : Nat, forall point : Circle.S2.SuspendedCirclePoint n, Circle.S2.suspendedCircleAntipode n (Circle.S2.suspendedCircleAntipode n point) = point"
+    dictionary_dependencies: ["S2-0005"]
+    paper_refs: ["papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
 warnings:
   - id: S2-W0001
     status: planned

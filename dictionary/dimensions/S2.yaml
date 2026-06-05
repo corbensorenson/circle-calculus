@@ -40,6 +40,24 @@ entries:
     introduced_in: "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS"
     forbidden_meanings:
       - "A second cyclic coordinate at the poles."
+  - id: S2-0005
+    name: "Suspended-circle antipode"
+    kind: operation
+    formal_definition: "`Circle.S2.suspendedCircleAntipode` swaps the poles of a suspended finite circle and negates the equator coordinate."
+    intuition: "Opposite surface points in the finite suspended-circle model."
+    dependencies: ["S2-0001", "S2-0004"]
+    introduced_in: "PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE"
+    forbidden_meanings:
+      - "A full continuous antipodal map on every sphere model."
+  - id: S2-0006
+    name: "Pole axis"
+    kind: relation
+    formal_definition: "The north/south pole pair swapped by `Circle.S2.suspendedCircleAntipode_swapsPoles`."
+    intuition: "The simplest axis structure in the finite suspended sphere."
+    dependencies: ["S2-0005"]
+    introduced_in: "PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE"
+    forbidden_meanings:
+      - "A chosen longitude at a collapsed pole."
   - id: S2-W0001
     name: "Torus confusion warning"
     kind: warning
@@ -67,4 +85,3 @@ entries:
     introduced_in: "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS"
     forbidden_meanings:
       - "Using group APIs for S^2 points without a separate proven structure."
-

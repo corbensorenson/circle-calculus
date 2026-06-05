@@ -1,27 +1,50 @@
 # Circle Calculus S2.3: Antipodes, Axes, Surface Closure, and Antinodes
 
-Status: planned scaffold.
+Status: draft scaffold with the finite suspended-circle antipode theorem spine proved.
 
 ## Aim
 
-This later `S^2` paper will add antipodes, axes, meridians, surface closure, and antinode language after the finite sphere-grid foundation is stable.
+This `S^2` paper adds the first conservative antipode and axis structure after the finite sphere-grid foundation.
 
 ## Target Spine
 
-The theorem ids for this paper should be added after the finite `S^2` foundation is stable.
+- `S2-T0008`: `Circle.S2.suspendedCircleAntipode_swapsPoles`
+- `S2-T0009`: `Circle.S2.suspendedCircleAntipode_involutive`
 
-Current upstream proved facts:
+## Model
 
-- `S2-T0001`: `Circle.S2.suspendedCircle_counts`
-- `S2-T0002`: `Circle.S2.suspendedCircle_chi`
-- `S2-T0003`: `Circle.S2.sphereGrid_counts`
-- `S2-T0004`: `Circle.S2.sphereGrid_chi`
-- `S2-T0005`: `Circle.S2.latitudeRing_isCircle`
-- `S2-T0006`: `Circle.S2.longitudeRotation_fixesPoles`
-- `S2-T0007`: `Circle.S2.latitudeCoil_period`
+The finite point model for the suspended circle has two poles and an equator:
 
-The surface-structure theorem ids for this paper should be added after those upstream finite-grid facts are used to define antipodes, axes, meridians, surface closure, and antinodes.
+```text
+SuspendedCirclePoint(n) =
+  north
+  south
+  equator(node in C_n)
+```
+
+The finite antipode operation is:
+
+```text
+north      -> south
+south      -> north
+equator(x) -> equator(-x)
+```
+
+This is a conservative finite model. It does not claim the full continuous antipodal map on every sphere construction.
+
+## Proved Core
+
+`S2-T0008` is proved by `Circle.S2.suspendedCircleAntipode_swapsPoles`: the antipode swaps the two poles.
+
+`S2-T0009` is proved by `Circle.S2.suspendedCircleAntipode_involutive`: applying the antipode twice returns the original suspended-circle point.
+
+Surface closure remains tied to the already proved Euler facts `Circle.S2.suspendedCircle_chi` and `Circle.S2.sphereGrid_chi`.
+
+## Dictionary Targets
+
+- `S2-0005`: suspended-circle antipode
+- `S2-0006`: pole axis
 
 ## Notes
 
-Do not force continuous geometry too early. Use this paper as a future surface-structure target, not as a shortcut around the finite combinatorial model.
+Do not force continuous geometry too early. Antinodes, meridian systems, and continuous surface geometry remain future refinements after the finite antipode spine is stable.
