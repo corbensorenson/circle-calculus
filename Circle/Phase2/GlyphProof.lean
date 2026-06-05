@@ -16,11 +16,18 @@ structure ProofGlyph where
 def proofGlyph (glyphId theoremId leanName : String) : ProofGlyph :=
   { glyphId := glyphId, theoremId := theoremId, leanName := leanName }
 
+def proofGlyphGlyphId (glyph : ProofGlyph) : String :=
+  glyph.glyphId
+
 def proofGlyphTheoremId (glyph : ProofGlyph) : String :=
   glyph.theoremId
 
 def proofGlyphLeanName (glyph : ProofGlyph) : String :=
   glyph.leanName
+
+theorem proofGlyphGlyphId_mk (glyphId theoremId leanName : String) :
+    proofGlyphGlyphId (proofGlyph glyphId theoremId leanName) = glyphId := by
+  rfl
 
 theorem proofGlyphTheoremId_mk (glyphId theoremId leanName : String) :
     proofGlyphTheoremId (proofGlyph glyphId theoremId leanName) = theoremId := by

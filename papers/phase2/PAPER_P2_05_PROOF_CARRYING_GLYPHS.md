@@ -20,6 +20,7 @@ This is not a diagram normalizer yet. It is the checked metadata contract that a
 
 - `P2G-T0001`: a constructed proof glyph exposes its theorem id. Lean declaration: `Circle.Phase2.proofGlyphTheoremId_mk`.
 - `P2G-T0002`: a constructed proof glyph exposes its Lean declaration name. Lean declaration: `Circle.Phase2.proofGlyphLeanName_mk`.
+- `P2G-T0003`: a constructed proof glyph exposes its glyph id. Lean declaration: `Circle.Phase2.proofGlyphGlyphId_mk`.
 
 These are Lean-proved certificate projection facts. They support the future glyph interface, but they do not prove glyph semantics, diagram normalization, theorem dependency correctness, or proof search.
 

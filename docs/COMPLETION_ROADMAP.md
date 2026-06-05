@@ -270,7 +270,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: `P2BC-T0001` and `P2BC-T0002` are Lean-proved directed-interval boundary facts; general chain complexes, cobordisms, TQFT, and physics-adjacent claims remain future work.
 - [x] `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md`
   - Program: glyphs with formal syntax, normal forms, theorem dependencies, proof certificates, semantic models, and projection views.
-  - Status: `P2G-T0001` and `P2G-T0002` are Lean-proved proof-glyph certificate projection facts; glyph syntax, normal forms, semantics, dependency correctness, and proof search remain future work.
+  - Status: `P2G-T0001` through `P2G-T0003` are Lean-proved proof-glyph certificate projection facts; glyph syntax, normal forms, semantics, dependency correctness, and proof search remain future work.
 - [x] `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md`
   - Program: coil signatures, closure profiles, prime-lag recurrence, antinode maps, and periodic-data benchmarks.
   - Status: `APPD-T0001` and `APPD-T0002` are Lean-proved finite phase-coordinate facts with Python examples; real-data and benchmark claims remain future work.
@@ -337,6 +337,7 @@ Application guardrails:
 - [x] `P2BC-T0002`: reversing a directed interval negates its boundary.
 - [x] `P2G-T0001`: proof glyph certificate exposes its theorem id.
 - [x] `P2G-T0002`: proof glyph certificate exposes its Lean declaration name.
+- [x] `P2G-T0003`: proof glyph certificate exposes its glyph id.
 - [x] `APPD-T0001`: finite phase coordinate is bounded by a positive period.
 - [x] `APPD-T0002`: finite phase coordinate closes after adding one full period.
 - [x] `COMPC-T0001`: cyclic address is bounded by a positive circular buffer size.

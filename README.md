@@ -80,7 +80,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md` | draft/proved finite seed | `P2B-T0001` and `P2B-T0002` are Lean-proved period-8 clock facts; Bott/Clifford periodicity remains future work |
 | `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md` | draft/proved trivial seed | `P2BU-T0001` through `P2BU-T0003` are Lean-proved product-bundle projection/fiber facts |
 | `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md` | draft/proved finite seed | `P2BC-T0001` and `P2BC-T0002` are Lean-proved directed-interval boundary facts |
-| `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md` | draft/proved certificate seed | `P2G-T0001` and `P2G-T0002` are Lean-proved proof-glyph projection facts |
+| `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md` | draft/proved certificate seed | `P2G-T0001` through `P2G-T0003` are Lean-proved proof-glyph projection facts |
 | `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md` | draft/proved finite seed | `APPD-T0001` and `APPD-T0002` are Lean-proved phase-coordinate facts with Python examples |
 | `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md` | draft/proved finite seed | `COMPC-T0001` and `COMPC-T0002` are Lean-proved cyclic-address facts with Python examples |
 | `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md` | draft/proved finite seed | `COMPR-T0001` and `COMPR-T0002` are Lean-proved direction-bin schedule facts with Python examples |
@@ -276,6 +276,7 @@ Proved common and dimensional spine:
 - `P2BC-T0002`: reversing a directed interval negates its boundary
 - `P2G-T0001`: proof glyph certificate exposes its theorem id
 - `P2G-T0002`: proof glyph certificate exposes its Lean declaration name
+- `P2G-T0003`: proof glyph certificate exposes its glyph id
 - `APPD-T0001`: finite phase coordinate is bounded by a positive period
 - `APPD-T0002`: finite phase coordinate closes after adding one full period
 - `COMPC-T0001`: cyclic address is bounded by a positive circular buffer size

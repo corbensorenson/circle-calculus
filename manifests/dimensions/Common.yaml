@@ -183,6 +183,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["glyph.lean_name == lean_name"]
     blocker: ""
+  - id: P2G-T0003
+    status: lean_proved
+    lean_name: Circle.Phase2.proofGlyphGlyphId_mk
+    informal_statement: "A constructed proof glyph exposes the glyph id it carries."
+    formal_statement: "forall glyphId theoremId leanName : String, proofGlyphGlyphId (proofGlyph glyphId theoremId leanName) = glyphId"
+    dictionary_dependencies: ["COMMON-0013"]
+    paper_refs: ["papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["glyph.glyph_id == glyph_id"]
+    blocker: ""
   - id: APPD-T0001
     status: lean_proved
     lean_name: Circle.Applications.phaseCoordinate_lt_period

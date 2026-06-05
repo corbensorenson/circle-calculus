@@ -13,6 +13,10 @@ theorems:
     status: lean_proved
     lean_name: Circle.Phase2.proofGlyphLeanName_mk
     dictionary_dependencies: ["COMMON-0013", "COMMON-0015"]
+  - id: P2G-T0003
+    status: lean_proved
+    lean_name: Circle.Phase2.proofGlyphGlyphId_mk
+    dictionary_dependencies: ["COMMON-0013"]
 next_targets:
   - "Add glyph normal forms only after defining a syntax tree and semantics."
   - "Use finite-circle orbit diagrams as the first proof-carrying demonstrator."
