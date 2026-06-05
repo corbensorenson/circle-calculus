@@ -1,14 +1,16 @@
 # Circle Calculus Phase II.4: Boundary and Cobordism Calculus
 
-Status: draft with a proved directed-interval boundary seed.
+Status: polished draft with a proved directed-interval boundary seed.
 
 ## Aim
 
-Develop boundary operators, `boundary(boundary)=0`, cobordisms, field-adjacent structures, and proofs as transformations between boundaries.
+This paper starts the boundary side of Phase II. The long-term program includes boundary operators, the law `boundary(boundary)=0`, cobordisms, field-adjacent structures, and proofs as transformations between boundary states. The current paper proves only the smallest directed-interval seed.
 
-The current formal seed is deliberately small: `COMMON-0010`, a directed interval with integer endpoints.
+That seed is useful because it gives the project a checked orientation-and-boundary vocabulary before it uses more ambitious cobordism or physics-adjacent language.
 
 ## Current Model
+
+The formal seed is `COMMON-0010`, a directed interval with integer endpoints:
 
 ```text
 interval = [source -> target]
@@ -17,25 +19,36 @@ pointBoundary(any zero-dimensional boundary chain) = 0
 reverse(interval) = [target -> source]
 ```
 
-`COMMON-0011` names this boundary-operator seed, and `COMMON-0012` names interval orientation reversal.
+`COMMON-0011` names the boundary operator, and `COMMON-0012` names interval orientation reversal.
 
 ## Theorem Spine
 
-- `P2BC-T0001`: point-boundary after interval-boundary is zero. Lean declaration: `Circle.Phase2.boundaryBoundaryInterval_zero`.
-- `P2BC-T0002`: reversing a directed interval negates its boundary. Lean declaration: `Circle.Phase2.intervalBoundary_reverse`.
-- `P2BC-T0003`: reversing a directed interval twice returns the original interval. Lean declaration: `Circle.Phase2.reverseInterval_involutive`.
-- `P2BC-T0004`: a constant directed interval has zero boundary. Lean declaration: `Circle.Phase2.intervalBoundary_constant_zero`.
+- `P2BC-T0001`: `Circle.Phase2.boundaryBoundaryInterval_zero`
+- `P2BC-T0002`: `Circle.Phase2.intervalBoundary_reverse`
+- `P2BC-T0003`: `Circle.Phase2.reverseInterval_involutive`
+- `P2BC-T0004`: `Circle.Phase2.intervalBoundary_constant_zero`
 
-These are Lean-proved finite interval facts. They support the boundary-calculus vocabulary, but they do not prove a general chain-complex theorem, a cobordism theorem, TQFT structure, or a physics boundary law.
+## Proved Core
 
-The Python sidecar checks the same directed-interval boundary examples. Those examples are executable support, not a general cobordism or physics theorem.
+`P2BC-T0001` proves the first boundary-after-boundary seed: after taking the interval boundary, the point-boundary layer is zero. This is not yet a general chain-complex theorem, but it is the checked finite interval case.
+
+`P2BC-T0002` proves that reversing a directed interval negates its boundary:
+
+```text
+intervalBoundary(reverse interval) = - intervalBoundary interval
+```
+
+`P2BC-T0003` proves that reversal is involutive, and `P2BC-T0004` proves that a constant interval has zero boundary.
+
+The Python sidecar checks the same directed-interval examples. It provides executable orientation, while Lean supplies the proof status.
 
 ## Next Program
 
-- Start with finite combinatorial boundary models where Lean support is lightweight.
-- Keep TQFT and physics-adjacent language as roadmap material until formalized.
-- Use manifests to distinguish definitions, examples, and proved laws.
+- Generalize from directed intervals to finite chains only after selecting a representation.
+- Keep TQFT, field, and physics-adjacent language as roadmap material until formalized.
+- Use manifests to distinguish definitions, examples, planned claims, and proved laws.
+- Link this boundary seed to proof-as-transformation papers only through explicit theorem ids.
 
 ## Guardrail
 
-No physics or cobordism theorem is promoted from analogy to proof without a checked formal statement.
+No general cobordism, chain-complex, TQFT, or physics theorem is promoted from analogy to proof without a checked formal statement.

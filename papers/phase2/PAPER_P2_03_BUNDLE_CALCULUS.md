@@ -1,14 +1,12 @@
 # Circle Calculus Phase II.3: Bundle Calculus
 
-Status: draft with a proved trivial product-bundle seed.
+Status: polished draft with a proved trivial product-bundle seed.
 
 ## Aim
 
-Develop a proof-carrying language for base, fiber, total space, projection, transition functions, connection, curvature, holonomy, and hidden proof provenance.
+This paper begins a proof-carrying language for base space, fiber, total space, projection, transition functions, connection, curvature, holonomy, and hidden proof provenance. The long-term target is a dictionary where visible base state and hidden fiber state can be tracked explicitly across Hopf-like, gauge-like, and proof-interface examples.
 
-The current formal seed is deliberately small: `COMMON-0007`, a trivial product bundle with a visible base coordinate and a hidden fiber coordinate.
-
-This is a vocabulary seed, not a theorem that all bundles are products.
+The current formal seed is deliberately small: `COMMON-0007`, a trivial product bundle with a visible base coordinate and a hidden fiber coordinate. This is a vocabulary seed, not a claim that all bundles are products.
 
 ## Current Model
 
@@ -19,25 +17,34 @@ TrivialBundle(Base,Fiber)
   fiber(point) = fiber
 ```
 
-`COMMON-0008` names the projection operation, and `COMMON-0009` names the fiber-coordinate operation.
+`COMMON-0008` names the projection operation. `COMMON-0009` names the fiber-coordinate operation.
 
 ## Theorem Spine
 
-- `P2BU-T0001`: projection of a built trivial-bundle point returns the base. Lean declaration: `Circle.Phase2.trivialBundleProjection_point`.
-- `P2BU-T0002`: the fiber coordinate of a built trivial-bundle point returns the fiber value. Lean declaration: `Circle.Phase2.trivialBundleFiber_point`.
-- `P2BU-T0003`: changing only the fiber value does not change the projected base. Lean declaration: `Circle.Phase2.trivialBundleProjection_forgetsFiber`.
-- `P2BU-T0004`: changing only the base value does not change the fiber coordinate. Lean declaration: `Circle.Phase2.trivialBundleFiber_forgetsBase`.
+- `P2BU-T0001`: `Circle.Phase2.trivialBundleProjection_point`
+- `P2BU-T0002`: `Circle.Phase2.trivialBundleFiber_point`
+- `P2BU-T0003`: `Circle.Phase2.trivialBundleProjection_forgetsFiber`
+- `P2BU-T0004`: `Circle.Phase2.trivialBundleFiber_forgetsBase`
 
-These are Lean-proved product-bundle facts. They support base/fiber terminology for later proof-carrying glyph and Hopf-style examples, but they do not formalize nontrivial bundles, transition functions, connections, curvature, or holonomy.
+## Proved Core
 
-The Python sidecar checks the same trivial base/fiber projection examples. Those examples are executable support, not evidence that nontrivial bundles are globally products.
+`P2BU-T0001` proves that projecting a constructed product-bundle point returns its base coordinate. `P2BU-T0002` proves the dual fiber-coordinate statement.
+
+The two forgetfulness theorems are the important conceptual seed. `P2BU-T0003` proves that changing only the fiber value does not change the visible base projection. `P2BU-T0004` proves that changing only the base value does not change the hidden fiber coordinate.
+
+This pair of laws gives Circle Calculus a precise way to say "visible base" and "hidden fiber" without using those words as metaphor only. The Python sidecar checks the same base/fiber projection examples.
+
+## Relation To Hopf And Glyphs
+
+The `S^3`, `S^7`, and future `S^15` Hopf papers motivate this vocabulary: a visible base point can have phase or fiber data that is not visible in the projection. Proof-carrying glyphs will need the same separation between a rendered view and hidden theorem/proof metadata.
 
 ## Next Program
 
-- Use the Hopf papers as motivating examples, not as completed bundle formalizations.
+- Add transition functions only after choosing a nontrivial bundle representation.
+- Use Hopf-coordinate papers as motivating examples, not as completed bundle formalizations.
 - Track visible base state and hidden phase/fiber state separately.
 - Add theorem ids only for precise bundle definitions and checked maps.
 
 ## Guardrail
 
-Do not collapse twisted fiber structures into global products.
+Do not collapse twisted or nontrivial fiber structures into global products. This paper proves trivial product-bundle projection facts only.

@@ -1,14 +1,16 @@
 # Circle Calculus Phase II.1: Stable Sphere Calculus
 
-Status: draft with a proved finite stable-sphere seed.
+Status: polished draft with a proved finite stable-sphere seed.
 
 ## Aim
 
-Develop the post-`S^15` stable sphere layer without pretending the exceptional Hopf/division-algebra ladder continues forever. The current paper starts with the finite cell-count suspension model already used by the dimensional ladder, then marks the future boundary between finite Euler bookkeeping and genuine stable homotopy or spectrum machinery.
+This paper starts the post-`S^15` phase. The point is not to keep climbing exceptional dimensions as if the Hopf/division-algebra ladder continued forever. After `S^15`, the project needs a different organizing language: stable behavior under repeated suspension, maps between spaces, spectra, and eventually stable invariants.
+
+The current formal layer is deliberately finite. It reuses the suspension-count machinery that already supports the dimensional ladder and proves the first Euler-stability facts for repeated suspension.
 
 ## Current Model
 
-The entry point is the common finite suspension transform `COMMON-0003`.
+The entry point is the common finite suspension transform `COMMON-0003`:
 
 ```text
 counts
@@ -16,19 +18,30 @@ counts
   -> Susp(Susp(counts))
 ```
 
-`COMMON-0004` names the double suspension operation in this finite model. It is not a spectrum and it is not a stable homotopy equivalence. It is the finite theorem that the Euler characteristic returns to its original value after two suspension steps.
+`COMMON-0004` names double suspension in this finite cell-count model. `COMMON-0005` names the four-suspension iteration obtained by applying double suspension twice.
 
-`COMMON-0005` names the first iterated double-suspension check, applying the same Euler-stabilizing step twice.
+This is not a spectrum. It is not a stable homotopy theorem. It is the checked finite statement that Euler characteristic returns to its original value after two suspension steps.
 
 ## Theorem Spine
 
-- `P2S-T0001`: double finite suspension preserves Euler characteristic. Lean declaration: `Circle.Phase2.doubleSuspensionEuler`.
-- `P2S-T0002`: four finite suspensions preserve Euler characteristic. Lean declaration: `Circle.Phase2.fourSuspensionEuler`.
-- `P2S-T0003`: four finite suspensions are two double-suspension steps. Lean declaration: `Circle.Phase2.fourSuspensionCounts_eq_double_double`.
+- `P2S-T0001`: `Circle.Phase2.doubleSuspensionEuler`
+- `P2S-T0002`: `Circle.Phase2.fourSuspensionEuler`
+- `P2S-T0003`: `Circle.Phase2.fourSuspensionCounts_eq_double_double`
 
-These are Lean-proved finite cell-count theorems. They provide a verified seed for stable-sphere calculus, but they do not prove any statement about spectra, stable maps, or stable homotopy groups.
+## Proved Core
 
-The Python sidecar checks the same finite suspension-count identities on representative examples. Those examples are executable support, not substitutes for the Lean proofs.
+`P2S-T0001` proves that double finite suspension preserves Euler characteristic. In the current count model, one suspension flips the familiar parity behavior, and the second returns the Euler value.
+
+`P2S-T0002` proves that four finite suspensions also preserve Euler characteristic. This gives the first repeated-stability checkpoint.
+
+`P2S-T0003` proves that the four-suspension count operation is exactly two double-suspension steps:
+
+```text
+fourSuspensionCounts counts =
+  doubleSuspensionCounts (doubleSuspensionCounts counts)
+```
+
+The Python sidecar checks the same finite identities on representative examples. The Lean theorem ids are the proof source; the Python examples are executable orientation.
 
 ## Next Program
 
@@ -39,4 +52,4 @@ The Python sidecar checks the same finite suspension-count identities on represe
 
 ## Guardrail
 
-This paper must not claim a false Hopf/division-algebra continuation beyond the `S^15` horizon.
+Do not present these finite Euler facts as stable homotopy, spectrum theory, generalized cohomology, or a new Hopf continuation. They are the verified seed from which a real stable-sphere calculus can grow.
