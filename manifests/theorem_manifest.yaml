@@ -415,6 +415,22 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["scale(n,k,x)==scale(n,k,x%period(n,k)) over positive moduli in bounded tests"]
 
+  - id: CC-T0035
+    name: Scaling equality is period congruence
+    status: proved
+    lean_name: Circle.scale_nat_eq_iff_period_modEq
+    informal_statement: "For a nonzero circle size, two natural addresses have the same scaled value exactly when they are congruent modulo the stride period."
+    formal_statement: "forall {n k x y : Nat}, n != 0 -> (Circle.scale n k ((x : Nat) : Circle.C n) = Circle.scale n k ((y : Nat) : Circle.C n) <-> x ≡ y [MOD Circle.period n k])"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_equality_iff_period_congruent"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean by reducing scaled equality to product congruence, factoring out gcd(n,k), and canceling the coprime reduced multiplier."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["scale(n,k,x)==scale(n,k,y) iff x%period(n,k)==y%period(n,k) over positive moduli in bounded tests"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

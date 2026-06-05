@@ -169,6 +169,49 @@ theorem scale_nat_eq_iff_mul_modEq (n k x y : Nat) :
   rw [← Nat.cast_mul, ← Nat.cast_mul]
   exact ZMod.natCast_eq_natCast_iff (k * x) (k * y) n
 
+theorem scale_nat_eq_iff_period_modEq {n k x y : Nat} (hn : n ≠ 0) :
+    scale n k ((x : Nat) : C n) = scale n k ((y : Nat) : C n) ↔
+      x ≡ y [MOD period n k] := by
+  rw [scale_nat_eq_iff_mul_modEq]
+  rw [period_eq_n_div_gcd hn]
+  let g := Nat.gcd n k
+  have hnpos : 0 < n := Nat.pos_of_ne_zero hn
+  have hgpos : 0 < g := Nat.gcd_pos_of_pos_left k hnpos
+  have hgn : g ∣ n := Nat.gcd_dvd_left n k
+  have hgk : g ∣ k := Nat.gcd_dvd_right n k
+  have hn_decomp : n = g * (n / g) := by
+    rw [Nat.mul_div_cancel' hgn]
+  have hk_decomp : k = g * (k / g) := by
+    rw [Nat.mul_div_cancel' hgk]
+  have hcop : Nat.Coprime (n / g) (k / g) := Nat.coprime_div_gcd_div_gcd hgpos
+  have hcop_gcd : Nat.gcd (n / g) (k / g) = 1 :=
+    Nat.coprime_iff_gcd_eq_one.mp hcop
+  constructor
+  · intro h
+    have h1n : (g * (k / g)) * x ≡ (g * (k / g)) * y [MOD n] := by
+      rw [← hk_decomp]
+      exact h
+    have h1 : (g * (k / g)) * x ≡ (g * (k / g)) * y [MOD g * (n / g)] := by
+      rw [← hn_decomp]
+      exact h1n
+    have h2 : g * ((k / g) * x) ≡ g * ((k / g) * y) [MOD g * (n / g)] := by
+      simpa [Nat.mul_assoc] using h1
+    have h3 : (k / g) * x ≡ (k / g) * y [MOD n / g] :=
+      Nat.ModEq.mul_left_cancel' hgpos.ne' h2
+    exact Nat.ModEq.cancel_left_of_coprime hcop_gcd h3
+  · intro h
+    have h1 : (k / g) * x ≡ (k / g) * y [MOD n / g] :=
+      h.mul_left (k / g)
+    have h2 : g * ((k / g) * x) ≡ g * ((k / g) * y) [MOD g * (n / g)] :=
+      h1.mul_left' g
+    have h3 : (g * (k / g)) * x ≡ (g * (k / g)) * y [MOD g * (n / g)] := by
+      simpa [Nat.mul_assoc] using h2
+    have h4 : (g * (k / g)) * x ≡ (g * (k / g)) * y [MOD n] := by
+      rw [hn_decomp]
+      exact h3
+    rw [hk_decomp]
+    exact h4
+
 theorem scale_nat_eq_iff_nat_modEq_of_coprime {n k x y : Nat} (hcop : Nat.Coprime n k) :
     scale n k ((x : Nat) : C n) = scale n k ((y : Nat) : C n) ↔ x ≡ y [MOD n] := by
   have hbij : Function.Bijective (scale n k) := (scale_invertible_iff_coprime n k).mpr hcop

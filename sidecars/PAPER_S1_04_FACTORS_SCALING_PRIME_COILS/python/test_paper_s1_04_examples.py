@@ -153,6 +153,18 @@ def test_scale_equality_congruence_examples() -> None:
                     )
 
 
+def test_scale_equality_period_congruence_examples() -> None:
+    for n in range(1, 33):
+        circle = Circle(n)
+        for k in range(0, 17):
+            period = circle.period(k)
+            for x in range(0, 33):
+                for y in range(0, 33):
+                    assert (circle.scale(x, k) == circle.scale(y, k)) == (
+                        x % period == y % period
+                    )
+
+
 def test_coprime_scale_equality_examples() -> None:
     for n in range(1, 33):
         circle = Circle(n)
