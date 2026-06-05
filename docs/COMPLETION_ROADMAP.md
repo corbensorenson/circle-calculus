@@ -246,9 +246,9 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
 ### Future S15
 
 - [x] `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md`
-  - Future targets: `S15-T0001` through `S15-T0003`
+  - Future targets: `S15-T0001` through `S15-T0004`
   - Do not claim the full octonionic Hopf fibration before quotient topology and phase action are formalized.
-  - Status: `S15-T0001` is a Lean roadmap marker; `S15-T0002` and `S15-T0003` are Lean-proved; full fibration topology remains future work.
+  - Status: `S15-T0001` is a Lean roadmap marker; `S15-T0002` through `S15-T0004` are Lean-proved finite topological/coordinate landing facts; full fibration topology remains future work.
 
 ### Phase II: Structured Transformations After S15
 

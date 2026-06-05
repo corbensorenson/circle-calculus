@@ -10,6 +10,8 @@ This file re-exports the roadmap marker used by
 namespace Circle.PaperS1501
 
 #check Circle.Future.S15.topologicalModel
+#check Circle.Future.S15.eightSuspensions
+#check Circle.Future.S15.topologicalModel_eq_eightSuspensions_s7
 #check Circle.Future.S15.topologicalModel_eulerCharacteristic
 #check Circle.Future.S15.OctonionPair
 #check Circle.Future.S15.HopfBase9

@@ -5,7 +5,7 @@ namespace Circle.Future.S15
 
 def dimension : Nat := 15
 
-def topologicalModel (n : Nat) : List Nat :=
+def eightSuspensions (cells : List Nat) : List Nat :=
   Circle.Common.suspensionCounts
     (Circle.Common.suspensionCounts
       (Circle.Common.suspensionCounts
@@ -13,11 +13,18 @@ def topologicalModel (n : Nat) : List Nat :=
           (Circle.Common.suspensionCounts
             (Circle.Common.suspensionCounts
               (Circle.Common.suspensionCounts
-                (Circle.Common.suspensionCounts (Circle.S7.iteratedSuspensionModel n))))))))
+                (Circle.Common.suspensionCounts cells)))))))
+
+def topologicalModel (n : Nat) : List Nat :=
+  eightSuspensions (Circle.S7.iteratedSuspensionModel n)
+
+theorem topologicalModel_eq_eightSuspensions_s7 (n : Nat) :
+    topologicalModel n = eightSuspensions (Circle.S7.iteratedSuspensionModel n) := by
+  rfl
 
 theorem topologicalModel_eulerCharacteristic (n : Nat) :
     Circle.Common.eulerCharacteristic (topologicalModel n) = 0 := by
-  unfold topologicalModel
+  unfold topologicalModel eightSuspensions
   repeat rw [Circle.Common.suspensionEuler]
   rw [Circle.S7.eulerCharacteristic]
   norm_num

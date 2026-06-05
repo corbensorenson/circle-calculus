@@ -75,7 +75,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md` | draft | `S7C-T0001` through `S7C-T0003` proved |
 | `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md` | draft/partial proof | `S7QH-T0001` and `S7QH-T0002` are Lean-proved coordinate theorems; full fibration topology remains future work |
 | `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md` | draft/proved spine | `S7O-T0001` through `S7O-T0006` are Lean-proved in a bounded Cayley-Dickson coordinate model |
-| `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | draft/partial proof | `S15-T0001` is a Lean roadmap marker; `S15-T0002` and `S15-T0003` are Lean-proved topological/coordinate landing facts |
+| `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | draft/partial proof | `S15-T0001` is a Lean roadmap marker; `S15-T0002` through `S15-T0004` are Lean-proved topological/coordinate landing facts |
 | `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md` | draft/proved finite seed | `P2S-T0001` and `P2S-T0002` are Lean-proved double/four suspension Euler facts |
 | `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md` | draft/proved finite seed | `P2B-T0001` and `P2B-T0002` are Lean-proved period-8 clock facts; Bott/Clifford periodicity remains future work |
 | `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md` | draft/proved trivial seed | `P2BU-T0001` through `P2BU-T0003` are Lean-proved product-bundle projection/fiber facts |
@@ -349,7 +349,9 @@ Executable exploratory spine:
 - `S7QH-T0002`: shared right unit-quaternion phase rotation preserves the quaternionic Hopf map
 - `S7O-T0001` through `S7O-T0006`: bounded Cayley-Dickson basis, conjugate norm, norm multiplicativity, unit closure by norm, noncommutativity, and nonassociativity facts in Lean
 - `S15-T0001`: Lean roadmap marker for the octonionic Hopf horizon
-- `S15-T0002`, `S15-T0003`: finite S15 Euler theorem and bounded octonionic Hopf landing theorem
+- `S15-T0002`: finite S15 Euler theorem
+- `S15-T0003`: bounded octonionic Hopf landing theorem
+- `S15-T0004`: finite S15 model is the eightfold suspension of finite S7
 
 ## What This Does Not Claim Yet
 

@@ -11,6 +11,7 @@ This future paper records the long-horizon octonionic Hopf target after `S^7` fo
 - `S15-T0001`: `Circle.Future.S15.octonionicHopfRoadmap`
 - `S15-T0002`: `Circle.Future.S15.topologicalModel_eulerCharacteristic`
 - `S15-T0003`: `Circle.Future.S15.octonionicHopf_lands_sphere`
+- `S15-T0004`: `Circle.Future.S15.topologicalModel_eq_eightSuspensions_s7`
 
 ## Intended Structure
 
@@ -27,6 +28,8 @@ The Lean marker `Circle.Future.S15.octonionicHopfRoadmap` records this intended 
 This is not a proof of the octonionic Hopf fibration. It is a durable pointer for the post-`S^7` horizon.
 
 ## Proved Core
+
+`S15-T0004` proves that the finite `S^15` topological model is exactly the eightfold suspension of the finite `S^7` model.
 
 `S15-T0002` is proved by `Circle.Future.S15.topologicalModel_eulerCharacteristic`: suspending the finite `S^7` model eight more times gives a finite `S^15` model with Euler characteristic `0`.
 
