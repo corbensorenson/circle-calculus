@@ -247,6 +247,34 @@ theorem scale_nat_mem_scalePeriodRepresentativeImage {n k x : Nat} (hn : n ≠ 0
   exact Finset.mem_image.mpr
     ⟨⟨x % period n k, Nat.mod_lt x hp⟩, Finset.mem_univ _, rfl⟩
 
+noncomputable def scaleCircleImage (n k : Nat) : Finset (C n) :=
+  (Finset.range n).image (fun x : Nat => scale n k ((x : Nat) : C n))
+
+theorem scaleCircleImage_eq_scalePeriodRepresentativeImage {n k : Nat} (hn : n ≠ 0) :
+    scaleCircleImage n k = scalePeriodRepresentativeImage n k := by
+  apply Finset.ext
+  intro y
+  constructor
+  · intro hy
+    unfold scaleCircleImage at hy
+    rcases Finset.mem_image.mp hy with ⟨x, _, hx⟩
+    rw [← hx]
+    exact scale_nat_mem_scalePeriodRepresentativeImage (n := n) (k := k) (x := x) hn
+  · intro hy
+    unfold scaleCircleImage
+    unfold scalePeriodRepresentativeImage at hy
+    rcases Finset.mem_image.mp hy with ⟨r, _, hr⟩
+    have hp_le_n : period n k ≤ n := by
+      rw [period_eq_n_div_gcd hn]
+      exact Nat.div_le_self n (Nat.gcd n k)
+    have hrn : (r : Nat) < n := lt_of_lt_of_le r.isLt hp_le_n
+    exact Finset.mem_image.mpr ⟨(r : Nat), Finset.mem_range.mpr hrn, hr⟩
+
+theorem scaleCircleImage_card {n k : Nat} (hn : n ≠ 0) :
+    (scaleCircleImage n k).card = period n k := by
+  rw [scaleCircleImage_eq_scalePeriodRepresentativeImage hn]
+  exact scalePeriodRepresentativeImage_card hn
+
 theorem scale_nat_eq_iff_nat_modEq_of_coprime {n k x y : Nat} (hcop : Nat.Coprime n k) :
     scale n k ((x : Nat) : C n) = scale n k ((y : Nat) : C n) ↔ x ≡ y [MOD n] := by
   have hbij : Function.Bijective (scale n k) := (scale_invertible_iff_coprime n k).mpr hcop

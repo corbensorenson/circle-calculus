@@ -187,6 +187,21 @@ The strongest first three from the handoff are:
 
 The latest compute handoff also ranks `CoilSampler`, `CoilStencil`, `CoilHash`, `CoilMotion`, `CoilPRM`, `CoilCodec`, and `CoilANN` as worth prototyping after the first three. Keep these as benchmark tracks until a specific workload, baseline, and measurement plan exist.
 
+Latest 2026-06-05 compute handoff ranking:
+
+1. `CoilRay Sort`: ray/path tracing reordering by spherical-coil direction bins.
+2. `CoilSampler`: deterministic sphere/hemisphere sampling and progressive Monte Carlo schedules.
+3. `CoilLayout`: orbit-order and gcd-cycle memory layouts for strided circular updates.
+4. `CoilStencil`: periodic-boundary simulation/PDE stencil lowering with verified wraparound.
+5. `CoilNTT`: exact finite-circle transform tooling for cyclic convolution, ZK, FHE, and polynomial workloads.
+6. `CoilHash`: multi-ring consistent hashing, hotspot diagnostics, and remapping proofs.
+7. `CoilMotion`: phase-aware animation loops, motion matching, and quaternion orientation blending.
+8. `CoilPRM` / `CoilRRT`: torus and `S^3` samplers for robotics configuration spaces.
+9. `CoilCodec`: phase-aware audio/video compression and loop detection.
+10. `CoilANN`: angular/hash-ring vector indexing through products of circles.
+
+The same handoff frames the largest application as `CoilIR`: a proof-carrying optimizer for cyclic, angular, and periodic computation. The intended pipeline is dictionary-recognized circular structure, Lean-proved rewrites or address transformations, backend choices such as FFT, NTT, spherical harmonics, quaternion kernels, coiled layouts, ring buffers, ray buckets, or samplers, and benchmarks that decide whether the backend is actually worthwhile.
+
 First rendering experiment:
 
 ```text

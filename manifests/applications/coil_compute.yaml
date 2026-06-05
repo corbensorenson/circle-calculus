@@ -28,4 +28,5 @@ theorems:
 next_targets:
   - "Extend from cyclic addresses to stride/orbit layouts before claiming layout wins."
   - "Benchmark direct, dense, FFT, NTT, and layout backends before making performance claims."
+  - "Treat CoilIR as a proof-carrying optimizer roadmap: dictionary-detected circular structure, Lean-proved rewrites, backend selection, and benchmark validation."
 guardrail: "Benchmarks decide performance claims."

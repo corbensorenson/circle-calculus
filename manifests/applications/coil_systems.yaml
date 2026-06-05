@@ -17,4 +17,5 @@ theorems:
 next_targets:
   - "Add fairness/starvation statements only after choosing an explicit scheduler model."
   - "Benchmark or domain-test each systems hypothesis before claiming usefulness."
+  - "Keep CoilHash, CoilMotion, CoilPRM, CoilCodec, CoilANN, CoilAcquire, CoilCAM, CoilTorsion, CoilDetect, CoilSched, and CoilQ as application roadmaps until each has a concrete model."
 guardrail: "Systems applications are hypotheses until benchmarked or domain-tested."

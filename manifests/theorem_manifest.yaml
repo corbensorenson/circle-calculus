@@ -479,6 +479,38 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["scale(n,k,x) is in {scale(n,k,r) | 0 <= r < period(n,k)} over positive moduli in bounded tests"]
 
+  - id: CC-T0039
+    name: Scaling circle image equals period-representative image
+    status: proved
+    lean_name: Circle.scaleCircleImage_eq_scalePeriodRepresentativeImage
+    informal_statement: "For a nonzero circle size, the image of scaling all finite circle representatives equals the image of scaling one full set of stride-period representatives."
+    formal_statement: "forall {n k : Nat}, n != 0 -> Circle.scaleCircleImage n k = Circle.scalePeriodRepresentativeImage n k"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_circle_image_equals_period_representative_image"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean from CC-T0038 and the bound period(n,k) <= n for nonzero n."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["{scale(n,k,x) | 0 <= x < n} == {scale(n,k,r) | 0 <= r < period(n,k)} over positive moduli in bounded tests"]
+
+  - id: CC-T0040
+    name: Scaling circle image has period cardinality
+    status: proved
+    lean_name: Circle.scaleCircleImage_card
+    informal_statement: "For a nonzero circle size, the finite image of scaling all circle representatives has cardinality equal to the stride period."
+    formal_statement: "forall {n k : Nat}, n != 0 -> (Circle.scaleCircleImage n k).card = Circle.period n k"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_circle_image_card"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean from CC-T0039 and CC-T0037."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["len({scale(n,k,x) | 0 <= x < n}) == period(n,k) over positive moduli in bounded tests"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

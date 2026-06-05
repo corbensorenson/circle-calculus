@@ -35,6 +35,8 @@ Maintain one clean roadmap/checklist, update manifests and dictionaries as sourc
 README state rule:
 After meaningful proof batches, paper batches, roadmap changes, or application-context additions, update `README.md` so it reflects the actual current state, proof status, usage pointers, and where to find the relevant docs. Do not churn the README for tiny internal-only edits.
 
+During autonomous sleep-mode work, apply the README state rule periodically: after each meaningful proof/paper batch and after each new browser handoff is absorbed into durable context, keep `README.md` aligned with the actual repo state before pushing.
+
 Dependency rule:
 Higher dimensions may depend on lower dimensions. Lower dimensions must not import higher dimensions.
 
@@ -165,7 +167,7 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
   - Status: signed zero, composition, and inverse motion are Lean-proved as `S1O-T0001` through `S1O-T0003`.
 - [x] `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md`
   - Proof targets: `CC-T0008`, multiplication as repeated rotation/scaling, invertibility iff coprime, factor structure, prime/full-coil refinements.
-  - Status: scaling invertible iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, scaling natural steps into coil traversal, prime-circle scaling bijectivity, divisor-cofactor collapse, cofactor-multiple collapse, cofactor-shift address collapse, scaling-zero divisibility, period-level kernel divisibility, period-multiple collapse, period-shift collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, scaled-address product congruence, and coprime scaling reflection are Lean-proved as `CC-T0008`, `CC-T0028`, `CC-T0017`, `CC-T0018`, `CC-T0029`, `CC-T0019`, `CC-T0020`, `CC-T0031`, `CC-T0021`, `CC-T0022`, `CC-T0023`, `CC-T0024`, `CC-T0025`, `CC-T0030`, `CC-T0032`, `CC-T0033`, `CC-T0034`, `CC-T0035`, `CC-T0036`, `CC-T0037`, `CC-T0038`, `CC-T0026`, and `CC-T0027`; deeper factor/orbit refinements remain future extensions.
+  - Status: scaling invertible iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, scaling natural steps into coil traversal, prime-circle scaling bijectivity, divisor-cofactor collapse, cofactor-multiple collapse, cofactor-shift address collapse, scaling-zero divisibility, period-level kernel divisibility, period-multiple collapse, period-shift collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, scaled-address product congruence, and coprime scaling reflection are Lean-proved as `CC-T0008`, `CC-T0028`, `CC-T0017`, `CC-T0018`, `CC-T0029`, `CC-T0019`, `CC-T0020`, `CC-T0031`, `CC-T0021`, `CC-T0022`, `CC-T0023`, `CC-T0024`, `CC-T0025`, `CC-T0030`, `CC-T0032`, `CC-T0033`, `CC-T0034`, `CC-T0035`, `CC-T0036`, `CC-T0037`, `CC-T0038`, `CC-T0039`, `CC-T0040`, `CC-T0026`, and `CC-T0027`; deeper kernel/fiber and composite orbit refinements remain future extensions.
 
 ### S0: Opposition And Sign
 
@@ -384,6 +386,8 @@ Already proved and linked:
 - [x] `CC-T0036`: scaling is injective on representatives below the coil period
 - [x] `CC-T0037`: the scaled image of one period of representatives has cardinality equal to the coil period
 - [x] `CC-T0038`: every scaled natural address lands in the period-representative image
+- [x] `CC-T0039`: the full finite scaling image equals the period-representative image
+- [x] `CC-T0040`: the full finite scaling image has cardinality equal to the coil period
 - [x] `CC-T0026`: scaled natural addresses are equal iff their scaled products are congruent modulo the circle size
 - [x] `CC-T0027`: coprime scaling reflects ordinary address congruence
 - [x] `CC-T0009`: unique winding/residue lift
@@ -397,7 +401,18 @@ Already proved and linked:
 
 Still planned:
 
-- Scaling/factor refinements beyond `CC-T0038`: full map-image/cardinality packaging, kernel/fiber cardinality, composite orbit refinements, and factor-lattice/provenance links.
+- Scaling/factor refinements beyond `CC-T0040`: kernel/fiber cardinality, composite orbit refinements, and factor-lattice/provenance links.
+
+## Latest Application Handoff Queue
+
+The 2026-06-05 compute handoff is preserved in `docs/PHASE2_AND_APPLICATIONS.md`. Keep these additions at the end of the roadmap so the proof-first dimensional work can continue without losing application context:
+
+- [x] Preserve the disciplined rule: Circle Math helps compute only when the workload has real cyclic, periodic, angular, spherical, toroidal, rotational, circulant, ring-buffer, or fibered structure.
+- [x] Record the strongest current prototype priorities: `CoilRay Sort`, `CoilLayout`, and `CoilNTT`.
+- [x] Preserve the broader top-ten prototype queue: `CoilRay Sort`, `CoilSampler`, `CoilLayout`, `CoilStencil`, `CoilNTT`, `CoilHash`, `CoilMotion`, `CoilPRM`, `CoilCodec`, and `CoilANN`.
+- [x] Preserve the `CoilIR` meta-application: dictionary-detected circular structure, Lean-proved rewrites, backend selection, and benchmark validation.
+- [ ] When application work resumes, start with small MLX/Mac-compatible benchmarks where possible; keep CUDA/NVIDIA references as external baselines or future portability notes.
+- [ ] Do not present ray tracing, GPU layout, stencil, NTT, hashing, robotics, codec, ANN, acquisition, CAM, torsion, detection, scheduler, or quantum ideas as proved until they have explicit models, manifests, sidecars, and checks.
 
 ## Verification Checklist
 

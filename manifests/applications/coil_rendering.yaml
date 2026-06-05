@@ -17,6 +17,7 @@ theorems:
 next_targets:
   - "Map real 3D directions to finite bins before claiming a CoilRay queue."
   - "Benchmark direction bucketing and spherical-coil bucketing against baseline wavefront path tracing."
+  - "Track CoilRay Sort and CoilSampler as the highest-priority rendering prototypes from the 2026-06-05 compute handoff."
 guardrail: "CoilRay claims require rendering benchmarks."
 keywords:
   - CoilRay Sort
