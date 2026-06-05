@@ -66,14 +66,15 @@ entries:
       - "scale(n,k) is invertible iff gcd(n,k)=1"
       - "if p is prime and 1<=k<p, then scale(p,k) is bijective"
       - "if k divides n, then scale(n,k)(n/k)=0 in C_n"
+      - "if k divides n, then scale(n,k)(m*(n/k))=0 in C_n"
     formal_models: ["left multiplication by (k : ZMod n)"]
-    lean_declarations: ["Circle.scale", "Circle.scale_one", "Circle.scale_comp", "Circle.scale_rot", "Circle.scale_coilStep", "Circle.scale_invertible_iff_coprime", "Circle.prime_scale_bijective", "Circle.scale_cofactor_zero"]
+    lean_declarations: ["Circle.scale", "Circle.scale_one", "Circle.scale_comp", "Circle.scale_rot", "Circle.scale_coilStep", "Circle.scale_invertible_iff_coprime", "Circle.prime_scale_bijective", "Circle.scale_cofactor_zero", "Circle.scale_cofactor_multiple_zero"]
     python_objects: ["Circle.scale", "Circle.scale_is_permutation"]
     introduced_in: "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS"
     forbidden_meanings:
       - "A geometric dilation unless a later geometry model explicitly interprets it that way."
       - "A proof of multiplication laws not linked to a theorem id."
-    examples: ["scale(12,5)(7)=11", "scale(12,4) is not invertible", "scale(13,5) is invertible because 13 is prime and 1<=5<13", "scale(12,4)(3)=0 because 4 divides 12"]
+    examples: ["scale(12,5)(7)=11", "scale(12,4) is not invertible", "scale(13,5) is invertible because 13 is prime and 1<=5<13", "scale(12,4)(3)=0 because 4 divides 12", "scale(12,4)(6)=0 as a second cofactor multiple"]
 
   - id: CC-0201
     name: Coil

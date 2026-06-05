@@ -54,4 +54,19 @@ theorem scale_cofactor_zero {n k : Nat} (hkn : k ∣ n) :
   rw [hmul]
   exact CharP.cast_eq_zero (ZMod n) n
 
+theorem scale_cofactor_multiple_zero {n k m : Nat} (hkn : k ∣ n) :
+    scale n k ((m * (n / k) : Nat) : C n) = 0 := by
+  unfold scale
+  rw [← Nat.cast_mul]
+  have hmul : k * (n / k) = n := Nat.mul_div_cancel' hkn
+  have hmul' : k * (m * (n / k)) = m * n := by
+    rw [← Nat.mul_assoc]
+    rw [Nat.mul_comm k m]
+    rw [Nat.mul_assoc]
+    rw [hmul]
+  rw [hmul']
+  rw [Nat.cast_mul]
+  rw [CharP.cast_eq_zero (ZMod n) n]
+  simp
+
 end Circle

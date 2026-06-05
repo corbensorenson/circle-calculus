@@ -59,3 +59,13 @@ def test_cofactor_zero_examples() -> None:
         for k in range(1, n + 1):
             if n % k == 0:
                 assert circle.scale(n // k, k) == 0
+
+
+def test_cofactor_multiple_zero_examples() -> None:
+    for n in range(1, 49):
+        circle = Circle(n)
+        for k in range(1, n + 1):
+            if n % k == 0:
+                cofactor = n // k
+                for m in range(0, 13):
+                    assert circle.scale(m * cofactor, k) == 0

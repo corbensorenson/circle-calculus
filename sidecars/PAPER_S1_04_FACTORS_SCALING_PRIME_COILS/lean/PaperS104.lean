@@ -17,5 +17,6 @@ namespace Circle.PaperS104
 #check Circle.scale_invertible_iff_coprime
 #check Circle.prime_scale_bijective
 #check Circle.scale_cofactor_zero
+#check Circle.scale_cofactor_multiple_zero
 
 end Circle.PaperS104

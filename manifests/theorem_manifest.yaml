@@ -223,6 +223,22 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["if k divides n and n>0, then scale(n,k,n//k)==0"]
 
+  - id: CC-T0023
+    name: Scaling sends cofactor multiples to zero
+    status: proved
+    lean_name: Circle.scale_cofactor_multiple_zero
+    informal_statement: "If k divides n, then every multiple of the cofactor n/k lands at zero under scaling by k in C_n."
+    formal_statement: "forall {n k m : Nat}, k divides n -> Circle.scale n k ((m*(n/k) : Nat) : Circle.C n) = 0"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0201", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_cofactor_multiples_zero_for_divisors"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean by rewriting k*(m*(n/k)) to m*n and casting the modulus multiple to zero in ZMod."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["if k divides n and n>0, then for m in a bounded range scale(n,k,m*(n//k))==0"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

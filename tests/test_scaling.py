@@ -64,3 +64,13 @@ def test_scale_cofactor_zero_for_divisors() -> None:
         for k in range(1, n + 1):
             if n % k == 0:
                 assert circle.scale(n // k, k) == 0
+
+
+def test_scale_cofactor_multiples_zero_for_divisors() -> None:
+    for n in range(1, 97):
+        circle = Circle(n)
+        for k in range(1, n + 1):
+            if n % k == 0:
+                cofactor = n // k
+                for m in range(0, 17):
+                    assert circle.scale(m * cofactor, k) == 0
