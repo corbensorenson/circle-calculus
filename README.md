@@ -74,7 +74,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md` | draft | `S6-T0001` proved; `S6-W0001` warning tracked |
 | `papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md` | draft | `S7C-T0001` and `S7C-T0002` proved |
 | `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md` | draft/partial proof | `S7QH-T0001` and `S7QH-T0002` are Lean-proved coordinate theorems; full fibration topology remains future work |
-| `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md` | draft/partial proof | `S7O-T0001`, `S7O-T0002`, `S7O-T0005`, and `S7O-T0006` are Lean-proved; `S7O-T0003` and `S7O-T0004` remain Python exploratory |
+| `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md` | draft/proved spine | `S7O-T0001` through `S7O-T0006` are Lean-proved in a bounded Cayley-Dickson coordinate model |
 | `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | roadmap | `S15-T0001` has a Lean roadmap marker; formal proof is deferred |
 
 The theorem manifest also includes `CC-T0008`, proving that scaling by `k` is invertible on `C_n` exactly when `n` and `k` are coprime.
@@ -252,7 +252,7 @@ Executable exploratory spine:
 - `S3H-T0003`: the sampled Hopf fiber phase orbit stays normalized, preserves the base point, and closes numerically after `2*pi`
 - `S7QH-T0001`: coordinate quaternionic Hopf map sends normalized quaternion pairs to the unit five-coordinate base equation
 - `S7QH-T0002`: shared right unit-quaternion phase rotation preserves the quaternionic Hopf map
-- `S7O-T0001`, `S7O-T0002`, `S7O-T0005`, `S7O-T0006`: bounded Cayley-Dickson basis, conjugate-norm, noncommutativity, and nonassociativity facts in Lean; `S7O-T0003` and `S7O-T0004` remain Python exploratory
+- `S7O-T0001` through `S7O-T0006`: bounded Cayley-Dickson basis, conjugate norm, norm multiplicativity, unit closure by norm, noncommutativity, and nonassociativity facts in Lean
 - `S15-T0001`: roadmap marker for the future `S7 -> S15 -> S8` octonionic Hopf horizon
 
 ## What This Does Not Claim Yet

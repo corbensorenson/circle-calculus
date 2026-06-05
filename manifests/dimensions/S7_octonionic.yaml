@@ -80,31 +80,31 @@ theorems:
       python_property_tests: ["sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS/python/test_paper_s7_03_examples.py::test_octonion_conjugate_norm_returns_real_norm_square"]
     blocker: ""
   - id: S7O-T0003
-    status: exploratory_python
+    status: lean_proved
     lean_name: Circle.S7.octonionNormMul
     informal_statement: "Octonion norm is multiplicative."
-    formal_statement: "Python exploratory model: squared_norm(x*y)=squared_norm(x)*squared_norm(y) on tested samples."
+    formal_statement: "forall a b : Circle.S7.OctonionCoord, Circle.S7.octonionCoordNormSq (Circle.S7.octonionMulCoord a b) = Circle.S7.octonionCoordNormSq a * Circle.S7.octonionCoordNormSq b"
     dictionary_dependencies: ["S7O-0002"]
     paper_refs: ["papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"]
     imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
     verification:
-      lean_build_required: false
+      lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS/python/test_paper_s7_03_examples.py::test_octonion_norm_multiplicative_on_sample_values"]
-    blocker: "Lean proof deferred until robust octonion support or a small verified Cayley-Dickson model is selected."
+    blocker: ""
   - id: S7O-T0004
-    status: exploratory_python
+    status: lean_proved
     lean_name: Circle.S7.unitOctonion_mul_closed
     informal_statement: "Unit octonions are closed under multiplication, without forming a group."
-    formal_statement: "Python exploratory model: normalized sample octonions have product squared norm 1."
+    formal_statement: "forall a b : Circle.S7.OctonionCoord, Circle.S7.octonionCoordNormSq a = 1 -> Circle.S7.octonionCoordNormSq b = 1 -> Circle.S7.octonionCoordNormSq (Circle.S7.octonionMulCoord a b) = 1"
     dictionary_dependencies: ["S7O-0002", "S7O-W0001"]
     paper_refs: ["papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"]
     imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
     verification:
-      lean_build_required: false
+      lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS/python/test_paper_s7_03_examples.py::test_unit_octonion_product_stays_unit_on_sample_values"]
-    blocker: "Lean proof deferred until robust octonion support or a small verified Cayley-Dickson model is selected."
+    blocker: ""
   - id: S7O-T0005
     status: lean_proved
     lean_name: Circle.S7.octonion_noncommutative_example

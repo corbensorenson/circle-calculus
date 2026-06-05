@@ -239,7 +239,7 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
   - Targets: `S7O-T0001` through `S7O-T0006`
   - Warning targets: `S7O-W0001`, `S7O-W0002`
   - Unit octonions are not a group.
-  - Status: `S7O-T0001`, `S7O-T0002`, `S7O-T0005`, and `S7O-T0006` are Lean-proved in a bounded Cayley-Dickson coordinate model; `S7O-T0003` norm multiplicativity and `S7O-T0004` unit closure remain Python-exploratory until a full norm proof is added.
+  - Status: `S7O-T0001` through `S7O-T0006` are Lean-proved in a bounded Cayley-Dickson coordinate model; higher octonion library design and octonionic Hopf formalization remain future work.
 
 ### Future S15
 
