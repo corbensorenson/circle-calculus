@@ -197,10 +197,11 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
   - Proof targets: `S3Q-T0001` through `S3Q-T0005`
   - Prefer mathlib quaternion support when available.
   - Status: real quaternion norm, unit closure, conjugate inverse equations, noncommutative example, and associativity are Lean-proved.
-- [ ] `papers/S3/PAPER_S3_03_HOPF_COILS.md`
+- [x] `papers/S3/PAPER_S3_03_HOPF_COILS.md`
   - Proof/model targets: `S3H-T0001` through `S3H-T0003`
   - Warning target: `S3H-W0001`, not globally `S^2 x S^1`
   - Start with Python numeric models if Lean analysis support is too heavy.
+  - Status: Hopf map, phase invariance, and circle-like fiber orbit have executable Python sidecar checks; Lean formalization remains deferred.
 - [ ] `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md`
   - Proof targets to add after quaternion basics: `q` and `-q` represent the same 3D rotation.
 

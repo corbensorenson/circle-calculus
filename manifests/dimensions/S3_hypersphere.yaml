@@ -122,41 +122,41 @@ theorems:
     status: exploratory_python
     lean_name: Circle.S3.hopfMap_lands_sphere
     informal_statement: "The complex-pair Hopf map sends normalized S^3 points to S^2."
-    formal_statement: "deferred formal statement"
+    formal_statement: "Python exploratory model: if |z0|^2 + |z1|^2 = 1, then ||hopf_map(z0,z1)||^2 = 1."
     dictionary_dependencies: ["S3H-0001"]
     paper_refs: ["papers/S3/PAPER_S3_03_HOPF_COILS.md"]
     imports_allowed: ["Common", "S1", "S2"]
     verification:
       lean_build_required: false
       no_sorry_required: true
-      python_property_tests: ["hopf_map(normalized_pair) has norm 1"]
+      python_property_tests: ["sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py::test_hopf_map_lands_on_unit_sphere_for_normalized_pair"]
     blocker: "Lean proof deferred until real/complex analysis support is selected."
   - id: S3H-T0002
     status: exploratory_python
     lean_name: Circle.S3.hopfMap_phase_invariant
     informal_statement: "Simultaneous S^1 phase rotation preserves the Hopf map."
-    formal_statement: "deferred formal statement"
+    formal_statement: "Python exploratory model: hopf_map(exp(i*theta)*z0, exp(i*theta)*z1) = hopf_map(z0,z1)."
     dictionary_dependencies: ["S3H-0001", "S3H-0002"]
     paper_refs: ["papers/S3/PAPER_S3_03_HOPF_COILS.md"]
     imports_allowed: ["Common", "S1", "S2"]
     verification:
       lean_build_required: false
       no_sorry_required: true
-      python_property_tests: ["hopf_map(u*z0,u*z1)==hopf_map(z0,z1)"]
+      python_property_tests: ["sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py::test_hopf_map_phase_invariant"]
     blocker: "Lean proof deferred until real/complex analysis support is selected."
   - id: S3H-T0003
-    status: planned
+    status: exploratory_python
     lean_name: Circle.S3.hopfFiber_circle_like
     informal_statement: "A Hopf fiber is S^1-like."
-    formal_statement: "deferred formal statement"
+    formal_statement: "Python exploratory model: the common-phase orbit stays on the normalized S3 pair space, preserves the Hopf base point, and closes after angle 2*pi."
     dictionary_dependencies: ["S3H-0001", "S3H-0002"]
     paper_refs: ["papers/S3/PAPER_S3_03_HOPF_COILS.md"]
     imports_allowed: ["Common", "S1", "S2"]
     verification:
-      lean_build_required: true
+      lean_build_required: false
       no_sorry_required: true
-      python_property_tests: []
-    blocker: ""
+      python_property_tests: ["sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py::test_hopf_fiber_phase_orbit_is_circle_like"]
+    blocker: "Lean proof deferred until real/complex analysis support is selected."
 warnings:
   - id: S3H-W0001
     status: planned

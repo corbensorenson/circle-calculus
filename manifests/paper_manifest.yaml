@@ -124,6 +124,19 @@ papers:
       - S3Q-0002
       - S3Q-0003
 
+  - id: PAPER_S3_03_HOPF_COILS
+    title: "Circle Calculus S3.3: Hopf Coils"
+    status: draft
+    sidecar: sidecars/PAPER_S3_03_HOPF_COILS
+    theorem_ids:
+      - S3H-T0001
+      - S3H-T0002
+      - S3H-T0003
+    dictionary_ids:
+      - S3H-0001
+      - S3H-0002
+      - S3H-W0001
+
   - id: PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY
     title: "Circle Calculus S456.1: General Suspension and Euler Parity"
     status: draft
