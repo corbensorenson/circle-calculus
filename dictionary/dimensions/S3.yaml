@@ -11,7 +11,7 @@ entries:
   - id: S3Q-0001
     name: "Quaternion model"
     kind: model
-    formal_definition: "The planned algebraic S^3 model using unit quaternions."
+    formal_definition: "The algebraic S^3 track using real quaternions `Circle.S3.RealQuaternion = Quaternion ℝ` and the norm-square map `Circle.S3.quaternionNorm`."
     intuition: "S^3 as the first higher sphere with native associative but noncommutative multiplication."
     dependencies: []
     introduced_in: "PAPER_S3_02_QUATERNION_COILS"
@@ -21,7 +21,7 @@ entries:
   - id: S3Q-0002
     name: "Unit quaternion"
     kind: object
-    formal_definition: "A quaternion whose norm is one."
+    formal_definition: "A real quaternion bundled with a proof that `Circle.S3.quaternionNorm q = 1`."
     intuition: "A point of the algebraic S^3 model."
     dependencies: ["S3Q-0001"]
     introduced_in: "PAPER_S3_02_QUATERNION_COILS"
@@ -63,4 +63,3 @@ entries:
     introduced_in: "PAPER_S3_03_HOPF_COILS"
     forbidden_meanings:
       - "Declaring S^3 equal to S^2 x S^1."
-

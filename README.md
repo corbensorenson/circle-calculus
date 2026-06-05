@@ -37,7 +37,7 @@ The expanded long-horizon plan is dimension-organized:
 S^0 -> S^1 -> S^2 -> S^3 -> S^4/S^5/S^6 -> S^7 -> Future/S^15
 ```
 
-The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, and scaling invertibility; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle and sphere-grid theorem spine; and the finite combinatorial `S^3` suspension theorem spine.
+The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, and scaling invertibility; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle and sphere-grid theorem spine; the finite combinatorial `S^3` suspension theorem spine; and the core `S^3` real-quaternion algebra spine.
 
 Future dimensional work is split into two related ladders:
 
@@ -60,6 +60,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md` | draft | `S2-T0001` and `S2-T0002` proved |
 | `papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md` | draft | `S2-T0003` through `S2-T0007` proved |
 | `papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md` | draft | `S3C-T0001` through `S3C-T0004` proved |
+| `papers/S3/PAPER_S3_02_QUATERNION_COILS.md` | draft | `S3Q-T0001` through `S3Q-T0005` proved |
 | `papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md` | scaffold | `COMMON-T0001` through `COMMON-T0003` proved as shared finite-cell suspension facts |
 
 The theorem manifest also includes `CC-T0008`, proving that scaling by `k` is invertible on `C_n` exactly when `n` and `k` are coprime.
@@ -210,6 +211,11 @@ Proved common and dimensional spine:
 - `S3C-T0002`: suspended-surface Euler characteristic is zero when the surface has Euler characteristic two
 - `S3C-T0003`: suspended-suspended-circle cell counts
 - `S3C-T0004`: suspended-suspended-circle Euler characteristic
+- `S3Q-T0001`: real quaternion norm-square primitive
+- `S3Q-T0002`: unit quaternions are closed under multiplication
+- `S3Q-T0003`: conjugation gives inverse equations for unit quaternions
+- `S3Q-T0004`: quaternion multiplication is noncommutative by exact example
+- `S3Q-T0005`: quaternion multiplication is associative
 
 ## What This Does Not Claim Yet
 
