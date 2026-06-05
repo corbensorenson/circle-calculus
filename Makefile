@@ -3,7 +3,7 @@ QUARTO := $(shell if command -v quarto >/dev/null 2>&1; then command -v quarto; 
 
 .PHONY: check lean sidecarlean test manifest dictionary papermanifest paperlinks dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples site-data sitecheck site-render site-preview living-book-check
 
-check: lean sidecarlean test manifest dictionary papermanifest paperlinks dimensioncheck nofake
+check: lean sidecarlean test manifest dictionary papermanifest paperlinks dimensioncheck nofake sitecheck
 
 lean:
 	$(LAKE) build
