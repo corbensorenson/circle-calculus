@@ -94,6 +94,13 @@ theorem quaternion_mul_assoc (a b c : RealQuaternion) :
     (a * b) * c = a * (b * c) :=
   mul_assoc a b c
 
+noncomputable def quaternionConjugationAction (q v : RealQuaternion) : RealQuaternion :=
+  q * v * star q
+
+theorem quaternionConjugation_neg (q v : RealQuaternion) :
+    quaternionConjugationAction (-q) v = quaternionConjugationAction q v := by
+  ext <;> simp [quaternionConjugationAction] <;> ring
+
 def quaternionTrackName : String :=
   "S3Q"
 

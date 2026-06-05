@@ -63,3 +63,21 @@ entries:
     introduced_in: "PAPER_S3_03_HOPF_COILS"
     forbidden_meanings:
       - "Declaring S^3 equal to S^2 x S^1."
+  - id: S3S-0001
+    name: "Quaternion conjugation action"
+    kind: operation
+    formal_definition: "The real-quaternion action `Circle.S3.quaternionConjugationAction q v = q * v * star q`."
+    intuition: "The algebraic core of rotating by conjugation before quotienting signs."
+    dependencies: ["S3Q-0001", "S3Q-0002"]
+    introduced_in: "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP"
+    forbidden_meanings:
+      - "A complete SO(3) formalization by itself."
+  - id: S3S-0002
+    name: "Quaternion sign ambiguity"
+    kind: relation
+    formal_definition: "`q` and `-q` give the same value under `Circle.S3.quaternionConjugationAction`."
+    intuition: "The first formal shadow of the spin double cover: opposite unit quaternions act the same."
+    dependencies: ["S3S-0001"]
+    introduced_in: "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP"
+    forbidden_meanings:
+      - "A claim that `q = -q`."

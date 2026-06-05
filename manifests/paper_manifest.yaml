@@ -137,6 +137,16 @@ papers:
       - S3H-0002
       - S3H-W0001
 
+  - id: PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP
+    title: "Circle Calculus S3.4: Spin, Double Covers, and Rotation Quotients"
+    status: draft
+    sidecar: sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP
+    theorem_ids:
+      - S3S-T0001
+    dictionary_ids:
+      - S3S-0001
+      - S3S-0002
+
   - id: PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY
     title: "Circle Calculus S456.1: General Suspension and Euler Parity"
     status: draft

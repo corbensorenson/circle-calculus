@@ -157,6 +157,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py::test_hopf_fiber_phase_orbit_is_circle_like"]
     blocker: "Lean proof deferred until real/complex analysis support is selected."
+  - id: S3S-T0001
+    status: lean_proved
+    lean_name: Circle.S3.quaternionConjugation_neg
+    informal_statement: "The quaternion conjugation action is unchanged by replacing q with -q."
+    formal_statement: "forall q v : Circle.S3.RealQuaternion, Circle.S3.quaternionConjugationAction (-q) v = Circle.S3.quaternionConjugationAction q v"
+    dictionary_dependencies: ["S3S-0001", "S3S-0002", "S3Q-0001"]
+    paper_refs: ["papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"]
+    imports_allowed: ["Common", "S1", "S2"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
 warnings:
   - id: S3H-W0001
     status: planned

@@ -202,8 +202,9 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
   - Warning target: `S3H-W0001`, not globally `S^2 x S^1`
   - Start with Python numeric models if Lean analysis support is too heavy.
   - Status: Hopf map, phase invariance, and circle-like fiber orbit have executable Python sidecar checks; Lean formalization remains deferred.
-- [ ] `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md`
-  - Proof targets to add after quaternion basics: `q` and `-q` represent the same 3D rotation.
+- [x] `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md`
+  - Proof target: `S3S-T0001`
+  - Status: quaternion conjugation action is Lean-proved invariant under replacing `q` by `-q`; full `SO(3)` quotient remains future work.
 
 ### S4-S6: Geometric Bridge
 
