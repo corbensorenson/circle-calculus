@@ -40,6 +40,11 @@ namespace Circle.PaperS104
 #check Circle.scalePeriodKernelRepresentatives_card
 #check Circle.scaleKernelRepresentativeSet_eq_periodMultiples
 #check Circle.scaleKernelRepresentativeSet_card
+#check Circle.scaleFiberRepresentativeSet
+#check Circle.scalePeriodFiberRepresentatives
+#check Circle.scalePeriodFiberRepresentatives_card
+#check Circle.scaleFiberRepresentativeSet_eq_periodFibers
+#check Circle.scaleFiberRepresentativeSet_card
 #check Circle.scale_nat_eq_iff_nat_modEq_of_coprime
 #check Circle.scale_factor_modEq
 

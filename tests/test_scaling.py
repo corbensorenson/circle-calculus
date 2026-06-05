@@ -236,6 +236,34 @@ def test_scale_kernel_representative_card() -> None:
             assert len(kernel) == gcd(n, k)
 
 
+def test_scale_fiber_representatives_equal_period_fibers() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for k in range(0, 33):
+            period = circle.period(k)
+            for r in range(0, 33):
+                fiber = {
+                    x
+                    for x in range(n)
+                    if circle.scale(x, k) == circle.scale(r, k)
+                }
+                period_fibers = {r % period + m * period for m in range(gcd(n, k))}
+                assert fiber == period_fibers
+
+
+def test_scale_fiber_representative_card() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for k in range(0, 33):
+            for r in range(0, 33):
+                fiber = {
+                    x
+                    for x in range(n)
+                    if circle.scale(x, k) == circle.scale(r, k)
+                }
+                assert len(fiber) == gcd(n, k)
+
+
 def test_coprime_scale_equality_iff_addresses_congruent() -> None:
     for n in range(1, 65):
         circle = Circle(n)

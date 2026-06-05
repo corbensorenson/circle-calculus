@@ -350,6 +350,116 @@ theorem scaleKernelRepresentativeSet_card {n k : Nat} (hn : n ≠ 0) :
   rw [scaleKernelRepresentativeSet_eq_periodMultiples hn]
   exact scalePeriodKernelRepresentatives_card hn
 
+noncomputable def scaleFiberRepresentativeSet (n k r : Nat) : Finset Nat :=
+  (Finset.range n).filter
+    (fun x : Nat => scale n k ((x : Nat) : C n) = scale n k ((r : Nat) : C n))
+
+noncomputable def scalePeriodFiberRepresentatives (n k r : Nat) : Finset Nat :=
+  Finset.univ.image
+    (fun m : Fin (Nat.gcd n k) => (r % period n k) + (m : Nat) * period n k)
+
+theorem scalePeriodFiberRepresentatives_card {n k r : Nat} (hn : n ≠ 0) :
+    (scalePeriodFiberRepresentatives n k r).card = Nat.gcd n k := by
+  unfold scalePeriodFiberRepresentatives
+  rw [Finset.card_image_of_injective]
+  · exact Fintype.card_fin (Nat.gcd n k)
+  · intro a b h
+    apply Fin.ext
+    have hnpos : 0 < n := Nat.pos_of_ne_zero hn
+    have hgpos : 0 < Nat.gcd n k := Nat.gcd_pos_of_pos_left k hnpos
+    have hp : 0 < period n k := by
+      rw [period_eq_n_div_gcd hn]
+      exact Nat.div_pos (Nat.gcd_le_left k hnpos) hgpos
+    have hmul : (a : Nat) * period n k = (b : Nat) * period n k :=
+      Nat.add_left_cancel h
+    exact Nat.mul_right_cancel hp hmul
+
+theorem scaleFiberRepresentativeSet_eq_periodFibers {n k r : Nat} (hn : n ≠ 0) :
+    scaleFiberRepresentativeSet n k r = scalePeriodFiberRepresentatives n k r := by
+  apply Finset.ext
+  intro x
+  constructor
+  · intro hx
+    unfold scaleFiberRepresentativeSet at hx
+    rcases Finset.mem_filter.mp hx with ⟨hxn, hscale⟩
+    unfold scalePeriodFiberRepresentatives
+    have hnpos : 0 < n := Nat.pos_of_ne_zero hn
+    have hgpos : 0 < Nat.gcd n k := Nat.gcd_pos_of_pos_left k hnpos
+    have hp : 0 < period n k := by
+      rw [period_eq_n_div_gcd hn]
+      exact Nat.div_pos (Nat.gcd_le_left k hnpos) hgpos
+    have hg_mul_p : Nat.gcd n k * period n k = n := by
+      rw [period_eq_n_div_gcd hn]
+      exact Nat.mul_div_cancel' (Nat.gcd_dvd_left n k)
+    have htarget :
+        scale n k ((x : Nat) : C n) =
+          scale n k (((r % period n k) : Nat) : C n) :=
+      hscale.trans (scale_nat_period_normalForm (n := n) (k := k) (x := r) hn)
+    have hmod : x ≡ r % period n k [MOD period n k] :=
+      (scale_nat_eq_iff_period_modEq (n := n) (k := k)
+        (x := x) (y := r % period n k) hn).mp htarget
+    have hrmod_lt : r % period n k < period n k := Nat.mod_lt r hp
+    have hxmod : x % period n k = r % period n k := by
+      unfold Nat.ModEq at hmod
+      simpa [Nat.mod_eq_of_lt hrmod_lt] using hmod
+    have hx_decomp : x = r % period n k + (x / period n k) * period n k := by
+      have h0 := Nat.mod_add_div x (period n k)
+      rw [hxmod] at h0
+      rw [Nat.mul_comm (period n k) (x / period n k)] at h0
+      exact h0.symm
+    have hq_lt : x / period n k < Nat.gcd n k := by
+      rw [Nat.div_lt_iff_lt_mul hp]
+      rw [hg_mul_p]
+      exact Finset.mem_range.mp hxn
+    exact Finset.mem_image.mpr
+      ⟨⟨x / period n k, hq_lt⟩, Finset.mem_univ _, hx_decomp.symm⟩
+  · intro hx
+    unfold scalePeriodFiberRepresentatives at hx
+    rcases Finset.mem_image.mp hx with ⟨m, _, hm⟩
+    unfold scaleFiberRepresentativeSet
+    exact Finset.mem_filter.mpr
+      ⟨by
+        have hnpos : 0 < n := Nat.pos_of_ne_zero hn
+        have hgpos : 0 < Nat.gcd n k := Nat.gcd_pos_of_pos_left k hnpos
+        have hp : 0 < period n k := by
+          rw [period_eq_n_div_gcd hn]
+          exact Nat.div_pos (Nat.gcd_le_left k hnpos) hgpos
+        have hrmod_lt : r % period n k < period n k := Nat.mod_lt r hp
+        have hg_mul_p : Nat.gcd n k * period n k = n := by
+          rw [period_eq_n_div_gcd hn]
+          exact Nat.mul_div_cancel' (Nat.gcd_dvd_left n k)
+        have hlt1 :
+            r % period n k + (m : Nat) * period n k <
+              ((m : Nat) + 1) * period n k := by
+          calc
+            r % period n k + (m : Nat) * period n k =
+                (m : Nat) * period n k + r % period n k := by
+                  exact Nat.add_comm _ _
+            _ < (m : Nat) * period n k + period n k := by
+                  exact Nat.add_lt_add_left hrmod_lt ((m : Nat) * period n k)
+            _ = ((m : Nat) + 1) * period n k := by
+                  rw [Nat.add_mul, one_mul]
+        have hle :
+            ((m : Nat) + 1) * period n k ≤ Nat.gcd n k * period n k :=
+          Nat.mul_le_mul_right (period n k) (Nat.succ_le_of_lt m.isLt)
+        exact Finset.mem_range.mpr (by
+          rw [← hm]
+          exact lt_of_lt_of_le hlt1 (hle.trans_eq hg_mul_p)),
+       by
+        rw [← hm]
+        calc
+          scale n k (((r % period n k + (m : Nat) * period n k) : Nat) : C n) =
+              scale n k (((r % period n k) : Nat) : C n) := by
+                exact scale_add_period_multiple
+                  (n := n) (k := k) (x := r % period n k) (m := (m : Nat)) hn
+          _ = scale n k ((r : Nat) : C n) := by
+                exact (scale_nat_period_normalForm (n := n) (k := k) (x := r) hn).symm⟩
+
+theorem scaleFiberRepresentativeSet_card {n k r : Nat} (hn : n ≠ 0) :
+    (scaleFiberRepresentativeSet n k r).card = Nat.gcd n k := by
+  rw [scaleFiberRepresentativeSet_eq_periodFibers hn]
+  exact scalePeriodFiberRepresentatives_card hn
+
 theorem scale_nat_eq_iff_nat_modEq_of_coprime {n k x y : Nat} (hcop : Nat.Coprime n k) :
     scale n k ((x : Nat) : C n) = scale n k ((y : Nat) : C n) ↔ x ≡ y [MOD n] := by
   have hbij : Function.Bijective (scale n k) := (scale_invertible_iff_coprime n k).mpr hcop
