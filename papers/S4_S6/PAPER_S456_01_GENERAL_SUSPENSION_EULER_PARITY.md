@@ -1,6 +1,6 @@
 # Circle Calculus S456.1: General Suspension and Euler Parity
 
-Status: draft with the common suspension/Euler spine and the `S^4` through `S^6` parity theorem Lean-proved.
+Status: polished draft with the common suspension/Euler spine and the `S^4` through `S^6` parity theorem Lean-proved.
 
 ## Aim
 

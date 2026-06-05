@@ -1,12 +1,14 @@
 # Circle Calculus S2.3: Antipodes, Axes, Surface Closure, and Antinodes
 
-Status: draft scaffold with the finite suspended-circle antipode theorem spine proved.
+Status: polished draft with the finite suspended-circle antipode and sphere-grid coordinate theorem spine Lean-proved.
 
 ## Aim
 
-This `S^2` paper adds the first conservative antipode and axis structure after the finite sphere-grid foundation.
+This paper adds conservative antipode, pole-axis, equator, and coordinate-rotation structure to the finite `S^2` layer. It extends the suspended-circle and sphere-grid models without pretending that the full continuous antipodal map, smooth axes, or surface geometry have been formalized.
 
-## Target Spine
+The guiding rule is the same as the rest of the `S^2` track: prove finite structure first, keep continuous geometry future.
+
+## Theorem Spine
 
 - `S2-T0008`: `Circle.S2.suspendedCircleAntipode_swapsPoles`
 - `S2-T0009`: `Circle.S2.suspendedCircleAntipode_involutive`
@@ -19,7 +21,7 @@ This `S^2` paper adds the first conservative antipode and axis structure after t
 
 ## Model
 
-The finite point model for the suspended circle has two poles and an equator:
+The finite suspended-circle point model has two poles and an equator:
 
 ```text
 SuspendedCirclePoint(n) =
@@ -36,65 +38,34 @@ south      -> north
 equator(x) -> equator(-x)
 ```
 
-This is a conservative finite model. It does not claim the full continuous antipodal map on every sphere construction.
-
-The finite pole and equator predicates are:
+Pole and equator predicates distinguish the collapsed poles from the circular equator. In the sphere-grid model, non-pole points also have partial coordinate projections:
 
 ```text
-is_suspended_pole(north)=true
-is_suspended_pole(south)=true
-is_suspended_pole(equator(x))=false
-
-is_suspended_equator(north)=false
-is_suspended_equator(south)=false
-is_suspended_equator(equator(x))=true
-```
-
-For the finite sphere-grid model, non-pole points also have partial coordinate projections:
-
-```text
-latitude_coordinate(north)=none
-latitude_coordinate(south)=none
+latitude_coordinate(pole)=none
+longitude_coordinate(pole)=none
 latitude_coordinate(ring(latitude,node))=some(latitude)
-
-longitude_coordinate(north)=none
-longitude_coordinate(south)=none
 longitude_coordinate(ring(latitude,node))=some(node)
-```
-
-The finite antipodal-pair relation is intentionally simple:
-
-```text
-antipodal_pair(p,q) iff antipode(p)=q
 ```
 
 ## Proved Core
 
-`S2-T0008` is proved by `Circle.S2.suspendedCircleAntipode_swapsPoles`: the antipode swaps the two poles.
+`S2-T0008` proves that the suspended-circle antipode swaps north and south. `S2-T0009` proves the antipode is involutive. `S2-T0010` proves it preserves the finite pole subset, and `S2-T0011` proves it preserves the equator subset.
 
-`S2-T0009` is proved by `Circle.S2.suspendedCircleAntipode_involutive`: applying the antipode twice returns the original suspended-circle point.
+`S2-T0012` proves that longitude rotation preserves latitude coordinates. `S2-T0013` proves that longitude rotation advances a ring point's longitude coordinate by `Circle.rot(n,stride)` while keeping pole longitudes empty.
 
-`S2-T0010` is proved by `Circle.S2.suspendedCircleAntipode_preservesPoleSet`: the antipode preserves the finite pole subset, even though it swaps the individual north and south poles.
+`S2-T0014` proves every point forms an antipodal pair with its antipode, and `S2-T0015` proves the finite antipodal-pair relation is symmetric.
 
-`S2-T0011` is proved by `Circle.S2.suspendedCircleAntipode_preservesEquatorSet`: the antipode sends equator points to equator points.
+Surface closure remains tied to the already-proved Euler facts for suspended circles and sphere grids. The Python sidecar checks the same finite antipode, pole/equator predicate, longitude-coordinate, latitude-coordinate, and antipodal-pair examples.
 
-`S2-T0012` is proved by `Circle.S2.longitudeRotation_preservesLatitudeCoordinate`: a longitude rotation preserves the finite latitude coordinate of every sphere-grid point.
+## Role In The Ladder
 
-`S2-T0013` is proved by `Circle.S2.longitudeRotation_advancesLongitudeCoordinate`: a longitude rotation advances a ring point's longitude coordinate by `Circle.rot(n,stride)` and leaves pole longitude coordinates empty.
-
-`S2-T0014` is proved by `Circle.S2.suspendedCircleAntipodalPair_self_antipode`: every point forms an antipodal pair with its antipode.
-
-`S2-T0015` is proved by `Circle.S2.suspendedCircleAntipodalPair_symmetric`: the finite antipodal-pair relation is symmetric.
-
-Surface closure remains tied to the already proved Euler facts `Circle.S2.suspendedCircle_chi` and `Circle.S2.sphereGrid_chi`.
-
-The Python sidecar checks the same finite antipode, pole/equator predicate, longitude-coordinate, latitude-coordinate, and antipodal-pair examples. Continuous surface geometry remains future work.
+This paper makes `S^2` more than a cell-count example. It gives later Hopf and sphere-grid explanations finite language for poles, equators, latitude/longitude coordinates, and antipodal pairing.
 
 ## Dictionary Targets
 
 - `S2-0005`: suspended-circle antipode
 - `S2-0006`: pole axis / finite pole subset
 
-## Notes
+## Guardrails
 
-Do not force continuous geometry too early. Continuous surface geometry remains a future refinement after the finite antipode, pole-subset, equator-subset, coordinate-projection, and antipodal-pair spine is stable.
+Continuous surface geometry, smooth antinodes, metric axes, and full analytic antipodal maps remain future work. The current proved content is the finite antipode, pole/equator preservation, coordinate-rotation, and antipodal-pair spine.

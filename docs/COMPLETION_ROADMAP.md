@@ -212,7 +212,7 @@ Goal: make the executable examples line up with the Lean-backed papers without d
 - [x] `papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md`
   - Proof targets to add as the model matures: antipodal map, axis, meridians, surface closure, antinodes.
   - Do not force continuous geometry too early.
-  - Status: suspended-circle antipode pole swap, involution, finite pole/equator subset preservation, finite sphere-grid latitude/longitude coordinate rotation laws, and finite antipodal-pair witness/symmetry facts are Lean-proved as `S2-T0008` through `S2-T0015`; continuous surface geometry remains a future refinement.
+  - Status: polished draft; suspended-circle antipode pole swap, involution, finite pole/equator subset preservation, finite sphere-grid latitude/longitude coordinate rotation laws, and finite antipodal-pair witness/symmetry facts are Lean-proved as `S2-T0008` through `S2-T0015`; continuous surface geometry remains a future refinement.
 
 ### S3: Hypersphere, Quaternions, Hopf
 
@@ -228,7 +228,7 @@ Goal: make the executable examples line up with the Lean-backed papers without d
   - Proof/model targets: `S3H-T0001` through `S3H-T0005`
   - Warning target: `S3H-W0001`, not globally `S^2 x S^1`
   - Start with Python numeric models if Lean analysis support is too heavy.
-  - Status: `S3H-T0001` through `S3H-T0005` are Lean-proved bounded Hopf coordinate and phase-action facts; analytic circle parameterization beyond these algebraic phase laws, quotient topology, and global fibration formalization remain future work.
+  - Status: polished draft; `S3H-T0001` through `S3H-T0005` are Lean-proved bounded Hopf coordinate and phase-action facts; analytic circle parameterization beyond these algebraic phase laws, quotient topology, and global fibration formalization remain future work.
 - [x] `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md`
   - Proof target: `S3S-T0001` through `S3S-T0003`
   - Status: polished draft proves quaternion conjugation identity action, zero preservation, and sign cancellation; full `SO(3)` quotient remains future work.
@@ -258,12 +258,12 @@ Goal: make the executable examples line up with the Lean-backed papers without d
 - [x] `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md`
   - Targets: `S7QH-T0001`, `S7QH-T0002`
   - Keep roadmap/exploratory until `S3` quaternion calculus and `S4` base are stable.
-  - Status: `S7QH-T0001` and `S7QH-T0002` are Lean-proved coordinate theorems; quaternionic projective space, quotient topology, and full fibration formalization remain future work.
+  - Status: polished draft; `S7QH-T0001` and `S7QH-T0002` are Lean-proved coordinate theorems; quaternionic projective space, quotient topology, and full fibration formalization remain future work.
 - [x] `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md`
   - Targets: `S7O-T0001` through `S7O-T0006`
   - Warning targets: `S7O-W0001`, `S7O-W0002`
   - Unit octonions are not a group.
-  - Status: `S7O-T0001` through `S7O-T0006` are Lean-proved in a bounded Cayley-Dickson coordinate model; higher octonion library design and octonionic Hopf formalization remain future work.
+  - Status: polished draft; `S7O-T0001` through `S7O-T0006` are Lean-proved in a bounded Cayley-Dickson coordinate model; higher octonion library design and octonionic Hopf formalization remain future work.
 
 ### Future S15
 

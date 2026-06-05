@@ -1,6 +1,6 @@
 # Circle Calculus S6.1: Octonion Shadow and Warnings
 
-Status: draft with the finite `S^6` suspension and Euler theorem spine Lean-proved, plus the active `S^6` warning.
+Status: polished draft with the finite `S^6` suspension and Euler theorem spine Lean-proved, plus the active `S^6` warning.
 
 ## Aim
 

@@ -1,12 +1,18 @@
 # Circle Calculus S7.3: Octonionic Units and Nonassociative Coils
 
-Status: draft with the bounded Cayley-Dickson octonion theorem spine Lean-proved.
+Status: polished draft with the bounded Cayley-Dickson octonion theorem spine Lean-proved.
 
 ## Aim
 
-This paper develops the octonionic `S^7` layer cautiously and explicitly tracks nonassociativity.
+This paper develops the octonionic `S^7` layer cautiously. Octonions are the first place in the dimensional ladder where multiplication remains norm-compatible but becomes nonassociative. That means the project must track order and grouping explicitly.
 
-## Target Spine
+The core slogan for this stage is:
+
+```text
+S^7: order and grouping matter
+```
+
+## Theorem Spine
 
 - `S7O-T0001`: `Circle.S7.octonionBasis`
 - `S7O-T0002`: `Circle.S7.octonionConjugateNorm`
@@ -17,48 +23,35 @@ This paper develops the octonionic `S^7` layer cautiously and explicitly tracks 
 - `S7O-W0001`: unit octonions are not a group
 - `S7O-W0002`: bracketing matters
 
-## Dictionary Targets
-
-- `S7O-0001`: octonion model
-- `S7O-0002`: unit octonion
-- `S7O-W0001`: unit octonions are not a group warning
-- `S7O-W0002`: octonion bracketing warning
-
 ## Model
 
-The executable sidecar uses a small Cayley-Dickson octonion model, and the Lean sidecar now mirrors a bounded real-coordinate Cayley-Dickson skeleton:
+The executable sidecar uses a small Cayley-Dickson octonion model, and the Lean sidecar mirrors a bounded real-coordinate Cayley-Dickson skeleton:
 
 ```text
 Octonion = Quaternion pair
 ```
 
-with multiplication, conjugation, squared norm, basis elements `e0` through `e7`, and normalization helpers in `circle_math.dimensions.octonion`.
-
-This model is intentionally bounded. It proves the paper's current coordinate algebra spine before the project attempts a fuller octonion algebra library.
+The model includes multiplication, conjugation, squared norm, basis elements `e0` through `e7`, and normalization helpers. It is intentionally bounded: it proves the current coordinate algebra spine before the project attempts a fuller octonion algebra library.
 
 ## Proved Core
 
-The Lean sidecar `sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS/lean/PaperS703.lean` checks:
+`S7O-T0001` proves each coordinate basis element has squared norm `1`. `S7O-T0002` proves that `x * conjugate(x)` is the real coordinate containing `squared_norm(x)`.
 
-- `S7O-T0001`: `Circle.S7.octonionBasis` proves each coordinate basis element has squared norm `1`.
-- `S7O-T0002`: `Circle.S7.octonionConjugateNorm` proves `x * conjugate(x)` is the real coordinate containing `squared_norm(x)`.
-- `S7O-T0003`: `Circle.S7.octonionNormMul` proves squared norm is multiplicative for the Cayley-Dickson coordinate product.
-- `S7O-T0004`: `Circle.S7.unitOctonion_mul_closed` proves products of norm-one octonions remain norm-one.
-- `S7O-T0005`: `Circle.S7.octonion_noncommutative_example` proves `e1 * e2 != e2 * e1`.
-- `S7O-T0006`: `Circle.S7.octonion_nonassociative_example` proves `(e1 * e2) * e4 != e1 * (e2 * e4)`.
+`S7O-T0003` proves squared norm is multiplicative for the Cayley-Dickson coordinate product. `S7O-T0004` uses that fact to prove products of norm-one octonions remain norm-one.
 
-## Executable Core
+The next two theorems are warnings made formal. `S7O-T0005` proves:
 
-The Python sidecar `sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS/python/test_paper_s7_03_examples.py` checks:
+```text
+e1 * e2 != e2 * e1
+```
 
-- `S7O-T0001`: the coordinate basis has eight unit elements, matching the Lean coordinate theorem.
-- `S7O-T0002`: multiplying a sample octonion by its conjugate returns the squared norm in the real coordinate, matching the Lean coordinate theorem.
-- `S7O-T0003`: squared norm is multiplicative, matching the Lean coordinate theorem.
-- `S7O-T0004`: normalized sample octonions have product squared norm `1`, matching the Lean coordinate theorem.
-- `S7O-T0005`: basis elements `e1` and `e2` do not commute, matching the Lean example theorem.
-- `S7O-T0006`: `(e1*e2)*e4` differs from `e1*(e2*e4)`, matching the Lean example theorem.
+`S7O-T0006` proves:
 
-The executable checks now serve as examples for the Lean-proved coordinate theorems.
+```text
+(e1 * e2) * e4 != e1 * (e2 * e4)
+```
+
+The Python sidecar checks the same basis, conjugate-norm, norm-multiplication, unit-product, noncommutativity, and nonassociativity examples.
 
 ## Warnings
 
@@ -66,6 +59,13 @@ The executable checks now serve as examples for the Lean-proved coordinate theor
 
 `S7O-W0002` remains active: bracketing is part of an octonion statement because multiplication is nonassociative.
 
-## Notes
+## Dictionary Targets
 
-The core slogan for this stage is `S^7: order and grouping matter`.
+- `S7O-0001`: octonion model
+- `S7O-0002`: unit octonion
+- `S7O-W0001`: unit octonions are not a group warning
+- `S7O-W0002`: octonion bracketing warning
+
+## Guardrails
+
+This paper proves bounded coordinate octonion facts and formal example warnings. It does not claim unit octonions form a group, does not erase bracketing, and does not yet prove the full octonionic Hopf fibration.

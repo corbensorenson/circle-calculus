@@ -1,21 +1,21 @@
 # Circle Calculus S7.2: Quaternionic Hopf Fibration
 
-Status: draft with the bounded quaternionic Hopf coordinate landing and right-phase invariance facts Lean-proved.
+Status: polished draft with bounded quaternionic Hopf coordinate landing and right-phase invariance facts Lean-proved.
 
 ## Aim
 
-This paper tracks the quaternionic Hopf roadmap now that the `S^3` quaternion calculus and the finite `S^4` base are stable.
-
-## Target Spine
-
-- `S7QH-T0001`: `Circle.S7.quaternionicHopf_lands_sphere`
-- `S7QH-T0002`: `Circle.S7.quaternionicPhaseInvariance`
-
-## Intended Structure
+This paper records the quaternionic Hopf roadmap now that the `S^3` quaternion calculus and the finite `S^4` base are stable. The intended structure is:
 
 ```text
 S^3 -> S^7 -> S^4
 ```
+
+The current result is not the full fibration. It is the bounded coordinate spine needed before quaternionic projective space, quotient topology, and a complete fibration theorem can be stated honestly.
+
+## Theorem Spine
+
+- `S7QH-T0001`: `Circle.S7.quaternionicHopf_lands_sphere`
+- `S7QH-T0002`: `Circle.S7.quaternionicPhaseInvariance`
 
 ## Model
 
@@ -26,31 +26,22 @@ The executable sidecar represents a point of `S^7` as a normalized pair of quate
 |q0|^2 + |q1|^2 = 1
 ```
 
-The exploratory quaternionic Hopf map is:
+The coordinate Hopf map is:
 
 ```text
 H(q0,q1) =
   (2 q0 conjugate(q1), |q0|^2 - |q1|^2)
 ```
 
-The first component is a quaternion, so the output is represented by five real coordinates: four from `2 q0 conjugate(q1)` and one scalar coordinate.
-
-The quaternionic phase action used by the executable model is right multiplication by a shared unit quaternion:
+The first component is a quaternion, so the output is represented by five real coordinates. The phase action is shared right multiplication by a unit quaternion:
 
 ```text
 (q0,q1) -> (q0 u, q1 u)
 ```
 
-When `|u|=1`, the Hopf coordinates are invariant in the Python model.
-
 ## Proved Core
 
-The Lean sidecar `sidecars/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION/lean/PaperS702.lean` checks the coordinate model:
-
-- `S7QH-T0001` is proved by `Circle.S7.quaternionicHopf_lands_sphere`: if a quaternion pair has total norm square `1`, the five Hopf base coordinates have norm square `1`.
-- `S7QH-T0002` is proved by `Circle.S7.quaternionicPhaseInvariance`: right multiplication of both quaternion coordinates by the same unit quaternion coordinate preserves the Hopf base coordinates.
-
-The helper theorem `Circle.S7.quaternionicHopfBaseNormSq_hopfMap` proves the exact identity
+`S7QH-T0001` proves that if a quaternion pair has total norm square `1`, then the five Hopf base coordinates have norm square `1`. The helper theorem `Circle.S7.quaternionicHopfBaseNormSq_hopfMap` proves:
 
 ```text
 ||H(p)||^2 = ||p||^4
@@ -58,16 +49,13 @@ The helper theorem `Circle.S7.quaternionicHopfBaseNormSq_hopfMap` proves the exa
 
 for the real-coordinate quaternionic Hopf model.
 
-The helper theorem `Circle.S7.quaternionicHopfMap_rightPhase_scaled` proves the stronger scaling identity: right multiplication by `u` scales the Hopf base by `|u|^2`, so unit `u` preserves the base point.
+`S7QH-T0002` proves right-phase invariance: multiplying both quaternion coordinates on the right by the same unit quaternion coordinate preserves the Hopf base coordinates. The helper theorem `Circle.S7.quaternionicHopfMap_rightPhase_scaled` proves the stronger scaling identity: right multiplication by `u` scales the Hopf base by `|u|^2`, so unit `u` preserves the base point.
 
-## Executable Core
+The Python sidecar checks normalized landing and shared right-unit phase invariance on executable quaternion examples.
 
-The Python sidecar `sidecars/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION/python/test_paper_s7_02_examples.py` checks:
+## Role In The Ladder
 
-- `S7QH-T0001`: normalized quaternion pairs map to five-coordinate points with squared norm numerically `1`, matching the Lean coordinate theorem.
-- `S7QH-T0002`: shared right unit-quaternion phase rotation preserves the quaternionic Hopf map, matching the Lean coordinate theorem.
-
-These checks remain useful examples, but the two bounded coordinate statements now have Lean proofs.
+This paper links `S^3` quaternion algebra, finite `S^4` topology, and the `S^7` roadmap. It also sets the stage for robotics/orientation applications and for comparing the associative quaternionic story with the later nonassociative octonion layer.
 
 ## Dictionary Targets
 
@@ -75,6 +63,6 @@ These checks remain useful examples, but the two bounded coordinate statements n
 - `S3Q-0001`: quaternion model
 - `S4-0001`: S4 quaternionic Hopf base
 
-## Notes
+## Guardrails
 
-This paper records the coordinate model and bounded invariances. It does not yet formalize quaternionic projective space, a full fibration theorem, or the quotient topology.
+This paper proves bounded coordinate landing and right-phase invariance. It does not yet formalize quaternionic projective space, quotient topology, smooth bundle structure, or the full quaternionic Hopf fibration.

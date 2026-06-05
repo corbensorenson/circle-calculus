@@ -1,6 +1,6 @@
 # Circle Calculus S5.1: Complex Projective Bridge
 
-Status: draft with the finite `S^5` suspension and Euler theorem spine Lean-proved.
+Status: polished draft with the finite `S^5` suspension and Euler theorem spine Lean-proved.
 
 ## Aim
 
