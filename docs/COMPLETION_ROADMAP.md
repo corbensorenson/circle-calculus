@@ -287,19 +287,19 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `P2G-T0001` through `P2G-T0003` are Lean-proved proof-glyph certificate projection facts with Python examples; glyph syntax, normal forms, semantics, dependency correctness, and proof search remain future work.
 - [x] `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md`
   - Program: coil signatures, closure profiles, prime-lag recurrence, antinode maps, and periodic-data benchmarks.
-  - Status: `APPD-T0001` through `APPD-T0003` are Lean-proved finite phase-coordinate facts with Python examples; real-data and benchmark claims remain future work.
+  - Status: polished draft; `APPD-T0001` through `APPD-T0003` are Lean-proved finite phase-coordinate facts with Python examples; real-data and benchmark claims remain future work.
 - [x] `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md`
   - Program: certified cyclic/circulant/orbit structure lowered to FFT/NTT/permutation backends and benchmarked.
-  - Status: `COMPC-T0001` through `COMPC-T0003` are Lean-proved cyclic-address facts with Python examples; backend lowering and performance claims remain benchmark work.
+  - Status: polished draft; `COMPC-T0001` through `COMPC-T0003` are Lean-proved cyclic-address facts with Python examples; backend lowering and performance claims remain benchmark work.
 - [x] `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md`
   - Program: `CoilRay Sort`, `CoilSampler`, `CoilNoise`, `CoilSTIR`, BRDF/lighting angular compression, spherical-coil ray queues, procedural placement/dithering, and rendering benchmarks.
-  - Status: `COMPR-T0001` through `COMPR-T0003` are Lean-proved direction-bin schedule facts with Python examples; rendering performance, coherence, and sampling-quality claims remain benchmark work.
+  - Status: polished draft; `COMPR-T0001` through `COMPR-T0003` are Lean-proved direction-bin schedule facts with Python examples; rendering performance, coherence, and sampling-quality claims remain benchmark work.
 - [x] `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md`
   - Program: `CoilLayout`, `CoilStencil`, `CoilNTT`, gcd-cycle memory layouts, verified periodic boundaries, exact finite transforms, and MLX/Mac-compatible prototypes where relevant.
-  - Status: `COMPL-T0001` through `COMPL-T0004` are Lean-proved stride-address facts with Python examples; layout, stencil, FFT, NTT, MLX/backend, and performance claims remain future work.
+  - Status: polished draft; `COMPL-T0001` through `COMPL-T0004` are Lean-proved stride-address facts with Python examples; layout, stencil, FFT, NTT, MLX/backend, and performance claims remain future work.
 - [x] `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md`
   - Program: `CoilHash`, `CoilMotion`, `CoilPRM`, `CoilCodec`, `CoilANN`, `CoilAcquire`, `CoilCAM`, `CoilTorsion`, `CoilDetect`, `CoilSched`, and `CoilQ` as benchmarked or domain-tested application roadmaps.
-  - Status: `COMPS-T0001` through `COMPS-T0003` are Lean-proved round-robin schedule facts with Python examples; fairness, load balancing, robotics, codec, ANN, acquisition, CAM, torsion, detection, and quantum claims remain future domain work.
+  - Status: polished draft; `COMPS-T0001` through `COMPS-T0003` are Lean-proved round-robin schedule facts with Python examples; fairness, load balancing, robotics, codec, ANN, acquisition, CAM, torsion, detection, and quantum claims remain future domain work.
 - [x] `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md`
   - Program: disciplined Circle AI thesis covering phase, recurrence, rotation, sparse cyclic mixing, circular memory, harmonic transforms, geometry-aware models, and proof-carrying model components.
   - Status: `AIA-T0001` through `AIA-T0003` are Lean-proved phase-channel facts with Python examples; model-quality and speed claims remain benchmark work.
