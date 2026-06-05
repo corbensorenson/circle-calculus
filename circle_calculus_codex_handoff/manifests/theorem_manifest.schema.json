@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Circle Calculus Theorem Manifest",
+  "type": "object",
+  "required": [
+    "theorems"
+  ],
+  "properties": {
+    "theorems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "status",
+          "lean_name",
+          "informal_statement",
+          "formal_statement",
+          "dictionary_dependencies",
+          "paper_refs",
+          "verification"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^CC-T[0-9]{4}$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "planned",
+              "stated",
+              "proved",
+              "blocked",
+              "deferred"
+            ]
+          },
+          "lean_name": {
+            "type": "string"
+          },
+          "informal_statement": {
+            "type": "string"
+          },
+          "formal_statement": {
+            "type": "string"
+          },
+          "dictionary_dependencies": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "paper_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "python_tests": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "proof_notes": {
+            "type": "string"
+          },
+          "blocker": {
+            "type": "string"
+          },
+          "verification": {
+            "type": "object",
+            "required": [
+              "lean_build_required",
+              "no_sorry_required"
+            ],
+            "properties": {
+              "lean_build_required": {
+                "type": "boolean"
+              },
+              "no_sorry_required": {
+                "type": "boolean"
+              },
+              "python_property_tests": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

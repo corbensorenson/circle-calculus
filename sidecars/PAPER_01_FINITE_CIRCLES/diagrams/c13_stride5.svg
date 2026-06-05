@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="120">
+<text x="20" y="25" font-size="18">C_13, stride 5</text>
+<line x1="30.0" y1="62" x2="65.4" y2="62" stroke="black"/>
+<line x1="85.4" y1="62" x2="120.8" y2="62" stroke="black"/>
+<line x1="140.8" y1="62" x2="176.2" y2="62" stroke="black"/>
+<line x1="196.2" y1="62" x2="231.5" y2="62" stroke="black"/>
+<line x1="251.5" y1="62" x2="286.9" y2="62" stroke="black"/>
+<line x1="306.9" y1="62" x2="342.3" y2="62" stroke="black"/>
+<line x1="362.3" y1="62" x2="397.7" y2="62" stroke="black"/>
+<line x1="417.7" y1="62" x2="453.1" y2="62" stroke="black"/>
+<line x1="473.1" y1="62" x2="508.5" y2="62" stroke="black"/>
+<line x1="528.5" y1="62" x2="563.8" y2="62" stroke="black"/>
+<line x1="583.8" y1="62" x2="619.2" y2="62" stroke="black"/>
+<line x1="639.2" y1="62" x2="674.6" y2="62" stroke="black"/>
+<text x="20.0" y="70" font-size="16" text-anchor="middle">0</text>
+<text x="75.4" y="70" font-size="16" text-anchor="middle">5</text>
+<text x="130.8" y="70" font-size="16" text-anchor="middle">10</text>
+<text x="186.2" y="70" font-size="16" text-anchor="middle">2</text>
+<text x="241.5" y="70" font-size="16" text-anchor="middle">7</text>
+<text x="296.9" y="70" font-size="16" text-anchor="middle">12</text>
+<text x="352.3" y="70" font-size="16" text-anchor="middle">4</text>
+<text x="407.7" y="70" font-size="16" text-anchor="middle">9</text>
+<text x="463.1" y="70" font-size="16" text-anchor="middle">1</text>
+<text x="518.5" y="70" font-size="16" text-anchor="middle">6</text>
+<text x="573.8" y="70" font-size="16" text-anchor="middle">11</text>
+<text x="629.2" y="70" font-size="16" text-anchor="middle">3</text>
+<text x="684.6" y="70" font-size="16" text-anchor="middle">8</text>
+</svg>

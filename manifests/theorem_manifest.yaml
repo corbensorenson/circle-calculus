@@ -1,0 +1,256 @@
+theorems:
+  - id: CC-T0001
+    name: Rotation zero
+    status: proved
+    lean_name: Circle.rot_zero
+    informal_statement: "Rotating by zero leaves every node unchanged."
+    formal_statement: "forall (n : Nat) (x : Circle.C n), Circle.rot n 0 x = x"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0101"]
+    paper_refs: ["PAPER_01_FINITE_CIRCLES.section.rotation"]
+    python_tests: ["tests/test_rotation.py::test_rot_zero"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Rotation.lean."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["rot(n,0,i)==i%n"]
+
+  - id: CC-T0002
+    name: Rotation composition
+    status: proved
+    lean_name: Circle.rot_comp
+    informal_statement: "Composing rotations adds their strides."
+    formal_statement: "forall (n a b : Nat) (x : Circle.C n), Circle.rot n a (Circle.rot n b x) = Circle.rot n (a+b) x"
+    dictionary_dependencies: ["CC-0101"]
+    paper_refs: ["PAPER_01_FINITE_CIRCLES.section.rotation"]
+    python_tests: ["tests/test_rotation.py::test_rot_comp"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Rotation.lean."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["rot(n,a,rot(n,b,i))==rot(n,a+b,i)"]
+
+  - id: CC-T0003
+    name: Rotation inverse
+    status: proved
+    lean_name: Circle.rot_inverse_left
+    informal_statement: "A rotation followed by the opposite rotation returns to the starting node."
+    formal_statement: "forall (n a : Nat) (x : Circle.C n), x + (a : ZMod n) - (a : ZMod n) = x"
+    dictionary_dependencies: ["CC-0101"]
+    paper_refs: ["PAPER_01_FINITE_CIRCLES.section.rotation"]
+    python_tests: ["tests/test_rotation.py::test_rot_inverse"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Rotation.lean."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["rot(n,-a,rot(n,a,i))==i%n"]
+
+  - id: CC-T0004
+    name: Closure condition
+    status: proved
+    lean_name: Circle.closesAt_iff_stride_multiple_zero
+    informal_statement: "A coil closes at step m exactly when m times its stride is zero in C_n."
+    formal_statement: "forall (n stride start steps : Nat), Circle.closesAt n stride start steps iff ((steps * stride : Nat) : ZMod n) = 0"
+    dictionary_dependencies: ["CC-0201", "CC-0202"]
+    paper_refs: ["PAPER_01_FINITE_CIRCLES.section.closure"]
+    python_tests: ["tests/test_orbit_period.py::test_period_eq_n_div_gcd"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Coil.lean."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["coil closes at m iff (m*k)%n==0"]
+
+  - id: CC-T0005
+    name: Period equals n divided by gcd
+    status: proved
+    lean_name: Circle.period_eq_n_div_gcd
+    informal_statement: "The period of stride k on C_n is n/gcd(n,k)."
+    formal_statement: "forall {n k : Nat}, n != 0 -> Circle.period n k = n / Nat.gcd n k"
+    dictionary_dependencies: ["CC-0201", "CC-0205"]
+    paper_refs: ["PAPER_01_FINITE_CIRCLES.section.period"]
+    python_tests: ["tests/test_orbit_period.py::test_period_eq_n_div_gcd"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Period.lean using ZMod.addOrderOf_coe."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["period(n,k)==n//gcd(n,k)"]
+
+  - id: CC-T0006
+    name: Orbit decomposition count
+    status: proved
+    lean_name: Circle.orbit_decomposition_count
+    informal_statement: "Stride k partitions C_n into gcd(n,k) disjoint cycles."
+    formal_statement: "forall {n k : Nat}, n != 0 -> Circle.orbitClassCount n k = Nat.gcd n k"
+    dictionary_dependencies: ["CC-0201", "CC-0205", "CC-0207", "CC-0208"]
+    paper_refs: ["PAPER_01_FINITE_CIRCLES.section.orbits"]
+    python_tests: ["tests/test_orbit_period.py::test_orbit_decomposition"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Orbit.lean using the quotient by the stride-generated additive subgroup, Lagrange's theorem, Fintype.card_zmultiples, and ZMod.addOrderOf_coe."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["number_of_distinct_orbits(n,k)==gcd(n,k)"]
+
+  - id: CC-T0007
+    name: Prime full coil
+    status: proved
+    lean_name: Circle.prime_full_coil
+    informal_statement: "Every nonzero stride smaller than a prime circle size generates a full coil."
+    formal_statement: "forall {p k : Nat}, Nat.Prime p -> 0 < k -> k < p -> Circle.period p k = p"
+    dictionary_dependencies: ["CC-0201", "CC-0205", "CC-0206"]
+    paper_refs: ["PAPER_01_FINITE_CIRCLES.section.prime"]
+    python_tests: ["tests/test_prime_coils.py::test_prime_full_coils"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Prime.lean from CC-T0005 and Nat.coprime_of_lt_prime."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["for prime p and 1<=k<p: len(orbit(p,0,k))==p"]
+
+  - id: CC-T0008
+    name: Scaling invertible iff coprime
+    status: planned
+    lean_name: Circle.scale_invertible_iff_coprime
+    informal_statement: "Scaling by k is invertible on C_n exactly when gcd(n,k)=1."
+    formal_statement: "deferred formal statement"
+    dictionary_dependencies: ["CC-0001", "CC-0002"]
+    paper_refs: ["PAPER_04_MULTIPLICATION_SCALING.section.scaling"]
+    python_tests: ["tests/test_scaling.py::test_scale_permutation_iff_coprime"]
+    proof_notes: "Later Paper 4 target."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["scale is permutation iff gcd(n,k)==1"]
+
+  - id: CC-T0009
+    name: Lift unique
+    status: proved
+    lean_name: Circle.lift_unique
+    informal_statement: "Every natural number has a unique winding/residue decomposition."
+    formal_statement: "forall {modulus value winding residue : Nat}, modulus != 0 -> residue < modulus -> winding * modulus + residue = value -> winding = Circle.liftWinding modulus value and residue = Circle.liftResidue modulus value"
+    dictionary_dependencies: ["CC-0301"]
+    paper_refs: ["PAPER_02_WINDING_NATURALS.section.lift"]
+    python_tests: ["tests/test_winding.py::test_lift_unique_decomposition_round_trip"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Winding.lean using natural-number division and modulo uniqueness."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["value == q*n+r and 0<=r<n"]
+
+  - id: CC-T0010
+    name: Addition as path concatenation
+    status: proved
+    lean_name: Circle.lift_add_decomposition
+    informal_statement: "Lifted addition concatenates two path counts by adding windings, adding residues, and carrying residue overflow into the winding count."
+    formal_statement: "forall {modulus left right : Nat}, modulus != 0 -> Circle.liftAddWinding modulus left right * modulus + Circle.liftAddResidue modulus left right = left + right and Circle.liftAddResidue modulus left right < modulus"
+    dictionary_dependencies: ["CC-0301", "CC-0303"]
+    paper_refs: ["PAPER_02_WINDING_NATURALS.section.addition"]
+    python_tests: ["tests/test_winding.py::test_lift_add_path_concatenation"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Winding.lean using quotient/remainder decomposition of the sum of residues."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["lift_add(modulus,left,right).value == left+right and residue < modulus"]
+
+  - id: CC-T0011
+    name: Lift exists
+    status: proved
+    lean_name: Circle.lift_exists
+    informal_statement: "Every natural number has a canonical winding/residue decomposition for each positive modulus."
+    formal_statement: "forall {modulus value : Nat}, modulus != 0 -> Circle.liftWinding modulus value * modulus + Circle.liftResidue modulus value = value and Circle.liftResidue modulus value < modulus"
+    dictionary_dependencies: ["CC-0301"]
+    paper_refs: ["PAPER_02_WINDING_NATURALS.section.lift"]
+    python_tests: ["tests/test_winding.py::test_lift_unique_decomposition_round_trip"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Winding.lean from Nat.div_add_mod and Nat.mod_lt."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["lift(modulus,value).value == value and residue < modulus"]
+
+  - id: CC-T0012
+    name: Lift successor with carry
+    status: proved
+    lean_name: Circle.lift_successor_decomposition
+    informal_statement: "Successor is unit residue motion with carry into the winding count."
+    formal_statement: "forall {modulus value : Nat}, modulus != 0 -> Circle.liftSuccWinding modulus value * modulus + Circle.liftSuccResidue modulus value = value + 1 and Circle.liftSuccResidue modulus value < modulus"
+    dictionary_dependencies: ["CC-0301", "CC-0302"]
+    paper_refs: ["PAPER_02_WINDING_NATURALS.section.successor"]
+    python_tests: ["tests/test_winding.py::test_lift_successor_with_carry"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Winding.lean using quotient/remainder decomposition of residue+1."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["lift_successor(modulus,value).value == value+1 and residue < modulus"]
+
+  - id: CC-T0013
+    name: Lifted addition right zero identity
+    status: proved
+    lean_name: Circle.lift_add_zero_right
+    informal_statement: "Zero is a right identity for lifted addition."
+    formal_statement: "forall {modulus value : Nat}, modulus != 0 -> Circle.liftAddWinding modulus value 0 = Circle.liftWinding modulus value and Circle.liftAddResidue modulus value 0 = Circle.liftResidue modulus value"
+    dictionary_dependencies: ["CC-0301", "CC-0303"]
+    paper_refs: ["PAPER_02_WINDING_NATURALS.section.addition"]
+    python_tests: ["tests/test_winding.py::test_lift_add_zero_identity"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Winding.lean."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["lift_add(modulus,value,0)==lift(modulus,value)"]
+
+  - id: CC-T0014
+    name: Lifted addition associativity
+    status: proved
+    lean_name: Circle.lift_add_assoc_value
+    informal_statement: "Lifted addition is associative at the reconstructed-value level."
+    formal_statement: "forall {modulus left middle right : Nat}, modulus != 0 -> value((left+middle)+right as a lifted addition) = value(left+(middle+right) as a lifted addition)"
+    dictionary_dependencies: ["CC-0301", "CC-0303"]
+    paper_refs: ["PAPER_02_WINDING_NATURALS.section.addition"]
+    python_tests: ["tests/test_winding.py::test_lift_add_associative_value"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Winding.lean by reducing both lifted additions to natural-number sums."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["lift_add(modulus,left+middle,right).value == lift_add(modulus,left,middle+right).value"]
+
+  - id: CC-T0015
+    name: Lifted addition left zero identity
+    status: proved
+    lean_name: Circle.lift_add_zero_left
+    informal_statement: "Zero is a left identity for lifted addition."
+    formal_statement: "forall {modulus value : Nat}, modulus != 0 -> Circle.liftAddWinding modulus 0 value = Circle.liftWinding modulus value and Circle.liftAddResidue modulus 0 value = Circle.liftResidue modulus value"
+    dictionary_dependencies: ["CC-0301", "CC-0303"]
+    paper_refs: ["PAPER_02_WINDING_NATURALS.section.addition"]
+    python_tests: ["tests/test_winding.py::test_lift_add_zero_identity"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Winding.lean."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["lift_add(modulus,0,value)==lift(modulus,value)"]
+
+  - id: CC-T0016
+    name: Iterated lifted successor
+    status: proved
+    lean_name: Circle.lift_iter_successor_decomposition
+    informal_statement: "Repeated lifted successor corresponds to natural-number induction by unit steps."
+    formal_statement: "forall {modulus winding residue value steps : Nat}, modulus != 0 -> residue < modulus -> winding * modulus + residue = value -> iterating the lifted successor transition steps times reconstructs value + steps and leaves residue bounded"
+    dictionary_dependencies: ["CC-0301", "CC-0302", "CC-0304"]
+    paper_refs: ["PAPER_02_WINDING_NATURALS.section.induction"]
+    python_tests: ["tests/test_winding.py::test_lift_iter_successor_induction"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Winding.lean by induction on the number of successor steps."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["lift_iter_successor(modulus,value,steps).value == value+steps and residue < modulus"]

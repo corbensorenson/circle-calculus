@@ -1,0 +1,100 @@
+entries:
+  - id: CC-0001
+    name: Circle
+    kind: object
+    symbol: C_n
+    formal_definition: "In v0, C_n is the finite cyclic address space modeled as ZMod n, with n > 0 for finite marked circles."
+    intuition: "A closed address space whose positions wrap around."
+    dependencies: []
+    rewrite_rules: []
+    formal_models: ["ZMod n", "integers modulo n", "finite cyclic group"]
+    lean_declarations: ["Circle.C"]
+    python_objects: ["circle_math.finite.Circle"]
+    introduced_in: "Paper 1"
+    forbidden_meanings:
+      - "A Euclidean metric circle in v0."
+      - "A set of planar points at fixed radius in v0."
+    examples: ["C_12 as a clock", "C_13 as a prime circle"]
+
+  - id: CC-0002
+    name: Node
+    kind: object
+    symbol: "node(n,i)"
+    formal_definition: "An element of C_n, represented by the residue class of i modulo n."
+    intuition: "A marked address on the circle."
+    dependencies: ["CC-0001"]
+    rewrite_rules: ["node(n,i) = node(n, i mod n)"]
+    formal_models: ["element of ZMod n"]
+    lean_declarations: []
+    python_objects: ["Circle.node"]
+    introduced_in: "Paper 1"
+    forbidden_meanings:
+      - "A geometric point in a plane unless a later geometry model is explicitly active."
+    examples: ["node(12,14)=node(12,2)"]
+
+  - id: CC-0101
+    name: Rotation
+    kind: operation
+    symbol: "rot(n,k)"
+    formal_definition: "rot(n,k)(x) = x + k in C_n."
+    intuition: "Move k steps around the circle."
+    dependencies: ["CC-0001", "CC-0002"]
+    rewrite_rules:
+      - "rot(n,0)=identity"
+      - "rot(n,a)∘rot(n,b)=rot(n,a+b)"
+      - "rot(n,k+n)=rot(n,k)"
+    formal_models: ["addition by k in ZMod n"]
+    lean_declarations: ["Circle.rot", "Circle.rot_zero", "Circle.rot_comp"]
+    python_objects: ["Circle.rot"]
+    introduced_in: "Paper 1"
+    forbidden_meanings:
+      - "Physical spinning unless a later model interprets it physically."
+    examples: ["rot(12,5)(8)=1"]
+
+  - id: CC-0201
+    name: Coil
+    kind: object
+    symbol: "coil(n,k,start)"
+    formal_definition: "The orbit {start + t*k mod n | t ∈ Nat}."
+    intuition: "The path traced by repeatedly applying the same rotation."
+    dependencies: ["CC-0101"]
+    rewrite_rules: []
+    formal_models: ["additive orbit in ZMod n"]
+    lean_declarations: []
+    python_objects: ["Circle.orbit"]
+    introduced_in: "Paper 1"
+    forbidden_meanings:
+      - "A visual spiral without a formal orbit rule."
+    examples: ["coil(12,4,0) = 0→4→8→0"]
+
+  - id: CC-0205
+    name: Period
+    kind: relation
+    symbol: "period(n,k)"
+    formal_definition: "The least positive m such that m*k = 0 in C_n; in Lean v0, addOrderOf (k : ZMod n)."
+    intuition: "How many steps before the coil returns."
+    dependencies: ["CC-0201"]
+    rewrite_rules: ["period(n,k)=n/gcd(n,k) for n≠0"]
+    formal_models: ["additive order in ZMod n"]
+    lean_declarations: ["Circle.period", "Circle.period_eq_n_div_gcd"]
+    python_objects: ["Circle.period"]
+    introduced_in: "Paper 1"
+    forbidden_meanings:
+      - "The length of a drawn curve."
+    examples: ["period(12,4)=3", "period(13,5)=13"]
+
+  - id: CC-W005
+    name: Gödel Escape Fallacy
+    kind: warning
+    symbol: ""
+    formal_definition: "The invalid claim that a new encoding avoids incompleteness merely by changing notation or representation."
+    intuition: "Circle encodings can arithmetize syntax, but they do not evade Gödel boundaries."
+    dependencies: []
+    rewrite_rules: []
+    formal_models: ["metatheory warning"]
+    lean_declarations: []
+    python_objects: []
+    introduced_in: "Paper 9"
+    forbidden_meanings:
+      - "A proof that Circle Calculus is complete for all arithmetic truth."
+    examples: ["Gödel coil numbering must be treated as arithmetization, not escape."]

@@ -1,0 +1,100 @@
+entries:
+  - id: DIM-0001
+    name: Topological Sphere Convention
+    kind: convention
+    formal_definition: "S^d denotes the d-dimensional sphere, typically modeled as the boundary of a (d+1)-ball or as unit points in R^(d+1)."
+    intuition: "The superscript is the surface dimension, not the embedding dimension."
+    dependencies: []
+    introduced_in: "DIMENSIONAL_ROADMAP"
+    forbidden_meanings:
+      - "Do not call S^3 a 4-sphere. It is the 3-sphere embedded in 4D space."
+
+  - id: S0-0001
+    name: Two-Point Sphere
+    kind: object
+    formal_definition: "S^0 is the two-point sphere, used as opposition/sign in the topological sphere ladder."
+    intuition: "The boundary of an interval: two endpoints."
+    dependencies: ["DIM-0001"]
+    introduced_in: "S0.1"
+    forbidden_meanings:
+      - "Do not confuse S^0 with C_1."
+
+  - id: S1-0001
+    name: Circle Core
+    kind: object
+    formal_definition: "S^1 is represented in the finite core by cyclic address spaces C_n."
+    intuition: "Phase, recurrence, modular motion, and closure."
+    dependencies: ["DIM-0001"]
+    introduced_in: "S1.1"
+    forbidden_meanings:
+      - "Do not treat every S^1 theorem as automatically true for S^2 or S^3."
+
+  - id: S2-0001
+    name: Suspended Circle
+    kind: object
+    formal_definition: "SuspC(n) is the finite suspension of C_n, formed by adding north and south poles and coning the circle to both poles."
+    intuition: "The first finite sphere built directly from a circle."
+    dependencies: ["S1-0001"]
+    introduced_in: "S2.1"
+    forbidden_meanings:
+      - "Do not define this using Euclidean radius in the combinatorial layer."
+
+  - id: S2-0002
+    name: Pole
+    kind: object
+    formal_definition: "A collapsed endpoint in a sphere grid where longitude is undefined."
+    intuition: "A place where all longitudes meet."
+    dependencies: ["S2-0001"]
+    introduced_in: "S2.1"
+    forbidden_meanings:
+      - "Do not assign ordinary longitude identity to a pole."
+
+  - id: S2-W0001
+    name: Torus Confusion Warning
+    kind: warning
+    formal_definition: "C_n × C_m has two independent cyclic directions and is torus-like, not sphere-like."
+    intuition: "A sphere needs endpoint collapse; a torus wraps both ways."
+    dependencies: ["S1-0001"]
+    introduced_in: "S2.2"
+    forbidden_meanings:
+      - "Do not use C_n × C_m as the definition of SphereGrid."
+
+  - id: S3-0001
+    name: Three-Sphere
+    kind: object
+    formal_definition: "S^3 is the 3-dimensional sphere, modeled combinatorially by suspending S^2 and algebraically by unit quaternions."
+    intuition: "The 4D hypersphere; the place where hidden phase and quaternionic rotation enter."
+    dependencies: ["S2-0001"]
+    introduced_in: "S3.1"
+    forbidden_meanings:
+      - "Do not call S^3 globally S^2 × S^1."
+
+  - id: S3-0002
+    name: Hopf Coil
+    kind: object
+    formal_definition: "A circle-like fiber in the Hopf structure S^1 -> S^3 -> S^2."
+    intuition: "A hidden circle of phase above a visible sphere point."
+    dependencies: ["S3-0001", "S1-0001", "S2-0001"]
+    introduced_in: "S3.3"
+    forbidden_meanings:
+      - "Do not treat projected Hopf drawings as proofs."
+
+  - id: S7-0001
+    name: Seven-Sphere
+    kind: object
+    formal_definition: "S^7 is the 7-dimensional sphere, modeled topologically by iterated suspension and algebraically by unit octonions."
+    intuition: "The next major algebraic jump after S^3."
+    dependencies: ["S3-0001"]
+    introduced_in: "S7.1"
+    forbidden_meanings:
+      - "Do not skip the topological construction and jump directly to octonions as if they define all of S^7 for the project."
+
+  - id: S7-W0001
+    name: Unit Octonions Are Not A Group
+    kind: warning
+    formal_definition: "Octonion multiplication is nonassociative, so unit octonions cannot be treated as a group under ordinary multiplication."
+    intuition: "In S^7, operation order and bracketing both matter."
+    dependencies: ["S7-0001"]
+    introduced_in: "S7.3"
+    forbidden_meanings:
+      - "Do not use group APIs for unit octonions unless a formally justified alternative structure is defined."

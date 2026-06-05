@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="120">
+<text x="20" y="25" font-size="18">C_12, stride 4</text>
+<line x1="30.0" y1="62" x2="250.0" y2="62" stroke="black"/>
+<line x1="270.0" y1="62" x2="490.0" y2="62" stroke="black"/>
+<text x="20.0" y="70" font-size="16" text-anchor="middle">0</text>
+<text x="260.0" y="70" font-size="16" text-anchor="middle">4</text>
+<text x="500.0" y="70" font-size="16" text-anchor="middle">8</text>
+</svg>

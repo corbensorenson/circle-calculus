@@ -1,0 +1,42 @@
+papers:
+  - id: PAPER_01_FINITE_CIRCLES
+    title: "Circle Calculus I: Finite Circles, Rotations, and Coils"
+    status: outline
+    sidecar: sidecars/PAPER_01_FINITE_CIRCLES
+    theorem_ids:
+      - CC-T0001
+      - CC-T0002
+      - CC-T0003
+      - CC-T0004
+      - CC-T0005
+      - CC-T0006
+      - CC-T0007
+    dictionary_ids:
+      - CC-0001
+      - CC-0002
+      - CC-0101
+      - CC-0201
+      - CC-0202
+      - CC-0205
+      - CC-0206
+      - CC-0207
+      - CC-0208
+
+  - id: PAPER_02_WINDING_NATURALS
+    title: "Circle Calculus II: Winding, Lifted Circles, and Natural Numbers"
+    status: draft
+    sidecar: sidecars/PAPER_02_WINDING_NATURALS
+    theorem_ids:
+      - CC-T0009
+      - CC-T0010
+      - CC-T0011
+      - CC-T0012
+      - CC-T0013
+      - CC-T0014
+      - CC-T0015
+      - CC-T0016
+    dictionary_ids:
+      - CC-0301
+      - CC-0302
+      - CC-0303
+      - CC-0304

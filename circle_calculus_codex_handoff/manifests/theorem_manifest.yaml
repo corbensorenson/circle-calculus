@@ -1,0 +1,80 @@
+theorems:
+  - id: CC-T0001
+    name: Rotation zero
+    status: planned
+    lean_name: Circle.rot_zero
+    informal_statement: "Rotating by zero leaves every node unchanged."
+    formal_statement: "∀ (n : Nat) (x : Circle.C n), Circle.rot n 0 x = x"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0101"]
+    paper_refs: ["PAPER_01_FINITE_CIRCLES.section.rotation"]
+    python_tests: ["tests/test_rotation.py::test_rot_zero"]
+    proof_notes: "Should follow by simp [Circle.rot]."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["rot(n,0,i)==i%n"]
+
+  - id: CC-T0002
+    name: Rotation composition
+    status: planned
+    lean_name: Circle.rot_comp
+    informal_statement: "Composing rotations adds their strides."
+    formal_statement: "∀ (n a b : Nat) (x : Circle.C n), Circle.rot n a (Circle.rot n b x) = Circle.rot n (a+b) x"
+    dictionary_dependencies: ["CC-0101"]
+    paper_refs: ["PAPER_01_FINITE_CIRCLES.section.rotation"]
+    python_tests: ["tests/test_rotation.py::test_rot_comp"]
+    proof_notes: "Should follow from addition associativity and natCast_add in ZMod."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["rot(n,a,rot(n,b,i))==rot(n,a+b,i)"]
+
+  - id: CC-T0003
+    name: Rotation inverse
+    status: planned
+    lean_name: Circle.rot_inverse_left
+    informal_statement: "A rotation followed by the opposite rotation returns to the starting node."
+    formal_statement: "∀ (n a : Nat) (x : Circle.C n), x + (a : ZMod n) - (a : ZMod n) = x"
+    dictionary_dependencies: ["CC-0101"]
+    paper_refs: ["PAPER_01_FINITE_CIRCLES.section.rotation"]
+    python_tests: ["tests/test_rotation.py::test_rot_inverse"]
+    proof_notes: "May be easier using additive group simplification rather than rot with Nat-only stride."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["rot(n,-a,rot(n,a,i))==i%n"]
+
+  - id: CC-T0004
+    name: Period equals n divided by gcd
+    status: planned
+    lean_name: Circle.period_eq_n_div_gcd
+    informal_statement: "The period of stride k on C_n is n/gcd(n,k)."
+    formal_statement: "∀ {n k : Nat}, n ≠ 0 → Circle.period n k = n / Nat.gcd n k"
+    dictionary_dependencies: ["CC-0201", "CC-0205"]
+    paper_refs: ["PAPER_01_FINITE_CIRCLES.section.period"]
+    python_tests: ["tests/test_orbit_period.py::test_period_eq_n_div_gcd"]
+    proof_notes: "Use ZMod.addOrderOf_coe if available."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["period(n,k)==n//gcd(n,k)"]
+
+  - id: CC-T0005
+    name: Prime full coil
+    status: planned
+    lean_name: Circle.prime_full_coil
+    informal_statement: "Every nonzero stride smaller than a prime circle size generates a full coil."
+    formal_statement: "∀ {p k : Nat}, Nat.Prime p → 0 < k → k < p → Circle.period p k = p"
+    dictionary_dependencies: ["CC-0201", "CC-0205"]
+    paper_refs: ["PAPER_01_FINITE_CIRCLES.section.prime"]
+    python_tests: ["tests/test_prime_coils.py::test_prime_full_coils"]
+    proof_notes: "Use prime.coprime_iff_not_dvd or related mathlib lemma plus period theorem."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["for prime p and 1<=k<p: len(orbit(p,0,k))==p"]
