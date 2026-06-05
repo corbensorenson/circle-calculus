@@ -30,6 +30,8 @@ Positive and negative integers represent the two orientations of motion on the s
 
 `S1O-T0003` is proved by `Circle.S1.signedRot_inverse`: moving by `k` and then by `-k` returns to the starting node.
 
+The Python sidecar checks the same signed finite-circle examples for zero stride, composition by adding signed strides, and inverse motion. These examples support the paper but do not replace the Lean theorem spine.
+
 ## Dictionary Targets
 
 - `S1-0002`: signed rotation

@@ -14,7 +14,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S1_03_INTEGERS_ORIENTATION/python/test_signed_rotation_examples.py
     blocker: ""
   - id: S1O-T0002
     status: lean_proved
@@ -27,7 +28,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S1_03_INTEGERS_ORIENTATION/python/test_signed_rotation_examples.py
     blocker: ""
   - id: S1O-T0003
     status: lean_proved
@@ -40,6 +42,7 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S1_03_INTEGERS_ORIENTATION/python/test_signed_rotation_examples.py
     blocker: ""
 warnings: []

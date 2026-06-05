@@ -150,6 +150,20 @@ Required artifacts:
 
 All future theorem statuses must remain planned, deferred, exploratory_python, or lean_stated until actual proofs exist.
 
+## Python Sidecar Backfill
+
+Goal: make the executable examples line up with the Lean-backed papers without duplicating adapter-only material. The sidecars remain support artifacts; they never turn an unproved statement into a proved theorem.
+
+- [x] Root `S1` finite-circle and winding papers already have Python examples through `sidecars/PAPER_01_FINITE_CIRCLES/python/test_paper_01_examples.py` and `sidecars/PAPER_02_WINDING_NATURALS/python/test_paper_02_examples.py`.
+- [x] `papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md` has Python examples for the two-point model, antipode involution, and `C_1` warning.
+- [x] `papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md` has Python examples for zero signed rotation, signed composition, and inverse motion.
+- [x] `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md` already has Python examples for the scaling/factor spine.
+- [ ] Backfill `S2` Python examples for suspended circles, sphere grids, antipodes, and finite coordinate rotations.
+- [ ] Backfill `S3` Python examples for finite hypersphere counts, quaternion coils, and spin sign cancellation. `PAPER_S3_03_HOPF_COILS` already has Python examples.
+- [ ] Backfill `S4` through `S6` Python examples for suspension/Euler bridge papers.
+- [ ] Backfill `S7` and future `S15` Python examples for finite suspension/topological landing facts where useful.
+- [x] Phase II and application seed papers now have Python examples or benchmark sidecars where useful.
+
 ## Paper Checklist
 
 ### S1: Circle Core

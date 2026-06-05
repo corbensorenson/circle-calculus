@@ -18,6 +18,8 @@ This paper separates the two-point sphere `S^0` from the one-node circle `C_1`.
 
 `S0-T0002` is proved by `Circle.S0.antipode_involutive`: applying the antipode twice returns the original sign.
 
+The Python sidecar checks the same two-point model, the antipode involution, and the guardrail that the one-node circle `C_1` is not `S^0`. These examples are executable support, not a replacement for the Lean proofs.
+
 The Lean model is deliberately small:
 
 ```text
