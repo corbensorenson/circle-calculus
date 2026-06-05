@@ -61,6 +61,8 @@ The theorem manifest also includes `CC-T0008`, proving that scaling by `k` is in
 
 The D0 dimensional scaffold is also in place: dimension manifests, dimension dictionaries, planned paper stubs, Lean/Python scaffolds, and dimension validation scripts. Future-dimension theorems remain planned, deferred, exploratory, or stated until actual Lean proofs exist.
 
+The `S^0` backfill has also started: the two-point opposition model proves `S0-T0001` and `S0-T0002` in Lean, keeping `S^0` separate from the one-node circle `C_1`.
+
 ## Proof Standard
 
 A theorem is treated as proved only when all of the following are true:

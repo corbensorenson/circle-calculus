@@ -161,8 +161,9 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
 
 ### S0: Opposition And Sign
 
-- [ ] `papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md`
+- [x] `papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md`
   - Proof targets: `S0-T0001`, `S0-T0002`
+  - Status: both finite opposition facts are Lean-proved in `Circle/S0/Scaffold.lean`.
   - Warning target: `S0-W0001`, `C_1` is not `S^0`.
 
 ### S2: Sphere Calculus

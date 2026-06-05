@@ -1,4 +1,16 @@
 papers:
+  - id: PAPER_S0_01_TWO_POINT_OPPOSITION
+    title: "Circle Calculus S0.1: Two-Point Opposition"
+    status: draft
+    sidecar: sidecars/PAPER_S0_01_TWO_POINT_OPPOSITION
+    theorem_ids:
+      - S0-T0001
+      - S0-T0002
+    dictionary_ids:
+      - S0-0001
+      - S0-0002
+      - S0-W0001
+
   - id: PAPER_01_FINITE_CIRCLES
     title: "Circle Calculus I: Finite Circles, Rotations, and Coils"
     status: outline

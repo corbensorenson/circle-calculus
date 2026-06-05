@@ -17,7 +17,7 @@ dimensions:
     display_name: "Opposition and sign"
     sphere_notation: "S^0"
     role: "two-point opposition backfill"
-    status: planned
+    status: active
     lean_namespace: "Circle.S0"
     lean_root: "Circle/S0"
     python_root: "circle_math/dimensions"
@@ -138,4 +138,3 @@ dimensions:
     dictionary_file: "dictionary/dimensions/S15.yaml"
     allowed_import_dimensions: ["Common", "S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7"]
     forbidden_import_dimensions: []
-
