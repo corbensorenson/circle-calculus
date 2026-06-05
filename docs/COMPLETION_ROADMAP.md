@@ -223,7 +223,7 @@ Goal: make the executable examples line up with the Lean-backed papers without d
   - Status: `S3H-T0001` through `S3H-T0005` are Lean-proved bounded Hopf coordinate and phase-action facts; analytic circle parameterization beyond these algebraic phase laws, quotient topology, and global fibration formalization remain future work.
 - [x] `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md`
   - Proof target: `S3S-T0001` through `S3S-T0003`
-  - Status: quaternion conjugation identity action, zero preservation, and sign cancellation are Lean-proved; full `SO(3)` quotient remains future work.
+  - Status: polished draft proves quaternion conjugation identity action, zero preservation, and sign cancellation; full `SO(3)` quotient remains future work.
 
 ### S4-S6: Geometric Bridge
 
@@ -246,7 +246,7 @@ Goal: make the executable examples line up with the Lean-backed papers without d
 - [x] `papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md`
   - Proof targets: `S7C-T0001`, `S7C-T0002`, `S7C-T0003`
   - Prove topological/combinatorial `S7` before octonion algebra.
-  - Status: finite iterated-suspension model, S6 suspension link, and Euler characteristic are Lean-proved.
+  - Status: polished draft proves the finite iterated-suspension model, S6 suspension link, and Euler characteristic before octonion algebra enters.
 - [x] `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md`
   - Targets: `S7QH-T0001`, `S7QH-T0002`
   - Keep roadmap/exploratory until `S3` quaternion calculus and `S4` base are stable.
@@ -262,7 +262,7 @@ Goal: make the executable examples line up with the Lean-backed papers without d
 - [x] `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md`
   - Future targets: `S15-T0001` through `S15-T0004`
   - Do not claim the full octonionic Hopf fibration before quotient topology and phase action are formalized.
-  - Status: `S15-T0001` is a Lean roadmap marker; `S15-T0002` through `S15-T0004` are Lean-proved finite topological/coordinate landing facts; full fibration topology remains future work.
+  - Status: polished draft records `S15-T0001` as a Lean roadmap marker; `S15-T0002` through `S15-T0004` are Lean-proved finite topological/coordinate landing facts; full fibration topology remains future work.
 
 ### Phase II: Structured Transformations After S15
 

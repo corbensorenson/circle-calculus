@@ -67,15 +67,15 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md` | draft | `S3C-T0001` through `S3C-T0004` proved with Python examples |
 | `papers/S3/PAPER_S3_02_QUATERNION_COILS.md` | draft | `S3Q-T0001` through `S3Q-T0005` proved with Python examples |
 | `papers/S3/PAPER_S3_03_HOPF_COILS.md` | draft/proved spine | `S3H-T0001` through `S3H-T0005` are Lean-proved bounded Hopf coordinate and phase-action facts; full fibration topology remains future work |
-| `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md` | draft | `S3S-T0001` through `S3S-T0003` proved with Python examples |
+| `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md` | polished draft | `S3S-T0001` through `S3S-T0003` proved with Python examples |
 | `papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md` | polished draft | `COMMON-T0001` through `COMMON-T0003` and `S456-T0001` proved with Python examples |
 | `papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md` | polished draft | `S4-T0001` and `S4-T0002` proved with Python examples |
 | `papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md` | polished draft | `S5-T0001` and `S5-T0002` proved with Python examples |
 | `papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md` | polished draft | `S6-T0001` and `S6-T0002` proved with Python examples; `S6-W0001` warning tracked |
-| `papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md` | draft | `S7C-T0001` through `S7C-T0003` proved with Python examples |
+| `papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md` | polished draft | `S7C-T0001` through `S7C-T0003` proved with Python examples |
 | `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md` | draft/partial proof | `S7QH-T0001` and `S7QH-T0002` are Lean-proved coordinate theorems; full fibration topology remains future work |
 | `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md` | draft/proved spine | `S7O-T0001` through `S7O-T0006` are Lean-proved in a bounded Cayley-Dickson coordinate model |
-| `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | draft/partial proof | `S15-T0001` is a Lean roadmap marker with Python examples; `S15-T0002` through `S15-T0004` are Lean-proved topological/coordinate landing facts with Python examples |
+| `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | polished draft/partial proof | `S15-T0001` is a Lean roadmap marker with Python examples; `S15-T0002` through `S15-T0004` are Lean-proved topological/coordinate landing facts with Python examples |
 | `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md` | draft/proved finite seed | `P2S-T0001` through `P2S-T0003` are Lean-proved double/four suspension facts with Python examples |
 | `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md` | draft/proved finite seed | `P2B-T0001` through `P2B-T0003` are Lean-proved period-8 clock facts with Python examples; Bott/Clifford periodicity remains future work |
 | `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md` | draft/proved trivial seed | `P2BU-T0001` through `P2BU-T0004` are Lean-proved product-bundle projection/fiber facts with Python examples |
