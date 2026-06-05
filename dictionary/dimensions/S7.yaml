@@ -20,7 +20,7 @@ entries:
   - id: S7O-0001
     name: "Octonion model"
     kind: model
-    formal_definition: "The planned S^7 algebraic layer using unit octonions when formal support is robust."
+    formal_definition: "The exploratory Cayley-Dickson octonion model in `circle_math.dimensions.octonion`, with basis, multiplication, conjugation, squared norm, and explicit noncommutative/nonassociative examples tested in Python."
     intuition: "S^7: order and grouping matter."
     dependencies: []
     introduced_in: "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS"
@@ -30,7 +30,7 @@ entries:
   - id: S7O-0002
     name: "Unit octonion"
     kind: object
-    formal_definition: "An octonion with norm one, planned as an S^7 algebraic point."
+    formal_definition: "An octonion with squared norm one in the exploratory Python model."
     intuition: "A unit element of the nonassociative octonion layer."
     dependencies: ["S7O-0001"]
     introduced_in: "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS"

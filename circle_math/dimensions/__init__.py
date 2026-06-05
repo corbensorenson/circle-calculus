@@ -10,6 +10,7 @@ from .hopf import (
     sphere_norm_sq,
     unit_phase,
 )
+from .octonion import Octonion, normalize as normalize_octonion, octonion_basis, real_part
 from .quaternion import (
     Quaternion,
     normalize_pair as normalize_quaternion_pair,
@@ -34,6 +35,10 @@ __all__ = [
     "r5_norm_sq",
     "right_phase_rotate",
     "normalize_quaternion_pair",
+    "normalize_octonion",
+    "Octonion",
+    "octonion_basis",
+    "real_part",
     "sphere_grid_counts",
     "sphere_norm_sq",
     "suspended_circle_counts",
