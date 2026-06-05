@@ -268,6 +268,27 @@ def test_scale_fiber_representative_card_examples() -> None:
                 assert len(fiber) == gcd(n, k)
 
 
+def test_scale_target_fiber_empty_outside_image_examples() -> None:
+    for n in range(1, 33):
+        circle = Circle(n)
+        for k in range(0, 17):
+            image = {circle.scale(x, k) for x in range(n)}
+            for target in range(n):
+                fiber = {x for x in range(n) if circle.scale(x, k) == target}
+                if target not in image:
+                    assert fiber == set()
+
+
+def test_scale_target_fiber_card_inside_image_examples() -> None:
+    for n in range(1, 33):
+        circle = Circle(n)
+        for k in range(0, 17):
+            image = {circle.scale(x, k) for x in range(n)}
+            for target in image:
+                fiber = {x for x in range(n) if circle.scale(x, k) == target}
+                assert len(fiber) == gcd(n, k)
+
+
 def test_coprime_scale_equality_examples() -> None:
     for n in range(1, 33):
         circle = Circle(n)

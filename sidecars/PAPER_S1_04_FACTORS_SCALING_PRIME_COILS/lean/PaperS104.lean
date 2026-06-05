@@ -49,6 +49,9 @@ namespace Circle.PaperS104
 #check Circle.scalePeriodFiberRepresentatives_card
 #check Circle.scaleFiberRepresentativeSet_eq_periodFibers
 #check Circle.scaleFiberRepresentativeSet_card
+#check Circle.scaleTargetFiberRepresentativeSet
+#check Circle.scaleTargetFiberRepresentativeSet_eq_empty_of_not_mem_scaleCircleImage
+#check Circle.scaleTargetFiberRepresentativeSet_card_of_mem_scaleCircleImage
 #check Circle.scale_nat_eq_iff_nat_modEq_of_coprime
 #check Circle.scale_factor_modEq
 

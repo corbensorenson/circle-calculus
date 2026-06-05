@@ -591,6 +591,38 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["scale(n,k,x)==0 iff period(n,k) divides x over positive moduli in bounded tests"]
 
+  - id: CC-T0046
+    name: Scaling target fibers are empty outside the image
+    status: proved
+    lean_name: Circle.scaleTargetFiberRepresentativeSet_eq_empty_of_not_mem_scaleCircleImage
+    informal_statement: "For any target node not in the finite image of the scaling map, the canonical representative fiber over that target is empty."
+    formal_statement: "forall {n k : Nat} {target : Circle.C n}, target notin Circle.scaleCircleImage n k -> Circle.scaleTargetFiberRepresentativeSet n k target = empty"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_target_fiber_empty_outside_image"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean by contradiction: any representative in the target fiber would witness target membership in scaleCircleImage."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["if target notin {scale(n,k,x) | 0 <= x < n}, then {x | 0 <= x < n and scale(n,k,x)=target} is empty"]
+
+  - id: CC-T0047
+    name: Scaling target fibers inside the image have gcd cardinality
+    status: proved
+    lean_name: Circle.scaleTargetFiberRepresentativeSet_card_of_mem_scaleCircleImage
+    informal_statement: "For a nonzero circle size, any target node in the finite image of scaling has a canonical representative fiber of cardinality gcd(n,k)."
+    formal_statement: "forall {n k : Nat}, n != 0 -> forall {target : Circle.C n}, target in Circle.scaleCircleImage n k -> (Circle.scaleTargetFiberRepresentativeSet n k target).card = Nat.gcd n k"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_target_fiber_card_inside_image"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean by choosing an image representative and applying CC-T0044."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["if target in {scale(n,k,x) | 0 <= x < n}, then len({x | 0 <= x < n and scale(n,k,x)=target}) == gcd(n,k)"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

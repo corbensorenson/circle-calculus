@@ -482,6 +482,37 @@ theorem scaleFiberRepresentativeSet_card {n k r : Nat} (hn : n ≠ 0) :
   rw [scaleFiberRepresentativeSet_eq_periodFibers hn]
   exact scalePeriodFiberRepresentatives_card hn
 
+noncomputable def scaleTargetFiberRepresentativeSet (n k : Nat) (target : C n) :
+    Finset Nat :=
+  (Finset.range n).filter (fun x : Nat => scale n k ((x : Nat) : C n) = target)
+
+theorem scaleTargetFiberRepresentativeSet_eq_empty_of_not_mem_scaleCircleImage
+    {n k : Nat} {target : C n} (hnot : target ∉ scaleCircleImage n k) :
+    scaleTargetFiberRepresentativeSet n k target = ∅ := by
+  apply Finset.ext
+  intro x
+  constructor
+  · intro hx
+    unfold scaleTargetFiberRepresentativeSet at hx
+    rcases Finset.mem_filter.mp hx with ⟨hxn, htarget⟩
+    have hmem : target ∈ scaleCircleImage n k := by
+      unfold scaleCircleImage
+      exact Finset.mem_image.mpr ⟨x, hxn, htarget⟩
+    exact (hnot hmem).elim
+  · intro hx
+    simp at hx
+
+theorem scaleTargetFiberRepresentativeSet_card_of_mem_scaleCircleImage
+    {n k : Nat} (hn : n ≠ 0) {target : C n} (hmem : target ∈ scaleCircleImage n k) :
+    (scaleTargetFiberRepresentativeSet n k target).card = Nat.gcd n k := by
+  unfold scaleCircleImage at hmem
+  rcases Finset.mem_image.mp hmem with ⟨r, _, hr⟩
+  have hset : scaleTargetFiberRepresentativeSet n k target = scaleFiberRepresentativeSet n k r := by
+    rw [← hr]
+    rfl
+  rw [hset]
+  exact scaleFiberRepresentativeSet_card hn
+
 theorem scale_nat_eq_iff_nat_modEq_of_coprime {n k x y : Nat} (hcop : Nat.Coprime n k) :
     scale n k ((x : Nat) : C n) = scale n k ((y : Nat) : C n) ↔ x ≡ y [MOD n] := by
   have hbij : Function.Bijective (scale n k) := (scale_invertible_iff_coprime n k).mpr hcop
