@@ -1,6 +1,6 @@
 # Circle Calculus S1.3: Integers, Orientation, and Reversible Motion
 
-Status: draft with the signed-rotation theorem spine Lean-proved and Python examples linked.
+Status: polished draft with the signed-rotation theorem spine Lean-proved and Python examples linked.
 
 ## Aim
 

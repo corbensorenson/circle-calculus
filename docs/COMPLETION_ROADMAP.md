@@ -186,23 +186,23 @@ Goal: make the executable examples line up with the Lean-backed papers without d
   - Status: polished dimension guide draft links the proved theorem spine into the dimension layout while keeping the root paper as the detailed source.
 - [x] `papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md`
   - Proof targets: oriented winding, signed residues, integer addition, additive inverse, reversible motion.
-  - Status: signed zero, composition, and inverse motion are Lean-proved as `S1O-T0001` through `S1O-T0003`.
+  - Status: polished draft; signed zero, composition, and inverse motion are Lean-proved as `S1O-T0001` through `S1O-T0003`.
 - [x] `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md`
   - Proof targets: `CC-T0008`, multiplication as repeated rotation/scaling, invertibility iff coprime, factor structure, prime/full-coil refinements.
-  - Status: scaling invertible iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, scaling natural steps into coil traversal, prime-circle scaling bijectivity, divisor-cofactor collapse, cofactor-multiple collapse, cofactor-shift address collapse, scaling-zero divisibility, period-level kernel divisibility, period-multiple collapse, period-shift collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and cardinality, zero-fiber/kernel and scaled-target/fiber bridges, fiber-set equality modulo scaled value and stride period, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, scaled-address product congruence, and coprime scaling reflection are Lean-proved as `CC-T0008`, `CC-T0028`, `CC-T0017`, `CC-T0018`, `CC-T0029`, `CC-T0019`, `CC-T0020`, `CC-T0031`, `CC-T0021`, `CC-T0022`, `CC-T0023`, `CC-T0024`, `CC-T0025`, `CC-T0030`, `CC-T0032`, `CC-T0033`, `CC-T0034`, `CC-T0035`, `CC-T0036`, `CC-T0037`, `CC-T0038`, `CC-T0039`, `CC-T0040`, `CC-T0041`, `CC-T0042`, `CC-T0043`, `CC-T0044`, `CC-T0050`, `CC-T0052`, `CC-T0053`, `CC-T0045`, `CC-T0051`, `CC-T0046`, `CC-T0047`, `CC-T0048`, `CC-T0049`, `CC-T0026`, and `CC-T0027`; composite orbit refinements and factor-lattice/provenance links remain future extensions.
+  - Status: polished draft; scaling invertible iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, scaling natural steps into coil traversal, prime-circle scaling bijectivity, divisor-cofactor collapse, cofactor-multiple collapse, cofactor-shift address collapse, scaling-zero divisibility, period-level kernel divisibility, period-multiple collapse, period-shift collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and cardinality, zero-fiber/kernel and scaled-target/fiber bridges, fiber-set equality modulo scaled value and stride period, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, scaled-address product congruence, and coprime scaling reflection are Lean-proved as `CC-T0008`, `CC-T0028`, `CC-T0017`, `CC-T0018`, `CC-T0029`, `CC-T0019`, `CC-T0020`, `CC-T0031`, `CC-T0021`, `CC-T0022`, `CC-T0023`, `CC-T0024`, `CC-T0025`, `CC-T0030`, `CC-T0032`, `CC-T0033`, `CC-T0034`, `CC-T0035`, `CC-T0036`, `CC-T0037`, `CC-T0038`, `CC-T0039`, `CC-T0040`, `CC-T0041`, `CC-T0042`, `CC-T0043`, `CC-T0044`, `CC-T0050`, `CC-T0052`, `CC-T0053`, `CC-T0045`, `CC-T0051`, `CC-T0046`, `CC-T0047`, `CC-T0048`, `CC-T0049`, `CC-T0026`, and `CC-T0027`; composite orbit refinements and factor-lattice/provenance links remain future extensions.
 
 ### S0: Opposition And Sign
 
 - [x] `papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md`
   - Proof targets: `S0-T0001`, `S0-T0002`
-  - Status: both finite opposition facts are Lean-proved in `Circle/S0/Scaffold.lean`.
+  - Status: polished draft; both finite opposition facts are Lean-proved in `Circle/S0/Scaffold.lean`.
   - Warning target: `S0-W0001`, `C_1` is not `S^0`.
 
 ### S2: Sphere Calculus
 
 - [x] `papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md`
   - Proof targets: `S2-T0001`, `S2-T0002`
-  - Status: suspended-circle counts and Euler characteristic are Lean-proved in `Circle/S2/Scaffold.lean`.
+  - Status: polished draft; suspended-circle counts and Euler characteristic are Lean-proved in `Circle/S2/Scaffold.lean`.
   - Main model: `SuspC(n)`, with `V=n+2`, `E=3n`, `F=2n`, `chi=2`.
 - [x] `papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md`
   - Proof targets: `S2-T0003` through `S2-T0007`

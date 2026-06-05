@@ -1,6 +1,6 @@
 # Circle Calculus S1.4: Factors, Scaling, and Prime Coils
 
-Status: draft with the first scaling theorem spine proved.
+Status: polished draft with the first scaling theorem spine Lean-proved.
 
 ## Aim
 

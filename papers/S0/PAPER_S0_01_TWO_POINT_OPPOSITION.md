@@ -1,6 +1,6 @@
 # Circle Calculus S0.1: Two-Point Opposition
 
-Status: draft with the two finite opposition facts Lean-proved and Python examples linked.
+Status: polished draft with the two finite opposition facts Lean-proved and Python examples linked.
 
 ## Aim
 

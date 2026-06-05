@@ -1,6 +1,6 @@
 # Circle Calculus S2.1: Suspended Circles and the First Finite Sphere
 
-Status: draft with the suspended-circle count and Euler facts Lean-proved and Python examples linked.
+Status: polished draft with the suspended-circle count and Euler facts Lean-proved and Python examples linked.
 
 ## Aim
 
