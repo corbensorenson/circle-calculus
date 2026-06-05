@@ -28,6 +28,7 @@ namespace Circle.PaperS104
 #check Circle.scale_nat_period_normalForm
 #check Circle.scale_nat_eq_iff_mul_modEq
 #check Circle.scale_nat_eq_iff_period_modEq
+#check Circle.scale_nat_period_representatives_injective
 #check Circle.scale_nat_eq_iff_nat_modEq_of_coprime
 #check Circle.scale_factor_modEq
 

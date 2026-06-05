@@ -431,6 +431,22 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["scale(n,k,x)==scale(n,k,y) iff x%period(n,k)==y%period(n,k) over positive moduli in bounded tests"]
 
+  - id: CC-T0036
+    name: Scaling is injective on period representatives
+    status: proved
+    lean_name: Circle.scale_nat_period_representatives_injective
+    informal_statement: "For a nonzero circle size, scaling is injective on the natural representatives strictly below the stride period."
+    formal_statement: "forall {n k x y : Nat}, n != 0 -> x < Circle.period n k -> y < Circle.period n k -> (Circle.scale n k ((x : Nat) : Circle.C n) = Circle.scale n k ((y : Nat) : Circle.C n) <-> x = y)"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_period_representatives_injective"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean from CC-T0035 and Nat.ModEq.eq_of_lt_of_lt."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["for 0<=x,y<period(n,k), scale(n,k,x)==scale(n,k,y) iff x==y over positive moduli in bounded tests"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

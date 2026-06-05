@@ -165,6 +165,16 @@ def test_scale_equality_period_congruence_examples() -> None:
                     )
 
 
+def test_scale_period_representatives_injective_examples() -> None:
+    for n in range(1, 65):
+        circle = Circle(n)
+        for k in range(0, 33):
+            period = circle.period(k)
+            for x in range(period):
+                for y in range(period):
+                    assert (circle.scale(x, k) == circle.scale(y, k)) == (x == y)
+
+
 def test_coprime_scale_equality_examples() -> None:
     for n in range(1, 33):
         circle = Circle(n)

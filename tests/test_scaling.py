@@ -170,6 +170,16 @@ def test_scale_equality_iff_period_congruent() -> None:
                     )
 
 
+def test_scale_period_representatives_injective() -> None:
+    for n in range(1, 129):
+        circle = Circle(n)
+        for k in range(0, 65):
+            period = circle.period(k)
+            for x in range(period):
+                for y in range(period):
+                    assert (circle.scale(x, k) == circle.scale(y, k)) == (x == y)
+
+
 def test_coprime_scale_equality_iff_addresses_congruent() -> None:
     for n in range(1, 65):
         circle = Circle(n)

@@ -212,6 +212,16 @@ theorem scale_nat_eq_iff_period_modEq {n k x y : Nat} (hn : n ≠ 0) :
     rw [hk_decomp]
     exact h4
 
+theorem scale_nat_period_representatives_injective {n k x y : Nat} (hn : n ≠ 0)
+    (hx : x < period n k) (hy : y < period n k) :
+    scale n k ((x : Nat) : C n) = scale n k ((y : Nat) : C n) ↔ x = y := by
+  rw [scale_nat_eq_iff_period_modEq hn]
+  constructor
+  · intro h
+    exact h.eq_of_lt_of_lt hx hy
+  · intro h
+    rw [h]
+
 theorem scale_nat_eq_iff_nat_modEq_of_coprime {n k x y : Nat} (hcop : Nat.Coprime n k) :
     scale n k ((x : Nat) : C n) = scale n k ((y : Nat) : C n) ↔ x ≡ y [MOD n] := by
   have hbij : Function.Bijective (scale n k) := (scale_invertible_iff_coprime n k).mpr hcop
