@@ -177,6 +177,15 @@ theorem hopfMap_phase_invariant (u v : ℝ) (huv : u * u + v * v = 1) (p : HopfP
             (u ^ 2 + v ^ 2) * (c * c + d * d) := by ring
       _ = a * a + b * b - (c * c + d * d) := by rw [huv_sq]; ring
 
+theorem hopfFiber_circle_like (u v : ℝ) (huv : u * u + v * v = 1)
+    (p : HopfPair) (hp : hopfPairNormSq p = 1) :
+    hopfPairNormSq (phaseRotatePair u v p) = 1 ∧
+      hopfMap (phaseRotatePair u v p) = hopfMap p := by
+  constructor
+  · rw [phaseRotatePair_norm_sq, huv, hp]
+    ring
+  · exact hopfMap_phase_invariant u v huv p
+
 def quaternionTrackName : String :=
   "S3Q"
 

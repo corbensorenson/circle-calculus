@@ -1,6 +1,6 @@
 # Circle Calculus S3.3: Hopf Coils
 
-Status: draft with two bounded Hopf algebra facts Lean-proved; the full fiber-closure model remains executable Python exploration.
+Status: draft with the bounded Hopf coordinate landing, phase-invariance, and normalized fiber-orbit facts Lean-proved.
 
 ## Aim
 
@@ -45,6 +45,7 @@ The Lean sidecar `sidecars/PAPER_S3_03_HOPF_COILS/lean/PaperS303.lean` checks th
 
 - `S3H-T0001` is proved by `Circle.S3.hopfMap_lands_sphere`: if the coordinate pair has norm square `1`, the Hopf base coordinates have norm square `1`.
 - `S3H-T0002` is proved by `Circle.S3.hopfMap_phase_invariant`: common multiplication by a unit real-coordinate phase `(u,v)` preserves the Hopf base point.
+- `S3H-T0003` is proved by `Circle.S3.hopfFiber_circle_like`: a unit phase keeps a normalized Hopf pair normalized and preserves its Hopf base point.
 
 The helper theorem `Circle.S3.hopfBaseNormSq_hopfMap` proves the exact identity
 
@@ -60,9 +61,9 @@ The Python sidecar `sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_exam
 
 - `S3H-T0001`: normalized complex pairs map to points whose squared `S^2` norm is numerically `1`, matching the Lean coordinate theorem.
 - `S3H-T0002`: simultaneous common-phase rotation leaves the Hopf base point unchanged, matching the Lean coordinate theorem.
-- `S3H-T0003`: the common-phase orbit stays normalized, preserves the Hopf base point, and closes after angle `2*pi`.
+- `S3H-T0003`: the common-phase orbit stays normalized and preserves the Hopf base point, matching the Lean coordinate theorem; the sampled `2*pi` closure remains an executable analytic example.
 
-`S3H-T0003` is still an executable check, not a full Lean fibration or topological closure proof.
+These are bounded coordinate proofs, not a full Lean fibration or global topological non-product proof.
 
 ## Warning
 
@@ -76,4 +77,4 @@ The Python sidecar `sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_exam
 
 ## Notes
 
-The current Lean contribution is algebraic: landing on the unit base equation and invariance under common unit phase. The full Hopf fibration, topology of fibers, and global non-product structure remain future formalization work.
+The current Lean contribution is algebraic: landing on the unit base equation, invariance under common unit phase, and normalized phase-orbit preservation. The full Hopf fibration, topology of fibers, analytic circle parameterization, and global non-product structure remain future formalization work.

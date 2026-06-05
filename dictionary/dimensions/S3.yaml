@@ -48,7 +48,7 @@ entries:
   - id: S3H-0002
     name: "Hopf phase fiber"
     kind: object
-    formal_definition: "The common unit-phase action `Circle.S3.phaseRotatePair`; `Circle.S3.hopfMap_phase_invariant` proves it preserves the Hopf base coordinates."
+    formal_definition: "The common unit-phase action `Circle.S3.phaseRotatePair`; `Circle.S3.hopfMap_phase_invariant` proves it preserves Hopf base coordinates, and `Circle.S3.hopfFiber_circle_like` proves it also preserves normalized Hopf pairs."
     intuition: "The hidden circle above each visible base point."
     dependencies: ["S3H-0001", "S1-0001"]
     introduced_in: "PAPER_S3_03_HOPF_COILS"

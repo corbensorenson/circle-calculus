@@ -145,18 +145,18 @@ theorems:
       python_property_tests: ["sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py::test_hopf_map_phase_invariant"]
     blocker: ""
   - id: S3H-T0003
-    status: exploratory_python
+    status: lean_proved
     lean_name: Circle.S3.hopfFiber_circle_like
-    informal_statement: "A Hopf fiber is S^1-like."
-    formal_statement: "Python exploratory model: the common-phase orbit stays on the normalized S3 pair space, preserves the Hopf base point, and closes after angle 2*pi."
+    informal_statement: "A unit phase orbit stays on the normalized S3 pair space and preserves the Hopf base point."
+    formal_statement: "forall (u v : ℝ) (p : Circle.S3.HopfPair), u*u+v*v=1 -> Circle.S3.hopfPairNormSq p = 1 -> Circle.S3.hopfPairNormSq (Circle.S3.phaseRotatePair u v p) = 1 and Circle.S3.hopfMap (Circle.S3.phaseRotatePair u v p) = Circle.S3.hopfMap p"
     dictionary_dependencies: ["S3H-0001", "S3H-0002"]
     paper_refs: ["papers/S3/PAPER_S3_03_HOPF_COILS.md"]
     imports_allowed: ["Common", "S1", "S2"]
     verification:
-      lean_build_required: false
+      lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py::test_hopf_fiber_phase_orbit_is_circle_like"]
-    blocker: "Lean proof deferred until real/complex analysis support is selected."
+    blocker: ""
   - id: S3S-T0001
     status: lean_proved
     lean_name: Circle.S3.quaternionConjugation_neg
