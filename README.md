@@ -68,6 +68,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md` | draft | `S5-T0001` proved |
 | `papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md` | draft | `S6-T0001` proved; `S6-W0001` warning tracked |
 | `papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md` | draft | `S7C-T0001` and `S7C-T0002` proved |
+| `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md` | draft/exploratory | `S7QH-T0001` and `S7QH-T0002` have Python sidecar checks; Lean formalization is deferred |
 
 The theorem manifest also includes `CC-T0008`, proving that scaling by `k` is invertible on `C_n` exactly when `n` and `k` are coprime.
 
@@ -235,6 +236,8 @@ Executable exploratory spine:
 - `S3H-T0001`: Hopf map lands on the unit sphere for normalized complex-pair examples
 - `S3H-T0002`: common phase rotation preserves the Hopf base point in Python checks
 - `S3H-T0003`: the sampled Hopf fiber phase orbit stays normalized, preserves the base point, and closes numerically after `2*pi`
+- `S7QH-T0001`: quaternionic Hopf map sends normalized quaternion-pair examples to S4-like five-coordinate points
+- `S7QH-T0002`: shared right unit-quaternion phase rotation preserves the quaternionic Hopf map in Python checks
 
 ## What This Does Not Claim Yet
 

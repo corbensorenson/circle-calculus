@@ -228,9 +228,10 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
   - Proof targets: `S7C-T0001`, `S7C-T0002`
   - Prove topological/combinatorial `S7` before octonion algebra.
   - Status: finite iterated-suspension model and Euler characteristic are Lean-proved.
-- [ ] `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md`
+- [x] `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md`
   - Targets: `S7QH-T0001`, `S7QH-T0002`
   - Keep roadmap/exploratory until `S3` quaternion calculus and `S4` base are stable.
+  - Status: quaternionic Hopf map and right phase invariance have executable Python sidecar checks; Lean fibration formalization remains deferred.
 - [ ] `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md`
   - Targets: `S7O-T0001` through `S7O-T0006`
   - Warning targets: `S7O-W0001`, `S7O-W0002`

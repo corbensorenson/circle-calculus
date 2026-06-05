@@ -28,31 +28,31 @@ theorems:
       python_property_tests: []
     blocker: ""
   - id: S7QH-T0001
-    status: deferred
+    status: exploratory_python
     lean_name: Circle.S7.quaternionicHopfRoadmap
     informal_statement: "The quaternionic Hopf roadmap has intended structure S^3 -> S^7 -> S^4."
-    formal_statement: "deferred formal statement"
+    formal_statement: "Python exploratory model: normalized quaternion pairs map by quaternionic_hopf_map to five coordinates with squared norm 1."
     dictionary_dependencies: ["S7QH-0001", "S3Q-0001", "S4-0001"]
     paper_refs: ["papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"]
     imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
     verification:
       lean_build_required: false
       no_sorry_required: true
-      python_property_tests: []
-    blocker: "Deferred until S3 quaternion calculus and S4 base model are stable."
+      python_property_tests: ["sidecars/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION/python/test_paper_s7_02_examples.py::test_quaternionic_hopf_map_lands_on_s4_for_normalized_pair"]
+    blocker: "Lean proof deferred until a quaternionic projective/Hopf formalization path is selected."
   - id: S7QH-T0002
-    status: deferred
+    status: exploratory_python
     lean_name: Circle.S7.quaternionicPhaseInvariance
     informal_statement: "Quaternionic phase invariance is the S^7 analog of Hopf phase invariance."
-    formal_statement: "deferred formal statement"
+    formal_statement: "Python exploratory model: right multiplication of both quaternion coordinates by the same unit quaternion phase preserves quaternionic_hopf_map."
     dictionary_dependencies: ["S7QH-0001", "S3Q-0002"]
     paper_refs: ["papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"]
     imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
     verification:
       lean_build_required: false
       no_sorry_required: true
-      python_property_tests: []
-    blocker: "Deferred until S3 quaternion calculus and S4 base model are stable."
+      python_property_tests: ["sidecars/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION/python/test_paper_s7_02_examples.py::test_quaternionic_hopf_right_phase_invariant"]
+    blocker: "Lean proof deferred until a quaternionic projective/Hopf formalization path is selected."
   - id: S7O-T0001
     status: planned
     lean_name: Circle.S7.octonionBasis
