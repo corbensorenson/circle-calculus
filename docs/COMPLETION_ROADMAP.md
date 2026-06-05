@@ -206,7 +206,7 @@ Goal: make the executable examples line up with the Lean-backed papers without d
   - Main model: `SuspC(n)`, with `V=n+2`, `E=3n`, `F=2n`, `chi=2`.
 - [x] `papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md`
   - Proof targets: `S2-T0003` through `S2-T0007`
-  - Status: sphere-grid counts, Euler characteristic, latitude-ring model, pole-fixing rotation, and inherited latitude coil period are Lean-proved.
+  - Status: polished draft; sphere-grid counts, Euler characteristic, latitude-ring model, pole-fixing rotation, and inherited latitude coil period are Lean-proved.
   - Warning targets: `S2-W0001`, `S2-W0002`, `S2-W0003`
   - Main model: `SphereGrid(n,r)`, with pole collapse and latitude rings.
 - [x] `papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md`
@@ -219,11 +219,11 @@ Goal: make the executable examples line up with the Lean-backed papers without d
 - [x] `papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md`
   - Proof targets: `S3C-T0001` through `S3C-T0004`
   - Main model: suspension of finite 2D cell-count structures.
-  - Status: suspended-surface counts, Euler-zero theorem, suspended-suspended-circle counts, and Euler characteristic are Lean-proved.
+  - Status: polished draft; suspended-surface counts, Euler-zero theorem, suspended-suspended-circle counts, and Euler characteristic are Lean-proved.
 - [x] `papers/S3/PAPER_S3_02_QUATERNION_COILS.md`
   - Proof targets: `S3Q-T0001` through `S3Q-T0005`
   - Prefer mathlib quaternion support when available.
-  - Status: real quaternion norm, unit closure, conjugate inverse equations, noncommutative example, and associativity are Lean-proved.
+  - Status: polished draft; real quaternion norm, unit closure, conjugate inverse equations, noncommutative example, and associativity are Lean-proved.
 - [x] `papers/S3/PAPER_S3_03_HOPF_COILS.md`
   - Proof/model targets: `S3H-T0001` through `S3H-T0005`
   - Warning target: `S3H-W0001`, not globally `S^2 x S^1`

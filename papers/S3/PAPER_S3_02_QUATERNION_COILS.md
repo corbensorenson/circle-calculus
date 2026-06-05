@@ -1,18 +1,12 @@
 # Circle Calculus S3.2: Quaternion Coils and Unit-Quaternion Hypersphere
 
-Status: draft scaffold with the core quaternion theorem spine proved.
+Status: polished draft with the core quaternion theorem spine Lean-proved.
 
 ## Aim
 
-This paper develops the algebraic `S^3` model using real quaternions and unit quaternions.
+This paper develops the algebraic `S^3` model using real quaternions and unit quaternions. It is the first dimension where the project has a native multiplication law that is richer than circle addition: quaternion multiplication is associative and norm-preserving on unit quaternions, but not commutative.
 
-## Target Spine
-
-- `S3Q-T0001`: `Circle.S3.quaternionNorm`
-- `S3Q-T0002`: `Circle.S3.unitQuaternion_mul_closed`
-- `S3Q-T0003`: `Circle.S3.unitQuaternion_inverse`
-- `S3Q-T0004`: `Circle.S3.quaternion_noncommutative_example`
-- `S3Q-T0005`: `Circle.S3.quaternion_mul_assoc`
+The topological `S^3` count model was introduced separately in `PAPER_S3_01_FINITE_HYPERSPHERES.md`. Here the focus is algebraic.
 
 ## Model
 
@@ -22,13 +16,11 @@ The Lean model uses mathlib's quaternion algebra:
 Circle.S3.RealQuaternion = Quaternion real
 ```
 
-The project norm primitive is
+The project norm primitive is:
 
 ```text
 Circle.S3.quaternionNorm q = Quaternion.normSq q
 ```
-
-where `Quaternion.normSq` is the norm-square multiplicative map supplied by mathlib.
 
 A unit quaternion is bundled as:
 
@@ -38,22 +30,32 @@ UnitQuaternion =
   unit : quaternionNorm val = 1
 ```
 
-This is the algebraic `S^3` layer: the unit condition cuts out the unit 3-sphere in real quaternion coordinates, while multiplication gives a native group-like composition operation.
+The unit condition is the algebraic `S^3` layer in real quaternion coordinates.
+
+## Theorem Spine
+
+- `S3Q-T0001`: `Circle.S3.quaternionNorm`
+- `S3Q-T0002`: `Circle.S3.unitQuaternion_mul_closed`
+- `S3Q-T0003`: `Circle.S3.unitQuaternion_inverse`
+- `S3Q-T0004`: `Circle.S3.quaternion_noncommutative_example`
+- `S3Q-T0005`: `Circle.S3.quaternion_mul_assoc`
 
 ## Proved Core
 
-`S3Q-T0001` is implemented by `Circle.S3.quaternionNorm`.
+`S3Q-T0001` registers the quaternion norm used by the project.
 
-`S3Q-T0002` is proved by `Circle.S3.unitQuaternion_mul_closed`: if `p` and `q` are unit quaternions, then `p.val * q.val` also has norm `1`.
+`S3Q-T0002` proves unit closure: if `p` and `q` are unit quaternions, then `p.val * q.val` also has norm `1`. This is the algebraic reason unit quaternions can act as a closed multiplication layer.
 
-`S3Q-T0003` is proved by `Circle.S3.unitQuaternion_inverse`: for a unit quaternion `q`, conjugation gives both inverse equations
+`S3Q-T0003` proves the conjugate-inverse equations:
 
 ```text
 q.val * star q.val = 1
 star q.val * q.val = 1
 ```
 
-`S3Q-T0004` is proved by `Circle.S3.quaternion_noncommutative_example`: the exact integer basis quaternions `i` and `j` satisfy
+for a unit quaternion `q`.
+
+`S3Q-T0004` proves a concrete noncommutative example:
 
 ```text
 i * j != j * i
@@ -61,9 +63,13 @@ i * j != j * i
 
 This is the formal version of the slogan `S^3: order matters`.
 
-`S3Q-T0005` is proved by `Circle.S3.quaternion_mul_assoc`: quaternion multiplication is associative.
+`S3Q-T0005` proves associativity of quaternion multiplication. This separates quaternions from the later `S^7` octonion layer, where bracketing becomes a real warning.
 
-The Python sidecar checks the same executable quaternion norm, unit multiplication, conjugate-inverse, noncommutativity, and associativity examples. It is a computational model aligned with the Lean theorem spine, not a substitute for mathlib's formal quaternion proofs.
+The Python sidecar checks executable quaternion norm, unit multiplication, conjugate-inverse, noncommutativity, and associativity examples. These examples align with the Lean theorem spine but do not replace mathlib's formal proofs.
+
+## Role In The Ladder
+
+The quaternion spine supports the bounded Hopf coordinate paper, the spin sign-cancellation paper, the quaternionic Hopf roadmap in `S^7`, and robotics/orientation applications. It is one of the strongest algebraic parts of the dimensional ladder.
 
 ## Dictionary Targets
 
@@ -71,6 +77,6 @@ The Python sidecar checks the same executable quaternion norm, unit multiplicati
 - `S3Q-0002`: unit quaternion
 - `S3Q-0003`: quaternion noncommutativity
 
-## Notes
+## Guardrails
 
-This paper uses mathlib quaternion support directly. It does not claim that every topological feature of continuous `S^3` has been formalized here; it proves the algebraic unit-quaternion spine needed before Hopf and spin-double-cover work.
+This paper proves the algebraic unit-quaternion spine. It does not claim that every topological, smooth, or rotational feature of continuous `S^3` has been formalized here.
