@@ -125,6 +125,58 @@ First compute experiments:
 3. Finite-circle cyclic convolution and NTT reference.
    Compare direct convolution, FFT convolution, and exact modular convolution. Keep NTT exactness and modulus constraints explicit.
 
+## Circle Compute And Systems Applications
+
+The non-AI compute handoff should be preserved as application context, not as proved math. The rule is the same as the main compute track: Circle Math helps only where the workload has real cyclic, angular, periodic, spherical, toroidal, rotational, circulant, or ring-buffer structure.
+
+Most promising prototype families:
+
+- `CoilRay Sort`: ray/path tracing reordering by spherical-coil direction bins, material class, and approximate BVH region to improve ray coherence.
+- `CoilSampler`: deterministic circle/sphere/hemisphere sampling through golden-angle, spherical Fibonacci, and coprime latitude/longitude schedules with explicit coverage and alias diagnostics.
+- `CoilLayout`: memory layouts for strided circular updates `i -> i + k mod n`, using orbit order and gcd-cycle decomposition.
+- `CoilStencil`: periodic-boundary stencil compilation that can choose direct stencil, FFT, block-circulant, or coil-layout backends with verified wraparound.
+- `CoilNTT`: exact finite-circle transform tooling for cyclic convolution, polynomial rings, FHE, ZK systems, and NTT butterfly layouts.
+- `CoilHash`: consistent-hashing extensions using multi-ring placement, coprime virtual nodes, hotspot/antinode detection, and remapping proofs.
+- `CoilMotion`: phase-aware game/animation loops, motion matching, quaternion orientation blending, and derivative-closed cycles.
+- `CoilPRM` / `CoilRRT`: robotics samplers for toroidal joint spaces and `S^3` orientation states.
+- `CoilCodec`: phase-aware audio/video compression and loop detection.
+- `CoilANN`: angular/hash-ring vector indexing through projections into products of circles.
+
+Additional systems domains to keep in view:
+
+- Scientific instruments: `CoilAcquire` for CT, MRI, radar, lidar, sonar, radio astronomy, angular scan scheduling, alias avoidance, phase unwrapping, and spherical sensor fusion.
+- Geometry/CAD/3D printing: `CoilCAM` for closed-loop mesh repair, seam-aware UVs, spiral or coil infill, and continuous toolpaths.
+- Molecular simulation and biology: `CoilTorsion` for torsion angles, protein conformer sampling, periodic boxes, and rotationally equivariant features.
+- Cybersecurity and anomaly detection: `CoilDetect` for daily/weekly phase features, beaconing, cron rhythms, heartbeat drift, and cycle-breaking anomaly scores.
+- Operating systems and runtime schedulers: `CoilSched` for round-robin fairness, ring buffers, timer wheels, stride schedules, and gcd-based starvation diagnostics.
+- Quantum circuits: `CoilQ` for phase-gate normal forms, Bloch-sphere views, `SU(2)`/quaternion-style rotation reasoning, and circuit identity search.
+
+The strongest first three from the handoff are:
+
+1. `CoilRay Sort`, because ray coherence is a real rendering bottleneck.
+2. `CoilLayout`, because memory-layout improvements are practical and measurable.
+3. `CoilNTT`, because exact cyclic transforms are core workloads in cryptography, FHE, ZK systems, and polynomial computation.
+
+First rendering experiment:
+
+```text
+baseline wavefront path tracer
+direction-bucketed path tracer
+spherical-coil-bucketed path tracer
+```
+
+At each bounce, map `ray.direction` to an `S^2` bin, map that bin to a coil index, bucket the ray queue, and measure rays per second, cache behavior, divergence, BVH traversal time, noise per sample, and total frame time. The hypothesis is only that spherical-coil bucketing may improve coherence with less overhead than a heavier general sort. If benchmarks fail, record the failure and keep the theorem/proof layer separate from performance claims.
+
+Long-term meta-application:
+
+```text
+human/model operation
+  -> Circle dictionary identifies cyclic/angular structure
+  -> Lean proves the rewrite or address transformation
+  -> CoilIR chooses FFT, NTT, spherical harmonics, quaternion kernels, coiled layouts, ring buffers, ray buckets, or samplers
+  -> benchmarks decide whether the backend is worthwhile
+```
+
 Compute caveats:
 
 - Dense GEMM and tensor kernels are heavily optimized; structured methods win only when the structure is real enough.
@@ -198,6 +250,8 @@ Planned manifests:
 - `manifests/theories/glyph_proof_interface.yaml`
 - `manifests/applications/coil_data_analysis.yaml`
 - `manifests/applications/coil_compute.yaml`
+- `manifests/applications/coil_rendering.yaml`
+- `manifests/applications/coil_systems.yaml`
 - `manifests/applications/circle_ai.yaml`
 
 Planned papers:
@@ -209,6 +263,9 @@ Planned papers:
 - `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md`
 - `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md`
 - `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md`
+- `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md`
+- `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md`
+- `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md`
 - `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md`
 - `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`
 - `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md`
@@ -234,3 +291,10 @@ These sources were named in the browser handoffs as orientation material. They s
 - LoRA: `https://arxiv.org/abs/2106.09685`
 - SIREN periodic activations: `https://arxiv.org/abs/2006.09661`
 - Deep Quaternion Networks: `https://arxiv.org/abs/1712.04604`
+- NVIDIA ray tracing overview: `https://developer.nvidia.com/discover/ray-tracing`
+- NVIDIA wavefront path tracing handoff reference: `https://research.nvidia.com/sites/default/files/pubs/2013-07_Megakernels-Considered-Harmful/laine2013hpg_paper.pdf`
+- Ray reordering handoff reference: `https://arxiv.org/html/2506.11273v1`
+- Spherical Fibonacci point sets handoff reference: `https://ribardiere.pages.xlim.fr/articles/2013/CGF_SF.pdf`
+- ReSTIR handoff reference: `https://research.nvidia.com/sites/default/files/pubs/2020-07_Spatiotemporal-reservoir-resampling/ReSTIR.pdf`
+- Precomputed radiance transfer handoff reference: `https://cseweb.ucsd.edu/~ravir/6998/papers/p527-sloan.pdf`
+- Consistent hashing handoff reference: `https://www.cs.princeton.edu/courses/archive/fall07/cos518/papers/chash.pdf`

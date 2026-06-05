@@ -32,6 +32,9 @@ If a theorem cannot be proved in the current run:
 Organization rule:
 Maintain one clean roadmap/checklist, update manifests and dictionaries as source-of-truth registries, and avoid clutter reports or duplicate planning documents.
 
+README state rule:
+After meaningful proof batches, paper batches, roadmap changes, or application-context additions, update `README.md` so it reflects the actual current state, proof status, usage pointers, and where to find the relevant docs. Do not churn the README for tiny internal-only edits.
+
 Dependency rule:
 Higher dimensions may depend on lower dimensions. Lower dimensions must not import higher dimensions.
 
@@ -88,7 +91,7 @@ The project is complete only when all of these are true:
 
 ## Work Order
 
-Prefer this order. Only skip ahead when blocked and record the blocker.
+Prefer this order. Only skip ahead when blocked and record the blocker. During long autonomous runs, proceed from start to finish through this roadmap. When a target is blocked, record the blocker honestly, move to the next useful adjacent item, and return later instead of stopping the whole run.
 
 1. Keep current `S1` green.
 2. Add dimensional scaffolding and checks.
@@ -253,6 +256,12 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Program: coil signatures, closure profiles, prime-lag recurrence, antinode maps, and periodic-data benchmarks.
 - [ ] `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md`
   - Program: certified cyclic/circulant/orbit structure lowered to FFT/NTT/permutation backends and benchmarked.
+- [ ] `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md`
+  - Program: `CoilRay Sort`, `CoilSampler`, `CoilSTIR`, BRDF/lighting angular compression, spherical-coil ray queues, and rendering benchmarks.
+- [ ] `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md`
+  - Program: `CoilLayout`, `CoilStencil`, `CoilNTT`, gcd-cycle memory layouts, verified periodic boundaries, exact finite transforms, and MLX/Mac-compatible prototypes where relevant.
+- [ ] `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md`
+  - Program: `CoilHash`, `CoilMotion`, `CoilPRM`, `CoilCodec`, `CoilANN`, `CoilAcquire`, `CoilCAM`, `CoilTorsion`, `CoilDetect`, `CoilSched`, and `CoilQ` as benchmarked or domain-tested application roadmaps.
 - [ ] `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md`
   - Program: disciplined Circle AI thesis covering phase, recurrence, rotation, sparse cyclic mixing, circular memory, harmonic transforms, geometry-aware models, and proof-carrying model components.
 - [ ] `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`
@@ -269,6 +278,8 @@ Deferred manifest families:
 - [ ] `manifests/theories/glyph_proof_interface.yaml`
 - [ ] `manifests/applications/coil_data_analysis.yaml`
 - [ ] `manifests/applications/coil_compute.yaml`
+- [ ] `manifests/applications/coil_rendering.yaml`
+- [ ] `manifests/applications/coil_systems.yaml`
 - [ ] `manifests/applications/circle_ai.yaml`
 
 Application guardrails:
@@ -278,6 +289,8 @@ Application guardrails:
 - [ ] Treat number provenance as first-class only after the finite-circle factor/orbit spine is stable.
 - [ ] For local compute work, use MLX/Mac-compatible acceleration first. CUDA/cuFFT references are future portability notes or external baselines, not the active backend on this machine.
 - [ ] Benchmark compute claims against ordinary dense/direct baselines before presenting any speedup as real.
+- [ ] Prioritize `CoilRay Sort`, `CoilLayout`, and `CoilNTT` as the first non-AI compute prototypes after the dimensional proof spine is stable enough.
+- [ ] Treat ray tracing, periodic simulations, crypto/ZK transforms, systems scheduling, and vector indexing as applications to benchmark, not as automatic proof-theorem consequences.
 - [ ] Keep Circle AI claims benchmark-driven: no claim that circles improve all AI; only target cyclic, periodic, convolutional, rotational, harmonic, memory-like, or proof-search-like structure.
 - [ ] Stage AI work in this order when the proof/math spine is ready: CoilLinear/CoilRA prototypes, MultiCoil RoPE, Coil Attention plus CoilKV, activation-coil interpretability, then spherical/quaternion models. Keep octonion AI exploratory.
 

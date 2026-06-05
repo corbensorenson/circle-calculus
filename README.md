@@ -37,7 +37,7 @@ The expanded long-horizon plan is dimension-organized:
 S^0 -> S^1 -> S^2 -> S^3 -> S^4/S^5/S^6 -> S^7 -> Future/S^15
 ```
 
-The current proved layer is `S^1`: finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, and lifted natural-number arithmetic.
+The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, and scaling invertibility; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; and the first `S^2` suspended-circle and sphere-grid theorem spine.
 
 Future dimensional work is split into two related ladders:
 
@@ -50,18 +50,22 @@ See `docs/COMPLETION_ROADMAP.md`, `docs/DIMENSIONAL_LADDER.md`, `docs/PHASE2_AND
 
 ## Current Status
 
-This is an early public research scaffold with two promoted papers and a working verification pipeline.
+This is an early public research scaffold with a working verification pipeline and a growing dimension-indexed theorem spine.
 
 | Paper | Status | Formal spine |
 | --- | --- | --- |
 | `papers/PAPER_01_FINITE_CIRCLES.md` | outline/draft | `CC-T0001` through `CC-T0007` proved |
 | `papers/PAPER_02_WINDING_NATURALS.md` | draft | `CC-T0009` through `CC-T0016` proved |
+| `papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md` | draft | `S0-T0001` and `S0-T0002` proved |
+| `papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md` | draft | `S2-T0001` and `S2-T0002` proved |
+| `papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md` | draft | `S2-T0003` through `S2-T0007` proved |
+| `papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md` | scaffold | `COMMON-T0001` through `COMMON-T0003` proved as shared finite-cell suspension facts |
 
 The theorem manifest also includes `CC-T0008`, proving that scaling by `k` is invertible on `C_n` exactly when `n` and `k` are coprime.
 
 The D0 dimensional scaffold is also in place: dimension manifests, dimension dictionaries, planned paper stubs, Lean/Python scaffolds, and dimension validation scripts. Future-dimension theorems remain planned, deferred, exploratory, or stated until actual Lean proofs exist.
 
-The `S^0` backfill has also started: the two-point opposition model proves `S0-T0001` and `S0-T0002` in Lean, keeping `S^0` separate from the one-node circle `C_1`.
+The README is updated after meaningful proof batches, paper batches, roadmap changes, or application-context additions. Tiny internal-only edits should update the relevant source files without creating README churn.
 
 ## Proof Standard
 
@@ -145,6 +149,7 @@ Start with:
 6. `manifests/theorem_manifest.yaml`
 7. `docs/COMPLETION_ROADMAP.md`
 8. `docs/DIMENSIONAL_LADDER.md`
+9. `docs/PHASE2_AND_APPLICATIONS.md`
 
 The papers give the conceptual path. The sidecars show the proof links. The dictionary fixes vocabulary so later papers reuse the same meanings instead of drifting.
 
@@ -185,6 +190,21 @@ Proved winding/natural-number core:
 - `CC-T0014`: lifted addition associativity at reconstructed-value level
 - `CC-T0015`: lifted addition left zero identity
 - `CC-T0016`: iterated lifted successor
+
+Proved common and dimensional spine:
+
+- `COMMON-T0001`: finite cell-count Euler characteristic definition
+- `COMMON-T0002`: finite suspension cell counts
+- `COMMON-T0003`: finite suspension Euler theorem
+- `S0-T0001`: the finite `S^0` opposition type has two points
+- `S0-T0002`: opposition swaps the two `S^0` points
+- `S2-T0001`: suspended-circle cell counts
+- `S2-T0002`: suspended-circle Euler characteristic
+- `S2-T0003`: sphere-grid cell counts
+- `S2-T0004`: sphere-grid Euler characteristic
+- `S2-T0005`: latitude rings are finite circles
+- `S2-T0006`: longitude rotation fixes poles
+- `S2-T0007`: latitude coil period inherits the finite-circle period theorem
 
 ## What This Does Not Claim Yet
 
