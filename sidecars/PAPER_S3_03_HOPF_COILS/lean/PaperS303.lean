@@ -17,6 +17,8 @@ namespace Circle.PaperS303
 #check Circle.S3.hopfBaseNormSq_hopfMap
 #check Circle.S3.hopfMap_lands_sphere
 #check Circle.S3.phaseRotatePair
+#check Circle.S3.phaseRotatePair_identity
+#check Circle.S3.phaseRotatePair_comp
 #check Circle.S3.phaseRotatePair_norm_sq
 #check Circle.S3.hopfMap_phase_invariant
 #check Circle.S3.hopfFiber_circle_like

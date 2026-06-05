@@ -37,7 +37,7 @@ The expanded long-horizon plan is dimension-organized:
 S^0 -> S^1 -> S^2 -> S^3 -> S^4/S^5/S^6 -> S^7 -> Future/S^15
 ```
 
-The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, scaling invertibility, scale-factor normalization, scaling-to-coil image bridge, prime-circle scaling, divisor/cofactor scaling collapse, period-kernel collapse, period-normal scaling representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and cardinality, zero-fiber/kernel and scaled-target/fiber bridges, fiber-set equality modulo scaled value and stride period, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, cofactor-shift collapse, exact scaling-zero and period-divisibility criteria, scaled-address equality congruence, coprime scaling reflection, and signed reversible rotation; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle, sphere-grid, antipode, pole/equator subset, latitude/longitude coordinate, and antipodal-pair theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; the first `S^3` spin sign-cancellation theorem; the finite `S^4` through `S^6` suspension Euler bridge; the finite topological `S^7` suspension model; the first Phase II finite stable-sphere, period-8 clock, trivial-bundle, directed-boundary, and proof-glyph certificate seeds; and the first application finite phase-coordinate, cyclic-address, direction-bin, stride-address, round-robin schedule, and Circle AI indexing seeds.
+The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, scaling invertibility, scale-factor normalization, scaling-to-coil image bridge, prime-circle scaling, divisor/cofactor scaling collapse, period-kernel collapse, period-normal scaling representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and cardinality, zero-fiber/kernel and scaled-target/fiber bridges, fiber-set equality modulo scaled value and stride period, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, cofactor-shift collapse, exact scaling-zero and period-divisibility criteria, scaled-address equality congruence, coprime scaling reflection, and signed reversible rotation; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle, sphere-grid, antipode, pole/equator subset, latitude/longitude coordinate, and antipodal-pair theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; the first `S^3` Hopf coordinate and phase-action spine; the first `S^3` spin sign-cancellation theorem; the finite `S^4` through `S^6` suspension Euler bridge; the finite topological `S^7` suspension model; the first Phase II finite stable-sphere, period-8 clock, trivial-bundle, directed-boundary, and proof-glyph certificate seeds; and the first application finite phase-coordinate, cyclic-address, direction-bin, stride-address, round-robin schedule, and Circle AI indexing seeds.
 
 Future dimensional work is split into two related ladders:
 
@@ -66,7 +66,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md` | draft | `S2-T0008` through `S2-T0015` proved |
 | `papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md` | draft | `S3C-T0001` through `S3C-T0004` proved |
 | `papers/S3/PAPER_S3_02_QUATERNION_COILS.md` | draft | `S3Q-T0001` through `S3Q-T0005` proved |
-| `papers/S3/PAPER_S3_03_HOPF_COILS.md` | draft/proved spine | `S3H-T0001` through `S3H-T0003` are Lean-proved bounded Hopf coordinate facts; full fibration topology remains future work |
+| `papers/S3/PAPER_S3_03_HOPF_COILS.md` | draft/proved spine | `S3H-T0001` through `S3H-T0005` are Lean-proved bounded Hopf coordinate and phase-action facts; full fibration topology remains future work |
 | `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md` | draft | `S3S-T0001` proved |
 | `papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md` | draft | `COMMON-T0001` through `COMMON-T0003` and `S456-T0001` proved |
 | `papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md` | draft | `S4-T0001` proved |
@@ -318,6 +318,11 @@ Proved common and dimensional spine:
 - `S3Q-T0003`: conjugation gives inverse equations for unit quaternions
 - `S3Q-T0004`: quaternion multiplication is noncommutative by exact example
 - `S3Q-T0005`: quaternion multiplication is associative
+- `S3H-T0001`: normalized Hopf pairs map to the unit base equation
+- `S3H-T0002`: unit common phase preserves the Hopf base point
+- `S3H-T0003`: unit phase orbits stay normalized and preserve the Hopf base point
+- `S3H-T0004`: identity phase leaves every Hopf pair unchanged
+- `S3H-T0005`: composed Hopf phase rotations follow complex multiplication
 - `S3S-T0001`: quaternion conjugation action is invariant under replacing `q` by `-q`
 - `S456-T0001`: iterated finite suspensions give S4/S5/S6 Euler characteristics 2, 0, and 2
 - `S4-T0001`: finite S4 suspension model has Euler characteristic 2

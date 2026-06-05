@@ -49,6 +49,22 @@ def test_hopf_map_phase_invariant(theta: float) -> None:
     assert_point_close(hopf_map(*rotated), hopf_map(z0, z1))
 
 
+def test_phase_rotate_identity() -> None:
+    z0, z1 = normalize_pair(0.75 - 0.25j, 0.5 + 1.5j)
+
+    assert_complex_pair_close(phase_rotate(z0, z1, 0.0), (z0, z1))
+
+
+def test_phase_rotate_composition() -> None:
+    z0, z1 = normalize_pair(1.0 - 0.75j, 0.2 + 0.9j)
+
+    for theta, phi in [(0.0, 0.5), (0.25, 1.0), (math.pi / 3.0, math.pi / 5.0)]:
+        once = phase_rotate(z0, z1, theta)
+        twice = phase_rotate(*once, phi)
+        combined = phase_rotate(z0, z1, theta + phi)
+        assert_complex_pair_close(twice, combined)
+
+
 def test_hopf_fiber_phase_orbit_is_circle_like() -> None:
     z0, z1 = normalize_pair(1.0 - 0.75j, 0.2 + 0.9j)
     base = hopf_map(z0, z1)

@@ -147,6 +147,24 @@ def phaseRotatePair (u v : ℝ) (p : HopfPair) : HopfPair where
   z1re := u * p.z1re - v * p.z1im
   z1im := v * p.z1re + u * p.z1im
 
+theorem phaseRotatePair_identity (p : HopfPair) :
+    phaseRotatePair 1 0 p = p := by
+  cases p
+  simp [phaseRotatePair]
+
+theorem phaseRotatePair_comp (u v a b : ℝ) (p : HopfPair) :
+    phaseRotatePair u v (phaseRotatePair a b p) =
+      phaseRotatePair (u * a - v * b) (v * a + u * b) p := by
+  cases p
+  simp [phaseRotatePair]
+  constructor
+  · ring
+  constructor
+  · ring
+  constructor
+  · ring
+  · ring
+
 theorem phaseRotatePair_norm_sq (u v : ℝ) (p : HopfPair) :
     hopfPairNormSq (phaseRotatePair u v p) =
       (u * u + v * v) * hopfPairNormSq p := by

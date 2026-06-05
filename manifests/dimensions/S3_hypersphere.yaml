@@ -157,6 +157,32 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py::test_hopf_fiber_phase_orbit_is_circle_like"]
     blocker: ""
+  - id: S3H-T0004
+    status: lean_proved
+    lean_name: Circle.S3.phaseRotatePair_identity
+    informal_statement: "The identity phase leaves every Hopf pair unchanged."
+    formal_statement: "forall p : Circle.S3.HopfPair, Circle.S3.phaseRotatePair 1 0 p = p"
+    dictionary_dependencies: ["S3H-0002"]
+    paper_refs: ["papers/S3/PAPER_S3_03_HOPF_COILS.md"]
+    imports_allowed: ["Common", "S1", "S2"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py::test_phase_rotate_identity"]
+    blocker: ""
+  - id: S3H-T0005
+    status: lean_proved
+    lean_name: Circle.S3.phaseRotatePair_comp
+    informal_statement: "Composing two Hopf phase rotations follows the complex phase multiplication law."
+    formal_statement: "forall u v a b : Real, forall p : Circle.S3.HopfPair, Circle.S3.phaseRotatePair u v (Circle.S3.phaseRotatePair a b p) = Circle.S3.phaseRotatePair (u*a-v*b) (v*a+u*b) p"
+    dictionary_dependencies: ["S3H-0002"]
+    paper_refs: ["papers/S3/PAPER_S3_03_HOPF_COILS.md"]
+    imports_allowed: ["Common", "S1", "S2"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py::test_phase_rotate_composition"]
+    blocker: ""
   - id: S3S-T0001
     status: lean_proved
     lean_name: Circle.S3.quaternionConjugation_neg
