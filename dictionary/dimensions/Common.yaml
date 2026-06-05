@@ -193,3 +193,26 @@ entries:
     forbidden_meanings:
       - "A claim that an arbitrary dataset has this period."
       - "A noise-robust period detector."
+  - id: COMMON-0018
+    name: "Cyclic address"
+    kind: operation
+    symbol: "addr(size,index)"
+    formal_definition: "The finite wraparound address index % size for a positive circular buffer size."
+    intuition: "The proof-carrying address rewrite behind ring buffers, circular queues, and cyclic kernels."
+    dependencies: []
+    introduced_in: "PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION"
+    forbidden_meanings:
+      - "A memory-safety proof for an implementation language."
+      - "A benchmark result."
+      - "A cache-locality claim."
+  - id: COMMON-0019
+    name: "Cyclic address wraparound"
+    kind: relation
+    symbol: "addr(i + size) = addr(i)"
+    formal_definition: "The cyclic address is unchanged after adding one positive circular buffer size."
+    intuition: "A legal rewrite for circular computation: one full wrap returns to the same address."
+    dependencies: ["COMMON-0018"]
+    introduced_in: "PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION"
+    forbidden_meanings:
+      - "A proof that a backend is faster."
+      - "A proof that arbitrary strided memory is coalesced."

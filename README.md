@@ -37,7 +37,7 @@ The expanded long-horizon plan is dimension-organized:
 S^0 -> S^1 -> S^2 -> S^3 -> S^4/S^5/S^6 -> S^7 -> Future/S^15
 ```
 
-The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, scaling invertibility, and signed reversible rotation; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle, sphere-grid, and antipode theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; the first `S^3` spin sign-cancellation theorem; the finite `S^4` through `S^6` suspension Euler bridge; the finite topological `S^7` suspension model; the first Phase II finite stable-sphere, period-8 clock, trivial-bundle, directed-boundary, and proof-glyph certificate seeds; and the first application finite phase-coordinate seed.
+The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, scaling invertibility, and signed reversible rotation; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle, sphere-grid, and antipode theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; the first `S^3` spin sign-cancellation theorem; the finite `S^4` through `S^6` suspension Euler bridge; the finite topological `S^7` suspension model; the first Phase II finite stable-sphere, period-8 clock, trivial-bundle, directed-boundary, and proof-glyph certificate seeds; and the first application finite phase-coordinate and cyclic-address seeds.
 
 Future dimensional work is split into two related ladders:
 
@@ -82,12 +82,13 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md` | draft/proved finite seed | `P2BC-T0001` and `P2BC-T0002` are Lean-proved directed-interval boundary facts |
 | `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md` | draft/proved certificate seed | `P2G-T0001` and `P2G-T0002` are Lean-proved proof-glyph projection facts |
 | `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md` | draft/proved finite seed | `APPD-T0001` and `APPD-T0002` are Lean-proved phase-coordinate facts with Python examples |
+| `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md` | draft/proved finite seed | `COMPC-T0001` and `COMPC-T0002` are Lean-proved cyclic-address facts with Python examples |
 
 The theorem manifest also includes `CC-T0008`, proving that scaling by `k` is invertible on `C_n` exactly when `n` and `k` are coprime.
 
 The D0 dimensional scaffold is also in place: dimension manifests, dimension dictionaries, planned paper stubs, Lean/Python scaffolds, and dimension validation scripts. Future-dimension claims remain planned, deferred, exploratory, or stated until actual Lean proofs exist.
 
-Phase II and application scaffolds are also in place under `papers/phase2/`, `papers/applications/`, `manifests/theories/`, and `manifests/applications/`. `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_05_PROOF_CARRYING_GLYPHS` and `PAPER_APP_01_COIL_DATA_ANALYSIS` now have proved seeds; the remaining application tracks are roadmap/benchmark scaffolds, not proof claims.
+Phase II and application scaffolds are also in place under `papers/phase2/`, `papers/applications/`, `manifests/theories/`, and `manifests/applications/`. `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_05_PROOF_CARRYING_GLYPHS`, `PAPER_APP_01_COIL_DATA_ANALYSIS`, and `PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION` now have proved seeds; the remaining application tracks are roadmap/benchmark scaffolds, not proof claims.
 
 The README is updated after meaningful proof batches, paper batches, roadmap changes, or application-context additions. Tiny internal-only edits should update the relevant source files without creating README churn.
 
@@ -233,6 +234,8 @@ Proved common and dimensional spine:
 - `P2G-T0002`: proof glyph certificate exposes its Lean declaration name
 - `APPD-T0001`: finite phase coordinate is bounded by a positive period
 - `APPD-T0002`: finite phase coordinate closes after adding one full period
+- `COMPC-T0001`: cyclic address is bounded by a positive circular buffer size
+- `COMPC-T0002`: cyclic address is unchanged after adding one full buffer size
 - `S0-T0001`: the finite `S^0` opposition type has two points
 - `S0-T0002`: opposition swaps the two `S^0` points
 - `S2-T0001`: suspended-circle cell counts

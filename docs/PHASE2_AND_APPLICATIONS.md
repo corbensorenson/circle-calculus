@@ -96,6 +96,8 @@ Current active Phase II proof seed:
 - This is the metadata contract for proof-carrying diagrams, not a proof of glyph semantics, normal forms, dependency correctness, or proof search.
 - `PAPER_APP_01_COIL_DATA_ANALYSIS` proves the finite phase-coordinate facts `APPD-T0001` and `APPD-T0002` in Lean through `Circle.Applications.phaseCoordinate_lt_period` and `Circle.Applications.phaseCoordinate_add_period`, with matching Python examples.
 - This is a synthetic periodic-data primitive, not a real-data period detector or benchmark result.
+- `PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION` proves the cyclic-address facts `COMPC-T0001` and `COMPC-T0002` in Lean through `Circle.Applications.cyclicAddress_lt_size` and `Circle.Applications.cyclicAddress_add_size`, with matching Python examples.
+- This is a proof-carrying rewrite primitive, not evidence that any backend is faster.
 
 ## Compute Track
 
@@ -257,7 +259,7 @@ Circle AI guardrails:
 
 ## Planned And Active Scaffolds Created
 
-These files exist so later Phase II and application work has stable paper and manifest anchors. Most application tracks remain planned scaffolds rather than proof claims; `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_05_PROOF_CARRYING_GLYPHS` and `PAPER_APP_01_COIL_DATA_ANALYSIS` are active proof seeds.
+These files exist so later Phase II and application work has stable paper and manifest anchors. Most application tracks remain planned scaffolds rather than proof claims; `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_05_PROOF_CARRYING_GLYPHS`, `PAPER_APP_01_COIL_DATA_ANALYSIS`, and `PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION` are active proof seeds.
 
 Planned manifests:
 

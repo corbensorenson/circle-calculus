@@ -274,6 +274,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: `APPD-T0001` and `APPD-T0002` are Lean-proved finite phase-coordinate facts with Python examples; real-data and benchmark claims remain future work.
 - [x] `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md`
   - Program: certified cyclic/circulant/orbit structure lowered to FFT/NTT/permutation backends and benchmarked.
+  - Status: `COMPC-T0001` and `COMPC-T0002` are Lean-proved cyclic-address facts with Python examples; backend lowering and performance claims remain benchmark work.
 - [x] `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md`
   - Program: `CoilRay Sort`, `CoilSampler`, `CoilNoise`, `CoilSTIR`, BRDF/lighting angular compression, spherical-coil ray queues, procedural placement/dithering, and rendering benchmarks.
 - [x] `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md`
@@ -330,6 +331,8 @@ Application guardrails:
 - [x] `P2G-T0002`: proof glyph certificate exposes its Lean declaration name.
 - [x] `APPD-T0001`: finite phase coordinate is bounded by a positive period.
 - [x] `APPD-T0002`: finite phase coordinate closes after adding one full period.
+- [x] `COMPC-T0001`: cyclic address is bounded by a positive circular buffer size.
+- [x] `COMPC-T0002`: cyclic address is unchanged after adding one full buffer size.
 
 ## Current S1 Proof Status
 

@@ -1,6 +1,21 @@
 id: coil_compute
-status: planned
+status: active
 papers:
   - papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md
   - papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md
+sidecars:
+  - sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/lean/PaperComp01.lean
+  - sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py
+theorems:
+  - id: COMPC-T0001
+    status: lean_proved
+    lean_name: Circle.Applications.cyclicAddress_lt_size
+    dictionary_dependencies: ["COMMON-0018"]
+  - id: COMPC-T0002
+    status: lean_proved
+    lean_name: Circle.Applications.cyclicAddress_add_size
+    dictionary_dependencies: ["COMMON-0018", "COMMON-0019"]
+next_targets:
+  - "Extend from cyclic addresses to stride/orbit layouts before claiming layout wins."
+  - "Benchmark direct, dense, FFT, NTT, and layout backends before making performance claims."
 guardrail: "Benchmarks decide performance claims."

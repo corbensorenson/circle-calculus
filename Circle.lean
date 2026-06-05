@@ -15,3 +15,4 @@ import Circle.Phase2.Bundle
 import Circle.Phase2.BoundaryCobordism
 import Circle.Phase2.GlyphProof
 import Circle.Applications.CoilData
+import Circle.Applications.CoilCompute

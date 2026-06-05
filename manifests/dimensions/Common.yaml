@@ -209,4 +209,30 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["phase_coordinate(period, step + period) == phase_coordinate(period, step)"]
     blocker: ""
+  - id: COMPC-T0001
+    status: lean_proved
+    lean_name: Circle.Applications.cyclicAddress_lt_size
+    informal_statement: "For a positive circular buffer size, a cyclic address is bounded by that size."
+    formal_statement: "forall {size : Nat}, 0 < size -> forall index : Nat, cyclicAddress size index < size"
+    dictionary_dependencies: ["COMMON-0018"]
+    paper_refs: ["papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["0 <= cyclic_address(size, index) < size"]
+    blocker: ""
+  - id: COMPC-T0002
+    status: lean_proved
+    lean_name: Circle.Applications.cyclicAddress_add_size
+    informal_statement: "For a positive circular buffer size, adding one full size preserves the cyclic address."
+    formal_statement: "forall {size : Nat}, 0 < size -> forall index : Nat, cyclicAddress size (index + size) = cyclicAddress size index"
+    dictionary_dependencies: ["COMMON-0018", "COMMON-0019"]
+    paper_refs: ["papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["cyclic_address(size, index + size) == cyclic_address(size, index)"]
+    blocker: ""
 warnings: []

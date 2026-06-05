@@ -382,10 +382,14 @@ papers:
 
   - id: PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION
     title: "Circle Calculus Compute 1: Proof-Carrying Circular Computation"
-    status: planned
-    sidecar: ""
-    theorem_ids: []
-    dictionary_ids: []
+    status: draft
+    sidecar: sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION
+    theorem_ids:
+      - COMPC-T0001
+      - COMPC-T0002
+    dictionary_ids:
+      - COMMON-0018
+      - COMMON-0019
 
   - id: PAPER_COMP_02_COIL_RAY_AND_SAMPLING
     title: "Circle Calculus Compute 2: CoilRay and CoilSampler"
