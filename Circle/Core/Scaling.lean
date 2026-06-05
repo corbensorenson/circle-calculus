@@ -482,9 +482,20 @@ theorem scaleFiberRepresentativeSet_card {n k r : Nat} (hn : n ≠ 0) :
   rw [scaleFiberRepresentativeSet_eq_periodFibers hn]
   exact scalePeriodFiberRepresentatives_card hn
 
+theorem scaleFiberRepresentativeSet_zero_eq_scaleKernelRepresentativeSet (n k : Nat) :
+    scaleFiberRepresentativeSet n k 0 = scaleKernelRepresentativeSet n k := by
+  unfold scaleFiberRepresentativeSet scaleKernelRepresentativeSet
+  simp [scale]
+
 noncomputable def scaleTargetFiberRepresentativeSet (n k : Nat) (target : C n) :
     Finset Nat :=
   (Finset.range n).filter (fun x : Nat => scale n k ((x : Nat) : C n) = target)
+
+theorem scaleTargetFiberRepresentativeSet_scaled_eq_scaleFiberRepresentativeSet
+    (n k r : Nat) :
+    scaleTargetFiberRepresentativeSet n k (scale n k ((r : Nat) : C n)) =
+      scaleFiberRepresentativeSet n k r := by
+  rfl
 
 theorem scaleTargetFiberRepresentativeSet_eq_empty_of_not_mem_scaleCircleImage
     {n k : Nat} {target : C n} (hnot : target ∉ scaleCircleImage n k) :

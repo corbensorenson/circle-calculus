@@ -268,6 +268,19 @@ def test_scale_fiber_representative_card_examples() -> None:
                 assert len(fiber) == gcd(n, k)
 
 
+def test_scale_zero_fiber_equals_kernel_examples() -> None:
+    for n in range(1, 33):
+        circle = Circle(n)
+        for k in range(0, 17):
+            zero_fiber = {
+                x
+                for x in range(n)
+                if circle.scale(x, k) == circle.scale(0, k)
+            }
+            kernel = {x for x in range(n) if circle.scale(x, k) == 0}
+            assert zero_fiber == kernel
+
+
 def test_scale_target_fiber_empty_outside_image_examples() -> None:
     for n in range(1, 33):
         circle = Circle(n)
@@ -287,6 +300,23 @@ def test_scale_target_fiber_card_inside_image_examples() -> None:
             for target in image:
                 fiber = {x for x in range(n) if circle.scale(x, k) == target}
                 assert len(fiber) == gcd(n, k)
+
+
+def test_scale_target_fiber_over_scaled_representative_equals_representative_fiber_examples() -> None:
+    for n in range(1, 33):
+        circle = Circle(n)
+        for k in range(0, 17):
+            for r in range(0, 17):
+                target = circle.scale(r, k)
+                target_fiber = {
+                    x for x in range(n) if circle.scale(x, k) == target
+                }
+                representative_fiber = {
+                    x
+                    for x in range(n)
+                    if circle.scale(x, k) == circle.scale(r, k)
+                }
+                assert target_fiber == representative_fiber
 
 
 def test_scale_image_card_times_target_fiber_card_examples() -> None:

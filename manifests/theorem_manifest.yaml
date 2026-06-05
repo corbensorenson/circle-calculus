@@ -655,6 +655,38 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["len({scale(n,k,x) | 0 <= x < n}) * len({x | 0 <= x < n and scale(n,k,x)=0}) == n"]
 
+  - id: CC-T0050
+    name: Scaling zero fiber is the kernel representative set
+    status: proved
+    lean_name: Circle.scaleFiberRepresentativeSet_zero_eq_scaleKernelRepresentativeSet
+    informal_statement: "For every finite circle and scaling factor, the representative fiber over the scaled zero address is exactly the canonical kernel representative set."
+    formal_statement: "forall n k : Nat, Circle.scaleFiberRepresentativeSet n k 0 = Circle.scaleKernelRepresentativeSet n k"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_zero_fiber_equals_kernel"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean by unfolding the two representative-set definitions and simplifying scale at zero."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["{x | 0 <= x < n and scale(n,k,x)=scale(n,k,0)} == {x | 0 <= x < n and scale(n,k,x)=0}"]
+
+  - id: CC-T0051
+    name: Scaling target fiber over a scaled representative is its representative fiber
+    status: proved
+    lean_name: Circle.scaleTargetFiberRepresentativeSet_scaled_eq_scaleFiberRepresentativeSet
+    informal_statement: "For every finite circle, scaling factor, and representative r, the target fiber over scale(r) is exactly the canonical representative fiber of r."
+    formal_statement: "forall n k r : Nat, Circle.scaleTargetFiberRepresentativeSet n k (Circle.scale n k ((r : Nat) : Circle.C n)) = Circle.scaleFiberRepresentativeSet n k r"
+    dictionary_dependencies: ["CC-0001", "CC-0002", "CC-0105", "CC-0205"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_scale_target_fiber_over_scaled_representative_equals_representative_fiber"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean by definitional equality of the target-fiber and representative-fiber filters."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["{x | 0 <= x < n and scale(n,k,x)=target} == {x | 0 <= x < n and scale(n,k,x)=scale(n,k,r)} for target=scale(n,k,r)"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved
