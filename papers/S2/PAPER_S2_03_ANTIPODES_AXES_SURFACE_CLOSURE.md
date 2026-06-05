@@ -12,6 +12,8 @@ This `S^2` paper adds the first conservative antipode and axis structure after t
 - `S2-T0009`: `Circle.S2.suspendedCircleAntipode_involutive`
 - `S2-T0010`: `Circle.S2.suspendedCircleAntipode_preservesPoleSet`
 - `S2-T0011`: `Circle.S2.suspendedCircleAntipode_preservesEquatorSet`
+- `S2-T0012`: `Circle.S2.longitudeRotation_preservesLatitudeCoordinate`
+- `S2-T0013`: `Circle.S2.longitudeRotation_advancesLongitudeCoordinate`
 
 ## Model
 
@@ -46,6 +48,18 @@ is_suspended_equator(south)=false
 is_suspended_equator(equator(x))=true
 ```
 
+For the finite sphere-grid model, non-pole points also have partial coordinate projections:
+
+```text
+latitude_coordinate(north)=none
+latitude_coordinate(south)=none
+latitude_coordinate(ring(latitude,node))=some(latitude)
+
+longitude_coordinate(north)=none
+longitude_coordinate(south)=none
+longitude_coordinate(ring(latitude,node))=some(node)
+```
+
 ## Proved Core
 
 `S2-T0008` is proved by `Circle.S2.suspendedCircleAntipode_swapsPoles`: the antipode swaps the two poles.
@@ -56,6 +70,10 @@ is_suspended_equator(equator(x))=true
 
 `S2-T0011` is proved by `Circle.S2.suspendedCircleAntipode_preservesEquatorSet`: the antipode sends equator points to equator points.
 
+`S2-T0012` is proved by `Circle.S2.longitudeRotation_preservesLatitudeCoordinate`: a longitude rotation preserves the finite latitude coordinate of every sphere-grid point.
+
+`S2-T0013` is proved by `Circle.S2.longitudeRotation_advancesLongitudeCoordinate`: a longitude rotation advances a ring point's longitude coordinate by `Circle.rot(n,stride)` and leaves pole longitude coordinates empty.
+
 Surface closure remains tied to the already proved Euler facts `Circle.S2.suspendedCircle_chi` and `Circle.S2.sphereGrid_chi`.
 
 ## Dictionary Targets
@@ -65,4 +83,4 @@ Surface closure remains tied to the already proved Euler facts `Circle.S2.suspen
 
 ## Notes
 
-Do not force continuous geometry too early. Antinodes, meridian systems, and continuous surface geometry remain future refinements after the finite antipode, pole-subset, and equator-subset spine is stable.
+Do not force continuous geometry too early. Antinodes and continuous surface geometry remain future refinements after the finite antipode, pole-subset, equator-subset, and coordinate-projection spine is stable.

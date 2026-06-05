@@ -190,7 +190,7 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
 - [x] `papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md`
   - Proof targets to add as the model matures: antipodal map, axis, meridians, surface closure, antinodes.
   - Do not force continuous geometry too early.
-  - Status: suspended-circle antipode pole swap, involution, finite pole-subset preservation, and finite equator-subset preservation are Lean-proved as `S2-T0008` through `S2-T0011`; meridian systems, antinodes, and continuous surface geometry remain future refinements.
+  - Status: suspended-circle antipode pole swap, involution, finite pole/equator subset preservation, and finite sphere-grid latitude/longitude coordinate rotation laws are Lean-proved as `S2-T0008` through `S2-T0013`; antinodes and continuous surface geometry remain future refinements.
 
 ### S3: Hypersphere, Quaternions, Hopf
 

@@ -144,6 +144,32 @@ theorems:
       no_sorry_required: true
       python_property_tests: []
     blocker: ""
+  - id: S2-T0012
+    status: lean_proved
+    lean_name: Circle.S2.longitudeRotation_preservesLatitudeCoordinate
+    informal_statement: "Longitude rotation preserves the finite latitude coordinate of every sphere-grid point."
+    formal_statement: "forall n r stride : Nat, forall point : Circle.S2.SphereGridPoint n r, Circle.S2.sphereGridLatitudeCoordinate (Circle.S2.longitudeRotation n r stride point) = Circle.S2.sphereGridLatitudeCoordinate point"
+    dictionary_dependencies: ["S2-0003"]
+    paper_refs: ["papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
+  - id: S2-T0013
+    status: lean_proved
+    lean_name: Circle.S2.longitudeRotation_advancesLongitudeCoordinate
+    informal_statement: "Longitude rotation advances the finite longitude coordinate by the corresponding circle rotation while leaving poles without a longitude coordinate."
+    formal_statement: "forall n r stride : Nat, forall point : Circle.S2.SphereGridPoint n r, Circle.S2.sphereGridLongitudeCoordinate (Circle.S2.longitudeRotation n r stride point) = Option.map (Circle.rot n stride) (Circle.S2.sphereGridLongitudeCoordinate point)"
+    dictionary_dependencies: ["S2-0003", "CC-0101"]
+    paper_refs: ["papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
 warnings:
   - id: S2-W0001
     status: active

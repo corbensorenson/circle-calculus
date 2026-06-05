@@ -97,10 +97,32 @@ def longitudeRotation (n r stride : Nat) : SphereGridPoint n r -> SphereGridPoin
   | SphereGridPoint.south => SphereGridPoint.south
   | SphereGridPoint.ring latitude node => SphereGridPoint.ring latitude (Circle.rot n stride node)
 
+def sphereGridLatitudeCoordinate {n r : Nat} : SphereGridPoint n r -> Option (Fin r)
+  | SphereGridPoint.north => none
+  | SphereGridPoint.south => none
+  | SphereGridPoint.ring latitude _ => some latitude
+
+def sphereGridLongitudeCoordinate {n r : Nat} : SphereGridPoint n r -> Option (Circle.C n)
+  | SphereGridPoint.north => none
+  | SphereGridPoint.south => none
+  | SphereGridPoint.ring _ node => some node
+
 theorem longitudeRotation_fixesPoles (n r stride : Nat) :
     longitudeRotation n r stride SphereGridPoint.north = SphereGridPoint.north ∧
       longitudeRotation n r stride SphereGridPoint.south = SphereGridPoint.south := by
   constructor <;> rfl
+
+theorem longitudeRotation_preservesLatitudeCoordinate (n r stride : Nat)
+    (point : SphereGridPoint n r) :
+    sphereGridLatitudeCoordinate (longitudeRotation n r stride point) =
+      sphereGridLatitudeCoordinate point := by
+  cases point <;> rfl
+
+theorem longitudeRotation_advancesLongitudeCoordinate (n r stride : Nat)
+    (point : SphereGridPoint n r) :
+    sphereGridLongitudeCoordinate (longitudeRotation n r stride point) =
+      (sphereGridLongitudeCoordinate point).map (Circle.rot n stride) := by
+  cases point <;> rfl
 
 theorem latitudeCoil_period {n k : Nat} (hn : n ≠ 0) :
     Circle.period n k = n / Nat.gcd n k :=

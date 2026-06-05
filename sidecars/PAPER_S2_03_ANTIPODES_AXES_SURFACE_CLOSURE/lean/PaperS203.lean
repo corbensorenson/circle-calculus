@@ -17,5 +17,9 @@ namespace Circle.PaperS203
 #check Circle.S2.suspendedCircleAntipode_involutive
 #check Circle.S2.suspendedCircleAntipode_preservesPoleSet
 #check Circle.S2.suspendedCircleAntipode_preservesEquatorSet
+#check Circle.S2.sphereGridLatitudeCoordinate
+#check Circle.S2.sphereGridLongitudeCoordinate
+#check Circle.S2.longitudeRotation_preservesLatitudeCoordinate
+#check Circle.S2.longitudeRotation_advancesLongitudeCoordinate
 
 end Circle.PaperS203
