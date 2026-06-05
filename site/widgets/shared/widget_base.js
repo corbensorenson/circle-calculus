@@ -1,4 +1,5 @@
 const dataCache = new Map();
+const REPOSITORY_URL = "https://github.com/corbensorenson/circle-calculus";
 
 function dataUrl(relativePath) {
   const currentScript = document.currentScript;
@@ -47,10 +48,25 @@ function renderMeta(meta) {
     const dt = document.createElement("dt");
     dt.textContent = label;
     const dd = document.createElement("dd");
-    dd.textContent = value;
+    if (typeof value === "object" && value.href) {
+      const link = document.createElement("a");
+      link.href = value.href;
+      link.textContent = value.text;
+      dd.appendChild(link);
+    } else if (typeof value === "object" && value.text) {
+      dd.textContent = value.text;
+    } else {
+      dd.textContent = value;
+    }
     dl.append(dt, dd);
   }
   return dl;
+}
+
+function githubSourceLink(path, line) {
+  if (!path) return "";
+  const anchor = line ? `#L${line}` : "";
+  return `${REPOSITORY_URL}/blob/main/${path}${anchor}`;
 }
 
 async function hydrateTheorems() {
@@ -77,7 +93,10 @@ async function hydrateTheorems() {
     statement.textContent = theorem.informal_statement || theorem.formal_statement || "";
 
     const meta = renderMeta([
-      ["Lean", theorem.lean_name],
+      ["Lean", theorem.lean_name ? {
+        text: theorem.lean_name,
+        href: githubSourceLink(theorem.lean_source, theorem.lean_source_line),
+      } : ""],
       ["Source", theorem.source_manifest],
       ["Paper refs", joinList(theorem.paper_refs)],
       ["Dictionary", joinList(theorem.dictionary_dependencies)],

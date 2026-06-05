@@ -35,6 +35,8 @@ def test_export_site_data_writes_required_indexes() -> None:
     theorem_by_id = {item["id"]: item for item in theorems["theorems"]}
     assert theorem_by_id["CC-T0001"]["canonical_status"] == "proved"
     assert theorem_by_id["CC-T0002"]["lean_name"] == "Circle.rot_comp"
+    assert theorem_by_id["CC-T0002"]["lean_source"] == "Circle/Core/Rotation.lean"
+    assert theorem_by_id["CC-T0002"]["lean_source_line"] > 0
 
     dictionary = json.loads((generated / "dictionary.json").read_text())
     dictionary_by_id = {item["id"]: item for item in dictionary["entries"]}

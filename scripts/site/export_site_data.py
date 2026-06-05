@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 from site_lib import GENERATED, ROOT, load_yaml, repo_relative, write_json
 
+
+DECL_RE = re.compile(r"^\s*(?:theorem|lemma|def|abbrev|structure|inductive)\s+([A-Za-z0-9_'.]+)")
 
 STATUS_MAP = {
     "proved": "proved",
@@ -28,9 +31,34 @@ def theorem_manifest_paths() -> list[Path]:
     return [path for path in candidates if path.name not in {"paper_manifest.yaml", "dimension_index.yaml"}]
 
 
+def lean_declaration_sources() -> dict[str, dict[str, object]]:
+    sources: dict[str, dict[str, object]] = {}
+    for path in sorted((ROOT / "Circle").glob("**/*.lean")):
+        namespace_stack: list[str] = []
+        for line_number, line in enumerate(path.read_text().splitlines(), start=1):
+            stripped = line.strip()
+            if stripped.startswith("namespace "):
+                namespace_stack.append(stripped.split(None, 1)[1])
+                continue
+            if stripped == "end" or stripped.startswith("end "):
+                if namespace_stack:
+                    namespace_stack.pop()
+                continue
+            match = DECL_RE.match(line)
+            if match:
+                local = match.group(1)
+                full = ".".join(namespace_stack + [local]) if namespace_stack else local
+                sources[full] = {
+                    "path": repo_relative(path),
+                    "line": line_number,
+                }
+    return sources
+
+
 def export_theorems() -> dict:
     theorems: list[dict] = []
     seen: set[str] = set()
+    lean_sources = lean_declaration_sources()
     for path in theorem_manifest_paths():
         data = load_yaml(path)
         for theorem in data.get("theorems", []):
@@ -42,6 +70,10 @@ def export_theorems() -> dict:
             item["source_manifest"] = repo_relative(path)
             item["original_status"] = item.get("status", "")
             item["canonical_status"] = canonical_status(item.get("status", "planned"))
+            lean_source = lean_sources.get(item.get("lean_name", ""))
+            if lean_source:
+                item["lean_source"] = lean_source["path"]
+                item["lean_source_line"] = lean_source["line"]
             theorems.append(item)
     return {"theorems": sorted(theorems, key=lambda item: item["id"])}
 

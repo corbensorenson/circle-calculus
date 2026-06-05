@@ -7,6 +7,8 @@
       ],
       "id": "AIA-T0001",
       "lean_name": "Circle.Applications.phaseChannel_lt_period",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 14,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved"
@@ -19,6 +21,8 @@
       ],
       "id": "AIA-T0002",
       "lean_name": "Circle.Applications.phaseChannel_add_period",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 19,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved"
@@ -30,6 +34,8 @@
       ],
       "id": "AIA-T0003",
       "lean_name": "Circle.Applications.phaseChannel_zero",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 25,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved"
@@ -41,6 +47,8 @@
       ],
       "id": "AIM-T0001",
       "lean_name": "Circle.Applications.memorySlot_lt_bankSize",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 33,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved"
@@ -53,6 +61,8 @@
       ],
       "id": "AIM-T0002",
       "lean_name": "Circle.Applications.memorySlot_add_bankSize",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 38,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved"
@@ -64,6 +74,8 @@
       ],
       "id": "AIM-T0003",
       "lean_name": "Circle.Applications.memorySlot_zero",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 44,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved"
@@ -75,6 +87,8 @@
       ],
       "id": "AIRA-T0001",
       "lean_name": "Circle.Applications.adapterBlock_lt_blockSize",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 52,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved"
@@ -87,6 +101,8 @@
       ],
       "id": "AIRA-T0002",
       "lean_name": "Circle.Applications.adapterBlock_add_blockSize",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 57,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved"
@@ -98,6 +114,8 @@
       ],
       "id": "AIRA-T0003",
       "lean_name": "Circle.Applications.adapterBlock_zero",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 63,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved"
@@ -109,6 +127,8 @@
       ],
       "id": "APPD-T0001",
       "lean_name": "Circle.Applications.phaseCoordinate_lt_period",
+      "lean_source": "Circle/Applications/CoilData.lean",
+      "lean_source_line": 13,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_data_analysis.yaml",
       "status": "lean_proved"
@@ -121,6 +141,8 @@
       ],
       "id": "APPD-T0002",
       "lean_name": "Circle.Applications.phaseCoordinate_add_period",
+      "lean_source": "Circle/Applications/CoilData.lean",
+      "lean_source_line": 18,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_data_analysis.yaml",
       "status": "lean_proved"
@@ -132,6 +154,8 @@
       ],
       "id": "APPD-T0003",
       "lean_name": "Circle.Applications.phaseCoordinate_zero",
+      "lean_source": "Circle/Applications/CoilData.lean",
+      "lean_source_line": 24,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_data_analysis.yaml",
       "status": "lean_proved"
@@ -148,6 +172,8 @@
       "id": "CC-T0001",
       "informal_statement": "Rotating by zero leaves every node unchanged.",
       "lean_name": "Circle.rot_zero",
+      "lean_source": "Circle/Core/Rotation.lean",
+      "lean_source_line": 9,
       "name": "Rotation zero",
       "original_status": "proved",
       "paper_refs": [
@@ -177,6 +203,8 @@
       "id": "CC-T0002",
       "informal_statement": "Composing rotations adds their strides.",
       "lean_name": "Circle.rot_comp",
+      "lean_source": "Circle/Core/Rotation.lean",
+      "lean_source_line": 12,
       "name": "Rotation composition",
       "original_status": "proved",
       "paper_refs": [
@@ -206,6 +234,8 @@
       "id": "CC-T0003",
       "informal_statement": "A rotation followed by the opposite rotation returns to the starting node.",
       "lean_name": "Circle.rot_inverse_left",
+      "lean_source": "Circle/Core/Rotation.lean",
+      "lean_source_line": 16,
       "name": "Rotation inverse",
       "original_status": "proved",
       "paper_refs": [
@@ -236,6 +266,8 @@
       "id": "CC-T0004",
       "informal_statement": "A coil closes at step m exactly when m times its stride is zero in C_n.",
       "lean_name": "Circle.closesAt_iff_stride_multiple_zero",
+      "lean_source": "Circle/Core/Coil.lean",
+      "lean_source_line": 13,
       "name": "Closure condition",
       "original_status": "proved",
       "paper_refs": [
@@ -266,6 +298,8 @@
       "id": "CC-T0005",
       "informal_statement": "The period of stride k on C_n is n/gcd(n,k).",
       "lean_name": "Circle.period_eq_n_div_gcd",
+      "lean_source": "Circle/Core/Period.lean",
+      "lean_source_line": 14,
       "name": "Period equals n divided by gcd",
       "original_status": "proved",
       "paper_refs": [
@@ -298,6 +332,8 @@
       "id": "CC-T0006",
       "informal_statement": "Stride k partitions C_n into gcd(n,k) disjoint cycles.",
       "lean_name": "Circle.orbit_decomposition_count",
+      "lean_source": "Circle/Core/Orbit.lean",
+      "lean_source_line": 18,
       "name": "Orbit decomposition count",
       "original_status": "proved",
       "paper_refs": [
@@ -329,6 +365,8 @@
       "id": "CC-T0007",
       "informal_statement": "Every nonzero stride smaller than a prime circle size generates a full coil.",
       "lean_name": "Circle.prime_full_coil",
+      "lean_source": "Circle/Core/Prime.lean",
+      "lean_source_line": 10,
       "name": "Prime full coil",
       "original_status": "proved",
       "paper_refs": [
@@ -360,6 +398,8 @@
       "id": "CC-T0008",
       "informal_statement": "Scaling by k is invertible on C_n exactly when gcd(n,k)=1.",
       "lean_name": "Circle.scale_invertible_iff_coprime",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 60,
       "name": "Scaling invertible iff coprime",
       "original_status": "proved",
       "paper_refs": [
@@ -389,6 +429,8 @@
       "id": "CC-T0009",
       "informal_statement": "Every natural number has a unique winding/residue decomposition.",
       "lean_name": "Circle.lift_unique",
+      "lean_source": "Circle/Core/Winding.lean",
+      "lean_source_line": 38,
       "name": "Lift unique",
       "original_status": "proved",
       "paper_refs": [
@@ -419,6 +461,8 @@
       "id": "CC-T0010",
       "informal_statement": "Lifted addition concatenates two path counts by adding windings, adding residues, and carrying residue overflow into the winding count.",
       "lean_name": "Circle.lift_add_decomposition",
+      "lean_source": "Circle/Core/Winding.lean",
+      "lean_source_line": 104,
       "name": "Addition as path concatenation",
       "original_status": "proved",
       "paper_refs": [
@@ -448,6 +492,8 @@
       "id": "CC-T0011",
       "informal_statement": "Every natural number has a canonical winding/residue decomposition for each positive modulus.",
       "lean_name": "Circle.lift_exists",
+      "lean_source": "Circle/Core/Winding.lean",
+      "lean_source_line": 30,
       "name": "Lift exists",
       "original_status": "proved",
       "paper_refs": [
@@ -478,6 +524,8 @@
       "id": "CC-T0012",
       "informal_statement": "Successor is unit residue motion with carry into the winding count.",
       "lean_name": "Circle.lift_successor_decomposition",
+      "lean_source": "Circle/Core/Winding.lean",
+      "lean_source_line": 61,
       "name": "Lift successor with carry",
       "original_status": "proved",
       "paper_refs": [
@@ -508,6 +556,8 @@
       "id": "CC-T0013",
       "informal_statement": "Zero is a right identity for lifted addition.",
       "lean_name": "Circle.lift_add_zero_right",
+      "lean_source": "Circle/Core/Winding.lean",
+      "lean_source_line": 129,
       "name": "Lifted addition right zero identity",
       "original_status": "proved",
       "paper_refs": [
@@ -538,6 +588,8 @@
       "id": "CC-T0014",
       "informal_statement": "Lifted addition is associative at the reconstructed-value level.",
       "lean_name": "Circle.lift_add_assoc_value",
+      "lean_source": "Circle/Core/Winding.lean",
+      "lean_source_line": 153,
       "name": "Lifted addition associativity",
       "original_status": "proved",
       "paper_refs": [
@@ -568,6 +620,8 @@
       "id": "CC-T0015",
       "informal_statement": "Zero is a left identity for lifted addition.",
       "lean_name": "Circle.lift_add_zero_left",
+      "lean_source": "Circle/Core/Winding.lean",
+      "lean_source_line": 141,
       "name": "Lifted addition left zero identity",
       "original_status": "proved",
       "paper_refs": [
@@ -599,6 +653,8 @@
       "id": "CC-T0016",
       "informal_statement": "Repeated lifted successor corresponds to natural-number induction by unit steps.",
       "lean_name": "Circle.lift_iter_successor_decomposition",
+      "lean_source": "Circle/Core/Winding.lean",
+      "lean_source_line": 192,
       "name": "Iterated lifted successor",
       "original_status": "proved",
       "paper_refs": [
@@ -630,6 +686,8 @@
       "id": "CC-T0017",
       "informal_statement": "Scaling by one leaves every node unchanged.",
       "lean_name": "Circle.scale_one",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 29,
       "name": "Scaling by one identity",
       "original_status": "proved",
       "paper_refs": [
@@ -661,6 +719,8 @@
       "id": "CC-T0018",
       "informal_statement": "Composing scaling maps multiplies their scale factors.",
       "lean_name": "Circle.scale_comp",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 34,
       "name": "Scaling composition",
       "original_status": "proved",
       "paper_refs": [
@@ -694,6 +754,8 @@
       "id": "CC-T0019",
       "informal_statement": "Scaling a rotated node equals rotating the scaled node by the scaled stride.",
       "lean_name": "Circle.scale_rot",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 40,
       "name": "Scaling transports rotation stride",
       "original_status": "proved",
       "paper_refs": [
@@ -726,6 +788,8 @@
       "id": "CC-T0020",
       "informal_statement": "Scaling a finite coil step gives the matching coil step with scaled start and scaled stride.",
       "lean_name": "Circle.scale_coilStep",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 46,
       "name": "Scaling transports coil steps",
       "original_status": "proved",
       "paper_refs": [
@@ -758,6 +822,8 @@
       "id": "CC-T0021",
       "informal_statement": "Every nonzero multiplier below a prime circle size gives a reversible scaling map.",
       "lean_name": "Circle.prime_scale_bijective",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 67,
       "name": "Prime scaling is bijective",
       "original_status": "proved",
       "paper_refs": [
@@ -790,6 +856,8 @@
       "id": "CC-T0022",
       "informal_statement": "If k divides n, then scaling the cofactor address n/k by k lands at zero in C_n.",
       "lean_name": "Circle.scale_cofactor_zero",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 72,
       "name": "Scaling sends a divisor cofactor to zero",
       "original_status": "proved",
       "paper_refs": [
@@ -823,6 +891,8 @@
       "id": "CC-T0023",
       "informal_statement": "If k divides n, then every multiple of the cofactor n/k lands at zero under scaling by k in C_n.",
       "lean_name": "Circle.scale_cofactor_multiple_zero",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 80,
       "name": "Scaling sends cofactor multiples to zero",
       "original_status": "proved",
       "paper_refs": [
@@ -856,6 +926,8 @@
       "id": "CC-T0024",
       "informal_statement": "If k divides n, then adding any multiple of n/k to an address does not change its scaled value under k.",
       "lean_name": "Circle.scale_add_cofactor_multiple",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 95,
       "name": "Scaling collapses cofactor-shifted addresses",
       "original_status": "proved",
       "paper_refs": [
@@ -888,6 +960,8 @@
       "id": "CC-T0025",
       "informal_statement": "A natural address x maps to zero under scaling by k exactly when n divides k*x.",
       "lean_name": "Circle.scale_nat_eq_zero_iff_dvd_mul",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 105,
       "name": "Scaling zero iff modulus divides product",
       "original_status": "proved",
       "paper_refs": [
@@ -921,6 +995,8 @@
       "id": "CC-T0026",
       "informal_statement": "Two natural addresses have equal scaled values exactly when their scaled products are congruent modulo n.",
       "lean_name": "Circle.scale_nat_eq_iff_mul_modEq",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 187,
       "name": "Scaling equality iff scaled products are congruent",
       "original_status": "proved",
       "paper_refs": [
@@ -954,6 +1030,8 @@
       "id": "CC-T0027",
       "informal_statement": "When k is coprime to n, two natural addresses have equal scaled values exactly when the original addresses are congruent modulo n.",
       "lean_name": "Circle.scale_nat_eq_iff_nat_modEq_of_coprime",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 578,
       "name": "Coprime scaling reflects address congruence",
       "original_status": "proved",
       "paper_refs": [
@@ -985,6 +1063,8 @@
       "id": "CC-T0028",
       "informal_statement": "Scaling by zero sends every finite-circle address to zero.",
       "lean_name": "Circle.scale_zero_factor",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 24,
       "name": "Scaling by zero collapses to zero",
       "original_status": "proved",
       "paper_refs": [
@@ -1017,6 +1097,8 @@
       "id": "CC-T0029",
       "informal_statement": "Scale factors that are congruent modulo n define the same scaling map on C_n.",
       "lean_name": "Circle.scale_factor_modEq",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 590,
       "name": "Congruent scale factors act identically",
       "original_status": "proved",
       "paper_refs": [
@@ -1049,6 +1131,8 @@
       "id": "CC-T0030",
       "informal_statement": "For a nonzero circle size, a natural address scales to zero exactly when the stride period divides that address.",
       "lean_name": "Circle.scale_nat_eq_zero_iff_period_dvd",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 111,
       "name": "Scaling kernel is period divisibility",
       "original_status": "proved",
       "paper_refs": [
@@ -1081,6 +1165,8 @@
       "id": "CC-T0031",
       "informal_statement": "Scaling a natural step index by stride k gives the same address as walking k for that many coil steps from zero.",
       "lean_name": "Circle.scale_nat_to_coilStep",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 55,
       "name": "Scaling a step index gives the matching coil step",
       "original_status": "proved",
       "paper_refs": [
@@ -1113,6 +1199,8 @@
       "id": "CC-T0032",
       "informal_statement": "For a nonzero circle size, every natural multiple of the stride period maps to zero under scaling by that stride.",
       "lean_name": "Circle.scale_period_multiple_zero",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 157,
       "name": "Scaling period multiples gives zero",
       "original_status": "proved",
       "paper_refs": [
@@ -1145,6 +1233,8 @@
       "id": "CC-T0033",
       "informal_statement": "For a nonzero circle size, adding any natural multiple of the stride period to an address does not change its scaled value.",
       "lean_name": "Circle.scale_add_period_multiple",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 162,
       "name": "Scaling collapses period-shifted addresses",
       "original_status": "proved",
       "paper_refs": [
@@ -1177,6 +1267,8 @@
       "id": "CC-T0034",
       "informal_statement": "For a nonzero circle size, scaling a natural address has the same value as scaling its residue modulo the stride period.",
       "lean_name": "Circle.scale_nat_period_normalForm",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 172,
       "name": "Scaling has period normal form",
       "original_status": "proved",
       "paper_refs": [
@@ -1209,6 +1301,8 @@
       "id": "CC-T0035",
       "informal_statement": "For a nonzero circle size, two natural addresses have the same scaled value exactly when they are congruent modulo the stride period.",
       "lean_name": "Circle.scale_nat_eq_iff_period_modEq",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 194,
       "name": "Scaling equality is period congruence",
       "original_status": "proved",
       "paper_refs": [
@@ -1241,6 +1335,8 @@
       "id": "CC-T0036",
       "informal_statement": "For a nonzero circle size, scaling is injective on the natural representatives strictly below the stride period.",
       "lean_name": "Circle.scale_nat_period_representatives_injective",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 237,
       "name": "Scaling is injective on period representatives",
       "original_status": "proved",
       "paper_refs": [
@@ -1273,6 +1369,8 @@
       "id": "CC-T0037",
       "informal_statement": "For a nonzero circle size, the finite image of one full set of stride-period representatives under scaling has cardinality equal to the stride period.",
       "lean_name": "Circle.scalePeriodRepresentativeImage_card",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 250,
       "name": "Scaling period-representative image has period cardinality",
       "original_status": "proved",
       "paper_refs": [
@@ -1305,6 +1403,8 @@
       "id": "CC-T0038",
       "informal_statement": "For a nonzero circle size, every scaled natural address lies in the scaled image of one full set of stride-period representatives.",
       "lean_name": "Circle.scale_nat_mem_scalePeriodRepresentativeImage",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 260,
       "name": "Scaled addresses land in period-representative image",
       "original_status": "proved",
       "paper_refs": [
@@ -1337,6 +1437,8 @@
       "id": "CC-T0039",
       "informal_statement": "For a nonzero circle size, the image of scaling all finite circle representatives equals the image of scaling one full set of stride-period representatives.",
       "lean_name": "Circle.scaleCircleImage_eq_scalePeriodRepresentativeImage",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 275,
       "name": "Scaling circle image equals period-representative image",
       "original_status": "proved",
       "paper_refs": [
@@ -1369,6 +1471,8 @@
       "id": "CC-T0040",
       "informal_statement": "For a nonzero circle size, the finite image of scaling all circle representatives has cardinality equal to the stride period.",
       "lean_name": "Circle.scaleCircleImage_card",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 295,
       "name": "Scaling circle image has period cardinality",
       "original_status": "proved",
       "paper_refs": [
@@ -1401,6 +1505,8 @@
       "id": "CC-T0041",
       "informal_statement": "For a nonzero circle size, the canonical representatives that map to zero under scaling are exactly the multiples of the stride period indexed below gcd(n,k).",
       "lean_name": "Circle.scaleKernelRepresentativeSet_eq_periodMultiples",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 320,
       "name": "Scaling kernel representatives are period multiples",
       "original_status": "proved",
       "paper_refs": [
@@ -1433,6 +1539,8 @@
       "id": "CC-T0042",
       "informal_statement": "For a nonzero circle size, the finite set of canonical representatives that map to zero under scaling has cardinality gcd(n,k).",
       "lean_name": "Circle.scaleKernelRepresentativeSet_card",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 370,
       "name": "Scaling kernel representative set has gcd cardinality",
       "original_status": "proved",
       "paper_refs": [
@@ -1465,6 +1573,8 @@
       "id": "CC-T0043",
       "informal_statement": "For a nonzero circle size, the canonical representatives in the scaled fiber of a representative r are exactly r modulo the stride period plus all period multiples indexed below gcd(n,k).",
       "lean_name": "Circle.scaleFiberRepresentativeSet_eq_periodFibers",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 399,
       "name": "Scaling fibers are period-offset representatives",
       "original_status": "proved",
       "paper_refs": [
@@ -1497,6 +1607,8 @@
       "id": "CC-T0044",
       "informal_statement": "For a nonzero circle size, every finite canonical representative fiber of the scaling map has cardinality gcd(n,k).",
       "lean_name": "Circle.scaleFiberRepresentativeSet_card",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 480,
       "name": "Scaling fibers have gcd cardinality",
       "original_status": "proved",
       "paper_refs": [
@@ -1529,6 +1641,8 @@
       "id": "CC-T0045",
       "informal_statement": "For a nonzero circle size, a natural representative lies in the additive kernel subgroup of scaling by k exactly when the stride period divides that representative.",
       "lean_name": "Circle.nat_mem_scaleKernelSubgroup_iff_period_dvd",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 152,
       "name": "Scaling kernel subgroup membership is period divisibility",
       "original_status": "proved",
       "paper_refs": [
@@ -1561,6 +1675,8 @@
       "id": "CC-T0046",
       "informal_statement": "For any target node not in the finite image of the scaling map, the canonical representative fiber over that target is empty.",
       "lean_name": "Circle.scaleTargetFiberRepresentativeSet_eq_empty_of_not_mem_scaleCircleImage",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 532,
       "name": "Scaling target fibers are empty outside the image",
       "original_status": "proved",
       "paper_refs": [
@@ -1593,6 +1709,8 @@
       "id": "CC-T0047",
       "informal_statement": "For a nonzero circle size, any target node in the finite image of scaling has a canonical representative fiber of cardinality gcd(n,k).",
       "lean_name": "Circle.scaleTargetFiberRepresentativeSet_card_of_mem_scaleCircleImage",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 548,
       "name": "Scaling target fibers inside the image have gcd cardinality",
       "original_status": "proved",
       "paper_refs": [
@@ -1625,6 +1743,8 @@
       "id": "CC-T0048",
       "informal_statement": "For a nonzero circle size, any target node in the finite scaling image has image-cardinality times target-fiber-cardinality equal to the circle size.",
       "lean_name": "Circle.scaleCircleImage_card_mul_targetFiberRepresentativeSet_card",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 559,
       "name": "Scaling image and target fiber cardinalities factor the circle",
       "original_status": "proved",
       "paper_refs": [
@@ -1657,6 +1777,8 @@
       "id": "CC-T0049",
       "informal_statement": "For a nonzero circle size, the finite scaling image cardinality times the canonical kernel representative cardinality equals the circle size.",
       "lean_name": "Circle.scaleCircleImage_card_mul_scaleKernelRepresentativeSet_card",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 569,
       "name": "Scaling image and kernel cardinalities factor the circle",
       "original_status": "proved",
       "paper_refs": [
@@ -1689,6 +1811,8 @@
       "id": "CC-T0050",
       "informal_statement": "For every finite circle and scaling factor, the representative fiber over the scaled zero address is exactly the canonical kernel representative set.",
       "lean_name": "Circle.scaleFiberRepresentativeSet_zero_eq_scaleKernelRepresentativeSet",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 485,
       "name": "Scaling zero fiber is the kernel representative set",
       "original_status": "proved",
       "paper_refs": [
@@ -1721,6 +1845,8 @@
       "id": "CC-T0051",
       "informal_statement": "For every finite circle, scaling factor, and representative r, the target fiber over scale(r) is exactly the canonical representative fiber of r.",
       "lean_name": "Circle.scaleTargetFiberRepresentativeSet_scaled_eq_scaleFiberRepresentativeSet",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 526,
       "name": "Scaling target fiber over a scaled representative is its representative fiber",
       "original_status": "proved",
       "paper_refs": [
@@ -1753,6 +1879,8 @@
       "id": "CC-T0052",
       "informal_statement": "For a canonical representative r below n, its scaling fiber equals the fiber of s exactly when scale(r) equals scale(s).",
       "lean_name": "Circle.scaleFiberRepresentativeSet_eq_iff_scaled_eq_of_lt",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 490,
       "name": "Scaling representative fibers are equal iff scaled representatives are equal",
       "original_status": "proved",
       "paper_refs": [
@@ -1785,6 +1913,8 @@
       "id": "CC-T0053",
       "informal_statement": "For nonzero n and a canonical representative r below n, its scaling fiber equals the fiber of s exactly when r and s are congruent modulo period(n,k).",
       "lean_name": "Circle.scaleFiberRepresentativeSet_eq_iff_period_modEq_of_lt",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 514,
       "name": "Scaling representative fibers are equal iff representatives are period-congruent",
       "original_status": "proved",
       "paper_refs": [
@@ -1818,6 +1948,8 @@
       ],
       "informal_statement": "The Euler characteristic of a finite cell-count list is the alternating sum of its cell counts.",
       "lean_name": "Circle.Common.eulerCharacteristic",
+      "lean_source": "Circle/Common/Scaffold.lean",
+      "lean_source_line": 7,
       "original_status": "lean_proved",
       "paper_refs": [
         "docs/COMPLETION_ROADMAP.md#common-proof-targets"
@@ -1846,6 +1978,8 @@
       ],
       "informal_statement": "Suspension transforms finite cell counts by adding two poles and coning adjacent dimensions.",
       "lean_name": "Circle.Common.suspensionCounts",
+      "lean_source": "Circle/Common/Scaffold.lean",
+      "lean_source_line": 15,
       "original_status": "lean_proved",
       "paper_refs": [
         "docs/COMPLETION_ROADMAP.md#common-proof-targets"
@@ -1874,6 +2008,8 @@
       ],
       "informal_statement": "Suspension changes Euler characteristic by chi(Susp K)=2-chi(K).",
       "lean_name": "Circle.Common.suspensionEuler",
+      "lean_source": "Circle/Common/Scaffold.lean",
+      "lean_source_line": 29,
       "original_status": "lean_proved",
       "paper_refs": [
         "docs/COMPLETION_ROADMAP.md#common-proof-targets"
@@ -1895,6 +2031,8 @@
       ],
       "id": "COMPC-T0001",
       "lean_name": "Circle.Applications.cyclicAddress_lt_size",
+      "lean_source": "Circle/Applications/CoilCompute.lean",
+      "lean_source_line": 13,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
       "status": "lean_proved"
@@ -1907,6 +2045,8 @@
       ],
       "id": "COMPC-T0002",
       "lean_name": "Circle.Applications.cyclicAddress_add_size",
+      "lean_source": "Circle/Applications/CoilCompute.lean",
+      "lean_source_line": 18,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
       "status": "lean_proved"
@@ -1918,6 +2058,8 @@
       ],
       "id": "COMPC-T0003",
       "lean_name": "Circle.Applications.cyclicAddress_zero",
+      "lean_source": "Circle/Applications/CoilCompute.lean",
+      "lean_source_line": 24,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
       "status": "lean_proved"
@@ -1929,6 +2071,8 @@
       ],
       "id": "COMPL-T0001",
       "lean_name": "Circle.Applications.strideAddress_lt_size",
+      "lean_source": "Circle/Applications/CoilCompute.lean",
+      "lean_source_line": 32,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
       "status": "lean_proved"
@@ -1941,6 +2085,8 @@
       ],
       "id": "COMPL-T0002",
       "lean_name": "Circle.Applications.strideAddress_add_size_steps",
+      "lean_source": "Circle/Applications/CoilCompute.lean",
+      "lean_source_line": 37,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
       "status": "lean_proved"
@@ -1952,6 +2098,8 @@
       ],
       "id": "COMPL-T0003",
       "lean_name": "Circle.Applications.strideAddress_zero_step",
+      "lean_source": "Circle/Applications/CoilCompute.lean",
+      "lean_source_line": 43,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
       "status": "lean_proved"
@@ -1963,6 +2111,8 @@
       ],
       "id": "COMPL-T0004",
       "lean_name": "Circle.Applications.strideAddress_zero_stride",
+      "lean_source": "Circle/Applications/CoilCompute.lean",
+      "lean_source_line": 48,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
       "status": "lean_proved"
@@ -1974,6 +2124,8 @@
       ],
       "id": "COMPR-T0001",
       "lean_name": "Circle.Applications.directionBin_lt_binCount",
+      "lean_source": "Circle/Applications/CoilRendering.lean",
+      "lean_source_line": 13,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_rendering.yaml",
       "status": "lean_proved"
@@ -1986,6 +2138,8 @@
       ],
       "id": "COMPR-T0002",
       "lean_name": "Circle.Applications.directionBin_add_binCount",
+      "lean_source": "Circle/Applications/CoilRendering.lean",
+      "lean_source_line": 18,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_rendering.yaml",
       "status": "lean_proved"
@@ -1997,6 +2151,8 @@
       ],
       "id": "COMPR-T0003",
       "lean_name": "Circle.Applications.directionBin_zero",
+      "lean_source": "Circle/Applications/CoilRendering.lean",
+      "lean_source_line": 24,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_rendering.yaml",
       "status": "lean_proved"
@@ -2008,6 +2164,8 @@
       ],
       "id": "COMPS-T0001",
       "lean_name": "Circle.Applications.roundRobinSlot_lt_slotCount",
+      "lean_source": "Circle/Applications/CoilSystems.lean",
+      "lean_source_line": 13,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_systems.yaml",
       "status": "lean_proved"
@@ -2020,6 +2178,8 @@
       ],
       "id": "COMPS-T0002",
       "lean_name": "Circle.Applications.roundRobinSlot_add_slotCount",
+      "lean_source": "Circle/Applications/CoilSystems.lean",
+      "lean_source_line": 18,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_systems.yaml",
       "status": "lean_proved"
@@ -2031,6 +2191,8 @@
       ],
       "id": "COMPS-T0003",
       "lean_name": "Circle.Applications.roundRobinSlot_zero",
+      "lean_source": "Circle/Applications/CoilSystems.lean",
+      "lean_source_line": 24,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_systems.yaml",
       "status": "lean_proved"
@@ -2048,6 +2210,8 @@
       ],
       "informal_statement": "The finite period-8 dimension clock always returns an index below 8.",
       "lean_name": "Circle.Phase2.bottClockIndex_lt_eight",
+      "lean_source": "Circle/Phase2/BottClifford.lean",
+      "lean_source_line": 14,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md#theorem-spine"
@@ -2075,6 +2239,8 @@
       ],
       "informal_statement": "Adding eight dimensions preserves the finite period-8 clock index.",
       "lean_name": "Circle.Phase2.bottClockIndex_add_eight",
+      "lean_source": "Circle/Phase2/BottClifford.lean",
+      "lean_source_line": 19,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md#theorem-spine"
@@ -2102,6 +2268,8 @@
       ],
       "informal_statement": "Dimension zero has period-8 clock index zero.",
       "lean_name": "Circle.Phase2.bottClockIndex_zero",
+      "lean_source": "Circle/Phase2/BottClifford.lean",
+      "lean_source_line": 24,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md#theorem-spine"
@@ -2130,6 +2298,8 @@
       ],
       "informal_statement": "In the directed-interval seed, taking point-boundary after interval-boundary gives zero.",
       "lean_name": "Circle.Phase2.boundaryBoundaryInterval_zero",
+      "lean_source": "Circle/Phase2/BoundaryCobordism.lean",
+      "lean_source_line": 26,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md#theorem-spine"
@@ -2159,6 +2329,8 @@
       ],
       "informal_statement": "Reversing a directed interval negates its boundary.",
       "lean_name": "Circle.Phase2.intervalBoundary_reverse",
+      "lean_source": "Circle/Phase2/BoundaryCobordism.lean",
+      "lean_source_line": 30,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md#theorem-spine"
@@ -2187,6 +2359,8 @@
       ],
       "informal_statement": "Reversing a directed interval twice returns the original interval.",
       "lean_name": "Circle.Phase2.reverseInterval_involutive",
+      "lean_source": "Circle/Phase2/BoundaryCobordism.lean",
+      "lean_source_line": 36,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md#theorem-spine"
@@ -2215,6 +2389,8 @@
       ],
       "informal_statement": "A constant directed interval has zero boundary.",
       "lean_name": "Circle.Phase2.intervalBoundary_constant_zero",
+      "lean_source": "Circle/Phase2/BoundaryCobordism.lean",
+      "lean_source_line": 41,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md#theorem-spine"
@@ -2243,6 +2419,8 @@
       ],
       "informal_statement": "In the trivial product-bundle seed, projecting a built point returns its base coordinate.",
       "lean_name": "Circle.Phase2.trivialBundleProjection_point",
+      "lean_source": "Circle/Phase2/Bundle.lean",
+      "lean_source_line": 26,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"
@@ -2271,6 +2449,8 @@
       ],
       "informal_statement": "In the trivial product-bundle seed, reading a built point's fiber coordinate returns its fiber value.",
       "lean_name": "Circle.Phase2.trivialBundleFiber_point",
+      "lean_source": "Circle/Phase2/Bundle.lean",
+      "lean_source_line": 31,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"
@@ -2300,6 +2480,8 @@
       ],
       "informal_statement": "In the trivial product-bundle seed, changing only the fiber value does not change the projected base.",
       "lean_name": "Circle.Phase2.trivialBundleProjection_forgetsFiber",
+      "lean_source": "Circle/Phase2/Bundle.lean",
+      "lean_source_line": 36,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"
@@ -2329,6 +2511,8 @@
       ],
       "informal_statement": "In the trivial product-bundle seed, changing only the base value does not change the fiber coordinate.",
       "lean_name": "Circle.Phase2.trivialBundleFiber_forgetsBase",
+      "lean_source": "Circle/Phase2/Bundle.lean",
+      "lean_source_line": 42,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"
@@ -2357,6 +2541,8 @@
       ],
       "informal_statement": "A constructed proof glyph exposes the theorem id it carries.",
       "lean_name": "Circle.Phase2.proofGlyphTheoremId_mk",
+      "lean_source": "Circle/Phase2/GlyphProof.lean",
+      "lean_source_line": 32,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md#theorem-spine"
@@ -2385,6 +2571,8 @@
       ],
       "informal_statement": "A constructed proof glyph exposes the Lean declaration name it carries.",
       "lean_name": "Circle.Phase2.proofGlyphLeanName_mk",
+      "lean_source": "Circle/Phase2/GlyphProof.lean",
+      "lean_source_line": 36,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md#theorem-spine"
@@ -2412,6 +2600,8 @@
       ],
       "informal_statement": "A constructed proof glyph exposes the glyph id it carries.",
       "lean_name": "Circle.Phase2.proofGlyphGlyphId_mk",
+      "lean_source": "Circle/Phase2/GlyphProof.lean",
+      "lean_source_line": 28,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md#theorem-spine"
@@ -2441,6 +2631,8 @@
       ],
       "informal_statement": "Applying the finite suspension cell-count transform twice preserves Euler characteristic.",
       "lean_name": "Circle.Phase2.doubleSuspensionEuler",
+      "lean_source": "Circle/Phase2/StableSphere.lean",
+      "lean_source_line": 16,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md#theorem-spine"
@@ -2471,6 +2663,8 @@
       ],
       "informal_statement": "Four finite suspensions preserve Euler characteristic as two double-suspension steps.",
       "lean_name": "Circle.Phase2.fourSuspensionEuler",
+      "lean_source": "Circle/Phase2/StableSphere.lean",
+      "lean_source_line": 30,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md#theorem-spine"
@@ -2499,6 +2693,8 @@
       ],
       "informal_statement": "The finite four-suspension count operation is two double-suspension steps.",
       "lean_name": "Circle.Phase2.fourSuspensionCounts_eq_double_double",
+      "lean_source": "Circle/Phase2/StableSphere.lean",
+      "lean_source_line": 26,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md#theorem-spine"
@@ -2526,6 +2722,8 @@
       ],
       "informal_statement": "The S^0 opposition model has exactly two points.",
       "lean_name": "Circle.S0.card_sign",
+      "lean_source": "Circle/S0/Scaffold.lean",
+      "lean_source_line": 32,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md"
@@ -2554,6 +2752,8 @@
       ],
       "informal_statement": "The antipodal map on S^0 has order two.",
       "lean_name": "Circle.S0.antipode_involutive",
+      "lean_source": "Circle/S0/Scaffold.lean",
+      "lean_source_line": 35,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md"
@@ -2589,6 +2789,8 @@
       ],
       "informal_statement": "The future octonionic Hopf horizon has intended structure S^7 -> S^15 -> S^8.",
       "lean_name": "Circle.Future.S15.octonionicHopfRoadmap",
+      "lean_source": "Circle/Future/S15/Scaffold.lean",
+      "lean_source_line": 91,
       "original_status": "lean_stated",
       "paper_refs": [
         "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md"
@@ -2625,6 +2827,8 @@
       ],
       "informal_statement": "The finite topological S15 suspension model has Euler characteristic 0.",
       "lean_name": "Circle.Future.S15.topologicalModel_eulerCharacteristic",
+      "lean_source": "Circle/Future/S15/Scaffold.lean",
+      "lean_source_line": 25,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md"
@@ -2660,6 +2864,8 @@
       ],
       "informal_statement": "The bounded octonionic Hopf coordinate map sends normalized octonion pairs to the unit nine-coordinate base equation.",
       "lean_name": "Circle.Future.S15.octonionicHopf_lands_sphere",
+      "lean_source": "Circle/Future/S15/Scaffold.lean",
+      "lean_source_line": 85,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md"
@@ -2696,6 +2902,8 @@
       ],
       "informal_statement": "The finite S15 topological model is the eightfold suspension of the finite S7 model.",
       "lean_name": "Circle.Future.S15.topologicalModel_eq_eightSuspensions_s7",
+      "lean_source": "Circle/Future/S15/Scaffold.lean",
+      "lean_source_line": 21,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md"
@@ -2724,6 +2932,8 @@
       ],
       "informal_statement": "Signed rotation by zero leaves every finite-circle node unchanged.",
       "lean_name": "Circle.S1.signedRot_zero",
+      "lean_source": "Circle/S1/Scaffold.lean",
+      "lean_source_line": 12,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md"
@@ -2752,6 +2962,8 @@
       ],
       "informal_statement": "Composing signed rotations adds their signed strides.",
       "lean_name": "Circle.S1.signedRot_comp",
+      "lean_source": "Circle/S1/Scaffold.lean",
+      "lean_source_line": 16,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md"
@@ -2781,6 +2993,8 @@
       ],
       "informal_statement": "A signed rotation followed by the opposite signed rotation returns to the starting node.",
       "lean_name": "Circle.S1.signedRot_inverse",
+      "lean_source": "Circle/S1/Scaffold.lean",
+      "lean_source_line": 20,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md"
@@ -2810,6 +3024,8 @@
       ],
       "informal_statement": "For n>=3, the suspended finite circle has V=n+2, E=3n, and F=2n.",
       "lean_name": "Circle.S2.suspendedCircle_counts",
+      "lean_source": "Circle/S2/Scaffold.lean",
+      "lean_source_line": 81,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md"
@@ -2839,6 +3055,8 @@
       ],
       "informal_statement": "For n>=3, the suspended finite circle has Euler characteristic 2.",
       "lean_name": "Circle.S2.suspendedCircle_chi",
+      "lean_source": "Circle/S2/Scaffold.lean",
+      "lean_source_line": 86,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md"
@@ -2868,6 +3086,8 @@
       ],
       "informal_statement": "For n>=3 and r>=1, SphereGrid(n,r) has V=nr+2, E=n(2r+1), and F=n(r+1).",
       "lean_name": "Circle.S2.sphereGrid_counts",
+      "lean_source": "Circle/S2/Scaffold.lean",
+      "lean_source_line": 95,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"
@@ -2897,6 +3117,8 @@
       ],
       "informal_statement": "For n>=3 and r>=1, SphereGrid(n,r) has Euler characteristic 2.",
       "lean_name": "Circle.S2.sphereGrid_chi",
+      "lean_source": "Circle/S2/Scaffold.lean",
+      "lean_source_line": 99,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"
@@ -2927,6 +3149,8 @@
       ],
       "informal_statement": "Every non-pole latitude ring in a sphere grid is C_n-like.",
       "lean_name": "Circle.S2.latitudeRing_isCircle",
+      "lean_source": "Circle/S2/Scaffold.lean",
+      "lean_source_line": 107,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"
@@ -2956,6 +3180,8 @@
       ],
       "informal_statement": "A latitude rotation acts on ring nodes and fixes the collapsed poles.",
       "lean_name": "Circle.S2.longitudeRotation_fixesPoles",
+      "lean_source": "Circle/S2/Scaffold.lean",
+      "lean_source_line": 131,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"
@@ -2985,6 +3211,8 @@
       ],
       "informal_statement": "A fixed latitude ring inherits the S1 coil period n/gcd(n,k).",
       "lean_name": "Circle.S2.latitudeCoil_period",
+      "lean_source": "Circle/S2/Scaffold.lean",
+      "lean_source_line": 148,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"
@@ -3014,6 +3242,8 @@
       ],
       "informal_statement": "The suspended-circle antipode swaps the north and south poles.",
       "lean_name": "Circle.S2.suspendedCircleAntipode_swapsPoles",
+      "lean_source": "Circle/S2/Scaffold.lean",
+      "lean_source_line": 42,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
@@ -3042,6 +3272,8 @@
       ],
       "informal_statement": "Applying the suspended-circle antipode twice returns the original point.",
       "lean_name": "Circle.S2.suspendedCircleAntipode_involutive",
+      "lean_source": "Circle/S2/Scaffold.lean",
+      "lean_source_line": 47,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
@@ -3071,6 +3303,8 @@
       ],
       "informal_statement": "The suspended-circle antipode preserves the finite pole subset.",
       "lean_name": "Circle.S2.suspendedCircleAntipode_preservesPoleSet",
+      "lean_source": "Circle/S2/Scaffold.lean",
+      "lean_source_line": 51,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
@@ -3099,6 +3333,8 @@
       ],
       "informal_statement": "The suspended-circle antipode preserves the finite equator subset.",
       "lean_name": "Circle.S2.suspendedCircleAntipode_preservesEquatorSet",
+      "lean_source": "Circle/S2/Scaffold.lean",
+      "lean_source_line": 56,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
@@ -3127,6 +3363,8 @@
       ],
       "informal_statement": "Longitude rotation preserves the finite latitude coordinate of every sphere-grid point.",
       "lean_name": "Circle.S2.longitudeRotation_preservesLatitudeCoordinate",
+      "lean_source": "Circle/S2/Scaffold.lean",
+      "lean_source_line": 136,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
@@ -3156,6 +3394,8 @@
       ],
       "informal_statement": "Longitude rotation advances the finite longitude coordinate by the corresponding circle rotation while leaving poles without a longitude coordinate.",
       "lean_name": "Circle.S2.longitudeRotation_advancesLongitudeCoordinate",
+      "lean_source": "Circle/S2/Scaffold.lean",
+      "lean_source_line": 142,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
@@ -3184,6 +3424,8 @@
       ],
       "informal_statement": "Every suspended-circle point forms a finite antipodal pair with its antipode.",
       "lean_name": "Circle.S2.suspendedCircleAntipodalPair_self_antipode",
+      "lean_source": "Circle/S2/Scaffold.lean",
+      "lean_source_line": 61,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
@@ -3212,6 +3454,8 @@
       ],
       "informal_statement": "The finite suspended-circle antipodal-pair relation is symmetric.",
       "lean_name": "Circle.S2.suspendedCircleAntipodalPair_symmetric",
+      "lean_source": "Circle/S2/Scaffold.lean",
+      "lean_source_line": 66,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
@@ -3242,6 +3486,8 @@
       ],
       "informal_statement": "Suspending a finite surface count model transforms V,E,F into V+2,E+2V,F+2E,2F.",
       "lean_name": "Circle.S3.suspensionSurface_counts",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 20,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md"
@@ -3273,6 +3519,8 @@
       ],
       "informal_statement": "If a finite surface model has Euler characteristic 2, its suspension has Euler characteristic 0.",
       "lean_name": "Circle.S3.suspensionSurface_chi_zero",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 25,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md"
@@ -3303,6 +3551,8 @@
       ],
       "informal_statement": "Susp(SuspC(n)) has V=n+4, E=5n+4, F=8n, and T=4n.",
       "lean_name": "Circle.S3.suspendedSuspendedCircle_counts",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 36,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md"
@@ -3334,6 +3584,8 @@
       ],
       "informal_statement": "Susp(SuspC(n)) has Euler characteristic 0.",
       "lean_name": "Circle.S3.suspendedSuspendedCircle_chi",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 43,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md"
@@ -3363,6 +3615,8 @@
       ],
       "informal_statement": "The coordinate Hopf map sends normalized S^3 pairs to the unit S^2 equation.",
       "lean_name": "Circle.S3.hopfMap_lands_sphere",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 147,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -3393,6 +3647,8 @@
       ],
       "informal_statement": "Simultaneous unit phase rotation preserves the Hopf map.",
       "lean_name": "Circle.S3.hopfMap_phase_invariant",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 183,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -3423,6 +3679,8 @@
       ],
       "informal_statement": "A unit phase orbit stays on the normalized S3 pair space and preserves the Hopf base point.",
       "lean_name": "Circle.S3.hopfFiber_circle_like",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 206,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -3452,6 +3710,8 @@
       ],
       "informal_statement": "The identity phase leaves every Hopf pair unchanged.",
       "lean_name": "Circle.S3.phaseRotatePair_identity",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 158,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -3481,6 +3741,8 @@
       ],
       "informal_statement": "Composing two Hopf phase rotations follows the complex phase multiplication law.",
       "lean_name": "Circle.S3.phaseRotatePair_comp",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 163,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -3510,6 +3772,8 @@
       ],
       "informal_statement": "Define the quaternion norm used for the unit-quaternion S^3 model.",
       "lean_name": "Circle.S3.quaternionNorm",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 50,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
@@ -3540,6 +3804,8 @@
       ],
       "informal_statement": "Unit quaternions are closed under multiplication.",
       "lean_name": "Circle.S3.unitQuaternion_mul_closed",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 57,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
@@ -3570,6 +3836,8 @@
       ],
       "informal_statement": "The inverse of a unit quaternion is its conjugate.",
       "lean_name": "Circle.S3.unitQuaternion_inverse",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 69,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
@@ -3600,6 +3868,8 @@
       ],
       "informal_statement": "Quaternion multiplication is noncommutative by a formal example.",
       "lean_name": "Circle.S3.quaternion_noncommutative_example",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 87,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
@@ -3629,6 +3899,8 @@
       ],
       "informal_statement": "Quaternion multiplication is associative.",
       "lean_name": "Circle.S3.quaternion_mul_assoc",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 93,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
@@ -3660,6 +3932,8 @@
       ],
       "informal_statement": "The quaternion conjugation action is unchanged by replacing q with -q.",
       "lean_name": "Circle.S3.quaternionConjugation_neg",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 108,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
@@ -3690,6 +3964,8 @@
       ],
       "informal_statement": "The identity quaternion conjugation action fixes every input quaternion.",
       "lean_name": "Circle.S3.quaternionConjugation_one",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 100,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
@@ -3720,6 +3996,8 @@
       ],
       "informal_statement": "Quaternion conjugation sends the zero input quaternion to zero.",
       "lean_name": "Circle.S3.quaternionConjugation_zero_vector",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 104,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
@@ -3752,6 +4030,8 @@
       ],
       "informal_statement": "The finite iterated-suspension model of S^4 has Euler characteristic 2.",
       "lean_name": "Circle.S4.eulerCharacteristic",
+      "lean_source": "Circle/S4/Scaffold.lean",
+      "lean_source_line": 15,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md"
@@ -3784,6 +4064,8 @@
       ],
       "informal_statement": "The finite S4 counts are defined as the suspension of the finite S3 counts.",
       "lean_name": "Circle.S4.counts_eq_suspension_s3",
+      "lean_source": "Circle/S4/Scaffold.lean",
+      "lean_source_line": 11,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md"
@@ -3816,6 +4098,8 @@
       ],
       "informal_statement": "The finite iterated-suspension model satisfies chi(S^d)=1+(-1)^d.",
       "lean_name": "Circle.S4.iteratedSuspensionEulerParity",
+      "lean_source": "Circle/S4/Scaffold.lean",
+      "lean_source_line": 22,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md"
@@ -3849,6 +4133,8 @@
       ],
       "informal_statement": "The finite iterated-suspension model of S^5 has Euler characteristic 0.",
       "lean_name": "Circle.S5.eulerCharacteristic",
+      "lean_source": "Circle/S5/Scaffold.lean",
+      "lean_source_line": 15,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md"
@@ -3882,6 +4168,8 @@
       ],
       "informal_statement": "The finite S5 counts are defined as the suspension of the finite S4 counts.",
       "lean_name": "Circle.S5.counts_eq_suspension_s4",
+      "lean_source": "Circle/S5/Scaffold.lean",
+      "lean_source_line": 11,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md"
@@ -3916,6 +4204,8 @@
       ],
       "informal_statement": "The finite iterated-suspension model of S^6 has Euler characteristic 2.",
       "lean_name": "Circle.S6.eulerCharacteristic",
+      "lean_source": "Circle/S6/Scaffold.lean",
+      "lean_source_line": 15,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md"
@@ -3950,6 +4240,8 @@
       ],
       "informal_statement": "The finite S6 counts are defined as the suspension of the finite S5 counts.",
       "lean_name": "Circle.S6.counts_eq_suspension_s5",
+      "lean_source": "Circle/S6/Scaffold.lean",
+      "lean_source_line": 11,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md"
@@ -3984,6 +4276,8 @@
       ],
       "informal_statement": "S^7 is constructed as a finite iterated-suspension model.",
       "lean_name": "Circle.S7.iteratedSuspensionModel",
+      "lean_source": "Circle/S7/Scaffold.lean",
+      "lean_source_line": 8,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md"
@@ -4018,6 +4312,8 @@
       ],
       "informal_statement": "The finite iterated-suspension model of S^7 has Euler characteristic 0.",
       "lean_name": "Circle.S7.eulerCharacteristic",
+      "lean_source": "Circle/S7/Scaffold.lean",
+      "lean_source_line": 15,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md"
@@ -4053,6 +4349,8 @@
       ],
       "informal_statement": "The finite S7 iterated-suspension model is defined as the suspension of the finite S6 counts.",
       "lean_name": "Circle.S7.iteratedSuspensionModel_eq_suspension_s6",
+      "lean_source": "Circle/S7/Scaffold.lean",
+      "lean_source_line": 11,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md"
@@ -4086,6 +4384,8 @@
       ],
       "informal_statement": "Each coordinate octonion basis element has squared norm one.",
       "lean_name": "Circle.S7.octonionBasis",
+      "lean_source": "Circle/S7/Scaffold.lean",
+      "lean_source_line": 182,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
@@ -4120,6 +4420,8 @@
       ],
       "informal_statement": "Define octonion conjugate and norm.",
       "lean_name": "Circle.S7.octonionConjugateNorm",
+      "lean_source": "Circle/S7/Scaffold.lean",
+      "lean_source_line": 187,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
@@ -4153,6 +4455,8 @@
       ],
       "informal_statement": "Octonion norm is multiplicative.",
       "lean_name": "Circle.S7.octonionNormMul",
+      "lean_source": "Circle/S7/Scaffold.lean",
+      "lean_source_line": 196,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
@@ -4187,6 +4491,8 @@
       ],
       "informal_statement": "Unit octonions are closed under multiplication, without forming a group.",
       "lean_name": "Circle.S7.unitOctonion_mul_closed",
+      "lean_source": "Circle/S7/Scaffold.lean",
+      "lean_source_line": 206,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
@@ -4220,6 +4526,8 @@
       ],
       "informal_statement": "Octonion multiplication is noncommutative by a formal example.",
       "lean_name": "Circle.S7.octonion_noncommutative_example",
+      "lean_source": "Circle/S7/Scaffold.lean",
+      "lean_source_line": 212,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
@@ -4254,6 +4562,8 @@
       ],
       "informal_statement": "Octonion multiplication is nonassociative by a formal example.",
       "lean_name": "Circle.S7.octonion_nonassociative_example",
+      "lean_source": "Circle/S7/Scaffold.lean",
+      "lean_source_line": 218,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
@@ -4289,6 +4599,8 @@
       ],
       "informal_statement": "The quaternionic Hopf coordinate map sends normalized quaternion pairs to the unit S4 equation.",
       "lean_name": "Circle.S7.quaternionicHopf_lands_sphere",
+      "lean_source": "Circle/S7/Scaffold.lean",
+      "lean_source_line": 108,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"
@@ -4323,6 +4635,8 @@
       ],
       "informal_statement": "Quaternionic phase invariance is the S^7 analog of Hopf phase invariance.",
       "lean_name": "Circle.S7.quaternionicPhaseInvariance",
+      "lean_source": "Circle/S7/Scaffold.lean",
+      "lean_source_line": 124,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"
