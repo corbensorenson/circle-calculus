@@ -23,6 +23,8 @@ reverse(interval) = [target -> source]
 
 - `P2BC-T0001`: point-boundary after interval-boundary is zero. Lean declaration: `Circle.Phase2.boundaryBoundaryInterval_zero`.
 - `P2BC-T0002`: reversing a directed interval negates its boundary. Lean declaration: `Circle.Phase2.intervalBoundary_reverse`.
+- `P2BC-T0003`: reversing a directed interval twice returns the original interval. Lean declaration: `Circle.Phase2.reverseInterval_involutive`.
+- `P2BC-T0004`: a constant directed interval has zero boundary. Lean declaration: `Circle.Phase2.intervalBoundary_constant_zero`.
 
 These are Lean-proved finite interval facts. They support the boundary-calculus vocabulary, but they do not prove a general chain-complex theorem, a cobordism theorem, TQFT structure, or a physics boundary law.
 

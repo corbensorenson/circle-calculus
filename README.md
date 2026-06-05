@@ -76,10 +76,10 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md` | draft/partial proof | `S7QH-T0001` and `S7QH-T0002` are Lean-proved coordinate theorems; full fibration topology remains future work |
 | `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md` | draft/proved spine | `S7O-T0001` through `S7O-T0006` are Lean-proved in a bounded Cayley-Dickson coordinate model |
 | `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | draft/partial proof | `S15-T0001` is a Lean roadmap marker; `S15-T0002` through `S15-T0004` are Lean-proved topological/coordinate landing facts |
-| `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md` | draft/proved finite seed | `P2S-T0001` and `P2S-T0002` are Lean-proved double/four suspension Euler facts |
-| `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md` | draft/proved finite seed | `P2B-T0001` and `P2B-T0002` are Lean-proved period-8 clock facts; Bott/Clifford periodicity remains future work |
-| `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md` | draft/proved trivial seed | `P2BU-T0001` through `P2BU-T0003` are Lean-proved product-bundle projection/fiber facts |
-| `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md` | draft/proved finite seed | `P2BC-T0001` and `P2BC-T0002` are Lean-proved directed-interval boundary facts |
+| `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md` | draft/proved finite seed | `P2S-T0001` through `P2S-T0003` are Lean-proved double/four suspension facts |
+| `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md` | draft/proved finite seed | `P2B-T0001` through `P2B-T0003` are Lean-proved period-8 clock facts; Bott/Clifford periodicity remains future work |
+| `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md` | draft/proved trivial seed | `P2BU-T0001` through `P2BU-T0004` are Lean-proved product-bundle projection/fiber facts |
+| `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md` | draft/proved finite seed | `P2BC-T0001` through `P2BC-T0004` are Lean-proved directed-interval boundary facts |
 | `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md` | draft/proved certificate seed | `P2G-T0001` through `P2G-T0003` are Lean-proved proof-glyph projection facts |
 | `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md` | draft/proved finite seed | `APPD-T0001` through `APPD-T0003` are Lean-proved phase-coordinate facts with Python examples |
 | `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md` | draft/proved finite seed | `COMPC-T0001` through `COMPC-T0003` are Lean-proved cyclic-address facts with Python examples |
@@ -267,13 +267,18 @@ Proved common and dimensional spine:
 - `COMMON-T0003`: finite suspension Euler theorem
 - `P2S-T0001`: finite double suspension preserves Euler characteristic
 - `P2S-T0002`: finite four-suspension iteration preserves Euler characteristic
+- `P2S-T0003`: finite four-suspension counts are two double-suspension steps
 - `P2B-T0001`: finite period-8 dimension clock index is below 8
 - `P2B-T0002`: finite period-8 dimension clock is invariant under adding 8
+- `P2B-T0003`: finite period-8 dimension clock sends zero to zero
 - `P2BU-T0001`: trivial-bundle projection returns the base coordinate
 - `P2BU-T0002`: trivial-bundle fiber coordinate returns the fiber value
 - `P2BU-T0003`: trivial-bundle projection is invariant under changing only the fiber
+- `P2BU-T0004`: trivial-bundle fiber coordinate is invariant under changing only the base
 - `P2BC-T0001`: point-boundary after interval-boundary is zero in the directed-interval seed
 - `P2BC-T0002`: reversing a directed interval negates its boundary
+- `P2BC-T0003`: reversing a directed interval twice returns it
+- `P2BC-T0004`: a constant directed interval has zero boundary
 - `P2G-T0001`: proof glyph certificate exposes its theorem id
 - `P2G-T0002`: proof glyph certificate exposes its Lean declaration name
 - `P2G-T0003`: proof glyph certificate exposes its glyph id

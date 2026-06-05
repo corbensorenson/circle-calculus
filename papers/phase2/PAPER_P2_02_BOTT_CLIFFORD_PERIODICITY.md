@@ -18,6 +18,7 @@ This clock is useful because later Bott/Clifford work is organized by eight-step
 
 - `P2B-T0001`: the clock index is always below `8`. Lean declaration: `Circle.Phase2.bottClockIndex_lt_eight`.
 - `P2B-T0002`: adding `8` preserves the clock index. Lean declaration: `Circle.Phase2.bottClockIndex_add_eight`.
+- `P2B-T0003`: dimension zero has clock index zero. Lean declaration: `Circle.Phase2.bottClockIndex_zero`.
 
 These are Lean-proved finite arithmetic facts. They support dimension-indexed organization, but they do not prove any Clifford algebra, K-theory, KO-theory, or Bott periodicity theorem.
 

@@ -66,6 +66,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["chi(Susp^4(counts)) == chi(counts)"]
     blocker: ""
+  - id: P2S-T0003
+    status: lean_proved
+    lean_name: Circle.Phase2.fourSuspensionCounts_eq_double_double
+    informal_statement: "The finite four-suspension count operation is two double-suspension steps."
+    formal_statement: "forall counts : List Nat, fourSuspensionCounts counts = doubleSuspensionCounts (doubleSuspensionCounts counts)"
+    dictionary_dependencies: ["COMMON-0004", "COMMON-0005"]
+    paper_refs: ["papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["Susp^4(counts) == DoubleSusp(DoubleSusp(counts))"]
+    blocker: ""
   - id: P2B-T0001
     status: lean_proved
     lean_name: Circle.Phase2.bottClockIndex_lt_eight
@@ -91,6 +104,19 @@ theorems:
       lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["(dimension + 8) % 8 == dimension % 8"]
+    blocker: ""
+  - id: P2B-T0003
+    status: lean_proved
+    lean_name: Circle.Phase2.bottClockIndex_zero
+    informal_statement: "Dimension zero has period-8 clock index zero."
+    formal_statement: "bottClockIndex 0 = 0"
+    dictionary_dependencies: ["COMMON-0006"]
+    paper_refs: ["papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["0 % 8 == 0"]
     blocker: ""
   - id: P2BU-T0001
     status: lean_proved
@@ -131,6 +157,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["projection((base,left)) == projection((base,right))"]
     blocker: ""
+  - id: P2BU-T0004
+    status: lean_proved
+    lean_name: Circle.Phase2.trivialBundleFiber_forgetsBase
+    informal_statement: "In the trivial product-bundle seed, changing only the base value does not change the fiber coordinate."
+    formal_statement: "forall left right fiber, trivialBundleFiber (trivialBundlePoint left fiber) = trivialBundleFiber (trivialBundlePoint right fiber)"
+    dictionary_dependencies: ["COMMON-0007", "COMMON-0008", "COMMON-0009"]
+    paper_refs: ["papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["fiber((left,fiber)) == fiber((right,fiber))"]
+    blocker: ""
   - id: P2BC-T0001
     status: lean_proved
     lean_name: Circle.Phase2.boundaryBoundaryInterval_zero
@@ -156,6 +195,32 @@ theorems:
       lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["boundary(reverse(interval)) == -boundary(interval)"]
+    blocker: ""
+  - id: P2BC-T0003
+    status: lean_proved
+    lean_name: Circle.Phase2.reverseInterval_involutive
+    informal_statement: "Reversing a directed interval twice returns the original interval."
+    formal_statement: "forall interval : DirectedInterval, reverseInterval (reverseInterval interval) = interval"
+    dictionary_dependencies: ["COMMON-0010", "COMMON-0012"]
+    paper_refs: ["papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["reverse(reverse(interval)) == interval"]
+    blocker: ""
+  - id: P2BC-T0004
+    status: lean_proved
+    lean_name: Circle.Phase2.intervalBoundary_constant_zero
+    informal_statement: "A constant directed interval has zero boundary."
+    formal_statement: "forall point : Int, intervalBoundary (constantInterval point) = 0"
+    dictionary_dependencies: ["COMMON-0010", "COMMON-0011"]
+    paper_refs: ["papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["boundary(constant_interval(point)) == 0"]
     blocker: ""
   - id: P2G-T0001
     status: lean_proved

@@ -39,4 +39,10 @@ theorem trivialBundleProjection_forgetsFiber {Base Fiber : Type}
       trivialBundleProjection (trivialBundlePoint base right) := by
   rfl
 
+theorem trivialBundleFiber_forgetsBase {Base Fiber : Type}
+    (left right : Base) (fiber : Fiber) :
+    trivialBundleFiber (trivialBundlePoint left fiber) =
+      trivialBundleFiber (trivialBundlePoint right fiber) := by
+  rfl
+
 end Circle.Phase2

@@ -368,6 +368,7 @@ papers:
     theorem_ids:
       - P2S-T0001
       - P2S-T0002
+      - P2S-T0003
     dictionary_ids:
       - COMMON-0002
       - COMMON-0003
@@ -381,6 +382,7 @@ papers:
     theorem_ids:
       - P2B-T0001
       - P2B-T0002
+      - P2B-T0003
     dictionary_ids:
       - COMMON-0006
 
@@ -392,6 +394,7 @@ papers:
       - P2BU-T0001
       - P2BU-T0002
       - P2BU-T0003
+      - P2BU-T0004
     dictionary_ids:
       - COMMON-0007
       - COMMON-0008
@@ -404,6 +407,8 @@ papers:
     theorem_ids:
       - P2BC-T0001
       - P2BC-T0002
+      - P2BC-T0003
+      - P2BC-T0004
     dictionary_ids:
       - COMMON-0010
       - COMMON-0011

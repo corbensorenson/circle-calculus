@@ -12,6 +12,7 @@ namespace Circle.PaperP201
 #check Circle.Phase2.doubleSuspensionCounts
 #check Circle.Phase2.doubleSuspensionEuler
 #check Circle.Phase2.fourSuspensionCounts
+#check Circle.Phase2.fourSuspensionCounts_eq_double_double
 #check Circle.Phase2.fourSuspensionEuler
 
 end Circle.PaperP201

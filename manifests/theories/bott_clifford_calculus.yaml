@@ -13,6 +13,10 @@ theorems:
     status: lean_proved
     lean_name: Circle.Phase2.bottClockIndex_add_eight
     dictionary_dependencies: ["COMMON-0006"]
+  - id: P2B-T0003
+    status: lean_proved
+    lean_name: Circle.Phase2.bottClockIndex_zero
+    dictionary_dependencies: ["COMMON-0006"]
 next_targets:
   - "Choose a formal Clifford algebra path before registering Clifford periodicity theorems."
   - "Keep Bott/K-theory claims as cited background until Lean declarations exist."

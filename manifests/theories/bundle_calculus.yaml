@@ -17,6 +17,10 @@ theorems:
     status: lean_proved
     lean_name: Circle.Phase2.trivialBundleProjection_forgetsFiber
     dictionary_dependencies: ["COMMON-0007", "COMMON-0008", "COMMON-0009"]
+  - id: P2BU-T0004
+    status: lean_proved
+    lean_name: Circle.Phase2.trivialBundleFiber_forgetsBase
+    dictionary_dependencies: ["COMMON-0007", "COMMON-0008", "COMMON-0009"]
 next_targets:
   - "Add transition functions only after choosing a nontrivial bundle representation."
   - "Connect Hopf-coordinate papers as motivating examples, not as completed bundle formalizations."

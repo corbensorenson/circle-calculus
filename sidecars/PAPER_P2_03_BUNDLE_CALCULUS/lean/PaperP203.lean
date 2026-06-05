@@ -16,5 +16,6 @@ namespace Circle.PaperP203
 #check Circle.Phase2.trivialBundleProjection_point
 #check Circle.Phase2.trivialBundleFiber_point
 #check Circle.Phase2.trivialBundleProjection_forgetsFiber
+#check Circle.Phase2.trivialBundleFiber_forgetsBase
 
 end Circle.PaperP203

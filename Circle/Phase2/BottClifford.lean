@@ -21,4 +21,8 @@ theorem bottClockIndex_add_eight (dimension : Nat) :
   unfold bottClockIndex
   omega
 
+theorem bottClockIndex_zero :
+    bottClockIndex 0 = 0 := by
+  rfl
+
 end Circle.Phase2

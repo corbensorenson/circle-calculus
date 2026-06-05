@@ -23,6 +23,10 @@ theorem doubleSuspensionEuler (counts : List Nat) :
 def fourSuspensionCounts (counts : List Nat) : List Nat :=
   doubleSuspensionCounts (doubleSuspensionCounts counts)
 
+theorem fourSuspensionCounts_eq_double_double (counts : List Nat) :
+    fourSuspensionCounts counts = doubleSuspensionCounts (doubleSuspensionCounts counts) := by
+  rfl
+
 theorem fourSuspensionEuler (counts : List Nat) :
     Circle.Common.eulerCharacteristic (fourSuspensionCounts counts) =
       Circle.Common.eulerCharacteristic counts := by

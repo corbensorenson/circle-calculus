@@ -24,6 +24,7 @@ counts
 
 - `P2S-T0001`: double finite suspension preserves Euler characteristic. Lean declaration: `Circle.Phase2.doubleSuspensionEuler`.
 - `P2S-T0002`: four finite suspensions preserve Euler characteristic. Lean declaration: `Circle.Phase2.fourSuspensionEuler`.
+- `P2S-T0003`: four finite suspensions are two double-suspension steps. Lean declaration: `Circle.Phase2.fourSuspensionCounts_eq_double_double`.
 
 These are Lean-proved finite cell-count theorems. They provide a verified seed for stable-sphere calculus, but they do not prove any statement about spectra, stable maps, or stable homotopy groups.
 

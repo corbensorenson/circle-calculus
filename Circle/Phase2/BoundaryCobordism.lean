@@ -20,6 +20,9 @@ def pointBoundary (_chain : Int) : Int :=
 def reverseInterval (interval : DirectedInterval) : DirectedInterval :=
   { source := interval.target, target := interval.source }
 
+def constantInterval (point : Int) : DirectedInterval :=
+  { source := point, target := point }
+
 theorem boundaryBoundaryInterval_zero (interval : DirectedInterval) :
     pointBoundary (intervalBoundary interval) = 0 := by
   rfl
@@ -29,5 +32,14 @@ theorem intervalBoundary_reverse (interval : DirectedInterval) :
   cases interval
   simp [intervalBoundary, reverseInterval]
   omega
+
+theorem reverseInterval_involutive (interval : DirectedInterval) :
+    reverseInterval (reverseInterval interval) = interval := by
+  cases interval
+  rfl
+
+theorem intervalBoundary_constant_zero (point : Int) :
+    intervalBoundary (constantInterval point) = 0 := by
+  simp [intervalBoundary, constantInterval]
 
 end Circle.Phase2

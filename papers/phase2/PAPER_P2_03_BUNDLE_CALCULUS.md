@@ -26,6 +26,7 @@ TrivialBundle(Base,Fiber)
 - `P2BU-T0001`: projection of a built trivial-bundle point returns the base. Lean declaration: `Circle.Phase2.trivialBundleProjection_point`.
 - `P2BU-T0002`: the fiber coordinate of a built trivial-bundle point returns the fiber value. Lean declaration: `Circle.Phase2.trivialBundleFiber_point`.
 - `P2BU-T0003`: changing only the fiber value does not change the projected base. Lean declaration: `Circle.Phase2.trivialBundleProjection_forgetsFiber`.
+- `P2BU-T0004`: changing only the base value does not change the fiber coordinate. Lean declaration: `Circle.Phase2.trivialBundleFiber_forgetsBase`.
 
 These are Lean-proved product-bundle facts. They support base/fiber terminology for later proof-carrying glyph and Hopf-style examples, but they do not formalize nontrivial bundles, transition functions, connections, curvature, or holonomy.
 

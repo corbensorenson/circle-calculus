@@ -258,16 +258,16 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
 
 - [x] `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md`
   - Program: suspension, stable maps, spectra, and stable invariants.
-  - Status: `P2S-T0001` and `P2S-T0002` are Lean-proved finite double/four suspension Euler facts; stable maps, spectra, and stable homotopy claims remain future work.
+  - Status: `P2S-T0001` through `P2S-T0003` are Lean-proved finite double/four suspension facts; stable maps, spectra, and stable homotopy claims remain future work.
 - [x] `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md`
   - Program: Clifford algebras, spinors, Bott periodicity, and dimension clocks.
-  - Status: `P2B-T0001` and `P2B-T0002` are Lean-proved finite period-8 clock facts; Clifford algebras, K-theory, KO-theory, and Bott periodicity remain future formalization work.
+  - Status: `P2B-T0001` through `P2B-T0003` are Lean-proved finite period-8 clock facts; Clifford algebras, K-theory, KO-theory, and Bott periodicity remain future formalization work.
 - [x] `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md`
   - Program: base, fiber, total space, projection, transition functions, connection, curvature, holonomy, and hidden proof provenance.
-  - Status: `P2BU-T0001` through `P2BU-T0003` are Lean-proved trivial product-bundle projection/fiber facts; nontrivial bundles, transition functions, connections, curvature, and holonomy remain future work.
+  - Status: `P2BU-T0001` through `P2BU-T0004` are Lean-proved trivial product-bundle projection/fiber facts; nontrivial bundles, transition functions, connections, curvature, and holonomy remain future work.
 - [x] `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md`
   - Program: boundaries, `boundary(boundary)=0`, cobordisms, fields, and proofs as transformations.
-  - Status: `P2BC-T0001` and `P2BC-T0002` are Lean-proved directed-interval boundary facts; general chain complexes, cobordisms, TQFT, and physics-adjacent claims remain future work.
+  - Status: `P2BC-T0001` through `P2BC-T0004` are Lean-proved directed-interval boundary facts; general chain complexes, cobordisms, TQFT, and physics-adjacent claims remain future work.
 - [x] `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md`
   - Program: glyphs with formal syntax, normal forms, theorem dependencies, proof certificates, semantic models, and projection views.
   - Status: `P2G-T0001` through `P2G-T0003` are Lean-proved proof-glyph certificate projection facts; glyph syntax, normal forms, semantics, dependency correctness, and proof search remain future work.
@@ -328,13 +328,18 @@ Application guardrails:
 - [x] `COMMON-T0003`: suspension Euler transform, `chi(Susp(K)) = 2 - chi(K)`.
 - [x] `P2S-T0001`: finite double suspension preserves Euler characteristic.
 - [x] `P2S-T0002`: finite four-suspension iteration preserves Euler characteristic.
+- [x] `P2S-T0003`: finite four-suspension counts are two double-suspension steps.
 - [x] `P2B-T0001`: finite period-8 dimension clock index is below 8.
 - [x] `P2B-T0002`: finite period-8 dimension clock is invariant under adding 8.
+- [x] `P2B-T0003`: finite period-8 dimension clock sends zero to zero.
 - [x] `P2BU-T0001`: trivial-bundle projection returns the base coordinate.
 - [x] `P2BU-T0002`: trivial-bundle fiber coordinate returns the fiber value.
 - [x] `P2BU-T0003`: trivial-bundle projection is invariant under changing only the fiber.
+- [x] `P2BU-T0004`: trivial-bundle fiber coordinate is invariant under changing only the base.
 - [x] `P2BC-T0001`: point-boundary after interval-boundary is zero in the directed-interval seed.
 - [x] `P2BC-T0002`: reversing a directed interval negates its boundary.
+- [x] `P2BC-T0003`: reversing a directed interval twice returns it.
+- [x] `P2BC-T0004`: a constant directed interval has zero boundary.
 - [x] `P2G-T0001`: proof glyph certificate exposes its theorem id.
 - [x] `P2G-T0002`: proof glyph certificate exposes its Lean declaration name.
 - [x] `P2G-T0003`: proof glyph certificate exposes its glyph id.

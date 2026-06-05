@@ -13,7 +13,10 @@ namespace Circle.PaperP204
 #check Circle.Phase2.intervalBoundary
 #check Circle.Phase2.pointBoundary
 #check Circle.Phase2.reverseInterval
+#check Circle.Phase2.constantInterval
 #check Circle.Phase2.boundaryBoundaryInterval_zero
 #check Circle.Phase2.intervalBoundary_reverse
+#check Circle.Phase2.reverseInterval_involutive
+#check Circle.Phase2.intervalBoundary_constant_zero
 
 end Circle.PaperP204
