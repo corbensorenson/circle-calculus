@@ -11,7 +11,7 @@ entries:
   - id: S7QH-0001
     name: "Quaternionic Hopf roadmap"
     kind: model
-    formal_definition: "The exploratory quaternion-pair model in `circle_math.dimensions.quaternion`: normalized H^2 pairs map by `quaternionic_hopf_map` to S4-like five-coordinate points, with right unit-quaternion phase invariance checked in Python."
+    formal_definition: "The coordinate quaternionic Hopf model `Circle.S7.quaternionicHopfMap`, with `Circle.S7.quaternionicHopf_lands_sphere` proving that normalized quaternion pairs land on the unit five-coordinate base equation; right unit-quaternion phase invariance remains a Python check."
     intuition: "The higher hidden-phase analog of Hopf coils."
     dependencies: ["S3Q-0001", "S4-0001"]
     introduced_in: "PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION"

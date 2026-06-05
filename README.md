@@ -250,7 +250,7 @@ Executable exploratory spine:
 - `S3H-T0001`: coordinate Hopf map lands on the unit base equation for normalized pairs
 - `S3H-T0002`: common unit-phase rotation preserves the Hopf base point in Lean and Python checks
 - `S3H-T0003`: the sampled Hopf fiber phase orbit stays normalized, preserves the base point, and closes numerically after `2*pi`
-- `S7QH-T0001`: quaternionic Hopf map sends normalized quaternion-pair examples to S4-like five-coordinate points
+- `S7QH-T0001`: coordinate quaternionic Hopf map sends normalized quaternion pairs to the unit five-coordinate base equation
 - `S7QH-T0002`: shared right unit-quaternion phase rotation preserves the quaternionic Hopf map in Python checks
 - `S7O-T0001` through `S7O-T0006`: exploratory octonion basis, conjugate/norm, sample norm multiplication, sample unit closure, noncommutativity, and nonassociativity checks
 - `S15-T0001`: roadmap marker for the future `S7 -> S15 -> S8` octonionic Hopf horizon

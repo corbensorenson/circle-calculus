@@ -28,18 +28,18 @@ theorems:
       python_property_tests: []
     blocker: ""
   - id: S7QH-T0001
-    status: exploratory_python
-    lean_name: Circle.S7.quaternionicHopfRoadmap
-    informal_statement: "The quaternionic Hopf roadmap has intended structure S^3 -> S^7 -> S^4."
-    formal_statement: "Python exploratory model: normalized quaternion pairs map by quaternionic_hopf_map to five coordinates with squared norm 1."
+    status: lean_proved
+    lean_name: Circle.S7.quaternionicHopf_lands_sphere
+    informal_statement: "The quaternionic Hopf coordinate map sends normalized quaternion pairs to the unit S4 equation."
+    formal_statement: "forall p : Circle.S7.QuaternionPair, Circle.S7.quaternionPairNormSq p = 1 -> Circle.S7.hopfBase5NormSq (Circle.S7.quaternionicHopfMap p) = 1"
     dictionary_dependencies: ["S7QH-0001", "S3Q-0001", "S4-0001"]
     paper_refs: ["papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"]
     imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
     verification:
-      lean_build_required: false
+      lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["sidecars/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION/python/test_paper_s7_02_examples.py::test_quaternionic_hopf_map_lands_on_s4_for_normalized_pair"]
-    blocker: "Lean proof deferred until a quaternionic projective/Hopf formalization path is selected."
+    blocker: ""
   - id: S7QH-T0002
     status: exploratory_python
     lean_name: Circle.S7.quaternionicPhaseInvariance
