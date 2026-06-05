@@ -2,7 +2,7 @@ entries:
   - id: S7C-0001
     name: "Topological S7 suspension model"
     kind: object
-    formal_definition: "The planned finite S^7 model built by iterated suspension."
+    formal_definition: "The finite S7 model `Circle.S7.iteratedSuspensionModel`, built by suspending `Circle.S6.counts` and proved to have Euler characteristic 0 by `Circle.S7.eulerCharacteristic`."
     intuition: "The topological S^7 layer before octonion algebra."
     dependencies: ["S456-0001"]
     introduced_in: "PAPER_S7_01_TOPOLOGICAL_7SPHERE"
@@ -54,4 +54,3 @@ entries:
     introduced_in: "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS"
     forbidden_meanings:
       - "Silently reassociating octonion products."
-

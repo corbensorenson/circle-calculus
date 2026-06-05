@@ -224,9 +224,10 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
 
 ### S7: Topological, Quaternionic Hopf, Octonionic
 
-- [ ] `papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md`
+- [x] `papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md`
   - Proof targets: `S7C-T0001`, `S7C-T0002`
   - Prove topological/combinatorial `S7` before octonion algebra.
+  - Status: finite iterated-suspension model and Euler characteristic are Lean-proved.
 - [ ] `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md`
   - Targets: `S7QH-T0001`, `S7QH-T0002`
   - Keep roadmap/exploratory until `S3` quaternion calculus and `S4` base are stable.

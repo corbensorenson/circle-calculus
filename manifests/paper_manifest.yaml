@@ -192,3 +192,14 @@ papers:
       - S6-0001
       - S6-W0001
       - S456-0001
+
+  - id: PAPER_S7_01_TOPOLOGICAL_7SPHERE
+    title: "Circle Calculus S7.1: Topological 7-Sphere by Iterated Suspension"
+    status: draft
+    sidecar: sidecars/PAPER_S7_01_TOPOLOGICAL_7SPHERE
+    theorem_ids:
+      - S7C-T0001
+      - S7C-T0002
+    dictionary_ids:
+      - S7C-0001
+      - S456-0001
