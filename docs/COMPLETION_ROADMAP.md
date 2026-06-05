@@ -189,9 +189,10 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
 
 ### S3: Hypersphere, Quaternions, Hopf
 
-- [ ] `papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md`
+- [x] `papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md`
   - Proof targets: `S3C-T0001` through `S3C-T0004`
   - Main model: suspension of finite 2D cell-count structures.
+  - Status: suspended-surface counts, Euler-zero theorem, suspended-suspended-circle counts, and Euler characteristic are Lean-proved.
 - [ ] `papers/S3/PAPER_S3_02_QUATERNION_COILS.md`
   - Proof targets: `S3Q-T0001` through `S3Q-T0005`
   - Prefer mathlib quaternion support when available.
