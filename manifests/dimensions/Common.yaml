@@ -183,4 +183,30 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["glyph.lean_name == lean_name"]
     blocker: ""
+  - id: APPD-T0001
+    status: lean_proved
+    lean_name: Circle.Applications.phaseCoordinate_lt_period
+    informal_statement: "For a positive period, the finite phase coordinate is bounded by that period."
+    formal_statement: "forall {period : Nat}, 0 < period -> forall step : Nat, phaseCoordinate period step < period"
+    dictionary_dependencies: ["COMMON-0016"]
+    paper_refs: ["papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["0 <= phase_coordinate(period, step) < period"]
+    blocker: ""
+  - id: APPD-T0002
+    status: lean_proved
+    lean_name: Circle.Applications.phaseCoordinate_add_period
+    informal_statement: "For a positive period, adding one full period preserves the finite phase coordinate."
+    formal_statement: "forall {period : Nat}, 0 < period -> forall step : Nat, phaseCoordinate period (step + period) = phaseCoordinate period step"
+    dictionary_dependencies: ["COMMON-0016", "COMMON-0017"]
+    paper_refs: ["papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["phase_coordinate(period, step + period) == phase_coordinate(period, step)"]
+    blocker: ""
 warnings: []

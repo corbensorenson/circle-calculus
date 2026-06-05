@@ -170,3 +170,26 @@ entries:
     forbidden_meanings:
       - "A proof that the Lean declaration proves the intended semantic diagram."
       - "A rendered proof certificate."
+  - id: COMMON-0016
+    name: "Finite phase coordinate"
+    kind: operation
+    symbol: "phase(period, step)"
+    formal_definition: "The residue step % period for a positive finite period."
+    intuition: "The simplest coordinate for synthetic periodic data: where a sample lies inside its current cycle."
+    dependencies: []
+    introduced_in: "PAPER_APP_01_COIL_DATA_ANALYSIS"
+    forbidden_meanings:
+      - "A discovered period in real data."
+      - "A Fourier transform."
+      - "A benchmark result."
+  - id: COMMON-0017
+    name: "Phase closure"
+    kind: relation
+    symbol: "phase(step + period) = phase(step)"
+    formal_definition: "The finite phase coordinate is unchanged after adding one positive period."
+    intuition: "One full cycle returns a periodic coordinate to the same phase."
+    dependencies: ["COMMON-0016"]
+    introduced_in: "PAPER_APP_01_COIL_DATA_ANALYSIS"
+    forbidden_meanings:
+      - "A claim that an arbitrary dataset has this period."
+      - "A noise-robust period detector."

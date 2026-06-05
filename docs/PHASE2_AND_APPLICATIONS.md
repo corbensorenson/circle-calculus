@@ -94,6 +94,8 @@ Current active Phase II proof seed:
 - This is finite boundary bookkeeping, not a proof of general chain complexes, cobordism, TQFT, or physics boundary laws.
 - `PAPER_P2_05_PROOF_CARRYING_GLYPHS` proves the proof-glyph certificate projection facts `P2G-T0001` and `P2G-T0002` in Lean through `Circle.Phase2.proofGlyphTheoremId_mk` and `Circle.Phase2.proofGlyphLeanName_mk`.
 - This is the metadata contract for proof-carrying diagrams, not a proof of glyph semantics, normal forms, dependency correctness, or proof search.
+- `PAPER_APP_01_COIL_DATA_ANALYSIS` proves the finite phase-coordinate facts `APPD-T0001` and `APPD-T0002` in Lean through `Circle.Applications.phaseCoordinate_lt_period` and `Circle.Applications.phaseCoordinate_add_period`, with matching Python examples.
+- This is a synthetic periodic-data primitive, not a real-data period detector or benchmark result.
 
 ## Compute Track
 
@@ -255,7 +257,7 @@ Circle AI guardrails:
 
 ## Planned And Active Scaffolds Created
 
-These files exist so later Phase II and application work has stable paper and manifest anchors. Most application tracks remain planned scaffolds rather than proof claims; `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_05_PROOF_CARRYING_GLYPHS` are active Phase II proof seeds.
+These files exist so later Phase II and application work has stable paper and manifest anchors. Most application tracks remain planned scaffolds rather than proof claims; `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_05_PROOF_CARRYING_GLYPHS` and `PAPER_APP_01_COIL_DATA_ANALYSIS` are active proof seeds.
 
 Planned manifests:
 

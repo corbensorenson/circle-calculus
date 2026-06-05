@@ -1,5 +1,20 @@
 id: coil_data_analysis
-status: planned
+status: active
 papers:
   - papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md
+sidecars:
+  - sidecars/PAPER_APP_01_COIL_DATA_ANALYSIS/lean/PaperApp01.lean
+  - sidecars/PAPER_APP_01_COIL_DATA_ANALYSIS/python/test_phase_coordinate_examples.py
+theorems:
+  - id: APPD-T0001
+    status: lean_proved
+    lean_name: Circle.Applications.phaseCoordinate_lt_period
+    dictionary_dependencies: ["COMMON-0016"]
+  - id: APPD-T0002
+    status: lean_proved
+    lean_name: Circle.Applications.phaseCoordinate_add_period
+    dictionary_dependencies: ["COMMON-0016", "COMMON-0017"]
+next_targets:
+  - "Add synthetic periodic-data generators and compare coil signatures against ordinary period baselines."
+  - "Keep real-data claims exploratory until benchmarked."
 guardrail: "Benchmark against ordinary periodic baselines."

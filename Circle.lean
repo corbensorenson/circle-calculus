@@ -14,3 +14,4 @@ import Circle.Phase2.BottClifford
 import Circle.Phase2.Bundle
 import Circle.Phase2.BoundaryCobordism
 import Circle.Phase2.GlyphProof
+import Circle.Applications.CoilData

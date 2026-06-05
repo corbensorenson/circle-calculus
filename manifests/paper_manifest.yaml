@@ -371,10 +371,14 @@ papers:
 
   - id: PAPER_APP_01_COIL_DATA_ANALYSIS
     title: "Circle Calculus Application 1: Coil Data Analysis"
-    status: planned
-    sidecar: ""
-    theorem_ids: []
-    dictionary_ids: []
+    status: draft
+    sidecar: sidecars/PAPER_APP_01_COIL_DATA_ANALYSIS
+    theorem_ids:
+      - APPD-T0001
+      - APPD-T0002
+    dictionary_ids:
+      - COMMON-0016
+      - COMMON-0017
 
   - id: PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION
     title: "Circle Calculus Compute 1: Proof-Carrying Circular Computation"

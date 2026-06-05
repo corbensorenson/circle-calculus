@@ -271,6 +271,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: `P2G-T0001` and `P2G-T0002` are Lean-proved proof-glyph certificate projection facts; glyph syntax, normal forms, semantics, dependency correctness, and proof search remain future work.
 - [x] `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md`
   - Program: coil signatures, closure profiles, prime-lag recurrence, antinode maps, and periodic-data benchmarks.
+  - Status: `APPD-T0001` and `APPD-T0002` are Lean-proved finite phase-coordinate facts with Python examples; real-data and benchmark claims remain future work.
 - [x] `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md`
   - Program: certified cyclic/circulant/orbit structure lowered to FFT/NTT/permutation backends and benchmarked.
 - [x] `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md`
@@ -327,6 +328,8 @@ Application guardrails:
 - [x] `P2BC-T0002`: reversing a directed interval negates its boundary.
 - [x] `P2G-T0001`: proof glyph certificate exposes its theorem id.
 - [x] `P2G-T0002`: proof glyph certificate exposes its Lean declaration name.
+- [x] `APPD-T0001`: finite phase coordinate is bounded by a positive period.
+- [x] `APPD-T0002`: finite phase coordinate closes after adding one full period.
 
 ## Current S1 Proof Status
 
