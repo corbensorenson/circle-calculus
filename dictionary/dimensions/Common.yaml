@@ -24,7 +24,7 @@ entries:
     name: "Suspension cell-count transform"
     kind: operation
     symbol: "Susp"
-    formal_definition: "A planned transform that adds two poles and cones each cell dimension to the next dimension."
+    formal_definition: "The finite suspension count transform that adds two poles and cones each cell dimension to the next dimension."
     intuition: "The finite combinatorial move used to climb the sphere ladder."
     dependencies: ["COMMON-0001"]
     introduced_in: "D0 dimensional scaffolding"

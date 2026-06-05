@@ -2,7 +2,7 @@
 
 This note summarizes the expanded post-`S^1` roadmap. The active completion checklist lives in `docs/COMPLETION_ROADMAP.md`, the deferred Phase II/application context lives in `docs/PHASE2_AND_APPLICATIONS.md`, and the detailed planning pack lives in `circle_calculus_dimensional_handoff/`.
 
-The current proved core is still the finite `S^1`/circle layer. Higher-dimensional work should extend it without contaminating it.
+The current proved core now spans the finite `S^0` through `S^7` ladder, with future `S^15` topological and bounded-coordinate landing seeds. Higher-dimensional work should keep extending lower layers without contaminating them.
 
 ## Core Rule
 
@@ -89,6 +89,18 @@ applications
 
 See `docs/PHASE2_AND_APPLICATIONS.md` for the deferred Phase II and MLX-first compute tracks.
 
-## First Expansion Goal
+## Current Expansion State
 
-The D0 scaffold now exists: dimension manifests, dictionary files, paper stubs, Lean/Python scaffolding, and dimension check scripts. All `S^2` through `S^7` theorem statuses remain planned, deferred, exploratory, or stated until actual proofs exist. Track the next implementation stages in `docs/COMPLETION_ROADMAP.md`.
+The D0 scaffold exists: dimension manifests, dictionary files, paper folders, Lean/Python scaffolding, and dimension check scripts.
+
+The current proved dimensional spine includes:
+
+- `S^0`: two-point opposition and antipode involution.
+- `S^1`: finite circles, rotations, coils, winding, signed orientation, scaling, factors, kernels, images, and fibers.
+- `S^2`: suspended-circle counts, sphere grids, latitude rings, pole-fixing rotations, finite antipodes, coordinate projections, and antipodal-pair laws.
+- `S^3`: finite suspension counts, quaternion algebra, bounded Hopf coordinate laws, and spin sign-cancellation seeds.
+- `S^4` through `S^6`: finite iterated-suspension counts and Euler parity bridge.
+- `S^7`: finite topological suspension model, bounded quaternionic Hopf coordinate seeds, and bounded octonion coordinate algebra.
+- `Future/S15`: roadmap marker plus finite eightfold-suspension and bounded octonionic Hopf landing seeds.
+
+Full smooth topology, quotient fibration theorems, stable homotopy, Bott/Clifford periodicity, and benchmarked application claims remain future work unless a paper, manifest entry, Lean declaration, and repository checks say otherwise. Track the next implementation stages in `docs/COMPLETION_ROADMAP.md`.

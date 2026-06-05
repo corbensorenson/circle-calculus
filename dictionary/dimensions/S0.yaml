@@ -3,7 +3,7 @@ entries:
     name: "Two-point opposition"
     kind: object
     symbol: "S^0"
-    formal_definition: "The planned S^0 model consisting of exactly two opposed points."
+    formal_definition: "The finite S^0 model consisting of exactly two opposed points, represented in Lean by Circle.S0.Sign."
     intuition: "The smallest sphere-like opposition pair."
     dependencies: []
     introduced_in: "PAPER_S0_01_TWO_POINT_OPPOSITION"
@@ -13,7 +13,7 @@ entries:
   - id: S0-0002
     name: "S0 antipode"
     kind: operation
-    formal_definition: "The planned map that swaps the two points of S^0."
+    formal_definition: "The finite map Circle.S0.antipode that swaps the two points of S^0."
     intuition: "Opposition as an involutive flip."
     dependencies: ["S0-0001"]
     introduced_in: "PAPER_S0_01_TWO_POINT_OPPOSITION"
@@ -29,4 +29,3 @@ entries:
     introduced_in: "PAPER_S0_01_TWO_POINT_OPPOSITION"
     forbidden_meanings:
       - "Identifying one point with two opposed points."
-
