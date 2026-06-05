@@ -152,18 +152,20 @@ All future theorem statuses must remain planned, deferred, exploratory_python, o
 
 ### S1: Circle Core
 
-- [ ] `papers/S1/PAPER_S1_01_FINITE_CIRCLES.md`
+- [x] `papers/S1/PAPER_S1_01_FINITE_CIRCLES.md`
   - Current source: `papers/PAPER_01_FINITE_CIRCLES.md`
   - Proof targets: `CC-T0001` through `CC-T0007`
   - Status: proved theorem spine exists; paper should be polished and relocated or linked through the dimension layout.
-- [ ] `papers/S1/PAPER_S1_02_WINDING_NATURALS.md`
+- [x] `papers/S1/PAPER_S1_02_WINDING_NATURALS.md`
   - Current source: `papers/PAPER_02_WINDING_NATURALS.md`
   - Proof targets: `CC-T0009` through `CC-T0016`
   - Status: proved theorem spine exists; paper should be polished and relocated or linked through the dimension layout.
-- [ ] `papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md`
+- [x] `papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md`
   - Proof targets: oriented winding, signed residues, integer addition, additive inverse, reversible motion.
-- [ ] `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md`
+  - Status: signed zero, composition, and inverse motion are Lean-proved as `S1O-T0001` through `S1O-T0003`.
+- [x] `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md`
   - Proof targets: `CC-T0008`, multiplication as repeated rotation/scaling, invertibility iff coprime, factor structure, prime/full-coil refinements.
+  - Status: scaling invertible iff coprime is Lean-proved; deeper factor refinements remain future extensions.
 
 ### S0: Opposition And Sign
 

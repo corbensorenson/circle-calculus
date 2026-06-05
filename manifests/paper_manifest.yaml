@@ -63,6 +63,57 @@ papers:
       - S1-0001
       - CC-0105
 
+  - id: PAPER_S1_01_FINITE_CIRCLES
+    title: "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+    status: adapter
+    sidecar: sidecars/PAPER_S1_01_FINITE_CIRCLES
+    theorem_ids:
+      - CC-T0001
+      - CC-T0002
+      - CC-T0003
+      - CC-T0004
+      - CC-T0005
+      - CC-T0006
+      - CC-T0007
+    dictionary_ids:
+      - S1-0001
+      - CC-0001
+      - CC-0101
+      - CC-0201
+      - CC-0205
+
+  - id: PAPER_S1_02_WINDING_NATURALS
+    title: "Circle Calculus S1.2: Winding, Lifted Circles, and Natural Numbers"
+    status: adapter
+    sidecar: sidecars/PAPER_S1_02_WINDING_NATURALS
+    theorem_ids:
+      - CC-T0009
+      - CC-T0010
+      - CC-T0011
+      - CC-T0012
+      - CC-T0013
+      - CC-T0014
+      - CC-T0015
+      - CC-T0016
+    dictionary_ids:
+      - S1-0001
+      - CC-0301
+      - CC-0302
+      - CC-0303
+      - CC-0304
+
+  - id: PAPER_S1_03_INTEGERS_ORIENTATION
+    title: "Circle Calculus S1.3: Integers, Orientation, and Reversible Motion"
+    status: draft
+    sidecar: sidecars/PAPER_S1_03_INTEGERS_ORIENTATION
+    theorem_ids:
+      - S1O-T0001
+      - S1O-T0002
+      - S1O-T0003
+    dictionary_ids:
+      - S1-0002
+      - S1-0003
+
   - id: PAPER_S2_01_SUSPENDED_CIRCLES
     title: "Circle Calculus S2.1: Suspended Circles and the First Finite Sphere"
     status: draft

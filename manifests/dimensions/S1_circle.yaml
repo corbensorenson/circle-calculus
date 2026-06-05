@@ -2,6 +2,44 @@ dimension: S1
 status: active
 source_manifest: manifests/theorem_manifest.yaml
 notes: "S1 keeps the existing CC-T theorem ids and root theorem manifest as the active proof registry."
-theorems: []
+theorems:
+  - id: S1O-T0001
+    status: lean_proved
+    lean_name: Circle.S1.signedRot_zero
+    informal_statement: "Signed rotation by zero leaves every finite-circle node unchanged."
+    formal_statement: "forall n : Nat, forall x : Circle.C n, Circle.S1.signedRot n 0 x = x"
+    dictionary_dependencies: ["S1-0002"]
+    paper_refs: ["papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
+  - id: S1O-T0002
+    status: lean_proved
+    lean_name: Circle.S1.signedRot_comp
+    informal_statement: "Composing signed rotations adds their signed strides."
+    formal_statement: "forall n : Nat, forall a b : Int, forall x : Circle.C n, Circle.S1.signedRot n a (Circle.S1.signedRot n b x) = Circle.S1.signedRot n (a+b) x"
+    dictionary_dependencies: ["S1-0002"]
+    paper_refs: ["papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
+  - id: S1O-T0003
+    status: lean_proved
+    lean_name: Circle.S1.signedRot_inverse
+    informal_statement: "A signed rotation followed by the opposite signed rotation returns to the starting node."
+    formal_statement: "forall n : Nat, forall k : Int, forall x : Circle.C n, Circle.S1.signedRot n (-k) (Circle.S1.signedRot n k x) = x"
+    dictionary_dependencies: ["S1-0002", "S1-0003"]
+    paper_refs: ["papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+    blocker: ""
 warnings: []
-

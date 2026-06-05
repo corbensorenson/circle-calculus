@@ -37,7 +37,7 @@ The expanded long-horizon plan is dimension-organized:
 S^0 -> S^1 -> S^2 -> S^3 -> S^4/S^5/S^6 -> S^7 -> Future/S^15
 ```
 
-The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, and scaling invertibility; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle and sphere-grid theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; the first `S^3` spin sign-cancellation theorem; the finite `S^4` through `S^6` suspension Euler bridge; and the finite topological `S^7` suspension model.
+The current proved layer includes `S^1` finite circles, rotations, coils, period, orbit decomposition, prime full coils, winding, lifted natural-number arithmetic, scaling invertibility, and signed reversible rotation; `S^0` two-point opposition; common finite-cell suspension/Euler machinery; the first `S^2` suspended-circle and sphere-grid theorem spine; the finite combinatorial `S^3` suspension theorem spine; the core `S^3` real-quaternion algebra spine; the first `S^3` spin sign-cancellation theorem; the finite `S^4` through `S^6` suspension Euler bridge; and the finite topological `S^7` suspension model.
 
 Future dimensional work is split into two related ladders:
 
@@ -56,6 +56,10 @@ This is an early public research scaffold with a working verification pipeline a
 | --- | --- | --- |
 | `papers/PAPER_01_FINITE_CIRCLES.md` | outline/draft | `CC-T0001` through `CC-T0007` proved |
 | `papers/PAPER_02_WINDING_NATURALS.md` | draft | `CC-T0009` through `CC-T0016` proved |
+| `papers/S1/PAPER_S1_01_FINITE_CIRCLES.md` | adapter | `CC-T0001` through `CC-T0007` linked in dimension layout |
+| `papers/S1/PAPER_S1_02_WINDING_NATURALS.md` | adapter | `CC-T0009` through `CC-T0016` linked in dimension layout |
+| `papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md` | draft | `S1O-T0001` through `S1O-T0003` proved |
+| `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md` | draft | `CC-T0008` proved |
 | `papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md` | draft | `S0-T0001` and `S0-T0002` proved |
 | `papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md` | draft | `S2-T0001` and `S2-T0002` proved |
 | `papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md` | draft | `S2-T0003` through `S2-T0007` proved |
@@ -232,6 +236,9 @@ Proved common and dimensional spine:
 - `S6-T0001`: finite S6 suspension model has Euler characteristic 2
 - `S7C-T0001`: finite S7 iterated-suspension model
 - `S7C-T0002`: finite S7 iterated-suspension model has Euler characteristic 0
+- `S1O-T0001`: signed rotation by zero fixes every finite-circle node
+- `S1O-T0002`: composing signed rotations adds signed strides
+- `S1O-T0003`: signed rotation by `k` followed by `-k` returns to the start
 
 Executable exploratory spine:
 

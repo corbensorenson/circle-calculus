@@ -10,4 +10,21 @@ entries:
     forbidden_meanings:
       - "A continuous metric circle unless a later model explicitly activates that interpretation."
       - "A higher-dimensional sphere."
-
+  - id: S1-0002
+    name: "Signed rotation"
+    kind: operation
+    formal_definition: "`Circle.S1.signedRot n k x = x + (k : ZMod n)` for integer stride `k`."
+    intuition: "Clockwise and counterclockwise motion are the same finite circle operation with signed stride."
+    dependencies: ["S1-0001", "CC-0101"]
+    introduced_in: "PAPER_S1_03_INTEGERS_ORIENTATION"
+    forbidden_meanings:
+      - "A new circle object separate from C_n."
+  - id: S1-0003
+    name: "Reversible signed motion"
+    kind: relation
+    formal_definition: "`Circle.S1.signedRot_inverse` proves that moving by `k` and then by `-k` returns to the starting node."
+    intuition: "Orientation adds reversibility to the finite-circle motion model."
+    dependencies: ["S1-0002"]
+    introduced_in: "PAPER_S1_03_INTEGERS_ORIENTATION"
+    forbidden_meanings:
+      - "A proof of all integer arithmetic by itself."
