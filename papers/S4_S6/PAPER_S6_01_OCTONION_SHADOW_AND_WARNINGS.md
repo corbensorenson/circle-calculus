@@ -33,6 +33,8 @@ For every natural `n`,
 chi(Circle.S6.counts(n)) = 2
 ```
 
+The Python sidecar checks the same suspension-from-`S^5` count definition and Euler characteristic examples. The `S^6` complex-structure warning remains a guardrail, not a theorem claim.
+
 ## Dictionary Targets
 
 - `S6-0001`: S6 octonion shadow

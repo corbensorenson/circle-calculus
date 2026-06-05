@@ -12,7 +12,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY/python/test_s456_parity_examples.py
     blocker: ""
   - id: S4-T0001
     status: lean_proved
@@ -25,7 +26,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF/python/test_s4_suspension_examples.py
     blocker: ""
   - id: S4-T0002
     status: lean_proved
@@ -38,6 +40,7 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF/python/test_s4_suspension_examples.py
     blocker: ""
 warnings: []

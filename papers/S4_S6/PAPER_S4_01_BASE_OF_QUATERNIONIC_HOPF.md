@@ -32,6 +32,8 @@ For every natural `n`,
 chi(Circle.S4.counts(n)) = 2
 ```
 
+The Python sidecar checks the same suspension-from-`S^3` count definition and Euler characteristic examples.
+
 ## Roadmap Link
 
 The intended later structure is:

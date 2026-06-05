@@ -41,6 +41,8 @@ chi(S6) = 2
 
 This is the finite-count version of the parity pattern `chi(S^d)=1+(-1)^d` for the dimensions currently in this bridge.
 
+The Python sidecar checks the same common suspension-Euler formula and the `S^4`, `S^5`, `S^6` parity pattern on finite suspended-circle examples.
+
 ## Dictionary Targets
 
 - `COMMON-0001`: finite cell-count list

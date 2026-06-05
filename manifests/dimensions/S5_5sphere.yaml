@@ -12,7 +12,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE/python/test_s5_suspension_examples.py
     blocker: ""
   - id: S5-T0002
     status: lean_proved
@@ -25,6 +26,7 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE/python/test_s5_suspension_examples.py
     blocker: ""
 warnings: []

@@ -32,6 +32,8 @@ For every natural `n`,
 chi(Circle.S5.counts(n)) = 0
 ```
 
+The Python sidecar checks the same suspension-from-`S^4` count definition and Euler characteristic examples.
+
 ## Dictionary Targets
 
 - `S5-0001`: S5 complex projective bridge

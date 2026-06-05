@@ -12,7 +12,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS/python/test_s6_suspension_examples.py
     blocker: ""
   - id: S6-T0002
     status: lean_proved
@@ -25,7 +26,8 @@ theorems:
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests:
+        - sidecars/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS/python/test_s6_suspension_examples.py
     blocker: ""
 warnings:
   - id: S6-W0001
