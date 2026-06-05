@@ -43,6 +43,8 @@ The helper theorem `Circle.Future.S15.hopfBase9NormSq_octonionicHopfMap` proves 
 
 for the bounded octonionic Hopf landing model.
 
+The Python sidecar checks the roadmap marker, the eightfold-suspension topological model, Euler characteristic `0`, the bounded coordinate identity, and normalized-pair landing examples. These examples do not prove quotient topology or a global octonionic phase action.
+
 ## Dictionary Targets
 
 - `S15-0001`: future octonionic Hopf horizon

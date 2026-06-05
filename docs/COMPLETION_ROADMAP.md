@@ -161,7 +161,7 @@ Goal: make the executable examples line up with the Lean-backed papers without d
 - [x] Backfill `S2` Python examples for suspended circles, sphere grids, antipodes, and finite coordinate rotations.
 - [x] Backfill `S3` Python examples for finite hypersphere counts, quaternion coils, and spin sign cancellation. `PAPER_S3_03_HOPF_COILS` already has Python examples.
 - [x] Backfill `S4` through `S6` Python examples for suspension/Euler bridge papers.
-- [ ] Backfill `S7` and future `S15` Python examples for finite suspension/topological landing facts where useful.
+- [x] Backfill `S7` and future `S15` Python examples for finite suspension/topological landing facts where useful.
 - [x] Phase II and application seed papers now have Python examples or benchmark sidecars where useful.
 
 ## Paper Checklist

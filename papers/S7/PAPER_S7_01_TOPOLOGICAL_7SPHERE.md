@@ -37,6 +37,8 @@ chi(Circle.S7.iteratedSuspensionModel(n)) = 0
 
 This completes the topological/combinatorial `S^7` layer needed before the algebraic octonion track.
 
+The Python sidecar checks the same suspension-from-`S^6` count definition and Euler characteristic examples. Octonion algebra remains in the separate `S7.3` paper.
+
 ## Dictionary Targets
 
 - `S7C-0001`: topological S7 suspension model
