@@ -283,8 +283,7 @@ Application guardrails:
 
 - [x] `COMMON-T0001`: Euler characteristic of a finite cell-count list.
 - [x] `COMMON-T0002`: suspension cell-count transform.
-- [ ] `COMMON-T0003`: suspension Euler transform, `chi(Susp(K)) = 2 - chi(K)`.
-  - Blocker: needs a lightweight Lean proof of the integer alternating-sum identity without broad tactic imports.
+- [x] `COMMON-T0003`: suspension Euler transform, `chi(Susp(K)) = 2 - chi(K)`.
 
 ## Current S1 Proof Status
 

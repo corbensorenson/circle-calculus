@@ -28,7 +28,7 @@ theorems:
       python_property_tests: ["suspension_counts([v,e,f]) == [v+2,e+2*v,f+2*e,2*f]"]
     blocker: ""
   - id: COMMON-T0003
-    status: planned
+    status: lean_proved
     lean_name: Circle.Common.suspensionEuler
     informal_statement: "Suspension changes Euler characteristic by chi(Susp K)=2-chi(K)."
     formal_statement: "forall counts : List Nat, eulerCharacteristic (suspensionCounts counts) = 2 - eulerCharacteristic counts"
@@ -39,5 +39,5 @@ theorems:
       lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["euler_characteristic(suspension_counts(counts)) == 2-euler_characteristic(counts)"]
-    blocker: "Needs a lightweight Lean proof of the integer alternating-sum identity without importing the broad Mathlib.Tactic stack."
+    blocker: ""
 warnings: []

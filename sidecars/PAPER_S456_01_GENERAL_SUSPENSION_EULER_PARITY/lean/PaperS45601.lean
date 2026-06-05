@@ -11,5 +11,6 @@ namespace Circle.PaperS45601
 
 #check Circle.Common.eulerCharacteristic
 #check Circle.Common.suspensionCounts
+#check Circle.Common.suspensionEuler
 
 end Circle.PaperS45601

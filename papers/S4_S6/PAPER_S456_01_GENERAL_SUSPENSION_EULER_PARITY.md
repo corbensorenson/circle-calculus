@@ -1,6 +1,6 @@
 # Circle Calculus S456.1: General Suspension and Euler Parity
 
-Status: draft scaffold with the common definitions compiled.
+Status: draft scaffold with the common suspension/Euler spine proved.
 
 ## Aim
 
@@ -13,19 +13,19 @@ This paper will prove the general finite suspension Euler parity bridge across `
 - `COMMON-T0003`: `Circle.Common.suspensionEuler`
 - `S456-T0001`: iterated suspension Euler parity
 
-## Compiled Common Core
+## Proved Common Core
 
 `COMMON-T0001` is represented by the Lean declaration `Circle.Common.eulerCharacteristic`.
 
 `COMMON-T0002` is represented by the Lean declaration `Circle.Common.suspensionCounts`.
 
-`COMMON-T0003` remains planned. It will prove that for every finite cell-count list, the suspension transform changes Euler characteristic by
+`COMMON-T0003` is proved by `Circle.Common.suspensionEuler`: for every finite cell-count list, the suspension transform changes Euler characteristic by
 
 ```text
 chi(Susp(K)) = 2 - chi(K)
 ```
 
-The current blocker is proof-engineering, not mathematics: the identity should be proved without importing the broad tactic stack.
+This supplies the shared algebraic step needed before the dimension-specific `S456-T0001` parity theorem is stated.
 
 ## Dictionary Targets
 
