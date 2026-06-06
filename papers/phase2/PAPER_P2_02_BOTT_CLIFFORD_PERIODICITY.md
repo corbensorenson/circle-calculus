@@ -39,6 +39,7 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `P2B-T0001`: `Circle.Phase2.bottClockIndex_lt_eight`
 - `P2B-T0002`: `Circle.Phase2.bottClockIndex_add_eight`
 - `P2B-T0003`: `Circle.Phase2.bottClockIndex_zero`
+- `P2B-T0004`: `Circle.Phase2.bottClockIndex_add_mul_eight`
 
 ## Proved Core
 
@@ -48,6 +49,12 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 
 ```text
 bottClockIndex (dimension + 8) = bottClockIndex dimension
+```
+
+`P2B-T0004` proves the multi-pass closure law:
+
+```text
+bottClockIndex (dimension + passes * 8) = bottClockIndex dimension
 ```
 
 `P2B-T0003` proves that dimension zero lands at clock index zero.

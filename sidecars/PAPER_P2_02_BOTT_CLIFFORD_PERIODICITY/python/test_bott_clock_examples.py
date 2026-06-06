@@ -13,5 +13,11 @@ def test_bott_clock_closes_after_eight_dimensions() -> None:
         assert bott_clock_index(dimension + 8) == bott_clock_index(dimension)
 
 
+def test_bott_clock_closes_after_multiple_eight_dimension_passes() -> None:
+    for dimension in range(0, 128):
+        for passes in range(0, 16):
+            assert bott_clock_index(dimension + passes * 8) == bott_clock_index(dimension)
+
+
 def test_bott_clock_zero() -> None:
     assert bott_clock_index(0) == 0

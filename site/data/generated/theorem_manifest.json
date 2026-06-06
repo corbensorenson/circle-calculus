@@ -3692,7 +3692,7 @@
       "informal_statement": "Dimension zero has period-8 clock index zero.",
       "lean_name": "Circle.Phase2.bottClockIndex_zero",
       "lean_source": "Circle/Phase2/BottClifford.lean",
-      "lean_source_line": 24,
+      "lean_source_line": 29,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md#theorem-spine"
@@ -3712,6 +3712,43 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "0 % 8 == 0"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0006"
+      ],
+      "formal_statement": "forall dimension passes : Nat, bottClockIndex (dimension + passes * 8) = bottClockIndex dimension",
+      "id": "P2B-T0004",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "Adding any whole number of eight-step dimension-clock passes preserves the finite period-8 clock index.",
+      "lean_name": "Circle.Phase2.bottClockIndex_add_mul_eight",
+      "lean_source": "Circle/Phase2/BottClifford.lean",
+      "lean_source_line": 24,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY",
+          "path": "papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.2: Bott and Clifford Periodicity"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "bott_clock_index(dimension + passes * 8) == bott_clock_index(dimension)"
         ]
       }
     },

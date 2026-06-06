@@ -12,6 +12,7 @@ namespace Circle.PaperP202
 #check Circle.Phase2.bottClockIndex
 #check Circle.Phase2.bottClockIndex_lt_eight
 #check Circle.Phase2.bottClockIndex_add_eight
+#check Circle.Phase2.bottClockIndex_add_mul_eight
 #check Circle.Phase2.bottClockIndex_zero
 
 end Circle.PaperP202

@@ -163,6 +163,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["0 % 8 == 0"]
     blocker: ""
+  - id: P2B-T0004
+    status: lean_proved
+    lean_name: Circle.Phase2.bottClockIndex_add_mul_eight
+    informal_statement: "Adding any whole number of eight-step dimension-clock passes preserves the finite period-8 clock index."
+    formal_statement: "forall dimension passes : Nat, bottClockIndex (dimension + passes * 8) = bottClockIndex dimension"
+    dictionary_dependencies: ["COMMON-0006"]
+    paper_refs: ["papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["bott_clock_index(dimension + passes * 8) == bott_clock_index(dimension)"]
+    blocker: ""
   - id: P2BU-T0001
     status: lean_proved
     lean_name: Circle.Phase2.trivialBundleProjection_point

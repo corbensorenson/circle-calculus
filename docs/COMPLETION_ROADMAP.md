@@ -300,7 +300,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `P2S-T0001` through `P2S-T0003` are Lean-proved finite double/four suspension facts with Python examples; stable maps, spectra, and stable homotopy claims remain future work.
 - [x] `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md`
   - Program: Clifford algebras, spinors, Bott periodicity, and dimension clocks.
-  - Status: polished draft; `P2B-T0001` through `P2B-T0003` are Lean-proved finite period-8 clock facts with Python examples; Clifford algebras, K-theory, KO-theory, and Bott periodicity remain future formalization work.
+  - Status: polished draft; `P2B-T0001` through `P2B-T0004` are Lean-proved finite period-8 clock facts with Python examples; Clifford algebras, K-theory, KO-theory, and Bott periodicity remain future formalization work.
 - [x] `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md`
   - Program: base, fiber, total space, projection, transition functions, connection, curvature, holonomy, and hidden proof provenance.
   - Status: polished draft; `P2BU-T0001` through `P2BU-T0007` are Lean-proved trivial product-bundle projection/fiber and base-preserving transition sanity facts with Python examples; nontrivial bundles, overlap/cocycle data, connections, curvature, and holonomy remain future work.
@@ -374,6 +374,7 @@ Application guardrails:
 - [x] `P2B-T0001`: finite period-8 dimension clock index is below 8.
 - [x] `P2B-T0002`: finite period-8 dimension clock is invariant under adding 8.
 - [x] `P2B-T0003`: finite period-8 dimension clock sends zero to zero.
+- [x] `P2B-T0004`: finite period-8 dimension clock is invariant under any whole number of eight-step passes.
 - [x] `P2BU-T0001`: trivial-bundle projection returns the base coordinate.
 - [x] `P2BU-T0002`: trivial-bundle fiber coordinate returns the fiber value.
 - [x] `P2BU-T0003`: trivial-bundle projection is invariant under changing only the fiber.

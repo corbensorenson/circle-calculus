@@ -5,5 +5,6 @@ title: "Bott And Clifford Periodicity"
 Placeholder for period-8 clock seeds and future Bott/Clifford work.
 
 <div class="theorem-box" data-theorem-id="P2B-T0001"></div>
+<div class="theorem-box" data-theorem-id="P2B-T0004"></div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

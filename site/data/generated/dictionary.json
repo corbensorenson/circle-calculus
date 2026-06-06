@@ -2797,6 +2797,12 @@
           "lean_name": "Circle.Phase2.bottClockIndex_zero",
           "name": "Circle.Phase2.bottClockIndex_zero",
           "status": "proved"
+        },
+        {
+          "id": "P2B-T0004",
+          "lean_name": "Circle.Phase2.bottClockIndex_add_mul_eight",
+          "name": "Circle.Phase2.bottClockIndex_add_mul_eight",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []

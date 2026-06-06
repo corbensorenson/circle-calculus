@@ -21,6 +21,11 @@ theorem bottClockIndex_add_eight (dimension : Nat) :
   unfold bottClockIndex
   omega
 
+theorem bottClockIndex_add_mul_eight (dimension passes : Nat) :
+    bottClockIndex (dimension + passes * 8) = bottClockIndex dimension := by
+  unfold bottClockIndex
+  exact Nat.add_mul_mod_self_right dimension passes 8
+
 theorem bottClockIndex_zero :
     bottClockIndex 0 = 0 := by
   rfl
