@@ -190,6 +190,7 @@ make examples    # regenerate current example diagrams
 make sourcecheck # run repository checks after Lean has already been built
 make site-data   # export Living Book JSON from manifests/dictionaries/papers
 make sitecheck   # validate Living Book structure, ids, links, status, and widgets
+python scripts/site/check_site_source_links.py # verify generated GitHub/source-link paths
 make site-render # render the Quarto Living Book into site/_site
 make living-book-check # run core checks plus Living Book checks and render
 make check       # run the full suite

@@ -42,6 +42,8 @@ The deploy job publishes the artifact to GitHub Pages only from `main`.
 
 This keeps publication downstream of the proof/status/data checks. A rendered page can be public only after theorem manifests, dictionary links, paper links, widget parity, fake-proof guardrails, and Quarto render have all passed in CI.
 
+`make sourcecheck` includes `make sitecheck`, and `sitecheck` validates the generated source-link paths used by Living Book GitHub links. This protects the public site against stale links when Lean files, papers, dictionary files, sidecars, widgets, glyph fixtures, or target manifests move.
+
 ## Repository Settings
 
 In GitHub, configure Pages to use **GitHub Actions** as the publishing source. No secrets, custom domain, paid service, or checked-in rendered output are required.
