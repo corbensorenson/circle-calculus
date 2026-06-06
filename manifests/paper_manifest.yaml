@@ -520,6 +520,7 @@ papers:
     dictionary_ids:
       - COMMON-0022
       - COMMON-0023
+      - COMMON-0040
 
   - id: PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS
     title: "Circle Calculus Compute 4: Coil Systems Applications"

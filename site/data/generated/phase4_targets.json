@@ -461,17 +461,18 @@
       "claim_type": "experiment",
       "dictionary_dependencies": [
         "COMMON-0022",
-        "COMMON-0023"
+        "COMMON-0023",
+        "COMMON-0040"
       ],
       "guardrail": "Performance claims require benchmarks.",
       "id": "P4-APP-003",
       "layer": "Applications",
-      "next_action": "Add benchmark parameter grid and expected-output checks.",
+      "next_action": "Benchmark parameter grid and expected-output checks added; expand to workload-specific direct, dense, FFT, NTT, and MLX layout baselines before performance claims.",
       "paper_refs": [
         "papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md"
       ],
       "priority": "medium",
-      "status": "planned",
+      "status": "exploratory_python",
       "target_statement": "Circular/stride layout claims should be benchmarked against dense, direct, FFT, and layout baselines.",
       "title": "Coil layout memory-locality benchmark"
     }

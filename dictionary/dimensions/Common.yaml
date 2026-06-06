@@ -443,3 +443,15 @@ entries:
       - "A real model-quality result."
       - "A proof that phase channels improve neural networks."
       - "A replacement for standard AI baselines."
+  - id: COMMON-0040
+    name: "Coil layout validation grid"
+    kind: experiment
+    symbol: "layout_grid"
+    formal_definition: "`circle_math.applications.coil_compute.validate_layout_grid`, a deterministic parameter grid checking natural, gcd-cycle, direct, and tiny dense circular-stride checksums agree."
+    intuition: "A correctness harness for comparing layout orders before timing them."
+    dependencies: ["COMMON-0022", "COMMON-0023"]
+    introduced_in: "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT"
+    forbidden_meanings:
+      - "A cache-locality proof."
+      - "Evidence that gcd-cycle layout is faster."
+      - "A replacement for FFT, NTT, dense, or direct baselines."

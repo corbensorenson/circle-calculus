@@ -9,6 +9,8 @@ sidecars:
   - sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/lean/PaperComp03.lean
   - sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py
   - sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/benchmark_coil_layout.py
+python_reference:
+  - circle_math/applications/coil_compute.py
 theorems:
   - id: COMPC-T0001
     status: lean_proved
@@ -39,7 +41,13 @@ theorems:
     lean_name: Circle.Applications.strideAddress_zero_stride
     dictionary_dependencies: ["COMMON-0022"]
 next_targets:
-  - "Extend from cyclic addresses to stride/orbit layouts before claiming layout wins."
+  - "Expand the layout validation grid to workload-specific direct, FFT, NTT, and dense baselines before claiming layout wins."
   - "Benchmark direct, dense, FFT, NTT, and layout backends before making performance claims."
   - "Treat CoilIR as a proof-carrying optimizer roadmap: dictionary-detected circular structure, Lean-proved rewrites, backend selection, and benchmark validation."
+benchmarks:
+  - id: COMPL-B0001
+    status: exploratory_python
+    path: sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py::test_layout_grid_expected_outputs_match
+    script: sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/benchmark_coil_layout.py
+    description: "Deterministic layout parameter grid checking natural, gcd-cycle, direct, and tiny dense circular-stride checksums before timing layout orders."
 guardrail: "Benchmarks decide performance claims."
