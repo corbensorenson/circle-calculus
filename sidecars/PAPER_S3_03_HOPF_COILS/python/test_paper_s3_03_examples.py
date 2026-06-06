@@ -65,6 +65,23 @@ def test_phase_rotate_composition() -> None:
         assert_complex_pair_close(twice, combined)
 
 
+def test_hopf_phase_action_laws() -> None:
+    z0, z1 = normalize_pair(1.0 - 0.75j, 0.2 + 0.9j)
+
+    def act(phase: complex, pair: tuple[complex, complex]) -> tuple[complex, complex]:
+        left, right = pair
+        return (phase * left, phase * right)
+
+    for theta, phi in [(0.0, 0.5), (0.25, 1.0), (math.pi / 3.0, math.pi / 5.0)]:
+        left_phase = complex(math.cos(theta), math.sin(theta))
+        right_phase = complex(math.cos(phi), math.sin(phi))
+        assert_complex_pair_close(act(1.0 + 0.0j, (z0, z1)), (z0, z1))
+        assert_complex_pair_close(
+            act(left_phase, act(right_phase, (z0, z1))),
+            act(left_phase * right_phase, (z0, z1)),
+        )
+
+
 def test_hopf_fiber_phase_orbit_is_circle_like() -> None:
     z0, z1 = normalize_pair(1.0 - 0.75j, 0.2 + 0.9j)
     base = hopf_map(z0, z1)

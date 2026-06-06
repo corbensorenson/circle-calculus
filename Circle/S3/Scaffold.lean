@@ -204,6 +204,21 @@ def phaseRotatePair (u v : ℝ) (p : HopfPair) : HopfPair where
   z1re := u * p.z1re - v * p.z1im
   z1im := v * p.z1re + u * p.z1im
 
+structure HopfPhase where
+  re : ℝ
+  im : ℝ
+
+def hopfPhaseIdentity : HopfPhase where
+  re := 1
+  im := 0
+
+def hopfPhaseMul (left right : HopfPhase) : HopfPhase where
+  re := left.re * right.re - left.im * right.im
+  im := left.im * right.re + left.re * right.im
+
+def hopfPhaseAct (phase : HopfPhase) (p : HopfPair) : HopfPair :=
+  phaseRotatePair phase.re phase.im p
+
 theorem phaseRotatePair_identity (p : HopfPair) :
     phaseRotatePair 1 0 p = p := by
   cases p
@@ -221,6 +236,21 @@ theorem phaseRotatePair_comp (u v a b : ℝ) (p : HopfPair) :
   constructor
   · ring
   · ring
+
+theorem hopfPhaseAct_identity (p : HopfPair) :
+    hopfPhaseAct hopfPhaseIdentity p = p :=
+  phaseRotatePair_identity p
+
+theorem hopfPhaseAct_comp (left right : HopfPhase) (p : HopfPair) :
+    hopfPhaseAct left (hopfPhaseAct right p) =
+      hopfPhaseAct (hopfPhaseMul left right) p :=
+  phaseRotatePair_comp left.re left.im right.re right.im p
+
+theorem hopfPhaseAction_laws (left right : HopfPhase) (p : HopfPair) :
+    hopfPhaseAct hopfPhaseIdentity p = p ∧
+      hopfPhaseAct left (hopfPhaseAct right p) =
+        hopfPhaseAct (hopfPhaseMul left right) p := by
+  exact ⟨hopfPhaseAct_identity p, hopfPhaseAct_comp left right p⟩
 
 theorem phaseRotatePair_norm_sq (u v : ℝ) (p : HopfPair) :
     hopfPairNormSq (phaseRotatePair u v p) =

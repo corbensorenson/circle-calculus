@@ -15,6 +15,7 @@ The current contribution is bounded and algebraic: coordinate landing, phase inv
 - `S3H-T0003`: `Circle.S3.hopfFiber_circle_like`
 - `S3H-T0004`: `Circle.S3.phaseRotatePair_identity`
 - `S3H-T0005`: `Circle.S3.phaseRotatePair_comp`
+- `S3H-T0006`: `Circle.S3.hopfPhaseAction_laws`
 - `S3H-W0001`: not globally `S^2 x S^1`
 
 ## Model
@@ -41,6 +42,15 @@ The hidden phase action is simultaneous common rotation:
 (z0,z1) -> (exp(i theta) z0, exp(i theta) z1)
 ```
 
+The Lean wrapper records this as a small action interface:
+
+```text
+HopfPhase(re,im)
+hopfPhaseIdentity = (1,0)
+hopfPhaseMul(left,right) = complex phase multiplication
+hopfPhaseAct(phase,pair) = common phase rotation
+```
+
 ## Proved Core
 
 `S3H-T0001` proves that a normalized coordinate pair lands on the unit base equation. The helper theorem `Circle.S3.hopfBaseNormSq_hopfMap` proves the exact coordinate identity:
@@ -57,7 +67,9 @@ The hidden phase action is simultaneous common rotation:
 (u,v)*(a,b) = (u*a - v*b, v*a + u*b)
 ```
 
-The Python sidecar checks the same complex-coordinate examples, including sampled `2*pi` closure as executable intuition. Those examples support the paper, but the proof status comes from the Lean declarations.
+`S3H-T0006` packages those laws through the `HopfPhase` action wrapper: identity phase fixes every Hopf pair, and acting by one phase after another is the same as acting by their phase product.
+
+The Python sidecar checks the same complex-coordinate examples, including sampled `2*pi` closure and the phase action laws as executable intuition. Those examples support the paper, but the proof status comes from the Lean declarations.
 
 ## Warning
 
@@ -71,4 +83,4 @@ The Python sidecar checks the same complex-coordinate examples, including sample
 
 ## Guardrails
 
-The current Lean contribution is algebraic and coordinate-bounded. The full Hopf fibration, topology of fibers, analytic circle parameterization beyond these algebraic phase laws, and global non-product structure remain future formalization work.
+The current Lean contribution is algebraic and coordinate-bounded. The phase action wrapper is an interface for the checked coordinate action, not a proof that `S^3` is a global product. The full Hopf fibration, topology of fibers, analytic circle parameterization beyond these algebraic phase laws, and global non-product structure remain future formalization work.

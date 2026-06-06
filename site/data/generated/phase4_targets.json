@@ -191,12 +191,17 @@
       "guardrail": "Do not claim S3 is globally S2 x S1.",
       "id": "P4-S3-002",
       "layer": "S3",
-      "next_action": "Define a finite action record or theorem bundle without claiming global product structure.",
+      "next_action": "Promoted to S3H-T0006 using HopfPhase, hopfPhaseAct, hopfPhaseIdentity, and hopfPhaseMul wrappers.",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
       ],
       "priority": "high",
-      "status": "planned",
+      "promoted_theorem_id": "S3H-T0006",
+      "status": "promoted",
+      "supporting_theorem_ids": [
+        "S3H-T0004",
+        "S3H-T0005"
+      ],
       "target_statement": "Identity phase fixes Hopf pairs and phase composition agrees with complex multiplication.",
       "title": "Hopf phase action is a right action"
     },

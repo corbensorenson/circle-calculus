@@ -118,14 +118,16 @@ targets:
   - id: P4-S3-002
     layer: S3
     priority: high
-    status: planned
+    status: promoted
+    promoted_theorem_id: S3H-T0006
+    supporting_theorem_ids: ["S3H-T0004", "S3H-T0005"]
     claim_type: theorem
     title: "Hopf phase action is a right action"
     target_statement: "Identity phase fixes Hopf pairs and phase composition agrees with complex multiplication."
     candidate_formalization: "Package S3H-T0004 and S3H-T0005 into a right-action interface for normalized Hopf pairs."
     paper_refs: ["papers/S3/PAPER_S3_03_HOPF_COILS.md"]
     dictionary_dependencies: ["S3H-0001", "S3H-0002"]
-    next_action: "Define a finite action record or theorem bundle without claiming global product structure."
+    next_action: "Promoted to S3H-T0006 using HopfPhase, hopfPhaseAct, hopfPhaseIdentity, and hopfPhaseMul wrappers."
     guardrail: "Do not claim S3 is globally S2 x S1."
 
   - id: P4-S3-003
