@@ -252,9 +252,9 @@ Goal: make the executable examples line up with the Lean-backed papers without d
   - Proof targets: `S5-T0001`, `S5-T0002`
   - Status: polished draft proves the finite `S^5` suspension/Euler anchor and keeps projective geometry exploratory unless formalized.
 - [x] `papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md`
-  - Proof targets: `S6-T0001`, `S6-T0002`
+  - Proof targets: `S6-T0001` through `S6-T0003`
   - Warning target: `S6-W0001`
-  - Status: polished draft proves the finite `S^6` suspension/Euler anchor and keeps the `S^6` complex-structure warning explicit.
+  - Status: polished draft proves the finite `S^6` suspension/Euler anchor and warning-boundary marker, and keeps the `S^6` complex-structure warning explicit.
 
 ### S7: Topological, Quaternionic Hopf, Octonionic
 

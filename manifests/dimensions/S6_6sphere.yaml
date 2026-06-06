@@ -29,6 +29,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS/python/test_s6_suspension_examples.py
     blocker: ""
+  - id: S6-T0003
+    status: lean_proved
+    lean_name: Circle.S6.warningBoundary_marker
+    informal_statement: "The S6 scaffold marks its warning boundary as S6-W0001; this is a corpus boundary marker, not a complex-structure theorem."
+    formal_statement: "Circle.S6.warningLayerName = \"S6-W0001\""
+    dictionary_dependencies: ["S6-0001", "S6-W0001"]
+    paper_refs: ["papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS/python/test_s6_suspension_examples.py::test_s6_warning_boundary_marker
+    blocker: ""
 warnings:
   - id: S6-W0001
     status: active

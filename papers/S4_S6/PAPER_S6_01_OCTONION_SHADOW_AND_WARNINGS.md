@@ -29,6 +29,7 @@ This is the expected parity for an even-dimensional sphere in the finite-count m
 
 - `S6-T0001`: `Circle.S6.eulerCharacteristic`
 - `S6-T0002`: `Circle.S6.counts_eq_suspension_s5`
+- `S6-T0003`: `Circle.S6.warningBoundary_marker`
 - `S6-W0001`: S6 complex-structure warning
 
 ## Proved Core
@@ -43,7 +44,15 @@ chi(Circle.S6.counts(n)) = 2
 
 for every natural `n`.
 
-The Python sidecar checks the same suspension-from-`S^5` count definition and Euler characteristic examples.
+`S6-T0003` is a warning-boundary marker:
+
+```text
+Circle.S6.warningLayerName = "S6-W0001"
+```
+
+This theorem does not prove a geometric fact about `S^6`. It makes the corpus boundary machine-checkable: the S6 scaffold is explicitly tied to the active warning id that blocks complex-structure overclaims.
+
+The Python sidecar checks the same suspension-from-`S^5` count definition, Euler characteristic examples, and warning-boundary id.
 
 ## Warning Layer
 
@@ -55,7 +64,7 @@ Do not rely on unresolved S^6 complex-structure claims.
 
 This is not a decorative warning. It prevents a common failure mode: seeing `S^6` near octonions and treating speculative or delicate geometric claims as if they were already part of the formal corpus.
 
-The current paper proves no complex structure and assumes none.
+The current paper proves no complex structure and assumes none. `S6-T0003` only confirms that this warning boundary is attached to the S6 scaffold.
 
 ## Role Before S7
 

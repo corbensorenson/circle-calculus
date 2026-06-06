@@ -73,7 +73,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md` | polished draft | `COMMON-T0001` through `COMMON-T0005` and `S456-T0001` proved with Python examples |
 | `papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md` | polished draft | `S4-T0001` and `S4-T0002` proved with Python examples |
 | `papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md` | polished draft | `S5-T0001` and `S5-T0002` proved with Python examples |
-| `papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md` | polished draft | `S6-T0001` and `S6-T0002` proved with Python examples; `S6-W0001` warning tracked |
+| `papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md` | polished draft | `S6-T0001` through `S6-T0003` proved with Python examples; `S6-W0001` warning tracked |
 | `papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md` | polished draft | `S7C-T0001` through `S7C-T0003` proved with Python examples |
 | `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md` | polished draft/partial proof | `S7QH-T0001` and `S7QH-T0002` are Lean-proved coordinate theorems; full fibration topology remains future work |
 | `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md` | polished draft/proved spine | `S7O-T0001` through `S7O-T0006` are Lean-proved in a bounded Cayley-Dickson coordinate model |
@@ -391,6 +391,7 @@ Proved common and dimensional spine:
 - `S5-T0002`: finite S5 counts are the suspension of finite S4 counts
 - `S6-T0001`: finite S6 suspension model has Euler characteristic 2
 - `S6-T0002`: finite S6 counts are the suspension of finite S5 counts
+- `S6-T0003`: S6 warning boundary marker is tied to `S6-W0001`
 - `S7C-T0001`: finite S7 iterated-suspension model
 - `S7C-T0002`: finite S7 iterated-suspension model has Euler characteristic 0
 - `S7C-T0003`: finite S7 model is the suspension of finite S6 counts

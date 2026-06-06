@@ -4851,6 +4851,41 @@
       "blocker": "",
       "canonical_status": "proved",
       "dictionary_dependencies": [
+        "S6-0001",
+        "S6-W0001"
+      ],
+      "formal_statement": "Circle.S6.warningLayerName = \"S6-W0001\"",
+      "id": "S6-T0003",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5"
+      ],
+      "informal_statement": "The S6 scaffold marks its warning boundary as S6-W0001; this is a corpus boundary marker, not a complex-structure theorem.",
+      "lean_name": "Circle.S6.warningBoundary_marker",
+      "lean_source": "Circle/S6/Scaffold.lean",
+      "lean_source_line": 25,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md"
+      ],
+      "source_manifest": "manifests/dimensions/S6_6sphere.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS/python/test_s6_suspension_examples.py::test_s6_warning_boundary_marker"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
         "S7C-0001",
         "S456-0001"
       ],

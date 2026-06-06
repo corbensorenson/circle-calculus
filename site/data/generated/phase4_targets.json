@@ -265,12 +265,18 @@
       "guardrail": "Do not imply the project settles the S6 complex-structure problem.",
       "id": "P4-S456-002",
       "layer": "S4-S6",
-      "next_action": "Add an explicit warning card or paper lemma tying S6-W0001 to the paper status.",
+      "next_action": "Promoted to S6-T0003 as a Lean warning-boundary marker tied to S6-W0001; no complex-structure theorem is claimed.",
       "paper_refs": [
         "papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md"
       ],
       "priority": "medium",
-      "status": "planned",
+      "promoted_theorem_id": "S6-T0003",
+      "status": "promoted",
+      "supporting_theorem_ids": [
+        "S6-T0001",
+        "S6-T0002",
+        "S6-W0001"
+      ],
       "target_statement": "The current S6 finite model proves only cell-count and Euler facts, not complex-structure claims.",
       "title": "S6 warning theorem boundary"
     },

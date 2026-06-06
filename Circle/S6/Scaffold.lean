@@ -22,4 +22,8 @@ theorem eulerCharacteristic (n : Nat) :
 def warningLayerName : String :=
   "S6-W0001"
 
+theorem warningBoundary_marker :
+    warningLayerName = "S6-W0001" := by
+  rfl
+
 end Circle.S6

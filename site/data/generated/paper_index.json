@@ -398,7 +398,8 @@
       "status": "polished_draft",
       "theorem_ids": [
         "S6-T0001",
-        "S6-T0002"
+        "S6-T0002",
+        "S6-T0003"
       ],
       "title": "Circle Calculus S6.1: Octonion Shadow and Warnings"
     },
