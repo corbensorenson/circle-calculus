@@ -247,6 +247,32 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py::test_hopf_phase_action_laws"]
     blocker: ""
+  - id: S3H-T0007
+    status: lean_proved
+    lean_name: Circle.S3.hopfPhaseMul_identity
+    informal_statement: "The Hopf phase identity is a left and right identity for Hopf phase multiplication."
+    formal_statement: "forall phase : Circle.S3.HopfPhase, Circle.S3.hopfPhaseMul Circle.S3.hopfPhaseIdentity phase = phase and Circle.S3.hopfPhaseMul phase Circle.S3.hopfPhaseIdentity = phase"
+    dictionary_dependencies: ["S3H-0001", "S3H-0002"]
+    paper_refs: ["papers/S3/PAPER_S3_03_HOPF_COILS.md"]
+    imports_allowed: ["Common", "S1", "S2"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py::test_hopf_phase_multiplication_identity_and_associativity"]
+    blocker: ""
+  - id: S3H-T0008
+    status: lean_proved
+    lean_name: Circle.S3.hopfPhaseMul_assoc
+    informal_statement: "Hopf phase multiplication is associative."
+    formal_statement: "forall left middle right : Circle.S3.HopfPhase, Circle.S3.hopfPhaseMul (Circle.S3.hopfPhaseMul left middle) right = Circle.S3.hopfPhaseMul left (Circle.S3.hopfPhaseMul middle right)"
+    dictionary_dependencies: ["S3H-0001", "S3H-0002"]
+    paper_refs: ["papers/S3/PAPER_S3_03_HOPF_COILS.md"]
+    imports_allowed: ["Common", "S1", "S2"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py::test_hopf_phase_multiplication_identity_and_associativity"]
+    blocker: ""
   - id: S3S-T0001
     status: lean_proved
     lean_name: Circle.S3.quaternionConjugation_neg

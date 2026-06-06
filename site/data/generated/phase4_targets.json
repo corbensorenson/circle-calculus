@@ -378,6 +378,55 @@
       "title": "Unit-quaternion conjugation is involutive"
     },
     {
+      "candidate_formalization": "forall phase : Circle.S3.HopfPhase, Circle.S3.hopfPhaseMul Circle.S3.hopfPhaseIdentity phase = phase and Circle.S3.hopfPhaseMul phase Circle.S3.hopfPhaseIdentity = phase",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S3H-0001",
+        "S3H-0002"
+      ],
+      "guardrail": "This is a coordinate phase-algebra law, not a global-product claim about S^3.",
+      "id": "P4-S3-005",
+      "layer": "S3",
+      "next_action": "Promoted to S3H-T0007 and Lean-proved as Circle.S3.hopfPhaseMul_identity.",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_03_HOPF_COILS.md"
+      ],
+      "priority": "medium",
+      "promoted_theorem_id": "S3H-T0007",
+      "status": "promoted",
+      "supporting_theorem_ids": [
+        "S3H-T0004",
+        "S3H-T0006"
+      ],
+      "target_statement": "The Hopf phase identity is a left and right identity for the coordinate phase multiplication wrapper.",
+      "title": "Hopf phase multiplication has identity"
+    },
+    {
+      "candidate_formalization": "forall left middle right : Circle.S3.HopfPhase, Circle.S3.hopfPhaseMul (Circle.S3.hopfPhaseMul left middle) right = Circle.S3.hopfPhaseMul left (Circle.S3.hopfPhaseMul middle right)",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S3H-0001",
+        "S3H-0002"
+      ],
+      "guardrail": "This remains an algebraic coordinate wrapper law and does not formalize the full Hopf fibration topology.",
+      "id": "P4-S3-006",
+      "layer": "S3",
+      "next_action": "Promoted to S3H-T0008 and Lean-proved as Circle.S3.hopfPhaseMul_assoc.",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_03_HOPF_COILS.md"
+      ],
+      "priority": "medium",
+      "promoted_theorem_id": "S3H-T0008",
+      "status": "promoted",
+      "supporting_theorem_ids": [
+        "S3H-T0005",
+        "S3H-T0006",
+        "S3H-T0007"
+      ],
+      "target_statement": "Composing Hopf phase multiplications is associative in the coordinate phase wrapper.",
+      "title": "Hopf phase multiplication is associative"
+    },
+    {
       "candidate_formalization": "eulerCharacteristic (iteratedSuspensionCounts m counts) = alternatingSuspensionEuler m (eulerCharacteristic counts), with a two-step parity corollary.",
       "claim_type": "theorem",
       "dictionary_dependencies": [

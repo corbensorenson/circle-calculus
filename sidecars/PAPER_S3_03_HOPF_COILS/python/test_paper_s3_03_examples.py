@@ -82,6 +82,22 @@ def test_hopf_phase_action_laws() -> None:
         )
 
 
+def test_hopf_phase_multiplication_identity_and_associativity() -> None:
+    phases = [
+        complex(math.cos(theta), math.sin(theta))
+        for theta in [0.0, 0.25, math.pi / 3.0, math.pi / 2.0]
+    ]
+
+    for phase in phases:
+        assert_close(abs((1.0 + 0.0j) * phase - phase), 0.0)
+        assert_close(abs(phase * (1.0 + 0.0j) - phase), 0.0)
+
+    for left in phases:
+        for middle in phases:
+            for right in phases:
+                assert_close(abs((left * middle) * right - left * (middle * right)), 0.0)
+
+
 def test_hopf_fiber_phase_orbit_is_circle_like() -> None:
     z0, z1 = normalize_pair(1.0 - 0.75j, 0.2 + 0.9j)
     base = hopf_map(z0, z1)

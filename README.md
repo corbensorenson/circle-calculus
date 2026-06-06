@@ -68,7 +68,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md` | polished draft | `S2-T0008` through `S2-T0016` plus `S2-T0018` through `S2-T0020` proved with Python examples |
 | `papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md` | polished draft | `S3C-T0001` through `S3C-T0004` proved with Python examples |
 | `papers/S3/PAPER_S3_02_QUATERNION_COILS.md` | polished draft | `S3Q-T0001` through `S3Q-T0008` proved with Python examples |
-| `papers/S3/PAPER_S3_03_HOPF_COILS.md` | polished draft/proved spine | `S3H-T0001` through `S3H-T0006` are Lean-proved bounded Hopf coordinate and phase-action facts; full fibration topology remains future work |
+| `papers/S3/PAPER_S3_03_HOPF_COILS.md` | polished draft/proved spine | `S3H-T0001` through `S3H-T0008` are Lean-proved bounded Hopf coordinate, phase-multiplication, and phase-action facts; full fibration topology remains future work |
 | `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md` | polished draft | `S3S-T0001` through `S3S-T0004` proved with Python examples; `P5-EDGE-007` adds a bounded orientation-debugging note |
 | `papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md` | polished draft | `COMMON-T0001` through `COMMON-T0005` and `S456-T0001` proved with Python examples |
 | `papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md` | polished draft | `S4-T0001` and `S4-T0002` proved with Python examples |
@@ -403,6 +403,8 @@ Proved common and dimensional spine:
 - `S3H-T0004`: identity phase leaves every Hopf pair unchanged
 - `S3H-T0005`: composed Hopf phase rotations follow complex multiplication
 - `S3H-T0006`: Hopf phase action wrapper satisfies identity and composition laws
+- `S3H-T0007`: Hopf phase multiplication has left and right identity
+- `S3H-T0008`: Hopf phase multiplication is associative
 - `S3S-T0001`: quaternion conjugation action is invariant under replacing `q` by `-q`
 - `S3S-T0002`: identity quaternion conjugation fixes every input
 - `S3S-T0003`: quaternion conjugation sends zero to zero

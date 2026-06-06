@@ -4584,7 +4584,7 @@
       "informal_statement": "Simultaneous unit phase rotation preserves the Hopf map.",
       "lean_name": "Circle.S3.hopfMap_phase_invariant",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 318,
+      "lean_source_line": 333,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -4616,7 +4616,7 @@
       "informal_statement": "A unit phase orbit stays on the normalized S3 pair space and preserves the Hopf base point.",
       "lean_name": "Circle.S3.hopfFiber_circle_like",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 341,
+      "lean_source_line": 356,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -4647,7 +4647,7 @@
       "informal_statement": "The identity phase leaves every Hopf pair unchanged.",
       "lean_name": "Circle.S3.phaseRotatePair_identity",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 278,
+      "lean_source_line": 293,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -4678,7 +4678,7 @@
       "informal_statement": "Composing two Hopf phase rotations follows the complex phase multiplication law.",
       "lean_name": "Circle.S3.phaseRotatePair_comp",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 283,
+      "lean_source_line": 298,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -4710,7 +4710,7 @@
       "informal_statement": "The Hopf phase wrapper has an identity phase and composition law matching complex phase multiplication.",
       "lean_name": "Circle.S3.hopfPhaseAction_laws",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 305,
+      "lean_source_line": 320,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -4722,6 +4722,70 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py::test_hopf_phase_action_laws"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S3H-0001",
+        "S3H-0002"
+      ],
+      "formal_statement": "forall phase : Circle.S3.HopfPhase, Circle.S3.hopfPhaseMul Circle.S3.hopfPhaseIdentity phase = phase and Circle.S3.hopfPhaseMul phase Circle.S3.hopfPhaseIdentity = phase",
+      "id": "S3H-T0007",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2"
+      ],
+      "informal_statement": "The Hopf phase identity is a left and right identity for Hopf phase multiplication.",
+      "lean_name": "Circle.S3.hopfPhaseMul_identity",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 275,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_03_HOPF_COILS.md"
+      ],
+      "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py::test_hopf_phase_multiplication_identity_and_associativity"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S3H-0001",
+        "S3H-0002"
+      ],
+      "formal_statement": "forall left middle right : Circle.S3.HopfPhase, Circle.S3.hopfPhaseMul (Circle.S3.hopfPhaseMul left middle) right = Circle.S3.hopfPhaseMul left (Circle.S3.hopfPhaseMul middle right)",
+      "id": "S3H-T0008",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2"
+      ],
+      "informal_statement": "Hopf phase multiplication is associative.",
+      "lean_name": "Circle.S3.hopfPhaseMul_assoc",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 281,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_03_HOPF_COILS.md"
+      ],
+      "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py::test_hopf_phase_multiplication_identity_and_associativity"
         ]
       }
     },

@@ -235,6 +235,36 @@ targets:
     next_action: "Promoted to S3Q-T0008 and Lean-proved as Circle.S3.unitQuaternion_conj_involutive."
     guardrail: "This is a bundled algebraic unit-quaternion fact, not a complete rotation-space theorem."
 
+  - id: P4-S3-005
+    layer: S3
+    priority: medium
+    status: promoted
+    promoted_theorem_id: S3H-T0007
+    supporting_theorem_ids: ["S3H-T0004", "S3H-T0006"]
+    claim_type: theorem
+    title: "Hopf phase multiplication has identity"
+    target_statement: "The Hopf phase identity is a left and right identity for the coordinate phase multiplication wrapper."
+    candidate_formalization: "forall phase : Circle.S3.HopfPhase, Circle.S3.hopfPhaseMul Circle.S3.hopfPhaseIdentity phase = phase and Circle.S3.hopfPhaseMul phase Circle.S3.hopfPhaseIdentity = phase"
+    paper_refs: ["papers/S3/PAPER_S3_03_HOPF_COILS.md"]
+    dictionary_dependencies: ["S3H-0001", "S3H-0002"]
+    next_action: "Promoted to S3H-T0007 and Lean-proved as Circle.S3.hopfPhaseMul_identity."
+    guardrail: "This is a coordinate phase-algebra law, not a global-product claim about S^3."
+
+  - id: P4-S3-006
+    layer: S3
+    priority: medium
+    status: promoted
+    promoted_theorem_id: S3H-T0008
+    supporting_theorem_ids: ["S3H-T0005", "S3H-T0006", "S3H-T0007"]
+    claim_type: theorem
+    title: "Hopf phase multiplication is associative"
+    target_statement: "Composing Hopf phase multiplications is associative in the coordinate phase wrapper."
+    candidate_formalization: "forall left middle right : Circle.S3.HopfPhase, Circle.S3.hopfPhaseMul (Circle.S3.hopfPhaseMul left middle) right = Circle.S3.hopfPhaseMul left (Circle.S3.hopfPhaseMul middle right)"
+    paper_refs: ["papers/S3/PAPER_S3_03_HOPF_COILS.md"]
+    dictionary_dependencies: ["S3H-0001", "S3H-0002"]
+    next_action: "Promoted to S3H-T0008 and Lean-proved as Circle.S3.hopfPhaseMul_assoc."
+    guardrail: "This remains an algebraic coordinate wrapper law and does not formalize the full Hopf fibration topology."
+
   - id: P4-S456-001
     layer: S4-S6
     priority: high

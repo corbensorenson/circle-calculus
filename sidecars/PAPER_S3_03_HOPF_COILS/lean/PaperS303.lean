@@ -20,6 +20,8 @@ namespace Circle.PaperS303
 #check Circle.S3.HopfPhase
 #check Circle.S3.hopfPhaseIdentity
 #check Circle.S3.hopfPhaseMul
+#check Circle.S3.hopfPhaseMul_identity
+#check Circle.S3.hopfPhaseMul_assoc
 #check Circle.S3.hopfPhaseAct
 #check Circle.S3.phaseRotatePair_identity
 #check Circle.S3.phaseRotatePair_comp

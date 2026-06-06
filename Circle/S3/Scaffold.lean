@@ -272,6 +272,21 @@ def hopfPhaseMul (left right : HopfPhase) : HopfPhase where
   re := left.re * right.re - left.im * right.im
   im := left.im * right.re + left.re * right.im
 
+theorem hopfPhaseMul_identity (phase : HopfPhase) :
+    hopfPhaseMul hopfPhaseIdentity phase = phase ∧
+      hopfPhaseMul phase hopfPhaseIdentity = phase := by
+  cases phase
+  constructor <;> simp [hopfPhaseMul, hopfPhaseIdentity]
+
+theorem hopfPhaseMul_assoc (left middle right : HopfPhase) :
+    hopfPhaseMul (hopfPhaseMul left middle) right =
+      hopfPhaseMul left (hopfPhaseMul middle right) := by
+  cases left
+  cases middle
+  cases right
+  simp [hopfPhaseMul]
+  constructor <;> ring
+
 def hopfPhaseAct (phase : HopfPhase) (p : HopfPair) : HopfPair :=
   phaseRotatePair phase.re phase.im p
 

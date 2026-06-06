@@ -1,6 +1,6 @@
 # Circle Calculus S3.3: Hopf Coils
 
-Status: polished draft with bounded Hopf coordinate landing, phase-invariance, phase-action, and normalized fiber-orbit facts Lean-proved.
+Status: polished draft with bounded Hopf coordinate landing, phase-invariance, phase-multiplication, phase-action, and normalized fiber-orbit facts Lean-proved.
 
 ## Aim
 
@@ -32,6 +32,8 @@ The theorem, warning, and dictionary links are registered in `manifests/paper_ma
 - `S3H-T0004`: `Circle.S3.phaseRotatePair_identity`
 - `S3H-T0005`: `Circle.S3.phaseRotatePair_comp`
 - `S3H-T0006`: `Circle.S3.hopfPhaseAction_laws`
+- `S3H-T0007`: `Circle.S3.hopfPhaseMul_identity`
+- `S3H-T0008`: `Circle.S3.hopfPhaseMul_assoc`
 - `S3H-W0001`: not globally `S^2 x S^1`
 
 ## Model
@@ -85,7 +87,9 @@ hopfPhaseAct(phase,pair) = common phase rotation
 
 `S3H-T0006` packages those laws through the `HopfPhase` action wrapper: identity phase fixes every Hopf pair, and acting by one phase after another is the same as acting by their phase product.
 
-The Python sidecar checks the same complex-coordinate examples, including sampled `2*pi` closure and the phase action laws as executable intuition. Those examples support the paper, but the proof status comes from the Lean declarations.
+`S3H-T0007` proves that the phase identity is a left and right identity for the `HopfPhase` multiplication wrapper. `S3H-T0008` proves that this phase multiplication is associative. Together, these make the checked phase-action API less ad hoc while remaining a coordinate algebra interface rather than a global product theorem.
+
+The Python sidecar checks the same complex-coordinate examples, including sampled `2*pi` closure, phase multiplication identity/associativity, and the phase action laws as executable intuition. Those examples support the paper, but the proof status comes from the Lean declarations.
 
 ## Warning
 

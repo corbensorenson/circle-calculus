@@ -235,10 +235,10 @@ Goal: make the executable examples line up with the Lean-backed papers without d
   - Prefer mathlib quaternion support when available.
   - Status: polished draft; real quaternion norm, unit closure, conjugate inverse equations, bundled identity/inverse laws, bundled conjugation involution, noncommutative example, and associativity are Lean-proved.
 - [x] `papers/S3/PAPER_S3_03_HOPF_COILS.md`
-  - Proof/model targets: `S3H-T0001` through `S3H-T0006`
+  - Proof/model targets: `S3H-T0001` through `S3H-T0008`
   - Warning target: `S3H-W0001`, not globally `S^2 x S^1`
   - Start with Python numeric models if Lean analysis support is too heavy.
-  - Status: polished draft; `S3H-T0001` through `S3H-T0006` are Lean-proved bounded Hopf coordinate and phase-action facts, including the Hopf phase action wrapper; analytic circle parameterization beyond these algebraic phase laws, quotient topology, and global fibration formalization remain future work.
+  - Status: polished draft; `S3H-T0001` through `S3H-T0008` are Lean-proved bounded Hopf coordinate, phase-multiplication, and phase-action facts, including the Hopf phase action wrapper; analytic circle parameterization beyond these algebraic phase laws, quotient topology, and global fibration formalization remain future work.
 - [x] `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md`
   - Proof target: `S3S-T0001` through `S3S-T0004`
   - Status: polished draft proves quaternion conjugation identity action, zero preservation, sign cancellation, and the unit-quaternion sign equivalence relation; `P5-EDGE-007` adds a bounded orientation-debugging note and sign-ambiguity Python record; full `SO(3)` quotient remains future work.
