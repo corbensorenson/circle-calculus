@@ -1,12 +1,12 @@
 # Circle Calculus
 
+**Start learning here:** [Circle Calculus Living Book](https://corbensorenson.github.io/circle-calculus/) is the public interactive textbook for the project.
+
 Circle Calculus is a staged paper-and-proof corpus for rebuilding familiar mathematical structures from finite circular address spaces, rotations, coils, winding, lifted arithmetic, and eventually a dimension-indexed sphere ladder.
 
 ## Living Book
 
-Start here as a learning resource: [Circle Calculus Living Book](https://corbensorenson.github.io/circle-calculus/).
-
-The Living Book is the public interactive textbook for this repository. It connects explanations, S1 widgets, dictionary entries, theorem status, papers, Python reference models, and Lean source links so readers can learn the project without losing the proof-status trail.
+The Living Book connects explanations, S1 widgets, dictionary entries, theorem status, papers, Python reference models, and Lean source links so readers can learn the project without losing the proof-status trail.
 
 The long-term aim is not just to write essays. The aim is to keep every serious concept tied to:
 
