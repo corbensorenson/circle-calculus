@@ -4,9 +4,35 @@ title: "S2: Sphere Scaffolding"
 
 S2 pages are scaffolded as the Living Book grows beyond the S1 interactive core.
 
+S2 is the first step where the book asks how circles can be organized into a sphere-like layer. The safest current version is finite and combinatorial: poles, equators, latitude-like rows, longitude-like addresses, and antipodal pairings are tracked as explicit data rather than assumed from continuous geometry.
+
+::: {.learning-unit}
+
+## What To Learn Here
+
+Read S2 as a bridge, not as a finished theory of smooth spheres. The goal is to see how S1 circular addresses can be suspended into a finite sphere scaffold while keeping every claim tied to checked finite definitions.
+
+:::
+
 <div class="warning-box">
 This section distinguishes Lean-proved finite suspended-circle facts from future continuous sphere geometry and future interactives. The theorem cards are the status source.
 </div>
+
+## Lesson Path
+
+1. Start with [Suspended Circles](suspended_circles.qmd) to see how a finite circle gets two pole-like endpoints.
+2. Continue to [Sphere Grids](sphere_grids.qmd) for latitude/longitude vocabulary and finite grid cautions.
+3. Return to the theorem cards when you need to know which finite claims are Lean-proved.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+Explain the difference between a finite suspended-circle model and a claim about the continuous sphere `S^2`.
+
+:::
+
+## Source Trail
 
 <div class="theorem-box" data-theorem-id="S2-T0001"></div>
 <div class="dictionary-box" data-dictionary-id="S2-0001"></div>

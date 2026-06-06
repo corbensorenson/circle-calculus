@@ -4,16 +4,36 @@ title: "Winding Lift"
 
 Winding keeps full-turn information that ordinary residues forget. A lifted node records a winding count `q` and residue `r` so that the represented value is `q*n + r`.
 
+The earlier S1 chapters deliberately threw away full turns. That is perfect for studying circular closure, but it is not enough when the number of turns matters. Winding adds that missing memory back.
+
+For example, on a circle with base `5`, the values `2`, `7`, `12`, and `17` all have residue `2`. The lift separates them by recording how many full turns occurred before landing at residue `2`.
+
 <div class="warning-box">
 Do not read residue-only diagrams as natural-number proofs. The lift layer is what stores full turns.
 The widget is an explanation, not a proof.
 </div>
+
+## Picture
 
 <div class="dictionary-box" data-dictionary-id="CC-0301"></div>
 
 <div class="theorem-box" data-theorem-id="CC-T0009"></div>
 
 <div class="widget-panel" data-widget="winding_lift_explorer" data-theorem-id="CC-T0009" data-dictionary-ids="CC-0301"></div>
+
+## Try It
+
+Set base `n = 5` and step count `t = 17`. The lift should show three full turns and residue `2`. Then try `t = 2`, `7`, and `12`; the residue stays the same while the winding count changes.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+Why is the residue `2` alone not enough to recover whether the original step count was `2`, `7`, `12`, or `17`?
+
+:::
+
+## Source Trail
 
 Python reference model:
 

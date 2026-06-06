@@ -4,16 +4,44 @@ title: "Applications"
 
 Application pages are active proof/benchmark target tracks for AI, compute, rendering, systems, and data analysis. Benchmark claims must stay separate from Lean proof status.
 
+Read the application section after the S1 core. Each application is a case study in reusing the same small vocabulary:
+
+```text
+address -> stride -> orbit -> period -> phase -> checked status
+```
+
+The point is not to say that circular language automatically improves every domain. The point is to identify domains where periodic, rotational, scheduled, or phase-like structure is already present, then make the representation explicit enough to test and verify.
+
 <div class="warning-box">
 Application pages are active but exploratory unless a theorem card says otherwise. Benchmarks and fixtures are executable references, not proof of real-world performance or usefulness.
 </div>
 
-## Tracks
+::: {.learning-unit}
+
+## How To Read Applications
+
+For each application page, ask three questions:
+
+1. What is the circular address space?
+2. What is the stride, phase, schedule, or repeated action?
+3. Which claims are Lean-proved finite seeds, and which claims still require benchmarks?
+
+:::
+
+## Case-Study Tracks
 
 - [Data analysis](data_analysis.qmd): finite phase coordinates plus synthetic periodic-data fixtures.
 - [Compute](compute.qmd): cyclic addresses, direction bins, stride layouts, and round-robin schedule seeds.
 - [AI](ai.qmd): finite phase channels, cyclic memory slots, and adapter-block indexing seeds.
 - [Rendering](rendering.qmd): CoilRay and sampling vocabulary, currently limited to finite direction-bin scheduling facts.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+Choose one application page and name its finite circular address space before reading the theorem cards.
+
+:::
 
 ## Representative Proved Seeds
 
