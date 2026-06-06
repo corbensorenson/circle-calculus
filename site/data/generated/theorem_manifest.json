@@ -3504,7 +3504,7 @@
       "id": "COMPR-T0003",
       "lean_name": "Circle.Applications.directionBin_zero",
       "lean_source": "Circle/Applications/CoilRendering.lean",
-      "lean_source_line": 30,
+      "lean_source_line": 37,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_rendering.yaml",
       "status": "lean_proved",
@@ -3527,6 +3527,27 @@
       "lean_name": "Circle.Applications.directionBin_add_mul_binCount",
       "lean_source": "Circle/Applications/CoilRendering.lean",
       "lean_source_line": 24,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/coil_rendering.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_02_COIL_RAY_AND_SAMPLING",
+          "path": "papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 2: CoilRay and CoilSampler"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0020"
+      ],
+      "id": "COMPR-T0005",
+      "lean_name": "Circle.Applications.directionBin_idempotent",
+      "lean_source": "Circle/Applications/CoilRendering.lean",
+      "lean_source_line": 30,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_rendering.yaml",
       "status": "lean_proved",

@@ -3601,6 +3601,12 @@
           "lean_name": "Circle.Applications.directionBin_add_mul_binCount",
           "name": "Circle.Applications.directionBin_add_mul_binCount",
           "status": "proved"
+        },
+        {
+          "id": "COMPR-T0005",
+          "lean_name": "Circle.Applications.directionBin_idempotent",
+          "name": "Circle.Applications.directionBin_idempotent",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []

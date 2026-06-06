@@ -318,7 +318,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `COMPC-T0001` through `COMPC-T0005` are Lean-proved cyclic-address facts with Python examples; backend lowering and performance claims remain benchmark work.
 - [x] `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md`
   - Program: `CoilRay Sort`, `CoilSampler`, `CoilNoise`, `CoilSTIR`, BRDF/lighting angular compression, spherical-coil ray queues, procedural placement/dithering, and rendering benchmarks.
-  - Status: polished draft; `COMPR-T0001` through `COMPR-T0004` are Lean-proved direction-bin schedule facts with Python examples; rendering performance, coherence, and sampling-quality claims remain benchmark work.
+  - Status: polished draft; `COMPR-T0001` through `COMPR-T0005` are Lean-proved direction-bin schedule facts with Python examples; rendering performance, coherence, and sampling-quality claims remain benchmark work.
 - [x] `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md`
   - Program: `CoilLayout`, `CoilStencil`, `CoilNTT`, gcd-cycle memory layouts, verified periodic boundaries, exact finite transforms, and MLX/Mac-compatible prototypes where relevant.
   - Status: polished draft; `COMPL-T0001` through `COMPL-T0005` are Lean-proved stride-address facts with Python examples; `COMPL-B0001` and `COMPL-B0002` are exploratory CoilLayout/stencil validation fixtures; layout, FFT, NTT, MLX/backend, and performance claims remain future work.
@@ -412,6 +412,7 @@ Application guardrails:
 - [x] `COMPR-T0002`: direction-bin schedule closes after one full pass through the bins.
 - [x] `COMPR-T0003`: direction-bin schedule at zero is zero.
 - [x] `COMPR-T0004`: direction-bin schedule closes after any whole number of full bin passes.
+- [x] `COMPR-T0005`: direction-bin schedule normalization is idempotent.
 - [x] `COMPL-T0001`: stride address is bounded by a positive circular size.
 - [x] `COMPL-T0002`: stride address closes after one full pass through the circular step horizon.
 - [x] `COMPL-T0003`: zero step has zero stride address.

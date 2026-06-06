@@ -22,6 +22,10 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.directionBin_add_mul_binCount
     dictionary_dependencies: ["COMMON-0020", "COMMON-0021"]
+  - id: COMPR-T0005
+    status: lean_proved
+    lean_name: Circle.Applications.directionBin_idempotent
+    dictionary_dependencies: ["COMMON-0020"]
 next_targets:
   - "Map real 3D directions to finite bins before claiming a CoilRay queue."
   - "Benchmark direction bucketing and spherical-coil bucketing against baseline wavefront path tracing."

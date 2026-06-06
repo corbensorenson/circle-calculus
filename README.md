@@ -91,7 +91,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md` | polished draft/proved certificate seed | `P2G-T0001` through `P2G-T0006` are Lean-proved proof-glyph projection, metadata-validity, and manifest-growth facts with Python examples; `P5-EDGE-001` adds an exploratory generated glyph-status fixture |
 | `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md` | polished draft/proved finite seed | `APPD-T0001` through `APPD-T0004` are Lean-proved phase-coordinate facts with Python examples; `APPD-B0001` and `APPD-B0002` are exploratory deterministic period benchmark fixtures |
 | `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md` | polished draft/proved finite seed | `COMPC-T0001` through `COMPC-T0005` are Lean-proved cyclic-address facts with Python examples |
-| `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md` | polished draft/proved finite seed | `COMPR-T0001` through `COMPR-T0004` are Lean-proved direction-bin schedule facts with Python examples |
+| `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md` | polished draft/proved finite seed | `COMPR-T0001` through `COMPR-T0005` are Lean-proved direction-bin schedule facts with Python examples |
 | `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md` | polished draft/proved finite seed | `COMPL-T0001` through `COMPL-T0005` are Lean-proved stride-address facts with Python examples; `COMPL-B0001` and `COMPL-B0002` are exploratory CoilLayout/stencil validation fixtures |
 | `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md` | polished draft/proved finite seed | `COMPS-T0001` through `COMPS-T0004` are Lean-proved round-robin schedule facts with Python examples |
 | `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md` | polished draft/proved finite seed | `AIA-T0001` through `AIA-T0004` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` and `AIA-B0002` are exploratory deterministic phase-channel benchmark fixtures |
@@ -369,6 +369,7 @@ Proved common and dimensional spine:
 - `COMPR-T0002`: direction-bin schedule closes after one full pass through the bins
 - `COMPR-T0003`: direction-bin schedule at zero is zero
 - `COMPR-T0004`: direction-bin schedule closes after any whole number of full bin passes
+- `COMPR-T0005`: direction-bin schedule normalization is idempotent
 - `COMPL-T0001`: stride address is bounded by a positive circular size
 - `COMPL-T0002`: stride address closes after one full pass through the circular step horizon
 - `COMPL-T0003`: zero step has zero stride address

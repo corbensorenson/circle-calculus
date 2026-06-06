@@ -644,6 +644,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["direction_bin(bin_count, sample + passes * bin_count) == direction_bin(bin_count, sample)"]
     blocker: ""
+  - id: COMPR-T0005
+    status: lean_proved
+    lean_name: Circle.Applications.directionBin_idempotent
+    informal_statement: "Normalizing a direction-bin schedule twice is the same as normalizing it once."
+    formal_statement: "forall binCount sample : Nat, directionBin binCount (directionBin binCount sample) = directionBin binCount sample"
+    dictionary_dependencies: ["COMMON-0020"]
+    paper_refs: ["papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["direction_bin(bin_count, direction_bin(bin_count, sample)) == direction_bin(bin_count, sample)"]
+    blocker: ""
   - id: COMPL-T0001
     status: lean_proved
     lean_name: Circle.Applications.strideAddress_lt_size

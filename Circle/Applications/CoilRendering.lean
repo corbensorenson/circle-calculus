@@ -27,6 +27,13 @@ theorem directionBin_add_mul_binCount {binCount : Nat} (_h : 0 < binCount)
   unfold directionBin
   exact Nat.add_mul_mod_self_right sample passes binCount
 
+theorem directionBin_idempotent (binCount sample : Nat) :
+    directionBin binCount (directionBin binCount sample) = directionBin binCount sample := by
+  unfold directionBin
+  by_cases h : binCount = 0
+  · simp [h]
+  · exact Nat.mod_eq_of_lt (Nat.mod_lt sample (Nat.pos_of_ne_zero h))
+
 theorem directionBin_zero (binCount : Nat) :
     directionBin binCount 0 = 0 := by
   unfold directionBin
