@@ -4,9 +4,33 @@ title: "S4-S6: Suspension And Warning Layer"
 
 These pages are scaffolded for finite suspension/Euler parity and warning-aware higher-dimensional material.
 
+::: {.learning-unit}
+
+## What To Learn Here
+
+S4 through S6 are not presented as finished geometric worlds yet. The current learning goal is narrower: understand how finite suspension counts and Euler-parity facts can be reused across several higher-dimensional scaffolds.
+
+:::
+
 <div class="warning-box">
 This section is a scaffold around finite suspension-count and Euler-parity facts. It does not claim a complete continuous S4-S6 geometry layer. The theorem card is the status source.
 </div>
+
+## Lesson Path
+
+1. Read [Suspension Euler Parity](suspension_euler_parity.qmd).
+2. Identify which facts are common finite suspension facts.
+3. Treat quaternionic, projective, and octonionic-shadow language as roadmap material unless theorem cards say otherwise.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+What is the difference between proving a finite suspension-count fact and proving a complete theory of `S^4`, `S^5`, or `S^6`?
+
+:::
+
+## Source Trail
 
 <div class="theorem-box" data-theorem-id="S456-T0001"></div>
 

@@ -4,9 +4,35 @@ title: "Phase II"
 
 Phase II pages collect stable spheres, periodicity, bundles, boundary/cobordism seeds, and proof-carrying glyphs.
 
+::: {.learning-unit}
+
+## What To Learn Here
+
+Phase II is the infrastructure layer. It asks how the circle-first system can support stable patterns, bundle-like data, boundary orientation, and proof-carrying glyphs without letting diagrams outrun formal status.
+
+:::
+
 <div class="warning-box">
 Phase II pages mix proved finite seeds with planned theory-building infrastructure. The theorem cards and generated target indexes determine what is proved, planned, exploratory, or future work.
 </div>
+
+## Lesson Path
+
+1. [Stable Spheres](stable_sphere_calculus.qmd): repeated suspension as a finite checked pattern.
+2. [Bott And Clifford](bott_clifford_periodicity.qmd): period-eight clock facts as a seed, not full periodicity.
+3. [Bundles](bundle_calculus.qmd): trivial-bundle projections and base-preserving transition seeds.
+4. [Boundary Cobordism](boundary_cobordism.qmd): directed boundary facts.
+5. [Proof-Carrying Glyphs](proof_carrying_glyphs.qmd): metadata and certificate structure for proof-linked diagrams.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+Why should proof-carrying glyphs point to theorem manifests instead of carrying their own unverified proof-status claims?
+
+:::
+
+## Source Trail
 
 <div class="theorem-box" data-theorem-id="P2S-T0001"></div>
 <div class="theorem-box" data-theorem-id="P2BU-T0007"></div>

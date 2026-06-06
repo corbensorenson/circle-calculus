@@ -4,6 +4,30 @@ title: "S0: Opposition"
 
 S0 is the two-point opposition layer. It is included as a small finite base for sign and antipodal language.
 
+::: {.learning-unit}
+
+## What To Learn Here
+
+S0 is the smallest possible opposition system: two points and a flip between them. It prepares the vocabulary later reused for sign, antipodes, poles, and paired states.
+
+:::
+
+## Lesson Path
+
+1. Read [Opposition](opposition.qmd).
+2. Check how a two-point flip differs from a larger circular rotation.
+3. Use the theorem and dictionary cards as the source trail.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+Why is S0 useful even though it has only two points?
+
+:::
+
+## Source Trail
+
 <div class="theorem-box" data-theorem-id="S0-T0001"></div>
 <div class="dictionary-box" data-dictionary-id="S0-0001"></div>
 

@@ -4,9 +4,34 @@ title: "S15: Active Hopf Horizon"
 
 S15 is an active horizon track. Current pages should treat it as finite-seed, warning-boundary, and roadmap material unless a generated theorem card reports a certified theorem.
 
+::: {.learning-unit}
+
+## What To Learn Here
+
+S15 is a horizon chapter, not a completed destination. It records finite suspension facts, bounded coordinate landing facts, safe right-phase facts, and a counterexample that prevents a naive invariance claim from being promoted.
+
+:::
+
 <div class="warning-box">
 This section is actively being expanded, but it remains horizon-facing. A theorem card may expose a checked finite theorem or roadmap marker; the Living Book does not claim a complete implemented S15 theory.
 </div>
+
+## Lesson Path
+
+1. Read the finite eight-suspension and Euler-parity facts first.
+2. Then read the bounded octonionic Hopf coordinate landing facts.
+3. Treat the right-phase facts and counterexample as guardrails for future work.
+4. Do not upgrade the horizon page into a full octonionic Hopf fibration claim.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+Which theorem card records the counterexample showing that naive shared right unit-octonion multiplication does not preserve the full bounded Hopf coordinate?
+
+:::
+
+## Source Trail
 
 <div class="theorem-box" data-theorem-id="S15-T0001"></div>
 <div class="theorem-box" data-theorem-id="S15-T0002"></div>
@@ -16,5 +41,6 @@ This section is actively being expanded, but it remains horizon-facing. A theore
 <div class="theorem-box" data-theorem-id="S15-T0006"></div>
 <div class="theorem-box" data-theorem-id="S15-T0007"></div>
 <div class="theorem-box" data-theorem-id="S15-T0008"></div>
+<div class="theorem-box" data-theorem-id="S15-T0009"></div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>
