@@ -498,7 +498,7 @@ Already proved and linked:
 
 Still planned:
 
-- Scaling/factor refinements beyond `CC-T0058`: affine classification, additional factor-lattice/provenance links, and any higher-level composite orbit packaging.
+- Scaling/factor refinements beyond the current `CC-T0058` affine spine: affine classification and additional factor-lattice/provenance links. Orbit packaging beyond the current `CC-T0061` gcd-congruence theorem remains a separate future refinement.
 
 ## Latest Application Handoff Queue
 
