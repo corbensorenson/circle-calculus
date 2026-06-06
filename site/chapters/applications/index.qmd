@@ -8,7 +8,22 @@ Application pages are active proof/benchmark target tracks for AI, compute, rend
 Application pages are active but exploratory unless a theorem card says otherwise. Benchmarks and fixtures are executable references, not proof of real-world performance or usefulness.
 </div>
 
-<div class="theorem-box" data-theorem-id="APPD-T0001"></div>
+## Tracks
+
+- [Data analysis](data_analysis.qmd): finite phase coordinates plus synthetic periodic-data fixtures.
+- [Compute](compute.qmd): cyclic addresses, direction bins, stride layouts, and round-robin schedule seeds.
+- [AI](ai.qmd): finite phase channels, cyclic memory slots, and adapter-block indexing seeds.
+- [Rendering](rendering.qmd): CoilRay and sampling vocabulary, currently limited to finite direction-bin scheduling facts.
+
+## Representative Proved Seeds
+
 <div class="theorem-box" data-theorem-id="APPD-T0004"></div>
+<div class="theorem-box" data-theorem-id="COMPC-T0004"></div>
+<div class="theorem-box" data-theorem-id="COMPR-T0004"></div>
+<div class="theorem-box" data-theorem-id="COMPL-T0005"></div>
+<div class="theorem-box" data-theorem-id="COMPS-T0004"></div>
+<div class="theorem-box" data-theorem-id="AIA-T0004"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0004"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0004"></div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

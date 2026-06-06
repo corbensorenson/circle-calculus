@@ -6,4 +6,9 @@ Rendering applications are scaffolded. They should remain exploratory until benc
 
 <div class="warning-box">Rendering demos are not proof artifacts.</div>
 
+The current proved seed for rendering-adjacent work is the finite direction-bin schedule used by the CoilRay and sampling roadmap. It proves address-safety and repeated-bin closure only; it does not prove ray coherence, lower noise, or better frame time.
+
+<div class="theorem-box" data-theorem-id="COMPR-T0001"></div>
+<div class="theorem-box" data-theorem-id="COMPR-T0004"></div>
+
 <script type="module" src="../../widgets/shared/widget_base.js"></script>
