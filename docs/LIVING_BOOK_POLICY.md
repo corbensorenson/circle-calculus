@@ -54,7 +54,7 @@ make sitecheck
 make site-render
 ```
 
-`make sitecheck` validates generated source-link paths so rendered GitHub links for theorem manifests, Lean files, dictionary sources, papers, sidecars, widgets, glyphs, and roadmap targets do not silently drift after files move.
+`make sitecheck` validates generated source-link paths so rendered GitHub links for theorem manifests, Lean files, dictionary sources, papers, sidecars, widgets, glyphs, and roadmap targets do not silently drift after files move. It also validates widget mount contracts so every `data-widget` panel resolves to a generated widget-index entry and a matching JavaScript `mountWidgets(...)` call.
 
 On this workstation, Quarto is available through a local extracted install under `.tools/` when no system `quarto` command exists. Fresh clones can install Quarto with the standard Quarto installer or a package manager, then run the same Make targets.
 

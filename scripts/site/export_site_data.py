@@ -172,6 +172,20 @@ def export_widget_index() -> dict:
             "dictionary_ids": ["CC-0301"],
             "python_reference": "circle_math.winding.lift",
         },
+        {
+            "id": "sphere_grid_placeholder",
+            "path": "site/widgets/S2/sphere_grid_placeholder.js",
+            "theorem_ids": [],
+            "dictionary_ids": ["S2-0001", "S2-0002"],
+            "python_reference": "",
+        },
+        {
+            "id": "hopf_placeholder",
+            "path": "site/widgets/S3/hopf_placeholder.js",
+            "theorem_ids": [],
+            "dictionary_ids": ["S3H-0001", "S3H-0002"],
+            "python_reference": "",
+        },
     ]
     return {"widgets": widgets}
 

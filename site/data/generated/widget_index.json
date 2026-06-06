@@ -68,6 +68,26 @@
       "theorem_ids": [
         "CC-T0009"
       ]
+    },
+    {
+      "dictionary_ids": [
+        "S2-0001",
+        "S2-0002"
+      ],
+      "id": "sphere_grid_placeholder",
+      "path": "site/widgets/S2/sphere_grid_placeholder.js",
+      "python_reference": "",
+      "theorem_ids": []
+    },
+    {
+      "dictionary_ids": [
+        "S3H-0001",
+        "S3H-0002"
+      ],
+      "id": "hopf_placeholder",
+      "path": "site/widgets/S3/hopf_placeholder.js",
+      "python_reference": "",
+      "theorem_ids": []
     }
   ]
 }

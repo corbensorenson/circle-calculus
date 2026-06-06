@@ -4922,7 +4922,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "sphere_grid_placeholder",
+          "path": "site/widgets/S2/sphere_grid_placeholder.js",
+          "python_reference": ""
+        }
+      ]
     },
     {
       "dependencies": [
@@ -4988,7 +4994,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "sphere_grid_placeholder",
+          "path": "site/widgets/S2/sphere_grid_placeholder.js",
+          "python_reference": ""
+        }
+      ]
     },
     {
       "dependencies": [
@@ -5425,7 +5437,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "hopf_placeholder",
+          "path": "site/widgets/S3/hopf_placeholder.js",
+          "python_reference": ""
+        }
+      ]
     },
     {
       "dependencies": [
@@ -5495,7 +5513,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "hopf_placeholder",
+          "path": "site/widgets/S3/hopf_placeholder.js",
+          "python_reference": ""
+        }
+      ]
     },
     {
       "dependencies": [

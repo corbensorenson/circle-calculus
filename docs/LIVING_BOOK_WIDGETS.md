@@ -72,9 +72,14 @@ Implemented shared JavaScript:
 
 These should be visibly marked placeholder/exploratory until implemented and linked to checked theorem status.
 
+The placeholder widgets are included in `site/data/generated/widget_index.json` so every mounted widget is discoverable from generated site data, even when it is scaffold-only.
+
 ## Validation Strategy
 
-Checker: `scripts/site/check_widget_python_parity.py`.
+Checkers:
+
+- `scripts/site/check_site_widget_contracts.py` verifies that every `data-widget` page mount exists in `widget_index.json`, imports the matching widget script, and points to a JavaScript file that calls `mountWidgets("<widget_id>", ...)`.
+- `scripts/site/check_widget_python_parity.py` validates deterministic S1 formulas against Python reference behavior.
 
 Minimum parity cases:
 

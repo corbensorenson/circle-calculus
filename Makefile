@@ -89,6 +89,7 @@ sitecheck: site-data
 	python scripts/site/check_site_theorem_status.py
 	python scripts/site/check_site_paper_links.py
 	python scripts/site/check_site_source_links.py
+	python scripts/site/check_site_widget_contracts.py
 	python scripts/site/check_widget_python_parity.py
 
 quarto-dirs:
