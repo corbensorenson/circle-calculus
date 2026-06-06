@@ -73,10 +73,10 @@
       ],
       "guardrail": "Do not duplicate dictionary definitions manually in site prose when generated boxes can carry them.",
       "id": "P6-SWEEP-003",
-      "next_action": "Scan new Phase IV/V vocabulary for missing dictionary entries before the next prose sweep.",
+      "next_action": "Root and dimension dictionaries now share one validator; continue scanning Phase IV/V vocabulary for missing terms before the next prose sweep.",
       "objective": "Keep project vocabulary stable across papers, manifests, Python, Lean, and Living Book pages.",
       "priority": "high",
-      "status": "planned",
+      "status": "active",
       "sweep_type": "dictionary_usage"
     },
     {
