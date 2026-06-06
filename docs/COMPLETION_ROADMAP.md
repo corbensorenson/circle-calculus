@@ -97,6 +97,7 @@ The project is complete only when all of these are true:
 - Paper registry: `manifests/paper_manifest.yaml`
 - Phase IV theorem target registry: `manifests/phase4_theorem_targets.yaml`
 - Phase VI sweep registry: `manifests/phase6_sweep_targets.yaml`
+- Application benchmark/edge-claim guardrails: `scripts/check_application_guardrails.py`
 - Dimensional plan: `docs/DIMENSIONAL_LADDER.md`
 - Deferred Phase II and applications context: `docs/PHASE2_AND_APPLICATIONS.md`
 - Phase III Living Book plan: `docs/LIVING_BOOK_POLICY.md`, `docs/LIVING_BOOK_ROADMAP.md`, and `docs/LIVING_BOOK_WIDGETS.md`

@@ -10,7 +10,7 @@ The long-term aim is not just to write essays. The aim is to keep every serious 
 - shared dictionary files under `dictionary/`, and
 - theorem metadata in `manifests/theorem_manifest.yaml`.
 
-The Phase IV wide/deep theorem-target audit is tracked in `manifests/phase4_theorem_targets.yaml` and validated by `scripts/check_phase4_targets.py`. Phase V edge problem-space targets are tracked in `manifests/phase5_edge_targets.yaml`, explained in `docs/PHASE5_EDGE_TARGETS.md`, and validated by `scripts/check_phase5_targets.py`. Phase VI global sweep targets are tracked in `manifests/phase6_sweep_targets.yaml` and validated by `scripts/check_phase6_sweep_targets.py`.
+The Phase IV wide/deep theorem-target audit is tracked in `manifests/phase4_theorem_targets.yaml` and validated by `scripts/check_phase4_targets.py`. Phase V edge problem-space targets are tracked in `manifests/phase5_edge_targets.yaml`, explained in `docs/PHASE5_EDGE_TARGETS.md`, and validated by `scripts/check_phase5_targets.py`. Phase VI global sweep targets are tracked in `manifests/phase6_sweep_targets.yaml` and validated by `scripts/check_phase6_sweep_targets.py`; application benchmark and edge-claim guardrails are additionally checked by `scripts/check_application_guardrails.py`.
 
 The rule is simple: papers are allowed to be ambitious, but claimed theorems must be traceable.
 
@@ -102,7 +102,7 @@ Phase III is now implemented as the first Circle Calculus Living Book milestone:
 
 The next project phases are intentionally wide, deep, and correctness-driven: Phase IV audits every dimensional level and application area for missing theorem targets, paper improvements, reusable lemmas, dictionary gaps, and stronger proof spines; Phase V searches edge problem spaces where Circle Calculus may provide leverage that is hard, awkward, or unavailable in ordinary presentations; Phase VI sweeps the whole corpus so the writing is cleaner, the claims are more correct, and the proof-status links are easy for outsiders to consume.
 
-Current Phase VI maintenance state: all 35 manifest papers now include source trails linking paper prose to Lean/Python sidecars and proof-status boundaries. `make check` also validates paper source trails, root plus dimension dictionary entries, and the 10 application/theory research manifests that connect papers, sidecars, benchmarks, theorem ids, and dictionary dependencies.
+Current Phase VI maintenance state: all 35 manifest papers now include source trails linking paper prose to Lean/Python sidecars and proof-status boundaries. `make check` also validates paper source trails, root plus dimension dictionary entries, the 10 application/theory research manifests that connect papers, sidecars, benchmarks, theorem ids, and dictionary dependencies, and application guardrails for baseline language, benchmark/proof separation, and MLX/CUDA wording.
 
 The README is updated after meaningful proof batches, paper batches, roadmap changes, or application-context additions. Tiny internal-only edits should update the relevant source files without creating README churn.
 

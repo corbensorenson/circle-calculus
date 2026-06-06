@@ -172,14 +172,15 @@
       ],
       "checks": [
         "python scripts/check_phase5_targets.py",
+        "python scripts/check_application_guardrails.py",
         "python -m pytest"
       ],
       "guardrail": "Benchmark results are measurements or fixtures, not theorem proofs.",
       "id": "P6-SWEEP-007",
-      "next_action": "Audit application papers after each new benchmark fixture or baseline comparison.",
+      "next_action": "Application guardrail validation is wired into make check; rerun after each new benchmark fixture, baseline comparison, CUDA/MLX wording update, or application paper change.",
       "objective": "Ensure application claims remain benchmarked, baseline-aware, and separated from mathematical proofs.",
       "priority": "high",
-      "status": "planned",
+      "status": "active",
       "sweep_type": "application_guardrails"
     },
     {
