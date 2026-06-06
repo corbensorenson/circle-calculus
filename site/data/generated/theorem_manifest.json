@@ -11,7 +11,15 @@
       "lean_source_line": 14,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES",
+          "path": "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 1: Circle AI Architectures"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -25,7 +33,15 @@
       "lean_source_line": 19,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES",
+          "path": "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 1: Circle AI Architectures"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -38,7 +54,15 @@
       "lean_source_line": 25,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES",
+          "path": "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 1: Circle AI Architectures"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -51,7 +75,15 @@
       "lean_source_line": 33,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -65,7 +97,15 @@
       "lean_source_line": 38,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -78,7 +118,15 @@
       "lean_source_line": 44,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -91,7 +139,15 @@
       "lean_source_line": 52,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -105,7 +161,15 @@
       "lean_source_line": 57,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -118,7 +182,15 @@
       "lean_source_line": 63,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -131,7 +203,15 @@
       "lean_source_line": 13,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_data_analysis.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_APP_01_COIL_DATA_ANALYSIS",
+          "path": "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Application 1: Coil Data Analysis"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -145,7 +225,15 @@
       "lean_source_line": 18,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_data_analysis.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_APP_01_COIL_DATA_ANALYSIS",
+          "path": "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Application 1: Coil Data Analysis"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -158,7 +246,15 @@
       "lean_source_line": 24,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_data_analysis.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_APP_01_COIL_DATA_ANALYSIS",
+          "path": "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Application 1: Coil Data Analysis"
+        }
+      ]
     },
     {
       "blocker": "",
@@ -185,6 +281,20 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -216,6 +326,20 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -247,6 +371,20 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -279,6 +417,20 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -311,6 +463,20 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -345,6 +511,20 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -378,6 +558,20 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -411,6 +605,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -442,6 +644,20 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_02_WINDING_NATURALS",
+          "path": "papers/PAPER_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus II: Winding, Lifted Circles, and Natural Numbers"
+        },
+        {
+          "id": "PAPER_S1_02_WINDING_NATURALS",
+          "path": "papers/S1/PAPER_S1_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.2: Winding, Lifted Circles, and Natural Numbers"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -474,6 +690,20 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_02_WINDING_NATURALS",
+          "path": "papers/PAPER_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus II: Winding, Lifted Circles, and Natural Numbers"
+        },
+        {
+          "id": "PAPER_S1_02_WINDING_NATURALS",
+          "path": "papers/S1/PAPER_S1_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.2: Winding, Lifted Circles, and Natural Numbers"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -505,6 +735,20 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_02_WINDING_NATURALS",
+          "path": "papers/PAPER_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus II: Winding, Lifted Circles, and Natural Numbers"
+        },
+        {
+          "id": "PAPER_S1_02_WINDING_NATURALS",
+          "path": "papers/S1/PAPER_S1_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.2: Winding, Lifted Circles, and Natural Numbers"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -537,6 +781,20 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_02_WINDING_NATURALS",
+          "path": "papers/PAPER_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus II: Winding, Lifted Circles, and Natural Numbers"
+        },
+        {
+          "id": "PAPER_S1_02_WINDING_NATURALS",
+          "path": "papers/S1/PAPER_S1_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.2: Winding, Lifted Circles, and Natural Numbers"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -569,6 +827,20 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_02_WINDING_NATURALS",
+          "path": "papers/PAPER_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus II: Winding, Lifted Circles, and Natural Numbers"
+        },
+        {
+          "id": "PAPER_S1_02_WINDING_NATURALS",
+          "path": "papers/S1/PAPER_S1_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.2: Winding, Lifted Circles, and Natural Numbers"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -601,6 +873,20 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_02_WINDING_NATURALS",
+          "path": "papers/PAPER_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus II: Winding, Lifted Circles, and Natural Numbers"
+        },
+        {
+          "id": "PAPER_S1_02_WINDING_NATURALS",
+          "path": "papers/S1/PAPER_S1_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.2: Winding, Lifted Circles, and Natural Numbers"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -633,6 +919,20 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_02_WINDING_NATURALS",
+          "path": "papers/PAPER_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus II: Winding, Lifted Circles, and Natural Numbers"
+        },
+        {
+          "id": "PAPER_S1_02_WINDING_NATURALS",
+          "path": "papers/S1/PAPER_S1_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.2: Winding, Lifted Circles, and Natural Numbers"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -666,6 +966,20 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_02_WINDING_NATURALS",
+          "path": "papers/PAPER_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus II: Winding, Lifted Circles, and Natural Numbers"
+        },
+        {
+          "id": "PAPER_S1_02_WINDING_NATURALS",
+          "path": "papers/S1/PAPER_S1_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.2: Winding, Lifted Circles, and Natural Numbers"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -699,6 +1013,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -732,6 +1054,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -767,6 +1097,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -801,6 +1139,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -835,6 +1181,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -869,6 +1223,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -904,6 +1266,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -939,6 +1309,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -973,6 +1351,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1008,6 +1394,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1043,6 +1437,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1076,6 +1478,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1110,6 +1520,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1144,6 +1562,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1178,6 +1604,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1212,6 +1646,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1246,6 +1688,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1280,6 +1730,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1314,6 +1772,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1348,6 +1814,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1382,6 +1856,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1416,6 +1898,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1450,6 +1940,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1484,6 +1982,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1518,6 +2024,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1552,6 +2066,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1586,6 +2108,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1620,6 +2150,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1654,6 +2192,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1688,6 +2234,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1722,6 +2276,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1756,6 +2318,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1790,6 +2360,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1824,6 +2402,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1858,6 +2444,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1892,6 +2486,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1926,6 +2528,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1963,6 +2573,26 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -1998,6 +2628,20 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2030,6 +2674,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2064,6 +2716,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2098,6 +2758,14 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2133,6 +2801,20 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2168,6 +2850,20 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2203,6 +2899,20 @@
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2233,6 +2943,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY",
+          "path": "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S456.1: General Suspension and Euler Parity"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2263,6 +2981,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY",
+          "path": "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S456.1: General Suspension and Euler Parity"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2293,6 +3019,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY",
+          "path": "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S456.1: General Suspension and Euler Parity"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2323,6 +3057,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY",
+          "path": "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S456.1: General Suspension and Euler Parity"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2354,6 +3096,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY",
+          "path": "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S456.1: General Suspension and Euler Parity"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2385,6 +3135,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY",
+          "path": "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S456.1: General Suspension and Euler Parity"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2404,7 +3162,15 @@
       "lean_source_line": 13,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION",
+          "path": "papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 1: Proof-Carrying Circular Computation"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -2418,7 +3184,15 @@
       "lean_source_line": 18,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION",
+          "path": "papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 1: Proof-Carrying Circular Computation"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -2431,7 +3205,15 @@
       "lean_source_line": 24,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION",
+          "path": "papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 1: Proof-Carrying Circular Computation"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -2444,7 +3226,15 @@
       "lean_source_line": 32,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT",
+          "path": "papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 3: CoilLayout, CoilStencil, and CoilNTT"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -2458,7 +3248,15 @@
       "lean_source_line": 37,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT",
+          "path": "papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 3: CoilLayout, CoilStencil, and CoilNTT"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -2471,7 +3269,15 @@
       "lean_source_line": 43,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT",
+          "path": "papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 3: CoilLayout, CoilStencil, and CoilNTT"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -2484,7 +3290,15 @@
       "lean_source_line": 48,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT",
+          "path": "papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 3: CoilLayout, CoilStencil, and CoilNTT"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -2497,7 +3311,15 @@
       "lean_source_line": 13,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_rendering.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_02_COIL_RAY_AND_SAMPLING",
+          "path": "papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 2: CoilRay and CoilSampler"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -2511,7 +3333,15 @@
       "lean_source_line": 18,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_rendering.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_02_COIL_RAY_AND_SAMPLING",
+          "path": "papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 2: CoilRay and CoilSampler"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -2524,7 +3354,15 @@
       "lean_source_line": 24,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_rendering.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_02_COIL_RAY_AND_SAMPLING",
+          "path": "papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 2: CoilRay and CoilSampler"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -2537,7 +3375,15 @@
       "lean_source_line": 13,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_systems.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS",
+          "path": "papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 4: Coil Systems Applications"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -2551,7 +3397,15 @@
       "lean_source_line": 18,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_systems.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS",
+          "path": "papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 4: Coil Systems Applications"
+        }
+      ]
     },
     {
       "canonical_status": "proved",
@@ -2564,7 +3418,15 @@
       "lean_source_line": 24,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_systems.yaml",
-      "status": "lean_proved"
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS",
+          "path": "papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 4: Coil Systems Applications"
+        }
+      ]
     },
     {
       "blocker": "",
@@ -2587,6 +3449,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY",
+          "path": "papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.2: Bott and Clifford Periodicity"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2616,6 +3486,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY",
+          "path": "papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.2: Bott and Clifford Periodicity"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2645,6 +3523,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY",
+          "path": "papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.2: Bott and Clifford Periodicity"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2675,6 +3561,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.4: Boundary and Cobordism Calculus"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2706,6 +3600,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.4: Boundary and Cobordism Calculus"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2736,6 +3638,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.4: Boundary and Cobordism Calculus"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2766,6 +3676,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.4: Boundary and Cobordism Calculus"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2796,6 +3714,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_03_BUNDLE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.3: Bundle Calculus"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2826,6 +3752,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_03_BUNDLE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.3: Bundle Calculus"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2857,6 +3791,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_03_BUNDLE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.3: Bundle Calculus"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2888,6 +3830,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_03_BUNDLE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.3: Bundle Calculus"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2920,6 +3870,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_03_BUNDLE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.3: Bundle Calculus"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2951,6 +3909,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_03_BUNDLE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.3: Bundle Calculus"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -2982,6 +3948,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_03_BUNDLE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.3: Bundle Calculus"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3012,6 +3986,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_05_PROOF_CARRYING_GLYPHS",
+          "path": "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.5: Proof-Carrying Glyphs"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3042,6 +4024,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_05_PROOF_CARRYING_GLYPHS",
+          "path": "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.5: Proof-Carrying Glyphs"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3071,6 +4061,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_05_PROOF_CARRYING_GLYPHS",
+          "path": "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.5: Proof-Carrying Glyphs"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3104,6 +4102,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_05_PROOF_CARRYING_GLYPHS",
+          "path": "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.5: Proof-Carrying Glyphs"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3139,6 +4145,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_05_PROOF_CARRYING_GLYPHS",
+          "path": "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.5: Proof-Carrying Glyphs"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3170,6 +4184,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_01_STABLE_SPHERE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.1: Stable Sphere Calculus"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3202,6 +4224,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_01_STABLE_SPHERE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.1: Stable Sphere Calculus"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3232,6 +4262,14 @@
       ],
       "source_manifest": "manifests/dimensions/Common.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_01_STABLE_SPHERE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.1: Stable Sphere Calculus"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3261,6 +4299,14 @@
       ],
       "source_manifest": "manifests/dimensions/S0_opposition.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S0_01_TWO_POINT_OPPOSITION",
+          "path": "papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S0.1: Two-Point Opposition"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3291,6 +4337,14 @@
       ],
       "source_manifest": "manifests/dimensions/S0_opposition.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S0_01_TWO_POINT_OPPOSITION",
+          "path": "papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S0.1: Two-Point Opposition"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3321,6 +4375,14 @@
       ],
       "source_manifest": "manifests/dimensions/S0_opposition.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S0_01_TWO_POINT_OPPOSITION",
+          "path": "papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S0.1: Two-Point Opposition"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3351,6 +4413,14 @@
       ],
       "source_manifest": "manifests/dimensions/S0_opposition.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S0_01_TWO_POINT_OPPOSITION",
+          "path": "papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S0.1: Two-Point Opposition"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3381,6 +4451,14 @@
       ],
       "source_manifest": "manifests/dimensions/S0_opposition.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S0_01_TWO_POINT_OPPOSITION",
+          "path": "papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S0.1: Two-Point Opposition"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3418,6 +4496,14 @@
       ],
       "source_manifest": "manifests/dimensions/S15_future.yaml",
       "status": "lean_stated",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
+          "path": "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S15.1: Octonionic Hopf Roadmap"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3456,6 +4542,14 @@
       ],
       "source_manifest": "manifests/dimensions/S15_future.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
+          "path": "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S15.1: Octonionic Hopf Roadmap"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3493,6 +4587,14 @@
       ],
       "source_manifest": "manifests/dimensions/S15_future.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
+          "path": "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S15.1: Octonionic Hopf Roadmap"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3531,6 +4633,14 @@
       ],
       "source_manifest": "manifests/dimensions/S15_future.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
+          "path": "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S15.1: Octonionic Hopf Roadmap"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3569,6 +4679,14 @@
       ],
       "source_manifest": "manifests/dimensions/S15_future.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
+          "path": "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S15.1: Octonionic Hopf Roadmap"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3608,6 +4726,14 @@
       ],
       "source_manifest": "manifests/dimensions/S15_future.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
+          "path": "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S15.1: Octonionic Hopf Roadmap"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3647,6 +4773,14 @@
       ],
       "source_manifest": "manifests/dimensions/S15_future.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
+          "path": "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S15.1: Octonionic Hopf Roadmap"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3686,6 +4820,14 @@
       ],
       "source_manifest": "manifests/dimensions/S15_future.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
+          "path": "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S15.1: Octonionic Hopf Roadmap"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3724,6 +4866,14 @@
       ],
       "source_manifest": "manifests/dimensions/S15_future.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
+          "path": "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S15.1: Octonionic Hopf Roadmap"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3754,6 +4904,14 @@
       ],
       "source_manifest": "manifests/dimensions/S1_circle.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_03_INTEGERS_ORIENTATION",
+          "path": "papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.3: Integers, Orientation, and Reversible Motion"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3784,6 +4942,14 @@
       ],
       "source_manifest": "manifests/dimensions/S1_circle.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_03_INTEGERS_ORIENTATION",
+          "path": "papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.3: Integers, Orientation, and Reversible Motion"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3815,6 +4981,14 @@
       ],
       "source_manifest": "manifests/dimensions/S1_circle.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_03_INTEGERS_ORIENTATION",
+          "path": "papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.3: Integers, Orientation, and Reversible Motion"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3846,6 +5020,14 @@
       ],
       "source_manifest": "manifests/dimensions/S1_circle.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_03_INTEGERS_ORIENTATION",
+          "path": "papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.3: Integers, Orientation, and Reversible Motion"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3877,6 +5059,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_01_SUSPENDED_CIRCLES",
+          "path": "papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.1: Suspended Circles and the First Finite Sphere"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3908,6 +5098,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_01_SUSPENDED_CIRCLES",
+          "path": "papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.1: Suspended Circles and the First Finite Sphere"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3939,6 +5137,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+          "path": "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.2: Sphere Grids, Latitude Rings, and Pole Collapse"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3970,6 +5176,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+          "path": "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.2: Sphere Grids, Latitude Rings, and Pole Collapse"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4002,6 +5216,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+          "path": "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.2: Sphere Grids, Latitude Rings, and Pole Collapse"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4033,6 +5255,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+          "path": "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.2: Sphere Grids, Latitude Rings, and Pole Collapse"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4064,6 +5294,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+          "path": "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.2: Sphere Grids, Latitude Rings, and Pole Collapse"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4095,6 +5333,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE",
+          "path": "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.3: Antipodes, Axes, Surface Closure, and Antinodes"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4125,6 +5371,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE",
+          "path": "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.3: Antipodes, Axes, Surface Closure, and Antinodes"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4156,6 +5410,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE",
+          "path": "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.3: Antipodes, Axes, Surface Closure, and Antinodes"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4186,6 +5448,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE",
+          "path": "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.3: Antipodes, Axes, Surface Closure, and Antinodes"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4216,6 +5486,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE",
+          "path": "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.3: Antipodes, Axes, Surface Closure, and Antinodes"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4247,6 +5525,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE",
+          "path": "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.3: Antipodes, Axes, Surface Closure, and Antinodes"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4277,6 +5563,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE",
+          "path": "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.3: Antipodes, Axes, Surface Closure, and Antinodes"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4307,6 +5601,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE",
+          "path": "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.3: Antipodes, Axes, Surface Closure, and Antinodes"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4339,6 +5641,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE",
+          "path": "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.3: Antipodes, Axes, Surface Closure, and Antinodes"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4371,6 +5681,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+          "path": "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.2: Sphere Grids, Latitude Rings, and Pole Collapse"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4402,6 +5720,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE",
+          "path": "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.3: Antipodes, Axes, Surface Closure, and Antinodes"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4434,6 +5760,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE",
+          "path": "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.3: Antipodes, Axes, Surface Closure, and Antinodes"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4467,6 +5801,14 @@
       ],
       "source_manifest": "manifests/dimensions/S2_sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE",
+          "path": "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.3: Antipodes, Axes, Surface Closure, and Antinodes"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4499,6 +5841,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_01_FINITE_HYPERSPHERES",
+          "path": "papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.1: Finite 3-Spheres by Suspending Spheres"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4532,6 +5882,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_01_FINITE_HYPERSPHERES",
+          "path": "papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.1: Finite 3-Spheres by Suspending Spheres"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4564,6 +5922,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_01_FINITE_HYPERSPHERES",
+          "path": "papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.1: Finite 3-Spheres by Suspending Spheres"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4597,6 +5963,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_01_FINITE_HYPERSPHERES",
+          "path": "papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.1: Finite 3-Spheres by Suspending Spheres"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4628,6 +6002,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_03_HOPF_COILS",
+          "path": "papers/S3/PAPER_S3_03_HOPF_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.3: Hopf Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4660,6 +6042,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_03_HOPF_COILS",
+          "path": "papers/S3/PAPER_S3_03_HOPF_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.3: Hopf Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4692,6 +6082,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_03_HOPF_COILS",
+          "path": "papers/S3/PAPER_S3_03_HOPF_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.3: Hopf Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4723,6 +6121,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_03_HOPF_COILS",
+          "path": "papers/S3/PAPER_S3_03_HOPF_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.3: Hopf Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4754,6 +6160,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_03_HOPF_COILS",
+          "path": "papers/S3/PAPER_S3_03_HOPF_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.3: Hopf Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4786,6 +6200,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_03_HOPF_COILS",
+          "path": "papers/S3/PAPER_S3_03_HOPF_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.3: Hopf Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4818,6 +6240,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_03_HOPF_COILS",
+          "path": "papers/S3/PAPER_S3_03_HOPF_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.3: Hopf Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4850,6 +6280,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_03_HOPF_COILS",
+          "path": "papers/S3/PAPER_S3_03_HOPF_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.3: Hopf Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4881,6 +6319,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_02_QUATERNION_COILS",
+          "path": "papers/S3/PAPER_S3_02_QUATERNION_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.2: Quaternion Coils and Unit-Quaternion Hypersphere"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4913,6 +6359,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_02_QUATERNION_COILS",
+          "path": "papers/S3/PAPER_S3_02_QUATERNION_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.2: Quaternion Coils and Unit-Quaternion Hypersphere"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4945,6 +6399,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_02_QUATERNION_COILS",
+          "path": "papers/S3/PAPER_S3_02_QUATERNION_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.2: Quaternion Coils and Unit-Quaternion Hypersphere"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -4977,6 +6439,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_02_QUATERNION_COILS",
+          "path": "papers/S3/PAPER_S3_02_QUATERNION_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.2: Quaternion Coils and Unit-Quaternion Hypersphere"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5008,6 +6478,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_02_QUATERNION_COILS",
+          "path": "papers/S3/PAPER_S3_02_QUATERNION_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.2: Quaternion Coils and Unit-Quaternion Hypersphere"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5040,6 +6518,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_02_QUATERNION_COILS",
+          "path": "papers/S3/PAPER_S3_02_QUATERNION_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.2: Quaternion Coils and Unit-Quaternion Hypersphere"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5072,6 +6558,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_02_QUATERNION_COILS",
+          "path": "papers/S3/PAPER_S3_02_QUATERNION_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.2: Quaternion Coils and Unit-Quaternion Hypersphere"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5104,6 +6598,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_02_QUATERNION_COILS",
+          "path": "papers/S3/PAPER_S3_02_QUATERNION_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.2: Quaternion Coils and Unit-Quaternion Hypersphere"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5137,6 +6639,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP",
+          "path": "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.4: Spin, Double Covers, and Rotation Quotients"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5169,6 +6679,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP",
+          "path": "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.4: Spin, Double Covers, and Rotation Quotients"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5201,6 +6719,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP",
+          "path": "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.4: Spin, Double Covers, and Rotation Quotients"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5234,6 +6760,14 @@
       ],
       "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP",
+          "path": "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.4: Spin, Double Covers, and Rotation Quotients"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5268,6 +6802,14 @@
       ],
       "source_manifest": "manifests/dimensions/S4_4sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF",
+          "path": "papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S4.1: S4 as Base of Quaternionic Hopf Structure"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5302,6 +6844,14 @@
       ],
       "source_manifest": "manifests/dimensions/S4_4sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF",
+          "path": "papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S4.1: S4 as Base of Quaternionic Hopf Structure"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5336,6 +6886,14 @@
       ],
       "source_manifest": "manifests/dimensions/S4_4sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY",
+          "path": "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S456.1: General Suspension and Euler Parity"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5371,6 +6929,14 @@
       ],
       "source_manifest": "manifests/dimensions/S5_5sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE",
+          "path": "papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S5.1: Complex Projective Bridge"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5406,6 +6972,14 @@
       ],
       "source_manifest": "manifests/dimensions/S5_5sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE",
+          "path": "papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S5.1: Complex Projective Bridge"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5442,6 +7016,14 @@
       ],
       "source_manifest": "manifests/dimensions/S6_6sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS",
+          "path": "papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S6.1: Octonion Shadow and Warnings"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5478,6 +7060,14 @@
       ],
       "source_manifest": "manifests/dimensions/S6_6sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS",
+          "path": "papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S6.1: Octonion Shadow and Warnings"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5513,6 +7103,14 @@
       ],
       "source_manifest": "manifests/dimensions/S6_6sphere.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS",
+          "path": "papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S6.1: Octonion Shadow and Warnings"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5549,6 +7147,14 @@
       ],
       "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_01_TOPOLOGICAL_7SPHERE",
+          "path": "papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.1: Topological 7-Sphere by Iterated Suspension"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5585,6 +7191,14 @@
       ],
       "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_01_TOPOLOGICAL_7SPHERE",
+          "path": "papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.1: Topological 7-Sphere by Iterated Suspension"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5622,6 +7236,14 @@
       ],
       "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_01_TOPOLOGICAL_7SPHERE",
+          "path": "papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.1: Topological 7-Sphere by Iterated Suspension"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5657,6 +7279,14 @@
       ],
       "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS",
+          "path": "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.3: Octonionic Units and Nonassociative Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5693,6 +7323,14 @@
       ],
       "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS",
+          "path": "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.3: Octonionic Units and Nonassociative Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5728,6 +7366,14 @@
       ],
       "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS",
+          "path": "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.3: Octonionic Units and Nonassociative Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5764,6 +7410,14 @@
       ],
       "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS",
+          "path": "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.3: Octonionic Units and Nonassociative Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5799,6 +7453,14 @@
       ],
       "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS",
+          "path": "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.3: Octonionic Units and Nonassociative Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5835,6 +7497,14 @@
       ],
       "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS",
+          "path": "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.3: Octonionic Units and Nonassociative Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5872,6 +7542,14 @@
       ],
       "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS",
+          "path": "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.3: Octonionic Units and Nonassociative Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5909,6 +7587,14 @@
       ],
       "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS",
+          "path": "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.3: Octonionic Units and Nonassociative Coils"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5946,6 +7632,14 @@
       ],
       "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION",
+          "path": "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.2: Quaternionic Hopf Fibration"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -5982,6 +7676,14 @@
       ],
       "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION",
+          "path": "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.2: Quaternionic Hopf Fibration"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -6019,6 +7721,14 @@
       ],
       "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION",
+          "path": "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.2: Quaternionic Hopf Fibration"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -6056,6 +7766,14 @@
       ],
       "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION",
+          "path": "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.2: Quaternionic Hopf Fibration"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -6093,6 +7811,14 @@
       ],
       "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
       "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION",
+          "path": "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.2: Quaternionic Hopf Fibration"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,

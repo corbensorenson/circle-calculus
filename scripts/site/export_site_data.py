@@ -272,6 +272,35 @@ def add_dictionary_backlinks(
     return {"entries": sorted(entries, key=lambda item: item["id"])}
 
 
+def add_theorem_backlinks(theorem_manifest: dict, paper_index: dict) -> dict:
+    theorems = [dict(theorem) for theorem in theorem_manifest.get("theorems", [])]
+    by_id = {theorem["id"]: theorem for theorem in theorems}
+    for theorem in theorems:
+        theorem["used_by_papers"] = []
+
+    for paper in paper_index.get("papers", []):
+        for theorem_id in paper.get("theorem_ids", []):
+            theorem = by_id.get(theorem_id)
+            if theorem is None:
+                continue
+            theorem["used_by_papers"].append(
+                {
+                    "id": paper.get("id", ""),
+                    "title": paper.get("title", ""),
+                    "status": paper.get("status", ""),
+                    "path": paper.get("path", ""),
+                },
+            )
+
+    for theorem in theorems:
+        theorem["used_by_papers"] = sorted(
+            theorem["used_by_papers"],
+            key=lambda item: item.get("id", ""),
+        )
+
+    return {"theorems": sorted(theorems, key=lambda item: item["id"])}
+
+
 def export_phase4_targets() -> dict:
     path = ROOT / "manifests" / "phase4_theorem_targets.yaml"
     if not path.exists():
@@ -348,6 +377,7 @@ def export_all() -> None:
     theorem_manifest = export_theorems()
     base_dictionary = export_dictionary()
     paper_index = export_papers()
+    theorem_manifest = add_theorem_backlinks(theorem_manifest, paper_index)
     widget_index = export_widget_index()
     glyph_index = export_glyph_index(theorem_manifest, base_dictionary)
     dictionary = add_dictionary_backlinks(

@@ -42,9 +42,9 @@ The build job:
 
 The deploy job publishes the artifact to GitHub Pages only from `main`.
 
-This keeps publication downstream of the proof/status/data checks. A rendered page can be public only after theorem manifests, dictionary links, paper links, widget mount contracts, widget parity, fake-proof guardrails, Quarto render, and rendered-artifact link validation have all passed in CI.
+This keeps publication downstream of the proof/status/data checks. A rendered page can be public only after theorem manifests, dictionary links, paper links, generated theorem/dictionary/paper/widget/glyph backlinks, widget mount contracts, widget parity, fake-proof guardrails, Quarto render, and rendered-artifact link validation have all passed in CI.
 
-`make sourcecheck` includes `make sitecheck`, and `sitecheck` validates the generated source-link paths used by Living Book GitHub links. This protects the public site against stale links when Lean files, papers, dictionary files, sidecars, widgets, glyph fixtures, or target manifests move.
+`make sourcecheck` includes `make sitecheck`, and `sitecheck` validates the generated source-link paths and reciprocal generated backlinks used by Living Book GitHub links and indexes. This protects the public site against stale links when Lean files, papers, dictionary files, sidecars, widgets, glyph fixtures, or target manifests move.
 
 ## Repository Settings
 

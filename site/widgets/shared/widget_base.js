@@ -288,6 +288,7 @@ async function hydrateTheorems() {
         href: githubSourceLink(theorem.lean_source, theorem.lean_source_line),
       } : ""],
       ["Source", theorem.source_manifest],
+      ["Used by papers", linkedCompactIds(theorem.used_by_papers, "papers.html", 4)],
       ["Paper refs", linkedRepoPaths(theorem.paper_refs)],
       ["Dictionary", linkedCompactIds(theorem.dictionary_dependencies, "dictionary.html")],
     ]);
@@ -389,7 +390,8 @@ async function hydrateTheoremIndexes() {
             : "",
         },
         { label: "Dictionary", render: (theorem) => linkedCompactIds(theorem.dictionary_dependencies, "dictionary.html") },
-        { label: "Papers", render: (theorem) => linkedRepoPaths(theorem.paper_refs, 3) },
+        { label: "Papers", render: (theorem) => linkedCompactIds(theorem.used_by_papers, "papers.html", 4) },
+        { label: "Refs", render: (theorem) => linkedRepoPaths(theorem.paper_refs, 2) },
         { label: "Source", render: (theorem) => makeLink(theorem.source_manifest, githubSourceLink(theorem.source_manifest)) },
       ],
       {
