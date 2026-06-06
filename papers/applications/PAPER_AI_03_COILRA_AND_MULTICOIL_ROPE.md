@@ -14,6 +14,22 @@ adapter_block(block_size,channel) = channel mod block_size
 
 for positive block sizes. This is a block/cyclic channel-index primitive, not a LoRA replacement theorem or a MultiCoil RoPE theorem.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/lean/PaperAI03.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks adapter-block examples; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `AIRA-T0001`: `Circle.Applications.adapterBlock_lt_blockSize`

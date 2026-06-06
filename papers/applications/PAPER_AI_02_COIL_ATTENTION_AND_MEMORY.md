@@ -14,6 +14,22 @@ memory_slot(bank_size,token) = token mod bank_size
 
 for positive memory-bank sizes. This is a memory indexing primitive, not a retrieval-quality or no-aliasing theorem.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/lean/PaperAI02.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks cyclic memory-slot examples; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `AIM-T0001`: `Circle.Applications.memorySlot_lt_bankSize`

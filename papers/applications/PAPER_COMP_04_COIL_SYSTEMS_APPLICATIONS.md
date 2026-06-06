@@ -21,6 +21,22 @@ slot(slot_count,tick) = tick mod slot_count
 
 for positive slot counts. This is a `CoilSched`-style primitive, not a fairness or load-balancing theorem.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/lean/PaperComp04.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks round-robin examples; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `COMPS-T0001`: `Circle.Applications.roundRobinSlot_lt_slotCount`

@@ -22,6 +22,22 @@ addr(size,index) = index mod size
 
 for positive circular buffer sizes. This is a proof-carrying rewrite primitive, not a benchmark result.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/lean/PaperComp01.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks cyclic-address examples; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `COMPC-T0001`: `Circle.Applications.cyclicAddress_lt_size`

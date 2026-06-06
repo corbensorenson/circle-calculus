@@ -20,6 +20,23 @@ addr(size,stride,step) = (step * stride) mod size
 
 for circular stride schedules.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/lean/PaperComp03.lean
+```
+
+The Python examples and benchmark fixture are:
+
+```text
+sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py
+sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/benchmark_coil_layout.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python benchmark is an executable harness, including optional MLX use when available; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `COMPL-T0001`: `Circle.Applications.strideAddress_lt_size`

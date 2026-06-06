@@ -14,6 +14,22 @@ bin(bin_count,sample) = sample mod bin_count
 
 for positive bin counts. This is a queue/sampler indexing primitive, not a claim that ray binning improves rendering performance.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_COMP_02_COIL_RAY_AND_SAMPLING/lean/PaperComp02.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_COMP_02_COIL_RAY_AND_SAMPLING/python/test_direction_bin_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks direction-bin examples; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `COMPR-T0001`: `Circle.Applications.directionBin_lt_binCount`

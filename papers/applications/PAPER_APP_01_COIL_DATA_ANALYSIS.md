@@ -14,6 +14,22 @@ phase(period, step) = step mod period
 
 for positive periods. This is a synthetic-data primitive, not a detector for unknown real-world periods.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_APP_01_COIL_DATA_ANALYSIS/lean/PaperApp01.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_APP_01_COIL_DATA_ANALYSIS/python/test_phase_coordinate_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar and synthetic benchmark fixtures are executable support; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `APPD-T0001`: `Circle.Applications.phaseCoordinate_lt_period`

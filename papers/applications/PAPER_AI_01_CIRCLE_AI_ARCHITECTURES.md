@@ -28,6 +28,23 @@ It compares that phase lookup against a constant baseline on a task whose labels
 
 `COMMON-0044` adds a second tiny fixture comparing phase lookup with a learned scalar threshold baseline on two controls. On the periodic synthetic task, phase lookup reaches `1.0` accuracy while the scalar threshold baseline does not. On the nonperiodic threshold-control task, the scalar threshold reaches `1.0` while phase lookup fails. This is the intended guardrail: phase features should help only when phase structure is real.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/lean/PaperAI01.lean
+```
+
+The Python examples and benchmark fixture are:
+
+```text
+sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/test_phase_channel_examples.py
+sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_phase_channel.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. Benchmark fixtures are exploratory executable evidence; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `AIA-T0001`: `Circle.Applications.phaseChannel_lt_period`
