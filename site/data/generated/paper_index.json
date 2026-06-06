@@ -636,7 +636,8 @@
       "dictionary_ids": [
         "COMMON-0022",
         "COMMON-0023",
-        "COMMON-0040"
+        "COMMON-0040",
+        "COMMON-0045"
       ],
       "id": "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT",
       "path": "papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md",

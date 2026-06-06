@@ -41,7 +41,7 @@ theorems:
     lean_name: Circle.Applications.strideAddress_zero_stride
     dictionary_dependencies: ["COMMON-0022"]
 next_targets:
-  - "Expand the layout validation grid to workload-specific direct, FFT, NTT, and dense baselines before claiming layout wins."
+  - "COMPL-B0002 adds a periodic-boundary stencil validation fixture; expand next toward FFT, NTT, and MLX layout baselines before claiming layout wins."
   - "Benchmark direct, dense, FFT, NTT, and layout backends before making performance claims."
   - "Treat CoilIR as a proof-carrying optimizer roadmap: dictionary-detected circular structure, Lean-proved rewrites, backend selection, and benchmark validation."
 benchmarks:
@@ -50,4 +50,9 @@ benchmarks:
     path: sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py::test_layout_grid_expected_outputs_match
     script: sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/benchmark_coil_layout.py
     description: "Deterministic layout parameter grid checking natural, gcd-cycle, direct, and tiny dense circular-stride checksums before timing layout orders."
+  - id: COMPL-B0002
+    status: exploratory_python
+    path: sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py::test_stencil_grid_expected_outputs_match
+    script: sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/benchmark_coil_layout.py --validate-stencil
+    description: "Deterministic periodic-boundary stencil fixture checking direct natural-order, gcd-cycle layout-order, and tiny dense-matrix outputs agree."
 guardrail: "Benchmarks decide performance claims."

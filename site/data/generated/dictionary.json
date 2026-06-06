@@ -1466,6 +1466,25 @@
       "symbol": "learned_phase_baseline"
     },
     {
+      "dependencies": [
+        "COMMON-0022",
+        "COMMON-0040"
+      ],
+      "forbidden_meanings": [
+        "A cache-locality proof.",
+        "Evidence that gcd-cycle layout is faster.",
+        "A proof of FFT, NTT, or MLX backend correctness."
+      ],
+      "formal_definition": "`circle_math.applications.coil_compute.validate_stencil_grid`, a deterministic periodic-boundary stencil fixture comparing direct natural-order, gcd-cycle layout-order, and tiny dense-matrix outputs.",
+      "id": "COMMON-0045",
+      "introduced_in": "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT",
+      "intuition": "A workload-specific correctness harness for checking that circular layout traversal preserves expected periodic-stencil outputs before timing or backend claims.",
+      "kind": "experiment",
+      "name": "Periodic stencil validation fixture",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "periodic_stencil_fixture"
+    },
+    {
       "dependencies": [],
       "forbidden_meanings": [
         "The one-node circle C_1.",

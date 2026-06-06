@@ -21,6 +21,7 @@ from circle_math.applications.coil_compute import (
     run_cpu_grid,
     run_mlx,
     validate_layout_grid,
+    validate_stencil_grid,
 )
 
 
@@ -45,6 +46,19 @@ def print_grid_validation() -> None:
         raise SystemExit(1)
 
 
+def print_stencil_validation() -> None:
+    mismatch = False
+    for result in validate_stencil_grid():
+        status = "ok" if result.all_match else "mismatch"
+        mismatch = mismatch or not result.all_match
+        print(
+            f"{status:8s} stencil size={result.case.size} stride={result.case.stride} "
+            f"repeats={result.case.repeats} checksum={sum(result.direct_output):.1f}"
+        )
+    if mismatch:
+        raise SystemExit(1)
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Benchmark natural vs gcd-cycle circular-stride traversal.")
     parser.add_argument("--size", type=int, default=32768)
@@ -53,6 +67,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--backend", choices=("cpu", "mlx", "both"), default="cpu")
     parser.add_argument("--grid", action="store_true", help="run the deterministic CPU parameter grid")
     parser.add_argument("--validate-grid", action="store_true", help="validate expected outputs for the grid")
+    parser.add_argument("--validate-stencil", action="store_true", help="validate periodic-boundary stencil outputs")
     return parser.parse_args()
 
 
@@ -60,6 +75,9 @@ def main() -> None:
     args = parse_args()
     if args.validate_grid:
         print_grid_validation()
+        return
+    if args.validate_stencil:
+        print_stencil_validation()
         return
 
     if args.grid:

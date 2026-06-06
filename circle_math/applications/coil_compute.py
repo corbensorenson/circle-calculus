@@ -46,11 +46,37 @@ class LayoutValidationResult:
         )
 
 
+@dataclass(frozen=True)
+class StencilBenchmarkCase:
+    size: int
+    stride: int
+    repeats: int = 1
+
+
+@dataclass(frozen=True)
+class StencilValidationResult:
+    case: StencilBenchmarkCase
+    direct_output: tuple[float, ...]
+    gcd_cycle_output: tuple[float, ...]
+    dense_output: tuple[float, ...]
+
+    @property
+    def all_match(self) -> bool:
+        return self.direct_output == self.gcd_cycle_output == self.dense_output
+
+
 DEFAULT_LAYOUT_CASES: tuple[LayoutBenchmarkCase, ...] = (
     LayoutBenchmarkCase(size=8, stride=3, repeats=2),
     LayoutBenchmarkCase(size=12, stride=4, repeats=2),
     LayoutBenchmarkCase(size=15, stride=6, repeats=2),
     LayoutBenchmarkCase(size=16, stride=5, repeats=2),
+)
+
+DEFAULT_STENCIL_CASES: tuple[StencilBenchmarkCase, ...] = (
+    StencilBenchmarkCase(size=8, stride=1, repeats=1),
+    StencilBenchmarkCase(size=12, stride=4, repeats=2),
+    StencilBenchmarkCase(size=15, stride=6, repeats=1),
+    StencilBenchmarkCase(size=16, stride=5, repeats=2),
 )
 
 
@@ -145,6 +171,90 @@ def validate_layout_case(case: LayoutBenchmarkCase) -> LayoutValidationResult:
 def validate_layout_grid(cases: Sequence[LayoutBenchmarkCase] = DEFAULT_LAYOUT_CASES) -> tuple[LayoutValidationResult, ...]:
     """Validate a deterministic parameter grid for layout benchmark fixtures."""
     return tuple(validate_layout_case(case) for case in cases)
+
+
+def periodic_stencil_step(values: Sequence[float], stride: int, order: Iterable[int]) -> tuple[float, ...]:
+    """Apply one periodic nearest-stride stencil pass in the requested order."""
+    size = len(values)
+    if size == 0:
+        raise ValueError("values must be nonempty")
+    order_tuple = tuple(order)
+    if len(order_tuple) != size or sorted(order_tuple) != list(range(size)):
+        raise ValueError("order must visit each address exactly once")
+    stride %= size
+    output = [0.0 for _ in range(size)]
+    for index in order_tuple:
+        output[index] = (
+            0.25 * values[(index - stride) % size]
+            + 0.5 * values[index]
+            + 0.25 * values[(index + stride) % size]
+        )
+    return tuple(output)
+
+
+def direct_periodic_stencil(values: Sequence[float], stride: int, repeats: int) -> tuple[float, ...]:
+    """Run a periodic stencil in ordinary natural order."""
+    _require_positive(repeats, "repeats")
+    current = tuple(values)
+    for _ in range(repeats):
+        current = periodic_stencil_step(current, stride, natural_order(len(current)))
+    return current
+
+
+def gcd_cycle_periodic_stencil(values: Sequence[float], stride: int, repeats: int) -> tuple[float, ...]:
+    """Run the same stencil while visiting addresses in gcd-cycle layout order."""
+    _require_positive(repeats, "repeats")
+    current = tuple(values)
+    for _ in range(repeats):
+        current = periodic_stencil_step(current, stride, gcd_cycle_order(len(current), stride))
+    return current
+
+
+def dense_periodic_stencil(values: Sequence[float], stride: int, repeats: int) -> tuple[float, ...]:
+    """Run a tiny dense-matrix periodic stencil reference for validation fixtures."""
+    size = len(values)
+    if size == 0:
+        raise ValueError("values must be nonempty")
+    if size > 128:
+        raise ValueError("dense stencil baseline is only intended for small validation fixtures")
+    _require_positive(repeats, "repeats")
+    stride %= size
+    current = tuple(values)
+    for _ in range(repeats):
+        next_values = []
+        for row in range(size):
+            total = 0.0
+            for column, value in enumerate(current):
+                weight = 0.0
+                if column == (row - stride) % size:
+                    weight += 0.25
+                if column == row:
+                    weight += 0.5
+                if column == (row + stride) % size:
+                    weight += 0.25
+                total += value * weight
+            next_values.append(total)
+        current = tuple(next_values)
+    return current
+
+
+def validate_stencil_case(case: StencilBenchmarkCase) -> StencilValidationResult:
+    """Compare a periodic-boundary stencil against direct, layout, and dense baselines."""
+    values = reference_values(case.size)
+    direct_output = direct_periodic_stencil(values, case.stride, case.repeats)
+    gcd_output = gcd_cycle_periodic_stencil(values, case.stride, case.repeats)
+    dense_output = dense_periodic_stencil(values, case.stride, case.repeats)
+    return StencilValidationResult(
+        case=case,
+        direct_output=direct_output,
+        gcd_cycle_output=gcd_output,
+        dense_output=dense_output,
+    )
+
+
+def validate_stencil_grid(cases: Sequence[StencilBenchmarkCase] = DEFAULT_STENCIL_CASES) -> tuple[StencilValidationResult, ...]:
+    """Validate deterministic periodic-boundary stencil fixture cases."""
+    return tuple(validate_stencil_case(case) for case in cases)
 
 
 def time_cpu_order(name: str, size: int, stride: int, repeats: int, order: tuple[int, ...]) -> BenchmarkResult:

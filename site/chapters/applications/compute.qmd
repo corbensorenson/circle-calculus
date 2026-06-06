@@ -4,7 +4,7 @@ title: "Compute"
 
 The compute page tracks proof-carrying circular computation, CoilRay, sampling, layout, stencil, NTT, and systems applications.
 
-The current CoilLayout benchmark fixture validates a deterministic parameter grid before timing layout orders. `COMPL-B0001` is executable expected-output coverage, not a performance claim.
+The current CoilLayout fixtures validate deterministic layout and periodic-stencil outputs before timing or backend claims. `COMPL-B0001` and `COMPL-B0002` are executable expected-output coverage, not performance claims.
 
 <div class="theorem-box" data-theorem-id="COMPC-T0001"></div>
 <div class="theorem-box" data-theorem-id="COMPR-T0001"></div>
@@ -12,6 +12,7 @@ The current CoilLayout benchmark fixture validates a deterministic parameter gri
 <div class="theorem-box" data-theorem-id="COMPS-T0001"></div>
 
 <div class="dictionary-box" data-dictionary-id="COMMON-0040"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0045"></div>
 
 ::: {.warning-box}
 Benchmark fixtures are executable references only. They do not prove cache locality, stencil correctness, FFT/NTT correctness, or backend speed.

@@ -11,7 +11,7 @@ The source of truth is `manifests/phase5_edge_targets.yaml`, validated by `scrip
 - `P5-EDGE-003`: number provenance compression fixture. Status: exploratory Python provenance object.
 - `P5-EDGE-004`: noisy and aliased coil-signature benchmark. Status: exploratory Python fixture suite.
 - `P5-EDGE-005`: learned phase-channel baseline comparison. Status: exploratory Python control fixture.
-- `P5-EDGE-006`: circular layout and sampling backend comparison.
+- `P5-EDGE-006`: circular layout and sampling backend comparison. Status: exploratory periodic-stencil validation fixture.
 - `P5-EDGE-007`: quaternion and Hopf orientation-debugging note.
 - `P5-EDGE-008`: Living Book learning-path evaluation.
 

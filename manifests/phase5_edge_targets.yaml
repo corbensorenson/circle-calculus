@@ -102,7 +102,7 @@ targets:
   - id: P5-EDGE-006
     area: "Compute and rendering"
     priority: medium
-    status: planned
+    status: exploratory_python
     claim_type: experiment
     title: "Circular layout and sampling backend comparison"
     edge_question: "Can circular schedules improve locality, explainability, or verification for workloads that are already periodic or angular?"
@@ -114,8 +114,10 @@ targets:
     artifact_refs:
       - "papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md"
       - "papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md"
-    dictionary_dependencies: ["COMMON-0020", "COMMON-0022", "COMMON-0040"]
-    next_action: "Extend COMPL-B0001 toward a periodic-boundary stencil or angular-sampling fixture."
+      - "circle_math/applications/coil_compute.py"
+      - "sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py"
+    dictionary_dependencies: ["COMMON-0020", "COMMON-0022", "COMMON-0040", "COMMON-0045"]
+    next_action: "COMPL-B0002 adds a periodic-boundary stencil fixture; expand next toward angular sampling and repeated direct/dense/FFT/NTT/MLX backend measurements."
     guardrail: "Performance claims require direct baselines and repeated measurements."
 
   - id: P5-EDGE-007

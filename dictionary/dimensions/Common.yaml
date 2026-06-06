@@ -503,3 +503,15 @@ entries:
       - "A neural-network quality benchmark."
       - "Evidence that phase channels improve all AI."
       - "A replacement for dense, RoPE, attention, or state-space baselines."
+  - id: COMMON-0045
+    name: "Periodic stencil validation fixture"
+    kind: experiment
+    symbol: "periodic_stencil_fixture"
+    formal_definition: "`circle_math.applications.coil_compute.validate_stencil_grid`, a deterministic periodic-boundary stencil fixture comparing direct natural-order, gcd-cycle layout-order, and tiny dense-matrix outputs."
+    intuition: "A workload-specific correctness harness for checking that circular layout traversal preserves expected periodic-stencil outputs before timing or backend claims."
+    dependencies: ["COMMON-0022", "COMMON-0040"]
+    introduced_in: "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT"
+    forbidden_meanings:
+      - "A cache-locality proof."
+      - "Evidence that gcd-cycle layout is faster."
+      - "A proof of FFT, NTT, or MLX backend correctness."

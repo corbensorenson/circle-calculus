@@ -1,6 +1,6 @@
 # Circle Calculus Compute 3: CoilLayout, CoilStencil, and CoilNTT
 
-Status: polished draft with a proved stride-address seed and an exploratory layout benchmark/validation harness.
+Status: polished draft with a proved stride-address seed and exploratory layout/stencil benchmark validation harnesses.
 
 ## Aim
 
@@ -35,6 +35,8 @@ The Python test sidecar checks the same finite stride examples. The benchmark si
 
 `COMPL-B0001` adds a deterministic validation grid before timing claims. It checks that natural order, gcd-cycle order, direct traversal, and a tiny dense circular-stride reference all produce the same checksum on selected parameter cases. This is expected-output coverage for benchmark safety, not a cache-locality or speed result.
 
+`COMPL-B0002` adds the first workload-specific fixture: a periodic-boundary stencil grid. For each selected size and stride, the Python sidecar compares ordinary natural-order stencil evaluation, gcd-cycle layout-order evaluation, and a tiny dense-matrix reference. Matching outputs say only that the fixture preserves expected values across traversal orders; they do not imply cache-locality, speed, FFT/NTT correctness, or MLX backend quality.
+
 ## Compute Program
 
 `CoilLayout` should test whether storing stride cycles contiguously improves real workloads. For composite `n`, a stride decomposes into `gcd(n,k)` cycles, so memory can be arranged by orbit.
@@ -45,7 +47,7 @@ The Python test sidecar checks the same finite stride examples. The benchmark si
 
 ## Next Program
 
-- Extend the current traversal benchmark into workload-specific kernels.
+- Extend the current traversal and periodic-stencil fixtures into repeated workload-specific timings.
 - Expand the validation grid into explicit direct, dense, FFT, NTT, and MLX layout baselines.
 - Keep CPU reference behavior explicit before adding MLX acceleration.
 - Model transform correctness before claiming FFT/NTT backend correctness.

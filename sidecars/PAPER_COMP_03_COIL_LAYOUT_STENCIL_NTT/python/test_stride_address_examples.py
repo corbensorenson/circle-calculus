@@ -1,12 +1,17 @@
 from circle_math.applications.coil_compute import (
     DEFAULT_LAYOUT_CASES,
+    DEFAULT_STENCIL_CASES,
     circular_stride_checksum,
+    direct_periodic_stencil,
+    dense_periodic_stencil,
+    gcd_cycle_periodic_stencil,
     gcd_cycle_order,
     natural_order,
     reference_values,
     run_cpu_grid,
     stride_address,
     validate_layout_grid,
+    validate_stencil_grid,
 )
 
 
@@ -62,3 +67,20 @@ def test_cpu_grid_benchmark_uses_expected_checksums() -> None:
     for result in results:
         key = (result.size, result.stride, result.repeats)
         assert result.checksum == expected[key]
+
+
+def test_periodic_stencil_baselines_match_for_default_cases() -> None:
+    for case in DEFAULT_STENCIL_CASES:
+        values = reference_values(case.size)
+        direct = direct_periodic_stencil(values, case.stride, case.repeats)
+        dense = dense_periodic_stencil(values, case.stride, case.repeats)
+        layout = gcd_cycle_periodic_stencil(values, case.stride, case.repeats)
+        assert direct == dense == layout
+
+
+def test_stencil_grid_expected_outputs_match() -> None:
+    results = validate_stencil_grid()
+    assert len(results) == len(DEFAULT_STENCIL_CASES)
+    for result in results:
+        assert result.all_match
+        assert len(result.direct_output) == result.case.size
