@@ -25,6 +25,22 @@ glyph validity = glyph fields match some metadata entry
 
 This is still not a JSON parser or a live theorem-browser proof. It is the finite predicate that the exporter/site layer must respect.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/lean/PaperP205.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The generated glyph fixture is checked by `scripts/check_glyph_fixtures.py`; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `P2G-T0001`: `Circle.Phase2.proofGlyphTheoremId_mk`

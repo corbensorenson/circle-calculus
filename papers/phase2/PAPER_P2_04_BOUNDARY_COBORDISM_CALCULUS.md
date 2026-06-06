@@ -21,6 +21,22 @@ reverse(interval) = [target -> source]
 
 `COMMON-0011` names the boundary operator, and `COMMON-0012` names interval orientation reversal.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS/lean/PaperP204.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS/python/test_boundary_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks directed-boundary examples; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `P2BC-T0001`: `Circle.Phase2.boundaryBoundaryInterval_zero`

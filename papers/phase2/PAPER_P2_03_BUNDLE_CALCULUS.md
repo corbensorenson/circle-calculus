@@ -21,6 +21,22 @@ TrivialBundle(Base,Fiber)
 
 `COMMON-0008` names the projection operation. `COMMON-0009` names the fiber-coordinate operation.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_P2_03_BUNDLE_CALCULUS/lean/PaperP203.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_P2_03_BUNDLE_CALCULUS/python/test_trivial_bundle_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks finite bundle examples; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `P2BU-T0001`: `Circle.Phase2.trivialBundleProjection_point`

@@ -18,6 +18,22 @@ dimension |-> dimension mod 8
 
 This model is finite arithmetic. It is not Bott periodicity itself. It is a proof-carrying dimension index that can appear in future manifests, dictionaries, and papers without smuggling in unproved theory.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY/lean/PaperP202.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY/python/test_bott_clock_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks period-8 examples; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `P2B-T0001`: `Circle.Phase2.bottClockIndex_lt_eight`

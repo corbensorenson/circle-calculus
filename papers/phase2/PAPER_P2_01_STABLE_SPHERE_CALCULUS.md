@@ -22,6 +22,22 @@ counts
 
 This is not a spectrum. It is not a stable homotopy theorem. It is the checked finite statement that Euler characteristic returns to its original value after two suspension steps.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_P2_01_STABLE_SPHERE_CALCULUS/lean/PaperP201.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_P2_01_STABLE_SPHERE_CALCULUS/python/test_stable_sphere_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks finite seed examples; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `P2S-T0001`: `Circle.Phase2.doubleSuspensionEuler`
