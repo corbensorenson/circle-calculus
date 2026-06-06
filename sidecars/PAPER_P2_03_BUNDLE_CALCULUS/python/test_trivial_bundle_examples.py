@@ -31,6 +31,10 @@ def bundle_transition_apply(
     return TrivialBundlePoint(base=point.base, fiber=transition.map_fiber(point.fiber))
 
 
+def bundle_transition_identity() -> BundleTransition:
+    return BundleTransition(map_fiber=lambda fiber: fiber)
+
+
 def bundle_transition_compose(
     outer: BundleTransition, inner: BundleTransition
 ) -> BundleTransition:
@@ -81,3 +85,8 @@ def test_bundle_transition_composes() -> None:
     composed = bundle_transition_apply(bundle_transition_compose(outer, inner), point)
     sequential = bundle_transition_apply(outer, bundle_transition_apply(inner, point))
     assert composed == sequential
+
+
+def test_bundle_identity_transition_preserves_point() -> None:
+    point = TrivialBundlePoint(base=("base", 1), fiber={"phase": 7})
+    assert bundle_transition_apply(bundle_transition_identity(), point) == point

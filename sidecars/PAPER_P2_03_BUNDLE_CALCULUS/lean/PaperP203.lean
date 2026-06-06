@@ -19,9 +19,11 @@ namespace Circle.PaperP203
 #check Circle.Phase2.trivialBundleProjection_forgetsFiber
 #check Circle.Phase2.trivialBundleFiber_forgetsBase
 #check Circle.Phase2.bundleTransitionApply
+#check Circle.Phase2.bundleTransitionIdentity
 #check Circle.Phase2.bundleTransitionCompose
 #check Circle.Phase2.bundleTransitionProjection_apply
 #check Circle.Phase2.bundleTransitionFiber_apply
 #check Circle.Phase2.bundleTransitionApply_compose
+#check Circle.Phase2.bundleTransitionApply_identity
 
 end Circle.PaperP203

@@ -11,5 +11,6 @@ Bundle calculus starts with product-bundle projection and fiber vocabulary, then
 <div class="theorem-box" data-theorem-id="P2BU-T0005"></div>
 <div class="theorem-box" data-theorem-id="P2BU-T0006"></div>
 <div class="theorem-box" data-theorem-id="P2BU-T0007"></div>
+<div class="theorem-box" data-theorem-id="P2BU-T0008"></div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

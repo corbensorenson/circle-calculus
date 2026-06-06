@@ -22,7 +22,23 @@ theorems:
     status: lean_proved
     lean_name: Circle.Phase2.trivialBundleFiber_forgetsBase
     dictionary_dependencies: ["COMMON-0007", "COMMON-0008", "COMMON-0009"]
+  - id: P2BU-T0005
+    status: lean_proved
+    lean_name: Circle.Phase2.bundleTransitionProjection_apply
+    dictionary_dependencies: ["COMMON-0007", "COMMON-0008", "COMMON-0009", "COMMON-0034"]
+  - id: P2BU-T0006
+    status: lean_proved
+    lean_name: Circle.Phase2.bundleTransitionFiber_apply
+    dictionary_dependencies: ["COMMON-0007", "COMMON-0009", "COMMON-0034"]
+  - id: P2BU-T0007
+    status: lean_proved
+    lean_name: Circle.Phase2.bundleTransitionApply_compose
+    dictionary_dependencies: ["COMMON-0007", "COMMON-0009", "COMMON-0034", "COMMON-0035"]
+  - id: P2BU-T0008
+    status: lean_proved
+    lean_name: Circle.Phase2.bundleTransitionApply_identity
+    dictionary_dependencies: ["COMMON-0007", "COMMON-0009", "COMMON-0034"]
 next_targets:
-  - "Add transition functions only after choosing a nontrivial bundle representation."
+  - "Extend transition functions only after choosing a nontrivial bundle representation and explicit overlap data."
   - "Connect Hopf-coordinate papers as motivating examples, not as completed bundle formalizations."
 guardrail: "Do not treat twisted bundles as global products."

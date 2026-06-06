@@ -270,6 +270,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_P2_03_BUNDLE_CALCULUS/python/test_trivial_bundle_examples.py::test_bundle_transition_composes
     blocker: ""
+  - id: P2BU-T0008
+    status: lean_proved
+    lean_name: Circle.Phase2.bundleTransitionApply_identity
+    informal_statement: "The identity bundle transition leaves every trivial-bundle point unchanged."
+    formal_statement: "forall point, bundleTransitionApply bundleTransitionIdentity point = point"
+    dictionary_dependencies: ["COMMON-0007", "COMMON-0009", "COMMON-0034"]
+    paper_refs: ["papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_P2_03_BUNDLE_CALCULUS/python/test_trivial_bundle_examples.py::test_bundle_identity_transition_preserves_point
+    blocker: ""
   - id: P2BC-T0001
     status: lean_proved
     lean_name: Circle.Phase2.boundaryBoundaryInterval_zero

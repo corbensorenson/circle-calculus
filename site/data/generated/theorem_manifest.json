@@ -4076,7 +4076,7 @@
       "informal_statement": "A base-preserving bundle transition over the trivial bundle seed does not change the projected base coordinate.",
       "lean_name": "Circle.Phase2.bundleTransitionProjection_apply",
       "lean_source": "Circle/Phase2/Bundle.lean",
-      "lean_source_line": 60,
+      "lean_source_line": 63,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"
@@ -4115,7 +4115,7 @@
       "informal_statement": "A base-preserving bundle transition applies its fiber map to the fiber coordinate of a constructed point.",
       "lean_name": "Circle.Phase2.bundleTransitionFiber_apply",
       "lean_source": "Circle/Phase2/Bundle.lean",
-      "lean_source_line": 67,
+      "lean_source_line": 70,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"
@@ -4154,7 +4154,7 @@
       "informal_statement": "Composing base-preserving bundle transitions agrees with applying the inner transition and then the outer transition.",
       "lean_name": "Circle.Phase2.bundleTransitionApply_compose",
       "lean_source": "Circle/Phase2/Bundle.lean",
-      "lean_source_line": 73,
+      "lean_source_line": 76,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"
@@ -4174,6 +4174,45 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "sidecars/PAPER_P2_03_BUNDLE_CALCULUS/python/test_trivial_bundle_examples.py::test_bundle_transition_composes"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0007",
+        "COMMON-0009",
+        "COMMON-0034"
+      ],
+      "formal_statement": "forall point, bundleTransitionApply bundleTransitionIdentity point = point",
+      "id": "P2BU-T0008",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "The identity bundle transition leaves every trivial-bundle point unchanged.",
+      "lean_name": "Circle.Phase2.bundleTransitionApply_identity",
+      "lean_source": "Circle/Phase2/Bundle.lean",
+      "lean_source_line": 83,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_03_BUNDLE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.3: Bundle Calculus"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_P2_03_BUNDLE_CALCULUS/python/test_trivial_bundle_examples.py::test_bundle_identity_transition_preserves_point"
         ]
       }
     },

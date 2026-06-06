@@ -46,6 +46,7 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `P2BU-T0005`: `Circle.Phase2.bundleTransitionProjection_apply`
 - `P2BU-T0006`: `Circle.Phase2.bundleTransitionFiber_apply`
 - `P2BU-T0007`: `Circle.Phase2.bundleTransitionApply_compose`
+- `P2BU-T0008`: `Circle.Phase2.bundleTransitionApply_identity`
 
 ## Proved Core
 
@@ -55,7 +56,7 @@ The two forgetfulness theorems are the important conceptual seed. `P2BU-T0003` p
 
 This pair of laws gives Circle Calculus a precise way to say "visible base" and "hidden fiber" without using those words as metaphor only. The Python sidecar checks the same base/fiber projection examples.
 
-`P2BU-T0005` proves that applying a base-preserving transition does not change the projected base coordinate. `P2BU-T0006` proves that the transition acts on the fiber coordinate by its fiber map. `P2BU-T0007` proves that transition composition agrees with applying the inner transition and then the outer transition.
+`P2BU-T0005` proves that applying a base-preserving transition does not change the projected base coordinate. `P2BU-T0006` proves that the transition acts on the fiber coordinate by its fiber map. `P2BU-T0007` proves that transition composition agrees with applying the inner transition and then the outer transition. `P2BU-T0008` proves that the identity transition leaves every trivial-bundle point unchanged.
 
 These transition facts are deliberately local to the trivial product-bundle seed. They are the sanity laws future nontrivial transition functions must satisfy before the project talks about overlaps, cocycles, connections, curvature, or holonomy.
 
