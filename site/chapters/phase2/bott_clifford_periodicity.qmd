@@ -2,9 +2,33 @@
 title: "Bott And Clifford Periodicity"
 ---
 
-Placeholder for period-8 clock seeds and future Bott/Clifford work.
+The Bott/Clifford page starts with a small period-eight clock. The clock is not Bott periodicity by itself; it is the finite indexing seed that future Bott and Clifford work can reference without ambiguity.
+
+::: {.warning-box}
+The current theorem cards certify period-eight clock facts only. Full Bott periodicity, Clifford algebra classification, and K-theory claims remain future work.
+:::
+
+## What To Notice
+
+- The finite clock records indices modulo `8`.
+- Period-eight wraparound is a clean S1-style idea reused in a harder theory track.
+- Future Bott/Clifford claims need their own theorem ids and proofs.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+Why is a period-eight clock useful as infrastructure, even though it is not the full Bott periodicity theorem?
+
+:::
+
+## Source Trail
 
 <div class="theorem-box" data-theorem-id="P2B-T0001"></div>
+<div class="theorem-box" data-theorem-id="P2B-T0002"></div>
+<div class="theorem-box" data-theorem-id="P2B-T0003"></div>
 <div class="theorem-box" data-theorem-id="P2B-T0004"></div>
+
+<p data-paper-ref="papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md">Bott And Clifford Periodicity</a></p>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

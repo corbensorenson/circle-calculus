@@ -2,12 +2,36 @@
 title: "Future Hopf Horizon"
 ---
 
-This page is a placeholder for the octonionic Hopf horizon. It should remain scoped as future work where the theorem manifest says future, deferred, or roadmap.
+This page tracks the octonionic Hopf horizon. It is active because the project has finite and bounded coordinate seeds here, but it remains horizon-facing because the full theory is not complete.
+
+::: {.warning-box}
+This page should remain scoped as future work wherever the theorem manifest says future, deferred, or roadmap. The checked cards below do not imply a completed octonionic Hopf fibration theory.
+:::
+
+## What To Notice
+
+- `S15-T0003` records a bounded coordinate landing fact.
+- `S15-T0005` through `S15-T0007` record safe right-phase facts under explicit hypotheses.
+- `S15-T0008` is a guardrail counterexample against a naive full-coordinate invariance claim.
+- `S15-T0009` records the finite eight-suspension Euler-parity fact.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+How does a counterexample theorem help the Living Book stay honest about the S15 horizon?
+
+:::
+
+## Source Trail
 
 <div class="theorem-box" data-theorem-id="S15-T0003"></div>
 <div class="theorem-box" data-theorem-id="S15-T0005"></div>
 <div class="theorem-box" data-theorem-id="S15-T0006"></div>
 <div class="theorem-box" data-theorem-id="S15-T0007"></div>
 <div class="theorem-box" data-theorem-id="S15-T0008"></div>
+<div class="theorem-box" data-theorem-id="S15-T0009"></div>
+
+<p data-paper-ref="papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md">S15 Octonionic Hopf Roadmap</a></p>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

@@ -4,8 +4,34 @@ title: "Suspension Euler Parity"
 
 The finite S4-S6 ladder currently tracks suspension-count and Euler-parity facts. This page is a placeholder for interactive expansion.
 
+::: {.warning-box}
+The current layer is finite suspension and Euler-parity bookkeeping. It does not claim complete continuous geometry for `S^4`, `S^5`, or `S^6`.
+:::
+
+## What To Notice
+
+- Suspension changes finite cell counts in a controlled way.
+- Euler-parity facts give a checked bridge across several dimensions.
+- S4, S5, and S6 pages must keep their different future roles separate.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+Why can one finite suspension/Euler lemma support several dimension pages without proving all future geometry on those pages?
+
+:::
+
+## Source Trail
+
 <div class="theorem-box" data-theorem-id="S4-T0001"></div>
+<div class="theorem-box" data-theorem-id="S4-T0002"></div>
 <div class="theorem-box" data-theorem-id="S5-T0001"></div>
+<div class="theorem-box" data-theorem-id="S5-T0002"></div>
 <div class="theorem-box" data-theorem-id="S6-T0001"></div>
+<div class="theorem-box" data-theorem-id="S6-T0002"></div>
+<div class="theorem-box" data-theorem-id="S6-T0003"></div>
+
+<p data-paper-ref="papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md">Common paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md">General Suspension Euler Parity</a></p>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

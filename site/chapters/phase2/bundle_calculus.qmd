@@ -4,6 +4,34 @@ title: "Bundle Calculus"
 
 Bundle calculus starts with product-bundle projection and fiber vocabulary, then adds base-preserving transition sanity laws. Nontrivial atlases, overlaps, cocycles, connections, curvature, and holonomy remain future work.
 
+::: {.learning-unit}
+
+## What To Learn Here
+
+The first bundle lesson is intentionally trivial: a base point and a fiber value are stored together, and projections recover each part. This gives the Living Book a safe vocabulary for base, fiber, and transition before any nontrivial bundle geometry is attempted.
+
+:::
+
+::: {.warning-box}
+The current layer is product-bundle arithmetic and base-preserving transition sanity. Nontrivial atlas, overlap, cocycle, connection, curvature, and holonomy claims remain future work.
+:::
+
+## What To Notice
+
+- A trivial bundle point has a base coordinate and a fiber coordinate.
+- Projection theorems check that the two parts are recovered correctly.
+- Transition theorems currently express base preservation and identity behavior only.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+Why should the project prove trivial bundle projection facts before adding nontrivial atlas or holonomy language?
+
+:::
+
+## Source Trail
+
 <div class="theorem-box" data-theorem-id="P2BU-T0001"></div>
 <div class="theorem-box" data-theorem-id="P2BU-T0002"></div>
 <div class="theorem-box" data-theorem-id="P2BU-T0003"></div>
@@ -12,5 +40,7 @@ Bundle calculus starts with product-bundle projection and fiber vocabulary, then
 <div class="theorem-box" data-theorem-id="P2BU-T0006"></div>
 <div class="theorem-box" data-theorem-id="P2BU-T0007"></div>
 <div class="theorem-box" data-theorem-id="P2BU-T0008"></div>
+
+<p data-paper-ref="papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md">Bundle Calculus</a></p>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>
