@@ -14,6 +14,22 @@ SphereGrid(n,r) = {N,S} union {(j,i) | 1 <= j <= r, i in C_n}
 
 The warnings matter as much as the formulas: `C_n x C_m` is torus-like, pole collapse creates singular chart behavior, and `S^2` is not treated as a group.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS/lean/PaperS202.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS/python/test_sphere_grid_examples.py
+```
+
+The theorem, warning, and dictionary links are registered in `manifests/paper_manifest.yaml`. The examples check finite cases; they do not replace the Lean theorem spine.
+
 ## Theorem Spine
 
 - `S2-T0003`: `Circle.S2.sphereGrid_counts`

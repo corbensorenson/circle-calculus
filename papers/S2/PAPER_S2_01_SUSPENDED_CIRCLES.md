@@ -8,6 +8,22 @@ This paper defines the first finite combinatorial `S^2` model by suspending a fi
 
 The goal is not to formalize all continuous sphere geometry. The goal is to introduce a checked finite cell-count model whose Euler characteristic behaves like a sphere surface and whose construction can feed later sphere-grid, antipode, and suspension papers.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_S2_01_SUSPENDED_CIRCLES/lean/PaperS201.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_S2_01_SUSPENDED_CIRCLES/python/test_suspended_circle_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. Python examples are executable support; Lean declarations determine proof status.
+
 ## Model
 
 Start with a finite circle `C_n`. The suspended-circle model adds two poles and cones the circle from both sides.
@@ -26,7 +42,7 @@ The two new vertices are the north and south poles. The old circle contributes t
 
 The Lean count identity is arithmetic and is valid for all natural `n`; the geometric reading remains `n >= 3`.
 
-## Target Spine
+## Theorem Spine
 
 - `S2-T0001`: `Circle.S2.suspendedCircle_counts`
 - `S2-T0002`: `Circle.S2.suspendedCircle_chi`

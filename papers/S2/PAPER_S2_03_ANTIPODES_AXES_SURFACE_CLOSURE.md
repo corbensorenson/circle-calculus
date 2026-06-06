@@ -8,6 +8,22 @@ This paper adds conservative antipode, pole-axis, equator, and coordinate-rotati
 
 The guiding rule is the same as the rest of the `S^2` track: prove finite structure first, keep continuous geometry future.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE/lean/PaperS203.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE/python/test_s2_antipode_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks finite examples; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `S2-T0008`: `Circle.S2.suspendedCircleAntipode_swapsPoles`
