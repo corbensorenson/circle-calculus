@@ -80,7 +80,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | polished draft/partial proof | `S15-T0001` is a Lean roadmap marker; `S15-T0002` through `S15-T0008` are Lean-proved topological, coordinate landing, safe right-phase, and warning-boundary facts with Python examples |
 | `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md` | polished draft/proved finite seed | `P2S-T0001` through `P2S-T0003` are Lean-proved double/four suspension facts with Python examples |
 | `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md` | polished draft/proved finite seed | `P2B-T0001` through `P2B-T0003` are Lean-proved period-8 clock facts with Python examples; Bott/Clifford periodicity remains future work |
-| `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md` | polished draft/proved trivial seed | `P2BU-T0001` through `P2BU-T0004` are Lean-proved product-bundle projection/fiber facts with Python examples |
+| `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md` | polished draft/proved transition seed | `P2BU-T0001` through `P2BU-T0007` are Lean-proved product-bundle projection/fiber and base-preserving transition facts with Python examples |
 | `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md` | polished draft/proved finite seed | `P2BC-T0001` through `P2BC-T0004` are Lean-proved directed-interval boundary facts with Python examples |
 | `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md` | polished draft/proved certificate seed | `P2G-T0001` through `P2G-T0005` are Lean-proved proof-glyph projection and metadata-validity facts with Python examples |
 | `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md` | polished draft/proved finite seed | `APPD-T0001` through `APPD-T0003` are Lean-proved phase-coordinate facts with Python examples |
@@ -310,6 +310,9 @@ Proved common and dimensional spine:
 - `P2BU-T0002`: trivial-bundle fiber coordinate returns the fiber value
 - `P2BU-T0003`: trivial-bundle projection is invariant under changing only the fiber
 - `P2BU-T0004`: trivial-bundle fiber coordinate is invariant under changing only the base
+- `P2BU-T0005`: base-preserving bundle transitions do not change projection
+- `P2BU-T0006`: bundle transitions apply their fiber map to the fiber coordinate
+- `P2BU-T0007`: bundle transition composition agrees with sequential application
 - `P2BC-T0001`: point-boundary after interval-boundary is zero in the directed-interval seed
 - `P2BC-T0002`: reversing a directed interval negates its boundary
 - `P2BC-T0003`: reversing a directed interval twice returns it

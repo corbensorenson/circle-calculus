@@ -238,14 +238,16 @@ targets:
   - id: P4-P2-002
     layer: PhaseII
     priority: medium
-    status: planned
+    status: promoted
+    promoted_theorem_id: P2BU-T0007
+    supporting_theorem_ids: ["P2BU-T0005", "P2BU-T0006"]
     claim_type: theorem
     title: "Bundle transition sanity target"
     target_statement: "Future nontrivial bundle transition functions must preserve base coordinates and compose on overlaps."
     candidate_formalization: "Transition maps over a finite base with cocycle-like compatibility on triple overlaps."
     paper_refs: ["papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md"]
-    dictionary_dependencies: ["COMMON-0007", "COMMON-0008", "COMMON-0009"]
-    next_action: "Choose finite overlap data before registering as a theorem id."
+    dictionary_dependencies: ["COMMON-0007", "COMMON-0008", "COMMON-0009", "COMMON-0034", "COMMON-0035"]
+    next_action: "Promoted to P2BU-T0007 with base-preserving projection and fiber-map support theorems P2BU-T0005 and P2BU-T0006; true overlap/cocycle data remains future work."
     guardrail: "Do not treat twisted bundles as global products."
 
   - id: P4-APP-001

@@ -376,3 +376,25 @@ entries:
     forbidden_meanings:
       - "A proof by diagram."
       - "A visual normal-form theorem."
+  - id: COMMON-0034
+    name: "Bundle transition seed"
+    kind: operation
+    symbol: "transition.apply"
+    formal_definition: "`Circle.Phase2.BundleTransition`, a base-preserving fiber map over the trivial bundle seed."
+    intuition: "The first checked transition-function boundary: fiber data may move while the visible base coordinate stays fixed."
+    dependencies: ["COMMON-0007", "COMMON-0008", "COMMON-0009"]
+    introduced_in: "PAPER_P2_03_BUNDLE_CALCULUS"
+    forbidden_meanings:
+      - "A nontrivial bundle atlas."
+      - "A proof of Hopf fibration transition functions."
+  - id: COMMON-0035
+    name: "Bundle transition composition"
+    kind: operation
+    symbol: "transition.compose"
+    formal_definition: "`Circle.Phase2.bundleTransitionCompose`, composing two base-preserving fiber maps in the trivial bundle seed."
+    intuition: "A finite sanity law for future overlap/cocycle work."
+    dependencies: ["COMMON-0034"]
+    introduced_in: "PAPER_P2_03_BUNDLE_CALCULUS"
+    forbidden_meanings:
+      - "A general cocycle theorem."
+      - "A connection, curvature, or holonomy theorem."

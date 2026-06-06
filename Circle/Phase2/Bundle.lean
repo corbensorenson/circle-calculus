@@ -11,6 +11,9 @@ structure TrivialBundle (Base Fiber : Type) where
   base : Base
   fiber : Fiber
 
+structure BundleTransition (Fiber : Type) where
+  mapFiber : Fiber -> Fiber
+
 def trivialBundleProjection {Base Fiber : Type}
     (point : TrivialBundle Base Fiber) : Base :=
   point.base
@@ -43,6 +46,35 @@ theorem trivialBundleFiber_forgetsBase {Base Fiber : Type}
     (left right : Base) (fiber : Fiber) :
     trivialBundleFiber (trivialBundlePoint left fiber) =
       trivialBundleFiber (trivialBundlePoint right fiber) := by
+  rfl
+
+def bundleTransitionApply {Base Fiber : Type}
+    (transition : BundleTransition Fiber)
+    (point : TrivialBundle Base Fiber) : TrivialBundle Base Fiber :=
+  trivialBundlePoint point.base (transition.mapFiber point.fiber)
+
+def bundleTransitionCompose {Fiber : Type}
+    (outer inner : BundleTransition Fiber) : BundleTransition Fiber :=
+  { mapFiber := fun fiber => outer.mapFiber (inner.mapFiber fiber) }
+
+theorem bundleTransitionProjection_apply {Base Fiber : Type}
+    (transition : BundleTransition Fiber)
+    (point : TrivialBundle Base Fiber) :
+    trivialBundleProjection (bundleTransitionApply transition point) =
+      trivialBundleProjection point := by
+  rfl
+
+theorem bundleTransitionFiber_apply {Base Fiber : Type}
+    (transition : BundleTransition Fiber) (base : Base) (fiber : Fiber) :
+    trivialBundleFiber (bundleTransitionApply transition (trivialBundlePoint base fiber)) =
+      transition.mapFiber fiber := by
+  rfl
+
+theorem bundleTransitionApply_compose {Base Fiber : Type}
+    (outer inner : BundleTransition Fiber)
+    (point : TrivialBundle Base Fiber) :
+    bundleTransitionApply (bundleTransitionCompose outer inner) point =
+      bundleTransitionApply outer (bundleTransitionApply inner point) := by
   rfl
 
 end Circle.Phase2

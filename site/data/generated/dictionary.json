@@ -1259,6 +1259,42 @@
       "symbol": "glyph valid against manifest"
     },
     {
+      "dependencies": [
+        "COMMON-0007",
+        "COMMON-0008",
+        "COMMON-0009"
+      ],
+      "forbidden_meanings": [
+        "A nontrivial bundle atlas.",
+        "A proof of Hopf fibration transition functions."
+      ],
+      "formal_definition": "`Circle.Phase2.BundleTransition`, a base-preserving fiber map over the trivial bundle seed.",
+      "id": "COMMON-0034",
+      "introduced_in": "PAPER_P2_03_BUNDLE_CALCULUS",
+      "intuition": "The first checked transition-function boundary: fiber data may move while the visible base coordinate stays fixed.",
+      "kind": "operation",
+      "name": "Bundle transition seed",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "transition.apply"
+    },
+    {
+      "dependencies": [
+        "COMMON-0034"
+      ],
+      "forbidden_meanings": [
+        "A general cocycle theorem.",
+        "A connection, curvature, or holonomy theorem."
+      ],
+      "formal_definition": "`Circle.Phase2.bundleTransitionCompose`, composing two base-preserving fiber maps in the trivial bundle seed.",
+      "id": "COMMON-0035",
+      "introduced_in": "PAPER_P2_03_BUNDLE_CALCULUS",
+      "intuition": "A finite sanity law for future overlap/cocycle work.",
+      "kind": "operation",
+      "name": "Bundle transition composition",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "transition.compose"
+    },
+    {
       "dependencies": [],
       "forbidden_meanings": [
         "The one-node circle C_1.",

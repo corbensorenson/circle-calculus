@@ -2758,7 +2758,7 @@
       "informal_statement": "In the trivial product-bundle seed, projecting a built point returns its base coordinate.",
       "lean_name": "Circle.Phase2.trivialBundleProjection_point",
       "lean_source": "Circle/Phase2/Bundle.lean",
-      "lean_source_line": 26,
+      "lean_source_line": 29,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"
@@ -2788,7 +2788,7 @@
       "informal_statement": "In the trivial product-bundle seed, reading a built point's fiber coordinate returns its fiber value.",
       "lean_name": "Circle.Phase2.trivialBundleFiber_point",
       "lean_source": "Circle/Phase2/Bundle.lean",
-      "lean_source_line": 31,
+      "lean_source_line": 34,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"
@@ -2819,7 +2819,7 @@
       "informal_statement": "In the trivial product-bundle seed, changing only the fiber value does not change the projected base.",
       "lean_name": "Circle.Phase2.trivialBundleProjection_forgetsFiber",
       "lean_source": "Circle/Phase2/Bundle.lean",
-      "lean_source_line": 36,
+      "lean_source_line": 39,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"
@@ -2850,7 +2850,7 @@
       "informal_statement": "In the trivial product-bundle seed, changing only the base value does not change the fiber coordinate.",
       "lean_name": "Circle.Phase2.trivialBundleFiber_forgetsBase",
       "lean_source": "Circle/Phase2/Bundle.lean",
-      "lean_source_line": 42,
+      "lean_source_line": 45,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"
@@ -2862,6 +2862,100 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "fiber((left,fiber)) == fiber((right,fiber))"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0007",
+        "COMMON-0008",
+        "COMMON-0009",
+        "COMMON-0034"
+      ],
+      "formal_statement": "forall transition point, trivialBundleProjection (bundleTransitionApply transition point) = trivialBundleProjection point",
+      "id": "P2BU-T0005",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "A base-preserving bundle transition over the trivial bundle seed does not change the projected base coordinate.",
+      "lean_name": "Circle.Phase2.bundleTransitionProjection_apply",
+      "lean_source": "Circle/Phase2/Bundle.lean",
+      "lean_source_line": 60,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_P2_03_BUNDLE_CALCULUS/python/test_trivial_bundle_examples.py::test_bundle_transition_preserves_projection"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0007",
+        "COMMON-0009",
+        "COMMON-0034"
+      ],
+      "formal_statement": "forall transition base fiber, trivialBundleFiber (bundleTransitionApply transition (trivialBundlePoint base fiber)) = transition.mapFiber fiber",
+      "id": "P2BU-T0006",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "A base-preserving bundle transition applies its fiber map to the fiber coordinate of a constructed point.",
+      "lean_name": "Circle.Phase2.bundleTransitionFiber_apply",
+      "lean_source": "Circle/Phase2/Bundle.lean",
+      "lean_source_line": 67,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_P2_03_BUNDLE_CALCULUS/python/test_trivial_bundle_examples.py::test_bundle_transition_maps_fiber"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0007",
+        "COMMON-0034",
+        "COMMON-0035"
+      ],
+      "formal_statement": "forall outer inner point, bundleTransitionApply (bundleTransitionCompose outer inner) point = bundleTransitionApply outer (bundleTransitionApply inner point)",
+      "id": "P2BU-T0007",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "Composing base-preserving bundle transitions agrees with applying the inner transition and then the outer transition.",
+      "lean_name": "Circle.Phase2.bundleTransitionApply_compose",
+      "lean_source": "Circle/Phase2/Bundle.lean",
+      "lean_source_line": 73,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_P2_03_BUNDLE_CALCULUS/python/test_trivial_bundle_examples.py::test_bundle_transition_composes"
         ]
       }
     },

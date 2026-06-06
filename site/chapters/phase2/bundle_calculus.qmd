@@ -2,8 +2,14 @@
 title: "Bundle Calculus"
 ---
 
-Placeholder for trivial product-bundle seeds and future bundle calculus.
+Bundle calculus starts with product-bundle projection and fiber vocabulary, then adds base-preserving transition sanity laws. Nontrivial atlases, overlaps, cocycles, connections, curvature, and holonomy remain future work.
 
 <div class="theorem-box" data-theorem-id="P2BU-T0001"></div>
+<div class="theorem-box" data-theorem-id="P2BU-T0002"></div>
+<div class="theorem-box" data-theorem-id="P2BU-T0003"></div>
+<div class="theorem-box" data-theorem-id="P2BU-T0004"></div>
+<div class="theorem-box" data-theorem-id="P2BU-T0005"></div>
+<div class="theorem-box" data-theorem-id="P2BU-T0006"></div>
+<div class="theorem-box" data-theorem-id="P2BU-T0007"></div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

@@ -428,10 +428,15 @@ papers:
       - P2BU-T0002
       - P2BU-T0003
       - P2BU-T0004
+      - P2BU-T0005
+      - P2BU-T0006
+      - P2BU-T0007
     dictionary_ids:
       - COMMON-0007
       - COMMON-0008
       - COMMON-0009
+      - COMMON-0034
+      - COMMON-0035
 
   - id: PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS
     title: "Circle Calculus Phase II.4: Boundary and Cobordism Calculus"

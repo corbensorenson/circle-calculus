@@ -201,6 +201,48 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["fiber((left,fiber)) == fiber((right,fiber))"]
     blocker: ""
+  - id: P2BU-T0005
+    status: lean_proved
+    lean_name: Circle.Phase2.bundleTransitionProjection_apply
+    informal_statement: "A base-preserving bundle transition over the trivial bundle seed does not change the projected base coordinate."
+    formal_statement: "forall transition point, trivialBundleProjection (bundleTransitionApply transition point) = trivialBundleProjection point"
+    dictionary_dependencies: ["COMMON-0007", "COMMON-0008", "COMMON-0009", "COMMON-0034"]
+    paper_refs: ["papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_P2_03_BUNDLE_CALCULUS/python/test_trivial_bundle_examples.py::test_bundle_transition_preserves_projection
+    blocker: ""
+  - id: P2BU-T0006
+    status: lean_proved
+    lean_name: Circle.Phase2.bundleTransitionFiber_apply
+    informal_statement: "A base-preserving bundle transition applies its fiber map to the fiber coordinate of a constructed point."
+    formal_statement: "forall transition base fiber, trivialBundleFiber (bundleTransitionApply transition (trivialBundlePoint base fiber)) = transition.mapFiber fiber"
+    dictionary_dependencies: ["COMMON-0007", "COMMON-0009", "COMMON-0034"]
+    paper_refs: ["papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_P2_03_BUNDLE_CALCULUS/python/test_trivial_bundle_examples.py::test_bundle_transition_maps_fiber
+    blocker: ""
+  - id: P2BU-T0007
+    status: lean_proved
+    lean_name: Circle.Phase2.bundleTransitionApply_compose
+    informal_statement: "Composing base-preserving bundle transitions agrees with applying the inner transition and then the outer transition."
+    formal_statement: "forall outer inner point, bundleTransitionApply (bundleTransitionCompose outer inner) point = bundleTransitionApply outer (bundleTransitionApply inner point)"
+    dictionary_dependencies: ["COMMON-0007", "COMMON-0034", "COMMON-0035"]
+    paper_refs: ["papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_P2_03_BUNDLE_CALCULUS/python/test_trivial_bundle_examples.py::test_bundle_transition_composes
+    blocker: ""
   - id: P2BC-T0001
     status: lean_proved
     lean_name: Circle.Phase2.boundaryBoundaryInterval_zero

@@ -390,17 +390,24 @@
       "dictionary_dependencies": [
         "COMMON-0007",
         "COMMON-0008",
-        "COMMON-0009"
+        "COMMON-0009",
+        "COMMON-0034",
+        "COMMON-0035"
       ],
       "guardrail": "Do not treat twisted bundles as global products.",
       "id": "P4-P2-002",
       "layer": "PhaseII",
-      "next_action": "Choose finite overlap data before registering as a theorem id.",
+      "next_action": "Promoted to P2BU-T0007 with base-preserving projection and fiber-map support theorems P2BU-T0005 and P2BU-T0006; true overlap/cocycle data remains future work.",
       "paper_refs": [
         "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md"
       ],
       "priority": "medium",
-      "status": "planned",
+      "promoted_theorem_id": "P2BU-T0007",
+      "status": "promoted",
+      "supporting_theorem_ids": [
+        "P2BU-T0005",
+        "P2BU-T0006"
+      ],
       "target_statement": "Future nontrivial bundle transition functions must preserve base coordinates and compose on overlaps.",
       "title": "Bundle transition sanity target"
     },

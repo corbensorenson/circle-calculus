@@ -10,6 +10,7 @@ This file re-exports the trivial product-bundle seed used by
 namespace Circle.PaperP203
 
 #check Circle.Phase2.TrivialBundle
+#check Circle.Phase2.BundleTransition
 #check Circle.Phase2.trivialBundleProjection
 #check Circle.Phase2.trivialBundleFiber
 #check Circle.Phase2.trivialBundlePoint
@@ -17,5 +18,10 @@ namespace Circle.PaperP203
 #check Circle.Phase2.trivialBundleFiber_point
 #check Circle.Phase2.trivialBundleProjection_forgetsFiber
 #check Circle.Phase2.trivialBundleFiber_forgetsBase
+#check Circle.Phase2.bundleTransitionApply
+#check Circle.Phase2.bundleTransitionCompose
+#check Circle.Phase2.bundleTransitionProjection_apply
+#check Circle.Phase2.bundleTransitionFiber_apply
+#check Circle.Phase2.bundleTransitionApply_compose
 
 end Circle.PaperP203

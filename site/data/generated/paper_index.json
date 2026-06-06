@@ -520,7 +520,9 @@
       "dictionary_ids": [
         "COMMON-0007",
         "COMMON-0008",
-        "COMMON-0009"
+        "COMMON-0009",
+        "COMMON-0034",
+        "COMMON-0035"
       ],
       "id": "PAPER_P2_03_BUNDLE_CALCULUS",
       "path": "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md",
@@ -530,7 +532,10 @@
         "P2BU-T0001",
         "P2BU-T0002",
         "P2BU-T0003",
-        "P2BU-T0004"
+        "P2BU-T0004",
+        "P2BU-T0005",
+        "P2BU-T0006",
+        "P2BU-T0007"
       ],
       "title": "Circle Calculus Phase II.3: Bundle Calculus"
     },

@@ -293,7 +293,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `P2B-T0001` through `P2B-T0003` are Lean-proved finite period-8 clock facts with Python examples; Clifford algebras, K-theory, KO-theory, and Bott periodicity remain future formalization work.
 - [x] `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md`
   - Program: base, fiber, total space, projection, transition functions, connection, curvature, holonomy, and hidden proof provenance.
-  - Status: polished draft; `P2BU-T0001` through `P2BU-T0004` are Lean-proved trivial product-bundle projection/fiber facts with Python examples; nontrivial bundles, transition functions, connections, curvature, and holonomy remain future work.
+  - Status: polished draft; `P2BU-T0001` through `P2BU-T0007` are Lean-proved trivial product-bundle projection/fiber and base-preserving transition sanity facts with Python examples; nontrivial bundles, overlap/cocycle data, connections, curvature, and holonomy remain future work.
 - [x] `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md`
   - Program: boundaries, `boundary(boundary)=0`, cobordisms, fields, and proofs as transformations.
   - Status: polished draft; `P2BC-T0001` through `P2BC-T0004` are Lean-proved directed-interval boundary facts with Python examples; general chain complexes, cobordisms, TQFT, and physics-adjacent claims remain future work.
@@ -367,6 +367,9 @@ Application guardrails:
 - [x] `P2BU-T0002`: trivial-bundle fiber coordinate returns the fiber value.
 - [x] `P2BU-T0003`: trivial-bundle projection is invariant under changing only the fiber.
 - [x] `P2BU-T0004`: trivial-bundle fiber coordinate is invariant under changing only the base.
+- [x] `P2BU-T0005`: base-preserving bundle transitions do not change projection.
+- [x] `P2BU-T0006`: bundle transitions apply their fiber map to the fiber coordinate.
+- [x] `P2BU-T0007`: bundle transition composition agrees with sequential application.
 - [x] `P2BC-T0001`: point-boundary after interval-boundary is zero in the directed-interval seed.
 - [x] `P2BC-T0002`: reversing a directed interval negates its boundary.
 - [x] `P2BC-T0003`: reversing a directed interval twice returns it.
