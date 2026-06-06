@@ -90,6 +90,7 @@ sitecheck: site-data
 	python scripts/site/check_site_theorem_status.py
 	python scripts/site/check_site_paper_links.py
 	python scripts/site/check_site_source_links.py
+	python scripts/site/check_site_static_source_links.py
 	python scripts/site/check_site_data_backlinks.py
 	python scripts/site/check_site_widget_contracts.py
 	python scripts/site/check_site_accessibility_contract.py
