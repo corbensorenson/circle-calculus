@@ -4651,6 +4651,84 @@
       "blocker": "",
       "canonical_status": "proved",
       "dictionary_dependencies": [
+        "COMMON-0004",
+        "COMMON-0005"
+      ],
+      "formal_statement": "forall counts : List Nat, eightSuspensionCounts counts = fourSuspensionCounts (fourSuspensionCounts counts)",
+      "id": "P2S-T0004",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "The finite eight-suspension count operation is two four-suspension steps.",
+      "lean_name": "Circle.Phase2.eightSuspensionCounts_eq_four_four",
+      "lean_source": "Circle/Phase2/StableSphere.lean",
+      "lean_source_line": 39,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_01_STABLE_SPHERE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.1: Stable Sphere Calculus"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_P2_01_STABLE_SPHERE_CALCULUS/python/test_stable_sphere_examples.py::test_eight_suspension_is_two_four_suspensions"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0002",
+        "COMMON-0003",
+        "COMMON-0004",
+        "COMMON-0005"
+      ],
+      "formal_statement": "forall counts : List Nat, eulerCharacteristic (eightSuspensionCounts counts) = eulerCharacteristic counts",
+      "id": "P2S-T0005",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "Eight finite suspensions preserve Euler characteristic as two four-suspension steps.",
+      "lean_name": "Circle.Phase2.eightSuspensionEuler",
+      "lean_source": "Circle/Phase2/StableSphere.lean",
+      "lean_source_line": 43,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_01_STABLE_SPHERE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.1: Stable Sphere Calculus"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_P2_01_STABLE_SPHERE_CALCULUS/python/test_stable_sphere_examples.py::test_eight_suspension_preserves_euler_characteristic"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
         "S0-0001"
       ],
       "formal_statement": "Nat.card Circle.S0.Sign = 2",

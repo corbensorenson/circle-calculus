@@ -43,6 +43,8 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `P2S-T0001`: `Circle.Phase2.doubleSuspensionEuler`
 - `P2S-T0002`: `Circle.Phase2.fourSuspensionEuler`
 - `P2S-T0003`: `Circle.Phase2.fourSuspensionCounts_eq_double_double`
+- `P2S-T0004`: `Circle.Phase2.eightSuspensionCounts_eq_four_four`
+- `P2S-T0005`: `Circle.Phase2.eightSuspensionEuler`
 
 ## Proved Core
 
@@ -57,11 +59,13 @@ fourSuspensionCounts counts =
   doubleSuspensionCounts (doubleSuspensionCounts counts)
 ```
 
+`P2S-T0004` proves that the eight-suspension count operation is exactly two four-suspension steps, and `P2S-T0005` proves that eight finite suspensions preserve Euler characteristic. These are repeated finite-count stability laws, not spectrum or stable homotopy theorems.
+
 The Python sidecar checks the same finite identities on representative examples. The Lean theorem ids are the proof source; the Python examples are executable orientation.
 
 ## Next Program
 
-- Define a bounded stable-map representation before adding map-composition theorems.
+- Define a bounded stable-map representation before adding map-composition theorems beyond repeated finite suspension counts.
 - Keep spectra as a separate formal model with explicit dictionary entries and theorem ids.
 - Connect Bott/Clifford periodicity only after a concrete formalization path is selected.
 - Use this paper as the handoff between dimensional objects and structured transformations.

@@ -512,7 +512,9 @@
       "theorem_ids": [
         "P2S-T0001",
         "P2S-T0002",
-        "P2S-T0003"
+        "P2S-T0003",
+        "P2S-T0004",
+        "P2S-T0005"
       ],
       "title": "Circle Calculus Phase II.1: Stable Sphere Calculus"
     },

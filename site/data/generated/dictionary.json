@@ -2439,6 +2439,12 @@
           "status": "proved"
         },
         {
+          "id": "P2S-T0005",
+          "lean_name": "Circle.Phase2.eightSuspensionEuler",
+          "name": "Circle.Phase2.eightSuspensionEuler",
+          "status": "proved"
+        },
+        {
           "id": "S15-T0002",
           "lean_name": "Circle.Future.S15.topologicalModel_eulerCharacteristic",
           "name": "Circle.Future.S15.topologicalModel_eulerCharacteristic",
@@ -2624,6 +2630,12 @@
           "status": "proved"
         },
         {
+          "id": "P2S-T0005",
+          "lean_name": "Circle.Phase2.eightSuspensionEuler",
+          "name": "Circle.Phase2.eightSuspensionEuler",
+          "status": "proved"
+        },
+        {
           "id": "S15-T0009",
           "lean_name": "Circle.Future.S15.eightSuspensions_eulerCharacteristic",
           "name": "Circle.Future.S15.eightSuspensions_eulerCharacteristic",
@@ -2707,6 +2719,18 @@
           "lean_name": "Circle.Phase2.fourSuspensionCounts_eq_double_double",
           "name": "Circle.Phase2.fourSuspensionCounts_eq_double_double",
           "status": "proved"
+        },
+        {
+          "id": "P2S-T0004",
+          "lean_name": "Circle.Phase2.eightSuspensionCounts_eq_four_four",
+          "name": "Circle.Phase2.eightSuspensionCounts_eq_four_four",
+          "status": "proved"
+        },
+        {
+          "id": "P2S-T0005",
+          "lean_name": "Circle.Phase2.eightSuspensionEuler",
+          "name": "Circle.Phase2.eightSuspensionEuler",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -2750,6 +2774,18 @@
           "id": "P2S-T0003",
           "lean_name": "Circle.Phase2.fourSuspensionCounts_eq_double_double",
           "name": "Circle.Phase2.fourSuspensionCounts_eq_double_double",
+          "status": "proved"
+        },
+        {
+          "id": "P2S-T0004",
+          "lean_name": "Circle.Phase2.eightSuspensionCounts_eq_four_four",
+          "name": "Circle.Phase2.eightSuspensionCounts_eq_four_four",
+          "status": "proved"
+        },
+        {
+          "id": "P2S-T0005",
+          "lean_name": "Circle.Phase2.eightSuspensionEuler",
+          "name": "Circle.Phase2.eightSuspensionEuler",
           "status": "proved"
         }
       ],

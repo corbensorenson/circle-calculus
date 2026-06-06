@@ -33,4 +33,17 @@ theorem fourSuspensionEuler (counts : List Nat) :
   unfold fourSuspensionCounts
   rw [doubleSuspensionEuler, doubleSuspensionEuler]
 
+def eightSuspensionCounts (counts : List Nat) : List Nat :=
+  fourSuspensionCounts (fourSuspensionCounts counts)
+
+theorem eightSuspensionCounts_eq_four_four (counts : List Nat) :
+    eightSuspensionCounts counts = fourSuspensionCounts (fourSuspensionCounts counts) := by
+  rfl
+
+theorem eightSuspensionEuler (counts : List Nat) :
+    Circle.Common.eulerCharacteristic (eightSuspensionCounts counts) =
+      Circle.Common.eulerCharacteristic counts := by
+  unfold eightSuspensionCounts
+  rw [fourSuspensionEuler, fourSuspensionEuler]
+
 end Circle.Phase2

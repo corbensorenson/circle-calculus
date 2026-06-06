@@ -27,6 +27,8 @@ Why is it useful to prove finite repeated-suspension facts before trying to talk
 <div class="theorem-box" data-theorem-id="P2S-T0001"></div>
 <div class="theorem-box" data-theorem-id="P2S-T0002"></div>
 <div class="theorem-box" data-theorem-id="P2S-T0003"></div>
+<div class="theorem-box" data-theorem-id="P2S-T0004"></div>
+<div class="theorem-box" data-theorem-id="P2S-T0005"></div>
 
 <p data-paper-ref="papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md">Stable Sphere Calculus</a></p>
 

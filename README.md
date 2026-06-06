@@ -84,7 +84,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md` | polished draft/partial proof | `S7QH-T0001` through `S7QH-T0005` are Lean-proved coordinate theorems; full fibration topology remains future work |
 | `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md` | polished draft/proved spine | `S7O-T0001` through `S7O-T0008` are Lean-proved in a bounded Cayley-Dickson coordinate model |
 | `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | polished draft/partial proof | `S15-T0001` is a Lean roadmap marker; `S15-T0002` through `S15-T0009` have checked Lean declarations for topological, coordinate landing, safe right-phase, and warning-boundary facts with Python examples |
-| `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md` | polished draft/proved finite seed | `P2S-T0001` through `P2S-T0003` are Lean-proved double/four suspension facts with Python examples |
+| `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md` | polished draft/proved finite seed | `P2S-T0001` through `P2S-T0005` are Lean-proved double/four/eight suspension facts with Python examples |
 | `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md` | polished draft/proved finite seed | `P2B-T0001` through `P2B-T0004` are Lean-proved period-8 clock facts with Python examples; Bott/Clifford periodicity remains future work |
 | `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md` | polished draft/proved transition seed | `P2BU-T0001` through `P2BU-T0009` are Lean-proved product-bundle projection/fiber and base-preserving transition facts with Python examples |
 | `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md` | polished draft/proved finite seed | `P2BC-T0001` through `P2BC-T0005` are Lean-proved directed-interval boundary facts with Python examples |
@@ -326,6 +326,8 @@ Proved common and dimensional spine:
 - `P2S-T0001`: finite double suspension preserves Euler characteristic
 - `P2S-T0002`: finite four-suspension iteration preserves Euler characteristic
 - `P2S-T0003`: finite four-suspension counts are two double-suspension steps
+- `P2S-T0004`: finite eight-suspension counts are two four-suspension steps
+- `P2S-T0005`: finite eight-suspension iteration preserves Euler characteristic
 - `P2B-T0001`: finite period-8 dimension clock index is below 8
 - `P2B-T0002`: finite period-8 dimension clock is invariant under adding 8
 - `P2B-T0003`: finite period-8 dimension clock sends zero to zero

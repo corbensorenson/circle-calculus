@@ -86,7 +86,7 @@ Phase II programs:
 
 Current active Phase II proof seed:
 
-- `PAPER_P2_01_STABLE_SPHERE_CALCULUS` proves the finite double/four suspension facts `P2S-T0001` through `P2S-T0003` in Lean through `Circle.Phase2.doubleSuspensionEuler`, `Circle.Phase2.fourSuspensionEuler`, and `Circle.Phase2.fourSuspensionCounts_eq_double_double`, with matching Python examples.
+- `PAPER_P2_01_STABLE_SPHERE_CALCULUS` proves the finite double/four/eight suspension facts `P2S-T0001` through `P2S-T0005` in Lean through `Circle.Phase2.doubleSuspensionEuler`, `Circle.Phase2.fourSuspensionEuler`, `Circle.Phase2.fourSuspensionCounts_eq_double_double`, `Circle.Phase2.eightSuspensionCounts_eq_four_four`, and `Circle.Phase2.eightSuspensionEuler`, with matching Python examples.
 - This is deliberately finite cell-count bookkeeping. It is the entry point for stable-sphere calculus, not a proof of spectra, stable maps, Bott periodicity, or stable homotopy groups.
 - `PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY` proves the finite period-8 clock facts `P2B-T0001` through `P2B-T0004` in Lean through `Circle.Phase2.bottClockIndex_lt_eight`, `Circle.Phase2.bottClockIndex_add_eight`, `Circle.Phase2.bottClockIndex_zero`, and `Circle.Phase2.bottClockIndex_add_mul_eight`, with matching Python examples.
 - This clock is roadmap bookkeeping for future Clifford/Bott work, not a proof of Clifford algebras, K-theory, KO-theory, or Bott periodicity.
