@@ -18,6 +18,7 @@ namespace Circle.PaperS203
 #check Circle.S2.suspendedCircleAntipode_swapsPoles
 #check Circle.S2.suspendedCircleAntipode_involutive
 #check Circle.S2.suspendedCircleAntipode_bijective
+#check Circle.S2.suspendedCircleLongitudeRotation_bijective
 #check Circle.S2.suspendedCircleAntipode_longitudeRotation_opposite
 #check Circle.S2.suspendedCircleAntipode_preservesPoleSet
 #check Circle.S2.suspendedCircleAntipode_preservesEquatorSet

@@ -130,6 +130,21 @@ targets:
     next_action: "Promoted to S2-T0018 and Lean-proved as Circle.S2.suspendedCircleAntipode_bijective."
     guardrail: "This is a finite suspended-circle bijection, not a full continuous antipodal-map theorem."
 
+  - id: P4-S2-004
+    layer: S2
+    priority: medium
+    status: promoted
+    promoted_theorem_id: S2-T0019
+    supporting_theorem_ids: ["S1O-T0004", "S2-T0016"]
+    claim_type: theorem
+    title: "Suspended longitude rotations are bijections"
+    target_statement: "Every signed longitude rotation of the finite suspended-circle model is a reversible bijection of suspended-circle points."
+    candidate_formalization: "forall n : Nat, forall stride : Int, Function.Bijective (Circle.S2.suspendedCircleLongitudeRotation n stride)"
+    paper_refs: ["papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"]
+    dictionary_dependencies: ["S2-0005", "S2-0006", "CC-0101"]
+    next_action: "Promoted to S2-T0019 and Lean-proved as Circle.S2.suspendedCircleLongitudeRotation_bijective using the signed S1 rotation bijection on equator coordinates."
+    guardrail: "This is a finite suspended-circle coordinate action, not the continuous rotation group of S^2."
+
   - id: P4-S2-002
     layer: S2
     priority: medium

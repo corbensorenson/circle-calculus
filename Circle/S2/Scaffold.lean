@@ -66,6 +66,23 @@ theorem suspendedCircleAntipode_bijective (n : Nat) :
   · intro y
     exact ⟨suspendedCircleAntipode n y, suspendedCircleAntipode_involutive n y⟩
 
+theorem suspendedCircleLongitudeRotation_bijective (n : Nat) (stride : Int) :
+    Function.Bijective (suspendedCircleLongitudeRotation n stride) := by
+  constructor
+  · intro x y h
+    cases x <;> cases y <;> simp [suspendedCircleLongitudeRotation] at h ⊢
+    exact (Circle.S1.signedRot_bijective n stride).1 h
+  · intro y
+    cases y with
+    | north =>
+        exact ⟨SuspendedCirclePoint.north, rfl⟩
+    | south =>
+        exact ⟨SuspendedCirclePoint.south, rfl⟩
+    | equator node =>
+        obtain ⟨pre, hpre⟩ := (Circle.S1.signedRot_bijective n stride).2 node
+        exact ⟨SuspendedCirclePoint.equator pre, by
+          simp [suspendedCircleLongitudeRotation, hpre]⟩
+
 theorem suspendedCircleAntipode_longitudeRotation_opposite
     (n : Nat) (stride : Int) (point : SuspendedCirclePoint n) :
     suspendedCircleAntipode n (suspendedCircleLongitudeRotation n stride point) =

@@ -86,6 +86,14 @@ def test_suspended_antipode_is_bijective() -> None:
         assert images == points
 
 
+def test_suspended_longitude_rotation_is_bijective() -> None:
+    for n in range(1, 33):
+        points = set(suspended_points(n))
+        for stride in range(-64, 65):
+            images = {suspended_longitude_rotation(n, stride, point) for point in points}
+            assert images == points
+
+
 def test_suspended_antipode_preserves_pole_and_equator_sets() -> None:
     for n in range(1, 33):
         for point in suspended_points(n):

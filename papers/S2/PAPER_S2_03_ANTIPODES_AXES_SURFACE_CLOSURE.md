@@ -36,6 +36,7 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `S2-T0015`: `Circle.S2.suspendedCircleAntipodalPair_symmetric`
 - `S2-T0016`: `Circle.S2.suspendedCircleAntipode_longitudeRotation_opposite`
 - `S2-T0018`: `Circle.S2.suspendedCircleAntipode_bijective`
+- `S2-T0019`: `Circle.S2.suspendedCircleLongitudeRotation_bijective`
 
 ## Model
 
@@ -75,7 +76,7 @@ longitude_coordinate(ring(latitude,node))=some(node)
 
 ## Proved Core
 
-`S2-T0008` proves that the suspended-circle antipode swaps north and south. `S2-T0009` proves the antipode is involutive. `S2-T0018` proves the same finite antipode is a bijection of suspended-circle points. `S2-T0010` proves it preserves the finite pole subset, and `S2-T0011` proves it preserves the equator subset.
+`S2-T0008` proves that the suspended-circle antipode swaps north and south. `S2-T0009` proves the antipode is involutive. `S2-T0018` proves the same finite antipode is a bijection of suspended-circle points. `S2-T0019` proves every signed suspended longitude rotation is also a bijection: it fixes the two poles and uses the already-proved signed `S^1` rotation bijection on equator coordinates. `S2-T0010` proves the antipode preserves the finite pole subset, and `S2-T0011` proves it preserves the equator subset.
 
 `S2-T0012` proves that longitude rotation preserves latitude coordinates. `S2-T0013` proves that longitude rotation advances a ring point's longitude coordinate by `Circle.rot(n,stride)` while keeping pole longitudes empty.
 
@@ -83,7 +84,7 @@ longitude_coordinate(ring(latitude,node))=some(node)
 
 `S2-T0016` proves the equator-compatible antipode/longitude law: antipoding after a signed longitude rotation by `k` equals rotating by `-k` after antipoding. On poles this is the fixed-pole rule; on equator coordinates it is the finite-circle identity `-(x+k)=(-x)+(-k)`.
 
-Surface closure remains tied to the already-proved Euler facts for suspended circles and sphere grids. The Python sidecar checks the same finite antipode, antipode bijection, pole/equator predicate, suspended longitude/opposite-stride law, longitude-coordinate, latitude-coordinate, and antipodal-pair examples.
+Surface closure remains tied to the already-proved Euler facts for suspended circles and sphere grids. The Python sidecar checks the same finite antipode, antipode bijection, suspended longitude-rotation bijection, pole/equator predicate, suspended longitude/opposite-stride law, longitude-coordinate, latitude-coordinate, and antipodal-pair examples.
 
 ## Role In The Ladder
 
@@ -96,4 +97,4 @@ This paper makes `S^2` more than a cell-count example. It gives later Hopf and s
 
 ## Guardrails
 
-Continuous surface geometry, smooth antinodes, metric axes, and full analytic antipodal maps remain future work. The current proved content is the finite antipode, its finite bijection property, pole/equator preservation, suspended longitude/opposite-stride law, coordinate-rotation, and antipodal-pair spine.
+Continuous surface geometry, smooth antinodes, metric axes, and full analytic antipodal maps remain future work. The current proved content is the finite antipode, its finite bijection property, finite signed suspended longitude-rotation bijection, pole/equator preservation, suspended longitude/opposite-stride law, coordinate-rotation, and antipodal-pair spine.

@@ -222,7 +222,7 @@ Goal: make the executable examples line up with the Lean-backed papers without d
 - [x] `papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md`
   - Proof targets to add as the model matures: antipodal map, axis, meridians, surface closure, antinodes.
   - Do not force continuous geometry too early.
-  - Status: polished draft; suspended-circle antipode pole swap, involution, finite bijection, finite pole/equator subset preservation, finite suspended longitude/opposite-stride law, finite sphere-grid latitude/longitude coordinate rotation laws, and finite antipodal-pair witness/symmetry facts are Lean-proved as `S2-T0008` through `S2-T0016` plus `S2-T0018`; continuous surface geometry remains a future refinement.
+  - Status: polished draft; suspended-circle antipode pole swap, involution, finite bijection, finite signed longitude-rotation bijection, finite pole/equator subset preservation, finite suspended longitude/opposite-stride law, finite sphere-grid latitude/longitude coordinate rotation laws, and finite antipodal-pair witness/symmetry facts are Lean-proved as `S2-T0008` through `S2-T0016` plus `S2-T0018` and `S2-T0019`; continuous surface geometry remains a future refinement.
 
 ### S3: Hypersphere, Quaternions, Hopf
 
