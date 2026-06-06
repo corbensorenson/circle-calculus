@@ -27,7 +27,7 @@ targets:
   - id: P6-SWEEP-002
     area: "Paper prose and theorem-link clarity"
     priority: high
-    status: planned
+    status: active
     sweep_type: paper_quality
     objective: "Make every paper easier to read while preserving exact proof status and theorem ids."
     acceptance_criteria:
@@ -41,7 +41,7 @@ targets:
     checks:
       - "python scripts/check_paper_manifest.py"
       - "python scripts/check_paper_theorem_links.py"
-    next_action: "Audit the papers in dimensional order, starting with S0/S1 then moving upward."
+    next_action: "S1.4 source-trail and guardrail cleanup started; continue auditing papers in dimensional order from S0/S1 upward."
     guardrail: "Cleaner prose must not upgrade proof status."
 
   - id: P6-SWEEP-003

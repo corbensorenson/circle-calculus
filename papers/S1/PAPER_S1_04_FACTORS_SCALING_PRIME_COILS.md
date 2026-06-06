@@ -4,9 +4,28 @@ Status: polished draft with the scaling, full-coil, and affine-map theorem spine
 
 ## Aim
 
-This paper will connect multiplication, scaling, factors, invertibility, and prime-circle behavior inside `S^1`.
+This paper connects multiplication-like scaling, factors, invertibility, image/fiber structure, full coils, prime-circle behavior, and affine finite-circle maps inside `S^1`.
 
-## Target Spine
+The object remains finite and modular: every theorem below is a statement about finite-circle addresses, natural representatives, periods, kernels, fibers, images, or affine maps. The paper does not claim a general theory of rings, fields, smooth circles, or all endomorphism classifications.
+
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/lean/PaperS104.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py
+sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_number_provenance_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. Python examples and exploratory fixtures support navigation and executable sanity checks; the proof status comes from the Lean declarations.
+
+## Theorem Spine
 
 - `CC-T0008`: `Circle.scale_invertible_iff_coprime`
 - `CC-T0028`: `Circle.scale_zero_factor`
@@ -50,11 +69,13 @@ This paper will connect multiplication, scaling, factors, invertibility, and pri
 - `CC-T0056`: `Circle.rot_bijective`
 - `CC-T0057`: `Circle.affineMap_comp`
 - `CC-T0058`: `Circle.affineMap_bijective_of_coprime`
-- multiplication as repeated rotation or scaling
-- scaling invertibility iff coprime
-- factor structure through orbit decomposition
-- prime rings as full-cycle systems
-- affine maps as scale-then-rotation maps, with bijectivity under coprime scaling
+
+Reader-facing grouping:
+
+- scaling basics: zero, identity, composition, factor congruence, and transport of rotations/coils;
+- factor and kernel witnesses: cofactor collapse, zero criteria, period criteria, and kernel representatives;
+- image and fiber structure: period representatives, image cardinality, target fibers, and image-times-fiber factorizations;
+- reversible cases: coprime reflection, full-coil iff coprime, prime-circle scaling, and coprime affine bijections.
 
 ## Proved Core
 
@@ -238,8 +259,11 @@ Compared with value-only notation, provenance is clearer when a reader needs to 
 
 - `S1-0001`: S1 finite circle core
 - `CC-0105`: Scaling
-- new factor entries as the proof model matures
+- `COMMON-0041`: finite-coil theorem signature index
+- `COMMON-0042`: number provenance fixture
 
-## Notes
+## Guardrails And Next Targets
 
 The remaining factor-structure targets should build on `CC-T0008`, `CC-T0017`, `CC-T0018`, `CC-T0019`, `CC-T0020`, `CC-T0021`, `CC-T0022`, `CC-T0023`, `CC-T0024`, `CC-T0025`, `CC-T0026`, `CC-T0027`, `CC-T0028`, `CC-T0029`, `CC-T0030`, `CC-T0031`, `CC-T0032`, `CC-T0033`, `CC-T0034`, `CC-T0035`, `CC-T0036`, `CC-T0037`, `CC-T0038`, `CC-T0039`, `CC-T0040`, `CC-T0041`, `CC-T0042`, `CC-T0043`, `CC-T0044`, `CC-T0045`, `CC-T0046`, `CC-T0047`, `CC-T0048`, `CC-T0049`, `CC-T0050`, `CC-T0051`, `CC-T0052`, `CC-T0053`, `CC-T0054`, `CC-T0056`, `CC-T0057`, and `CC-T0058` without claiming more than the current finite-circle model proves.
+
+The finite-coil signature index and number-provenance fixture are exploratory navigation aids. They should not be described as proof-search speedups, proof-compression theorems, or new arithmetic unless future manifests, benchmarks, and Lean declarations support those stronger claims.

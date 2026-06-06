@@ -111,6 +111,7 @@ papers:
     dictionary_ids:
       - S1-0001
       - CC-0105
+      - COMMON-0041
       - COMMON-0042
 
   - id: PAPER_S1_01_FINITE_CIRCLES
