@@ -87,4 +87,4 @@ site-render: site-data
 site-preview: site-data
 	$(QUARTO_ENV) $(QUARTO) preview site
 
-living-book-check: lean sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests dimensioncheck nofake sitecheck site-render
+living-book-check: check site-render
