@@ -1,6 +1,6 @@
 # Circle Calculus Application 1: Coil Data Analysis
 
-Status: polished draft with a proved finite phase-coordinate seed and an exploratory deterministic benchmark fixture.
+Status: polished draft with a proved finite phase-coordinate seed and exploratory deterministic benchmark fixtures.
 
 ## Aim
 
@@ -45,9 +45,13 @@ The first practical benchmark starts with synthetic signals where the ground-tru
 - deterministic known-period signal generation;
 - `coil_closure_error`, a mean-squared closure score for candidate periods;
 - `autocorrelation_score`, an ordinary normalized autocorrelation baseline;
+- `periodogram_score`, a simple single-frequency periodogram-style baseline;
 - `benchmark_known_period`, a fixture reporting both best-period choices.
+- `benchmark_period_fixture_suite`, a clean/noisy/aliased/multi-period fixture suite reporting all three methods.
 
 The current fixture checks that both coil closure and autocorrelation recover the known period for a simple deterministic synthetic signal. That is a sanity check, not a usefulness claim.
+
+`APPD-B0002` extends the fixture suite. Clean and deterministic-noisy cases recover the known period `12` across all three methods. The aliased case records both `6` and `12` as visible components. The multi-period case is intentionally ambiguous: coil closure and autocorrelation currently prefer `24`, while the periodogram-style score prefers `12`. This is a useful warning, not a win.
 
 A minimal future pipeline is:
 
@@ -64,8 +68,8 @@ Only after synthetic behavior is understood should the project move to real data
 
 ## Next Program
 
-- Expand synthetic periodic-data generators to noisy, aliased, and multi-period fixtures.
-- Compare coil signatures against ordinary autocorrelation, periodogram, and Fourier baselines.
+- Compare the deterministic suite against external periodogram/Fourier baselines.
+- Add real-data guardrails before moving beyond synthetic fixtures.
 - Track aliasing and false positives explicitly.
 - Keep Python/MLX experiments separate from Lean proof status.
 

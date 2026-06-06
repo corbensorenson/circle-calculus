@@ -89,21 +89,24 @@
       ],
       "area": "Cyclic and periodic data analysis",
       "artifact_refs": [
-        "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md"
+        "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md",
+        "circle_math/applications/coil_data.py",
+        "sidecars/PAPER_APP_01_COIL_DATA_ANALYSIS/python/test_phase_coordinate_examples.py"
       ],
       "claim_type": "experiment",
       "dictionary_dependencies": [
         "COMMON-0036",
         "COMMON-0037",
-        "COMMON-0038"
+        "COMMON-0038",
+        "COMMON-0043"
       ],
       "edge_question": "Can coil closure profiles or prime-lag scans add useful diagnostics beyond autocorrelation and periodogram baselines?",
       "guardrail": "Benchmark results are not Lean proofs and do not imply real-data usefulness.",
       "id": "P5-EDGE-004",
-      "next_action": "Extend APPD-B0001 with noisy, aliased, multi-period, and periodogram baseline cases.",
+      "next_action": "APPD-B0002 adds deterministic noisy, aliased, multi-period, and periodogram-style baseline cases; next step is external periodogram/Fourier baselines and real-data guardrails.",
       "ordinary_baseline": "Autocorrelation, periodogram/Fourier ranking, and known-period synthetic controls.",
       "priority": "high",
-      "status": "planned",
+      "status": "exploratory_python",
       "title": "Noisy and aliased coil-signature benchmark"
     },
     {

@@ -302,7 +302,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `P2G-T0001` through `P2G-T0005` are Lean-proved proof-glyph certificate projection and finite theorem-metadata validity facts with Python examples; `P5-EDGE-001` adds an exploratory generated glyph-status fixture; glyph syntax, normal forms, semantics, dependency correctness, and proof search remain future work.
 - [x] `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md`
   - Program: coil signatures, closure profiles, prime-lag recurrence, antinode maps, and periodic-data benchmarks.
-  - Status: polished draft; `APPD-T0001` through `APPD-T0003` are Lean-proved finite phase-coordinate facts with Python examples. `APPD-B0001` is an exploratory Python fixture comparing coil closure ranking with an autocorrelation baseline on a deterministic known-period signal; real-data and usefulness claims remain future work.
+  - Status: polished draft; `APPD-T0001` through `APPD-T0003` are Lean-proved finite phase-coordinate facts with Python examples. `APPD-B0001` and `APPD-B0002` are exploratory Python fixtures comparing coil closure ranking with autocorrelation and periodogram-style baselines on deterministic clean, noisy, aliased, and multi-period synthetic signals; real-data and usefulness claims remain future work.
 - [x] `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md`
   - Program: certified cyclic/circulant/orbit structure lowered to FFT/NTT/permutation backends and benchmarked.
   - Status: polished draft; `COMPC-T0001` through `COMPC-T0003` are Lean-proved cyclic-address facts with Python examples; backend lowering and performance claims remain benchmark work.
@@ -383,6 +383,7 @@ Application guardrails:
 - [x] `APPD-T0002`: finite phase coordinate closes after adding one full period.
 - [x] `APPD-T0003`: finite phase coordinate at zero is zero.
 - [x] `APPD-B0001`: exploratory known-period Python fixture compares coil closure ranking with an autocorrelation baseline.
+- [x] `APPD-B0002`: exploratory clean/noisy/aliased/multi-period Python fixture reports coil closure, autocorrelation, and periodogram-style baselines.
 - [x] `COMPC-T0001`: cyclic address is bounded by a positive circular buffer size.
 - [x] `COMPC-T0002`: cyclic address is unchanged after adding one full buffer size.
 - [x] `COMPC-T0003`: cyclic address at zero is zero.
@@ -653,6 +654,7 @@ Outputs:
 - [x] `P5-EDGE-001`: generated glyph-status fixture resolves theorem and dictionary data without upgrading unproved theorem status.
 - [x] `P5-EDGE-002`: finite-coil theorem-signature index normalizes gcd, period, orbit count, full-coil, and same-orbit tags for bounded S1 proof navigation.
 - [x] `P5-EDGE-003`: number provenance fixture records divisor, cofactor, orbit-count, period, and theorem-link views for selected finite circles.
+- [x] `P5-EDGE-004`: expanded deterministic periodic-data fixture suite records clean, noisy, aliased, and multi-period baseline behavior without upgrading usefulness claims.
 - [ ] At least one experiment-ready paper or application note for each accepted edge direction.
 - [ ] Python/MLX or other executable sidecars where the claim is computational.
 - [ ] Lean theorem targets where the claim is formal.

@@ -1427,6 +1427,26 @@
       "symbol": "NumberProvenance(n)"
     },
     {
+      "dependencies": [
+        "COMMON-0036",
+        "COMMON-0037",
+        "COMMON-0038"
+      ],
+      "forbidden_meanings": [
+        "A real-data benchmark.",
+        "Evidence that coil closure beats periodogram or autocorrelation.",
+        "A proof of hidden periodicity."
+      ],
+      "formal_definition": "`circle_math.applications.coil_data.benchmark_period_fixture_suite`, deterministic clean, noisy, aliased, and multi-period synthetic fixtures reporting coil closure, autocorrelation, and periodogram-style baselines.",
+      "id": "COMMON-0043",
+      "introduced_in": "PAPER_APP_01_COIL_DATA_ANALYSIS",
+      "intuition": "A small testbed for seeing where coil closure agrees with ordinary baselines and where ambiguity appears.",
+      "kind": "experiment",
+      "name": "Expanded periodic benchmark suite",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "period_fixture_suite"
+    },
+    {
       "dependencies": [],
       "forbidden_meanings": [
         "The one-node circle C_1.",

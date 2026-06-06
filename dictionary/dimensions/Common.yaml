@@ -479,3 +479,15 @@ entries:
       - "New arithmetic."
       - "A proof compression theorem."
       - "Evidence that provenance is always clearer than value-only notation."
+  - id: COMMON-0043
+    name: "Expanded periodic benchmark suite"
+    kind: experiment
+    symbol: "period_fixture_suite"
+    formal_definition: "`circle_math.applications.coil_data.benchmark_period_fixture_suite`, deterministic clean, noisy, aliased, and multi-period synthetic fixtures reporting coil closure, autocorrelation, and periodogram-style baselines."
+    intuition: "A small testbed for seeing where coil closure agrees with ordinary baselines and where ambiguity appears."
+    dependencies: ["COMMON-0036", "COMMON-0037", "COMMON-0038"]
+    introduced_in: "PAPER_APP_01_COIL_DATA_ANALYSIS"
+    forbidden_meanings:
+      - "A real-data benchmark."
+      - "Evidence that coil closure beats periodogram or autocorrelation."
+      - "A proof of hidden periodicity."

@@ -62,7 +62,7 @@ targets:
   - id: P5-EDGE-004
     area: "Cyclic and periodic data analysis"
     priority: high
-    status: planned
+    status: exploratory_python
     claim_type: experiment
     title: "Noisy and aliased coil-signature benchmark"
     edge_question: "Can coil closure profiles or prime-lag scans add useful diagnostics beyond autocorrelation and periodogram baselines?"
@@ -73,8 +73,10 @@ targets:
       - "Negative or ambiguous results are recorded without upgrading claims."
     artifact_refs:
       - "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md"
-    dictionary_dependencies: ["COMMON-0036", "COMMON-0037", "COMMON-0038"]
-    next_action: "Extend APPD-B0001 with noisy, aliased, multi-period, and periodogram baseline cases."
+      - "circle_math/applications/coil_data.py"
+      - "sidecars/PAPER_APP_01_COIL_DATA_ANALYSIS/python/test_phase_coordinate_examples.py"
+    dictionary_dependencies: ["COMMON-0036", "COMMON-0037", "COMMON-0038", "COMMON-0043"]
+    next_action: "APPD-B0002 adds deterministic noisy, aliased, multi-period, and periodogram-style baseline cases; next step is external periodogram/Fourier baselines and real-data guardrails."
     guardrail: "Benchmark results are not Lean proofs and do not imply real-data usefulness."
 
   - id: P5-EDGE-005

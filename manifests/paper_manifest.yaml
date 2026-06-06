@@ -485,6 +485,7 @@ papers:
       - COMMON-0036
       - COMMON-0037
       - COMMON-0038
+      - COMMON-0043
 
   - id: PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION
     title: "Circle Calculus Compute 1: Proof-Carrying Circular Computation"

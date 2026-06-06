@@ -21,12 +21,16 @@ theorems:
     lean_name: Circle.Applications.phaseCoordinate_zero
     dictionary_dependencies: ["COMMON-0016"]
 next_targets:
-  - "Expand deterministic synthetic fixtures to noisy, aliased, and multi-period cases."
-  - "Add periodogram/Fourier baselines before usefulness claims."
+  - "Compare the deterministic fixture suite against external periodogram/Fourier baselines before usefulness claims."
+  - "Add real-data guardrails and report negative or ambiguous results explicitly."
   - "Keep real-data claims exploratory until benchmarked."
 benchmarks:
   - id: APPD-B0001
     status: exploratory_python
     path: sidecars/PAPER_APP_01_COIL_DATA_ANALYSIS/python/test_phase_coordinate_examples.py::test_known_period_benchmark_fixture_reports_both_methods
     description: "Deterministic known-period synthetic fixture comparing coil closure ranking against an autocorrelation baseline."
+  - id: APPD-B0002
+    status: exploratory_python
+    path: sidecars/PAPER_APP_01_COIL_DATA_ANALYSIS/python/test_phase_coordinate_examples.py::test_period_fixture_suite_reports_all_baselines_without_overclaiming
+    description: "Deterministic clean, noisy, aliased, and multi-period fixture suite reporting coil closure, autocorrelation, and periodogram-style baselines."
 guardrail: "Benchmark against ordinary periodic baselines."

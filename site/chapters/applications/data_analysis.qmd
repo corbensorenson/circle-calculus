@@ -2,7 +2,9 @@
 title: "Data Analysis"
 ---
 
-The data-analysis page tracks finite phase-coordinate proofs and exploratory benchmark fixtures for periodic synthetic data. The first fixture compares coil closure ranking with an autocorrelation baseline on a deterministic known-period signal; it is not a real-data usefulness claim.
+The data-analysis page tracks finite phase-coordinate proofs and exploratory benchmark fixtures for periodic synthetic data. `APPD-B0001` compares coil closure ranking with an autocorrelation baseline on a deterministic known-period signal. `APPD-B0002` extends this to clean, noisy, aliased, and multi-period cases with coil closure, autocorrelation, and periodogram-style baselines.
+
+The multi-period fixture is intentionally ambiguous; it is a warning against overclaiming, not a real-data usefulness claim.
 
 <div class="theorem-box" data-theorem-id="APPD-T0001"></div>
 <div class="theorem-box" data-theorem-id="APPD-T0002"></div>
