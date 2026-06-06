@@ -1347,6 +1347,25 @@
       "symbol": "autocorr(lag)"
     },
     {
+      "dependencies": [
+        "COMMON-0026",
+        "COMMON-0027"
+      ],
+      "forbidden_meanings": [
+        "A real model-quality result.",
+        "A proof that phase channels improve neural networks.",
+        "A replacement for standard AI baselines."
+      ],
+      "formal_definition": "`circle_math.applications.circle_ai.run_phase_channel_benchmark`, a deterministic known-period binary-label fixture comparing a phase-channel lookup against a constant baseline, with optional MLX scoring when available.",
+      "id": "COMMON-0039",
+      "introduced_in": "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES",
+      "intuition": "A small smoke test that keeps AI phase-channel claims executable before moving to learned models.",
+      "kind": "experiment",
+      "name": "Synthetic phase-channel benchmark",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "phase_channel_fixture"
+    },
+    {
       "dependencies": [],
       "forbidden_meanings": [
         "The one-node circle C_1.",

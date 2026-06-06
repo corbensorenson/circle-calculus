@@ -317,7 +317,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `COMPS-T0001` through `COMPS-T0003` are Lean-proved round-robin schedule facts with Python examples; fairness, load balancing, robotics, codec, ANN, acquisition, CAM, torsion, detection, and quantum claims remain future domain work.
 - [x] `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md`
   - Program: disciplined Circle AI thesis covering phase, recurrence, rotation, sparse cyclic mixing, circular memory, harmonic transforms, geometry-aware models, and proof-carrying model components.
-  - Status: polished draft; `AIA-T0001` through `AIA-T0003` are Lean-proved phase-channel facts with Python examples; model-quality and speed claims remain benchmark work.
+  - Status: polished draft; `AIA-T0001` through `AIA-T0003` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` is an exploratory deterministic phase-channel benchmark fixture; model-quality and speed claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`
   - Program: Coil Attention, CoilKV, long-context retrieval, alias control, stride/orbit coverage, and comparisons against full attention, sparse attention, Hyena-like mixers, and S4/Mamba-like baselines.
   - Status: polished draft; `AIM-T0001` through `AIM-T0003` are Lean-proved cyclic-memory-slot facts with Python examples; retrieval quality, alias control, and attention replacement claims remain benchmark work.
@@ -399,6 +399,7 @@ Application guardrails:
 - [x] `AIA-T0001`: AI phase channel is bounded by a positive period.
 - [x] `AIA-T0002`: AI phase channel closes after one full period.
 - [x] `AIA-T0003`: AI phase channel at zero is zero.
+- [x] `AIA-B0001`: exploratory deterministic phase-channel benchmark fixture.
 - [x] `AIM-T0001`: cyclic memory slot is bounded by a positive bank size.
 - [x] `AIM-T0002`: cyclic memory slot closes after one full bank pass.
 - [x] `AIM-T0003`: cyclic memory slot at zero is zero.
@@ -484,7 +485,7 @@ The 2026-06-05 compute handoff is preserved in `docs/PHASE2_AND_APPLICATIONS.md`
 - [x] Record the strongest current prototype priorities: `CoilRay Sort`, `CoilLayout`, and `CoilNTT`.
 - [x] Preserve the broader top-ten prototype queue: `CoilRay Sort`, `CoilSampler`, `CoilLayout`, `CoilStencil`, `CoilNTT`, `CoilHash`, `CoilMotion`, `CoilPRM`, `CoilCodec`, and `CoilANN`.
 - [x] Preserve the `CoilIR` meta-application: dictionary-detected circular structure, Lean-proved rewrites, backend selection, and benchmark validation.
-- [x] When application work resumes, start with small MLX/Mac-compatible benchmarks where possible; keep CUDA/NVIDIA references as external baselines or future portability notes. Current starter: `sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/benchmark_coil_layout.py` times natural versus gcd-cycle circular-stride traversal on CPU and optionally MLX.
+- [x] When application work resumes, start with small MLX/Mac-compatible benchmarks where possible; keep CUDA/NVIDIA references as external baselines or future portability notes. Current starters: `sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/benchmark_coil_layout.py` times natural versus gcd-cycle circular-stride traversal on CPU and optionally MLX; `sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_phase_channel.py` scores a deterministic phase-channel fixture on CPU and optionally MLX.
 - [x] Do not present ray tracing, GPU layout, stencil, NTT, hashing, robotics, codec, ANN, acquisition, CAM, torsion, detection, scheduler, or quantum ideas as proved until they have explicit models, manifests, sidecars, and checks. Current papers and manifests label these as benchmark/domain tracks unless a Lean theorem id and checked sidecar exist.
 
 ## Phase III: Circle Calculus Living Book

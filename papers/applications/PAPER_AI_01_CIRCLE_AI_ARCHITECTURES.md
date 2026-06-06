@@ -1,6 +1,6 @@
 # Circle Calculus AI 1: Circle AI Architectures
 
-Status: polished draft with a proved finite phase-channel seed.
+Status: polished draft with a proved finite phase-channel seed and an exploratory deterministic benchmark fixture.
 
 ## Aim
 
@@ -18,6 +18,14 @@ phase_channel(period,position) = position mod period
 
 for positive periods. This is a feature-index primitive, not evidence of model quality.
 
+The current executable benchmark seed is `COMMON-0039`, a deterministic known-period binary-label fixture:
+
+```text
+positions -> phase_channel(period,position) -> phase lookup
+```
+
+It compares that phase lookup against a constant baseline on a task whose labels are constructed from the true phase. The fixture can score on CPU and can use MLX scoring when `mlx.core` is available. This is a smoke test for the benchmark harness, not evidence about learned models or real data.
+
 ## Theorem Spine
 
 - `AIA-T0001`: `Circle.Applications.phaseChannel_lt_period`
@@ -29,6 +37,17 @@ for positive periods. This is a feature-index primitive, not evidence of model q
 `AIA-T0001` proves that the phase channel is bounded by the positive period. `AIA-T0002` proves that adding one full period preserves the channel. `AIA-T0003` proves the zero anchor. The Python sidecar checks the same finite examples.
 
 These facts certify only a finite phase-indexing primitive. They do not prove lower loss, better generalization, longer context, faster inference, or improved reasoning.
+
+## Benchmark Fixture
+
+`AIA-B0001` is the first exploratory Python benchmark fixture for this paper. It lives in:
+
+```text
+circle_math/applications/circle_ai.py
+sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_phase_channel.py
+```
+
+The test sidecar checks that the fixture is deterministic and that the phase lookup solves the constructed known-period task while the constant baseline does not. The fixture intentionally does not compare against dense neural networks, RoPE, attention, state-space models, or real sequence data yet.
 
 ## Architecture Program
 
@@ -44,8 +63,9 @@ Every experiment should compare against strong ordinary baselines and report neg
 
 ## Next Program
 
-- Start with synthetic tasks where the true cyclic structure is known.
+- Expand the phase-channel fixture to learned synthetic tasks where the true cyclic structure is known.
 - Compare against dense MLP/attention, standard RoPE, convolution, Hyena-like mixers, and S4/Mamba-like baselines as appropriate.
+- Add separate memory-slot and adapter-block benchmarks before making CoilKV, Coil Attention, CoilRA, or MultiCoil RoPE claims.
 - Keep MLX/Mac-compatible prototypes first.
 - Separate Lean-proved indexing facts from model-quality claims.
 

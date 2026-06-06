@@ -1,6 +1,4 @@
-def adapter_block(block_size: int, channel: int) -> int:
-    assert block_size > 0
-    return channel % block_size
+from circle_math.applications.circle_ai import adapter_block
 
 
 def test_adapter_block_is_bounded() -> None:

@@ -38,6 +38,7 @@ Periodic activations should be evaluated on signal, coordinate, and neural-field
 
 ## Next Program
 
+- Treat `AIA-B0001` as phase-channel benchmark scaffolding only; adapter, CoilRA, and MultiCoil RoPE benchmarks remain separate work.
 - Start with small MLX prototypes and synthetic tasks.
 - Compare against dense, LoRA, block-circulant, and standard RoPE baselines.
 - Measure quality and runtime together; parameter reduction alone is not enough.

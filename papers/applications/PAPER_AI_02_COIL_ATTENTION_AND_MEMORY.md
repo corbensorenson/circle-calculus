@@ -51,6 +51,7 @@ Measurements should include accuracy, sequence length scaling, memory use, runti
 
 ## Next Program
 
+- Treat `AIA-B0001` as phase-channel benchmark scaffolding only; cyclic-memory retrieval still needs its own fixture.
 - Test fixed, learned, and content-gated coil paths separately.
 - Track gcd/orbit coverage and aliasing explicitly.
 - Add local/global attention fallbacks before claiming a practical model.

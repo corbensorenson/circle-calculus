@@ -544,6 +544,7 @@ papers:
     dictionary_ids:
       - COMMON-0026
       - COMMON-0027
+      - COMMON-0039
 
   - id: PAPER_AI_02_COIL_ATTENTION_AND_MEMORY
     title: "Circle Calculus AI 2: Coil Attention and Memory"

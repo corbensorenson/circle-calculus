@@ -88,7 +88,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md` | polished draft/proved finite seed | `COMPR-T0001` through `COMPR-T0003` are Lean-proved direction-bin schedule facts with Python examples |
 | `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md` | polished draft/proved finite seed | `COMPL-T0001` through `COMPL-T0004` are Lean-proved stride-address facts with Python examples and a starter CoilLayout benchmark harness |
 | `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md` | polished draft/proved finite seed | `COMPS-T0001` through `COMPS-T0003` are Lean-proved round-robin schedule facts with Python examples |
-| `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md` | polished draft/proved finite seed | `AIA-T0001` through `AIA-T0003` are Lean-proved phase-channel facts with Python examples |
+| `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md` | polished draft/proved finite seed | `AIA-T0001` through `AIA-T0003` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` is an exploratory deterministic phase-channel benchmark fixture |
 | `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md` | polished draft/proved finite seed | `AIM-T0001` through `AIM-T0003` are Lean-proved cyclic-memory-slot facts with Python examples |
 | `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md` | polished draft/proved finite seed | `AIRA-T0001` through `AIRA-T0003` are Lean-proved adapter-block facts with Python examples |
 
@@ -342,6 +342,7 @@ Proved common and dimensional spine:
 - `AIA-T0001`: AI phase channel is bounded by a positive period
 - `AIA-T0002`: AI phase channel closes after one full period
 - `AIA-T0003`: AI phase channel at zero is zero
+- `AIA-B0001`: exploratory deterministic phase-channel benchmark fixture
 - `AIM-T0001`: cyclic memory slot is bounded by a positive bank size
 - `AIM-T0002`: cyclic memory slot closes after one full bank pass
 - `AIM-T0003`: cyclic memory slot at zero is zero

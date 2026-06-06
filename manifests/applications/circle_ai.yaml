@@ -7,10 +7,13 @@ papers:
 sidecars:
   - sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/lean/PaperAI01.lean
   - sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/test_phase_channel_examples.py
+  - sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_phase_channel.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/lean/PaperAI02.lean
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/lean/PaperAI03.lean
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py
+python_reference:
+  - circle_math/applications/circle_ai.py
 theorems:
   - id: AIA-T0001
     status: lean_proved
@@ -49,6 +52,13 @@ theorems:
     lean_name: Circle.Applications.adapterBlock_zero
     dictionary_dependencies: ["COMMON-0030"]
 next_targets:
-  - "Run MLX/Mac-compatible synthetic benchmarks before making model-quality or speed claims."
+  - "Expand the phase-channel fixture beyond constant baselines to learned dense, RoPE, and cyclic-feature baselines."
+  - "Add separate cyclic-memory and adapter-block benchmarks before making memory, attention, or CoilRA claims."
   - "Compare against dense, LoRA, block-circulant, standard RoPE, full attention, sparse attention, Hyena-like, and state-space baselines as appropriate."
+benchmarks:
+  - id: AIA-B0001
+    status: exploratory_python
+    path: sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/test_phase_channel_examples.py::test_phase_channel_benchmark_fixture_is_deterministic
+    script: sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_phase_channel.py
+    description: "Deterministic phase-channel synthetic fixture comparing a phase lookup against a constant baseline, with optional MLX scoring when available."
 guardrail: "No claim that circles improve all AI."

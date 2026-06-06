@@ -1,6 +1,4 @@
-def memory_slot(bank_size: int, token: int) -> int:
-    assert bank_size > 0
-    return token % bank_size
+from circle_math.applications.circle_ai import memory_slot
 
 
 def test_memory_slot_is_bounded() -> None:

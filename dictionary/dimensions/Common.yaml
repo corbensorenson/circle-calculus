@@ -431,3 +431,15 @@ entries:
     forbidden_meanings:
       - "A proof that Fourier or periodogram methods are unnecessary."
       - "A benchmark without candidate-period controls."
+  - id: COMMON-0039
+    name: "Synthetic phase-channel benchmark"
+    kind: experiment
+    symbol: "phase_channel_fixture"
+    formal_definition: "`circle_math.applications.circle_ai.run_phase_channel_benchmark`, a deterministic known-period binary-label fixture comparing a phase-channel lookup against a constant baseline, with optional MLX scoring when available."
+    intuition: "A small smoke test that keeps AI phase-channel claims executable before moving to learned models."
+    dependencies: ["COMMON-0026", "COMMON-0027"]
+    introduced_in: "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES"
+    forbidden_meanings:
+      - "A real model-quality result."
+      - "A proof that phase channels improve neural networks."
+      - "A replacement for standard AI baselines."
