@@ -8,6 +8,22 @@ This paper develops the algebraic `S^3` model using real quaternions and unit qu
 
 The topological `S^3` count model was introduced separately in `PAPER_S3_01_FINITE_HYPERSPHERES.md`. Here the focus is algebraic.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_S3_02_QUATERNION_COILS/lean/PaperS302.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks executable examples; Lean and mathlib declarations determine proof status.
+
 ## Model
 
 The Lean model uses mathlib's quaternion algebra:

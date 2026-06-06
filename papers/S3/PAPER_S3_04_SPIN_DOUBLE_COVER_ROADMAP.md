@@ -14,6 +14,22 @@ Circle.S3.quaternionConjugationAction q v = q * v * star q
 
 For a unit quaternion, `star q` is the inverse supplied by the earlier quaternion paper. That makes this expression the algebraic shape behind quaternion rotation, while still avoiding an unproved global model of `SO(3)`.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/lean/PaperS304.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks bounded orientation examples; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `S3S-T0001`: `Circle.S3.quaternionConjugation_neg`

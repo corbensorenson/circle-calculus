@@ -8,6 +8,22 @@ This paper introduces the Hopf pattern `S^1 -> S^3 -> S^2` as visible base state
 
 The current contribution is bounded and algebraic: coordinate landing, phase invariance, identity phase, phase composition, and normalized phase-orbit preservation. It is not yet a full formalization of the Hopf fibration as a topological quotient.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_S3_03_HOPF_COILS/lean/PaperS303.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py
+```
+
+The theorem, warning, and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks coordinate examples; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `S3H-T0001`: `Circle.S3.hopfMap_lands_sphere`

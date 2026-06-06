@@ -20,6 +20,22 @@ the suspension count transform produces:
 
 The two new vertices are suspension poles. Every old vertex contributes two new edges, every old edge contributes two new faces, and every old face contributes two new 3-cells.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_S3_01_FINITE_HYPERSPHERES/lean/PaperS301.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_S3_01_FINITE_HYPERSPHERES/python/test_finite_hypersphere_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks finite examples; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `S3C-T0001`: `Circle.S3.suspensionSurface_counts`
