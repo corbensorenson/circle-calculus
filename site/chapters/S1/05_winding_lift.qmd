@@ -6,6 +6,7 @@ Winding keeps full-turn information that ordinary residues forget. A lifted node
 
 <div class="warning-box">
 Do not read residue-only diagrams as natural-number proofs. The lift layer is what stores full turns.
+The widget is an explanation, not a proof.
 </div>
 
 <div class="dictionary-box" data-dictionary-id="CC-0301"></div>

@@ -4,6 +4,10 @@ title: "Rotation As Addition"
 
 A rotation `rot(n,k)` moves a node by adding `k` in `C_n`.
 
+<div class="warning-box">
+The widget demonstrates the composition law as an executable reference. It is not a formal proof.
+</div>
+
 <div class="dictionary-box" data-dictionary-id="CC-0101"></div>
 
 <div class="theorem-box" data-theorem-id="CC-T0001"></div>

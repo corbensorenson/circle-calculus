@@ -4,6 +4,10 @@ title: "Period, GCD, And Prime Full Coils"
 
 For positive `n`, the period of stride `k` on `C_n` is `n / gcd(n,k)`. The same gcd counts the number of disjoint stride cycles.
 
+<div class="warning-box">
+The widgets expose the gcd and prime/full-coil patterns as executable references. They are not proofs.
+</div>
+
 <div class="dictionary-box" data-dictionary-id="CC-0205"></div>
 <div class="dictionary-box" data-dictionary-id="CC-0206"></div>
 <div class="dictionary-box" data-dictionary-id="CC-0207"></div>

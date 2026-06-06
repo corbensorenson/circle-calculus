@@ -50,6 +50,7 @@ The repository verification path is:
 ```bash
 make check
 make site-render
+make living-book-check
 ```
 
 These commands are the local source of truth for the public site, proof metadata, sidecars, dictionary links, target links, and fake-proof guardrails.

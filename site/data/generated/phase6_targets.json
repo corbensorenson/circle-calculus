@@ -120,14 +120,15 @@
       ],
       "checks": [
         "make sitecheck",
-        "make site-render"
+        "make site-render",
+        "python scripts/site/check_site_navigation_contract.py"
       ],
       "guardrail": "Do not make scaffolded higher-dimensional pages look complete.",
       "id": "P6-SWEEP-005",
-      "next_action": "Run browser checks on the reader path and S1 widget pages after widget or navigation changes.",
+      "next_action": "Navigation/page-contract validation is wired into sitecheck; run browser checks on the reader path and S1 widget pages after widget or navigation changes.",
       "objective": "Keep the Living Book navigable, mobile-friendly, generated-data linked, and proof-status honest.",
       "priority": "high",
-      "status": "planned",
+      "status": "active",
       "sweep_type": "living_book"
     },
     {
