@@ -41,6 +41,7 @@ targets:
     checks:
       - "python scripts/check_paper_manifest.py"
       - "python scripts/check_paper_theorem_links.py"
+      - "python scripts/check_paper_source_trails.py"
     next_action: "Source-trail coverage now exists for all 35 manifest papers; continue the paper-quality sweep with sentence-level guardrail clarity and theorem-language precision."
     guardrail: "Cleaner prose must not upgrade proof status."
 

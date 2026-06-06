@@ -43,7 +43,8 @@
       ],
       "checks": [
         "python scripts/check_paper_manifest.py",
-        "python scripts/check_paper_theorem_links.py"
+        "python scripts/check_paper_theorem_links.py",
+        "python scripts/check_paper_source_trails.py"
       ],
       "guardrail": "Cleaner prose must not upgrade proof status.",
       "id": "P6-SWEEP-002",

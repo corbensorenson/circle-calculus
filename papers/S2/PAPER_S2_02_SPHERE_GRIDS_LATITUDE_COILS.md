@@ -28,7 +28,7 @@ The Python examples are:
 sidecars/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS/python/test_sphere_grid_examples.py
 ```
 
-The theorem, warning, and dictionary links are registered in `manifests/paper_manifest.yaml`. The examples check finite cases; they do not replace the Lean theorem spine.
+The theorem, warning, and dictionary links are registered in `manifests/paper_manifest.yaml`. The examples check finite cases; they do not replace the Lean theorem spine, and Lean declarations determine proof status.
 
 ## Theorem Spine
 
