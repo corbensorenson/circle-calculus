@@ -29,6 +29,14 @@ def test_stride_address_closes_after_size_steps() -> None:
                 assert stride_address(size, stride, step + size) == stride_address(size, stride, step)
 
 
+def test_stride_address_closes_after_multiple_size_passes() -> None:
+    for size in range(1, 33):
+        for stride in range(0, 33):
+            for step in range(0, 64):
+                for passes in range(0, 8):
+                    assert stride_address(size, stride, step + passes * size) == stride_address(size, stride, step)
+
+
 def test_stride_address_zero_step() -> None:
     for size in range(1, 33):
         for stride in range(0, 33):

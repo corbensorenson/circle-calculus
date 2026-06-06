@@ -44,6 +44,10 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.strideAddress_zero_stride
     dictionary_dependencies: ["COMMON-0022"]
+  - id: COMPL-T0005
+    status: lean_proved
+    lean_name: Circle.Applications.strideAddress_add_mul_size_steps
+    dictionary_dependencies: ["COMMON-0022", "COMMON-0023"]
 next_targets:
   - "COMPL-B0002 adds a periodic-boundary stencil validation fixture; expand next toward FFT, NTT, and MLX layout baselines before claiming layout wins."
   - "Benchmark direct, dense, FFT, NTT, and layout backends before making performance claims."

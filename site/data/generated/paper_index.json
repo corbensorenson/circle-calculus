@@ -663,7 +663,8 @@
         "COMPL-T0001",
         "COMPL-T0002",
         "COMPL-T0003",
-        "COMPL-T0004"
+        "COMPL-T0004",
+        "COMPL-T0005"
       ],
       "title": "Circle Calculus Compute 3: CoilLayout, CoilStencil, and CoilNTT"
     },

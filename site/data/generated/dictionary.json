@@ -3606,6 +3606,12 @@
           "lean_name": "Circle.Applications.strideAddress_zero_stride",
           "name": "Circle.Applications.strideAddress_zero_stride",
           "status": "proved"
+        },
+        {
+          "id": "COMPL-T0005",
+          "lean_name": "Circle.Applications.strideAddress_add_mul_size_steps",
+          "name": "Circle.Applications.strideAddress_add_mul_size_steps",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -3641,6 +3647,12 @@
           "id": "COMPL-T0002",
           "lean_name": "Circle.Applications.strideAddress_add_size_steps",
           "name": "Circle.Applications.strideAddress_add_size_steps",
+          "status": "proved"
+        },
+        {
+          "id": "COMPL-T0005",
+          "lean_name": "Circle.Applications.strideAddress_add_mul_size_steps",
+          "name": "Circle.Applications.strideAddress_add_mul_size_steps",
           "status": "proved"
         }
       ],

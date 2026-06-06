@@ -3376,7 +3376,7 @@
       "id": "COMPL-T0003",
       "lean_name": "Circle.Applications.strideAddress_zero_step",
       "lean_source": "Circle/Applications/CoilCompute.lean",
-      "lean_source_line": 49,
+      "lean_source_line": 55,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
       "status": "lean_proved",
@@ -3397,7 +3397,29 @@
       "id": "COMPL-T0004",
       "lean_name": "Circle.Applications.strideAddress_zero_stride",
       "lean_source": "Circle/Applications/CoilCompute.lean",
-      "lean_source_line": 54,
+      "lean_source_line": 60,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/coil_compute.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT",
+          "path": "papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 3: CoilLayout, CoilStencil, and CoilNTT"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0022",
+        "COMMON-0023"
+      ],
+      "id": "COMPL-T0005",
+      "lean_name": "Circle.Applications.strideAddress_add_mul_size_steps",
+      "lean_source": "Circle/Applications/CoilCompute.lean",
+      "lean_source_line": 49,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
       "status": "lean_proved",

@@ -586,6 +586,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["stride_address(size, 0, step) == 0"]
     blocker: ""
+  - id: COMPL-T0005
+    status: lean_proved
+    lean_name: Circle.Applications.strideAddress_add_mul_size_steps
+    informal_statement: "Adding any whole number of full circular-size passes to the step count preserves the stride address."
+    formal_statement: "forall size stride step passes : Nat, strideAddress size stride (step + passes * size) = strideAddress size stride step"
+    dictionary_dependencies: ["COMMON-0022", "COMMON-0023"]
+    paper_refs: ["papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["stride_address(size, stride, step + passes * size) == stride_address(size, stride, step)"]
+    blocker: ""
   - id: COMPS-T0001
     status: lean_proved
     lean_name: Circle.Applications.roundRobinSlot_lt_slotCount

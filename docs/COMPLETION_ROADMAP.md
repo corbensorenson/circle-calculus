@@ -321,7 +321,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `COMPR-T0001` through `COMPR-T0004` are Lean-proved direction-bin schedule facts with Python examples; rendering performance, coherence, and sampling-quality claims remain benchmark work.
 - [x] `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md`
   - Program: `CoilLayout`, `CoilStencil`, `CoilNTT`, gcd-cycle memory layouts, verified periodic boundaries, exact finite transforms, and MLX/Mac-compatible prototypes where relevant.
-  - Status: polished draft; `COMPL-T0001` through `COMPL-T0004` are Lean-proved stride-address facts with Python examples; `COMPL-B0001` and `COMPL-B0002` are exploratory CoilLayout/stencil validation fixtures; layout, FFT, NTT, MLX/backend, and performance claims remain future work.
+  - Status: polished draft; `COMPL-T0001` through `COMPL-T0005` are Lean-proved stride-address facts with Python examples; `COMPL-B0001` and `COMPL-B0002` are exploratory CoilLayout/stencil validation fixtures; layout, FFT, NTT, MLX/backend, and performance claims remain future work.
 - [x] `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md`
   - Program: `CoilHash`, `CoilMotion`, `CoilPRM`, `CoilCodec`, `CoilANN`, `CoilAcquire`, `CoilCAM`, `CoilTorsion`, `CoilDetect`, `CoilSched`, and `CoilQ` as benchmarked or domain-tested application roadmaps.
   - Status: polished draft; `COMPS-T0001` through `COMPS-T0004` are Lean-proved round-robin schedule facts with Python examples; fairness, load balancing, robotics, codec, ANN, acquisition, CAM, torsion, detection, and quantum claims remain future domain work.
@@ -408,6 +408,7 @@ Application guardrails:
 - [x] `COMPL-T0002`: stride address closes after one full pass through the circular step horizon.
 - [x] `COMPL-T0003`: zero step has zero stride address.
 - [x] `COMPL-T0004`: zero stride has zero stride address.
+- [x] `COMPL-T0005`: stride address closes after any whole number of full circular-size passes.
 - [x] `COMPL-B0001`: exploratory CoilLayout validation/benchmark-grid fixture.
 - [x] `COMPL-B0002`: exploratory periodic-boundary stencil validation fixture.
 - [x] `COMPS-T0001`: round-robin slot schedule is bounded by a positive slot count.

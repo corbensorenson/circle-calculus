@@ -46,6 +46,12 @@ theorem strideAddress_add_size_steps (size stride step : Nat) :
   rw [Nat.add_mul]
   exact Nat.add_mul_mod_self_left (step * stride) size stride
 
+theorem strideAddress_add_mul_size_steps (size stride step passes : Nat) :
+    strideAddress size stride (step + passes * size) = strideAddress size stride step := by
+  unfold strideAddress
+  rw [Nat.add_mul, Nat.mul_assoc passes size stride, Nat.mul_left_comm passes size stride]
+  exact Nat.add_mul_mod_self_left (step * stride) size (passes * stride)
+
 theorem strideAddress_zero_step (size stride : Nat) :
     strideAddress size stride 0 = 0 := by
   unfold strideAddress

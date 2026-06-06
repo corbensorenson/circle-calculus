@@ -43,10 +43,11 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `COMPL-T0002`: `Circle.Applications.strideAddress_add_size_steps`
 - `COMPL-T0003`: `Circle.Applications.strideAddress_zero_step`
 - `COMPL-T0004`: `Circle.Applications.strideAddress_zero_stride`
+- `COMPL-T0005`: `Circle.Applications.strideAddress_add_mul_size_steps`
 
 ## Proved Core
 
-`COMPL-T0001` proves that a stride address is bounded by the positive circular size. `COMPL-T0002` proves closure after one full pass through the circular step horizon. `COMPL-T0003` and `COMPL-T0004` prove the zero-step and zero-stride anchors.
+`COMPL-T0001` proves that a stride address is bounded by the positive circular size. `COMPL-T0002` proves closure after one full pass through the circular step horizon. `COMPL-T0005` proves the same closure law for any whole number of full circular-size passes. `COMPL-T0003` and `COMPL-T0004` prove the zero-step and zero-stride anchors.
 
 The Python test sidecar checks the same finite stride examples. The benchmark sidecar `benchmark_coil_layout.py` is a small Mac-compatible harness for natural-order versus gcd-cycle circular-stride traversal, with an optional MLX backend when `mlx.core` is available.
 
