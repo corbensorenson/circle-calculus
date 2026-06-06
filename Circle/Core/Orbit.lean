@@ -1,5 +1,6 @@
 import Circle.Core.Period
 import Mathlib.GroupTheory.Coset.Card
+import Mathlib.Tactic.Ring
 
 namespace Circle
 
@@ -58,6 +59,57 @@ theorem sameOrbit_nat_modEq_gcd_of_sameOrbit
       exact hzero'
     exact sub_eq_zero.mp hsub
   exact (ZMod.natCast_eq_natCast_iff x y g).mp hcast
+
+/-- GCD-congruent natural representatives lie in the same stride-orbit quotient. -/
+theorem sameOrbit_of_nat_modEq_gcd
+    (n k x y : Nat)
+    (h : x ≡ y [MOD Nat.gcd n k]) :
+    sameOrbit n k ((x : Nat) : C n) ((y : Nat) : C n) := by
+  let g := Nat.gcd n k
+  have hdvd : (g : Int) ∣ (y : Int) - (x : Int) := by
+    simpa [g] using (Nat.ModEq.dvd h)
+  rcases hdvd with ⟨t, ht⟩
+  have hbez :
+      (g : Int) = (n : Int) * Nat.gcdA n k + (k : Int) * Nat.gcdB n k := by
+    simpa [g] using Nat.gcd_eq_gcd_ab n k
+  have hdiff :
+      (x : Int) - (y : Int) =
+        (n : Int) * (Nat.gcdA n k * (-t)) +
+          (k : Int) * (Nat.gcdB n k * (-t)) := by
+    calc
+      (x : Int) - (y : Int) = -((y : Int) - (x : Int)) := by ring
+      _ = -((g : Int) * t) := by rw [ht]
+      _ = (g : Int) * (-t) := by ring
+      _ = ((n : Int) * Nat.gcdA n k + (k : Int) * Nat.gcdB n k) * (-t) := by
+            rw [hbez]
+      _ = (n : Int) * (Nat.gcdA n k * (-t)) +
+            (k : Int) * (Nat.gcdB n k * (-t)) := by ring
+  rw [sameOrbit_iff_difference_mem_orbitSubgroup]
+  unfold orbitSubgroup
+  rw [AddSubgroup.mem_zmultiples_iff]
+  refine ⟨Nat.gcdB n k * (-t), ?_⟩
+  calc
+    (Nat.gcdB n k * (-t)) • stride n k =
+        (((Nat.gcdB n k * (-t)) * (k : Int)) : ZMod n) := by
+          simp [stride, zsmul_eq_mul]
+    _ = (((k : Int) * (Nat.gcdB n k * (-t))) : ZMod n) := by
+          rw [mul_comm]
+    _ = (((n : Int) * (Nat.gcdA n k * (-t)) +
+          (k : Int) * (Nat.gcdB n k * (-t))) : ZMod n) := by
+          simp [Int.cast_natCast]
+    _ = (((x : Int) - (y : Int)) : ZMod n) := by
+          simpa [Int.cast_add, Int.cast_mul, Int.cast_natCast] using
+            (congrArg (fun r : Int => (r : ZMod n)) hdiff).symm
+    _ = ((x : Nat) : C n) - ((y : Nat) : C n) := by
+          norm_num
+
+/-- Natural representatives are in the same stride-orbit iff they are gcd-congruent. -/
+theorem sameOrbit_nat_iff_modEq_gcd (n k x y : Nat) :
+    sameOrbit n k ((x : Nat) : C n) ((y : Nat) : C n) ↔
+      x ≡ y [MOD Nat.gcd n k] := by
+  constructor
+  · exact sameOrbit_nat_modEq_gcd_of_sameOrbit n k x y
+  · exact sameOrbit_of_nat_modEq_gcd n k x y
 
 /-- The number of stride-orbit classes on `C n`. -/
 noncomputable def orbitClassCount (n k : Nat) : Nat :=

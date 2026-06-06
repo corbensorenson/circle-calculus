@@ -44,7 +44,9 @@
         "CC-T0007",
         "CC-T0054",
         "CC-T0055",
-        "CC-T0059"
+        "CC-T0059",
+        "CC-T0060",
+        "CC-T0061"
       ],
       "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
     },
@@ -148,7 +150,9 @@
         "CC-T0007",
         "CC-T0054",
         "CC-T0055",
-        "CC-T0059"
+        "CC-T0059",
+        "CC-T0060",
+        "CC-T0061"
       ],
       "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
     },

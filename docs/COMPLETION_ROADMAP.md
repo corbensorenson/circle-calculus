@@ -185,8 +185,8 @@ Goal: make the executable examples line up with the Lean-backed papers without d
 
 - [x] `papers/S1/PAPER_S1_01_FINITE_CIRCLES.md`
   - Current source: `papers/PAPER_01_FINITE_CIRCLES.md`
-  - Proof targets: `CC-T0001` through `CC-T0007`, plus `CC-T0054`, `CC-T0055`, and `CC-T0059`
-  - Status: polished dimension guide draft links the proved theorem spine into the dimension layout while keeping the root paper as the detailed source. The full same-orbit iff gcd-congruence representative theorem remains Phase IV work until the reverse direction is proved.
+  - Proof targets: `CC-T0001` through `CC-T0007`, plus `CC-T0054`, `CC-T0055`, and `CC-T0059` through `CC-T0061`
+  - Status: polished dimension guide draft links the proved theorem spine into the dimension layout while keeping the root paper as the detailed source. The full same-orbit iff gcd-congruence representative theorem is Lean-proved as `CC-T0061`.
 - [x] `papers/S1/PAPER_S1_02_WINDING_NATURALS.md`
   - Current source: `papers/PAPER_02_WINDING_NATURALS.md`
   - Proof targets: `CC-T0009` through `CC-T0016`
@@ -411,6 +411,8 @@ Already proved and linked:
 - [x] `CC-T0006`: orbit decomposition count
 - [x] `CC-T0055`: same orbit iff the node difference lies in the stride subgroup
 - [x] `CC-T0059`: same-orbit natural representatives are congruent modulo `gcd(n,k)`
+- [x] `CC-T0060`: gcd-congruent natural representatives lie in the same stride-orbit quotient
+- [x] `CC-T0061`: same orbit iff natural representatives are congruent modulo `gcd(n,k)`
 - [x] `CC-T0007`: prime full coil
 - [x] `CC-T0054`: full coil iff coprime
 - [x] `CC-T0008`: scaling invertible iff coprime

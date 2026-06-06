@@ -17,6 +17,8 @@ namespace Circle.Paper01
 #check Circle.orbit_decomposition_count
 #check Circle.sameOrbit_iff_difference_mem_orbitSubgroup
 #check Circle.sameOrbit_nat_modEq_gcd_of_sameOrbit
+#check Circle.sameOrbit_of_nat_modEq_gcd
+#check Circle.sameOrbit_nat_iff_modEq_gcd
 #check Circle.fullCoil_iff_coprime
 #check Circle.prime_full_coil
 

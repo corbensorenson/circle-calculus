@@ -58,3 +58,15 @@ def test_same_orbit_implies_gcd_congruence_examples() -> None:
                 for y in range(0, n):
                     if labels[x] == labels[y]:
                         assert (x - y) % g == 0
+
+
+def test_gcd_congruence_implies_same_orbit_examples() -> None:
+    for n in range(1, 65):
+        c = Circle(n)
+        for k in range(0, 129):
+            g = gcd(n, k)
+            labels = orbit_class_labels(c, k)
+            for x in range(0, n):
+                for y in range(0, n):
+                    if (x - y) % g == 0:
+                        assert labels[x] == labels[y]

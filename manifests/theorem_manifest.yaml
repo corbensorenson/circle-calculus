@@ -815,6 +815,38 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["bounded examples: same orbit by generated cycle decomposition implies representatives are congruent modulo gcd(n,k)"]
 
+  - id: CC-T0060
+    name: GCD congruence implies same orbit of natural representatives
+    status: proved
+    lean_name: Circle.sameOrbit_of_nat_modEq_gcd
+    informal_statement: "If two natural representatives are congruent modulo gcd(n,k), then they lie in the same stride-orbit quotient."
+    formal_statement: "forall (n k x y : Nat), x congruent y modulo Nat.gcd n k -> Circle.sameOrbit n k ((x : Nat) : Circle.C n) ((y : Nat) : Circle.C n)"
+    dictionary_dependencies: ["CC-0201", "CC-0207", "CC-0208"]
+    paper_refs: ["PAPER_01_FINITE_CIRCLES.section.orbits", "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md"]
+    python_tests: ["tests/test_orbit_period.py::test_gcd_congruence_implies_same_orbit_examples", "sidecars/PAPER_01_FINITE_CIRCLES/python/test_paper_01_examples.py::test_gcd_congruence_implies_same_orbit_examples"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Orbit.lean using Bezout's identity: gcd(n,k)-congruence writes the representative difference as an n-multiple plus a k-multiple, and the n-multiple vanishes in C_n."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["bounded examples: representatives congruent modulo gcd(n,k) lie in the same generated orbit class"]
+
+  - id: CC-T0061
+    name: Same orbit iff gcd congruence of natural representatives
+    status: proved
+    lean_name: Circle.sameOrbit_nat_iff_modEq_gcd
+    informal_statement: "Two natural representatives lie in the same stride-orbit quotient exactly when they are congruent modulo gcd(n,k)."
+    formal_statement: "forall (n k x y : Nat), Circle.sameOrbit n k ((x : Nat) : Circle.C n) ((y : Nat) : Circle.C n) iff x congruent y modulo Nat.gcd n k"
+    dictionary_dependencies: ["CC-0201", "CC-0207", "CC-0208"]
+    paper_refs: ["PAPER_01_FINITE_CIRCLES.section.orbits", "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md"]
+    python_tests: ["tests/test_orbit_period.py::test_same_orbit_matches_gcd_congruence_examples", "sidecars/PAPER_01_FINITE_CIRCLES/python/test_paper_01_examples.py::test_same_orbit_gcd_congruence_examples"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Orbit.lean by combining CC-T0059 and CC-T0060."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["bounded examples: same orbit by generated cycle decomposition iff representatives are congruent modulo gcd(n,k)"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

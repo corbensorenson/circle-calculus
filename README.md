@@ -56,9 +56,9 @@ This is an early public research scaffold with a working verification pipeline a
 
 | Paper | Status | Formal spine |
 | --- | --- | --- |
-| `papers/PAPER_01_FINITE_CIRCLES.md` | polished draft | `CC-T0001` through `CC-T0007` plus `CC-T0054`, `CC-T0055`, and `CC-T0059` proved |
+| `papers/PAPER_01_FINITE_CIRCLES.md` | polished draft | `CC-T0001` through `CC-T0007` plus `CC-T0054`, `CC-T0055`, and `CC-T0059` through `CC-T0061` proved |
 | `papers/PAPER_02_WINDING_NATURALS.md` | polished draft | `CC-T0009` through `CC-T0016` proved |
-| `papers/S1/PAPER_S1_01_FINITE_CIRCLES.md` | polished dimension guide draft | `CC-T0001` through `CC-T0007` plus `CC-T0054`, `CC-T0055`, and `CC-T0059` linked in dimension layout |
+| `papers/S1/PAPER_S1_01_FINITE_CIRCLES.md` | polished dimension guide draft | `CC-T0001` through `CC-T0007` plus `CC-T0054`, `CC-T0055`, and `CC-T0059` through `CC-T0061` linked in dimension layout |
 | `papers/S1/PAPER_S1_02_WINDING_NATURALS.md` | polished dimension guide draft | `CC-T0009` through `CC-T0016` linked in dimension layout |
 | `papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md` | polished draft | `S1O-T0001` through `S1O-T0003` proved with Python examples |
 | `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md` | polished draft | `CC-T0008`, `CC-T0017` through `CC-T0054`, and `CC-T0056` through `CC-T0058` proved |
@@ -237,6 +237,8 @@ Proved finite-circle core:
 - `CC-T0006`: orbit decomposition count
 - `CC-T0055`: same orbit iff the node difference lies in the stride subgroup
 - `CC-T0059`: same-orbit natural representatives are gcd-congruent
+- `CC-T0060`: gcd-congruent natural representatives are in the same orbit
+- `CC-T0061`: same orbit iff natural representatives are gcd-congruent
 - `CC-T0007`: prime full coil
 - `CC-T0054`: full coil iff coprime
 - `CC-T0008`: scaling invertible iff coprime
