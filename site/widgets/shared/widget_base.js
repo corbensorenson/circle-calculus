@@ -48,7 +48,9 @@ function renderMeta(meta) {
     const dt = document.createElement("dt");
     dt.textContent = label;
     const dd = document.createElement("dd");
-    if (typeof value === "object" && value.href) {
+    if (value instanceof Node) {
+      dd.appendChild(value);
+    } else if (typeof value === "object" && value.href) {
       const link = document.createElement("a");
       link.href = value.href;
       link.textContent = value.text;
@@ -66,7 +68,8 @@ function renderMeta(meta) {
 function githubSourceLink(path, line) {
   if (!path) return "";
   const anchor = line ? `#L${line}` : "";
-  return `${REPOSITORY_URL}/blob/main/${path}${anchor}`;
+  const mode = !line && !/\.[^/]+$/.test(path) ? "tree" : "blob";
+  return `${REPOSITORY_URL}/${mode}/main/${path}${anchor}`;
 }
 
 function makeLink(text, href) {
@@ -75,6 +78,70 @@ function makeLink(text, href) {
   link.href = href;
   link.textContent = text || href;
   return link;
+}
+
+function sitePageLink(page, filter) {
+  const url = new URL(`../../${page}`, import.meta.url);
+  if (filter) url.hash = filter;
+  return url.toString();
+}
+
+function makeIndexLink(text, page, filter) {
+  return makeLink(text, sitePageLink(page, filter || text));
+}
+
+function idsFrom(items) {
+  if (!items) return [];
+  const values = Array.isArray(items) ? items : [items];
+  return values
+    .map((item) => typeof item === "object" ? item.id : item)
+    .filter(Boolean);
+}
+
+function sourcePathFrom(item) {
+  if (!item) return "";
+  if (typeof item === "string") return item;
+  return item.path || item.source_manifest || item.lean_source || item.source || "";
+}
+
+function appendSeparatedLinks(fragment, nodes) {
+  nodes.forEach((node, index) => {
+    if (index > 0) fragment.appendChild(document.createTextNode(", "));
+    fragment.appendChild(node);
+  });
+}
+
+function linkedCompactIds(items, page, limit = 6) {
+  const ids = idsFrom(items);
+  if (ids.length === 0) return "";
+  const fragment = document.createDocumentFragment();
+  appendSeparatedLinks(
+    fragment,
+    ids.slice(0, limit).map((id) => makeIndexLink(id, page, id)),
+  );
+  if (ids.length > limit) {
+    fragment.appendChild(document.createTextNode(` + ${ids.length - limit} more`));
+  }
+  return fragment;
+}
+
+function linkedRepoPaths(items, limit = 4) {
+  if (!items || items.length === 0) return "";
+  const values = Array.isArray(items) ? items : [items];
+  const links = [];
+  for (const item of values.slice(0, limit)) {
+    const path = sourcePathFrom(item);
+    if (!path) continue;
+    const text = typeof item === "object" ? item.id || path : path;
+    links.push(makeLink(text, githubSourceLink(path)));
+  }
+  if (links.length === 0) return "";
+  const fragment = document.createDocumentFragment();
+  appendSeparatedLinks(fragment, links);
+  if (values.length > limit) {
+    fragment.appendChild(document.createTextNode(` + ${values.length - limit} more`));
+  }
+  return fragment;
 }
 
 function appendCell(tr, value) {
@@ -112,6 +179,9 @@ function renderFilterableIndex(target, items, columns, options = {}) {
   input.type = "search";
   input.placeholder = options.placeholder || "Filter entries";
   input.setAttribute("aria-label", options.placeholder || "Filter entries");
+  if (options.hashFilter) {
+    input.value = readHashFilter();
+  }
   label.appendChild(input);
 
   const count = document.createElement("span");
@@ -123,9 +193,14 @@ function renderFilterableIndex(target, items, columns, options = {}) {
 
   function renderTable() {
     const needle = input.value.trim().toLowerCase();
-    const rows = needle
-      ? items.filter((item) => filterText(item).includes(needle))
-      : items;
+    let rows = items;
+    if (needle) {
+      const primaryKey = options.primaryKey || "id";
+      const exactRows = items.filter((item) => String(item[primaryKey] || "").toLowerCase() === needle);
+      rows = exactRows.length > 0
+        ? exactRows
+        : items.filter((item) => filterText(item).includes(needle));
+    }
 
     const table = document.createElement("table");
     table.className = options.tableClass || "generated-index-table";
@@ -152,10 +227,36 @@ function renderFilterableIndex(target, items, columns, options = {}) {
     count.textContent = `${rows.length} of ${items.length}`;
   }
 
-  input.addEventListener("input", renderTable);
+  input.addEventListener("input", () => {
+    if (options.hashFilter) updateHashFilter(input.value);
+    renderTable();
+  });
+  if (options.hashFilter) {
+    window.addEventListener("hashchange", () => {
+      input.value = readHashFilter();
+      renderTable();
+    });
+  }
   wrapper.append(tools, tableWrap);
   target.replaceChildren(wrapper);
   renderTable();
+}
+
+function readHashFilter() {
+  const raw = window.location.hash.slice(1);
+  if (!raw) return "";
+  try {
+    return decodeURIComponent(raw).trim();
+  } catch {
+    return raw.trim();
+  }
+}
+
+function updateHashFilter(value) {
+  const url = new URL(window.location.href);
+  const needle = value.trim();
+  url.hash = needle || "";
+  history.replaceState(null, "", url);
 }
 
 async function hydrateTheorems() {
@@ -187,8 +288,8 @@ async function hydrateTheorems() {
         href: githubSourceLink(theorem.lean_source, theorem.lean_source_line),
       } : ""],
       ["Source", theorem.source_manifest],
-      ["Paper refs", joinList(theorem.paper_refs)],
-      ["Dictionary", joinList(theorem.dictionary_dependencies)],
+      ["Paper refs", linkedRepoPaths(theorem.paper_refs)],
+      ["Dictionary", linkedCompactIds(theorem.dictionary_dependencies, "dictionary.html")],
     ]);
 
     target.replaceChildren(header, statement, meta);
@@ -228,10 +329,10 @@ async function hydrateDictionary() {
       }],
       ["Lean", joinList(entry.lean_declarations)],
       ["Python", joinList(entry.python_objects)],
-      ["Used by theorems", compactIds(entry.used_by_theorems)],
-      ["Used by papers", compactIds(entry.used_by_papers, 4)],
-      ["Used by widgets", compactIds(entry.used_by_widgets)],
-      ["Used by glyphs", compactIds(entry.used_by_glyphs)],
+      ["Used by theorems", linkedCompactIds(entry.used_by_theorems, "theorems.html")],
+      ["Used by papers", linkedCompactIds(entry.used_by_papers, "papers.html", 4)],
+      ["Used by widgets", linkedRepoPaths(entry.used_by_widgets)],
+      ["Used by glyphs", linkedCompactIds(entry.used_by_glyphs, "chapters/phase2/proof_carrying_glyphs.html")],
     ]);
 
     target.replaceChildren(header, definition, intuition, forbidden, meta);
@@ -245,17 +346,19 @@ async function hydrateDictionaryIndexes() {
       target,
       data.entries,
       [
-        { label: "Id", render: (entry) => entry.id },
+        { label: "Id", render: (entry) => makeIndexLink(entry.id, "dictionary.html", entry.id) },
         { label: "Term", render: (entry) => entry.name || "" },
         { label: "Kind", render: (entry) => entry.kind || "" },
         { label: "Source", render: (entry) => makeLink(entry.source_dictionary, githubSourceLink(entry.source_dictionary)) },
-        { label: "Theorems", render: (entry) => compactIds(entry.used_by_theorems) },
-        { label: "Papers", render: (entry) => compactIds(entry.used_by_papers, 4) },
-        { label: "Widgets", render: (entry) => compactIds(entry.used_by_widgets) },
+        { label: "Theorems", render: (entry) => linkedCompactIds(entry.used_by_theorems, "theorems.html") },
+        { label: "Papers", render: (entry) => linkedCompactIds(entry.used_by_papers, "papers.html", 4) },
+        { label: "Widgets", render: (entry) => linkedRepoPaths(entry.used_by_widgets) },
       ],
       {
         placeholder: "Filter by id, term, kind, theorem, paper, widget, or source",
         tableClass: "dictionary-index-table",
+        hashFilter: true,
+        primaryKey: "id",
       },
     );
   }
@@ -268,7 +371,7 @@ async function hydrateTheoremIndexes() {
       target,
       data.theorems,
       [
-        { label: "Id", render: (theorem) => theorem.id },
+        { label: "Id", render: (theorem) => makeIndexLink(theorem.id, "theorems.html", theorem.id) },
         {
           label: "Status",
           render: (theorem) => {
@@ -285,12 +388,15 @@ async function hydrateTheoremIndexes() {
             ? makeLink(theorem.lean_name, githubSourceLink(theorem.lean_source, theorem.lean_source_line))
             : "",
         },
-        { label: "Dictionary", render: (theorem) => joinList(theorem.dictionary_dependencies) },
+        { label: "Dictionary", render: (theorem) => linkedCompactIds(theorem.dictionary_dependencies, "dictionary.html") },
+        { label: "Papers", render: (theorem) => linkedRepoPaths(theorem.paper_refs, 3) },
         { label: "Source", render: (theorem) => makeLink(theorem.source_manifest, githubSourceLink(theorem.source_manifest)) },
       ],
       {
         placeholder: "Filter by theorem id, status, Lean name, dictionary id, or source",
         tableClass: "theorem-index-table",
+        hashFilter: true,
+        primaryKey: "id",
       },
     );
   }
@@ -303,17 +409,19 @@ async function hydratePaperIndexes() {
       target,
       data.papers,
       [
-        { label: "Id", render: (paper) => paper.id || "" },
+        { label: "Id", render: (paper) => makeIndexLink(paper.id || "", "papers.html", paper.id || "") },
         { label: "Status", render: (paper) => paper.status || "" },
         { label: "Title", render: (paper) => paper.title || "" },
         { label: "Paper", render: (paper) => makeLink(paper.path, githubSourceLink(paper.path)) },
         { label: "Sidecar", render: (paper) => makeLink(paper.sidecar, githubSourceLink(paper.sidecar)) },
-        { label: "Theorems", render: (paper) => joinList(paper.theorem_ids) },
-        { label: "Dictionary", render: (paper) => joinList(paper.dictionary_ids) },
+        { label: "Theorems", render: (paper) => linkedCompactIds(paper.theorem_ids, "theorems.html") },
+        { label: "Dictionary", render: (paper) => linkedCompactIds(paper.dictionary_ids, "dictionary.html") },
       ],
       {
         placeholder: "Filter by paper id, title, theorem id, dictionary id, or sidecar",
         tableClass: "paper-index-table",
+        hashFilter: true,
+        primaryKey: "id",
       },
     );
   }
@@ -332,16 +440,21 @@ async function hydrateTargetIndexes() {
       target,
       data.targets,
       [
-        { label: "Id", render: (item) => item.id || "" },
+        { label: "Id", render: (item) => makeIndexLink(item.id || "", "targets.html", item.id || "") },
         { label: "Layer/Area", render: (item) => item.layer || item.area || "" },
         { label: "Status", render: (item) => item.status || "" },
         { label: "Priority", render: (item) => item.priority || "" },
         { label: "Title", render: (item) => item.title || item.objective || "" },
+        { label: "Theorem", render: (item) => linkedCompactIds(item.promoted_theorem_id, "theorems.html") },
+        { label: "Dictionary", render: (item) => linkedCompactIds(item.dictionary_dependencies, "dictionary.html", 4) },
+        { label: "Refs", render: (item) => linkedRepoPaths(item.paper_refs || item.artifact_refs, 3) },
         { label: "Next Action", render: (item) => item.next_action || "" },
       ],
       {
         placeholder: "Filter by target id, area, status, title, or next action",
         tableClass: "target-index-table",
+        hashFilter: true,
+        primaryKey: "id",
       },
     );
   }
@@ -354,19 +467,22 @@ async function hydrateGlyphIndexes() {
       target,
       data.glyphs,
       [
-        { label: "Glyph", render: (item) => item.id || "" },
-        { label: "Theorem", render: (item) => item.theorem_id || "" },
+        { label: "Glyph", render: (item) => makeIndexLink(item.id || "", "chapters/phase2/proof_carrying_glyphs.html", item.id || "") },
+        { label: "Theorem", render: (item) => linkedCompactIds(item.theorem_id, "theorems.html") },
         { label: "Status", render: (item) => item.status_label || "" },
         {
           label: "Lean",
           render: (item) => makeLink(item.lean_name, githubSourceLink(item.lean_source, item.lean_source_line)),
         },
-        { label: "Dictionary", render: (item) => joinList(item.dictionary_ids) },
+        { label: "Dictionary", render: (item) => linkedCompactIds(item.dictionary_ids, "dictionary.html") },
+        { label: "Papers", render: (item) => linkedRepoPaths(item.paper_refs, 3) },
         { label: "Caption", render: (item) => item.caption || "" },
       ],
       {
         placeholder: "Filter by glyph id, theorem id, status, Lean name, or dictionary id",
         tableClass: "glyph-index-table",
+        hashFilter: true,
+        primaryKey: "id",
       },
     );
   }

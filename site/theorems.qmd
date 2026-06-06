@@ -4,6 +4,8 @@ title: "Theorem Index"
 
 This index is generated from theorem manifests. It is a navigation layer, not a proof layer. The status column is the public-facing source for what the Living Book may call Lean-proved, planned, exploratory, blocked, deferred, or draft.
 
+Click a theorem, dictionary, paper, target, or glyph id to open the corresponding generated index filtered to that id.
+
 <div class="theorem-index" data-theorem-index="all"></div>
 
 <script type="module" src="widgets/shared/widget_base.js"></script>

@@ -4,6 +4,8 @@ title: "Target Index"
 
 This index is generated from target manifests. These are planned theorem, proof, paper, experiment, and edge-problem targets. They are not proved theorem claims.
 
+Click ids in the generated tables to move between targets, promoted theorem ids, dictionary terms, and source artifacts.
+
 <div class="warning-box">
 Target status is intentionally weaker than theorem status. A target becomes a proved theorem only after a theorem id, Lean declaration, manifest status, and checks support it.
 </div>
