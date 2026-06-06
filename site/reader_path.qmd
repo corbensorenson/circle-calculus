@@ -7,6 +7,7 @@ Use this path when you want to understand the project without losing the proof-s
 ## 1. Start With The Status Rules
 
 - Read the [theorem status legend](status.qmd).
+- Use [Verify A Claim](verify_claim.qmd) when you need to audit one theorem id, term, widget, glyph, or paper claim end to end.
 - Open the [theorem index](theorems.qmd) when a page names a theorem id.
 - Open the [dictionary index](dictionary.qmd) when a page uses project vocabulary.
 - Use the [target index](targets.qmd) for planned, exploratory, blocked, or edge-problem work.
@@ -57,6 +58,8 @@ make living-book-check
 ```
 
 These commands are the local source of truth for the public site, proof metadata, sidecars, dictionary links, target links, and fake-proof guardrails.
+
+For a reader-facing checklist, use [Verify A Claim](verify_claim.qmd).
 
 The public site deploy path is GitHub Pages. Deployment is generated from `site/_site/` only after the GitHub Actions workflow has built Lean, run source checks, and rendered Quarto.
 

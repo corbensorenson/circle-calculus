@@ -19,6 +19,8 @@ website:
         text: Roadmap
       - href: reader_path.qmd
         text: Reader Path
+      - href: verify_claim.qmd
+        text: Verify
       - href: status.qmd
         text: Status
       - href: dictionary.qmd
@@ -40,6 +42,8 @@ website:
         text: Roadmap
       - href: reader_path.qmd
         text: Reader Path
+      - href: verify_claim.qmd
+        text: Verify A Claim
       - href: status.qmd
         text: Theorem Status
       - href: dictionary.qmd

@@ -11,6 +11,7 @@ REQUIRED_NAV_HREFS = {
     "index.qmd",
     "roadmap.qmd",
     "reader_path.qmd",
+    "verify_claim.qmd",
     "status.qmd",
     "dictionary.qmd",
     "theorems.qmd",
@@ -73,8 +74,19 @@ PAGE_CONTRACTS = {
     "reader_path.qmd": [
         ("source trail", ["Source Trail"]),
         ("proof status", ["proof-status", "proof status"]),
+        ("verify claim page", ["Verify A Claim"]),
         ("full verification", ["make living-book-check"]),
         ("regular verification", ["make check", "make site-render"]),
+    ],
+    "verify_claim.qmd": [
+        ("Lean-proved criteria", ["A mathematical claim is Lean-proved only when"]),
+        ("theorem trace", ["Trace A Theorem Id"]),
+        ("dictionary trace", ["Trace A Dictionary Term"]),
+        ("paper trace", ["Trace A Paper Claim"]),
+        ("widget trace", ["Trace A Widget Or Glyph"]),
+        ("local verification", ["make living-book-check", "make sitecheck"]),
+        ("public verification", ["GitHub Pages", "site/_site"]),
+        ("non-proof guardrail", ["not proofs", "not prove"]),
     ],
     "status.qmd": [
         ("generated status source", ["generated theorem data"]),

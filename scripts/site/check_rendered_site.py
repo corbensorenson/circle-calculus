@@ -18,6 +18,7 @@ REQUIRED_RENDERED_FILES = [
     "about.html",
     "roadmap.html",
     "reader_path.html",
+    "verify_claim.html",
     "status.html",
     "dictionary.html",
     "theorems.html",

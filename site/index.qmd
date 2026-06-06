@@ -35,6 +35,7 @@ Compare widget behavior against the Python reference models and tests. Python ex
 
 - Begin with [S1 finite circles](chapters/S1/index.qmd).
 - Follow the [reader path](reader_path.qmd) for a proof-status-safe tour.
+- Use [Verify A Claim](verify_claim.qmd) when you want to audit a theorem, paper paragraph, widget, or diagram.
 - Browse the [dictionary index](dictionary.qmd) when a term matters.
 - Browse the [theorem index](theorems.qmd) when a theorem id matters.
 - Inspect the [project roadmap](roadmap.qmd).

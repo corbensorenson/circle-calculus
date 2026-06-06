@@ -1,0 +1,100 @@
+---
+title: "Verify A Claim"
+---
+
+Use this page when you want to check whether a sentence, diagram, widget, paper paragraph, or theorem card is backed by the formal project.
+
+## Quick Rule
+
+A mathematical claim is Lean-proved only when all of these are true:
+
+1. The claim has a theorem id in the [theorem index](theorems.qmd).
+2. The theorem status badge says `Lean-proved`.
+3. The theorem row links to a Lean declaration source.
+4. The theorem id appears in the generated paper and dictionary backlinks expected for that claim.
+5. The repository checks pass locally or in GitHub Actions.
+
+If any of those are missing, read the claim as planned, exploratory, draft, blocked, deferred, or explanatory.
+
+::: {.warning-box}
+Widgets, diagrams, Python examples, target entries, and paper prose are not proofs. They are useful only when they stay downstream of theorem manifests and compiled Lean declarations.
+:::
+
+## Trace A Theorem Id
+
+Given a theorem id such as `CC-T0005`:
+
+1. Open [Theorem Index](theorems.qmd#CC-T0005).
+2. Check the status badge.
+3. Open the Lean source link if the theorem is Lean-proved.
+4. Follow the paper backlinks to see where the theorem is used in prose.
+5. Follow the dictionary links to check the meanings of the terms used by the theorem.
+
+The generated theorem index is a navigation layer. The formal proof source remains the Lean declaration compiled by `lake build`.
+
+## Trace A Dictionary Term
+
+Given a dictionary id such as `CC-0001`:
+
+1. Open [Dictionary Index](dictionary.qmd#CC-0001).
+2. Read the formal definition and forbidden meanings.
+3. Follow theorem, paper, widget, and glyph backlinks.
+4. Check whether the term is used in a proved theorem, a draft paper, an exploratory target, or only a widget.
+
+Dictionary entries control vocabulary. They do not prove theorem statements by themselves.
+
+## Trace A Paper Claim
+
+Given a paper id or title:
+
+1. Open [Paper Index](papers.qmd).
+2. Filter by the paper id or title.
+3. Open the paper source and sidecar links.
+4. Follow every theorem id listed for the paper into the theorem index.
+5. Treat prose without a proved theorem id as exposition, motivation, roadmap, or conjectural framing.
+
+## Trace A Widget Or Glyph
+
+For a widget:
+
+1. Check the widget page warning.
+2. Check the theorem id attached to the widget panel, if any.
+3. Open the theorem id in the theorem index.
+4. Compare the widget output with the Python reference only as executable support.
+
+For a glyph:
+
+1. Open [Proof-Carrying Glyphs](chapters/phase2/proof_carrying_glyphs.qmd).
+2. Filter or inspect the glyph id.
+3. Follow the linked theorem id and dictionary ids.
+4. Check the glyph status against the theorem status.
+
+Glyphs are proof interfaces. They do not replace Lean proof checking.
+
+## Local Verification Commands
+
+Use the full local gate when changing proofs, manifests, dictionary entries, papers, widgets, or site data:
+
+```bash
+make living-book-check
+```
+
+This includes Lean build, repository checks, site data export, Living Book source checks, Quarto render, and rendered artifact validation.
+
+For focused Living Book work:
+
+```bash
+make sitecheck
+make site-render
+make site-render-check
+```
+
+`make sitecheck` includes theorem id checks, dictionary id checks, paper links, source links, reciprocal generated backlinks, theorem-status language checks, widget mount contracts, and widget/Python parity.
+
+## Public Verification
+
+The public site is hosted at [Circle Calculus Living Book](https://corbensorenson.github.io/circle-calculus/). It is published from GitHub Pages only after the deployment workflow builds Lean, runs source checks, renders Quarto, validates the rendered artifact, and uploads `site/_site/`.
+
+The public page is a learning resource. The proof source is still the repository state that produced it.
+
+<script type="module" src="widgets/shared/widget_base.js"></script>

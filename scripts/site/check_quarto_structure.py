@@ -11,6 +11,7 @@ REQUIRED = [
     "site/404.qmd",
     "site/about.qmd",
     "site/roadmap.qmd",
+    "site/verify_claim.qmd",
     "site/status.qmd",
     "site/dictionary.qmd",
     "site/theorems.qmd",
