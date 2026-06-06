@@ -27,7 +27,7 @@ C.orbit(start=0, stride=4)  # [0, 4, 8]
 C.period(4)                # 3
 ```
 
-<p data-paper-ref="papers/PAPER_01_FINITE_CIRCLES.md">Paper source: [Circle Calculus I](../../../papers/PAPER_01_FINITE_CIRCLES.md)</p>
+<p data-paper-ref="papers/PAPER_01_FINITE_CIRCLES.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/PAPER_01_FINITE_CIRCLES.md">Circle Calculus I</a></p>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>
 <script type="module" src="../../widgets/S1/coil_orbit_explorer.js"></script>

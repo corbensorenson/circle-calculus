@@ -38,6 +38,6 @@ Compare widget behavior against the Python reference models and tests. Python ex
 - Browse the [dictionary index](dictionary.qmd) when a term matters.
 - Browse the [theorem index](theorems.qmd) when a theorem id matters.
 - Inspect the [project roadmap](roadmap.qmd).
-- Read the proof-status policy in [Living Book Policy](../docs/LIVING_BOOK_POLICY.md).
+- Read the proof-status policy in [Living Book Policy](https://github.com/corbensorenson/circle-calculus/blob/main/docs/LIVING_BOOK_POLICY.md).
 
 <script type="module" src="widgets/shared/widget_base.js"></script>

@@ -40,11 +40,11 @@ Targets, widgets, Python examples, and diagrams are not proofs. A theorem is Lea
 
 ## 4. Open The Source Trail
 
-- Papers live in [`papers/`](../papers/).
-- Lean proofs live in [`Circle/`](../Circle/) and sidecars under [`sidecars/`](../sidecars/).
-- Python reference models live in [`circle_math/`](../circle_math/).
-- Manifests live in [`manifests/`](../manifests/).
-- Dictionary source lives in [`dictionary/`](../dictionary/).
+- Papers live in [`papers/`](https://github.com/corbensorenson/circle-calculus/tree/main/papers).
+- Lean proofs live in [`Circle/`](https://github.com/corbensorenson/circle-calculus/tree/main/Circle) and sidecars under [`sidecars/`](https://github.com/corbensorenson/circle-calculus/tree/main/sidecars).
+- Python reference models live in [`circle_math/`](https://github.com/corbensorenson/circle-calculus/tree/main/circle_math).
+- Manifests live in [`manifests/`](https://github.com/corbensorenson/circle-calculus/tree/main/manifests).
+- Dictionary source lives in [`dictionary/`](https://github.com/corbensorenson/circle-calculus/tree/main/dictionary).
 
 ## 5. Verify Locally
 

@@ -16,6 +16,7 @@ GitHub Pages is a static-site host for HTML, CSS, and JavaScript from a GitHub r
 make site-data
 make sitecheck
 make site-render
+make site-render-check
 ```
 
 For the full local gate, including Lean and all repository checks:
@@ -36,11 +37,12 @@ The build job:
 4. installs Quarto,
 5. runs `make sourcecheck`,
 6. renders with `make site-render`, and
-7. uploads `site/_site/` as a GitHub Pages artifact.
+7. validates the rendered artifact with `make site-render-check`, and
+8. uploads `site/_site/` as a GitHub Pages artifact.
 
 The deploy job publishes the artifact to GitHub Pages only from `main`.
 
-This keeps publication downstream of the proof/status/data checks. A rendered page can be public only after theorem manifests, dictionary links, paper links, widget mount contracts, widget parity, fake-proof guardrails, and Quarto render have all passed in CI.
+This keeps publication downstream of the proof/status/data checks. A rendered page can be public only after theorem manifests, dictionary links, paper links, widget mount contracts, widget parity, fake-proof guardrails, Quarto render, and rendered-artifact link validation have all passed in CI.
 
 `make sourcecheck` includes `make sitecheck`, and `sitecheck` validates the generated source-link paths used by Living Book GitHub links. This protects the public site against stale links when Lean files, papers, dictionary files, sidecars, widgets, glyph fixtures, or target manifests move.
 
@@ -66,6 +68,7 @@ If the first deployment does not appear, check:
 ## Guardrails
 
 - Do not publish a site render if `make sourcecheck` or `make sitecheck` fails.
+- Do not publish a site render if `make site-render-check` finds a missing artifact or broken local link.
 - Do not publish a site render if theorem statuses fail validation.
 - Do not treat GitHub Pages output as proof. The formal verification command remains `lake build`, supported by repository checks.
 - Do not commit secrets, custom-domain assumptions, or paid-service configuration for Pages.

@@ -52,9 +52,12 @@ Local render commands:
 make site-data
 make sitecheck
 make site-render
+make site-render-check
 ```
 
 `make sitecheck` validates generated source-link paths so rendered GitHub links for theorem manifests, Lean files, dictionary sources, papers, sidecars, widgets, glyphs, and roadmap targets do not silently drift after files move. It also validates widget mount contracts so every `data-widget` panel resolves to a generated widget-index entry and a matching JavaScript `mountWidgets(...)` call.
+
+`make site-render-check` validates the rendered `site/_site/` artifact after Quarto runs. It requires the Pages marker, fallback page, generated JSON indexes, widgets, CSS, and core HTML pages to exist, and it fails when built pages contain local links that escape or miss the published artifact.
 
 On this workstation, Quarto is available through a local extracted install under `.tools/` when no system `quarto` command exists. Fresh clones can install Quarto with the standard Quarto installer or a package manager, then run the same Make targets.
 

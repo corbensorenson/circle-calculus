@@ -18,7 +18,7 @@ The widget demonstrates the composition law as an executable reference. It is no
 
 ## Source Links
 
-<p data-paper-ref="papers/PAPER_01_FINITE_CIRCLES.md">Paper source: [Circle Calculus I](../../../papers/PAPER_01_FINITE_CIRCLES.md)</p>
+<p data-paper-ref="papers/PAPER_01_FINITE_CIRCLES.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/PAPER_01_FINITE_CIRCLES.md">Circle Calculus I</a></p>
 
 Python reference model:
 
