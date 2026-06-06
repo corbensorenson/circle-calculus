@@ -3415,6 +3415,28 @@
       "id": "COMPS-T0003",
       "lean_name": "Circle.Applications.roundRobinSlot_zero",
       "lean_source": "Circle/Applications/CoilSystems.lean",
+      "lean_source_line": 30,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/coil_systems.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS",
+          "path": "papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 4: Coil Systems Applications"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0024",
+        "COMMON-0025"
+      ],
+      "id": "COMPS-T0004",
+      "lean_name": "Circle.Applications.roundRobinSlot_add_mul_slotCount",
+      "lean_source": "Circle/Applications/CoilSystems.lean",
       "lean_source_line": 24,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_systems.yaml",

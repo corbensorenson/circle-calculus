@@ -324,7 +324,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `COMPL-T0001` through `COMPL-T0004` are Lean-proved stride-address facts with Python examples; `COMPL-B0001` and `COMPL-B0002` are exploratory CoilLayout/stencil validation fixtures; layout, FFT, NTT, MLX/backend, and performance claims remain future work.
 - [x] `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md`
   - Program: `CoilHash`, `CoilMotion`, `CoilPRM`, `CoilCodec`, `CoilANN`, `CoilAcquire`, `CoilCAM`, `CoilTorsion`, `CoilDetect`, `CoilSched`, and `CoilQ` as benchmarked or domain-tested application roadmaps.
-  - Status: polished draft; `COMPS-T0001` through `COMPS-T0003` are Lean-proved round-robin schedule facts with Python examples; fairness, load balancing, robotics, codec, ANN, acquisition, CAM, torsion, detection, and quantum claims remain future domain work.
+  - Status: polished draft; `COMPS-T0001` through `COMPS-T0004` are Lean-proved round-robin schedule facts with Python examples; fairness, load balancing, robotics, codec, ANN, acquisition, CAM, torsion, detection, and quantum claims remain future domain work.
 - [x] `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md`
   - Program: disciplined Circle AI thesis covering phase, recurrence, rotation, sparse cyclic mixing, circular memory, harmonic transforms, geometry-aware models, and proof-carrying model components.
   - Status: polished draft; `AIA-T0001` through `AIA-T0003` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` and `AIA-B0002` are exploratory deterministic phase-channel benchmark fixtures; model-quality and speed claims remain benchmark work.
@@ -410,6 +410,7 @@ Application guardrails:
 - [x] `COMPS-T0001`: round-robin slot schedule is bounded by a positive slot count.
 - [x] `COMPS-T0002`: round-robin slot schedule closes after one full pass through the slots.
 - [x] `COMPS-T0003`: round-robin slot schedule at zero is zero.
+- [x] `COMPS-T0004`: round-robin slot schedule closes after any whole number of full passes.
 - [x] `AIA-T0001`: AI phase channel is bounded by a positive period.
 - [x] `AIA-T0002`: AI phase channel closes after one full period.
 - [x] `AIA-T0003`: AI phase channel at zero is zero.

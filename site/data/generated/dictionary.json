@@ -3652,6 +3652,12 @@
           "lean_name": "Circle.Applications.roundRobinSlot_zero",
           "name": "Circle.Applications.roundRobinSlot_zero",
           "status": "proved"
+        },
+        {
+          "id": "COMPS-T0004",
+          "lean_name": "Circle.Applications.roundRobinSlot_add_mul_slotCount",
+          "name": "Circle.Applications.roundRobinSlot_add_mul_slotCount",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -3686,6 +3692,12 @@
           "id": "COMPS-T0002",
           "lean_name": "Circle.Applications.roundRobinSlot_add_slotCount",
           "name": "Circle.Applications.roundRobinSlot_add_slotCount",
+          "status": "proved"
+        },
+        {
+          "id": "COMPS-T0004",
+          "lean_name": "Circle.Applications.roundRobinSlot_add_mul_slotCount",
+          "name": "Circle.Applications.roundRobinSlot_add_mul_slotCount",
           "status": "proved"
         }
       ],

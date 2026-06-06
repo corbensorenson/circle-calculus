@@ -10,6 +10,7 @@ The current CoilLayout fixtures validate deterministic layout and periodic-stenc
 <div class="theorem-box" data-theorem-id="COMPR-T0001"></div>
 <div class="theorem-box" data-theorem-id="COMPL-T0001"></div>
 <div class="theorem-box" data-theorem-id="COMPS-T0001"></div>
+<div class="theorem-box" data-theorem-id="COMPS-T0004"></div>
 
 <div class="dictionary-box" data-dictionary-id="COMMON-0040"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0045"></div>

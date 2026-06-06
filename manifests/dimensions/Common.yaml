@@ -586,6 +586,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["round_robin_slot(slot_count, 0) == 0"]
     blocker: ""
+  - id: COMPS-T0004
+    status: lean_proved
+    lean_name: Circle.Applications.roundRobinSlot_add_mul_slotCount
+    informal_statement: "For a positive slot count, adding any whole number of full round-robin passes preserves the selected slot."
+    formal_statement: "forall {slotCount : Nat}, 0 < slotCount -> forall tick passes : Nat, roundRobinSlot slotCount (tick + passes * slotCount) = roundRobinSlot slotCount tick"
+    dictionary_dependencies: ["COMMON-0024", "COMMON-0025"]
+    paper_refs: ["papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["round_robin_slot(slot_count, tick + passes * slot_count) == round_robin_slot(slot_count, tick)"]
+    blocker: ""
   - id: AIA-T0001
     status: lean_proved
     lean_name: Circle.Applications.phaseChannel_lt_period

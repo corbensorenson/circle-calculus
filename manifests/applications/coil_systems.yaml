@@ -18,6 +18,10 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.roundRobinSlot_zero
     dictionary_dependencies: ["COMMON-0024"]
+  - id: COMPS-T0004
+    status: lean_proved
+    lean_name: Circle.Applications.roundRobinSlot_add_mul_slotCount
+    dictionary_dependencies: ["COMMON-0024", "COMMON-0025"]
 next_targets:
   - "Add fairness/starvation statements only after choosing an explicit scheduler model."
   - "Benchmark or domain-test each systems hypothesis before claiming usefulness."

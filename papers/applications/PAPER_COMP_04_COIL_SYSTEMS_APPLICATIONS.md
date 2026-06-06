@@ -42,10 +42,11 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `COMPS-T0001`: `Circle.Applications.roundRobinSlot_lt_slotCount`
 - `COMPS-T0002`: `Circle.Applications.roundRobinSlot_add_slotCount`
 - `COMPS-T0003`: `Circle.Applications.roundRobinSlot_zero`
+- `COMPS-T0004`: `Circle.Applications.roundRobinSlot_add_mul_slotCount`
 
 ## Proved Core
 
-`COMPS-T0001` proves that the selected slot is bounded by the positive slot count. `COMPS-T0002` proves closure after one full pass through the slots. `COMPS-T0003` proves the zero anchor. The Python sidecar checks the same finite examples.
+`COMPS-T0001` proves that the selected slot is bounded by the positive slot count. `COMPS-T0002` proves closure after one full pass through the slots. `COMPS-T0003` proves the zero anchor. `COMPS-T0004` proves closure after any whole number of full passes. The Python sidecar checks the same finite examples.
 
 These facts are enough to certify a basic round-robin address schedule. They do not prove fairness, starvation freedom, load balancing, remapping bounds, robotics coverage, codec quality, ANN recall, acquisition quality, CAM path optimality, torsion-model performance, anomaly-detection accuracy, or quantum-circuit simplification.
 
