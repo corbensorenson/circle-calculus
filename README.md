@@ -77,7 +77,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md` | polished draft | `S7C-T0001` through `S7C-T0003` proved with Python examples |
 | `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md` | polished draft/partial proof | `S7QH-T0001` through `S7QH-T0003` are Lean-proved coordinate theorems; full fibration topology remains future work |
 | `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md` | polished draft/proved spine | `S7O-T0001` through `S7O-T0008` are Lean-proved in a bounded Cayley-Dickson coordinate model |
-| `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | polished draft/partial proof | `S15-T0001` is a Lean roadmap marker; `S15-T0002` through `S15-T0008` are Lean-proved topological, coordinate landing, safe right-phase, and warning-boundary facts with Python examples |
+| `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | polished draft/partial proof | `S15-T0001` is a Lean roadmap marker; `S15-T0002` through `S15-T0008` have checked Lean declarations for topological, coordinate landing, safe right-phase, and warning-boundary facts with Python examples |
 | `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md` | polished draft/proved finite seed | `P2S-T0001` through `P2S-T0003` are Lean-proved double/four suspension facts with Python examples |
 | `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md` | polished draft/proved finite seed | `P2B-T0001` through `P2B-T0003` are Lean-proved period-8 clock facts with Python examples; Bott/Clifford periodicity remains future work |
 | `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md` | polished draft/proved transition seed | `P2BU-T0001` through `P2BU-T0007` are Lean-proved product-bundle projection/fiber and base-preserving transition facts with Python examples |
@@ -170,6 +170,7 @@ make manifest    # validate theorem metadata
 make dictionary  # validate dictionary metadata
 make papermanifest # validate paper-to-sidecar/theorem/dictionary links
 make paperlinks  # verify papers cite known theorem ids
+make claimlanguage # audit proved-language against theorem statuses
 make phase4targets # validate the wide/deep theorem target registry
 make phase5targets # validate the edge problem-space target registry
 make phase6targets # validate the global sweep target registry

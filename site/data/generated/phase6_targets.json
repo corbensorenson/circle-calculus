@@ -16,16 +16,17 @@
       ],
       "checks": [
         "make check",
+        "python scripts/check_claim_language.py",
         "python scripts/check_manifest.py",
         "python scripts/check_no_fake_proofs.py",
         "python scripts/site/check_site_theorem_status.py"
       ],
       "guardrail": "Do not edit theorem meanings merely to make prose cleaner.",
       "id": "P6-SWEEP-001",
-      "next_action": "Run a claim-language audit across README, papers, and Living Book pages after the next proof batch.",
+      "next_action": "Claim-language audit added and wired into make check; rerun after each proof, paper, README, or Living Book status update.",
       "objective": "Ensure every reader-facing theorem claim has an honest status and every proved claim resolves to compiled Lean.",
       "priority": "high",
-      "status": "planned",
+      "status": "active",
       "sweep_type": "proof_status"
     },
     {
