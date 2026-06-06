@@ -4,6 +4,10 @@ title: "S2: Sphere Scaffolding"
 
 S2 pages are scaffolded as the Living Book grows beyond the S1 interactive core.
 
+<div class="warning-box">
+This section distinguishes Lean-proved finite suspended-circle facts from future continuous sphere geometry and future interactives. The theorem cards are the status source.
+</div>
+
 <div class="theorem-box" data-theorem-id="S2-T0001"></div>
 <div class="dictionary-box" data-dictionary-id="S2-0001"></div>
 

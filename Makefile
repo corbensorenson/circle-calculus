@@ -84,6 +84,7 @@ sitenavcontract:
 sitecheck: site-data
 	python scripts/site/check_quarto_structure.py
 	python scripts/site/check_site_navigation_contract.py
+	python scripts/site/check_site_scaffold_contract.py
 	python scripts/site/check_site_manifest_links.py
 	python scripts/site/check_site_dictionary_links.py
 	python scripts/site/check_site_theorem_status.py

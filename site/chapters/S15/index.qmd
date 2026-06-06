@@ -4,6 +4,10 @@ title: "S15: Future Hopf Horizon"
 
 S15 is a future horizon. Current pages should treat it as roadmap material unless a generated theorem card reports a certified finite seed.
 
+<div class="warning-box">
+This section is future-facing. A theorem card may expose a checked finite or roadmap marker, but the Living Book does not claim an implemented S15 theory.
+</div>
+
 <div class="theorem-box" data-theorem-id="S15-T0001"></div>
 <div class="theorem-box" data-theorem-id="S15-T0002"></div>
 <div class="theorem-box" data-theorem-id="S15-T0003"></div>

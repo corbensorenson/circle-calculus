@@ -6,6 +6,10 @@ The data-analysis page tracks finite phase-coordinate proofs and exploratory ben
 
 The multi-period fixture is intentionally ambiguous; it is a warning against overclaiming, not a real-data usefulness claim.
 
+<div class="warning-box">
+Benchmark fixtures are executable references only. They are not proofs of real-data usefulness, statistical optimality, or superiority over ordinary baselines.
+</div>
+
 <div class="theorem-box" data-theorem-id="APPD-T0001"></div>
 <div class="theorem-box" data-theorem-id="APPD-T0002"></div>
 <div class="theorem-box" data-theorem-id="APPD-T0003"></div>

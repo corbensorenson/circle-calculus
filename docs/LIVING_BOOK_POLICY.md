@@ -55,7 +55,7 @@ make site-render
 make site-render-check
 ```
 
-`make sitecheck` validates generated source-link paths so rendered GitHub links for theorem manifests, Lean files, dictionary sources, papers, sidecars, widgets, glyphs, and roadmap targets do not silently drift after files move. It also validates reciprocal generated backlinks across theorem, dictionary, paper, widget, and glyph data, widget mount contracts, and basic widget accessibility contracts such as labelled inputs, named regions, live output regions, and SVG title/description metadata.
+`make sitecheck` validates generated source-link paths so rendered GitHub links for theorem manifests, Lean files, dictionary sources, papers, sidecars, widgets, glyphs, and roadmap targets do not silently drift after files move. It also validates scaffold/future/non-proof guardrails, reciprocal generated backlinks across theorem, dictionary, paper, widget, and glyph data, widget mount contracts, and basic widget accessibility contracts such as labelled inputs, named regions, live output regions, and SVG title/description metadata.
 
 `make site-render-check` validates the rendered `site/_site/` artifact after Quarto runs. It requires the Pages marker, fallback page, generated JSON indexes, widgets, CSS, and core HTML pages to exist, and it fails when built pages contain local links that escape or miss the published artifact.
 

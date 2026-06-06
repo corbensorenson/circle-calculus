@@ -4,6 +4,10 @@ title: "S7: Topological And Octonionic Layer"
 
 S7 is scaffolded for finite topological S7 facts, quaternionic Hopf coordinate facts, and octonionic warnings.
 
+<div class="warning-box">
+This section is warning-sensitive. Octonionic and Hopf material must remain bounded to the theorem-card status and must not imply associativity, group structure, or full fibration topology unless proved. The theorem card is the status source.
+</div>
+
 <div class="theorem-box" data-theorem-id="S7C-T0001"></div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

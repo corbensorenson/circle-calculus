@@ -190,6 +190,7 @@ make examples    # regenerate current example diagrams
 make sourcecheck # run repository checks after Lean has already been built
 make site-data   # export Living Book JSON from manifests/dictionaries/papers
 make sitecheck   # validate Living Book structure, ids, links, status, and widgets
+python scripts/site/check_site_scaffold_contract.py # verify scaffold/future/non-proof guardrails
 python scripts/site/check_site_source_links.py # verify generated GitHub/source-link paths
 python scripts/site/check_site_data_backlinks.py # verify generated theorem/dictionary/paper/widget/glyph backlinks
 python scripts/site/check_site_widget_contracts.py # verify widget mounts, scripts, and index entries

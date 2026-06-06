@@ -4,6 +4,10 @@ title: "Phase II"
 
 Phase II pages collect stable spheres, periodicity, bundles, boundary/cobordism seeds, and proof-carrying glyphs.
 
+<div class="warning-box">
+Phase II pages mix proved finite seeds with planned theory-building infrastructure. The theorem cards and generated target indexes determine what is proved, planned, exploratory, or future work.
+</div>
+
 <div class="theorem-box" data-theorem-id="P2S-T0001"></div>
 <div class="theorem-box" data-theorem-id="P2BU-T0007"></div>
 <div class="theorem-box" data-theorem-id="P2G-T0004"></div>

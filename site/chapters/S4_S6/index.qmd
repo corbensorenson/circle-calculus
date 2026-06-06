@@ -4,6 +4,10 @@ title: "S4-S6: Suspension And Warning Layer"
 
 These pages are scaffolded for finite suspension/Euler parity and warning-aware higher-dimensional material.
 
+<div class="warning-box">
+This section is a scaffold around finite suspension-count and Euler-parity facts. It does not claim a complete continuous S4-S6 geometry layer. The theorem card is the status source.
+</div>
+
 <div class="theorem-box" data-theorem-id="S456-T0001"></div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>
