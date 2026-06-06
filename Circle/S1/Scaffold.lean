@@ -21,4 +21,16 @@ theorem signedRot_inverse (n : Nat) (k : Int) (x : Circle.C n) :
     signedRot n (-k) (signedRot n k x) = x := by
   simp [signedRot, add_assoc]
 
+theorem signedRot_bijective (n : Nat) (k : Int) :
+    Function.Bijective (signedRot n k) := by
+  constructor
+  · intro x y h
+    calc
+      x = signedRot n (-k) (signedRot n k x) := (signedRot_inverse n k x).symm
+      _ = signedRot n (-k) (signedRot n k y) := by rw [h]
+      _ = y := signedRot_inverse n k y
+  · intro y
+    refine ⟨signedRot n (-k) y, ?_⟩
+    simpa using signedRot_inverse n (-k) y
+
 end Circle.S1

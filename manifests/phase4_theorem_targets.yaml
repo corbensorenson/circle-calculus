@@ -86,6 +86,21 @@ targets:
     next_action: "Promoted to CC-T0058 with supporting Lean theorems CC-T0056 and CC-T0057; leave full affine classification for a later target."
     guardrail: "Do not claim all endomorphisms are affine unless the classification is separately proved."
 
+  - id: P4-S1-004
+    layer: S1
+    priority: medium
+    status: promoted
+    promoted_theorem_id: S1O-T0004
+    supporting_theorem_ids: ["S1O-T0002", "S1O-T0003"]
+    claim_type: theorem
+    title: "Signed rotations are bijections"
+    target_statement: "Every signed rotation on a finite circle is a reversible bijection of nodes."
+    candidate_formalization: "forall n : Nat, forall k : Int, Function.Bijective (Circle.S1.signedRot n k)"
+    paper_refs: ["papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md"]
+    dictionary_dependencies: ["S1-0002", "S1-0003"]
+    next_action: "Promoted to S1O-T0004 and Lean-proved as Circle.S1.signedRot_bijective."
+    guardrail: "Keep this finite modular bijection separate from continuous orientation claims."
+
   - id: P4-S2-001
     layer: S2
     priority: high

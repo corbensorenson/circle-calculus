@@ -136,6 +136,30 @@
       "title": "Affine circle automorphism normal form"
     },
     {
+      "candidate_formalization": "forall n : Nat, forall k : Int, Function.Bijective (Circle.S1.signedRot n k)",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S1-0002",
+        "S1-0003"
+      ],
+      "guardrail": "Keep this finite modular bijection separate from continuous orientation claims.",
+      "id": "P4-S1-004",
+      "layer": "S1",
+      "next_action": "Promoted to S1O-T0004 and Lean-proved as Circle.S1.signedRot_bijective.",
+      "paper_refs": [
+        "papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md"
+      ],
+      "priority": "medium",
+      "promoted_theorem_id": "S1O-T0004",
+      "status": "promoted",
+      "supporting_theorem_ids": [
+        "S1O-T0002",
+        "S1O-T0003"
+      ],
+      "target_statement": "Every signed rotation on a finite circle is a reversible bijection of nodes.",
+      "title": "Signed rotations are bijections"
+    },
+    {
       "candidate_formalization": "suspendedCircleAntipode n (suspendedCircleLongitudeRotation n stride p) = suspendedCircleLongitudeRotation n (-stride) (suspendedCircleAntipode n p)",
       "claim_type": "theorem",
       "dictionary_dependencies": [

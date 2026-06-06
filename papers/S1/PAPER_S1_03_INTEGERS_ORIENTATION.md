@@ -41,6 +41,7 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `S1O-T0001`: `Circle.S1.signedRot_zero`
 - `S1O-T0002`: `Circle.S1.signedRot_comp`
 - `S1O-T0003`: `Circle.S1.signedRot_inverse`
+- `S1O-T0004`: `Circle.S1.signedRot_bijective`
 
 ## Proved Core
 
@@ -50,7 +51,9 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 
 `S1O-T0003` is proved by `Circle.S1.signedRot_inverse`: moving by `k` and then by `-k` returns to the starting node.
 
-The Python sidecar checks the same signed finite-circle examples for zero stride, composition by adding signed strides, and inverse motion. These examples support the paper but do not replace the Lean theorem spine.
+`S1O-T0004` is proved by `Circle.S1.signedRot_bijective`: every signed rotation is a bijection of the finite circle's nodes. This is the map-level version of reversible motion.
+
+The Python sidecar checks the same signed finite-circle examples for zero stride, composition by adding signed strides, inverse motion, and finite bijection. These examples support the paper but do not replace the Lean theorem spine.
 
 ## Interpretation
 
@@ -76,7 +79,7 @@ It supports later work in several ways:
 - Signed strides make it easier to state symmetry and reflection facts.
 - Later quaternion and spin papers reuse the idea that changing direction or sign can preserve a structured action.
 
-This paper is intentionally narrow. It does not yet build a full signed winding object or prove all integer arithmetic. It proves the group-action facts needed for reversible motion on `C_n`.
+This paper is intentionally narrow. It does not yet build a full signed winding object or prove all integer arithmetic. It proves the group-action facts and bijection fact needed for reversible motion on `C_n`.
 
 ## Dictionary Targets
 

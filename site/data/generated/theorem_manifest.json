@@ -3758,6 +3758,37 @@
       "blocker": "",
       "canonical_status": "proved",
       "dictionary_dependencies": [
+        "S1-0002",
+        "S1-0003"
+      ],
+      "formal_statement": "forall n : Nat, forall k : Int, Function.Bijective (Circle.S1.signedRot n k)",
+      "id": "S1O-T0004",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "Every signed rotation of a finite circle is a bijection of its nodes.",
+      "lean_name": "Circle.S1.signedRot_bijective",
+      "lean_source": "Circle/S1/Scaffold.lean",
+      "lean_source_line": 24,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md"
+      ],
+      "source_manifest": "manifests/dimensions/S1_circle.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_S1_03_INTEGERS_ORIENTATION/python/test_signed_rotation_examples.py::test_signed_rotation_is_bijective"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
         "S2-0001",
         "COMMON-0001"
       ],

@@ -24,3 +24,11 @@ def test_signed_rotation_inverse_returns_to_start() -> None:
         for node in range(size):
             for stride in range(-64, 65):
                 assert signed_rot(size, -stride, signed_rot(size, stride, node)) == node
+
+
+def test_signed_rotation_is_bijective() -> None:
+    for size in range(1, 25):
+        nodes = set(range(size))
+        for stride in range(-64, 65):
+            images = {signed_rot(size, stride, node) for node in nodes}
+            assert images == nodes

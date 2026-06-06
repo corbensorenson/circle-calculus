@@ -13,5 +13,6 @@ namespace Circle.PaperS103
 #check Circle.S1.signedRot_zero
 #check Circle.S1.signedRot_comp
 #check Circle.S1.signedRot_inverse
+#check Circle.S1.signedRot_bijective
 
 end Circle.PaperS103
