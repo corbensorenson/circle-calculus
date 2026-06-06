@@ -117,20 +117,23 @@
       ],
       "area": "AI and ML inductive bias",
       "artifact_refs": [
-        "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md"
+        "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md",
+        "circle_math/applications/circle_ai.py",
+        "sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/test_phase_channel_examples.py"
       ],
       "claim_type": "experiment",
       "dictionary_dependencies": [
         "COMMON-0026",
-        "COMMON-0039"
+        "COMMON-0039",
+        "COMMON-0044"
       ],
       "edge_question": "Can explicit phase channels help only on tasks with real periodic structure, compared against ordinary learned baselines?",
       "guardrail": "No claim that circles improve all AI.",
       "id": "P5-EDGE-005",
-      "next_action": "Extend AIA-B0001 from constant-baseline scoring to learned dense and phase-feature baselines.",
+      "next_action": "AIA-B0002 adds periodic and nonperiodic learned-baseline controls; expand beyond scalar thresholds to dense, RoPE, cyclic-feature, and MLX model baselines.",
       "ordinary_baseline": "Dense learned features, standard positional features, RoPE-style encodings, and nonperiodic controls.",
       "priority": "high",
-      "status": "planned",
+      "status": "exploratory_python",
       "title": "Learned phase-channel baseline comparison"
     },
     {

@@ -52,7 +52,7 @@ theorems:
     lean_name: Circle.Applications.adapterBlock_zero
     dictionary_dependencies: ["COMMON-0030"]
 next_targets:
-  - "Expand the phase-channel fixture beyond constant baselines to learned dense, RoPE, and cyclic-feature baselines."
+  - "Expand the learned phase fixture beyond scalar thresholds to dense, RoPE, and cyclic-feature baselines."
   - "Add separate cyclic-memory and adapter-block benchmarks before making memory, attention, or CoilRA claims."
   - "Compare against dense, LoRA, block-circulant, standard RoPE, full attention, sparse attention, Hyena-like, and state-space baselines as appropriate."
 benchmarks:
@@ -61,4 +61,8 @@ benchmarks:
     path: sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/test_phase_channel_examples.py::test_phase_channel_benchmark_fixture_is_deterministic
     script: sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_phase_channel.py
     description: "Deterministic phase-channel synthetic fixture comparing a phase lookup against a constant baseline, with optional MLX scoring when available."
+  - id: AIA-B0002
+    status: exploratory_python
+    path: sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/test_phase_channel_examples.py::test_learned_phase_baseline_fixture_has_positive_and_negative_controls
+    description: "Tiny learned-baseline fixture comparing phase lookup against a scalar threshold baseline on periodic and nonperiodic synthetic controls."
 guardrail: "No claim that circles improve all AI."

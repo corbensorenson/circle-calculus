@@ -317,7 +317,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `COMPS-T0001` through `COMPS-T0003` are Lean-proved round-robin schedule facts with Python examples; fairness, load balancing, robotics, codec, ANN, acquisition, CAM, torsion, detection, and quantum claims remain future domain work.
 - [x] `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md`
   - Program: disciplined Circle AI thesis covering phase, recurrence, rotation, sparse cyclic mixing, circular memory, harmonic transforms, geometry-aware models, and proof-carrying model components.
-  - Status: polished draft; `AIA-T0001` through `AIA-T0003` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` is an exploratory deterministic phase-channel benchmark fixture; model-quality and speed claims remain benchmark work.
+  - Status: polished draft; `AIA-T0001` through `AIA-T0003` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` and `AIA-B0002` are exploratory deterministic phase-channel benchmark fixtures; model-quality and speed claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`
   - Program: Coil Attention, CoilKV, long-context retrieval, alias control, stride/orbit coverage, and comparisons against full attention, sparse attention, Hyena-like mixers, and S4/Mamba-like baselines.
   - Status: polished draft; `AIM-T0001` through `AIM-T0003` are Lean-proved cyclic-memory-slot facts with Python examples; retrieval quality, alias control, and attention replacement claims remain benchmark work.
@@ -402,6 +402,7 @@ Application guardrails:
 - [x] `AIA-T0002`: AI phase channel closes after one full period.
 - [x] `AIA-T0003`: AI phase channel at zero is zero.
 - [x] `AIA-B0001`: exploratory deterministic phase-channel benchmark fixture.
+- [x] `AIA-B0002`: exploratory learned-baseline phase fixture with periodic and nonperiodic controls.
 - [x] `AIM-T0001`: cyclic memory slot is bounded by a positive bank size.
 - [x] `AIM-T0002`: cyclic memory slot closes after one full bank pass.
 - [x] `AIM-T0003`: cyclic memory slot at zero is zero.
@@ -586,6 +587,9 @@ Phase III guardrails:
 Goal:
 Expand coverage at every dimensional level by deliberately looking for missing theorems, stronger formal statements, cleaner proof spines, better sidecars, and paper improvements. This phase is not a license to invent unsupported claims; it is a structured audit for what the project should prove next and for where existing papers or proofs should be strengthened.
 
+Coverage standard:
+Go wide across every dimensional layer and application family, then go deep wherever the audit finds a real proof spine, reusable lemma, dictionary concept, or paper improvement. A successful Phase IV pass should leave the project with broader theorem coverage, stronger local proofs, and clearer paper/proof links, not just a longer wishlist.
+
 Required sweep:
 
 - [ ] Audit `S0` for sign, opposition, involution, parity, and antipodal vocabulary that should be made explicit.
@@ -622,6 +626,9 @@ Completion criteria:
 Goal:
 Search for problem spaces near the edge of the project where Circle Calculus may offer leverage that is difficult, awkward, or unavailable in ordinary presentations. The standard is not hype; the standard is whether the circle/provenance/glyph/proof-carrying organization produces a concrete artifact, explanation, compression, benchmark, search improvement, or formal interface that would be hard to get otherwise.
 
+Search standard:
+Look for tasks where ordinary mathematical presentation is correct but awkward, fragmented, hard to navigate, hard to certify visually, or hard to operationalize. Circle Calculus earns a Phase V claim only when it produces a concrete advantage: a better proof interface, a cleaner executable model, a more navigable provenance object, a stronger benchmark fixture, or a clearer reader workflow.
+
 Source of truth:
 
 - `manifests/phase5_edge_targets.yaml`
@@ -655,6 +662,7 @@ Outputs:
 - [x] `P5-EDGE-002`: finite-coil theorem-signature index normalizes gcd, period, orbit count, full-coil, and same-orbit tags for bounded S1 proof navigation.
 - [x] `P5-EDGE-003`: number provenance fixture records divisor, cofactor, orbit-count, period, and theorem-link views for selected finite circles.
 - [x] `P5-EDGE-004`: expanded deterministic periodic-data fixture suite records clean, noisy, aliased, and multi-period baseline behavior without upgrading usefulness claims.
+- [x] `P5-EDGE-005`: learned phase-channel baseline fixture records both a positive periodic case and a negative nonperiodic control.
 - [ ] At least one experiment-ready paper or application note for each accepted edge direction.
 - [ ] Python/MLX or other executable sidecars where the claim is computational.
 - [ ] Lean theorem targets where the claim is formal.
@@ -664,6 +672,9 @@ Outputs:
 
 Goal:
 Make the entire project cleaner, more correct, easier to consume, and harder to misread. This is the final wide sweep over writing, proofs, manifests, dictionary entries, site pages, examples, links, and repository ergonomics.
+
+Polish standard:
+The final pass should optimize for correct wide and deep coverage. Every reader-facing claim should be either proved, explicitly planned, exploratory, blocked, deferred, or background. Every public entry point should sound cleaner, point to the right source of truth, and make it easy for a new reader to understand what has been proved and what remains future work.
 
 Sweep checklist:
 

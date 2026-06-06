@@ -22,6 +22,8 @@ The dimensional ladder is organized so lower-dimensional material does not rely 
 
 Higher-dimensional pages may be present before their interactive chapters are mature. A placeholder page is not a proof claim.
 
+Phase IV, Phase V, and Phase VI are the wide/deep/correctness loop: first audit every dimension and application area for better theorem coverage and paper/proof spines, then search edge problem spaces for concrete Circle Calculus leverage, then sweep the full corpus for correctness, clarity, proof-status discipline, and reader usability.
+
 <div class="warning-box">
 The Living Book must not say a theorem is proved unless the theorem id is proved in the generated theorem data and resolves to compiled Lean.
 </div>

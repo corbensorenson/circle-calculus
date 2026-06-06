@@ -153,6 +153,18 @@ class PhaseChannelBenchmarkResult:
     note: str = "Synthetic phase fixture only; not a model-quality claim."
 
 
+@dataclass(frozen=True)
+class LearnedPhaseBenchmarkResult:
+    period: int
+    train_length: int
+    test_length: int
+    periodic_phase_accuracy: float
+    periodic_dense_accuracy: float
+    nonperiodic_phase_accuracy: float
+    nonperiodic_dense_accuracy: float
+    note: str = "Tiny learned-baseline fixture only; not a model-quality claim."
+
+
 def run_phase_channel_benchmark(
     *,
     period: int = 8,
@@ -207,4 +219,74 @@ def run_phase_channel_benchmark(
         phase_channel_accuracy=phase_accuracy,
         constant_accuracy=constant_accuracy,
         backend=backend,
+    )
+
+
+def nonperiodic_threshold_label(position: int, threshold: int) -> int:
+    """Return a simple nonperiodic control label."""
+    return 1 if position >= threshold else 0
+
+
+def fit_threshold_classifier(positions: Sequence[int], labels: Sequence[int]) -> tuple[int, int]:
+    """Fit a deterministic scalar threshold classifier.
+
+    Returns ``(threshold, polarity)`` where polarity 1 predicts ``position >=
+    threshold`` and polarity -1 predicts the opposite. This is a tiny dense
+    scalar baseline, not a neural model.
+    """
+    if len(positions) != len(labels):
+        raise ValueError("positions and labels must have the same length")
+    if not positions:
+        raise ValueError("positions must be nonempty")
+    candidates = tuple(range(min(positions), max(positions) + 2))
+    best = (0.0, candidates[0], 1)
+    for threshold in candidates:
+        for polarity in (1, -1):
+            predictions = tuple(
+                1 if (position >= threshold) == (polarity == 1) else 0
+                for position in positions
+            )
+            score = accuracy(predictions, labels)
+            if score > best[0]:
+                best = (score, threshold, polarity)
+    return best[1], best[2]
+
+
+def predict_threshold_classifier(positions: Sequence[int], threshold: int, polarity: int) -> tuple[int, ...]:
+    if polarity not in (1, -1):
+        raise ValueError("polarity must be 1 or -1")
+    return tuple(1 if (position >= threshold) == (polarity == 1) else 0 for position in positions)
+
+
+def run_learned_phase_baseline_benchmark(
+    *,
+    period: int = 8,
+    train_length: int = 64,
+    test_length: int = 32,
+) -> LearnedPhaseBenchmarkResult:
+    """Compare phase lookup against a learned scalar threshold baseline."""
+    train_positions, periodic_train_labels = synthetic_phase_dataset(period, train_length)
+    test_positions, periodic_test_labels = synthetic_phase_dataset(period, test_length, start=train_length)
+
+    phase_lookup = fit_phase_lookup(period, train_positions, periodic_train_labels)
+    periodic_phase_predictions = predict_phase_lookup(period, phase_lookup, test_positions)
+    threshold, polarity = fit_threshold_classifier(train_positions, periodic_train_labels)
+    periodic_dense_predictions = predict_threshold_classifier(test_positions, threshold, polarity)
+
+    control_threshold = (3 * train_length) // 4
+    control_train_labels = tuple(nonperiodic_threshold_label(position, control_threshold) for position in train_positions)
+    control_test_labels = tuple(nonperiodic_threshold_label(position, control_threshold) for position in test_positions)
+    control_phase_lookup = fit_phase_lookup(period, train_positions, control_train_labels)
+    control_phase_predictions = predict_phase_lookup(period, control_phase_lookup, test_positions)
+    control_threshold_fit, control_polarity = fit_threshold_classifier(train_positions, control_train_labels)
+    control_dense_predictions = predict_threshold_classifier(test_positions, control_threshold_fit, control_polarity)
+
+    return LearnedPhaseBenchmarkResult(
+        period=period,
+        train_length=train_length,
+        test_length=test_length,
+        periodic_phase_accuracy=accuracy(periodic_phase_predictions, periodic_test_labels),
+        periodic_dense_accuracy=accuracy(periodic_dense_predictions, periodic_test_labels),
+        nonperiodic_phase_accuracy=accuracy(control_phase_predictions, control_test_labels),
+        nonperiodic_dense_accuracy=accuracy(control_dense_predictions, control_test_labels),
     )

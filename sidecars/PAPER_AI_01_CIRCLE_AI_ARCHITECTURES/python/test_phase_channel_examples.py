@@ -1,6 +1,7 @@
 from circle_math.applications.circle_ai import (
     mlx_available,
     phase_channel,
+    run_learned_phase_baseline_benchmark,
     run_phase_channel_benchmark,
 )
 
@@ -39,3 +40,10 @@ def test_mlx_phase_channel_backend_matches_cpu_when_available() -> None:
     mlx = run_phase_channel_benchmark(period=8, train_length=64, test_length=32, backend="mlx")
     assert mlx.phase_channel_accuracy == cpu.phase_channel_accuracy
     assert mlx.constant_accuracy == cpu.constant_accuracy
+
+
+def test_learned_phase_baseline_fixture_has_positive_and_negative_controls() -> None:
+    result = run_learned_phase_baseline_benchmark(period=8, train_length=64, test_length=32)
+    assert result.periodic_phase_accuracy > result.periodic_dense_accuracy
+    assert result.nonperiodic_dense_accuracy > result.nonperiodic_phase_accuracy
+    assert result.note.endswith("not a model-quality claim.")

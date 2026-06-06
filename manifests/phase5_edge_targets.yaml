@@ -82,7 +82,7 @@ targets:
   - id: P5-EDGE-005
     area: "AI and ML inductive bias"
     priority: high
-    status: planned
+    status: exploratory_python
     claim_type: experiment
     title: "Learned phase-channel baseline comparison"
     edge_question: "Can explicit phase channels help only on tasks with real periodic structure, compared against ordinary learned baselines?"
@@ -93,8 +93,10 @@ targets:
       - "The result report separates quality, runtime, parameter count, and interpretability."
     artifact_refs:
       - "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md"
-    dictionary_dependencies: ["COMMON-0026", "COMMON-0039"]
-    next_action: "Extend AIA-B0001 from constant-baseline scoring to learned dense and phase-feature baselines."
+      - "circle_math/applications/circle_ai.py"
+      - "sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/test_phase_channel_examples.py"
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0039", "COMMON-0044"]
+    next_action: "AIA-B0002 adds periodic and nonperiodic learned-baseline controls; expand beyond scalar thresholds to dense, RoPE, cyclic-feature, and MLX model baselines."
     guardrail: "No claim that circles improve all AI."
 
   - id: P5-EDGE-006

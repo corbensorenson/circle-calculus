@@ -1447,6 +1447,25 @@
       "symbol": "period_fixture_suite"
     },
     {
+      "dependencies": [
+        "COMMON-0026",
+        "COMMON-0039"
+      ],
+      "forbidden_meanings": [
+        "A neural-network quality benchmark.",
+        "Evidence that phase channels improve all AI.",
+        "A replacement for dense, RoPE, attention, or state-space baselines."
+      ],
+      "formal_definition": "`circle_math.applications.circle_ai.run_learned_phase_baseline_benchmark`, a tiny deterministic comparison between a phase lookup and a learned scalar threshold baseline on periodic and nonperiodic synthetic controls.",
+      "id": "COMMON-0044",
+      "introduced_in": "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES",
+      "intuition": "A guardrail fixture: phase features should help only when phase structure is real, while ordinary features should win on nonperiodic controls.",
+      "kind": "experiment",
+      "name": "Learned phase baseline fixture",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "learned_phase_baseline"
+    },
+    {
       "dependencies": [],
       "forbidden_meanings": [
         "The one-node circle C_1.",

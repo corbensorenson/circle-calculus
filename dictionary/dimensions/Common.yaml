@@ -491,3 +491,15 @@ entries:
       - "A real-data benchmark."
       - "Evidence that coil closure beats periodogram or autocorrelation."
       - "A proof of hidden periodicity."
+  - id: COMMON-0044
+    name: "Learned phase baseline fixture"
+    kind: experiment
+    symbol: "learned_phase_baseline"
+    formal_definition: "`circle_math.applications.circle_ai.run_learned_phase_baseline_benchmark`, a tiny deterministic comparison between a phase lookup and a learned scalar threshold baseline on periodic and nonperiodic synthetic controls."
+    intuition: "A guardrail fixture: phase features should help only when phase structure is real, while ordinary features should win on nonperiodic controls."
+    dependencies: ["COMMON-0026", "COMMON-0039"]
+    introduced_in: "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES"
+    forbidden_meanings:
+      - "A neural-network quality benchmark."
+      - "Evidence that phase channels improve all AI."
+      - "A replacement for dense, RoPE, attention, or state-space baselines."

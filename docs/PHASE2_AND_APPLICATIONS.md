@@ -106,7 +106,7 @@ Current active Phase II proof seed:
 - This is address-level structure plus a starter benchmark scaffold with expected-output checks, not a proof of cache locality, stencil correctness, NTT correctness, or backend speed.
 - `PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS` proves the round-robin schedule facts `COMPS-T0001` through `COMPS-T0003` in Lean through `Circle.Applications.roundRobinSlot_lt_slotCount`, `Circle.Applications.roundRobinSlot_add_slotCount`, and `Circle.Applications.roundRobinSlot_zero`, with matching Python examples.
 - This is a finite scheduler primitive, not a fairness, load-balancing, robotics, ANN, codec, acquisition, CAM, torsion, detection, or quantum-computing theorem.
-- `PAPER_AI_01_CIRCLE_AI_ARCHITECTURES` proves the phase-channel facts `AIA-T0001` through `AIA-T0003` in Lean through `Circle.Applications.phaseChannel_lt_period`, `Circle.Applications.phaseChannel_add_period`, and `Circle.Applications.phaseChannel_zero`, with matching Python examples and the exploratory deterministic benchmark fixture `AIA-B0001`.
+- `PAPER_AI_01_CIRCLE_AI_ARCHITECTURES` proves the phase-channel facts `AIA-T0001` through `AIA-T0003` in Lean through `Circle.Applications.phaseChannel_lt_period`, `Circle.Applications.phaseChannel_add_period`, and `Circle.Applications.phaseChannel_zero`, with matching Python examples and the exploratory deterministic benchmark fixtures `AIA-B0001` and `AIA-B0002`.
 - `PAPER_AI_02_COIL_ATTENTION_AND_MEMORY` proves the cyclic-memory-slot facts `AIM-T0001` through `AIM-T0003` in Lean through `Circle.Applications.memorySlot_lt_bankSize`, `Circle.Applications.memorySlot_add_bankSize`, and `Circle.Applications.memorySlot_zero`, with matching Python examples.
 - `PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE` proves the adapter-block facts `AIRA-T0001` through `AIRA-T0003` in Lean through `Circle.Applications.adapterBlock_lt_blockSize`, `Circle.Applications.adapterBlock_add_blockSize`, and `Circle.Applications.adapterBlock_zero`, with matching Python examples.
 - These are finite indexing primitives for AI prototypes plus one starter phase-channel harness, not model-quality, parameter-efficiency, attention-replacement, RoPE, or runtime claims.
@@ -264,8 +264,8 @@ Deferred Circle AI subprojects:
 
 First Circle AI prototypes:
 
-1. Phase-channel learned-task benchmarks built from `AIA-B0001`.
-   Expand the current deterministic fixture from constant-baseline scoring to learned dense, RoPE, and cyclic-feature baselines before making model-quality claims.
+1. Phase-channel learned-task benchmarks built from `AIA-B0001` and `AIA-B0002`.
+   Expand the current deterministic fixtures from constant/scalar-threshold baselines to learned dense, RoPE, and cyclic-feature baselines before making model-quality claims.
 
 2. Coil Attention plus MultiCoil RoPE on synthetic long-context retrieval.
    Compare against full attention, sliding window, dilated attention, BigBird-like sparse attention, Hyena-like long convolution, and S4/Mamba-like state-space baselines.

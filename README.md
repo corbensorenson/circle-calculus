@@ -88,7 +88,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md` | polished draft/proved finite seed | `COMPR-T0001` through `COMPR-T0003` are Lean-proved direction-bin schedule facts with Python examples |
 | `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md` | polished draft/proved finite seed | `COMPL-T0001` through `COMPL-T0004` are Lean-proved stride-address facts with Python examples; `COMPL-B0001` is an exploratory CoilLayout validation/benchmark-grid fixture |
 | `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md` | polished draft/proved finite seed | `COMPS-T0001` through `COMPS-T0003` are Lean-proved round-robin schedule facts with Python examples |
-| `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md` | polished draft/proved finite seed | `AIA-T0001` through `AIA-T0003` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` is an exploratory deterministic phase-channel benchmark fixture |
+| `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md` | polished draft/proved finite seed | `AIA-T0001` through `AIA-T0003` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` and `AIA-B0002` are exploratory deterministic phase-channel benchmark fixtures |
 | `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md` | polished draft/proved finite seed | `AIM-T0001` through `AIM-T0003` are Lean-proved cyclic-memory-slot facts with Python examples |
 | `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md` | polished draft/proved finite seed | `AIRA-T0001` through `AIRA-T0003` are Lean-proved adapter-block facts with Python examples |
 
@@ -100,7 +100,7 @@ Phase II and application scaffolds are also in place under `papers/phase2/`, `pa
 
 Phase III is now implemented as the first Circle Calculus Living Book milestone: a Quarto-based interactive explainer site generated from manifests, dictionary entries, papers, Python reference models, and Lean proof metadata. Its policy and roadmap live in `docs/LIVING_BOOK_POLICY.md`, `docs/LIVING_BOOK_ROADMAP.md`, and `docs/LIVING_BOOK_WIDGETS.md`; the source browser handoff is archived at `circle_calculus_codex_handoff/source_logs/05_living_book_browser_note.md`. The Living Book is an explanation layer, not a proof layer.
 
-The next project phases are intentionally wide and deep: Phase IV audits every dimensional level and application area for missing theorem targets, paper improvements, and stronger proof spines; Phase V searches edge problem spaces where Circle Calculus may provide leverage that is hard, awkward, or unavailable in ordinary presentations; Phase VI sweeps the whole corpus so the writing is cleaner, the claims are more correct, and the proof-status links are easy for outsiders to consume.
+The next project phases are intentionally wide, deep, and correctness-driven: Phase IV audits every dimensional level and application area for missing theorem targets, paper improvements, reusable lemmas, dictionary gaps, and stronger proof spines; Phase V searches edge problem spaces where Circle Calculus may provide leverage that is hard, awkward, or unavailable in ordinary presentations; Phase VI sweeps the whole corpus so the writing is cleaner, the claims are more correct, and the proof-status links are easy for outsiders to consume.
 
 The README is updated after meaningful proof batches, paper batches, roadmap changes, or application-context additions. Tiny internal-only edits should update the relevant source files without creating README churn.
 
@@ -345,6 +345,7 @@ Proved common and dimensional spine:
 - `AIA-T0002`: AI phase channel closes after one full period
 - `AIA-T0003`: AI phase channel at zero is zero
 - `AIA-B0001`: exploratory deterministic phase-channel benchmark fixture
+- `AIA-B0002`: exploratory learned-baseline fixture with periodic and nonperiodic controls
 - `AIM-T0001`: cyclic memory slot is bounded by a positive bank size
 - `AIM-T0002`: cyclic memory slot closes after one full bank pass
 - `AIM-T0003`: cyclic memory slot at zero is zero
