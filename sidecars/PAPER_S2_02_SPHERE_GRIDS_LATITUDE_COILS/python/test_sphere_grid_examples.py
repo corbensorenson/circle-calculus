@@ -23,6 +23,12 @@ def latitude_coil_period(n: int, stride: int) -> int:
     return n // gcd(n, stride)
 
 
+def latitude_orbit_class_count(n: int, stride: int, latitude: int) -> int:
+    assert n > 0
+    assert latitude >= 0
+    return gcd(n, stride)
+
+
 def test_sphere_grid_counts() -> None:
     for n in range(3, 33):
         for r in range(1, 12):
@@ -55,3 +61,11 @@ def test_latitude_coil_period() -> None:
     for n in range(1, 65):
         for stride in range(0, 65):
             assert latitude_coil_period(n, stride) == n // gcd(n, stride)
+
+
+def test_latitude_orbit_class_count() -> None:
+    for n in range(1, 65):
+        for r in range(1, 12):
+            for latitude in range(r):
+                for stride in range(0, 65):
+                    assert latitude_orbit_class_count(n, stride, latitude) == gcd(n, stride)

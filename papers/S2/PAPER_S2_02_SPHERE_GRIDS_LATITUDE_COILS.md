@@ -21,6 +21,7 @@ The warnings matter as much as the formulas: `C_n x C_m` is torus-like, pole col
 - `S2-T0005`: `Circle.S2.latitudeRing_isCircle`
 - `S2-T0006`: `Circle.S2.longitudeRotation_fixesPoles`
 - `S2-T0007`: `Circle.S2.latitudeCoil_period`
+- `S2-T0017`: `Circle.S2.latitudeRingOrbitClassCount_eq_gcd`
 - `S2-W0001`: torus confusion warning
 - `S2-W0002`: pole singularity warning
 - `S2-W0003`: S2 group fallacy warning
@@ -54,7 +55,15 @@ for all natural `n` and `r`. `S2-T0004` proves that the Euler characteristic of 
 period(n,k) = n / gcd(n,k)
 ```
 
-The Python sidecar checks the same counts, Euler characteristic, pole-fixing longitude rotations, latitude preservation on ring points, and inherited period formula on finite examples.
+`S2-T0017` proves the matching orbit-class count inherited by each finite latitude ring:
+
+```text
+orbit_class_count(n,k) = gcd(n,k)
+```
+
+The theorem is deliberately ring-local. It does not count orbits of the whole sphere grid and it does not give `S^2` a global circle-group structure.
+
+The Python sidecar checks the same counts, Euler characteristic, pole-fixing longitude rotations, latitude preservation on ring points, inherited period formula, and inherited orbit-class count on finite examples.
 
 ## Role In The Ladder
 
@@ -69,4 +78,4 @@ This paper is the bridge from one-dimensional circle behavior to a surface model
 
 ## Guardrails
 
-This paper does not model `S^2` as `C_n x C_m`, does not claim a global group law on `S^2`, and does not turn finite grid examples into continuous differential geometry. It proves the finite grid count, Euler, latitude-ring, pole-fixing, and inherited-period spine.
+This paper does not model `S^2` as `C_n x C_m`, does not claim a global group law on `S^2`, and does not turn finite grid examples into continuous differential geometry. It proves the finite grid count, Euler, latitude-ring, pole-fixing, inherited-period, and inherited orbit-count spine.

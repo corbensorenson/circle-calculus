@@ -143,12 +143,16 @@
       "guardrail": "Do not turn the whole sphere grid into a product of two circles.",
       "id": "P4-S2-002",
       "layer": "S2",
-      "next_action": "Package the inherited S1 orbit theorem as an S2 latitude theorem.",
+      "next_action": "Promoted to S2-T0017 as a latitude-ring wrapper around the S1 orbit-class count theorem.",
       "paper_refs": [
         "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"
       ],
       "priority": "medium",
-      "status": "planned",
+      "promoted_theorem_id": "S2-T0017",
+      "status": "promoted",
+      "supporting_theorem_ids": [
+        "CC-T0006"
+      ],
       "target_statement": "Each non-pole latitude ring decomposes under a stride into gcd(n,k) finite cycles.",
       "title": "Latitude-ring orbit decomposition inherits S1 orbit count"
     },

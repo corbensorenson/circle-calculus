@@ -18,5 +18,7 @@ namespace Circle.PaperS202
 #check Circle.S2.longitudeRotation
 #check Circle.S2.longitudeRotation_fixesPoles
 #check Circle.S2.latitudeCoil_period
+#check Circle.S2.latitudeRingOrbitClassCount
+#check Circle.S2.latitudeRingOrbitClassCount_eq_gcd
 
 end Circle.PaperS202

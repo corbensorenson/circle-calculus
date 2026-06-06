@@ -2,6 +2,7 @@ import Circle.Common.Scaffold
 import Circle.S1.Scaffold
 import Circle.Core.Rotation
 import Circle.Core.Period
+import Circle.Core.Orbit
 
 namespace Circle.S2
 
@@ -160,5 +161,13 @@ theorem longitudeRotation_advancesLongitudeCoordinate (n r stride : Nat)
 theorem latitudeCoil_period {n k : Nat} (hn : n ≠ 0) :
     Circle.period n k = n / Nat.gcd n k :=
   Circle.period_eq_n_div_gcd hn
+
+noncomputable def latitudeRingOrbitClassCount (n k r : Nat) (_latitude : Fin r) : Nat :=
+  Circle.orbitClassCount n k
+
+theorem latitudeRingOrbitClassCount_eq_gcd {n k r : Nat}
+    (latitude : Fin r) (hn : n ≠ 0) :
+    latitudeRingOrbitClassCount n k r latitude = Nat.gcd n k :=
+  Circle.orbit_decomposition_count hn
 
 end Circle.S2

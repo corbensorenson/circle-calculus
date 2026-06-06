@@ -212,8 +212,8 @@ Goal: make the executable examples line up with the Lean-backed papers without d
   - Status: polished draft; suspended-circle counts and Euler characteristic are Lean-proved in `Circle/S2/Scaffold.lean`.
   - Main model: `SuspC(n)`, with `V=n+2`, `E=3n`, `F=2n`, `chi=2`.
 - [x] `papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md`
-  - Proof targets: `S2-T0003` through `S2-T0007`
-  - Status: polished draft; sphere-grid counts, Euler characteristic, latitude-ring model, pole-fixing rotation, and inherited latitude coil period are Lean-proved.
+  - Proof targets: `S2-T0003` through `S2-T0007`, plus `S2-T0017`
+  - Status: polished draft; sphere-grid counts, Euler characteristic, latitude-ring model, pole-fixing rotation, inherited latitude coil period, and inherited latitude orbit-count theorem are Lean-proved.
   - Warning targets: `S2-W0001`, `S2-W0002`, `S2-W0003`
   - Main model: `SphereGrid(n,r)`, with pole collapse and latitude rings.
 - [x] `papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md`

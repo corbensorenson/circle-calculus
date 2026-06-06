@@ -64,7 +64,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md` | polished draft | `CC-T0008`, `CC-T0017` through `CC-T0054`, and `CC-T0056` through `CC-T0058` proved |
 | `papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md` | polished draft | `S0-T0001` through `S0-T0004` proved with Python examples |
 | `papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md` | polished draft | `S2-T0001` and `S2-T0002` proved with Python examples |
-| `papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md` | polished draft | `S2-T0003` through `S2-T0007` proved with Python examples |
+| `papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md` | polished draft | `S2-T0003` through `S2-T0007` and `S2-T0017` proved with Python examples |
 | `papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md` | polished draft | `S2-T0008` through `S2-T0016` proved with Python examples |
 | `papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md` | polished draft | `S3C-T0001` through `S3C-T0004` proved with Python examples |
 | `papers/S3/PAPER_S3_02_QUATERNION_COILS.md` | polished draft | `S3Q-T0001` through `S3Q-T0005` proved with Python examples |
@@ -351,6 +351,7 @@ Proved common and dimensional spine:
 - `S2-T0005`: latitude rings are finite circles
 - `S2-T0006`: longitude rotation fixes poles
 - `S2-T0007`: latitude coil period inherits the finite-circle period theorem
+- `S2-T0017`: latitude-ring orbit count inherits the finite-circle gcd orbit theorem
 - `S2-T0008`: suspended-circle antipode swaps the poles
 - `S2-T0009`: suspended-circle antipode is involutive
 - `S2-T0010`: suspended-circle antipode preserves the finite pole subset

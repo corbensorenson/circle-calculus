@@ -99,6 +99,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS/python/test_sphere_grid_examples.py
     blocker: ""
+  - id: S2-T0017
+    status: lean_proved
+    lean_name: Circle.S2.latitudeRingOrbitClassCount_eq_gcd
+    informal_statement: "A fixed finite latitude ring inherits the S1 orbit-class count gcd(n,k) for stride k."
+    formal_statement: "forall {n k r : Nat}, forall latitude : Fin r, n != 0 -> Circle.S2.latitudeRingOrbitClassCount n k r latitude = Nat.gcd n k"
+    dictionary_dependencies: ["S2-0002", "S2-0003", "CC-0208"]
+    paper_refs: ["papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS/python/test_sphere_grid_examples.py::test_latitude_orbit_class_count
+    blocker: ""
   - id: S2-T0008
     status: lean_proved
     lean_name: Circle.S2.suspendedCircleAntipode_swapsPoles
