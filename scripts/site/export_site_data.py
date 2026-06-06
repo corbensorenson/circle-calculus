@@ -176,6 +176,88 @@ def export_widget_index() -> dict:
     return {"widgets": widgets}
 
 
+def add_dictionary_backlinks(
+    dictionary: dict,
+    theorem_manifest: dict,
+    paper_index: dict,
+    widget_index: dict,
+    glyph_index: dict,
+) -> dict:
+    entries = [dict(entry) for entry in dictionary.get("entries", [])]
+    by_id = {entry["id"]: entry for entry in entries}
+    backlink_fields = [
+        "used_by_theorems",
+        "used_by_papers",
+        "used_by_widgets",
+        "used_by_glyphs",
+    ]
+    for entry in entries:
+        for field in backlink_fields:
+            entry[field] = []
+
+    def add(entry_id: str, field: str, value: dict) -> None:
+        entry = by_id.get(entry_id)
+        if entry is not None:
+            entry[field].append(value)
+
+    for theorem in theorem_manifest.get("theorems", []):
+        for entry_id in theorem.get("dictionary_dependencies", []):
+            add(
+                entry_id,
+                "used_by_theorems",
+                {
+                    "id": theorem.get("id", ""),
+                    "name": theorem.get("name", theorem.get("lean_name", "")),
+                    "status": theorem.get("canonical_status", theorem.get("status", "")),
+                    "lean_name": theorem.get("lean_name", ""),
+                },
+            )
+
+    for paper in paper_index.get("papers", []):
+        for entry_id in paper.get("dictionary_ids", []):
+            add(
+                entry_id,
+                "used_by_papers",
+                {
+                    "id": paper.get("id", ""),
+                    "title": paper.get("title", ""),
+                    "status": paper.get("status", ""),
+                    "path": paper.get("path", ""),
+                },
+            )
+
+    for widget in widget_index.get("widgets", []):
+        for entry_id in widget.get("dictionary_ids", []):
+            add(
+                entry_id,
+                "used_by_widgets",
+                {
+                    "id": widget.get("id", ""),
+                    "path": widget.get("path", ""),
+                    "python_reference": widget.get("python_reference", ""),
+                },
+            )
+
+    for glyph in glyph_index.get("glyphs", []):
+        for entry_id in glyph.get("dictionary_ids", []):
+            add(
+                entry_id,
+                "used_by_glyphs",
+                {
+                    "id": glyph.get("id", ""),
+                    "theorem_id": glyph.get("theorem_id", ""),
+                    "status": glyph.get("canonical_status", ""),
+                    "status_label": glyph.get("status_label", ""),
+                },
+            )
+
+    for entry in entries:
+        for field in backlink_fields:
+            entry[field] = sorted(entry[field], key=lambda item: item.get("id", ""))
+
+    return {"entries": sorted(entries, key=lambda item: item["id"])}
+
+
 def export_phase4_targets() -> dict:
     path = ROOT / "manifests" / "phase4_theorem_targets.yaml"
     if not path.exists():
@@ -250,16 +332,26 @@ def export_glyph_index(theorem_manifest: dict, dictionary: dict) -> dict:
 
 def export_all() -> None:
     theorem_manifest = export_theorems()
-    dictionary = export_dictionary()
+    base_dictionary = export_dictionary()
+    paper_index = export_papers()
+    widget_index = export_widget_index()
+    glyph_index = export_glyph_index(theorem_manifest, base_dictionary)
+    dictionary = add_dictionary_backlinks(
+        base_dictionary,
+        theorem_manifest,
+        paper_index,
+        widget_index,
+        glyph_index,
+    )
     write_json(GENERATED / "theorem_manifest.json", theorem_manifest)
     write_json(GENERATED / "dictionary.json", dictionary)
     write_json(GENERATED / "dimensions.json", export_dimensions())
-    write_json(GENERATED / "paper_index.json", export_papers())
-    write_json(GENERATED / "widget_index.json", export_widget_index())
+    write_json(GENERATED / "paper_index.json", paper_index)
+    write_json(GENERATED / "widget_index.json", widget_index)
     write_json(GENERATED / "phase4_targets.json", export_phase4_targets())
     write_json(GENERATED / "phase5_targets.json", export_phase5_targets())
     write_json(GENERATED / "phase6_targets.json", export_phase6_targets())
-    write_json(GENERATED / "glyph_index.json", export_glyph_index(theorem_manifest, dictionary))
+    write_json(GENERATED / "glyph_index.json", glyph_index)
 
 
 def main() -> int:

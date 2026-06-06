@@ -4,9 +4,11 @@ QUARTO_HOME ?= $(CURDIR)/.tools/quarto-home
 QUARTO_DENO_DIR ?= $(CURDIR)/.tools/quarto-deno
 QUARTO_ENV := HOME="$(QUARTO_HOME)" DENO_DIR="$(QUARTO_DENO_DIR)"
 
-.PHONY: check lean sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests claimlanguage phase4targets phase5targets phase6targets applicationguardrails glyphfixtures dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples site-data sitenavcontract sitecheck site-render site-preview living-book-check
+.PHONY: check sourcecheck lean sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests claimlanguage phase4targets phase5targets phase6targets applicationguardrails glyphfixtures dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples site-data sitenavcontract sitecheck quarto-dirs site-render site-preview living-book-check
 
-check: lean sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests claimlanguage phase4targets phase5targets phase6targets applicationguardrails glyphfixtures dimensioncheck nofake sitecheck
+check: lean sourcecheck
+
+sourcecheck: sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests claimlanguage phase4targets phase5targets phase6targets applicationguardrails glyphfixtures dimensioncheck nofake sitecheck
 
 lean:
 	$(LAKE) build
@@ -88,10 +90,13 @@ sitecheck: site-data
 	python scripts/site/check_site_paper_links.py
 	python scripts/site/check_widget_python_parity.py
 
-site-render: site-data
+quarto-dirs:
+	mkdir -p "$(QUARTO_HOME)" "$(QUARTO_DENO_DIR)"
+
+site-render: site-data quarto-dirs
 	$(QUARTO_ENV) $(QUARTO) render site
 
-site-preview: site-data
+site-preview: site-data quarto-dirs
 	$(QUARTO_ENV) $(QUARTO) preview site
 
 living-book-check: check site-render

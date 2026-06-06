@@ -44,6 +44,9 @@ def test_export_site_data_writes_required_indexes() -> None:
     dictionary = json.loads((generated / "dictionary.json").read_text())
     dictionary_by_id = {item["id"]: item for item in dictionary["entries"]}
     assert dictionary_by_id["CC-0001"]["name"] == "Circle"
+    assert "CC-T0001" in {item["id"] for item in dictionary_by_id["CC-0001"]["used_by_theorems"]}
+    assert "PAPER_01_FINITE_CIRCLES" in {item["id"] for item in dictionary_by_id["CC-0001"]["used_by_papers"]}
+    assert "finite_circle_rotator" in {item["id"] for item in dictionary_by_id["CC-0001"]["used_by_widgets"]}
 
     widgets = json.loads((generated / "widget_index.json").read_text())
     widget_ids = {item["id"] for item in widgets["widgets"]}
@@ -64,3 +67,7 @@ def test_export_site_data_writes_required_indexes() -> None:
     phase5_ids = {item["id"] for item in phase5["targets"]}
     assert "P5-EDGE-001" in phase5_ids
     assert "P5-EDGE-008" in phase5_ids
+
+    phase6 = json.loads((generated / "phase6_targets.json").read_text())
+    phase6_ids = {item["id"] for item in phase6["targets"]}
+    assert "P6-SWEEP-001" in phase6_ids

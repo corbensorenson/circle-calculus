@@ -2,7 +2,7 @@
 
 The Living Book is Phase III of the project: a public-facing Quarto website/e-textbook generated from papers, theorem manifests, dictionary entries, Lean proof metadata, and Python reference models.
 
-Current milestone status as of 2026-06-05: Phase 0 and the first S1 interactive source milestone are implemented, including a theorem-status legend and dictionary index. Higher dimensions and applications are scaffolded as placeholders only.
+Current milestone status as of 2026-06-06: Phase 0 and the first S1 interactive source milestone are implemented, including a theorem-status legend, generated dictionary/theorem/paper/target/glyph indexes, and searchable dictionary backlinks into theorem, paper, widget, and glyph usage. Higher dimensions and applications are scaffolded honestly: pages exist, proved finite spines are linked where available, and future topology/application claims remain marked as planned, exploratory, deferred, or blocked.
 
 ## Phase 0: Skeleton And Data
 
@@ -35,6 +35,15 @@ Required widgets:
 - `winding_lift_explorer`
 
 Each chapter must distinguish intuition, example, Python model, and formal theorem. Theorem boxes and status badges must pull from generated manifest data.
+
+## Phase 1.5: Public Access And Navigation Polish
+
+- Publish the static Quarto render through GitHub Pages from the checked `main` branch.
+- Keep `site/_site/` out of git and deploy it as a generated artifact.
+- Gate deployment on Lean proof build, manifest checks, dictionary checks, paper checks, no-fake-proof checks, widget parity, and Quarto render.
+- Make dictionary, theorem, paper, target, and glyph indexes filterable and source-linked.
+- Show dictionary backlinks generated from manifests rather than hand-written duplicate lists.
+- Visually check the S1 widgets on desktop and mobile before claiming the Living Book is reader-grade.
 
 ## Phase 2: S2 Interactives
 

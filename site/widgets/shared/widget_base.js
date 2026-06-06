@@ -69,6 +69,95 @@ function githubSourceLink(path, line) {
   return `${REPOSITORY_URL}/blob/main/${path}${anchor}`;
 }
 
+function makeLink(text, href) {
+  if (!href) return text || "";
+  const link = document.createElement("a");
+  link.href = href;
+  link.textContent = text || href;
+  return link;
+}
+
+function appendCell(tr, value) {
+  const td = document.createElement("td");
+  if (value instanceof Node) {
+    td.appendChild(value);
+  } else {
+    td.textContent = value || "";
+  }
+  tr.appendChild(td);
+}
+
+function compactIds(items, limit = 6) {
+  if (!items || items.length === 0) return "";
+  const ids = items.map((item) => item.id).filter(Boolean);
+  if (ids.length <= limit) return ids.join(", ");
+  return `${ids.slice(0, limit).join(", ")} + ${ids.length - limit} more`;
+}
+
+function filterText(item) {
+  return JSON.stringify(item).toLowerCase();
+}
+
+function renderFilterableIndex(target, items, columns, options = {}) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "filterable-index";
+
+  const tools = document.createElement("div");
+  tools.className = "index-tools";
+
+  const label = document.createElement("label");
+  label.textContent = options.label || "Filter";
+
+  const input = document.createElement("input");
+  input.type = "search";
+  input.placeholder = options.placeholder || "Filter entries";
+  input.setAttribute("aria-label", options.placeholder || "Filter entries");
+  label.appendChild(input);
+
+  const count = document.createElement("span");
+  count.className = "index-count";
+  tools.append(label, count);
+
+  const tableWrap = document.createElement("div");
+  tableWrap.className = "index-table-wrap";
+
+  function renderTable() {
+    const needle = input.value.trim().toLowerCase();
+    const rows = needle
+      ? items.filter((item) => filterText(item).includes(needle))
+      : items;
+
+    const table = document.createElement("table");
+    table.className = options.tableClass || "generated-index-table";
+    const thead = document.createElement("thead");
+    const header = document.createElement("tr");
+    for (const column of columns) {
+      const th = document.createElement("th");
+      th.textContent = column.label;
+      header.appendChild(th);
+    }
+    thead.appendChild(header);
+
+    const tbody = document.createElement("tbody");
+    for (const item of rows) {
+      const tr = document.createElement("tr");
+      for (const column of columns) {
+        appendCell(tr, column.render(item));
+      }
+      tbody.appendChild(tr);
+    }
+
+    table.append(thead, tbody);
+    tableWrap.replaceChildren(table);
+    count.textContent = `${rows.length} of ${items.length}`;
+  }
+
+  input.addEventListener("input", renderTable);
+  wrapper.append(tools, tableWrap);
+  target.replaceChildren(wrapper);
+  renderTable();
+}
+
 async function hydrateTheorems() {
   const data = await loadJson("../../data/generated/theorem_manifest.json");
   const byId = new Map(data.theorems.map((item) => [item.id, item]));
@@ -132,111 +221,101 @@ async function hydrateDictionary() {
     forbidden.textContent = entry.forbidden_meanings && entry.forbidden_meanings.length
       ? `Forbidden meanings: ${entry.forbidden_meanings.join("; ")}`
       : "";
+    const meta = renderMeta([
+      ["Source", {
+        text: entry.source_dictionary,
+        href: githubSourceLink(entry.source_dictionary),
+      }],
+      ["Lean", joinList(entry.lean_declarations)],
+      ["Python", joinList(entry.python_objects)],
+      ["Used by theorems", compactIds(entry.used_by_theorems)],
+      ["Used by papers", compactIds(entry.used_by_papers, 4)],
+      ["Used by widgets", compactIds(entry.used_by_widgets)],
+      ["Used by glyphs", compactIds(entry.used_by_glyphs)],
+    ]);
 
-    target.replaceChildren(header, definition, intuition, forbidden);
+    target.replaceChildren(header, definition, intuition, forbidden, meta);
   }
 }
 
 async function hydrateDictionaryIndexes() {
   const data = await loadJson("../../data/generated/dictionary.json");
   for (const target of document.querySelectorAll(".dictionary-index[data-dictionary-index]")) {
-    const table = document.createElement("table");
-    table.className = "dictionary-index-table";
-    const thead = document.createElement("thead");
-    thead.innerHTML = "<tr><th>Id</th><th>Term</th><th>Kind</th><th>Source</th></tr>";
-    const tbody = document.createElement("tbody");
-    for (const entry of data.entries) {
-      const tr = document.createElement("tr");
-      for (const value of [
-        entry.id,
-        entry.name || "",
-        entry.kind || "",
-        entry.source_dictionary || "",
-      ]) {
-        const td = document.createElement("td");
-        td.textContent = value;
-        tr.appendChild(td);
-      }
-      tbody.appendChild(tr);
-    }
-    table.append(thead, tbody);
-    target.replaceChildren(table);
+    renderFilterableIndex(
+      target,
+      data.entries,
+      [
+        { label: "Id", render: (entry) => entry.id },
+        { label: "Term", render: (entry) => entry.name || "" },
+        { label: "Kind", render: (entry) => entry.kind || "" },
+        { label: "Source", render: (entry) => makeLink(entry.source_dictionary, githubSourceLink(entry.source_dictionary)) },
+        { label: "Theorems", render: (entry) => compactIds(entry.used_by_theorems) },
+        { label: "Papers", render: (entry) => compactIds(entry.used_by_papers, 4) },
+        { label: "Widgets", render: (entry) => compactIds(entry.used_by_widgets) },
+      ],
+      {
+        placeholder: "Filter by id, term, kind, theorem, paper, widget, or source",
+        tableClass: "dictionary-index-table",
+      },
+    );
   }
 }
 
 async function hydrateTheoremIndexes() {
   const data = await loadJson("../../data/generated/theorem_manifest.json");
   for (const target of document.querySelectorAll(".theorem-index[data-theorem-index]")) {
-    const table = document.createElement("table");
-    table.className = "theorem-index-table";
-    const thead = document.createElement("thead");
-    thead.innerHTML = "<tr><th>Id</th><th>Status</th><th>Name</th><th>Lean</th><th>Source</th></tr>";
-    const tbody = document.createElement("tbody");
-    for (const theorem of data.theorems) {
-      const tr = document.createElement("tr");
-
-      const id = document.createElement("td");
-      id.textContent = theorem.id;
-      tr.appendChild(id);
-
-      const status = document.createElement("td");
-      const badge = document.createElement("span");
-      badge.className = statusClass(theorem);
-      badge.textContent = statusLabel(theorem);
-      status.appendChild(badge);
-      tr.appendChild(status);
-
-      const name = document.createElement("td");
-      name.textContent = theorem.name || theorem.informal_statement || "";
-      tr.appendChild(name);
-
-      const lean = document.createElement("td");
-      if (theorem.lean_name && theorem.lean_source) {
-        const link = document.createElement("a");
-        link.href = githubSourceLink(theorem.lean_source, theorem.lean_source_line);
-        link.textContent = theorem.lean_name;
-        lean.appendChild(link);
-      } else {
-        lean.textContent = theorem.lean_name || "";
-      }
-      tr.appendChild(lean);
-
-      const source = document.createElement("td");
-      source.textContent = theorem.source_manifest || "";
-      tr.appendChild(source);
-
-      tbody.appendChild(tr);
-    }
-    table.append(thead, tbody);
-    target.replaceChildren(table);
+    renderFilterableIndex(
+      target,
+      data.theorems,
+      [
+        { label: "Id", render: (theorem) => theorem.id },
+        {
+          label: "Status",
+          render: (theorem) => {
+            const badge = document.createElement("span");
+            badge.className = statusClass(theorem);
+            badge.textContent = statusLabel(theorem);
+            return badge;
+          },
+        },
+        { label: "Name", render: (theorem) => theorem.name || theorem.informal_statement || "" },
+        {
+          label: "Lean",
+          render: (theorem) => theorem.lean_name
+            ? makeLink(theorem.lean_name, githubSourceLink(theorem.lean_source, theorem.lean_source_line))
+            : "",
+        },
+        { label: "Dictionary", render: (theorem) => joinList(theorem.dictionary_dependencies) },
+        { label: "Source", render: (theorem) => makeLink(theorem.source_manifest, githubSourceLink(theorem.source_manifest)) },
+      ],
+      {
+        placeholder: "Filter by theorem id, status, Lean name, dictionary id, or source",
+        tableClass: "theorem-index-table",
+      },
+    );
   }
 }
 
 async function hydratePaperIndexes() {
   const data = await loadJson("../../data/generated/paper_index.json");
   for (const target of document.querySelectorAll(".paper-index[data-paper-index]")) {
-    const table = document.createElement("table");
-    table.className = "paper-index-table";
-    const thead = document.createElement("thead");
-    thead.innerHTML = "<tr><th>Id</th><th>Status</th><th>Title</th><th>Path</th><th>Sidecar</th></tr>";
-    const tbody = document.createElement("tbody");
-    for (const paper of data.papers) {
-      const tr = document.createElement("tr");
-      for (const value of [
-        paper.id || "",
-        paper.status || "",
-        paper.title || "",
-        paper.path || "",
-        paper.sidecar || "",
-      ]) {
-        const td = document.createElement("td");
-        td.textContent = value;
-        tr.appendChild(td);
-      }
-      tbody.appendChild(tr);
-    }
-    table.append(thead, tbody);
-    target.replaceChildren(table);
+    renderFilterableIndex(
+      target,
+      data.papers,
+      [
+        { label: "Id", render: (paper) => paper.id || "" },
+        { label: "Status", render: (paper) => paper.status || "" },
+        { label: "Title", render: (paper) => paper.title || "" },
+        { label: "Paper", render: (paper) => makeLink(paper.path, githubSourceLink(paper.path)) },
+        { label: "Sidecar", render: (paper) => makeLink(paper.sidecar, githubSourceLink(paper.sidecar)) },
+        { label: "Theorems", render: (paper) => joinList(paper.theorem_ids) },
+        { label: "Dictionary", render: (paper) => joinList(paper.dictionary_ids) },
+      ],
+      {
+        placeholder: "Filter by paper id, title, theorem id, dictionary id, or sidecar",
+        tableClass: "paper-index-table",
+      },
+    );
   }
 }
 
@@ -249,57 +328,47 @@ async function hydrateTargetIndexes() {
   for (const target of document.querySelectorAll(".target-index[data-target-index]")) {
     const indexName = target.dataset.targetIndex || "phase4";
     const data = await loadJson(indexFiles[indexName] || indexFiles.phase4);
-    const table = document.createElement("table");
-    table.className = "target-index-table";
-    const thead = document.createElement("thead");
-    thead.innerHTML = "<tr><th>Id</th><th>Layer/Area</th><th>Status</th><th>Priority</th><th>Title</th><th>Next Action</th></tr>";
-    const tbody = document.createElement("tbody");
-    for (const item of data.targets) {
-      const tr = document.createElement("tr");
-      for (const value of [
-        item.id || "",
-        item.layer || item.area || "",
-        item.status || "",
-        item.priority || "",
-        item.title || item.objective || "",
-        item.next_action || "",
-      ]) {
-        const td = document.createElement("td");
-        td.textContent = value;
-        tr.appendChild(td);
-      }
-      tbody.appendChild(tr);
-    }
-    table.append(thead, tbody);
-    target.replaceChildren(table);
+    renderFilterableIndex(
+      target,
+      data.targets,
+      [
+        { label: "Id", render: (item) => item.id || "" },
+        { label: "Layer/Area", render: (item) => item.layer || item.area || "" },
+        { label: "Status", render: (item) => item.status || "" },
+        { label: "Priority", render: (item) => item.priority || "" },
+        { label: "Title", render: (item) => item.title || item.objective || "" },
+        { label: "Next Action", render: (item) => item.next_action || "" },
+      ],
+      {
+        placeholder: "Filter by target id, area, status, title, or next action",
+        tableClass: "target-index-table",
+      },
+    );
   }
 }
 
 async function hydrateGlyphIndexes() {
   const data = await loadJson("../../data/generated/glyph_index.json");
   for (const target of document.querySelectorAll(".glyph-index")) {
-    const table = document.createElement("table");
-    table.className = "glyph-index-table";
-    const thead = document.createElement("thead");
-    thead.innerHTML = "<tr><th>Glyph</th><th>Theorem</th><th>Status</th><th>Lean</th><th>Caption</th></tr>";
-    const tbody = document.createElement("tbody");
-    for (const item of data.glyphs) {
-      const tr = document.createElement("tr");
-      for (const value of [
-        item.id || "",
-        item.theorem_id || "",
-        item.status_label || "",
-        item.lean_name || "",
-        item.caption || "",
-      ]) {
-        const td = document.createElement("td");
-        td.textContent = value;
-        tr.appendChild(td);
-      }
-      tbody.appendChild(tr);
-    }
-    table.append(thead, tbody);
-    target.replaceChildren(table);
+    renderFilterableIndex(
+      target,
+      data.glyphs,
+      [
+        { label: "Glyph", render: (item) => item.id || "" },
+        { label: "Theorem", render: (item) => item.theorem_id || "" },
+        { label: "Status", render: (item) => item.status_label || "" },
+        {
+          label: "Lean",
+          render: (item) => makeLink(item.lean_name, githubSourceLink(item.lean_source, item.lean_source_line)),
+        },
+        { label: "Dictionary", render: (item) => joinList(item.dictionary_ids) },
+        { label: "Caption", render: (item) => item.caption || "" },
+      ],
+      {
+        placeholder: "Filter by glyph id, theorem id, status, Lean name, or dictionary id",
+        tableClass: "glyph-index-table",
+      },
+    );
   }
 }
 

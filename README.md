@@ -2,6 +2,12 @@
 
 Circle Calculus is a staged paper-and-proof corpus for rebuilding familiar mathematical structures from finite circular address spaces, rotations, coils, winding, lifted arithmetic, and eventually a dimension-indexed sphere ladder.
 
+## Living Book
+
+Start here as a learning resource: [Circle Calculus Living Book](https://corbensorenson.github.io/circle-calculus/).
+
+The Living Book is the public interactive textbook for this repository. It connects explanations, S1 widgets, dictionary entries, theorem status, papers, Python reference models, and Lean source links so readers can learn the project without losing the proof-status trail.
+
 The long-term aim is not just to write essays. The aim is to keep every serious concept tied to:
 
 - a human-readable paper in `papers/`,
@@ -98,7 +104,7 @@ The D0 dimensional scaffold is also in place: dimension manifests, dimension dic
 
 Phase II and application scaffolds are also in place under `papers/phase2/`, `papers/applications/`, `manifests/theories/`, and `manifests/applications/`. `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_05_PROOF_CARRYING_GLYPHS`, `PAPER_APP_01_COIL_DATA_ANALYSIS`, `PAPER_COMP_01` through `PAPER_COMP_04`, and `PAPER_AI_01` through `PAPER_AI_03` now have proved seeds. The 2026-06-05 compute-applications handoff is preserved in `docs/PHASE2_AND_APPLICATIONS.md` and `circle_calculus_codex_handoff/source_logs/04_compute_applications_browser_note.md`. Benchmark claims remain benchmark work, not proof claims.
 
-Phase III is now implemented as the first Circle Calculus Living Book milestone: a Quarto-based interactive explainer site generated from manifests, dictionary entries, papers, Python reference models, and Lean proof metadata. Its policy and roadmap live in `docs/LIVING_BOOK_POLICY.md`, `docs/LIVING_BOOK_ROADMAP.md`, and `docs/LIVING_BOOK_WIDGETS.md`; `site/reader_path.qmd` gives a proof-status-safe tour through dimensions, applications, source trails, and local verification; the source browser handoff is archived at `circle_calculus_codex_handoff/source_logs/05_living_book_browser_note.md`. The Living Book is an explanation layer, not a proof layer.
+Phase III is now implemented as the first Circle Calculus Living Book milestone: a Quarto-based interactive explainer site generated from manifests, dictionary entries, papers, Python reference models, and Lean proof metadata. Its policy and roadmap live in `docs/LIVING_BOOK_POLICY.md`, `docs/LIVING_BOOK_ROADMAP.md`, and `docs/LIVING_BOOK_WIDGETS.md`; `site/reader_path.qmd` gives a proof-status-safe tour through dimensions, applications, source trails, and local verification; the source browser handoff is archived at `circle_calculus_codex_handoff/source_logs/05_living_book_browser_note.md`. The Living Book is an explanation layer, not a proof layer. The intended public URL is `https://corbensorenson.github.io/circle-calculus/`, deployed from the static Quarto render only after proof/status/source-link checks pass in GitHub Actions.
 
 The next project phases are intentionally wide, deep, and correctness-driven: Phase IV audits every dimensional level and application area for missing theorem targets, paper improvements, reusable lemmas, dictionary gaps, and stronger proof spines; Phase V searches edge problem spaces where Circle Calculus may provide leverage that is hard, awkward, or unavailable in ordinary presentations; Phase VI sweeps the whole corpus so the writing is cleaner, the claims are more correct, and the proof-status links are easy for outsiders to consume.
 
@@ -181,6 +187,7 @@ make phase6targets # validate the global sweep target registry
 make dimensioncheck # validate dimension manifests, imports, and paper links
 make nofake      # reject forbidden proof placeholders
 make examples    # regenerate current example diagrams
+make sourcecheck # run repository checks after Lean has already been built
 make site-data   # export Living Book JSON from manifests/dictionaries/papers
 make sitecheck   # validate Living Book structure, ids, links, status, and widgets
 make site-render # render the Quarto Living Book into site/_site

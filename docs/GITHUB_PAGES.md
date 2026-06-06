@@ -1,6 +1,14 @@
 # GitHub Pages Publishing
 
-The Living Book source lives under `site/` and renders with Quarto.
+The Living Book source lives under `site/` and renders with Quarto. The rendered output is `site/_site/`; that directory is generated output and should not be committed.
+
+GitHub Pages is the public hosting target for the Living Book:
+
+```text
+https://corbensorenson.github.io/circle-calculus/
+```
+
+GitHub Pages is a static-site host for HTML, CSS, and JavaScript from a GitHub repository. For this public repository, the static Quarto output is a direct fit.
 
 ## Local Render
 
@@ -10,23 +18,44 @@ make sitecheck
 make site-render
 ```
 
-The rendered output is `site/_site/`. That directory is generated output and should not be committed.
+For the full local gate, including Lean and all repository checks:
 
-## Publishing Options
+```bash
+make living-book-check
+```
 
-Preferred future route:
+## Automatic Deployment
 
-1. Add a GitHub Actions workflow that installs or exposes Quarto.
-2. Run `make sitecheck`.
-3. Run `make site-render`.
-4. Upload `site/_site/` as the GitHub Pages artifact.
-5. Deploy through GitHub Pages.
+`.github/workflows/pages.yml` builds and deploys the Living Book.
 
-This repository does not currently enable automatic Pages deployment. That keeps the first Living Book milestone focused on correct source, generated data, and validation.
+The build job:
+
+1. checks out the repository,
+2. builds the Lean proof spine with `leanprover/lean-action`,
+3. installs Python dependencies,
+4. installs Quarto,
+5. runs `make sourcecheck`,
+6. renders with `make site-render`, and
+7. uploads `site/_site/` as a GitHub Pages artifact.
+
+The deploy job publishes the artifact to GitHub Pages only from `main`.
+
+This keeps publication downstream of the proof/status/data checks. A rendered page can be public only after theorem manifests, dictionary links, paper links, widget parity, fake-proof guardrails, and Quarto render have all passed in CI.
+
+## Repository Settings
+
+In GitHub, configure Pages to use **GitHub Actions** as the publishing source. No secrets, custom domain, paid service, or checked-in rendered output are required.
+
+If the first deployment does not appear, check:
+
+- the `Deploy Living Book` workflow run,
+- repository Settings -> Pages -> Build and deployment source,
+- repository Actions permissions, and
+- whether the build failed before artifact upload.
 
 ## Guardrails
 
-- Do not publish a site render if `make sitecheck` fails.
+- Do not publish a site render if `make sourcecheck` or `make sitecheck` fails.
 - Do not publish a site render if theorem statuses fail validation.
 - Do not treat GitHub Pages output as proof. The formal verification command remains `lake build`, supported by repository checks.
 - Do not commit secrets, custom-domain assumptions, or paid-service configuration for Pages.

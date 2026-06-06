@@ -2,7 +2,7 @@
 title: "Dictionary Index"
 ---
 
-The dictionary fixes the meanings of Circle Calculus terms so papers, Lean declarations, Python reference models, and widgets do not drift.
+The dictionary fixes the meanings of Circle Calculus terms so papers, Lean declarations, Python reference models, and widgets do not drift. The generated index links each entry back to theorem, paper, widget, and glyph usage where the manifests expose those relationships.
 
 <div class="warning-box">
 Dictionary entries are definitions and guardrails. They are not theorem proofs.

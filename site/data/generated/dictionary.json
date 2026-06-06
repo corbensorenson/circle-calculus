@@ -29,7 +29,289 @@
       ],
       "rewrite_rules": [],
       "source_dictionary": "dictionary/circle_dictionary.yaml",
-      "symbol": "C_n"
+      "symbol": "C_n",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "CC-T0001",
+          "lean_name": "Circle.rot_zero",
+          "name": "Rotation zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0008",
+          "lean_name": "Circle.scale_invertible_iff_coprime",
+          "name": "Scaling invertible iff coprime",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0017",
+          "lean_name": "Circle.scale_one",
+          "name": "Scaling by one identity",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0018",
+          "lean_name": "Circle.scale_comp",
+          "name": "Scaling composition",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0019",
+          "lean_name": "Circle.scale_rot",
+          "name": "Scaling transports rotation stride",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0020",
+          "lean_name": "Circle.scale_coilStep",
+          "name": "Scaling transports coil steps",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0021",
+          "lean_name": "Circle.prime_scale_bijective",
+          "name": "Prime scaling is bijective",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0022",
+          "lean_name": "Circle.scale_cofactor_zero",
+          "name": "Scaling sends a divisor cofactor to zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0023",
+          "lean_name": "Circle.scale_cofactor_multiple_zero",
+          "name": "Scaling sends cofactor multiples to zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0024",
+          "lean_name": "Circle.scale_add_cofactor_multiple",
+          "name": "Scaling collapses cofactor-shifted addresses",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0025",
+          "lean_name": "Circle.scale_nat_eq_zero_iff_dvd_mul",
+          "name": "Scaling zero iff modulus divides product",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0026",
+          "lean_name": "Circle.scale_nat_eq_iff_mul_modEq",
+          "name": "Scaling equality iff scaled products are congruent",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0027",
+          "lean_name": "Circle.scale_nat_eq_iff_nat_modEq_of_coprime",
+          "name": "Coprime scaling reflects address congruence",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0028",
+          "lean_name": "Circle.scale_zero_factor",
+          "name": "Scaling by zero collapses to zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0029",
+          "lean_name": "Circle.scale_factor_modEq",
+          "name": "Congruent scale factors act identically",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0030",
+          "lean_name": "Circle.scale_nat_eq_zero_iff_period_dvd",
+          "name": "Scaling kernel is period divisibility",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0031",
+          "lean_name": "Circle.scale_nat_to_coilStep",
+          "name": "Scaling a step index gives the matching coil step",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0032",
+          "lean_name": "Circle.scale_period_multiple_zero",
+          "name": "Scaling period multiples gives zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0033",
+          "lean_name": "Circle.scale_add_period_multiple",
+          "name": "Scaling collapses period-shifted addresses",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0034",
+          "lean_name": "Circle.scale_nat_period_normalForm",
+          "name": "Scaling has period normal form",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0035",
+          "lean_name": "Circle.scale_nat_eq_iff_period_modEq",
+          "name": "Scaling equality is period congruence",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0036",
+          "lean_name": "Circle.scale_nat_period_representatives_injective",
+          "name": "Scaling is injective on period representatives",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0037",
+          "lean_name": "Circle.scalePeriodRepresentativeImage_card",
+          "name": "Scaling period-representative image has period cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0038",
+          "lean_name": "Circle.scale_nat_mem_scalePeriodRepresentativeImage",
+          "name": "Scaled addresses land in period-representative image",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0039",
+          "lean_name": "Circle.scaleCircleImage_eq_scalePeriodRepresentativeImage",
+          "name": "Scaling circle image equals period-representative image",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0040",
+          "lean_name": "Circle.scaleCircleImage_card",
+          "name": "Scaling circle image has period cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0041",
+          "lean_name": "Circle.scaleKernelRepresentativeSet_eq_periodMultiples",
+          "name": "Scaling kernel representatives are period multiples",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0042",
+          "lean_name": "Circle.scaleKernelRepresentativeSet_card",
+          "name": "Scaling kernel representative set has gcd cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0043",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_eq_periodFibers",
+          "name": "Scaling fibers are period-offset representatives",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0044",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_card",
+          "name": "Scaling fibers have gcd cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0045",
+          "lean_name": "Circle.nat_mem_scaleKernelSubgroup_iff_period_dvd",
+          "name": "Scaling kernel subgroup membership is period divisibility",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0046",
+          "lean_name": "Circle.scaleTargetFiberRepresentativeSet_eq_empty_of_not_mem_scaleCircleImage",
+          "name": "Scaling target fibers are empty outside the image",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0047",
+          "lean_name": "Circle.scaleTargetFiberRepresentativeSet_card_of_mem_scaleCircleImage",
+          "name": "Scaling target fibers inside the image have gcd cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0048",
+          "lean_name": "Circle.scaleCircleImage_card_mul_targetFiberRepresentativeSet_card",
+          "name": "Scaling image and target fiber cardinalities factor the circle",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0049",
+          "lean_name": "Circle.scaleCircleImage_card_mul_scaleKernelRepresentativeSet_card",
+          "name": "Scaling image and kernel cardinalities factor the circle",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0050",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_zero_eq_scaleKernelRepresentativeSet",
+          "name": "Scaling zero fiber is the kernel representative set",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0051",
+          "lean_name": "Circle.scaleTargetFiberRepresentativeSet_scaled_eq_scaleFiberRepresentativeSet",
+          "name": "Scaling target fiber over a scaled representative is its representative fiber",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0052",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_eq_iff_scaled_eq_of_lt",
+          "name": "Scaling representative fibers are equal iff scaled representatives are equal",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0053",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_eq_iff_period_modEq_of_lt",
+          "name": "Scaling representative fibers are equal iff representatives are period-congruent",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0056",
+          "lean_name": "Circle.rot_bijective",
+          "name": "Rotation map is bijective",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0057",
+          "lean_name": "Circle.affineMap_comp",
+          "name": "Affine circle maps compose by affine modular arithmetic",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0058",
+          "lean_name": "Circle.affineMap_bijective_of_coprime",
+          "name": "Coprime affine circle maps are bijective",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0005",
+          "lean_name": "Circle.S2.latitudeRing_isCircle",
+          "name": "Circle.S2.latitudeRing_isCircle",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": [
+        {
+          "id": "finite_circle_rotator",
+          "path": "site/widgets/S1/finite_circle_rotator.js",
+          "python_reference": "circle_math.finite.Circle.node"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -60,7 +342,259 @@
         "node(n,i) = node(n, i mod n)"
       ],
       "source_dictionary": "dictionary/circle_dictionary.yaml",
-      "symbol": "node(n,i)"
+      "symbol": "node(n,i)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "CC-T0001",
+          "lean_name": "Circle.rot_zero",
+          "name": "Rotation zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0008",
+          "lean_name": "Circle.scale_invertible_iff_coprime",
+          "name": "Scaling invertible iff coprime",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0017",
+          "lean_name": "Circle.scale_one",
+          "name": "Scaling by one identity",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0018",
+          "lean_name": "Circle.scale_comp",
+          "name": "Scaling composition",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0019",
+          "lean_name": "Circle.scale_rot",
+          "name": "Scaling transports rotation stride",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0020",
+          "lean_name": "Circle.scale_coilStep",
+          "name": "Scaling transports coil steps",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0021",
+          "lean_name": "Circle.prime_scale_bijective",
+          "name": "Prime scaling is bijective",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0022",
+          "lean_name": "Circle.scale_cofactor_zero",
+          "name": "Scaling sends a divisor cofactor to zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0023",
+          "lean_name": "Circle.scale_cofactor_multiple_zero",
+          "name": "Scaling sends cofactor multiples to zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0024",
+          "lean_name": "Circle.scale_add_cofactor_multiple",
+          "name": "Scaling collapses cofactor-shifted addresses",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0025",
+          "lean_name": "Circle.scale_nat_eq_zero_iff_dvd_mul",
+          "name": "Scaling zero iff modulus divides product",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0026",
+          "lean_name": "Circle.scale_nat_eq_iff_mul_modEq",
+          "name": "Scaling equality iff scaled products are congruent",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0027",
+          "lean_name": "Circle.scale_nat_eq_iff_nat_modEq_of_coprime",
+          "name": "Coprime scaling reflects address congruence",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0028",
+          "lean_name": "Circle.scale_zero_factor",
+          "name": "Scaling by zero collapses to zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0029",
+          "lean_name": "Circle.scale_factor_modEq",
+          "name": "Congruent scale factors act identically",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0030",
+          "lean_name": "Circle.scale_nat_eq_zero_iff_period_dvd",
+          "name": "Scaling kernel is period divisibility",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0031",
+          "lean_name": "Circle.scale_nat_to_coilStep",
+          "name": "Scaling a step index gives the matching coil step",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0032",
+          "lean_name": "Circle.scale_period_multiple_zero",
+          "name": "Scaling period multiples gives zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0033",
+          "lean_name": "Circle.scale_add_period_multiple",
+          "name": "Scaling collapses period-shifted addresses",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0034",
+          "lean_name": "Circle.scale_nat_period_normalForm",
+          "name": "Scaling has period normal form",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0035",
+          "lean_name": "Circle.scale_nat_eq_iff_period_modEq",
+          "name": "Scaling equality is period congruence",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0036",
+          "lean_name": "Circle.scale_nat_period_representatives_injective",
+          "name": "Scaling is injective on period representatives",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0037",
+          "lean_name": "Circle.scalePeriodRepresentativeImage_card",
+          "name": "Scaling period-representative image has period cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0038",
+          "lean_name": "Circle.scale_nat_mem_scalePeriodRepresentativeImage",
+          "name": "Scaled addresses land in period-representative image",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0039",
+          "lean_name": "Circle.scaleCircleImage_eq_scalePeriodRepresentativeImage",
+          "name": "Scaling circle image equals period-representative image",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0040",
+          "lean_name": "Circle.scaleCircleImage_card",
+          "name": "Scaling circle image has period cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0041",
+          "lean_name": "Circle.scaleKernelRepresentativeSet_eq_periodMultiples",
+          "name": "Scaling kernel representatives are period multiples",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0042",
+          "lean_name": "Circle.scaleKernelRepresentativeSet_card",
+          "name": "Scaling kernel representative set has gcd cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0043",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_eq_periodFibers",
+          "name": "Scaling fibers are period-offset representatives",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0044",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_card",
+          "name": "Scaling fibers have gcd cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0045",
+          "lean_name": "Circle.nat_mem_scaleKernelSubgroup_iff_period_dvd",
+          "name": "Scaling kernel subgroup membership is period divisibility",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0046",
+          "lean_name": "Circle.scaleTargetFiberRepresentativeSet_eq_empty_of_not_mem_scaleCircleImage",
+          "name": "Scaling target fibers are empty outside the image",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0047",
+          "lean_name": "Circle.scaleTargetFiberRepresentativeSet_card_of_mem_scaleCircleImage",
+          "name": "Scaling target fibers inside the image have gcd cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0048",
+          "lean_name": "Circle.scaleCircleImage_card_mul_targetFiberRepresentativeSet_card",
+          "name": "Scaling image and target fiber cardinalities factor the circle",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0049",
+          "lean_name": "Circle.scaleCircleImage_card_mul_scaleKernelRepresentativeSet_card",
+          "name": "Scaling image and kernel cardinalities factor the circle",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0050",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_zero_eq_scaleKernelRepresentativeSet",
+          "name": "Scaling zero fiber is the kernel representative set",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0051",
+          "lean_name": "Circle.scaleTargetFiberRepresentativeSet_scaled_eq_scaleFiberRepresentativeSet",
+          "name": "Scaling target fiber over a scaled representative is its representative fiber",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0052",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_eq_iff_scaled_eq_of_lt",
+          "name": "Scaling representative fibers are equal iff scaled representatives are equal",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0053",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_eq_iff_period_modEq_of_lt",
+          "name": "Scaling representative fibers are equal iff representatives are period-congruent",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": [
+        {
+          "id": "finite_circle_rotator",
+          "path": "site/widgets/S1/finite_circle_rotator.js",
+          "python_reference": "circle_math.finite.Circle.node"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -96,7 +630,97 @@
         "rot(n,k+n)=rot(n,k)"
       ],
       "source_dictionary": "dictionary/circle_dictionary.yaml",
-      "symbol": "rot(n,k)"
+      "symbol": "rot(n,k)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "CC-T0001",
+          "lean_name": "Circle.rot_zero",
+          "name": "Rotation zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0002",
+          "lean_name": "Circle.rot_comp",
+          "name": "Rotation composition",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0003",
+          "lean_name": "Circle.rot_inverse_left",
+          "name": "Rotation inverse",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0019",
+          "lean_name": "Circle.scale_rot",
+          "name": "Scaling transports rotation stride",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0056",
+          "lean_name": "Circle.rot_bijective",
+          "name": "Rotation map is bijective",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0057",
+          "lean_name": "Circle.affineMap_comp",
+          "name": "Affine circle maps compose by affine modular arithmetic",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0058",
+          "lean_name": "Circle.affineMap_bijective_of_coprime",
+          "name": "Coprime affine circle maps are bijective",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0013",
+          "lean_name": "Circle.S2.longitudeRotation_advancesLongitudeCoordinate",
+          "name": "Circle.S2.longitudeRotation_advancesLongitudeCoordinate",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0016",
+          "lean_name": "Circle.S2.suspendedCircleAntipode_longitudeRotation_opposite",
+          "name": "Circle.S2.suspendedCircleAntipode_longitudeRotation_opposite",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0019",
+          "lean_name": "Circle.S2.suspendedCircleLongitudeRotation_bijective",
+          "name": "Circle.S2.suspendedCircleLongitudeRotation_bijective",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0020",
+          "lean_name": "Circle.S2.longitudeRotation_bijective",
+          "name": "Circle.S2.longitudeRotation_bijective",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": [
+        {
+          "id": "rotation_composition",
+          "path": "site/widgets/S1/rotation_composition.js",
+          "python_reference": "circle_math.finite.Circle.rot"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -251,7 +875,259 @@
         "if gcd(n,k)=1, then scale(n,k)(x)=scale(n,k)(y) iff x and y are congruent mod n"
       ],
       "source_dictionary": "dictionary/circle_dictionary.yaml",
-      "symbol": "scale(n,k)"
+      "symbol": "scale(n,k)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "CC-T0008",
+          "lean_name": "Circle.scale_invertible_iff_coprime",
+          "name": "Scaling invertible iff coprime",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0017",
+          "lean_name": "Circle.scale_one",
+          "name": "Scaling by one identity",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0018",
+          "lean_name": "Circle.scale_comp",
+          "name": "Scaling composition",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0019",
+          "lean_name": "Circle.scale_rot",
+          "name": "Scaling transports rotation stride",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0020",
+          "lean_name": "Circle.scale_coilStep",
+          "name": "Scaling transports coil steps",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0021",
+          "lean_name": "Circle.prime_scale_bijective",
+          "name": "Prime scaling is bijective",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0022",
+          "lean_name": "Circle.scale_cofactor_zero",
+          "name": "Scaling sends a divisor cofactor to zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0023",
+          "lean_name": "Circle.scale_cofactor_multiple_zero",
+          "name": "Scaling sends cofactor multiples to zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0024",
+          "lean_name": "Circle.scale_add_cofactor_multiple",
+          "name": "Scaling collapses cofactor-shifted addresses",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0025",
+          "lean_name": "Circle.scale_nat_eq_zero_iff_dvd_mul",
+          "name": "Scaling zero iff modulus divides product",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0026",
+          "lean_name": "Circle.scale_nat_eq_iff_mul_modEq",
+          "name": "Scaling equality iff scaled products are congruent",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0027",
+          "lean_name": "Circle.scale_nat_eq_iff_nat_modEq_of_coprime",
+          "name": "Coprime scaling reflects address congruence",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0028",
+          "lean_name": "Circle.scale_zero_factor",
+          "name": "Scaling by zero collapses to zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0029",
+          "lean_name": "Circle.scale_factor_modEq",
+          "name": "Congruent scale factors act identically",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0030",
+          "lean_name": "Circle.scale_nat_eq_zero_iff_period_dvd",
+          "name": "Scaling kernel is period divisibility",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0031",
+          "lean_name": "Circle.scale_nat_to_coilStep",
+          "name": "Scaling a step index gives the matching coil step",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0032",
+          "lean_name": "Circle.scale_period_multiple_zero",
+          "name": "Scaling period multiples gives zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0033",
+          "lean_name": "Circle.scale_add_period_multiple",
+          "name": "Scaling collapses period-shifted addresses",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0034",
+          "lean_name": "Circle.scale_nat_period_normalForm",
+          "name": "Scaling has period normal form",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0035",
+          "lean_name": "Circle.scale_nat_eq_iff_period_modEq",
+          "name": "Scaling equality is period congruence",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0036",
+          "lean_name": "Circle.scale_nat_period_representatives_injective",
+          "name": "Scaling is injective on period representatives",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0037",
+          "lean_name": "Circle.scalePeriodRepresentativeImage_card",
+          "name": "Scaling period-representative image has period cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0038",
+          "lean_name": "Circle.scale_nat_mem_scalePeriodRepresentativeImage",
+          "name": "Scaled addresses land in period-representative image",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0039",
+          "lean_name": "Circle.scaleCircleImage_eq_scalePeriodRepresentativeImage",
+          "name": "Scaling circle image equals period-representative image",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0040",
+          "lean_name": "Circle.scaleCircleImage_card",
+          "name": "Scaling circle image has period cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0041",
+          "lean_name": "Circle.scaleKernelRepresentativeSet_eq_periodMultiples",
+          "name": "Scaling kernel representatives are period multiples",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0042",
+          "lean_name": "Circle.scaleKernelRepresentativeSet_card",
+          "name": "Scaling kernel representative set has gcd cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0043",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_eq_periodFibers",
+          "name": "Scaling fibers are period-offset representatives",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0044",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_card",
+          "name": "Scaling fibers have gcd cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0045",
+          "lean_name": "Circle.nat_mem_scaleKernelSubgroup_iff_period_dvd",
+          "name": "Scaling kernel subgroup membership is period divisibility",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0046",
+          "lean_name": "Circle.scaleTargetFiberRepresentativeSet_eq_empty_of_not_mem_scaleCircleImage",
+          "name": "Scaling target fibers are empty outside the image",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0047",
+          "lean_name": "Circle.scaleTargetFiberRepresentativeSet_card_of_mem_scaleCircleImage",
+          "name": "Scaling target fibers inside the image have gcd cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0048",
+          "lean_name": "Circle.scaleCircleImage_card_mul_targetFiberRepresentativeSet_card",
+          "name": "Scaling image and target fiber cardinalities factor the circle",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0049",
+          "lean_name": "Circle.scaleCircleImage_card_mul_scaleKernelRepresentativeSet_card",
+          "name": "Scaling image and kernel cardinalities factor the circle",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0050",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_zero_eq_scaleKernelRepresentativeSet",
+          "name": "Scaling zero fiber is the kernel representative set",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0051",
+          "lean_name": "Circle.scaleTargetFiberRepresentativeSet_scaled_eq_scaleFiberRepresentativeSet",
+          "name": "Scaling target fiber over a scaled representative is its representative fiber",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0052",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_eq_iff_scaled_eq_of_lt",
+          "name": "Scaling representative fibers are equal iff scaled representatives are equal",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0053",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_eq_iff_period_modEq_of_lt",
+          "name": "Scaling representative fibers are equal iff representatives are period-congruent",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0057",
+          "lean_name": "Circle.affineMap_comp",
+          "name": "Affine circle maps compose by affine modular arithmetic",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0058",
+          "lean_name": "Circle.affineMap_bijective_of_coprime",
+          "name": "Coprime affine circle maps are bijective",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -280,7 +1156,115 @@
       ],
       "rewrite_rules": [],
       "source_dictionary": "dictionary/circle_dictionary.yaml",
-      "symbol": "coil(n,k,start)"
+      "symbol": "coil(n,k,start)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "CC-T0004",
+          "lean_name": "Circle.closesAt_iff_stride_multiple_zero",
+          "name": "Closure condition",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0005",
+          "lean_name": "Circle.period_eq_n_div_gcd",
+          "name": "Period equals n divided by gcd",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0006",
+          "lean_name": "Circle.orbit_decomposition_count",
+          "name": "Orbit decomposition count",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0007",
+          "lean_name": "Circle.prime_full_coil",
+          "name": "Prime full coil",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0019",
+          "lean_name": "Circle.scale_rot",
+          "name": "Scaling transports rotation stride",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0020",
+          "lean_name": "Circle.scale_coilStep",
+          "name": "Scaling transports coil steps",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0023",
+          "lean_name": "Circle.scale_cofactor_multiple_zero",
+          "name": "Scaling sends cofactor multiples to zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0024",
+          "lean_name": "Circle.scale_add_cofactor_multiple",
+          "name": "Scaling collapses cofactor-shifted addresses",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0031",
+          "lean_name": "Circle.scale_nat_to_coilStep",
+          "name": "Scaling a step index gives the matching coil step",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0054",
+          "lean_name": "Circle.fullCoil_iff_coprime",
+          "name": "Full coil iff coprime",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0055",
+          "lean_name": "Circle.sameOrbit_iff_difference_mem_orbitSubgroup",
+          "name": "Same orbit iff difference lies in stride subgroup",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0059",
+          "lean_name": "Circle.sameOrbit_nat_modEq_gcd_of_sameOrbit",
+          "name": "Same orbit implies gcd congruence of natural representatives",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0060",
+          "lean_name": "Circle.sameOrbit_of_nat_modEq_gcd",
+          "name": "GCD congruence implies same orbit of natural representatives",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0061",
+          "lean_name": "Circle.sameOrbit_nat_iff_modEq_gcd",
+          "name": "Same orbit iff gcd congruence of natural representatives",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": [
+        {
+          "id": "coil_orbit_explorer",
+          "path": "site/widgets/S1/coil_orbit_explorer.js",
+          "python_reference": "circle_math.finite.Circle.orbit"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -312,7 +1296,55 @@
         "start + m*k = start iff m*k = 0 in C_n"
       ],
       "source_dictionary": "dictionary/circle_dictionary.yaml",
-      "symbol": "closed(coil)"
+      "symbol": "closed(coil)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "CC-T0004",
+          "lean_name": "Circle.closesAt_iff_stride_multiple_zero",
+          "name": "Closure condition",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0025",
+          "lean_name": "Circle.scale_nat_eq_zero_iff_dvd_mul",
+          "name": "Scaling zero iff modulus divides product",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0026",
+          "lean_name": "Circle.scale_nat_eq_iff_mul_modEq",
+          "name": "Scaling equality iff scaled products are congruent",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0027",
+          "lean_name": "Circle.scale_nat_eq_iff_nat_modEq_of_coprime",
+          "name": "Coprime scaling reflects address congruence",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0029",
+          "lean_name": "Circle.scale_factor_modEq",
+          "name": "Congruent scale factors act identically",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": [
+        {
+          "id": "coil_orbit_explorer",
+          "path": "site/widgets/S1/coil_orbit_explorer.js",
+          "python_reference": "circle_math.finite.Circle.orbit"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -345,7 +1377,223 @@
         "period(n,k)=n/gcd(n,k) for n != 0"
       ],
       "source_dictionary": "dictionary/circle_dictionary.yaml",
-      "symbol": "period(n,k)"
+      "symbol": "period(n,k)",
+      "used_by_glyphs": [
+        {
+          "id": "glyph:c13_stride5_period",
+          "status": "proved",
+          "status_label": "Lean-proved",
+          "theorem_id": "CC-T0005"
+        }
+      ],
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "CC-T0005",
+          "lean_name": "Circle.period_eq_n_div_gcd",
+          "name": "Period equals n divided by gcd",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0006",
+          "lean_name": "Circle.orbit_decomposition_count",
+          "name": "Orbit decomposition count",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0007",
+          "lean_name": "Circle.prime_full_coil",
+          "name": "Prime full coil",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0022",
+          "lean_name": "Circle.scale_cofactor_zero",
+          "name": "Scaling sends a divisor cofactor to zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0023",
+          "lean_name": "Circle.scale_cofactor_multiple_zero",
+          "name": "Scaling sends cofactor multiples to zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0030",
+          "lean_name": "Circle.scale_nat_eq_zero_iff_period_dvd",
+          "name": "Scaling kernel is period divisibility",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0032",
+          "lean_name": "Circle.scale_period_multiple_zero",
+          "name": "Scaling period multiples gives zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0033",
+          "lean_name": "Circle.scale_add_period_multiple",
+          "name": "Scaling collapses period-shifted addresses",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0034",
+          "lean_name": "Circle.scale_nat_period_normalForm",
+          "name": "Scaling has period normal form",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0035",
+          "lean_name": "Circle.scale_nat_eq_iff_period_modEq",
+          "name": "Scaling equality is period congruence",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0036",
+          "lean_name": "Circle.scale_nat_period_representatives_injective",
+          "name": "Scaling is injective on period representatives",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0037",
+          "lean_name": "Circle.scalePeriodRepresentativeImage_card",
+          "name": "Scaling period-representative image has period cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0038",
+          "lean_name": "Circle.scale_nat_mem_scalePeriodRepresentativeImage",
+          "name": "Scaled addresses land in period-representative image",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0039",
+          "lean_name": "Circle.scaleCircleImage_eq_scalePeriodRepresentativeImage",
+          "name": "Scaling circle image equals period-representative image",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0040",
+          "lean_name": "Circle.scaleCircleImage_card",
+          "name": "Scaling circle image has period cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0041",
+          "lean_name": "Circle.scaleKernelRepresentativeSet_eq_periodMultiples",
+          "name": "Scaling kernel representatives are period multiples",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0042",
+          "lean_name": "Circle.scaleKernelRepresentativeSet_card",
+          "name": "Scaling kernel representative set has gcd cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0043",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_eq_periodFibers",
+          "name": "Scaling fibers are period-offset representatives",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0044",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_card",
+          "name": "Scaling fibers have gcd cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0045",
+          "lean_name": "Circle.nat_mem_scaleKernelSubgroup_iff_period_dvd",
+          "name": "Scaling kernel subgroup membership is period divisibility",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0046",
+          "lean_name": "Circle.scaleTargetFiberRepresentativeSet_eq_empty_of_not_mem_scaleCircleImage",
+          "name": "Scaling target fibers are empty outside the image",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0047",
+          "lean_name": "Circle.scaleTargetFiberRepresentativeSet_card_of_mem_scaleCircleImage",
+          "name": "Scaling target fibers inside the image have gcd cardinality",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0048",
+          "lean_name": "Circle.scaleCircleImage_card_mul_targetFiberRepresentativeSet_card",
+          "name": "Scaling image and target fiber cardinalities factor the circle",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0049",
+          "lean_name": "Circle.scaleCircleImage_card_mul_scaleKernelRepresentativeSet_card",
+          "name": "Scaling image and kernel cardinalities factor the circle",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0050",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_zero_eq_scaleKernelRepresentativeSet",
+          "name": "Scaling zero fiber is the kernel representative set",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0051",
+          "lean_name": "Circle.scaleTargetFiberRepresentativeSet_scaled_eq_scaleFiberRepresentativeSet",
+          "name": "Scaling target fiber over a scaled representative is its representative fiber",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0052",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_eq_iff_scaled_eq_of_lt",
+          "name": "Scaling representative fibers are equal iff scaled representatives are equal",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0053",
+          "lean_name": "Circle.scaleFiberRepresentativeSet_eq_iff_period_modEq_of_lt",
+          "name": "Scaling representative fibers are equal iff representatives are period-congruent",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0054",
+          "lean_name": "Circle.fullCoil_iff_coprime",
+          "name": "Full coil iff coprime",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0007",
+          "lean_name": "Circle.S2.latitudeCoil_period",
+          "name": "Circle.S2.latitudeCoil_period",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": [
+        {
+          "id": "coil_orbit_explorer",
+          "path": "site/widgets/S1/coil_orbit_explorer.js",
+          "python_reference": "circle_math.finite.Circle.orbit"
+        },
+        {
+          "id": "period_gcd_visualizer",
+          "path": "site/widgets/S1/period_gcd_visualizer.js",
+          "python_reference": "circle_math.finite.Circle.orbit_decomposition"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -377,7 +1625,43 @@
         "full_coil(n,k) iff period(n,k)=n"
       ],
       "source_dictionary": "dictionary/circle_dictionary.yaml",
-      "symbol": "full_coil(n,k)"
+      "symbol": "full_coil(n,k)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "CC-T0007",
+          "lean_name": "Circle.prime_full_coil",
+          "name": "Prime full coil",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0021",
+          "lean_name": "Circle.prime_scale_bijective",
+          "name": "Prime scaling is bijective",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0054",
+          "lean_name": "Circle.fullCoil_iff_coprime",
+          "name": "Full coil iff coprime",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": [
+        {
+          "id": "prime_full_coil_explorer",
+          "path": "site/widgets/S1/prime_full_coil_explorer.js",
+          "python_reference": "circle_math.finite.Circle.is_full_coil"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -412,7 +1696,80 @@
         "two nodes lie in the same orbit class iff their difference is an integer multiple of the stride in C_n"
       ],
       "source_dictionary": "dictionary/circle_dictionary.yaml",
-      "symbol": "C_n / orbitSubgroup(n,k)"
+      "symbol": "C_n / orbitSubgroup(n,k)",
+      "used_by_glyphs": [
+        {
+          "id": "glyph:c13_stride5_period",
+          "status": "proved",
+          "status_label": "Lean-proved",
+          "theorem_id": "CC-T0005"
+        }
+      ],
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "CC-T0006",
+          "lean_name": "Circle.orbit_decomposition_count",
+          "name": "Orbit decomposition count",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0024",
+          "lean_name": "Circle.scale_add_cofactor_multiple",
+          "name": "Scaling collapses cofactor-shifted addresses",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0026",
+          "lean_name": "Circle.scale_nat_eq_iff_mul_modEq",
+          "name": "Scaling equality iff scaled products are congruent",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0027",
+          "lean_name": "Circle.scale_nat_eq_iff_nat_modEq_of_coprime",
+          "name": "Coprime scaling reflects address congruence",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0055",
+          "lean_name": "Circle.sameOrbit_iff_difference_mem_orbitSubgroup",
+          "name": "Same orbit iff difference lies in stride subgroup",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0059",
+          "lean_name": "Circle.sameOrbit_nat_modEq_gcd_of_sameOrbit",
+          "name": "Same orbit implies gcd congruence of natural representatives",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0060",
+          "lean_name": "Circle.sameOrbit_of_nat_modEq_gcd",
+          "name": "GCD congruence implies same orbit of natural representatives",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0061",
+          "lean_name": "Circle.sameOrbit_nat_iff_modEq_gcd",
+          "name": "Same orbit iff gcd congruence of natural representatives",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": [
+        {
+          "id": "period_gcd_visualizer",
+          "path": "site/widgets/S1/period_gcd_visualizer.js",
+          "python_reference": "circle_math.finite.Circle.orbit_decomposition"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -447,7 +1804,61 @@
         "orbit_class_count(n,k)=gcd(n,k) for n != 0"
       ],
       "source_dictionary": "dictionary/circle_dictionary.yaml",
-      "symbol": "orbit_class_count(n,k)"
+      "symbol": "orbit_class_count(n,k)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "CC-T0006",
+          "lean_name": "Circle.orbit_decomposition_count",
+          "name": "Orbit decomposition count",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0055",
+          "lean_name": "Circle.sameOrbit_iff_difference_mem_orbitSubgroup",
+          "name": "Same orbit iff difference lies in stride subgroup",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0059",
+          "lean_name": "Circle.sameOrbit_nat_modEq_gcd_of_sameOrbit",
+          "name": "Same orbit implies gcd congruence of natural representatives",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0060",
+          "lean_name": "Circle.sameOrbit_of_nat_modEq_gcd",
+          "name": "GCD congruence implies same orbit of natural representatives",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0061",
+          "lean_name": "Circle.sameOrbit_nat_iff_modEq_gcd",
+          "name": "Same orbit iff gcd congruence of natural representatives",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0017",
+          "lean_name": "Circle.S2.latitudeRingOrbitClassCount_eq_gcd",
+          "name": "Circle.S2.latitudeRingOrbitClassCount_eq_gcd",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": [
+        {
+          "id": "period_gcd_visualizer",
+          "path": "site/widgets/S1/period_gcd_visualizer.js",
+          "python_reference": "circle_math.finite.Circle.orbit_decomposition"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -484,7 +1895,79 @@
         "value(lifted_node(n,q,r)) = q*n+r"
       ],
       "source_dictionary": "dictionary/circle_dictionary.yaml",
-      "symbol": "lifted_node(n,q,r)"
+      "symbol": "lifted_node(n,q,r)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_02_WINDING_NATURALS",
+          "path": "papers/PAPER_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus II: Winding, Lifted Circles, and Natural Numbers"
+        },
+        {
+          "id": "PAPER_S1_02_WINDING_NATURALS",
+          "path": "papers/S1/PAPER_S1_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.2: Winding, Lifted Circles, and Natural Numbers"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "CC-T0009",
+          "lean_name": "Circle.lift_unique",
+          "name": "Lift unique",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0010",
+          "lean_name": "Circle.lift_add_decomposition",
+          "name": "Addition as path concatenation",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0011",
+          "lean_name": "Circle.lift_exists",
+          "name": "Lift exists",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0012",
+          "lean_name": "Circle.lift_successor_decomposition",
+          "name": "Lift successor with carry",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0013",
+          "lean_name": "Circle.lift_add_zero_right",
+          "name": "Lifted addition right zero identity",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0014",
+          "lean_name": "Circle.lift_add_assoc_value",
+          "name": "Lifted addition associativity",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0015",
+          "lean_name": "Circle.lift_add_zero_left",
+          "name": "Lifted addition left zero identity",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0016",
+          "lean_name": "Circle.lift_iter_successor_decomposition",
+          "name": "Iterated lifted successor",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": [
+        {
+          "id": "winding_lift_explorer",
+          "path": "site/widgets/S1/winding_lift_explorer.js",
+          "python_reference": "circle_math.winding.lift"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -522,7 +2005,37 @@
         "succ_lift(n,value).winding = winding(value) + ((residue(value)+1) / n)"
       ],
       "source_dictionary": "dictionary/circle_dictionary.yaml",
-      "symbol": "succ_lift(n,value)"
+      "symbol": "succ_lift(n,value)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_02_WINDING_NATURALS",
+          "path": "papers/PAPER_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus II: Winding, Lifted Circles, and Natural Numbers"
+        },
+        {
+          "id": "PAPER_S1_02_WINDING_NATURALS",
+          "path": "papers/S1/PAPER_S1_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.2: Winding, Lifted Circles, and Natural Numbers"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "CC-T0012",
+          "lean_name": "Circle.lift_successor_decomposition",
+          "name": "Lift successor with carry",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0016",
+          "lean_name": "Circle.lift_iter_successor_decomposition",
+          "name": "Iterated lifted successor",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -564,7 +2077,49 @@
         "add_lift(n,0,value) = lifted_node(n,winding(value),residue(value))"
       ],
       "source_dictionary": "dictionary/circle_dictionary.yaml",
-      "symbol": "add_lift(n,left,right)"
+      "symbol": "add_lift(n,left,right)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_02_WINDING_NATURALS",
+          "path": "papers/PAPER_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus II: Winding, Lifted Circles, and Natural Numbers"
+        },
+        {
+          "id": "PAPER_S1_02_WINDING_NATURALS",
+          "path": "papers/S1/PAPER_S1_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.2: Winding, Lifted Circles, and Natural Numbers"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "CC-T0010",
+          "lean_name": "Circle.lift_add_decomposition",
+          "name": "Addition as path concatenation",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0013",
+          "lean_name": "Circle.lift_add_zero_right",
+          "name": "Lifted addition right zero identity",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0014",
+          "lean_name": "Circle.lift_add_assoc_value",
+          "name": "Lifted addition associativity",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0015",
+          "lean_name": "Circle.lift_add_zero_left",
+          "name": "Lifted addition left zero identity",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -601,7 +2156,31 @@
         "iter_succ_lift(n,value,steps).residue < n for n != 0"
       ],
       "source_dictionary": "dictionary/circle_dictionary.yaml",
-      "symbol": "iter_succ_lift(n,value,steps)"
+      "symbol": "iter_succ_lift(n,value,steps)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_02_WINDING_NATURALS",
+          "path": "papers/PAPER_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus II: Winding, Lifted Circles, and Natural Numbers"
+        },
+        {
+          "id": "PAPER_S1_02_WINDING_NATURALS",
+          "path": "papers/S1/PAPER_S1_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.2: Winding, Lifted Circles, and Natural Numbers"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "CC-T0016",
+          "lean_name": "Circle.lift_iter_successor_decomposition",
+          "name": "Iterated lifted successor",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],
@@ -626,7 +2205,11 @@
       ],
       "rewrite_rules": [],
       "source_dictionary": "dictionary/circle_dictionary.yaml",
-      "symbol": "theorem_manifest.yaml"
+      "symbol": "theorem_manifest.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -651,7 +2234,11 @@
       "python_objects": [],
       "rewrite_rules": [],
       "source_dictionary": "dictionary/circle_dictionary.yaml",
-      "symbol": "sidecars/PAPER_ID/lean"
+      "symbol": "sidecars/PAPER_ID/lean",
+      "used_by_glyphs": [],
+      "used_by_papers": [],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -676,7 +2263,11 @@
       "python_objects": [],
       "rewrite_rules": [],
       "source_dictionary": "dictionary/circle_dictionary.yaml",
-      "symbol": "sidecars/PAPER_ID/python"
+      "symbol": "sidecars/PAPER_ID/python",
+      "used_by_glyphs": [],
+      "used_by_papers": [],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],
@@ -699,7 +2290,11 @@
       "python_objects": [],
       "rewrite_rules": [],
       "source_dictionary": "dictionary/circle_dictionary.yaml",
-      "symbol": ""
+      "symbol": "",
+      "used_by_glyphs": [],
+      "used_by_papers": [],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],
@@ -713,7 +2308,49 @@
       "intuition": "The bookkeeping vector behind Euler characteristic and suspension formulas.",
       "kind": "object",
       "name": "Finite cell-count list",
-      "source_dictionary": "dictionary/dimensions/Common.yaml"
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_01_SUSPENDED_CIRCLES",
+          "path": "papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.1: Suspended Circles and the First Finite Sphere"
+        },
+        {
+          "id": "PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY",
+          "path": "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S456.1: General Suspension and Euler Parity"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "COMMON-T0001",
+          "lean_name": "Circle.Common.eulerCharacteristic",
+          "name": "Circle.Common.eulerCharacteristic",
+          "status": "proved"
+        },
+        {
+          "id": "COMMON-T0002",
+          "lean_name": "Circle.Common.suspensionCounts",
+          "name": "Circle.Common.suspensionCounts",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0001",
+          "lean_name": "Circle.S2.suspendedCircle_counts",
+          "name": "Circle.S2.suspendedCircle_counts",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0003",
+          "lean_name": "Circle.S2.sphereGrid_counts",
+          "name": "Circle.S2.sphereGrid_counts",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -730,7 +2367,175 @@
       "kind": "operation",
       "name": "Euler characteristic",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "chi"
+      "symbol": "chi",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_01_STABLE_SPHERE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.1: Stable Sphere Calculus"
+        },
+        {
+          "id": "PAPER_S2_01_SUSPENDED_CIRCLES",
+          "path": "papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.1: Suspended Circles and the First Finite Sphere"
+        },
+        {
+          "id": "PAPER_S3_01_FINITE_HYPERSPHERES",
+          "path": "papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.1: Finite 3-Spheres by Suspending Spheres"
+        },
+        {
+          "id": "PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY",
+          "path": "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S456.1: General Suspension and Euler Parity"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "COMMON-T0001",
+          "lean_name": "Circle.Common.eulerCharacteristic",
+          "name": "Circle.Common.eulerCharacteristic",
+          "status": "proved"
+        },
+        {
+          "id": "COMMON-T0003",
+          "lean_name": "Circle.Common.suspensionEuler",
+          "name": "Circle.Common.suspensionEuler",
+          "status": "proved"
+        },
+        {
+          "id": "COMMON-T0004",
+          "lean_name": "Circle.Common.iteratedSuspensionEuler",
+          "name": "Circle.Common.iteratedSuspensionEuler",
+          "status": "proved"
+        },
+        {
+          "id": "COMMON-T0005",
+          "lean_name": "Circle.Common.iteratedSuspensionEuler_two_step",
+          "name": "Circle.Common.iteratedSuspensionEuler_two_step",
+          "status": "proved"
+        },
+        {
+          "id": "COMMON-T0006",
+          "lean_name": "Circle.Common.suspensionEuler_two_step",
+          "name": "Circle.Common.suspensionEuler_two_step",
+          "status": "proved"
+        },
+        {
+          "id": "P2S-T0001",
+          "lean_name": "Circle.Phase2.doubleSuspensionEuler",
+          "name": "Circle.Phase2.doubleSuspensionEuler",
+          "status": "proved"
+        },
+        {
+          "id": "P2S-T0002",
+          "lean_name": "Circle.Phase2.fourSuspensionEuler",
+          "name": "Circle.Phase2.fourSuspensionEuler",
+          "status": "proved"
+        },
+        {
+          "id": "S15-T0002",
+          "lean_name": "Circle.Future.S15.topologicalModel_eulerCharacteristic",
+          "name": "Circle.Future.S15.topologicalModel_eulerCharacteristic",
+          "status": "proved"
+        },
+        {
+          "id": "S15-T0004",
+          "lean_name": "Circle.Future.S15.topologicalModel_eq_eightSuspensions_s7",
+          "name": "Circle.Future.S15.topologicalModel_eq_eightSuspensions_s7",
+          "status": "proved"
+        },
+        {
+          "id": "S15-T0009",
+          "lean_name": "Circle.Future.S15.eightSuspensions_eulerCharacteristic",
+          "name": "Circle.Future.S15.eightSuspensions_eulerCharacteristic",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0002",
+          "lean_name": "Circle.S2.suspendedCircle_chi",
+          "name": "Circle.S2.suspendedCircle_chi",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0004",
+          "lean_name": "Circle.S2.sphereGrid_chi",
+          "name": "Circle.S2.sphereGrid_chi",
+          "status": "proved"
+        },
+        {
+          "id": "S3C-T0002",
+          "lean_name": "Circle.S3.suspensionSurface_chi_zero",
+          "name": "Circle.S3.suspensionSurface_chi_zero",
+          "status": "proved"
+        },
+        {
+          "id": "S3C-T0004",
+          "lean_name": "Circle.S3.suspendedSuspendedCircle_chi",
+          "name": "Circle.S3.suspendedSuspendedCircle_chi",
+          "status": "proved"
+        },
+        {
+          "id": "S4-T0001",
+          "lean_name": "Circle.S4.eulerCharacteristic",
+          "name": "Circle.S4.eulerCharacteristic",
+          "status": "proved"
+        },
+        {
+          "id": "S4-T0002",
+          "lean_name": "Circle.S4.counts_eq_suspension_s3",
+          "name": "Circle.S4.counts_eq_suspension_s3",
+          "status": "proved"
+        },
+        {
+          "id": "S456-T0001",
+          "lean_name": "Circle.S4.iteratedSuspensionEulerParity",
+          "name": "Circle.S4.iteratedSuspensionEulerParity",
+          "status": "proved"
+        },
+        {
+          "id": "S5-T0001",
+          "lean_name": "Circle.S5.eulerCharacteristic",
+          "name": "Circle.S5.eulerCharacteristic",
+          "status": "proved"
+        },
+        {
+          "id": "S5-T0002",
+          "lean_name": "Circle.S5.counts_eq_suspension_s4",
+          "name": "Circle.S5.counts_eq_suspension_s4",
+          "status": "proved"
+        },
+        {
+          "id": "S6-T0001",
+          "lean_name": "Circle.S6.eulerCharacteristic",
+          "name": "Circle.S6.eulerCharacteristic",
+          "status": "proved"
+        },
+        {
+          "id": "S6-T0002",
+          "lean_name": "Circle.S6.counts_eq_suspension_s5",
+          "name": "Circle.S6.counts_eq_suspension_s5",
+          "status": "proved"
+        },
+        {
+          "id": "S7C-T0002",
+          "lean_name": "Circle.S7.eulerCharacteristic",
+          "name": "Circle.S7.eulerCharacteristic",
+          "status": "proved"
+        },
+        {
+          "id": "S7C-T0003",
+          "lean_name": "Circle.S7.iteratedSuspensionModel_eq_suspension_s6",
+          "name": "Circle.S7.iteratedSuspensionModel_eq_suspension_s6",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -747,7 +2552,103 @@
       "kind": "operation",
       "name": "Suspension cell-count transform",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "Susp"
+      "symbol": "Susp",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_01_STABLE_SPHERE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.1: Stable Sphere Calculus"
+        },
+        {
+          "id": "PAPER_S2_01_SUSPENDED_CIRCLES",
+          "path": "papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.1: Suspended Circles and the First Finite Sphere"
+        },
+        {
+          "id": "PAPER_S3_01_FINITE_HYPERSPHERES",
+          "path": "papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.1: Finite 3-Spheres by Suspending Spheres"
+        },
+        {
+          "id": "PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY",
+          "path": "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S456.1: General Suspension and Euler Parity"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "COMMON-T0002",
+          "lean_name": "Circle.Common.suspensionCounts",
+          "name": "Circle.Common.suspensionCounts",
+          "status": "proved"
+        },
+        {
+          "id": "COMMON-T0003",
+          "lean_name": "Circle.Common.suspensionEuler",
+          "name": "Circle.Common.suspensionEuler",
+          "status": "proved"
+        },
+        {
+          "id": "COMMON-T0004",
+          "lean_name": "Circle.Common.iteratedSuspensionEuler",
+          "name": "Circle.Common.iteratedSuspensionEuler",
+          "status": "proved"
+        },
+        {
+          "id": "COMMON-T0005",
+          "lean_name": "Circle.Common.iteratedSuspensionEuler_two_step",
+          "name": "Circle.Common.iteratedSuspensionEuler_two_step",
+          "status": "proved"
+        },
+        {
+          "id": "COMMON-T0006",
+          "lean_name": "Circle.Common.suspensionEuler_two_step",
+          "name": "Circle.Common.suspensionEuler_two_step",
+          "status": "proved"
+        },
+        {
+          "id": "P2S-T0001",
+          "lean_name": "Circle.Phase2.doubleSuspensionEuler",
+          "name": "Circle.Phase2.doubleSuspensionEuler",
+          "status": "proved"
+        },
+        {
+          "id": "P2S-T0002",
+          "lean_name": "Circle.Phase2.fourSuspensionEuler",
+          "name": "Circle.Phase2.fourSuspensionEuler",
+          "status": "proved"
+        },
+        {
+          "id": "S15-T0009",
+          "lean_name": "Circle.Future.S15.eightSuspensions_eulerCharacteristic",
+          "name": "Circle.Future.S15.eightSuspensions_eulerCharacteristic",
+          "status": "proved"
+        },
+        {
+          "id": "S3C-T0001",
+          "lean_name": "Circle.S3.suspensionSurface_counts",
+          "name": "Circle.S3.suspensionSurface_counts",
+          "status": "proved"
+        },
+        {
+          "id": "S3C-T0002",
+          "lean_name": "Circle.S3.suspensionSurface_chi_zero",
+          "name": "Circle.S3.suspensionSurface_chi_zero",
+          "status": "proved"
+        },
+        {
+          "id": "S456-T0001",
+          "lean_name": "Circle.S4.iteratedSuspensionEulerParity",
+          "name": "Circle.S4.iteratedSuspensionEulerParity",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -766,7 +2667,49 @@
       "kind": "operation",
       "name": "Double suspension Euler stabilizer",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "Susp^2"
+      "symbol": "Susp^2",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_01_STABLE_SPHERE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.1: Stable Sphere Calculus"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "COMMON-T0005",
+          "lean_name": "Circle.Common.iteratedSuspensionEuler_two_step",
+          "name": "Circle.Common.iteratedSuspensionEuler_two_step",
+          "status": "proved"
+        },
+        {
+          "id": "COMMON-T0006",
+          "lean_name": "Circle.Common.suspensionEuler_two_step",
+          "name": "Circle.Common.suspensionEuler_two_step",
+          "status": "proved"
+        },
+        {
+          "id": "P2S-T0001",
+          "lean_name": "Circle.Phase2.doubleSuspensionEuler",
+          "name": "Circle.Phase2.doubleSuspensionEuler",
+          "status": "proved"
+        },
+        {
+          "id": "P2S-T0002",
+          "lean_name": "Circle.Phase2.fourSuspensionEuler",
+          "name": "Circle.Phase2.fourSuspensionEuler",
+          "status": "proved"
+        },
+        {
+          "id": "P2S-T0003",
+          "lean_name": "Circle.Phase2.fourSuspensionCounts_eq_double_double",
+          "name": "Circle.Phase2.fourSuspensionCounts_eq_double_double",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -786,7 +2729,31 @@
       "kind": "operation",
       "name": "Four suspension Euler stabilizer",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "Susp^4"
+      "symbol": "Susp^4",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_01_STABLE_SPHERE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.1: Stable Sphere Calculus"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "P2S-T0002",
+          "lean_name": "Circle.Phase2.fourSuspensionEuler",
+          "name": "Circle.Phase2.fourSuspensionEuler",
+          "status": "proved"
+        },
+        {
+          "id": "P2S-T0003",
+          "lean_name": "Circle.Phase2.fourSuspensionCounts_eq_double_double",
+          "name": "Circle.Phase2.fourSuspensionCounts_eq_double_double",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],
@@ -802,7 +2769,37 @@
       "kind": "operation",
       "name": "Period-eight dimension clock",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "dim mod 8"
+      "symbol": "dim mod 8",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY",
+          "path": "papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.2: Bott and Clifford Periodicity"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "P2B-T0001",
+          "lean_name": "Circle.Phase2.bottClockIndex_lt_eight",
+          "name": "Circle.Phase2.bottClockIndex_lt_eight",
+          "status": "proved"
+        },
+        {
+          "id": "P2B-T0002",
+          "lean_name": "Circle.Phase2.bottClockIndex_add_eight",
+          "name": "Circle.Phase2.bottClockIndex_add_eight",
+          "status": "proved"
+        },
+        {
+          "id": "P2B-T0003",
+          "lean_name": "Circle.Phase2.bottClockIndex_zero",
+          "name": "Circle.Phase2.bottClockIndex_zero",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],
@@ -818,7 +2815,61 @@
       "kind": "object",
       "name": "Trivial product bundle",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "Base x Fiber"
+      "symbol": "Base x Fiber",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_03_BUNDLE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.3: Bundle Calculus"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "P2BU-T0001",
+          "lean_name": "Circle.Phase2.trivialBundleProjection_point",
+          "name": "Circle.Phase2.trivialBundleProjection_point",
+          "status": "proved"
+        },
+        {
+          "id": "P2BU-T0002",
+          "lean_name": "Circle.Phase2.trivialBundleFiber_point",
+          "name": "Circle.Phase2.trivialBundleFiber_point",
+          "status": "proved"
+        },
+        {
+          "id": "P2BU-T0003",
+          "lean_name": "Circle.Phase2.trivialBundleProjection_forgetsFiber",
+          "name": "Circle.Phase2.trivialBundleProjection_forgetsFiber",
+          "status": "proved"
+        },
+        {
+          "id": "P2BU-T0004",
+          "lean_name": "Circle.Phase2.trivialBundleFiber_forgetsBase",
+          "name": "Circle.Phase2.trivialBundleFiber_forgetsBase",
+          "status": "proved"
+        },
+        {
+          "id": "P2BU-T0005",
+          "lean_name": "Circle.Phase2.bundleTransitionProjection_apply",
+          "name": "Circle.Phase2.bundleTransitionProjection_apply",
+          "status": "proved"
+        },
+        {
+          "id": "P2BU-T0006",
+          "lean_name": "Circle.Phase2.bundleTransitionFiber_apply",
+          "name": "Circle.Phase2.bundleTransitionFiber_apply",
+          "status": "proved"
+        },
+        {
+          "id": "P2BU-T0007",
+          "lean_name": "Circle.Phase2.bundleTransitionApply_compose",
+          "name": "Circle.Phase2.bundleTransitionApply_compose",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -835,7 +2886,43 @@
       "kind": "operation",
       "name": "Bundle projection",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "pi"
+      "symbol": "pi",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_03_BUNDLE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.3: Bundle Calculus"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "P2BU-T0001",
+          "lean_name": "Circle.Phase2.trivialBundleProjection_point",
+          "name": "Circle.Phase2.trivialBundleProjection_point",
+          "status": "proved"
+        },
+        {
+          "id": "P2BU-T0003",
+          "lean_name": "Circle.Phase2.trivialBundleProjection_forgetsFiber",
+          "name": "Circle.Phase2.trivialBundleProjection_forgetsFiber",
+          "status": "proved"
+        },
+        {
+          "id": "P2BU-T0004",
+          "lean_name": "Circle.Phase2.trivialBundleFiber_forgetsBase",
+          "name": "Circle.Phase2.trivialBundleFiber_forgetsBase",
+          "status": "proved"
+        },
+        {
+          "id": "P2BU-T0005",
+          "lean_name": "Circle.Phase2.bundleTransitionProjection_apply",
+          "name": "Circle.Phase2.bundleTransitionProjection_apply",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -852,7 +2939,49 @@
       "kind": "operation",
       "name": "Fiber coordinate",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "fiber"
+      "symbol": "fiber",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_03_BUNDLE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.3: Bundle Calculus"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "P2BU-T0002",
+          "lean_name": "Circle.Phase2.trivialBundleFiber_point",
+          "name": "Circle.Phase2.trivialBundleFiber_point",
+          "status": "proved"
+        },
+        {
+          "id": "P2BU-T0003",
+          "lean_name": "Circle.Phase2.trivialBundleProjection_forgetsFiber",
+          "name": "Circle.Phase2.trivialBundleProjection_forgetsFiber",
+          "status": "proved"
+        },
+        {
+          "id": "P2BU-T0004",
+          "lean_name": "Circle.Phase2.trivialBundleFiber_forgetsBase",
+          "name": "Circle.Phase2.trivialBundleFiber_forgetsBase",
+          "status": "proved"
+        },
+        {
+          "id": "P2BU-T0005",
+          "lean_name": "Circle.Phase2.bundleTransitionProjection_apply",
+          "name": "Circle.Phase2.bundleTransitionProjection_apply",
+          "status": "proved"
+        },
+        {
+          "id": "P2BU-T0006",
+          "lean_name": "Circle.Phase2.bundleTransitionFiber_apply",
+          "name": "Circle.Phase2.bundleTransitionFiber_apply",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],
@@ -868,7 +2997,43 @@
       "kind": "object",
       "name": "Directed interval",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "[source -> target]"
+      "symbol": "[source -> target]",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.4: Boundary and Cobordism Calculus"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "P2BC-T0001",
+          "lean_name": "Circle.Phase2.boundaryBoundaryInterval_zero",
+          "name": "Circle.Phase2.boundaryBoundaryInterval_zero",
+          "status": "proved"
+        },
+        {
+          "id": "P2BC-T0002",
+          "lean_name": "Circle.Phase2.intervalBoundary_reverse",
+          "name": "Circle.Phase2.intervalBoundary_reverse",
+          "status": "proved"
+        },
+        {
+          "id": "P2BC-T0003",
+          "lean_name": "Circle.Phase2.reverseInterval_involutive",
+          "name": "Circle.Phase2.reverseInterval_involutive",
+          "status": "proved"
+        },
+        {
+          "id": "P2BC-T0004",
+          "lean_name": "Circle.Phase2.intervalBoundary_constant_zero",
+          "name": "Circle.Phase2.intervalBoundary_constant_zero",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -886,7 +3051,37 @@
       "kind": "operation",
       "name": "Boundary operator seed",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "boundary"
+      "symbol": "boundary",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.4: Boundary and Cobordism Calculus"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "P2BC-T0001",
+          "lean_name": "Circle.Phase2.boundaryBoundaryInterval_zero",
+          "name": "Circle.Phase2.boundaryBoundaryInterval_zero",
+          "status": "proved"
+        },
+        {
+          "id": "P2BC-T0002",
+          "lean_name": "Circle.Phase2.intervalBoundary_reverse",
+          "name": "Circle.Phase2.intervalBoundary_reverse",
+          "status": "proved"
+        },
+        {
+          "id": "P2BC-T0004",
+          "lean_name": "Circle.Phase2.intervalBoundary_constant_zero",
+          "name": "Circle.Phase2.intervalBoundary_constant_zero",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -904,7 +3099,31 @@
       "kind": "operation",
       "name": "Interval orientation reversal",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "reverse"
+      "symbol": "reverse",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.4: Boundary and Cobordism Calculus"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "P2BC-T0002",
+          "lean_name": "Circle.Phase2.intervalBoundary_reverse",
+          "name": "Circle.Phase2.intervalBoundary_reverse",
+          "status": "proved"
+        },
+        {
+          "id": "P2BC-T0003",
+          "lean_name": "Circle.Phase2.reverseInterval_involutive",
+          "name": "Circle.Phase2.reverseInterval_involutive",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],
@@ -920,7 +3139,49 @@
       "kind": "object",
       "name": "Proof glyph certificate",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "glyph -> theorem -> Lean"
+      "symbol": "glyph -> theorem -> Lean",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_05_PROOF_CARRYING_GLYPHS",
+          "path": "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.5: Proof-Carrying Glyphs"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "P2G-T0001",
+          "lean_name": "Circle.Phase2.proofGlyphTheoremId_mk",
+          "name": "Circle.Phase2.proofGlyphTheoremId_mk",
+          "status": "proved"
+        },
+        {
+          "id": "P2G-T0002",
+          "lean_name": "Circle.Phase2.proofGlyphLeanName_mk",
+          "name": "Circle.Phase2.proofGlyphLeanName_mk",
+          "status": "proved"
+        },
+        {
+          "id": "P2G-T0003",
+          "lean_name": "Circle.Phase2.proofGlyphGlyphId_mk",
+          "name": "Circle.Phase2.proofGlyphGlyphId_mk",
+          "status": "proved"
+        },
+        {
+          "id": "P2G-T0004",
+          "lean_name": "Circle.Phase2.proofGlyphValidAgainst_resolves_metadata",
+          "name": "Circle.Phase2.proofGlyphValidAgainst_resolves_metadata",
+          "status": "proved"
+        },
+        {
+          "id": "P2G-T0005",
+          "lean_name": "Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata",
+          "name": "Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -937,7 +3198,37 @@
       "kind": "operation",
       "name": "Glyph theorem-id projection",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "glyph.theorem_id"
+      "symbol": "glyph.theorem_id",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_05_PROOF_CARRYING_GLYPHS",
+          "path": "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.5: Proof-Carrying Glyphs"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "P2G-T0001",
+          "lean_name": "Circle.Phase2.proofGlyphTheoremId_mk",
+          "name": "Circle.Phase2.proofGlyphTheoremId_mk",
+          "status": "proved"
+        },
+        {
+          "id": "P2G-T0004",
+          "lean_name": "Circle.Phase2.proofGlyphValidAgainst_resolves_metadata",
+          "name": "Circle.Phase2.proofGlyphValidAgainst_resolves_metadata",
+          "status": "proved"
+        },
+        {
+          "id": "P2G-T0005",
+          "lean_name": "Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata",
+          "name": "Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -954,7 +3245,37 @@
       "kind": "operation",
       "name": "Glyph Lean-name projection",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "glyph.lean_name"
+      "symbol": "glyph.lean_name",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_05_PROOF_CARRYING_GLYPHS",
+          "path": "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.5: Proof-Carrying Glyphs"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "P2G-T0002",
+          "lean_name": "Circle.Phase2.proofGlyphLeanName_mk",
+          "name": "Circle.Phase2.proofGlyphLeanName_mk",
+          "status": "proved"
+        },
+        {
+          "id": "P2G-T0004",
+          "lean_name": "Circle.Phase2.proofGlyphValidAgainst_resolves_metadata",
+          "name": "Circle.Phase2.proofGlyphValidAgainst_resolves_metadata",
+          "status": "proved"
+        },
+        {
+          "id": "P2G-T0005",
+          "lean_name": "Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata",
+          "name": "Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],
@@ -970,7 +3291,37 @@
       "kind": "operation",
       "name": "Finite phase coordinate",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "phase(period, step)"
+      "symbol": "phase(period, step)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_APP_01_COIL_DATA_ANALYSIS",
+          "path": "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Application 1: Coil Data Analysis"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "APPD-T0001",
+          "lean_name": "Circle.Applications.phaseCoordinate_lt_period",
+          "name": "Circle.Applications.phaseCoordinate_lt_period",
+          "status": "proved"
+        },
+        {
+          "id": "APPD-T0002",
+          "lean_name": "Circle.Applications.phaseCoordinate_add_period",
+          "name": "Circle.Applications.phaseCoordinate_add_period",
+          "status": "proved"
+        },
+        {
+          "id": "APPD-T0003",
+          "lean_name": "Circle.Applications.phaseCoordinate_zero",
+          "name": "Circle.Applications.phaseCoordinate_zero",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -987,7 +3338,25 @@
       "kind": "relation",
       "name": "Phase closure",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "phase(step + period) = phase(step)"
+      "symbol": "phase(step + period) = phase(step)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_APP_01_COIL_DATA_ANALYSIS",
+          "path": "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Application 1: Coil Data Analysis"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "APPD-T0002",
+          "lean_name": "Circle.Applications.phaseCoordinate_add_period",
+          "name": "Circle.Applications.phaseCoordinate_add_period",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],
@@ -1003,7 +3372,37 @@
       "kind": "operation",
       "name": "Cyclic address",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "addr(size,index)"
+      "symbol": "addr(size,index)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION",
+          "path": "papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 1: Proof-Carrying Circular Computation"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "COMPC-T0001",
+          "lean_name": "Circle.Applications.cyclicAddress_lt_size",
+          "name": "Circle.Applications.cyclicAddress_lt_size",
+          "status": "proved"
+        },
+        {
+          "id": "COMPC-T0002",
+          "lean_name": "Circle.Applications.cyclicAddress_add_size",
+          "name": "Circle.Applications.cyclicAddress_add_size",
+          "status": "proved"
+        },
+        {
+          "id": "COMPC-T0003",
+          "lean_name": "Circle.Applications.cyclicAddress_zero",
+          "name": "Circle.Applications.cyclicAddress_zero",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1020,7 +3419,25 @@
       "kind": "relation",
       "name": "Cyclic address wraparound",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "addr(i + size) = addr(i)"
+      "symbol": "addr(i + size) = addr(i)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION",
+          "path": "papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 1: Proof-Carrying Circular Computation"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "COMPC-T0002",
+          "lean_name": "Circle.Applications.cyclicAddress_add_size",
+          "name": "Circle.Applications.cyclicAddress_add_size",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],
@@ -1036,7 +3453,37 @@
       "kind": "operation",
       "name": "Direction-bin schedule",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "bin(bin_count,sample)"
+      "symbol": "bin(bin_count,sample)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_02_COIL_RAY_AND_SAMPLING",
+          "path": "papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 2: CoilRay and CoilSampler"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "COMPR-T0001",
+          "lean_name": "Circle.Applications.directionBin_lt_binCount",
+          "name": "Circle.Applications.directionBin_lt_binCount",
+          "status": "proved"
+        },
+        {
+          "id": "COMPR-T0002",
+          "lean_name": "Circle.Applications.directionBin_add_binCount",
+          "name": "Circle.Applications.directionBin_add_binCount",
+          "status": "proved"
+        },
+        {
+          "id": "COMPR-T0003",
+          "lean_name": "Circle.Applications.directionBin_zero",
+          "name": "Circle.Applications.directionBin_zero",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1053,7 +3500,25 @@
       "kind": "relation",
       "name": "Direction-bin closure",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "bin(sample + bin_count) = bin(sample)"
+      "symbol": "bin(sample + bin_count) = bin(sample)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_02_COIL_RAY_AND_SAMPLING",
+          "path": "papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 2: CoilRay and CoilSampler"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "COMPR-T0002",
+          "lean_name": "Circle.Applications.directionBin_add_binCount",
+          "name": "Circle.Applications.directionBin_add_binCount",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1071,7 +3536,43 @@
       "kind": "operation",
       "name": "Stride address",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "addr(size,stride,step)"
+      "symbol": "addr(size,stride,step)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT",
+          "path": "papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 3: CoilLayout, CoilStencil, and CoilNTT"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "COMPL-T0001",
+          "lean_name": "Circle.Applications.strideAddress_lt_size",
+          "name": "Circle.Applications.strideAddress_lt_size",
+          "status": "proved"
+        },
+        {
+          "id": "COMPL-T0002",
+          "lean_name": "Circle.Applications.strideAddress_add_size_steps",
+          "name": "Circle.Applications.strideAddress_add_size_steps",
+          "status": "proved"
+        },
+        {
+          "id": "COMPL-T0003",
+          "lean_name": "Circle.Applications.strideAddress_zero_step",
+          "name": "Circle.Applications.strideAddress_zero_step",
+          "status": "proved"
+        },
+        {
+          "id": "COMPL-T0004",
+          "lean_name": "Circle.Applications.strideAddress_zero_stride",
+          "name": "Circle.Applications.strideAddress_zero_stride",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1089,7 +3590,25 @@
       "kind": "relation",
       "name": "Stride schedule closure",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "addr(step + size) = addr(step)"
+      "symbol": "addr(step + size) = addr(step)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT",
+          "path": "papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 3: CoilLayout, CoilStencil, and CoilNTT"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "COMPL-T0002",
+          "lean_name": "Circle.Applications.strideAddress_add_size_steps",
+          "name": "Circle.Applications.strideAddress_add_size_steps",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],
@@ -1105,7 +3624,37 @@
       "kind": "operation",
       "name": "Round-robin slot",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "slot(slot_count,tick)"
+      "symbol": "slot(slot_count,tick)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS",
+          "path": "papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 4: Coil Systems Applications"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "COMPS-T0001",
+          "lean_name": "Circle.Applications.roundRobinSlot_lt_slotCount",
+          "name": "Circle.Applications.roundRobinSlot_lt_slotCount",
+          "status": "proved"
+        },
+        {
+          "id": "COMPS-T0002",
+          "lean_name": "Circle.Applications.roundRobinSlot_add_slotCount",
+          "name": "Circle.Applications.roundRobinSlot_add_slotCount",
+          "status": "proved"
+        },
+        {
+          "id": "COMPS-T0003",
+          "lean_name": "Circle.Applications.roundRobinSlot_zero",
+          "name": "Circle.Applications.roundRobinSlot_zero",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1122,7 +3671,25 @@
       "kind": "relation",
       "name": "Round-robin closure",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "slot(tick + slot_count) = slot(tick)"
+      "symbol": "slot(tick + slot_count) = slot(tick)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS",
+          "path": "papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 4: Coil Systems Applications"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "COMPS-T0002",
+          "lean_name": "Circle.Applications.roundRobinSlot_add_slotCount",
+          "name": "Circle.Applications.roundRobinSlot_add_slotCount",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],
@@ -1138,7 +3705,37 @@
       "kind": "operation",
       "name": "AI phase channel",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "phase_channel(period,position)"
+      "symbol": "phase_channel(period,position)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES",
+          "path": "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 1: Circle AI Architectures"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIA-T0001",
+          "lean_name": "Circle.Applications.phaseChannel_lt_period",
+          "name": "Circle.Applications.phaseChannel_lt_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIA-T0002",
+          "lean_name": "Circle.Applications.phaseChannel_add_period",
+          "name": "Circle.Applications.phaseChannel_add_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIA-T0003",
+          "lean_name": "Circle.Applications.phaseChannel_zero",
+          "name": "Circle.Applications.phaseChannel_zero",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1155,7 +3752,25 @@
       "kind": "relation",
       "name": "AI phase-channel closure",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "phase_channel(position + period) = phase_channel(position)"
+      "symbol": "phase_channel(position + period) = phase_channel(position)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES",
+          "path": "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 1: Circle AI Architectures"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIA-T0002",
+          "lean_name": "Circle.Applications.phaseChannel_add_period",
+          "name": "Circle.Applications.phaseChannel_add_period",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],
@@ -1170,7 +3785,37 @@
       "kind": "operation",
       "name": "Cyclic memory slot",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "memory_slot(bank_size,token)"
+      "symbol": "memory_slot(bank_size,token)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIM-T0001",
+          "lean_name": "Circle.Applications.memorySlot_lt_bankSize",
+          "name": "Circle.Applications.memorySlot_lt_bankSize",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0002",
+          "lean_name": "Circle.Applications.memorySlot_add_bankSize",
+          "name": "Circle.Applications.memorySlot_add_bankSize",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0003",
+          "lean_name": "Circle.Applications.memorySlot_zero",
+          "name": "Circle.Applications.memorySlot_zero",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1187,7 +3832,25 @@
       "kind": "relation",
       "name": "Cyclic memory-slot closure",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "memory_slot(token + bank_size) = memory_slot(token)"
+      "symbol": "memory_slot(token + bank_size) = memory_slot(token)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIM-T0002",
+          "lean_name": "Circle.Applications.memorySlot_add_bankSize",
+          "name": "Circle.Applications.memorySlot_add_bankSize",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],
@@ -1203,7 +3866,37 @@
       "kind": "operation",
       "name": "Adapter block index",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "adapter_block(block_size,channel)"
+      "symbol": "adapter_block(block_size,channel)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIRA-T0001",
+          "lean_name": "Circle.Applications.adapterBlock_lt_blockSize",
+          "name": "Circle.Applications.adapterBlock_lt_blockSize",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0002",
+          "lean_name": "Circle.Applications.adapterBlock_add_blockSize",
+          "name": "Circle.Applications.adapterBlock_add_blockSize",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0003",
+          "lean_name": "Circle.Applications.adapterBlock_zero",
+          "name": "Circle.Applications.adapterBlock_zero",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1220,7 +3913,25 @@
       "kind": "relation",
       "name": "Adapter block closure",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "adapter_block(channel + block_size) = adapter_block(channel)"
+      "symbol": "adapter_block(channel + block_size) = adapter_block(channel)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIRA-T0002",
+          "lean_name": "Circle.Applications.adapterBlock_add_blockSize",
+          "name": "Circle.Applications.adapterBlock_add_blockSize",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1238,7 +3949,31 @@
       "kind": "object",
       "name": "Theorem metadata entry",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "theorem metadata"
+      "symbol": "theorem metadata",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_05_PROOF_CARRYING_GLYPHS",
+          "path": "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.5: Proof-Carrying Glyphs"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "P2G-T0004",
+          "lean_name": "Circle.Phase2.proofGlyphValidAgainst_resolves_metadata",
+          "name": "Circle.Phase2.proofGlyphValidAgainst_resolves_metadata",
+          "status": "proved"
+        },
+        {
+          "id": "P2G-T0005",
+          "lean_name": "Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata",
+          "name": "Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1256,7 +3991,38 @@
       "kind": "relation",
       "name": "Glyph manifest validity",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "glyph valid against manifest"
+      "symbol": "glyph valid against manifest",
+      "used_by_glyphs": [
+        {
+          "id": "glyph:metadata_validity",
+          "status": "proved",
+          "status_label": "Lean-proved",
+          "theorem_id": "P2G-T0004"
+        }
+      ],
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_05_PROOF_CARRYING_GLYPHS",
+          "path": "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.5: Proof-Carrying Glyphs"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "P2G-T0004",
+          "lean_name": "Circle.Phase2.proofGlyphValidAgainst_resolves_metadata",
+          "name": "Circle.Phase2.proofGlyphValidAgainst_resolves_metadata",
+          "status": "proved"
+        },
+        {
+          "id": "P2G-T0005",
+          "lean_name": "Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata",
+          "name": "Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1275,7 +4041,37 @@
       "kind": "operation",
       "name": "Bundle transition seed",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "transition.apply"
+      "symbol": "transition.apply",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_03_BUNDLE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.3: Bundle Calculus"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "P2BU-T0005",
+          "lean_name": "Circle.Phase2.bundleTransitionProjection_apply",
+          "name": "Circle.Phase2.bundleTransitionProjection_apply",
+          "status": "proved"
+        },
+        {
+          "id": "P2BU-T0006",
+          "lean_name": "Circle.Phase2.bundleTransitionFiber_apply",
+          "name": "Circle.Phase2.bundleTransitionFiber_apply",
+          "status": "proved"
+        },
+        {
+          "id": "P2BU-T0007",
+          "lean_name": "Circle.Phase2.bundleTransitionApply_compose",
+          "name": "Circle.Phase2.bundleTransitionApply_compose",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1292,7 +4088,25 @@
       "kind": "operation",
       "name": "Bundle transition composition",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "transition.compose"
+      "symbol": "transition.compose",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_03_BUNDLE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.3: Bundle Calculus"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "P2BU-T0007",
+          "lean_name": "Circle.Phase2.bundleTransitionApply_compose",
+          "name": "Circle.Phase2.bundleTransitionApply_compose",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1310,7 +4124,18 @@
       "kind": "experiment",
       "name": "Synthetic period benchmark",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "known_period_fixture"
+      "symbol": "known_period_fixture",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_APP_01_COIL_DATA_ANALYSIS",
+          "path": "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Application 1: Coil Data Analysis"
+        }
+      ],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1327,7 +4152,18 @@
       "kind": "metric",
       "name": "Coil closure error",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "closure_error(period)"
+      "symbol": "closure_error(period)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_APP_01_COIL_DATA_ANALYSIS",
+          "path": "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Application 1: Coil Data Analysis"
+        }
+      ],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1344,7 +4180,18 @@
       "kind": "metric",
       "name": "Autocorrelation period baseline",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "autocorr(lag)"
+      "symbol": "autocorr(lag)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_APP_01_COIL_DATA_ANALYSIS",
+          "path": "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Application 1: Coil Data Analysis"
+        }
+      ],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1363,7 +4210,18 @@
       "kind": "experiment",
       "name": "Synthetic phase-channel benchmark",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "phase_channel_fixture"
+      "symbol": "phase_channel_fixture",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES",
+          "path": "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 1: Circle AI Architectures"
+        }
+      ],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1382,7 +4240,18 @@
       "kind": "experiment",
       "name": "Coil layout validation grid",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "layout_grid"
+      "symbol": "layout_grid",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT",
+          "path": "papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 3: CoilLayout, CoilStencil, and CoilNTT"
+        }
+      ],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1403,7 +4272,24 @@
       "kind": "interface",
       "name": "Finite-coil theorem signature index",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "coil_signature_index"
+      "symbol": "coil_signature_index",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_01_FINITE_CIRCLES",
+          "path": "papers/PAPER_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1424,7 +4310,18 @@
       "kind": "interface",
       "name": "Number provenance fixture",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "NumberProvenance(n)"
+      "symbol": "NumberProvenance(n)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1444,7 +4341,18 @@
       "kind": "experiment",
       "name": "Expanded periodic benchmark suite",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "period_fixture_suite"
+      "symbol": "period_fixture_suite",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_APP_01_COIL_DATA_ANALYSIS",
+          "path": "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Application 1: Coil Data Analysis"
+        }
+      ],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1463,7 +4371,18 @@
       "kind": "experiment",
       "name": "Learned phase baseline fixture",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "learned_phase_baseline"
+      "symbol": "learned_phase_baseline",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES",
+          "path": "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 1: Circle AI Architectures"
+        }
+      ],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1482,7 +4401,18 @@
       "kind": "experiment",
       "name": "Periodic stencil validation fixture",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
-      "symbol": "periodic_stencil_fixture"
+      "symbol": "periodic_stencil_fixture",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT",
+          "path": "papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 3: CoilLayout, CoilStencil, and CoilNTT"
+        }
+      ],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],
@@ -1497,7 +4427,49 @@
       "kind": "object",
       "name": "Two-point opposition",
       "source_dictionary": "dictionary/dimensions/S0.yaml",
-      "symbol": "S^0"
+      "symbol": "S^0",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S0_01_TWO_POINT_OPPOSITION",
+          "path": "papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S0.1: Two-Point Opposition"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S0-T0001",
+          "lean_name": "Circle.S0.card_sign",
+          "name": "Circle.S0.card_sign",
+          "status": "proved"
+        },
+        {
+          "id": "S0-T0002",
+          "lean_name": "Circle.S0.antipode_involutive",
+          "name": "Circle.S0.antipode_involutive",
+          "status": "proved"
+        },
+        {
+          "id": "S0-T0003",
+          "lean_name": "Circle.S0.antipode_ne",
+          "name": "Circle.S0.antipode_ne",
+          "status": "proved"
+        },
+        {
+          "id": "S0-T0004",
+          "lean_name": "Circle.S0.antipode_swaps",
+          "name": "Circle.S0.antipode_swaps",
+          "status": "proved"
+        },
+        {
+          "id": "S0-T0005",
+          "lean_name": "Circle.S0.antipode_bijective",
+          "name": "Circle.S0.antipode_bijective",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1513,7 +4485,43 @@
       "intuition": "Opposition as an involutive flip.",
       "kind": "operation",
       "name": "S0 antipode",
-      "source_dictionary": "dictionary/dimensions/S0.yaml"
+      "source_dictionary": "dictionary/dimensions/S0.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S0_01_TWO_POINT_OPPOSITION",
+          "path": "papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S0.1: Two-Point Opposition"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S0-T0002",
+          "lean_name": "Circle.S0.antipode_involutive",
+          "name": "Circle.S0.antipode_involutive",
+          "status": "proved"
+        },
+        {
+          "id": "S0-T0003",
+          "lean_name": "Circle.S0.antipode_ne",
+          "name": "Circle.S0.antipode_ne",
+          "status": "proved"
+        },
+        {
+          "id": "S0-T0004",
+          "lean_name": "Circle.S0.antipode_swaps",
+          "name": "Circle.S0.antipode_swaps",
+          "status": "proved"
+        },
+        {
+          "id": "S0-T0005",
+          "lean_name": "Circle.S0.antipode_bijective",
+          "name": "Circle.S0.antipode_bijective",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1529,7 +4537,18 @@
       "intuition": "The topological base sphere and the degenerate one-node circle are different objects.",
       "kind": "warning",
       "name": "C1 is not S0 warning",
-      "source_dictionary": "dictionary/dimensions/S0.yaml"
+      "source_dictionary": "dictionary/dimensions/S0.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S0_01_TWO_POINT_OPPOSITION",
+          "path": "papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S0.1: Two-Point Opposition"
+        }
+      ],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1549,7 +4568,30 @@
       "kind": "model",
       "name": "S1 finite circle core",
       "source_dictionary": "dictionary/dimensions/S1.yaml",
-      "symbol": "S^1"
+      "symbol": "S^1",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_S1_02_WINDING_NATURALS",
+          "path": "papers/S1/PAPER_S1_02_WINDING_NATURALS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.2: Winding, Lifted Circles, and Natural Numbers"
+        },
+        {
+          "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+          "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
+        }
+      ],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1565,7 +4607,43 @@
       "intuition": "Clockwise and counterclockwise motion are the same finite circle operation with signed stride.",
       "kind": "operation",
       "name": "Signed rotation",
-      "source_dictionary": "dictionary/dimensions/S1.yaml"
+      "source_dictionary": "dictionary/dimensions/S1.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_03_INTEGERS_ORIENTATION",
+          "path": "papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.3: Integers, Orientation, and Reversible Motion"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S1O-T0001",
+          "lean_name": "Circle.S1.signedRot_zero",
+          "name": "Circle.S1.signedRot_zero",
+          "status": "proved"
+        },
+        {
+          "id": "S1O-T0002",
+          "lean_name": "Circle.S1.signedRot_comp",
+          "name": "Circle.S1.signedRot_comp",
+          "status": "proved"
+        },
+        {
+          "id": "S1O-T0003",
+          "lean_name": "Circle.S1.signedRot_inverse",
+          "name": "Circle.S1.signedRot_inverse",
+          "status": "proved"
+        },
+        {
+          "id": "S1O-T0004",
+          "lean_name": "Circle.S1.signedRot_bijective",
+          "name": "Circle.S1.signedRot_bijective",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1580,7 +4658,31 @@
       "intuition": "Orientation adds reversibility to the finite-circle motion model.",
       "kind": "relation",
       "name": "Reversible signed motion",
-      "source_dictionary": "dictionary/dimensions/S1.yaml"
+      "source_dictionary": "dictionary/dimensions/S1.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_03_INTEGERS_ORIENTATION",
+          "path": "papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.3: Integers, Orientation, and Reversible Motion"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S1O-T0003",
+          "lean_name": "Circle.S1.signedRot_inverse",
+          "name": "Circle.S1.signedRot_inverse",
+          "status": "proved"
+        },
+        {
+          "id": "S1O-T0004",
+          "lean_name": "Circle.S1.signedRot_bijective",
+          "name": "Circle.S1.signedRot_bijective",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1595,7 +4697,32 @@
       "intuition": "The post-S7 horizon now anchored by bounded topological and coordinate Hopf facts.",
       "kind": "paper",
       "name": "Future octonionic Hopf horizon",
-      "source_dictionary": "dictionary/dimensions/S15.yaml"
+      "source_dictionary": "dictionary/dimensions/S15.yaml",
+      "used_by_glyphs": [
+        {
+          "id": "glyph:s15_roadmap_marker",
+          "status": "planned",
+          "status_label": "Planned theorem",
+          "theorem_id": "S15-T0001"
+        }
+      ],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
+          "path": "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S15.1: Octonionic Hopf Roadmap"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S15-T0001",
+          "lean_name": "Circle.Future.S15.octonionicHopfRoadmap",
+          "name": "Circle.Future.S15.octonionicHopfRoadmap",
+          "status": "planned"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1611,7 +4738,37 @@
       "intuition": "A bounded topological anchor for the S15 horizon.",
       "kind": "object",
       "name": "Finite S15 suspension model",
-      "source_dictionary": "dictionary/dimensions/S15.yaml"
+      "source_dictionary": "dictionary/dimensions/S15.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
+          "path": "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S15.1: Octonionic Hopf Roadmap"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S15-T0002",
+          "lean_name": "Circle.Future.S15.topologicalModel_eulerCharacteristic",
+          "name": "Circle.Future.S15.topologicalModel_eulerCharacteristic",
+          "status": "proved"
+        },
+        {
+          "id": "S15-T0004",
+          "lean_name": "Circle.Future.S15.topologicalModel_eq_eightSuspensions_s7",
+          "name": "Circle.Future.S15.topologicalModel_eq_eightSuspensions_s7",
+          "status": "proved"
+        },
+        {
+          "id": "S15-T0009",
+          "lean_name": "Circle.Future.S15.eightSuspensions_eulerCharacteristic",
+          "name": "Circle.Future.S15.eightSuspensions_eulerCharacteristic",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1627,7 +4784,49 @@
       "intuition": "The coordinate landing equation for the octonionic Hopf horizon before full fibration topology.",
       "kind": "theorem",
       "name": "Bounded octonionic Hopf landing",
-      "source_dictionary": "dictionary/dimensions/S15.yaml"
+      "source_dictionary": "dictionary/dimensions/S15.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
+          "path": "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S15.1: Octonionic Hopf Roadmap"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S15-T0003",
+          "lean_name": "Circle.Future.S15.octonionicHopf_lands_sphere",
+          "name": "Circle.Future.S15.octonionicHopf_lands_sphere",
+          "status": "proved"
+        },
+        {
+          "id": "S15-T0005",
+          "lean_name": "Circle.Future.S15.octonionPairRightPhase_normSq",
+          "name": "Circle.Future.S15.octonionPairRightPhase_normSq",
+          "status": "proved"
+        },
+        {
+          "id": "S15-T0006",
+          "lean_name": "Circle.Future.S15.octonionicHopfMap_rightPhase_scalar_invariant",
+          "name": "Circle.Future.S15.octonionicHopfMap_rightPhase_scalar_invariant",
+          "status": "proved"
+        },
+        {
+          "id": "S15-T0007",
+          "lean_name": "Circle.Future.S15.octonionicHopfMap_rightPhase_lands_sphere",
+          "name": "Circle.Future.S15.octonionicHopfMap_rightPhase_lands_sphere",
+          "status": "proved"
+        },
+        {
+          "id": "S15-T0008",
+          "lean_name": "Circle.Future.S15.octonionicHopfMap_rightPhase_not_invariant_example",
+          "name": "Circle.Future.S15.octonionicHopfMap_rightPhase_not_invariant_example",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1645,7 +4844,25 @@
       "intuition": "The octonionic horizon needs bracketed quotient/fiber work; copying the S3 or quaternionic S7 phase story is not sound.",
       "kind": "warning",
       "name": "Naive octonionic phase invariance warning",
-      "source_dictionary": "dictionary/dimensions/S15.yaml"
+      "source_dictionary": "dictionary/dimensions/S15.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
+          "path": "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S15.1: Octonionic Hopf Roadmap"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S15-T0008",
+          "lean_name": "Circle.Future.S15.octonionicHopfMap_rightPhase_not_invariant_example",
+          "name": "Circle.Future.S15.octonionicHopfMap_rightPhase_not_invariant_example",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1663,7 +4880,49 @@
       "kind": "object",
       "name": "Suspended finite circle",
       "source_dictionary": "dictionary/dimensions/S2.yaml",
-      "symbol": "SuspC(n)"
+      "symbol": "SuspC(n)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_01_SUSPENDED_CIRCLES",
+          "path": "papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.1: Suspended Circles and the First Finite Sphere"
+        },
+        {
+          "id": "PAPER_S3_01_FINITE_HYPERSPHERES",
+          "path": "papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.1: Finite 3-Spheres by Suspending Spheres"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S2-T0001",
+          "lean_name": "Circle.S2.suspendedCircle_counts",
+          "name": "Circle.S2.suspendedCircle_counts",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0002",
+          "lean_name": "Circle.S2.suspendedCircle_chi",
+          "name": "Circle.S2.suspendedCircle_chi",
+          "status": "proved"
+        },
+        {
+          "id": "S3C-T0003",
+          "lean_name": "Circle.S3.suspendedSuspendedCircle_counts",
+          "name": "Circle.S3.suspendedSuspendedCircle_counts",
+          "status": "proved"
+        },
+        {
+          "id": "S3C-T0004",
+          "lean_name": "Circle.S3.suspendedSuspendedCircle_chi",
+          "name": "Circle.S3.suspendedSuspendedCircle_chi",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1681,7 +4940,55 @@
       "kind": "object",
       "name": "Sphere grid",
       "source_dictionary": "dictionary/dimensions/S2.yaml",
-      "symbol": "SphereGrid(n,r)"
+      "symbol": "SphereGrid(n,r)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+          "path": "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.2: Sphere Grids, Latitude Rings, and Pole Collapse"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S2-T0003",
+          "lean_name": "Circle.S2.sphereGrid_counts",
+          "name": "Circle.S2.sphereGrid_counts",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0004",
+          "lean_name": "Circle.S2.sphereGrid_chi",
+          "name": "Circle.S2.sphereGrid_chi",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0005",
+          "lean_name": "Circle.S2.latitudeRing_isCircle",
+          "name": "Circle.S2.latitudeRing_isCircle",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0006",
+          "lean_name": "Circle.S2.longitudeRotation_fixesPoles",
+          "name": "Circle.S2.longitudeRotation_fixesPoles",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0017",
+          "lean_name": "Circle.S2.latitudeRingOrbitClassCount_eq_gcd",
+          "name": "Circle.S2.latitudeRingOrbitClassCount_eq_gcd",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0020",
+          "lean_name": "Circle.S2.longitudeRotation_bijective",
+          "name": "Circle.S2.longitudeRotation_bijective",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1698,7 +5005,55 @@
       "intuition": "A horizontal cyclic slice of the finite sphere grid.",
       "kind": "object",
       "name": "Latitude ring",
-      "source_dictionary": "dictionary/dimensions/S2.yaml"
+      "source_dictionary": "dictionary/dimensions/S2.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+          "path": "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.2: Sphere Grids, Latitude Rings, and Pole Collapse"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S2-T0005",
+          "lean_name": "Circle.S2.latitudeRing_isCircle",
+          "name": "Circle.S2.latitudeRing_isCircle",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0007",
+          "lean_name": "Circle.S2.latitudeCoil_period",
+          "name": "Circle.S2.latitudeCoil_period",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0012",
+          "lean_name": "Circle.S2.longitudeRotation_preservesLatitudeCoordinate",
+          "name": "Circle.S2.longitudeRotation_preservesLatitudeCoordinate",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0013",
+          "lean_name": "Circle.S2.longitudeRotation_advancesLongitudeCoordinate",
+          "name": "Circle.S2.longitudeRotation_advancesLongitudeCoordinate",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0017",
+          "lean_name": "Circle.S2.latitudeRingOrbitClassCount_eq_gcd",
+          "name": "Circle.S2.latitudeRingOrbitClassCount_eq_gcd",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0020",
+          "lean_name": "Circle.S2.longitudeRotation_bijective",
+          "name": "Circle.S2.longitudeRotation_bijective",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1713,7 +5068,31 @@
       "intuition": "The mechanism that makes a sphere grid sphere-like rather than torus-like.",
       "kind": "relation",
       "name": "Pole collapse",
-      "source_dictionary": "dictionary/dimensions/S2.yaml"
+      "source_dictionary": "dictionary/dimensions/S2.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+          "path": "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.2: Sphere Grids, Latitude Rings, and Pole Collapse"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S2-T0006",
+          "lean_name": "Circle.S2.longitudeRotation_fixesPoles",
+          "name": "Circle.S2.longitudeRotation_fixesPoles",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0020",
+          "lean_name": "Circle.S2.longitudeRotation_bijective",
+          "name": "Circle.S2.longitudeRotation_bijective",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1729,7 +5108,73 @@
       "intuition": "Opposite surface points in the finite suspended-circle model.",
       "kind": "operation",
       "name": "Suspended-circle antipode",
-      "source_dictionary": "dictionary/dimensions/S2.yaml"
+      "source_dictionary": "dictionary/dimensions/S2.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE",
+          "path": "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.3: Antipodes, Axes, Surface Closure, and Antinodes"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S2-T0008",
+          "lean_name": "Circle.S2.suspendedCircleAntipode_swapsPoles",
+          "name": "Circle.S2.suspendedCircleAntipode_swapsPoles",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0009",
+          "lean_name": "Circle.S2.suspendedCircleAntipode_involutive",
+          "name": "Circle.S2.suspendedCircleAntipode_involutive",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0010",
+          "lean_name": "Circle.S2.suspendedCircleAntipode_preservesPoleSet",
+          "name": "Circle.S2.suspendedCircleAntipode_preservesPoleSet",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0011",
+          "lean_name": "Circle.S2.suspendedCircleAntipode_preservesEquatorSet",
+          "name": "Circle.S2.suspendedCircleAntipode_preservesEquatorSet",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0014",
+          "lean_name": "Circle.S2.suspendedCircleAntipodalPair_self_antipode",
+          "name": "Circle.S2.suspendedCircleAntipodalPair_self_antipode",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0015",
+          "lean_name": "Circle.S2.suspendedCircleAntipodalPair_symmetric",
+          "name": "Circle.S2.suspendedCircleAntipodalPair_symmetric",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0016",
+          "lean_name": "Circle.S2.suspendedCircleAntipode_longitudeRotation_opposite",
+          "name": "Circle.S2.suspendedCircleAntipode_longitudeRotation_opposite",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0018",
+          "lean_name": "Circle.S2.suspendedCircleAntipode_bijective",
+          "name": "Circle.S2.suspendedCircleAntipode_bijective",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0019",
+          "lean_name": "Circle.S2.suspendedCircleLongitudeRotation_bijective",
+          "name": "Circle.S2.suspendedCircleLongitudeRotation_bijective",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1744,7 +5189,49 @@
       "intuition": "The simplest axis structure in the finite suspended sphere.",
       "kind": "relation",
       "name": "Pole axis",
-      "source_dictionary": "dictionary/dimensions/S2.yaml"
+      "source_dictionary": "dictionary/dimensions/S2.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE",
+          "path": "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.3: Antipodes, Axes, Surface Closure, and Antinodes"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S2-T0008",
+          "lean_name": "Circle.S2.suspendedCircleAntipode_swapsPoles",
+          "name": "Circle.S2.suspendedCircleAntipode_swapsPoles",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0010",
+          "lean_name": "Circle.S2.suspendedCircleAntipode_preservesPoleSet",
+          "name": "Circle.S2.suspendedCircleAntipode_preservesPoleSet",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0016",
+          "lean_name": "Circle.S2.suspendedCircleAntipode_longitudeRotation_opposite",
+          "name": "Circle.S2.suspendedCircleAntipode_longitudeRotation_opposite",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0018",
+          "lean_name": "Circle.S2.suspendedCircleAntipode_bijective",
+          "name": "Circle.S2.suspendedCircleAntipode_bijective",
+          "status": "proved"
+        },
+        {
+          "id": "S2-T0019",
+          "lean_name": "Circle.S2.suspendedCircleLongitudeRotation_bijective",
+          "name": "Circle.S2.suspendedCircleLongitudeRotation_bijective",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1759,7 +5246,18 @@
       "intuition": "A finite sphere grid requires pole collapse.",
       "kind": "warning",
       "name": "Torus confusion warning",
-      "source_dictionary": "dictionary/dimensions/S2.yaml"
+      "source_dictionary": "dictionary/dimensions/S2.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+          "path": "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.2: Sphere Grids, Latitude Rings, and Pole Collapse"
+        }
+      ],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1774,7 +5272,18 @@
       "intuition": "All longitudes meet at each pole.",
       "kind": "warning",
       "name": "Pole singularity warning",
-      "source_dictionary": "dictionary/dimensions/S2.yaml"
+      "source_dictionary": "dictionary/dimensions/S2.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+          "path": "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.2: Sphere Grids, Latitude Rings, and Pole Collapse"
+        }
+      ],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1789,7 +5298,18 @@
       "intuition": "The sphere surface is geometric here, not a cyclic or quaternionic group.",
       "kind": "warning",
       "name": "S2 group fallacy warning",
-      "source_dictionary": "dictionary/dimensions/S2.yaml"
+      "source_dictionary": "dictionary/dimensions/S2.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS",
+          "path": "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S2.2: Sphere Grids, Latitude Rings, and Pole Collapse"
+        }
+      ],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1805,7 +5325,43 @@
       "intuition": "The combinatorial topological S^3 layer before quaternion algebra.",
       "kind": "object",
       "name": "Finite 3-sphere suspension model",
-      "source_dictionary": "dictionary/dimensions/S3.yaml"
+      "source_dictionary": "dictionary/dimensions/S3.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_01_FINITE_HYPERSPHERES",
+          "path": "papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.1: Finite 3-Spheres by Suspending Spheres"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S3C-T0001",
+          "lean_name": "Circle.S3.suspensionSurface_counts",
+          "name": "Circle.S3.suspensionSurface_counts",
+          "status": "proved"
+        },
+        {
+          "id": "S3C-T0002",
+          "lean_name": "Circle.S3.suspensionSurface_chi_zero",
+          "name": "Circle.S3.suspensionSurface_chi_zero",
+          "status": "proved"
+        },
+        {
+          "id": "S3C-T0003",
+          "lean_name": "Circle.S3.suspendedSuspendedCircle_counts",
+          "name": "Circle.S3.suspendedSuspendedCircle_counts",
+          "status": "proved"
+        },
+        {
+          "id": "S3C-T0004",
+          "lean_name": "Circle.S3.suspendedSuspendedCircle_chi",
+          "name": "Circle.S3.suspendedSuspendedCircle_chi",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1821,7 +5377,55 @@
       "intuition": "A visible S^2 base with hidden S^1 phase fibers.",
       "kind": "operation",
       "name": "Hopf map",
-      "source_dictionary": "dictionary/dimensions/S3.yaml"
+      "source_dictionary": "dictionary/dimensions/S3.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_03_HOPF_COILS",
+          "path": "papers/S3/PAPER_S3_03_HOPF_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.3: Hopf Coils"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S3H-T0001",
+          "lean_name": "Circle.S3.hopfMap_lands_sphere",
+          "name": "Circle.S3.hopfMap_lands_sphere",
+          "status": "proved"
+        },
+        {
+          "id": "S3H-T0002",
+          "lean_name": "Circle.S3.hopfMap_phase_invariant",
+          "name": "Circle.S3.hopfMap_phase_invariant",
+          "status": "proved"
+        },
+        {
+          "id": "S3H-T0003",
+          "lean_name": "Circle.S3.hopfFiber_circle_like",
+          "name": "Circle.S3.hopfFiber_circle_like",
+          "status": "proved"
+        },
+        {
+          "id": "S3H-T0006",
+          "lean_name": "Circle.S3.hopfPhaseAction_laws",
+          "name": "Circle.S3.hopfPhaseAction_laws",
+          "status": "proved"
+        },
+        {
+          "id": "S3H-T0007",
+          "lean_name": "Circle.S3.hopfPhaseMul_identity",
+          "name": "Circle.S3.hopfPhaseMul_identity",
+          "status": "proved"
+        },
+        {
+          "id": "S3H-T0008",
+          "lean_name": "Circle.S3.hopfPhaseMul_assoc",
+          "name": "Circle.S3.hopfPhaseMul_assoc",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1837,7 +5441,61 @@
       "intuition": "The hidden circle above each visible base point.",
       "kind": "object",
       "name": "Hopf phase fiber",
-      "source_dictionary": "dictionary/dimensions/S3.yaml"
+      "source_dictionary": "dictionary/dimensions/S3.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_03_HOPF_COILS",
+          "path": "papers/S3/PAPER_S3_03_HOPF_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.3: Hopf Coils"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S3H-T0002",
+          "lean_name": "Circle.S3.hopfMap_phase_invariant",
+          "name": "Circle.S3.hopfMap_phase_invariant",
+          "status": "proved"
+        },
+        {
+          "id": "S3H-T0003",
+          "lean_name": "Circle.S3.hopfFiber_circle_like",
+          "name": "Circle.S3.hopfFiber_circle_like",
+          "status": "proved"
+        },
+        {
+          "id": "S3H-T0004",
+          "lean_name": "Circle.S3.phaseRotatePair_identity",
+          "name": "Circle.S3.phaseRotatePair_identity",
+          "status": "proved"
+        },
+        {
+          "id": "S3H-T0005",
+          "lean_name": "Circle.S3.phaseRotatePair_comp",
+          "name": "Circle.S3.phaseRotatePair_comp",
+          "status": "proved"
+        },
+        {
+          "id": "S3H-T0006",
+          "lean_name": "Circle.S3.hopfPhaseAction_laws",
+          "name": "Circle.S3.hopfPhaseAction_laws",
+          "status": "proved"
+        },
+        {
+          "id": "S3H-T0007",
+          "lean_name": "Circle.S3.hopfPhaseMul_identity",
+          "name": "Circle.S3.hopfPhaseMul_identity",
+          "status": "proved"
+        },
+        {
+          "id": "S3H-T0008",
+          "lean_name": "Circle.S3.hopfPhaseMul_assoc",
+          "name": "Circle.S3.hopfPhaseMul_assoc",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1852,7 +5510,18 @@
       "intuition": "Hidden phase is twisted globally.",
       "kind": "warning",
       "name": "Hopf not product warning",
-      "source_dictionary": "dictionary/dimensions/S3.yaml"
+      "source_dictionary": "dictionary/dimensions/S3.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_03_HOPF_COILS",
+          "path": "papers/S3/PAPER_S3_03_HOPF_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.3: Hopf Coils"
+        }
+      ],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],
@@ -1866,7 +5535,115 @@
       "intuition": "S^3 as the first higher sphere with native associative but noncommutative multiplication.",
       "kind": "model",
       "name": "Quaternion model",
-      "source_dictionary": "dictionary/dimensions/S3.yaml"
+      "source_dictionary": "dictionary/dimensions/S3.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_02_QUATERNION_COILS",
+          "path": "papers/S3/PAPER_S3_02_QUATERNION_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.2: Quaternion Coils and Unit-Quaternion Hypersphere"
+        },
+        {
+          "id": "PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION",
+          "path": "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.2: Quaternionic Hopf Fibration"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S3Q-T0001",
+          "lean_name": "Circle.S3.quaternionNorm",
+          "name": "Circle.S3.quaternionNorm",
+          "status": "proved"
+        },
+        {
+          "id": "S3Q-T0002",
+          "lean_name": "Circle.S3.unitQuaternion_mul_closed",
+          "name": "Circle.S3.unitQuaternion_mul_closed",
+          "status": "proved"
+        },
+        {
+          "id": "S3Q-T0003",
+          "lean_name": "Circle.S3.unitQuaternion_inverse",
+          "name": "Circle.S3.unitQuaternion_inverse",
+          "status": "proved"
+        },
+        {
+          "id": "S3Q-T0004",
+          "lean_name": "Circle.S3.quaternion_noncommutative_example",
+          "name": "Circle.S3.quaternion_noncommutative_example",
+          "status": "proved"
+        },
+        {
+          "id": "S3Q-T0005",
+          "lean_name": "Circle.S3.quaternion_mul_assoc",
+          "name": "Circle.S3.quaternion_mul_assoc",
+          "status": "proved"
+        },
+        {
+          "id": "S3Q-T0006",
+          "lean_name": "Circle.S3.unitQuaternion_identity",
+          "name": "Circle.S3.unitQuaternion_identity",
+          "status": "proved"
+        },
+        {
+          "id": "S3Q-T0007",
+          "lean_name": "Circle.S3.unitQuaternion_conj_inverse",
+          "name": "Circle.S3.unitQuaternion_conj_inverse",
+          "status": "proved"
+        },
+        {
+          "id": "S3Q-T0008",
+          "lean_name": "Circle.S3.unitQuaternion_conj_involutive",
+          "name": "Circle.S3.unitQuaternion_conj_involutive",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0001",
+          "lean_name": "Circle.S3.quaternionConjugation_neg",
+          "name": "Circle.S3.quaternionConjugation_neg",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0002",
+          "lean_name": "Circle.S3.quaternionConjugation_one",
+          "name": "Circle.S3.quaternionConjugation_one",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0003",
+          "lean_name": "Circle.S3.quaternionConjugation_zero_vector",
+          "name": "Circle.S3.quaternionConjugation_zero_vector",
+          "status": "proved"
+        },
+        {
+          "id": "S7QH-T0001",
+          "lean_name": "Circle.S7.quaternionicHopf_lands_sphere",
+          "name": "Circle.S7.quaternionicHopf_lands_sphere",
+          "status": "proved"
+        },
+        {
+          "id": "S7QH-T0003",
+          "lean_name": "Circle.S7.quaternionicRightPhaseAction_laws",
+          "name": "Circle.S7.quaternionicRightPhaseAction_laws",
+          "status": "proved"
+        },
+        {
+          "id": "S7QH-T0004",
+          "lean_name": "Circle.S7.quaternionPairRightPhase_norm_scaled",
+          "name": "Circle.S7.quaternionPairRightPhase_norm_scaled",
+          "status": "proved"
+        },
+        {
+          "id": "S7QH-T0005",
+          "lean_name": "Circle.S7.quaternionPairRightPhase_unit_preserves_norm",
+          "name": "Circle.S7.quaternionPairRightPhase_unit_preserves_norm",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1881,7 +5658,73 @@
       "intuition": "A point of the algebraic S^3 model.",
       "kind": "object",
       "name": "Unit quaternion",
-      "source_dictionary": "dictionary/dimensions/S3.yaml"
+      "source_dictionary": "dictionary/dimensions/S3.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_02_QUATERNION_COILS",
+          "path": "papers/S3/PAPER_S3_02_QUATERNION_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.2: Quaternion Coils and Unit-Quaternion Hypersphere"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S3Q-T0002",
+          "lean_name": "Circle.S3.unitQuaternion_mul_closed",
+          "name": "Circle.S3.unitQuaternion_mul_closed",
+          "status": "proved"
+        },
+        {
+          "id": "S3Q-T0003",
+          "lean_name": "Circle.S3.unitQuaternion_inverse",
+          "name": "Circle.S3.unitQuaternion_inverse",
+          "status": "proved"
+        },
+        {
+          "id": "S3Q-T0006",
+          "lean_name": "Circle.S3.unitQuaternion_identity",
+          "name": "Circle.S3.unitQuaternion_identity",
+          "status": "proved"
+        },
+        {
+          "id": "S3Q-T0007",
+          "lean_name": "Circle.S3.unitQuaternion_conj_inverse",
+          "name": "Circle.S3.unitQuaternion_conj_inverse",
+          "status": "proved"
+        },
+        {
+          "id": "S3Q-T0008",
+          "lean_name": "Circle.S3.unitQuaternion_conj_involutive",
+          "name": "Circle.S3.unitQuaternion_conj_involutive",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0004",
+          "lean_name": "Circle.S3.spinSignRelated_equivalence",
+          "name": "Circle.S3.spinSignRelated_equivalence",
+          "status": "proved"
+        },
+        {
+          "id": "S7QH-T0002",
+          "lean_name": "Circle.S7.quaternionicPhaseInvariance",
+          "name": "Circle.S7.quaternionicPhaseInvariance",
+          "status": "proved"
+        },
+        {
+          "id": "S7QH-T0004",
+          "lean_name": "Circle.S7.quaternionPairRightPhase_norm_scaled",
+          "name": "Circle.S7.quaternionPairRightPhase_norm_scaled",
+          "status": "proved"
+        },
+        {
+          "id": "S7QH-T0005",
+          "lean_name": "Circle.S7.quaternionPairRightPhase_unit_preserves_norm",
+          "name": "Circle.S7.quaternionPairRightPhase_unit_preserves_norm",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1896,7 +5739,25 @@
       "intuition": "S^3: order matters.",
       "kind": "relation",
       "name": "Quaternion noncommutativity",
-      "source_dictionary": "dictionary/dimensions/S3.yaml"
+      "source_dictionary": "dictionary/dimensions/S3.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_02_QUATERNION_COILS",
+          "path": "papers/S3/PAPER_S3_02_QUATERNION_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.2: Quaternion Coils and Unit-Quaternion Hypersphere"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S3Q-T0004",
+          "lean_name": "Circle.S3.quaternion_noncommutative_example",
+          "name": "Circle.S3.quaternion_noncommutative_example",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1912,7 +5773,43 @@
       "intuition": "The algebraic core of rotating by conjugation before quotienting signs.",
       "kind": "operation",
       "name": "Quaternion conjugation action",
-      "source_dictionary": "dictionary/dimensions/S3.yaml"
+      "source_dictionary": "dictionary/dimensions/S3.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP",
+          "path": "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.4: Spin, Double Covers, and Rotation Quotients"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S3S-T0001",
+          "lean_name": "Circle.S3.quaternionConjugation_neg",
+          "name": "Circle.S3.quaternionConjugation_neg",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0002",
+          "lean_name": "Circle.S3.quaternionConjugation_one",
+          "name": "Circle.S3.quaternionConjugation_one",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0003",
+          "lean_name": "Circle.S3.quaternionConjugation_zero_vector",
+          "name": "Circle.S3.quaternionConjugation_zero_vector",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0004",
+          "lean_name": "Circle.S3.spinSignRelated_equivalence",
+          "name": "Circle.S3.spinSignRelated_equivalence",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1927,7 +5824,31 @@
       "intuition": "The first formal shadow of the spin double cover: opposite unit quaternions act the same.",
       "kind": "relation",
       "name": "Quaternion sign ambiguity",
-      "source_dictionary": "dictionary/dimensions/S3.yaml"
+      "source_dictionary": "dictionary/dimensions/S3.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP",
+          "path": "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.4: Spin, Double Covers, and Rotation Quotients"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S3S-T0001",
+          "lean_name": "Circle.S3.quaternionConjugation_neg",
+          "name": "Circle.S3.quaternionConjugation_neg",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0004",
+          "lean_name": "Circle.S3.spinSignRelated_equivalence",
+          "name": "Circle.S3.spinSignRelated_equivalence",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1942,7 +5863,49 @@
       "intuition": "The geometric base needed before quaternionic Hopf claims.",
       "kind": "object",
       "name": "S4 quaternionic Hopf base",
-      "source_dictionary": "dictionary/dimensions/S4_S6.yaml"
+      "source_dictionary": "dictionary/dimensions/S4_S6.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF",
+          "path": "papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S4.1: S4 as Base of Quaternionic Hopf Structure"
+        },
+        {
+          "id": "PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION",
+          "path": "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.2: Quaternionic Hopf Fibration"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S4-T0001",
+          "lean_name": "Circle.S4.eulerCharacteristic",
+          "name": "Circle.S4.eulerCharacteristic",
+          "status": "proved"
+        },
+        {
+          "id": "S4-T0002",
+          "lean_name": "Circle.S4.counts_eq_suspension_s3",
+          "name": "Circle.S4.counts_eq_suspension_s3",
+          "status": "proved"
+        },
+        {
+          "id": "S7QH-T0001",
+          "lean_name": "Circle.S7.quaternionicHopf_lands_sphere",
+          "name": "Circle.S7.quaternionicHopf_lands_sphere",
+          "status": "proved"
+        },
+        {
+          "id": "S7QH-T0003",
+          "lean_name": "Circle.S7.quaternionicRightPhaseAction_laws",
+          "name": "Circle.S7.quaternionicRightPhaseAction_laws",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1958,7 +5921,97 @@
       "intuition": "The bridge that carries S^4, S^5, and S^6 without skipping dimensions.",
       "kind": "relation",
       "name": "Iterated suspension Euler parity",
-      "source_dictionary": "dictionary/dimensions/S4_S6.yaml"
+      "source_dictionary": "dictionary/dimensions/S4_S6.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY",
+          "path": "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S456.1: General Suspension and Euler Parity"
+        },
+        {
+          "id": "PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF",
+          "path": "papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S4.1: S4 as Base of Quaternionic Hopf Structure"
+        },
+        {
+          "id": "PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE",
+          "path": "papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S5.1: Complex Projective Bridge"
+        },
+        {
+          "id": "PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS",
+          "path": "papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S6.1: Octonion Shadow and Warnings"
+        },
+        {
+          "id": "PAPER_S7_01_TOPOLOGICAL_7SPHERE",
+          "path": "papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.1: Topological 7-Sphere by Iterated Suspension"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S4-T0001",
+          "lean_name": "Circle.S4.eulerCharacteristic",
+          "name": "Circle.S4.eulerCharacteristic",
+          "status": "proved"
+        },
+        {
+          "id": "S4-T0002",
+          "lean_name": "Circle.S4.counts_eq_suspension_s3",
+          "name": "Circle.S4.counts_eq_suspension_s3",
+          "status": "proved"
+        },
+        {
+          "id": "S456-T0001",
+          "lean_name": "Circle.S4.iteratedSuspensionEulerParity",
+          "name": "Circle.S4.iteratedSuspensionEulerParity",
+          "status": "proved"
+        },
+        {
+          "id": "S5-T0001",
+          "lean_name": "Circle.S5.eulerCharacteristic",
+          "name": "Circle.S5.eulerCharacteristic",
+          "status": "proved"
+        },
+        {
+          "id": "S5-T0002",
+          "lean_name": "Circle.S5.counts_eq_suspension_s4",
+          "name": "Circle.S5.counts_eq_suspension_s4",
+          "status": "proved"
+        },
+        {
+          "id": "S6-T0001",
+          "lean_name": "Circle.S6.eulerCharacteristic",
+          "name": "Circle.S6.eulerCharacteristic",
+          "status": "proved"
+        },
+        {
+          "id": "S6-T0002",
+          "lean_name": "Circle.S6.counts_eq_suspension_s5",
+          "name": "Circle.S6.counts_eq_suspension_s5",
+          "status": "proved"
+        },
+        {
+          "id": "S7C-T0001",
+          "lean_name": "Circle.S7.iteratedSuspensionModel",
+          "name": "Circle.S7.iteratedSuspensionModel",
+          "status": "proved"
+        },
+        {
+          "id": "S7C-T0003",
+          "lean_name": "Circle.S7.iteratedSuspensionModel_eq_suspension_s6",
+          "name": "Circle.S7.iteratedSuspensionModel_eq_suspension_s6",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1973,7 +6026,31 @@
       "intuition": "A higher odd sphere that remains part of the geometric ladder.",
       "kind": "model",
       "name": "S5 complex projective bridge",
-      "source_dictionary": "dictionary/dimensions/S4_S6.yaml"
+      "source_dictionary": "dictionary/dimensions/S4_S6.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE",
+          "path": "papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S5.1: Complex Projective Bridge"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S5-T0001",
+          "lean_name": "Circle.S5.eulerCharacteristic",
+          "name": "Circle.S5.eulerCharacteristic",
+          "status": "proved"
+        },
+        {
+          "id": "S5-T0002",
+          "lean_name": "Circle.S5.counts_eq_suspension_s4",
+          "name": "Circle.S5.counts_eq_suspension_s4",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -1988,7 +6065,37 @@
       "intuition": "A geometric warning layer before S^7 octonions.",
       "kind": "model",
       "name": "S6 octonion shadow",
-      "source_dictionary": "dictionary/dimensions/S4_S6.yaml"
+      "source_dictionary": "dictionary/dimensions/S4_S6.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS",
+          "path": "papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S6.1: Octonion Shadow and Warnings"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S6-T0001",
+          "lean_name": "Circle.S6.eulerCharacteristic",
+          "name": "Circle.S6.eulerCharacteristic",
+          "status": "proved"
+        },
+        {
+          "id": "S6-T0002",
+          "lean_name": "Circle.S6.counts_eq_suspension_s5",
+          "name": "Circle.S6.counts_eq_suspension_s5",
+          "status": "proved"
+        },
+        {
+          "id": "S6-T0003",
+          "lean_name": "Circle.S6.warningBoundary_marker",
+          "name": "Circle.S6.warningBoundary_marker",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -2003,7 +6110,25 @@
       "intuition": "Do not build on delicate unresolved S^6 claims.",
       "kind": "warning",
       "name": "S6 complex-structure warning",
-      "source_dictionary": "dictionary/dimensions/S4_S6.yaml"
+      "source_dictionary": "dictionary/dimensions/S4_S6.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS",
+          "path": "papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S6.1: Octonion Shadow and Warnings"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S6-T0003",
+          "lean_name": "Circle.S6.warningBoundary_marker",
+          "name": "Circle.S6.warningBoundary_marker",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -2018,7 +6143,49 @@
       "intuition": "The topological S^7 layer before octonion algebra.",
       "kind": "object",
       "name": "Topological S7 suspension model",
-      "source_dictionary": "dictionary/dimensions/S7.yaml"
+      "source_dictionary": "dictionary/dimensions/S7.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_01_TOPOLOGICAL_7SPHERE",
+          "path": "papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.1: Topological 7-Sphere by Iterated Suspension"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S15-T0002",
+          "lean_name": "Circle.Future.S15.topologicalModel_eulerCharacteristic",
+          "name": "Circle.Future.S15.topologicalModel_eulerCharacteristic",
+          "status": "proved"
+        },
+        {
+          "id": "S15-T0004",
+          "lean_name": "Circle.Future.S15.topologicalModel_eq_eightSuspensions_s7",
+          "name": "Circle.Future.S15.topologicalModel_eq_eightSuspensions_s7",
+          "status": "proved"
+        },
+        {
+          "id": "S7C-T0001",
+          "lean_name": "Circle.S7.iteratedSuspensionModel",
+          "name": "Circle.S7.iteratedSuspensionModel",
+          "status": "proved"
+        },
+        {
+          "id": "S7C-T0002",
+          "lean_name": "Circle.S7.eulerCharacteristic",
+          "name": "Circle.S7.eulerCharacteristic",
+          "status": "proved"
+        },
+        {
+          "id": "S7C-T0003",
+          "lean_name": "Circle.S7.iteratedSuspensionModel_eq_suspension_s6",
+          "name": "Circle.S7.iteratedSuspensionModel_eq_suspension_s6",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],
@@ -2032,7 +6199,104 @@
       "intuition": "S^7: order and grouping matter.",
       "kind": "model",
       "name": "Octonion model",
-      "source_dictionary": "dictionary/dimensions/S7.yaml"
+      "source_dictionary": "dictionary/dimensions/S7.yaml",
+      "used_by_glyphs": [
+        {
+          "id": "glyph:s15_roadmap_marker",
+          "status": "planned",
+          "status_label": "Planned theorem",
+          "theorem_id": "S15-T0001"
+        }
+      ],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
+          "path": "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S15.1: Octonionic Hopf Roadmap"
+        },
+        {
+          "id": "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS",
+          "path": "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.3: Octonionic Units and Nonassociative Coils"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S15-T0001",
+          "lean_name": "Circle.Future.S15.octonionicHopfRoadmap",
+          "name": "Circle.Future.S15.octonionicHopfRoadmap",
+          "status": "planned"
+        },
+        {
+          "id": "S15-T0003",
+          "lean_name": "Circle.Future.S15.octonionicHopf_lands_sphere",
+          "name": "Circle.Future.S15.octonionicHopf_lands_sphere",
+          "status": "proved"
+        },
+        {
+          "id": "S15-T0005",
+          "lean_name": "Circle.Future.S15.octonionPairRightPhase_normSq",
+          "name": "Circle.Future.S15.octonionPairRightPhase_normSq",
+          "status": "proved"
+        },
+        {
+          "id": "S15-T0006",
+          "lean_name": "Circle.Future.S15.octonionicHopfMap_rightPhase_scalar_invariant",
+          "name": "Circle.Future.S15.octonionicHopfMap_rightPhase_scalar_invariant",
+          "status": "proved"
+        },
+        {
+          "id": "S15-T0007",
+          "lean_name": "Circle.Future.S15.octonionicHopfMap_rightPhase_lands_sphere",
+          "name": "Circle.Future.S15.octonionicHopfMap_rightPhase_lands_sphere",
+          "status": "proved"
+        },
+        {
+          "id": "S15-T0008",
+          "lean_name": "Circle.Future.S15.octonionicHopfMap_rightPhase_not_invariant_example",
+          "name": "Circle.Future.S15.octonionicHopfMap_rightPhase_not_invariant_example",
+          "status": "proved"
+        },
+        {
+          "id": "S7O-T0001",
+          "lean_name": "Circle.S7.octonionBasis",
+          "name": "Circle.S7.octonionBasis",
+          "status": "proved"
+        },
+        {
+          "id": "S7O-T0002",
+          "lean_name": "Circle.S7.octonionConjugateNorm",
+          "name": "Circle.S7.octonionConjugateNorm",
+          "status": "proved"
+        },
+        {
+          "id": "S7O-T0005",
+          "lean_name": "Circle.S7.octonion_noncommutative_example",
+          "name": "Circle.S7.octonion_noncommutative_example",
+          "status": "proved"
+        },
+        {
+          "id": "S7O-T0006",
+          "lean_name": "Circle.S7.octonion_nonassociative_example",
+          "name": "Circle.S7.octonion_nonassociative_example",
+          "status": "proved"
+        },
+        {
+          "id": "S7O-T0007",
+          "lean_name": "Circle.S7.octonionConjugateNorm_left",
+          "name": "Circle.S7.octonionConjugateNorm_left",
+          "status": "proved"
+        },
+        {
+          "id": "S7O-T0008",
+          "lean_name": "Circle.S7.unitOctonion_conj_inverse",
+          "name": "Circle.S7.unitOctonion_conj_inverse",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -2047,7 +6311,67 @@
       "intuition": "A unit element of the nonassociative octonion layer.",
       "kind": "object",
       "name": "Unit octonion",
-      "source_dictionary": "dictionary/dimensions/S7.yaml"
+      "source_dictionary": "dictionary/dimensions/S7.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS",
+          "path": "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.3: Octonionic Units and Nonassociative Coils"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S15-T0005",
+          "lean_name": "Circle.Future.S15.octonionPairRightPhase_normSq",
+          "name": "Circle.Future.S15.octonionPairRightPhase_normSq",
+          "status": "proved"
+        },
+        {
+          "id": "S15-T0006",
+          "lean_name": "Circle.Future.S15.octonionicHopfMap_rightPhase_scalar_invariant",
+          "name": "Circle.Future.S15.octonionicHopfMap_rightPhase_scalar_invariant",
+          "status": "proved"
+        },
+        {
+          "id": "S15-T0007",
+          "lean_name": "Circle.Future.S15.octonionicHopfMap_rightPhase_lands_sphere",
+          "name": "Circle.Future.S15.octonionicHopfMap_rightPhase_lands_sphere",
+          "status": "proved"
+        },
+        {
+          "id": "S7O-T0002",
+          "lean_name": "Circle.S7.octonionConjugateNorm",
+          "name": "Circle.S7.octonionConjugateNorm",
+          "status": "proved"
+        },
+        {
+          "id": "S7O-T0003",
+          "lean_name": "Circle.S7.octonionNormMul",
+          "name": "Circle.S7.octonionNormMul",
+          "status": "proved"
+        },
+        {
+          "id": "S7O-T0004",
+          "lean_name": "Circle.S7.unitOctonion_mul_closed",
+          "name": "Circle.S7.unitOctonion_mul_closed",
+          "status": "proved"
+        },
+        {
+          "id": "S7O-T0007",
+          "lean_name": "Circle.S7.octonionConjugateNorm_left",
+          "name": "Circle.S7.octonionConjugateNorm_left",
+          "status": "proved"
+        },
+        {
+          "id": "S7O-T0008",
+          "lean_name": "Circle.S7.unitOctonion_conj_inverse",
+          "name": "Circle.S7.unitOctonion_conj_inverse",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -2063,7 +6387,25 @@
       "intuition": "The S^7 algebraic jump changes the proof rules.",
       "kind": "warning",
       "name": "Unit octonions are not a group warning",
-      "source_dictionary": "dictionary/dimensions/S7.yaml"
+      "source_dictionary": "dictionary/dimensions/S7.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS",
+          "path": "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.3: Octonionic Units and Nonassociative Coils"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S7O-T0004",
+          "lean_name": "Circle.S7.unitOctonion_mul_closed",
+          "name": "Circle.S7.unitOctonion_mul_closed",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -2078,7 +6420,55 @@
       "intuition": "Parentheses matter.",
       "kind": "warning",
       "name": "Octonion bracketing warning",
-      "source_dictionary": "dictionary/dimensions/S7.yaml"
+      "source_dictionary": "dictionary/dimensions/S7.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS",
+          "path": "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.3: Octonionic Units and Nonassociative Coils"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S15-T0006",
+          "lean_name": "Circle.Future.S15.octonionicHopfMap_rightPhase_scalar_invariant",
+          "name": "Circle.Future.S15.octonionicHopfMap_rightPhase_scalar_invariant",
+          "status": "proved"
+        },
+        {
+          "id": "S15-T0007",
+          "lean_name": "Circle.Future.S15.octonionicHopfMap_rightPhase_lands_sphere",
+          "name": "Circle.Future.S15.octonionicHopfMap_rightPhase_lands_sphere",
+          "status": "proved"
+        },
+        {
+          "id": "S15-T0008",
+          "lean_name": "Circle.Future.S15.octonionicHopfMap_rightPhase_not_invariant_example",
+          "name": "Circle.Future.S15.octonionicHopfMap_rightPhase_not_invariant_example",
+          "status": "proved"
+        },
+        {
+          "id": "S7O-T0006",
+          "lean_name": "Circle.S7.octonion_nonassociative_example",
+          "name": "Circle.S7.octonion_nonassociative_example",
+          "status": "proved"
+        },
+        {
+          "id": "S7O-T0007",
+          "lean_name": "Circle.S7.octonionConjugateNorm_left",
+          "name": "Circle.S7.octonionConjugateNorm_left",
+          "status": "proved"
+        },
+        {
+          "id": "S7O-T0008",
+          "lean_name": "Circle.S7.unitOctonion_conj_inverse",
+          "name": "Circle.S7.unitOctonion_conj_inverse",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [
@@ -2094,7 +6484,49 @@
       "intuition": "The higher hidden-phase analog of Hopf coils.",
       "kind": "model",
       "name": "Quaternionic Hopf roadmap",
-      "source_dictionary": "dictionary/dimensions/S7.yaml"
+      "source_dictionary": "dictionary/dimensions/S7.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION",
+          "path": "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S7.2: Quaternionic Hopf Fibration"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S7QH-T0001",
+          "lean_name": "Circle.S7.quaternionicHopf_lands_sphere",
+          "name": "Circle.S7.quaternionicHopf_lands_sphere",
+          "status": "proved"
+        },
+        {
+          "id": "S7QH-T0002",
+          "lean_name": "Circle.S7.quaternionicPhaseInvariance",
+          "name": "Circle.S7.quaternionicPhaseInvariance",
+          "status": "proved"
+        },
+        {
+          "id": "S7QH-T0003",
+          "lean_name": "Circle.S7.quaternionicRightPhaseAction_laws",
+          "name": "Circle.S7.quaternionicRightPhaseAction_laws",
+          "status": "proved"
+        },
+        {
+          "id": "S7QH-T0004",
+          "lean_name": "Circle.S7.quaternionPairRightPhase_norm_scaled",
+          "name": "Circle.S7.quaternionPairRightPhase_norm_scaled",
+          "status": "proved"
+        },
+        {
+          "id": "S7QH-T0005",
+          "lean_name": "Circle.S7.quaternionPairRightPhase_unit_preserves_norm",
+          "name": "Circle.S7.quaternionPairRightPhase_unit_preserves_norm",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],
@@ -2107,7 +6539,11 @@
       "intuition": "The papers are allowed to be ambitious, but proof status must be exact.",
       "kind": "warning",
       "name": "Proof status honesty",
-      "source_dictionary": "dictionary/dimensions/warnings.yaml"
+      "source_dictionary": "dictionary/dimensions/warnings.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],
@@ -2120,7 +6556,11 @@
       "intuition": "Visual artifacts support papers; Lean carries formal proof status.",
       "kind": "warning",
       "name": "Pictures are not proofs",
-      "source_dictionary": "dictionary/dimensions/warnings.yaml"
+      "source_dictionary": "dictionary/dimensions/warnings.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [],
+      "used_by_theorems": [],
+      "used_by_widgets": []
     }
   ]
 }

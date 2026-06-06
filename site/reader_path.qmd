@@ -27,6 +27,9 @@ Targets, widgets, Python examples, and diagrams are not proofs. A theorem is Lea
 | S2 | [Suspended circles](chapters/S2/suspended_circles.qmd) | Scaffolded sphere-grid bridge. |
 | S3 | [Quaternions](chapters/S3/quaternions.qmd) | Quaternion and spin sign-ambiguity theorem links. |
 | S3 | [Hopf coils](chapters/S3/hopf_coils.qmd) | Bounded Hopf coordinate facts and product warnings. |
+| S4-S6 | [Suspension Euler parity](chapters/S4_S6/suspension_euler_parity.qmd) | Common suspension-count and Euler bridge. |
+| S7 | [Octonionic layer](chapters/S7/octonionic_layer.qmd) | Bounded octonion-model facts and nonassociativity warnings. |
+| S15 | [Future Hopf horizon](chapters/S15/future_hopf_horizon.qmd) | Future-facing roadmap facts without full topology claims. |
 
 ## 3. Follow Applications Only Through Their Guardrails
 
@@ -54,5 +57,7 @@ make living-book-check
 ```
 
 These commands are the local source of truth for the public site, proof metadata, sidecars, dictionary links, target links, and fake-proof guardrails.
+
+The public site deploy path is GitHub Pages. Deployment is generated from `site/_site/` only after the GitHub Actions workflow has built Lean, run source checks, and rendered Quarto.
 
 <script type="module" src="widgets/shared/widget_base.js"></script>

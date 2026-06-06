@@ -2,7 +2,7 @@
 title: "Paper Index"
 ---
 
-This index is generated from the paper manifest and links papers to their current status and sidecar roots.
+This index is generated from the paper manifest and links papers to their current status, source file, sidecar roots, theorem ids, and dictionary ids. Paper prose can be ambitious, but proof status still comes from theorem manifests and Lean builds.
 
 <div class="paper-index" data-paper-index="all"></div>
 
