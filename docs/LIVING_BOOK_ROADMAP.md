@@ -52,6 +52,7 @@ Each chapter must distinguish intuition, example, Python model, and formal theor
 - Give each reader-facing lesson a goal, plain-language explanation, interactive diagram or widget when available, short learner task, checkpoint, and source trail.
 - Keep theorem cards, dictionary boxes, paper links, Lean links, and Python examples close to the lesson they support, but do not let them replace the lesson.
 - Use indexes as reference shelves, not as the main reading experience.
+- Add review/exercise pages at the end of mature units so readers can test the combined concept sequence before moving upward.
 - Add guided paths for higher dimensions and applications as those pages mature, always preserving proof-status boundaries.
 
 ## Phase 2: S2 Interactives

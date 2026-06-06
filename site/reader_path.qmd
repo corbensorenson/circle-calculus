@@ -41,6 +41,10 @@ These chapters are the first textbook spine. Read them in order before jumping t
 <strong>Lesson 5: winding.</strong> Learn why a residue alone forgets how many turns occurred, and how a lifted coordinate records quotient plus remainder.
 </div>
 
+<div class="learning-step">
+<strong>Review: S1 exercises.</strong> Check that finite addresses, rotation, coils, period, primes, and winding work together before moving on.
+</div>
+
 </div>
 
 | Step | Page | What To Check |
@@ -50,6 +54,7 @@ These chapters are the first textbook spine. Read them in order before jumping t
 | 3 | [Coils and closure](chapters/S1/03_coils_orbits_closure.qmd) | Can you list the orbit for a chosen start and stride? |
 | 4 | [Period and primes](chapters/S1/04_period_gcd_prime_full_coils.qmd) | Can you compute the period from `gcd(n,k)`? |
 | 5 | [Winding lift](chapters/S1/05_winding_lift.qmd) | Can you separate total steps into turns and residue? |
+| Review | [S1 review and exercises](chapters/S1/06_review.qmd) | Can you solve the cumulative exercises without opening the answer sketches first? |
 
 ## Part II: Add Signs, Factors, And Higher Shapes
 

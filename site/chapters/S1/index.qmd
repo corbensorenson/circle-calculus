@@ -20,7 +20,8 @@ By the end of S1, a reader should be able to look at a finite circle `C_n`, choo
 2. rotations as modular addition,
 3. coils, orbits, closure, and period,
 4. gcd decomposition and prime full coils,
-5. winding lift as a separate residue-plus-turns layer.
+5. winding lift as a separate residue-plus-turns layer,
+6. review exercises that combine the whole S1 unit.
 
 ## Mental Picture
 
@@ -35,6 +36,8 @@ The first four lessons use interactive diagrams so you can change `n`, starts, a
 Before moving to higher dimensions, make sure you can answer this without looking at source code: in `C_12`, why does stride `4` visit `0, 4, 8` and then close, while stride `5` visits all twelve addresses?
 
 :::
+
+Finish with [S1 Review And Exercises](06_review.qmd) before moving to S2.
 
 <div class="dimension-banner" data-dimension-id="S1">S1 finite cyclic address core</div>
 

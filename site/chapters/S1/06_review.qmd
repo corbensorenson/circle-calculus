@@ -1,0 +1,59 @@
+---
+title: "S1 Review And Exercises"
+---
+
+This review page checks whether the finite-circle unit is usable as a single story. Work through it after the first five S1 lessons and before moving to S2.
+
+## What You Should Be Able To Do
+
+- Reduce an integer address to a node in `C_n`.
+- Compose two rotations by adding their strides.
+- Trace an orbit from a start node and stride.
+- Predict period from `n / gcd(n,k)`.
+- Recognize why prime circles make every nonzero stride a full coil.
+- Separate residue from winding in a lifted coordinate.
+
+::: {.warning-box}
+These exercises are learning checks. They are not formal proofs. Use the theorem cards below when you want the proof-status trail.
+:::
+
+## Exercises
+
+1. In `C_10`, reduce the addresses `3`, `13`, `23`, and `-7`. What do they have in common?
+
+2. In `C_12`, start at `8`. Apply stride `5`, then stride `7`. What is the final node? What single stride gives the same result?
+
+3. In `C_12`, trace the orbit from start `0` with stride `4`. How many nodes are visited before closure?
+
+4. In `C_18`, use stride `6`. Compute `gcd(18,6)`, the number of disjoint cycles, and the length of each cycle.
+
+5. Compare `C_11` and `C_12`. Which nonzero strides are full coils in each circle?
+
+6. With base `5`, lift `t = 17` into quotient-plus-residue form. Then explain why residue alone loses information.
+
+## Answer Sketches
+
+1. They all reduce to node `3` in `C_10`.
+
+2. The two-step stride is `5 + 7 = 12`, so the final node is the same as start `8` in `C_12`.
+
+3. The orbit is `0, 4, 8`, then it returns to `0`; the period is `3`.
+
+4. `gcd(18,6) = 6`; there are six disjoint cycles, each of length `3`.
+
+5. In `C_11`, every stride `1` through `10` is a full coil. In `C_12`, only strides coprime to `12` are full coils: `1`, `5`, `7`, and `11`.
+
+6. `17 = 3*5 + 2`, so the winding count is `3` and the residue is `2`. The residue alone cannot distinguish `2`, `7`, `12`, and `17`.
+
+## Source Trail
+
+<div class="theorem-box" data-theorem-id="CC-T0002"></div>
+<div class="theorem-box" data-theorem-id="CC-T0005"></div>
+<div class="theorem-box" data-theorem-id="CC-T0006"></div>
+<div class="theorem-box" data-theorem-id="CC-T0007"></div>
+<div class="theorem-box" data-theorem-id="CC-T0009"></div>
+
+<p data-paper-ref="papers/PAPER_01_FINITE_CIRCLES.md">Finite-circle paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/PAPER_01_FINITE_CIRCLES.md">Circle Calculus I</a></p>
+<p data-paper-ref="papers/PAPER_02_WINDING_NATURALS.md">Winding paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/PAPER_02_WINDING_NATURALS.md">Circle Calculus II</a></p>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

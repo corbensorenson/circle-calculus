@@ -75,6 +75,8 @@ website:
             text: Period And Primes
           - href: chapters/S1/05_winding_lift.qmd
             text: Winding Lift
+          - href: chapters/S1/06_review.qmd
+            text: Review And Exercises
       - section: "S2"
         contents:
           - href: chapters/S2/index.qmd
