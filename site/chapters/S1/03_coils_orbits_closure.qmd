@@ -30,6 +30,14 @@ An orbit is the ordered list of nodes visited by repeated rotation. Closure is t
 
 This is the first Circle Calculus pattern that scales upward: choose a space, choose a motion, follow the repeated motion, then study how and when it closes.
 
+## What This Relearns From Ordinary Math
+
+::: {.teacher-note}
+
+This lesson is iteration. The same idea appears in powers of a function, repeated addition, dynamical systems, graph walks, cyclic groups, feedback loops, and program loops. A coil is the finite-circle version of "keep applying the same rule and record the path."
+
+:::
+
 ## Diagram
 
 The widget traces the orbit, marks visited nodes, and compares actual orbit length with the gcd prediction.

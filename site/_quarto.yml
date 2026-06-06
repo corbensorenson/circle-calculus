@@ -18,6 +18,8 @@ website:
         text: Read
       - href: reader_path.qmd
         text: Guided Path
+      - href: chapters/foundations/00_mathematical_building_blocks.qmd
+        text: Lesson 0
       - href: chapters/S1/01_finite_circles.qmd
         text: Lesson 1
       - href: verify_claim.qmd
@@ -49,7 +51,13 @@ website:
             text: Guided Learning Path
           - href: verify_claim.qmd
             text: How To Verify A Claim
-      - section: "Part I: First Objects"
+      - section: "Part I: Learning Toolkit"
+        contents:
+          - href: chapters/foundations/index.qmd
+            text: Foundations Overview
+          - href: chapters/foundations/00_mathematical_building_blocks.qmd
+            text: 0. Mathematical Building Blocks
+      - section: "Part II: First Objects"
         contents:
           - href: chapters/S0/index.qmd
             text: S0 Two-State Opposition
@@ -57,7 +65,7 @@ website:
             text: Two-Point Flip
           - href: chapters/S1/index.qmd
             text: S1 Unit Overview
-      - section: "Part II: Finite Circular Arithmetic"
+      - section: "Part III: Finite Circular Arithmetic"
         contents:
           - href: chapters/S1/01_finite_circles.qmd
             text: 1. Finite Circles
@@ -71,7 +79,7 @@ website:
             text: 5. Winding Lift
           - href: chapters/S1/06_review.qmd
             text: 6. S1 Review And Exercises
-      - section: "Part III: Higher-Dimensional Ladder"
+      - section: "Part IV: Higher-Dimensional Ladder"
         contents:
           - href: chapters/S2/index.qmd
             text: S2 Overview
@@ -99,7 +107,7 @@ website:
             text: S15 Overview
           - href: chapters/S15/future_hopf_horizon.qmd
             text: S15 Hopf Horizon
-      - section: "Part IV: Advanced Frameworks"
+      - section: "Part V: Advanced Frameworks"
         contents:
           - href: chapters/phase2/index.qmd
             text: Phase II Overview
@@ -113,7 +121,7 @@ website:
             text: Boundary Cobordism
           - href: chapters/phase2/proof_carrying_glyphs.qmd
             text: Proof-Carrying Glyphs
-      - section: "Part V: Applications"
+      - section: "Part VI: Applications"
         contents:
           - href: chapters/applications/index.qmd
             text: Application Overview

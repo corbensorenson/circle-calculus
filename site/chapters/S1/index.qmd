@@ -10,6 +10,8 @@ The important object is not a smooth geometric circle. In this unit, `C_n` means
 
 :::
 
+If the words object, address, rule, composition, iteration, invariant, or proof status feel unclear, read [Lesson 0: Mathematical Building Blocks](../foundations/00_mathematical_building_blocks.qmd) before starting this unit.
+
 ::: {.lesson-goal}
 
 ## Unit Goal

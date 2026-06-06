@@ -34,6 +34,14 @@ This is the smallest building block for the rest of the book. Rotation, coils, p
 In v0, circles are finite cyclic address spaces. They are not Euclidean metric circles, and the widget below is an explanation rather than a proof.
 :::
 
+## What This Relearns From Ordinary Math
+
+::: {.teacher-note}
+
+This lesson is modular arithmetic, but taught as naming positions. The ordinary remainder calculation is still there. The book adds a visual habit: the quotient counts completed turns and the remainder tells you the visible node.
+
+:::
+
 ## Diagram
 
 Use the widget to change the circle size and selected address.
@@ -99,7 +107,7 @@ C.node(14)  # 2
 </div>
 
 <div class="book-navigation">
-<a href="index.qmd">Previous: S1 Overview</a>
+<a href="../S0/opposition.qmd">Previous: Two-Point Flip</a>
 <a href="02_rotation_as_addition.qmd">Next: Rotation As Addition</a>
 </div>
 

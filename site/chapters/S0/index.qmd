@@ -46,7 +46,7 @@ Why is S0 useful even though it has only two points?
 </div>
 
 <div class="book-navigation">
-<a href="../../reader_path.qmd">Previous: Guided Learning Path</a>
+<a href="../foundations/00_mathematical_building_blocks.qmd">Previous: Mathematical Building Blocks</a>
 <a href="opposition.qmd">Next: Two-Point Flip</a>
 </div>
 

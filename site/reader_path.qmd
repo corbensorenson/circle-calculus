@@ -8,6 +8,20 @@ Use this page as the textbook syllabus. It tells you what to read first, what ea
 Targets, widgets, Python examples, and diagrams are not proofs. A theorem is Lean-proved only when generated theorem data and the local Lean build support that status.
 :::
 
+## The Reading Rule
+
+Read the book in the same order you would read a math textbook: earliest concepts first, source references second. The dictionary, theorem index, paper index, and target index are reference shelves. They are useful after a lesson has given you the concept.
+
+Each mature lesson has the same rhythm:
+
+1. Learn the goal.
+2. Read the idea in plain language.
+3. Use a diagram or widget.
+4. Work one example.
+5. Check a common mistake.
+6. Try a small exercise.
+7. Open the source trail only when you want to audit the term or theorem.
+
 ## Before You Start
 
 Circle Calculus is easiest if you keep four layers separate:
@@ -19,7 +33,21 @@ Circle Calculus is easiest if you keep four layers separate:
 
 If those layers blur together, pause and use [How To Verify A Claim](verify_claim.qmd).
 
-## Part I: Foundations
+## Part I: Learning Toolkit
+
+::: {.learning-unit}
+
+## Learning Goal
+
+Learn the basic habits that make every later chapter easier: object, address, rule, composition, iteration, invariant, theorem, and proof status.
+
+:::
+
+Start with [Lesson 0: Mathematical Building Blocks](chapters/foundations/00_mathematical_building_blocks.qmd). It is the front-of-book toolkit for readers who want to relearn the project from first principles before touching S0 or S1.
+
+You are ready to continue when you can explain why a picture, rule, example, and proof are different kinds of mathematical evidence.
+
+## Part II: First Objects
 
 ::: {.learning-unit}
 
@@ -29,11 +57,11 @@ Learn how a tiny finite object can carry useful structure without pretending it 
 
 :::
 
-Start with [S0 Two-State Opposition](chapters/S0/index.qmd) if you want the absolute smallest object: two points and a flip. Then move to S1, where the book becomes arithmetic.
+Read [S0 Two-State Opposition](chapters/S0/index.qmd) for the absolute smallest object: two points and a flip. Then move to S1, where the book becomes arithmetic.
 
 You are ready to continue when you can explain why a two-point flip is useful for signs, poles, antipodes, and paired states, but is not the same as a larger circular rotation.
 
-## Part II: S1 Finite Circular Arithmetic
+## Part III: S1 Finite Circular Arithmetic
 
 These are the first mature textbook chapters. Read them in order before jumping to higher dimensions.
 
@@ -63,7 +91,7 @@ In `C_18`, start at `5` and stride by `6`. Which nodes are visited before closur
 
 :::
 
-## Part III: Higher-Dimensional Ladder
+## Part IV: Higher-Dimensional Ladder
 
 Higher dimensions are organized as a ladder, not as isolated essays. Each page should say what finite model is currently checked and what continuous or topological claim remains future.
 
@@ -79,7 +107,7 @@ Higher dimensions are organized as a ladder, not as isolated essays. Each page s
 
 You are ready to continue when you can distinguish a finite scaffold theorem from a full smooth/topological theorem.
 
-## Part IV: Advanced Frameworks
+## Part V: Advanced Frameworks
 
 Phase II pages are framework chapters. They reuse the earlier vocabulary but shift attention to stability, bundles, boundaries, and proof-carrying glyphs.
 
@@ -91,7 +119,7 @@ Phase II pages are framework chapters. They reuse the earlier vocabulary but shi
 
 Read these as bridge chapters. They are valuable because their finite seeds are explicit and their long-horizon claims are kept under status control.
 
-## Part V: Applications
+## Part VI: Applications
 
 Application chapters are case studies, not hype pages. They reuse S1 language: address, rotation, stride, period, phase, closure, and proof status.
 
@@ -124,7 +152,7 @@ The public site deploy path is GitHub Pages. Deployment is generated from `site/
 
 <div class="next-lesson">
 <span>Start the textbook sequence</span>
-<a href="chapters/S1/01_finite_circles.qmd">Go to Lesson 1: Finite Circles</a>
+<a href="chapters/foundations/00_mathematical_building_blocks.qmd">Go to Lesson 0: Mathematical Building Blocks</a>
 </div>
 
 <script type="module" src="widgets/shared/widget_base.js"></script>

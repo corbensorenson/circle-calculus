@@ -28,6 +28,14 @@ Lesson 1 gave us a finite address space. Now we let a node move. Starting from n
 
 Two rotations in a row do not create a new kind of motion. If the first stride is `b` and the second stride is `a`, the combined motion lands where a single stride `a + b` lands.
 
+## What This Relearns From Ordinary Math
+
+::: {.teacher-note}
+
+This lesson is the beginning of algebraic structure. A rotation is a function, and composing rotations is a function-composition law. Later chapters reuse the same habit for quaternions, phase actions, bundles, schedules, and proof-carrying diagrams.
+
+:::
+
 ## Diagram
 
 The widget compares a two-step route with the one-step route that uses the summed stride.

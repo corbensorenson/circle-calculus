@@ -29,6 +29,8 @@ The Living Book should be usable as a guided textbook, not merely as a directory
 
 Reference indexes remain important, but they should support the reading path instead of replacing it. Navigation should lead with the guided chapter sequence and place dictionary/theorem/paper/target indexes in a reference or appendix position.
 
+The front of the book must include a foundations/toolkit layer before the first technical unit. This layer should teach the reader how the project uses objects, addresses, rules, composition, iteration, invariants, evidence layers, and proof status, so the rest of the book can be read as a cumulative curriculum.
+
 ## Proof-Status Rule
 
 No page, theorem box, widget caption, status badge, or chapter text may call a theorem proved unless all of these are true:

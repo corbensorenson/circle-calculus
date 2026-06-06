@@ -1,0 +1,63 @@
+---
+title: "Part I: Learning Toolkit"
+---
+
+This short opening unit teaches the habits the rest of the book uses. It is for readers who want Circle Calculus to feel like a textbook instead of a pile of references.
+
+::: {.lesson-goal}
+
+## Unit Goal
+
+Learn the small mathematical moves that appear everywhere later: name an object, apply a rule, compare results, repeat a rule, notice what stays fixed, and check which claims are proved.
+
+:::
+
+## The Shape Of The Book
+
+Circle Calculus does not begin with a large abstract system. It begins with a few operations that ordinary mathematics also depends on.
+
+::: {.concept-map}
+
+<div class="concept-flow">
+<span><strong>Name</strong> choose an address or state</span>
+<span><strong>Reduce</strong> put the name in context</span>
+<span><strong>Move</strong> apply a rule</span>
+<span><strong>Repeat</strong> build an orbit</span>
+<span><strong>Compare</strong> find sameness or difference</span>
+<span><strong>Prove</strong> record the checked claim</span>
+</div>
+
+:::
+
+The rest of the Living Book repeats that pattern at larger scales. S0 starts with two states. S1 adds finite circular addresses. S2 organizes circular rows into sphere-like scaffolds. S3 and later chapters add richer algebra, fibers, and applications.
+
+## Lesson Path
+
+Read [Lesson 0: Mathematical Building Blocks](00_mathematical_building_blocks.qmd) before the first S0/S1 lessons if any of these words feel slippery:
+
+- object,
+- address,
+- rule,
+- function,
+- composition,
+- iteration,
+- invariant,
+- theorem, or
+- proof status.
+
+This lesson does not try to replace a full foundations course. It gives the minimum vocabulary needed to read the Circle Calculus sequence without bouncing between reference pages.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+Before moving on, you should be able to explain why a picture, a rule, an example, and a proof are different kinds of mathematical evidence.
+
+:::
+
+<div class="book-navigation">
+<a href="../../reader_path.qmd">Previous: Guided Learning Path</a>
+<a href="00_mathematical_building_blocks.qmd">Next: Lesson 0</a>
+</div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

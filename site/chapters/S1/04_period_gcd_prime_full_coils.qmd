@@ -29,6 +29,14 @@ The gcd tells you how many disjoint stride cycles the circle splits into. The le
 
 Prime circles make this especially clean. On `C_p`, every nonzero stride is coprime to `p`, so every nonzero stride is a full coil. Composite circles have at least one nonzero stride that closes early.
 
+## What This Relearns From Ordinary Math
+
+::: {.teacher-note}
+
+This lesson is divisibility as structure. The gcd is not just a number produced by an algorithm; it predicts how a finite space decomposes under repeated motion. That is the bridge from arithmetic to group actions, factor structure, schedules, and later application pages.
+
+:::
+
 ## Diagrams
 
 The first widget shows gcd, cycle count, and cycle length. The second widget compares prime and composite behavior.

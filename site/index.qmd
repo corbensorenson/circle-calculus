@@ -27,6 +27,16 @@ Every mature lesson tries to give the same learning experience:
 
 :::
 
+## How To Read This Like A Textbook
+
+Do not begin by opening the theorem index or dictionary index. Begin with the guided lessons. Each lesson is meant to stand on its own as a learning page: read the idea, work the example, try the checkpoint, then use the source trail only when you want to audit the claim.
+
+::: {.teacher-note}
+
+The reference pages are intentionally still available because the project is proof-linked. They are not the lesson. The lesson teaches the concept; the references show where that concept lives in the repository.
+
+:::
+
 ## Concept Map
 
 ::: {.concept-map}
@@ -63,9 +73,10 @@ Compare widget behavior against Python reference models and tests. Python exampl
 ## Start Here
 
 1. Read the [Guided Learning Path](reader_path.qmd).
-2. Begin [Lesson 1: Finite Circles](chapters/S1/01_finite_circles.qmd).
-3. Finish the S1 review before moving to higher dimensions.
-4. Use [How To Verify A Claim](verify_claim.qmd) whenever a theorem, widget, paper paragraph, or diagram matters.
+2. Read [Lesson 0: Mathematical Building Blocks](chapters/foundations/00_mathematical_building_blocks.qmd).
+3. Begin [Lesson 1: Finite Circles](chapters/S1/01_finite_circles.qmd).
+4. Finish the S1 review before moving to higher dimensions.
+5. Use [How To Verify A Claim](verify_claim.qmd) whenever a theorem, widget, paper paragraph, or diagram matters.
 
 ## Source Pipeline
 
@@ -89,7 +100,7 @@ The proof-status policy is in [Living Book Policy](https://github.com/corbensore
 
 <div class="next-lesson">
 <span>Next lesson</span>
-<a href="reader_path.qmd">Open the guided learning path</a>
+<a href="chapters/foundations/00_mathematical_building_blocks.qmd">Start Lesson 0: Mathematical Building Blocks</a>
 </div>
 
 <script type="module" src="widgets/shared/widget_base.js"></script>
