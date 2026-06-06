@@ -26,6 +26,7 @@ namespace Circle.PaperS203
 #check Circle.S2.suspendedCircleAntipodalPair_symmetric
 #check Circle.S2.sphereGridLatitudeCoordinate
 #check Circle.S2.sphereGridLongitudeCoordinate
+#check Circle.S2.longitudeRotation_bijective
 #check Circle.S2.longitudeRotation_preservesLatitudeCoordinate
 #check Circle.S2.longitudeRotation_advancesLongitudeCoordinate
 

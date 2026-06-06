@@ -65,7 +65,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md` | polished draft | `S0-T0001` through `S0-T0005` proved with Python examples |
 | `papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md` | polished draft | `S2-T0001` and `S2-T0002` proved with Python examples |
 | `papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md` | polished draft | `S2-T0003` through `S2-T0007` and `S2-T0017` proved with Python examples |
-| `papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md` | polished draft | `S2-T0008` through `S2-T0016` plus `S2-T0018` and `S2-T0019` proved with Python examples |
+| `papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md` | polished draft | `S2-T0008` through `S2-T0016` plus `S2-T0018` through `S2-T0020` proved with Python examples |
 | `papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md` | polished draft | `S3C-T0001` through `S3C-T0004` proved with Python examples |
 | `papers/S3/PAPER_S3_02_QUATERNION_COILS.md` | polished draft | `S3Q-T0001` through `S3Q-T0007` proved with Python examples |
 | `papers/S3/PAPER_S3_03_HOPF_COILS.md` | polished draft/proved spine | `S3H-T0001` through `S3H-T0006` are Lean-proved bounded Hopf coordinate and phase-action facts; full fibration topology remains future work |
@@ -384,6 +384,7 @@ Proved common and dimensional spine:
 - `S2-T0016`: suspended-circle antipode converts signed longitude rotation into opposite signed rotation
 - `S2-T0018`: suspended-circle antipode is bijective
 - `S2-T0019`: suspended-circle signed longitude rotations are bijective
+- `S2-T0020`: finite sphere-grid longitude rotations are bijective
 - `S3C-T0001`: suspended-surface cell counts
 - `S3C-T0002`: suspended-surface Euler characteristic is zero when the surface has Euler characteristic two
 - `S3C-T0003`: suspended-suspended-circle cell counts

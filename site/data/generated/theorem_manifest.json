@@ -3988,7 +3988,7 @@
       "informal_statement": "A fixed latitude ring inherits the S1 coil period n/gcd(n,k).",
       "lean_name": "Circle.S2.latitudeCoil_period",
       "lean_source": "Circle/S2/Scaffold.lean",
-      "lean_source_line": 190,
+      "lean_source_line": 207,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"
@@ -4140,7 +4140,7 @@
       "informal_statement": "Longitude rotation preserves the finite latitude coordinate of every sphere-grid point.",
       "lean_name": "Circle.S2.longitudeRotation_preservesLatitudeCoordinate",
       "lean_source": "Circle/S2/Scaffold.lean",
-      "lean_source_line": 178,
+      "lean_source_line": 195,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
@@ -4171,7 +4171,7 @@
       "informal_statement": "Longitude rotation advances the finite longitude coordinate by the corresponding circle rotation while leaving poles without a longitude coordinate.",
       "lean_name": "Circle.S2.longitudeRotation_advancesLongitudeCoordinate",
       "lean_source": "Circle/S2/Scaffold.lean",
-      "lean_source_line": 184,
+      "lean_source_line": 201,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
@@ -4295,7 +4295,7 @@
       "informal_statement": "A fixed finite latitude ring inherits the S1 orbit-class count gcd(n,k) for stride k.",
       "lean_name": "Circle.S2.latitudeRingOrbitClassCount_eq_gcd",
       "lean_source": "Circle/S2/Scaffold.lean",
-      "lean_source_line": 197,
+      "lean_source_line": 214,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"
@@ -4370,6 +4370,39 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "sidecars/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE/python/test_s2_antipode_examples.py::test_suspended_longitude_rotation_is_bijective"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S2-0002",
+        "S2-0003",
+        "S2-0004",
+        "CC-0101"
+      ],
+      "formal_statement": "forall n r stride : Nat, Function.Bijective (Circle.S2.longitudeRotation n r stride)",
+      "id": "S2-T0020",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "Every finite sphere-grid longitude rotation is a bijection of sphere-grid points.",
+      "lean_name": "Circle.S2.longitudeRotation_bijective",
+      "lean_source": "Circle/S2/Scaffold.lean",
+      "lean_source_line": 178,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
+      ],
+      "source_manifest": "manifests/dimensions/S2_sphere.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE/python/test_s2_antipode_examples.py::test_longitude_rotation_is_bijective"
         ]
       }
     },

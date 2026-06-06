@@ -175,6 +175,23 @@ theorem longitudeRotation_fixesPoles (n r stride : Nat) :
       longitudeRotation n r stride SphereGridPoint.south = SphereGridPoint.south := by
   constructor <;> rfl
 
+theorem longitudeRotation_bijective (n r stride : Nat) :
+    Function.Bijective (longitudeRotation n r stride) := by
+  constructor
+  · intro x y h
+    cases x <;> cases y <;> simp [longitudeRotation] at h ⊢
+    exact ⟨h.1, (Circle.rot_bijective n stride).1 h.2⟩
+  · intro y
+    cases y with
+    | north =>
+        exact ⟨SphereGridPoint.north, rfl⟩
+    | south =>
+        exact ⟨SphereGridPoint.south, rfl⟩
+    | ring latitude node =>
+        obtain ⟨pre, hpre⟩ := (Circle.rot_bijective n stride).2 node
+        exact ⟨SphereGridPoint.ring latitude pre, by
+          simp [longitudeRotation, hpre]⟩
+
 theorem longitudeRotation_preservesLatitudeCoordinate (n r stride : Nat)
     (point : SphereGridPoint n r) :
     sphereGridLatitudeCoordinate (longitudeRotation n r stride point) =

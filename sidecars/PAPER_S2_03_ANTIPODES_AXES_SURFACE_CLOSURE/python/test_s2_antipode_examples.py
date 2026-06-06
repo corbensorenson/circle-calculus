@@ -122,6 +122,15 @@ def test_longitude_rotation_preserves_latitude_coordinate() -> None:
                 assert latitude_coordinate(longitude_rotation(n, 3, point)) == latitude_coordinate(point)
 
 
+def test_longitude_rotation_is_bijective() -> None:
+    for n in range(1, 16):
+        for r in range(1, 8):
+            points = set(sphere_grid_points(n, r))
+            for stride in range(0, 16):
+                images = {longitude_rotation(n, stride, point) for point in points}
+                assert images == points
+
+
 def test_longitude_rotation_advances_longitude_coordinate() -> None:
     for n in range(1, 16):
         for r in range(1, 8):

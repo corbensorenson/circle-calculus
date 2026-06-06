@@ -230,6 +230,33 @@
       "title": "Suspended longitude rotations are bijections"
     },
     {
+      "candidate_formalization": "forall n r stride : Nat, Function.Bijective (Circle.S2.longitudeRotation n r stride)",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S2-0002",
+        "S2-0003",
+        "S2-0004",
+        "CC-0101"
+      ],
+      "guardrail": "This is a finite sphere-grid coordinate bijection, not a smooth SO(3) action on S^2.",
+      "id": "P4-S2-005",
+      "layer": "S2",
+      "next_action": "Promoted to S2-T0020 and Lean-proved as Circle.S2.longitudeRotation_bijective using the finite-circle rotation bijection on each latitude ring.",
+      "paper_refs": [
+        "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
+      ],
+      "priority": "medium",
+      "promoted_theorem_id": "S2-T0020",
+      "status": "promoted",
+      "supporting_theorem_ids": [
+        "CC-T0001",
+        "S2-T0012",
+        "S2-T0013"
+      ],
+      "target_statement": "Every finite sphere-grid longitude rotation fixes poles, rotates each latitude ring, and is a reversible bijection of grid points.",
+      "title": "Sphere-grid longitude rotations are bijections"
+    },
+    {
       "candidate_formalization": "For each latitude ring, orbitClassCount n k = Nat.gcd n k",
       "claim_type": "theorem",
       "dictionary_dependencies": [
