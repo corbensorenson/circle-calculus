@@ -4017,7 +4017,7 @@
       "informal_statement": "The coordinate Hopf map sends normalized S^3 pairs to the unit S^2 equation.",
       "lean_name": "Circle.S3.hopfMap_lands_sphere",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 196,
+      "lean_source_line": 247,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -4049,7 +4049,7 @@
       "informal_statement": "Simultaneous unit phase rotation preserves the Hopf map.",
       "lean_name": "Circle.S3.hopfMap_phase_invariant",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 262,
+      "lean_source_line": 313,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -4081,7 +4081,7 @@
       "informal_statement": "A unit phase orbit stays on the normalized S3 pair space and preserves the Hopf base point.",
       "lean_name": "Circle.S3.hopfFiber_circle_like",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 285,
+      "lean_source_line": 336,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -4112,7 +4112,7 @@
       "informal_statement": "The identity phase leaves every Hopf pair unchanged.",
       "lean_name": "Circle.S3.phaseRotatePair_identity",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 222,
+      "lean_source_line": 273,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -4143,7 +4143,7 @@
       "informal_statement": "Composing two Hopf phase rotations follows the complex phase multiplication law.",
       "lean_name": "Circle.S3.phaseRotatePair_comp",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 227,
+      "lean_source_line": 278,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -4175,7 +4175,7 @@
       "informal_statement": "The Hopf phase wrapper has an identity phase and composition law matching complex phase multiplication.",
       "lean_name": "Circle.S3.hopfPhaseAction_laws",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 249,
+      "lean_source_line": 300,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -4270,7 +4270,7 @@
       "informal_statement": "The inverse of a unit quaternion is its conjugate.",
       "lean_name": "Circle.S3.unitQuaternion_inverse",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 103,
+      "lean_source_line": 109,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
@@ -4302,7 +4302,7 @@
       "informal_statement": "Quaternion multiplication is noncommutative by a formal example.",
       "lean_name": "Circle.S3.quaternion_noncommutative_example",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 136,
+      "lean_source_line": 187,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
@@ -4333,7 +4333,7 @@
       "informal_statement": "Quaternion multiplication is associative.",
       "lean_name": "Circle.S3.quaternion_mul_assoc",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 142,
+      "lean_source_line": 193,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
@@ -4365,7 +4365,7 @@
       "informal_statement": "The bundled identity unit quaternion is a left and right identity for bundled unit-quaternion multiplication.",
       "lean_name": "Circle.S3.unitQuaternion_identity",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 98,
+      "lean_source_line": 104,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
@@ -4397,7 +4397,7 @@
       "informal_statement": "The bundled conjugate of a unit quaternion is a left and right inverse for bundled unit-quaternion multiplication.",
       "lean_name": "Circle.S3.unitQuaternion_conj_inverse",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 125,
+      "lean_source_line": 131,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
@@ -4430,7 +4430,7 @@
       "informal_statement": "The quaternion conjugation action is unchanged by replacing q with -q.",
       "lean_name": "Circle.S3.quaternionConjugation_neg",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 157,
+      "lean_source_line": 208,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
@@ -4462,7 +4462,7 @@
       "informal_statement": "The identity quaternion conjugation action fixes every input quaternion.",
       "lean_name": "Circle.S3.quaternionConjugation_one",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 149,
+      "lean_source_line": 200,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
@@ -4494,7 +4494,7 @@
       "informal_statement": "Quaternion conjugation sends the zero input quaternion to zero.",
       "lean_name": "Circle.S3.quaternionConjugation_zero_vector",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 153,
+      "lean_source_line": 204,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
@@ -4506,6 +4506,39 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S3S-0001",
+        "S3S-0002",
+        "S3Q-0002"
+      ],
+      "formal_statement": "Equivalence Circle.S3.spinSignRelated",
+      "id": "S3S-T0004",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2"
+      ],
+      "informal_statement": "The relation identifying a unit quaternion with its negative is reflexive, symmetric, and transitive.",
+      "lean_name": "Circle.S3.spinSignRelated_equivalence",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 177,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
+      ],
+      "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py::test_spin_sign_relation_is_equivalence_on_examples"
         ]
       }
     },

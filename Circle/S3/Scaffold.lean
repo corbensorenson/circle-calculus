@@ -85,6 +85,12 @@ noncomputable def unitQuaternionConj (q : UnitQuaternion) : UnitQuaternion where
     rw [quaternionNorm, Quaternion.normSq_star]
     exact q.unit
 
+noncomputable def unitQuaternionNeg (q : UnitQuaternion) : UnitQuaternion where
+  val := -q.val
+  unit := by
+    rw [quaternionNorm, Quaternion.normSq_neg]
+    exact q.unit
+
 theorem unitQuaternion_one_mul (q : UnitQuaternion) :
     unitQuaternionMul unitQuaternionOne q = q := by
   cases q
@@ -126,6 +132,51 @@ theorem unitQuaternion_conj_inverse (q : UnitQuaternion) :
     unitQuaternionMul q (unitQuaternionConj q) = unitQuaternionOne ∧
       unitQuaternionMul (unitQuaternionConj q) q = unitQuaternionOne := by
   exact ⟨unitQuaternion_mul_conj q, unitQuaternion_conj_mul q⟩
+
+theorem unitQuaternion_neg_involutive (q : UnitQuaternion) :
+    unitQuaternionNeg (unitQuaternionNeg q) = q := by
+  apply unitQuaternion_ext
+  simp [unitQuaternionNeg]
+
+def spinSignRelated (p q : UnitQuaternion) : Prop :=
+  q = p ∨ q = unitQuaternionNeg p
+
+theorem spinSignRelated_refl (q : UnitQuaternion) :
+    spinSignRelated q q := by
+  left
+  rfl
+
+theorem spinSignRelated_symm {p q : UnitQuaternion}
+    (h : spinSignRelated p q) :
+    spinSignRelated q p := by
+  cases h with
+  | inl hqp =>
+      left
+      exact hqp.symm
+  | inr hqneg =>
+      right
+      rw [hqneg]
+      exact (unitQuaternion_neg_involutive p).symm
+
+theorem spinSignRelated_trans {p q r : UnitQuaternion}
+    (hpq : spinSignRelated p q) (hqr : spinSignRelated q r) :
+    spinSignRelated p r := by
+  cases hpq with
+  | inl hqp =>
+      rw [hqp] at hqr
+      exact hqr
+  | inr hqneg =>
+      cases hqr with
+      | inl hrq =>
+          right
+          rw [hrq, hqneg]
+      | inr hrneg =>
+          left
+          rw [hrneg, hqneg, unitQuaternion_neg_involutive]
+
+theorem spinSignRelated_equivalence :
+    Equivalence spinSignRelated := by
+  exact ⟨spinSignRelated_refl, spinSignRelated_symm, spinSignRelated_trans⟩
 
 def quaternionI : Quaternion ℤ :=
   ⟨0, 1, 0, 0⟩

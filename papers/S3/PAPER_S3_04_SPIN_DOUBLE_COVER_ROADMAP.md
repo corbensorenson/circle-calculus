@@ -19,6 +19,7 @@ For a unit quaternion, `star q` is the inverse supplied by the earlier quaternio
 - `S3S-T0001`: `Circle.S3.quaternionConjugation_neg`
 - `S3S-T0002`: `Circle.S3.quaternionConjugation_one`
 - `S3S-T0003`: `Circle.S3.quaternionConjugation_zero_vector`
+- `S3S-T0004`: `Circle.S3.spinSignRelated_equivalence`
 
 ## Proved Core
 
@@ -47,7 +48,17 @@ quaternionConjugationAction q v
 
 for every real quaternion `q` and input `v`. The proof is purely algebraic. It uses the multiplication and conjugation laws already formalized in the `S^3` quaternion spine and shows that the two negative signs introduced by `-q` cancel inside the conjugation action.
 
-Together, these facts provide the checked algebraic shadow of the spin double-cover story: identity acts as identity, zero remains zero, and changing a quaternion representative by sign does not change the action. The Python sidecar mirrors these examples for identity action, zero preservation, and sign cancellation.
+Together, these facts provide the checked algebraic shadow of the spin double-cover story: identity acts as identity, zero remains zero, and changing a quaternion representative by sign does not change the action.
+
+`S3S-T0004` defines the conservative sign relation on bundled unit quaternions:
+
+```text
+p ~ q iff q = p or q = -p
+```
+
+and proves that this relation is reflexive, symmetric, and transitive. This is the quotient-ready algebraic relation needed before any future `SO(3)` coverage is claimed.
+
+The Python sidecar mirrors these examples for identity action, zero preservation, sign cancellation, and bounded sign-relation equivalence checks.
 
 ## Role In The Ladder
 
@@ -66,4 +77,4 @@ It is deliberately placed after `PAPER_S3_02_QUATERNION_COILS.md` and `PAPER_S3_
 
 ## Guardrails
 
-The proved claim is not yet a full formalization of `Spin(3)`, `SO(3)`, pure imaginary vectors, rotation matrices, or the quotient map from unit quaternions to rotations. Those belong in a later paper once the project has a precise formal model of 3D vector space and rotation equivalence. The safe current claim is exactly the algebraic conjugation-action spine and its sign invariance.
+The proved claim is not yet a full formalization of `Spin(3)`, `SO(3)`, pure imaginary vectors, rotation matrices, or the quotient map from unit quaternions to rotations. Those belong in a later paper once the project has a precise formal model of 3D vector space and rotation equivalence. The safe current claim is exactly the algebraic conjugation-action spine, sign invariance, and the equivalence relation that identifies `q` with `-q`.

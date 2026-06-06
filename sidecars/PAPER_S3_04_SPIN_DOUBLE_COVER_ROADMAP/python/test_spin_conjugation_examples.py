@@ -16,6 +16,17 @@ def assert_quaternion_close(left: Quaternion, right: Quaternion, *, tol: float =
         assert abs(left_coord - right_coord) <= tol
 
 
+def quaternion_close(left: Quaternion, right: Quaternion, *, tol: float = TOL) -> bool:
+    return all(
+        abs(left_coord - right_coord) <= tol
+        for left_coord, right_coord in zip(left.coordinates(), right.coordinates())
+    )
+
+
+def spin_sign_related(left: Quaternion, right: Quaternion) -> bool:
+    return quaternion_close(right, left) or quaternion_close(right, -left)
+
+
 def test_quaternion_conjugation_identity_action() -> None:
     examples = [
         ZERO,
@@ -50,3 +61,28 @@ def test_quaternion_conjugation_sign_cancellation() -> None:
     for q in quaternions:
         for v in vectors:
             assert_quaternion_close(conjugation_action(-q, v), conjugation_action(q, v))
+
+
+def test_spin_sign_relation_is_equivalence_on_examples() -> None:
+    representatives = [
+        ONE,
+        -ONE,
+        unit_i_phase(0.5),
+        -unit_i_phase(0.5),
+        unit_i_phase(1.0),
+        -unit_i_phase(1.0),
+    ]
+
+    for q in representatives:
+        assert spin_sign_related(q, q)
+
+    for q in representatives:
+        for r in representatives:
+            if spin_sign_related(q, r):
+                assert spin_sign_related(r, q)
+
+    for p in representatives:
+        for q in representatives:
+            for r in representatives:
+                if spin_sign_related(p, q) and spin_sign_related(q, r):
+                    assert spin_sign_related(p, r)

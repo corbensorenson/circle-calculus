@@ -215,12 +215,17 @@
       "guardrail": "Do not claim a complete SO(3) formalization without quotient topology and rotation action proofs.",
       "id": "P4-S3-003",
       "layer": "S3",
-      "next_action": "Define the quotient relation before claiming SO(3) coverage.",
+      "next_action": "Promoted to S3S-T0004 by defining spinSignRelated on UnitQuaternion and proving Equivalence.",
       "paper_refs": [
         "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
       ],
       "priority": "medium",
-      "status": "planned",
+      "promoted_theorem_id": "S3S-T0004",
+      "status": "promoted",
+      "supporting_theorem_ids": [
+        "S3S-T0001",
+        "S3Q-T0007"
+      ],
       "target_statement": "The relation q ~ -q is reflexive, symmetric, and transitive on unit quaternions.",
       "title": "Spin sign quotient equivalence relation"
     },

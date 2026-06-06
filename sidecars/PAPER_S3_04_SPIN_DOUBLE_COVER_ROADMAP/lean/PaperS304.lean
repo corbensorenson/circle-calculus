@@ -13,5 +13,12 @@ namespace Circle.PaperS304
 #check Circle.S3.quaternionConjugation_one
 #check Circle.S3.quaternionConjugation_zero_vector
 #check Circle.S3.quaternionConjugation_neg
+#check Circle.S3.unitQuaternionNeg
+#check Circle.S3.unitQuaternion_neg_involutive
+#check Circle.S3.spinSignRelated
+#check Circle.S3.spinSignRelated_refl
+#check Circle.S3.spinSignRelated_symm
+#check Circle.S3.spinSignRelated_trans
+#check Circle.S3.spinSignRelated_equivalence
 
 end Circle.PaperS304
