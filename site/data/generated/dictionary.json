@@ -1385,6 +1385,27 @@
       "symbol": "layout_grid"
     },
     {
+      "dependencies": [
+        "CC-0205",
+        "CC-0206",
+        "CC-0207",
+        "CC-0208"
+      ],
+      "forbidden_meanings": [
+        "A general theorem prover.",
+        "A proof-search speedup benchmark.",
+        "Evidence of global theorem discovery."
+      ],
+      "formal_definition": "`circle_math.finite_search.build_s1_signature_index`, a bounded tag-to-theorem-id index for S1 finite-coil facts.",
+      "id": "COMMON-0041",
+      "introduced_in": "PAPER_01_FINITE_CIRCLES",
+      "intuition": "A small proof-navigation aid that groups finite-circle theorems by gcd, period, orbit count, full-coil, and same-orbit signatures.",
+      "kind": "interface",
+      "name": "Finite-coil theorem signature index",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "coil_signature_index"
+    },
+    {
       "dependencies": [],
       "forbidden_meanings": [
         "The one-node circle C_1.",

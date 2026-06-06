@@ -455,3 +455,15 @@ entries:
       - "A cache-locality proof."
       - "Evidence that gcd-cycle layout is faster."
       - "A replacement for FFT, NTT, dense, or direct baselines."
+  - id: COMMON-0041
+    name: "Finite-coil theorem signature index"
+    kind: interface
+    symbol: "coil_signature_index"
+    formal_definition: "`circle_math.finite_search.build_s1_signature_index`, a bounded tag-to-theorem-id index for S1 finite-coil facts."
+    intuition: "A small proof-navigation aid that groups finite-circle theorems by gcd, period, orbit count, full-coil, and same-orbit signatures."
+    dependencies: ["CC-0205", "CC-0206", "CC-0207", "CC-0208"]
+    introduced_in: "PAPER_01_FINITE_CIRCLES"
+    forbidden_meanings:
+      - "A general theorem prover."
+      - "A proof-search speedup benchmark."
+      - "Evidence of global theorem discovery."

@@ -33,22 +33,25 @@
       "area": "Proof search and theorem discovery",
       "artifact_refs": [
         "papers/PAPER_01_FINITE_CIRCLES.md",
-        "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"
+        "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+        "circle_math/finite_search.py",
+        "sidecars/PAPER_01_FINITE_CIRCLES/python/test_finite_coil_search_examples.py"
       ],
       "claim_type": "experiment",
       "dictionary_dependencies": [
         "CC-0205",
         "CC-0206",
         "CC-0207",
-        "CC-0208"
+        "CC-0208",
+        "COMMON-0041"
       ],
       "edge_question": "Can finite-coil signatures expose useful theorem candidates or reduce search friction in bounded S1 modular domains?",
       "guardrail": "Do not claim global theorem discovery from a bounded-domain index.",
       "id": "P5-EDGE-002",
-      "next_action": "Build a small S1 theorem-signature index from manifests and circle_math finite models.",
+      "next_action": "Bounded S1 theorem-signature index added; expand toward generated theorem metadata and compare against ordinary name/type lookup.",
       "ordinary_baseline": "Name/type search over theorem declarations and ordinary modular-arithmetic lemmas.",
       "priority": "high",
-      "status": "planned",
+      "status": "exploratory_python",
       "title": "Finite-coil normal-form theorem search"
     },
     {

@@ -222,6 +222,12 @@ The Lean proof reduces scaling to left multiplication by `(k : ZMod n)`. Mathlib
 - left multiplication is bijective exactly when the multiplier is a unit;
 - `(k : ZMod n)` is a unit exactly when `k` is coprime to `n`.
 
+## Search And Navigation Fixture
+
+`P5-EDGE-002` links this scaling/full-coil theorem spine to a bounded finite-coil signature index. The current Python fixture indexes at least ten existing S1 theorem ids by tags for period, gcd, orbit count, full coils, same-orbit congruence, and scaling fibers.
+
+This helps when a reader starts from a computed coil shape and wants theorem candidates. It does not replace ordinary theorem search by name or type, and it is not evidence of a proof-search speedup.
+
 ## Dictionary Targets
 
 - `S1-0001`: S1 finite circle core

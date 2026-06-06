@@ -186,7 +186,7 @@ Goal: make the executable examples line up with the Lean-backed papers without d
 - [x] `papers/S1/PAPER_S1_01_FINITE_CIRCLES.md`
   - Current source: `papers/PAPER_01_FINITE_CIRCLES.md`
   - Proof targets: `CC-T0001` through `CC-T0007`, plus `CC-T0054`, `CC-T0055`, and `CC-T0059` through `CC-T0061`
-  - Status: polished dimension guide draft links the proved theorem spine into the dimension layout while keeping the root paper as the detailed source. The full same-orbit iff gcd-congruence representative theorem is Lean-proved as `CC-T0061`.
+  - Status: polished dimension guide draft links the proved theorem spine into the dimension layout while keeping the root paper as the detailed source. The full same-orbit iff gcd-congruence representative theorem is Lean-proved as `CC-T0061`; `P5-EDGE-002` adds an exploratory finite-coil theorem-signature index for proof navigation.
 - [x] `papers/S1/PAPER_S1_02_WINDING_NATURALS.md`
   - Current source: `papers/PAPER_02_WINDING_NATURALS.md`
   - Proof targets: `CC-T0009` through `CC-T0016`
@@ -196,7 +196,7 @@ Goal: make the executable examples line up with the Lean-backed papers without d
   - Status: polished draft; signed zero, composition, and inverse motion are Lean-proved as `S1O-T0001` through `S1O-T0003`.
 - [x] `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md`
   - Proof targets: `CC-T0008`, `CC-T0017` through `CC-T0054`, and `CC-T0056` through `CC-T0058`, multiplication as repeated rotation/scaling, invertibility iff coprime, factor structure, prime/full-coil refinements, and affine scale-then-rotation maps.
-  - Status: polished draft; scaling invertible iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, scaling natural steps into coil traversal, prime-circle scaling bijectivity, divisor/cofactor collapse, cofactor-multiple collapse, cofactor-shift address collapse, scaling-zero divisibility, period-level kernel divisibility, period-multiple collapse, period-shift collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and cardinality, zero-fiber/kernel and scaled-target/fiber bridges, fiber-set equality modulo scaled value and stride period, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, scaled-address product congruence, coprime scaling reflection, full-coil iff coprime, rotation bijectivity, affine composition normal form, and coprime affine bijectivity are Lean-proved; affine classification, composite orbit refinements, and factor-lattice/provenance links remain future extensions.
+  - Status: polished draft; scaling invertible iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, scaling natural steps into coil traversal, prime-circle scaling bijectivity, divisor/cofactor collapse, cofactor-multiple collapse, cofactor-shift address collapse, scaling-zero divisibility, period-level kernel divisibility, period-multiple collapse, period-shift collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and cardinality, zero-fiber/kernel and scaled-target/fiber bridges, fiber-set equality modulo scaled value and stride period, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, scaled-address product congruence, coprime scaling reflection, full-coil iff coprime, rotation bijectivity, affine composition normal form, and coprime affine bijectivity are Lean-proved; the `P5-EDGE-002` theorem-signature fixture indexes this spine for proof navigation; affine classification, composite orbit refinements, and factor-lattice/provenance links remain future extensions.
 
 ### S0: Opposition And Sign
 
@@ -651,6 +651,7 @@ Outputs:
 
 - [x] A short list of concrete edge experiments with acceptance criteria.
 - [x] `P5-EDGE-001`: generated glyph-status fixture resolves theorem and dictionary data without upgrading unproved theorem status.
+- [x] `P5-EDGE-002`: finite-coil theorem-signature index normalizes gcd, period, orbit count, full-coil, and same-orbit tags for bounded S1 proof navigation.
 - [ ] At least one experiment-ready paper or application note for each accepted edge direction.
 - [ ] Python/MLX or other executable sidecars where the claim is computational.
 - [ ] Lean theorem targets where the claim is formal.

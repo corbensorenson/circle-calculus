@@ -113,6 +113,19 @@ For `C_12` with stride `4`, the orbit from `0` is:
 
 The second example has period `3` and decomposes into `4` cycles.
 
+## 6.1 Finite-Coil Signature Search Fixture
+
+`P5-EDGE-002` adds an exploratory Python search fixture:
+
+```text
+circle_math/finite_search.py
+sidecars/PAPER_01_FINITE_CIRCLES/python/test_finite_coil_search_examples.py
+```
+
+The fixture normalizes finite-circle examples to gcd, period, orbit-count, and full-coil signatures, then indexes existing theorem ids by tags such as `period`, `gcd`, `full-coil`, and `same-orbit`.
+
+The ordinary baseline is name/type lookup over theorem declarations. Signature lookup is useful when the reader starts from a shape, for example "`C_12` with stride `4` has four cycles of period three; which theorems explain this?" It is less useful when the reader already knows the exact theorem name or needs a non-S1 theorem. This is proof navigation, not theorem discovery evidence.
+
 ## 7. Translation To Standard Mathematics
 
 The standard interpretation is modular arithmetic. `C_n` is `ZMod n`; rotation is addition by a residue; a coil is an additive orbit; period is additive order. Circle diagrams can be rendered from these terms, but the diagram is not the proof.
