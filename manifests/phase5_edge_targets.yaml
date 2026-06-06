@@ -123,7 +123,7 @@ targets:
   - id: P5-EDGE-007
     area: "Robotics, orientation, and physics-adjacent models"
     priority: medium
-    status: planned
+    status: exploratory_python
     claim_type: paper_improvement
     title: "Quaternion and Hopf orientation-debugging note"
     edge_question: "Can quaternion/Hopf/fiber language make orientation ambiguity, phase, and spin double-cover behavior easier to verify or debug?"
@@ -136,8 +136,9 @@ targets:
       - "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
       - "papers/S3/PAPER_S3_03_HOPF_COILS.md"
       - "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
-    dictionary_dependencies: ["S3Q-0001", "S3H-0001"]
-    next_action: "Draft a short orientation-debugging application note downstream of the S3 proofs."
+      - "sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py"
+    dictionary_dependencies: ["S3Q-0001", "S3H-0001", "S3S-0001", "S3S-0002"]
+    next_action: "Orientation-debugging note and Python sign-ambiguity record added; future work needs a precise SO(3) quotient/vector-space model before stronger robotics claims."
     guardrail: "Do not claim a complete SO(3), robotics, gauge, or physics formalization."
 
   - id: P5-EDGE-008

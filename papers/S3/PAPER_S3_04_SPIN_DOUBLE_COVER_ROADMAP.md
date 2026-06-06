@@ -60,6 +60,17 @@ and proves that this relation is reflexive, symmetric, and transitive. This is t
 
 The Python sidecar mirrors these examples for identity action, zero preservation, sign cancellation, and bounded sign-relation equivalence checks.
 
+## Orientation-Debugging Note
+
+This paper can already support a small debugging workflow for quaternion orientation code:
+
+1. Treat the two inputs `q` and `-q` as distinct representatives.
+2. Compare the downstream conjugation action, not the raw representative sign.
+3. Record whether the representatives are sign-related by `S3S-T0004`.
+4. Use `S3S-T0001` as the checked reason that the conjugation action is unchanged.
+
+The Python sidecar function `orientation_debug_record` follows exactly that bounded workflow. It reports that a sample unit phase `q` and its negative are distinct quaternion records, sign-related representatives, and action-equivalent under conjugation on the tested vector. This is an executable orientation-debugging example only. It is not a robotics verification result, not a complete `SO(3)` quotient formalization, and not a replacement for a full rotation-matrix or vector-space model.
+
 ## Role In The Ladder
 
 This paper connects three layers of the project:

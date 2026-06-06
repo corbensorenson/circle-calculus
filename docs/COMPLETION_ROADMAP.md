@@ -238,7 +238,7 @@ Goal: make the executable examples line up with the Lean-backed papers without d
   - Status: polished draft; `S3H-T0001` through `S3H-T0006` are Lean-proved bounded Hopf coordinate and phase-action facts, including the Hopf phase action wrapper; analytic circle parameterization beyond these algebraic phase laws, quotient topology, and global fibration formalization remain future work.
 - [x] `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md`
   - Proof target: `S3S-T0001` through `S3S-T0004`
-  - Status: polished draft proves quaternion conjugation identity action, zero preservation, sign cancellation, and the unit-quaternion sign equivalence relation; full `SO(3)` quotient remains future work.
+  - Status: polished draft proves quaternion conjugation identity action, zero preservation, sign cancellation, and the unit-quaternion sign equivalence relation; `P5-EDGE-007` adds a bounded orientation-debugging note and sign-ambiguity Python record; full `SO(3)` quotient remains future work.
 
 ### S4-S6: Geometric Bridge
 
@@ -665,6 +665,7 @@ Outputs:
 - [x] `P5-EDGE-004`: expanded deterministic periodic-data fixture suite records clean, noisy, aliased, and multi-period baseline behavior without upgrading usefulness claims.
 - [x] `P5-EDGE-005`: learned phase-channel baseline fixture records both a positive periodic case and a negative nonperiodic control.
 - [x] `P5-EDGE-006`: periodic-boundary stencil validation fixture checks direct, dense, and gcd-cycle traversal outputs before backend or speed claims.
+- [x] `P5-EDGE-007`: orientation-debugging note records q/-q sign ambiguity against existing S3 spin theorem ids without claiming full SO(3) or robotics verification.
 - [ ] At least one experiment-ready paper or application note for each accepted edge direction.
 - [ ] Python/MLX or other executable sidecars where the claim is computational.
 - [ ] Lean theorem targets where the claim is formal.

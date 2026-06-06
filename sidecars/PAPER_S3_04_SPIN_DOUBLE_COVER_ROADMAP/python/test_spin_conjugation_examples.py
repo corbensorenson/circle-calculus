@@ -27,6 +27,15 @@ def spin_sign_related(left: Quaternion, right: Quaternion) -> bool:
     return quaternion_close(right, left) or quaternion_close(right, -left)
 
 
+def orientation_debug_record(q: Quaternion, v: Quaternion) -> dict[str, bool]:
+    """Return the bounded sign-ambiguity checks used by the debugging note."""
+    return {
+        "representatives_are_distinct": not quaternion_close(q, -q),
+        "actions_match": quaternion_close(conjugation_action(q, v), conjugation_action(-q, v)),
+        "spin_sign_related": spin_sign_related(q, -q),
+    }
+
+
 def test_quaternion_conjugation_identity_action() -> None:
     examples = [
         ZERO,
@@ -86,3 +95,12 @@ def test_spin_sign_relation_is_equivalence_on_examples() -> None:
             for r in representatives:
                 if spin_sign_related(p, q) and spin_sign_related(q, r):
                     assert spin_sign_related(p, r)
+
+
+def test_orientation_debug_record_exposes_sign_ambiguity() -> None:
+    q = unit_i_phase(0.75)
+    v = Quaternion(0.0, 1.0, 2.0, -0.5)
+    record = orientation_debug_record(q, v)
+    assert record["representatives_are_distinct"]
+    assert record["actions_match"]
+    assert record["spin_sign_related"]
