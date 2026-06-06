@@ -12,6 +12,7 @@ namespace Circle.PaperAI03
 #check Circle.Applications.adapterBlock
 #check Circle.Applications.adapterBlock_lt_blockSize
 #check Circle.Applications.adapterBlock_add_blockSize
+#check Circle.Applications.adapterBlock_add_mul_blockSize
 #check Circle.Applications.adapterBlock_zero
 
 end Circle.PaperAI03

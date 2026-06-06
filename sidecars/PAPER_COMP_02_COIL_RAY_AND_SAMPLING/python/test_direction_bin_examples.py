@@ -15,6 +15,13 @@ def test_direction_bin_closes_after_bin_count() -> None:
             assert direction_bin(bin_count, sample + bin_count) == direction_bin(bin_count, sample)
 
 
+def test_direction_bin_closes_after_multiple_bin_passes() -> None:
+    for bin_count in range(1, 65):
+        for sample in range(0, 128):
+            for passes in range(0, 9):
+                assert direction_bin(bin_count, sample + passes * bin_count) == direction_bin(bin_count, sample)
+
+
 def test_direction_bin_zero() -> None:
     for bin_count in range(1, 65):
         assert direction_bin(bin_count, 0) == 0

@@ -3319,6 +3319,12 @@
           "lean_name": "Circle.Applications.phaseCoordinate_zero",
           "name": "Circle.Applications.phaseCoordinate_zero",
           "status": "proved"
+        },
+        {
+          "id": "APPD-T0004",
+          "lean_name": "Circle.Applications.phaseCoordinate_add_mul_period",
+          "name": "Circle.Applications.phaseCoordinate_add_mul_period",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -3353,6 +3359,12 @@
           "id": "APPD-T0002",
           "lean_name": "Circle.Applications.phaseCoordinate_add_period",
           "name": "Circle.Applications.phaseCoordinate_add_period",
+          "status": "proved"
+        },
+        {
+          "id": "APPD-T0004",
+          "lean_name": "Circle.Applications.phaseCoordinate_add_mul_period",
+          "name": "Circle.Applications.phaseCoordinate_add_mul_period",
           "status": "proved"
         }
       ],
@@ -3400,6 +3412,12 @@
           "lean_name": "Circle.Applications.cyclicAddress_zero",
           "name": "Circle.Applications.cyclicAddress_zero",
           "status": "proved"
+        },
+        {
+          "id": "COMPC-T0004",
+          "lean_name": "Circle.Applications.cyclicAddress_add_mul_size",
+          "name": "Circle.Applications.cyclicAddress_add_mul_size",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -3434,6 +3452,12 @@
           "id": "COMPC-T0002",
           "lean_name": "Circle.Applications.cyclicAddress_add_size",
           "name": "Circle.Applications.cyclicAddress_add_size",
+          "status": "proved"
+        },
+        {
+          "id": "COMPC-T0004",
+          "lean_name": "Circle.Applications.cyclicAddress_add_mul_size",
+          "name": "Circle.Applications.cyclicAddress_add_mul_size",
           "status": "proved"
         }
       ],
@@ -3481,6 +3505,12 @@
           "lean_name": "Circle.Applications.directionBin_zero",
           "name": "Circle.Applications.directionBin_zero",
           "status": "proved"
+        },
+        {
+          "id": "COMPR-T0004",
+          "lean_name": "Circle.Applications.directionBin_add_mul_binCount",
+          "name": "Circle.Applications.directionBin_add_mul_binCount",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -3515,6 +3545,12 @@
           "id": "COMPR-T0002",
           "lean_name": "Circle.Applications.directionBin_add_binCount",
           "name": "Circle.Applications.directionBin_add_binCount",
+          "status": "proved"
+        },
+        {
+          "id": "COMPR-T0004",
+          "lean_name": "Circle.Applications.directionBin_add_mul_binCount",
+          "name": "Circle.Applications.directionBin_add_mul_binCount",
           "status": "proved"
         }
       ],
@@ -3745,6 +3781,12 @@
           "lean_name": "Circle.Applications.phaseChannel_zero",
           "name": "Circle.Applications.phaseChannel_zero",
           "status": "proved"
+        },
+        {
+          "id": "AIA-T0004",
+          "lean_name": "Circle.Applications.phaseChannel_add_mul_period",
+          "name": "Circle.Applications.phaseChannel_add_mul_period",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -3779,6 +3821,12 @@
           "id": "AIA-T0002",
           "lean_name": "Circle.Applications.phaseChannel_add_period",
           "name": "Circle.Applications.phaseChannel_add_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIA-T0004",
+          "lean_name": "Circle.Applications.phaseChannel_add_mul_period",
+          "name": "Circle.Applications.phaseChannel_add_mul_period",
           "status": "proved"
         }
       ],
@@ -3825,6 +3873,12 @@
           "lean_name": "Circle.Applications.memorySlot_zero",
           "name": "Circle.Applications.memorySlot_zero",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0004",
+          "lean_name": "Circle.Applications.memorySlot_add_mul_bankSize",
+          "name": "Circle.Applications.memorySlot_add_mul_bankSize",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -3859,6 +3913,12 @@
           "id": "AIM-T0002",
           "lean_name": "Circle.Applications.memorySlot_add_bankSize",
           "name": "Circle.Applications.memorySlot_add_bankSize",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0004",
+          "lean_name": "Circle.Applications.memorySlot_add_mul_bankSize",
+          "name": "Circle.Applications.memorySlot_add_mul_bankSize",
           "status": "proved"
         }
       ],
@@ -3906,6 +3966,12 @@
           "lean_name": "Circle.Applications.adapterBlock_zero",
           "name": "Circle.Applications.adapterBlock_zero",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0004",
+          "lean_name": "Circle.Applications.adapterBlock_add_mul_blockSize",
+          "name": "Circle.Applications.adapterBlock_add_mul_blockSize",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -3940,6 +4006,12 @@
           "id": "AIRA-T0002",
           "lean_name": "Circle.Applications.adapterBlock_add_blockSize",
           "name": "Circle.Applications.adapterBlock_add_blockSize",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0004",
+          "lean_name": "Circle.Applications.adapterBlock_add_mul_blockSize",
+          "name": "Circle.Applications.adapterBlock_add_mul_blockSize",
           "status": "proved"
         }
       ],

@@ -89,14 +89,14 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md` | polished draft/proved transition seed | `P2BU-T0001` through `P2BU-T0007` are Lean-proved product-bundle projection/fiber and base-preserving transition facts with Python examples |
 | `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md` | polished draft/proved finite seed | `P2BC-T0001` through `P2BC-T0004` are Lean-proved directed-interval boundary facts with Python examples |
 | `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md` | polished draft/proved certificate seed | `P2G-T0001` through `P2G-T0005` are Lean-proved proof-glyph projection and metadata-validity facts with Python examples; `P5-EDGE-001` adds an exploratory generated glyph-status fixture |
-| `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md` | polished draft/proved finite seed | `APPD-T0001` through `APPD-T0003` are Lean-proved phase-coordinate facts with Python examples; `APPD-B0001` and `APPD-B0002` are exploratory deterministic period benchmark fixtures |
-| `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md` | polished draft/proved finite seed | `COMPC-T0001` through `COMPC-T0003` are Lean-proved cyclic-address facts with Python examples |
-| `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md` | polished draft/proved finite seed | `COMPR-T0001` through `COMPR-T0003` are Lean-proved direction-bin schedule facts with Python examples |
+| `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md` | polished draft/proved finite seed | `APPD-T0001` through `APPD-T0004` are Lean-proved phase-coordinate facts with Python examples; `APPD-B0001` and `APPD-B0002` are exploratory deterministic period benchmark fixtures |
+| `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md` | polished draft/proved finite seed | `COMPC-T0001` through `COMPC-T0004` are Lean-proved cyclic-address facts with Python examples |
+| `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md` | polished draft/proved finite seed | `COMPR-T0001` through `COMPR-T0004` are Lean-proved direction-bin schedule facts with Python examples |
 | `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md` | polished draft/proved finite seed | `COMPL-T0001` through `COMPL-T0004` are Lean-proved stride-address facts with Python examples; `COMPL-B0001` and `COMPL-B0002` are exploratory CoilLayout/stencil validation fixtures |
 | `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md` | polished draft/proved finite seed | `COMPS-T0001` through `COMPS-T0004` are Lean-proved round-robin schedule facts with Python examples |
-| `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md` | polished draft/proved finite seed | `AIA-T0001` through `AIA-T0003` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` and `AIA-B0002` are exploratory deterministic phase-channel benchmark fixtures |
-| `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md` | polished draft/proved finite seed | `AIM-T0001` through `AIM-T0003` are Lean-proved cyclic-memory-slot facts with Python examples |
-| `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md` | polished draft/proved finite seed | `AIRA-T0001` through `AIRA-T0003` are Lean-proved adapter-block facts with Python examples |
+| `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md` | polished draft/proved finite seed | `AIA-T0001` through `AIA-T0004` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` and `AIA-B0002` are exploratory deterministic phase-channel benchmark fixtures |
+| `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md` | polished draft/proved finite seed | `AIM-T0001` through `AIM-T0004` are Lean-proved cyclic-memory-slot facts with Python examples |
+| `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md` | polished draft/proved finite seed | `AIRA-T0001` through `AIRA-T0004` are Lean-proved adapter-block facts with Python examples |
 
 The theorem manifest also includes `CC-T0008`, `CC-T0017` through `CC-T0054`, and `CC-T0056` through `CC-T0058`, proving the first scaling/full-coil/affine spine: invertibility iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, the scaling-to-coil image bridge, bijectivity of nonzero scaling on prime circles, divisor-cofactor collapse to zero, cofactor-multiple collapse to zero, period-multiple collapse to zero, cofactor-shift and period-shift address collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and gcd cardinality, zero-fiber/kernel and scaled-target/fiber bridges, fiber-set equality modulo scaled value and stride period, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, the exact divisibility and period-divisibility criteria for scaling to zero, the exact product-congruence criterion for scaled-address equality, coprime reflection of address congruence, full-coil iff coprime, rotation bijectivity, affine composition normal form, and coprime affine bijectivity.
 
@@ -348,14 +348,17 @@ Proved common and dimensional spine:
 - `APPD-T0001`: finite phase coordinate is bounded by a positive period
 - `APPD-T0002`: finite phase coordinate closes after adding one full period
 - `APPD-T0003`: finite phase coordinate at zero is zero
+- `APPD-T0004`: finite phase coordinate closes after any whole number of full periods
 - `APPD-B0001`: exploratory Python fixture comparing coil closure ranking with an autocorrelation baseline on a known-period synthetic signal
 - `APPD-B0002`: exploratory Python fixture suite for clean, noisy, aliased, and multi-period synthetic signals with coil closure, autocorrelation, and periodogram-style baselines
 - `COMPC-T0001`: cyclic address is bounded by a positive circular buffer size
 - `COMPC-T0002`: cyclic address is unchanged after adding one full buffer size
 - `COMPC-T0003`: cyclic address at zero is zero
+- `COMPC-T0004`: cyclic address is unchanged after any whole number of full buffer-size passes
 - `COMPR-T0001`: direction-bin schedule is bounded by a positive bin count
 - `COMPR-T0002`: direction-bin schedule closes after one full pass through the bins
 - `COMPR-T0003`: direction-bin schedule at zero is zero
+- `COMPR-T0004`: direction-bin schedule closes after any whole number of full bin passes
 - `COMPL-T0001`: stride address is bounded by a positive circular size
 - `COMPL-T0002`: stride address closes after one full pass through the circular step horizon
 - `COMPL-T0003`: zero step has zero stride address
@@ -369,14 +372,17 @@ Proved common and dimensional spine:
 - `AIA-T0001`: AI phase channel is bounded by a positive period
 - `AIA-T0002`: AI phase channel closes after one full period
 - `AIA-T0003`: AI phase channel at zero is zero
+- `AIA-T0004`: AI phase channel closes after any whole number of full periods
 - `AIA-B0001`: exploratory deterministic phase-channel benchmark fixture
 - `AIA-B0002`: exploratory learned-baseline fixture with periodic and nonperiodic controls
 - `AIM-T0001`: cyclic memory slot is bounded by a positive bank size
 - `AIM-T0002`: cyclic memory slot closes after one full bank pass
 - `AIM-T0003`: cyclic memory slot at zero is zero
+- `AIM-T0004`: cyclic memory slot closes after any whole number of full bank passes
 - `AIRA-T0001`: adapter block index is bounded by a positive block size
 - `AIRA-T0002`: adapter block index closes after one full block pass
 - `AIRA-T0003`: adapter block index at zero is zero
+- `AIRA-T0004`: adapter block index closes after any whole number of full block passes
 - `S0-T0001`: the finite `S^0` opposition type has two points
 - `S0-T0002`: the opposition antipode is involutive
 - `S0-T0003`: the opposition antipode has no fixed point

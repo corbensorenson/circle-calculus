@@ -35,6 +35,7 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `AIM-T0001`: `Circle.Applications.memorySlot_lt_bankSize`
 - `AIM-T0002`: `Circle.Applications.memorySlot_add_bankSize`
 - `AIM-T0003`: `Circle.Applications.memorySlot_zero`
+- `AIM-T0004`: `Circle.Applications.memorySlot_add_mul_bankSize`
 
 ## Proved Core
 
@@ -45,7 +46,7 @@ memorySlot bankSize (token + bankSize) =
   memorySlot bankSize token
 ```
 
-`AIM-T0003` proves the zero anchor. The Python sidecar checks the same finite examples.
+`AIM-T0004` proves closure after any whole number of full memory-bank passes. `AIM-T0003` proves the zero anchor. The Python sidecar checks the same finite examples.
 
 These theorems certify the cyclic slot address only. They do not prove retrieval quality, alias control, attention replacement, or long-context scaling.
 

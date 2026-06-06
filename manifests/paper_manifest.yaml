@@ -492,6 +492,7 @@ papers:
       - APPD-T0001
       - APPD-T0002
       - APPD-T0003
+      - APPD-T0004
     dictionary_ids:
       - COMMON-0016
       - COMMON-0017
@@ -508,6 +509,7 @@ papers:
       - COMPC-T0001
       - COMPC-T0002
       - COMPC-T0003
+      - COMPC-T0004
     dictionary_ids:
       - COMMON-0018
       - COMMON-0019
@@ -520,6 +522,7 @@ papers:
       - COMPR-T0001
       - COMPR-T0002
       - COMPR-T0003
+      - COMPR-T0004
     dictionary_ids:
       - COMMON-0020
       - COMMON-0021
@@ -560,6 +563,7 @@ papers:
       - AIA-T0001
       - AIA-T0002
       - AIA-T0003
+      - AIA-T0004
     dictionary_ids:
       - COMMON-0026
       - COMMON-0027
@@ -574,6 +578,7 @@ papers:
       - AIM-T0001
       - AIM-T0002
       - AIM-T0003
+      - AIM-T0004
     dictionary_ids:
       - COMMON-0028
       - COMMON-0029
@@ -586,6 +591,7 @@ papers:
       - AIRA-T0001
       - AIRA-T0002
       - AIRA-T0003
+      - AIRA-T0004
     dictionary_ids:
       - COMMON-0030
       - COMMON-0031

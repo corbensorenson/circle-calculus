@@ -312,13 +312,13 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `P2G-T0001` through `P2G-T0005` are Lean-proved proof-glyph certificate projection and finite theorem-metadata validity facts with Python examples; `P5-EDGE-001` adds an exploratory generated glyph-status fixture; glyph syntax, normal forms, semantics, dependency correctness, and proof search remain future work.
 - [x] `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md`
   - Program: coil signatures, closure profiles, prime-lag recurrence, antinode maps, and periodic-data benchmarks.
-  - Status: polished draft; `APPD-T0001` through `APPD-T0003` are Lean-proved finite phase-coordinate facts with Python examples. `APPD-B0001` and `APPD-B0002` are exploratory Python fixtures comparing coil closure ranking with autocorrelation and periodogram-style baselines on deterministic clean, noisy, aliased, and multi-period synthetic signals; real-data and usefulness claims remain future work.
+  - Status: polished draft; `APPD-T0001` through `APPD-T0004` are Lean-proved finite phase-coordinate facts with Python examples. `APPD-B0001` and `APPD-B0002` are exploratory Python fixtures comparing coil closure ranking with autocorrelation and periodogram-style baselines on deterministic clean, noisy, aliased, and multi-period synthetic signals; real-data and usefulness claims remain future work.
 - [x] `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md`
   - Program: certified cyclic/circulant/orbit structure lowered to FFT/NTT/permutation backends and benchmarked.
-  - Status: polished draft; `COMPC-T0001` through `COMPC-T0003` are Lean-proved cyclic-address facts with Python examples; backend lowering and performance claims remain benchmark work.
+  - Status: polished draft; `COMPC-T0001` through `COMPC-T0004` are Lean-proved cyclic-address facts with Python examples; backend lowering and performance claims remain benchmark work.
 - [x] `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md`
   - Program: `CoilRay Sort`, `CoilSampler`, `CoilNoise`, `CoilSTIR`, BRDF/lighting angular compression, spherical-coil ray queues, procedural placement/dithering, and rendering benchmarks.
-  - Status: polished draft; `COMPR-T0001` through `COMPR-T0003` are Lean-proved direction-bin schedule facts with Python examples; rendering performance, coherence, and sampling-quality claims remain benchmark work.
+  - Status: polished draft; `COMPR-T0001` through `COMPR-T0004` are Lean-proved direction-bin schedule facts with Python examples; rendering performance, coherence, and sampling-quality claims remain benchmark work.
 - [x] `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md`
   - Program: `CoilLayout`, `CoilStencil`, `CoilNTT`, gcd-cycle memory layouts, verified periodic boundaries, exact finite transforms, and MLX/Mac-compatible prototypes where relevant.
   - Status: polished draft; `COMPL-T0001` through `COMPL-T0004` are Lean-proved stride-address facts with Python examples; `COMPL-B0001` and `COMPL-B0002` are exploratory CoilLayout/stencil validation fixtures; layout, FFT, NTT, MLX/backend, and performance claims remain future work.
@@ -327,13 +327,13 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `COMPS-T0001` through `COMPS-T0004` are Lean-proved round-robin schedule facts with Python examples; fairness, load balancing, robotics, codec, ANN, acquisition, CAM, torsion, detection, and quantum claims remain future domain work.
 - [x] `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md`
   - Program: disciplined Circle AI thesis covering phase, recurrence, rotation, sparse cyclic mixing, circular memory, harmonic transforms, geometry-aware models, and proof-carrying model components.
-  - Status: polished draft; `AIA-T0001` through `AIA-T0003` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` and `AIA-B0002` are exploratory deterministic phase-channel benchmark fixtures; model-quality and speed claims remain benchmark work.
+  - Status: polished draft; `AIA-T0001` through `AIA-T0004` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` and `AIA-B0002` are exploratory deterministic phase-channel benchmark fixtures; model-quality and speed claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`
   - Program: Coil Attention, CoilKV, long-context retrieval, alias control, stride/orbit coverage, and comparisons against full attention, sparse attention, Hyena-like mixers, and S4/Mamba-like baselines.
-  - Status: polished draft; `AIM-T0001` through `AIM-T0003` are Lean-proved cyclic-memory-slot facts with Python examples; retrieval quality, alias control, and attention replacement claims remain benchmark work.
+  - Status: polished draft; `AIM-T0001` through `AIM-T0004` are Lean-proved cyclic-memory-slot facts with Python examples; retrieval quality, alias control, and attention replacement claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md`
   - Program: CoilLinear, CoilRA, MultiCoil RoPE, periodic activations, and MLX-first benchmarks against dense, LoRA, block-circulant, and standard RoPE baselines.
-  - Status: polished draft; `AIRA-T0001` through `AIRA-T0003` are Lean-proved adapter-block facts with Python examples; CoilRA, MultiCoil RoPE, model quality, parameter efficiency, and runtime claims remain benchmark work.
+  - Status: polished draft; `AIRA-T0001` through `AIRA-T0004` are Lean-proved adapter-block facts with Python examples; CoilRA, MultiCoil RoPE, model quality, parameter efficiency, and runtime claims remain benchmark work.
 
 Created planned manifest families:
 
@@ -393,14 +393,17 @@ Application guardrails:
 - [x] `APPD-T0001`: finite phase coordinate is bounded by a positive period.
 - [x] `APPD-T0002`: finite phase coordinate closes after adding one full period.
 - [x] `APPD-T0003`: finite phase coordinate at zero is zero.
+- [x] `APPD-T0004`: finite phase coordinate closes after any whole number of full periods.
 - [x] `APPD-B0001`: exploratory known-period Python fixture compares coil closure ranking with an autocorrelation baseline.
 - [x] `APPD-B0002`: exploratory clean/noisy/aliased/multi-period Python fixture reports coil closure, autocorrelation, and periodogram-style baselines.
 - [x] `COMPC-T0001`: cyclic address is bounded by a positive circular buffer size.
 - [x] `COMPC-T0002`: cyclic address is unchanged after adding one full buffer size.
 - [x] `COMPC-T0003`: cyclic address at zero is zero.
+- [x] `COMPC-T0004`: cyclic address is unchanged after any whole number of full buffer-size passes.
 - [x] `COMPR-T0001`: direction-bin schedule is bounded by a positive bin count.
 - [x] `COMPR-T0002`: direction-bin schedule closes after one full pass through the bins.
 - [x] `COMPR-T0003`: direction-bin schedule at zero is zero.
+- [x] `COMPR-T0004`: direction-bin schedule closes after any whole number of full bin passes.
 - [x] `COMPL-T0001`: stride address is bounded by a positive circular size.
 - [x] `COMPL-T0002`: stride address closes after one full pass through the circular step horizon.
 - [x] `COMPL-T0003`: zero step has zero stride address.
@@ -414,14 +417,17 @@ Application guardrails:
 - [x] `AIA-T0001`: AI phase channel is bounded by a positive period.
 - [x] `AIA-T0002`: AI phase channel closes after one full period.
 - [x] `AIA-T0003`: AI phase channel at zero is zero.
+- [x] `AIA-T0004`: AI phase channel closes after any whole number of full periods.
 - [x] `AIA-B0001`: exploratory deterministic phase-channel benchmark fixture.
 - [x] `AIA-B0002`: exploratory learned-baseline phase fixture with periodic and nonperiodic controls.
 - [x] `AIM-T0001`: cyclic memory slot is bounded by a positive bank size.
 - [x] `AIM-T0002`: cyclic memory slot closes after one full bank pass.
 - [x] `AIM-T0003`: cyclic memory slot at zero is zero.
+- [x] `AIM-T0004`: cyclic memory slot closes after any whole number of full bank passes.
 - [x] `AIRA-T0001`: adapter block index is bounded by a positive block size.
 - [x] `AIRA-T0002`: adapter block index closes after one full block pass.
 - [x] `AIRA-T0003`: adapter block index at zero is zero.
+- [x] `AIRA-T0004`: adapter block index closes after any whole number of full block passes.
 
 ## Current S1 Proof Status
 

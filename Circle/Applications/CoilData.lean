@@ -21,6 +21,12 @@ theorem phaseCoordinate_add_period {period : Nat} (h : 0 < period) (step : Nat) 
   rw [Nat.add_mod, Nat.mod_self, Nat.add_zero]
   exact Nat.mod_eq_of_lt (Nat.mod_lt step h)
 
+theorem phaseCoordinate_add_mul_period {period : Nat} (_h : 0 < period)
+    (step passes : Nat) :
+    phaseCoordinate period (step + passes * period) = phaseCoordinate period step := by
+  unfold phaseCoordinate
+  exact Nat.add_mul_mod_self_right step passes period
+
 theorem phaseCoordinate_zero (period : Nat) :
     phaseCoordinate period 0 = 0 := by
   unfold phaseCoordinate

@@ -24,6 +24,10 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.cyclicAddress_zero
     dictionary_dependencies: ["COMMON-0018"]
+  - id: COMPC-T0004
+    status: lean_proved
+    lean_name: Circle.Applications.cyclicAddress_add_mul_size
+    dictionary_dependencies: ["COMMON-0018", "COMMON-0019"]
   - id: COMPL-T0001
     status: lean_proved
     lean_name: Circle.Applications.strideAddress_lt_size

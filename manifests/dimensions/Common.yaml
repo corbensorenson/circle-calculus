@@ -417,6 +417,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["phase_coordinate(period, 0) == 0"]
     blocker: ""
+  - id: APPD-T0004
+    status: lean_proved
+    lean_name: Circle.Applications.phaseCoordinate_add_mul_period
+    informal_statement: "For a positive period, adding any whole number of full periods preserves the finite phase coordinate."
+    formal_statement: "forall {period : Nat}, 0 < period -> forall step passes : Nat, phaseCoordinate period (step + passes * period) = phaseCoordinate period step"
+    dictionary_dependencies: ["COMMON-0016", "COMMON-0017"]
+    paper_refs: ["papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["phase_coordinate(period, step + passes * period) == phase_coordinate(period, step)"]
+    blocker: ""
   - id: COMPC-T0001
     status: lean_proved
     lean_name: Circle.Applications.cyclicAddress_lt_size
@@ -456,6 +469,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["cyclic_address(size, 0) == 0"]
     blocker: ""
+  - id: COMPC-T0004
+    status: lean_proved
+    lean_name: Circle.Applications.cyclicAddress_add_mul_size
+    informal_statement: "For a positive circular buffer size, adding any whole number of full buffer sizes preserves the cyclic address."
+    formal_statement: "forall {size : Nat}, 0 < size -> forall index passes : Nat, cyclicAddress size (index + passes * size) = cyclicAddress size index"
+    dictionary_dependencies: ["COMMON-0018", "COMMON-0019"]
+    paper_refs: ["papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["cyclic_address(size, index + passes * size) == cyclic_address(size, index)"]
+    blocker: ""
   - id: COMPR-T0001
     status: lean_proved
     lean_name: Circle.Applications.directionBin_lt_binCount
@@ -494,6 +520,19 @@ theorems:
       lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["direction_bin(bin_count, 0) == 0"]
+    blocker: ""
+  - id: COMPR-T0004
+    status: lean_proved
+    lean_name: Circle.Applications.directionBin_add_mul_binCount
+    informal_statement: "For a positive direction-bin count, adding any whole number of full bin passes preserves the direction-bin schedule."
+    formal_statement: "forall {binCount : Nat}, 0 < binCount -> forall sample passes : Nat, directionBin binCount (sample + passes * binCount) = directionBin binCount sample"
+    dictionary_dependencies: ["COMMON-0020", "COMMON-0021"]
+    paper_refs: ["papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["direction_bin(bin_count, sample + passes * bin_count) == direction_bin(bin_count, sample)"]
     blocker: ""
   - id: COMPL-T0001
     status: lean_proved
@@ -638,6 +677,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["phase_channel(period, 0) == 0"]
     blocker: ""
+  - id: AIA-T0004
+    status: lean_proved
+    lean_name: Circle.Applications.phaseChannel_add_mul_period
+    informal_statement: "For a positive AI phase period, adding any whole number of full periods preserves the phase channel."
+    formal_statement: "forall {period : Nat}, 0 < period -> forall position passes : Nat, phaseChannel period (position + passes * period) = phaseChannel period position"
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0027"]
+    paper_refs: ["papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["phase_channel(period, position + passes * period) == phase_channel(period, position)"]
+    blocker: ""
   - id: AIM-T0001
     status: lean_proved
     lean_name: Circle.Applications.memorySlot_lt_bankSize
@@ -677,6 +729,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["memory_slot(bank_size, 0) == 0"]
     blocker: ""
+  - id: AIM-T0004
+    status: lean_proved
+    lean_name: Circle.Applications.memorySlot_add_mul_bankSize
+    informal_statement: "For a positive cyclic memory-bank size, adding any whole number of full bank passes preserves the memory slot."
+    formal_statement: "forall {bankSize : Nat}, 0 < bankSize -> forall token passes : Nat, memorySlot bankSize (token + passes * bankSize) = memorySlot bankSize token"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["memory_slot(bank_size, token + passes * bank_size) == memory_slot(bank_size, token)"]
+    blocker: ""
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize
@@ -715,5 +780,18 @@ theorems:
       lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["adapter_block(block_size, 0) == 0"]
+    blocker: ""
+  - id: AIRA-T0004
+    status: lean_proved
+    lean_name: Circle.Applications.adapterBlock_add_mul_blockSize
+    informal_statement: "For a positive adapter block size, adding any whole number of full block passes preserves the adapter block index."
+    formal_statement: "forall {blockSize : Nat}, 0 < blockSize -> forall channel passes : Nat, adapterBlock blockSize (channel + passes * blockSize) = adapterBlock blockSize channel"
+    dictionary_dependencies: ["COMMON-0030", "COMMON-0031"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["adapter_block(block_size, channel + passes * block_size) == adapter_block(block_size, channel)"]
     blocker: ""
 warnings: []

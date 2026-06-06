@@ -35,6 +35,7 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `APPD-T0001`: `Circle.Applications.phaseCoordinate_lt_period`
 - `APPD-T0002`: `Circle.Applications.phaseCoordinate_add_period`
 - `APPD-T0003`: `Circle.Applications.phaseCoordinate_zero`
+- `APPD-T0004`: `Circle.Applications.phaseCoordinate_add_mul_period`
 
 ## Proved Core
 
@@ -44,6 +45,12 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 
 ```text
 phase(period, step + period) = phase(period, step)
+```
+
+`APPD-T0004` proves the multi-pass closure law:
+
+```text
+phase(period, step + passes * period) = phase(period, step)
 ```
 
 `APPD-T0003` proves the zero anchor:

@@ -13,6 +13,13 @@ def test_memory_slot_closes_after_bank_size() -> None:
             assert memory_slot(bank_size, token + bank_size) == memory_slot(bank_size, token)
 
 
+def test_memory_slot_closes_after_multiple_bank_passes() -> None:
+    for bank_size in range(1, 65):
+        for token in range(0, 128):
+            for passes in range(0, 9):
+                assert memory_slot(bank_size, token + passes * bank_size) == memory_slot(bank_size, token)
+
+
 def test_memory_slot_zero() -> None:
     for bank_size in range(1, 65):
         assert memory_slot(bank_size, 0) == 0

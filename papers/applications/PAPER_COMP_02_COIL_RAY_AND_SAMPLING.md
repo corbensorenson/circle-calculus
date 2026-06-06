@@ -35,10 +35,11 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `COMPR-T0001`: `Circle.Applications.directionBin_lt_binCount`
 - `COMPR-T0002`: `Circle.Applications.directionBin_add_binCount`
 - `COMPR-T0003`: `Circle.Applications.directionBin_zero`
+- `COMPR-T0004`: `Circle.Applications.directionBin_add_mul_binCount`
 
 ## Proved Core
 
-`COMPR-T0001` proves that the bin schedule is bounded by the positive bin count. `COMPR-T0002` proves that adding one full bin count preserves the schedule, and `COMPR-T0003` proves the zero anchor. The Python sidecar checks the same finite examples.
+`COMPR-T0001` proves that the bin schedule is bounded by the positive bin count. `COMPR-T0002` proves that adding one full bin count preserves the schedule, `COMPR-T0004` proves the same law for any whole number of full bin passes, and `COMPR-T0003` proves the zero anchor. The Python sidecar checks the same finite examples.
 
 These theorems justify only the finite binning primitive. They do not prove a sphere-binning algorithm, ray coherence, low discrepancy, sampling quality, or rendering speed.
 

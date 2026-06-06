@@ -609,7 +609,8 @@
       "theorem_ids": [
         "APPD-T0001",
         "APPD-T0002",
-        "APPD-T0003"
+        "APPD-T0003",
+        "APPD-T0004"
       ],
       "title": "Circle Calculus Application 1: Coil Data Analysis"
     },
@@ -625,7 +626,8 @@
       "theorem_ids": [
         "COMPC-T0001",
         "COMPC-T0002",
-        "COMPC-T0003"
+        "COMPC-T0003",
+        "COMPC-T0004"
       ],
       "title": "Circle Calculus Compute 1: Proof-Carrying Circular Computation"
     },
@@ -641,7 +643,8 @@
       "theorem_ids": [
         "COMPR-T0001",
         "COMPR-T0002",
-        "COMPR-T0003"
+        "COMPR-T0003",
+        "COMPR-T0004"
       ],
       "title": "Circle Calculus Compute 2: CoilRay and CoilSampler"
     },
@@ -695,7 +698,8 @@
       "theorem_ids": [
         "AIA-T0001",
         "AIA-T0002",
-        "AIA-T0003"
+        "AIA-T0003",
+        "AIA-T0004"
       ],
       "title": "Circle Calculus AI 1: Circle AI Architectures"
     },
@@ -711,7 +715,8 @@
       "theorem_ids": [
         "AIM-T0001",
         "AIM-T0002",
-        "AIM-T0003"
+        "AIM-T0003",
+        "AIM-T0004"
       ],
       "title": "Circle Calculus AI 2: Coil Attention and Memory"
     },
@@ -727,7 +732,8 @@
       "theorem_ids": [
         "AIRA-T0001",
         "AIRA-T0002",
-        "AIRA-T0003"
+        "AIRA-T0003",
+        "AIRA-T0004"
       ],
       "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
     }

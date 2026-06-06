@@ -13,5 +13,6 @@ Benchmark fixtures are executable references only. They are not proofs of real-d
 <div class="theorem-box" data-theorem-id="APPD-T0001"></div>
 <div class="theorem-box" data-theorem-id="APPD-T0002"></div>
 <div class="theorem-box" data-theorem-id="APPD-T0003"></div>
+<div class="theorem-box" data-theorem-id="APPD-T0004"></div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

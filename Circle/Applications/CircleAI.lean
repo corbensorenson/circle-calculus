@@ -22,6 +22,12 @@ theorem phaseChannel_add_period {period : Nat} (h : 0 < period) (position : Nat)
   rw [Nat.add_mod, Nat.mod_self, Nat.add_zero]
   exact Nat.mod_eq_of_lt (Nat.mod_lt position h)
 
+theorem phaseChannel_add_mul_period {period : Nat} (_h : 0 < period)
+    (position passes : Nat) :
+    phaseChannel period (position + passes * period) = phaseChannel period position := by
+  unfold phaseChannel
+  exact Nat.add_mul_mod_self_right position passes period
+
 theorem phaseChannel_zero (period : Nat) :
     phaseChannel period 0 = 0 := by
   unfold phaseChannel
@@ -41,6 +47,12 @@ theorem memorySlot_add_bankSize {bankSize : Nat} (h : 0 < bankSize) (token : Nat
   rw [Nat.add_mod, Nat.mod_self, Nat.add_zero]
   exact Nat.mod_eq_of_lt (Nat.mod_lt token h)
 
+theorem memorySlot_add_mul_bankSize {bankSize : Nat} (_h : 0 < bankSize)
+    (token passes : Nat) :
+    memorySlot bankSize (token + passes * bankSize) = memorySlot bankSize token := by
+  unfold memorySlot
+  exact Nat.add_mul_mod_self_right token passes bankSize
+
 theorem memorySlot_zero (bankSize : Nat) :
     memorySlot bankSize 0 = 0 := by
   unfold memorySlot
@@ -59,6 +71,12 @@ theorem adapterBlock_add_blockSize {blockSize : Nat} (h : 0 < blockSize) (channe
   unfold adapterBlock
   rw [Nat.add_mod, Nat.mod_self, Nat.add_zero]
   exact Nat.mod_eq_of_lt (Nat.mod_lt channel h)
+
+theorem adapterBlock_add_mul_blockSize {blockSize : Nat} (_h : 0 < blockSize)
+    (channel passes : Nat) :
+    adapterBlock blockSize (channel + passes * blockSize) = adapterBlock blockSize channel := by
+  unfold adapterBlock
+  exact Nat.add_mul_mod_self_right channel passes blockSize
 
 theorem adapterBlock_zero (blockSize : Nat) :
     adapterBlock blockSize 0 = 0 := by

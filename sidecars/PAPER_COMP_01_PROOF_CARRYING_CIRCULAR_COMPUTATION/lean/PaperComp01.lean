@@ -12,6 +12,7 @@ namespace Circle.PaperComp01
 #check Circle.Applications.cyclicAddress
 #check Circle.Applications.cyclicAddress_lt_size
 #check Circle.Applications.cyclicAddress_add_size
+#check Circle.Applications.cyclicAddress_add_mul_size
 #check Circle.Applications.cyclicAddress_zero
 
 end Circle.PaperComp01

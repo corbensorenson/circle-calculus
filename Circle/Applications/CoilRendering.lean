@@ -21,6 +21,12 @@ theorem directionBin_add_binCount {binCount : Nat} (h : 0 < binCount) (sample : 
   rw [Nat.add_mod, Nat.mod_self, Nat.add_zero]
   exact Nat.mod_eq_of_lt (Nat.mod_lt sample h)
 
+theorem directionBin_add_mul_binCount {binCount : Nat} (_h : 0 < binCount)
+    (sample passes : Nat) :
+    directionBin binCount (sample + passes * binCount) = directionBin binCount sample := by
+  unfold directionBin
+  exact Nat.add_mul_mod_self_right sample passes binCount
+
 theorem directionBin_zero (binCount : Nat) :
     directionBin binCount 0 = 0 := by
   unfold directionBin

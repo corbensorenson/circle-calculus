@@ -43,6 +43,7 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `COMPC-T0001`: `Circle.Applications.cyclicAddress_lt_size`
 - `COMPC-T0002`: `Circle.Applications.cyclicAddress_add_size`
 - `COMPC-T0003`: `Circle.Applications.cyclicAddress_zero`
+- `COMPC-T0004`: `Circle.Applications.cyclicAddress_add_mul_size`
 
 ## Proved Core
 
@@ -53,7 +54,7 @@ cyclicAddress size (index + size) =
   cyclicAddress size index
 ```
 
-`COMPC-T0003` proves the zero anchor.
+`COMPC-T0004` proves the corresponding multi-pass law for any whole number of full buffer-size passes. `COMPC-T0003` proves the zero anchor.
 
 Together these are the basic address-safety facts required before any compiler pass can replace an ordinary index with a circular one. The Python sidecar checks the same wraparound examples.
 

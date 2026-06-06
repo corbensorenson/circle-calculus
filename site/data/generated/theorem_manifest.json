@@ -51,6 +51,28 @@
       "id": "AIA-T0003",
       "lean_name": "Circle.Applications.phaseChannel_zero",
       "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 31,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES",
+          "path": "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 1: Circle AI Architectures"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0026",
+        "COMMON-0027"
+      ],
+      "id": "AIA-T0004",
+      "lean_name": "Circle.Applications.phaseChannel_add_mul_period",
+      "lean_source": "Circle/Applications/CircleAI.lean",
       "lean_source_line": 25,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
@@ -72,7 +94,7 @@
       "id": "AIM-T0001",
       "lean_name": "Circle.Applications.memorySlot_lt_bankSize",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 33,
+      "lean_source_line": 39,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -94,7 +116,7 @@
       "id": "AIM-T0002",
       "lean_name": "Circle.Applications.memorySlot_add_bankSize",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 38,
+      "lean_source_line": 44,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -115,7 +137,29 @@
       "id": "AIM-T0003",
       "lean_name": "Circle.Applications.memorySlot_zero",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 44,
+      "lean_source_line": 56,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0028",
+        "COMMON-0029"
+      ],
+      "id": "AIM-T0004",
+      "lean_name": "Circle.Applications.memorySlot_add_mul_bankSize",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 50,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -136,7 +180,7 @@
       "id": "AIRA-T0001",
       "lean_name": "Circle.Applications.adapterBlock_lt_blockSize",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 52,
+      "lean_source_line": 64,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -158,7 +202,7 @@
       "id": "AIRA-T0002",
       "lean_name": "Circle.Applications.adapterBlock_add_blockSize",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 57,
+      "lean_source_line": 69,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -179,7 +223,29 @@
       "id": "AIRA-T0003",
       "lean_name": "Circle.Applications.adapterBlock_zero",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 63,
+      "lean_source_line": 81,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0030",
+        "COMMON-0031"
+      ],
+      "id": "AIRA-T0004",
+      "lean_name": "Circle.Applications.adapterBlock_add_mul_blockSize",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 75,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -242,6 +308,28 @@
       ],
       "id": "APPD-T0003",
       "lean_name": "Circle.Applications.phaseCoordinate_zero",
+      "lean_source": "Circle/Applications/CoilData.lean",
+      "lean_source_line": 30,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/coil_data_analysis.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_APP_01_COIL_DATA_ANALYSIS",
+          "path": "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Application 1: Coil Data Analysis"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0016",
+        "COMMON-0017"
+      ],
+      "id": "APPD-T0004",
+      "lean_name": "Circle.Applications.phaseCoordinate_add_mul_period",
       "lean_source": "Circle/Applications/CoilData.lean",
       "lean_source_line": 24,
       "original_status": "lean_proved",
@@ -3202,6 +3290,28 @@
       "id": "COMPC-T0003",
       "lean_name": "Circle.Applications.cyclicAddress_zero",
       "lean_source": "Circle/Applications/CoilCompute.lean",
+      "lean_source_line": 30,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/coil_compute.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION",
+          "path": "papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 1: Proof-Carrying Circular Computation"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0018",
+        "COMMON-0019"
+      ],
+      "id": "COMPC-T0004",
+      "lean_name": "Circle.Applications.cyclicAddress_add_mul_size",
+      "lean_source": "Circle/Applications/CoilCompute.lean",
       "lean_source_line": 24,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
@@ -3223,7 +3333,7 @@
       "id": "COMPL-T0001",
       "lean_name": "Circle.Applications.strideAddress_lt_size",
       "lean_source": "Circle/Applications/CoilCompute.lean",
-      "lean_source_line": 32,
+      "lean_source_line": 38,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
       "status": "lean_proved",
@@ -3245,7 +3355,7 @@
       "id": "COMPL-T0002",
       "lean_name": "Circle.Applications.strideAddress_add_size_steps",
       "lean_source": "Circle/Applications/CoilCompute.lean",
-      "lean_source_line": 37,
+      "lean_source_line": 43,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
       "status": "lean_proved",
@@ -3266,7 +3376,7 @@
       "id": "COMPL-T0003",
       "lean_name": "Circle.Applications.strideAddress_zero_step",
       "lean_source": "Circle/Applications/CoilCompute.lean",
-      "lean_source_line": 43,
+      "lean_source_line": 49,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
       "status": "lean_proved",
@@ -3287,7 +3397,7 @@
       "id": "COMPL-T0004",
       "lean_name": "Circle.Applications.strideAddress_zero_stride",
       "lean_source": "Circle/Applications/CoilCompute.lean",
-      "lean_source_line": 48,
+      "lean_source_line": 54,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
       "status": "lean_proved",
@@ -3350,6 +3460,28 @@
       ],
       "id": "COMPR-T0003",
       "lean_name": "Circle.Applications.directionBin_zero",
+      "lean_source": "Circle/Applications/CoilRendering.lean",
+      "lean_source_line": 30,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/coil_rendering.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_02_COIL_RAY_AND_SAMPLING",
+          "path": "papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 2: CoilRay and CoilSampler"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0020",
+        "COMMON-0021"
+      ],
+      "id": "COMPR-T0004",
+      "lean_name": "Circle.Applications.directionBin_add_mul_binCount",
       "lean_source": "Circle/Applications/CoilRendering.lean",
       "lean_source_line": 24,
       "original_status": "lean_proved",
