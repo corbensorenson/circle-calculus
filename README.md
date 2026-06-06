@@ -7,7 +7,7 @@ The long-term aim is not just to write essays. The aim is to keep every serious 
 - a human-readable paper in `papers/`,
 - Lean 4/mathlib declarations in `Circle/` and paper-specific Lean sidecars in `sidecars/`,
 - executable Python reference models in `circle_math/`,
-- a shared dictionary in `dictionary/circle_dictionary.yaml`, and
+- shared dictionary files under `dictionary/`, and
 - theorem metadata in `manifests/theorem_manifest.yaml`.
 
 The Phase IV wide/deep theorem-target audit is tracked in `manifests/phase4_theorem_targets.yaml` and validated by `scripts/check_phase4_targets.py`. Phase V edge problem-space targets are tracked in `manifests/phase5_edge_targets.yaml`, explained in `docs/PHASE5_EDGE_TARGETS.md`, and validated by `scripts/check_phase5_targets.py`. Phase VI global sweep targets are tracked in `manifests/phase6_sweep_targets.yaml` and validated by `scripts/check_phase6_sweep_targets.py`.
@@ -102,6 +102,8 @@ Phase III is now implemented as the first Circle Calculus Living Book milestone:
 
 The next project phases are intentionally wide, deep, and correctness-driven: Phase IV audits every dimensional level and application area for missing theorem targets, paper improvements, reusable lemmas, dictionary gaps, and stronger proof spines; Phase V searches edge problem spaces where Circle Calculus may provide leverage that is hard, awkward, or unavailable in ordinary presentations; Phase VI sweeps the whole corpus so the writing is cleaner, the claims are more correct, and the proof-status links are easy for outsiders to consume.
 
+Current Phase VI maintenance state: all 35 manifest papers now include source trails linking paper prose to Lean/Python sidecars and proof-status boundaries. `make check` also validates paper source trails, root plus dimension dictionary entries, and the 10 application/theory research manifests that connect papers, sidecars, benchmarks, theorem ids, and dictionary dependencies.
+
 The README is updated after meaningful proof batches, paper batches, roadmap changes, or application-context additions. Tiny internal-only edits should update the relevant source files without creating README churn.
 
 ## Proof Standard
@@ -167,9 +169,11 @@ make lean        # build the root Lean library
 make sidecarlean # check all per-paper Lean sidecars
 make test        # run Python tests
 make manifest    # validate theorem metadata
-make dictionary  # validate dictionary metadata
+make dictionary  # validate root and dimension dictionary metadata
 make papermanifest # validate paper-to-sidecar/theorem/dictionary links
 make paperlinks  # verify papers cite known theorem ids
+make papersources # verify manifest papers expose source trails and proof-status boundaries
+make researchmanifests # validate application/theory manifest sidecars and benchmark refs
 make claimlanguage # audit proved-language against theorem statuses
 make phase4targets # validate the wide/deep theorem target registry
 make phase5targets # validate the edge problem-space target registry
