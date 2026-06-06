@@ -7,6 +7,13 @@ from typing import Iterable
 from site_lib import GENERATED, ROOT, load_json
 
 
+RUNTIME_LINK_GUARD_REQUIREMENTS = [
+    ("repo path guard", "function looksLikeRepoPath(path)"),
+    ("GitHub helper guard", "if (!looksLikeRepoPath(path)) return \"\";"),
+    ("non-path refs stay text", "document.createTextNode(text)"),
+]
+
+
 def validate_repo_path(failures: list[str], owner: str, label: str, raw_path: str) -> None:
     if not raw_path:
         return
@@ -30,8 +37,17 @@ def validate_many(
         validate_repo_path(failures, owner, label, value)
 
 
+def validate_runtime_link_guard(failures: list[str]) -> None:
+    path = ROOT / "site" / "widgets" / "shared" / "widget_base.js"
+    text = path.read_text()
+    for label, needle in RUNTIME_LINK_GUARD_REQUIREMENTS:
+        if needle not in text:
+            failures.append(f"site/widgets/shared/widget_base.js: missing {label}")
+
+
 def main() -> int:
     failures: list[str] = []
+    validate_runtime_link_guard(failures)
 
     theorem_manifest = load_json(GENERATED / "theorem_manifest.json")
     dictionary = load_json(GENERATED / "dictionary.json")

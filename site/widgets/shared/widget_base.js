@@ -1,5 +1,16 @@
 const dataCache = new Map();
 const REPOSITORY_URL = "https://github.com/corbensorenson/circle-calculus";
+const ROOT_REPO_FILES = new Set([
+  "CITATION.cff",
+  "Circle.lean",
+  "LICENSE",
+  "Makefile",
+  "README.md",
+  "lake-manifest.json",
+  "lakefile.lean",
+  "lean-toolchain",
+  "pyproject.toml",
+]);
 
 function dataUrl(relativePath) {
   const currentScript = document.currentScript;
@@ -65,8 +76,21 @@ function renderMeta(meta) {
   return dl;
 }
 
-function githubSourceLink(path, line) {
+function cleanRepoPath(path) {
   if (!path) return "";
+  return String(path).split("#", 1)[0].split("?", 1)[0];
+}
+
+function looksLikeRepoPath(path) {
+  const cleanPath = cleanRepoPath(path);
+  if (!cleanPath) return false;
+  if (["http://", "https://", "mailto:"].some((prefix) => cleanPath.startsWith(prefix))) return false;
+  if (cleanPath.startsWith("/") || cleanPath.split("/").includes("..")) return false;
+  return cleanPath.includes("/") || ROOT_REPO_FILES.has(cleanPath);
+}
+
+function githubSourceLink(path, line) {
+  if (!looksLikeRepoPath(path)) return "";
   const anchor = line ? `#L${line}` : "";
   const mode = !line && !/\.[^/]+$/.test(path) ? "tree" : "blob";
   return `${REPOSITORY_URL}/${mode}/main/${path}${anchor}`;
@@ -133,7 +157,8 @@ function linkedRepoPaths(items, limit = 4) {
     const path = sourcePathFrom(item);
     if (!path) continue;
     const text = typeof item === "object" ? item.id || path : path;
-    links.push(makeLink(text, githubSourceLink(path)));
+    const href = githubSourceLink(path);
+    links.push(href ? makeLink(text, href) : document.createTextNode(text));
   }
   if (links.length === 0) return "";
   const fragment = document.createDocumentFragment();
