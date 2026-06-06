@@ -23,6 +23,42 @@ theorem sameOrbit_iff_difference_mem_orbitSubgroup (n k : Nat) (x y : C n) :
   simpa using
     (QuotientAddGroup.eq_iff_sub_mem (N := orbitSubgroup n k) (x := x) (y := y))
 
+/-- Same-orbit natural representatives are congruent modulo `gcd(n,k)`. -/
+theorem sameOrbit_nat_modEq_gcd_of_sameOrbit
+    (n k x y : Nat)
+    (h : sameOrbit n k ((x : Nat) : C n) ((y : Nat) : C n)) :
+    x ≡ y [MOD Nat.gcd n k] := by
+  let g := Nat.gcd n k
+  let φ := ZMod.castHom (Nat.gcd_dvd_left n k) (ZMod g)
+  have hmem :
+      ((x : Nat) : C n) - ((y : Nat) : C n) ∈ orbitSubgroup n k :=
+    (sameOrbit_iff_difference_mem_orbitSubgroup n k
+      ((x : Nat) : C n) ((y : Nat) : C n)).mp h
+  have hzero :
+      φ (((x : Nat) : C n) - ((y : Nat) : C n)) = 0 := by
+    unfold orbitSubgroup at hmem
+    rcases (AddSubgroup.mem_zmultiples_iff.mp hmem) with ⟨z, hz⟩
+    rw [← hz]
+    have hstride_zero : φ (stride n k) = 0 := by
+      unfold φ stride
+      rw [ZMod.castHom_apply]
+      rw [ZMod.cast_natCast (Nat.gcd_dvd_left n k)]
+      exact (CharP.cast_eq_zero_iff (ZMod g) g k).mpr
+        (by simpa [g] using Nat.gcd_dvd_right n k)
+    simp [hstride_zero]
+  have hcast : ((x : Nat) : ZMod g) = ((y : Nat) : ZMod g) := by
+    have hzero' :
+        (ZMod.cast (((x : Nat) : C n) - ((y : Nat) : C n)) : ZMod g) = 0 := by
+      simpa [φ, g] using hzero
+    have hsub :
+        ((x : Nat) : ZMod g) - ((y : Nat) : ZMod g) = 0 := by
+      rw [ZMod.cast_sub (Nat.gcd_dvd_left n k)] at hzero'
+      rw [ZMod.cast_natCast (Nat.gcd_dvd_left n k)] at hzero'
+      rw [ZMod.cast_natCast (Nat.gcd_dvd_left n k)] at hzero'
+      exact hzero'
+    exact sub_eq_zero.mp hsub
+  exact (ZMod.natCast_eq_natCast_iff x y g).mp hcast
+
 /-- The number of stride-orbit classes on `C n`. -/
 noncomputable def orbitClassCount (n k : Nat) : Nat :=
   Nat.card (orbitClassQuotient n k)

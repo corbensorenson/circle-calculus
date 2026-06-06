@@ -71,7 +71,7 @@
       "guardrail": "Avoid ad hoc integer representatives that are not tied to ZMod equality.",
       "id": "P4-S1-002",
       "layer": "S1",
-      "next_action": "Use CC-T0055 as the quotient-level sameOrbit API, then prove the representative theorem with Nat.ModEq modulo Nat.gcd(n,k).",
+      "next_action": "Use CC-T0055 and the forward representative theorem CC-T0059, then prove the reverse direction by identifying the stride subgroup with the kernel of the cast map C_n -> ZMod(gcd(n,k)).",
       "paper_refs": [
         "papers/PAPER_01_FINITE_CIRCLES.md",
         "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md"
@@ -79,7 +79,8 @@
       "priority": "high",
       "status": "planned",
       "supporting_theorem_ids": [
-        "CC-T0055"
+        "CC-T0055",
+        "CC-T0059"
       ],
       "target_statement": "Two nodes lie in the same stride-k orbit exactly when their representatives differ by a multiple of gcd(n,k).",
       "title": "Orbit membership by gcd congruence"

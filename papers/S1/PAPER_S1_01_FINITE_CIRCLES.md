@@ -62,8 +62,9 @@ These declarations are ordinary modular arithmetic in Lean. The Circle Calculus 
 - `CC-T0007`: `Circle.prime_full_coil`, every nonzero stride on a prime circle is a full coil.
 - `CC-T0054`: `Circle.fullCoil_iff_coprime`, for nonzero `n`, a stride is a full coil exactly when it is coprime to `n`.
 - `CC-T0055`: `Circle.sameOrbit_iff_difference_mem_orbitSubgroup`, same-orbit quotient equality is exactly membership of the node difference in the stride-generated subgroup.
+- `CC-T0059`: `Circle.sameOrbit_nat_modEq_gcd_of_sameOrbit`, same-orbit natural representatives are congruent modulo `gcd(n,k)`.
 
-All nine theorem ids are registered in `manifests/theorem_manifest.yaml`, checked by Lean, and linked through the paper manifest.
+All ten theorem ids are registered in `manifests/theorem_manifest.yaml`, checked by Lean, and linked through the paper manifest. The full representative iff theorem for orbit membership remains a Phase IV target until the reverse implication is Lean-proved.
 
 ## Proof And Sidecars
 

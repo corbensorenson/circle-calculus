@@ -17,6 +17,7 @@ namespace Circle.PaperS101
 #check Circle.period_eq_n_div_gcd
 #check Circle.orbit_decomposition_count
 #check Circle.sameOrbit_iff_difference_mem_orbitSubgroup
+#check Circle.sameOrbit_nat_modEq_gcd_of_sameOrbit
 #check Circle.fullCoil_iff_coprime
 #check Circle.prime_full_coil
 

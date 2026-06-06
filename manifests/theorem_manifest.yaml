@@ -799,6 +799,22 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["bounded examples: affine image has cardinality n exactly when gcd(n,a)=1"]
 
+  - id: CC-T0059
+    name: Same orbit implies gcd congruence of natural representatives
+    status: proved
+    lean_name: Circle.sameOrbit_nat_modEq_gcd_of_sameOrbit
+    informal_statement: "If two natural representatives are in the same stride-orbit quotient, then they are congruent modulo gcd(n,k)."
+    formal_statement: "forall (n k x y : Nat), Circle.sameOrbit n k ((x : Nat) : Circle.C n) ((y : Nat) : Circle.C n) -> x congruent y modulo Nat.gcd n k"
+    dictionary_dependencies: ["CC-0201", "CC-0207", "CC-0208"]
+    paper_refs: ["PAPER_01_FINITE_CIRCLES.section.orbits", "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md"]
+    python_tests: ["tests/test_orbit_period.py::test_same_orbit_implies_gcd_congruence_examples", "sidecars/PAPER_01_FINITE_CIRCLES/python/test_paper_01_examples.py::test_same_orbit_implies_gcd_congruence_examples"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Orbit.lean by mapping the stride subgroup through the canonical cast C_n -> ZMod(gcd(n,k)); the stride maps to zero because gcd(n,k) divides k."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["bounded examples: same orbit by generated cycle decomposition implies representatives are congruent modulo gcd(n,k)"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved
