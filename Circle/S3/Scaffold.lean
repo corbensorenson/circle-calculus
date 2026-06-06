@@ -85,6 +85,11 @@ noncomputable def unitQuaternionConj (q : UnitQuaternion) : UnitQuaternion where
     rw [quaternionNorm, Quaternion.normSq_star]
     exact q.unit
 
+theorem unitQuaternion_conj_involutive (q : UnitQuaternion) :
+    unitQuaternionConj (unitQuaternionConj q) = q := by
+  apply unitQuaternion_ext
+  simp [unitQuaternionConj]
+
 noncomputable def unitQuaternionNeg (q : UnitQuaternion) : UnitQuaternion where
   val := -q.val
   unit := by

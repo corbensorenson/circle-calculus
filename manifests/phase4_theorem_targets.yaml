@@ -220,6 +220,21 @@ targets:
     next_action: "Promoted to S3S-T0004 by defining spinSignRelated on UnitQuaternion and proving Equivalence."
     guardrail: "Do not claim a complete SO(3) formalization without quotient topology and rotation action proofs."
 
+  - id: P4-S3-004
+    layer: S3
+    priority: medium
+    status: promoted
+    promoted_theorem_id: S3Q-T0008
+    supporting_theorem_ids: ["S3Q-T0003", "S3Q-T0007"]
+    claim_type: theorem
+    title: "Unit-quaternion conjugation is involutive"
+    target_statement: "The bundled conjugate of a unit quaternion returns the original unit quaternion when applied twice."
+    candidate_formalization: "forall q : Circle.S3.UnitQuaternion, Circle.S3.unitQuaternionConj (Circle.S3.unitQuaternionConj q) = q"
+    paper_refs: ["papers/S3/PAPER_S3_02_QUATERNION_COILS.md"]
+    dictionary_dependencies: ["S3Q-0001", "S3Q-0002"]
+    next_action: "Promoted to S3Q-T0008 and Lean-proved as Circle.S3.unitQuaternion_conj_involutive."
+    guardrail: "This is a bundled algebraic unit-quaternion fact, not a complete rotation-space theorem."
+
   - id: P4-S456-001
     layer: S4-S6
     priority: high

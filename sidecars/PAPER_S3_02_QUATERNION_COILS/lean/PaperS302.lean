@@ -17,6 +17,7 @@ namespace Circle.PaperS302
 #check Circle.S3.unitQuaternionMul
 #check Circle.S3.unitQuaternionOne
 #check Circle.S3.unitQuaternionConj
+#check Circle.S3.unitQuaternion_conj_involutive
 #check Circle.S3.unitQuaternion_one_mul
 #check Circle.S3.unitQuaternion_mul_one
 #check Circle.S3.unitQuaternion_identity

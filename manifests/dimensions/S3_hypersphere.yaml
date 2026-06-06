@@ -155,6 +155,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py::test_unit_quaternion_conjugate_is_inverse
     blocker: ""
+  - id: S3Q-T0008
+    status: lean_proved
+    lean_name: Circle.S3.unitQuaternion_conj_involutive
+    informal_statement: "Bundled unit-quaternion conjugation is involutive."
+    formal_statement: "forall q : Circle.S3.UnitQuaternion, Circle.S3.unitQuaternionConj (Circle.S3.unitQuaternionConj q) = q"
+    dictionary_dependencies: ["S3Q-0001", "S3Q-0002"]
+    paper_refs: ["papers/S3/PAPER_S3_02_QUATERNION_COILS.md"]
+    imports_allowed: ["Common", "S1", "S2"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py::test_unit_quaternion_conjugate_is_involutive
+    blocker: ""
   - id: S3H-T0001
     status: lean_proved
     lean_name: Circle.S3.hopfMap_lands_sphere

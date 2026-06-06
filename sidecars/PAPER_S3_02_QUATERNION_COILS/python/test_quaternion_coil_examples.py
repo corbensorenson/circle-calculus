@@ -47,6 +47,11 @@ def test_unit_quaternion_conjugate_is_inverse() -> None:
         assert_quaternion_close(q.conjugate() * q, ONE)
 
 
+def test_unit_quaternion_conjugate_is_involutive() -> None:
+    for q in [ONE, I, J, K, unit_i_phase(math.pi / 5.0), unit_i_phase(math.pi / 3.0)]:
+        assert_quaternion_close(q.conjugate().conjugate(), q)
+
+
 def test_quaternion_multiplication_is_noncommutative() -> None:
     assert I * J == K
     assert J * I == -K
