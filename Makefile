@@ -4,9 +4,9 @@ QUARTO_HOME ?= $(CURDIR)/.tools/quarto-home
 QUARTO_DENO_DIR ?= $(CURDIR)/.tools/quarto-deno
 QUARTO_ENV := HOME="$(QUARTO_HOME)" DENO_DIR="$(QUARTO_DENO_DIR)"
 
-.PHONY: check lean sidecarlean test manifest dictionary papermanifest paperlinks papersources claimlanguage phase4targets phase5targets phase6targets glyphfixtures dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples site-data sitecheck site-render site-preview living-book-check
+.PHONY: check lean sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests claimlanguage phase4targets phase5targets phase6targets glyphfixtures dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples site-data sitecheck site-render site-preview living-book-check
 
-check: lean sidecarlean test manifest dictionary papermanifest paperlinks papersources claimlanguage phase4targets phase5targets phase6targets glyphfixtures dimensioncheck nofake sitecheck
+check: lean sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests claimlanguage phase4targets phase5targets phase6targets glyphfixtures dimensioncheck nofake sitecheck
 
 lean:
 	$(LAKE) build
@@ -31,6 +31,9 @@ paperlinks:
 
 papersources:
 	python scripts/check_paper_source_trails.py
+
+researchmanifests:
+	python scripts/check_research_manifests.py
 
 claimlanguage:
 	python scripts/check_claim_language.py
@@ -84,4 +87,4 @@ site-render: site-data
 site-preview: site-data
 	$(QUARTO_ENV) $(QUARTO) preview site
 
-living-book-check: lean sidecarlean test manifest dictionary papermanifest paperlinks papersources dimensioncheck nofake sitecheck site-render
+living-book-check: lean sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests dimensioncheck nofake sitecheck site-render

@@ -94,14 +94,15 @@
       ],
       "checks": [
         "python scripts/check_lean_sidecars.py",
+        "python scripts/check_research_manifests.py",
         "python -m pytest"
       ],
       "guardrail": "Do not call Python tests formal proofs.",
       "id": "P6-SWEEP-004",
-      "next_action": "Review sidecar names and benchmark fixtures for stale examples or missing negative controls.",
+      "next_action": "Application/theory manifest sidecar and benchmark refs now have a dedicated validator; continue reviewing fixtures for missing negative controls.",
       "objective": "Ensure Python examples and Lean sidecars match paper claims without being presented as proofs.",
       "priority": "high",
-      "status": "planned",
+      "status": "active",
       "sweep_type": "sidecar_parity"
     },
     {
