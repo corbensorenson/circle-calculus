@@ -43,6 +43,34 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY/python/test_s456_parity_examples.py
     blocker: ""
+  - id: COMMON-T0004
+    status: lean_proved
+    lean_name: Circle.Common.iteratedSuspensionEuler
+    informal_statement: "The Euler characteristic after any finite number of suspension steps follows the recursive alternating update chi -> 2 - chi."
+    formal_statement: "forall steps : Nat, forall counts : List Nat, eulerCharacteristic (iteratedSuspensionCounts steps counts) = alternatingSuspensionEuler steps (eulerCharacteristic counts)"
+    dictionary_dependencies: ["COMMON-0002", "COMMON-0003"]
+    paper_refs: ["papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY/python/test_s456_parity_examples.py::test_general_iterated_suspension_euler_formula
+    blocker: ""
+  - id: COMMON-T0005
+    status: lean_proved
+    lean_name: Circle.Common.iteratedSuspensionEuler_two_step
+    informal_statement: "Two additional finite suspension steps preserve Euler characteristic, giving the finite iterated-suspension parity law."
+    formal_statement: "forall steps : Nat, forall counts : List Nat, eulerCharacteristic (iteratedSuspensionCounts (steps+2) counts) = eulerCharacteristic (iteratedSuspensionCounts steps counts)"
+    dictionary_dependencies: ["COMMON-0002", "COMMON-0003", "COMMON-0004"]
+    paper_refs: ["papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY/python/test_s456_parity_examples.py::test_iterated_suspension_euler_two_step_parity
+    blocker: ""
   - id: P2S-T0001
     status: lean_proved
     lean_name: Circle.Phase2.doubleSuspensionEuler

@@ -41,6 +41,8 @@ This formula is the whole engine behind the even/odd sphere Euler parity in the 
 - `COMMON-T0001`: `Circle.Common.eulerCharacteristic`
 - `COMMON-T0002`: `Circle.Common.suspensionCounts`
 - `COMMON-T0003`: `Circle.Common.suspensionEuler`
+- `COMMON-T0004`: `Circle.Common.iteratedSuspensionEuler`
+- `COMMON-T0005`: `Circle.Common.iteratedSuspensionEuler_two_step`
 - `S456-T0001`: `Circle.S4.iteratedSuspensionEulerParity`
 
 ## Proved Common Core
@@ -50,6 +52,20 @@ This formula is the whole engine behind the even/odd sphere Euler parity in the 
 `COMMON-T0002` is represented by `Circle.Common.suspensionCounts`, the finite suspension count transform.
 
 `COMMON-T0003` is proved by `Circle.Common.suspensionEuler`: for every finite cell-count list, suspension changes Euler characteristic by `2 - chi`.
+
+`COMMON-T0004` generalizes this from one suspension to any finite number of suspension steps:
+
+```text
+chi(Susp^m(K)) = alternatingSuspensionEuler(m, chi(K))
+```
+
+where `alternatingSuspensionEuler` recursively applies `chi -> 2 - chi`.
+
+`COMMON-T0005` proves the two-step parity corollary:
+
+```text
+chi(Susp^(m+2)(K)) = chi(Susp^m(K))
+```
 
 These are finite combinatorial facts. They do not assert smooth realization, homeomorphism classification, or stable homotopy.
 
@@ -73,7 +89,7 @@ chi(S^d) = 1 + (-1)^d
 
 for the dimensions currently in this bridge.
 
-The Python sidecar checks the same common suspension-Euler formula and the `S^4`, `S^5`, `S^6` parity pattern on finite suspended-circle examples.
+The Python sidecar checks the same common suspension-Euler formula, the general iterated suspension formula, the two-step parity law, and the `S^4`, `S^5`, `S^6` parity pattern on finite suspended-circle examples.
 
 ## Why The Bridge Matters
 

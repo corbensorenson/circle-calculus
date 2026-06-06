@@ -148,14 +148,16 @@ targets:
   - id: P4-S456-001
     layer: S4-S6
     priority: high
-    status: planned
+    status: promoted
+    promoted_theorem_id: COMMON-T0005
+    supporting_theorem_ids: ["COMMON-T0003", "COMMON-T0004", "S456-T0001"]
     claim_type: theorem
     title: "General iterated suspension Euler parity"
     target_statement: "Iterated finite suspensions alternate Euler characteristic according to suspension parity."
-    candidate_formalization: "eulerCharacteristic (iterate suspensionCounts m counts) = if m is even then chi counts else 2 - chi counts"
+    candidate_formalization: "eulerCharacteristic (iteratedSuspensionCounts m counts) = alternatingSuspensionEuler m (eulerCharacteristic counts), with a two-step parity corollary."
     paper_refs: ["papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md"]
     dictionary_dependencies: ["S456-0001", "COMMON-0002", "COMMON-0003"]
-    next_action: "Generalize the proved S4/S5/S6 finite calculation to an iteration theorem."
+    next_action: "Promoted to COMMON-T0004 and COMMON-T0005 as the general recursive iteration theorem and two-step parity corollary."
     guardrail: "Keep this finite-cell-count only, not a smooth classification theorem."
 
   - id: P4-S456-002

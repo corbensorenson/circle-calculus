@@ -286,6 +286,8 @@ papers:
       - COMMON-T0001
       - COMMON-T0002
       - COMMON-T0003
+      - COMMON-T0004
+      - COMMON-T0005
       - S456-T0001
     dictionary_ids:
       - COMMON-0001

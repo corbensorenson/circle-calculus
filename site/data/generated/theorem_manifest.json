@@ -2286,7 +2286,7 @@
       "informal_statement": "Suspension changes Euler characteristic by chi(Susp K)=2-chi(K).",
       "lean_name": "Circle.Common.suspensionEuler",
       "lean_source": "Circle/Common/Scaffold.lean",
-      "lean_source_line": 29,
+      "lean_source_line": 37,
       "original_status": "lean_proved",
       "paper_refs": [
         "docs/COMPLETION_ROADMAP.md#common-proof-targets"
@@ -2298,6 +2298,67 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "sidecars/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY/python/test_s456_parity_examples.py"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0002",
+        "COMMON-0003"
+      ],
+      "formal_statement": "forall steps : Nat, forall counts : List Nat, eulerCharacteristic (iteratedSuspensionCounts steps counts) = alternatingSuspensionEuler steps (eulerCharacteristic counts)",
+      "id": "COMMON-T0004",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "The Euler characteristic after any finite number of suspension steps follows the recursive alternating update chi -> 2 - chi.",
+      "lean_name": "Circle.Common.iteratedSuspensionEuler",
+      "lean_source": "Circle/Common/Scaffold.lean",
+      "lean_source_line": 47,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY/python/test_s456_parity_examples.py::test_general_iterated_suspension_euler_formula"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0002",
+        "COMMON-0003",
+        "COMMON-0004"
+      ],
+      "formal_statement": "forall steps : Nat, forall counts : List Nat, eulerCharacteristic (iteratedSuspensionCounts (steps+2) counts) = eulerCharacteristic (iteratedSuspensionCounts steps counts)",
+      "id": "COMMON-T0005",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "Two additional finite suspension steps preserve Euler characteristic, giving the finite iterated-suspension parity law.",
+      "lean_name": "Circle.Common.iteratedSuspensionEuler_two_step",
+      "lean_source": "Circle/Common/Scaffold.lean",
+      "lean_source_line": 62,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY/python/test_s456_parity_examples.py::test_iterated_suspension_euler_two_step_parity"
         ]
       }
     },
