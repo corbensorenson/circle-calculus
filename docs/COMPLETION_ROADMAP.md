@@ -302,7 +302,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `P2G-T0001` through `P2G-T0005` are Lean-proved proof-glyph certificate projection and finite theorem-metadata validity facts with Python examples; glyph syntax, normal forms, semantics, generated-JSON parsing, dependency correctness, and proof search remain future work.
 - [x] `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md`
   - Program: coil signatures, closure profiles, prime-lag recurrence, antinode maps, and periodic-data benchmarks.
-  - Status: polished draft; `APPD-T0001` through `APPD-T0003` are Lean-proved finite phase-coordinate facts with Python examples; real-data and benchmark claims remain future work.
+  - Status: polished draft; `APPD-T0001` through `APPD-T0003` are Lean-proved finite phase-coordinate facts with Python examples. `APPD-B0001` is an exploratory Python fixture comparing coil closure ranking with an autocorrelation baseline on a deterministic known-period signal; real-data and usefulness claims remain future work.
 - [x] `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md`
   - Program: certified cyclic/circulant/orbit structure lowered to FFT/NTT/permutation backends and benchmarked.
   - Status: polished draft; `COMPC-T0001` through `COMPC-T0003` are Lean-proved cyclic-address facts with Python examples; backend lowering and performance claims remain benchmark work.
@@ -382,6 +382,7 @@ Application guardrails:
 - [x] `APPD-T0001`: finite phase coordinate is bounded by a positive period.
 - [x] `APPD-T0002`: finite phase coordinate closes after adding one full period.
 - [x] `APPD-T0003`: finite phase coordinate at zero is zero.
+- [x] `APPD-B0001`: exploratory known-period Python fixture compares coil closure ranking with an autocorrelation baseline.
 - [x] `COMPC-T0001`: cyclic address is bounded by a positive circular buffer size.
 - [x] `COMPC-T0002`: cyclic address is unchanged after adding one full buffer size.
 - [x] `COMPC-T0003`: cyclic address at zero is zero.

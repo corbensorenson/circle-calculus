@@ -581,7 +581,10 @@
     {
       "dictionary_ids": [
         "COMMON-0016",
-        "COMMON-0017"
+        "COMMON-0017",
+        "COMMON-0036",
+        "COMMON-0037",
+        "COMMON-0038"
       ],
       "id": "PAPER_APP_01_COIL_DATA_ANALYSIS",
       "path": "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md",

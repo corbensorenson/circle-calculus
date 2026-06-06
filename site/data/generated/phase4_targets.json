@@ -416,17 +416,20 @@
       "claim_type": "experiment",
       "dictionary_dependencies": [
         "COMMON-0016",
-        "COMMON-0017"
+        "COMMON-0017",
+        "COMMON-0036",
+        "COMMON-0037",
+        "COMMON-0038"
       ],
       "guardrail": "Benchmark results are not Lean proofs.",
       "id": "P4-APP-001",
       "layer": "Applications",
-      "next_action": "Add deterministic synthetic generators and benchmark fixtures.",
+      "next_action": "Deterministic known-period fixture added; expand to noisier synthetic cases and periodogram/Fourier baselines before usefulness claims.",
       "paper_refs": [
         "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md"
       ],
       "priority": "high",
-      "status": "planned",
+      "status": "exploratory_python",
       "target_statement": "Coil signatures should be compared against standard periodogram/autocorrelation baselines on synthetic periodic data before usefulness claims.",
       "title": "Coil signatures versus ordinary period baselines"
     },

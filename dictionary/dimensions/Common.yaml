@@ -398,3 +398,36 @@ entries:
     forbidden_meanings:
       - "A general cocycle theorem."
       - "A connection, curvature, or holonomy theorem."
+  - id: COMMON-0036
+    name: "Synthetic period benchmark"
+    kind: experiment
+    symbol: "known_period_fixture"
+    formal_definition: "`circle_math.applications.coil_data.benchmark_known_period`, a deterministic fixture with known-period synthetic signals and candidate period rankings."
+    intuition: "A small benchmark harness for testing coil-period ideas before touching real data."
+    dependencies: ["COMMON-0016", "COMMON-0017"]
+    introduced_in: "PAPER_APP_01_COIL_DATA_ANALYSIS"
+    forbidden_meanings:
+      - "A real-data benchmark result."
+      - "Evidence that coil signatures outperform baselines."
+  - id: COMMON-0037
+    name: "Coil closure error"
+    kind: metric
+    symbol: "closure_error(period)"
+    formal_definition: "`circle_math.applications.coil_data.coil_closure_error`, the mean squared difference between a signal and itself shifted by a candidate period."
+    intuition: "A simple closure profile score: lower error means the candidate period closes the sampled coil better."
+    dependencies: ["COMMON-0036"]
+    introduced_in: "PAPER_APP_01_COIL_DATA_ANALYSIS"
+    forbidden_meanings:
+      - "A formal proof of hidden periodicity."
+      - "A universal period detector."
+  - id: COMMON-0038
+    name: "Autocorrelation period baseline"
+    kind: metric
+    symbol: "autocorr(lag)"
+    formal_definition: "`circle_math.applications.coil_data.autocorrelation_score`, the normalized autocorrelation score for a candidate lag."
+    intuition: "The ordinary baseline the coil closure profile must be compared against before usefulness claims."
+    dependencies: ["COMMON-0036"]
+    introduced_in: "PAPER_APP_01_COIL_DATA_ANALYSIS"
+    forbidden_meanings:
+      - "A proof that Fourier or periodogram methods are unnecessary."
+      - "A benchmark without candidate-period controls."

@@ -5,6 +5,8 @@ papers:
 sidecars:
   - sidecars/PAPER_APP_01_COIL_DATA_ANALYSIS/lean/PaperApp01.lean
   - sidecars/PAPER_APP_01_COIL_DATA_ANALYSIS/python/test_phase_coordinate_examples.py
+python_reference:
+  - circle_math/applications/coil_data.py
 theorems:
   - id: APPD-T0001
     status: lean_proved
@@ -19,6 +21,12 @@ theorems:
     lean_name: Circle.Applications.phaseCoordinate_zero
     dictionary_dependencies: ["COMMON-0016"]
 next_targets:
-  - "Add synthetic periodic-data generators and compare coil signatures against ordinary period baselines."
+  - "Expand deterministic synthetic fixtures to noisy, aliased, and multi-period cases."
+  - "Add periodogram/Fourier baselines before usefulness claims."
   - "Keep real-data claims exploratory until benchmarked."
+benchmarks:
+  - id: APPD-B0001
+    status: exploratory_python
+    path: sidecars/PAPER_APP_01_COIL_DATA_ANALYSIS/python/test_phase_coordinate_examples.py::test_known_period_benchmark_fixture_reports_both_methods
+    description: "Deterministic known-period synthetic fixture comparing coil closure ranking against an autocorrelation baseline."
 guardrail: "Benchmark against ordinary periodic baselines."

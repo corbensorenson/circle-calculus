@@ -253,14 +253,14 @@ targets:
   - id: P4-APP-001
     layer: Applications
     priority: high
-    status: planned
+    status: exploratory_python
     claim_type: experiment
     title: "Coil signatures versus ordinary period baselines"
     target_statement: "Coil signatures should be compared against standard periodogram/autocorrelation baselines on synthetic periodic data before usefulness claims."
     candidate_formalization: "Executable benchmark protocol plus bounded phase-coordinate theorem links."
     paper_refs: ["papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md"]
-    dictionary_dependencies: ["COMMON-0016", "COMMON-0017"]
-    next_action: "Add deterministic synthetic generators and benchmark fixtures."
+    dictionary_dependencies: ["COMMON-0016", "COMMON-0017", "COMMON-0036", "COMMON-0037", "COMMON-0038"]
+    next_action: "Deterministic known-period fixture added; expand to noisier synthetic cases and periodogram/Fourier baselines before usefulness claims."
     guardrail: "Benchmark results are not Lean proofs."
 
   - id: P4-APP-002

@@ -2,8 +2,10 @@
 title: "Data Analysis"
 ---
 
-The data-analysis page will track coil signatures, circular coordinates, period scans, and explanation layers.
+The data-analysis page tracks finite phase-coordinate proofs and exploratory benchmark fixtures for periodic synthetic data. The first fixture compares coil closure ranking with an autocorrelation baseline on a deterministic known-period signal; it is not a real-data usefulness claim.
 
+<div class="theorem-box" data-theorem-id="APPD-T0001"></div>
 <div class="theorem-box" data-theorem-id="APPD-T0002"></div>
+<div class="theorem-box" data-theorem-id="APPD-T0003"></div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

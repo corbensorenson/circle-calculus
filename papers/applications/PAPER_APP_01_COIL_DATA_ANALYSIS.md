@@ -1,6 +1,6 @@
 # Circle Calculus Application 1: Coil Data Analysis
 
-Status: polished draft with a proved finite phase-coordinate seed.
+Status: polished draft with a proved finite phase-coordinate seed and an exploratory deterministic benchmark fixture.
 
 ## Aim
 
@@ -40,7 +40,16 @@ The Python sidecar checks the same synthetic examples for boundedness, closure, 
 
 ## Benchmark Program
 
-The first practical benchmark should start with synthetic signals where the ground-truth period is known. A minimal pipeline is:
+The first practical benchmark starts with synthetic signals where the ground-truth period is known. The current Python reference module `circle_math.applications.coil_data` adds:
+
+- deterministic known-period signal generation;
+- `coil_closure_error`, a mean-squared closure score for candidate periods;
+- `autocorrelation_score`, an ordinary normalized autocorrelation baseline;
+- `benchmark_known_period`, a fixture reporting both best-period choices.
+
+The current fixture checks that both coil closure and autocorrelation recover the known period for a simple deterministic synthetic signal. That is a sanity check, not a usefulness claim.
+
+A minimal future pipeline is:
 
 ```text
 signal
@@ -55,8 +64,8 @@ Only after synthetic behavior is understood should the project move to real data
 
 ## Next Program
 
-- Add synthetic periodic-data generators and known-period fixtures.
-- Compare coil signatures against ordinary autocorrelation and Fourier baselines.
+- Expand synthetic periodic-data generators to noisy, aliased, and multi-period fixtures.
+- Compare coil signatures against ordinary autocorrelation, periodogram, and Fourier baselines.
 - Track aliasing and false positives explicitly.
 - Keep Python/MLX experiments separate from Lean proof status.
 
