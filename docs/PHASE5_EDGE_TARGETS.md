@@ -13,7 +13,7 @@ The source of truth is `manifests/phase5_edge_targets.yaml`, validated by `scrip
 - `P5-EDGE-005`: learned phase-channel baseline comparison. Status: exploratory Python control fixture.
 - `P5-EDGE-006`: circular layout and sampling backend comparison. Status: exploratory periodic-stencil validation fixture.
 - `P5-EDGE-007`: quaternion and Hopf orientation-debugging note. Status: exploratory paper/Python sign-ambiguity example.
-- `P5-EDGE-008`: Living Book learning-path evaluation.
+- `P5-EDGE-008`: Living Book learning-path evaluation. Status: active reader-path page.
 
 ## Discipline
 

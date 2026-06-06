@@ -144,7 +144,7 @@ targets:
   - id: P5-EDGE-008
     area: "Education and public understanding"
     priority: high
-    status: planned
+    status: active
     claim_type: tooling
     title: "Living Book learning-path evaluation"
     edge_question: "Can the Living Book make cyclic and dimensional ideas easier to learn while preserving formal proof status?"
@@ -155,8 +155,9 @@ targets:
       - "Every interactive example is labeled as intuition/executable reference rather than proof."
     artifact_refs:
       - "site/index.qmd"
+      - "site/reader_path.qmd"
       - "site/roadmap.qmd"
       - "site/chapters/S1/index.qmd"
     dictionary_dependencies: ["CC-0001", "COMMON-0033"]
-    next_action: "Add a Living Book reader path page once the target index supports Phase V."
+    next_action: "Reader path page added; next evaluate whether the path needs page-level screenshots or reader-task checks after more widgets mature."
     guardrail: "Do not weaken theorem status language for pedagogical smoothness."

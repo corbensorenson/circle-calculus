@@ -27,6 +27,7 @@ Compare widget behavior against the Python reference models and tests. Python ex
 ## Start
 
 - Begin with [S1 finite circles](chapters/S1/index.qmd).
+- Follow the [reader path](reader_path.qmd) for a proof-status-safe tour.
 - Inspect the [project roadmap](roadmap.qmd).
 - Read the proof-status policy in [Living Book Policy](../docs/LIVING_BOOK_POLICY.md).
 

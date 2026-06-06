@@ -13,6 +13,8 @@ website:
         text: Start
       - href: roadmap.qmd
         text: Roadmap
+      - href: reader_path.qmd
+        text: Reader Path
       - href: status.qmd
         text: Status
       - href: dictionary.qmd
@@ -32,6 +34,8 @@ website:
         text: Start
       - href: roadmap.qmd
         text: Roadmap
+      - href: reader_path.qmd
+        text: Reader Path
       - href: status.qmd
         text: Theorem Status
       - href: dictionary.qmd

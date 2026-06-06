@@ -1,0 +1,57 @@
+---
+title: "Reader Path"
+---
+
+Use this path when you want to understand the project without losing the proof-status thread.
+
+## 1. Start With The Status Rules
+
+- Read the [theorem status legend](status.qmd).
+- Open the [theorem index](theorems.qmd) when a page names a theorem id.
+- Open the [dictionary index](dictionary.qmd) when a page uses project vocabulary.
+- Use the [target index](targets.qmd) for planned, exploratory, blocked, or edge-problem work.
+
+::: {.warning-box}
+Targets, widgets, Python examples, and diagrams are not proofs. A theorem is Lean-proved only when generated theorem data and the local Lean build say so.
+:::
+
+## 2. Learn The Dimensional Spine
+
+| Step | Page | What To Check |
+| --- | --- | --- |
+| S0 | [Opposition](chapters/S0/opposition.qmd) | Two-point sign/opposition vocabulary. |
+| S1 | [Finite circles](chapters/S1/01_finite_circles.qmd) | Circular address spaces and nodes. |
+| S1 | [Rotation as addition](chapters/S1/02_rotation_as_addition.qmd) | Rotation theorem cards and Python/widget agreement. |
+| S1 | [Coils and closure](chapters/S1/03_coils_orbits_closure.qmd) | Orbit, period, and closure status. |
+| S1 | [Period and primes](chapters/S1/04_period_gcd_prime_full_coils.qmd) | GCD/period/full-coil claims and their status badges. |
+| S2 | [Suspended circles](chapters/S2/suspended_circles.qmd) | Scaffolded sphere-grid bridge. |
+| S3 | [Quaternions](chapters/S3/quaternions.qmd) | Quaternion and spin sign-ambiguity theorem links. |
+| S3 | [Hopf coils](chapters/S3/hopf_coils.qmd) | Bounded Hopf coordinate facts and product warnings. |
+
+## 3. Follow Applications Only Through Their Guardrails
+
+- [Data analysis](chapters/applications/data_analysis.qmd) tracks exploratory periodic-data fixtures.
+- [Compute](chapters/applications/compute.qmd) tracks circular compute fixtures and backend guardrails.
+- [AI](chapters/applications/ai.qmd) tracks phase-channel fixtures and explicit negative controls.
+- [Rendering](chapters/applications/rendering.qmd) remains scaffolded until benchmarks exist.
+
+## 4. Open The Source Trail
+
+- Papers live in [`papers/`](../papers/).
+- Lean proofs live in [`Circle/`](../Circle/) and sidecars under [`sidecars/`](../sidecars/).
+- Python reference models live in [`circle_math/`](../circle_math/).
+- Manifests live in [`manifests/`](../manifests/).
+- Dictionary source lives in [`dictionary/`](../dictionary/).
+
+## 5. Verify Locally
+
+The repository verification path is:
+
+```bash
+make check
+make site-render
+```
+
+These commands are the local source of truth for the public site, proof metadata, sidecars, dictionary links, target links, and fake-proof guardrails.
+
+<script type="module" src="widgets/shared/widget_base.js"></script>

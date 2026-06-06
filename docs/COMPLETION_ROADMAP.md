@@ -666,6 +666,7 @@ Outputs:
 - [x] `P5-EDGE-005`: learned phase-channel baseline fixture records both a positive periodic case and a negative nonperiodic control.
 - [x] `P5-EDGE-006`: periodic-boundary stencil validation fixture checks direct, dense, and gcd-cycle traversal outputs before backend or speed claims.
 - [x] `P5-EDGE-007`: orientation-debugging note records q/-q sign ambiguity against existing S3 spin theorem ids without claiming full SO(3) or robotics verification.
+- [x] `P5-EDGE-008`: Living Book reader path links dimensions, applications, theorem status, dictionary entries, source trails, and local verification commands.
 - [ ] At least one experiment-ready paper or application note for each accepted edge direction.
 - [ ] Python/MLX or other executable sidecars where the claim is computational.
 - [ ] Lean theorem targets where the claim is formal.
