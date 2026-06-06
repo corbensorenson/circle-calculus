@@ -232,6 +232,15 @@ theorem octonionConjugateNorm (o : OctonionCoord) :
   ring_nf
   tauto
 
+theorem octonionConjugateNorm_left (o : OctonionCoord) :
+    octonionMulCoord (octonionConjCoord o) o = octonionRealCoord (octonionCoordNormSq o) := by
+  rcases o with ⟨⟨a, b, c, d⟩, ⟨e, f, g, h⟩⟩
+  simp [octonionMulCoord, octonionConjCoord, octonionRealCoord, octonionCoordNormSq,
+    quaternionCoordNormSq, quaternionConjCoord, quaternionMulCoord, quaternionAddCoord,
+    quaternionNegCoord, quaternionSubCoord]
+  ring_nf
+  tauto
+
 theorem octonionNormMul (a b : OctonionCoord) :
     octonionCoordNormSq (octonionMulCoord a b) =
       octonionCoordNormSq a * octonionCoordNormSq b := by
@@ -247,6 +256,14 @@ theorem unitOctonion_mul_closed (a b : OctonionCoord)
     octonionCoordNormSq (octonionMulCoord a b) = 1 := by
   rw [octonionNormMul, ha, hb]
   ring
+
+theorem unitOctonion_conj_inverse (o : OctonionCoord)
+    (h : octonionCoordNormSq o = 1) :
+    octonionMulCoord o (octonionConjCoord o) = octonionRealCoord 1 ∧
+      octonionMulCoord (octonionConjCoord o) o = octonionRealCoord 1 := by
+  constructor
+  · rw [octonionConjugateNorm, h]
+  · rw [octonionConjugateNorm_left, h]
 
 theorem octonion_noncommutative_example :
     octonionMulCoord (octonionBasisCoord ⟨1, by norm_num⟩) (octonionBasisCoord ⟨2, by norm_num⟩) ≠

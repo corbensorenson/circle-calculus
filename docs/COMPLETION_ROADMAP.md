@@ -267,10 +267,10 @@ Goal: make the executable examples line up with the Lean-backed papers without d
   - Keep roadmap/exploratory until `S3` quaternion calculus and `S4` base are stable.
   - Status: polished draft; `S7QH-T0001` through `S7QH-T0003` are Lean-proved coordinate landing, right-phase invariance, and right-phase action theorems; quaternionic projective space, quotient topology, and full fibration formalization remain future work.
 - [x] `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md`
-  - Targets: `S7O-T0001` through `S7O-T0006`
+  - Targets: `S7O-T0001` through `S7O-T0008`
   - Warning targets: `S7O-W0001`, `S7O-W0002`
   - Unit octonions are not a group.
-  - Status: polished draft; `S7O-T0001` through `S7O-T0006` are Lean-proved in a bounded Cayley-Dickson coordinate model; higher octonion library design and octonionic Hopf formalization remain future work.
+  - Status: polished draft; `S7O-T0001` through `S7O-T0008` are Lean-proved in a bounded Cayley-Dickson coordinate model, including two-sided conjugate norm and bracket-explicit norm-one conjugate inverse equations; higher octonion library design and octonionic Hopf formalization remain future work.
 
 ### Future S15
 

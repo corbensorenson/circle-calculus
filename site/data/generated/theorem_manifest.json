@@ -5082,7 +5082,7 @@
       "informal_statement": "Octonion norm is multiplicative.",
       "lean_name": "Circle.S7.octonionNormMul",
       "lean_source": "Circle/S7/Scaffold.lean",
-      "lean_source_line": 235,
+      "lean_source_line": 244,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
@@ -5118,7 +5118,7 @@
       "informal_statement": "Unit octonions are closed under multiplication, without forming a group.",
       "lean_name": "Circle.S7.unitOctonion_mul_closed",
       "lean_source": "Circle/S7/Scaffold.lean",
-      "lean_source_line": 245,
+      "lean_source_line": 254,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
@@ -5153,7 +5153,7 @@
       "informal_statement": "Octonion multiplication is noncommutative by a formal example.",
       "lean_name": "Circle.S7.octonion_noncommutative_example",
       "lean_source": "Circle/S7/Scaffold.lean",
-      "lean_source_line": 251,
+      "lean_source_line": 268,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
@@ -5189,7 +5189,7 @@
       "informal_statement": "Octonion multiplication is nonassociative by a formal example.",
       "lean_name": "Circle.S7.octonion_nonassociative_example",
       "lean_source": "Circle/S7/Scaffold.lean",
-      "lean_source_line": 257,
+      "lean_source_line": 274,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
@@ -5201,6 +5201,80 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS/python/test_paper_s7_03_examples.py::test_octonion_multiplication_is_nonassociative"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S7O-0001",
+        "S7O-0002",
+        "S7O-W0002"
+      ],
+      "formal_statement": "forall o : Circle.S7.OctonionCoord, Circle.S7.octonionMulCoord (Circle.S7.octonionConjCoord o) o = Circle.S7.octonionRealCoord (Circle.S7.octonionCoordNormSq o)",
+      "id": "S7O-T0007",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6"
+      ],
+      "informal_statement": "Octonion conjugation also returns the real norm coordinate in the left-product order.",
+      "lean_name": "Circle.S7.octonionConjugateNorm_left",
+      "lean_source": "Circle/S7/Scaffold.lean",
+      "lean_source_line": 235,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
+      ],
+      "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS/python/test_paper_s7_03_examples.py::test_octonion_conjugate_norm_returns_real_norm_square"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S7O-0001",
+        "S7O-0002",
+        "S7O-W0002"
+      ],
+      "formal_statement": "forall o : Circle.S7.OctonionCoord, Circle.S7.octonionCoordNormSq o = 1 -> Circle.S7.octonionMulCoord o (Circle.S7.octonionConjCoord o) = Circle.S7.octonionRealCoord 1 and Circle.S7.octonionMulCoord (Circle.S7.octonionConjCoord o) o = Circle.S7.octonionRealCoord 1",
+      "id": "S7O-T0008",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6"
+      ],
+      "informal_statement": "A norm-one octonion has bracket-explicit left and right conjugate inverse equations.",
+      "lean_name": "Circle.S7.unitOctonion_conj_inverse",
+      "lean_source": "Circle/S7/Scaffold.lean",
+      "lean_source_line": 260,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
+      ],
+      "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS/python/test_paper_s7_03_examples.py::test_unit_octonion_conjugate_inverse_with_explicit_bracketing"
         ]
       }
     },

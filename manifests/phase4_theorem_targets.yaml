@@ -193,14 +193,16 @@ targets:
   - id: P4-S7-002
     layer: S7
     priority: high
-    status: planned
+    status: promoted
+    promoted_theorem_id: S7O-T0008
+    supporting_theorem_ids: ["S7O-T0002", "S7O-T0007"]
     claim_type: theorem
     title: "Unit octonion inverse equations with bracketing"
     target_statement: "For a norm-one octonion, conjugation gives left and right inverse equations with explicit bracketing."
     candidate_formalization: "forall o, normSq o = 1 -> (conj o) * o = 1 and o * (conj o) = 1"
     paper_refs: ["papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"]
     dictionary_dependencies: ["S7O-0001", "S7O-0002", "S7O-W0002"]
-    next_action: "Prove only bracket-explicit identities already supported by the coordinate model."
+    next_action: "Promoted to S7O-T0008 with bracket-explicit left and right conjugate inverse equations for norm-one octonions."
     guardrail: "Do not introduce a group API for unit octonions."
 
   - id: P4-S15-001

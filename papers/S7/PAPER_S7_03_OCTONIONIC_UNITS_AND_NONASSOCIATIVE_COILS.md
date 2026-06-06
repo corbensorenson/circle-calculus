@@ -20,6 +20,8 @@ S^7: order and grouping matter
 - `S7O-T0004`: `Circle.S7.unitOctonion_mul_closed`
 - `S7O-T0005`: `Circle.S7.octonion_noncommutative_example`
 - `S7O-T0006`: `Circle.S7.octonion_nonassociative_example`
+- `S7O-T0007`: `Circle.S7.octonionConjugateNorm_left`
+- `S7O-T0008`: `Circle.S7.unitOctonion_conj_inverse`
 - `S7O-W0001`: unit octonions are not a group
 - `S7O-W0002`: bracketing matters
 
@@ -35,9 +37,18 @@ The model includes multiplication, conjugation, squared norm, basis elements `e0
 
 ## Proved Core
 
-`S7O-T0001` proves each coordinate basis element has squared norm `1`. `S7O-T0002` proves that `x * conjugate(x)` is the real coordinate containing `squared_norm(x)`.
+`S7O-T0001` proves each coordinate basis element has squared norm `1`. `S7O-T0002` proves that `x * conjugate(x)` is the real coordinate containing `squared_norm(x)`, and `S7O-T0007` proves the matching left-product equation `conjugate(x) * x`.
 
 `S7O-T0003` proves squared norm is multiplicative for the Cayley-Dickson coordinate product. `S7O-T0004` uses that fact to prove products of norm-one octonions remain norm-one.
+
+`S7O-T0008` packages the norm-one inverse equations:
+
+```text
+x * conjugate(x) = 1
+conjugate(x) * x = 1
+```
+
+The statement is deliberately bracket-explicit. It does not introduce a group API for unit octonions, because ordinary octonion multiplication is not associative.
 
 The next two theorems are warnings made formal. `S7O-T0005` proves:
 
@@ -51,7 +62,7 @@ e1 * e2 != e2 * e1
 (e1 * e2) * e4 != e1 * (e2 * e4)
 ```
 
-The Python sidecar checks the same basis, conjugate-norm, norm-multiplication, unit-product, noncommutativity, and nonassociativity examples.
+The Python sidecar checks the same basis, two-sided conjugate-norm, norm-multiplication, unit-product, norm-one conjugate-inverse, noncommutativity, and nonassociativity examples.
 
 ## Warnings
 

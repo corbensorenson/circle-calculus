@@ -17,8 +17,10 @@ namespace Circle.PaperS703
 #check Circle.S7.octonionBasisCoord
 #check Circle.S7.octonionBasis
 #check Circle.S7.octonionConjugateNorm
+#check Circle.S7.octonionConjugateNorm_left
 #check Circle.S7.octonionNormMul
 #check Circle.S7.unitOctonion_mul_closed
+#check Circle.S7.unitOctonion_conj_inverse
 #check Circle.S7.octonion_noncommutative_example
 #check Circle.S7.octonion_nonassociative_example
 

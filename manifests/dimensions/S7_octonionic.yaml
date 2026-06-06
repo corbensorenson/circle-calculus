@@ -160,6 +160,32 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS/python/test_paper_s7_03_examples.py::test_octonion_multiplication_is_nonassociative"]
     blocker: ""
+  - id: S7O-T0007
+    status: lean_proved
+    lean_name: Circle.S7.octonionConjugateNorm_left
+    informal_statement: "Octonion conjugation also returns the real norm coordinate in the left-product order."
+    formal_statement: "forall o : Circle.S7.OctonionCoord, Circle.S7.octonionMulCoord (Circle.S7.octonionConjCoord o) o = Circle.S7.octonionRealCoord (Circle.S7.octonionCoordNormSq o)"
+    dictionary_dependencies: ["S7O-0001", "S7O-0002", "S7O-W0002"]
+    paper_refs: ["papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS/python/test_paper_s7_03_examples.py::test_octonion_conjugate_norm_returns_real_norm_square"]
+    blocker: ""
+  - id: S7O-T0008
+    status: lean_proved
+    lean_name: Circle.S7.unitOctonion_conj_inverse
+    informal_statement: "A norm-one octonion has bracket-explicit left and right conjugate inverse equations."
+    formal_statement: "forall o : Circle.S7.OctonionCoord, Circle.S7.octonionCoordNormSq o = 1 -> Circle.S7.octonionMulCoord o (Circle.S7.octonionConjCoord o) = Circle.S7.octonionRealCoord 1 and Circle.S7.octonionMulCoord (Circle.S7.octonionConjCoord o) o = Circle.S7.octonionRealCoord 1"
+    dictionary_dependencies: ["S7O-0001", "S7O-0002", "S7O-W0002"]
+    paper_refs: ["papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS/python/test_paper_s7_03_examples.py::test_unit_octonion_conjugate_inverse_with_explicit_bracketing"]
+    blocker: ""
 warnings:
   - id: S7O-W0001
     status: active
