@@ -46,7 +46,15 @@ This keeps publication downstream of the proof/status/data checks. A rendered pa
 
 ## Repository Settings
 
-In GitHub, configure Pages to use **GitHub Actions** as the publishing source. No secrets, custom domain, paid service, or checked-in rendered output are required.
+This repository is configured for GitHub Pages workflow builds at:
+
+```text
+https://corbensorenson.github.io/circle-calculus/
+```
+
+No secrets, custom domain, paid service, or checked-in rendered output are required.
+
+The Quarto site includes `site/.nojekyll` and `site/404.qmd`. The marker prevents accidental Jekyll processing if publishing mode changes, and the 404 page routes stale public links back to the Start, Reader Path, Dictionary, Theorem, Paper, and Roadmap entry points.
 
 If the first deployment does not appear, check:
 

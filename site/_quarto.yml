@@ -2,6 +2,7 @@ project:
   type: website
   output-dir: _site
   resources:
+    - .nojekyll
     - data/generated/*.json
     - widgets/**/*.js
 

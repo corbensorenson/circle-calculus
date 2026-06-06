@@ -1,0 +1,18 @@
+---
+title: "Page Not Found"
+---
+
+This Living Book page was not found.
+
+Use one of the stable entry points:
+
+- [Start](index.qmd)
+- [Reader Path](reader_path.qmd)
+- [Dictionary Index](dictionary.qmd)
+- [Theorem Index](theorems.qmd)
+- [Paper Index](papers.qmd)
+- [Project Roadmap](roadmap.qmd)
+
+The Living Book is generated from the Circle Calculus repository. If a link is stale, the source-of-truth path is still the theorem manifest, dictionary entry, paper manifest, or Lean declaration referenced from the indexes.
+
+<script type="module" src="widgets/shared/widget_base.js"></script>

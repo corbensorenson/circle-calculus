@@ -8,6 +8,7 @@ from site_lib import ROOT
 REQUIRED = [
     "site/_quarto.yml",
     "site/index.qmd",
+    "site/404.qmd",
     "site/about.qmd",
     "site/roadmap.qmd",
     "site/status.qmd",
@@ -45,6 +46,7 @@ REQUIRED = [
 ]
 
 REQUIRED_QUARTO_RESOURCES = [
+    ".nojekyll",
     "data/generated/*.json",
     "widgets/**/*.js",
 ]
