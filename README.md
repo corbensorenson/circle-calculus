@@ -62,7 +62,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S1/PAPER_S1_02_WINDING_NATURALS.md` | polished dimension guide draft | `CC-T0009` through `CC-T0016` linked in dimension layout |
 | `papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md` | polished draft | `S1O-T0001` through `S1O-T0003` proved with Python examples |
 | `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md` | polished draft | `CC-T0008`, `CC-T0017` through `CC-T0054`, and `CC-T0056` through `CC-T0058` proved; linked to finite-coil signature and number-provenance fixtures |
-| `papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md` | polished draft | `S0-T0001` through `S0-T0004` proved with Python examples |
+| `papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md` | polished draft | `S0-T0001` through `S0-T0005` proved with Python examples |
 | `papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md` | polished draft | `S2-T0001` and `S2-T0002` proved with Python examples |
 | `papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md` | polished draft | `S2-T0003` through `S2-T0007` and `S2-T0017` proved with Python examples |
 | `papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md` | polished draft | `S2-T0008` through `S2-T0016` proved with Python examples |
@@ -364,6 +364,7 @@ Proved common and dimensional spine:
 - `S0-T0002`: the opposition antipode is involutive
 - `S0-T0003`: the opposition antipode has no fixed point
 - `S0-T0004`: the opposition antipode swaps the two named signs
+- `S0-T0005`: the opposition antipode is bijective
 - `S2-T0001`: suspended-circle cell counts
 - `S2-T0002`: suspended-circle Euler characteristic
 - `S2-T0003`: sphere-grid cell counts

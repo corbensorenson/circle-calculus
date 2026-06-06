@@ -42,4 +42,11 @@ theorem antipode_swaps :
     antipode Sign.neg = Sign.pos ∧ antipode Sign.pos = Sign.neg := by
   constructor <;> rfl
 
+theorem antipode_bijective : Function.Bijective antipode := by
+  constructor
+  · intro x y h
+    cases x <;> cases y <;> simp [antipode] at h ⊢
+  · intro y
+    exact ⟨antipode y, antipode_involutive y⟩
+
 end Circle.S0

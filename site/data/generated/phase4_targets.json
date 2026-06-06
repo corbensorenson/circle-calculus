@@ -41,6 +41,30 @@
       "title": "S0 antipode swaps the two named signs"
     },
     {
+      "candidate_formalization": "Function.Bijective Circle.S0.antipode",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S0-0001",
+        "S0-0002"
+      ],
+      "guardrail": "This is a finite two-point bijection, not a general theorem about all antipodal maps.",
+      "id": "P4-S0-003",
+      "layer": "S0",
+      "next_action": "Promoted to S0-T0005 and Lean-proved as Circle.S0.antipode_bijective.",
+      "paper_refs": [
+        "papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md"
+      ],
+      "priority": "medium",
+      "promoted_theorem_id": "S0-T0005",
+      "status": "promoted",
+      "supporting_theorem_ids": [
+        "S0-T0002",
+        "S0-T0004"
+      ],
+      "target_statement": "The two-point antipode is a bijection of the S0 opposition model.",
+      "title": "S0 antipode is bijective"
+    },
+    {
       "candidate_formalization": "n != 0 -> (Circle.period n k = n iff Nat.gcd n k = 1)",
       "claim_type": "theorem",
       "dictionary_dependencies": [

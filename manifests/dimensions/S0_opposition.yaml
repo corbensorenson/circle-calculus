@@ -57,6 +57,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_S0_01_TWO_POINT_OPPOSITION/python/test_s0_opposition_examples.py
     blocker: ""
+  - id: S0-T0005
+    status: lean_proved
+    lean_name: Circle.S0.antipode_bijective
+    informal_statement: "The antipodal map on S^0 is a bijection of the two-point opposition model."
+    formal_statement: "Function.Bijective Circle.S0.antipode"
+    dictionary_dependencies: ["S0-0001", "S0-0002"]
+    paper_refs: ["papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_S0_01_TWO_POINT_OPPOSITION/python/test_s0_opposition_examples.py::test_s0_antipode_is_bijective
+    blocker: ""
 warnings:
   - id: S0-W0001
     status: active

@@ -15,5 +15,6 @@ namespace Circle.PaperS001
 #check Circle.S0.antipode_involutive
 #check Circle.S0.antipode_ne
 #check Circle.S0.antipode_swaps
+#check Circle.S0.antipode_bijective
 
 end Circle.PaperS001

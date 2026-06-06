@@ -29,6 +29,11 @@ def test_s0_antipode_swaps_named_signs() -> None:
     assert antipode(Sign.POS) is Sign.NEG
 
 
+def test_s0_antipode_is_bijective() -> None:
+    images = {antipode(sign) for sign in Sign}
+    assert images == set(Sign)
+
+
 def test_c1_is_not_s0() -> None:
     c1_nodes = (0,)
     assert len(c1_nodes) != len(Sign)
