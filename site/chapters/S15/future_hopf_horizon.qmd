@@ -5,5 +5,9 @@ title: "Future Hopf Horizon"
 This page is a placeholder for the octonionic Hopf horizon. It should remain scoped as future work where the theorem manifest says future, deferred, or roadmap.
 
 <div class="theorem-box" data-theorem-id="S15-T0003"></div>
+<div class="theorem-box" data-theorem-id="S15-T0005"></div>
+<div class="theorem-box" data-theorem-id="S15-T0006"></div>
+<div class="theorem-box" data-theorem-id="S15-T0007"></div>
+<div class="theorem-box" data-theorem-id="S15-T0008"></div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

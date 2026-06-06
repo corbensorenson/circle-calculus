@@ -208,14 +208,16 @@ targets:
   - id: P4-S15-001
     layer: S15
     priority: medium
-    status: planned
+    status: blocked
+    supporting_theorem_ids: ["S15-T0005", "S15-T0006", "S15-T0007", "S15-T0008"]
     claim_type: theorem
     title: "Octonionic Hopf phase-invariance target"
     target_statement: "Shared right unit-octonion phase should preserve the bounded octonionic Hopf landing coordinates where the nonassociative formula is explicitly bracketed."
     candidate_formalization: "octonionicHopfMap (x*u, y*u) = octonionicHopfMap (x,y) under norm-one and bracketed assumptions"
     paper_refs: ["papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md"]
     dictionary_dependencies: ["S15-0001", "S15-0003", "S7O-0001", "S7O-W0002"]
-    next_action: "Keep as planned until the octonionic bracketing and inverse lemmas are proved."
+    next_action: "Use S15-T0005 through S15-T0007 as the safe right-phase landing facts; future full invariance needs a different bracketed quotient/fiber model."
+    blocker: "S15-T0008 proves a unit-basis counterexample: naive shared right unit-octonion multiplication does not preserve the full bounded Hopf coordinate."
     guardrail: "Do not claim full octonionic Hopf fibration or quotient topology."
 
   - id: P4-P2-001

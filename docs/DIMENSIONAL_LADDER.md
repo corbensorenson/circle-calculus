@@ -101,6 +101,6 @@ The current proved dimensional spine includes:
 - `S^3`: finite suspension counts, quaternion algebra, bounded Hopf coordinate laws, and spin sign-cancellation seeds.
 - `S^4` through `S^6`: finite iterated-suspension counts and Euler parity bridge.
 - `S^7`: finite topological suspension model, bounded quaternionic Hopf coordinate seeds, and bounded octonion coordinate algebra.
-- `Future/S15`: roadmap marker plus finite eightfold-suspension and bounded octonionic Hopf landing seeds.
+- `Future/S15`: roadmap marker plus finite eightfold-suspension, bounded octonionic Hopf landing seeds, safe right-phase landing facts, and a warning counterexample to naive full-coordinate phase invariance.
 
 Full smooth topology, quotient fibration theorems, stable homotopy, Bott/Clifford periodicity, and benchmarked application claims remain future work unless a paper, manifest entry, Lean declaration, and repository checks say otherwise. Track the next implementation stages in `docs/COMPLETION_ROADMAP.md`.

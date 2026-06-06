@@ -1,6 +1,6 @@
 # Circle Calculus S15.1: Octonionic Hopf Roadmap
 
-Status: polished draft with a Lean roadmap marker plus finite topological `S^15` and bounded octonionic Hopf landing theorems Lean-proved.
+Status: polished draft with a Lean roadmap marker, finite topological `S^15`, bounded octonionic Hopf landing theorems, and a formal warning boundary for naive octonionic phase invariance Lean-proved.
 
 ## Aim
 
@@ -24,6 +24,11 @@ The full octonionic Hopf fibration, quotient topology, and global `S^7` phase ac
 - `S15-T0002`: `Circle.Future.S15.topologicalModel_eulerCharacteristic`
 - `S15-T0003`: `Circle.Future.S15.octonionicHopf_lands_sphere`
 - `S15-T0004`: `Circle.Future.S15.topologicalModel_eq_eightSuspensions_s7`
+- `S15-T0005`: `Circle.Future.S15.octonionPairRightPhase_normSq`
+- `S15-T0006`: `Circle.Future.S15.octonionicHopfMap_rightPhase_scalar_invariant`
+- `S15-T0007`: `Circle.Future.S15.octonionicHopfMap_rightPhase_lands_sphere`
+- `S15-T0008`: `Circle.Future.S15.octonionicHopfMap_rightPhase_not_invariant_example`
+- `S15-W0001`: naive right unit-octonion phase is not full coordinate invariance
 
 ## Roadmap Marker
 
@@ -63,6 +68,28 @@ for the bounded octonionic Hopf expression. This is the right algebraic seed for
 
 The Python sidecar mirrors the roadmap marker, the eightfold-suspension model, Euler characteristic `0`, the coordinate identity, and normalized-pair landing examples.
 
+## Right-Phase Boundary
+
+After the `S^7` octonion layer proved two-sided conjugate inverse equations, this paper tests the tempting next claim:
+
+```text
+H(x * u, y * u) = H(x, y)
+```
+
+for every unit octonion `u`. In the current bounded coordinate model, that exact full-coordinate statement is false. The correct safe facts are narrower:
+
+- `S15-T0005` proves shared right multiplication scales the octonion-pair squared norm by `normSq(u)`.
+- `S15-T0006` proves that a unit right phase preserves the scalar coordinate of the bounded Hopf map.
+- `S15-T0007` proves that if the original pair is normalized and `u` is unit, the phased pair still lands on the unit base equation.
+
+The full coordinate is not invariant under naive shared right multiplication. `S15-T0008` proves a basis counterexample:
+
+```text
+H(e1 * e4, e2 * e4) != H(e1, e2)
+```
+
+This is not a failure of the classical Hopf horizon. It is a proof-status boundary for this repository: the future octonionic fibration work needs a more careful bracketed quotient/fiber model before any phase-invariance claim can be promoted.
+
 ## Role After S7
 
 This paper is deliberately placed after `S^7` topological and octonion coordinate work. It also marks a strategic stopping point: after `S^15`, the project should pivot to stable spheres, maps, bundles, spectra, Bott/Clifford periodicity, boundaries, proof-carrying glyphs, and applications instead of implying a false continuation of exceptional Hopf/division-algebra dimensions.
@@ -72,8 +99,9 @@ This paper is deliberately placed after `S^7` topological and octonion coordinat
 - `S15-0001`: future octonionic Hopf horizon
 - `S15-0002`: finite S15 suspension model
 - `S15-0003`: bounded octonionic Hopf landing
+- `S15-W0001`: naive octonionic phase invariance warning
 - `S7O-0001`: octonion model
 
 ## Guardrails
 
-The proved statements do not establish the full octonionic Hopf fibration, quotient topology, a globally well-behaved `S^7` phase action, or any new infinite family of Hopf fibrations. They prove the finite topological suspension anchor and a bounded coordinate landing equation. Everything stronger stays roadmap/future until explicitly modeled and checked.
+The proved statements do not establish the full octonionic Hopf fibration, quotient topology, a globally well-behaved `S^7` phase action, or any new infinite family of Hopf fibrations. They prove the finite topological suspension anchor, bounded coordinate landing equations, safe right-phase landing facts, and a counterexample to naive full-coordinate right-phase invariance. Everything stronger stays roadmap/future until explicitly modeled and checked.

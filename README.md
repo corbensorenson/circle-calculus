@@ -77,7 +77,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md` | polished draft | `S7C-T0001` through `S7C-T0003` proved with Python examples |
 | `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md` | polished draft/partial proof | `S7QH-T0001` through `S7QH-T0003` are Lean-proved coordinate theorems; full fibration topology remains future work |
 | `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md` | polished draft/proved spine | `S7O-T0001` through `S7O-T0008` are Lean-proved in a bounded Cayley-Dickson coordinate model |
-| `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | polished draft/partial proof | `S15-T0001` is a Lean roadmap marker with Python examples; `S15-T0002` through `S15-T0004` are Lean-proved topological/coordinate landing facts with Python examples |
+| `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | polished draft/partial proof | `S15-T0001` is a Lean roadmap marker; `S15-T0002` through `S15-T0008` are Lean-proved topological, coordinate landing, safe right-phase, and warning-boundary facts with Python examples |
 | `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md` | polished draft/proved finite seed | `P2S-T0001` through `P2S-T0003` are Lean-proved double/four suspension facts with Python examples |
 | `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md` | polished draft/proved finite seed | `P2B-T0001` through `P2B-T0003` are Lean-proved period-8 clock facts with Python examples; Bott/Clifford periodicity remains future work |
 | `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md` | polished draft/proved trivial seed | `P2BU-T0001` through `P2BU-T0004` are Lean-proved product-bundle projection/fiber facts with Python examples |
@@ -412,6 +412,7 @@ Executable exploratory spine:
 - `S15-T0002`: finite S15 Euler theorem
 - `S15-T0003`: bounded octonionic Hopf landing theorem
 - `S15-T0004`: finite S15 model is the eightfold suspension of finite S7
+- `S15-T0005` through `S15-T0008`: safe octonionic right-phase landing facts plus a counterexample showing naive full-coordinate right-phase invariance is false in the bounded model
 
 ## What This Does Not Claim Yet
 

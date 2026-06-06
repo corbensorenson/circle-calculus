@@ -464,6 +464,7 @@
         "S15-0001",
         "S15-0002",
         "S15-0003",
+        "S15-W0001",
         "S7O-0001"
       ],
       "id": "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP",
@@ -474,7 +475,11 @@
         "S15-T0001",
         "S15-T0002",
         "S15-T0003",
-        "S15-T0004"
+        "S15-T0004",
+        "S15-T0005",
+        "S15-T0006",
+        "S15-T0007",
+        "S15-T0008"
       ],
       "title": "Circle Calculus S15.1: Octonionic Hopf Roadmap"
     },

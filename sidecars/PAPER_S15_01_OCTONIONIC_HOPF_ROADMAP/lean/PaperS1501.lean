@@ -19,6 +19,11 @@ namespace Circle.PaperS1501
 #check Circle.Future.S15.octonionicHopfMap
 #check Circle.Future.S15.hopfBase9NormSq_octonionicHopfMap
 #check Circle.Future.S15.octonionicHopf_lands_sphere
+#check Circle.Future.S15.octonionPairRightPhase
+#check Circle.Future.S15.octonionPairRightPhase_normSq
+#check Circle.Future.S15.octonionicHopfMap_rightPhase_scalar_invariant
+#check Circle.Future.S15.octonionicHopfMap_rightPhase_lands_sphere
+#check Circle.Future.S15.octonionicHopfMap_rightPhase_not_invariant_example
 #check Circle.Future.S15.octonionicHopfRoadmap
 
 end Circle.PaperS1501

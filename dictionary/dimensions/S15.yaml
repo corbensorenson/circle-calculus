@@ -26,3 +26,13 @@ entries:
     introduced_in: "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP"
     forbidden_meanings:
       - "A proof of octonionic phase quotient, global bundle structure, or S7 fiber action."
+  - id: S15-W0001
+    name: "Naive octonionic phase invariance warning"
+    kind: warning
+    formal_definition: "`Circle.Future.S15.octonionicHopfMap_rightPhase_not_invariant_example` proves that shared right multiplication by a unit octonion does not preserve the full bounded octonionic Hopf coordinate in the current bracketing."
+    intuition: "The octonionic horizon needs bracketed quotient/fiber work; copying the S3 or quaternionic S7 phase story is not sound."
+    dependencies: ["S15-0003", "S7O-0001", "S7O-W0002"]
+    introduced_in: "PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP"
+    forbidden_meanings:
+      - "A completed proof that no valid octonionic Hopf fibration exists."
+      - "Permission to ignore S7O-W0002 bracketing requirements."

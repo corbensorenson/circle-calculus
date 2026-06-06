@@ -57,4 +57,65 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP/python/test_s15_roadmap_examples.py
     blocker: ""
-warnings: []
+  - id: S15-T0005
+    status: lean_proved
+    lean_name: Circle.Future.S15.octonionPairRightPhase_normSq
+    informal_statement: "Shared right octonion phase scales an octonion-pair squared norm by the phase squared norm."
+    formal_statement: "forall p u, Circle.Future.S15.octonionPairNormSq (Circle.Future.S15.octonionPairRightPhase p u) = Circle.Future.S15.octonionPairNormSq p * Circle.S7.octonionCoordNormSq u"
+    dictionary_dependencies: ["S15-0003", "S7O-0001", "S7O-0002"]
+    paper_refs: ["papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6", "S7"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP/python/test_s15_roadmap_examples.py::test_right_unit_octonion_phase_preserves_pair_norm_and_landing
+    blocker: ""
+  - id: S15-T0006
+    status: lean_proved
+    lean_name: Circle.Future.S15.octonionicHopfMap_rightPhase_scalar_invariant
+    informal_statement: "Shared right unit-octonion phase preserves the scalar coordinate of the bounded octonionic Hopf map."
+    formal_statement: "forall p u, Circle.S7.octonionCoordNormSq u = 1 -> (Circle.Future.S15.octonionicHopfMap (Circle.Future.S15.octonionPairRightPhase p u)).scalar = (Circle.Future.S15.octonionicHopfMap p).scalar"
+    dictionary_dependencies: ["S15-0003", "S7O-0001", "S7O-0002", "S7O-W0002"]
+    paper_refs: ["papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6", "S7"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP/python/test_s15_roadmap_examples.py::test_right_unit_octonion_phase_preserves_hopf_scalar_coordinate
+    blocker: ""
+  - id: S15-T0007
+    status: lean_proved
+    lean_name: Circle.Future.S15.octonionicHopfMap_rightPhase_lands_sphere
+    informal_statement: "Shared right unit-octonion phase preserves the normalized-pair landing equation for the bounded octonionic Hopf map."
+    formal_statement: "forall p u, Circle.Future.S15.octonionPairNormSq p = 1 -> Circle.S7.octonionCoordNormSq u = 1 -> Circle.Future.S15.hopfBase9NormSq (Circle.Future.S15.octonionicHopfMap (Circle.Future.S15.octonionPairRightPhase p u)) = 1"
+    dictionary_dependencies: ["S15-0003", "S7O-0001", "S7O-0002", "S7O-W0002"]
+    paper_refs: ["papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6", "S7"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP/python/test_s15_roadmap_examples.py::test_right_unit_octonion_phase_preserves_pair_norm_and_landing
+    blocker: ""
+  - id: S15-T0008
+    status: lean_proved
+    lean_name: Circle.Future.S15.octonionicHopfMap_rightPhase_not_invariant_example
+    informal_statement: "A concrete unit-basis example shows the naive shared right octonion phase does not preserve the full bounded Hopf coordinate."
+    formal_statement: "Circle.Future.S15.octonionicHopfMap (Circle.Future.S15.octonionPairRightPhase {o0=e1,o1=e2} e4) != Circle.Future.S15.octonionicHopfMap {o0=e1,o1=e2}"
+    dictionary_dependencies: ["S15-0003", "S15-W0001", "S7O-0001", "S7O-W0002"]
+    paper_refs: ["papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6", "S7"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP/python/test_s15_roadmap_examples.py::test_naive_right_unit_octonion_phase_does_not_preserve_full_hopf_coordinates
+    blocker: ""
+warnings:
+  - id: S15-W0001
+    status: active
+    dictionary_dependencies: ["S15-W0001"]
+    paper_refs: ["papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md"]
+    statement: "Naive shared right unit-octonion phase is not a full coordinate-invariance theorem for the bounded octonionic Hopf map."
