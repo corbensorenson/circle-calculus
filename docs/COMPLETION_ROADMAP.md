@@ -299,7 +299,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `P2BC-T0001` through `P2BC-T0004` are Lean-proved directed-interval boundary facts with Python examples; general chain complexes, cobordisms, TQFT, and physics-adjacent claims remain future work.
 - [x] `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md`
   - Program: glyphs with formal syntax, normal forms, theorem dependencies, proof certificates, semantic models, and projection views.
-  - Status: polished draft; `P2G-T0001` through `P2G-T0005` are Lean-proved proof-glyph certificate projection and finite theorem-metadata validity facts with Python examples; glyph syntax, normal forms, semantics, generated-JSON parsing, dependency correctness, and proof search remain future work.
+  - Status: polished draft; `P2G-T0001` through `P2G-T0005` are Lean-proved proof-glyph certificate projection and finite theorem-metadata validity facts with Python examples; `P5-EDGE-001` adds an exploratory generated glyph-status fixture; glyph syntax, normal forms, semantics, dependency correctness, and proof search remain future work.
 - [x] `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md`
   - Program: coil signatures, closure profiles, prime-lag recurrence, antinode maps, and periodic-data benchmarks.
   - Status: polished draft; `APPD-T0001` through `APPD-T0003` are Lean-proved finite phase-coordinate facts with Python examples. `APPD-B0001` is an exploratory Python fixture comparing coil closure ranking with an autocorrelation baseline on a deterministic known-period signal; real-data and usefulness claims remain future work.
@@ -650,6 +650,7 @@ Required discipline:
 Outputs:
 
 - [x] A short list of concrete edge experiments with acceptance criteria.
+- [x] `P5-EDGE-001`: generated glyph-status fixture resolves theorem and dictionary data without upgrading unproved theorem status.
 - [ ] At least one experiment-ready paper or application note for each accepted edge direction.
 - [ ] Python/MLX or other executable sidecars where the claim is computational.
 - [ ] Lean theorem targets where the claim is formal.

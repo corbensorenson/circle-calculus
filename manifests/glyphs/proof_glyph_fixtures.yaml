@@ -1,0 +1,25 @@
+glyphs:
+  - id: glyph:c13_stride5_period
+    theorem_id: CC-T0005
+    lean_name: Circle.period_eq_n_div_gcd
+    dictionary_ids: ["CC-0205", "CC-0207"]
+    paper_refs:
+      - papers/PAPER_01_FINITE_CIRCLES.md
+      - papers/S1/PAPER_S1_01_FINITE_CIRCLES.md
+    caption: "Finite-circle period glyph for C_13 with stride 5."
+
+  - id: glyph:metadata_validity
+    theorem_id: P2G-T0004
+    lean_name: Circle.Phase2.proofGlyphValidAgainst_resolves_metadata
+    dictionary_ids: ["COMMON-0033"]
+    paper_refs:
+      - papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md
+    caption: "Proof-glyph validity boundary resolving against finite theorem metadata."
+
+  - id: glyph:s15_roadmap_marker
+    theorem_id: S15-T0001
+    lean_name: Circle.Future.S15.octonionicHopfRoadmap
+    dictionary_ids: ["S15-0001", "S7O-0001"]
+    paper_refs:
+      - papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md
+    caption: "Roadmap glyph for the future S15 Hopf horizon; this must not render as Lean-proved."

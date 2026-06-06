@@ -1,0 +1,61 @@
+{
+  "glyphs": [
+    {
+      "canonical_status": "proved",
+      "caption": "Finite-circle period glyph for C_13 with stride 5.",
+      "dictionary_ids": [
+        "CC-0205",
+        "CC-0207"
+      ],
+      "id": "glyph:c13_stride5_period",
+      "lean_name": "Circle.period_eq_n_div_gcd",
+      "lean_source": "Circle/Core/Period.lean",
+      "lean_source_line": 14,
+      "original_status": "proved",
+      "paper_refs": [
+        "papers/PAPER_01_FINITE_CIRCLES.md",
+        "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md"
+      ],
+      "source_manifest": "manifests/glyphs/proof_glyph_fixtures.yaml",
+      "status_label": "Lean-proved",
+      "theorem_id": "CC-T0005"
+    },
+    {
+      "canonical_status": "proved",
+      "caption": "Proof-glyph validity boundary resolving against finite theorem metadata.",
+      "dictionary_ids": [
+        "COMMON-0033"
+      ],
+      "id": "glyph:metadata_validity",
+      "lean_name": "Circle.Phase2.proofGlyphValidAgainst_resolves_metadata",
+      "lean_source": "Circle/Phase2/GlyphProof.lean",
+      "lean_source_line": 54,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md"
+      ],
+      "source_manifest": "manifests/glyphs/proof_glyph_fixtures.yaml",
+      "status_label": "Lean-proved",
+      "theorem_id": "P2G-T0004"
+    },
+    {
+      "canonical_status": "planned",
+      "caption": "Roadmap glyph for the future S15 Hopf horizon; this must not render as Lean-proved.",
+      "dictionary_ids": [
+        "S15-0001",
+        "S7O-0001"
+      ],
+      "id": "glyph:s15_roadmap_marker",
+      "lean_name": "Circle.Future.S15.octonionicHopfRoadmap",
+      "lean_source": "Circle/Future/S15/Scaffold.lean",
+      "lean_source_line": 133,
+      "original_status": "lean_stated",
+      "paper_refs": [
+        "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md"
+      ],
+      "source_manifest": "manifests/glyphs/proof_glyph_fixtures.yaml",
+      "status_label": "Planned theorem",
+      "theorem_id": "S15-T0001"
+    }
+  ]
+}

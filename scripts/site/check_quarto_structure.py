@@ -35,6 +35,7 @@ REQUIRED = [
     "site/data/generated/dimensions.json",
     "site/data/generated/paper_index.json",
     "site/data/generated/widget_index.json",
+    "site/data/generated/glyph_index.json",
     "site/data/generated/phase4_targets.json",
     "site/data/generated/phase5_targets.json",
     "docs/LIVING_BOOK_POLICY.md",

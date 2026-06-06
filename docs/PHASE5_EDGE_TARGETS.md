@@ -6,7 +6,7 @@ The source of truth is `manifests/phase5_edge_targets.yaml`, validated by `scrip
 
 ## Current Targets
 
-- `P5-EDGE-001`: glyph-to-theorem status compiler.
+- `P5-EDGE-001`: glyph-to-theorem status compiler. Status: exploratory generated fixture.
 - `P5-EDGE-002`: finite-coil normal-form theorem search.
 - `P5-EDGE-003`: number provenance compression fixture.
 - `P5-EDGE-004`: noisy and aliased coil-signature benchmark.

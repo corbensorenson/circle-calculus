@@ -2,7 +2,7 @@ targets:
   - id: P5-EDGE-001
     area: "Proof-carrying diagrams"
     priority: high
-    status: planned
+    status: exploratory_python
     claim_type: tooling
     title: "Glyph-to-theorem status compiler"
     edge_question: "Can a visual glyph resolve to theorem ids, Lean declarations, dictionary terms, and proof status without prose drift?"
@@ -15,7 +15,7 @@ targets:
       - "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md"
       - "site/chapters/phase2/proof_carrying_glyphs.qmd"
     dictionary_dependencies: ["COMMON-0033"]
-    next_action: "Create a generated glyph fixture tied to theorem_manifest.json and dictionary.json."
+    next_action: "Generated glyph fixture now resolves proved and unproved theorem statuses; expand toward glyph syntax trees and normal forms."
     guardrail: "A diagram is an interface, not a proof."
 
   - id: P5-EDGE-002

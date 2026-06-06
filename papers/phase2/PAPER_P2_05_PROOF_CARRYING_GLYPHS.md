@@ -49,6 +49,19 @@ These laws look small, but they establish the basic integrity contract for proof
 
 The Python sidecar checks the same certificate-field projections on a finite-circle glyph example, then checks matching metadata, missing theorem id rejection, and Lean-name mismatch rejection.
 
+## Generated Glyph Fixture
+
+`P5-EDGE-001` adds the first generated glyph fixture:
+
+```text
+manifests/glyphs/proof_glyph_fixtures.yaml
+site/data/generated/glyph_index.json
+```
+
+The fixture resolves glyph theorem ids and dictionary ids against generated site data. It includes Lean-proved glyphs for already proved theorem ids.
+
+The fixture also includes `S15-T0001` as a future roadmap glyph. That roadmap glyph must render with planned status. This is a status compiler for the interface layer, not a proof of glyph syntax, semantics, or diagram normalization.
+
 ## First Demonstrator
 
 The first serious target should be proof-carrying circle diagrams for modular arithmetic and prime structure:
@@ -69,6 +82,7 @@ Composite examples such as `C_36, stride 8` should add orbit decomposition, fibe
 
 - Define glyph syntax trees and normal forms.
 - Require every glyph claim to link to a theorem id or an explicit exploratory status.
+- Expand the generated glyph fixture into syntax-tree and normal-form examples.
 - Connect the finite theorem metadata model to generated site theorem data without changing the proof predicate.
 - Add semantic checks only after the syntax and theorem dependency model are clear.
 - Treat diagrams as proof interfaces, not proof substitutes.

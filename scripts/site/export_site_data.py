@@ -192,14 +192,65 @@ def export_phase5_targets() -> dict:
     return {"targets": data.get("targets", [])}
 
 
+def glyph_status_label(canonical_status: str) -> str:
+    if canonical_status == "proved":
+        return "Lean-proved"
+    if canonical_status == "exploratory":
+        return "Exploratory"
+    if canonical_status == "blocked":
+        return "Blocked"
+    if canonical_status == "deferred":
+        return "Deferred"
+    if canonical_status == "draft":
+        return "Draft"
+    return "Planned theorem"
+
+
+def glyph_manifest_paths() -> list[Path]:
+    return sorted((ROOT / "manifests" / "glyphs").glob("*.yaml"))
+
+
+def export_glyph_index(theorem_manifest: dict, dictionary: dict) -> dict:
+    theorem_by_id = {item["id"]: item for item in theorem_manifest.get("theorems", [])}
+    dictionary_ids = {item["id"] for item in dictionary.get("entries", [])}
+    glyphs: list[dict] = []
+    for path in glyph_manifest_paths():
+        data = load_yaml(path)
+        for glyph in data.get("glyphs", []):
+            theorem = theorem_by_id.get(glyph.get("theorem_id", ""))
+            if theorem is None:
+                raise ValueError(f"{repo_relative(path)}: unknown theorem id {glyph.get('theorem_id')}")
+            if glyph.get("lean_name") != theorem.get("lean_name"):
+                raise ValueError(f"{repo_relative(path)}: Lean name mismatch for {glyph.get('id')}")
+            unknown_dictionary_ids = [
+                dictionary_id
+                for dictionary_id in glyph.get("dictionary_ids", [])
+                if dictionary_id not in dictionary_ids
+            ]
+            if unknown_dictionary_ids:
+                raise ValueError(f"{repo_relative(path)}: unknown dictionary ids {unknown_dictionary_ids}")
+            item = dict(glyph)
+            item["source_manifest"] = repo_relative(path)
+            item["original_status"] = theorem.get("original_status", theorem.get("status", "planned"))
+            item["canonical_status"] = theorem.get("canonical_status", "planned")
+            item["status_label"] = glyph_status_label(item["canonical_status"])
+            item["lean_source"] = theorem.get("lean_source", "")
+            item["lean_source_line"] = theorem.get("lean_source_line", "")
+            glyphs.append(item)
+    return {"glyphs": sorted(glyphs, key=lambda item: item["id"])}
+
+
 def export_all() -> None:
-    write_json(GENERATED / "theorem_manifest.json", export_theorems())
-    write_json(GENERATED / "dictionary.json", export_dictionary())
+    theorem_manifest = export_theorems()
+    dictionary = export_dictionary()
+    write_json(GENERATED / "theorem_manifest.json", theorem_manifest)
+    write_json(GENERATED / "dictionary.json", dictionary)
     write_json(GENERATED / "dimensions.json", export_dimensions())
     write_json(GENERATED / "paper_index.json", export_papers())
     write_json(GENERATED / "widget_index.json", export_widget_index())
     write_json(GENERATED / "phase4_targets.json", export_phase4_targets())
     write_json(GENERATED / "phase5_targets.json", export_phase5_targets())
+    write_json(GENERATED / "glyph_index.json", export_glyph_index(theorem_manifest, dictionary))
 
 
 def main() -> int:

@@ -5,6 +5,8 @@ papers:
 sidecars:
   - sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/lean/PaperP205.lean
   - sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py
+glyph_fixtures:
+  - manifests/glyphs/proof_glyph_fixtures.yaml
 theorems:
   - id: P2G-T0001
     status: lean_proved
@@ -21,4 +23,5 @@ theorems:
 next_targets:
   - "Add glyph normal forms only after defining a syntax tree and semantics."
   - "Use finite-circle orbit diagrams as the first proof-carrying demonstrator."
+  - "Expand generated glyph fixtures into syntax-tree and normal-form examples after the status compiler remains stable."
 guardrail: "Diagrams are proof interfaces, not proof substitutes."

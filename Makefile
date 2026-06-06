@@ -4,9 +4,9 @@ QUARTO_HOME ?= $(CURDIR)/.tools/quarto-home
 QUARTO_DENO_DIR ?= $(CURDIR)/.tools/quarto-deno
 QUARTO_ENV := HOME="$(QUARTO_HOME)" DENO_DIR="$(QUARTO_DENO_DIR)"
 
-.PHONY: check lean sidecarlean test manifest dictionary papermanifest paperlinks phase4targets phase5targets dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples site-data sitecheck site-render site-preview living-book-check
+.PHONY: check lean sidecarlean test manifest dictionary papermanifest paperlinks phase4targets phase5targets glyphfixtures dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples site-data sitecheck site-render site-preview living-book-check
 
-check: lean sidecarlean test manifest dictionary papermanifest paperlinks phase4targets phase5targets dimensioncheck nofake sitecheck
+check: lean sidecarlean test manifest dictionary papermanifest paperlinks phase4targets phase5targets glyphfixtures dimensioncheck nofake sitecheck
 
 lean:
 	$(LAKE) build
@@ -34,6 +34,9 @@ phase4targets:
 
 phase5targets:
 	python scripts/check_phase5_targets.py
+
+glyphfixtures:
+	python scripts/check_glyph_fixtures.py
 
 dimensioncheck: dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks
 

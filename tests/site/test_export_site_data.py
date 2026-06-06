@@ -28,6 +28,7 @@ def test_export_site_data_writes_required_indexes() -> None:
         "dimensions.json",
         "paper_index.json",
         "widget_index.json",
+        "glyph_index.json",
         "phase4_targets.json",
         "phase5_targets.json",
     ]:
@@ -48,6 +49,11 @@ def test_export_site_data_writes_required_indexes() -> None:
     widget_ids = {item["id"] for item in widgets["widgets"]}
     assert "finite_circle_rotator" in widget_ids
     assert "prime_full_coil_explorer" in widget_ids
+
+    glyphs = json.loads((generated / "glyph_index.json").read_text())
+    glyph_by_id = {item["id"]: item for item in glyphs["glyphs"]}
+    assert glyph_by_id["glyph:c13_stride5_period"]["status_label"] == "Lean-proved"
+    assert glyph_by_id["glyph:s15_roadmap_marker"]["status_label"] != "Lean-proved"
 
     targets = json.loads((generated / "phase4_targets.json").read_text())
     target_ids = {item["id"] for item in targets["targets"]}

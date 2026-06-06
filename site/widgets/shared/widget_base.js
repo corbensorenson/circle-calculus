@@ -274,6 +274,34 @@ async function hydrateTargetIndexes() {
   }
 }
 
+async function hydrateGlyphIndexes() {
+  const data = await loadJson("../../data/generated/glyph_index.json");
+  for (const target of document.querySelectorAll(".glyph-index")) {
+    const table = document.createElement("table");
+    table.className = "glyph-index-table";
+    const thead = document.createElement("thead");
+    thead.innerHTML = "<tr><th>Glyph</th><th>Theorem</th><th>Status</th><th>Lean</th><th>Caption</th></tr>";
+    const tbody = document.createElement("tbody");
+    for (const item of data.glyphs) {
+      const tr = document.createElement("tr");
+      for (const value of [
+        item.id || "",
+        item.theorem_id || "",
+        item.status_label || "",
+        item.lean_name || "",
+        item.caption || "",
+      ]) {
+        const td = document.createElement("td");
+        td.textContent = value;
+        tr.appendChild(td);
+      }
+      tbody.appendChild(tr);
+    }
+    table.append(thead, tbody);
+    target.replaceChildren(table);
+  }
+}
+
 export function mountWidgets(name, mount) {
   for (const target of document.querySelectorAll(`[data-widget="${name}"]`)) {
     mount(target);
@@ -287,4 +315,5 @@ window.addEventListener("DOMContentLoaded", () => {
   hydrateTheoremIndexes().catch((error) => console.error(error));
   hydratePaperIndexes().catch((error) => console.error(error));
   hydrateTargetIndexes().catch((error) => console.error(error));
+  hydrateGlyphIndexes().catch((error) => console.error(error));
 });

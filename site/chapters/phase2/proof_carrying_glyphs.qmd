@@ -14,4 +14,10 @@ Diagrams and glyphs are not proofs. The current proved layer covers certificate 
 <div class="theorem-box" data-theorem-id="P2G-T0004"></div>
 <div class="theorem-box" data-theorem-id="P2G-T0005"></div>
 
+## Glyph Fixture
+
+This fixture is generated from `manifests/glyphs/proof_glyph_fixtures.yaml` and resolved against theorem and dictionary data during site export.
+
+<div class="glyph-index"></div>
+
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

@@ -18,10 +18,10 @@
       "edge_question": "Can a visual glyph resolve to theorem ids, Lean declarations, dictionary terms, and proof status without prose drift?",
       "guardrail": "A diagram is an interface, not a proof.",
       "id": "P5-EDGE-001",
-      "next_action": "Create a generated glyph fixture tied to theorem_manifest.json and dictionary.json.",
+      "next_action": "Generated glyph fixture now resolves proved and unproved theorem statuses; expand toward glyph syntax trees and normal forms.",
       "ordinary_baseline": "Static mathematical diagrams plus separate theorem statements.",
       "priority": "high",
-      "status": "planned",
+      "status": "exploratory_python",
       "title": "Glyph-to-theorem status compiler"
     },
     {
