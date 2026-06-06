@@ -58,14 +58,16 @@ targets:
   - id: P4-S1-003
     layer: S1
     priority: medium
-    status: planned
+    status: promoted
+    promoted_theorem_id: CC-T0058
+    supporting_theorem_ids: ["CC-T0056", "CC-T0057"]
     claim_type: theorem
     title: "Affine circle automorphism normal form"
     target_statement: "Every map built as a rotation after coprime scaling is a finite-circle bijection, and composition follows affine modular arithmetic."
     candidate_formalization: "Nat.Coprime n a -> Function.Bijective (fun x => Circle.rot n b (Circle.scale n a x)) plus a composition normal form"
     paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
     dictionary_dependencies: ["CC-0101", "CC-0105"]
-    next_action: "First prove the forward bijection and composition lemmas; leave classification for later."
+    next_action: "Promoted to CC-T0058 with supporting Lean theorems CC-T0056 and CC-T0057; leave full affine classification for a later target."
     guardrail: "Do not claim all endomorphisms are affine unless the classification is separately proved."
 
   - id: P4-S2-001

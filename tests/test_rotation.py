@@ -24,3 +24,10 @@ def test_rot_inverse() -> None:
             for i in range(-16, 17):
                 assert c.rot(c.rot(i, a), -a) == c.node(i)
 
+
+def test_rotation_map_is_permutation() -> None:
+    for n in range(1, 129):
+        c = Circle(n)
+        for a in range(-256, 257):
+            image = {c.rot(i, a) for i in range(n)}
+            assert len(image) == n

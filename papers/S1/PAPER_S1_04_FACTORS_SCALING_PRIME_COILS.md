@@ -1,6 +1,6 @@
 # Circle Calculus S1.4: Factors, Scaling, and Prime Coils
 
-Status: polished draft with the scaling and full-coil theorem spine Lean-proved.
+Status: polished draft with the scaling, full-coil, and affine-map theorem spine Lean-proved.
 
 ## Aim
 
@@ -47,10 +47,14 @@ This paper will connect multiplication, scaling, factors, invertibility, and pri
 - `CC-T0049`: `Circle.scaleCircleImage_card_mul_scaleKernelRepresentativeSet_card`
 - `CC-T0027`: `Circle.scale_nat_eq_iff_nat_modEq_of_coprime`
 - `CC-T0054`: `Circle.fullCoil_iff_coprime`
+- `CC-T0056`: `Circle.rot_bijective`
+- `CC-T0057`: `Circle.affineMap_comp`
+- `CC-T0058`: `Circle.affineMap_bijective_of_coprime`
 - multiplication as repeated rotation or scaling
 - scaling invertibility iff coprime
 - factor structure through orbit decomposition
 - prime rings as full-cycle systems
+- affine maps as scale-then-rotation maps, with bijectivity under coprime scaling
 
 ## Proved Core
 
@@ -130,6 +134,16 @@ This paper will connect multiplication, scaling, factors, invertibility, and pri
 
 `CC-T0054` is proved by `Circle.fullCoil_iff_coprime`: for nonzero circle size, a stride has full period exactly when the stride is coprime to the circle size.
 
+`CC-T0056` is proved by `Circle.rot_bijective`: every finite-circle rotation is a bijection. This is the translation part of the affine story.
+
+`CC-T0057` is proved by `Circle.affineMap_comp`: affine finite-circle maps compose by the normal form
+
+```text
+affine(n,a,b)(affine(n,c,d)(x)) = affine(n,a*c,a*d+b)(x).
+```
+
+`CC-T0058` is proved by `Circle.affineMap_bijective_of_coprime`: if `Nat.Coprime n a`, then the map `x |-> affine(n,a,b)(x)` is bijective for every shift `b`.
+
 Together these theorems make scaling into a checked multiplicative action on finite-circle addresses and finite coil steps:
 
 ```text
@@ -172,6 +186,9 @@ n != 0 and target in scale_circle_image(n,k) implies card(scale_circle_image(n,k
 n != 0 implies card(scale_circle_image(n,k))*card(scale_kernel_representative_set(n,k))=n
 gcd(n,k)=1 implies scale(n,k)(x)=scale(n,k)(y) iff x congruent y mod n
 n != 0 implies full_coil(n,k) iff gcd(n,k)=1
+rot(n,a) is bijective
+affine(n,a,b)(affine(n,c,d)(x)) = affine(n,a*c,a*d+b)(x)
+gcd(n,a)=1 implies affine(n,a,b) is bijective
 ```
 
 `CC-T0008` is proved by `Circle.scale_invertible_iff_coprime`.
@@ -185,6 +202,14 @@ scale(n,k)(x) = k*x in C_n
 is a bijection exactly when `Nat.Coprime n k`. In ordinary gcd language, scaling is reversible exactly when `gcd(n,k)=1`.
 
 The full-coil criterion is the coil-side companion to that scaling criterion. For nonzero `n`, a stride traverses the whole finite circle before closing exactly when it is coprime to `n`. The prime-circle theorem is the first checked specialization of this criterion: for a prime modulus, every nonzero residue below the modulus is coprime to it, so every such stride is full.
+
+The affine-map spine packages the simplest scale-and-shift normal form without overclaiming. Circle Calculus now has a checked map
+
+```text
+affine(n,a,b)(x) = rot(n,b)(scale(n,a)(x)).
+```
+
+Rotations are always bijective. If `a` is coprime to `n`, the scaling part is bijective, so the whole affine map is bijective. Composition follows ordinary affine modular arithmetic. This proves the forward automorphism construction promised by the Phase IV target, but it does not prove that every finite-circle endomorphism or automorphism has this form.
 
 The zero-factor theorem records the degenerate kernel extreme: scaling by zero collapses the whole circle to zero. The scale-factor congruence theorem records the normal form for scale factors: only the residue class of the multiplier modulo `n` matters.
 
@@ -205,4 +230,4 @@ The Lean proof reduces scaling to left multiplication by `(k : ZMod n)`. Mathlib
 
 ## Notes
 
-The remaining factor-structure targets should build on `CC-T0008`, `CC-T0017`, `CC-T0018`, `CC-T0019`, `CC-T0020`, `CC-T0021`, `CC-T0022`, `CC-T0023`, `CC-T0024`, `CC-T0025`, `CC-T0026`, `CC-T0027`, `CC-T0028`, `CC-T0029`, `CC-T0030`, `CC-T0031`, `CC-T0032`, `CC-T0033`, `CC-T0034`, `CC-T0035`, `CC-T0036`, `CC-T0037`, `CC-T0038`, `CC-T0039`, `CC-T0040`, `CC-T0041`, `CC-T0042`, `CC-T0043`, `CC-T0044`, `CC-T0045`, `CC-T0046`, `CC-T0047`, `CC-T0048`, `CC-T0049`, `CC-T0050`, `CC-T0051`, `CC-T0052`, `CC-T0053`, and `CC-T0054` without claiming more than the current finite-circle model proves.
+The remaining factor-structure targets should build on `CC-T0008`, `CC-T0017`, `CC-T0018`, `CC-T0019`, `CC-T0020`, `CC-T0021`, `CC-T0022`, `CC-T0023`, `CC-T0024`, `CC-T0025`, `CC-T0026`, `CC-T0027`, `CC-T0028`, `CC-T0029`, `CC-T0030`, `CC-T0031`, `CC-T0032`, `CC-T0033`, `CC-T0034`, `CC-T0035`, `CC-T0036`, `CC-T0037`, `CC-T0038`, `CC-T0039`, `CC-T0040`, `CC-T0041`, `CC-T0042`, `CC-T0043`, `CC-T0044`, `CC-T0045`, `CC-T0046`, `CC-T0047`, `CC-T0048`, `CC-T0049`, `CC-T0050`, `CC-T0051`, `CC-T0052`, `CC-T0053`, `CC-T0054`, `CC-T0056`, `CC-T0057`, and `CC-T0058` without claiming more than the current finite-circle model proves.

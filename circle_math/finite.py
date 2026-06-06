@@ -50,9 +50,11 @@ class Circle:
     def scale(self, i: int, k: int) -> int:
         return (k * i) % self.n
 
+    def affine(self, i: int, a: int, b: int) -> int:
+        return self.rot(self.scale(i, a), b)
+
     def scale_image(self, k: int) -> List[int]:
         return [self.scale(i, k) for i in range(self.n)]
 
     def scale_is_permutation(self, k: int) -> bool:
         return len(set(self.scale_image(k))) == self.n
-

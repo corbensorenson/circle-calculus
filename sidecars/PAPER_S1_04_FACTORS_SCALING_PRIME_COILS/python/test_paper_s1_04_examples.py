@@ -407,3 +407,34 @@ def test_scale_factor_mod_equivalent_examples() -> None:
                 equivalent = k + m * n
                 for x in range(0, 33):
                     assert circle.scale(x, k) == circle.scale(x, equivalent)
+
+
+def test_affine_map_examples() -> None:
+    circle = Circle(12)
+    assert circle.affine(7, 5, 3) == circle.rot(circle.scale(7, 5), 3)
+    assert circle.affine(circle.affine(7, 5, 3), 7, 2) == circle.affine(
+        7, 7 * 5, 7 * 3 + 2
+    )
+
+    factors = [0, 1, 2, 3, 5]
+    shifts = [0, 1, 2, 4, 7]
+    for n in range(1, 33):
+        circle = Circle(n)
+        for x in range(n):
+            for a in factors:
+                for b in shifts:
+                    for c in factors:
+                        for d in shifts:
+                            assert circle.affine(
+                                circle.affine(x, c, d), a, b
+                            ) == circle.affine(x, a * c, a * d + b)
+
+
+def test_coprime_affine_bijection_examples() -> None:
+    shifts = [0, 1, 2, 5, 8]
+    for n in range(1, 65):
+        circle = Circle(n)
+        for a in range(0, 65):
+            for b in shifts:
+                image = {circle.affine(x, a, b) for x in range(n)}
+                assert (len(image) == n) == (gcd(n, a) == 1)

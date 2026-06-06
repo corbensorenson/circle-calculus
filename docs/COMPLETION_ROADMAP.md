@@ -62,7 +62,7 @@ The project is complete only when all of these are true:
 - Paper manifests link papers to theorem ids, dictionary ids, and sidecar paths.
 - Phase III Living Book source pages, widgets, generated data, and checks exist once that phase begins, and they do not upgrade proof status beyond the manifests.
 - Phase IV wide/deep theorem discovery has audited every dimension and application area for missing theorem targets, weak papers, proof gaps, and better formal spines.
-- Phase V edge problem-space exploration has identified hard or unusual problem spaces where Circle Calculus might give practical leverage, with experiments and claims kept honest.
+- Phase V edge problem-space exploration has identified hard, awkward, or ordinary-math-resistant problem spaces where Circle Calculus might give practical leverage, with experiments and claims kept honest.
 - Phase VI global sweep has cleaned the whole corpus for correctness, soundness, prose quality, link integrity, proof status, and reader usability.
 - `make check` passes.
 - Living Book checks and `quarto render site` pass once the Quarto site exists, unless Quarto is explicitly unavailable and the blocker is documented.
@@ -121,9 +121,9 @@ Prefer this order. Only skip ahead when blocked and record the blocker. During l
 13. Add future `S15` roadmap only after `S7` foundations are stable.
 14. After the `S15` horizon, stop treating dimension climbing as the main objective. Pivot to Phase II: maps, bundles, spectra, Bott/Clifford periodicity, boundaries, proof-carrying glyphs, data applications, and compute applications.
 15. Build Phase III: a Quarto-based Circle Calculus Living Book generated from manifests, dictionary entries, papers, Python reference models, and Lean proof metadata. Start with static S1 interactives and do not let the site drift from proof status.
-16. Build Phase IV: go wide and deep across all dimensional levels, looking for additional theorem targets, stronger proof spines, missing dictionary terms, and paper improvements.
+16. Build Phase IV: go wide and deep across all dimensional levels, looking for additional theorem targets, stronger proof spines, missing dictionary terms, paper improvements, and proof-sidecar improvements.
 17. Build Phase V: search edge problem spaces where Circle Calculus might do something hard, awkward, or unavailable in ordinary presentations, and turn promising leads into honest experiments, papers, models, or theorem targets.
-18. Build Phase VI: sweep the entire project for correctness, clarity, style, consistency, proof status, broken links, missing citations, and overclaims.
+18. Build Phase VI: sweep the entire project for correctness, clarity, style, consistency, proof status, broken links, missing citations, overclaims, and prose that should sound cleaner to a new reader.
 
 ## Stage D0: Dimensional Scaffolding
 
@@ -195,8 +195,8 @@ Goal: make the executable examples line up with the Lean-backed papers without d
   - Proof targets: oriented winding, signed residues, integer addition, additive inverse, reversible motion.
   - Status: polished draft; signed zero, composition, and inverse motion are Lean-proved as `S1O-T0001` through `S1O-T0003`.
 - [x] `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md`
-  - Proof targets: `CC-T0008`, `CC-T0017` through `CC-T0054`, multiplication as repeated rotation/scaling, invertibility iff coprime, factor structure, prime/full-coil refinements.
-  - Status: polished draft; scaling invertible iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, scaling natural steps into coil traversal, prime-circle scaling bijectivity, divisor/cofactor collapse, cofactor-multiple collapse, cofactor-shift address collapse, scaling-zero divisibility, period-level kernel divisibility, period-multiple collapse, period-shift collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and cardinality, zero-fiber/kernel and scaled-target/fiber bridges, fiber-set equality modulo scaled value and stride period, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, scaled-address product congruence, coprime scaling reflection, and full-coil iff coprime are Lean-proved; composite orbit refinements and factor-lattice/provenance links remain future extensions.
+  - Proof targets: `CC-T0008`, `CC-T0017` through `CC-T0054`, and `CC-T0056` through `CC-T0058`, multiplication as repeated rotation/scaling, invertibility iff coprime, factor structure, prime/full-coil refinements, and affine scale-then-rotation maps.
+  - Status: polished draft; scaling invertible iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, scaling natural steps into coil traversal, prime-circle scaling bijectivity, divisor/cofactor collapse, cofactor-multiple collapse, cofactor-shift address collapse, scaling-zero divisibility, period-level kernel divisibility, period-multiple collapse, period-shift collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and cardinality, zero-fiber/kernel and scaled-target/fiber bridges, fiber-set equality modulo scaled value and stride period, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, scaled-address product congruence, coprime scaling reflection, full-coil iff coprime, rotation bijectivity, affine composition normal form, and coprime affine bijectivity are Lean-proved; affine classification, composite orbit refinements, and factor-lattice/provenance links remain future extensions.
 
 ### S0: Opposition And Sign
 
@@ -405,6 +405,7 @@ Already proved and linked:
 - [x] `CC-T0001`: rotation by zero
 - [x] `CC-T0002`: rotation composition
 - [x] `CC-T0003`: rotation inverse
+- [x] `CC-T0056`: rotations are bijections
 - [x] `CC-T0004`: closure condition
 - [x] `CC-T0005`: period equals `n / gcd(n,k)`
 - [x] `CC-T0006`: orbit decomposition count
@@ -449,6 +450,8 @@ Already proved and linked:
 - [x] `CC-T0049`: scaling image cardinality times kernel representative cardinality equals the circle size
 - [x] `CC-T0026`: scaled natural addresses are equal iff their scaled products are congruent modulo the circle size
 - [x] `CC-T0027`: coprime scaling reflects ordinary address congruence
+- [x] `CC-T0057`: affine circle maps compose by affine modular arithmetic
+- [x] `CC-T0058`: coprime affine circle maps are bijective
 - [x] `CC-T0009`: unique winding/residue lift
 - [x] `CC-T0010`: lifted addition decomposition
 - [x] `CC-T0011`: lifted existence
@@ -460,7 +463,7 @@ Already proved and linked:
 
 Still planned:
 
-- Scaling/factor refinements beyond `CC-T0054`: additional factor-lattice/provenance links and any higher-level composite orbit packaging.
+- Scaling/factor refinements beyond `CC-T0058`: affine classification, additional factor-lattice/provenance links, and any higher-level composite orbit packaging.
 
 ## Latest Application Handoff Queue
 
@@ -567,7 +570,7 @@ Phase III guardrails:
 ## Phase IV: Wide And Deep Theorem Discovery
 
 Goal:
-Expand coverage at every dimensional level by deliberately looking for missing theorems, stronger formal statements, cleaner proof spines, and paper improvements. This phase is not a license to invent unsupported claims; it is a structured audit for what the project should prove next.
+Expand coverage at every dimensional level by deliberately looking for missing theorems, stronger formal statements, cleaner proof spines, better sidecars, and paper improvements. This phase is not a license to invent unsupported claims; it is a structured audit for what the project should prove next and for where existing papers or proofs should be strengthened.
 
 Required sweep:
 
@@ -580,6 +583,8 @@ Required sweep:
 - [ ] Audit Phase II and applications for stable-sphere, Bott/Clifford seed, bundle, boundary/cobordism, proof-glyph, data-analysis, compute, rendering, systems, and AI theorem gaps.
 - [ ] For each promising theorem target, add or update a manifest entry before claiming it in prose.
 - [ ] Prove low-risk targets in Lean first, then update paper text, Python sidecars, theorem cards, and Living Book links.
+- [ ] Revisit existing proved claims for stronger variants, cleaner names, better lemmas, or more useful corollaries before moving to speculative terrain.
+- [ ] Improve papers or proof sidecars when the audit shows a claim is correct but underexplained, weakly linked, or hard for a reader to consume.
 - [ ] Record blocked or long-horizon targets as `blocked`, `deferred`, `planned`, `lean_stated`, or `exploratory_python` with a useful blocker or next-step note.
 - [ ] Keep lower dimensions independent of higher dimensions.
 
@@ -620,6 +625,7 @@ Required discipline:
 - [ ] Separate mathematical proof, executable example, benchmark, and speculative interpretation.
 - [ ] Use MLX/Mac-first language for local AI/compute work; CUDA references remain portability or external-baseline notes.
 - [ ] Add papers, sidecars, or application manifests only when the experiment or theorem target is concrete enough to track.
+- [ ] Keep a clear comparison to ordinary mathematical notation, software, or proof workflow so any claimed advantage is visible rather than assumed.
 - [ ] Reject or defer directions that become metaphor-only.
 
 Outputs:
@@ -638,6 +644,7 @@ Make the entire project cleaner, more correct, easier to consume, and harder to 
 Sweep checklist:
 
 - [ ] Re-read every paper for overclaims, missing theorem ids, unclear status language, duplicated definitions, and weak exposition.
+- [ ] Improve prose that sounds rough, vague, or too speculative, while preserving exact theorem status.
 - [ ] Re-run every theorem manifest against Lean declarations and paper references.
 - [ ] Re-run every dictionary entry against actual usage in papers, Lean, Python, and the Living Book.
 - [ ] Check every sidecar for stale examples, missing tests, weak names, and mismatch with paper claims.

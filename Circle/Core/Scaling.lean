@@ -8,6 +8,10 @@ namespace Circle
 def scale (n k : Nat) (x : C n) : C n :=
   (k : ZMod n) * x
 
+/-- An affine finite-circle map: scale by `a`, then rotate by `b`. -/
+def affineMap (n a b : Nat) (x : C n) : C n :=
+  rot n b (scale n a x)
+
 def scaleAddMonoidHom (n k : Nat) : C n →+ C n where
   toFun := scale n k
   map_zero' := by
@@ -593,5 +597,21 @@ theorem scale_factor_modEq {n k l : Nat} (h : k ≡ l [MOD n]) (x : C n) :
   have hcast : ((k : Nat) : ZMod n) = ((l : Nat) : ZMod n) :=
     (ZMod.natCast_eq_natCast_iff k l n).mpr h
   rw [hcast]
+
+/-- Affine finite-circle maps compose by ordinary modular affine arithmetic. -/
+theorem affineMap_comp (n a b c d : Nat) (x : C n) :
+    affineMap n a b (affineMap n c d x) =
+      affineMap n (a * c) (a * d + b) x := by
+  unfold affineMap scale rot
+  rw [Nat.cast_mul, Nat.cast_add, Nat.cast_mul]
+  ring_nf
+
+/-- If the scale factor is coprime to the modulus, the affine map is bijective. -/
+theorem affineMap_bijective_of_coprime {n a b : Nat} (hcop : Nat.Coprime n a) :
+    Function.Bijective (affineMap n a b) := by
+  have hscale : Function.Bijective (scale n a) :=
+    (scale_invertible_iff_coprime n a).mpr hcop
+  have hrot : Function.Bijective (rot n b) := rot_bijective n b
+  exact hrot.comp hscale
 
 end Circle

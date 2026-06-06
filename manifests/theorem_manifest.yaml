@@ -751,6 +751,54 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["bounded examples: same orbit by generated cycle decomposition iff representatives are congruent modulo gcd(n,k)"]
 
+  - id: CC-T0056
+    name: Rotation map is bijective
+    status: proved
+    lean_name: Circle.rot_bijective
+    informal_statement: "Every finite-circle rotation is a bijection on the node set."
+    formal_statement: "forall (n a : Nat), Function.Bijective (Circle.rot n a)"
+    dictionary_dependencies: ["CC-0001", "CC-0101"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_rotation.py::test_rotation_map_is_permutation"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Rotation.lean by using translation by the opposite stride as an inverse."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["bounded examples: rotating all canonical representatives gives every node exactly once"]
+
+  - id: CC-T0057
+    name: Affine circle maps compose by affine modular arithmetic
+    status: proved
+    lean_name: Circle.affineMap_comp
+    informal_statement: "A scale-then-rotation affine finite-circle map composed with another affine map has the normal form with scale factor a*c and shift a*d+b."
+    formal_statement: "forall (n a b c d : Nat) (x : Circle.C n), Circle.affineMap n a b (Circle.affineMap n c d x) = Circle.affineMap n (a * c) (a * d + b) x"
+    dictionary_dependencies: ["CC-0001", "CC-0101", "CC-0105"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_affine_composition_normal_form", "sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py::test_affine_map_examples"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean by unfolding affineMap, scale, and rot, then normalizing arithmetic in ZMod n."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["bounded examples: affine(a,b) after affine(c,d) equals affine(a*c, a*d+b)"]
+
+  - id: CC-T0058
+    name: Coprime affine circle maps are bijective
+    status: proved
+    lean_name: Circle.affineMap_bijective_of_coprime
+    informal_statement: "If the scale factor is coprime to the finite-circle size, then scaling by that factor followed by any rotation is a bijection."
+    formal_statement: "forall {n a b : Nat}, Nat.Coprime n a -> Function.Bijective (Circle.affineMap n a b)"
+    dictionary_dependencies: ["CC-0001", "CC-0101", "CC-0105"]
+    paper_refs: ["papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"]
+    python_tests: ["tests/test_scaling.py::test_coprime_affine_maps_are_permutations", "sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py::test_coprime_affine_bijection_examples"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Scaling.lean by composing CC-T0056 with the coprime scaling bijection CC-T0008."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["bounded examples: affine image has cardinality n exactly when gcd(n,a)=1"]
+
   - id: CC-T0009
     name: Lift unique
     status: proved

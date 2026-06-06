@@ -404,3 +404,28 @@ def test_scale_factor_mod_equivalent() -> None:
                 equivalent = k + m * n
                 for x in range(0, 65):
                     assert circle.scale(x, k) == circle.scale(x, equivalent)
+
+
+def test_affine_composition_normal_form() -> None:
+    factors = [0, 1, 2, 3, 5, 8]
+    shifts = [0, 1, 2, 4, 7, 11]
+    for n in range(1, 33):
+        circle = Circle(n)
+        for x in range(n):
+            for a in factors:
+                for b in shifts:
+                    for c in factors:
+                        for d in shifts:
+                            assert circle.affine(
+                                circle.affine(x, c, d), a, b
+                            ) == circle.affine(x, a * c, a * d + b)
+
+
+def test_coprime_affine_maps_are_permutations() -> None:
+    shifts = [0, 1, 2, 5, 13]
+    for n in range(1, 65):
+        circle = Circle(n)
+        for a in range(0, 65):
+            for b in shifts:
+                image = {circle.affine(x, a, b) for x in range(n)}
+                assert (len(image) == n) == (gcd(n, a) == 1)

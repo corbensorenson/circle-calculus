@@ -235,7 +235,7 @@
       "informal_statement": "A rotation followed by the opposite rotation returns to the starting node.",
       "lean_name": "Circle.rot_inverse_left",
       "lean_source": "Circle/Core/Rotation.lean",
-      "lean_source_line": 16,
+      "lean_source_line": 27,
       "name": "Rotation inverse",
       "original_status": "proved",
       "paper_refs": [
@@ -399,7 +399,7 @@
       "informal_statement": "Scaling by k is invertible on C_n exactly when gcd(n,k)=1.",
       "lean_name": "Circle.scale_invertible_iff_coprime",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 60,
+      "lean_source_line": 64,
       "name": "Scaling invertible iff coprime",
       "original_status": "proved",
       "paper_refs": [
@@ -687,7 +687,7 @@
       "informal_statement": "Scaling by one leaves every node unchanged.",
       "lean_name": "Circle.scale_one",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 29,
+      "lean_source_line": 33,
       "name": "Scaling by one identity",
       "original_status": "proved",
       "paper_refs": [
@@ -720,7 +720,7 @@
       "informal_statement": "Composing scaling maps multiplies their scale factors.",
       "lean_name": "Circle.scale_comp",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 34,
+      "lean_source_line": 38,
       "name": "Scaling composition",
       "original_status": "proved",
       "paper_refs": [
@@ -755,7 +755,7 @@
       "informal_statement": "Scaling a rotated node equals rotating the scaled node by the scaled stride.",
       "lean_name": "Circle.scale_rot",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 40,
+      "lean_source_line": 44,
       "name": "Scaling transports rotation stride",
       "original_status": "proved",
       "paper_refs": [
@@ -789,7 +789,7 @@
       "informal_statement": "Scaling a finite coil step gives the matching coil step with scaled start and scaled stride.",
       "lean_name": "Circle.scale_coilStep",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 46,
+      "lean_source_line": 50,
       "name": "Scaling transports coil steps",
       "original_status": "proved",
       "paper_refs": [
@@ -823,7 +823,7 @@
       "informal_statement": "Every nonzero multiplier below a prime circle size gives a reversible scaling map.",
       "lean_name": "Circle.prime_scale_bijective",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 67,
+      "lean_source_line": 71,
       "name": "Prime scaling is bijective",
       "original_status": "proved",
       "paper_refs": [
@@ -857,7 +857,7 @@
       "informal_statement": "If k divides n, then scaling the cofactor address n/k by k lands at zero in C_n.",
       "lean_name": "Circle.scale_cofactor_zero",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 72,
+      "lean_source_line": 76,
       "name": "Scaling sends a divisor cofactor to zero",
       "original_status": "proved",
       "paper_refs": [
@@ -892,7 +892,7 @@
       "informal_statement": "If k divides n, then every multiple of the cofactor n/k lands at zero under scaling by k in C_n.",
       "lean_name": "Circle.scale_cofactor_multiple_zero",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 80,
+      "lean_source_line": 84,
       "name": "Scaling sends cofactor multiples to zero",
       "original_status": "proved",
       "paper_refs": [
@@ -927,7 +927,7 @@
       "informal_statement": "If k divides n, then adding any multiple of n/k to an address does not change its scaled value under k.",
       "lean_name": "Circle.scale_add_cofactor_multiple",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 95,
+      "lean_source_line": 99,
       "name": "Scaling collapses cofactor-shifted addresses",
       "original_status": "proved",
       "paper_refs": [
@@ -961,7 +961,7 @@
       "informal_statement": "A natural address x maps to zero under scaling by k exactly when n divides k*x.",
       "lean_name": "Circle.scale_nat_eq_zero_iff_dvd_mul",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 105,
+      "lean_source_line": 109,
       "name": "Scaling zero iff modulus divides product",
       "original_status": "proved",
       "paper_refs": [
@@ -996,7 +996,7 @@
       "informal_statement": "Two natural addresses have equal scaled values exactly when their scaled products are congruent modulo n.",
       "lean_name": "Circle.scale_nat_eq_iff_mul_modEq",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 187,
+      "lean_source_line": 191,
       "name": "Scaling equality iff scaled products are congruent",
       "original_status": "proved",
       "paper_refs": [
@@ -1031,7 +1031,7 @@
       "informal_statement": "When k is coprime to n, two natural addresses have equal scaled values exactly when the original addresses are congruent modulo n.",
       "lean_name": "Circle.scale_nat_eq_iff_nat_modEq_of_coprime",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 578,
+      "lean_source_line": 582,
       "name": "Coprime scaling reflects address congruence",
       "original_status": "proved",
       "paper_refs": [
@@ -1064,7 +1064,7 @@
       "informal_statement": "Scaling by zero sends every finite-circle address to zero.",
       "lean_name": "Circle.scale_zero_factor",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 24,
+      "lean_source_line": 28,
       "name": "Scaling by zero collapses to zero",
       "original_status": "proved",
       "paper_refs": [
@@ -1098,7 +1098,7 @@
       "informal_statement": "Scale factors that are congruent modulo n define the same scaling map on C_n.",
       "lean_name": "Circle.scale_factor_modEq",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 590,
+      "lean_source_line": 594,
       "name": "Congruent scale factors act identically",
       "original_status": "proved",
       "paper_refs": [
@@ -1132,7 +1132,7 @@
       "informal_statement": "For a nonzero circle size, a natural address scales to zero exactly when the stride period divides that address.",
       "lean_name": "Circle.scale_nat_eq_zero_iff_period_dvd",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 111,
+      "lean_source_line": 115,
       "name": "Scaling kernel is period divisibility",
       "original_status": "proved",
       "paper_refs": [
@@ -1166,7 +1166,7 @@
       "informal_statement": "Scaling a natural step index by stride k gives the same address as walking k for that many coil steps from zero.",
       "lean_name": "Circle.scale_nat_to_coilStep",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 55,
+      "lean_source_line": 59,
       "name": "Scaling a step index gives the matching coil step",
       "original_status": "proved",
       "paper_refs": [
@@ -1200,7 +1200,7 @@
       "informal_statement": "For a nonzero circle size, every natural multiple of the stride period maps to zero under scaling by that stride.",
       "lean_name": "Circle.scale_period_multiple_zero",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 157,
+      "lean_source_line": 161,
       "name": "Scaling period multiples gives zero",
       "original_status": "proved",
       "paper_refs": [
@@ -1234,7 +1234,7 @@
       "informal_statement": "For a nonzero circle size, adding any natural multiple of the stride period to an address does not change its scaled value.",
       "lean_name": "Circle.scale_add_period_multiple",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 162,
+      "lean_source_line": 166,
       "name": "Scaling collapses period-shifted addresses",
       "original_status": "proved",
       "paper_refs": [
@@ -1268,7 +1268,7 @@
       "informal_statement": "For a nonzero circle size, scaling a natural address has the same value as scaling its residue modulo the stride period.",
       "lean_name": "Circle.scale_nat_period_normalForm",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 172,
+      "lean_source_line": 176,
       "name": "Scaling has period normal form",
       "original_status": "proved",
       "paper_refs": [
@@ -1302,7 +1302,7 @@
       "informal_statement": "For a nonzero circle size, two natural addresses have the same scaled value exactly when they are congruent modulo the stride period.",
       "lean_name": "Circle.scale_nat_eq_iff_period_modEq",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 194,
+      "lean_source_line": 198,
       "name": "Scaling equality is period congruence",
       "original_status": "proved",
       "paper_refs": [
@@ -1336,7 +1336,7 @@
       "informal_statement": "For a nonzero circle size, scaling is injective on the natural representatives strictly below the stride period.",
       "lean_name": "Circle.scale_nat_period_representatives_injective",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 237,
+      "lean_source_line": 241,
       "name": "Scaling is injective on period representatives",
       "original_status": "proved",
       "paper_refs": [
@@ -1370,7 +1370,7 @@
       "informal_statement": "For a nonzero circle size, the finite image of one full set of stride-period representatives under scaling has cardinality equal to the stride period.",
       "lean_name": "Circle.scalePeriodRepresentativeImage_card",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 250,
+      "lean_source_line": 254,
       "name": "Scaling period-representative image has period cardinality",
       "original_status": "proved",
       "paper_refs": [
@@ -1404,7 +1404,7 @@
       "informal_statement": "For a nonzero circle size, every scaled natural address lies in the scaled image of one full set of stride-period representatives.",
       "lean_name": "Circle.scale_nat_mem_scalePeriodRepresentativeImage",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 260,
+      "lean_source_line": 264,
       "name": "Scaled addresses land in period-representative image",
       "original_status": "proved",
       "paper_refs": [
@@ -1438,7 +1438,7 @@
       "informal_statement": "For a nonzero circle size, the image of scaling all finite circle representatives equals the image of scaling one full set of stride-period representatives.",
       "lean_name": "Circle.scaleCircleImage_eq_scalePeriodRepresentativeImage",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 275,
+      "lean_source_line": 279,
       "name": "Scaling circle image equals period-representative image",
       "original_status": "proved",
       "paper_refs": [
@@ -1472,7 +1472,7 @@
       "informal_statement": "For a nonzero circle size, the finite image of scaling all circle representatives has cardinality equal to the stride period.",
       "lean_name": "Circle.scaleCircleImage_card",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 295,
+      "lean_source_line": 299,
       "name": "Scaling circle image has period cardinality",
       "original_status": "proved",
       "paper_refs": [
@@ -1506,7 +1506,7 @@
       "informal_statement": "For a nonzero circle size, the canonical representatives that map to zero under scaling are exactly the multiples of the stride period indexed below gcd(n,k).",
       "lean_name": "Circle.scaleKernelRepresentativeSet_eq_periodMultiples",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 320,
+      "lean_source_line": 324,
       "name": "Scaling kernel representatives are period multiples",
       "original_status": "proved",
       "paper_refs": [
@@ -1540,7 +1540,7 @@
       "informal_statement": "For a nonzero circle size, the finite set of canonical representatives that map to zero under scaling has cardinality gcd(n,k).",
       "lean_name": "Circle.scaleKernelRepresentativeSet_card",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 370,
+      "lean_source_line": 374,
       "name": "Scaling kernel representative set has gcd cardinality",
       "original_status": "proved",
       "paper_refs": [
@@ -1574,7 +1574,7 @@
       "informal_statement": "For a nonzero circle size, the canonical representatives in the scaled fiber of a representative r are exactly r modulo the stride period plus all period multiples indexed below gcd(n,k).",
       "lean_name": "Circle.scaleFiberRepresentativeSet_eq_periodFibers",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 399,
+      "lean_source_line": 403,
       "name": "Scaling fibers are period-offset representatives",
       "original_status": "proved",
       "paper_refs": [
@@ -1608,7 +1608,7 @@
       "informal_statement": "For a nonzero circle size, every finite canonical representative fiber of the scaling map has cardinality gcd(n,k).",
       "lean_name": "Circle.scaleFiberRepresentativeSet_card",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 480,
+      "lean_source_line": 484,
       "name": "Scaling fibers have gcd cardinality",
       "original_status": "proved",
       "paper_refs": [
@@ -1642,7 +1642,7 @@
       "informal_statement": "For a nonzero circle size, a natural representative lies in the additive kernel subgroup of scaling by k exactly when the stride period divides that representative.",
       "lean_name": "Circle.nat_mem_scaleKernelSubgroup_iff_period_dvd",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 152,
+      "lean_source_line": 156,
       "name": "Scaling kernel subgroup membership is period divisibility",
       "original_status": "proved",
       "paper_refs": [
@@ -1676,7 +1676,7 @@
       "informal_statement": "For any target node not in the finite image of the scaling map, the canonical representative fiber over that target is empty.",
       "lean_name": "Circle.scaleTargetFiberRepresentativeSet_eq_empty_of_not_mem_scaleCircleImage",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 532,
+      "lean_source_line": 536,
       "name": "Scaling target fibers are empty outside the image",
       "original_status": "proved",
       "paper_refs": [
@@ -1710,7 +1710,7 @@
       "informal_statement": "For a nonzero circle size, any target node in the finite image of scaling has a canonical representative fiber of cardinality gcd(n,k).",
       "lean_name": "Circle.scaleTargetFiberRepresentativeSet_card_of_mem_scaleCircleImage",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 548,
+      "lean_source_line": 552,
       "name": "Scaling target fibers inside the image have gcd cardinality",
       "original_status": "proved",
       "paper_refs": [
@@ -1744,7 +1744,7 @@
       "informal_statement": "For a nonzero circle size, any target node in the finite scaling image has image-cardinality times target-fiber-cardinality equal to the circle size.",
       "lean_name": "Circle.scaleCircleImage_card_mul_targetFiberRepresentativeSet_card",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 559,
+      "lean_source_line": 563,
       "name": "Scaling image and target fiber cardinalities factor the circle",
       "original_status": "proved",
       "paper_refs": [
@@ -1778,7 +1778,7 @@
       "informal_statement": "For a nonzero circle size, the finite scaling image cardinality times the canonical kernel representative cardinality equals the circle size.",
       "lean_name": "Circle.scaleCircleImage_card_mul_scaleKernelRepresentativeSet_card",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 569,
+      "lean_source_line": 573,
       "name": "Scaling image and kernel cardinalities factor the circle",
       "original_status": "proved",
       "paper_refs": [
@@ -1812,7 +1812,7 @@
       "informal_statement": "For every finite circle and scaling factor, the representative fiber over the scaled zero address is exactly the canonical kernel representative set.",
       "lean_name": "Circle.scaleFiberRepresentativeSet_zero_eq_scaleKernelRepresentativeSet",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 485,
+      "lean_source_line": 489,
       "name": "Scaling zero fiber is the kernel representative set",
       "original_status": "proved",
       "paper_refs": [
@@ -1846,7 +1846,7 @@
       "informal_statement": "For every finite circle, scaling factor, and representative r, the target fiber over scale(r) is exactly the canonical representative fiber of r.",
       "lean_name": "Circle.scaleTargetFiberRepresentativeSet_scaled_eq_scaleFiberRepresentativeSet",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 526,
+      "lean_source_line": 530,
       "name": "Scaling target fiber over a scaled representative is its representative fiber",
       "original_status": "proved",
       "paper_refs": [
@@ -1880,7 +1880,7 @@
       "informal_statement": "For a canonical representative r below n, its scaling fiber equals the fiber of s exactly when scale(r) equals scale(s).",
       "lean_name": "Circle.scaleFiberRepresentativeSet_eq_iff_scaled_eq_of_lt",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 490,
+      "lean_source_line": 494,
       "name": "Scaling representative fibers are equal iff scaled representatives are equal",
       "original_status": "proved",
       "paper_refs": [
@@ -1914,7 +1914,7 @@
       "informal_statement": "For nonzero n and a canonical representative r below n, its scaling fiber equals the fiber of s exactly when r and s are congruent modulo period(n,k).",
       "lean_name": "Circle.scaleFiberRepresentativeSet_eq_iff_period_modEq_of_lt",
       "lean_source": "Circle/Core/Scaling.lean",
-      "lean_source_line": 514,
+      "lean_source_line": 518,
       "name": "Scaling representative fibers are equal iff representatives are period-congruent",
       "original_status": "proved",
       "paper_refs": [
@@ -2003,6 +2003,106 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "bounded examples: same orbit by generated cycle decomposition iff representatives are congruent modulo gcd(n,k)"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall (n a : Nat), Function.Bijective (Circle.rot n a)",
+      "id": "CC-T0056",
+      "informal_statement": "Every finite-circle rotation is a bijection on the node set.",
+      "lean_name": "Circle.rot_bijective",
+      "lean_source": "Circle/Core/Rotation.lean",
+      "lean_source_line": 17,
+      "name": "Rotation map is bijective",
+      "original_status": "proved",
+      "paper_refs": [
+        "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/Rotation.lean by using translation by the opposite stride as an inverse.",
+      "python_tests": [
+        "tests/test_rotation.py::test_rotation_map_is_permutation"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "bounded examples: rotating all canonical representatives gives every node exactly once"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101",
+        "CC-0105"
+      ],
+      "formal_statement": "forall (n a b c d : Nat) (x : Circle.C n), Circle.affineMap n a b (Circle.affineMap n c d x) = Circle.affineMap n (a * c) (a * d + b) x",
+      "id": "CC-T0057",
+      "informal_statement": "A scale-then-rotation affine finite-circle map composed with another affine map has the normal form with scale factor a*c and shift a*d+b.",
+      "lean_name": "Circle.affineMap_comp",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 602,
+      "name": "Affine circle maps compose by affine modular arithmetic",
+      "original_status": "proved",
+      "paper_refs": [
+        "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/Scaling.lean by unfolding affineMap, scale, and rot, then normalizing arithmetic in ZMod n.",
+      "python_tests": [
+        "tests/test_scaling.py::test_affine_composition_normal_form",
+        "sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py::test_affine_map_examples"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "bounded examples: affine(a,b) after affine(c,d) equals affine(a*c, a*d+b)"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101",
+        "CC-0105"
+      ],
+      "formal_statement": "forall {n a b : Nat}, Nat.Coprime n a -> Function.Bijective (Circle.affineMap n a b)",
+      "id": "CC-T0058",
+      "informal_statement": "If the scale factor is coprime to the finite-circle size, then scaling by that factor followed by any rotation is a bijection.",
+      "lean_name": "Circle.affineMap_bijective_of_coprime",
+      "lean_source": "Circle/Core/Scaling.lean",
+      "lean_source_line": 610,
+      "name": "Coprime affine circle maps are bijective",
+      "original_status": "proved",
+      "paper_refs": [
+        "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/Scaling.lean by composing CC-T0056 with the coprime scaling bijection CC-T0008.",
+      "python_tests": [
+        "tests/test_scaling.py::test_coprime_affine_maps_are_permutations",
+        "sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py::test_coprime_affine_bijection_examples"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "bounded examples: affine image has cardinality n exactly when gcd(n,a)=1"
         ]
       }
     },

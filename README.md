@@ -61,7 +61,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S1/PAPER_S1_01_FINITE_CIRCLES.md` | polished dimension guide draft | `CC-T0001` through `CC-T0007` plus `CC-T0054` and `CC-T0055` linked in dimension layout |
 | `papers/S1/PAPER_S1_02_WINDING_NATURALS.md` | polished dimension guide draft | `CC-T0009` through `CC-T0016` linked in dimension layout |
 | `papers/S1/PAPER_S1_03_INTEGERS_ORIENTATION.md` | polished draft | `S1O-T0001` through `S1O-T0003` proved with Python examples |
-| `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md` | polished draft | `CC-T0008` and `CC-T0017` through `CC-T0054` proved |
+| `papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md` | polished draft | `CC-T0008`, `CC-T0017` through `CC-T0054`, and `CC-T0056` through `CC-T0058` proved |
 | `papers/S0/PAPER_S0_01_TWO_POINT_OPPOSITION.md` | polished draft | `S0-T0001` through `S0-T0004` proved with Python examples |
 | `papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md` | polished draft | `S2-T0001` and `S2-T0002` proved with Python examples |
 | `papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md` | polished draft | `S2-T0003` through `S2-T0007` proved with Python examples |
@@ -92,7 +92,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md` | polished draft/proved finite seed | `AIM-T0001` through `AIM-T0003` are Lean-proved cyclic-memory-slot facts with Python examples |
 | `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md` | polished draft/proved finite seed | `AIRA-T0001` through `AIRA-T0003` are Lean-proved adapter-block facts with Python examples |
 
-The theorem manifest also includes `CC-T0008` and `CC-T0017` through `CC-T0054`, proving the first scaling/full-coil spine: invertibility iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, the scaling-to-coil image bridge, bijectivity of nonzero scaling on prime circles, divisor-cofactor collapse to zero, cofactor-multiple collapse to zero, period-multiple collapse to zero, cofactor-shift and period-shift address collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and gcd cardinality, zero-fiber/kernel and scaled-target/fiber bridges, fiber-set equality modulo scaled value and stride period, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, the exact divisibility and period-divisibility criteria for scaling to zero, the exact product-congruence criterion for scaled-address equality, coprime reflection of address congruence, and full-coil iff coprime.
+The theorem manifest also includes `CC-T0008`, `CC-T0017` through `CC-T0054`, and `CC-T0056` through `CC-T0058`, proving the first scaling/full-coil/affine spine: invertibility iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, the scaling-to-coil image bridge, bijectivity of nonzero scaling on prime circles, divisor-cofactor collapse to zero, cofactor-multiple collapse to zero, period-multiple collapse to zero, cofactor-shift and period-shift address collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and gcd cardinality, zero-fiber/kernel and scaled-target/fiber bridges, fiber-set equality modulo scaled value and stride period, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, the exact divisibility and period-divisibility criteria for scaling to zero, the exact product-congruence criterion for scaled-address equality, coprime reflection of address congruence, full-coil iff coprime, rotation bijectivity, affine composition normal form, and coprime affine bijectivity.
 
 The D0 dimensional scaffold is also in place: dimension manifests, dimension dictionaries, planned paper stubs, Lean/Python scaffolds, and dimension validation scripts. Future-dimension claims remain planned, deferred, exploratory, or stated until actual Lean proofs exist.
 
@@ -100,7 +100,7 @@ Phase II and application scaffolds are also in place under `papers/phase2/`, `pa
 
 Phase III is now implemented as the first Circle Calculus Living Book milestone: a Quarto-based interactive explainer site generated from manifests, dictionary entries, papers, Python reference models, and Lean proof metadata. Its policy and roadmap live in `docs/LIVING_BOOK_POLICY.md`, `docs/LIVING_BOOK_ROADMAP.md`, and `docs/LIVING_BOOK_WIDGETS.md`; the source browser handoff is archived at `circle_calculus_codex_handoff/source_logs/05_living_book_browser_note.md`. The Living Book is an explanation layer, not a proof layer.
 
-The next project phases are intentionally wide and deep: Phase IV audits every dimensional level and application area for missing theorem targets and stronger proof spines; Phase V searches edge problem spaces where Circle Calculus may provide leverage beyond ordinary presentations; Phase VI sweeps the whole corpus for correctness, clarity, proof-status integrity, and reader usability.
+The next project phases are intentionally wide and deep: Phase IV audits every dimensional level and application area for missing theorem targets, paper improvements, and stronger proof spines; Phase V searches edge problem spaces where Circle Calculus may provide leverage that is hard, awkward, or unavailable in ordinary presentations; Phase VI sweeps the whole corpus so the writing is cleaner, the claims are more correct, and the proof-status links are easy for outsiders to consume.
 
 The README is updated after meaningful proof batches, paper batches, roadmap changes, or application-context additions. Tiny internal-only edits should update the relevant source files without creating README churn.
 
@@ -231,6 +231,7 @@ Proved finite-circle core:
 - `CC-T0001`: rotation by zero
 - `CC-T0002`: rotation composition
 - `CC-T0003`: rotation inverse
+- `CC-T0056`: rotations are bijections
 - `CC-T0004`: closure condition
 - `CC-T0005`: period equals `n / gcd(n,k)`
 - `CC-T0006`: orbit decomposition count
@@ -275,6 +276,8 @@ Proved finite-circle core:
 - `CC-T0049`: scaling image cardinality times kernel representative cardinality equals the circle size
 - `CC-T0026`: scaled natural addresses are equal iff their scaled products are congruent modulo the circle size
 - `CC-T0027`: coprime scaling reflects ordinary address congruence
+- `CC-T0057`: affine circle maps compose by affine modular arithmetic
+- `CC-T0058`: coprime affine circle maps are bijective
 
 Proved winding/natural-number core:
 
