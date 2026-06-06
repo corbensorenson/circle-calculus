@@ -110,6 +110,8 @@ website:
             text: Bott And Clifford
           - href: chapters/phase2/boundary_cobordism.qmd
             text: Boundary Cobordism
+          - href: chapters/phase2/proof_carrying_glyphs.qmd
+            text: Proof-Carrying Glyphs
       - section: "Applications"
         contents:
           - href: chapters/applications/index.qmd

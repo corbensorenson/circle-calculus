@@ -354,3 +354,25 @@ entries:
     forbidden_meanings:
       - "A MultiCoil RoPE theorem."
       - "A model-quality benchmark."
+  - id: COMMON-0032
+    name: "Theorem metadata entry"
+    kind: object
+    symbol: "theorem metadata"
+    formal_definition: "A finite metadata record carrying a theorem id and Lean declaration name, modeled by `Circle.Phase2.TheoremMetadata`."
+    intuition: "The smallest source-of-truth object a proof glyph can resolve against."
+    dependencies: ["COMMON-0014", "COMMON-0015"]
+    introduced_in: "PAPER_P2_05_PROOF_CARRYING_GLYPHS"
+    forbidden_meanings:
+      - "A complete theorem manifest parser."
+      - "A proof that the Lean declaration has the intended semantics."
+  - id: COMMON-0033
+    name: "Glyph manifest validity"
+    kind: relation
+    symbol: "glyph valid against manifest"
+    formal_definition: "`Circle.Phase2.proofGlyphValidAgainst`, requiring a proof glyph's theorem id and Lean declaration name to match some theorem metadata entry."
+    intuition: "A proof-carrying glyph must resolve to tracked theorem metadata before readers trust the interface."
+    dependencies: ["COMMON-0013", "COMMON-0032"]
+    introduced_in: "PAPER_P2_05_PROOF_CARRYING_GLYPHS"
+    forbidden_meanings:
+      - "A proof by diagram."
+      - "A visual normal-form theorem."

@@ -1,0 +1,17 @@
+---
+title: "Proof-Carrying Glyphs"
+---
+
+Proof-carrying glyphs are treated here as proof interfaces. A glyph may point to a theorem id and Lean declaration name, but the theorem manifest and compiled Lean declaration remain the proof source of truth.
+
+<div class="warning-box">
+Diagrams and glyphs are not proofs. The current proved layer covers certificate projections and finite metadata validity only.
+</div>
+
+<div class="theorem-box" data-theorem-id="P2G-T0001"></div>
+<div class="theorem-box" data-theorem-id="P2G-T0002"></div>
+<div class="theorem-box" data-theorem-id="P2G-T0003"></div>
+<div class="theorem-box" data-theorem-id="P2G-T0004"></div>
+<div class="theorem-box" data-theorem-id="P2G-T0005"></div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

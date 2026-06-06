@@ -223,14 +223,16 @@ targets:
   - id: P4-P2-001
     layer: PhaseII
     priority: high
-    status: planned
+    status: promoted
+    promoted_theorem_id: P2G-T0004
+    supporting_theorem_ids: ["P2G-T0005"]
     claim_type: theorem
     title: "Glyph certificate resolves theorem manifest entry"
     target_statement: "A proof-carrying glyph certificate is valid only if its theorem id resolves to a manifest entry and its Lean name matches generated theorem data."
     candidate_formalization: "Validity predicate over generated theorem metadata and proof glyph fields."
     paper_refs: ["papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md"]
-    dictionary_dependencies: ["COMMON-0013", "COMMON-0014", "COMMON-0015"]
-    next_action: "Define a finite metadata model before connecting to generated JSON."
+    dictionary_dependencies: ["COMMON-0013", "COMMON-0014", "COMMON-0015", "COMMON-0032", "COMMON-0033"]
+    next_action: "Promoted to P2G-T0004 with P2G-T0005 as the matching-metadata constructor theorem; generated JSON integration remains a site/exporter layer."
     guardrail: "A glyph is a proof interface, not a proof substitute."
 
   - id: P4-P2-002

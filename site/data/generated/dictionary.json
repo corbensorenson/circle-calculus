@@ -1223,6 +1223,42 @@
       "symbol": "adapter_block(channel + block_size) = adapter_block(channel)"
     },
     {
+      "dependencies": [
+        "COMMON-0014",
+        "COMMON-0015"
+      ],
+      "forbidden_meanings": [
+        "A complete theorem manifest parser.",
+        "A proof that the Lean declaration has the intended semantics."
+      ],
+      "formal_definition": "A finite metadata record carrying a theorem id and Lean declaration name, modeled by `Circle.Phase2.TheoremMetadata`.",
+      "id": "COMMON-0032",
+      "introduced_in": "PAPER_P2_05_PROOF_CARRYING_GLYPHS",
+      "intuition": "The smallest source-of-truth object a proof glyph can resolve against.",
+      "kind": "object",
+      "name": "Theorem metadata entry",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "theorem metadata"
+    },
+    {
+      "dependencies": [
+        "COMMON-0013",
+        "COMMON-0032"
+      ],
+      "forbidden_meanings": [
+        "A proof by diagram.",
+        "A visual normal-form theorem."
+      ],
+      "formal_definition": "`Circle.Phase2.proofGlyphValidAgainst`, requiring a proof glyph's theorem id and Lean declaration name to match some theorem metadata entry.",
+      "id": "COMMON-0033",
+      "introduced_in": "PAPER_P2_05_PROOF_CARRYING_GLYPHS",
+      "intuition": "A proof-carrying glyph must resolve to tracked theorem metadata before readers trust the interface.",
+      "kind": "relation",
+      "name": "Glyph manifest validity",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "glyph valid against manifest"
+    },
+    {
       "dependencies": [],
       "forbidden_meanings": [
         "The one-node circle C_1.",

@@ -292,6 +292,36 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["glyph.glyph_id == glyph_id"]
     blocker: ""
+  - id: P2G-T0004
+    status: lean_proved
+    lean_name: Circle.Phase2.proofGlyphValidAgainst_resolves_metadata
+    informal_statement: "A proof glyph valid against finite theorem metadata resolves to an entry whose theorem id and Lean name match the glyph."
+    formal_statement: "forall glyph manifest, proofGlyphValidAgainst glyph manifest -> exists metadata in manifest, proofGlyphTheoremId glyph = metadata.theoremId and proofGlyphLeanName glyph = metadata.leanName"
+    dictionary_dependencies: ["COMMON-0013", "COMMON-0014", "COMMON-0015", "COMMON-0032", "COMMON-0033"]
+    paper_refs: ["papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py::test_proof_glyph_validates_against_matching_metadata
+        - sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py::test_proof_glyph_rejects_missing_theorem_id
+        - sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py::test_proof_glyph_rejects_lean_name_mismatch
+    blocker: ""
+  - id: P2G-T0005
+    status: lean_proved
+    lean_name: Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata
+    informal_statement: "A proof glyph is valid against finite theorem metadata when an included metadata entry matches its theorem id and Lean name."
+    formal_statement: "forall glyph manifest metadata, metadata in manifest -> proofGlyphTheoremId glyph = metadata.theoremId -> proofGlyphLeanName glyph = metadata.leanName -> proofGlyphValidAgainst glyph manifest"
+    dictionary_dependencies: ["COMMON-0013", "COMMON-0014", "COMMON-0015", "COMMON-0032", "COMMON-0033"]
+    paper_refs: ["papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py::test_proof_glyph_validates_against_matching_metadata
+    blocker: ""
   - id: APPD-T0001
     status: lean_proved
     lean_name: Circle.Applications.phaseCoordinate_lt_period

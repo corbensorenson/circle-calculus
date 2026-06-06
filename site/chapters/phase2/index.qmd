@@ -5,5 +5,6 @@ title: "Phase II"
 Phase II pages collect stable spheres, periodicity, bundles, boundary/cobordism seeds, and proof-carrying glyphs.
 
 <div class="theorem-box" data-theorem-id="P2S-T0001"></div>
+<div class="theorem-box" data-theorem-id="P2G-T0004"></div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

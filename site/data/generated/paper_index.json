@@ -556,7 +556,9 @@
       "dictionary_ids": [
         "COMMON-0013",
         "COMMON-0014",
-        "COMMON-0015"
+        "COMMON-0015",
+        "COMMON-0032",
+        "COMMON-0033"
       ],
       "id": "PAPER_P2_05_PROOF_CARRYING_GLYPHS",
       "path": "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md",
@@ -565,7 +567,9 @@
       "theorem_ids": [
         "P2G-T0001",
         "P2G-T0002",
-        "P2G-T0003"
+        "P2G-T0003",
+        "P2G-T0004",
+        "P2G-T0005"
       ],
       "title": "Circle Calculus Phase II.5: Proof-Carrying Glyphs"
     },

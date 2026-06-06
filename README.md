@@ -82,7 +82,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md` | polished draft/proved finite seed | `P2B-T0001` through `P2B-T0003` are Lean-proved period-8 clock facts with Python examples; Bott/Clifford periodicity remains future work |
 | `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md` | polished draft/proved trivial seed | `P2BU-T0001` through `P2BU-T0004` are Lean-proved product-bundle projection/fiber facts with Python examples |
 | `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md` | polished draft/proved finite seed | `P2BC-T0001` through `P2BC-T0004` are Lean-proved directed-interval boundary facts with Python examples |
-| `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md` | polished draft/proved certificate seed | `P2G-T0001` through `P2G-T0003` are Lean-proved proof-glyph projection facts with Python examples |
+| `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md` | polished draft/proved certificate seed | `P2G-T0001` through `P2G-T0005` are Lean-proved proof-glyph projection and metadata-validity facts with Python examples |
 | `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md` | polished draft/proved finite seed | `APPD-T0001` through `APPD-T0003` are Lean-proved phase-coordinate facts with Python examples |
 | `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md` | polished draft/proved finite seed | `COMPC-T0001` through `COMPC-T0003` are Lean-proved cyclic-address facts with Python examples |
 | `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md` | polished draft/proved finite seed | `COMPR-T0001` through `COMPR-T0003` are Lean-proved direction-bin schedule facts with Python examples |
@@ -317,6 +317,8 @@ Proved common and dimensional spine:
 - `P2G-T0001`: proof glyph certificate exposes its theorem id
 - `P2G-T0002`: proof glyph certificate exposes its Lean declaration name
 - `P2G-T0003`: proof glyph certificate exposes its glyph id
+- `P2G-T0004`: valid proof glyphs resolve to finite theorem metadata with matching theorem id and Lean name
+- `P2G-T0005`: matching theorem metadata constructs a valid proof glyph relation
 - `APPD-T0001`: finite phase coordinate is bounded by a positive period
 - `APPD-T0002`: finite phase coordinate closes after adding one full period
 - `APPD-T0003`: finite phase coordinate at zero is zero

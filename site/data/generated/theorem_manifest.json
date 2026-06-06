@@ -2880,7 +2880,7 @@
       "informal_statement": "A constructed proof glyph exposes the theorem id it carries.",
       "lean_name": "Circle.Phase2.proofGlyphTheoremId_mk",
       "lean_source": "Circle/Phase2/GlyphProof.lean",
-      "lean_source_line": 32,
+      "lean_source_line": 39,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md#theorem-spine"
@@ -2910,7 +2910,7 @@
       "informal_statement": "A constructed proof glyph exposes the Lean declaration name it carries.",
       "lean_name": "Circle.Phase2.proofGlyphLeanName_mk",
       "lean_source": "Circle/Phase2/GlyphProof.lean",
-      "lean_source_line": 36,
+      "lean_source_line": 43,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md#theorem-spine"
@@ -2939,7 +2939,7 @@
       "informal_statement": "A constructed proof glyph exposes the glyph id it carries.",
       "lean_name": "Circle.Phase2.proofGlyphGlyphId_mk",
       "lean_source": "Circle/Phase2/GlyphProof.lean",
-      "lean_source_line": 28,
+      "lean_source_line": 35,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md#theorem-spine"
@@ -2951,6 +2951,74 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "glyph.glyph_id == glyph_id"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0013",
+        "COMMON-0014",
+        "COMMON-0015",
+        "COMMON-0032",
+        "COMMON-0033"
+      ],
+      "formal_statement": "forall glyph manifest, proofGlyphValidAgainst glyph manifest -> exists metadata in manifest, proofGlyphTheoremId glyph = metadata.theoremId and proofGlyphLeanName glyph = metadata.leanName",
+      "id": "P2G-T0004",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "A proof glyph valid against finite theorem metadata resolves to an entry whose theorem id and Lean name match the glyph.",
+      "lean_name": "Circle.Phase2.proofGlyphValidAgainst_resolves_metadata",
+      "lean_source": "Circle/Phase2/GlyphProof.lean",
+      "lean_source_line": 54,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py::test_proof_glyph_validates_against_matching_metadata",
+          "sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py::test_proof_glyph_rejects_missing_theorem_id",
+          "sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py::test_proof_glyph_rejects_lean_name_mismatch"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0013",
+        "COMMON-0014",
+        "COMMON-0015",
+        "COMMON-0032",
+        "COMMON-0033"
+      ],
+      "formal_statement": "forall glyph manifest metadata, metadata in manifest -> proofGlyphTheoremId glyph = metadata.theoremId -> proofGlyphLeanName glyph = metadata.leanName -> proofGlyphValidAgainst glyph manifest",
+      "id": "P2G-T0005",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "A proof glyph is valid against finite theorem metadata when an included metadata entry matches its theorem id and Lean name.",
+      "lean_name": "Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata",
+      "lean_source": "Circle/Phase2/GlyphProof.lean",
+      "lean_source_line": 62,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py::test_proof_glyph_validates_against_matching_metadata"
         ]
       }
     },
