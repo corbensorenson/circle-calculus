@@ -23,6 +23,10 @@ def constant_interval(point: int) -> DirectedInterval:
     return DirectedInterval(source=point, target=point)
 
 
+def interval_between(source: int, target: int) -> DirectedInterval:
+    return DirectedInterval(source=source, target=target)
+
+
 def test_boundary_boundary_interval_zero() -> None:
     for source in range(-5, 6):
         for target in range(-5, 6):
@@ -47,3 +51,13 @@ def test_reverse_interval_is_involutive() -> None:
 def test_constant_interval_has_zero_boundary() -> None:
     for point in range(-20, 21):
         assert interval_boundary(constant_interval(point)) == 0
+
+
+def test_interval_boundary_adds_through_midpoint() -> None:
+    for source in range(-5, 6):
+        for mid in range(-5, 6):
+            for target in range(-5, 6):
+                direct = interval_boundary(interval_between(source, target))
+                first = interval_boundary(interval_between(source, mid))
+                second = interval_boundary(interval_between(mid, target))
+                assert direct == first + second

@@ -28,6 +28,7 @@ Why is endpoint orientation a useful first proof target for later boundary and c
 <div class="theorem-box" data-theorem-id="P2BC-T0002"></div>
 <div class="theorem-box" data-theorem-id="P2BC-T0003"></div>
 <div class="theorem-box" data-theorem-id="P2BC-T0004"></div>
+<div class="theorem-box" data-theorem-id="P2BC-T0005"></div>
 
 <p data-paper-ref="papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md">Boundary Cobordism Calculus</a></p>
 

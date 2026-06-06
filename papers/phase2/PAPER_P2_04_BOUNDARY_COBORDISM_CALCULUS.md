@@ -43,6 +43,7 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `P2BC-T0002`: `Circle.Phase2.intervalBoundary_reverse`
 - `P2BC-T0003`: `Circle.Phase2.reverseInterval_involutive`
 - `P2BC-T0004`: `Circle.Phase2.intervalBoundary_constant_zero`
+- `P2BC-T0005`: `Circle.Phase2.intervalBoundary_between_add`
 
 ## Proved Core
 
@@ -56,11 +57,20 @@ intervalBoundary(reverse interval) = - intervalBoundary interval
 
 `P2BC-T0003` proves that reversal is involutive, and `P2BC-T0004` proves that a constant interval has zero boundary.
 
+`P2BC-T0005` proves the first adjacent-interval additivity law:
+
+```text
+boundary([source -> target])
+  = boundary([source -> mid]) + boundary([mid -> target])
+```
+
+This is still a directed-interval theorem, not a general chain-complex theorem. Its role is to certify the arithmetic spine needed before finite chains or cobordism-style composition are introduced.
+
 The Python sidecar checks the same directed-interval examples. It provides executable orientation, while Lean supplies the proof status.
 
 ## Next Program
 
-- Generalize from directed intervals to finite chains only after selecting a representation.
+- Generalize adjacent-interval additivity to finite chains only after selecting a representation.
 - Keep TQFT, field, and physics-adjacent language as roadmap material until formalized.
 - Use manifests to distinguish definitions, examples, planned claims, and proved laws.
 - Link this boundary seed to proof-as-transformation papers only through explicit theorem ids.

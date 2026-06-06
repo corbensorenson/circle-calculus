@@ -22,7 +22,11 @@ theorems:
     status: lean_proved
     lean_name: Circle.Phase2.intervalBoundary_constant_zero
     dictionary_dependencies: ["COMMON-0010", "COMMON-0011"]
+  - id: P2BC-T0005
+    status: lean_proved
+    lean_name: Circle.Phase2.intervalBoundary_between_add
+    dictionary_dependencies: ["COMMON-0010", "COMMON-0011"]
 next_targets:
-  - "Generalize from directed intervals to finite chains only after selecting a representation."
+  - "Generalize adjacent-interval additivity to finite chains only after selecting a representation."
   - "Keep cobordism, TQFT, and physics-adjacent claims as roadmap material until formalized."
 guardrail: "Physics-adjacent claims remain roadmap material until formalized."

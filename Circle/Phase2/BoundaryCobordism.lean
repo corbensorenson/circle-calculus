@@ -23,6 +23,9 @@ def reverseInterval (interval : DirectedInterval) : DirectedInterval :=
 def constantInterval (point : Int) : DirectedInterval :=
   { source := point, target := point }
 
+def intervalBetween (source target : Int) : DirectedInterval :=
+  { source := source, target := target }
+
 theorem boundaryBoundaryInterval_zero (interval : DirectedInterval) :
     pointBoundary (intervalBoundary interval) = 0 := by
   rfl
@@ -41,5 +44,12 @@ theorem reverseInterval_involutive (interval : DirectedInterval) :
 theorem intervalBoundary_constant_zero (point : Int) :
     intervalBoundary (constantInterval point) = 0 := by
   simp [intervalBoundary, constantInterval]
+
+theorem intervalBoundary_between_add (source mid target : Int) :
+    intervalBoundary (intervalBetween source target) =
+      intervalBoundary (intervalBetween source mid) +
+        intervalBoundary (intervalBetween mid target) := by
+  simp [intervalBoundary, intervalBetween]
+  omega
 
 end Circle.Phase2

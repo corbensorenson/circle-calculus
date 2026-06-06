@@ -3049,6 +3049,12 @@
           "lean_name": "Circle.Phase2.intervalBoundary_constant_zero",
           "name": "Circle.Phase2.intervalBoundary_constant_zero",
           "status": "proved"
+        },
+        {
+          "id": "P2BC-T0005",
+          "lean_name": "Circle.Phase2.intervalBoundary_between_add",
+          "name": "Circle.Phase2.intervalBoundary_between_add",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -3096,6 +3102,12 @@
           "id": "P2BC-T0004",
           "lean_name": "Circle.Phase2.intervalBoundary_constant_zero",
           "name": "Circle.Phase2.intervalBoundary_constant_zero",
+          "status": "proved"
+        },
+        {
+          "id": "P2BC-T0005",
+          "lean_name": "Circle.Phase2.intervalBoundary_between_add",
+          "name": "Circle.Phase2.intervalBoundary_between_add",
           "status": "proved"
         }
       ],

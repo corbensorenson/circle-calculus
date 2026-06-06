@@ -306,7 +306,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `P2BU-T0001` through `P2BU-T0008` are Lean-proved trivial product-bundle projection/fiber and base-preserving transition sanity facts with Python examples; nontrivial bundles, overlap/cocycle data, connections, curvature, and holonomy remain future work.
 - [x] `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md`
   - Program: boundaries, `boundary(boundary)=0`, cobordisms, fields, and proofs as transformations.
-  - Status: polished draft; `P2BC-T0001` through `P2BC-T0004` are Lean-proved directed-interval boundary facts with Python examples; general chain complexes, cobordisms, TQFT, and physics-adjacent claims remain future work.
+  - Status: polished draft; `P2BC-T0001` through `P2BC-T0005` are Lean-proved directed-interval boundary facts with Python examples; general chain complexes, cobordisms, TQFT, and physics-adjacent claims remain future work.
 - [x] `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md`
   - Program: glyphs with formal syntax, normal forms, theorem dependencies, proof certificates, semantic models, and projection views.
   - Status: polished draft; `P2G-T0001` through `P2G-T0005` are Lean-proved proof-glyph certificate projection and finite theorem-metadata validity facts with Python examples; `P5-EDGE-001` adds an exploratory generated glyph-status fixture; glyph syntax, normal forms, semantics, dependency correctness, and proof search remain future work.
@@ -387,6 +387,7 @@ Application guardrails:
 - [x] `P2BC-T0002`: reversing a directed interval negates its boundary.
 - [x] `P2BC-T0003`: reversing a directed interval twice returns it.
 - [x] `P2BC-T0004`: a constant directed interval has zero boundary.
+- [x] `P2BC-T0005`: a directed interval boundary splits additively through an intermediate point.
 - [x] `P2G-T0001`: proof glyph certificate exposes its theorem id.
 - [x] `P2G-T0002`: proof glyph certificate exposes its Lean declaration name.
 - [x] `P2G-T0003`: proof glyph certificate exposes its glyph id.

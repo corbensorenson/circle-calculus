@@ -336,6 +336,20 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["boundary(constant_interval(point)) == 0"]
     blocker: ""
+  - id: P2BC-T0005
+    status: lean_proved
+    lean_name: Circle.Phase2.intervalBoundary_between_add
+    informal_statement: "A directed interval boundary from source to target splits additively through an intermediate point."
+    formal_statement: "forall source mid target : Int, intervalBoundary (intervalBetween source target) = intervalBoundary (intervalBetween source mid) + intervalBoundary (intervalBetween mid target)"
+    dictionary_dependencies: ["COMMON-0010", "COMMON-0011"]
+    paper_refs: ["papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS/python/test_boundary_examples.py::test_interval_boundary_adds_through_midpoint
+    blocker: ""
   - id: P2G-T0001
     status: lean_proved
     lean_name: Circle.Phase2.proofGlyphTheoremId_mk

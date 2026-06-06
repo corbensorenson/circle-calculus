@@ -3767,7 +3767,7 @@
       "informal_statement": "In the directed-interval seed, taking point-boundary after interval-boundary gives zero.",
       "lean_name": "Circle.Phase2.boundaryBoundaryInterval_zero",
       "lean_source": "Circle/Phase2/BoundaryCobordism.lean",
-      "lean_source_line": 26,
+      "lean_source_line": 29,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md#theorem-spine"
@@ -3806,7 +3806,7 @@
       "informal_statement": "Reversing a directed interval negates its boundary.",
       "lean_name": "Circle.Phase2.intervalBoundary_reverse",
       "lean_source": "Circle/Phase2/BoundaryCobordism.lean",
-      "lean_source_line": 30,
+      "lean_source_line": 33,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md#theorem-spine"
@@ -3844,7 +3844,7 @@
       "informal_statement": "Reversing a directed interval twice returns the original interval.",
       "lean_name": "Circle.Phase2.reverseInterval_involutive",
       "lean_source": "Circle/Phase2/BoundaryCobordism.lean",
-      "lean_source_line": 36,
+      "lean_source_line": 39,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md#theorem-spine"
@@ -3882,7 +3882,7 @@
       "informal_statement": "A constant directed interval has zero boundary.",
       "lean_name": "Circle.Phase2.intervalBoundary_constant_zero",
       "lean_source": "Circle/Phase2/BoundaryCobordism.lean",
-      "lean_source_line": 41,
+      "lean_source_line": 44,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md#theorem-spine"
@@ -3902,6 +3902,44 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "boundary(constant_interval(point)) == 0"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0010",
+        "COMMON-0011"
+      ],
+      "formal_statement": "forall source mid target : Int, intervalBoundary (intervalBetween source target) = intervalBoundary (intervalBetween source mid) + intervalBoundary (intervalBetween mid target)",
+      "id": "P2BC-T0005",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "A directed interval boundary from source to target splits additively through an intermediate point.",
+      "lean_name": "Circle.Phase2.intervalBoundary_between_add",
+      "lean_source": "Circle/Phase2/BoundaryCobordism.lean",
+      "lean_source_line": 48,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.4: Boundary and Cobordism Calculus"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS/python/test_boundary_examples.py::test_interval_boundary_adds_through_midpoint"
         ]
       }
     },
