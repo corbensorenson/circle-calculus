@@ -68,7 +68,7 @@ These declarations are ordinary modular arithmetic in Lean. The Circle Calculus 
 
 All twelve theorem ids are registered in `manifests/theorem_manifest.yaml`, checked by Lean, and linked through the paper manifest.
 
-## Proof And Sidecars
+## Source Trail
 
 The detailed prose proof sketches live in `papers/PAPER_01_FINITE_CIRCLES.md`.
 

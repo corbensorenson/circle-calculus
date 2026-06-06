@@ -13,6 +13,22 @@ Finite circles remember position but forget completed turns. This paper introduc
 - Theorem ids proved in Lean: `CC-T0009`, `CC-T0010`, `CC-T0011`, `CC-T0012`, `CC-T0013`, `CC-T0014`, `CC-T0015`, `CC-T0016`
 - Theorem ids deferred or planned: none for the current Paper 2 minimum theorem set
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_02_WINDING_NATURALS/lean/Paper02.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_02_WINDING_NATURALS/python/test_paper_02_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python examples are executable support; Lean declarations determine proof status.
+
 ## 1. Motivation
 
 On `C_n`, positions wrap around. That is useful for recurrence, but ordinary counting needs to remember how many complete turns have happened. Winding stores that lost information. For example, `17` steps around `C_5` is `3` full turns plus residue `2`.

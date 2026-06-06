@@ -13,6 +13,23 @@ This paper introduces the finite v0 core of Circle Calculus. A circle `CC-0001` 
 - Theorem ids proved in Lean: `CC-T0001`, `CC-T0002`, `CC-T0003`, `CC-T0004`, `CC-T0005`, `CC-T0006`, `CC-T0007`, `CC-T0054`, `CC-T0055`, `CC-T0059`, `CC-T0060`, `CC-T0061`
 - Theorem ids deferred or planned: none for the current Paper 1 minimum theorem set
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_01_FINITE_CIRCLES/lean/Paper01.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_01_FINITE_CIRCLES/python/test_paper_01_examples.py
+sidecars/PAPER_01_FINITE_CIRCLES/python/test_finite_coil_search_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python examples and finite-coil search fixture are executable support; Lean declarations determine proof status.
+
 ## 1. Motivation
 
 Closed recurrence is a primitive mathematical pattern: a process moves through addresses, eventually returns, and thereby exposes divisibility, periodicity, and symmetry. Circle Calculus begins with this pattern in the smallest rigorous setting: finite cyclic address spaces. The visual circle is allowed as an interface, but the formal object is `ZMod n`.

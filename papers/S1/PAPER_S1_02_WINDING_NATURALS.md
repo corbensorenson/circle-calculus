@@ -66,7 +66,7 @@ The project vocabulary is circle-first, but the formal theorem spine is intentio
 
 All eight theorem ids are registered in `manifests/theorem_manifest.yaml`, checked by Lean, and linked through the paper manifest.
 
-## Proof And Sidecars
+## Source Trail
 
 The detailed prose proof sketches live in `papers/PAPER_02_WINDING_NATURALS.md`.
 

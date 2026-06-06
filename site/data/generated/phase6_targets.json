@@ -47,7 +47,7 @@
       ],
       "guardrail": "Cleaner prose must not upgrade proof status.",
       "id": "P6-SWEEP-002",
-      "next_action": "S1.4 source-trail and guardrail cleanup started; continue auditing papers in dimensional order from S0/S1 upward.",
+      "next_action": "Source-trail coverage now exists for all 35 manifest papers; continue the paper-quality sweep with sentence-level guardrail clarity and theorem-language precision.",
       "objective": "Make every paper easier to read while preserving exact proof status and theorem ids.",
       "priority": "high",
       "status": "active",
