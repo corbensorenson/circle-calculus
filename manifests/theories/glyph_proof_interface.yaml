@@ -20,6 +20,18 @@ theorems:
     status: lean_proved
     lean_name: Circle.Phase2.proofGlyphGlyphId_mk
     dictionary_dependencies: ["COMMON-0013"]
+  - id: P2G-T0004
+    status: lean_proved
+    lean_name: Circle.Phase2.proofGlyphValidAgainst_resolves_metadata
+    dictionary_dependencies: ["COMMON-0013", "COMMON-0014", "COMMON-0015", "COMMON-0032", "COMMON-0033"]
+  - id: P2G-T0005
+    status: lean_proved
+    lean_name: Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata
+    dictionary_dependencies: ["COMMON-0013", "COMMON-0014", "COMMON-0015", "COMMON-0032", "COMMON-0033"]
+  - id: P2G-T0006
+    status: lean_proved
+    lean_name: Circle.Phase2.proofGlyphValidAgainst_cons
+    dictionary_dependencies: ["COMMON-0013", "COMMON-0032", "COMMON-0033"]
 next_targets:
   - "Add glyph normal forms only after defining a syntax tree and semantics."
   - "Use finite-circle orbit diagrams as the first proof-carrying demonstrator."

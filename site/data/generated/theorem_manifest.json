@@ -4455,6 +4455,45 @@
       "blocker": "",
       "canonical_status": "proved",
       "dictionary_dependencies": [
+        "COMMON-0013",
+        "COMMON-0032",
+        "COMMON-0033"
+      ],
+      "formal_statement": "forall glyph manifest newMetadata, proofGlyphValidAgainst glyph manifest -> proofGlyphValidAgainst glyph (newMetadata :: manifest)",
+      "id": "P2G-T0006",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "A proof glyph that is valid against finite theorem metadata remains valid when a new metadata entry is prepended.",
+      "lean_name": "Circle.Phase2.proofGlyphValidAgainst_cons",
+      "lean_source": "Circle/Phase2/GlyphProof.lean",
+      "lean_source_line": 70,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_05_PROOF_CARRYING_GLYPHS",
+          "path": "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.5: Proof-Carrying Glyphs"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py::test_proof_glyph_validity_survives_manifest_growth"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
         "COMMON-0002",
         "COMMON-0003",
         "COMMON-0004"

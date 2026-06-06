@@ -23,5 +23,6 @@ namespace Circle.PaperP205
 #check Circle.Phase2.proofGlyphValidAgainst
 #check Circle.Phase2.proofGlyphValidAgainst_resolves_metadata
 #check Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata
+#check Circle.Phase2.proofGlyphValidAgainst_cons
 
 end Circle.PaperP205

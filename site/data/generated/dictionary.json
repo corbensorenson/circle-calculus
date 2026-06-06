@@ -3209,6 +3209,12 @@
           "lean_name": "Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata",
           "name": "Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata",
           "status": "proved"
+        },
+        {
+          "id": "P2G-T0006",
+          "lean_name": "Circle.Phase2.proofGlyphValidAgainst_cons",
+          "name": "Circle.Phase2.proofGlyphValidAgainst_cons",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -4097,6 +4103,12 @@
           "lean_name": "Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata",
           "name": "Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata",
           "status": "proved"
+        },
+        {
+          "id": "P2G-T0006",
+          "lean_name": "Circle.Phase2.proofGlyphValidAgainst_cons",
+          "name": "Circle.Phase2.proofGlyphValidAgainst_cons",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -4145,6 +4157,12 @@
           "id": "P2G-T0005",
           "lean_name": "Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata",
           "name": "Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata",
+          "status": "proved"
+        },
+        {
+          "id": "P2G-T0006",
+          "lean_name": "Circle.Phase2.proofGlyphValidAgainst_cons",
+          "name": "Circle.Phase2.proofGlyphValidAgainst_cons",
           "status": "proved"
         }
       ],

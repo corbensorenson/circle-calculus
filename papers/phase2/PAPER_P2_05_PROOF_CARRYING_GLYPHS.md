@@ -48,6 +48,7 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `P2G-T0003`: `Circle.Phase2.proofGlyphGlyphId_mk`
 - `P2G-T0004`: `Circle.Phase2.proofGlyphValidAgainst_resolves_metadata`
 - `P2G-T0005`: `Circle.Phase2.proofGlyphValidAgainst_of_matching_metadata`
+- `P2G-T0006`: `Circle.Phase2.proofGlyphValidAgainst_cons`
 
 ## Proved Core
 
@@ -63,7 +64,9 @@ These laws look small, but they establish the basic integrity contract for proof
 
 `P2G-T0004` proves the validity boundary: if a glyph is valid against finite theorem metadata, then some metadata entry is present and its theorem id and Lean declaration name match the glyph fields. `P2G-T0005` proves the constructor direction: an included matching metadata entry is enough to make the glyph valid against that finite metadata list.
 
-The Python sidecar checks the same certificate-field projections on a finite-circle glyph example, then checks matching metadata, missing theorem id rejection, and Lean-name mismatch rejection.
+`P2G-T0006` proves manifest-growth monotonicity: if a glyph is already valid against a finite metadata list, it remains valid after a new metadata entry is prepended. This is a small but important registry law for a Living Book whose theorem manifest grows over time.
+
+The Python sidecar checks the same certificate-field projections on a finite-circle glyph example, then checks matching metadata, missing theorem id rejection, Lean-name mismatch rejection, and preservation under manifest growth.
 
 ## Generated Glyph Fixture
 
@@ -100,6 +103,7 @@ Composite examples such as `C_36, stride 8` should add orbit decomposition, fibe
 - Require every glyph claim to link to a theorem id or an explicit exploratory status.
 - Expand the generated glyph fixture into syntax-tree and normal-form examples.
 - Connect the finite theorem metadata model to generated site theorem data without changing the proof predicate.
+- Use manifest-growth monotonicity as the safe rule for expanding generated theorem metadata.
 - Add semantic checks only after the syntax and theorem dependency model are clear.
 - Treat diagrams as proof interfaces, not proof substitutes.
 

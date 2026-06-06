@@ -67,4 +67,12 @@ theorem proofGlyphValidAgainst_of_matching_metadata
     proofGlyphValidAgainst glyph manifest := by
   exact ⟨metadata, hin, htheorem, hlean⟩
 
+theorem proofGlyphValidAgainst_cons
+    (glyph : ProofGlyph) (manifest : List TheoremMetadata)
+    (newMetadata : TheoremMetadata)
+    (h : proofGlyphValidAgainst glyph manifest) :
+    proofGlyphValidAgainst glyph (newMetadata :: manifest) := by
+  rcases h with ⟨metadata, hin, htheorem, hlean⟩
+  exact ⟨metadata, List.mem_cons_of_mem newMetadata hin, htheorem, hlean⟩
+
 end Circle.Phase2

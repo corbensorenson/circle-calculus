@@ -83,3 +83,19 @@ def test_proof_glyph_rejects_lean_name_mismatch() -> None:
     manifest = (TheoremMetadata(theorem_id="CC-T0005", lean_name="Circle.period_eq_n_div_gcd"),)
 
     assert not proof_glyph_valid_against(glyph, manifest)
+
+
+def test_proof_glyph_validity_survives_manifest_growth() -> None:
+    glyph = ProofGlyph(
+        glyph_id="glyph:c13_stride5",
+        theorem_id="CC-T0005",
+        lean_name="Circle.period_eq_n_div_gcd",
+    )
+    manifest = (TheoremMetadata(theorem_id="CC-T0005", lean_name="Circle.period_eq_n_div_gcd"),)
+    grown_manifest = (
+        TheoremMetadata(theorem_id="CC-T0007", lean_name="Circle.prime_full_coils"),
+        *manifest,
+    )
+
+    assert proof_glyph_valid_against(glyph, manifest)
+    assert proof_glyph_valid_against(glyph, grown_manifest)

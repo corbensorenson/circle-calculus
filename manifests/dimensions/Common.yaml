@@ -419,6 +419,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py::test_proof_glyph_validates_against_matching_metadata
     blocker: ""
+  - id: P2G-T0006
+    status: lean_proved
+    lean_name: Circle.Phase2.proofGlyphValidAgainst_cons
+    informal_statement: "A proof glyph that is valid against finite theorem metadata remains valid when a new metadata entry is prepended."
+    formal_statement: "forall glyph manifest newMetadata, proofGlyphValidAgainst glyph manifest -> proofGlyphValidAgainst glyph (newMetadata :: manifest)"
+    dictionary_dependencies: ["COMMON-0013", "COMMON-0032", "COMMON-0033"]
+    paper_refs: ["papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py::test_proof_glyph_validity_survives_manifest_growth
+    blocker: ""
   - id: APPD-T0001
     status: lean_proved
     lean_name: Circle.Applications.phaseCoordinate_lt_period

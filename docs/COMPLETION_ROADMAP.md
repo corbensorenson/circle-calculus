@@ -309,7 +309,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `P2BC-T0001` through `P2BC-T0005` are Lean-proved directed-interval boundary facts with Python examples; general chain complexes, cobordisms, TQFT, and physics-adjacent claims remain future work.
 - [x] `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md`
   - Program: glyphs with formal syntax, normal forms, theorem dependencies, proof certificates, semantic models, and projection views.
-  - Status: polished draft; `P2G-T0001` through `P2G-T0005` are Lean-proved proof-glyph certificate projection and finite theorem-metadata validity facts with Python examples; `P5-EDGE-001` adds an exploratory generated glyph-status fixture; glyph syntax, normal forms, semantics, dependency correctness, and proof search remain future work.
+  - Status: polished draft; `P2G-T0001` through `P2G-T0006` are Lean-proved proof-glyph certificate projection, finite theorem-metadata validity, and manifest-growth facts with Python examples; `P5-EDGE-001` adds an exploratory generated glyph-status fixture; glyph syntax, normal forms, semantics, dependency correctness, and proof search remain future work.
 - [x] `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md`
   - Program: coil signatures, closure profiles, prime-lag recurrence, antinode maps, and periodic-data benchmarks.
   - Status: polished draft; `APPD-T0001` through `APPD-T0004` are Lean-proved finite phase-coordinate facts with Python examples. `APPD-B0001` and `APPD-B0002` are exploratory Python fixtures comparing coil closure ranking with autocorrelation and periodogram-style baselines on deterministic clean, noisy, aliased, and multi-period synthetic signals; real-data and usefulness claims remain future work.
@@ -393,6 +393,7 @@ Application guardrails:
 - [x] `P2G-T0003`: proof glyph certificate exposes its glyph id.
 - [x] `P2G-T0004`: valid proof glyphs resolve to finite theorem metadata with matching theorem id and Lean name.
 - [x] `P2G-T0005`: matching theorem metadata constructs a valid proof glyph relation.
+- [x] `P2G-T0006`: proof glyph validity is preserved when finite theorem metadata grows by one entry.
 - [x] `APPD-T0001`: finite phase coordinate is bounded by a positive period.
 - [x] `APPD-T0002`: finite phase coordinate closes after adding one full period.
 - [x] `APPD-T0003`: finite phase coordinate at zero is zero.
