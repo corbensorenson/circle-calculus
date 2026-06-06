@@ -16,7 +16,7 @@ The dimensional ladder is organized so lower-dimensional material does not rely 
 | Phase II | Stable spheres, bundles, glyphs | <span class="status-badge status-scaffold">scaffolded</span> |
 | Phase III | Living Book explanation layer | <span class="status-badge status-active">active</span> |
 | Phase IV | Wide/deep theorem discovery | <span class="status-badge status-active">active</span> |
-| Phase V | Edge problem-space search | <span class="status-badge status-scaffold">planned</span> |
+| Phase V | Edge problem-space search | <span class="status-badge status-active">active target scaffold</span> |
 | Phase VI | Global correctness and polish sweep | <span class="status-badge status-scaffold">planned</span> |
 | Applications | AI, compute, rendering, data analysis | <span class="status-badge status-scaffold">scaffolded</span> |
 

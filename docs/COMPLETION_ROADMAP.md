@@ -621,6 +621,12 @@ Completion criteria:
 Goal:
 Search for problem spaces near the edge of the project where Circle Calculus may offer leverage that is difficult, awkward, or unavailable in ordinary presentations. The standard is not hype; the standard is whether the circle/provenance/glyph/proof-carrying organization produces a concrete artifact, explanation, compression, benchmark, search improvement, or formal interface that would be hard to get otherwise.
 
+Source of truth:
+
+- `manifests/phase5_edge_targets.yaml`
+- `docs/PHASE5_EDGE_TARGETS.md`
+- `scripts/check_phase5_targets.py`
+
 Search areas:
 
 - [ ] Proof-carrying diagrams and glyphs: can diagrams compile to theorem ids, Lean declarations, and checked status without drifting?
@@ -643,11 +649,11 @@ Required discipline:
 
 Outputs:
 
-- [ ] A short list of concrete edge experiments with acceptance criteria.
+- [x] A short list of concrete edge experiments with acceptance criteria.
 - [ ] At least one experiment-ready paper or application note for each accepted edge direction.
 - [ ] Python/MLX or other executable sidecars where the claim is computational.
 - [ ] Lean theorem targets where the claim is formal.
-- [ ] Living Book pages or widgets only when they can stay downstream of manifests and source artifacts.
+- [x] Living Book target index generated downstream of manifests and source artifacts.
 
 ## Phase VI: Global Correctness, Clarity, And Polish Sweep
 

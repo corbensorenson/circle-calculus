@@ -1,0 +1,206 @@
+{
+  "targets": [
+    {
+      "acceptance_criteria": [
+        "A glyph manifest fixture resolves every theorem id and dictionary id.",
+        "Unproved theorem ids render as planned/exploratory/blocked rather than proved.",
+        "A Living Book page links the glyph fixture to the source manifest and Lean declarations."
+      ],
+      "area": "Proof-carrying diagrams",
+      "artifact_refs": [
+        "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md",
+        "site/chapters/phase2/proof_carrying_glyphs.qmd"
+      ],
+      "claim_type": "tooling",
+      "dictionary_dependencies": [
+        "COMMON-0033"
+      ],
+      "edge_question": "Can a visual glyph resolve to theorem ids, Lean declarations, dictionary terms, and proof status without prose drift?",
+      "guardrail": "A diagram is an interface, not a proof.",
+      "id": "P5-EDGE-001",
+      "next_action": "Create a generated glyph fixture tied to theorem_manifest.json and dictionary.json.",
+      "ordinary_baseline": "Static mathematical diagrams plus separate theorem statements.",
+      "priority": "high",
+      "status": "planned",
+      "title": "Glyph-to-theorem status compiler"
+    },
+    {
+      "acceptance_criteria": [
+        "A Python fixture normalizes finite-circle examples to gcd, period, orbit count, and full-coil signatures.",
+        "At least ten existing theorem ids are indexed by those signatures.",
+        "A comparison notes which lookups are easier by signature and which are not."
+      ],
+      "area": "Proof search and theorem discovery",
+      "artifact_refs": [
+        "papers/PAPER_01_FINITE_CIRCLES.md",
+        "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"
+      ],
+      "claim_type": "experiment",
+      "dictionary_dependencies": [
+        "CC-0205",
+        "CC-0206",
+        "CC-0207",
+        "CC-0208"
+      ],
+      "edge_question": "Can finite-coil signatures expose useful theorem candidates or reduce search friction in bounded S1 modular domains?",
+      "guardrail": "Do not claim global theorem discovery from a bounded-domain index.",
+      "id": "P5-EDGE-002",
+      "next_action": "Build a small S1 theorem-signature index from manifests and circle_math finite models.",
+      "ordinary_baseline": "Name/type search over theorem declarations and ordinary modular-arithmetic lemmas.",
+      "priority": "high",
+      "status": "planned",
+      "title": "Finite-coil normal-form theorem search"
+    },
+    {
+      "acceptance_criteria": [
+        "A provenance object records at least divisor, cofactor, orbit-count, period, and theorem-link views for selected n.",
+        "The fixture compares value-only lookup with provenance lookup on a small set of explanations.",
+        "The paper text identifies where provenance adds clarity and where it adds noise."
+      ],
+      "area": "Number provenance and symbolic compression",
+      "artifact_refs": [
+        "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"
+      ],
+      "claim_type": "experiment",
+      "dictionary_dependencies": [
+        "CC-0207",
+        "CC-0208"
+      ],
+      "edge_question": "Can construction histories for a number compress or clarify divisor, factor, orbit, and proof navigation better than value-only presentation?",
+      "guardrail": "Standard mathematics already represents these facts; the claim is interface leverage only.",
+      "id": "P5-EDGE-003",
+      "next_action": "Design a minimal NumberProvenance Python object for small finite circles.",
+      "ordinary_baseline": "A numeric value plus separate factorization and theorem links.",
+      "priority": "medium",
+      "status": "planned",
+      "title": "Number provenance compression fixture"
+    },
+    {
+      "acceptance_criteria": [
+        "Noisy, aliased, and multi-period synthetic fixtures are deterministic.",
+        "Coil closure, autocorrelation, and periodogram-style baselines are all reported.",
+        "Negative or ambiguous results are recorded without upgrading claims."
+      ],
+      "area": "Cyclic and periodic data analysis",
+      "artifact_refs": [
+        "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md"
+      ],
+      "claim_type": "experiment",
+      "dictionary_dependencies": [
+        "COMMON-0036",
+        "COMMON-0037",
+        "COMMON-0038"
+      ],
+      "edge_question": "Can coil closure profiles or prime-lag scans add useful diagnostics beyond autocorrelation and periodogram baselines?",
+      "guardrail": "Benchmark results are not Lean proofs and do not imply real-data usefulness.",
+      "id": "P5-EDGE-004",
+      "next_action": "Extend APPD-B0001 with noisy, aliased, multi-period, and periodogram baseline cases.",
+      "ordinary_baseline": "Autocorrelation, periodogram/Fourier ranking, and known-period synthetic controls.",
+      "priority": "high",
+      "status": "planned",
+      "title": "Noisy and aliased coil-signature benchmark"
+    },
+    {
+      "acceptance_criteria": [
+        "The benchmark includes positive periodic tasks and negative nonperiodic controls.",
+        "CPU and optional MLX paths produce matching deterministic scores on the tiny fixture.",
+        "The result report separates quality, runtime, parameter count, and interpretability."
+      ],
+      "area": "AI and ML inductive bias",
+      "artifact_refs": [
+        "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md"
+      ],
+      "claim_type": "experiment",
+      "dictionary_dependencies": [
+        "COMMON-0026",
+        "COMMON-0039"
+      ],
+      "edge_question": "Can explicit phase channels help only on tasks with real periodic structure, compared against ordinary learned baselines?",
+      "guardrail": "No claim that circles improve all AI.",
+      "id": "P5-EDGE-005",
+      "next_action": "Extend AIA-B0001 from constant-baseline scoring to learned dense and phase-feature baselines.",
+      "ordinary_baseline": "Dense learned features, standard positional features, RoPE-style encodings, and nonperiodic controls.",
+      "priority": "high",
+      "status": "planned",
+      "title": "Learned phase-channel baseline comparison"
+    },
+    {
+      "acceptance_criteria": [
+        "The CoilLayout validation grid expands to at least one workload-specific stencil or sampling fixture.",
+        "Direct/dense baselines and circular-layout variants agree on expected outputs.",
+        "Runtime observations are recorded as measurements, not proof claims."
+      ],
+      "area": "Compute and rendering",
+      "artifact_refs": [
+        "papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md",
+        "papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md"
+      ],
+      "claim_type": "experiment",
+      "dictionary_dependencies": [
+        "COMMON-0020",
+        "COMMON-0022",
+        "COMMON-0040"
+      ],
+      "edge_question": "Can circular schedules improve locality, explainability, or verification for workloads that are already periodic or angular?",
+      "guardrail": "Performance claims require direct baselines and repeated measurements.",
+      "id": "P5-EDGE-006",
+      "next_action": "Extend COMPL-B0001 toward a periodic-boundary stencil or angular-sampling fixture.",
+      "ordinary_baseline": "Direct dense traversal, ordinary stencil loops, FFT/NTT baselines, and standard angular sampling.",
+      "priority": "medium",
+      "status": "planned",
+      "title": "Circular layout and sampling backend comparison"
+    },
+    {
+      "acceptance_criteria": [
+        "The note gives a bounded orientation-debugging workflow tied to existing S3 theorem ids.",
+        "It distinguishes quaternion algebra facts from SO(3) quotient/topology claims.",
+        "At least one Python example shows q and -q sign ambiguity without claiming full robotics verification."
+      ],
+      "area": "Robotics, orientation, and physics-adjacent models",
+      "artifact_refs": [
+        "papers/S3/PAPER_S3_02_QUATERNION_COILS.md",
+        "papers/S3/PAPER_S3_03_HOPF_COILS.md",
+        "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
+      ],
+      "claim_type": "paper_improvement",
+      "dictionary_dependencies": [
+        "S3Q-0001",
+        "S3H-0001"
+      ],
+      "edge_question": "Can quaternion/Hopf/fiber language make orientation ambiguity, phase, and spin double-cover behavior easier to verify or debug?",
+      "guardrail": "Do not claim a complete SO(3), robotics, gauge, or physics formalization.",
+      "id": "P5-EDGE-007",
+      "next_action": "Draft a short orientation-debugging application note downstream of the S3 proofs.",
+      "ordinary_baseline": "Quaternion formulas, SO(3) conventions, and separate visualization tools.",
+      "priority": "medium",
+      "status": "planned",
+      "title": "Quaternion and Hopf orientation-debugging note"
+    },
+    {
+      "acceptance_criteria": [
+        "A reader path links S0, S1, S2, S3, applications, theorem status, dictionary entries, and source files.",
+        "Every theorem badge resolves from generated data.",
+        "Every interactive example is labeled as intuition/executable reference rather than proof."
+      ],
+      "area": "Education and public understanding",
+      "artifact_refs": [
+        "site/index.qmd",
+        "site/roadmap.qmd",
+        "site/chapters/S1/index.qmd"
+      ],
+      "claim_type": "tooling",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "COMMON-0033"
+      ],
+      "edge_question": "Can the Living Book make cyclic and dimensional ideas easier to learn while preserving formal proof status?",
+      "guardrail": "Do not weaken theorem status language for pedagogical smoothness.",
+      "id": "P5-EDGE-008",
+      "next_action": "Add a Living Book reader path page once the target index supports Phase V.",
+      "ordinary_baseline": "A static paper sequence with separate code and proof files.",
+      "priority": "high",
+      "status": "planned",
+      "title": "Living Book learning-path evaluation"
+    }
+  ]
+}

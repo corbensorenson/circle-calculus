@@ -10,7 +10,7 @@ The long-term aim is not just to write essays. The aim is to keep every serious 
 - a shared dictionary in `dictionary/circle_dictionary.yaml`, and
 - theorem metadata in `manifests/theorem_manifest.yaml`.
 
-The Phase IV wide/deep theorem-target audit is tracked in `manifests/phase4_theorem_targets.yaml` and validated by `scripts/check_phase4_targets.py`.
+The Phase IV wide/deep theorem-target audit is tracked in `manifests/phase4_theorem_targets.yaml` and validated by `scripts/check_phase4_targets.py`. Phase V edge problem-space targets are tracked in `manifests/phase5_edge_targets.yaml`, explained in `docs/PHASE5_EDGE_TARGETS.md`, and validated by `scripts/check_phase5_targets.py`.
 
 The rule is simple: papers are allowed to be ambitious, but claimed theorems must be traceable.
 

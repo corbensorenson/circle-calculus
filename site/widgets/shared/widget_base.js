@@ -241,18 +241,23 @@ async function hydratePaperIndexes() {
 }
 
 async function hydrateTargetIndexes() {
-  const data = await loadJson("../../data/generated/phase4_targets.json");
+  const indexFiles = {
+    phase4: "../../data/generated/phase4_targets.json",
+    phase5: "../../data/generated/phase5_targets.json",
+  };
   for (const target of document.querySelectorAll(".target-index[data-target-index]")) {
+    const indexName = target.dataset.targetIndex || "phase4";
+    const data = await loadJson(indexFiles[indexName] || indexFiles.phase4);
     const table = document.createElement("table");
     table.className = "target-index-table";
     const thead = document.createElement("thead");
-    thead.innerHTML = "<tr><th>Id</th><th>Layer</th><th>Status</th><th>Priority</th><th>Title</th><th>Next Action</th></tr>";
+    thead.innerHTML = "<tr><th>Id</th><th>Layer/Area</th><th>Status</th><th>Priority</th><th>Title</th><th>Next Action</th></tr>";
     const tbody = document.createElement("tbody");
     for (const item of data.targets) {
       const tr = document.createElement("tr");
       for (const value of [
         item.id || "",
-        item.layer || "",
+        item.layer || item.area || "",
         item.status || "",
         item.priority || "",
         item.title || "",

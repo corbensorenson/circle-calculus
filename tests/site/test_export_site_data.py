@@ -29,6 +29,7 @@ def test_export_site_data_writes_required_indexes() -> None:
         "paper_index.json",
         "widget_index.json",
         "phase4_targets.json",
+        "phase5_targets.json",
     ]:
         assert (generated / name).exists()
 
@@ -52,3 +53,8 @@ def test_export_site_data_writes_required_indexes() -> None:
     target_ids = {item["id"] for item in targets["targets"]}
     assert "P4-S1-001" in target_ids
     assert "P4-APP-002" in target_ids
+
+    phase5 = json.loads((generated / "phase5_targets.json").read_text())
+    phase5_ids = {item["id"] for item in phase5["targets"]}
+    assert "P5-EDGE-001" in phase5_ids
+    assert "P5-EDGE-008" in phase5_ids

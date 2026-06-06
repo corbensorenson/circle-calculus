@@ -184,6 +184,14 @@ def export_phase4_targets() -> dict:
     return {"targets": data.get("targets", [])}
 
 
+def export_phase5_targets() -> dict:
+    path = ROOT / "manifests" / "phase5_edge_targets.yaml"
+    if not path.exists():
+        return {"targets": []}
+    data = load_yaml(path)
+    return {"targets": data.get("targets", [])}
+
+
 def export_all() -> None:
     write_json(GENERATED / "theorem_manifest.json", export_theorems())
     write_json(GENERATED / "dictionary.json", export_dictionary())
@@ -191,6 +199,7 @@ def export_all() -> None:
     write_json(GENERATED / "paper_index.json", export_papers())
     write_json(GENERATED / "widget_index.json", export_widget_index())
     write_json(GENERATED / "phase4_targets.json", export_phase4_targets())
+    write_json(GENERATED / "phase5_targets.json", export_phase5_targets())
 
 
 def main() -> int:
