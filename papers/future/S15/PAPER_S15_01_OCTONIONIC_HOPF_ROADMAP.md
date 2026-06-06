@@ -18,6 +18,22 @@ That phrase is useful roadmap language, but it is not a proof. The paper therefo
 
 The full octonionic Hopf fibration, quotient topology, and global `S^7` phase action remain future work.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP/lean/PaperS1501.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP/python/test_s15_roadmap_examples.py
+```
+
+The theorem, warning, and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks bounded examples and the roadmap marker; Lean declarations determine proof status, and the warning boundary prevents upgrading the marker into a full fibration proof.
+
 ## Theorem Spine
 
 - `S15-T0001`: `Circle.Future.S15.octonionicHopfRoadmap`

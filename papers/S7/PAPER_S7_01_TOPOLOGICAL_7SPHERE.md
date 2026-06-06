@@ -19,6 +19,22 @@ Circle.S7.iteratedSuspensionModel n =
 
 This mirrors the earlier `S^2`, `S^3`, and `S^4` through `S^6` construction pattern: each new topological sphere model is introduced through a controlled finite suspension step, and Euler parity is checked rather than assumed.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_S7_01_TOPOLOGICAL_7SPHERE/lean/PaperS701.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_S7_01_TOPOLOGICAL_7SPHERE/python/test_s7_topological_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks finite suspension examples; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `S7C-T0001`: `Circle.S7.iteratedSuspensionModel`

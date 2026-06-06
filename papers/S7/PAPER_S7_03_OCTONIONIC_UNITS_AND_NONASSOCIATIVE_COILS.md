@@ -12,6 +12,22 @@ The core slogan for this stage is:
 S^7: order and grouping matter
 ```
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS/lean/PaperS703.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS/python/test_paper_s7_03_examples.py
+```
+
+The theorem, warning, and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks bounded Cayley-Dickson examples; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `S7O-T0001`: `Circle.S7.octonionBasis`

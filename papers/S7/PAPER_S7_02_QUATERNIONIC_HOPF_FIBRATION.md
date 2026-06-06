@@ -12,6 +12,22 @@ S^3 -> S^7 -> S^4
 
 The current result is not the full fibration. It is the bounded coordinate spine needed before quaternionic projective space, quotient topology, and a complete fibration theorem can be stated honestly.
 
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION/lean/PaperS702.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION/python/test_paper_s7_02_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks bounded coordinate examples; Lean declarations determine proof status.
+
 ## Theorem Spine
 
 - `S7QH-T0001`: `Circle.S7.quaternionicHopf_lands_sphere`
