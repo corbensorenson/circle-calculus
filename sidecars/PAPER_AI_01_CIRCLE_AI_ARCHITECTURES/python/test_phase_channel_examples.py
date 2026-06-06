@@ -25,6 +25,13 @@ def test_phase_channel_closes_after_multiple_periods() -> None:
                 assert phase_channel(period, position + passes * period) == phase_channel(period, position)
 
 
+def test_phase_channel_is_idempotent() -> None:
+    for period in range(1, 65):
+        for position in range(0, 512):
+            normalized = phase_channel(period, position)
+            assert phase_channel(period, normalized) == normalized
+
+
 def test_phase_channel_zero() -> None:
     for period in range(1, 65):
         assert phase_channel(period, 0) == 0

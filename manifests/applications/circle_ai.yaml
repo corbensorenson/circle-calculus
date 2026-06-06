@@ -31,6 +31,10 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.phaseChannel_add_mul_period
     dictionary_dependencies: ["COMMON-0026", "COMMON-0027"]
+  - id: AIA-T0005
+    status: lean_proved
+    lean_name: Circle.Applications.phaseChannel_idempotent
+    dictionary_dependencies: ["COMMON-0026"]
   - id: AIM-T0001
     status: lean_proved
     lean_name: Circle.Applications.memorySlot_lt_bankSize

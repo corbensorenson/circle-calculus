@@ -50,7 +50,7 @@ Choose one application page and name its finite circular address space before re
 <div class="theorem-box" data-theorem-id="COMPR-T0005"></div>
 <div class="theorem-box" data-theorem-id="COMPL-T0005"></div>
 <div class="theorem-box" data-theorem-id="COMPS-T0004"></div>
-<div class="theorem-box" data-theorem-id="AIA-T0004"></div>
+<div class="theorem-box" data-theorem-id="AIA-T0005"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0004"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0004"></div>
 

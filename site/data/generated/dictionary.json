@@ -3901,6 +3901,12 @@
           "lean_name": "Circle.Applications.phaseChannel_add_mul_period",
           "name": "Circle.Applications.phaseChannel_add_mul_period",
           "status": "proved"
+        },
+        {
+          "id": "AIA-T0005",
+          "lean_name": "Circle.Applications.phaseChannel_idempotent",
+          "name": "Circle.Applications.phaseChannel_idempotent",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []

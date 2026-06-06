@@ -839,6 +839,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["phase_channel(period, position + passes * period) == phase_channel(period, position)"]
     blocker: ""
+  - id: AIA-T0005
+    status: lean_proved
+    lean_name: Circle.Applications.phaseChannel_idempotent
+    informal_statement: "Normalizing an AI phase channel twice is the same as normalizing it once."
+    formal_statement: "forall period position : Nat, phaseChannel period (phaseChannel period position) = phaseChannel period position"
+    dictionary_dependencies: ["COMMON-0026"]
+    paper_refs: ["papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["phase_channel(period, phase_channel(period, position)) == phase_channel(period, position)"]
+    blocker: ""
   - id: AIM-T0001
     status: lean_proved
     lean_name: Circle.Applications.memorySlot_lt_bankSize

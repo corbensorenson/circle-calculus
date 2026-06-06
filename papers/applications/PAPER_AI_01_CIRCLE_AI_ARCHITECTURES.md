@@ -51,10 +51,11 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `AIA-T0002`: `Circle.Applications.phaseChannel_add_period`
 - `AIA-T0003`: `Circle.Applications.phaseChannel_zero`
 - `AIA-T0004`: `Circle.Applications.phaseChannel_add_mul_period`
+- `AIA-T0005`: `Circle.Applications.phaseChannel_idempotent`
 
 ## Proved Core
 
-`AIA-T0001` proves that the phase channel is bounded by the positive period. `AIA-T0002` proves that adding one full period preserves the channel, `AIA-T0004` proves the same closure law for any whole number of full periods, and `AIA-T0003` proves the zero anchor. The Python sidecar checks the same finite examples.
+`AIA-T0001` proves that the phase channel is bounded by the positive period. `AIA-T0002` proves that adding one full period preserves the channel, `AIA-T0004` proves the same closure law for any whole number of full periods, and `AIA-T0005` proves that normalizing an already normalized phase channel is a no-op. `AIA-T0003` proves the zero anchor. The Python sidecar checks the same finite examples.
 
 These facts certify only a finite phase-indexing primitive. They do not prove lower loss, better generalization, longer context, faster inference, or improved reasoning.
 

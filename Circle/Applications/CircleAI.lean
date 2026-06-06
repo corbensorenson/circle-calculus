@@ -28,6 +28,13 @@ theorem phaseChannel_add_mul_period {period : Nat} (_h : 0 < period)
   unfold phaseChannel
   exact Nat.add_mul_mod_self_right position passes period
 
+theorem phaseChannel_idempotent (period position : Nat) :
+    phaseChannel period (phaseChannel period position) = phaseChannel period position := by
+  unfold phaseChannel
+  by_cases h : period = 0
+  · simp [h]
+  · exact Nat.mod_eq_of_lt (Nat.mod_lt position (Nat.pos_of_ne_zero h))
+
 theorem phaseChannel_zero (period : Nat) :
     phaseChannel period 0 = 0 := by
   unfold phaseChannel

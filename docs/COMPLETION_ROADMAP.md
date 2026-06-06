@@ -327,7 +327,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `COMPS-T0001` through `COMPS-T0004` are Lean-proved round-robin schedule facts with Python examples; fairness, load balancing, robotics, codec, ANN, acquisition, CAM, torsion, detection, and quantum claims remain future domain work.
 - [x] `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md`
   - Program: disciplined Circle AI thesis covering phase, recurrence, rotation, sparse cyclic mixing, circular memory, harmonic transforms, geometry-aware models, and proof-carrying model components.
-  - Status: polished draft; `AIA-T0001` through `AIA-T0004` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` and `AIA-B0002` are exploratory deterministic phase-channel benchmark fixtures; model-quality and speed claims remain benchmark work.
+  - Status: polished draft; `AIA-T0001` through `AIA-T0005` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` and `AIA-B0002` are exploratory deterministic phase-channel benchmark fixtures; model-quality and speed claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`
   - Program: Coil Attention, CoilKV, long-context retrieval, alias control, stride/orbit coverage, and comparisons against full attention, sparse attention, Hyena-like mixers, and S4/Mamba-like baselines.
   - Status: polished draft; `AIM-T0001` through `AIM-T0004` are Lean-proved cyclic-memory-slot facts with Python examples; retrieval quality, alias control, and attention replacement claims remain benchmark work.
@@ -429,6 +429,7 @@ Application guardrails:
 - [x] `AIA-T0002`: AI phase channel closes after one full period.
 - [x] `AIA-T0003`: AI phase channel at zero is zero.
 - [x] `AIA-T0004`: AI phase channel closes after any whole number of full periods.
+- [x] `AIA-T0005`: AI phase-channel normalization is idempotent.
 - [x] `AIA-B0001`: exploratory deterministic phase-channel benchmark fixture.
 - [x] `AIA-B0002`: exploratory learned-baseline phase fixture with periodic and nonperiodic controls.
 - [x] `AIM-T0001`: cyclic memory slot is bounded by a positive bank size.
