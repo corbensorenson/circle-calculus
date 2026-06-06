@@ -59,6 +59,7 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `COMMON-T0003`: `Circle.Common.suspensionEuler`
 - `COMMON-T0004`: `Circle.Common.iteratedSuspensionEuler`
 - `COMMON-T0005`: `Circle.Common.iteratedSuspensionEuler_two_step`
+- `COMMON-T0006`: `Circle.Common.suspensionEuler_two_step`
 - `S456-T0001`: `Circle.S4.iteratedSuspensionEulerParity`
 
 ## Proved Common Core
@@ -68,6 +69,14 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 `COMMON-T0002` is represented by `Circle.Common.suspensionCounts`, the finite suspension count transform.
 
 `COMMON-T0003` is proved by `Circle.Common.suspensionEuler`: for every finite cell-count list, suspension changes Euler characteristic by `2 - chi`.
+
+`COMMON-T0006` packages the immediate two-suspension corollary:
+
+```text
+chi(Susp(Susp(K))) = chi(K)
+```
+
+This is the direct finite-count parity move used throughout the `S^4` through `S^6` bridge.
 
 `COMMON-T0004` generalizes this from one suspension to any finite number of suspension steps:
 
@@ -105,7 +114,7 @@ chi(S^d) = 1 + (-1)^d
 
 for the dimensions currently in this bridge.
 
-The Python sidecar checks the same common suspension-Euler formula, the general iterated suspension formula, the two-step parity law, and the `S^4`, `S^5`, `S^6` parity pattern on finite suspended-circle examples.
+The Python sidecar checks the same common suspension-Euler formula, the direct double-suspension corollary, the general iterated suspension formula, the two-step parity law, and the `S^4`, `S^5`, `S^6` parity pattern on finite suspended-circle examples.
 
 ## Why The Bridge Matters
 

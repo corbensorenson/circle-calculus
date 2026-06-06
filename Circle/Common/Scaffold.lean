@@ -44,6 +44,12 @@ theorem suspensionEuler (counts : List Nat) :
       simp [suspensionCounts, eulerCharacteristic, suspensionTailEuler]
       omega
 
+theorem suspensionEuler_two_step (counts : List Nat) :
+    eulerCharacteristic (suspensionCounts (suspensionCounts counts)) =
+      eulerCharacteristic counts := by
+  rw [suspensionEuler, suspensionEuler]
+  omega
+
 theorem iteratedSuspensionEuler (steps : Nat) (counts : List Nat) :
     eulerCharacteristic (iteratedSuspensionCounts steps counts) =
       alternatingSuspensionEuler steps (eulerCharacteristic counts) := by

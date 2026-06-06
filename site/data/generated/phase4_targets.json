@@ -480,6 +480,32 @@
       ]
     },
     {
+      "candidate_formalization": "forall counts : List Nat, Circle.Common.eulerCharacteristic (Circle.Common.suspensionCounts (Circle.Common.suspensionCounts counts)) = Circle.Common.eulerCharacteristic counts",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "COMMON-0002",
+        "COMMON-0003",
+        "COMMON-0004"
+      ],
+      "guardrail": "This is finite cell-count Euler algebra, not stable homotopy or smooth suspension equivalence.",
+      "id": "P4-S456-003",
+      "layer": "S4-S6",
+      "next_action": "Promoted to COMMON-T0006 and Lean-proved as Circle.Common.suspensionEuler_two_step.",
+      "paper_refs": [
+        "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md"
+      ],
+      "priority": "medium",
+      "promoted_theorem_id": "COMMON-T0006",
+      "status": "promoted",
+      "supporting_theorem_ids": [
+        "COMMON-T0003",
+        "COMMON-T0005",
+        "P2S-T0001"
+      ],
+      "target_statement": "Applying the finite suspension cell-count transform twice preserves Euler characteristic.",
+      "title": "Direct double suspension preserves Euler characteristic"
+    },
+    {
       "candidate_formalization": "quaternionicPhaseRotate (p * q) = quaternionicPhaseRotate q after quaternionicPhaseRotate p, plus base invariance",
       "claim_type": "theorem",
       "dictionary_dependencies": [

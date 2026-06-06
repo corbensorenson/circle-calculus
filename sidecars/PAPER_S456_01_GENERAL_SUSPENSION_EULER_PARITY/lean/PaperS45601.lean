@@ -12,6 +12,7 @@ namespace Circle.PaperS45601
 #check Circle.Common.eulerCharacteristic
 #check Circle.Common.suspensionCounts
 #check Circle.Common.suspensionEuler
+#check Circle.Common.suspensionEuler_two_step
 #check Circle.Common.iteratedSuspensionCounts
 #check Circle.Common.alternatingSuspensionEuler
 #check Circle.Common.iteratedSuspensionEuler

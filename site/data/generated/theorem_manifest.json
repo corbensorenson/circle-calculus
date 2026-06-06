@@ -2316,7 +2316,7 @@
       "informal_statement": "The Euler characteristic after any finite number of suspension steps follows the recursive alternating update chi -> 2 - chi.",
       "lean_name": "Circle.Common.iteratedSuspensionEuler",
       "lean_source": "Circle/Common/Scaffold.lean",
-      "lean_source_line": 47,
+      "lean_source_line": 53,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md"
@@ -2347,7 +2347,7 @@
       "informal_statement": "Two additional finite suspension steps preserve Euler characteristic, giving the finite iterated-suspension parity law.",
       "lean_name": "Circle.Common.iteratedSuspensionEuler_two_step",
       "lean_source": "Circle/Common/Scaffold.lean",
-      "lean_source_line": 62,
+      "lean_source_line": 68,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md"
@@ -2359,6 +2359,37 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "sidecars/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY/python/test_s456_parity_examples.py::test_iterated_suspension_euler_two_step_parity"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0002",
+        "COMMON-0003",
+        "COMMON-0004"
+      ],
+      "formal_statement": "forall counts : List Nat, eulerCharacteristic (suspensionCounts (suspensionCounts counts)) = eulerCharacteristic counts",
+      "id": "COMMON-T0006",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "Applying the finite suspension transform twice preserves Euler characteristic.",
+      "lean_name": "Circle.Common.suspensionEuler_two_step",
+      "lean_source": "Circle/Common/Scaffold.lean",
+      "lean_source_line": 47,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY/python/test_s456_parity_examples.py::test_double_suspension_preserves_euler_characteristic"
         ]
       }
     },

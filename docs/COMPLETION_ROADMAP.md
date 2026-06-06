@@ -246,8 +246,8 @@ Goal: make the executable examples line up with the Lean-backed papers without d
 ### S4-S6: Geometric Bridge
 
 - [x] `papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md`
-  - Proof targets: `COMMON-T0001` through `COMMON-T0005`, plus `S456-T0001`
-  - Status: polished draft proves the finite suspension/Euler parity bridge `chi(S^d)=1+(-1)^d` for the current `S^4` through `S^6` models, and the general finite iterated-suspension Euler/two-step parity theorem.
+  - Proof targets: `COMMON-T0001` through `COMMON-T0006`, plus `S456-T0001`
+  - Status: polished draft proves the finite suspension/Euler parity bridge `chi(S^d)=1+(-1)^d` for the current `S^4` through `S^6` models, the direct finite double-suspension Euler theorem, and the general finite iterated-suspension Euler/two-step parity theorem.
 - [x] `papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md`
   - Proof targets: `S4-T0001`, `S4-T0002`
   - Status: polished draft proves the finite `S^4` suspension/Euler anchor and records the future role of `S^4` as base of `S^3 -> S^7 -> S^4`.
@@ -360,6 +360,7 @@ Application guardrails:
 - [x] `COMMON-T0003`: suspension Euler transform, `chi(Susp(K)) = 2 - chi(K)`.
 - [x] `COMMON-T0004`: general iterated finite suspension Euler theorem.
 - [x] `COMMON-T0005`: two-step finite suspension Euler parity theorem.
+- [x] `COMMON-T0006`: direct finite double-suspension Euler theorem.
 - [x] `P2S-T0001`: finite double suspension preserves Euler characteristic.
 - [x] `P2S-T0002`: finite four-suspension iteration preserves Euler characteristic.
 - [x] `P2S-T0003`: finite four-suspension counts are two double-suspension steps.

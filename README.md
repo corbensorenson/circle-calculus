@@ -70,7 +70,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S3/PAPER_S3_02_QUATERNION_COILS.md` | polished draft | `S3Q-T0001` through `S3Q-T0008` proved with Python examples |
 | `papers/S3/PAPER_S3_03_HOPF_COILS.md` | polished draft/proved spine | `S3H-T0001` through `S3H-T0008` are Lean-proved bounded Hopf coordinate, phase-multiplication, and phase-action facts; full fibration topology remains future work |
 | `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md` | polished draft | `S3S-T0001` through `S3S-T0004` proved with Python examples; `P5-EDGE-007` adds a bounded orientation-debugging note |
-| `papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md` | polished draft | `COMMON-T0001` through `COMMON-T0005` and `S456-T0001` proved with Python examples |
+| `papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md` | polished draft | `COMMON-T0001` through `COMMON-T0006` and `S456-T0001` proved with Python examples |
 | `papers/S4_S6/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF.md` | polished draft | `S4-T0001` and `S4-T0002` proved with Python examples |
 | `papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md` | polished draft | `S5-T0001` and `S5-T0002` proved with Python examples |
 | `papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md` | polished draft | `S6-T0001` through `S6-T0003` proved with Python examples; `S6-W0001` warning tracked |
@@ -307,6 +307,7 @@ Proved common and dimensional spine:
 - `COMMON-T0003`: finite suspension Euler theorem
 - `COMMON-T0004`: general iterated finite suspension Euler theorem
 - `COMMON-T0005`: two-step finite suspension Euler parity theorem
+- `COMMON-T0006`: direct finite double-suspension Euler theorem
 - `P2S-T0001`: finite double suspension preserves Euler characteristic
 - `P2S-T0002`: finite four-suspension iteration preserves Euler characteristic
 - `P2S-T0003`: finite four-suspension counts are two double-suspension steps

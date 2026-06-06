@@ -39,6 +39,20 @@ def test_s4_s5_s6_euler_parity() -> None:
         assert euler_characteristic(s6_counts(n)) == 2
 
 
+def test_double_suspension_preserves_euler_characteristic() -> None:
+    examples = [
+        (),
+        (2,),
+        (4, 6, 4),
+        (8, 12, 6),
+        (7, 21, 14),
+    ]
+    for counts in examples:
+        assert euler_characteristic(suspension_counts(suspension_counts(counts))) == (
+            euler_characteristic(counts)
+        )
+
+
 def test_general_iterated_suspension_euler_formula() -> None:
     examples = [
         (),

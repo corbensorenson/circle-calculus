@@ -296,6 +296,21 @@ targets:
     next_action: "Promoted to S6-T0003 as a Lean warning-boundary marker tied to S6-W0001; no complex-structure theorem is claimed."
     guardrail: "Do not imply the project settles the S6 complex-structure problem."
 
+  - id: P4-S456-003
+    layer: S4-S6
+    priority: medium
+    status: promoted
+    promoted_theorem_id: COMMON-T0006
+    supporting_theorem_ids: ["COMMON-T0003", "COMMON-T0005", "P2S-T0001"]
+    claim_type: theorem
+    title: "Direct double suspension preserves Euler characteristic"
+    target_statement: "Applying the finite suspension cell-count transform twice preserves Euler characteristic."
+    candidate_formalization: "forall counts : List Nat, Circle.Common.eulerCharacteristic (Circle.Common.suspensionCounts (Circle.Common.suspensionCounts counts)) = Circle.Common.eulerCharacteristic counts"
+    paper_refs: ["papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md"]
+    dictionary_dependencies: ["COMMON-0002", "COMMON-0003", "COMMON-0004"]
+    next_action: "Promoted to COMMON-T0006 and Lean-proved as Circle.Common.suspensionEuler_two_step."
+    guardrail: "This is finite cell-count Euler algebra, not stable homotopy or smooth suspension equivalence."
+
   - id: P4-S7-001
     layer: S7
     priority: high

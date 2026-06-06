@@ -71,6 +71,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY/python/test_s456_parity_examples.py::test_iterated_suspension_euler_two_step_parity
     blocker: ""
+  - id: COMMON-T0006
+    status: lean_proved
+    lean_name: Circle.Common.suspensionEuler_two_step
+    informal_statement: "Applying the finite suspension transform twice preserves Euler characteristic."
+    formal_statement: "forall counts : List Nat, eulerCharacteristic (suspensionCounts (suspensionCounts counts)) = eulerCharacteristic counts"
+    dictionary_dependencies: ["COMMON-0002", "COMMON-0003", "COMMON-0004"]
+    paper_refs: ["papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY/python/test_s456_parity_examples.py::test_double_suspension_preserves_euler_characteristic
+    blocker: ""
   - id: P2S-T0001
     status: lean_proved
     lean_name: Circle.Phase2.doubleSuspensionEuler
