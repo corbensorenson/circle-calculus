@@ -4,13 +4,37 @@ title: "S1: Finite Circle Core"
 
 The S1 core uses finite `C_n` objects as cyclic address spaces. In v0, these are combinatorial circles, not Euclidean metric circles.
 
-The first S1 sequence is:
+This unit is the first place where Circle Calculus becomes usable. It teaches a small loop of addresses, then builds motion, repetition, closure, and period on top of that loop.
+
+::: {.learning-unit}
+
+## Unit Goal
+
+By the end of S1, a reader should be able to look at a finite circle `C_n`, choose a stride `k`, predict the orbit, compute the period from `gcd(n,k)`, and explain which parts are intuition, executable examples, or Lean-proved theorems.
+
+:::
+
+## Lesson Order
 
 1. finite circles and nodes,
 2. rotations as modular addition,
 3. coils, orbits, closure, and period,
 4. gcd decomposition and prime full coils,
 5. winding lift as a separate residue-plus-turns layer.
+
+## Mental Picture
+
+Imagine `n` labeled positions arranged around a loop. The geometry of the drawn loop is only a picture; the actual object is the address rule that sends every integer to one of those `n` labels. Rotation means adding a stride and reducing again. A coil is what you see when the same stride is repeated until the motion closes.
+
+The first four lessons use interactive diagrams so you can change `n`, starts, and strides. The diagrams are there to make the theorem statements feel concrete before you open the proof trail.
+
+::: {.checkpoint-box}
+
+## First Checkpoint
+
+Before moving to higher dimensions, make sure you can answer this without looking at source code: in `C_12`, why does stride `4` visit `0, 4, 8` and then close, while stride `5` visits all twelve addresses?
+
+:::
 
 <div class="dimension-banner" data-dimension-id="S1">S1 finite cyclic address core</div>
 

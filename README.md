@@ -6,7 +6,7 @@ Circle Calculus is a staged paper-and-proof corpus for rebuilding familiar mathe
 
 ## Living Book
 
-The Living Book connects explanations, S1 widgets, dictionary entries, theorem status, papers, Python reference models, and Lean source links so readers can learn the project without losing the proof-status trail.
+The Living Book is being organized as a guided textbook first and a reference index second: readers start with finite addresses, then rotation, coils, closure, period, primes, winding, dimensions, and applications. It connects explanations, diagrams/widgets, checkpoint questions, dictionary entries, theorem status, papers, Python reference models, and Lean source links so readers can learn the project without losing the proof-status trail.
 
 The long-term aim is not just to write essays. The aim is to keep every serious concept tied to:
 

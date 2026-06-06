@@ -4,9 +4,15 @@ title: "Rotation As Addition"
 
 A rotation `rot(n,k)` moves a node by adding `k` in `C_n`.
 
+Once a circle is an address system, motion becomes arithmetic. Starting from node `x`, a stride `k` sends the node to `x + k`, then the result is reduced modulo `n`.
+
+Two rotations in a row do not create a new kind of motion. If the first stride is `b` and the second stride is `a`, the combined motion is the same as one stride of `a + b`. The widget lets you compare the two-step route with the one-step route.
+
 <div class="warning-box">
 The widget demonstrates the composition law as an executable reference. It is not a formal proof.
 </div>
+
+## Picture
 
 <div class="dictionary-box" data-dictionary-id="CC-0101"></div>
 
@@ -16,7 +22,19 @@ The widget demonstrates the composition law as an executable reference. It is no
 
 <div class="widget-panel" data-widget="rotation_composition" data-theorem-id="CC-T0002" data-dictionary-ids="CC-0101"></div>
 
-## Source Links
+## Try It
+
+Use `n = 12`, start `x = 8`, stride `b = 5`, and stride `a = 7`. Predict the final node before reading the widget output. Then change `a` and `b` while keeping `a + b` fixed; the final node should stay fixed.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+Why should `rot(n,a)(rot(n,b)(x))` and `rot(n,a+b)(x)` land on the same node?
+
+:::
+
+## Source Trail
 
 <p data-paper-ref="papers/PAPER_01_FINITE_CIRCLES.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/PAPER_01_FINITE_CIRCLES.md">Circle Calculus I</a></p>
 

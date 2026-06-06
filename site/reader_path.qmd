@@ -2,52 +2,90 @@
 title: "Reader Path"
 ---
 
-Use this path when you want to understand the project without losing the proof-status thread.
+Use this path as the guided textbook order. It starts with the smallest concepts, then moves toward harder structure, higher dimensions, and applications.
 
-## 1. Start With The Status Rules
+The indexes are not the book. They are the reference shelves you open when a lesson names a theorem id, dictionary term, paper, or source file.
+
+## Before You Start
 
 - Read the [theorem status legend](status.qmd).
 - Use [Verify A Claim](verify_claim.qmd) when you need to audit one theorem id, term, widget, glyph, or paper claim end to end.
-- Open the [theorem index](theorems.qmd) when a page names a theorem id.
-- Open the [dictionary index](dictionary.qmd) when a page uses project vocabulary.
-- Use the [target index](targets.qmd) for planned, exploratory, blocked, or edge-problem work.
 
 ::: {.warning-box}
 Targets, widgets, Python examples, and diagrams are not proofs. A theorem is Lean-proved only when generated theorem data and the local Lean build say so.
 :::
 
-## 2. Learn The Dimensional Spine
+## Part I: Learn The S1 Core
+
+These chapters are the first textbook spine. Read them in order before jumping to higher dimensions.
+
+<div class="learning-ladder">
+
+<div class="learning-step">
+<strong>Lesson 1: finite circles.</strong> Learn that `C_n` is a finite cyclic address space. Use the widget to see how labels wrap.
+</div>
+
+<div class="learning-step">
+<strong>Lesson 2: rotation.</strong> Learn that motion on `C_n` is addition modulo `n`, and that composing rotations adds strides.
+</div>
+
+<div class="learning-step">
+<strong>Lesson 3: coils.</strong> Learn that repeated rotation traces an orbit, and that closure is the return to the starting address.
+</div>
+
+<div class="learning-step">
+<strong>Lesson 4: period and primes.</strong> Learn why `gcd(n,k)` controls cycle count and why prime circles make every nonzero stride a full coil.
+</div>
+
+<div class="learning-step">
+<strong>Lesson 5: winding.</strong> Learn why a residue alone forgets how many turns occurred, and how a lifted coordinate records quotient plus remainder.
+</div>
+
+</div>
 
 | Step | Page | What To Check |
 | --- | --- | --- |
+| 1 | [Finite circles](chapters/S1/01_finite_circles.qmd) | Can you reduce any integer to its node in `C_n`? |
+| 2 | [Rotation as addition](chapters/S1/02_rotation_as_addition.qmd) | Can you predict `rot(n,a)(rot(n,b)(x))` before using the widget? |
+| 3 | [Coils and closure](chapters/S1/03_coils_orbits_closure.qmd) | Can you list the orbit for a chosen start and stride? |
+| 4 | [Period and primes](chapters/S1/04_period_gcd_prime_full_coils.qmd) | Can you compute the period from `gcd(n,k)`? |
+| 5 | [Winding lift](chapters/S1/05_winding_lift.qmd) | Can you separate total steps into turns and residue? |
+
+## Part II: Add Signs, Factors, And Higher Shapes
+
+Once S1 is comfortable, use the dimensional ladder. Each page should explain what is proved, what is only modeled, and what remains a warning boundary.
+
+| Layer | Page | What It Adds |
+| --- | --- | --- |
 | S0 | [Opposition](chapters/S0/opposition.qmd) | Two-point sign/opposition vocabulary. |
-| S1 | [Finite circles](chapters/S1/01_finite_circles.qmd) | Circular address spaces and nodes. |
-| S1 | [Rotation as addition](chapters/S1/02_rotation_as_addition.qmd) | Rotation theorem cards and Python/widget agreement. |
-| S1 | [Coils and closure](chapters/S1/03_coils_orbits_closure.qmd) | Orbit, period, and closure status. |
-| S1 | [Period and primes](chapters/S1/04_period_gcd_prime_full_coils.qmd) | GCD/period/full-coil claims and their status badges. |
-| S2 | [Suspended circles](chapters/S2/suspended_circles.qmd) | Scaffolded sphere-grid bridge. |
-| S3 | [Quaternions](chapters/S3/quaternions.qmd) | Quaternion and spin sign-ambiguity theorem links. |
-| S3 | [Hopf coils](chapters/S3/hopf_coils.qmd) | Bounded Hopf coordinate facts and product warnings. |
+| S2 | [Suspended circles](chapters/S2/suspended_circles.qmd) | A first bridge from circular layers to finite sphere-like grids. |
+| S3 | [Quaternions](chapters/S3/quaternions.qmd) | Rotation algebra and spin sign ambiguity in a bounded checked spine. |
+| S3 | [Hopf coils](chapters/S3/hopf_coils.qmd) | Visible base coordinates with hidden phase, without overclaiming full topology. |
 | S4-S6 | [Suspension Euler parity](chapters/S4_S6/suspension_euler_parity.qmd) | Common suspension-count and Euler bridge. |
 | S7 | [Octonionic layer](chapters/S7/octonionic_layer.qmd) | Bounded octonion-model facts and nonassociativity warnings. |
-| S15 | [Future Hopf horizon](chapters/S15/future_hopf_horizon.qmd) | Future-facing roadmap facts without full topology claims. |
+| S15 | [Future Hopf horizon](chapters/S15/future_hopf_horizon.qmd) | Future-facing horizon facts and warning boundaries. |
 
-## 3. Follow Applications Only Through Their Guardrails
+## Part III: Read Applications As Case Studies
 
-- [Data analysis](chapters/applications/data_analysis.qmd) tracks exploratory periodic-data fixtures.
-- [Compute](chapters/applications/compute.qmd) tracks circular compute fixtures and backend guardrails.
-- [AI](chapters/applications/ai.qmd) tracks phase-channel fixtures and explicit negative controls.
-- [Rendering](chapters/applications/rendering.qmd) remains scaffolded until benchmarks exist.
+Application chapters are not detached essays. Read them as case studies that reuse the same S1 language: address, rotation, period, phase, closure, and proof status.
 
-## 4. Open The Source Trail
+- [Data analysis](chapters/applications/data_analysis.qmd): periodic coordinates, deterministic fixtures, and benchmark guardrails.
+- [Compute](chapters/applications/compute.qmd): cyclic addresses, stride layouts, schedules, and proof-carrying compute language.
+- [AI](chapters/applications/ai.qmd): phase channels, memory slots, adapter blocks, and explicit benchmark requirements.
+- [Rendering](chapters/applications/rendering.qmd): direction bins and scaffolded visual-compute tracks.
+
+## Part IV: Use The Source Trail
 
 - Papers live in [`papers/`](https://github.com/corbensorenson/circle-calculus/tree/main/papers).
 - Lean proofs live in [`Circle/`](https://github.com/corbensorenson/circle-calculus/tree/main/Circle) and sidecars under [`sidecars/`](https://github.com/corbensorenson/circle-calculus/tree/main/sidecars).
 - Python reference models live in [`circle_math/`](https://github.com/corbensorenson/circle-calculus/tree/main/circle_math).
 - Manifests live in [`manifests/`](https://github.com/corbensorenson/circle-calculus/tree/main/manifests).
 - Dictionary source lives in [`dictionary/`](https://github.com/corbensorenson/circle-calculus/tree/main/dictionary).
+- Open the [theorem index](theorems.qmd) when a page names a theorem id.
+- Open the [dictionary index](dictionary.qmd) when a page uses project vocabulary.
+- Use the [target index](targets.qmd) for planned, exploratory, blocked, or edge-problem work.
 
-## 5. Verify Locally
+## Part V: Verify Locally
 
 The repository verification path is:
 

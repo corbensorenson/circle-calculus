@@ -45,6 +45,15 @@ Each chapter must distinguish intuition, example, Python model, and formal theor
 - Show dictionary backlinks generated from manifests rather than hand-written duplicate lists.
 - Visually check the S1 widgets on desktop and mobile before claiming the Living Book is reader-grade.
 
+## Phase 1.6: Guided Textbook Pass
+
+- Treat the Living Book as a book first and an index second.
+- Put the easiest building-block concepts first: finite addresses, nodes, rotation, repeated rotation, closure, gcd/period, primes, and winding.
+- Give each reader-facing lesson a goal, plain-language explanation, interactive diagram or widget when available, short learner task, checkpoint, and source trail.
+- Keep theorem cards, dictionary boxes, paper links, Lean links, and Python examples close to the lesson they support, but do not let them replace the lesson.
+- Use indexes as reference shelves, not as the main reading experience.
+- Add guided paths for higher dimensions and applications as those pages mature, always preserving proof-status boundaries.
+
 ## Phase 2: S2 Interactives
 
 - Add suspended-circle pages.

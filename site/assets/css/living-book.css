@@ -97,6 +97,55 @@ body {
   font-weight: 700;
 }
 
+.book-preface,
+.learning-unit,
+.lesson-card,
+.checkpoint-box,
+.source-trail {
+  border: 1px solid var(--cc-line);
+  border-radius: 8px;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #fff;
+}
+
+.book-preface,
+.learning-unit {
+  background: var(--cc-panel);
+}
+
+.lesson-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  margin: 1rem 0;
+}
+
+.lesson-card h3,
+.learning-unit h3 {
+  margin-top: 0;
+}
+
+.learning-ladder {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.learning-step {
+  border-left: 4px solid var(--cc-link);
+  padding: 0.25rem 0 0.25rem 0.85rem;
+}
+
+.checkpoint-box {
+  border-color: #9fd4bd;
+  background: #ecf8f2;
+}
+
+.source-trail {
+  background: #fbfdff;
+}
+
 .widget-panel label {
   display: inline-flex;
   flex-direction: column;

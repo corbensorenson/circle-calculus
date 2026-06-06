@@ -4,11 +4,41 @@ title: "Circle Calculus Living Book"
 
 Circle Calculus is a proof-linked, executable, interactive living book for finite circular address spaces, coils, winding, and the dimension-indexed sphere ladder.
 
+This site is meant to be read like a textbook. Start with the smallest object, learn one operation at a time, use the diagrams to build intuition, and then open theorem cards when you want to see exactly what has been checked.
+
 The site is the public explanation layer generated from repository artifacts. It does not replace the formal project, and it must not promote a theorem beyond the status recorded in the generated theorem manifest.
 
 ```text
 Lean proofs -> theorem manifests -> dictionary -> Python models -> papers -> interactive site
 ```
+
+::: {.book-preface}
+
+## How To Read This Book
+
+Read the lessons in order the first time through. Each lesson has four roles:
+
+- **Picture:** a diagram or widget that lets you change small examples.
+- **Idea:** the plain-language explanation of what the picture is showing.
+- **Checkpoint:** a small task that tests whether the concept is usable.
+- **Source trail:** theorem cards, dictionary entries, Python examples, papers, and Lean links for audit.
+
+The indexes are reference shelves. They are useful after you have learned the idea, but the main path is the chapter sequence.
+
+:::
+
+## Learning Ladder
+
+| Part | What You Learn | First Page |
+| --- | --- | --- |
+| 0. Reading proof-linked math | What counts as intuition, code, paper prose, or proof. | [Reader Path](reader_path.qmd) |
+| 1. Finite circular worlds | A circle as `n` reusable addresses, not a Euclidean curve. | [Finite Circles](chapters/S1/01_finite_circles.qmd) |
+| 2. Motion | Rotation as addition modulo `n`. | [Rotation As Addition](chapters/S1/02_rotation_as_addition.qmd) |
+| 3. Repetition | Coils, orbits, closure, and period. | [Coils And Closure](chapters/S1/03_coils_orbits_closure.qmd) |
+| 4. Structure | GCD, cycle decomposition, and prime full coils. | [Period And Primes](chapters/S1/04_period_gcd_prime_full_coils.qmd) |
+| 5. Lifts | Residue plus winding, so repeated circular motion remembers turns. | [Winding Lift](chapters/S1/05_winding_lift.qmd) |
+| 6. Higher dimensions | Suspensions, spheres, quaternions, Hopf coordinates, and warning boundaries. | [Roadmap](roadmap.qmd) |
+| 7. Applications | Data, compute, AI, and rendering tracks guarded by proof and benchmark status. | [Applications Overview](chapters/applications/index.qmd) |
 
 ## What You Can Trust Here
 
@@ -33,8 +63,8 @@ Compare widget behavior against the Python reference models and tests. Python ex
 
 ## Start
 
-- Begin with [S1 finite circles](chapters/S1/index.qmd).
-- Follow the [reader path](reader_path.qmd) for a proof-status-safe tour.
+- Begin with the [guided reader path](reader_path.qmd).
+- Then start [S1 finite circles](chapters/S1/index.qmd).
 - Use [Verify A Claim](verify_claim.qmd) when you want to audit a theorem, paper paragraph, widget, or diagram.
 - Browse the [dictionary index](dictionary.qmd) when a term matters.
 - Browse the [theorem index](theorems.qmd) when a theorem id matters.

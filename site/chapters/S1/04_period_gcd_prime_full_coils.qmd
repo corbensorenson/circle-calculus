@@ -4,9 +4,15 @@ title: "Period, GCD, And Prime Full Coils"
 
 For positive `n`, the period of stride `k` on `C_n` is `n / gcd(n,k)`. The same gcd counts the number of disjoint stride cycles.
 
+This is where the circle picture and ordinary divisibility meet. If `k` shares a divisor with `n`, the stride steps over the circle in a pattern that only reaches part of it before closing. If `k` is coprime to `n`, the stride has no shared divisor to trap it, so the orbit passes through every node before closing.
+
+Prime circles make this especially clean. On `C_p`, every nonzero stride is coprime to `p`, so every nonzero stride is a full coil. Composite circles have at least one nonzero stride that closes early.
+
 <div class="warning-box">
 The widgets expose the gcd and prime/full-coil patterns as executable references. They are not proofs.
 </div>
+
+## Picture
 
 <div class="dictionary-box" data-dictionary-id="CC-0205"></div>
 <div class="dictionary-box" data-dictionary-id="CC-0206"></div>
@@ -20,6 +26,20 @@ The widgets expose the gcd and prime/full-coil patterns as executable references
 <div class="widget-panel" data-widget="period_gcd_visualizer" data-theorem-id="CC-T0006" data-dictionary-ids="CC-0205 CC-0207 CC-0208"></div>
 
 <div class="widget-panel" data-widget="prime_full_coil_explorer" data-theorem-id="CC-T0007" data-dictionary-ids="CC-0206"></div>
+
+## Try It
+
+Compare `C_12` and `C_13`. On `C_12`, test strides `2`, `3`, `4`, and `5`; some close early and one is a full coil. On `C_13`, test every nonzero stride and watch the full-coil pattern.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+For `C_18` with stride `6`, compute `gcd(18,6)`, the number of disjoint cycles, and the length of each cycle.
+
+:::
+
+## Source Trail
 
 Python reference model:
 

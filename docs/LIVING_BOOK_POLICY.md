@@ -14,6 +14,19 @@ The Living Book should help readers understand the project by combining prose, t
 - Papers are human-readable exposition tied to theorem ids and sidecars.
 - Widgets and diagrams are intuition and exploration layers only.
 
+## Textbook Design Rule
+
+The Living Book should be usable as a guided textbook, not merely as a directory of links. Reader-facing chapters should move from prerequisite concepts to harder concepts, and each core lesson should include:
+
+- the learning goal,
+- a plain-language explanation,
+- a diagram or widget when the concept benefits from one,
+- a small thing for the reader to try,
+- a checkpoint question or calculation, and
+- a source trail back to theorem cards, dictionary entries, papers, Lean declarations, and Python examples.
+
+Reference indexes remain important, but they should support the reading path instead of replacing it.
+
 ## Proof-Status Rule
 
 No page, theorem box, widget caption, status badge, or chapter text may call a theorem proved unless all of these are true:

@@ -4,16 +4,34 @@ title: "Finite Circles"
 
 The first object is the finite circle `C_n`. In this repository, `C_n` is a finite cyclic address space with nodes represented by residues modulo `n`.
 
+Think of `C_n` as a clock with `n` labels. The label is what matters, not the physical shape of the drawing. If `n = 12`, then address `14` lands on node `2`, because two full turns have been discarded and only the remainder is kept.
+
+This is the smallest building block for the rest of the book. Later chapters add motion, repeated motion, period, and higher-dimensional structure, but they all keep returning to this first rule: an address is read modulo the size of its circle.
+
 <div class="warning-box">
 In v0, circles are finite cyclic address spaces. They are not Euclidean metric circles, and the widget below is an explanation rather than a proof.
 </div>
+
+## Picture
 
 <div class="dictionary-box" data-dictionary-id="CC-0001"></div>
 <div class="dictionary-box" data-dictionary-id="CC-0002"></div>
 
 <div class="widget-panel" data-widget="finite_circle_rotator" data-dictionary-ids="CC-0001 CC-0002"></div>
 
-## Source Links
+## Try It
+
+Set `n` to `10`, then move the selected node past `9`. The displayed label should wrap back through `0`. Repeat with `n = 7` and selected node `15`; the node label should be the same as `1`.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+Explain, in one sentence, why the addresses `2`, `14`, and `26` all name the same node in `C_12`.
+
+:::
+
+## Source Trail
 
 <p data-paper-ref="papers/PAPER_01_FINITE_CIRCLES.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/PAPER_01_FINITE_CIRCLES.md">Circle Calculus I</a></p>
 

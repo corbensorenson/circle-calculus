@@ -4,9 +4,15 @@ title: "Coils, Orbits, And Closure"
 
 A coil is the orbit traced by repeatedly applying the same rotation. Closure means the repeated motion has returned to its starting address.
 
+The previous lesson moved once. This lesson asks what happens when the same stride is used again and again. The visited addresses form an orbit. Because `C_n` has only finitely many nodes, the motion eventually repeats; the first return to the starting node is the period of that stride.
+
+This is the first Circle Calculus pattern that scales upward: choose a space, choose a motion, follow the repeated motion, then study how and when it closes.
+
 <div class="warning-box">
 The widget output is a finite computation. It helps explain the theorem but is not a formal proof.
 </div>
+
+## Picture
 
 <div class="dictionary-box" data-dictionary-id="CC-0201"></div>
 <div class="dictionary-box" data-dictionary-id="CC-0202"></div>
@@ -16,6 +22,20 @@ The widget output is a finite computation. It helps explain the theorem but is n
 <div class="theorem-box" data-theorem-id="CC-T0005"></div>
 
 <div class="widget-panel" data-widget="coil_orbit_explorer" data-theorem-id="CC-T0005" data-dictionary-ids="CC-0201 CC-0202 CC-0205"></div>
+
+## Try It
+
+Start with `n = 12`, stride `4`, and start `0`. Write down the orbit before reading the widget output. Then switch the stride to `5` and compare how much of the circle is visited.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+What is the difference between a node being visited by an orbit and the orbit being closed?
+
+:::
+
+## Source Trail
 
 Python reference model:
 
