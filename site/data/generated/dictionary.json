@@ -2879,6 +2879,12 @@
           "lean_name": "Circle.Phase2.bundleTransitionApply_identity",
           "name": "Circle.Phase2.bundleTransitionApply_identity",
           "status": "proved"
+        },
+        {
+          "id": "P2BU-T0009",
+          "lean_name": "Circle.Phase2.bundleTransitionApply_compose_identity",
+          "name": "Circle.Phase2.bundleTransitionApply_compose_identity",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -2996,6 +3002,12 @@
           "id": "P2BU-T0008",
           "lean_name": "Circle.Phase2.bundleTransitionApply_identity",
           "name": "Circle.Phase2.bundleTransitionApply_identity",
+          "status": "proved"
+        },
+        {
+          "id": "P2BU-T0009",
+          "lean_name": "Circle.Phase2.bundleTransitionApply_compose_identity",
+          "name": "Circle.Phase2.bundleTransitionApply_compose_identity",
           "status": "proved"
         }
       ],
@@ -4219,6 +4231,12 @@
           "lean_name": "Circle.Phase2.bundleTransitionApply_identity",
           "name": "Circle.Phase2.bundleTransitionApply_identity",
           "status": "proved"
+        },
+        {
+          "id": "P2BU-T0009",
+          "lean_name": "Circle.Phase2.bundleTransitionApply_compose_identity",
+          "name": "Circle.Phase2.bundleTransitionApply_compose_identity",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -4253,6 +4271,12 @@
           "id": "P2BU-T0007",
           "lean_name": "Circle.Phase2.bundleTransitionApply_compose",
           "name": "Circle.Phase2.bundleTransitionApply_compose",
+          "status": "proved"
+        },
+        {
+          "id": "P2BU-T0009",
+          "lean_name": "Circle.Phase2.bundleTransitionApply_compose_identity",
+          "name": "Circle.Phase2.bundleTransitionApply_compose_identity",
           "status": "proved"
         }
       ],

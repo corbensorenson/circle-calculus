@@ -86,7 +86,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | polished draft/partial proof | `S15-T0001` is a Lean roadmap marker; `S15-T0002` through `S15-T0009` have checked Lean declarations for topological, coordinate landing, safe right-phase, and warning-boundary facts with Python examples |
 | `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md` | polished draft/proved finite seed | `P2S-T0001` through `P2S-T0003` are Lean-proved double/four suspension facts with Python examples |
 | `papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md` | polished draft/proved finite seed | `P2B-T0001` through `P2B-T0004` are Lean-proved period-8 clock facts with Python examples; Bott/Clifford periodicity remains future work |
-| `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md` | polished draft/proved transition seed | `P2BU-T0001` through `P2BU-T0008` are Lean-proved product-bundle projection/fiber and base-preserving transition facts with Python examples |
+| `papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md` | polished draft/proved transition seed | `P2BU-T0001` through `P2BU-T0009` are Lean-proved product-bundle projection/fiber and base-preserving transition facts with Python examples |
 | `papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md` | polished draft/proved finite seed | `P2BC-T0001` through `P2BC-T0005` are Lean-proved directed-interval boundary facts with Python examples |
 | `papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md` | polished draft/proved certificate seed | `P2G-T0001` through `P2G-T0006` are Lean-proved proof-glyph projection, metadata-validity, and manifest-growth facts with Python examples; `P5-EDGE-001` adds an exploratory generated glyph-status fixture |
 | `papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md` | polished draft/proved finite seed | `APPD-T0001` through `APPD-T0004` are Lean-proved phase-coordinate facts with Python examples; `APPD-B0001` and `APPD-B0002` are exploratory deterministic period benchmark fixtures |
@@ -338,6 +338,7 @@ Proved common and dimensional spine:
 - `P2BU-T0006`: bundle transitions apply their fiber map to the fiber coordinate
 - `P2BU-T0007`: bundle transition composition agrees with sequential application
 - `P2BU-T0008`: identity bundle transition leaves every trivial-bundle point unchanged
+- `P2BU-T0009`: composing a bundle transition with identity on either side acts like the original transition on points
 - `P2BC-T0001`: point-boundary after interval-boundary is zero in the directed-interval seed
 - `P2BC-T0002`: reversing a directed interval negates its boundary
 - `P2BC-T0003`: reversing a directed interval twice returns it

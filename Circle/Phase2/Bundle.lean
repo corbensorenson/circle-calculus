@@ -86,4 +86,13 @@ theorem bundleTransitionApply_identity {Base Fiber : Type}
   rcases point with ⟨base, fiber⟩
   rfl
 
+theorem bundleTransitionApply_compose_identity {Base Fiber : Type}
+    (transition : BundleTransition Fiber)
+    (point : TrivialBundle Base Fiber) :
+    bundleTransitionApply (bundleTransitionCompose bundleTransitionIdentity transition) point =
+        bundleTransitionApply transition point ∧
+      bundleTransitionApply (bundleTransitionCompose transition bundleTransitionIdentity) point =
+        bundleTransitionApply transition point := by
+  constructor <;> rcases point with ⟨base, fiber⟩ <;> rfl
+
 end Circle.Phase2

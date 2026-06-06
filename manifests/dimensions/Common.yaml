@@ -284,6 +284,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_P2_03_BUNDLE_CALCULUS/python/test_trivial_bundle_examples.py::test_bundle_identity_transition_preserves_point
     blocker: ""
+  - id: P2BU-T0009
+    status: lean_proved
+    lean_name: Circle.Phase2.bundleTransitionApply_compose_identity
+    informal_statement: "Composing any base-preserving bundle transition with the identity transition on either side acts like the original transition on every trivial-bundle point."
+    formal_statement: "forall transition point, bundleTransitionApply (bundleTransitionCompose bundleTransitionIdentity transition) point = bundleTransitionApply transition point and bundleTransitionApply (bundleTransitionCompose transition bundleTransitionIdentity) point = bundleTransitionApply transition point"
+    dictionary_dependencies: ["COMMON-0007", "COMMON-0009", "COMMON-0034", "COMMON-0035"]
+    paper_refs: ["papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_P2_03_BUNDLE_CALCULUS/python/test_trivial_bundle_examples.py::test_bundle_transition_identity_composition_acts_like_transition
+    blocker: ""
   - id: P2BC-T0001
     status: lean_proved
     lean_name: Circle.Phase2.boundaryBoundaryInterval_zero

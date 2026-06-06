@@ -47,6 +47,7 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `P2BU-T0006`: `Circle.Phase2.bundleTransitionFiber_apply`
 - `P2BU-T0007`: `Circle.Phase2.bundleTransitionApply_compose`
 - `P2BU-T0008`: `Circle.Phase2.bundleTransitionApply_identity`
+- `P2BU-T0009`: `Circle.Phase2.bundleTransitionApply_compose_identity`
 
 ## Proved Core
 
@@ -58,6 +59,8 @@ This pair of laws gives Circle Calculus a precise way to say "visible base" and 
 
 `P2BU-T0005` proves that applying a base-preserving transition does not change the projected base coordinate. `P2BU-T0006` proves that the transition acts on the fiber coordinate by its fiber map. `P2BU-T0007` proves that transition composition agrees with applying the inner transition and then the outer transition. `P2BU-T0008` proves that the identity transition leaves every trivial-bundle point unchanged.
 
+`P2BU-T0009` proves the identity-composition sanity law for transition action on points: composing any transition with the identity transition on either side acts the same as the original transition. This is still a trivial-bundle transition law, not a cocycle or atlas theorem.
+
 These transition facts are deliberately local to the trivial product-bundle seed. They are the sanity laws future nontrivial transition functions must satisfy before the project talks about overlaps, cocycles, connections, curvature, or holonomy.
 
 ## Relation To Hopf And Glyphs
@@ -66,7 +69,7 @@ The `S^3`, `S^7`, and future `S^15` Hopf papers motivate this vocabulary: a visi
 
 ## Next Program
 
-- Extend transition functions only after choosing a nontrivial bundle representation and explicit overlap data.
+- Extend transition functions beyond composition/identity sanity laws only after choosing a nontrivial bundle representation and explicit overlap data.
 - Use Hopf-coordinate papers as motivating examples, not as completed bundle formalizations.
 - Track visible base state and hidden phase/fiber state separately.
 - Add theorem ids only for precise bundle definitions and checked maps.

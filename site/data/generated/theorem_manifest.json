@@ -4258,6 +4258,46 @@
       "blocker": "",
       "canonical_status": "proved",
       "dictionary_dependencies": [
+        "COMMON-0007",
+        "COMMON-0009",
+        "COMMON-0034",
+        "COMMON-0035"
+      ],
+      "formal_statement": "forall transition point, bundleTransitionApply (bundleTransitionCompose bundleTransitionIdentity transition) point = bundleTransitionApply transition point and bundleTransitionApply (bundleTransitionCompose transition bundleTransitionIdentity) point = bundleTransitionApply transition point",
+      "id": "P2BU-T0009",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "Composing any base-preserving bundle transition with the identity transition on either side acts like the original transition on every trivial-bundle point.",
+      "lean_name": "Circle.Phase2.bundleTransitionApply_compose_identity",
+      "lean_source": "Circle/Phase2/Bundle.lean",
+      "lean_source_line": 89,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_P2_03_BUNDLE_CALCULUS",
+          "path": "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Phase II.3: Bundle Calculus"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_P2_03_BUNDLE_CALCULUS/python/test_trivial_bundle_examples.py::test_bundle_transition_identity_composition_acts_like_transition"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
         "COMMON-0013",
         "COMMON-0014"
       ],

@@ -25,5 +25,6 @@ namespace Circle.PaperP203
 #check Circle.Phase2.bundleTransitionFiber_apply
 #check Circle.Phase2.bundleTransitionApply_compose
 #check Circle.Phase2.bundleTransitionApply_identity
+#check Circle.Phase2.bundleTransitionApply_compose_identity
 
 end Circle.PaperP203

@@ -38,7 +38,11 @@ theorems:
     status: lean_proved
     lean_name: Circle.Phase2.bundleTransitionApply_identity
     dictionary_dependencies: ["COMMON-0007", "COMMON-0009", "COMMON-0034"]
+  - id: P2BU-T0009
+    status: lean_proved
+    lean_name: Circle.Phase2.bundleTransitionApply_compose_identity
+    dictionary_dependencies: ["COMMON-0007", "COMMON-0009", "COMMON-0034", "COMMON-0035"]
 next_targets:
-  - "Extend transition functions only after choosing a nontrivial bundle representation and explicit overlap data."
+  - "Extend transition functions beyond composition/identity sanity laws only after choosing a nontrivial bundle representation and explicit overlap data."
   - "Connect Hopf-coordinate papers as motivating examples, not as completed bundle formalizations."
 guardrail: "Do not treat twisted bundles as global products."

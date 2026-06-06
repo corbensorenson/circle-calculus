@@ -40,6 +40,7 @@ Why should the project prove trivial bundle projection facts before adding nontr
 <div class="theorem-box" data-theorem-id="P2BU-T0006"></div>
 <div class="theorem-box" data-theorem-id="P2BU-T0007"></div>
 <div class="theorem-box" data-theorem-id="P2BU-T0008"></div>
+<div class="theorem-box" data-theorem-id="P2BU-T0009"></div>
 
 <p data-paper-ref="papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md">Bundle Calculus</a></p>
 

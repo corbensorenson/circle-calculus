@@ -90,3 +90,16 @@ def test_bundle_transition_composes() -> None:
 def test_bundle_identity_transition_preserves_point() -> None:
     point = TrivialBundlePoint(base=("base", 1), fiber={"phase": 7})
     assert bundle_transition_apply(bundle_transition_identity(), point) == point
+
+
+def test_bundle_transition_identity_composition_acts_like_transition() -> None:
+    transition = BundleTransition(map_fiber=lambda fiber: fiber + 11)
+    identity = bundle_transition_identity()
+    point = TrivialBundlePoint(base="base", fiber=5)
+
+    left_identity = bundle_transition_apply(bundle_transition_compose(identity, transition), point)
+    right_identity = bundle_transition_apply(bundle_transition_compose(transition, identity), point)
+    direct = bundle_transition_apply(transition, point)
+
+    assert left_identity == direct
+    assert right_identity == direct
