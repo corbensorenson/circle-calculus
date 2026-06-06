@@ -315,7 +315,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `APPD-T0001` through `APPD-T0004` are Lean-proved finite phase-coordinate facts with Python examples. `APPD-B0001` and `APPD-B0002` are exploratory Python fixtures comparing coil closure ranking with autocorrelation and periodogram-style baselines on deterministic clean, noisy, aliased, and multi-period synthetic signals; real-data and usefulness claims remain future work.
 - [x] `papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md`
   - Program: certified cyclic/circulant/orbit structure lowered to FFT/NTT/permutation backends and benchmarked.
-  - Status: polished draft; `COMPC-T0001` through `COMPC-T0004` are Lean-proved cyclic-address facts with Python examples; backend lowering and performance claims remain benchmark work.
+  - Status: polished draft; `COMPC-T0001` through `COMPC-T0005` are Lean-proved cyclic-address facts with Python examples; backend lowering and performance claims remain benchmark work.
 - [x] `papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md`
   - Program: `CoilRay Sort`, `CoilSampler`, `CoilNoise`, `CoilSTIR`, BRDF/lighting angular compression, spherical-coil ray queues, procedural placement/dithering, and rendering benchmarks.
   - Status: polished draft; `COMPR-T0001` through `COMPR-T0004` are Lean-proved direction-bin schedule facts with Python examples; rendering performance, coherence, and sampling-quality claims remain benchmark work.
@@ -407,6 +407,7 @@ Application guardrails:
 - [x] `COMPC-T0002`: cyclic address is unchanged after adding one full buffer size.
 - [x] `COMPC-T0003`: cyclic address at zero is zero.
 - [x] `COMPC-T0004`: cyclic address is unchanged after any whole number of full buffer-size passes.
+- [x] `COMPC-T0005`: cyclic address normalization is idempotent.
 - [x] `COMPR-T0001`: direction-bin schedule is bounded by a positive bin count.
 - [x] `COMPR-T0002`: direction-bin schedule closes after one full pass through the bins.
 - [x] `COMPR-T0003`: direction-bin schedule at zero is zero.

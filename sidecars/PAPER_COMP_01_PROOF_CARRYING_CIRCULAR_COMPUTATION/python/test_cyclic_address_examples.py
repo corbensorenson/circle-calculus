@@ -22,6 +22,13 @@ def test_cyclic_address_wraps_by_multiple_sizes() -> None:
                 assert cyclic_address(size, index + passes * size) == cyclic_address(size, index)
 
 
+def test_cyclic_address_is_idempotent() -> None:
+    for size in range(1, 33):
+        for index in range(0, 256):
+            normalized = cyclic_address(size, index)
+            assert cyclic_address(size, normalized) == normalized
+
+
 def test_cyclic_address_zero() -> None:
     for size in range(1, 33):
         assert cyclic_address(size, 0) == 0

@@ -27,6 +27,13 @@ theorem cyclicAddress_add_mul_size {size : Nat} (_h : 0 < size)
   unfold cyclicAddress
   exact Nat.add_mul_mod_self_right index passes size
 
+theorem cyclicAddress_idempotent (size index : Nat) :
+    cyclicAddress size (cyclicAddress size index) = cyclicAddress size index := by
+  unfold cyclicAddress
+  by_cases h : size = 0
+  · simp [h]
+  · exact Nat.mod_eq_of_lt (Nat.mod_lt index (Nat.pos_of_ne_zero h))
+
 theorem cyclicAddress_zero (size : Nat) :
     cyclicAddress size 0 = 0 := by
   unfold cyclicAddress

@@ -32,6 +32,7 @@ What is the difference between proving a cyclic address wraps correctly and prov
 
 <div class="theorem-box" data-theorem-id="COMPC-T0001"></div>
 <div class="theorem-box" data-theorem-id="COMPC-T0004"></div>
+<div class="theorem-box" data-theorem-id="COMPC-T0005"></div>
 <div class="theorem-box" data-theorem-id="COMPR-T0001"></div>
 <div class="theorem-box" data-theorem-id="COMPR-T0004"></div>
 <div class="theorem-box" data-theorem-id="COMPL-T0001"></div>

@@ -579,6 +579,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["cyclic_address(size, index + passes * size) == cyclic_address(size, index)"]
     blocker: ""
+  - id: COMPC-T0005
+    status: lean_proved
+    lean_name: Circle.Applications.cyclicAddress_idempotent
+    informal_statement: "Normalizing a cyclic address twice is the same as normalizing it once."
+    formal_statement: "forall size index : Nat, cyclicAddress size (cyclicAddress size index) = cyclicAddress size index"
+    dictionary_dependencies: ["COMMON-0018"]
+    paper_refs: ["papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["cyclic_address(size, cyclic_address(size, index)) == cyclic_address(size, index)"]
+    blocker: ""
   - id: COMPR-T0001
     status: lean_proved
     lean_name: Circle.Applications.directionBin_lt_binCount

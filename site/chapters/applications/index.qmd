@@ -46,7 +46,7 @@ Choose one application page and name its finite circular address space before re
 ## Representative Proved Seeds
 
 <div class="theorem-box" data-theorem-id="APPD-T0004"></div>
-<div class="theorem-box" data-theorem-id="COMPC-T0004"></div>
+<div class="theorem-box" data-theorem-id="COMPC-T0005"></div>
 <div class="theorem-box" data-theorem-id="COMPR-T0004"></div>
 <div class="theorem-box" data-theorem-id="COMPL-T0005"></div>
 <div class="theorem-box" data-theorem-id="COMPS-T0004"></div>

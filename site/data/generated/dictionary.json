@@ -3502,6 +3502,12 @@
           "lean_name": "Circle.Applications.cyclicAddress_add_mul_size",
           "name": "Circle.Applications.cyclicAddress_add_mul_size",
           "status": "proved"
+        },
+        {
+          "id": "COMPC-T0005",
+          "lean_name": "Circle.Applications.cyclicAddress_idempotent",
+          "name": "Circle.Applications.cyclicAddress_idempotent",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []

@@ -3290,7 +3290,7 @@
       "id": "COMPC-T0003",
       "lean_name": "Circle.Applications.cyclicAddress_zero",
       "lean_source": "Circle/Applications/CoilCompute.lean",
-      "lean_source_line": 30,
+      "lean_source_line": 37,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
       "status": "lean_proved",
@@ -3328,12 +3328,33 @@
     {
       "canonical_status": "proved",
       "dictionary_dependencies": [
+        "COMMON-0018"
+      ],
+      "id": "COMPC-T0005",
+      "lean_name": "Circle.Applications.cyclicAddress_idempotent",
+      "lean_source": "Circle/Applications/CoilCompute.lean",
+      "lean_source_line": 30,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/coil_compute.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION",
+          "path": "papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Compute 1: Proof-Carrying Circular Computation"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
         "COMMON-0022"
       ],
       "id": "COMPL-T0001",
       "lean_name": "Circle.Applications.strideAddress_lt_size",
       "lean_source": "Circle/Applications/CoilCompute.lean",
-      "lean_source_line": 38,
+      "lean_source_line": 45,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
       "status": "lean_proved",
@@ -3355,7 +3376,7 @@
       "id": "COMPL-T0002",
       "lean_name": "Circle.Applications.strideAddress_add_size_steps",
       "lean_source": "Circle/Applications/CoilCompute.lean",
-      "lean_source_line": 43,
+      "lean_source_line": 50,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
       "status": "lean_proved",
@@ -3376,7 +3397,7 @@
       "id": "COMPL-T0003",
       "lean_name": "Circle.Applications.strideAddress_zero_step",
       "lean_source": "Circle/Applications/CoilCompute.lean",
-      "lean_source_line": 55,
+      "lean_source_line": 62,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
       "status": "lean_proved",
@@ -3397,7 +3418,7 @@
       "id": "COMPL-T0004",
       "lean_name": "Circle.Applications.strideAddress_zero_stride",
       "lean_source": "Circle/Applications/CoilCompute.lean",
-      "lean_source_line": 60,
+      "lean_source_line": 67,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
       "status": "lean_proved",
@@ -3419,7 +3440,7 @@
       "id": "COMPL-T0005",
       "lean_name": "Circle.Applications.strideAddress_add_mul_size_steps",
       "lean_source": "Circle/Applications/CoilCompute.lean",
-      "lean_source_line": 49,
+      "lean_source_line": 56,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_compute.yaml",
       "status": "lean_proved",
