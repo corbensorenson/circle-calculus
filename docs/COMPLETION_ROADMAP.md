@@ -228,9 +228,9 @@ Goal: make the executable examples line up with the Lean-backed papers without d
   - Main model: suspension of finite 2D cell-count structures.
   - Status: polished draft; suspended-surface counts, Euler-zero theorem, suspended-suspended-circle counts, and Euler characteristic are Lean-proved.
 - [x] `papers/S3/PAPER_S3_02_QUATERNION_COILS.md`
-  - Proof targets: `S3Q-T0001` through `S3Q-T0005`
+  - Proof targets: `S3Q-T0001` through `S3Q-T0007`
   - Prefer mathlib quaternion support when available.
-  - Status: polished draft; real quaternion norm, unit closure, conjugate inverse equations, noncommutative example, and associativity are Lean-proved.
+  - Status: polished draft; real quaternion norm, unit closure, conjugate inverse equations, bundled identity/inverse laws, noncommutative example, and associativity are Lean-proved.
 - [x] `papers/S3/PAPER_S3_03_HOPF_COILS.md`
   - Proof/model targets: `S3H-T0001` through `S3H-T0005`
   - Warning target: `S3H-W0001`, not globally `S^2 x S^1`

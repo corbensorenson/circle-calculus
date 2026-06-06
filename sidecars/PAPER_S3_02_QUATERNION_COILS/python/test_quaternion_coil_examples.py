@@ -35,6 +35,12 @@ def test_unit_quaternion_multiplication_preserves_norm() -> None:
             assert_close((left * right).squared_norm(), 1.0)
 
 
+def test_unit_quaternion_identity_laws() -> None:
+    for q in [ONE, I, J, K, unit_i_phase(math.pi / 7.0), unit_i_phase(math.pi / 11.0)]:
+        assert_quaternion_close(ONE * q, q)
+        assert_quaternion_close(q * ONE, q)
+
+
 def test_unit_quaternion_conjugate_is_inverse() -> None:
     for q in [ONE, I, J, K, unit_i_phase(math.pi / 5.0), unit_i_phase(math.pi / 3.0)]:
         assert_quaternion_close(q * q.conjugate(), ONE)

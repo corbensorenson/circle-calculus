@@ -4017,7 +4017,7 @@
       "informal_statement": "The coordinate Hopf map sends normalized S^3 pairs to the unit S^2 equation.",
       "lean_name": "Circle.S3.hopfMap_lands_sphere",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 147,
+      "lean_source_line": 196,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -4049,7 +4049,7 @@
       "informal_statement": "Simultaneous unit phase rotation preserves the Hopf map.",
       "lean_name": "Circle.S3.hopfMap_phase_invariant",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 183,
+      "lean_source_line": 232,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -4081,7 +4081,7 @@
       "informal_statement": "A unit phase orbit stays on the normalized S3 pair space and preserves the Hopf base point.",
       "lean_name": "Circle.S3.hopfFiber_circle_like",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 206,
+      "lean_source_line": 255,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -4112,7 +4112,7 @@
       "informal_statement": "The identity phase leaves every Hopf pair unchanged.",
       "lean_name": "Circle.S3.phaseRotatePair_identity",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 158,
+      "lean_source_line": 207,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -4143,7 +4143,7 @@
       "informal_statement": "Composing two Hopf phase rotations follows the complex phase multiplication law.",
       "lean_name": "Circle.S3.phaseRotatePair_comp",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 163,
+      "lean_source_line": 212,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -4206,7 +4206,7 @@
       "informal_statement": "Unit quaternions are closed under multiplication.",
       "lean_name": "Circle.S3.unitQuaternion_mul_closed",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 57,
+      "lean_source_line": 64,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
@@ -4238,7 +4238,7 @@
       "informal_statement": "The inverse of a unit quaternion is its conjugate.",
       "lean_name": "Circle.S3.unitQuaternion_inverse",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 69,
+      "lean_source_line": 103,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
@@ -4270,7 +4270,7 @@
       "informal_statement": "Quaternion multiplication is noncommutative by a formal example.",
       "lean_name": "Circle.S3.quaternion_noncommutative_example",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 87,
+      "lean_source_line": 136,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
@@ -4301,7 +4301,7 @@
       "informal_statement": "Quaternion multiplication is associative.",
       "lean_name": "Circle.S3.quaternion_mul_assoc",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 93,
+      "lean_source_line": 142,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
@@ -4313,6 +4313,70 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S3Q-0001",
+        "S3Q-0002"
+      ],
+      "formal_statement": "forall q : Circle.S3.UnitQuaternion, Circle.S3.unitQuaternionMul Circle.S3.unitQuaternionOne q = q and Circle.S3.unitQuaternionMul q Circle.S3.unitQuaternionOne = q",
+      "id": "S3Q-T0006",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2"
+      ],
+      "informal_statement": "The bundled identity unit quaternion is a left and right identity for bundled unit-quaternion multiplication.",
+      "lean_name": "Circle.S3.unitQuaternion_identity",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 98,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
+      ],
+      "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py::test_unit_quaternion_identity_laws"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S3Q-0001",
+        "S3Q-0002"
+      ],
+      "formal_statement": "forall q : Circle.S3.UnitQuaternion, Circle.S3.unitQuaternionMul q (Circle.S3.unitQuaternionConj q) = Circle.S3.unitQuaternionOne and Circle.S3.unitQuaternionMul (Circle.S3.unitQuaternionConj q) q = Circle.S3.unitQuaternionOne",
+      "id": "S3Q-T0007",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2"
+      ],
+      "informal_statement": "The bundled conjugate of a unit quaternion is a left and right inverse for bundled unit-quaternion multiplication.",
+      "lean_name": "Circle.S3.unitQuaternion_conj_inverse",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 125,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
+      ],
+      "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py::test_unit_quaternion_conjugate_is_inverse"
         ]
       }
     },
@@ -4334,7 +4398,7 @@
       "informal_statement": "The quaternion conjugation action is unchanged by replacing q with -q.",
       "lean_name": "Circle.S3.quaternionConjugation_neg",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 108,
+      "lean_source_line": 157,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
@@ -4366,7 +4430,7 @@
       "informal_statement": "The identity quaternion conjugation action fixes every input quaternion.",
       "lean_name": "Circle.S3.quaternionConjugation_one",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 100,
+      "lean_source_line": 149,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
@@ -4398,7 +4462,7 @@
       "informal_statement": "Quaternion conjugation sends the zero input quaternion to zero.",
       "lean_name": "Circle.S3.quaternionConjugation_zero_vector",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 104,
+      "lean_source_line": 153,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"

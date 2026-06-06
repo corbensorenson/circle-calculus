@@ -54,6 +54,13 @@ structure UnitQuaternion where
   val : RealQuaternion
   unit : quaternionNorm val = 1
 
+theorem unitQuaternion_ext {p q : UnitQuaternion} (h : p.val = q.val) : p = q := by
+  cases p
+  cases q
+  simp at h
+  subst h
+  simp
+
 theorem unitQuaternion_mul_closed (p q : UnitQuaternion) :
     quaternionNorm (p.val * q.val) = 1 := by
   unfold quaternionNorm
@@ -66,6 +73,33 @@ noncomputable def unitQuaternionMul (p q : UnitQuaternion) : UnitQuaternion wher
   val := p.val * q.val
   unit := unitQuaternion_mul_closed p q
 
+noncomputable def unitQuaternionOne : UnitQuaternion where
+  val := 1
+  unit := by
+    unfold quaternionNorm
+    simp
+
+noncomputable def unitQuaternionConj (q : UnitQuaternion) : UnitQuaternion where
+  val := star q.val
+  unit := by
+    rw [quaternionNorm, Quaternion.normSq_star]
+    exact q.unit
+
+theorem unitQuaternion_one_mul (q : UnitQuaternion) :
+    unitQuaternionMul unitQuaternionOne q = q := by
+  cases q
+  simp [unitQuaternionMul, unitQuaternionOne]
+
+theorem unitQuaternion_mul_one (q : UnitQuaternion) :
+    unitQuaternionMul q unitQuaternionOne = q := by
+  cases q
+  simp [unitQuaternionMul, unitQuaternionOne]
+
+theorem unitQuaternion_identity (q : UnitQuaternion) :
+    unitQuaternionMul unitQuaternionOne q = q ∧
+      unitQuaternionMul q unitQuaternionOne = q := by
+  exact ⟨unitQuaternion_one_mul q, unitQuaternion_mul_one q⟩
+
 theorem unitQuaternion_inverse (q : UnitQuaternion) :
     q.val * star q.val = 1 ∧ star q.val * q.val = 1 := by
   constructor
@@ -77,6 +111,21 @@ theorem unitQuaternion_inverse (q : UnitQuaternion) :
     change ((quaternionNorm q.val : ℝ) : RealQuaternion) = 1
     rw [q.unit]
     rfl
+
+theorem unitQuaternion_mul_conj (q : UnitQuaternion) :
+    unitQuaternionMul q (unitQuaternionConj q) = unitQuaternionOne := by
+  apply unitQuaternion_ext
+  exact (unitQuaternion_inverse q).1
+
+theorem unitQuaternion_conj_mul (q : UnitQuaternion) :
+    unitQuaternionMul (unitQuaternionConj q) q = unitQuaternionOne := by
+  apply unitQuaternion_ext
+  exact (unitQuaternion_inverse q).2
+
+theorem unitQuaternion_conj_inverse (q : UnitQuaternion) :
+    unitQuaternionMul q (unitQuaternionConj q) = unitQuaternionOne ∧
+      unitQuaternionMul (unitQuaternionConj q) q = unitQuaternionOne := by
+  exact ⟨unitQuaternion_mul_conj q, unitQuaternion_conj_mul q⟩
 
 def quaternionI : Quaternion ℤ :=
   ⟨0, 1, 0, 0⟩

@@ -127,6 +127,34 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py
     blocker: ""
+  - id: S3Q-T0006
+    status: lean_proved
+    lean_name: Circle.S3.unitQuaternion_identity
+    informal_statement: "The bundled identity unit quaternion is a left and right identity for bundled unit-quaternion multiplication."
+    formal_statement: "forall q : Circle.S3.UnitQuaternion, Circle.S3.unitQuaternionMul Circle.S3.unitQuaternionOne q = q and Circle.S3.unitQuaternionMul q Circle.S3.unitQuaternionOne = q"
+    dictionary_dependencies: ["S3Q-0001", "S3Q-0002"]
+    paper_refs: ["papers/S3/PAPER_S3_02_QUATERNION_COILS.md"]
+    imports_allowed: ["Common", "S1", "S2"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py::test_unit_quaternion_identity_laws
+    blocker: ""
+  - id: S3Q-T0007
+    status: lean_proved
+    lean_name: Circle.S3.unitQuaternion_conj_inverse
+    informal_statement: "The bundled conjugate of a unit quaternion is a left and right inverse for bundled unit-quaternion multiplication."
+    formal_statement: "forall q : Circle.S3.UnitQuaternion, Circle.S3.unitQuaternionMul q (Circle.S3.unitQuaternionConj q) = Circle.S3.unitQuaternionOne and Circle.S3.unitQuaternionMul (Circle.S3.unitQuaternionConj q) q = Circle.S3.unitQuaternionOne"
+    dictionary_dependencies: ["S3Q-0001", "S3Q-0002"]
+    paper_refs: ["papers/S3/PAPER_S3_02_QUATERNION_COILS.md"]
+    imports_allowed: ["Common", "S1", "S2"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py::test_unit_quaternion_conjugate_is_inverse
+    blocker: ""
   - id: S3H-T0001
     status: lean_proved
     lean_name: Circle.S3.hopfMap_lands_sphere

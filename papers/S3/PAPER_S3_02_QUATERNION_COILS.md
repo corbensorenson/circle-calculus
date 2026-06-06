@@ -39,6 +39,8 @@ The unit condition is the algebraic `S^3` layer in real quaternion coordinates.
 - `S3Q-T0003`: `Circle.S3.unitQuaternion_inverse`
 - `S3Q-T0004`: `Circle.S3.quaternion_noncommutative_example`
 - `S3Q-T0005`: `Circle.S3.quaternion_mul_assoc`
+- `S3Q-T0006`: `Circle.S3.unitQuaternion_identity`
+- `S3Q-T0007`: `Circle.S3.unitQuaternion_conj_inverse`
 
 ## Proved Core
 
@@ -55,6 +57,20 @@ star q.val * q.val = 1
 
 for a unit quaternion `q`.
 
+`S3Q-T0006` packages the bundled identity unit quaternion:
+
+```text
+1 * q = q
+q * 1 = q
+```
+
+inside the `UnitQuaternion` API. `S3Q-T0007` packages the conjugate as the bundled inverse:
+
+```text
+q * conjugate(q) = 1
+conjugate(q) * q = 1
+```
+
 `S3Q-T0004` proves a concrete noncommutative example:
 
 ```text
@@ -65,7 +81,7 @@ This is the formal version of the slogan `S^3: order matters`.
 
 `S3Q-T0005` proves associativity of quaternion multiplication. This separates quaternions from the later `S^7` octonion layer, where bracketing becomes a real warning.
 
-The Python sidecar checks executable quaternion norm, unit multiplication, conjugate-inverse, noncommutativity, and associativity examples. These examples align with the Lean theorem spine but do not replace mathlib's formal proofs.
+The Python sidecar checks executable quaternion norm, unit multiplication, identity laws, conjugate-inverse, noncommutativity, and associativity examples. These examples align with the Lean theorem spine but do not replace mathlib's formal proofs.
 
 ## Role In The Ladder
 
