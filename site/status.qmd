@@ -4,6 +4,14 @@ title: "Theorem Status Legend"
 
 The Living Book uses theorem-status labels from generated theorem data. Page prose, widgets, and diagrams do not upgrade theorem status.
 
+::: {.learning-unit}
+
+## Reading Status As A Student
+
+Treat status as a confidence label for a specific claim, not as a grade for an entire page. A page can contain intuition, diagrams, examples, and planned ideas while only some theorem cards are Lean-proved.
+
+:::
+
 | Label | Meaning |
 | --- | --- |
 | <span class="status-badge status-proved">Lean-proved</span> | The theorem id has status `proved` or `lean_proved` and resolves to a Lean declaration. |

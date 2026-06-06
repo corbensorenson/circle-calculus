@@ -10,6 +10,20 @@ Click an id to open a filtered, shareable view of the relevant dictionary, theor
 Dictionary entries are definitions and guardrails. They are not theorem proofs.
 </div>
 
+::: {.learning-unit}
+
+## How To Use The Dictionary While Reading
+
+When a lesson introduces a term, read the dictionary card before opening the theorem card. The dictionary tells you what the term means in this project, what it does not mean yet, and where the same term is reused across papers, widgets, and proofs.
+
+For the first pass through S1, follow this vocabulary ladder:
+
+```text
+circle -> node -> rotation -> coil -> period -> winding
+```
+
+:::
+
 <div class="dictionary-index" data-dictionary-index="all"></div>
 
 ## Core S1 Entries

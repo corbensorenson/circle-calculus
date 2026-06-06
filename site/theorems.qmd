@@ -6,6 +6,22 @@ This index is generated from theorem manifests. It is a navigation layer, not a 
 
 Click a theorem, dictionary, paper, target, or glyph id to open the corresponding generated index filtered to that id.
 
+::: {.learning-unit}
+
+## How To Use Theorem Cards While Reading
+
+Do not start here on a first read. Start with the lesson explanation and widget, then open the theorem card when you want to audit the exact claim.
+
+For each theorem, check:
+
+1. the theorem id,
+2. the status badge,
+3. the Lean declaration name when present,
+4. the dictionary dependencies, and
+5. the paper or sidecar source links.
+
+:::
+
 <div class="theorem-index" data-theorem-index="all"></div>
 
 <script type="module" src="widgets/shared/widget_base.js"></script>
