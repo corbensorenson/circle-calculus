@@ -1,46 +1,81 @@
 ---
-title: "S1: Finite Circle Core"
+title: "S1 Unit: Finite Circle Core"
 ---
 
-The S1 core uses finite `C_n` objects as cyclic address spaces. In v0, these are combinatorial circles, not Euclidean metric circles.
+S1 is the first complete unit of the Living Book. It teaches arithmetic on finite circular address spaces, then uses that arithmetic to explain motion, repetition, closure, period, primes, and winding.
 
-This unit is the first place where Circle Calculus becomes usable. It teaches a small loop of addresses, then builds motion, repetition, closure, and period on top of that loop.
+::: {.chapter-opening}
 
-::: {.learning-unit}
+The important object is not a smooth geometric circle. In this unit, `C_n` means a finite loop of `n` addresses. Drawings help you see the loop, but the mathematics is the rule that every address is reduced modulo `n`.
+
+:::
+
+::: {.lesson-goal}
 
 ## Unit Goal
 
-By the end of S1, a reader should be able to look at a finite circle `C_n`, choose a stride `k`, predict the orbit, compute the period from `gcd(n,k)`, and explain which parts are intuition, executable examples, or Lean-proved theorems.
+By the end of S1, you should be able to:
+
+- reduce addresses modulo a circle size,
+- rotate by adding a stride,
+- trace an orbit under repeated stride,
+- compute period from `gcd(n,k)`,
+- explain prime full-coil behavior, and
+- separate winding count from final residue.
 
 :::
 
-## Lesson Order
+## The Story In One Picture
 
-1. finite circles and nodes,
-2. rotations as modular addition,
-3. coils, orbits, closure, and period,
-4. gcd decomposition and prime full coils,
-5. winding lift as a separate residue-plus-turns layer,
-6. review exercises that combine the whole S1 unit.
+::: {.concept-map}
 
-## Mental Picture
+<div class="concept-flow">
+<span><strong>Circle</strong> `C_n` has `n` addresses</span>
+<span><strong>Node</strong> one reduced address</span>
+<span><strong>Rotation</strong> add a stride</span>
+<span><strong>Coil</strong> repeat a stride</span>
+<span><strong>Period</strong> first return</span>
+<span><strong>Winding</strong> turns plus residue</span>
+</div>
 
-Imagine `n` labeled positions arranged around a loop. The geometry of the drawn loop is only a picture; the actual object is the address rule that sends every integer to one of those `n` labels. Rotation means adding a stride and reducing again. A coil is what you see when the same stride is repeated until the motion closes.
+:::
 
-The first four lessons use interactive diagrams so you can change `n`, starts, and strides. The diagrams are there to make the theorem statements feel concrete before you open the proof trail.
+## Lesson Sequence
+
+1. [Finite Circles](01_finite_circles.qmd): learn what `C_n` is and how addresses wrap.
+2. [Rotation As Addition](02_rotation_as_addition.qmd): turn motion into modular addition.
+3. [Coils And Closure](03_coils_orbits_closure.qmd): repeat one motion until it closes.
+4. [Period And Primes](04_period_gcd_prime_full_coils.qmd): use gcd to predict cycle structure.
+5. [Winding Lift](05_winding_lift.qmd): keep full-turn information that residues forget.
+6. [Review And Exercises](06_review.qmd): check the whole unit before moving upward.
+
+## What Gets Proved Here
+
+The S1 core links to Lean-proved finite facts about rotation identity, rotation composition, inverse rotation, closure, period, orbit decomposition, prime full coils, full-coil/copime behavior, and winding. The cards in each lesson show the precise theorem ids and current status.
+
+::: {.warning-box}
+Do not use a diagram or widget as a proof. A page may help you see why a theorem should be true, but the proof-status source is the generated theorem card and Lean declaration.
+:::
 
 ::: {.checkpoint-box}
 
-## First Checkpoint
+## Entry Check
 
-Before moving to higher dimensions, make sure you can answer this without looking at source code: in `C_12`, why does stride `4` visit `0, 4, 8` and then close, while stride `5` visits all twelve addresses?
+Before the first lesson, make sure this sentence feels plausible: a clock face with `12` labels can treat `14` as the same address as `2` because the full turn has been ignored.
 
 :::
 
-Finish with [S1 Review And Exercises](06_review.qmd) before moving to S2.
+## Source Trail
 
-<div class="dimension-banner" data-dimension-id="S1">S1 finite cyclic address core</div>
+<div class="source-trail">
 
 <div class="dictionary-box" data-dictionary-id="S1-0001"></div>
+
+</div>
+
+<div class="next-lesson">
+<span>Begin S1</span>
+<a href="01_finite_circles.qmd">Lesson 1: Finite Circles</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

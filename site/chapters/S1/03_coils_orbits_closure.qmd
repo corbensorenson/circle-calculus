@@ -1,27 +1,66 @@
 ---
-title: "Coils, Orbits, And Closure"
+title: "Lesson 3: Coils, Orbits, And Closure"
 ---
 
-A coil is the orbit traced by repeatedly applying the same rotation. Closure means the repeated motion has returned to its starting address.
+A coil is the path traced by repeatedly applying the same rotation. Closure means the repeated motion returns to its starting address.
 
-The previous lesson moved once. This lesson asks what happens when the same stride is used again and again. The visited addresses form an orbit. Because `C_n` has only finitely many nodes, the motion eventually repeats; the first return to the starting node is the period of that stride.
+::: {.lesson-goal}
+
+## Lesson Goal
+
+Learn how one stride becomes a whole orbit when repeated. After this lesson, you should be able to list the visited nodes and identify the first return to the start.
+
+:::
+
+## The Idea
+
+The previous lesson moved once. This lesson asks what happens when the same stride is used again and again.
+
+If a circle has only finitely many nodes, repeated motion cannot keep creating new nodes forever. Eventually the motion repeats. The first return to the starting node is the period of that stride from that start.
+
+::: {.definition-box}
+
+## Definition In Words
+
+An orbit is the ordered list of nodes visited by repeated rotation. Closure is the moment the next step returns to the start.
+
+<p class="formula-line">x, rot(k)(x), rot(k)(rot(k)(x)), ...</p>
+
+:::
 
 This is the first Circle Calculus pattern that scales upward: choose a space, choose a motion, follow the repeated motion, then study how and when it closes.
 
-<div class="warning-box">
-The widget output is a finite computation. It helps explain the theorem but is not a formal proof.
-</div>
+## Diagram
 
-## Picture
-
-<div class="dictionary-box" data-dictionary-id="CC-0201"></div>
-<div class="dictionary-box" data-dictionary-id="CC-0202"></div>
-<div class="dictionary-box" data-dictionary-id="CC-0205"></div>
-
-<div class="theorem-box" data-theorem-id="CC-T0004"></div>
-<div class="theorem-box" data-theorem-id="CC-T0005"></div>
+The widget traces the orbit, marks visited nodes, and compares actual orbit length with the gcd prediction.
 
 <div class="widget-panel" data-widget="coil_orbit_explorer" data-theorem-id="CC-T0005" data-dictionary-ids="CC-0201 CC-0202 CC-0205"></div>
+
+::: {.warning-box}
+The widget output is a finite computation. It helps explain the theorem but is not a formal proof.
+:::
+
+## Worked Example
+
+::: {.worked-example}
+
+In `C_12`, start at `0` and use stride `4`.
+
+```text
+0 -> 4 -> 8 -> 0
+```
+
+The orbit visits three nodes before returning to the start. It does not visit all twelve nodes.
+
+:::
+
+## Common Mistake
+
+::: {.common-mistake}
+
+Do not confuse "visited a node" with "closed the orbit." A node is visited when it appears in the list. The orbit closes when the next repeated stride returns to the starting node.
+
+:::
 
 ## Try It
 
@@ -37,6 +76,17 @@ What is the difference between a node being visited by an orbit and the orbit be
 
 ## Source Trail
 
+<div class="source-trail">
+
+The dictionary cards name the moving pieces. The theorem cards state the checked closure and period facts used by later lessons.
+
+<div class="dictionary-box" data-dictionary-id="CC-0201"></div>
+<div class="dictionary-box" data-dictionary-id="CC-0202"></div>
+<div class="dictionary-box" data-dictionary-id="CC-0205"></div>
+
+<div class="theorem-box" data-theorem-id="CC-T0004"></div>
+<div class="theorem-box" data-theorem-id="CC-T0005"></div>
+
 Python reference model:
 
 ```python
@@ -48,6 +98,13 @@ C.period(4)                # 3
 ```
 
 <p data-paper-ref="papers/PAPER_01_FINITE_CIRCLES.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/PAPER_01_FINITE_CIRCLES.md">Circle Calculus I</a></p>
+
+</div>
+
+<div class="book-navigation">
+<a href="02_rotation_as_addition.qmd">Previous: Rotation As Addition</a>
+<a href="04_period_gcd_prime_full_coils.qmd">Next: Period And Primes</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>
 <script type="module" src="../../widgets/S1/coil_orbit_explorer.js"></script>

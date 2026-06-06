@@ -1,8 +1,16 @@
 ---
-title: "S1 Review And Exercises"
+title: "Lesson 6: S1 Review And Exercises"
 ---
 
-This review page checks whether the finite-circle unit is usable as a single story. Work through it after the first five S1 lessons and before moving to S2.
+This review checks whether the finite-circle unit is usable as a single story. Work through it after the first five S1 lessons and before moving to S2.
+
+::: {.lesson-goal}
+
+## Unit Readiness Goal
+
+You are ready for higher dimensions when you can solve finite-circle problems by hand, explain what the widgets are showing, and identify which facts are theorem-backed.
+
+:::
 
 ## What You Should Be Able To Do
 
@@ -33,6 +41,8 @@ These exercises are learning checks. They are not formal proofs. Use the theorem
 
 ## Answer Sketches
 
+::: {.worked-example}
+
 1. They all reduce to node `3` in `C_10`.
 
 2. The two-step stride is `5 + 7 = 12`, so the final node is the same as start `8` in `C_12`.
@@ -45,7 +55,21 @@ These exercises are learning checks. They are not formal proofs. Use the theorem
 
 6. `17 = 3*5 + 2`, so the winding count is `3` and the residue is `2`. The residue alone cannot distinguish `2`, `7`, `12`, and `17`.
 
+:::
+
+## Readiness Check
+
+::: {.checkpoint-box}
+
+If someone gives you a new `C_n`, a start, and a stride, you should now know how to draw the finite circle, reduce addresses, trace repeated motion, predict closure, and decide whether the output is an intuition diagram, a Python example, or a theorem-backed claim.
+
+:::
+
 ## Source Trail
+
+<div class="source-trail">
+
+These theorem cards cover the main S1 proof spine used in the exercises.
 
 <div class="theorem-box" data-theorem-id="CC-T0002"></div>
 <div class="theorem-box" data-theorem-id="CC-T0005"></div>
@@ -55,5 +79,12 @@ These exercises are learning checks. They are not formal proofs. Use the theorem
 
 <p data-paper-ref="papers/PAPER_01_FINITE_CIRCLES.md">Finite-circle paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/PAPER_01_FINITE_CIRCLES.md">Circle Calculus I</a></p>
 <p data-paper-ref="papers/PAPER_02_WINDING_NATURALS.md">Winding paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/PAPER_02_WINDING_NATURALS.md">Circle Calculus II</a></p>
+
+</div>
+
+<div class="book-navigation">
+<a href="05_winding_lift.qmd">Previous: Winding Lift</a>
+<a href="../S2/index.qmd">Next Unit: S2 Sphere Scaffolding</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

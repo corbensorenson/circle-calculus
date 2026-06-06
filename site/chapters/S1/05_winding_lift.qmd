@@ -1,25 +1,66 @@
 ---
-title: "Winding Lift"
+title: "Lesson 5: Winding Lift"
 ---
 
-Winding keeps full-turn information that ordinary residues forget. A lifted node records a winding count `q` and residue `r` so that the represented value is `q*n + r`.
+Winding keeps full-turn information that ordinary residues forget.
 
-The earlier S1 chapters deliberately threw away full turns. That is perfect for studying circular closure, but it is not enough when the number of turns matters. Winding adds that missing memory back.
+::: {.lesson-goal}
+
+## Lesson Goal
+
+Learn how a lifted coordinate records both the number of full turns and the final residue. After this lesson, you should be able to decompose a step count into quotient plus remainder.
+
+:::
+
+## The Idea
+
+The earlier S1 lessons deliberately threw away full turns. That is perfect for studying circular closure, but it is not enough when the number of turns matters.
 
 For example, on a circle with base `5`, the values `2`, `7`, `12`, and `17` all have residue `2`. The lift separates them by recording how many full turns occurred before landing at residue `2`.
 
-<div class="warning-box">
-Do not read residue-only diagrams as natural-number proofs. The lift layer is what stores full turns.
-The widget is an explanation, not a proof.
-</div>
+::: {.definition-box}
 
-## Picture
+## Definition In Words
 
-<div class="dictionary-box" data-dictionary-id="CC-0301"></div>
+A lifted node records a winding count `q` and residue `r` so the represented value is `q*n + r`.
 
-<div class="theorem-box" data-theorem-id="CC-T0009"></div>
+<p class="formula-line">t = q*n + r, with 0 <= r < n</p>
+
+:::
+
+## Diagram
+
+Use the widget to see the quotient and residue change separately.
 
 <div class="widget-panel" data-widget="winding_lift_explorer" data-theorem-id="CC-T0009" data-dictionary-ids="CC-0301"></div>
+
+::: {.warning-box}
+Do not read residue-only diagrams as natural-number proofs. The lift layer is what stores full turns. The widget is an explanation, not a proof.
+:::
+
+## Worked Example
+
+::: {.worked-example}
+
+With base `5`, lift `t = 17`.
+
+```text
+17 = 3*5 + 2
+q = 3
+r = 2
+```
+
+The residue `2` tells you where you landed. The winding count `3` tells you how many full turns happened first.
+
+:::
+
+## Common Mistake
+
+::: {.common-mistake}
+
+Do not try to recover the original natural number from the residue alone. Residue `2` could have come from `2`, `7`, `12`, `17`, or many later values.
+
+:::
 
 ## Try It
 
@@ -35,6 +76,12 @@ Why is the residue `2` alone not enough to recover whether the original step cou
 
 ## Source Trail
 
+<div class="source-trail">
+
+<div class="dictionary-box" data-dictionary-id="CC-0301"></div>
+
+<div class="theorem-box" data-theorem-id="CC-T0009"></div>
+
 Python reference model:
 
 ```python
@@ -44,6 +91,13 @@ lift(5, 17)  # winding=3, residue=2
 ```
 
 <p data-paper-ref="papers/PAPER_02_WINDING_NATURALS.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/PAPER_02_WINDING_NATURALS.md">Circle Calculus II</a></p>
+
+</div>
+
+<div class="book-navigation">
+<a href="04_period_gcd_prime_full_coils.qmd">Previous: Period And Primes</a>
+<a href="06_review.qmd">Next: S1 Review And Exercises</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>
 <script type="module" src="../../widgets/S1/winding_lift_explorer.js"></script>

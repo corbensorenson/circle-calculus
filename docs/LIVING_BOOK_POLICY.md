@@ -21,11 +21,13 @@ The Living Book should be usable as a guided textbook, not merely as a directory
 - the learning goal,
 - a plain-language explanation,
 - a diagram or widget when the concept benefits from one,
+- a worked example,
+- a common mistake or boundary warning when the idea is easy to overread,
 - a small thing for the reader to try,
 - a checkpoint question or calculation, and
 - a source trail back to theorem cards, dictionary entries, papers, Lean declarations, and Python examples.
 
-Reference indexes remain important, but they should support the reading path instead of replacing it.
+Reference indexes remain important, but they should support the reading path instead of replacing it. Navigation should lead with the guided chapter sequence and place dictionary/theorem/paper/target indexes in a reference or appendix position.
 
 ## Proof-Status Rule
 

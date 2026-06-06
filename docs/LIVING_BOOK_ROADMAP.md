@@ -49,8 +49,12 @@ Each chapter must distinguish intuition, example, Python model, and formal theor
 
 - Treat the Living Book as a book first and an index second.
 - Put the easiest building-block concepts first: finite addresses, nodes, rotation, repeated rotation, closure, gcd/period, primes, and winding.
+- Make the sidebar and navbar lead readers through the learning sequence before exposing dictionary/theorem/paper/target indexes.
+- Keep reference pages available as appendices, not as substitutes for chapters.
 - Give each reader-facing lesson a goal, plain-language explanation, interactive diagram or widget when available, short learner task, checkpoint, and source trail.
 - Keep theorem cards, dictionary boxes, paper links, Lean links, and Python examples close to the lesson they support, but do not let them replace the lesson.
+- Prefer the lesson order `S0 -> S1 finite addresses -> rotation -> coils -> period/gcd/primes -> winding -> S2/S3/higher dimensions -> Phase II -> applications`.
+- Add worked examples and common-mistake notes to mature lessons so a reader can learn from the page without leaving it.
 - Use indexes as reference shelves, not as the main reading experience.
 - Add review/exercise pages at the end of mature units so readers can test the combined concept sequence before moving upward.
 - Add guided paths for higher dimensions and applications as those pages mature, always preserving proof-status boundaries.

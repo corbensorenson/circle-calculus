@@ -101,7 +101,15 @@ body {
 .learning-unit,
 .lesson-card,
 .checkpoint-box,
-.source-trail {
+.source-trail,
+.lesson-goal,
+.definition-box,
+.worked-example,
+.common-mistake,
+.next-lesson,
+.book-navigation,
+.concept-map,
+.teacher-note {
   border: 1px solid var(--cc-line);
   border-radius: 8px;
   margin: 1rem 0;
@@ -110,8 +118,88 @@ body {
 }
 
 .book-preface,
-.learning-unit {
+.learning-unit,
+.lesson-goal {
   background: var(--cc-panel);
+}
+
+.lesson-goal {
+  border-left: 4px solid var(--cc-link);
+}
+
+.lesson-goal ul,
+.worked-example ul,
+.common-mistake ul,
+.checkpoint-box ul {
+  margin-bottom: 0;
+}
+
+.definition-box {
+  border-left: 4px solid #0b6b45;
+  background: #f7fcfa;
+}
+
+.definition-box .formula-line {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 1rem;
+  margin: 0.5rem 0 0;
+}
+
+.worked-example {
+  background: #fbfdff;
+}
+
+.common-mistake {
+  border-color: #efc36d;
+  background: #fffaf0;
+}
+
+.next-lesson,
+.book-navigation {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: space-between;
+}
+
+.next-lesson a,
+.book-navigation a {
+  font-weight: 700;
+}
+
+.concept-map {
+  background: #fcfcfd;
+}
+
+.concept-flow {
+  display: grid;
+  gap: 0.55rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+  margin: 1rem 0;
+}
+
+.concept-flow span {
+  border: 1px solid var(--cc-line);
+  border-radius: 8px;
+  padding: 0.65rem 0.75rem;
+  background: #fff;
+  text-align: center;
+}
+
+.concept-flow span strong {
+  display: block;
+}
+
+.chapter-opening {
+  border-bottom: 1px solid var(--cc-line);
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+}
+
+.source-trail h2,
+.source-trail h3 {
+  margin-top: 0;
 }
 
 .lesson-grid {
@@ -290,5 +378,11 @@ body {
   .target-index-table,
   .glyph-index-table {
     min-width: 640px;
+  }
+
+  .next-lesson,
+  .book-navigation {
+    align-items: stretch;
+    flex-direction: column;
   }
 }

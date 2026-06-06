@@ -15,108 +15,94 @@ website:
   navbar:
     left:
       - href: index.qmd
-        text: Start
-      - href: roadmap.qmd
-        text: Roadmap
+        text: Read
       - href: reader_path.qmd
-        text: Reader Path
+        text: Guided Path
+      - href: chapters/S1/01_finite_circles.qmd
+        text: Lesson 1
       - href: verify_claim.qmd
         text: Verify
-      - href: status.qmd
-        text: Status
-      - href: dictionary.qmd
-        text: Dictionary
-      - href: theorems.qmd
-        text: Theorems
-      - href: papers.qmd
-        text: Papers
-      - href: targets.qmd
-        text: Targets
+      - text: Reference
+        menu:
+          - href: dictionary.qmd
+            text: Dictionary
+          - href: theorems.qmd
+            text: Theorems
+          - href: papers.qmd
+            text: Papers
+          - href: targets.qmd
+            text: Targets
+          - href: status.qmd
+            text: Status
+          - href: roadmap.qmd
+            text: Roadmap
       - href: about.qmd
         text: About
   sidebar:
     style: docked
     contents:
-      - href: index.qmd
-        text: Start
-      - href: roadmap.qmd
-        text: Roadmap
-      - href: reader_path.qmd
-        text: Reader Path
-      - href: verify_claim.qmd
-        text: Verify A Claim
-      - href: status.qmd
-        text: Theorem Status
-      - href: dictionary.qmd
-        text: Dictionary Index
-      - href: theorems.qmd
-        text: Theorem Index
-      - href: papers.qmd
-        text: Paper Index
-      - href: targets.qmd
-        text: Phase IV Targets
-      - section: "S0"
+      - section: "Start Here"
+        contents:
+          - href: index.qmd
+            text: Preface
+          - href: reader_path.qmd
+            text: Guided Learning Path
+          - href: verify_claim.qmd
+            text: How To Verify A Claim
+      - section: "Part I: First Objects"
         contents:
           - href: chapters/S0/index.qmd
-            text: Overview
+            text: S0 Two-State Opposition
           - href: chapters/S0/opposition.qmd
-            text: Opposition
-      - section: "S1"
-        contents:
+            text: Two-Point Flip
           - href: chapters/S1/index.qmd
-            text: Overview
+            text: S1 Unit Overview
+      - section: "Part II: Finite Circular Arithmetic"
+        contents:
           - href: chapters/S1/01_finite_circles.qmd
-            text: Finite Circles
+            text: 1. Finite Circles
           - href: chapters/S1/02_rotation_as_addition.qmd
-            text: Rotation As Addition
+            text: 2. Rotation As Addition
           - href: chapters/S1/03_coils_orbits_closure.qmd
-            text: Coils And Closure
+            text: 3. Coils And Closure
           - href: chapters/S1/04_period_gcd_prime_full_coils.qmd
-            text: Period And Primes
+            text: 4. Period And Primes
           - href: chapters/S1/05_winding_lift.qmd
-            text: Winding Lift
+            text: 5. Winding Lift
           - href: chapters/S1/06_review.qmd
-            text: Review And Exercises
-      - section: "S2"
+            text: 6. S1 Review And Exercises
+      - section: "Part III: Higher-Dimensional Ladder"
         contents:
           - href: chapters/S2/index.qmd
-            text: Overview
+            text: S2 Overview
           - href: chapters/S2/suspended_circles.qmd
-            text: Suspended Circles
+            text: S2 Suspended Circles
           - href: chapters/S2/sphere_grids.qmd
-            text: Sphere Grids
-      - section: "S3"
-        contents:
+            text: S2 Sphere Grids
           - href: chapters/S3/index.qmd
-            text: Overview
+            text: S3 Overview
           - href: chapters/S3/hyperspheres.qmd
-            text: Hyperspheres
+            text: S3 Hyperspheres
           - href: chapters/S3/quaternions.qmd
-            text: Quaternions
+            text: S3 Quaternions
           - href: chapters/S3/hopf_coils.qmd
-            text: Hopf Coils
-      - section: "S4-S6"
-        contents:
+            text: S3 Hopf Coils
           - href: chapters/S4_S6/index.qmd
-            text: Overview
+            text: S4-S6 Overview
           - href: chapters/S4_S6/suspension_euler_parity.qmd
-            text: Suspension Euler Parity
-      - section: "S7"
-        contents:
+            text: S4-S6 Suspension Euler Parity
           - href: chapters/S7/index.qmd
-            text: Overview
+            text: S7 Overview
           - href: chapters/S7/octonionic_layer.qmd
-            text: Octonionic Layer
-      - section: "S15"
-        contents:
+            text: S7 Octonionic Layer
           - href: chapters/S15/index.qmd
-            text: Overview
+            text: S15 Overview
           - href: chapters/S15/future_hopf_horizon.qmd
-            text: Future Hopf Horizon
-      - section: "Phase II"
+            text: S15 Hopf Horizon
+      - section: "Part IV: Advanced Frameworks"
         contents:
           - href: chapters/phase2/index.qmd
-            text: Overview
+            text: Phase II Overview
           - href: chapters/phase2/stable_sphere_calculus.qmd
             text: Stable Spheres
           - href: chapters/phase2/bundle_calculus.qmd
@@ -127,10 +113,10 @@ website:
             text: Boundary Cobordism
           - href: chapters/phase2/proof_carrying_glyphs.qmd
             text: Proof-Carrying Glyphs
-      - section: "Applications"
+      - section: "Part V: Applications"
         contents:
           - href: chapters/applications/index.qmd
-            text: Overview
+            text: Application Overview
           - href: chapters/applications/ai.qmd
             text: AI
           - href: chapters/applications/compute.qmd
@@ -139,6 +125,22 @@ website:
             text: Rendering
           - href: chapters/applications/data_analysis.qmd
             text: Data Analysis
+      - section: "Appendix: Source Reference"
+        contents:
+          - href: status.qmd
+            text: Theorem Status
+          - href: dictionary.qmd
+            text: Dictionary Index
+          - href: theorems.qmd
+            text: Theorem Index
+          - href: papers.qmd
+            text: Paper Index
+          - href: targets.qmd
+            text: Target Index
+          - href: roadmap.qmd
+            text: Project Roadmap
+          - href: about.qmd
+            text: About
 
 format:
   html:

@@ -1,23 +1,68 @@
 ---
-title: "Finite Circles"
+title: "Lesson 1: Finite Circles"
 ---
 
-The first object is the finite circle `C_n`. In this repository, `C_n` is a finite cyclic address space with nodes represented by residues modulo `n`.
+The first object is the finite circle `C_n`: a loop of `n` reusable addresses.
 
-Think of `C_n` as a clock with `n` labels. The label is what matters, not the physical shape of the drawing. If `n = 12`, then address `14` lands on node `2`, because two full turns have been discarded and only the remainder is kept.
+::: {.lesson-goal}
 
-This is the smallest building block for the rest of the book. Later chapters add motion, repeated motion, period, and higher-dimensional structure, but they all keep returning to this first rule: an address is read modulo the size of its circle.
+## Lesson Goal
 
-<div class="warning-box">
+Learn how a finite circle names positions by reducing addresses modulo `n`. After this lesson, you should be able to say which node an integer address lands on.
+
+:::
+
+## The Idea
+
+Think of `C_n` as a clock with `n` labels. If the clock has `12` labels, then address `14` lands on node `2`: one full turn is discarded and the remainder is kept.
+
+The drawing can be circular, but the rule is arithmetic:
+
+::: {.definition-box}
+
+## Definition In Words
+
+`C_n` is a finite cyclic address space. Its nodes are the possible remainders after division by `n`.
+
+<p class="formula-line">address i on C_n -> node i mod n</p>
+
+:::
+
+This is the smallest building block for the rest of the book. Rotation, coils, period, primes, winding, and the higher-dimensional pages all return to this first move: reduce an address into a finite set of positions.
+
+::: {.warning-box}
 In v0, circles are finite cyclic address spaces. They are not Euclidean metric circles, and the widget below is an explanation rather than a proof.
-</div>
+:::
 
-## Picture
+## Diagram
 
-<div class="dictionary-box" data-dictionary-id="CC-0001"></div>
-<div class="dictionary-box" data-dictionary-id="CC-0002"></div>
+Use the widget to change the circle size and selected address.
 
 <div class="widget-panel" data-widget="finite_circle_rotator" data-dictionary-ids="CC-0001 CC-0002"></div>
+
+## Worked Example
+
+::: {.worked-example}
+
+On `C_12`, the addresses `2`, `14`, and `26` land on the same node.
+
+```text
+2  = 0*12 + 2
+14 = 1*12 + 2
+26 = 2*12 + 2
+```
+
+The quotient changes, but the remainder is always `2`.
+
+:::
+
+## Common Mistake
+
+::: {.common-mistake}
+
+Do not say that `14` and `2` are the same integer. They are different integers that name the same node after the address has been reduced in `C_12`.
+
+:::
 
 ## Try It
 
@@ -33,7 +78,12 @@ Explain, in one sentence, why the addresses `2`, `14`, and `26` all name the sam
 
 ## Source Trail
 
-<p data-paper-ref="papers/PAPER_01_FINITE_CIRCLES.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/PAPER_01_FINITE_CIRCLES.md">Circle Calculus I</a></p>
+<div class="source-trail">
+
+The cards below are the audit path for this lesson. Read the explanation first; use these when you want the project vocabulary and source files.
+
+<div class="dictionary-box" data-dictionary-id="CC-0001"></div>
+<div class="dictionary-box" data-dictionary-id="CC-0002"></div>
 
 Python reference model:
 
@@ -43,6 +93,15 @@ from circle_math.finite import Circle
 C = Circle(12)
 C.node(14)  # 2
 ```
+
+<p data-paper-ref="papers/PAPER_01_FINITE_CIRCLES.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/PAPER_01_FINITE_CIRCLES.md">Circle Calculus I</a></p>
+
+</div>
+
+<div class="book-navigation">
+<a href="index.qmd">Previous: S1 Overview</a>
+<a href="02_rotation_as_addition.qmd">Next: Rotation As Addition</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>
 <script type="module" src="../../widgets/S1/finite_circle_rotator.js"></script>

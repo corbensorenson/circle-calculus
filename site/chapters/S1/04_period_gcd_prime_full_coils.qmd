@@ -1,31 +1,69 @@
 ---
-title: "Period, GCD, And Prime Full Coils"
+title: "Lesson 4: Period, GCD, And Prime Full Coils"
 ---
 
-For positive `n`, the period of stride `k` on `C_n` is `n / gcd(n,k)`. The same gcd counts the number of disjoint stride cycles.
+For positive `n`, the period of stride `k` on `C_n` is controlled by `gcd(n,k)`.
 
-This is where the circle picture and ordinary divisibility meet. If `k` shares a divisor with `n`, the stride steps over the circle in a pattern that only reaches part of it before closing. If `k` is coprime to `n`, the stride has no shared divisor to trap it, so the orbit passes through every node before closing.
+::: {.lesson-goal}
+
+## Lesson Goal
+
+Learn why shared divisors determine how many cycles a stride creates. After this lesson, you should be able to compute period, cycle count, and full-coil behavior from `gcd(n,k)`.
+
+:::
+
+## The Idea
+
+This is where the circle picture and ordinary divisibility meet. If `k` shares a divisor with `n`, the stride steps through a repeating subset of the circle and closes early. If `k` is coprime to `n`, no shared divisor traps the motion, so the orbit passes through every node before closing.
+
+::: {.definition-box}
+
+## Definition In Words
+
+The gcd tells you how many disjoint stride cycles the circle splits into. The length of each cycle is the circle size divided by that gcd.
+
+<p class="formula-line">cycles = gcd(n,k)</p>
+<p class="formula-line">period = n / gcd(n,k)</p>
+
+:::
 
 Prime circles make this especially clean. On `C_p`, every nonzero stride is coprime to `p`, so every nonzero stride is a full coil. Composite circles have at least one nonzero stride that closes early.
 
-<div class="warning-box">
-The widgets expose the gcd and prime/full-coil patterns as executable references. They are not proofs.
-</div>
+## Diagrams
 
-## Picture
-
-<div class="dictionary-box" data-dictionary-id="CC-0205"></div>
-<div class="dictionary-box" data-dictionary-id="CC-0206"></div>
-<div class="dictionary-box" data-dictionary-id="CC-0207"></div>
-<div class="dictionary-box" data-dictionary-id="CC-0208"></div>
-
-<div class="theorem-box" data-theorem-id="CC-T0005"></div>
-<div class="theorem-box" data-theorem-id="CC-T0006"></div>
-<div class="theorem-box" data-theorem-id="CC-T0007"></div>
+The first widget shows gcd, cycle count, and cycle length. The second widget compares prime and composite behavior.
 
 <div class="widget-panel" data-widget="period_gcd_visualizer" data-theorem-id="CC-T0006" data-dictionary-ids="CC-0205 CC-0207 CC-0208"></div>
 
 <div class="widget-panel" data-widget="prime_full_coil_explorer" data-theorem-id="CC-T0007" data-dictionary-ids="CC-0206"></div>
+
+::: {.warning-box}
+The widgets expose the gcd and prime/full-coil patterns as executable references. They are not proofs.
+:::
+
+## Worked Example
+
+::: {.worked-example}
+
+In `C_18`, use stride `6`.
+
+```text
+gcd(18,6) = 6
+number of disjoint cycles = 6
+cycle length = 18 / 6 = 3
+```
+
+Starting at `0`, the orbit is `0 -> 6 -> 12 -> 0`. Other starts form the other cycles.
+
+:::
+
+## Common Mistake
+
+::: {.common-mistake}
+
+Do not say a stride is a full coil just because it is nonzero. That is true for every nonzero stride only on prime-sized circles. On composite circles, nonzero strides can share factors with `n` and close early.
+
+:::
 
 ## Try It
 
@@ -41,6 +79,19 @@ For `C_18` with stride `6`, compute `gcd(18,6)`, the number of disjoint cycles, 
 
 ## Source Trail
 
+<div class="source-trail">
+
+Use these cards to audit the period theorem, orbit decomposition theorem, and prime full-coil theorem.
+
+<div class="dictionary-box" data-dictionary-id="CC-0205"></div>
+<div class="dictionary-box" data-dictionary-id="CC-0206"></div>
+<div class="dictionary-box" data-dictionary-id="CC-0207"></div>
+<div class="dictionary-box" data-dictionary-id="CC-0208"></div>
+
+<div class="theorem-box" data-theorem-id="CC-T0005"></div>
+<div class="theorem-box" data-theorem-id="CC-T0006"></div>
+<div class="theorem-box" data-theorem-id="CC-T0007"></div>
+
 Python reference model:
 
 ```python
@@ -51,6 +102,13 @@ all(C.is_full_coil(k) for k in range(1, 13))
 ```
 
 <p data-paper-ref="papers/PAPER_01_FINITE_CIRCLES.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/PAPER_01_FINITE_CIRCLES.md">Circle Calculus I</a></p>
+
+</div>
+
+<div class="book-navigation">
+<a href="03_coils_orbits_closure.qmd">Previous: Coils And Closure</a>
+<a href="05_winding_lift.qmd">Next: Winding Lift</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>
 <script type="module" src="../../widgets/S1/period_gcd_visualizer.js"></script>

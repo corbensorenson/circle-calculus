@@ -1,10 +1,57 @@
 ---
-title: "Two-Point Opposition"
+title: "Two-Point Flip"
 ---
 
 The S0 chapter records the finite two-point opposition model. It is intentionally small: a two-point type and an operation that swaps its two points.
 
+::: {.lesson-goal}
+
+## Lesson Goal
+
+Understand the simplest possible closed action: flip once to leave, flip twice to return.
+
+:::
+
+## The Idea
+
+The two-point flip is the smallest example of a reversible finite action. It does not yet have the richer structure of a circle with many addresses, but it gives the book a clean way to talk about paired states.
+
+::: {.worked-example}
+
+If the two states are `left` and `right`, then:
+
+```text
+flip(left) = right
+flip(right) = left
+flip(flip(left)) = left
+```
+
+:::
+
+## Why It Comes Before S1
+
+S1 rotations can have many steps before returning. S0 returns after exactly two flips. That makes it the first closed finite behavior a reader can hold in mind before learning modular addresses.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+What is similar between a two-point flip and a stride on a finite circle? What is missing from S0 that appears in S1?
+
+:::
+
+## Source Trail
+
+<div class="source-trail">
+
 <div class="theorem-box" data-theorem-id="S0-T0002"></div>
 <div class="dictionary-box" data-dictionary-id="S0-0002"></div>
+
+</div>
+
+<div class="book-navigation">
+<a href="index.qmd">Previous: S0 Overview</a>
+<a href="../S1/index.qmd">Next Unit: S1 Finite Circle Core</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

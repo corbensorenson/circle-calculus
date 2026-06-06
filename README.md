@@ -213,24 +213,26 @@ If you use this project in a paper, post, dataset, codebase, or derivative resea
 
 Start with:
 
-1. `papers/PAPER_01_FINITE_CIRCLES.md`
-2. `sidecars/PAPER_01_FINITE_CIRCLES/lean/Paper01.lean`
-3. `papers/PAPER_02_WINDING_NATURALS.md`
-4. `sidecars/PAPER_02_WINDING_NATURALS/lean/Paper02.lean`
-5. `dictionary/circle_dictionary.yaml`
-6. `manifests/theorem_manifest.yaml`
-7. `docs/COMPLETION_ROADMAP.md`
-8. `docs/DIMENSIONAL_LADDER.md`
-9. `docs/PHASE2_AND_APPLICATIONS.md`
-10. `docs/LIVING_BOOK_ROADMAP.md`
-11. `site/index.qmd`
-12. `site/status.qmd`
-13. `site/dictionary.qmd`
-14. `site/theorems.qmd`
-15. `site/papers.qmd`
-16. `site/targets.qmd`
+1. [Circle Calculus Living Book](https://corbensorenson.github.io/circle-calculus/)
+2. `site/reader_path.qmd`
+3. `site/chapters/S1/01_finite_circles.qmd`
+4. `site/chapters/S1/02_rotation_as_addition.qmd`
+5. `site/chapters/S1/03_coils_orbits_closure.qmd`
+6. `site/chapters/S1/04_period_gcd_prime_full_coils.qmd`
+7. `site/chapters/S1/05_winding_lift.qmd`
+8. `site/chapters/S1/06_review.qmd`
+9. `papers/PAPER_01_FINITE_CIRCLES.md`
+10. `sidecars/PAPER_01_FINITE_CIRCLES/lean/Paper01.lean`
+11. `papers/PAPER_02_WINDING_NATURALS.md`
+12. `sidecars/PAPER_02_WINDING_NATURALS/lean/Paper02.lean`
+13. `dictionary/circle_dictionary.yaml`
+14. `manifests/theorem_manifest.yaml`
+15. `docs/COMPLETION_ROADMAP.md`
+16. `docs/DIMENSIONAL_LADDER.md`
+17. `docs/PHASE2_AND_APPLICATIONS.md`
+18. `docs/LIVING_BOOK_ROADMAP.md`
 
-The papers give the conceptual path. The sidecars show the proof links. The dictionary fixes vocabulary so later papers reuse the same meanings instead of drifting.
+The Living Book gives the guided learning path. The papers give long-form exposition. The sidecars show the proof links. The dictionary fixes vocabulary so later papers reuse the same meanings instead of drifting.
 
 ## How To Add A Paper
 
