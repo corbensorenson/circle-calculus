@@ -76,12 +76,12 @@ function renderMeta(meta) {
   return dl;
 }
 
-function cleanRepoPath(path) {
+export function cleanRepoPath(path) {
   if (!path) return "";
   return String(path).split("#", 1)[0].split("?", 1)[0];
 }
 
-function looksLikeRepoPath(path) {
+export function looksLikeRepoPath(path) {
   const cleanPath = cleanRepoPath(path);
   if (!cleanPath) return false;
   if (["http://", "https://", "mailto:"].some((prefix) => cleanPath.startsWith(prefix))) return false;
@@ -89,7 +89,7 @@ function looksLikeRepoPath(path) {
   return cleanPath.includes("/") || ROOT_REPO_FILES.has(cleanPath);
 }
 
-function githubSourceLink(path, line) {
+export function githubSourceLink(path, line) {
   if (!looksLikeRepoPath(path)) return "";
   const anchor = line ? `#L${line}` : "";
   const mode = !line && !/\.[^/]+$/.test(path) ? "tree" : "blob";
@@ -523,12 +523,14 @@ export function mountWidgets(name, mount) {
   }
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  hydrateTheorems().catch((error) => console.error(error));
-  hydrateDictionary().catch((error) => console.error(error));
-  hydrateDictionaryIndexes().catch((error) => console.error(error));
-  hydrateTheoremIndexes().catch((error) => console.error(error));
-  hydratePaperIndexes().catch((error) => console.error(error));
-  hydrateTargetIndexes().catch((error) => console.error(error));
-  hydrateGlyphIndexes().catch((error) => console.error(error));
-});
+if (typeof window !== "undefined") {
+  window.addEventListener("DOMContentLoaded", () => {
+    hydrateTheorems().catch((error) => console.error(error));
+    hydrateDictionary().catch((error) => console.error(error));
+    hydrateDictionaryIndexes().catch((error) => console.error(error));
+    hydrateTheoremIndexes().catch((error) => console.error(error));
+    hydratePaperIndexes().catch((error) => console.error(error));
+    hydrateTargetIndexes().catch((error) => console.error(error));
+    hydrateGlyphIndexes().catch((error) => console.error(error));
+  });
+}

@@ -2,10 +2,10 @@
 title: "Applications"
 ---
 
-Application pages are scaffolded for AI, compute, rendering, systems, and data analysis. Benchmark claims must stay separate from Lean proof status.
+Application pages are active proof/benchmark target tracks for AI, compute, rendering, systems, and data analysis. Benchmark claims must stay separate from Lean proof status.
 
 <div class="warning-box">
-Application pages are exploratory unless a theorem card says otherwise. Benchmarks and fixtures are executable references, not proof of real-world performance or usefulness.
+Application pages are active but exploratory unless a theorem card says otherwise. Benchmarks and fixtures are executable references, not proof of real-world performance or usefulness.
 </div>
 
 <div class="theorem-box" data-theorem-id="APPD-T0001"></div>

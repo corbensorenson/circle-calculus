@@ -38,6 +38,12 @@ After meaningful proof batches, paper batches, roadmap changes, or application-c
 
 During autonomous sleep-mode work, apply the README state rule periodically: after each meaningful proof/paper batch and after each new browser handoff is absorbed into durable context, keep `README.md` aligned with the actual repo state before pushing.
 
+Overnight expansion rule:
+Do not treat Phase II, applications, `S15`, or other future-horizon sections as permanently parked. Work them now whenever they have tractable finite seeds, honest theorem targets, paper improvements, dictionary gaps, sidecar examples, Living Book links, or benchmark fixtures. Keep status labels strict: topology-heavy, benchmark, or domain claims remain planned, exploratory, deferred, or blocked until Lean proofs, executable models, and guardrail checks justify stronger claims.
+
+Autonomous theorem discovery rule:
+If the explicit roadmap is exhausted or every current item is blocked, search authoritative mathematical sources for additional theorems, constructions, and standard structures that can be translated into Circle Calculus. Prioritize hard-but-tractable targets that demonstrate real leverage: proof-carrying diagrams, finite cyclic structure, orbit/fiber/provenance facts, quaternion/Hopf/sign ambiguity facts, finite suspension/Euler facts, data-analysis descriptors, and application models with clear baselines. Record source context, add manifest entries before paper claims, and preserve proof-status honesty.
+
 Dependency rule:
 Higher dimensions may depend on lower dimensions. Lower dimensions must not import higher dimensions.
 
@@ -100,7 +106,7 @@ The project is complete only when all of these are true:
 - Phase VI sweep registry: `manifests/phase6_sweep_targets.yaml`
 - Application benchmark/edge-claim guardrails: `scripts/check_application_guardrails.py`
 - Dimensional plan: `docs/DIMENSIONAL_LADDER.md`
-- Deferred Phase II and applications context: `docs/PHASE2_AND_APPLICATIONS.md`
+- Phase II and applications context: `docs/PHASE2_AND_APPLICATIONS.md`
 - Phase III Living Book plan: `docs/LIVING_BOOK_POLICY.md`, `docs/LIVING_BOOK_ROADMAP.md`, and `docs/LIVING_BOOK_WIDGETS.md`
 - Living Book source once implemented: `site/`
 - Completion control: this file
@@ -121,12 +127,13 @@ Prefer this order. Only skip ahead when blocked and record the blocker. During l
 10. Build topological `S7` by iterated suspension.
 11. Add `S7` quaternionic Hopf roadmap/models.
 12. Add `S7` octonion exploratory algebra and formalize only robust targets.
-13. Add future `S15` roadmap only after `S7` foundations are stable.
-14. After the `S15` horizon, stop treating dimension climbing as the main objective. Pivot to Phase II: maps, bundles, spectra, Bott/Clifford periodicity, boundaries, proof-carrying glyphs, data applications, and compute applications.
+13. Work the `S15` horizon as an active target layer once `S7` foundations are stable enough for honest finite seeds, warnings, and blocked targets.
+14. After each `S15` pass, stop treating dimension climbing as the only objective. Pivot to Phase II: maps, bundles, spectra, Bott/Clifford periodicity, boundaries, proof-carrying glyphs, data applications, and compute applications.
 15. Build Phase III: a Quarto-based Circle Calculus Living Book generated from manifests, dictionary entries, papers, Python reference models, and Lean proof metadata. Start with static S1 interactives and do not let the site drift from proof status.
 16. Build Phase IV: go wide and deep across all dimensional levels, looking for additional theorem targets, stronger proof spines, missing dictionary terms, paper improvements, and proof-sidecar improvements.
 17. Build Phase V: search edge problem spaces where Circle Calculus might do something hard, awkward, or unavailable in ordinary presentations, and turn promising leads into honest experiments, papers, models, or theorem targets.
 18. Build Phase VI: sweep the entire project for correctness, clarity, style, consistency, proof status, broken links, missing citations, overclaims, and prose that should sound cleaner to a new reader.
+19. If the roadmap is exhausted or blocked, search authoritative sources for additional theorem targets and convert the best candidates into manifests, dictionary entries, papers, Lean/Python sidecars, and Living Book links.
 
 ## Stage D0: Dimensional Scaffolding
 

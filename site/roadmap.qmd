@@ -12,15 +12,15 @@ The dimensional ladder is organized so lower-dimensional material does not rely 
 | S3 | Hyperspheres, quaternions, Hopf coils | <span class="status-badge status-scaffold">scaffolded</span> |
 | S4-S6 | Suspension/Euler bridge and warnings | <span class="status-badge status-scaffold">scaffolded</span> |
 | S7 | Topological and octonionic layer | <span class="status-badge status-scaffold">scaffolded</span> |
-| S15 | Future Hopf horizon | <span class="status-badge status-future">future</span> |
+| S15 | Hopf horizon and warning-boundary targets | <span class="status-badge status-active">active horizon</span> |
 | Phase II | Stable spheres, bundles, glyphs | <span class="status-badge status-scaffold">scaffolded</span> |
 | Phase III | Living Book explanation layer | <span class="status-badge status-active">active</span> |
 | Phase IV | Wide/deep theorem discovery | <span class="status-badge status-active">active</span> |
 | Phase V | Edge problem-space search | <span class="status-badge status-active">active target scaffold</span> |
 | Phase VI | Global correctness and polish sweep | <span class="status-badge status-active">active sweep registry</span> |
-| Applications | AI, compute, rendering, data analysis | <span class="status-badge status-scaffold">scaffolded</span> |
+| Applications | AI, compute, rendering, data analysis | <span class="status-badge status-active">active proof/benchmark targets</span> |
 
-Higher-dimensional pages may be present before their interactive chapters are mature. A placeholder page is not a proof claim.
+Higher-dimensional and application pages may be present before their interactive chapters are mature. A placeholder page is not a proof claim, and an active horizon label means the track is being worked, not that all claims are proved.
 
 Phase IV, Phase V, and Phase VI are the wide/deep/correctness loop: first audit every dimension and application area for better theorem coverage and paper/proof spines, then search edge problem spaces for concrete Circle Calculus leverage, then sweep the full corpus for correctness, clarity, proof-status discipline, and reader usability.
 

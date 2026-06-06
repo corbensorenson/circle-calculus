@@ -83,6 +83,7 @@ Checkers:
 - `scripts/site/check_site_widget_contracts.py` verifies that every `data-widget` page mount exists in `widget_index.json`, imports the matching widget script, and points to a JavaScript file that calls `mountWidgets("<widget_id>", ...)`.
 - `scripts/site/check_site_accessibility_contract.py` verifies shared widget accessibility contracts: named widget regions, labelled number inputs, live output regions, SVG title/description metadata, visible focus styling, and scaffold-only placeholder guardrails.
 - `scripts/site/check_widget_python_parity.py` validates deterministic S1 formulas against Python reference behavior.
+- `scripts/site/check_widget_runtime_links.py` imports the shared widget runtime under Node and verifies that real repository paths become GitHub source links while symbolic paper-section references remain plain text.
 
 Minimum parity cases:
 

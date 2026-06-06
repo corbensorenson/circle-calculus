@@ -95,6 +95,7 @@ sitecheck: site-data
 	python scripts/site/check_site_widget_contracts.py
 	python scripts/site/check_site_accessibility_contract.py
 	python scripts/site/check_widget_python_parity.py
+	python scripts/site/check_widget_runtime_links.py
 
 quarto-dirs:
 	mkdir -p "$(QUARTO_HOME)" "$(QUARTO_DENO_DIR)"

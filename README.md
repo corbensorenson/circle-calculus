@@ -196,6 +196,7 @@ python scripts/site/check_site_static_source_links.py # verify hard-coded GitHub
 python scripts/site/check_site_data_backlinks.py # verify generated theorem/dictionary/paper/widget/glyph backlinks
 python scripts/site/check_site_widget_contracts.py # verify widget mounts, scripts, and index entries
 python scripts/site/check_site_accessibility_contract.py # verify widget accessibility guardrails
+python scripts/site/check_widget_runtime_links.py # verify widget runtime keeps symbolic refs out of GitHub links
 make site-render # render the Quarto Living Book into site/_site
 make site-render-check # validate the rendered GitHub Pages artifact
 make living-book-check # run core checks plus Living Book checks, render, and artifact validation
@@ -463,6 +464,6 @@ This repository does not currently claim to have rebuilt all of mathematics from
 
 It also does not claim that Python tests are proofs, that diagrams are proofs, that `S^2` has a natural group structure, that `S^3` is globally `S^2 x S^1`, that unit octonions form a group, or that formalization bypasses foundational limitations. See `docs/GODEL_AND_LIMITATIONS.md` for the current limitations note.
 
-For the deferred application and compute tracks, see `docs/PHASE2_AND_APPLICATIONS.md`. Local compute experiments should be MLX/Mac-first; CUDA-specific references are future portability notes or external benchmark baselines.
+For the active application and compute tracks, see `docs/PHASE2_AND_APPLICATIONS.md`. Local compute experiments should be MLX/Mac-first; CUDA-specific references are portability notes or external benchmark baselines.
 
-For the planned interactive explanation layer, see `docs/LIVING_BOOK_POLICY.md`, `docs/LIVING_BOOK_ROADMAP.md`, and `docs/LIVING_BOOK_WIDGETS.md`. The Living Book must derive theorem status from manifests and must not treat widgets, diagrams, or Python examples as proofs.
+For the interactive explanation layer, see `docs/LIVING_BOOK_POLICY.md`, `docs/LIVING_BOOK_ROADMAP.md`, and `docs/LIVING_BOOK_WIDGETS.md`. The Living Book must derive theorem status from manifests and must not treat widgets, diagrams, or Python examples as proofs.

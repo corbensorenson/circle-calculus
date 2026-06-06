@@ -2,7 +2,7 @@
 
 The Living Book is Phase III of the project: a public-facing Quarto website/e-textbook generated from papers, theorem manifests, dictionary entries, Lean proof metadata, and Python reference models.
 
-Current milestone status as of 2026-06-06: Phase 0 and the first S1 interactive source milestone are implemented, including a theorem-status legend, generated dictionary/theorem/paper/target/glyph indexes, and searchable dictionary backlinks into theorem, paper, widget, and glyph usage. Higher dimensions and applications are scaffolded honestly: pages exist, proved finite spines are linked where available, and future topology/application claims remain marked as planned, exploratory, deferred, or blocked.
+Current milestone status as of 2026-06-06: Phase 0 and the first S1 interactive source milestone are implemented, including a theorem-status legend, generated dictionary/theorem/paper/target/glyph indexes, and searchable dictionary backlinks into theorem, paper, widget, and glyph usage. Higher dimensions, `S15`, Phase II, and applications are active roadmap tracks rather than parked ideas: pages exist, proved finite spines are linked where available, and topology/application claims remain marked as planned, exploratory, deferred, or blocked until formal evidence exists.
 
 ## Phase 0: Skeleton And Data
 
@@ -58,16 +58,17 @@ Each chapter must distinguish intuition, example, Python model, and formal theor
 - Link proved quaternion and bounded Hopf coordinate facts.
 - Keep quotient topology and full fibration claims future unless formalized.
 
-## Phase 4: S4-S6, S7, And S15 Roadmap Pages
+## Phase 4: S4-S6, S7, And S15 Active Horizon Pages
 
 - Add S4-S6 suspension/Euler parity pages.
 - Add S7 topological, quaternionic Hopf, and octonion warning pages.
-- Add S15 future Hopf horizon page.
-- Keep exceptional and future topics visibly scoped.
+- Add and expand the S15 Hopf horizon page as active finite-seed and warning-boundary work.
+- Keep exceptional and horizon topics visibly scoped: active does not mean proved.
 
 ## Phase 5: Applications
 
 - Add AI, compute, rendering, systems, and data-analysis pages.
+- Treat application pages as active proof/benchmark target tracks, not as indefinitely deferred notes.
 - Keep benchmark claims separate from Lean proofs.
 - Use MLX/Mac-first language for local compute work.
 
