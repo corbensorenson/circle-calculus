@@ -46,6 +46,8 @@ This keeps publication downstream of the proof/status/data checks. A rendered pa
 
 `make sourcecheck` includes `make sitecheck`, and `sitecheck` validates generated source-link paths, hard-coded GitHub source links in source pages/docs, and reciprocal generated backlinks used by Living Book GitHub links and indexes. This protects the public site against stale links when Lean files, papers, dictionary files, sidecars, widgets, glyph fixtures, target manifests, or learning-resource entry points move.
 
+The Quarto config sets `repo-subdir: site` so generated `View source` links point to the actual `site/*.qmd` sources. `make site-render-check` validates those rendered GitHub links after Quarto builds the artifact.
+
 ## Repository Settings
 
 This repository is configured for GitHub Pages workflow builds at:

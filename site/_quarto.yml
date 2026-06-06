@@ -10,6 +10,7 @@ website:
   title: "Circle Calculus Living Book"
   site-url: "https://corbensorenson.github.io/circle-calculus/"
   repo-url: "https://github.com/corbensorenson/circle-calculus"
+  repo-subdir: site
   repo-actions: [source]
   navbar:
     left:

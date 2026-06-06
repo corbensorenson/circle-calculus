@@ -5,11 +5,13 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
-from site_lib import SITE
+from site_lib import ROOT, SITE
 
 
 OUTPUT = SITE / "_site"
 PAGES_BASE = "/circle-calculus/"
+REPO_HOST = "github.com"
+REPO_PATH = "/corbensorenson/circle-calculus/"
 
 REQUIRED_RENDERED_FILES = [
     ".nojekyll",
@@ -117,6 +119,44 @@ def target_exists(target: Path) -> bool:
     return target.with_suffix(".html").exists()
 
 
+def clean_repo_path(path: str) -> str:
+    return unquote(path).rstrip(".,;:")
+
+
+def check_repo_source_link(failures: list[str], html_path: Path, attr: str, raw_value: str) -> None:
+    parsed = urlsplit(raw_value)
+    if parsed.scheme not in {"http", "https"} or parsed.netloc != REPO_HOST:
+        return
+    if not parsed.path.startswith(REPO_PATH):
+        return
+
+    suffix = parsed.path.removeprefix(REPO_PATH)
+    parts = suffix.split("/", 2)
+    if len(parts) != 3:
+        return
+
+    kind, branch, repo_path = parts
+    if branch != "main" or kind not in {"blob", "tree"}:
+        return
+
+    local_path = Path(clean_repo_path(repo_path))
+    if local_path.is_absolute() or ".." in local_path.parts:
+        failures.append(
+            f"{rendered_relative(html_path)}: {attr} {raw_value!r} contains unsafe repo path {repo_path!r}"
+        )
+        return
+
+    target = ROOT / local_path
+    if kind == "blob" and not target.is_file():
+        failures.append(
+            f"{rendered_relative(html_path)}: {attr} {raw_value!r} points to missing repo file {repo_path}"
+        )
+    if kind == "tree" and not target.is_dir():
+        failures.append(
+            f"{rendered_relative(html_path)}: {attr} {raw_value!r} points to missing repo directory {repo_path}"
+        )
+
+
 def check_required_files(failures: list[str]) -> None:
     if not OUTPUT.exists():
         failures.append("site/_site does not exist; run `make site-render` first")
@@ -138,6 +178,7 @@ def check_rendered_links(failures: list[str]) -> None:
         parser = LinkCollector()
         parser.feed(html_path.read_text(errors="ignore"))
         for attr, raw_value in parser.links:
+            check_repo_source_link(failures, html_path, attr, raw_value)
             try:
                 target = local_target_for(html_path, raw_value)
             except ValueError as exc:

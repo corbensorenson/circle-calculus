@@ -52,6 +52,12 @@ REQUIRED_QUARTO_RESOURCES = [
     "widgets/**/*.js",
 ]
 
+REQUIRED_QUARTO_CONFIG = [
+    'repo-url: "https://github.com/corbensorenson/circle-calculus"',
+    "repo-subdir: site",
+    "repo-actions: [source]",
+]
+
 
 def main() -> int:
     missing = [path for path in REQUIRED if not (ROOT / path).exists()]
@@ -68,6 +74,12 @@ def main() -> int:
         print("missing required Quarto resources:", file=sys.stderr)
         for resource in missing_resources:
             print(resource, file=sys.stderr)
+        return 1
+    missing_config = [setting for setting in REQUIRED_QUARTO_CONFIG if setting not in quarto_config]
+    if missing_config:
+        print("missing required Quarto source-link config:", file=sys.stderr)
+        for setting in missing_config:
+            print(setting, file=sys.stderr)
         return 1
     print("quarto structure ok")
     return 0

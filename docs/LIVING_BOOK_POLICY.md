@@ -59,6 +59,8 @@ make site-render-check
 
 `make site-render-check` validates the rendered `site/_site/` artifact after Quarto runs. It requires the Pages marker, fallback page, generated JSON indexes, widgets, CSS, and core HTML pages to exist, and it fails when built pages contain local links that escape or miss the published artifact.
 
+It also validates rendered GitHub repository links, including Quarto-generated `View source` links. The Quarto project must keep `repo-subdir: site` configured so those links resolve to the checked-in Living Book sources instead of nonexistent repository-root `.qmd` files.
+
 On this workstation, Quarto is available through a local extracted install under `.tools/` when no system `quarto` command exists. Fresh clones can install Quarto with the standard Quarto installer or a package manager, then run the same Make targets.
 
 The Makefile sets Quarto's `HOME` and `DENO_DIR` to ignored repo-local paths under `.tools/` for render and preview targets. This keeps Quarto's Sass/Deno cache writes out of user-specific cache directories and makes sandboxed autonomous runs reproducible.
