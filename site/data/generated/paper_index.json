@@ -431,7 +431,8 @@
       "status": "polished_draft",
       "theorem_ids": [
         "S7QH-T0001",
-        "S7QH-T0002"
+        "S7QH-T0002",
+        "S7QH-T0003"
       ],
       "title": "Circle Calculus S7.2: Quaternionic Hopf Fibration"
     },

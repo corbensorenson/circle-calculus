@@ -75,7 +75,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md` | polished draft | `S5-T0001` and `S5-T0002` proved with Python examples |
 | `papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md` | polished draft | `S6-T0001` through `S6-T0003` proved with Python examples; `S6-W0001` warning tracked |
 | `papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md` | polished draft | `S7C-T0001` through `S7C-T0003` proved with Python examples |
-| `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md` | polished draft/partial proof | `S7QH-T0001` and `S7QH-T0002` are Lean-proved coordinate theorems; full fibration topology remains future work |
+| `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md` | polished draft/partial proof | `S7QH-T0001` through `S7QH-T0003` are Lean-proved coordinate theorems; full fibration topology remains future work |
 | `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md` | polished draft/proved spine | `S7O-T0001` through `S7O-T0006` are Lean-proved in a bounded Cayley-Dickson coordinate model |
 | `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | polished draft/partial proof | `S15-T0001` is a Lean roadmap marker with Python examples; `S15-T0002` through `S15-T0004` are Lean-proved topological/coordinate landing facts with Python examples |
 | `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md` | polished draft/proved finite seed | `P2S-T0001` through `P2S-T0003` are Lean-proved double/four suspension facts with Python examples |
@@ -406,6 +406,7 @@ Executable exploratory spine:
 - `S3H-T0003`: unit phase orbit preserves normalized Hopf pairs and their base point; sampled `2*pi` closure remains an executable analytic example
 - `S7QH-T0001`: coordinate quaternionic Hopf map sends normalized quaternion pairs to the unit five-coordinate base equation
 - `S7QH-T0002`: shared right unit-quaternion phase rotation preserves the quaternionic Hopf map
+- `S7QH-T0003`: quaternionic right phase action composes and preserves the Hopf base point
 - `S7O-T0001` through `S7O-T0006`: bounded Cayley-Dickson basis, conjugate norm, norm multiplicativity, unit closure by norm, noncommutativity, and nonassociativity facts in Lean
 - `S15-T0001`: Lean roadmap marker for the octonionic Hopf horizon
 - `S15-T0002`: finite S15 Euler theorem

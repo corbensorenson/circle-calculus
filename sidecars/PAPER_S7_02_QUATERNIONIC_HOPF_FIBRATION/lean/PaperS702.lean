@@ -15,8 +15,11 @@ namespace Circle.PaperS702
 #check Circle.S7.quaternionCoordNormSq
 #check Circle.S7.quaternionConjCoord
 #check Circle.S7.quaternionMulCoord
+#check Circle.S7.quaternionCoord_ext
+#check Circle.S7.quaternionMulCoord_assoc
 #check Circle.S7.quaternionPairNormSq
 #check Circle.S7.quaternionPairRightPhase
+#check Circle.S7.quaternionPairRightPhase_comp
 #check Circle.S7.hopfBase5NormSq
 #check Circle.S7.hopfBase5Scale
 #check Circle.S7.quaternionicHopfMap
@@ -26,5 +29,6 @@ namespace Circle.PaperS702
 #check Circle.S7.quaternionicHopf_lands_sphere
 #check Circle.S7.quaternionicHopfMap_rightPhase_scaled
 #check Circle.S7.quaternionicPhaseInvariance
+#check Circle.S7.quaternionicRightPhaseAction_laws
 
 end Circle.PaperS702

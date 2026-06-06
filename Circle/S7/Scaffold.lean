@@ -25,6 +25,14 @@ structure QuaternionCoord where
   j : ℝ
   k : ℝ
 
+theorem quaternionCoord_ext {a b : QuaternionCoord}
+    (hr : a.r = b.r) (hi : a.i = b.i) (hj : a.j = b.j) (hk : a.k = b.k) :
+    a = b := by
+  cases a
+  cases b
+  simp at hr hi hj hk
+  simp [hr, hi, hj, hk]
+
 structure QuaternionPair where
   q0 : QuaternionCoord
   q1 : QuaternionCoord
@@ -97,6 +105,21 @@ theorem quaternionCoordNormSq_conj (q : QuaternionCoord) :
   rcases q with ⟨r, i, j, k⟩
   simp [quaternionCoordNormSq, quaternionConjCoord]
 
+theorem quaternionMulCoord_assoc (a b c : QuaternionCoord) :
+    quaternionMulCoord (quaternionMulCoord a b) c =
+      quaternionMulCoord a (quaternionMulCoord b c) := by
+  rcases a with ⟨ar, ai, aj, ak⟩
+  rcases b with ⟨br, bi, bj, bk⟩
+  rcases c with ⟨cr, ci, cj, ck⟩
+  apply quaternionCoord_ext <;> simp [quaternionMulCoord] <;> ring
+
+theorem quaternionPairRightPhase_comp
+    (p : QuaternionPair) (u v : QuaternionCoord) :
+    quaternionPairRightPhase (quaternionPairRightPhase p u) v =
+      quaternionPairRightPhase p (quaternionMulCoord u v) := by
+  rcases p with ⟨q0, q1⟩
+  simp [quaternionPairRightPhase, quaternionMulCoord_assoc]
+
 theorem quaternionicHopfBaseNormSq_hopfMap (p : QuaternionPair) :
     hopfBase5NormSq (quaternionicHopfMap p) =
       quaternionPairNormSq p * quaternionPairNormSq p := by
@@ -127,6 +150,22 @@ theorem quaternionicPhaseInvariance (p : QuaternionPair) (u : QuaternionCoord)
   rw [quaternionicHopfMap_rightPhase_scaled, hu]
   rcases quaternionicHopfMap p with ⟨x0, x1, x2, x3, x4⟩
   simp [hopfBase5Scale]
+
+theorem quaternionicRightPhaseAction_laws
+    (p : QuaternionPair) (u v : QuaternionCoord)
+    (hu : quaternionCoordNormSq u = 1) (hv : quaternionCoordNormSq v = 1) :
+    quaternionPairRightPhase (quaternionPairRightPhase p u) v =
+        quaternionPairRightPhase p (quaternionMulCoord u v) ∧
+      quaternionicHopfMap (quaternionPairRightPhase p u) = quaternionicHopfMap p ∧
+      quaternionicHopfMap (quaternionPairRightPhase p (quaternionMulCoord u v)) =
+        quaternionicHopfMap p := by
+  constructor
+  · exact quaternionPairRightPhase_comp p u v
+  · constructor
+    · exact quaternionicPhaseInvariance p u hu
+    · apply quaternionicPhaseInvariance
+      rw [quaternionCoordNormSq_mul, hu, hv]
+      ring
 
 def quaternionAddCoord (a b : QuaternionCoord) : QuaternionCoord where
   r := a.r + b.r

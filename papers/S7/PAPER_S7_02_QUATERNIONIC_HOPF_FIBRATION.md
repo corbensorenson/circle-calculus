@@ -16,6 +16,7 @@ The current result is not the full fibration. It is the bounded coordinate spine
 
 - `S7QH-T0001`: `Circle.S7.quaternionicHopf_lands_sphere`
 - `S7QH-T0002`: `Circle.S7.quaternionicPhaseInvariance`
+- `S7QH-T0003`: `Circle.S7.quaternionicRightPhaseAction_laws`
 
 ## Model
 
@@ -51,7 +52,15 @@ for the real-coordinate quaternionic Hopf model.
 
 `S7QH-T0002` proves right-phase invariance: multiplying both quaternion coordinates on the right by the same unit quaternion coordinate preserves the Hopf base coordinates. The helper theorem `Circle.S7.quaternionicHopfMap_rightPhase_scaled` proves the stronger scaling identity: right multiplication by `u` scales the Hopf base by `|u|^2`, so unit `u` preserves the base point.
 
-The Python sidecar checks normalized landing and shared right-unit phase invariance on executable quaternion examples.
+`S7QH-T0003` packages the right-phase action law:
+
+```text
+rightPhase(rightPhase(p,u),v) = rightPhase(p,u*v)
+```
+
+and combines it with the checked base-invariance laws for unit phases. This uses associativity of quaternion multiplication. It is an action law for the bounded coordinate model, not a proof of quotient topology or the full fibration.
+
+The Python sidecar checks normalized landing, shared right-unit phase invariance, and right-phase composition on executable quaternion examples.
 
 ## Role In The Ladder
 
@@ -65,4 +74,4 @@ This paper links `S^3` quaternion algebra, finite `S^4` topology, and the `S^7` 
 
 ## Guardrails
 
-This paper proves bounded coordinate landing and right-phase invariance. It does not yet formalize quaternionic projective space, quotient topology, smooth bundle structure, or the full quaternionic Hopf fibration.
+This paper proves bounded coordinate landing, right-phase invariance, and the coordinate right-phase action law. It does not yet formalize quaternionic projective space, quotient topology, smooth bundle structure, or the full quaternionic Hopf fibration.

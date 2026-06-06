@@ -291,12 +291,17 @@
       "guardrail": "Do not claim full fibration topology.",
       "id": "P4-S7-001",
       "layer": "S7",
-      "next_action": "Define the right-phase action API around existing S7QH-T0001 and S7QH-T0002.",
+      "next_action": "Promoted to S7QH-T0003 with coordinate right-phase composition and base-invariance laws.",
       "paper_refs": [
         "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"
       ],
       "priority": "high",
-      "status": "planned",
+      "promoted_theorem_id": "S7QH-T0003",
+      "status": "promoted",
+      "supporting_theorem_ids": [
+        "S7QH-T0001",
+        "S7QH-T0002"
+      ],
       "target_statement": "Right multiplication by unit quaternion phases composes according to quaternion multiplication and preserves the quaternionic Hopf base point.",
       "title": "Quaternionic Hopf right phase action composition"
     },
