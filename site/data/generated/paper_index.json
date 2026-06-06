@@ -77,7 +77,8 @@
     {
       "dictionary_ids": [
         "S1-0001",
-        "CC-0105"
+        "CC-0105",
+        "COMMON-0042"
       ],
       "id": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
       "path": "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",

@@ -228,6 +228,12 @@ The Lean proof reduces scaling to left multiplication by `(k : ZMod n)`. Mathlib
 
 This helps when a reader starts from a computed coil shape and wants theorem candidates. It does not replace ordinary theorem search by name or type, and it is not evidence of a proof-search speedup.
 
+## Number Provenance Fixture
+
+`P5-EDGE-003` adds a minimal `NumberProvenance` Python fixture for selected finite-circle sizes. For a value such as `36`, the fixture records divisor views, factor pairs, stride provenance, orbit count, period, cofactor, and theorem-link views.
+
+Compared with value-only notation, provenance is clearer when a reader needs to move from `36` to `C_36`, stride `8`, period `9`, orbit count `4`, and the theorem ids explaining those facts. It adds noise when the reader only needs the value, a simple factorization, or a direct theorem name. This is an interface and explanation experiment, not a new arithmetic object or a proof compression theorem.
+
 ## Dictionary Targets
 
 - `S1-0001`: S1 finite circle core

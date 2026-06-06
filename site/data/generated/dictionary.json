@@ -1406,6 +1406,27 @@
       "symbol": "coil_signature_index"
     },
     {
+      "dependencies": [
+        "CC-0205",
+        "CC-0207",
+        "CC-0208",
+        "COMMON-0041"
+      ],
+      "forbidden_meanings": [
+        "New arithmetic.",
+        "A proof compression theorem.",
+        "Evidence that provenance is always clearer than value-only notation."
+      ],
+      "formal_definition": "`circle_math.number_provenance.number_provenance`, a small finite-circle object recording divisors, factor pairs, stride views, and theorem-link views for a selected positive natural number.",
+      "id": "COMMON-0042",
+      "introduced_in": "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+      "intuition": "Treat a number as a navigable construction space rather than only a value.",
+      "kind": "interface",
+      "name": "Number provenance fixture",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "NumberProvenance(n)"
+    },
+    {
       "dependencies": [],
       "forbidden_meanings": [
         "The one-node circle C_1.",

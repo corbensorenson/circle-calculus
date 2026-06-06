@@ -42,7 +42,7 @@ targets:
   - id: P5-EDGE-003
     area: "Number provenance and symbolic compression"
     priority: medium
-    status: planned
+    status: exploratory_python
     claim_type: experiment
     title: "Number provenance compression fixture"
     edge_question: "Can construction histories for a number compress or clarify divisor, factor, orbit, and proof navigation better than value-only presentation?"
@@ -53,8 +53,10 @@ targets:
       - "The paper text identifies where provenance adds clarity and where it adds noise."
     artifact_refs:
       - "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"
-    dictionary_dependencies: ["CC-0207", "CC-0208"]
-    next_action: "Design a minimal NumberProvenance Python object for small finite circles."
+      - "circle_math/number_provenance.py"
+      - "sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_number_provenance_examples.py"
+    dictionary_dependencies: ["CC-0207", "CC-0208", "COMMON-0042"]
+    next_action: "Minimal NumberProvenance fixture added for small finite circles; expand only when it improves explanations without adding noise."
     guardrail: "Standard mathematics already represents these facts; the claim is interface leverage only."
 
   - id: P5-EDGE-004

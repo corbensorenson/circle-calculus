@@ -11,12 +11,30 @@ from .finite_search import (
     search_theorems_by_tags,
     signature_tags,
 )
+from .number_provenance import (
+    NumberProvenance,
+    StrideProvenance,
+    divisors,
+    factor_pairs,
+    number_provenance,
+    provenance_summary,
+    stride_provenance,
+    value_only_summary,
+)
 
 __all__ = [
     "Circle",
     "FiniteCoilSignature",
+    "NumberProvenance",
+    "StrideProvenance",
     "build_s1_signature_index",
+    "divisors",
+    "factor_pairs",
     "finite_coil_signature",
+    "number_provenance",
+    "provenance_summary",
     "search_theorems_by_tags",
     "signature_tags",
+    "stride_provenance",
+    "value_only_summary",
 ]

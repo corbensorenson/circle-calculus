@@ -62,20 +62,23 @@
       ],
       "area": "Number provenance and symbolic compression",
       "artifact_refs": [
-        "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"
+        "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+        "circle_math/number_provenance.py",
+        "sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_number_provenance_examples.py"
       ],
       "claim_type": "experiment",
       "dictionary_dependencies": [
         "CC-0207",
-        "CC-0208"
+        "CC-0208",
+        "COMMON-0042"
       ],
       "edge_question": "Can construction histories for a number compress or clarify divisor, factor, orbit, and proof navigation better than value-only presentation?",
       "guardrail": "Standard mathematics already represents these facts; the claim is interface leverage only.",
       "id": "P5-EDGE-003",
-      "next_action": "Design a minimal NumberProvenance Python object for small finite circles.",
+      "next_action": "Minimal NumberProvenance fixture added for small finite circles; expand only when it improves explanations without adding noise.",
       "ordinary_baseline": "A numeric value plus separate factorization and theorem links.",
       "priority": "medium",
-      "status": "planned",
+      "status": "exploratory_python",
       "title": "Number provenance compression fixture"
     },
     {

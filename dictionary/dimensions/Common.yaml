@@ -467,3 +467,15 @@ entries:
       - "A general theorem prover."
       - "A proof-search speedup benchmark."
       - "Evidence of global theorem discovery."
+  - id: COMMON-0042
+    name: "Number provenance fixture"
+    kind: interface
+    symbol: "NumberProvenance(n)"
+    formal_definition: "`circle_math.number_provenance.number_provenance`, a small finite-circle object recording divisors, factor pairs, stride views, and theorem-link views for a selected positive natural number."
+    intuition: "Treat a number as a navigable construction space rather than only a value."
+    dependencies: ["CC-0205", "CC-0207", "CC-0208", "COMMON-0041"]
+    introduced_in: "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS"
+    forbidden_meanings:
+      - "New arithmetic."
+      - "A proof compression theorem."
+      - "Evidence that provenance is always clearer than value-only notation."
