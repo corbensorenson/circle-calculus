@@ -6,6 +6,30 @@ The compute page tracks proof-carrying circular computation, CoilRay, sampling, 
 
 The current CoilLayout fixtures validate deterministic layout and periodic-stencil outputs before timing or backend claims. `COMPL-B0001` and `COMPL-B0002` are executable expected-output coverage, not performance claims.
 
+::: {.learning-unit}
+
+## Case-Study Frame
+
+The circular address spaces here are cyclic memory addresses, direction bins, stride layouts, and schedule slots. The repeated action is a stride or round-robin step. The checked seed says the finite address arithmetic behaves; it does not say the implementation is faster.
+
+:::
+
+## What To Notice
+
+- Proof-carrying computation starts with address safety and closure.
+- Layout and stencil fixtures check deterministic outputs before performance tests.
+- MLX/Mac work should remain explicit when local acceleration is discussed.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+What is the difference between proving a cyclic address wraps correctly and proving a compute kernel is fast?
+
+:::
+
+## Source Trail
+
 <div class="theorem-box" data-theorem-id="COMPC-T0001"></div>
 <div class="theorem-box" data-theorem-id="COMPC-T0004"></div>
 <div class="theorem-box" data-theorem-id="COMPR-T0001"></div>
@@ -17,6 +41,9 @@ The current CoilLayout fixtures validate deterministic layout and periodic-stenc
 
 <div class="dictionary-box" data-dictionary-id="COMMON-0040"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0045"></div>
+
+<p data-paper-ref="papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md">Proof-carrying compute paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md">Circular Computation</a></p>
+<p data-paper-ref="papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md">Layout paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md">Coil Layout, Stencil, And NTT</a></p>
 
 ::: {.warning-box}
 Benchmark fixtures are executable references only. They do not prove cache locality, stencil correctness, FFT/NTT correctness, or backend speed.

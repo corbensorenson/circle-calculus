@@ -8,7 +8,33 @@ Rendering applications are scaffolded. They should remain exploratory until benc
 
 The current proved seed for rendering-adjacent work is the finite direction-bin schedule used by the CoilRay and sampling roadmap. It proves address-safety and repeated-bin closure only; it does not prove ray coherence, lower noise, or better frame time.
 
+::: {.learning-unit}
+
+## Case-Study Frame
+
+The circular address space is a finite set of direction bins. The repeated action is stepping through bins by a stride. This can explain safe schedules, but visual quality and performance remain benchmark questions.
+
+:::
+
+## What To Notice
+
+- The proved seed covers bin indexing and closure.
+- Rendering quality claims need images, metrics, and baselines.
+- A demo can be useful for intuition without being a proof artifact.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+What extra evidence would be needed before claiming a direction-bin schedule improves rendering output?
+
+:::
+
+## Source Trail
+
 <div class="theorem-box" data-theorem-id="COMPR-T0001"></div>
 <div class="theorem-box" data-theorem-id="COMPR-T0004"></div>
+
+<p data-paper-ref="papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md">Coil Ray And Sampling</a></p>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>
