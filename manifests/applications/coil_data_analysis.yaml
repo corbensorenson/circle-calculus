@@ -24,6 +24,10 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.phaseCoordinate_add_mul_period
     dictionary_dependencies: ["COMMON-0016", "COMMON-0017"]
+  - id: APPD-T0005
+    status: lean_proved
+    lean_name: Circle.Applications.phaseCoordinate_idempotent
+    dictionary_dependencies: ["COMMON-0016"]
 next_targets:
   - "Compare the deterministic fixture suite against external periodogram/Fourier baselines before usefulness claims."
   - "Add real-data guardrails and report negative or ambiguous results explicitly."

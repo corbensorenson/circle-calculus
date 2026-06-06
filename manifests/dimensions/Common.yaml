@@ -527,6 +527,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["phase_coordinate(period, step + passes * period) == phase_coordinate(period, step)"]
     blocker: ""
+  - id: APPD-T0005
+    status: lean_proved
+    lean_name: Circle.Applications.phaseCoordinate_idempotent
+    informal_statement: "Normalizing a finite phase coordinate twice is the same as normalizing it once."
+    formal_statement: "forall period step : Nat, phaseCoordinate period (phaseCoordinate period step) = phaseCoordinate period step"
+    dictionary_dependencies: ["COMMON-0016"]
+    paper_refs: ["papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["phase_coordinate(period, phase_coordinate(period, step)) == phase_coordinate(period, step)"]
+    blocker: ""
   - id: COMPC-T0001
     status: lean_proved
     lean_name: Circle.Applications.cyclicAddress_lt_size

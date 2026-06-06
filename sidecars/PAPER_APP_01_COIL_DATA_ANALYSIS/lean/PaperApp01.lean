@@ -13,6 +13,7 @@ namespace Circle.PaperApp01
 #check Circle.Applications.phaseCoordinate_lt_period
 #check Circle.Applications.phaseCoordinate_add_period
 #check Circle.Applications.phaseCoordinate_add_mul_period
+#check Circle.Applications.phaseCoordinate_idempotent
 #check Circle.Applications.phaseCoordinate_zero
 
 end Circle.PaperApp01

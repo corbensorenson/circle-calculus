@@ -309,7 +309,7 @@
       "id": "APPD-T0003",
       "lean_name": "Circle.Applications.phaseCoordinate_zero",
       "lean_source": "Circle/Applications/CoilData.lean",
-      "lean_source_line": 30,
+      "lean_source_line": 37,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_data_analysis.yaml",
       "status": "lean_proved",
@@ -332,6 +332,27 @@
       "lean_name": "Circle.Applications.phaseCoordinate_add_mul_period",
       "lean_source": "Circle/Applications/CoilData.lean",
       "lean_source_line": 24,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/coil_data_analysis.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_APP_01_COIL_DATA_ANALYSIS",
+          "path": "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Application 1: Coil Data Analysis"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0016"
+      ],
+      "id": "APPD-T0005",
+      "lean_name": "Circle.Applications.phaseCoordinate_idempotent",
+      "lean_source": "Circle/Applications/CoilData.lean",
+      "lean_source_line": 30,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/coil_data_analysis.yaml",
       "status": "lean_proved",

@@ -34,6 +34,13 @@ def test_phase_coordinate_closes_after_multiple_periods() -> None:
                 assert phase_coordinate(period, step + passes * period) == phase_coordinate(period, step)
 
 
+def test_phase_coordinate_is_idempotent() -> None:
+    for period in range(1, 25):
+        for step in range(0, 200):
+            normalized = phase_coordinate(period, step)
+            assert phase_coordinate(period, normalized) == normalized
+
+
 def test_phase_coordinate_zero() -> None:
     for period in range(1, 25):
         assert phase_coordinate(period, 0) == 0

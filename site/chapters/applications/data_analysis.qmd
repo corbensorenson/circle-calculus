@@ -38,6 +38,7 @@ Why does a clean synthetic periodic fixture not prove that a method will work on
 <div class="theorem-box" data-theorem-id="APPD-T0002"></div>
 <div class="theorem-box" data-theorem-id="APPD-T0003"></div>
 <div class="theorem-box" data-theorem-id="APPD-T0004"></div>
+<div class="theorem-box" data-theorem-id="APPD-T0005"></div>
 
 <p data-paper-ref="papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md">Coil Data Analysis</a></p>
 

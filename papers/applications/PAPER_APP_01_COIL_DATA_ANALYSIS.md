@@ -36,6 +36,7 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `APPD-T0002`: `Circle.Applications.phaseCoordinate_add_period`
 - `APPD-T0003`: `Circle.Applications.phaseCoordinate_zero`
 - `APPD-T0004`: `Circle.Applications.phaseCoordinate_add_mul_period`
+- `APPD-T0005`: `Circle.Applications.phaseCoordinate_idempotent`
 
 ## Proved Core
 
@@ -51,6 +52,12 @@ phase(period, step + period) = phase(period, step)
 
 ```text
 phase(period, step + passes * period) = phase(period, step)
+```
+
+`APPD-T0005` proves that normalizing an already normalized phase coordinate is a no-op:
+
+```text
+phase(period, phase(period, step)) = phase(period, step)
 ```
 
 `APPD-T0003` proves the zero anchor:

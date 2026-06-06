@@ -3409,6 +3409,12 @@
           "lean_name": "Circle.Applications.phaseCoordinate_add_mul_period",
           "name": "Circle.Applications.phaseCoordinate_add_mul_period",
           "status": "proved"
+        },
+        {
+          "id": "APPD-T0005",
+          "lean_name": "Circle.Applications.phaseCoordinate_idempotent",
+          "name": "Circle.Applications.phaseCoordinate_idempotent",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
