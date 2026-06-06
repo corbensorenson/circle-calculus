@@ -8,8 +8,10 @@ Widgets are deterministic browser-native explanation tools. They are not proofs.
 - No remote resource fetches at runtime.
 - Plain HTML/SVG/JavaScript preferred.
 - Inputs must have labels.
+- Widget panels must be named regions.
+- Dynamic widget output must be an `aria-live` region.
 - Do not communicate status by color alone.
-- SVG nodes should have labels or accessible descriptions where practical.
+- SVG diagrams should expose a title, description, and visible node labels.
 - Widget captions must not call output a proof.
 
 ## Shared Files
@@ -79,6 +81,7 @@ The placeholder widgets are included in `site/data/generated/widget_index.json` 
 Checkers:
 
 - `scripts/site/check_site_widget_contracts.py` verifies that every `data-widget` page mount exists in `widget_index.json`, imports the matching widget script, and points to a JavaScript file that calls `mountWidgets("<widget_id>", ...)`.
+- `scripts/site/check_site_accessibility_contract.py` verifies shared widget accessibility contracts: named widget regions, labelled number inputs, live output regions, SVG title/description metadata, visible focus styling, and scaffold-only placeholder guardrails.
 - `scripts/site/check_widget_python_parity.py` validates deterministic S1 formulas against Python reference behavior.
 
 Minimum parity cases:

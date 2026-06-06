@@ -1,12 +1,9 @@
 import { mod, positiveInt } from "../shared/circle_math_core.js";
-import { addLabeledNumber, addOutput, clear, renderCircleSvg } from "../shared/svg_helpers.js";
+import { addLabeledNumber, addOutput, addWidgetHeader, clear, renderCircleSvg } from "../shared/svg_helpers.js";
 import { mountWidgets } from "../shared/widget_base.js";
 
 function mount(panel) {
-  const header = document.createElement("div");
-  header.className = "widget-header";
-  header.innerHTML = "<strong>Finite circle rotator</strong><span>Widget: intuition only</span>";
-  panel.appendChild(header);
+  addWidgetHeader(panel, "Finite circle rotator", "Widget: intuition only");
 
   const nInput = addLabeledNumber(panel, "finite-circle-n", "n", 12, 1, 48);
   const nodeInput = addLabeledNumber(panel, "finite-circle-node", "selected node i", 14, 0, 999);

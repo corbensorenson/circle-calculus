@@ -1,12 +1,9 @@
 import { gcd, isPrime, positiveInt } from "../shared/circle_math_core.js";
-import { addLabeledNumber, addOutput, clear, renderCircleSvg } from "../shared/svg_helpers.js";
+import { addLabeledNumber, addOutput, addWidgetHeader, clear, renderCircleSvg } from "../shared/svg_helpers.js";
 import { mountWidgets } from "../shared/widget_base.js";
 
 function mount(panel) {
-  const header = document.createElement("div");
-  header.className = "widget-header";
-  header.innerHTML = "<strong>Prime full-coil explorer</strong><span>Theorem id: CC-T0007</span>";
-  panel.appendChild(header);
+  addWidgetHeader(panel, "Prime full-coil explorer", "Theorem id: CC-T0007");
 
   const nInput = addLabeledNumber(panel, "prime-n", "n", 13, 2, 64);
   const output = addOutput(panel);

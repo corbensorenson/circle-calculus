@@ -1,12 +1,9 @@
 import { gcd, orbitDecomposition, period, positiveInt } from "../shared/circle_math_core.js";
-import { addLabeledNumber, addOutput, clear, renderCircleSvg } from "../shared/svg_helpers.js";
+import { addLabeledNumber, addOutput, addWidgetHeader, clear, renderCircleSvg } from "../shared/svg_helpers.js";
 import { mountWidgets } from "../shared/widget_base.js";
 
 function mount(panel) {
-  const header = document.createElement("div");
-  header.className = "widget-header";
-  header.innerHTML = "<strong>Period/GCD visualizer</strong><span>Theorem id: CC-T0006</span>";
-  panel.appendChild(header);
+  addWidgetHeader(panel, "Period/GCD visualizer", "Theorem id: CC-T0006");
 
   const nInput = addLabeledNumber(panel, "period-n", "n", 12, 1, 64);
   const strideInput = addLabeledNumber(panel, "period-stride", "stride k", 4, 0, 999);

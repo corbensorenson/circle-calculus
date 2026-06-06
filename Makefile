@@ -91,6 +91,7 @@ sitecheck: site-data
 	python scripts/site/check_site_source_links.py
 	python scripts/site/check_site_data_backlinks.py
 	python scripts/site/check_site_widget_contracts.py
+	python scripts/site/check_site_accessibility_contract.py
 	python scripts/site/check_widget_python_parity.py
 
 quarto-dirs:

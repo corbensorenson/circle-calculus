@@ -492,6 +492,8 @@ async function hydrateGlyphIndexes() {
 
 export function mountWidgets(name, mount) {
   for (const target of document.querySelectorAll(`[data-widget="${name}"]`)) {
+    target.setAttribute("role", "region");
+    target.setAttribute("aria-label", `${name.replaceAll("_", " ")} widget`);
     mount(target);
   }
 }

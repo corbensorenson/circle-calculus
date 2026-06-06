@@ -4,6 +4,8 @@ export function clear(element) {
   }
 }
 
+let svgIdCounter = 0;
+
 function svgElement(name, attrs = {}) {
   const el = document.createElementNS("http://www.w3.org/2000/svg", name);
   for (const [key, value] of Object.entries(attrs)) {
@@ -13,6 +15,9 @@ function svgElement(name, attrs = {}) {
 }
 
 export function renderCircleSvg({ n, selected = null, visited = [], title = "finite circle" }) {
+  svgIdCounter += 1;
+  const titleId = `circle-svg-title-${svgIdCounter}`;
+  const descId = `circle-svg-desc-${svgIdCounter}`;
   const size = 360;
   const cx = size / 2;
   const cy = size / 2;
@@ -22,8 +27,20 @@ export function renderCircleSvg({ n, selected = null, visited = [], title = "fin
     class: "widget-svg",
     viewBox: `0 0 ${size} ${size}`,
     role: "img",
-    "aria-label": `${title} with ${n} nodes`,
+    "aria-labelledby": `${titleId} ${descId}`,
   });
+
+  const titleNode = svgElement("title", { id: titleId });
+  titleNode.textContent = `${title} with ${n} nodes`;
+  svg.appendChild(titleNode);
+
+  const descNode = svgElement("desc", { id: descId });
+  const selectedText = selected === null ? "No selected node." : `Selected node: ${selected}.`;
+  const visitedText = visited.length === 0
+    ? "No highlighted orbit nodes."
+    : `Highlighted orbit nodes: ${visited.join(", ")}.`;
+  descNode.textContent = `${selectedText} ${visitedText} Node labels are printed next to each finite-circle point.`;
+  svg.appendChild(descNode);
 
   svg.appendChild(svgElement("circle", {
     cx,
@@ -75,14 +92,33 @@ export function addLabeledNumber(panel, id, label, value, min, max) {
   input.value = String(value);
   input.min = String(min);
   input.max = String(max);
+  input.step = "1";
+  input.inputMode = "numeric";
+  input.setAttribute("aria-label", label);
   wrapper.appendChild(input);
   panel.appendChild(wrapper);
   return input;
 }
 
+export function addWidgetHeader(panel, title, subtitle) {
+  const header = document.createElement("div");
+  header.className = "widget-header";
+  const heading = document.createElement("strong");
+  heading.textContent = title;
+  const meta = document.createElement("span");
+  meta.textContent = subtitle;
+  header.append(heading, meta);
+  panel.appendChild(header);
+  return header;
+}
+
 export function addOutput(panel) {
   const output = document.createElement("div");
   output.className = "widget-output";
+  output.setAttribute("role", "region");
+  output.setAttribute("aria-live", "polite");
+  output.setAttribute("aria-atomic", "true");
+  output.setAttribute("aria-label", "Widget output");
   panel.appendChild(output);
   return output;
 }

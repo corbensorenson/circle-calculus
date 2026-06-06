@@ -106,8 +106,17 @@ body {
 }
 
 .widget-panel input {
+  border: 1px solid var(--cc-line);
+  border-radius: 6px;
+  font: inherit;
+  padding: 0.25rem 0.4rem;
   width: 6rem;
   max-width: 100%;
+}
+
+.widget-panel input:focus-visible {
+  outline: 3px solid #9cc7ff;
+  outline-offset: 2px;
 }
 
 .widget-output {

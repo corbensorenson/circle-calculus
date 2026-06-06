@@ -89,7 +89,7 @@ make site-render
 make site-render-check
 ```
 
-`make sitecheck` includes theorem id checks, dictionary id checks, paper links, source links, reciprocal generated backlinks, theorem-status language checks, widget mount contracts, and widget/Python parity.
+`make sitecheck` includes theorem id checks, dictionary id checks, paper links, source links, reciprocal generated backlinks, theorem-status language checks, widget mount contracts, widget accessibility contracts, and widget/Python parity.
 
 ## Public Verification
 

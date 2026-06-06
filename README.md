@@ -193,6 +193,7 @@ make sitecheck   # validate Living Book structure, ids, links, status, and widge
 python scripts/site/check_site_source_links.py # verify generated GitHub/source-link paths
 python scripts/site/check_site_data_backlinks.py # verify generated theorem/dictionary/paper/widget/glyph backlinks
 python scripts/site/check_site_widget_contracts.py # verify widget mounts, scripts, and index entries
+python scripts/site/check_site_accessibility_contract.py # verify widget accessibility guardrails
 make site-render # render the Quarto Living Book into site/_site
 make site-render-check # validate the rendered GitHub Pages artifact
 make living-book-check # run core checks plus Living Book checks, render, and artifact validation

@@ -1,12 +1,9 @@
 import { positiveInt, windingLift } from "../shared/circle_math_core.js";
-import { addLabeledNumber, addOutput, clear, renderCircleSvg } from "../shared/svg_helpers.js";
+import { addLabeledNumber, addOutput, addWidgetHeader, clear, renderCircleSvg } from "../shared/svg_helpers.js";
 import { mountWidgets } from "../shared/widget_base.js";
 
 function mount(panel) {
-  const header = document.createElement("div");
-  header.className = "widget-header";
-  header.innerHTML = "<strong>Winding lift explorer</strong><span>Residue plus full turns</span>";
-  panel.appendChild(header);
+  addWidgetHeader(panel, "Winding lift explorer", "Residue plus full turns");
 
   const nInput = addLabeledNumber(panel, "winding-n", "base n", 5, 1, 48);
   const stepsInput = addLabeledNumber(panel, "winding-steps", "step count t", 17, 0, 999);
