@@ -10,6 +10,17 @@ from repo_paths import DICTIONARY, DIMENSION_DICTIONARIES, DIMENSION_MANIFESTS, 
 TARGETS = ROOT / "manifests" / "phase4_theorem_targets.yaml"
 ALLOWED_STATUSES = {"planned", "deferred", "blocked", "exploratory_python", "promoted"}
 ALLOWED_CLAIM_TYPES = {"theorem", "experiment", "paper_improvement", "proof_improvement"}
+REQUIRED_LAYERS = {
+    "Applications",
+    "PhaseII",
+    "S0",
+    "S1",
+    "S15",
+    "S2",
+    "S3",
+    "S4-S6",
+    "S7",
+}
 REQUIRED_FIELDS = {
     "id",
     "layer",
@@ -42,17 +53,34 @@ def load_theorem_ids() -> set[str]:
     return ids
 
 
+def load_warning_ids() -> set[str]:
+    ids: set[str] = set()
+    for path in sorted(DIMENSION_MANIFESTS.glob("*.yaml")):
+        data = yaml.safe_load(path.read_text()) or {}
+        ids.update(warning["id"] for warning in data.get("warnings", []))
+    return ids
+
+
 def main() -> int:
     data = yaml.safe_load(TARGETS.read_text()) or {}
     targets = data.get("targets", [])
     dictionary_ids = load_dictionary_ids()
     theorem_ids = load_theorem_ids()
+    warning_ids = load_warning_ids()
     failures: list[str] = []
 
     ids = [target.get("id") for target in targets]
     duplicates = sorted({target_id for target_id in ids if ids.count(target_id) > 1})
     if duplicates:
         failures.append(f"duplicate target ids: {duplicates}")
+
+    layers = {target.get("layer") for target in targets}
+    missing_layers = sorted(REQUIRED_LAYERS - layers)
+    if missing_layers:
+        failures.append(f"missing Phase IV layer coverage: {missing_layers}")
+    unknown_layers = sorted(layer for layer in layers - REQUIRED_LAYERS if layer is not None)
+    if unknown_layers:
+        failures.append(f"unknown Phase IV layers: {unknown_layers}")
 
     for target in targets:
         target_id = target.get("id", "<missing id>")
@@ -72,6 +100,12 @@ def main() -> int:
                 failures.append(f"{target_id}: promoted target needs promoted_theorem_id")
             elif promoted_theorem_id not in theorem_ids:
                 failures.append(f"{target_id}: promoted theorem id does not exist: {promoted_theorem_id}")
+        for theorem_id in target.get("supporting_theorem_ids", []):
+            if theorem_id not in theorem_ids:
+                failures.append(f"{target_id}: supporting theorem id does not exist: {theorem_id}")
+        for warning_id in target.get("warning_refs", []):
+            if warning_id not in warning_ids:
+                failures.append(f"{target_id}: warning ref does not exist: {warning_id}")
         for ref in target.get("paper_refs", []):
             path = ROOT / ref.split("#", 1)[0]
             if not path.exists():

@@ -10,7 +10,7 @@ The long-term aim is not just to write essays. The aim is to keep every serious 
 - shared dictionary files under `dictionary/`, and
 - theorem metadata in `manifests/theorem_manifest.yaml`.
 
-The Phase IV wide/deep theorem-target audit is tracked in `manifests/phase4_theorem_targets.yaml` and validated by `scripts/check_phase4_targets.py`. Phase V edge problem-space targets are tracked in `manifests/phase5_edge_targets.yaml`, explained in `docs/PHASE5_EDGE_TARGETS.md`, and validated by `scripts/check_phase5_targets.py`. Phase VI global sweep targets are tracked in `manifests/phase6_sweep_targets.yaml` and validated by `scripts/check_phase6_sweep_targets.py`; application benchmark and edge-claim guardrails are additionally checked by `scripts/check_application_guardrails.py`.
+The Phase IV wide/deep theorem-target audit is tracked in `manifests/phase4_theorem_targets.yaml` and validated by `scripts/check_phase4_targets.py`, including required layer coverage and promoted/supporting theorem references. Phase V edge problem-space targets are tracked in `manifests/phase5_edge_targets.yaml`, explained in `docs/PHASE5_EDGE_TARGETS.md`, and validated by `scripts/check_phase5_targets.py`. Phase VI global sweep targets are tracked in `manifests/phase6_sweep_targets.yaml` and validated by `scripts/check_phase6_sweep_targets.py`; application benchmark and edge-claim guardrails are additionally checked by `scripts/check_application_guardrails.py`.
 
 The rule is simple: papers are allowed to be ambitious, but claimed theorems must be traceable.
 

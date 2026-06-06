@@ -274,11 +274,13 @@
       "status": "promoted",
       "supporting_theorem_ids": [
         "S6-T0001",
-        "S6-T0002",
-        "S6-W0001"
+        "S6-T0002"
       ],
       "target_statement": "The current S6 finite model proves only cell-count and Euler facts, not complex-structure claims.",
-      "title": "S6 warning theorem boundary"
+      "title": "S6 warning theorem boundary",
+      "warning_refs": [
+        "S6-W0001"
+      ]
     },
     {
       "candidate_formalization": "quaternionicPhaseRotate (p * q) = quaternionicPhaseRotate q after quaternionicPhaseRotate p, plus base invariance",

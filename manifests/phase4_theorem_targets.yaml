@@ -165,7 +165,8 @@ targets:
     priority: medium
     status: promoted
     promoted_theorem_id: S6-T0003
-    supporting_theorem_ids: ["S6-T0001", "S6-T0002", "S6-W0001"]
+    supporting_theorem_ids: ["S6-T0001", "S6-T0002"]
+    warning_refs: ["S6-W0001"]
     claim_type: theorem
     title: "S6 warning theorem boundary"
     target_statement: "The current S6 finite model proves only cell-count and Euler facts, not complex-structure claims."

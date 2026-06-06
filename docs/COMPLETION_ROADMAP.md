@@ -96,6 +96,7 @@ The project is complete only when all of these are true:
 - Theorem registry: `manifests/theorem_manifest.yaml` and future `manifests/dimensions/`
 - Paper registry: `manifests/paper_manifest.yaml`
 - Phase IV theorem target registry: `manifests/phase4_theorem_targets.yaml`
+- Phase IV target coverage/theorem-reference check: `scripts/check_phase4_targets.py`
 - Phase VI sweep registry: `manifests/phase6_sweep_targets.yaml`
 - Application benchmark/edge-claim guardrails: `scripts/check_application_guardrails.py`
 - Dimensional plan: `docs/DIMENSIONAL_LADDER.md`
