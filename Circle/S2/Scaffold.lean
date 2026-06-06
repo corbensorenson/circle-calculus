@@ -54,6 +54,18 @@ theorem suspendedCircleAntipode_involutive (n : Nat) (point : SuspendedCirclePoi
     suspendedCircleAntipode n (suspendedCircleAntipode n point) = point := by
   cases point <;> simp [suspendedCircleAntipode]
 
+theorem suspendedCircleAntipode_bijective (n : Nat) :
+    Function.Bijective (suspendedCircleAntipode n) := by
+  constructor
+  · intro x y h
+    calc
+      x = suspendedCircleAntipode n (suspendedCircleAntipode n x) :=
+        (suspendedCircleAntipode_involutive n x).symm
+      _ = suspendedCircleAntipode n (suspendedCircleAntipode n y) := by rw [h]
+      _ = y := suspendedCircleAntipode_involutive n y
+  · intro y
+    exact ⟨suspendedCircleAntipode n y, suspendedCircleAntipode_involutive n y⟩
+
 theorem suspendedCircleAntipode_longitudeRotation_opposite
     (n : Nat) (stride : Int) (point : SuspendedCirclePoint n) :
     suspendedCircleAntipode n (suspendedCircleLongitudeRotation n stride point) =

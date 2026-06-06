@@ -3801,7 +3801,7 @@
       "informal_statement": "For n>=3, the suspended finite circle has V=n+2, E=3n, and F=2n.",
       "lean_name": "Circle.S2.suspendedCircle_counts",
       "lean_source": "Circle/S2/Scaffold.lean",
-      "lean_source_line": 94,
+      "lean_source_line": 106,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md"
@@ -3832,7 +3832,7 @@
       "informal_statement": "For n>=3, the suspended finite circle has Euler characteristic 2.",
       "lean_name": "Circle.S2.suspendedCircle_chi",
       "lean_source": "Circle/S2/Scaffold.lean",
-      "lean_source_line": 99,
+      "lean_source_line": 111,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md"
@@ -3863,7 +3863,7 @@
       "informal_statement": "For n>=3 and r>=1, SphereGrid(n,r) has V=nr+2, E=n(2r+1), and F=n(r+1).",
       "lean_name": "Circle.S2.sphereGrid_counts",
       "lean_source": "Circle/S2/Scaffold.lean",
-      "lean_source_line": 108,
+      "lean_source_line": 120,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"
@@ -3894,7 +3894,7 @@
       "informal_statement": "For n>=3 and r>=1, SphereGrid(n,r) has Euler characteristic 2.",
       "lean_name": "Circle.S2.sphereGrid_chi",
       "lean_source": "Circle/S2/Scaffold.lean",
-      "lean_source_line": 112,
+      "lean_source_line": 124,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"
@@ -3926,7 +3926,7 @@
       "informal_statement": "Every non-pole latitude ring in a sphere grid is C_n-like.",
       "lean_name": "Circle.S2.latitudeRing_isCircle",
       "lean_source": "Circle/S2/Scaffold.lean",
-      "lean_source_line": 120,
+      "lean_source_line": 132,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"
@@ -3957,7 +3957,7 @@
       "informal_statement": "A latitude rotation acts on ring nodes and fixes the collapsed poles.",
       "lean_name": "Circle.S2.longitudeRotation_fixesPoles",
       "lean_source": "Circle/S2/Scaffold.lean",
-      "lean_source_line": 144,
+      "lean_source_line": 156,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"
@@ -3988,7 +3988,7 @@
       "informal_statement": "A fixed latitude ring inherits the S1 coil period n/gcd(n,k).",
       "lean_name": "Circle.S2.latitudeCoil_period",
       "lean_source": "Circle/S2/Scaffold.lean",
-      "lean_source_line": 161,
+      "lean_source_line": 173,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"
@@ -4080,7 +4080,7 @@
       "informal_statement": "The suspended-circle antipode preserves the finite pole subset.",
       "lean_name": "Circle.S2.suspendedCircleAntipode_preservesPoleSet",
       "lean_source": "Circle/S2/Scaffold.lean",
-      "lean_source_line": 64,
+      "lean_source_line": 76,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
@@ -4110,7 +4110,7 @@
       "informal_statement": "The suspended-circle antipode preserves the finite equator subset.",
       "lean_name": "Circle.S2.suspendedCircleAntipode_preservesEquatorSet",
       "lean_source": "Circle/S2/Scaffold.lean",
-      "lean_source_line": 69,
+      "lean_source_line": 81,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
@@ -4140,7 +4140,7 @@
       "informal_statement": "Longitude rotation preserves the finite latitude coordinate of every sphere-grid point.",
       "lean_name": "Circle.S2.longitudeRotation_preservesLatitudeCoordinate",
       "lean_source": "Circle/S2/Scaffold.lean",
-      "lean_source_line": 149,
+      "lean_source_line": 161,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
@@ -4171,7 +4171,7 @@
       "informal_statement": "Longitude rotation advances the finite longitude coordinate by the corresponding circle rotation while leaving poles without a longitude coordinate.",
       "lean_name": "Circle.S2.longitudeRotation_advancesLongitudeCoordinate",
       "lean_source": "Circle/S2/Scaffold.lean",
-      "lean_source_line": 155,
+      "lean_source_line": 167,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
@@ -4201,7 +4201,7 @@
       "informal_statement": "Every suspended-circle point forms a finite antipodal pair with its antipode.",
       "lean_name": "Circle.S2.suspendedCircleAntipodalPair_self_antipode",
       "lean_source": "Circle/S2/Scaffold.lean",
-      "lean_source_line": 74,
+      "lean_source_line": 86,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
@@ -4231,7 +4231,7 @@
       "informal_statement": "The finite suspended-circle antipodal-pair relation is symmetric.",
       "lean_name": "Circle.S2.suspendedCircleAntipodalPair_symmetric",
       "lean_source": "Circle/S2/Scaffold.lean",
-      "lean_source_line": 79,
+      "lean_source_line": 91,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
@@ -4263,7 +4263,7 @@
       "informal_statement": "On finite suspended-circle coordinates, antipoding after a signed longitude rotation equals rotating by the opposite signed stride after antipoding.",
       "lean_name": "Circle.S2.suspendedCircleAntipode_longitudeRotation_opposite",
       "lean_source": "Circle/S2/Scaffold.lean",
-      "lean_source_line": 57,
+      "lean_source_line": 69,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
@@ -4295,7 +4295,7 @@
       "informal_statement": "A fixed finite latitude ring inherits the S1 orbit-class count gcd(n,k) for stride k.",
       "lean_name": "Circle.S2.latitudeRingOrbitClassCount_eq_gcd",
       "lean_source": "Circle/S2/Scaffold.lean",
-      "lean_source_line": 168,
+      "lean_source_line": 180,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md"
@@ -4307,6 +4307,37 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "sidecars/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS/python/test_sphere_grid_examples.py::test_latitude_orbit_class_count"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S2-0005",
+        "S2-0006"
+      ],
+      "formal_statement": "forall n : Nat, Function.Bijective (Circle.S2.suspendedCircleAntipode n)",
+      "id": "S2-T0018",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "The finite suspended-circle antipode is a bijection of suspended-circle points.",
+      "lean_name": "Circle.S2.suspendedCircleAntipode_bijective",
+      "lean_source": "Circle/S2/Scaffold.lean",
+      "lean_source_line": 57,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
+      ],
+      "source_manifest": "manifests/dimensions/S2_sphere.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE/python/test_s2_antipode_examples.py::test_suspended_antipode_is_bijective"
         ]
       }
     },

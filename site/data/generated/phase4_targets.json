@@ -181,6 +181,30 @@
       "title": "Longitude rotation commutes with suspended-circle antipode"
     },
     {
+      "candidate_formalization": "forall n : Nat, Function.Bijective (Circle.S2.suspendedCircleAntipode n)",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S2-0005",
+        "S2-0006"
+      ],
+      "guardrail": "This is a finite suspended-circle bijection, not a full continuous antipodal-map theorem.",
+      "id": "P4-S2-003",
+      "layer": "S2",
+      "next_action": "Promoted to S2-T0018 and Lean-proved as Circle.S2.suspendedCircleAntipode_bijective.",
+      "paper_refs": [
+        "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
+      ],
+      "priority": "medium",
+      "promoted_theorem_id": "S2-T0018",
+      "status": "promoted",
+      "supporting_theorem_ids": [
+        "S2-T0009",
+        "S2-T0008"
+      ],
+      "target_statement": "The finite suspended-circle antipode is a reversible bijection of suspended-circle points.",
+      "title": "Suspended-circle antipode is bijective"
+    },
+    {
       "candidate_formalization": "For each latitude ring, orbitClassCount n k = Nat.gcd n k",
       "claim_type": "theorem",
       "dictionary_dependencies": [

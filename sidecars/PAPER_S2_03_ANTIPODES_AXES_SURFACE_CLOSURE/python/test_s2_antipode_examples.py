@@ -79,6 +79,13 @@ def test_suspended_antipode_is_involutive() -> None:
             assert suspended_antipode(n, suspended_antipode(n, point)) == point
 
 
+def test_suspended_antipode_is_bijective() -> None:
+    for n in range(1, 33):
+        points = set(suspended_points(n))
+        images = {suspended_antipode(n, point) for point in points}
+        assert images == points
+
+
 def test_suspended_antipode_preserves_pole_and_equator_sets() -> None:
     for n in range(1, 33):
         for point in suspended_points(n):
