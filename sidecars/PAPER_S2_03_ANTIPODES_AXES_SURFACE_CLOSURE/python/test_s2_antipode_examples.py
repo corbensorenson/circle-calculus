@@ -31,6 +31,14 @@ def antipodal_pair(n: int, left: SuspendedPoint, right: SuspendedPoint) -> bool:
     return suspended_antipode(n, left) == right
 
 
+def suspended_longitude_rotation(n: int, stride: int, point: SuspendedPoint) -> SuspendedPoint:
+    if point in ("north", "south"):
+        return point
+    tag, node = point
+    assert tag == "equator"
+    return ("equator", (node + stride) % n)
+
+
 def longitude_rotation(n: int, stride: int, point: SphereGridPoint) -> SphereGridPoint:
     if point in ("north", "south"):
         return point
@@ -77,6 +85,19 @@ def test_suspended_antipode_preserves_pole_and_equator_sets() -> None:
             antipode = suspended_antipode(n, point)
             assert is_pole(antipode) == is_pole(point)
             assert is_equator(antipode) == is_equator(point)
+
+
+def test_suspended_antipode_longitude_rotation_opposite_stride() -> None:
+    for n in range(1, 33):
+        for stride in range(-64, 65):
+            for point in suspended_points(n):
+                rotate_then_antipode = suspended_antipode(
+                    n, suspended_longitude_rotation(n, stride, point)
+                )
+                antipode_then_opposite = suspended_longitude_rotation(
+                    n, -stride, suspended_antipode(n, point)
+                )
+                assert rotate_then_antipode == antipode_then_opposite
 
 
 def test_longitude_rotation_preserves_latitude_coordinate() -> None:

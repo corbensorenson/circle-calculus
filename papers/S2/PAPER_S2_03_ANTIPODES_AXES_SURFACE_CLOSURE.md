@@ -18,6 +18,7 @@ The guiding rule is the same as the rest of the `S^2` track: prove finite struct
 - `S2-T0013`: `Circle.S2.longitudeRotation_advancesLongitudeCoordinate`
 - `S2-T0014`: `Circle.S2.suspendedCircleAntipodalPair_self_antipode`
 - `S2-T0015`: `Circle.S2.suspendedCircleAntipodalPair_symmetric`
+- `S2-T0016`: `Circle.S2.suspendedCircleAntipode_longitudeRotation_opposite`
 
 ## Model
 
@@ -38,6 +39,14 @@ south      -> north
 equator(x) -> equator(-x)
 ```
 
+The finite suspended-circle longitude rotation leaves the poles fixed and rotates only equator nodes:
+
+```text
+rot_k(north)      = north
+rot_k(south)      = south
+rot_k(equator(x)) = equator(x+k)
+```
+
 Pole and equator predicates distinguish the collapsed poles from the circular equator. In the sphere-grid model, non-pole points also have partial coordinate projections:
 
 ```text
@@ -55,7 +64,9 @@ longitude_coordinate(ring(latitude,node))=some(node)
 
 `S2-T0014` proves every point forms an antipodal pair with its antipode, and `S2-T0015` proves the finite antipodal-pair relation is symmetric.
 
-Surface closure remains tied to the already-proved Euler facts for suspended circles and sphere grids. The Python sidecar checks the same finite antipode, pole/equator predicate, longitude-coordinate, latitude-coordinate, and antipodal-pair examples.
+`S2-T0016` proves the equator-compatible antipode/longitude law: antipoding after a signed longitude rotation by `k` equals rotating by `-k` after antipoding. On poles this is the fixed-pole rule; on equator coordinates it is the finite-circle identity `-(x+k)=(-x)+(-k)`.
+
+Surface closure remains tied to the already-proved Euler facts for suspended circles and sphere grids. The Python sidecar checks the same finite antipode, pole/equator predicate, suspended longitude/opposite-stride law, longitude-coordinate, latitude-coordinate, and antipodal-pair examples.
 
 ## Role In The Ladder
 
@@ -68,4 +79,4 @@ This paper makes `S^2` more than a cell-count example. It gives later Hopf and s
 
 ## Guardrails
 
-Continuous surface geometry, smooth antinodes, metric axes, and full analytic antipodal maps remain future work. The current proved content is the finite antipode, pole/equator preservation, coordinate-rotation, and antipodal-pair spine.
+Continuous surface geometry, smooth antinodes, metric axes, and full analytic antipodal maps remain future work. The current proved content is the finite antipode, pole/equator preservation, suspended longitude/opposite-stride law, coordinate-rotation, and antipodal-pair spine.

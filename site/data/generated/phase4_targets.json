@@ -112,7 +112,7 @@
       "title": "Affine circle automorphism normal form"
     },
     {
-      "candidate_formalization": "suspendedCircleAntipode n (longitudeRotation n stride p) = longitudeRotation n (-stride) (suspendedCircleAntipode n p)",
+      "candidate_formalization": "suspendedCircleAntipode n (suspendedCircleLongitudeRotation n stride p) = suspendedCircleLongitudeRotation n (-stride) (suspendedCircleAntipode n p)",
       "claim_type": "theorem",
       "dictionary_dependencies": [
         "S2-0005",
@@ -122,12 +122,13 @@
       "guardrail": "Do not assign independent longitude coordinates to poles.",
       "id": "P4-S2-001",
       "layer": "S2",
-      "next_action": "Confirm signed or modular stride API for S2 longitude rotation.",
+      "next_action": "Promoted to S2-T0016 using the signed S1 rotation API on finite suspended-circle equator coordinates.",
       "paper_refs": [
         "papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"
       ],
       "priority": "high",
-      "status": "planned",
+      "promoted_theorem_id": "S2-T0016",
+      "status": "promoted",
       "target_statement": "On equator coordinates, rotating longitude and then taking the antipode agrees with taking the antipode and rotating by the opposite stride.",
       "title": "Longitude rotation commutes with suspended-circle antipode"
     },

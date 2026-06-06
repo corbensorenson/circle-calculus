@@ -74,14 +74,15 @@ targets:
   - id: P4-S2-001
     layer: S2
     priority: high
-    status: planned
+    status: promoted
+    promoted_theorem_id: S2-T0016
     claim_type: theorem
     title: "Longitude rotation commutes with suspended-circle antipode"
     target_statement: "On equator coordinates, rotating longitude and then taking the antipode agrees with taking the antipode and rotating by the opposite stride."
-    candidate_formalization: "suspendedCircleAntipode n (longitudeRotation n stride p) = longitudeRotation n (-stride) (suspendedCircleAntipode n p)"
+    candidate_formalization: "suspendedCircleAntipode n (suspendedCircleLongitudeRotation n stride p) = suspendedCircleLongitudeRotation n (-stride) (suspendedCircleAntipode n p)"
     paper_refs: ["papers/S2/PAPER_S2_03_ANTIPODES_AXES_SURFACE_CLOSURE.md"]
     dictionary_dependencies: ["S2-0005", "S2-0006", "CC-0101"]
-    next_action: "Confirm signed or modular stride API for S2 longitude rotation."
+    next_action: "Promoted to S2-T0016 using the signed S1 rotation API on finite suspended-circle equator coordinates."
     guardrail: "Do not assign independent longitude coordinates to poles."
 
   - id: P4-S2-002

@@ -25,6 +25,11 @@ def suspendedCircleAntipode (n : Nat) : SuspendedCirclePoint n -> SuspendedCircl
   | SuspendedCirclePoint.south => SuspendedCirclePoint.north
   | SuspendedCirclePoint.equator node => SuspendedCirclePoint.equator (-node)
 
+def suspendedCircleLongitudeRotation (n : Nat) (stride : Int) : SuspendedCirclePoint n -> SuspendedCirclePoint n
+  | SuspendedCirclePoint.north => SuspendedCirclePoint.north
+  | SuspendedCirclePoint.south => SuspendedCirclePoint.south
+  | SuspendedCirclePoint.equator node => SuspendedCirclePoint.equator (Circle.S1.signedRot n stride node)
+
 def isSuspendedPole {n : Nat} : SuspendedCirclePoint n -> Prop
   | SuspendedCirclePoint.north => True
   | SuspendedCirclePoint.south => True
@@ -47,6 +52,13 @@ theorem suspendedCircleAntipode_swapsPoles (n : Nat) :
 theorem suspendedCircleAntipode_involutive (n : Nat) (point : SuspendedCirclePoint n) :
     suspendedCircleAntipode n (suspendedCircleAntipode n point) = point := by
   cases point <;> simp [suspendedCircleAntipode]
+
+theorem suspendedCircleAntipode_longitudeRotation_opposite
+    (n : Nat) (stride : Int) (point : SuspendedCirclePoint n) :
+    suspendedCircleAntipode n (suspendedCircleLongitudeRotation n stride point) =
+      suspendedCircleLongitudeRotation n (-stride) (suspendedCircleAntipode n point) := by
+  cases point <;>
+    simp [suspendedCircleAntipode, suspendedCircleLongitudeRotation, Circle.S1.signedRot, add_comm]
 
 theorem suspendedCircleAntipode_preservesPoleSet (n : Nat)
     (point : SuspendedCirclePoint n) :
