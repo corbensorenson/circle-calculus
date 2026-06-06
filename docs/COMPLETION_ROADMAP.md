@@ -266,9 +266,9 @@ Goal: make the executable examples line up with the Lean-backed papers without d
   - Prove topological/combinatorial `S7` before octonion algebra.
   - Status: polished draft proves the finite iterated-suspension model, S6 suspension link, and Euler characteristic before octonion algebra enters.
 - [x] `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md`
-  - Targets: `S7QH-T0001` through `S7QH-T0003`
+  - Targets: `S7QH-T0001` through `S7QH-T0005`
   - Keep roadmap/exploratory until `S3` quaternion calculus and `S4` base are stable.
-  - Status: polished draft; `S7QH-T0001` through `S7QH-T0003` are Lean-proved coordinate landing, right-phase invariance, and right-phase action theorems; quaternionic projective space, quotient topology, and full fibration formalization remain future work.
+  - Status: polished draft; `S7QH-T0001` through `S7QH-T0005` are Lean-proved coordinate landing, right-phase norm scaling/preservation, right-phase invariance, and right-phase action theorems; quaternionic projective space, quotient topology, and full fibration formalization remain future work.
 - [x] `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md`
   - Targets: `S7O-T0001` through `S7O-T0008`
   - Warning targets: `S7O-W0001`, `S7O-W0002`

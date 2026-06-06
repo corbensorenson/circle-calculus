@@ -556,6 +556,56 @@
       "title": "Unit octonion inverse equations with bracketing"
     },
     {
+      "candidate_formalization": "forall p u, Circle.S7.quaternionPairNormSq (Circle.S7.quaternionPairRightPhase p u) = Circle.S7.quaternionPairNormSq p * Circle.S7.quaternionCoordNormSq u",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S7QH-0001",
+        "S3Q-0001",
+        "S3Q-0002"
+      ],
+      "guardrail": "This is a bounded coordinate norm law, not a complete quaternionic Hopf fibration theorem.",
+      "id": "P4-S7-003",
+      "layer": "S7",
+      "next_action": "Promoted to S7QH-T0004 and Lean-proved as Circle.S7.quaternionPairRightPhase_norm_scaled.",
+      "paper_refs": [
+        "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"
+      ],
+      "priority": "medium",
+      "promoted_theorem_id": "S7QH-T0004",
+      "status": "promoted",
+      "supporting_theorem_ids": [
+        "S7QH-T0003",
+        "S3Q-T0002"
+      ],
+      "target_statement": "Right multiplication of both quaternion coordinates by a phase scales the total pair norm by the phase norm.",
+      "title": "Quaternionic right phase scales pair norm"
+    },
+    {
+      "candidate_formalization": "forall p u, Circle.S7.quaternionCoordNormSq u = 1 -> Circle.S7.quaternionPairNormSq (Circle.S7.quaternionPairRightPhase p u) = Circle.S7.quaternionPairNormSq p",
+      "claim_type": "theorem",
+      "dictionary_dependencies": [
+        "S7QH-0001",
+        "S3Q-0001",
+        "S3Q-0002"
+      ],
+      "guardrail": "This preserves normalized coordinate pairs under unit phase; it is not quotient topology.",
+      "id": "P4-S7-004",
+      "layer": "S7",
+      "next_action": "Promoted to S7QH-T0005 and Lean-proved as Circle.S7.quaternionPairRightPhase_unit_preserves_norm.",
+      "paper_refs": [
+        "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"
+      ],
+      "priority": "medium",
+      "promoted_theorem_id": "S7QH-T0005",
+      "status": "promoted",
+      "supporting_theorem_ids": [
+        "S7QH-T0004",
+        "S7QH-T0002"
+      ],
+      "target_statement": "Shared right multiplication by a unit quaternion preserves the total norm of a quaternion pair.",
+      "title": "Unit quaternionic right phase preserves pair norm"
+    },
+    {
       "blocker": "S15-T0008 proves a unit-basis counterexample: naive shared right unit-octonion multiplication does not preserve the full bounded Hopf coordinate.",
       "candidate_formalization": "octonionicHopfMap (x*u, y*u) = octonionicHopfMap (x,y) under norm-one and bracketed assumptions",
       "claim_type": "theorem",

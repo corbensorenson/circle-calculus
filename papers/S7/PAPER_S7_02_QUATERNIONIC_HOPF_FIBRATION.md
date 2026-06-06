@@ -1,6 +1,6 @@
 # Circle Calculus S7.2: Quaternionic Hopf Fibration
 
-Status: polished draft with bounded quaternionic Hopf coordinate landing and right-phase invariance facts Lean-proved.
+Status: polished draft with bounded quaternionic Hopf coordinate landing, right-phase norm preservation, and right-phase invariance facts Lean-proved.
 
 ## Aim
 
@@ -33,6 +33,8 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `S7QH-T0001`: `Circle.S7.quaternionicHopf_lands_sphere`
 - `S7QH-T0002`: `Circle.S7.quaternionicPhaseInvariance`
 - `S7QH-T0003`: `Circle.S7.quaternionicRightPhaseAction_laws`
+- `S7QH-T0004`: `Circle.S7.quaternionPairRightPhase_norm_scaled`
+- `S7QH-T0005`: `Circle.S7.quaternionPairRightPhase_unit_preserves_norm`
 
 ## Model
 
@@ -66,6 +68,8 @@ The first component is a quaternion, so the output is represented by five real c
 
 for the real-coordinate quaternionic Hopf model.
 
+`S7QH-T0004` proves that right multiplication by a quaternion coordinate `u` scales the total pair norm by `|u|^2`. `S7QH-T0005` specializes this to unit quaternion phases: shared right multiplication by a unit phase preserves the pair norm.
+
 `S7QH-T0002` proves right-phase invariance: multiplying both quaternion coordinates on the right by the same unit quaternion coordinate preserves the Hopf base coordinates. The helper theorem `Circle.S7.quaternionicHopfMap_rightPhase_scaled` proves the stronger scaling identity: right multiplication by `u` scales the Hopf base by `|u|^2`, so unit `u` preserves the base point.
 
 `S7QH-T0003` packages the right-phase action law:
@@ -76,7 +80,7 @@ rightPhase(rightPhase(p,u),v) = rightPhase(p,u*v)
 
 and combines it with the checked base-invariance laws for unit phases. This uses associativity of quaternion multiplication. It is an action law for the bounded coordinate model, not a proof of quotient topology or the full fibration.
 
-The Python sidecar checks normalized landing, shared right-unit phase invariance, and right-phase composition on executable quaternion examples.
+The Python sidecar checks normalized landing, right-phase norm scaling, shared right-unit phase norm preservation, shared right-unit phase invariance, and right-phase composition on executable quaternion examples.
 
 ## Role In The Ladder
 
@@ -90,4 +94,4 @@ This paper links `S^3` quaternion algebra, finite `S^4` topology, and the `S^7` 
 
 ## Guardrails
 
-This paper proves bounded coordinate landing, right-phase invariance, and the coordinate right-phase action law. It does not yet formalize quaternionic projective space, quotient topology, smooth bundle structure, or the full quaternionic Hopf fibration.
+This paper proves bounded coordinate landing, right-phase norm scaling, unit-phase norm preservation, right-phase invariance, and the coordinate right-phase action law. It does not yet formalize quaternionic projective space, quotient topology, smooth bundle structure, or the full quaternionic Hopf fibration.

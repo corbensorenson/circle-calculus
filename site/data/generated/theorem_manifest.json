@@ -5612,7 +5612,7 @@
       "informal_statement": "Each coordinate octonion basis element has squared norm one.",
       "lean_name": "Circle.S7.octonionBasis",
       "lean_source": "Circle/S7/Scaffold.lean",
-      "lean_source_line": 221,
+      "lean_source_line": 236,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
@@ -5648,7 +5648,7 @@
       "informal_statement": "Define octonion conjugate and norm.",
       "lean_name": "Circle.S7.octonionConjugateNorm",
       "lean_source": "Circle/S7/Scaffold.lean",
-      "lean_source_line": 226,
+      "lean_source_line": 241,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
@@ -5683,7 +5683,7 @@
       "informal_statement": "Octonion norm is multiplicative.",
       "lean_name": "Circle.S7.octonionNormMul",
       "lean_source": "Circle/S7/Scaffold.lean",
-      "lean_source_line": 244,
+      "lean_source_line": 259,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
@@ -5719,7 +5719,7 @@
       "informal_statement": "Unit octonions are closed under multiplication, without forming a group.",
       "lean_name": "Circle.S7.unitOctonion_mul_closed",
       "lean_source": "Circle/S7/Scaffold.lean",
-      "lean_source_line": 254,
+      "lean_source_line": 269,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
@@ -5754,7 +5754,7 @@
       "informal_statement": "Octonion multiplication is noncommutative by a formal example.",
       "lean_name": "Circle.S7.octonion_noncommutative_example",
       "lean_source": "Circle/S7/Scaffold.lean",
-      "lean_source_line": 268,
+      "lean_source_line": 283,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
@@ -5790,7 +5790,7 @@
       "informal_statement": "Octonion multiplication is nonassociative by a formal example.",
       "lean_name": "Circle.S7.octonion_nonassociative_example",
       "lean_source": "Circle/S7/Scaffold.lean",
-      "lean_source_line": 274,
+      "lean_source_line": 289,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
@@ -5827,7 +5827,7 @@
       "informal_statement": "Octonion conjugation also returns the real norm coordinate in the left-product order.",
       "lean_name": "Circle.S7.octonionConjugateNorm_left",
       "lean_source": "Circle/S7/Scaffold.lean",
-      "lean_source_line": 235,
+      "lean_source_line": 250,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
@@ -5864,7 +5864,7 @@
       "informal_statement": "A norm-one octonion has bracket-explicit left and right conjugate inverse equations.",
       "lean_name": "Circle.S7.unitOctonion_conj_inverse",
       "lean_source": "Circle/S7/Scaffold.lean",
-      "lean_source_line": 260,
+      "lean_source_line": 275,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md"
@@ -5901,7 +5901,7 @@
       "informal_statement": "The quaternionic Hopf coordinate map sends normalized quaternion pairs to the unit S4 equation.",
       "lean_name": "Circle.S7.quaternionicHopf_lands_sphere",
       "lean_source": "Circle/S7/Scaffold.lean",
-      "lean_source_line": 131,
+      "lean_source_line": 146,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"
@@ -5937,7 +5937,7 @@
       "informal_statement": "Quaternionic phase invariance is the S^7 analog of Hopf phase invariance.",
       "lean_name": "Circle.S7.quaternionicPhaseInvariance",
       "lean_source": "Circle/S7/Scaffold.lean",
-      "lean_source_line": 147,
+      "lean_source_line": 162,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"
@@ -5974,7 +5974,7 @@
       "informal_statement": "Shared right unit-quaternion phases compose by quaternion multiplication and preserve the quaternionic Hopf base point.",
       "lean_name": "Circle.S7.quaternionicRightPhaseAction_laws",
       "lean_source": "Circle/S7/Scaffold.lean",
-      "lean_source_line": 154,
+      "lean_source_line": 169,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"
@@ -5986,6 +5986,80 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "sidecars/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION/python/test_paper_s7_02_examples.py::test_quaternionic_right_phase_action_composes_and_preserves_base"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S7QH-0001",
+        "S3Q-0001",
+        "S3Q-0002"
+      ],
+      "formal_statement": "forall p u, quaternionPairNormSq (quaternionPairRightPhase p u) = quaternionPairNormSq p * quaternionCoordNormSq u",
+      "id": "S7QH-T0004",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6"
+      ],
+      "informal_statement": "Right quaternionic phase multiplication scales pair norm by the phase norm.",
+      "lean_name": "Circle.S7.quaternionPairRightPhase_norm_scaled",
+      "lean_source": "Circle/S7/Scaffold.lean",
+      "lean_source_line": 123,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"
+      ],
+      "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION/python/test_paper_s7_02_examples.py::test_quaternionic_right_phase_norm_scales_and_unit_phase_preserves_norm"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S7QH-0001",
+        "S3Q-0001",
+        "S3Q-0002"
+      ],
+      "formal_statement": "forall p u, quaternionCoordNormSq u = 1 -> quaternionPairNormSq (quaternionPairRightPhase p u) = quaternionPairNormSq p",
+      "id": "S7QH-T0005",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6"
+      ],
+      "informal_statement": "Shared right multiplication by a unit quaternion preserves the pair norm.",
+      "lean_name": "Circle.S7.quaternionPairRightPhase_unit_preserves_norm",
+      "lean_source": "Circle/S7/Scaffold.lean",
+      "lean_source_line": 130,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"
+      ],
+      "source_manifest": "manifests/dimensions/S7_octonionic.yaml",
+      "status": "lean_proved",
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION/python/test_paper_s7_02_examples.py::test_quaternionic_right_phase_norm_scales_and_unit_phase_preserves_norm"
         ]
       }
     }

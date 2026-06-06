@@ -59,6 +59,19 @@ def test_quaternionic_hopf_right_phase_invariant(theta: float) -> None:
     assert_point_close(quaternionic_hopf_map(*rotated), quaternionic_hopf_map(q0, q1))
 
 
+def test_quaternionic_right_phase_norm_scales_and_unit_phase_preserves_norm() -> None:
+    q0 = Quaternion(0.25, -0.5, 1.0, 0.75)
+    q1 = Quaternion(1.5, 0.0, -0.25, 0.5)
+    phase = Quaternion(2.0, 0.5, -0.25, 0.75)
+    rotated = right_phase_rotate(q0, q1, phase)
+
+    assert_close(pair_squared_norm(*rotated), pair_squared_norm(q0, q1) * phase.squared_norm())
+
+    unit_phase = unit_i_phase(math.pi / 7.0)
+    unit_rotated = right_phase_rotate(q0, q1, unit_phase)
+    assert_close(pair_squared_norm(*unit_rotated), pair_squared_norm(q0, q1))
+
+
 def test_quaternionic_right_phase_action_composes_and_preserves_base() -> None:
     q0, q1 = normalize_pair(Quaternion(0.25, -0.5, 1.0, 0.75), Quaternion(1.5, 0.0, -0.25, 0.5))
     base = quaternionic_hopf_map(q0, q1)

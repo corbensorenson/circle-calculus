@@ -20,6 +20,8 @@ namespace Circle.PaperS702
 #check Circle.S7.quaternionPairNormSq
 #check Circle.S7.quaternionPairRightPhase
 #check Circle.S7.quaternionPairRightPhase_comp
+#check Circle.S7.quaternionPairRightPhase_norm_scaled
+#check Circle.S7.quaternionPairRightPhase_unit_preserves_norm
 #check Circle.S7.hopfBase5NormSq
 #check Circle.S7.hopfBase5Scale
 #check Circle.S7.quaternionicHopfMap

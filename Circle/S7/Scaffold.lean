@@ -120,6 +120,21 @@ theorem quaternionPairRightPhase_comp
   rcases p with ⟨q0, q1⟩
   simp [quaternionPairRightPhase, quaternionMulCoord_assoc]
 
+theorem quaternionPairRightPhase_norm_scaled (p : QuaternionPair) (u : QuaternionCoord) :
+    quaternionPairNormSq (quaternionPairRightPhase p u) =
+      quaternionPairNormSq p * quaternionCoordNormSq u := by
+  rcases p with ⟨q0, q1⟩
+  simp [quaternionPairNormSq, quaternionPairRightPhase, quaternionCoordNormSq_mul]
+  ring
+
+theorem quaternionPairRightPhase_unit_preserves_norm
+    (p : QuaternionPair) (u : QuaternionCoord)
+    (hu : quaternionCoordNormSq u = 1) :
+    quaternionPairNormSq (quaternionPairRightPhase p u) =
+      quaternionPairNormSq p := by
+  rw [quaternionPairRightPhase_norm_scaled, hu]
+  ring
+
 theorem quaternionicHopfBaseNormSq_hopfMap (p : QuaternionPair) :
     hopfBase5NormSq (quaternionicHopfMap p) =
       quaternionPairNormSq p * quaternionPairNormSq p := by

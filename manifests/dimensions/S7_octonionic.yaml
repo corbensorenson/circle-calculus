@@ -82,6 +82,32 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["sidecars/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION/python/test_paper_s7_02_examples.py::test_quaternionic_right_phase_action_composes_and_preserves_base"]
     blocker: ""
+  - id: S7QH-T0004
+    status: lean_proved
+    lean_name: Circle.S7.quaternionPairRightPhase_norm_scaled
+    informal_statement: "Right quaternionic phase multiplication scales pair norm by the phase norm."
+    formal_statement: "forall p u, quaternionPairNormSq (quaternionPairRightPhase p u) = quaternionPairNormSq p * quaternionCoordNormSq u"
+    dictionary_dependencies: ["S7QH-0001", "S3Q-0001", "S3Q-0002"]
+    paper_refs: ["papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["sidecars/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION/python/test_paper_s7_02_examples.py::test_quaternionic_right_phase_norm_scales_and_unit_phase_preserves_norm"]
+    blocker: ""
+  - id: S7QH-T0005
+    status: lean_proved
+    lean_name: Circle.S7.quaternionPairRightPhase_unit_preserves_norm
+    informal_statement: "Shared right multiplication by a unit quaternion preserves the pair norm."
+    formal_statement: "forall p u, quaternionCoordNormSq u = 1 -> quaternionPairNormSq (quaternionPairRightPhase p u) = quaternionPairNormSq p"
+    dictionary_dependencies: ["S7QH-0001", "S3Q-0001", "S3Q-0002"]
+    paper_refs: ["papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"]
+    imports_allowed: ["Common", "S1", "S2", "S3", "S4", "S5", "S6"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["sidecars/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION/python/test_paper_s7_02_examples.py::test_quaternionic_right_phase_norm_scales_and_unit_phase_preserves_norm"]
+    blocker: ""
   - id: S7O-T0001
     status: lean_proved
     lean_name: Circle.S7.octonionBasis

@@ -341,6 +341,36 @@ targets:
     next_action: "Promoted to S7O-T0008 with bracket-explicit left and right conjugate inverse equations for norm-one octonions."
     guardrail: "Do not introduce a group API for unit octonions."
 
+  - id: P4-S7-003
+    layer: S7
+    priority: medium
+    status: promoted
+    promoted_theorem_id: S7QH-T0004
+    supporting_theorem_ids: ["S7QH-T0003", "S3Q-T0002"]
+    claim_type: theorem
+    title: "Quaternionic right phase scales pair norm"
+    target_statement: "Right multiplication of both quaternion coordinates by a phase scales the total pair norm by the phase norm."
+    candidate_formalization: "forall p u, Circle.S7.quaternionPairNormSq (Circle.S7.quaternionPairRightPhase p u) = Circle.S7.quaternionPairNormSq p * Circle.S7.quaternionCoordNormSq u"
+    paper_refs: ["papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"]
+    dictionary_dependencies: ["S7QH-0001", "S3Q-0001", "S3Q-0002"]
+    next_action: "Promoted to S7QH-T0004 and Lean-proved as Circle.S7.quaternionPairRightPhase_norm_scaled."
+    guardrail: "This is a bounded coordinate norm law, not a complete quaternionic Hopf fibration theorem."
+
+  - id: P4-S7-004
+    layer: S7
+    priority: medium
+    status: promoted
+    promoted_theorem_id: S7QH-T0005
+    supporting_theorem_ids: ["S7QH-T0004", "S7QH-T0002"]
+    claim_type: theorem
+    title: "Unit quaternionic right phase preserves pair norm"
+    target_statement: "Shared right multiplication by a unit quaternion preserves the total norm of a quaternion pair."
+    candidate_formalization: "forall p u, Circle.S7.quaternionCoordNormSq u = 1 -> Circle.S7.quaternionPairNormSq (Circle.S7.quaternionPairRightPhase p u) = Circle.S7.quaternionPairNormSq p"
+    paper_refs: ["papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md"]
+    dictionary_dependencies: ["S7QH-0001", "S3Q-0001", "S3Q-0002"]
+    next_action: "Promoted to S7QH-T0005 and Lean-proved as Circle.S7.quaternionPairRightPhase_unit_preserves_norm."
+    guardrail: "This preserves normalized coordinate pairs under unit phase; it is not quotient topology."
+
   - id: P4-S15-001
     layer: S15
     priority: medium

@@ -75,7 +75,7 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/S4_S6/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE.md` | polished draft | `S5-T0001` and `S5-T0002` proved with Python examples |
 | `papers/S4_S6/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS.md` | polished draft | `S6-T0001` through `S6-T0003` proved with Python examples; `S6-W0001` warning tracked |
 | `papers/S7/PAPER_S7_01_TOPOLOGICAL_7SPHERE.md` | polished draft | `S7C-T0001` through `S7C-T0003` proved with Python examples |
-| `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md` | polished draft/partial proof | `S7QH-T0001` through `S7QH-T0003` are Lean-proved coordinate theorems; full fibration topology remains future work |
+| `papers/S7/PAPER_S7_02_QUATERNIONIC_HOPF_FIBRATION.md` | polished draft/partial proof | `S7QH-T0001` through `S7QH-T0005` are Lean-proved coordinate theorems; full fibration topology remains future work |
 | `papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md` | polished draft/proved spine | `S7O-T0001` through `S7O-T0008` are Lean-proved in a bounded Cayley-Dickson coordinate model |
 | `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md` | polished draft/partial proof | `S15-T0001` is a Lean roadmap marker; `S15-T0002` through `S15-T0008` have checked Lean declarations for topological, coordinate landing, safe right-phase, and warning-boundary facts with Python examples |
 | `papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md` | polished draft/proved finite seed | `P2S-T0001` through `P2S-T0003` are Lean-proved double/four suspension facts with Python examples |
@@ -433,6 +433,8 @@ Executable exploratory spine:
 - `S7QH-T0001`: coordinate quaternionic Hopf map sends normalized quaternion pairs to the unit five-coordinate base equation
 - `S7QH-T0002`: shared right unit-quaternion phase rotation preserves the quaternionic Hopf map
 - `S7QH-T0003`: quaternionic right phase action composes and preserves the Hopf base point
+- `S7QH-T0004`: quaternionic right phase scales pair norm by the phase norm
+- `S7QH-T0005`: unit quaternionic right phase preserves pair norm
 - `S7O-T0001` through `S7O-T0008`: bounded Cayley-Dickson basis, two-sided conjugate norm, norm multiplicativity, unit closure by norm, bracket-explicit norm-one conjugate inverse, noncommutativity, and nonassociativity facts in Lean
 - `S15-T0001`: Lean roadmap marker for the octonionic Hopf horizon
 - `S15-T0002`: finite S15 Euler theorem
