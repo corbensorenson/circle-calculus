@@ -244,6 +244,7 @@ async function hydrateTargetIndexes() {
   const indexFiles = {
     phase4: "../../data/generated/phase4_targets.json",
     phase5: "../../data/generated/phase5_targets.json",
+    phase6: "../../data/generated/phase6_targets.json",
   };
   for (const target of document.querySelectorAll(".target-index[data-target-index]")) {
     const indexName = target.dataset.targetIndex || "phase4";
@@ -260,7 +261,7 @@ async function hydrateTargetIndexes() {
         item.layer || item.area || "",
         item.status || "",
         item.priority || "",
-        item.title || "",
+        item.title || item.objective || "",
         item.next_action || "",
       ]) {
         const td = document.createElement("td");

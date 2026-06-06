@@ -20,4 +20,10 @@ Source: `manifests/phase5_edge_targets.yaml`
 
 <div class="target-index" data-target-index="phase5"></div>
 
+## Phase VI Sweep Targets
+
+Source: `manifests/phase6_sweep_targets.yaml`
+
+<div class="target-index" data-target-index="phase6"></div>
+
 <script type="module" src="widgets/shared/widget_base.js"></script>

@@ -192,6 +192,14 @@ def export_phase5_targets() -> dict:
     return {"targets": data.get("targets", [])}
 
 
+def export_phase6_targets() -> dict:
+    path = ROOT / "manifests" / "phase6_sweep_targets.yaml"
+    if not path.exists():
+        return {"targets": []}
+    data = load_yaml(path)
+    return {"targets": data.get("targets", [])}
+
+
 def glyph_status_label(canonical_status: str) -> str:
     if canonical_status == "proved":
         return "Lean-proved"
@@ -250,6 +258,7 @@ def export_all() -> None:
     write_json(GENERATED / "widget_index.json", export_widget_index())
     write_json(GENERATED / "phase4_targets.json", export_phase4_targets())
     write_json(GENERATED / "phase5_targets.json", export_phase5_targets())
+    write_json(GENERATED / "phase6_targets.json", export_phase6_targets())
     write_json(GENERATED / "glyph_index.json", export_glyph_index(theorem_manifest, dictionary))
 
 

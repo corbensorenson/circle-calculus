@@ -1,0 +1,174 @@
+targets:
+  - id: P6-SWEEP-001
+    area: "Proof status and manifest consistency"
+    priority: high
+    status: planned
+    sweep_type: proof_status
+    objective: "Ensure every reader-facing theorem claim has an honest status and every proved claim resolves to compiled Lean."
+    acceptance_criteria:
+      - "No paper, site page, widget caption, or README line labels an unproved theorem as proved."
+      - "Every proved theorem id resolves to a Lean declaration and passes fake-proof checks."
+      - "Every planned, exploratory, blocked, or deferred theorem remains labeled that way in prose."
+    artifact_refs:
+      - "papers"
+      - "site"
+      - "manifests"
+      - "Circle"
+      - "sidecars"
+    checks:
+      - "make check"
+      - "python scripts/check_manifest.py"
+      - "python scripts/check_no_fake_proofs.py"
+      - "python scripts/site/check_site_theorem_status.py"
+    next_action: "Run a claim-language audit across README, papers, and Living Book pages after the next proof batch."
+    guardrail: "Do not edit theorem meanings merely to make prose cleaner."
+
+  - id: P6-SWEEP-002
+    area: "Paper prose and theorem-link clarity"
+    priority: high
+    status: planned
+    sweep_type: paper_quality
+    objective: "Make every paper easier to read while preserving exact proof status and theorem ids."
+    acceptance_criteria:
+      - "Each paper has a clear aim, theorem spine, proved core, sidecar pointer, and guardrail."
+      - "Formal claims either cite theorem ids or are labeled background, exploratory, planned, blocked, deferred, or future."
+      - "Speculative application language is separated from proved theorem language."
+    artifact_refs:
+      - "papers"
+      - "manifests/paper_manifest.yaml"
+      - "docs/PROOF_POLICY.md"
+    checks:
+      - "python scripts/check_paper_manifest.py"
+      - "python scripts/check_paper_theorem_links.py"
+    next_action: "Audit the papers in dimensional order, starting with S0/S1 then moving upward."
+    guardrail: "Cleaner prose must not upgrade proof status."
+
+  - id: P6-SWEEP-003
+    area: "Dictionary and terminology consistency"
+    priority: high
+    status: planned
+    sweep_type: dictionary_usage
+    objective: "Keep project vocabulary stable across papers, manifests, Python, Lean, and Living Book pages."
+    acceptance_criteria:
+      - "Recurring project terms have dictionary ids."
+      - "Dictionary forbidden meanings match paper and site guardrails."
+      - "No page or paper invents a parallel term when a dictionary term already exists."
+    artifact_refs:
+      - "dictionary"
+      - "papers"
+      - "site"
+      - "manifests/paper_manifest.yaml"
+    checks:
+      - "python scripts/check_dictionary.py"
+      - "python scripts/site/check_site_dictionary_links.py"
+    next_action: "Scan new Phase IV/V vocabulary for missing dictionary entries before the next prose sweep."
+    guardrail: "Do not duplicate dictionary definitions manually in site prose when generated boxes can carry them."
+
+  - id: P6-SWEEP-004
+    area: "Sidecar and executable-reference parity"
+    priority: high
+    status: planned
+    sweep_type: sidecar_parity
+    objective: "Ensure Python examples and Lean sidecars match paper claims without being presented as proofs."
+    acceptance_criteria:
+      - "Every paper sidecar path in the paper manifest exists."
+      - "Python sidecars test the examples named in their papers."
+      - "Benchmark sidecars include ordinary baselines and guardrails before usefulness claims."
+    artifact_refs:
+      - "sidecars"
+      - "circle_math"
+      - "manifests/paper_manifest.yaml"
+      - "manifests/applications"
+    checks:
+      - "python scripts/check_lean_sidecars.py"
+      - "python -m pytest"
+    next_action: "Review sidecar names and benchmark fixtures for stale examples or missing negative controls."
+    guardrail: "Do not call Python tests formal proofs."
+
+  - id: P6-SWEEP-005
+    area: "Living Book correctness and usability"
+    priority: high
+    status: planned
+    sweep_type: living_book
+    objective: "Keep the Living Book navigable, mobile-friendly, generated-data linked, and proof-status honest."
+    acceptance_criteria:
+      - "The reader path, roadmap, target index, theorem index, dictionary index, and application pages render."
+      - "Widgets are labeled as intuition or executable reference, not proof."
+      - "Theorem and dictionary boxes resolve from generated data."
+    artifact_refs:
+      - "site"
+      - "scripts/site"
+      - "docs/LIVING_BOOK_POLICY.md"
+      - "docs/LIVING_BOOK_ROADMAP.md"
+    checks:
+      - "make sitecheck"
+      - "make site-render"
+    next_action: "Run browser checks on the reader path and S1 widget pages after widget or navigation changes."
+    guardrail: "Do not make scaffolded higher-dimensional pages look complete."
+
+  - id: P6-SWEEP-006
+    area: "Public repo onboarding and peripheral docs"
+    priority: medium
+    status: planned
+    sweep_type: repo_onboarding
+    objective: "Make the public repository easy to understand, verify, cite, and navigate."
+    acceptance_criteria:
+      - "README matches the actual proof, paper, Living Book, license, and GitHub Pages state."
+      - "Peripheral docs point to source-of-truth manifests instead of duplicating drifting status tables."
+      - "No transient reports, caches, or local-only artifacts are tracked."
+    artifact_refs:
+      - "README.md"
+      - "LICENSE"
+      - "docs"
+      - ".gitignore"
+    checks:
+      - "git status --short"
+      - "git diff --check"
+      - "make check"
+    next_action: "Review README, GitHub Pages docs, and license/onboarding text after the next major roadmap update."
+    guardrail: "Do not add new peripheral docs unless they replace a real hidden-context gap."
+
+  - id: P6-SWEEP-007
+    area: "Application benchmark and edge-claim guardrails"
+    priority: high
+    status: planned
+    sweep_type: application_guardrails
+    objective: "Ensure application claims remain benchmarked, baseline-aware, and separated from mathematical proofs."
+    acceptance_criteria:
+      - "Every exploratory benchmark has a baseline or explicitly records that the baseline is future work."
+      - "AI, compute, data, rendering, and orientation claims do not imply universal improvement."
+      - "MLX/Mac-first local wording remains distinct from CUDA or external portability notes."
+    artifact_refs:
+      - "papers/applications"
+      - "manifests/applications"
+      - "manifests/phase5_edge_targets.yaml"
+      - "docs/PHASE2_AND_APPLICATIONS.md"
+    checks:
+      - "python scripts/check_phase5_targets.py"
+      - "python -m pytest"
+    next_action: "Audit application papers after each new benchmark fixture or baseline comparison."
+    guardrail: "Benchmark results are measurements or fixtures, not theorem proofs."
+
+  - id: P6-SWEEP-008
+    area: "Final link, source, and clutter sweep"
+    priority: medium
+    status: planned
+    sweep_type: repo_hygiene
+    objective: "Remove stale links, dead source references, and tracked clutter while preserving durable generated data."
+    acceptance_criteria:
+      - "Paper, site, manifest, and dictionary links resolve."
+      - "Generated data tracked by policy is current."
+      - "Rendered outputs, caches, and local install artifacts remain ignored unless intentionally tracked."
+    artifact_refs:
+      - "papers"
+      - "site"
+      - "site/data/generated"
+      - "scripts"
+      - ".gitignore"
+    checks:
+      - "python scripts/check_paper_theorem_links.py"
+      - "python scripts/site/check_site_paper_links.py"
+      - "python scripts/site/export_site_data.py"
+      - "git status --short"
+    next_action: "Perform a link and clutter audit before any release-style public announcement."
+    guardrail: "Do not delete user work or unrelated untracked files during cleanup."

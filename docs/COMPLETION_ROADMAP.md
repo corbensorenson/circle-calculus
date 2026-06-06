@@ -96,6 +96,7 @@ The project is complete only when all of these are true:
 - Theorem registry: `manifests/theorem_manifest.yaml` and future `manifests/dimensions/`
 - Paper registry: `manifests/paper_manifest.yaml`
 - Phase IV theorem target registry: `manifests/phase4_theorem_targets.yaml`
+- Phase VI sweep registry: `manifests/phase6_sweep_targets.yaml`
 - Dimensional plan: `docs/DIMENSIONAL_LADDER.md`
 - Deferred Phase II and applications context: `docs/PHASE2_AND_APPLICATIONS.md`
 - Phase III Living Book plan: `docs/LIVING_BOOK_POLICY.md`, `docs/LIVING_BOOK_ROADMAP.md`, and `docs/LIVING_BOOK_WIDGETS.md`
@@ -676,6 +677,11 @@ Outputs:
 
 Goal:
 Make the entire project cleaner, more correct, easier to consume, and harder to misread. This is the final wide sweep over writing, proofs, manifests, dictionary entries, site pages, examples, links, and repository ergonomics.
+
+Source of truth:
+
+- `manifests/phase6_sweep_targets.yaml`
+- `scripts/check_phase6_sweep_targets.py`
 
 Polish standard:
 The final pass should optimize for correct wide and deep coverage. Every reader-facing claim should be either proved, explicitly planned, exploratory, blocked, deferred, or background. Every public entry point should sound cleaner, point to the right source of truth, and make it easy for a new reader to understand what has been proved and what remains future work.
