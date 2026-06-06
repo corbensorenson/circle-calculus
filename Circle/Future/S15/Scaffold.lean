@@ -22,12 +22,17 @@ theorem topologicalModel_eq_eightSuspensions_s7 (n : Nat) :
     topologicalModel n = eightSuspensions (Circle.S7.iteratedSuspensionModel n) := by
   rfl
 
+theorem eightSuspensions_eulerCharacteristic (cells : List Nat) :
+    Circle.Common.eulerCharacteristic (eightSuspensions cells) =
+      Circle.Common.eulerCharacteristic cells := by
+  unfold eightSuspensions
+  repeat rw [Circle.Common.suspensionEuler_two_step]
+
 theorem topologicalModel_eulerCharacteristic (n : Nat) :
     Circle.Common.eulerCharacteristic (topologicalModel n) = 0 := by
-  unfold topologicalModel eightSuspensions
-  repeat rw [Circle.Common.suspensionEuler]
-  rw [Circle.S7.eulerCharacteristic]
-  norm_num
+  unfold topologicalModel
+  rw [eightSuspensions_eulerCharacteristic]
+  exact Circle.S7.eulerCharacteristic n
 
 structure OctonionPair where
   o0 : Circle.S7.OctonionCoord

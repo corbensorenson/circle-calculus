@@ -386,6 +386,21 @@ targets:
     blocker: "S15-T0008 proves a unit-basis counterexample: naive shared right unit-octonion multiplication does not preserve the full bounded Hopf coordinate."
     guardrail: "Do not claim full octonionic Hopf fibration or quotient topology."
 
+  - id: P4-S15-002
+    layer: S15
+    priority: medium
+    status: promoted
+    promoted_theorem_id: S15-T0009
+    supporting_theorem_ids: ["COMMON-T0006", "S15-T0002", "S15-T0004"]
+    claim_type: theorem
+    title: "Eight suspensions preserve Euler characteristic"
+    target_statement: "Eight finite suspension steps preserve Euler characteristic, giving the finite S15 topological anchor a direct parity theorem."
+    candidate_formalization: "forall cells : List Nat, Circle.Common.eulerCharacteristic (Circle.Future.S15.eightSuspensions cells) = Circle.Common.eulerCharacteristic cells"
+    paper_refs: ["papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md"]
+    dictionary_dependencies: ["S15-0002", "COMMON-0002", "COMMON-0003"]
+    next_action: "Promoted to S15-T0009 and Lean-proved as Circle.Future.S15.eightSuspensions_eulerCharacteristic."
+    guardrail: "This is finite suspension/Euler parity only, not the full octonionic Hopf fibration."
+
   - id: P4-P2-001
     layer: PhaseII
     priority: high

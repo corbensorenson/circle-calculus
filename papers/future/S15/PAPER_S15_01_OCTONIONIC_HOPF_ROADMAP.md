@@ -44,6 +44,7 @@ The theorem, warning, and dictionary links are registered in `manifests/paper_ma
 - `S15-T0006`: `Circle.Future.S15.octonionicHopfMap_rightPhase_scalar_invariant`
 - `S15-T0007`: `Circle.Future.S15.octonionicHopfMap_rightPhase_lands_sphere`
 - `S15-T0008`: `Circle.Future.S15.octonionicHopfMap_rightPhase_not_invariant_example`
+- `S15-T0009`: `Circle.Future.S15.eightSuspensions_eulerCharacteristic`
 - `S15-W0001`: naive right unit-octonion phase is not full coordinate invariance
 
 ## Roadmap Marker
@@ -64,6 +65,12 @@ It exists so the dictionary, paper manifest, and future proof work have one stab
 topologicalModel n = eightSuspensions (Circle.S7.iteratedSuspensionModel n)
 ```
 
+`S15-T0009` proves the general finite eight-suspension parity fact:
+
+```text
+chi(eightSuspensions(cells)) = chi(cells)
+```
+
 `S15-T0002` then proves:
 
 ```text
@@ -82,7 +89,7 @@ for every natural `n`. This gives the future `S^15` paper the same kind of finit
 
 for the bounded octonionic Hopf expression. This is the right algebraic seed for the future fibration paper because it checks the base-sphere landing equation before any quotient or fiber story is claimed.
 
-The Python sidecar mirrors the roadmap marker, the eightfold-suspension model, Euler characteristic `0`, the coordinate identity, and normalized-pair landing examples.
+The Python sidecar mirrors the roadmap marker, the eightfold-suspension model, eight-suspension Euler preservation, Euler characteristic `0`, the coordinate identity, and normalized-pair landing examples.
 
 ## Right-Phase Boundary
 

@@ -77,6 +77,18 @@ def test_s15_topological_model_is_eight_suspensions_of_s7() -> None:
         assert s15_topological_model(n) == eight_suspensions(s7_counts(n))
 
 
+def test_eight_suspensions_preserve_euler_characteristic() -> None:
+    examples = [
+        (),
+        (2,),
+        (4, 6, 4),
+        (8, 12, 6),
+        (7, 21, 14),
+    ]
+    for cells in examples:
+        assert euler_characteristic(eight_suspensions(cells)) == euler_characteristic(cells)
+
+
 def test_s15_topological_model_euler_characteristic() -> None:
     for n in range(3, 24):
         assert euler_characteristic(s15_topological_model(n)) == 0

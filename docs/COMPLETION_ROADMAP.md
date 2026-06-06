@@ -278,9 +278,9 @@ Goal: make the executable examples line up with the Lean-backed papers without d
 ### Future S15
 
 - [x] `papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md`
-  - Future targets: `S15-T0001` through `S15-T0008`
+  - Future targets: `S15-T0001` through `S15-T0009`
   - Do not claim the full octonionic Hopf fibration before quotient topology and a correct bracketed phase action are formalized.
-  - Status: polished draft records `S15-T0001` as a Lean roadmap marker; `S15-T0002` through `S15-T0008` are Lean-proved finite topological, coordinate landing, safe right-phase landing, and warning-boundary facts. The naive full-coordinate right unit-octonion phase-invariance target is blocked by a formal counterexample; full fibration topology remains future work.
+  - Status: polished draft records `S15-T0001` as a Lean roadmap marker; `S15-T0002` through `S15-T0009` are Lean-proved finite topological, eight-suspension parity, coordinate landing, safe right-phase landing, and warning-boundary facts. The naive full-coordinate right unit-octonion phase-invariance target is blocked by a formal counterexample; full fibration topology remains future work.
 
 ### Phase II: Structured Transformations After S15
 

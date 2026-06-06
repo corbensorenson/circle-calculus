@@ -48,7 +48,7 @@
       "id": "glyph:s15_roadmap_marker",
       "lean_name": "Circle.Future.S15.octonionicHopfRoadmap",
       "lean_source": "Circle/Future/S15/Scaffold.lean",
-      "lean_source_line": 133,
+      "lean_source_line": 138,
       "original_status": "lean_stated",
       "paper_refs": [
         "papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md"
