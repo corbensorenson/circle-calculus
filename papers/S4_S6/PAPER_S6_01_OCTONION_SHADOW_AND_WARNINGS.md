@@ -25,7 +25,23 @@ chi(S6) = 2 - chi(S5) = 2
 
 This is the expected parity for an even-dimensional sphere in the finite-count model.
 
-## Target Spine
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS/lean/PaperS601.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_S6_01_OCTONION_SHADOW_AND_WARNINGS/python/test_s6_suspension_examples.py
+```
+
+The theorem, warning, and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks finite suspension examples; Lean declarations determine proof status.
+
+## Theorem Spine
 
 - `S6-T0001`: `Circle.S6.eulerCharacteristic`
 - `S6-T0002`: `Circle.S6.counts_eq_suspension_s5`

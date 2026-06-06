@@ -25,7 +25,23 @@ chi(S5) = 2 - chi(S4) = 0
 
 This is the expected parity for an odd-dimensional sphere in the finite-count model.
 
-## Target Spine
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE/lean/PaperS501.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_S5_01_COMPLEX_PROJECTIVE_BRIDGE/python/test_s5_suspension_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks finite suspension examples; Lean declarations determine proof status.
+
+## Theorem Spine
 
 - `S5-T0001`: `Circle.S5.eulerCharacteristic`
 - `S5-T0002`: `Circle.S5.counts_eq_suspension_s4`

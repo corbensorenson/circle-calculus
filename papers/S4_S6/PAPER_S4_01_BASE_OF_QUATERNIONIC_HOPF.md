@@ -25,7 +25,23 @@ Circle.S4.counts(n) =
 
 The input `Circle.S3.suspendedSuspendedCircleCounts(n)` is the finite `S^3` model already proved in the `S3.1` paper. Applying the common suspension transform produces a finite count model for the next even-dimensional sphere.
 
-## Target Spine
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF/lean/PaperS401.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_S4_01_BASE_OF_QUATERNIONIC_HOPF/python/test_s4_suspension_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks finite suspension examples; Lean declarations determine proof status.
+
+## Theorem Spine
 
 - `S4-T0001`: `Circle.S4.eulerCharacteristic`
 - `S4-T0002`: `Circle.S4.counts_eq_suspension_s3`

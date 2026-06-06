@@ -25,7 +25,23 @@ antipode(pos) = neg
 
 There is no hidden geometry here. This is not a metric sphere, a smooth manifold, or a degenerate circle. It is the two-point combinatorial base object used by the later sphere notation.
 
-## Target Spine
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_S0_01_TWO_POINT_OPPOSITION/lean/PaperS001.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_S0_01_TWO_POINT_OPPOSITION/python/test_s0_opposition_examples.py
+```
+
+The theorem, warning, and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks finite examples; Lean declarations determine proof status.
+
+## Theorem Spine
 
 - `S0-T0001`: `Circle.S0.card_sign`
 - `S0-T0002`: `Circle.S0.antipode_involutive`

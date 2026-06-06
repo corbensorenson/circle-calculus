@@ -36,7 +36,23 @@ chi(Susp(K)) = 2 - chi(K)
 
 This formula is the whole engine behind the even/odd sphere Euler parity in the finite-count model.
 
-## Target Spine
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY/lean/PaperS45601.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY/python/test_s456_parity_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks finite count examples; Lean declarations determine proof status.
+
+## Theorem Spine
 
 - `COMMON-T0001`: `Circle.Common.eulerCharacteristic`
 - `COMMON-T0002`: `Circle.Common.suspensionCounts`

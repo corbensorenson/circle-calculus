@@ -20,7 +20,23 @@ Positive and negative integers represent the two orientations of motion on the s
 
 The model is still finite and modular. A negative stride does not require a new object; it is interpreted by coercion into `ZMod n`, where additive inverses already exist.
 
-## Target Spine
+## Source Trail
+
+The Lean sidecar is:
+
+```text
+sidecars/PAPER_S1_03_INTEGERS_ORIENTATION/lean/PaperS103.lean
+```
+
+The Python examples are:
+
+```text
+sidecars/PAPER_S1_03_INTEGERS_ORIENTATION/python/test_signed_rotation_examples.py
+```
+
+The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks finite examples; Lean declarations determine proof status.
+
+## Theorem Spine
 
 - `S1O-T0001`: `Circle.S1.signedRot_zero`
 - `S1O-T0002`: `Circle.S1.signedRot_comp`
