@@ -2,10 +2,34 @@
 title: "Suspended Circles"
 ---
 
-This placeholder will connect the suspended-circle paper, finite cell-count formulas, and future S2 interactives.
+Suspension is the first move from a circular layer toward a sphere-like layer. In this finite model, a circle is given two special pole-like endpoints, and the old circle becomes the equator-like middle layer.
+
+The goal is not to pretend this page has completed smooth sphere geometry. The goal is to show how a finite S1 address system can become part of a higher-dimensional scaffold while keeping the combinatorial facts checkable.
+
+::: {.warning-box}
+The widget here is still a placeholder. Treat it as a diagram slot for the finite suspended-circle idea, not as a proof or a complete S2 visualization.
+:::
+
+## What To Notice
+
+- The equator-like layer comes from the original finite circle.
+- The two added endpoints behave like north/south poles in the finite scaffold.
+- Cell counts and endpoint/equator distinctions are the checked claims; continuous metric geometry is future work.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+In a finite suspended-circle model, which part comes from the original `C_n`, and which parts are newly added?
+
+:::
+
+## Source Trail
 
 <div class="theorem-box" data-theorem-id="S2-T0002"></div>
 <div class="widget-panel" data-widget="sphere_grid_placeholder"></div>
+
+<p data-paper-ref="papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md">S2 Suspended Circles</a></p>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>
 <script type="module" src="../../widgets/S2/sphere_grid_placeholder.js"></script>

@@ -2,8 +2,30 @@
 title: "Finite Hyperspheres"
 ---
 
-This placeholder links the finite suspended-surface S3 model. Future widgets should keep topological claims separate from finite cell-count claims.
+Finite hyperspheres extend the suspension idea one dimension higher. The reader should treat this page as a finite scaffold: it helps organize cell counts and dimension vocabulary before the quaternion and Hopf chapters add algebraic and phase language.
+
+::: {.warning-box}
+Future widgets should keep topological claims separate from finite cell-count claims. A finite suspended-surface model is not a completed smooth `S^3` theory.
+:::
+
+## What To Notice
+
+- S2 introduced finite sphere-like grids.
+- S3 adds another suspension layer and prepares the ground for quaternion coordinates.
+- The checked theorem card records the finite scaffold claim currently available.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+Why should the finite hypersphere scaffold come before quaternion and Hopf material in the reader path?
+
+:::
+
+## Source Trail
 
 <div class="theorem-box" data-theorem-id="S3C-T0001"></div>
+
+<p data-paper-ref="papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S3/PAPER_S3_01_FINITE_HYPERSPHERES.md">S3 Finite Hyperspheres</a></p>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

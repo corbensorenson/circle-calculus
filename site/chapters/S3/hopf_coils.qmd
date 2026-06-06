@@ -2,10 +2,34 @@
 title: "Hopf Coils"
 ---
 
-This placeholder links bounded Hopf coordinate facts. Full fibration topology remains future work unless future manifests and Lean declarations say otherwise.
+Hopf-coil pages introduce one of the project’s most important higher-dimensional pictures: a visible base coordinate can be paired with a hidden circular phase. That is the intuition. The current formal layer is narrower and bounded to the coordinate facts represented by theorem cards.
+
+Read this page as a bridge from S1 phase to S3 fiber-like structure. The hidden-phase idea is useful, but it must not be mistaken for a completed proof of full Hopf fibration topology.
+
+::: {.warning-box}
+Full fibration topology remains future work unless future manifests and Lean declarations say otherwise. The widget is a placeholder for intuition, not a proof.
+:::
+
+## What To Notice
+
+- S1 taught one visible circular coordinate.
+- Hopf-style language introduces a visible base plus hidden circular phase.
+- The current theorem cards certify bounded coordinate facts, not the whole topological fibration.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+What is the difference between a hidden phase intuition and a Lean-proved bounded coordinate theorem?
+
+:::
+
+## Source Trail
 
 <div class="theorem-box" data-theorem-id="S3H-T0001"></div>
 <div class="widget-panel" data-widget="hopf_placeholder"></div>
+
+<p data-paper-ref="papers/S3/PAPER_S3_03_HOPF_COILS.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S3/PAPER_S3_03_HOPF_COILS.md">S3 Hopf Coils</a></p>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>
 <script type="module" src="../../widgets/S3/hopf_placeholder.js"></script>
