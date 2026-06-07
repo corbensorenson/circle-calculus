@@ -91,8 +91,11 @@ The paper also connects backward to bundle vocabulary in `PAPER_P2_03_BUNDLE_CAL
 - `PHYS-T0037`: `Circle.Physics.checkedGaugePath_identity_holonomy`, a checked identity path has zero holonomy.
 - `PHYS-T0038`: `Circle.Physics.checkedGaugePath_singleton_holonomy`, a checked singleton path has holonomy equal to the link phase.
 - `PHYS-T0039`: `Circle.Physics.checkedGaugePath_concat_holonomy`, checked path holonomy is additive under boundary-checked concatenation.
+- `PHYS-T0040`: `Circle.Physics.checkedGaugePath_toLinkPath_composable`, projecting a checked path to its link-path carrier preserves composability.
+- `PHYS-T0041`: `Circle.Physics.checkedGaugePath_toLinkPath_holonomy`, projecting a checked path to its link-path carrier preserves holonomy.
+- `PHYS-T0042`: `Circle.Physics.checkedGaugePath_toLinkPath_concat`, projecting a checked concatenation matches concatenating the projected link-path carriers.
 
-These theorem ids are Lean-proved in `Circle.Physics.LatticeGauge` for the finite `ZMod n` phase model. `PHYS-T0006` through `PHYS-T0039` move from bare phase lists toward finite link/path records, source-target composability, singleton concatenation, three-/four-link source-target laws, empty-path identity-style composability laws, record-level identity/associativity laws for concatenation, record-level reversal laws, general boundary-checked append composability, first source/target laws for nonempty concatenations, and a checked finite path interface with explicit endpoints, identities, associative boundary-checked composition, and checked-path holonomy identity/singleton/concat laws. They do not yet install a full mathlib category instance for finite graph paths. They do not prove continuum gauge theory.
+These theorem ids are Lean-proved in `Circle.Physics.LatticeGauge` for the finite `ZMod n` phase model. `PHYS-T0006` through `PHYS-T0042` move from bare phase lists toward finite link/path records, source-target composability, singleton concatenation, three-/four-link source-target laws, empty-path identity-style composability laws, record-level identity/associativity laws for concatenation, record-level reversal laws, general boundary-checked append composability, first source/target laws for nonempty concatenations, and a checked finite path interface with explicit endpoints, identities, associative boundary-checked composition, checked-path holonomy identity/singleton/concat laws, and projection bridges back to the link-path carrier. They do not yet install a full mathlib category instance for finite graph paths. They do not prove continuum gauge theory.
 
 ## Finite Model
 
@@ -127,7 +130,7 @@ The checked path interface packages this into an explicit finite record:
 CheckedGaugePath(source, target, links, composable, endpoints)
 ```
 
-It has an identity path at a vertex, singleton paths from links, boundary-checked composition, source/target laws for identity, singleton, and concatenated paths, left/right identity laws, an associativity law for boundary-checked composition, and holonomy laws for identity, singleton, and boundary-checked concatenation. This is a category-style interface seed, not a completed category instance for all finite graph paths.
+It has an identity path at a vertex, singleton paths from links, boundary-checked composition, source/target laws for identity, singleton, and concatenated paths, left/right identity laws, an associativity law for boundary-checked composition, holonomy laws for identity, singleton, and boundary-checked concatenation, and projection lemmas showing that a checked path's link carrier is composable, preserves holonomy, and respects concatenation. This is a category-style interface seed, not a completed category instance for all finite graph paths.
 
 A vertex gauge is a function:
 

@@ -1696,6 +1696,48 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_path_holonomy_concatenates_by_addition_mod_n
     blocker: ""
+  - id: PHYS-T0040
+    status: lean_proved
+    lean_name: Circle.Physics.checkedGaugePath_toLinkPath_composable
+    informal_statement: "Projecting a checked finite gauge path to its link-path carrier preserves composability."
+    formal_statement: "For checked finite gauge path path, path.toLinkPath.composable."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py
+    blocker: ""
+  - id: PHYS-T0041
+    status: lean_proved
+    lean_name: Circle.Physics.checkedGaugePath_toLinkPath_holonomy
+    informal_statement: "Projecting a checked finite gauge path to its link-path carrier preserves holonomy."
+    formal_statement: "For checked finite gauge path path, path.toLinkPath.holonomy = path.holonomy."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_path_holonomy_concatenates_by_addition_mod_n
+    blocker: ""
+  - id: PHYS-T0042
+    status: lean_proved
+    lean_name: Circle.Physics.checkedGaugePath_toLinkPath_concat
+    informal_statement: "Projecting a checked concatenation to its link-path carrier matches concatenating the projected carriers."
+    formal_statement: "For checked finite gauge paths left and right with left.target = right.source, (left.concat right h).toLinkPath = left.toLinkPath.concat right.toLinkPath."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_path_holonomy_concatenates_by_addition_mod_n
+    blocker: ""
   - id: GEN-T0001
     status: lean_proved
     lean_name: Circle.Generative.finiteCircleGenerator_regenerates_nodes

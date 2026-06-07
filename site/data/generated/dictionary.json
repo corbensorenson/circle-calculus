@@ -5666,6 +5666,24 @@
           "lean_name": "Circle.Physics.checkedGaugePath_concat_holonomy",
           "name": "Circle.Physics.checkedGaugePath_concat_holonomy",
           "status": "proved"
+        },
+        {
+          "id": "PHYS-T0040",
+          "lean_name": "Circle.Physics.checkedGaugePath_toLinkPath_composable",
+          "name": "Circle.Physics.checkedGaugePath_toLinkPath_composable",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0041",
+          "lean_name": "Circle.Physics.checkedGaugePath_toLinkPath_holonomy",
+          "name": "Circle.Physics.checkedGaugePath_toLinkPath_holonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0042",
+          "lean_name": "Circle.Physics.checkedGaugePath_toLinkPath_concat",
+          "name": "Circle.Physics.checkedGaugePath_toLinkPath_concat",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -5930,6 +5948,24 @@
           "id": "PHYS-T0039",
           "lean_name": "Circle.Physics.checkedGaugePath_concat_holonomy",
           "name": "Circle.Physics.checkedGaugePath_concat_holonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0040",
+          "lean_name": "Circle.Physics.checkedGaugePath_toLinkPath_composable",
+          "name": "Circle.Physics.checkedGaugePath_toLinkPath_composable",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0041",
+          "lean_name": "Circle.Physics.checkedGaugePath_toLinkPath_holonomy",
+          "name": "Circle.Physics.checkedGaugePath_toLinkPath_holonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0042",
+          "lean_name": "Circle.Physics.checkedGaugePath_toLinkPath_concat",
+          "name": "Circle.Physics.checkedGaugePath_toLinkPath_concat",
           "status": "proved"
         }
       ],

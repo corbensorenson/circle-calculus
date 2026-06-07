@@ -25,7 +25,7 @@
       ],
       "guardrail": "A finite gauge-link seed is not continuum electromagnetism, QED, Yang-Mills theory, or a physics prediction.",
       "id": "P7-PHYS-001",
-      "next_action": "Finite link-path record holonomy plus singleton, two-link, singleton-concat, three-link, four-link, empty-identity, concat-associativity, reversal-algebra, general boundary-checked append composability, first nonempty source/target laws, and a checked finite path interface with explicit endpoints, identity laws, associative boundary-checked composition, and checked-path holonomy laws are now Lean-proved; next decide whether a full finite graph path category is worth adding.",
+      "next_action": "Finite link-path record holonomy plus singleton, two-link, singleton-concat, three-link, four-link, empty-identity, concat-associativity, reversal-algebra, general boundary-checked append composability, first nonempty source/target laws, and a checked finite path interface with explicit endpoints, identity laws, associative boundary-checked composition, checked-path holonomy laws, and checked-to-link-path projection bridges are now Lean-proved; next decide whether a full finite graph path category is worth adding.",
       "ordinary_baseline": "Standard lattice gauge notation with link variables, Wilson loops, and separate prose or textbook derivations.",
       "priority": "high",
       "question": "Can Circle Calculus turn finite gauge-link diagrams into proof-carrying path holonomy and closed-loop invariance artifacts?",

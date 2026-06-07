@@ -316,6 +316,9 @@ def CheckedGaugePath.concat
 def CheckedGaugePath.holonomy (path : CheckedGaugePath n) : ZMod n :=
   pathHolonomy (path.links.map GaugeLink.phase)
 
+def CheckedGaugePath.toLinkPath (path : CheckedGaugePath n) : GaugeLinkPath n :=
+  { links := path.links }
+
 theorem checkedGaugePath_identity_source (n vertex : Nat) :
     (CheckedGaugePath.identity n vertex).source = vertex := by
   rfl
@@ -379,6 +382,20 @@ theorem checkedGaugePath_concat_holonomy
   cases left
   cases right
   simp [CheckedGaugePath.holonomy, CheckedGaugePath.concat, pathHolonomy, List.sum_append]
+
+theorem checkedGaugePath_toLinkPath_composable (path : CheckedGaugePath n) :
+    path.toLinkPath.composable := by
+  exact path.composable
+
+theorem checkedGaugePath_toLinkPath_holonomy (path : CheckedGaugePath n) :
+    path.toLinkPath.holonomy = path.holonomy := by
+  rfl
+
+theorem checkedGaugePath_toLinkPath_concat
+    (left right : CheckedGaugePath n) (hboundary : left.target = right.source) :
+    (left.concat right hboundary).toLinkPath =
+      left.toLinkPath.concat right.toLinkPath := by
+  rfl
 
 theorem gaugeLinkPath_reverse_phases (path : GaugeLinkPath n) :
     path.reverse.phases = reversePhases path.phases := by

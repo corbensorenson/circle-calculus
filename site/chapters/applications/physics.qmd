@@ -114,6 +114,9 @@ The theorem cards below are Lean-proved for the finite `ZMod n` phase and link-p
 <div class="theorem-box" data-theorem-id="PHYS-T0037"></div>
 <div class="theorem-box" data-theorem-id="PHYS-T0038"></div>
 <div class="theorem-box" data-theorem-id="PHYS-T0039"></div>
+<div class="theorem-box" data-theorem-id="PHYS-T0040"></div>
+<div class="theorem-box" data-theorem-id="PHYS-T0041"></div>
+<div class="theorem-box" data-theorem-id="PHYS-T0042"></div>
 
 ## Dictionary Trail
 
@@ -130,7 +133,7 @@ The theorem cards below are Lean-proved for the finite `ZMod n` phase and link-p
 <p data-paper-ref="papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md">Spin paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md">Spin Double Cover Roadmap</a></p>
 
 ::: {.warning-box}
-The Python fixture is an executable reference. The current Lean model proves finite phase-list and link-path holonomy facts plus singleton, two-link, singleton-concat, three-link, four-link, empty-identity, concat-identity, concat-associativity, reversal-algebra, boundary-append composability, first source/target projection facts, checked finite path endpoint facts, checked finite path identity/associativity laws, and checked finite path holonomy identity/singleton/concat laws. A full finite graph path category remains future graph-path work.
+The Python fixture is an executable reference. The current Lean model proves finite phase-list and link-path holonomy facts plus singleton, two-link, singleton-concat, three-link, four-link, empty-identity, concat-identity, concat-associativity, reversal-algebra, boundary-append composability, first source/target projection facts, checked finite path endpoint facts, checked finite path identity/associativity laws, checked finite path holonomy identity/singleton/concat laws, and projection bridges from checked paths back to the link-path carrier. A full finite graph path category remains future graph-path work.
 :::
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>
