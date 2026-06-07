@@ -26,6 +26,9 @@ sidecar remains an executable reference, not a formal proof source.
 #check Circle.Physics.checkedGaugePath_concat_identity_left
 #check Circle.Physics.checkedGaugePath_concat_identity_right
 #check Circle.Physics.checkedGaugePath_concat_assoc
+#check Circle.Physics.checkedGaugePath_identity_holonomy
+#check Circle.Physics.checkedGaugePath_singleton_holonomy
+#check Circle.Physics.checkedGaugePath_concat_holonomy
 #check Circle.Physics.gaugeLinkPathHolonomy_concat
 #check Circle.Physics.gaugeLinkPathHolonomy_reverse
 #check Circle.Physics.gaugeLinkPath_concat_empty_left

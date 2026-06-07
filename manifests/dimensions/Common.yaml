@@ -1654,6 +1654,48 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py
     blocker: ""
+  - id: PHYS-T0037
+    status: lean_proved
+    lean_name: Circle.Physics.checkedGaugePath_identity_holonomy
+    informal_statement: "A checked finite gauge identity path has zero holonomy."
+    formal_statement: "For vertex, (CheckedGaugePath.identity n vertex).holonomy = 0."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_singleton_path_holonomy_is_edge_phase_mod_n
+    blocker: ""
+  - id: PHYS-T0038
+    status: lean_proved
+    lean_name: Circle.Physics.checkedGaugePath_singleton_holonomy
+    informal_statement: "A checked singleton finite gauge path has holonomy equal to the link phase."
+    formal_statement: "For link, (CheckedGaugePath.singleton link).holonomy = link.phase."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_singleton_path_holonomy_is_edge_phase_mod_n
+    blocker: ""
+  - id: PHYS-T0039
+    status: lean_proved
+    lean_name: Circle.Physics.checkedGaugePath_concat_holonomy
+    informal_statement: "Checked finite gauge path holonomy is additive under boundary-checked concatenation."
+    formal_statement: "For checked finite gauge paths left and right with left.target = right.source, (left.concat right h).holonomy = left.holonomy + right.holonomy."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_path_holonomy_concatenates_by_addition_mod_n
+    blocker: ""
   - id: GEN-T0001
     status: lean_proved
     lean_name: Circle.Generative.finiteCircleGenerator_regenerates_nodes

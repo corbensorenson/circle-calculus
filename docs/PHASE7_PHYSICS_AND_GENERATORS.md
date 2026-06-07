@@ -73,6 +73,9 @@ checkedGaugePath_concat_target
 checkedGaugePath_concat_identity_left
 checkedGaugePath_concat_identity_right
 checkedGaugePath_concat_assoc
+checkedGaugePath_identity_holonomy
+checkedGaugePath_singleton_holonomy
+checkedGaugePath_concat_holonomy
 gaugeTransform_pathHolonomy_endpoints
 closedWilsonLoop_gaugeInvariant
 plaquetteHolonomy_gaugeInvariant
@@ -84,7 +87,7 @@ This is a good Circle Calculus target because a loop diagram can become:
 glyph -> finite path object -> theorem id -> Lean declaration -> paper section -> Living Book widget
 ```
 
-The finite-gauge seed now includes singleton/two-link/singleton-concat/three-link/four-link/empty-identity, record-associativity, reversal-algebra, general boundary-checked append composability, first source/target laws for nonempty concatenations, and a checked finite path interface with explicit endpoints, identity laws, and associative boundary-checked composition. The next finite-gauge step is to decide whether a full finite graph path-category instance is worth the abstraction:
+The finite-gauge seed now includes singleton/two-link/singleton-concat/three-link/four-link/empty-identity, record-associativity, reversal-algebra, general boundary-checked append composability, first source/target laws for nonempty concatenations, and a checked finite path interface with explicit endpoints, identity laws, associative boundary-checked composition, and checked-path holonomy identity/singleton/concat laws. The next finite-gauge step is to decide whether a full finite graph path-category instance is worth the abstraction:
 
 - Berry/geometric phase and Aharonov-Bohm-style holonomy primers;
 - Hopf/Bloch-sphere hidden phase lessons linked to the existing `S3` Hopf spine;

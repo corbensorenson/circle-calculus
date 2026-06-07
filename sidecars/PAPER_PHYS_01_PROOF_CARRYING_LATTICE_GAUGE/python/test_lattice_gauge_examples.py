@@ -22,6 +22,14 @@ def test_path_holonomy_concatenates_by_addition_mod_n() -> None:
     assert combined.target == "d"
 
 
+def test_singleton_path_holonomy_is_edge_phase_mod_n() -> None:
+    path = GaugePath(11, (GaugeEdge("a", "b", 14),))
+
+    assert path_holonomy(path) == 3
+    assert path.source == "a"
+    assert path.target == "b"
+
+
 def test_reverse_path_inverts_holonomy() -> None:
     path = GaugePath(13, (GaugeEdge("a", "b", 5), GaugeEdge("b", "c", 4)))
     reversed_path = reverse_path(path)
@@ -73,4 +81,3 @@ def test_square_plaquette_fixture_is_closed_and_gauge_invariant() -> None:
     assert plaquette.closed
     assert path_holonomy(plaquette) == (2 + 5 - 7 + 4) % 23
     assert path_holonomy(transformed) == path_holonomy(plaquette)
-

@@ -313,6 +313,9 @@ def CheckedGaugePath.concat
     endpoints := linksHaveEndpoints_append left.endpoints
       (by simpa [hboundary] using right.endpoints) }
 
+def CheckedGaugePath.holonomy (path : CheckedGaugePath n) : ZMod n :=
+  pathHolonomy (path.links.map GaugeLink.phase)
+
 theorem checkedGaugePath_identity_source (n vertex : Nat) :
     (CheckedGaugePath.identity n vertex).source = vertex := by
   rfl
@@ -361,6 +364,21 @@ theorem checkedGaugePath_concat_assoc
   cases middle
   cases right
   simp [CheckedGaugePath.concat, List.append_assoc]
+
+theorem checkedGaugePath_identity_holonomy (n vertex : Nat) :
+    (CheckedGaugePath.identity n vertex).holonomy = 0 := by
+  simp [CheckedGaugePath.holonomy, CheckedGaugePath.identity, pathHolonomy]
+
+theorem checkedGaugePath_singleton_holonomy (link : GaugeLink n) :
+    (CheckedGaugePath.singleton link).holonomy = link.phase := by
+  simp [CheckedGaugePath.holonomy, CheckedGaugePath.singleton, pathHolonomy]
+
+theorem checkedGaugePath_concat_holonomy
+    (left right : CheckedGaugePath n) (hboundary : left.target = right.source) :
+    (left.concat right hboundary).holonomy = left.holonomy + right.holonomy := by
+  cases left
+  cases right
+  simp [CheckedGaugePath.holonomy, CheckedGaugePath.concat, pathHolonomy, List.sum_append]
 
 theorem gaugeLinkPath_reverse_phases (path : GaugeLinkPath n) :
     path.reverse.phases = reversePhases path.phases := by
