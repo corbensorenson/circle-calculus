@@ -63,6 +63,14 @@ MultiCoil/RoPE-style work begins with a modest bookkeeping question: if a positi
 
 <div class="widget-panel" data-widget="multicoil_phase_explorer" data-dictionary-ids="COMMON-0046 COMMON-0026 COMMON-0027"></div>
 
+## RoPE-Style Relative Phase Path
+
+RoPE-style relative phase asks a related but different question: what phase feature is induced by the lag between a query position and a key position?
+
+`AIRA-B0003` is the current executable fixture for this idea. The widget below shows the correct-period relative feature, a wrong-period control, and the closure check after shifting query or key by a full period. It is not a standard RoPE benchmark or model-quality result.
+
+<div class="widget-panel" data-widget="rope_relative_phase" data-dictionary-ids="COMMON-0051 COMMON-0050 COMMON-0026"></div>
+
 ## Looped Recurrence Path
 
 Looped and recursive transformers reuse model blocks across multiple computation passes. The Circle Calculus version should make each pass explicit: loop phase, recurrence budget, state provenance, exit decision, and overthinking boundary. That is a possible interface contribution, not a proved model improvement.
@@ -305,5 +313,6 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 <script type="module" src="../../widgets/ai/coil_retrieval_reachability.js"></script>
 <script type="module" src="../../widgets/ai/content_gated_retrieval.js"></script>
 <script type="module" src="../../widgets/ai/multicoil_phase_explorer.js"></script>
+<script type="module" src="../../widgets/ai/rope_relative_phase.js"></script>
 <script type="module" src="../../widgets/ai/loop_recurrence_budget.js"></script>
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from math import gcd
+from math import cos, gcd, sin, tau
 
 from circle_math.applications import (
     average_candidate_count,
@@ -19,6 +19,7 @@ from circle_math.applications import (
     retrieval_hit_rate,
     retrieval_hit_rate_by_lag,
     retrieval_target_index,
+    rope_relative_feature,
     run_content_gated_retrieval_benchmark,
     token_recurrence_budget,
     training_free_loop_budget,
@@ -269,6 +270,12 @@ def js_multicoil_phase_label(periods: tuple[int, ...], position: int) -> int:
     phase = js_multicoil_phase(periods, position)
     score = sum((index + 1) * residue for index, residue in enumerate(phase))
     return 1 if score % 4 == 1 else 0
+
+
+def js_rope_relative_feature(period: int, query_position: int, key_position: int) -> tuple[float, float]:
+    lag = js_mod(query_position - key_position, period)
+    angle = tau * lag / period
+    return (round(cos(angle), 12), round(sin(angle), 12))
 
 
 def js_memory_slot(bank_size: int, token: int) -> int:
@@ -823,6 +830,33 @@ def main() -> int:
         assert multicoil_phase(periods, position + cycle) == multicoil_phase(periods, position)
         assert multicoil_phase_label(periods, position) == js_multicoil_phase_label(periods, position)
         assert multicoil_phase_label(periods, position + cycle) == multicoil_phase_label(periods, position)
+
+    rope_cases = [
+        (8, 19, 11, 7),
+        (11, 42, -5, 9),
+        (13, 140, 39, 12),
+    ]
+    for period, query_position, key_position, wrong_period in rope_cases:
+        assert rope_relative_feature(period, query_position, key_position) == js_rope_relative_feature(
+            period,
+            query_position,
+            key_position,
+        )
+        assert rope_relative_feature(period, query_position + period, key_position) == rope_relative_feature(
+            period,
+            query_position,
+            key_position,
+        )
+        assert rope_relative_feature(period, query_position, key_position + period) == rope_relative_feature(
+            period,
+            query_position,
+            key_position,
+        )
+        assert rope_relative_feature(wrong_period, query_position, key_position) == js_rope_relative_feature(
+            wrong_period,
+            query_position,
+            key_position,
+        )
 
     print("widget Python parity ok")
     return 0

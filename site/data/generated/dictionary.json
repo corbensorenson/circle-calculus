@@ -4101,6 +4101,11 @@
           "id": "multicoil_phase_explorer",
           "path": "site/widgets/ai/multicoil_phase_explorer.js",
           "python_reference": "circle_math.applications.circle_ai.multicoil_phase; circle_math.applications.circle_ai.multicoil_cycle_length; circle_math.applications.circle_ai.multicoil_phase_label"
+        },
+        {
+          "id": "rope_relative_phase",
+          "path": "site/widgets/ai/rope_relative_phase.js",
+          "python_reference": "circle_math.applications.circle_ai.rope_relative_feature; circle_math.applications.circle_ai.run_rope_relative_phase_benchmark"
         }
       ]
     },
@@ -5074,7 +5079,13 @@
         }
       ],
       "used_by_theorems": [],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "rope_relative_phase",
+          "path": "site/widgets/ai/rope_relative_phase.js",
+          "python_reference": "circle_math.applications.circle_ai.rope_relative_feature; circle_math.applications.circle_ai.run_rope_relative_phase_benchmark"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -5105,7 +5116,13 @@
         }
       ],
       "used_by_theorems": [],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "rope_relative_phase",
+          "path": "site/widgets/ai/rope_relative_phase.js",
+          "python_reference": "circle_math.applications.circle_ai.rope_relative_feature; circle_math.applications.circle_ai.run_rope_relative_phase_benchmark"
+        }
+      ]
     },
     {
       "dependencies": [

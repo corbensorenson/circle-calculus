@@ -141,6 +141,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is positional phase bookkeeping for a synthetic fixture only. It does not prove RoPE improvement, language-model quality, attention replacement, context-length improvement, or runtime improvement.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python MultiCoil phase helpers.
 
+### rope_relative_phase
+
+- Inputs: correct period, wrong/control period, query position, and key position.
+- Outputs: correct-period relative lag, sine/cosine relative feature, wrong-period feature, constructed synthetic label, query-shift closure check, key-shift closure check, finite phase-channel theorem links, and dictionary links.
+- Theorem ids: `AIA-T0001`, `AIA-T0002`, `AIA-T0004`, and `AIA-T0005` as finite phase-channel primitives only.
+- Dictionary ids: `COMMON-0051`, `COMMON-0050`, and `COMMON-0026`.
+- Python references: `circle_math.applications.circle_ai.rope_relative_feature` and `circle_math.applications.circle_ai.run_rope_relative_phase_benchmark`.
+- Guardrail: the widget is a relative phase fixture only. It does not prove standard RoPE quality, attention quality, context-length improvement, perplexity improvement, or runtime improvement.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python RoPE relative phase helper.
+
 ## Physics Widgets
 
 ### finite_path_algebra
@@ -199,5 +209,6 @@ Minimum parity cases:
 - coil-retrieval target index, selected coil path, local window, wrong-stride path, full-attention oracle hit, and near-lag local/coil controls.
 - content-gated retrieval mixed lags, gated/static/wrong/union/full hit rates, and average candidate counts.
 - MultiCoil phase tuple, joint cycle length, phase closure after one joint cycle, and constructed synthetic label.
+- RoPE-style relative phase lag, sine/cosine feature, query-period closure, and key-period closure.
 - finite path concatenation holonomy, reverse-path holonomy, path-plus-reverse closure, and open-path gauge endpoint prediction.
 - finite gauge-loop normalized phases, gauge-transformed phases, original/transformed holonomy, and closed endpoint cancellation.
