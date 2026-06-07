@@ -20,6 +20,7 @@ sidecars:
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_looped_recurrence.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_loop_exit_certificate.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_token_level_recurrence.py
+  - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_learned_token_level_recurrence.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_training_free_loop_wrapper.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_middle_block_recurrence.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_multi_resolution_recurrence.py
@@ -148,7 +149,9 @@ next_targets:
     AIA/AIM/AIRA proofs cover finite indexing and loop-budget schedule facts only, while AIM-B0003 provides
     a deterministic recurrence-schedule fixture with single-pass, fixed-loop, adaptive-exit, recurrent-memory,
     sparse phase-router, over-looped, and dense-threshold controls, AIM-B0005 records token-level budgets,
-    active-token counts, selected middle block, resolution labels, and wrong/over-loop controls, AIM-B0006
+    active-token counts, selected middle block, resolution labels, and wrong/over-loop controls, AIM-B0012
+    adds learned token-level recurrence routing with a phase-to-budget lookup, wrong-period, shifted-budget,
+    fixed-budget, over-loop, and nonperiodic scalar controls, AIM-B0006
     adds a deterministic training-free loop-wrapper fixture with CPU/optional-MLX scoring, fixed-loop,
     wrong-period, over-loop, and scalar-threshold baselines, and AIM-B0007 adds a middle-block recurrence
     fixture with selected-block, full-block, fixed-budget, wrong-block, and over-loop controls, and AIM-B0008
@@ -225,6 +228,11 @@ benchmarks:
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_benchmark_has_per_token_and_wrong_loop_controls
     script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_token_level_recurrence.py
     description: "Deterministic token-level recurrence routing fixture recording per-token budgets, active-token counts, selected middle block, resolution labels, fixed global-budget baseline, wrong-budget control, over-loop control, and nonperiodic scalar-threshold control."
+  - id: AIM-B0012
+    status: exploratory_python
+    path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_learned_token_level_recurrence_benchmark_has_token_router_controls
+    script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_learned_token_level_recurrence.py
+    description: "Deterministic learned token-level recurrence fixture fitting a phase-to-budget lookup and comparing it against fixed-budget, wrong-period, shifted-budget, over-loop, and nonperiodic scalar-threshold baselines."
   - id: AIM-B0006
     status: exploratory_python
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_training_free_loop_wrapper_benchmark_has_baselines_and_controls

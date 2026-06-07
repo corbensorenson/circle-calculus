@@ -389,6 +389,34 @@ class TokenLevelRecurrenceBenchmarkResult:
 
 
 @dataclass(frozen=True)
+class LearnedTokenLevelRecurrenceBenchmarkResult:
+    loop_period: int
+    wrong_period: int
+    train_token_count: int
+    test_token_count: int
+    max_budget: int
+    fixed_global_budget: int
+    over_loop_budget: int
+    wrong_budget_shift: int
+    overthink_tolerance: int
+    learned_budget_lookup: tuple[int, ...]
+    wrong_period_budget_lookup: tuple[int, ...]
+    required_budget_sample: tuple[int, ...]
+    learned_budget_sample: tuple[int, ...]
+    wrong_shift_budget_sample: tuple[int, ...]
+    active_token_counts: tuple[int, ...]
+    learned_token_router_accuracy: float
+    fixed_global_budget_accuracy: float
+    wrong_period_router_accuracy: float
+    wrong_shift_accuracy: float
+    over_looped_accuracy: float
+    nonperiodic_phase_lookup_accuracy: float
+    nonperiodic_scalar_threshold_accuracy: float
+    average_active_tokens: float
+    note: str = "Synthetic learned token-level recurrence fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
 class MiddleBlockRecurrenceBenchmarkResult:
     block_count: int
     sample_count: int
@@ -2153,6 +2181,142 @@ def run_token_level_recurrence_benchmark(
         over_looped_accuracy=accuracy(over_predictions, positive_labels),
         nonperiodic_token_level_accuracy=accuracy(control_loop_predictions, control_labels),
         nonperiodic_scalar_threshold_accuracy=accuracy(control_threshold_predictions, control_labels),
+        average_active_tokens=sum(active_counts) / len(active_counts),
+    )
+
+
+def run_learned_token_level_recurrence_benchmark(
+    *,
+    loop_period: int = 4,
+    wrong_period: int = 3,
+    train_token_count: int = 64,
+    test_token_count: int = 32,
+    max_budget: int = 4,
+    fixed_global_budget: int = 4,
+    over_loop_budget: int = 8,
+    wrong_budget_shift: int = 1,
+    overthink_tolerance: int = 0,
+) -> LearnedTokenLevelRecurrenceBenchmarkResult:
+    """Run a learned token-level recurrence routing fixture.
+
+    The fixture fits a phase-to-budget table on training tokens, applies that
+    table to held-out tokens, and compares it with fixed, wrong-period,
+    shifted-budget, over-loop, and nonperiodic scalar controls. It is routing
+    bookkeeping only, not evidence about learned recursive transformer quality.
+    """
+    _require_positive(loop_period, "loop_period")
+    _require_positive(wrong_period, "wrong_period")
+    _require_positive(train_token_count, "train_token_count")
+    _require_positive(test_token_count, "test_token_count")
+    _require_positive(max_budget, "max_budget")
+    _require_positive(fixed_global_budget, "fixed_global_budget")
+    _require_positive(over_loop_budget, "over_loop_budget")
+    if loop_period > max_budget:
+        raise ValueError("loop_period must be no larger than max_budget")
+    if wrong_period == loop_period:
+        raise ValueError("wrong_period must differ from loop_period")
+    if wrong_budget_shift == 0:
+        raise ValueError("wrong_budget_shift must be nonzero")
+    if overthink_tolerance < 0:
+        raise ValueError("overthink_tolerance must be nonnegative")
+
+    train_tokens = tuple(range(train_token_count))
+    train_budgets = token_recurrence_budgets(loop_period, train_tokens)
+    test_tokens = tuple(range(train_token_count, train_token_count + test_token_count))
+    required_budgets = token_recurrence_budgets(loop_period, test_tokens)
+    labels = tuple(1 for _ in test_tokens)
+
+    learned_lookup = fit_loop_budget_lookup(loop_period, train_tokens, train_budgets)
+    learned_budgets = tuple(
+        min(budget, max_budget)
+        for budget in predict_loop_budget_lookup(loop_period, learned_lookup, test_tokens)
+    )
+    wrong_lookup = fit_loop_budget_lookup(wrong_period, train_tokens, train_budgets)
+    wrong_period_budgets = tuple(
+        min(budget, max_budget)
+        for budget in predict_loop_budget_lookup(wrong_period, wrong_lookup, test_tokens)
+    )
+    fixed_budgets = tuple(fixed_global_budget for _ in test_tokens)
+    wrong_shift_budgets = tuple(
+        ((budget - 1 + wrong_budget_shift) % max_budget) + 1
+        for budget in required_budgets
+    )
+    over_budgets = tuple(over_loop_budget for _ in test_tokens)
+
+    learned_predictions = _recurrence_budget_predictions(
+        required_budgets,
+        learned_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+    fixed_predictions = _recurrence_budget_predictions(
+        required_budgets,
+        fixed_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+    wrong_period_predictions = _recurrence_budget_predictions(
+        required_budgets,
+        wrong_period_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+    wrong_shift_predictions = _recurrence_budget_predictions(
+        required_budgets,
+        wrong_shift_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+    over_predictions = _recurrence_budget_predictions(
+        required_budgets,
+        over_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+
+    control_threshold = (3 * train_token_count) // 4
+    control_train_labels = tuple(
+        nonperiodic_threshold_label(token, control_threshold)
+        for token in train_tokens
+    )
+    control_test_labels = tuple(
+        nonperiodic_threshold_label(token, control_threshold)
+        for token in test_tokens
+    )
+    control_phase_lookup = fit_phase_lookup(loop_period, train_tokens, control_train_labels)
+    control_phase_predictions = predict_phase_lookup(loop_period, control_phase_lookup, test_tokens)
+    control_threshold_fit, control_polarity = fit_threshold_classifier(
+        train_tokens,
+        control_train_labels,
+    )
+    control_threshold_predictions = predict_threshold_classifier(
+        test_tokens,
+        control_threshold_fit,
+        control_polarity,
+    )
+    active_counts = active_token_counts_by_budget(learned_budgets, max_budget)
+
+    return LearnedTokenLevelRecurrenceBenchmarkResult(
+        loop_period=loop_period,
+        wrong_period=wrong_period,
+        train_token_count=train_token_count,
+        test_token_count=test_token_count,
+        max_budget=max_budget,
+        fixed_global_budget=fixed_global_budget,
+        over_loop_budget=over_loop_budget,
+        wrong_budget_shift=wrong_budget_shift,
+        overthink_tolerance=overthink_tolerance,
+        learned_budget_lookup=learned_lookup,
+        wrong_period_budget_lookup=wrong_lookup,
+        required_budget_sample=required_budgets[: min(12, len(required_budgets))],
+        learned_budget_sample=learned_budgets[: min(12, len(learned_budgets))],
+        wrong_shift_budget_sample=wrong_shift_budgets[: min(12, len(wrong_shift_budgets))],
+        active_token_counts=active_counts,
+        learned_token_router_accuracy=accuracy(learned_predictions, labels),
+        fixed_global_budget_accuracy=accuracy(fixed_predictions, labels),
+        wrong_period_router_accuracy=accuracy(wrong_period_predictions, labels),
+        wrong_shift_accuracy=accuracy(wrong_shift_predictions, labels),
+        over_looped_accuracy=accuracy(over_predictions, labels),
+        nonperiodic_phase_lookup_accuracy=accuracy(control_phase_predictions, control_test_labels),
+        nonperiodic_scalar_threshold_accuracy=accuracy(
+            control_threshold_predictions,
+            control_test_labels,
+        ),
         average_active_tokens=sum(active_counts) / len(active_counts),
     )
 

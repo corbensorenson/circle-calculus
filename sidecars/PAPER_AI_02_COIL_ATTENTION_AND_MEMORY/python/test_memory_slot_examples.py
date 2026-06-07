@@ -27,6 +27,7 @@ from circle_math.applications.circle_ai import (
     run_coil_retrieval_benchmark,
     run_content_gated_retrieval_benchmark,
     run_learned_content_gate_retrieval_benchmark,
+    run_learned_token_level_recurrence_benchmark,
     run_looped_recurrence_benchmark,
     run_learned_recurrence_schedule_benchmark,
     run_memory_slot_benchmark,
@@ -509,6 +510,45 @@ def test_learned_recurrence_schedule_benchmark_has_baselines_and_controls() -> N
     assert result.fixed_loop_budget_accuracy == 0.25
     assert result.wrong_period_router_accuracy < result.learned_phase_router_accuracy
     assert result.over_looped_accuracy == 0.0
+    assert result.note.endswith("not a model-quality claim.")
+
+
+def test_learned_token_level_recurrence_benchmark_has_token_router_controls() -> None:
+    result = run_learned_token_level_recurrence_benchmark(
+        loop_period=4,
+        wrong_period=3,
+        train_token_count=64,
+        test_token_count=32,
+        max_budget=4,
+        fixed_global_budget=4,
+        over_loop_budget=8,
+        wrong_budget_shift=1,
+        overthink_tolerance=0,
+    )
+
+    assert result == run_learned_token_level_recurrence_benchmark(
+        loop_period=4,
+        wrong_period=3,
+        train_token_count=64,
+        test_token_count=32,
+        max_budget=4,
+        fixed_global_budget=4,
+        over_loop_budget=8,
+        wrong_budget_shift=1,
+        overthink_tolerance=0,
+    )
+    assert result.learned_budget_lookup == (1, 2, 3, 4)
+    assert result.required_budget_sample == (1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4)
+    assert result.learned_budget_sample == result.required_budget_sample
+    assert result.wrong_shift_budget_sample == (2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1)
+    assert result.active_token_counts == (32, 24, 16, 8)
+    assert result.average_active_tokens == 20.0
+    assert result.learned_token_router_accuracy == 1.0
+    assert result.fixed_global_budget_accuracy == 0.25
+    assert result.wrong_period_router_accuracy < result.learned_token_router_accuracy
+    assert result.wrong_shift_accuracy == 0.0
+    assert result.over_looped_accuracy == 0.0
+    assert result.nonperiodic_scalar_threshold_accuracy > result.nonperiodic_phase_lookup_accuracy
     assert result.note.endswith("not a model-quality claim.")
 
 
