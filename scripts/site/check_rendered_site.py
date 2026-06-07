@@ -48,6 +48,7 @@ REQUIRED_RENDERED_FILES = [
     "widgets/S1/winding_lift_explorer.js",
     "widgets/S2/sphere_grid_placeholder.js",
     "widgets/S3/hopf_placeholder.js",
+    "widgets/generative/seed_rule_diagram_generator.js",
 ]
 
 REQUIRED_TEXT = {

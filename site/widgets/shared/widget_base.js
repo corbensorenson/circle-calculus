@@ -18,7 +18,7 @@ function dataUrl(relativePath) {
   return new URL(relativePath, scriptUrl).toString();
 }
 
-async function loadJson(relativePath) {
+export async function loadJson(relativePath) {
   const url = dataUrl(relativePath);
   if (!dataCache.has(url)) {
     dataCache.set(url, fetch(url).then((response) => {
@@ -31,7 +31,7 @@ async function loadJson(relativePath) {
   return dataCache.get(url);
 }
 
-function statusLabel(item) {
+export function statusLabel(item) {
   const status = item.canonical_status || item.status || "planned";
   if (status === "proved") return "Lean-proved";
   if (status === "exploratory") return "Exploratory";
@@ -41,7 +41,7 @@ function statusLabel(item) {
   return "Planned theorem";
 }
 
-function statusClass(item) {
+export function statusClass(item) {
   const status = item.canonical_status || item.status || "planned";
   return `status-badge status-${status}`;
 }

@@ -105,7 +105,7 @@ targets:
       - "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"
       - "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md"
     dictionary_dependencies: ["COMMON-0042", "COMMON-0064", "COMMON-0065", "COMMON-0066", "COMMON-0033"]
-    next_action: "Exact representative-indexed orbit-decomposition regeneration plus orbit-count, representative orbit-length, coverage-product, formal orbit-class count agreement, canonical representative coverage, and disjointness are now Lean-proved; next route generator records into Living Book diagrams and keep minimality claims scoped to explicit search spaces."
+    next_action: "Exact representative-indexed orbit-decomposition regeneration, comparison gates, and the first generated-diagram Living Book widget are in place; next extend the widget contract toward orbit-family and proof-glyph records while keeping minimality claims scoped to explicit search spaces."
     guardrail: "A smaller generator is not automatically optimal, meaningful, or new mathematics."
 
   - id: P7-GEN-002
@@ -129,13 +129,13 @@ targets:
       - "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"
       - "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md"
     dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066", "COMMON-0041", "COMMON-0042"]
-    next_action: "Finite-circle and finite physics-loop diagram generation are now in the comparison fixture; exact-regeneration self/symmetry/transitivity, field-equality gates, and unequal-value negative gates are Lean-proved; expand next toward orbit-family diagrams and Living Book widget/status-badge integration, using the Lean exact-regeneration comparison seed as the finite proof boundary."
+    next_action: "Finite-circle and finite physics-loop diagram generation are now in both the comparison fixture and Living Book widget; exact-regeneration self/symmetry/transitivity, field-equality gates, and unequal-value negative gates are Lean-proved; expand next toward orbit-family diagrams and stronger explicit search-space baselines."
     guardrail: "Do not call this universal compression, Kolmogorov complexity, or an optimal generator theorem."
 
   - id: P7-GEN-003
     area: "Generative diagrams and Living Book lessons"
     priority: medium
-    status: exploratory_python
+    status: active
     target_type: living_book
     title: "Proof-carrying generative diagrams"
     question: "Can a Living Book diagram be generated from the same seed/rule/provenance record that feeds Python examples and theorem ids?"
@@ -149,8 +149,10 @@ targets:
       - "Circle/Generative/SeedRule.lean"
       - "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md"
       - "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py"
+      - "site/chapters/applications/generative.qmd"
+      - "site/widgets/generative/seed_rule_diagram_generator.js"
       - "site/targets.qmd"
       - "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md"
-    dictionary_dependencies: ["COMMON-0033", "COMMON-0064", "COMMON-0065", "COMMON-0066"]
-    next_action: "Finite-circle and finite physics-loop diagram generation now expose seed, rules, theorem ids, and dictionary ids in Python; next add Living Book widgets/status badges using the same component contract."
+    dictionary_dependencies: ["CC-0001", "CC-0002", "COMMON-0033", "COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063", "COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    next_action: "The first Living Book widget now exposes finite-circle and finite physics-loop seed/rule records with theorem-status badges; next add orbit-family and proof-glyph records or make the widget data-driven from generated site fixtures."
     guardrail: "Generated diagrams are explanations and interfaces; they are not proofs unless a linked theorem id is independently Lean-proved."

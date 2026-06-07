@@ -115,6 +115,8 @@ proof_glyph
 
 Each record regenerates its object deterministically. The finite-circle diagram generator returns node labels and successor edges from the same `n` seed, theorem ids, and dictionary ids as the node generator. The physics-loop diagram generator returns a finite square plaquette diagram with normalized link phases, closed-loop status, holonomy, physics theorem ids, and dictionary ids. A comparison fixture serializes the regenerated explicit object and the seed-rule record, then reports whether the generator description is shorter. Exact regeneration is checked before any length result is trusted, and the Lean comparison facts now expose the exact check as equality of the regenerated/generated fields for constructed comparison records.
 
+The Living Book page for generative structures now includes a static `seed_rule_diagram_generator` widget. It renders the finite-circle and finite physics-loop diagram records with visible seeds, rules, theorem-status badges, and dictionary links. The widget is an explanation layer; its diagram output is not a proof, and its description-length display is not a minimality theorem.
+
 ## Positive And Negative Cases
 
 The large finite-circle case gives a positive example: listing every node of `C_128` is longer than storing the seed and rule record. The tiny circle case gives a negative example: a single-node circle is shorter as an explicit object because the provenance record has fixed metadata overhead.
@@ -138,4 +140,4 @@ Seed-rule provenance turns that construction into a first-class object. It can c
 
 This paper does not prove Kolmogorov complexity results, optimal compression, universal generative modeling, or that smaller descriptions are always better. It gives a finite, auditable interface for exact regeneration and provenance.
 
-The next formal step is to route the generated finite-circle and physics-loop diagrams into Living Book widgets with visible seed/rule/proof-status metadata, while keeping compression-minimality claims out of scope until a precise search space exists.
+The next formal step is to extend the generated-diagram contract toward orbit-family and proof-glyph records, while keeping compression-minimality claims out of scope until a precise search space exists.

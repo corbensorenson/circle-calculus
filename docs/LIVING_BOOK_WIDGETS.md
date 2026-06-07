@@ -67,6 +67,18 @@ Implemented shared JavaScript:
 - Guardrail: mark as planned/draft if the corresponding Lean theorem is not proved.
 - Validation: quotient/residue decomposition agrees with Python reference behavior.
 
+## Generative Widgets
+
+### seed_rule_diagram_generator
+
+- Inputs: selected generated artifact.
+- Outputs: a generated finite-circle successor diagram or finite physics-loop plaquette diagram; seed; rules; schedule; closure condition; generated-object summary; theorem-status badges; dictionary links.
+- Theorem ids: `CC-T0001`, `CC-T0002`, `PHYS-T0005`, `PHYS-T0012`, `GEN-T0017`, and `GEN-T0019`.
+- Dictionary ids: finite circle/node ids plus finite gauge/generative provenance ids.
+- Python references: `circle_math.generative.finite_circle_diagram_generator` and `circle_math.generative.physics_loop_diagram_generator`.
+- Guardrail: the widget is generated explanation only. It displays linked proof statuses from the theorem manifest, but the diagram itself is not a proof and does not prove compression minimality or physics claims.
+- Validation: deterministic JavaScript diagram formulas are parity-checked against the Python seed-rule fixtures.
+
 ## Future Placeholders
 
 - `site/widgets/S2/sphere_grid_placeholder.js`
@@ -94,3 +106,5 @@ Minimum parity cases:
 - period `n/gcd(n,k)`;
 - gcd orbit count;
 - winding/residue decomposition.
+- finite-circle generated diagram nodes and successor edges;
+- finite physics-loop generated diagram normalized phases, closed-loop flag, and holonomy.

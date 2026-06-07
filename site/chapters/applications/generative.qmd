@@ -68,7 +68,11 @@ regenerate
 compare_generator_to_explicit
 ```
 
-The sidecar tests regenerate finite circle nodes, a finite-circle diagram with successor edges, a finite physics-loop diagram with normalized plaquette phases and holonomy, a stride orbit, the full stride-orbit decomposition, and proof-glyph metadata. The comparison fixture checks exact regeneration before comparing description length.
+The sidecar tests regenerate finite circle nodes, a finite-circle diagram with successor edges, a finite physics-loop diagram with normalized plaquette phases and holonomy, a stride orbit, the full stride-orbit decomposition, and proof-glyph metadata. The comparison fixture checks exact regeneration before comparing description length. The widget below exposes the same finite-circle and finite physics-loop seed/rule records as generated explanation, with theorem-status badges pulled from the manifest.
+
+<div class="widget-panel" data-widget="seed_rule_diagram_generator"></div>
+
+<script type="module" src="../../widgets/generative/seed_rule_diagram_generator.js"></script>
 
 ::: {.checkpoint-box}
 

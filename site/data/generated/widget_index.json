@@ -88,6 +88,29 @@
       "path": "site/widgets/S3/hopf_placeholder.js",
       "python_reference": "",
       "theorem_ids": []
+    },
+    {
+      "dictionary_ids": [
+        "CC-0001",
+        "CC-0002",
+        "COMMON-0060",
+        "COMMON-0061",
+        "COMMON-0062",
+        "COMMON-0063",
+        "COMMON-0064",
+        "COMMON-0066"
+      ],
+      "id": "seed_rule_diagram_generator",
+      "path": "site/widgets/generative/seed_rule_diagram_generator.js",
+      "python_reference": "circle_math.generative.finite_circle_diagram_generator; circle_math.generative.physics_loop_diagram_generator",
+      "theorem_ids": [
+        "CC-T0001",
+        "CC-T0002",
+        "PHYS-T0005",
+        "PHYS-T0012",
+        "GEN-T0017",
+        "GEN-T0019"
+      ]
     }
   ]
 }
