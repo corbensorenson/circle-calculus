@@ -13,13 +13,21 @@ circle geometry.
 The strongest immediate bridge is the Erdős-Ginzburg-Ziv theorem (EGZ): every
 family of at least `2*n - 1` elements of `ZMod n` contains `n` elements summing
 to zero. This is a recognized Erdős theorem, mathlib already has a formal proof,
-and Circle Calculus can state it natively as a theorem about `C n`.
+and Circle Calculus can state it natively as a theorem about `C n`. The next
+clean bridge is Cauchy-Davenport: nonempty finite subsets of prime-size
+`ZMod p` have sumsets of size at least `min p (|s| + |t| - 1)`.
 
 This review adds that bridge as:
 
 - theorem id: `CC-T0062`
 - Lean declaration: `Circle.erdos_ginzburg_ziv`
 - source: `Circle/Erdos/EGZ.lean`
+
+The Cauchy-Davenport bridge is now also tracked as:
+
+- theorem id: `CC-T0063`
+- Lean declaration: `Circle.cauchy_davenport_prime_circle`
+- source: `Circle/Erdos/CauchyDavenport.lean`
 
 This is not a claim of a new proof. It is a rigorous external theorem contact
 point: Circle's basic object is exactly the object in a nontrivial Erdős theorem.
@@ -31,7 +39,7 @@ High-confidence fit:
 - Finite cyclic groups and residues: already core.
 - Additive zero-sum questions: direct match after adding sequence/multiset
   vocabulary.
-- Sumset lower bounds on `ZMod p`: natural next bridge through Cauchy-Davenport.
+- Sumset lower bounds on `ZMod p`: now bridged through Cauchy-Davenport.
 - Computational witness/provenance tooling: consistent with the existing
   proof-carrying glyph and theorem-search lanes.
 
@@ -85,10 +93,11 @@ Notable status-sensitive items checked:
    EGZ is directly about zero sums in `ZMod n`, and mathlib exposes
    `ZMod.erdos_ginzburg_ziv`. Circle now wraps it as `CC-T0062`.
 
-2. Best next formal bridge: Cauchy-Davenport on `ZMod p`.
+2. Best second formal bridge: Cauchy-Davenport on `ZMod p`.
    This is not itself an Erdős problem, but it is core additive combinatorics and
    a standard route into zero-sum results. Mathlib has `ZMod.cauchy_davenport`.
-   A Circle wrapper would give the project a sumset API.
+   Circle now wraps it as `CC-T0063`; a richer local sumset API remains future
+   work.
 
 3. Best hard solved Erdős problem for explanatory fixtures: Erdős discrepancy.
    Homogeneous arithmetic progressions look like finite coils. The honest target
@@ -120,9 +129,10 @@ A credible Circle-Erdős program should proceed in this order:
    and no zero-sum subsequence of length `n`. This would show Circle can explain
    both the theorem and the tight threshold.
 
-3. Add `Circle.cauchy_davenport_prime`.
-   This would connect Circle's finite-address language to sumset growth, the
-   standard engine behind many additive-combinatorics arguments.
+3. Add `Circle.cauchy_davenport_prime_circle`.
+   This now connects Circle's finite-address language to sumset growth, the
+   standard engine behind many additive-combinatorics arguments. The next work
+   is to add local sumset vocabulary and examples rather than claim a new proof.
 
 4. Build zero-sum witness tooling.
    Define finite address families, zero-sum subsequences, witness certificates,
@@ -148,7 +158,8 @@ recognized, and aligned with the formal core.
 - Circle formal core: `docs/FORMAL_CORE_V0.md`
 - Circle proof policy: `docs/PROOF_POLICY.md`
 - EGZ bridge: `Circle/Erdos/EGZ.lean`
-- Theorem registry entry: `CC-T0062` in `manifests/theorem_manifest.yaml`
+- Cauchy-Davenport bridge: `Circle/Erdos/CauchyDavenport.lean`
+- Theorem registry entries: `CC-T0062` and `CC-T0063` in `manifests/theorem_manifest.yaml`
 - mathlib EGZ documentation:
   https://leanprover-community.github.io/mathlib4_docs/Mathlib/Combinatorics/Additive/ErdosGinzburgZiv.html
 - mathlib Cauchy-Davenport documentation:

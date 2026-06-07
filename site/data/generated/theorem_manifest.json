@@ -3486,6 +3486,34 @@
       "blocker": "",
       "canonical_status": "proved",
       "dictionary_dependencies": [
+        "CC-0001"
+      ],
+      "formal_statement": "forall {p : Nat}, p.Prime -> forall {s t : Finset (Circle.C p)}, s.Nonempty -> t.Nonempty -> min p (s.card + t.card - 1) <= (s + t).card",
+      "id": "CC-T0063",
+      "informal_statement": "For nonempty finite subsets of a prime-size circle C_p, the sumset has size at least min(p, |s| + |t| - 1).",
+      "lean_name": "Circle.cauchy_davenport_prime_circle",
+      "lean_source": "Circle/Erdos/CauchyDavenport.lean",
+      "lean_source_line": 13,
+      "name": "Cauchy-Davenport prime circle bridge",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/ERDOS_CIRCLE_MATH_REVIEW.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Erdos/CauchyDavenport.lean as a Circle.C wrapper around mathlib's ZMod.cauchy_davenport theorem.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
         "COMMON-0001",
         "COMMON-0002"
       ],

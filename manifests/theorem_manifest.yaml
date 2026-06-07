@@ -990,3 +990,19 @@ theorems:
       lean_build_required: true
       no_sorry_required: true
       python_property_tests: []
+
+  - id: CC-T0063
+    name: Cauchy-Davenport prime circle bridge
+    status: proved
+    lean_name: Circle.cauchy_davenport_prime_circle
+    informal_statement: "For nonempty finite subsets of a prime-size circle C_p, the sumset has size at least min(p, |s| + |t| - 1)."
+    formal_statement: "forall {p : Nat}, p.Prime -> forall {s t : Finset (Circle.C p)}, s.Nonempty -> t.Nonempty -> min p (s.card + t.card - 1) <= (s + t).card"
+    dictionary_dependencies: ["CC-0001"]
+    paper_refs: ["docs/ERDOS_CIRCLE_MATH_REVIEW.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Erdos/CauchyDavenport.lean as a Circle.C wrapper around mathlib's ZMod.cauchy_davenport theorem."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []

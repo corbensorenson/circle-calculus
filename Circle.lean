@@ -22,3 +22,4 @@ import Circle.Applications.CircleAI
 import Circle.Physics.LatticeGauge
 import Circle.Generative.SeedRule
 import Circle.Erdos.EGZ
+import Circle.Erdos.CauchyDavenport

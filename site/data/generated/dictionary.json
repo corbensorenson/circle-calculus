@@ -305,6 +305,12 @@
           "status": "proved"
         },
         {
+          "id": "CC-T0063",
+          "lean_name": "Circle.cauchy_davenport_prime_circle",
+          "name": "Cauchy-Davenport prime circle bridge",
+          "status": "proved"
+        },
+        {
           "id": "GEN-T0001",
           "lean_name": "Circle.Generative.finiteCircleGenerator_regenerates_nodes",
           "name": "Circle.Generative.finiteCircleGenerator_regenerates_nodes",

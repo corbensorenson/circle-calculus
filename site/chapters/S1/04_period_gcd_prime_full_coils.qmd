@@ -100,6 +100,13 @@ Use these cards to audit the period theorem, orbit decomposition theorem, and pr
 <div class="theorem-box" data-theorem-id="CC-T0006"></div>
 <div class="theorem-box" data-theorem-id="CC-T0007"></div>
 
+### Additive-Combinatorics Bridges
+
+Prime-size finite circles also touch classical additive combinatorics. These cards are external theorem bridges imported through mathlib: they show that `C n` is the right finite cyclic object for zero-sum and sumset-growth statements, but they are not new Circle Calculus proofs.
+
+<div class="theorem-box" data-theorem-id="CC-T0062"></div>
+<div class="theorem-box" data-theorem-id="CC-T0063"></div>
+
 Python reference model:
 
 ```python
