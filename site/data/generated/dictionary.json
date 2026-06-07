@@ -5894,6 +5894,11 @@
           "python_reference": "circle_math.physics.square_plaquette_path; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy"
         },
         {
+          "id": "finite_path_algebra",
+          "path": "site/widgets/physics/finite_path_algebra.js",
+          "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.path_holonomy; circle_math.physics.concat_paths; circle_math.physics.reverse_path; circle_math.physics.gauge_transform_path; circle_math.physics.transformed_holonomy_endpoint_prediction"
+        },
+        {
           "id": "seed_rule_diagram_generator",
           "path": "site/widgets/generative/seed_rule_diagram_generator.js",
           "python_reference": "circle_math.generative.finite_circle_diagram_generator; circle_math.generative.physics_loop_diagram_generator; circle_math.generative.coil_orbit_generator; circle_math.generative.orbit_decomposition_generator; circle_math.generative.proof_glyph_generator"
@@ -6206,6 +6211,11 @@
           "python_reference": "circle_math.physics.square_plaquette_path; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy"
         },
         {
+          "id": "finite_path_algebra",
+          "path": "site/widgets/physics/finite_path_algebra.js",
+          "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.path_holonomy; circle_math.physics.concat_paths; circle_math.physics.reverse_path; circle_math.physics.gauge_transform_path; circle_math.physics.transformed_holonomy_endpoint_prediction"
+        },
+        {
           "id": "seed_rule_diagram_generator",
           "path": "site/widgets/generative/seed_rule_diagram_generator.js",
           "python_reference": "circle_math.generative.finite_circle_diagram_generator; circle_math.generative.physics_loop_diagram_generator; circle_math.generative.coil_orbit_generator; circle_math.generative.orbit_decomposition_generator; circle_math.generative.proof_glyph_generator"
@@ -6348,6 +6358,11 @@
           "id": "finite_gauge_loop_holonomy",
           "path": "site/widgets/physics/finite_gauge_loop_holonomy.js",
           "python_reference": "circle_math.physics.square_plaquette_path; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy"
+        },
+        {
+          "id": "finite_path_algebra",
+          "path": "site/widgets/physics/finite_path_algebra.js",
+          "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.path_holonomy; circle_math.physics.concat_paths; circle_math.physics.reverse_path; circle_math.physics.gauge_transform_path; circle_math.physics.transformed_holonomy_endpoint_prediction"
         },
         {
           "id": "seed_rule_diagram_generator",

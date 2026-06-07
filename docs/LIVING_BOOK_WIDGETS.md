@@ -123,6 +123,16 @@ Implemented shared JavaScript:
 
 ## Physics Widgets
 
+### finite_path_algebra
+
+- Inputs: finite phase modulus; phases on `a->b`, `b->c`, and `c->d`; and vertex gauge values at `a`, `b`, `c`, and `d`.
+- Outputs: left/right/concatenated path records, concatenated holonomy, additive concatenation check, reversed path, reverse holonomy, closed path formed by appending the reverse, closed holonomy, gauge-transformed open path, endpoint-shift prediction, theorem-status badges, and dictionary links.
+- Theorem ids: `PHYS-T0001`, `PHYS-T0002`, `PHYS-T0003`, `PHYS-T0006`, `PHYS-T0007`, and `PHYS-T0039`.
+- Dictionary ids: `COMMON-0060`, `COMMON-0061`, and `COMMON-0063`.
+- Python references: `circle_math.physics.GaugePath`, `circle_math.physics.GaugeEdge`, `circle_math.physics.path_holonomy`, `circle_math.physics.concat_paths`, `circle_math.physics.reverse_path`, `circle_math.physics.gauge_transform_path`, and `circle_math.physics.transformed_holonomy_endpoint_prediction`.
+- Guardrail: the widget is finite modular path algebra only. It does not prove continuum electromagnetism, QFT, Yang-Mills theory, Berry phase, or a physics prediction.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python finite path helpers.
+
 ### finite_gauge_loop_holonomy
 
 - Inputs: finite phase modulus, four square-plaquette edge phases, and four vertex gauge values.
@@ -167,4 +177,5 @@ Minimum parity cases:
 - cyclic memory slot reduction, one-bank closure, multi-bank closure, idempotent normalization, slot loads, and collision count.
 - coil-retrieval target index, selected coil path, local window, wrong-stride path, full-attention oracle hit, and near-lag local/coil controls.
 - content-gated retrieval mixed lags, gated/static/wrong/union/full hit rates, and average candidate counts.
+- finite path concatenation holonomy, reverse-path holonomy, path-plus-reverse closure, and open-path gauge endpoint prediction.
 - finite gauge-loop normalized phases, gauge-transformed phases, original/transformed holonomy, and closed endpoint cancellation.

@@ -29,8 +29,12 @@ from circle_math.generative import (
     regenerate,
 )
 from circle_math.physics import (
+    GaugeEdge,
+    GaugePath,
+    concat_paths,
     gauge_transform_path,
     path_holonomy,
+    reverse_path,
     square_plaquette_path,
     transformed_holonomy_endpoint_prediction,
 )
@@ -117,6 +121,21 @@ def js_physics_loop_diagram(
     }
 
 
+def js_gauge_edge(source: str, target: str, phase: int, modulus: int) -> dict:
+    return {"source": source, "target": target, "phase": js_mod(phase, modulus)}
+
+
+def js_path_holonomy(edges: tuple[dict, ...], modulus: int) -> int:
+    return js_mod(sum(edge["phase"] for edge in edges), modulus)
+
+
+def js_reverse_edges(edges: tuple[dict, ...], modulus: int) -> tuple[dict, ...]:
+    return tuple(
+        js_gauge_edge(edge["target"], edge["source"], -edge["phase"], modulus)
+        for edge in reversed(edges)
+    )
+
+
 def js_square_plaquette_edges(
     modulus: int,
     *,
@@ -153,8 +172,11 @@ def js_gauge_transformed_edges(edges: tuple[dict, ...], gauge: dict[str, int], m
     )
 
 
-def js_path_holonomy(edges: tuple[dict, ...], modulus: int) -> int:
-    return js_mod(sum(edge["phase"] for edge in edges), modulus)
+def gauge_path_edges(path: GaugePath) -> tuple[dict, ...]:
+    return tuple(
+        {"source": edge.source, "target": edge.target, "phase": edge.phase}
+        for edge in path.edges
+    )
 
 
 def js_loop_required_steps(loop_period: int, sample_index: int) -> int:
@@ -331,6 +353,53 @@ def main() -> int:
         assert path_holonomy(transformed) == js_path_holonomy(js_transformed, modulus)
         assert transformed_holonomy_endpoint_prediction(plaquette, gauge) == path_holonomy(plaquette)
         assert path_holonomy(transformed) == path_holonomy(plaquette)
+
+    path_cases = [
+        (17, 6, 2, 9, {"a": 4, "b": 9, "c": 12, "d": 3}),
+        (23, -5, 31, 8, {"a": 20, "b": -3, "c": 7, "d": 11}),
+    ]
+    for modulus, ab, bc, cd, gauge in path_cases:
+        left = GaugePath(
+            modulus,
+            (
+                GaugeEdge("a", "b", ab),
+                GaugeEdge("b", "c", bc),
+            ),
+        )
+        right = GaugePath(modulus, (GaugeEdge("c", "d", cd),))
+        combined = concat_paths(left, right)
+        reversed_path = reverse_path(combined)
+        closed = concat_paths(combined, reversed_path)
+        transformed = gauge_transform_path(combined, gauge)
+        js_left = (
+            js_gauge_edge("a", "b", ab, modulus),
+            js_gauge_edge("b", "c", bc, modulus),
+        )
+        js_right = (js_gauge_edge("c", "d", cd, modulus),)
+        js_combined = (*js_left, *js_right)
+        js_reversed = js_reverse_edges(js_combined, modulus)
+        js_closed = (*js_combined, *js_reversed)
+        js_transformed = js_gauge_transformed_edges(js_combined, gauge, modulus)
+        assert gauge_path_edges(left) == js_left
+        assert gauge_path_edges(right) == js_right
+        assert gauge_path_edges(combined) == js_combined
+        assert gauge_path_edges(reversed_path) == js_reversed
+        assert gauge_path_edges(closed) == js_closed
+        assert gauge_path_edges(transformed) == js_transformed
+        assert path_holonomy(combined) == js_path_holonomy(js_combined, modulus)
+        assert path_holonomy(combined) == (
+            path_holonomy(left) + path_holonomy(right)
+        ) % modulus
+        assert path_holonomy(reversed_path) == js_path_holonomy(js_reversed, modulus)
+        assert path_holonomy(reversed_path) == (-path_holonomy(combined)) % modulus
+        assert closed.closed
+        assert path_holonomy(closed) == js_path_holonomy(js_closed, modulus)
+        assert path_holonomy(closed) == 0
+        assert path_holonomy(transformed) == js_path_holonomy(js_transformed, modulus)
+        assert path_holonomy(transformed) == transformed_holonomy_endpoint_prediction(
+            combined,
+            gauge,
+        )
 
     ai_cases = [
         (1, 0, 1, 0),

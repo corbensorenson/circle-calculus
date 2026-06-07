@@ -65,7 +65,11 @@ wilson_loop_certificate
 
 The sidecar tests check a composable path, a reversed path, an open-path gauge transform, a closed Wilson loop, and a square plaquette.
 
-The widget below is the same finite idea in interactive form. Change the edge phases or vertex gauge choices and compare the original holonomy with the transformed holonomy. It is not a proof and not a physics prediction; the theorem cards remain the formal status source.
+The first widget shows the path algebra before the closed-loop case: concatenate a composable path, reverse it, close it by following the reverse, and compare an open-path gauge transform against its endpoint prediction. It is finite bookkeeping only; the theorem cards remain the formal status source.
+
+<div class="widget-panel" data-widget="finite_path_algebra" data-theorem-id="PHYS-T0001" data-dictionary-ids="COMMON-0060 COMMON-0061 COMMON-0063"></div>
+
+The second widget specializes that idea to a square plaquette. Change the edge phases or vertex gauge choices and compare the original holonomy with the transformed holonomy. It is not a proof and not a physics prediction.
 
 <div class="widget-panel" data-widget="finite_gauge_loop_holonomy" data-theorem-id="PHYS-T0005" data-dictionary-ids="COMMON-0060 COMMON-0061 COMMON-0062 COMMON-0063"></div>
 
@@ -143,5 +147,6 @@ The theorem cards below are Lean-proved for the finite `ZMod n` phase and link-p
 The Python fixture is an executable reference. The current Lean model proves finite phase-list and link-path holonomy facts plus singleton, two-link, singleton-concat, three-link, four-link, empty-identity, concat-identity, concat-associativity, reversal-algebra, boundary-append composability, first source/target projection facts, checked finite path endpoint facts, checked finite path identity/associativity laws, checked finite path holonomy identity/singleton/concat laws, projection bridges from checked paths back to the link-path carrier, and closed checked-path gauge-invariance facts. A full finite graph path category remains future graph-path work.
 :::
 
+<script type="module" src="../../widgets/physics/finite_path_algebra.js"></script>
 <script type="module" src="../../widgets/physics/finite_gauge_loop_holonomy.js"></script>
 <script type="module" src="../../widgets/shared/widget_base.js"></script>
