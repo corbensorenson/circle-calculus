@@ -330,7 +330,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `COMPS-T0001` through `COMPS-T0004` are Lean-proved round-robin schedule facts with Python examples; fairness, load balancing, robotics, codec, ANN, acquisition, CAM, torsion, detection, and quantum claims remain future domain work.
 - [x] `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md`
   - Program: disciplined Circle AI thesis covering phase, recurrence, rotation, sparse cyclic mixing, circular memory, harmonic transforms, geometry-aware models, and proof-carrying model components.
-  - Status: polished draft; `AIA-T0001` through `AIA-T0005` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` and `AIA-B0002` are exploratory deterministic phase-channel benchmark fixtures; `AIA-B0003` is an exploratory CPU/optional-MLX backend parity fixture; model-quality and speed claims remain benchmark work.
+  - Status: polished draft; `AIA-T0001` through `AIA-T0005` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` and `AIA-B0002` are exploratory deterministic phase-channel benchmark fixtures; `AIA-B0003` is an exploratory CPU/optional-MLX backend parity fixture; `AIA-B0004` is an exploratory learned-feature baseline fixture; model-quality and speed claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`
   - Program: Coil Attention, CoilKV, long-context retrieval, alias control, stride/orbit coverage, and comparisons against full attention, sparse attention, Hyena-like mixers, and S4/Mamba-like baselines.
   - Status: polished draft; `AIM-T0001` through `AIM-T0005` are Lean-proved cyclic-memory-slot facts with Python examples; `AIM-B0001` is an exploratory cyclic-memory fixture with constant/scalar-threshold baselines and a nonperiodic control; `AIM-B0002` is an exploratory coil-retrieval reachability fixture with coil-path, local-window, wrong-stride, full-attention oracle, and near-lag controls; retrieval quality, alias control, and attention replacement claims remain benchmark work.
@@ -436,6 +436,7 @@ Application guardrails:
 - [x] `AIA-B0001`: exploratory deterministic phase-channel benchmark fixture.
 - [x] `AIA-B0002`: exploratory learned-baseline phase fixture with periodic and nonperiodic controls.
 - [x] `AIA-B0003`: exploratory CPU/optional-MLX backend parity fixture.
+- [x] `AIA-B0004`: exploratory learned-feature fixture with dense-scalar, learned-position, wrong-period, cyclic-feature, and nonperiodic controls.
 - [x] `AIM-T0001`: cyclic memory slot is bounded by a positive bank size.
 - [x] `AIM-T0002`: cyclic memory slot closes after one full bank pass.
 - [x] `AIM-T0003`: cyclic memory slot at zero is zero.
@@ -707,7 +708,7 @@ Outputs:
 - [x] `P5-EDGE-006`: periodic-boundary stencil validation fixture checks direct, dense, and gcd-cycle traversal outputs before backend or speed claims.
 - [x] `P5-EDGE-007`: orientation-debugging note records q/-q sign ambiguity against existing S3 spin theorem ids without claiming full SO(3) or robotics verification.
 - [x] `P5-EDGE-008`: Living Book reader path links dimensions, applications, theorem status, dictionary entries, source trails, and local verification commands.
-- [x] `P5-EDGE-009`: full-spectrum Circle AI program target separates proof targets, benchmarks, baselines, controls, model prototypes, and speculative hypotheses; `AIA-B0003` adds CPU/optional-MLX backend parity scaffolding, `AIM-B0002` extends the starter fixtures to coil-retrieval reachability, `AIRA-B0001` extends them to adapter-block structure, and `AIRA-B0002` extends them to MultiCoil/RoPE-style positional structure.
+- [x] `P5-EDGE-009`: full-spectrum Circle AI program target separates proof targets, benchmarks, baselines, controls, model prototypes, and speculative hypotheses; `AIA-B0003` adds CPU/optional-MLX backend parity scaffolding, `AIA-B0004` adds learned-feature baseline controls, `AIM-B0002` extends the starter fixtures to coil-retrieval reachability, `AIRA-B0001` extends them to adapter-block structure, and `AIRA-B0002` extends them to MultiCoil/RoPE-style positional structure.
 - [ ] At least one experiment-ready paper or application note for each accepted edge direction.
 - [ ] Python/MLX or other executable sidecars where the claim is computational.
 - [ ] Lean theorem targets where the claim is formal.
@@ -722,11 +723,12 @@ Program lanes:
 
 - [x] Phase-channel indexing and known-period synthetic fixtures.
 - [x] CPU reference plus optional MLX backend parity scaffolding.
+- [x] Learned-feature baseline scaffolding for dense scalar, learned-position, wrong-period, and cyclic-feature controls.
 - [x] Cyclic memory slots, alias diagnostics, and starter retrieval fixtures.
 - [x] Coil/sparse attention reachability fixtures with local, wrong-stride, and full-attention baselines.
 - [x] Adapter-block and block-cyclic parameter-sharing fixtures.
 - [x] MultiCoil/RoPE-style positional fixtures with single-period, constant, scalar-threshold, and nonperiodic controls.
-- [ ] Learned dense, learned-positional, standard-RoPE, LoRA, sliding-window, dilated, full-attention, long-convolution, and state-space baselines for the starter fixtures.
+- [ ] Learned dense-model, standard-RoPE, LoRA, sliding-window, dilated, full-attention, long-convolution, and state-space baselines for the starter fixtures.
 - [ ] Recurrent, state-space, and convolutional sequence-model prototypes with explicit period structure.
 - [ ] Harmonic, Fourier, circulant, and NTT-adjacent feature prototypes.
 - [ ] Quaternion, spherical, Hopf/fiber, and rotation-aware representation prototypes for geometry-bearing data.
@@ -745,6 +747,7 @@ Current accepted benchmark anchors:
 - [x] `AIA-B0001`: deterministic phase-channel fixture.
 - [x] `AIA-B0002`: learned-baseline phase fixture with periodic and nonperiodic controls.
 - [x] `AIA-B0003`: CPU/optional-MLX backend parity fixture across the current AI synthetic cases.
+- [x] `AIA-B0004`: learned-feature fixture comparing cyclic phase features with dense-scalar, learned-position, and wrong-period baselines.
 - [x] `AIM-B0001`: cyclic-memory fixture with ordinary baselines and collision diagnostics.
 - [x] `AIM-B0002`: coil-retrieval reachability fixture with local, wrong-stride, full-attention oracle, and near-lag controls.
 - [x] `AIRA-B0001`: adapter-block fixture with ordinary baselines and nonperiodic control.

@@ -2,6 +2,7 @@ from circle_math.applications.circle_ai import (
     mlx_available,
     phase_channel,
     run_ai_backend_parity_check,
+    run_learned_feature_baseline_benchmark,
     run_learned_phase_baseline_benchmark,
     run_phase_channel_benchmark,
 )
@@ -64,12 +65,31 @@ def test_learned_phase_baseline_fixture_has_positive_and_negative_controls() -> 
     assert result.note.endswith("not a model-quality claim.")
 
 
+def test_learned_feature_baseline_fixture_has_baselines_and_controls() -> None:
+    result = run_learned_feature_baseline_benchmark(
+        period=8,
+        wrong_period=7,
+        train_length=64,
+        test_length=32,
+    )
+    assert result.periodic_cyclic_feature_accuracy == 1.0
+    assert result.periodic_cyclic_feature_accuracy > result.periodic_dense_scalar_accuracy
+    assert result.periodic_cyclic_feature_accuracy > result.periodic_learned_position_accuracy
+    assert result.periodic_cyclic_feature_accuracy > result.periodic_wrong_period_accuracy
+    assert result.nonperiodic_dense_scalar_accuracy == 1.0
+    assert result.nonperiodic_dense_scalar_accuracy > result.nonperiodic_cyclic_feature_accuracy
+    assert result.nonperiodic_dense_scalar_accuracy > result.nonperiodic_learned_position_accuracy
+    assert result.note.endswith("not a model-quality claim.")
+
+
 def test_ai_backend_parity_fixture_is_deterministic() -> None:
     first = run_ai_backend_parity_check()
     second = run_ai_backend_parity_check()
     assert first == second
-    assert first.fixture_count >= 7
+    assert first.fixture_count >= 9
     assert dict(first.cpu_scores)["phase_lookup"] == 1.0
+    assert dict(first.cpu_scores)["learned_feature_cyclic"] == 1.0
+    assert dict(first.cpu_scores)["learned_feature_nonperiodic_dense_scalar"] == 1.0
     assert dict(first.cpu_scores)["memory_lookup"] == 1.0
     assert dict(first.cpu_scores)["adapter_lookup"] == 1.0
     assert dict(first.cpu_scores)["multicoil_lookup"] == 1.0

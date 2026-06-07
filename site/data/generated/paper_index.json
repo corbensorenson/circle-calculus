@@ -700,7 +700,9 @@
         "COMMON-0026",
         "COMMON-0027",
         "COMMON-0039",
-        "COMMON-0044"
+        "COMMON-0044",
+        "COMMON-0048",
+        "COMMON-0049"
       ],
       "id": "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES",
       "path": "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md",

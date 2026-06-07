@@ -199,6 +199,22 @@ class LearnedPhaseBenchmarkResult:
 
 
 @dataclass(frozen=True)
+class LearnedFeatureBaselineResult:
+    period: int
+    wrong_period: int
+    train_length: int
+    test_length: int
+    periodic_cyclic_feature_accuracy: float
+    periodic_dense_scalar_accuracy: float
+    periodic_learned_position_accuracy: float
+    periodic_wrong_period_accuracy: float
+    nonperiodic_cyclic_feature_accuracy: float
+    nonperiodic_dense_scalar_accuracy: float
+    nonperiodic_learned_position_accuracy: float
+    note: str = "Tiny learned-feature baseline fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
 class AIBackendParityResult:
     fixture_count: int
     cpu_scores: tuple[tuple[str, float], ...]
@@ -368,6 +384,35 @@ def predict_threshold_classifier(positions: Sequence[int], threshold: int, polar
     return tuple(1 if (position >= threshold) == (polarity == 1) else 0 for position in positions)
 
 
+def _fit_position_lookup(positions: Sequence[int], labels: Sequence[int]) -> tuple[int, tuple[tuple[int, int], ...]]:
+    if len(positions) != len(labels):
+        raise ValueError("positions and labels must have the same length")
+    if not positions:
+        raise ValueError("positions must be nonempty")
+    fallback = majority_label(labels)
+    counts: dict[int, list[int]] = {}
+    for position, label in zip(positions, labels):
+        if label not in (0, 1):
+            raise ValueError("labels must be binary")
+        if position not in counts:
+            counts[position] = [0, 0]
+        counts[position][label] += 1
+    entries = tuple(
+        (position, 1 if one_count >= zero_count else 0)
+        for position, (zero_count, one_count) in sorted(counts.items())
+    )
+    return fallback, entries
+
+
+def _predict_position_lookup(
+    lookup: tuple[int, tuple[tuple[int, int], ...]],
+    positions: Sequence[int],
+) -> tuple[int, ...]:
+    fallback, entries = lookup
+    lookup_map = dict(entries)
+    return tuple(lookup_map.get(position, fallback) for position in positions)
+
+
 def run_learned_phase_baseline_benchmark(
     *,
     period: int = 8,
@@ -399,6 +444,72 @@ def run_learned_phase_baseline_benchmark(
         periodic_dense_accuracy=accuracy(periodic_dense_predictions, periodic_test_labels),
         nonperiodic_phase_accuracy=accuracy(control_phase_predictions, control_test_labels),
         nonperiodic_dense_accuracy=accuracy(control_dense_predictions, control_test_labels),
+    )
+
+
+def run_learned_feature_baseline_benchmark(
+    *,
+    period: int = 8,
+    wrong_period: int = 7,
+    train_length: int = 64,
+    test_length: int = 32,
+) -> LearnedFeatureBaselineResult:
+    """Compare cyclic features with small ordinary learned baselines.
+
+    This fixture is still synthetic and tiny. It checks whether a correct
+    cyclic phase feature solves a known-period task while dense scalar,
+    absolute-position lookup, and wrong-period phase baselines stay weaker;
+    the nonperiodic control checks that the scalar baseline wins when the
+    target is not cyclic.
+    """
+    _require_positive(period, "period")
+    _require_positive(wrong_period, "wrong_period")
+    if train_length <= 0:
+        raise ValueError("train_length must be positive")
+    if test_length <= 0:
+        raise ValueError("test_length must be positive")
+
+    train_positions, periodic_train_labels = synthetic_phase_dataset(period, train_length)
+    test_positions, periodic_test_labels = synthetic_phase_dataset(period, test_length, start=train_length)
+
+    cyclic_lookup = fit_phase_lookup(period, train_positions, periodic_train_labels)
+    periodic_cyclic_predictions = predict_phase_lookup(period, cyclic_lookup, test_positions)
+    dense_threshold, dense_polarity = fit_threshold_classifier(train_positions, periodic_train_labels)
+    periodic_dense_predictions = predict_threshold_classifier(test_positions, dense_threshold, dense_polarity)
+    position_lookup = _fit_position_lookup(train_positions, periodic_train_labels)
+    periodic_position_predictions = _predict_position_lookup(position_lookup, test_positions)
+    wrong_lookup = fit_phase_lookup(wrong_period, train_positions, periodic_train_labels)
+    periodic_wrong_predictions = predict_phase_lookup(wrong_period, wrong_lookup, test_positions)
+
+    control_threshold = (3 * train_length) // 4
+    control_train_labels = tuple(nonperiodic_threshold_label(position, control_threshold) for position in train_positions)
+    control_test_labels = tuple(nonperiodic_threshold_label(position, control_threshold) for position in test_positions)
+    control_cyclic_lookup = fit_phase_lookup(period, train_positions, control_train_labels)
+    control_cyclic_predictions = predict_phase_lookup(period, control_cyclic_lookup, test_positions)
+    control_dense_threshold, control_dense_polarity = fit_threshold_classifier(
+        train_positions,
+        control_train_labels,
+    )
+    control_dense_predictions = predict_threshold_classifier(
+        test_positions,
+        control_dense_threshold,
+        control_dense_polarity,
+    )
+    control_position_lookup = _fit_position_lookup(train_positions, control_train_labels)
+    control_position_predictions = _predict_position_lookup(control_position_lookup, test_positions)
+
+    return LearnedFeatureBaselineResult(
+        period=period,
+        wrong_period=wrong_period,
+        train_length=train_length,
+        test_length=test_length,
+        periodic_cyclic_feature_accuracy=accuracy(periodic_cyclic_predictions, periodic_test_labels),
+        periodic_dense_scalar_accuracy=accuracy(periodic_dense_predictions, periodic_test_labels),
+        periodic_learned_position_accuracy=accuracy(periodic_position_predictions, periodic_test_labels),
+        periodic_wrong_period_accuracy=accuracy(periodic_wrong_predictions, periodic_test_labels),
+        nonperiodic_cyclic_feature_accuracy=accuracy(control_cyclic_predictions, control_test_labels),
+        nonperiodic_dense_scalar_accuracy=accuracy(control_dense_predictions, control_test_labels),
+        nonperiodic_learned_position_accuracy=accuracy(control_position_predictions, control_test_labels),
     )
 
 
@@ -1068,6 +1179,29 @@ def ai_backend_parity_cases() -> tuple[tuple[str, tuple[int, ...], tuple[int, ..
     retrieval_predictions = _retrieval_hit_indicators(64, retrieval_queries, 21, retrieval_candidates)
     retrieval_labels = tuple(1 for _ in retrieval_queries)
 
+    learned_train_positions, learned_train_labels = synthetic_phase_dataset(8, 64)
+    learned_test_positions, learned_test_labels = synthetic_phase_dataset(8, 32, start=64)
+    learned_lookup = fit_phase_lookup(8, learned_train_positions, learned_train_labels)
+    learned_predictions = predict_phase_lookup(8, learned_lookup, learned_test_positions)
+    learned_control_threshold = (3 * 64) // 4
+    learned_control_train_labels = tuple(
+        nonperiodic_threshold_label(position, learned_control_threshold)
+        for position in learned_train_positions
+    )
+    learned_control_test_labels = tuple(
+        nonperiodic_threshold_label(position, learned_control_threshold)
+        for position in learned_test_positions
+    )
+    learned_control_threshold_fit, learned_control_polarity = fit_threshold_classifier(
+        learned_train_positions,
+        learned_control_train_labels,
+    )
+    learned_control_predictions = predict_threshold_classifier(
+        learned_test_positions,
+        learned_control_threshold_fit,
+        learned_control_polarity,
+    )
+
     near_local_candidates = tuple(
         local_window_indices(64, query_index, window=8)
         for query_index in retrieval_queries
@@ -1087,6 +1221,12 @@ def ai_backend_parity_cases() -> tuple[tuple[str, tuple[int, ...], tuple[int, ..
         ("multicoil_lookup", multicoil_predictions, multicoil_test_labels),
         ("retrieval_coil_path", retrieval_predictions, retrieval_labels),
         ("retrieval_near_local_window", near_local_predictions, near_local_labels),
+        ("learned_feature_cyclic", learned_predictions, learned_test_labels),
+        (
+            "learned_feature_nonperiodic_dense_scalar",
+            learned_control_predictions,
+            learned_control_test_labels,
+        ),
     )
 
 

@@ -10,11 +10,11 @@ The source of truth is `manifests/phase5_edge_targets.yaml`, validated by `scrip
 - `P5-EDGE-002`: finite-coil normal-form theorem search. Status: exploratory Python signature index.
 - `P5-EDGE-003`: number provenance compression fixture. Status: exploratory Python provenance object.
 - `P5-EDGE-004`: noisy and aliased coil-signature benchmark. Status: exploratory Python fixture suite.
-- `P5-EDGE-005`: learned phase-channel baseline comparison. Status: exploratory Python control fixture.
+- `P5-EDGE-005`: learned phase-channel baseline comparison. Status: exploratory Python control fixture with `AIA-B0004` learned-feature baseline scaffolding.
 - `P5-EDGE-006`: circular layout and sampling backend comparison. Status: exploratory periodic-stencil validation fixture.
 - `P5-EDGE-007`: quaternion and Hopf orientation-debugging note. Status: exploratory paper/Python sign-ambiguity example.
 - `P5-EDGE-008`: Living Book learning-path evaluation. Status: active reader-path page.
-- `P5-EDGE-009`: full-spectrum Circle AI application program. Status: active proof/benchmark roadmap target with `AIA-B0003` backend parity, `AIM-B0001` cyclic-memory, `AIM-B0002` coil-retrieval, `AIRA-B0001` adapter-block, and `AIRA-B0002` MultiCoil/RoPE-style positional fixtures.
+- `P5-EDGE-009`: full-spectrum Circle AI application program. Status: active proof/benchmark roadmap target with `AIA-B0003` backend parity, `AIA-B0004` learned-feature baseline controls, `AIM-B0001` cyclic-memory, `AIM-B0002` coil-retrieval, `AIRA-B0001` adapter-block, and `AIRA-B0002` MultiCoil/RoPE-style positional fixtures.
 
 ## Discipline
 

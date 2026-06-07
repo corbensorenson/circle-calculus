@@ -95,8 +95,9 @@ targets:
       - "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md"
       - "circle_math/applications/circle_ai.py"
       - "sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/test_phase_channel_examples.py"
-    dictionary_dependencies: ["COMMON-0026", "COMMON-0039", "COMMON-0044"]
-    next_action: "AIA-B0002 adds periodic and nonperiodic learned-baseline controls; expand beyond scalar thresholds to dense, RoPE, cyclic-feature, and MLX model baselines."
+      - "sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_learned_feature_baselines.py"
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0039", "COMMON-0044", "COMMON-0049"]
+    next_action: "AIA-B0002 adds periodic and nonperiodic learned-baseline controls; AIA-B0004 adds dense-scalar, learned-position, wrong-period, cyclic-feature, and nonperiodic controls; expand next to standard RoPE, Fourier-feature, dense learned, and MLX model baselines."
     guardrail: "No claim that circles improve all AI."
 
   - id: P5-EDGE-006
@@ -181,6 +182,6 @@ targets:
       - "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md"
       - "site/chapters/applications/ai.qmd"
       - "circle_math/applications/circle_ai.py"
-    dictionary_dependencies: ["COMMON-0026", "COMMON-0028", "COMMON-0030", "COMMON-0039", "COMMON-0044", "COMMON-0046", "COMMON-0047", "COMMON-0048"]
-    next_action: "AIA-B0003 adds CPU/optional-MLX backend parity scaffolding, AIM-B0001 adds a deterministic cyclic-memory fixture, AIM-B0002 adds a deterministic coil-retrieval reachability fixture, AIRA-B0001 adds a deterministic adapter-block fixture, and AIRA-B0002 adds a deterministic MultiCoil/RoPE-style positional fixture, each with ordinary baselines and a negative or control case; expand next toward learned/content-gated coil attention, dense/LoRA/block-circulant baselines, standard RoPE/learned-position baselines, actual MLX model prototypes, and timing only after parity is stable."
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0028", "COMMON-0030", "COMMON-0039", "COMMON-0044", "COMMON-0046", "COMMON-0047", "COMMON-0048", "COMMON-0049"]
+    next_action: "AIA-B0003 adds CPU/optional-MLX backend parity scaffolding, AIA-B0004 adds learned-feature baseline controls, AIM-B0001 adds a deterministic cyclic-memory fixture, AIM-B0002 adds a deterministic coil-retrieval reachability fixture, AIRA-B0001 adds a deterministic adapter-block fixture, and AIRA-B0002 adds a deterministic MultiCoil/RoPE-style positional fixture, each with ordinary baselines and a negative or control case; expand next toward learned/content-gated coil attention, dense/LoRA/block-circulant baselines, standard RoPE/Fourier-feature baselines, actual MLX model prototypes, and timing only after parity is stable."
     guardrail: "AI importance does not relax proof status or benchmark discipline: finite index proofs are not model-quality claims."

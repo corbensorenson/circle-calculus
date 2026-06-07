@@ -551,3 +551,15 @@ entries:
       - "A speed benchmark."
       - "Evidence that MLX improves model quality."
       - "A claim that MLX was tested when the backend is unavailable."
+  - id: COMMON-0049
+    name: "Learned feature baseline fixture"
+    kind: experiment
+    symbol: "learned_feature_baseline"
+    formal_definition: "`circle_math.applications.circle_ai.run_learned_feature_baseline_benchmark`, a deterministic comparison between cyclic phase features and ordinary dense-scalar, learned-position, and wrong-period baselines, with a nonperiodic scalar-control task."
+    intuition: "A staged AI guardrail: a correct cyclic feature should solve a constructed periodic task, ordinary scalar features should win when the target is nonperiodic, and wrong-period or memorized-position features should not be confused with evidence of general model quality."
+    dependencies: ["COMMON-0026", "COMMON-0044", "COMMON-0048"]
+    introduced_in: "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES"
+    forbidden_meanings:
+      - "A neural-network benchmark."
+      - "Evidence that cyclic features improve real AI workloads."
+      - "A replacement for standard RoPE, attention, LoRA, state-space, or learned dense baselines."

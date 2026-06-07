@@ -9,6 +9,7 @@ sidecars:
   - sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/test_phase_channel_examples.py
   - sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_phase_channel.py
   - sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_backend_parity.py
+  - sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_learned_feature_baselines.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/lean/PaperAI02.lean
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_memory_slot.py
@@ -81,7 +82,7 @@ theorems:
     lean_name: Circle.Applications.adapterBlock_idempotent
     dictionary_dependencies: ["COMMON-0030"]
 next_targets:
-  - "Expand the learned phase fixture beyond scalar thresholds to dense, RoPE, and cyclic-feature baselines."
+  - "AIA-B0004 expands the learned phase fixture to dense-scalar, learned-position, wrong-period, and cyclic-feature baselines; next compare against standard RoPE, learned positional encodings, Fourier features, and learned dense models before model-quality claims."
   - "Use AIM-B0002 as coil-retrieval reachability scaffolding only; expand toward learned/content-gated coil paths, alias-control, full-attention, sparse-attention, Hyena-like, and state-space baselines before retrieval-quality claims."
   - "Use AIRA-B0001 as adapter-block scaffolding only; expand toward CoilRA, block-circulant, LoRA, and dense-adapter baselines before making parameter-efficiency or quality claims."
   - "Use AIRA-B0002 as MultiCoil/RoPE-style positional scaffolding only; expand toward standard RoPE, learned positional encodings, attention, dense sequence, Fourier-feature, and MLX/CPU parity baselines before model-quality claims."
@@ -102,6 +103,11 @@ benchmarks:
     path: sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/test_phase_channel_examples.py::test_ai_backend_parity_fixture_is_deterministic
     script: sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_backend_parity.py
     description: "Deterministic AI backend parity fixture comparing CPU reference baseline scoring against optional MLX scoring across current phase, memory, adapter, MultiCoil, and retrieval synthetic cases."
+  - id: AIA-B0004
+    status: exploratory_python
+    path: sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/test_phase_channel_examples.py::test_learned_feature_baseline_fixture_has_baselines_and_controls
+    script: sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_learned_feature_baselines.py
+    description: "Deterministic learned-feature synthetic fixture comparing cyclic phase features against dense-scalar, learned-position, and wrong-period baselines, with a nonperiodic scalar-control baseline."
   - id: AIM-B0001
     status: exploratory_python
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_memory_slot_benchmark_has_baseline_and_negative_control
