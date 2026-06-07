@@ -6,6 +6,7 @@ from math import cos, gcd, sin, tau
 from circle_math.applications import (
     adapter_block_collision_count,
     adapter_block_loads,
+    active_token_counts_by_budget,
     average_candidate_count,
     block_cyclic_adapter_parameter_count,
     coil_attention_path,
@@ -26,6 +27,7 @@ from circle_math.applications import (
     multicoil_cycle_length,
     multicoil_phase,
     multicoil_phase_label,
+    recurrence_resolution_levels,
     retrieval_hit_rate,
     retrieval_hit_rate_by_lag,
     retrieval_target_index,
@@ -33,7 +35,9 @@ from circle_math.applications import (
     run_adapter_parameter_budget_benchmark,
     run_content_gated_retrieval_benchmark,
     run_circulant_mixer_benchmark,
+    run_token_level_recurrence_benchmark,
     token_recurrence_budget,
+    token_recurrence_budgets,
     training_free_loop_budget,
     rotate_kernel,
 )
@@ -59,6 +63,7 @@ from circle_math.physics import (
     reverse_path,
     square_plaquette_path,
     transformed_holonomy_endpoint_prediction,
+    wilson_loop_certificate,
 )
 from circle_math.winding import lift
 
@@ -245,6 +250,26 @@ def js_gauge_transformed_edges(edges: tuple[dict, ...], gauge: dict[str, int], m
     )
 
 
+def js_wilson_loop_certificate(
+    edges: tuple[dict, ...], gauges: tuple[dict[str, int], ...], modulus: int
+) -> dict:
+    holonomy = js_path_holonomy(edges, modulus)
+    invariant_under = []
+    closed = bool(edges) and edges[0]["source"] == edges[-1]["target"]
+    if closed:
+        for index, gauge in enumerate(gauges):
+            transformed = js_gauge_transformed_edges(edges, gauge, modulus)
+            if js_path_holonomy(transformed, modulus) == holonomy:
+                invariant_under.append(f"gauge:{index}")
+    return {
+        "modulus": modulus,
+        "holonomy": holonomy,
+        "closed": closed,
+        "gauge_invariant_under": tuple(invariant_under),
+        "theorem_ids": ("PHYS-T0004", "PHYS-T0005"),
+    }
+
+
 def gauge_path_edges(path: GaugePath) -> tuple[dict, ...]:
     return tuple(
         {"source": edge.source, "target": edge.target, "phase": edge.phase}
@@ -258,6 +283,85 @@ def js_loop_required_steps(loop_period: int, sample_index: int) -> int:
 
 def js_token_recurrence_budget(loop_period: int, token_index: int) -> int:
     return js_loop_required_steps(loop_period, token_index)
+
+
+def js_token_recurrence_budgets(loop_period: int, token_count: int) -> tuple[int, ...]:
+    return tuple(js_token_recurrence_budget(loop_period, token) for token in range(token_count))
+
+
+def js_active_token_counts_by_budget(budgets: tuple[int, ...], max_budget: int) -> tuple[int, ...]:
+    return tuple(sum(1 for budget in budgets if budget >= step) for step in range(1, max_budget + 1))
+
+
+def js_recurrence_resolution_levels(max_budget: int) -> tuple[str, ...]:
+    return tuple("coarse" if step % 2 == 1 else "fine" for step in range(1, max_budget + 1))
+
+
+def js_shifted_budgets(budgets: tuple[int, ...], max_budget: int, shift: int) -> tuple[int, ...]:
+    return tuple(js_mod(budget - 1 + shift, max_budget) + 1 for budget in budgets)
+
+
+def js_recurrence_budget_predictions(
+    required_budgets: tuple[int, ...],
+    planned_budgets: tuple[int, ...],
+    tolerance: int,
+) -> tuple[int, ...]:
+    return tuple(
+        1 if required <= planned <= required + tolerance else 0
+        for required, planned in zip(required_budgets, planned_budgets)
+    )
+
+
+def js_accuracy(predictions: tuple[int, ...], labels: tuple[int, ...]) -> float:
+    return sum(1 for prediction, label in zip(predictions, labels) if prediction == label) / len(labels)
+
+
+def js_majority_label(labels: tuple[int, ...]) -> int:
+    positives = sum(1 for label in labels if label == 1)
+    negatives = len(labels) - positives
+    return 1 if positives >= negatives else 0
+
+
+def js_fit_phase_lookup(period: int, positions: tuple[int, ...], labels: tuple[int, ...]) -> tuple[int, ...]:
+    fallback = js_majority_label(labels)
+    counts = [[0, 0] for _ in range(period)]
+    for position, label in zip(positions, labels):
+        counts[js_mod(position, period)][label] += 1
+    return tuple(
+        fallback if zero_count + one_count == 0 else (1 if one_count >= zero_count else 0)
+        for zero_count, one_count in counts
+    )
+
+
+def js_predict_phase_lookup(period: int, lookup: tuple[int, ...], positions: tuple[int, ...]) -> tuple[int, ...]:
+    return tuple(lookup[js_mod(position, period)] for position in positions)
+
+
+def js_nonperiodic_threshold_label(position: int, threshold: int) -> int:
+    return 1 if position >= threshold else 0
+
+
+def js_fit_threshold_classifier(positions: tuple[int, ...], labels: tuple[int, ...]) -> tuple[int, int]:
+    candidates = tuple(range(min(positions), max(positions) + 2))
+    best = (0.0, candidates[0], 1)
+    for threshold in candidates:
+        for polarity in (1, -1):
+            predictions = tuple(
+                1 if (position >= threshold) == (polarity == 1) else 0
+                for position in positions
+            )
+            score = js_accuracy(predictions, labels)
+            if score > best[0]:
+                best = (score, threshold, polarity)
+    return best[1], best[2]
+
+
+def js_predict_threshold_classifier(
+    positions: tuple[int, ...],
+    threshold: int,
+    polarity: int,
+) -> tuple[int, ...]:
+    return tuple(1 if (position >= threshold) == (polarity == 1) else 0 for position in positions)
 
 
 def js_training_free_loop_budget(loop_period: int, sample_index: int, max_loops: int) -> int:
@@ -614,6 +718,54 @@ def main() -> int:
             gauge,
         )
 
+    wilson_cases = [
+        (
+            19,
+            (3, 7, 11),
+            (
+                {"a": 0, "b": 0, "c": 0},
+                {"a": 5, "b": 13, "c": 2},
+                {"a": 21, "b": -4, "c": 8},
+            ),
+        ),
+        (
+            11,
+            (-3, 4, 19),
+            (
+                {"a": 0, "b": 0, "c": 0},
+                {"a": 2, "b": 5, "c": 9},
+                {"a": -7, "b": 12, "c": 3},
+            ),
+        ),
+    ]
+    for modulus, (ab, bc, ca), gauges in wilson_cases:
+        loop = GaugePath(
+            modulus,
+            (
+                GaugeEdge("a", "b", ab),
+                GaugeEdge("b", "c", bc),
+                GaugeEdge("c", "a", ca),
+            ),
+        )
+        js_edges = (
+            js_gauge_edge("a", "b", ab, modulus),
+            js_gauge_edge("b", "c", bc, modulus),
+            js_gauge_edge("c", "a", ca, modulus),
+        )
+        certificate = wilson_loop_certificate(loop, gauges)
+        js_certificate = js_wilson_loop_certificate(js_edges, gauges, modulus)
+        assert gauge_path_edges(loop) == js_edges
+        assert certificate.holonomy == js_certificate["holonomy"]
+        assert certificate.closed == js_certificate["closed"]
+        assert certificate.gauge_invariant_under == js_certificate["gauge_invariant_under"]
+        assert certificate.theorem_ids == js_certificate["theorem_ids"]
+        for gauge in gauges:
+            transformed = gauge_transform_path(loop, gauge)
+            js_transformed = js_gauge_transformed_edges(js_edges, gauge, modulus)
+            assert gauge_path_edges(transformed) == js_transformed
+            assert path_holonomy(transformed) == js_path_holonomy(js_transformed, modulus)
+            assert path_holonomy(transformed) == certificate.holonomy
+
     ai_cases = [
         (1, 0, 1, 0),
         (4, 11, 3, 1),
@@ -658,6 +810,69 @@ def main() -> int:
             max_loops,
             overthink_tolerance=tolerance,
         ).overthinking_boundary == certificate.overthinking_boundary
+
+    token_recurrence_cases = [
+        (4, 32, 4, 4, 8, 1, 0),
+        (5, 25, 5, 3, 7, 2, 1),
+        (3, 18, 4, 2, 6, 1, 0),
+    ]
+    for loop_period, token_count, max_budget, fixed_budget, over_budget, wrong_shift, tolerance in token_recurrence_cases:
+        tokens = tuple(range(token_count))
+        budgets = js_token_recurrence_budgets(loop_period, token_count)
+        routed_budgets = tuple(min(budget, max_budget) for budget in budgets)
+        fixed_budgets = tuple(fixed_budget for _ in tokens)
+        wrong_budgets = js_shifted_budgets(budgets, max_budget, wrong_shift)
+        over_budgets = tuple(over_budget for _ in tokens)
+        labels = tuple(1 for _ in tokens)
+        control_threshold = (3 * token_count) // 4
+        control_labels = tuple(js_nonperiodic_threshold_label(token, control_threshold) for token in tokens)
+        control_lookup = js_fit_phase_lookup(loop_period, tokens, control_labels)
+        control_loop_predictions = js_predict_phase_lookup(loop_period, control_lookup, tokens)
+        threshold, polarity = js_fit_threshold_classifier(tokens, control_labels)
+        control_threshold_predictions = js_predict_threshold_classifier(tokens, threshold, polarity)
+        benchmark = run_token_level_recurrence_benchmark(
+            loop_period=loop_period,
+            token_count=token_count,
+            max_budget=max_budget,
+            fixed_global_budget=fixed_budget,
+            over_loop_budget=over_budget,
+            wrong_budget_shift=wrong_shift,
+            overthink_tolerance=tolerance,
+        )
+
+        assert token_recurrence_budgets(loop_period, tokens) == budgets
+        assert active_token_counts_by_budget(budgets, max_budget) == js_active_token_counts_by_budget(
+            budgets,
+            max_budget,
+        )
+        assert recurrence_resolution_levels(max_budget) == js_recurrence_resolution_levels(max_budget)
+        assert benchmark.token_budgets == budgets
+        assert benchmark.active_token_counts == js_active_token_counts_by_budget(budgets, max_budget)
+        assert benchmark.resolution_levels == js_recurrence_resolution_levels(max_budget)
+        assert benchmark.token_level_accuracy == js_accuracy(
+            js_recurrence_budget_predictions(budgets, routed_budgets, tolerance),
+            labels,
+        )
+        assert benchmark.fixed_global_budget_accuracy == js_accuracy(
+            js_recurrence_budget_predictions(budgets, fixed_budgets, tolerance),
+            labels,
+        )
+        assert benchmark.wrong_budget_accuracy == js_accuracy(
+            js_recurrence_budget_predictions(budgets, wrong_budgets, tolerance),
+            labels,
+        )
+        assert benchmark.over_looped_accuracy == js_accuracy(
+            js_recurrence_budget_predictions(budgets, over_budgets, tolerance),
+            labels,
+        )
+        assert benchmark.nonperiodic_token_level_accuracy == js_accuracy(
+            control_loop_predictions,
+            control_labels,
+        )
+        assert benchmark.nonperiodic_scalar_threshold_accuracy == js_accuracy(
+            control_threshold_predictions,
+            control_labels,
+        )
 
     memory_cases = [
         (1, 0, 0, 1),

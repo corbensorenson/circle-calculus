@@ -124,6 +124,10 @@ token
 
 This is the Circle Calculus contribution to the interface: recurrence provenance should be visible before it is sold as reasoning or throughput.
 
+The widget below exposes the deterministic `AIM-B0005` fixture: each token gets a finite recurrence budget, loop steps show how many tokens remain active, resolution labels alternate by step, and fixed/wrong/over-loop controls remain visible. It is not a learned-router result or a model-quality claim.
+
+<div class="widget-panel" data-widget="token_level_recurrence" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0059 COMMON-0068 COMMON-0069"></div>
+
 `AIM-B0012` turns learned token-level routing into auditable bookkeeping:
 
 ```text
@@ -333,4 +337,5 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 <script type="module" src="../../widgets/ai/multicoil_phase_explorer.js"></script>
 <script type="module" src="../../widgets/ai/rope_relative_phase.js"></script>
 <script type="module" src="../../widgets/ai/loop_recurrence_budget.js"></script>
+<script type="module" src="../../widgets/ai/token_level_recurrence.js"></script>
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

@@ -245,6 +245,19 @@ def export_widget_index() -> dict:
             "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.token_recurrence_budget; circle_math.applications.circle_ai.training_free_loop_budget",
         },
         {
+            "id": "token_level_recurrence",
+            "path": "site/widgets/ai/token_level_recurrence.js",
+            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018"],
+            "dictionary_ids": [
+                "COMMON-0052",
+                "COMMON-0053",
+                "COMMON-0059",
+                "COMMON-0068",
+                "COMMON-0069",
+            ],
+            "python_reference": "circle_math.applications.circle_ai.token_recurrence_budgets; circle_math.applications.circle_ai.active_token_counts_by_budget; circle_math.applications.circle_ai.recurrence_resolution_levels; circle_math.applications.circle_ai.run_token_level_recurrence_benchmark",
+        },
+        {
             "id": "cyclic_memory_slots",
             "path": "site/widgets/ai/cyclic_memory_slots.js",
             "theorem_ids": ["AIM-T0001", "AIM-T0002", "AIM-T0003", "AIM-T0004", "AIM-T0005"],
@@ -311,6 +324,18 @@ def export_widget_index() -> dict:
                 "COMMON-0063",
             ],
             "python_reference": "circle_math.physics.square_plaquette_path; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy",
+        },
+        {
+            "id": "wilson_loop_certificate",
+            "path": "site/widgets/physics/wilson_loop_certificate.js",
+            "theorem_ids": ["PHYS-T0004", "PHYS-T0005"],
+            "dictionary_ids": [
+                "COMMON-0060",
+                "COMMON-0061",
+                "COMMON-0062",
+                "COMMON-0063",
+            ],
+            "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy; circle_math.physics.wilson_loop_certificate",
         },
     ]
     return {"widgets": widgets}

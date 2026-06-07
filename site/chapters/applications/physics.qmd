@@ -73,6 +73,10 @@ The second widget specializes that idea to a square plaquette. Change the edge p
 
 <div class="widget-panel" data-widget="finite_gauge_loop_holonomy" data-theorem-id="PHYS-T0005" data-dictionary-ids="COMMON-0060 COMMON-0061 COMMON-0062 COMMON-0063"></div>
 
+The third widget turns the closed-loop calculation into a certificate-style record. It checks the same triangular Wilson loop under several sampled vertex gauges and records exactly which finite theorem cards support the closed-loop boundary.
+
+<div class="widget-panel" data-widget="wilson_loop_certificate" data-theorem-id="PHYS-T0004" data-dictionary-ids="COMMON-0060 COMMON-0061 COMMON-0062 COMMON-0063"></div>
+
 ::: {.checkpoint-box}
 
 If a path starts at `s` and ends at `t`, which gauge values survive after every interior vertex cancellation?
@@ -149,4 +153,5 @@ The Python fixture is an executable reference. The current Lean model proves fin
 
 <script type="module" src="../../widgets/physics/finite_path_algebra.js"></script>
 <script type="module" src="../../widgets/physics/finite_gauge_loop_holonomy.js"></script>
+<script type="module" src="../../widgets/physics/wilson_loop_certificate.js"></script>
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

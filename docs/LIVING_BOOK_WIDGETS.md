@@ -101,6 +101,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is finite schedule bookkeeping only. It does not prove model quality, speed, reasoning improvement, memory improvement, or context-length improvement.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python AI recurrence helpers.
 
+### token_level_recurrence
+
+- Inputs: loop period, token count, maximum budget, fixed global budget, wrong-budget shift, over-loop budget, and overthinking tolerance.
+- Outputs: per-token recurrence-budget strip, selected middle-block record, coarse/fine resolution labels, active-token counts by loop step, fixed-budget control, wrong-budget control, over-loop control, nonperiodic phase-lookup control, and scalar-threshold control.
+- Theorem ids: `AIM-T0006`, `AIM-T0007`, `AIM-T0008`, `AIM-T0009`, and `AIM-T0018` as finite loop-budget primitives.
+- Dictionary ids: `COMMON-0052`, `COMMON-0053`, `COMMON-0059`, `COMMON-0068`, and `COMMON-0069`.
+- Python references: `circle_math.applications.circle_ai.token_recurrence_budgets`, `circle_math.applications.circle_ai.active_token_counts_by_budget`, `circle_math.applications.circle_ai.recurrence_resolution_levels`, and `circle_math.applications.circle_ai.run_token_level_recurrence_benchmark`.
+- Guardrail: the widget is deterministic token-level schedule bookkeeping only. It does not prove learned-router quality, recursive reasoning, perplexity improvement, throughput, memory improvement, context-length improvement, or model-quality improvement.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python token-level recurrence benchmark fixture.
+
 ### cyclic_memory_slots
 
 - Inputs: memory-bank size, token index, full-bank pass count, and token-window length.
@@ -193,6 +203,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is finite `Z_n` bookkeeping only. It is not a proof artifact, continuum gauge theory, QFT, Yang-Mills theory, Berry phase, electromagnetism, or a physics prediction.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python finite lattice-gauge fixture.
 
+### wilson_loop_certificate
+
+- Inputs: finite phase modulus, three triangular-loop edge phases, and one editable sampled vertex gauge.
+- Outputs: normalized triangular loop, original holonomy, transformed edge rows for three sampled gauges, transformed holonomies, sampled invariance flags, theorem-status badges, and dictionary links.
+- Theorem ids: `PHYS-T0004` and `PHYS-T0005`, matching the current Python certificate payload.
+- Dictionary ids: `COMMON-0060`, `COMMON-0061`, `COMMON-0062`, and `COMMON-0063`.
+- Python references: `circle_math.physics.GaugePath`, `circle_math.physics.GaugeEdge`, `circle_math.physics.gauge_transform_path`, `circle_math.physics.path_holonomy`, and `circle_math.physics.wilson_loop_certificate`.
+- Guardrail: the widget is a sampled finite Wilson-loop certificate only. It does not prove continuum gauge theory, electromagnetism, QFT, Berry phase, or a physics prediction.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python Wilson-loop certificate helper.
+
 ## Future Placeholders
 
 - `site/widgets/S2/sphere_grid_placeholder.js`
@@ -232,5 +252,7 @@ Minimum parity cases:
 - RoPE-style relative phase lag, sine/cosine feature, query-period closure, and key-period closure.
 - adapter parameter-budget dense, LoRA-style, and block-cyclic counts; ratios; block loads; and collision count.
 - circulant mixer circular-convolution output, dense circulant-matrix output, wrong-shift output, max dense delta, and parameter counts.
+- token-level recurrence budgets, active-token counts, resolution labels, fixed/wrong/over-loop controls, and nonperiodic scalar-control comparison.
 - finite path concatenation holonomy, reverse-path holonomy, path-plus-reverse closure, and open-path gauge endpoint prediction.
 - finite gauge-loop normalized phases, gauge-transformed phases, original/transformed holonomy, and closed endpoint cancellation.
+- Wilson-loop certificate original holonomy, transformed sampled-gauge holonomies, sampled invariance ids, and theorem id payload.

@@ -163,6 +163,25 @@
     },
     {
       "dictionary_ids": [
+        "COMMON-0052",
+        "COMMON-0053",
+        "COMMON-0059",
+        "COMMON-0068",
+        "COMMON-0069"
+      ],
+      "id": "token_level_recurrence",
+      "path": "site/widgets/ai/token_level_recurrence.js",
+      "python_reference": "circle_math.applications.circle_ai.token_recurrence_budgets; circle_math.applications.circle_ai.active_token_counts_by_budget; circle_math.applications.circle_ai.recurrence_resolution_levels; circle_math.applications.circle_ai.run_token_level_recurrence_benchmark",
+      "theorem_ids": [
+        "AIM-T0006",
+        "AIM-T0007",
+        "AIM-T0008",
+        "AIM-T0009",
+        "AIM-T0018"
+      ]
+    },
+    {
+      "dictionary_ids": [
         "COMMON-0028",
         "COMMON-0029"
       ],
@@ -297,6 +316,21 @@
         "PHYS-T0005",
         "PHYS-T0012",
         "PHYS-T0045"
+      ]
+    },
+    {
+      "dictionary_ids": [
+        "COMMON-0060",
+        "COMMON-0061",
+        "COMMON-0062",
+        "COMMON-0063"
+      ],
+      "id": "wilson_loop_certificate",
+      "path": "site/widgets/physics/wilson_loop_certificate.js",
+      "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy; circle_math.physics.wilson_loop_certificate",
+      "theorem_ids": [
+        "PHYS-T0004",
+        "PHYS-T0005"
       ]
     }
   ]
