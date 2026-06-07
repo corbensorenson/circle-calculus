@@ -243,12 +243,13 @@
         "COMMON-0030",
         "COMMON-0039",
         "COMMON-0044",
-        "COMMON-0046"
+        "COMMON-0046",
+        "COMMON-0047"
       ],
       "edge_question": "Across phase features, cyclic memory, sparse/coil attention, adapter blocks, RoPE variants, recurrent state, harmonic features, and geometry-aware models, where does explicit circle structure actually help compared with ordinary AI baselines?",
       "guardrail": "AI importance does not relax proof status or benchmark discipline: finite index proofs are not model-quality claims.",
       "id": "P5-EDGE-009",
-      "next_action": "AIM-B0001 adds a deterministic cyclic-memory fixture, AIRA-B0001 adds a deterministic adapter-block fixture, and AIRA-B0002 adds a deterministic MultiCoil/RoPE-style positional fixture, each with ordinary baselines and a nonperiodic control; expand next toward coil attention, dense/LoRA/block-circulant baselines, standard RoPE/learned-position baselines, and MLX/CPU parity fixtures, and record negative results with the same weight as positive results.",
+      "next_action": "AIM-B0001 adds a deterministic cyclic-memory fixture, AIM-B0002 adds a deterministic coil-retrieval reachability fixture, AIRA-B0001 adds a deterministic adapter-block fixture, and AIRA-B0002 adds a deterministic MultiCoil/RoPE-style positional fixture, each with ordinary baselines and a negative or control case; expand next toward learned/content-gated coil attention, dense/LoRA/block-circulant baselines, standard RoPE/learned-position baselines, and MLX/CPU parity fixtures, and record negative results with the same weight as positive results.",
       "ordinary_baseline": "Dense learned features, standard attention, sliding-window and sparse attention, RoPE and learned positional encodings, LoRA and dense adapters, state-space and convolutional sequence models, Fourier features, and ordinary periodic feature engineering.",
       "priority": "high",
       "status": "active",

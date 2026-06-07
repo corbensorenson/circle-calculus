@@ -333,7 +333,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `AIA-T0001` through `AIA-T0005` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` and `AIA-B0002` are exploratory deterministic phase-channel benchmark fixtures; model-quality and speed claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`
   - Program: Coil Attention, CoilKV, long-context retrieval, alias control, stride/orbit coverage, and comparisons against full attention, sparse attention, Hyena-like mixers, and S4/Mamba-like baselines.
-  - Status: polished draft; `AIM-T0001` through `AIM-T0005` are Lean-proved cyclic-memory-slot facts with Python examples; `AIM-B0001` is an exploratory cyclic-memory fixture with constant/scalar-threshold baselines and a nonperiodic control; retrieval quality, alias control, and attention replacement claims remain benchmark work.
+  - Status: polished draft; `AIM-T0001` through `AIM-T0005` are Lean-proved cyclic-memory-slot facts with Python examples; `AIM-B0001` is an exploratory cyclic-memory fixture with constant/scalar-threshold baselines and a nonperiodic control; `AIM-B0002` is an exploratory coil-retrieval reachability fixture with coil-path, local-window, wrong-stride, full-attention oracle, and near-lag controls; retrieval quality, alias control, and attention replacement claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md`
   - Program: CoilLinear, CoilRA, MultiCoil RoPE, periodic activations, and MLX-first benchmarks against dense, LoRA, block-circulant, and standard RoPE baselines.
   - Status: polished draft; `AIRA-T0001` through `AIRA-T0005` are Lean-proved adapter-block facts with Python examples; `AIRA-B0001` is an exploratory adapter-block fixture with constant/scalar-threshold baselines and a nonperiodic control; `AIRA-B0002` is an exploratory MultiCoil/RoPE-style positional fixture with single-period, constant, scalar-threshold, and nonperiodic controls; CoilRA, MultiCoil RoPE, model quality, parameter efficiency, and runtime claims remain benchmark work.
@@ -441,6 +441,7 @@ Application guardrails:
 - [x] `AIM-T0004`: cyclic memory slot closes after any whole number of full bank passes.
 - [x] `AIM-T0005`: cyclic memory-slot normalization is idempotent.
 - [x] `AIM-B0001`: exploratory cyclic-memory benchmark fixture with baselines and a nonperiodic control.
+- [x] `AIM-B0002`: exploratory coil-retrieval reachability fixture with baselines and a near-lag control.
 - [x] `AIRA-T0001`: adapter block index is bounded by a positive block size.
 - [x] `AIRA-T0002`: adapter block index closes after one full block pass.
 - [x] `AIRA-T0003`: adapter block index at zero is zero.
@@ -705,7 +706,7 @@ Outputs:
 - [x] `P5-EDGE-006`: periodic-boundary stencil validation fixture checks direct, dense, and gcd-cycle traversal outputs before backend or speed claims.
 - [x] `P5-EDGE-007`: orientation-debugging note records q/-q sign ambiguity against existing S3 spin theorem ids without claiming full SO(3) or robotics verification.
 - [x] `P5-EDGE-008`: Living Book reader path links dimensions, applications, theorem status, dictionary entries, source trails, and local verification commands.
-- [x] `P5-EDGE-009`: full-spectrum Circle AI program target separates proof targets, benchmarks, baselines, controls, model prototypes, and speculative hypotheses; `AIRA-B0001` extends the starter fixtures to adapter-block structure and `AIRA-B0002` extends them to MultiCoil/RoPE-style positional structure.
+- [x] `P5-EDGE-009`: full-spectrum Circle AI program target separates proof targets, benchmarks, baselines, controls, model prototypes, and speculative hypotheses; `AIM-B0002` extends the starter fixtures to coil-retrieval reachability, `AIRA-B0001` extends them to adapter-block structure, and `AIRA-B0002` extends them to MultiCoil/RoPE-style positional structure.
 - [ ] At least one experiment-ready paper or application note for each accepted edge direction.
 - [ ] Python/MLX or other executable sidecars where the claim is computational.
 - [ ] Lean theorem targets where the claim is formal.

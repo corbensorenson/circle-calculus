@@ -4685,6 +4685,29 @@
       "used_by_widgets": []
     },
     {
+      "dependencies": [
+        "COMMON-0028",
+        "COMMON-0029"
+      ],
+      "forbidden_meanings": [
+        "A proof that Coil Attention improves language models.",
+        "A replacement for full attention, sparse attention, Hyena-like mixers, or state-space baselines.",
+        "A neural attention-quality, runtime, or memory-scaling benchmark."
+      ],
+      "formal_definition": "`circle_math.applications.circle_ai.run_coil_retrieval_benchmark`, a deterministic reachability comparison between selected coil-path, local-window, wrong-stride, and full-attention oracle candidate sets for known dependency lags.",
+      "id": "COMMON-0047",
+      "introduced_in": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+      "intuition": "A small long-context scaffold: before claiming Coil Attention helps, check whether the selected coil path can even reach the dependency and whether ordinary local attention wins on near-lag controls.",
+      "kind": "experiment",
+      "name": "Coil retrieval reachability fixture",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "coil_retrieval_fixture",
+      "used_by_glyphs": [],
+      "used_by_papers": [],
+      "used_by_theorems": [],
+      "used_by_widgets": []
+    },
+    {
       "dependencies": [],
       "forbidden_meanings": [
         "The one-node circle C_1.",

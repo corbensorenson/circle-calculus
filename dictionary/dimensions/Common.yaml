@@ -527,3 +527,15 @@ entries:
       - "A proof that MultiCoil RoPE improves language models."
       - "A replacement for standard RoPE, learned positional encodings, attention, or dense baselines."
       - "A speed or parameter-efficiency benchmark."
+  - id: COMMON-0047
+    name: "Coil retrieval reachability fixture"
+    kind: experiment
+    symbol: "coil_retrieval_fixture"
+    formal_definition: "`circle_math.applications.circle_ai.run_coil_retrieval_benchmark`, a deterministic reachability comparison between selected coil-path, local-window, wrong-stride, and full-attention oracle candidate sets for known dependency lags."
+    intuition: "A small long-context scaffold: before claiming Coil Attention helps, check whether the selected coil path can even reach the dependency and whether ordinary local attention wins on near-lag controls."
+    dependencies: ["COMMON-0028", "COMMON-0029"]
+    introduced_in: "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+    forbidden_meanings:
+      - "A proof that Coil Attention improves language models."
+      - "A replacement for full attention, sparse attention, Hyena-like mixers, or state-space baselines."
+      - "A neural attention-quality, runtime, or memory-scaling benchmark."

@@ -27,6 +27,7 @@ The Python examples are:
 ```text
 sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py
 sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_memory_slot.py
+sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_coil_retrieval.py
 ```
 
 The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks cyclic memory-slot examples; Lean declarations determine proof status.
@@ -58,6 +59,10 @@ These theorems certify the cyclic slot address only. They do not prove retrieval
 
 The fixture also records collision diagnostics: how many training tokens alias into already-used slots and the maximum training load of a slot. These are executable checks for the benchmark harness only. They are not evidence that cyclic memory improves language modeling, retrieval, attention, or long-context scaling.
 
+`AIM-B0002` adds a deterministic coil-retrieval reachability fixture. The positive synthetic task has a known dependency lag that is reachable by the selected coil path but not by the local-window or wrong-stride baselines. The full-attention candidate set is included as an oracle upper bound. The near-lag control reverses the story: local attention reaches the dependency while the selected coil path misses it.
+
+This fixture checks candidate-set reachability only. It is not evidence that Coil Attention improves model quality, that fixed coils replace full attention, that alias behavior is solved, or that a model runs faster.
+
 ## Prototype Program
 
 The next benchmark should be synthetic long-context retrieval where the target dependency is known. A useful comparison set is:
@@ -76,7 +81,8 @@ Measurements should include accuracy, sequence length scaling, memory use, runti
 
 ## Next Program
 
-- Treat `AIM-B0001` as cyclic-memory benchmark scaffolding only; long-context retrieval still needs task-specific fixtures.
+- Treat `AIM-B0001` as cyclic-memory benchmark scaffolding only.
+- Treat `AIM-B0002` as coil-retrieval reachability scaffolding only; learned/content-gated retrieval quality remains separate work.
 - Test fixed, learned, and content-gated coil paths separately.
 - Track gcd/orbit coverage and aliasing explicitly.
 - Add local/global attention fallbacks before claiming a practical model.

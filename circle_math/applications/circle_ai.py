@@ -215,6 +215,25 @@ class MemorySlotBenchmarkResult:
 
 
 @dataclass(frozen=True)
+class CoilRetrievalBenchmarkResult:
+    sequence_length: int
+    query_count: int
+    target_lag: int
+    stride: int
+    path_length: int
+    local_window: int
+    coil_path_accuracy: float
+    local_window_accuracy: float
+    wrong_stride_accuracy: float
+    full_attention_accuracy: float
+    near_control_lag: int
+    near_control_coil_path_accuracy: float
+    near_control_local_window_accuracy: float
+    near_control_full_attention_accuracy: float
+    note: str = "Synthetic coil-retrieval reachability fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
 class AdapterBlockBenchmarkResult:
     block_size: int
     train_channels: int
@@ -533,6 +552,152 @@ def run_memory_slot_benchmark(
         ),
         train_collision_count=memory_slot_collision_count(bank_size, train_tokens),
         max_train_slot_load=max(train_loads),
+    )
+
+
+def coil_attention_path(
+    sequence_length: int,
+    query_index: int,
+    stride: int,
+    path_length: int,
+) -> tuple[int, ...]:
+    """Return fixed-stride predecessor indices for a coil attention path."""
+    _require_positive(sequence_length, "sequence_length")
+    _require_positive(path_length, "path_length")
+    if stride < 0:
+        raise ValueError("stride must be nonnegative")
+    return tuple((query_index - step * stride) % sequence_length for step in range(1, path_length + 1))
+
+
+def local_window_indices(sequence_length: int, query_index: int, window: int) -> tuple[int, ...]:
+    """Return predecessor indices in a local attention window."""
+    _require_positive(sequence_length, "sequence_length")
+    _require_positive(window, "window")
+    return tuple((query_index - step) % sequence_length for step in range(1, window + 1))
+
+
+def retrieval_target_index(sequence_length: int, query_index: int, target_lag: int) -> int:
+    """Return the known dependency index for a synthetic retrieval target."""
+    _require_positive(sequence_length, "sequence_length")
+    if target_lag < 0:
+        raise ValueError("target_lag must be nonnegative")
+    return (query_index - target_lag) % sequence_length
+
+
+def retrieval_hit_rate(
+    sequence_length: int,
+    query_indices: Sequence[int],
+    target_lag: int,
+    candidate_sets: Sequence[Sequence[int]],
+) -> float:
+    """Return how often a candidate attention set contains the target index."""
+    if len(query_indices) != len(candidate_sets):
+        raise ValueError("query_indices and candidate_sets must have the same length")
+    if not query_indices:
+        raise ValueError("query_indices must be nonempty")
+    hits = 0
+    for query_index, candidates in zip(query_indices, candidate_sets):
+        target = retrieval_target_index(sequence_length, query_index, target_lag)
+        if target in set(candidates):
+            hits += 1
+    return hits / len(query_indices)
+
+
+def run_coil_retrieval_benchmark(
+    *,
+    sequence_length: int = 64,
+    query_count: int = 64,
+    target_lag: int = 21,
+    stride: int = 7,
+    path_length: int = 3,
+    local_window: int = 8,
+    wrong_stride: int = 5,
+    near_control_lag: int = 3,
+) -> CoilRetrievalBenchmarkResult:
+    """Run a deterministic coil-retrieval reachability fixture.
+
+    The positive fixture asks whether a fixed coil path can reach a known
+    dependency lag that local attention misses. The near-lag control asks the
+    opposite: local attention should reach the dependency while the selected
+    coil path should not. This measures reachability of candidate index sets,
+    not neural attention quality.
+    """
+    _require_positive(sequence_length, "sequence_length")
+    _require_positive(query_count, "query_count")
+    _require_positive(path_length, "path_length")
+    _require_positive(local_window, "local_window")
+    if target_lag < 0:
+        raise ValueError("target_lag must be nonnegative")
+    if wrong_stride < 0:
+        raise ValueError("wrong_stride must be nonnegative")
+    if near_control_lag < 0:
+        raise ValueError("near_control_lag must be nonnegative")
+
+    query_indices = tuple(range(query_count))
+    coil_candidates = tuple(
+        coil_attention_path(sequence_length, query_index, stride, path_length)
+        for query_index in query_indices
+    )
+    local_candidates = tuple(
+        local_window_indices(sequence_length, query_index, local_window)
+        for query_index in query_indices
+    )
+    wrong_stride_candidates = tuple(
+        coil_attention_path(sequence_length, query_index, wrong_stride, path_length)
+        for query_index in query_indices
+    )
+    full_candidates = tuple(tuple(range(sequence_length)) for _ in query_indices)
+
+    return CoilRetrievalBenchmarkResult(
+        sequence_length=sequence_length,
+        query_count=query_count,
+        target_lag=target_lag,
+        stride=stride,
+        path_length=path_length,
+        local_window=local_window,
+        coil_path_accuracy=retrieval_hit_rate(
+            sequence_length,
+            query_indices,
+            target_lag,
+            coil_candidates,
+        ),
+        local_window_accuracy=retrieval_hit_rate(
+            sequence_length,
+            query_indices,
+            target_lag,
+            local_candidates,
+        ),
+        wrong_stride_accuracy=retrieval_hit_rate(
+            sequence_length,
+            query_indices,
+            target_lag,
+            wrong_stride_candidates,
+        ),
+        full_attention_accuracy=retrieval_hit_rate(
+            sequence_length,
+            query_indices,
+            target_lag,
+            full_candidates,
+        ),
+        near_control_lag=near_control_lag,
+        near_control_coil_path_accuracy=retrieval_hit_rate(
+            sequence_length,
+            query_indices,
+            near_control_lag,
+            coil_candidates,
+        ),
+        near_control_local_window_accuracy=retrieval_hit_rate(
+            sequence_length,
+            query_indices,
+            near_control_lag,
+            local_candidates,
+        ),
+        near_control_full_attention_accuracy=retrieval_hit_rate(
+            sequence_length,
+            query_indices,
+            near_control_lag,
+            full_candidates,
+        ),
     )
 
 

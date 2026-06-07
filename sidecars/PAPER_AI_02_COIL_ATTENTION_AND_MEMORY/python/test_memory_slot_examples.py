@@ -1,9 +1,13 @@
 from circle_math.applications.circle_ai import (
+    coil_attention_path,
     fit_memory_slot_lookup,
+    local_window_indices,
     memory_slot,
     memory_slot_collision_count,
     memory_slot_loads,
     predict_memory_slot_lookup,
+    retrieval_target_index,
+    run_coil_retrieval_benchmark,
     run_memory_slot_benchmark,
     synthetic_memory_slot_dataset,
 )
@@ -62,3 +66,43 @@ def test_memory_slot_benchmark_has_baseline_and_negative_control() -> None:
     assert result.train_collision_count == 56
     assert result.max_train_slot_load == 8
     assert result.note.endswith("not a model-quality claim.")
+
+
+def test_coil_attention_path_indices_are_bounded() -> None:
+    for query_index in range(0, 128):
+        path = coil_attention_path(sequence_length=64, query_index=query_index, stride=7, path_length=3)
+        assert len(path) == 3
+        assert all(0 <= index < 64 for index in path)
+
+
+def test_coil_attention_path_reaches_constructed_lag() -> None:
+    sequence_length = 64
+    query_index = 42
+    target_lag = 21
+    path = coil_attention_path(sequence_length, query_index, stride=7, path_length=3)
+    local = local_window_indices(sequence_length, query_index, window=8)
+    target = retrieval_target_index(sequence_length, query_index, target_lag)
+
+    assert target in path
+    assert target not in local
+
+
+def test_coil_retrieval_benchmark_has_baselines_and_near_control() -> None:
+    result = run_coil_retrieval_benchmark(
+        sequence_length=64,
+        query_count=64,
+        target_lag=21,
+        stride=7,
+        path_length=3,
+        local_window=8,
+        wrong_stride=5,
+        near_control_lag=3,
+    )
+
+    assert result.coil_path_accuracy == 1.0
+    assert result.full_attention_accuracy == 1.0
+    assert result.local_window_accuracy == 0.0
+    assert result.wrong_stride_accuracy == 0.0
+    assert result.near_control_local_window_accuracy == 1.0
+    assert result.near_control_full_attention_accuracy == 1.0
+    assert result.near_control_coil_path_accuracy == 0.0
