@@ -4,6 +4,7 @@ from circle_math.applications.circle_ai import (
     coil_attention_path,
     content_route_label,
     fit_loop_budget_lookup,
+    fit_loop_block_lookup,
     fit_content_route_lookup,
     fit_memory_slot_lookup,
     local_window_indices,
@@ -19,6 +20,7 @@ from circle_math.applications.circle_ai import (
     mixed_retrieval_target_lags,
     multi_resolution_required_resolutions,
     predict_loop_budget_lookup,
+    predict_loop_block_lookup,
     predict_content_route_lookup,
     predict_memory_slot_lookup,
     retrieval_hit_rate_by_lag,
@@ -27,6 +29,7 @@ from circle_math.applications.circle_ai import (
     run_coil_retrieval_benchmark,
     run_content_gated_retrieval_benchmark,
     run_learned_content_gate_retrieval_benchmark,
+    run_learned_middle_block_recurrence_benchmark,
     run_learned_token_level_recurrence_benchmark,
     run_looped_recurrence_benchmark,
     run_learned_recurrence_schedule_benchmark,
@@ -483,6 +486,15 @@ def test_learned_recurrence_schedule_lookup_helpers_are_deterministic() -> None:
     assert predict_loop_budget_lookup(4, lookup, tuple(range(16, 24))) == (1, 2, 3, 4, 1, 2, 3, 4)
 
 
+def test_learned_middle_block_lookup_helpers_are_deterministic() -> None:
+    samples = tuple(range(12))
+    blocks = middle_block_required_blocks(8, (2, 5), samples)
+    lookup = fit_loop_block_lookup(3, samples, blocks)
+
+    assert lookup == (2, 3, 4)
+    assert predict_loop_block_lookup(3, lookup, tuple(range(12, 20))) == (2, 3, 4, 2, 3, 4, 2, 3)
+
+
 def test_learned_recurrence_schedule_benchmark_has_baselines_and_controls() -> None:
     result = run_learned_recurrence_schedule_benchmark(
         loop_period=4,
@@ -510,6 +522,58 @@ def test_learned_recurrence_schedule_benchmark_has_baselines_and_controls() -> N
     assert result.fixed_loop_budget_accuracy == 0.25
     assert result.wrong_period_router_accuracy < result.learned_phase_router_accuracy
     assert result.over_looped_accuracy == 0.0
+    assert result.note.endswith("not a model-quality claim.")
+
+
+def test_learned_middle_block_recurrence_benchmark_has_block_and_budget_controls() -> None:
+    result = run_learned_middle_block_recurrence_benchmark(
+        block_count=8,
+        train_length=64,
+        test_length=32,
+        loop_period=4,
+        wrong_block_period=2,
+        wrong_budget_period=3,
+        selected_loop_block=(2, 5),
+        wrong_loop_block=(0, 2),
+        max_budget=4,
+        fixed_loop_budget=4,
+        over_loop_budget=8,
+        overthink_tolerance=0,
+    )
+
+    assert result == run_learned_middle_block_recurrence_benchmark(
+        block_count=8,
+        train_length=64,
+        test_length=32,
+        loop_period=4,
+        wrong_block_period=2,
+        wrong_budget_period=3,
+        selected_loop_block=(2, 5),
+        wrong_loop_block=(0, 2),
+        max_budget=4,
+        fixed_loop_budget=4,
+        over_loop_budget=8,
+        overthink_tolerance=0,
+    )
+    assert result.block_period == 3
+    assert result.learned_block_lookup == (2, 3, 4)
+    assert result.learned_budget_lookup == (1, 2, 3, 4)
+    assert result.required_block_sample == (3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2)
+    assert result.learned_block_sample == result.required_block_sample
+    assert result.required_budget_sample == (1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4)
+    assert result.learned_budget_sample == result.required_budget_sample
+    assert result.active_sample_counts == (32, 24, 16, 8)
+    assert result.learned_middle_block_router_accuracy == 1.0
+    assert result.selected_band_phase_budget_accuracy == 1.0
+    assert result.full_block_phase_budget_accuracy == 1.0
+    assert result.fixed_loop_budget_accuracy == 0.25
+    assert result.wrong_block_period_accuracy < result.learned_middle_block_router_accuracy
+    assert result.wrong_budget_period_accuracy < result.learned_middle_block_router_accuracy
+    assert result.wrong_loop_block_accuracy == 0.0
+    assert result.over_looped_accuracy == 0.0
+    assert result.average_learned_block_passes == 2.5
+    assert result.average_selected_band_passes == 7.5
+    assert result.average_full_block_passes == 20.0
     assert result.note.endswith("not a model-quality claim.")
 
 

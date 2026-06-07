@@ -21,6 +21,7 @@ sidecars:
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_loop_exit_certificate.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_token_level_recurrence.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_learned_token_level_recurrence.py
+  - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_learned_middle_block_recurrence.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_training_free_loop_wrapper.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_middle_block_recurrence.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_multi_resolution_recurrence.py
@@ -151,7 +152,9 @@ next_targets:
     sparse phase-router, over-looped, and dense-threshold controls, AIM-B0005 records token-level budgets,
     active-token counts, selected middle block, resolution labels, and wrong/over-loop controls, AIM-B0012
     adds learned token-level recurrence routing with a phase-to-budget lookup, wrong-period, shifted-budget,
-    fixed-budget, over-loop, and nonperiodic scalar controls, AIM-B0006
+    fixed-budget, over-loop, and nonperiodic scalar controls, AIM-B0013 adds learned middle-block recurrence
+    routing with separate phase-to-block and phase-to-budget lookups plus wrong-period, selected-band,
+    full-block, fixed-budget, wrong-block, and over-loop controls, AIM-B0006
     adds a deterministic training-free loop-wrapper fixture with CPU/optional-MLX scoring, fixed-loop,
     wrong-period, over-loop, and scalar-threshold baselines, and AIM-B0007 adds a middle-block recurrence
     fixture with selected-block, full-block, fixed-budget, wrong-block, and over-loop controls, and AIM-B0008
@@ -233,6 +236,11 @@ benchmarks:
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_learned_token_level_recurrence_benchmark_has_token_router_controls
     script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_learned_token_level_recurrence.py
     description: "Deterministic learned token-level recurrence fixture fitting a phase-to-budget lookup and comparing it against fixed-budget, wrong-period, shifted-budget, over-loop, and nonperiodic scalar-threshold baselines."
+  - id: AIM-B0013
+    status: exploratory_python
+    path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_learned_middle_block_recurrence_benchmark_has_block_and_budget_controls
+    script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_learned_middle_block_recurrence.py
+    description: "Deterministic learned middle-block recurrence fixture fitting phase-to-block and phase-to-budget lookups and comparing them against selected-band and full-block baselines plus fixed-budget, wrong-period, wrong-block, and over-loop controls with block-pass accounting."
   - id: AIM-B0006
     status: exploratory_python
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_training_free_loop_wrapper_benchmark_has_baselines_and_controls
