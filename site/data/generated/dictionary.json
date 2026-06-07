@@ -5058,6 +5058,38 @@
       "used_by_widgets": []
     },
     {
+      "dependencies": [
+        "COMMON-0052",
+        "COMMON-0053",
+        "COMMON-0054",
+        "COMMON-0055"
+      ],
+      "forbidden_meanings": [
+        "A learned token-level recursive transformer.",
+        "Evidence that adaptive recurrence improves reasoning, perplexity, throughput, memory, or context length.",
+        "A replacement for Universal Transformer, Mixture-of-Recursions, middle-block recurrence, multi-resolution recurrence, training-free loop wrappers, or dense transformer baselines."
+      ],
+      "formal_definition": "`circle_math.applications.circle_ai.run_token_level_recurrence_benchmark`, a deterministic fixture that records per-token recurrence budgets, active-token counts by loop step, selected middle-block range, coarse/fine resolution labels, and fixed/wrong/over-loop controls.",
+      "id": "COMMON-0059",
+      "introduced_in": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+      "intuition": "A first harness for Mixture-of-Recursions-style ideas: make token budgets, active sets, loop block, and resolution level visible before training a recursive model.",
+      "kind": "experiment",
+      "name": "Token-level recurrence routing fixture",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "token_level_recurrence_fixture",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "used_by_theorems": [],
+      "used_by_widgets": []
+    },
+    {
       "dependencies": [],
       "forbidden_meanings": [
         "The one-node circle C_1.",

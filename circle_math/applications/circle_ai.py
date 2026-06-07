@@ -319,6 +319,29 @@ class LoopedRecurrenceBenchmarkResult:
 
 
 @dataclass(frozen=True)
+class TokenLevelRecurrenceBenchmarkResult:
+    loop_period: int
+    token_count: int
+    max_budget: int
+    fixed_global_budget: int
+    over_loop_budget: int
+    wrong_budget_shift: int
+    overthink_tolerance: int
+    selected_loop_block: tuple[int, int]
+    resolution_levels: tuple[str, ...]
+    token_budgets: tuple[int, ...]
+    active_token_counts: tuple[int, ...]
+    token_level_accuracy: float
+    fixed_global_budget_accuracy: float
+    wrong_budget_accuracy: float
+    over_looped_accuracy: float
+    nonperiodic_token_level_accuracy: float
+    nonperiodic_scalar_threshold_accuracy: float
+    average_active_tokens: float
+    note: str = "Synthetic token-level recurrence routing fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
 class AdapterBlockBenchmarkResult:
     block_size: int
     train_channels: int
@@ -1433,6 +1456,160 @@ def run_looped_recurrence_benchmark(
         over_looped_accuracy=accuracy(over_looped_predictions, positive_labels),
         nonperiodic_loop_phase_accuracy=accuracy(control_loop_predictions, control_test_labels),
         nonperiodic_dense_threshold_accuracy=accuracy(control_threshold_predictions, control_test_labels),
+    )
+
+
+def token_recurrence_budget(loop_period: int, token_index: int) -> int:
+    """Return the routed recurrence budget for a token-level fixture."""
+    return loop_required_steps(loop_period, token_index)
+
+
+def token_recurrence_budgets(loop_period: int, token_indices: Sequence[int]) -> tuple[int, ...]:
+    """Return per-token recurrence budgets for token-level routing fixtures."""
+    return tuple(token_recurrence_budget(loop_period, token_index) for token_index in token_indices)
+
+
+def normalize_selected_loop_block(selected_loop_block: Optional[Sequence[int]]) -> tuple[int, int]:
+    """Validate the selected middle-block range recorded by the fixture."""
+    block = (2, 5) if selected_loop_block is None else tuple(selected_loop_block)
+    if len(block) != 2:
+        raise ValueError("selected_loop_block must contain start and stop indices")
+    start, stop = int(block[0]), int(block[1])
+    if start < 0:
+        raise ValueError("selected_loop_block start must be nonnegative")
+    if stop <= start:
+        raise ValueError("selected_loop_block stop must be greater than start")
+    return start, stop
+
+
+def recurrence_resolution_levels(max_budget: int) -> tuple[str, ...]:
+    """Return a deterministic coarse/fine resolution label for each loop step."""
+    _require_positive(max_budget, "max_budget")
+    return tuple("coarse" if step % 2 == 1 else "fine" for step in range(1, max_budget + 1))
+
+
+def active_token_counts_by_budget(token_budgets: Sequence[int], max_budget: int) -> tuple[int, ...]:
+    """Count how many tokens are still active at each loop step."""
+    _require_positive(max_budget, "max_budget")
+    budgets = tuple(token_budgets)
+    if not budgets:
+        raise ValueError("token_budgets must be nonempty")
+    for budget in budgets:
+        _require_positive(budget, "token budget")
+    return tuple(sum(1 for budget in budgets if budget >= step) for step in range(1, max_budget + 1))
+
+
+def _recurrence_budget_predictions(
+    required_budgets: Sequence[int],
+    planned_budgets: Sequence[int],
+    *,
+    overthink_tolerance: int,
+) -> tuple[int, ...]:
+    required = tuple(required_budgets)
+    planned = tuple(planned_budgets)
+    if len(required) != len(planned):
+        raise ValueError("required_budgets and planned_budgets must have the same length")
+    if not required:
+        raise ValueError("required_budgets must be nonempty")
+    if overthink_tolerance < 0:
+        raise ValueError("overthink_tolerance must be nonnegative")
+    return tuple(
+        loop_score_trace(required_budget, planned_budget, overthink_tolerance=overthink_tolerance)[-1]
+        for required_budget, planned_budget in zip(required, planned)
+    )
+
+
+def run_token_level_recurrence_benchmark(
+    *,
+    loop_period: int = 4,
+    token_count: int = 32,
+    max_budget: int = 4,
+    fixed_global_budget: int = 4,
+    over_loop_budget: int = 8,
+    wrong_budget_shift: int = 1,
+    overthink_tolerance: int = 0,
+    selected_loop_block: Optional[Sequence[int]] = None,
+) -> TokenLevelRecurrenceBenchmarkResult:
+    """Run a deterministic token-level recurrence routing fixture.
+
+    This fixture records per-token recurrence budgets, active-token counts by
+    loop step, a selected middle-block range, alternating coarse/fine
+    resolution labels, and fixed/wrong/over-loop controls. It is schedule
+    bookkeeping only, not evidence about learned recursive model quality.
+    """
+    _require_positive(loop_period, "loop_period")
+    _require_positive(token_count, "token_count")
+    _require_positive(max_budget, "max_budget")
+    _require_positive(fixed_global_budget, "fixed_global_budget")
+    _require_positive(over_loop_budget, "over_loop_budget")
+    if wrong_budget_shift == 0:
+        raise ValueError("wrong_budget_shift must be nonzero")
+    if overthink_tolerance < 0:
+        raise ValueError("overthink_tolerance must be nonnegative")
+
+    tokens = tuple(range(token_count))
+    token_budgets = token_recurrence_budgets(loop_period, tokens)
+    positive_labels = tuple(1 for _ in tokens)
+    routed_budgets = tuple(min(budget, max_budget) for budget in token_budgets)
+    fixed_budgets = tuple(fixed_global_budget for _ in tokens)
+    wrong_budgets = tuple(
+        ((budget - 1 + wrong_budget_shift) % max_budget) + 1
+        for budget in token_budgets
+    )
+    over_budgets = tuple(over_loop_budget for _ in tokens)
+
+    token_level_predictions = _recurrence_budget_predictions(
+        token_budgets,
+        routed_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+    fixed_predictions = _recurrence_budget_predictions(
+        token_budgets,
+        fixed_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+    wrong_predictions = _recurrence_budget_predictions(
+        token_budgets,
+        wrong_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+    over_predictions = _recurrence_budget_predictions(
+        token_budgets,
+        over_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+
+    control_threshold = (3 * token_count) // 4
+    control_labels = tuple(nonperiodic_threshold_label(token, control_threshold) for token in tokens)
+    control_loop_lookup = fit_phase_lookup(loop_period, tokens, control_labels)
+    control_loop_predictions = predict_phase_lookup(loop_period, control_loop_lookup, tokens)
+    control_threshold_fit, control_polarity = fit_threshold_classifier(tokens, control_labels)
+    control_threshold_predictions = predict_threshold_classifier(
+        tokens,
+        control_threshold_fit,
+        control_polarity,
+    )
+    active_counts = active_token_counts_by_budget(token_budgets, max_budget)
+
+    return TokenLevelRecurrenceBenchmarkResult(
+        loop_period=loop_period,
+        token_count=token_count,
+        max_budget=max_budget,
+        fixed_global_budget=fixed_global_budget,
+        over_loop_budget=over_loop_budget,
+        wrong_budget_shift=wrong_budget_shift,
+        overthink_tolerance=overthink_tolerance,
+        selected_loop_block=normalize_selected_loop_block(selected_loop_block),
+        resolution_levels=recurrence_resolution_levels(max_budget),
+        token_budgets=token_budgets,
+        active_token_counts=active_counts,
+        token_level_accuracy=accuracy(token_level_predictions, positive_labels),
+        fixed_global_budget_accuracy=accuracy(fixed_predictions, positive_labels),
+        wrong_budget_accuracy=accuracy(wrong_predictions, positive_labels),
+        over_looped_accuracy=accuracy(over_predictions, positive_labels),
+        nonperiodic_token_level_accuracy=accuracy(control_loop_predictions, control_labels),
+        nonperiodic_scalar_threshold_accuracy=accuracy(control_threshold_predictions, control_labels),
+        average_active_tokens=sum(active_counts) / len(active_counts),
     )
 
 

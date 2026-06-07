@@ -1,4 +1,5 @@
 from circle_math.applications.circle_ai import (
+    active_token_counts_by_budget,
     average_candidate_count,
     coil_attention_path,
     fit_memory_slot_lookup,
@@ -13,11 +14,15 @@ from circle_math.applications.circle_ai import (
     predict_memory_slot_lookup,
     retrieval_hit_rate_by_lag,
     retrieval_target_index,
+    recurrence_resolution_levels,
     run_coil_retrieval_benchmark,
     run_content_gated_retrieval_benchmark,
     run_looped_recurrence_benchmark,
     run_memory_slot_benchmark,
+    run_token_level_recurrence_benchmark,
     synthetic_memory_slot_dataset,
+    token_recurrence_budget,
+    token_recurrence_budgets,
 )
 
 
@@ -204,4 +209,48 @@ def test_looped_recurrence_benchmark_has_baselines_and_overloop_control() -> Non
     assert result.over_looped_accuracy == 0.0
     assert result.nonperiodic_dense_threshold_accuracy == 1.0
     assert result.nonperiodic_dense_threshold_accuracy > result.nonperiodic_loop_phase_accuracy
+    assert result.note.endswith("not a model-quality claim.")
+
+
+def test_token_level_recurrence_budget_helpers_are_deterministic() -> None:
+    tokens = tuple(range(8))
+    budgets = token_recurrence_budgets(4, tokens)
+
+    assert budgets == (1, 2, 3, 4, 1, 2, 3, 4)
+    assert tuple(token_recurrence_budget(4, token) for token in tokens) == budgets
+    assert active_token_counts_by_budget(budgets, 4) == (8, 6, 4, 2)
+    assert recurrence_resolution_levels(4) == ("coarse", "fine", "coarse", "fine")
+
+
+def test_token_level_recurrence_benchmark_has_per_token_and_wrong_loop_controls() -> None:
+    result = run_token_level_recurrence_benchmark(
+        loop_period=4,
+        token_count=32,
+        max_budget=4,
+        fixed_global_budget=4,
+        over_loop_budget=8,
+        wrong_budget_shift=1,
+        overthink_tolerance=0,
+    )
+
+    assert result == run_token_level_recurrence_benchmark(
+        loop_period=4,
+        token_count=32,
+        max_budget=4,
+        fixed_global_budget=4,
+        over_loop_budget=8,
+        wrong_budget_shift=1,
+        overthink_tolerance=0,
+    )
+    assert result.selected_loop_block == (2, 5)
+    assert result.token_budgets[:8] == (1, 2, 3, 4, 1, 2, 3, 4)
+    assert result.active_token_counts == (32, 24, 16, 8)
+    assert result.resolution_levels == ("coarse", "fine", "coarse", "fine")
+    assert result.average_active_tokens == 20.0
+    assert result.token_level_accuracy == 1.0
+    assert result.fixed_global_budget_accuracy == 0.25
+    assert result.wrong_budget_accuracy == 0.0
+    assert result.over_looped_accuracy == 0.0
+    assert result.nonperiodic_scalar_threshold_accuracy == 1.0
+    assert result.nonperiodic_scalar_threshold_accuracy > result.nonperiodic_token_level_accuracy
     assert result.note.endswith("not a model-quality claim.")

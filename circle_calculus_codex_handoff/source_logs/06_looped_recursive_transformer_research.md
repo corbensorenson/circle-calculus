@@ -53,9 +53,10 @@ Add a looped/recursive transformer lane under the dedicated Circle AI program:
 
 1. Define a finite recurrence schedule object and dictionary terms. Initial terms: `COMMON-0052` through `COMMON-0055`.
 2. Add a Python fixture that compares fixed-depth, looped-depth, adaptive-exit, and over-looped controls on a small deterministic task. Initial fixture: `AIM-B0003`, implemented by `circle_math.applications.circle_ai.run_looped_recurrence_benchmark` and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_looped_recurrence.py`.
-3. Add a Lean seed for bounded loop phase and recurrence-budget indexing if it is not already covered by phase-channel facts.
-4. Add a Living Book lesson that teaches recurrence depth, exit certificates, and overthinking guardrails without claiming model quality.
-5. Later, add MLX prototypes against ordinary dense, Universal Transformer, looped-transformer, recurrent-memory, sparse/MoE, token-level Mixture-of-Recursions, middle-block recurrence, multi-resolution recurrence, training-free loop wrappers, RWKV/Mamba-style, and standard transformer baselines.
+3. Add a token-level routing fixture for Mixture-of-Recursions-style bookkeeping: `AIM-B0005`, implemented by `circle_math.applications.circle_ai.run_token_level_recurrence_benchmark` and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_token_level_recurrence.py`. This records per-token budgets, active-token counts, selected middle block, resolution labels, and wrong/over-loop controls.
+4. Add a Lean seed for bounded loop phase and recurrence-budget indexing if it is not already covered by phase-channel facts.
+5. Add a Living Book lesson that teaches recurrence depth, token-level budgets, exit certificates, and overthinking guardrails without claiming model quality.
+6. Later, add MLX prototypes against ordinary dense, Universal Transformer, looped-transformer, recurrent-memory, sparse/MoE, token-level Mixture-of-Recursions, middle-block recurrence, multi-resolution recurrence, training-free loop wrappers, RWKV/Mamba-style, and standard transformer baselines.
 
 ## Guardrail
 

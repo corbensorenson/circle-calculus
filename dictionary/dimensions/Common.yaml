@@ -671,3 +671,15 @@ entries:
       - "A proof that circulant neural layers improve quality."
       - "Evidence about runtime, memory, training stability, or hardware efficiency."
       - "A replacement for dense, LoRA, block-circulant, FFT, NTT, or learned linear-layer baselines."
+  - id: COMMON-0059
+    name: "Token-level recurrence routing fixture"
+    kind: experiment
+    symbol: "token_level_recurrence_fixture"
+    formal_definition: "`circle_math.applications.circle_ai.run_token_level_recurrence_benchmark`, a deterministic fixture that records per-token recurrence budgets, active-token counts by loop step, selected middle-block range, coarse/fine resolution labels, and fixed/wrong/over-loop controls."
+    intuition: "A first harness for Mixture-of-Recursions-style ideas: make token budgets, active sets, loop block, and resolution level visible before training a recursive model."
+    dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054", "COMMON-0055"]
+    introduced_in: "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+    forbidden_meanings:
+      - "A learned token-level recursive transformer."
+      - "Evidence that adaptive recurrence improves reasoning, perplexity, throughput, memory, or context length."
+      - "A replacement for Universal Transformer, Mixture-of-Recursions, middle-block recurrence, multi-resolution recurrence, training-free loop wrappers, or dense transformer baselines."
