@@ -1085,6 +1085,62 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
     blocker: ""
+  - id: AIM-T0018
+    status: lean_proved
+    lean_name: Circle.Applications.tokenRecurrenceBudget_le_loopPeriod
+    informal_statement: "For a positive loop period, every token recurrence budget is bounded by the loop period."
+    formal_statement: "For positive loopPeriod and token, tokenRecurrenceBudget loopPeriod token <= loopPeriod."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0019
+    status: lean_proved
+    lean_name: Circle.Applications.trainingFreeLoopBudget_add_loopPeriod
+    informal_statement: "Training-free loop-wrapper budgets are periodic under a full loop-period shift of the sample index."
+    formal_statement: "For positive loopPeriod, trainingFreeLoopBudget loopPeriod (sample + loopPeriod) maxLoops = trainingFreeLoopBudget loopPeriod sample maxLoops."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0067"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_training_free_loop_wrapper_budget_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0020
+    status: lean_proved
+    lean_name: Circle.Applications.trainingFreeLoopBudget_eq_required_of_available
+    informal_statement: "When the loop-exit budget is available, the training-free wrapper budget equals the required loop depth."
+    formal_statement: "For loopPeriod sample maxLoops, loopExitAvailable loopPeriod sample maxLoops implies trainingFreeLoopBudget loopPeriod sample maxLoops = loopRequiredSteps loopPeriod sample."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0067"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_training_free_loop_wrapper_benchmark_has_baselines_and_controls
+    blocker: ""
+  - id: AIM-T0021
+    status: lean_proved
+    lean_name: Circle.Applications.loopOverthinkingBoundary_add_loopPeriod
+    informal_statement: "Finite loop overthinking boundaries are periodic under a full loop-period shift of the sample index."
+    formal_statement: "For positive loopPeriod, loopOverthinkingBoundary loopPeriod (sample + loopPeriod) tolerance = loopOverthinkingBoundary loopPeriod sample tolerance."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
+    blocker: ""
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize

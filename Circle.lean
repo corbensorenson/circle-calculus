@@ -21,3 +21,4 @@ import Circle.Applications.CoilSystems
 import Circle.Applications.CircleAI
 import Circle.Physics.LatticeGauge
 import Circle.Generative.SeedRule
+import Circle.Erdos.EGZ

@@ -974,3 +974,19 @@ theorems:
       lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["lift_iter_successor(modulus,value,steps).value == value+steps and residue < modulus"]
+
+  - id: CC-T0062
+    name: Erdős-Ginzburg-Ziv circle bridge
+    status: proved
+    lean_name: Circle.erdos_ginzburg_ziv
+    informal_statement: "Any finite family of at least 2*n-1 addresses in C_n contains n addresses whose sum is zero in C_n."
+    formal_statement: "forall {ι : Type*} {n : Nat} {s : Finset ι} (a : ι -> Circle.C n), 2*n-1 <= s.card -> exists t, t subset s and t.card = n and sum over t of a is zero"
+    dictionary_dependencies: ["CC-0001"]
+    paper_refs: ["docs/ERDOS_CIRCLE_MATH_REVIEW.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Erdos/EGZ.lean as a Circle.C wrapper around mathlib's ZMod.erdos_ginzburg_ziv theorem."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []

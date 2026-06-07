@@ -19,9 +19,13 @@ namespace Circle.PaperAI02
 #check Circle.Applications.loopRequiredSteps_le_loopPeriod
 #check Circle.Applications.loopRequiredSteps_add_loopPeriod
 #check Circle.Applications.tokenRecurrenceBudget_add_loopPeriod
+#check Circle.Applications.tokenRecurrenceBudget_le_loopPeriod
 #check Circle.Applications.trainingFreeLoopBudget_le_maxLoops
 #check Circle.Applications.trainingFreeLoopBudget_le_requiredSteps
+#check Circle.Applications.trainingFreeLoopBudget_add_loopPeriod
+#check Circle.Applications.trainingFreeLoopBudget_eq_required_of_available
 #check Circle.Applications.loopOverthinkingBoundary_ge_required
+#check Circle.Applications.loopOverthinkingBoundary_add_loopPeriod
 #check Circle.Applications.loopExitAvailable_of_loopPeriod_le_budget
 #check Circle.Applications.loopExitAvailable_add_loopPeriod
 #check Circle.Applications.loopExitCertificate_exit_eq_required

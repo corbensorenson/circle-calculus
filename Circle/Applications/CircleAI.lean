@@ -103,6 +103,12 @@ theorem tokenRecurrenceBudget_add_loopPeriod {loopPeriod : Nat} (h : 0 < loopPer
   unfold tokenRecurrenceBudget
   exact loopRequiredSteps_add_loopPeriod h token
 
+theorem tokenRecurrenceBudget_le_loopPeriod {loopPeriod : Nat} (h : 0 < loopPeriod)
+    (token : Nat) :
+    tokenRecurrenceBudget loopPeriod token ≤ loopPeriod := by
+  unfold tokenRecurrenceBudget
+  exact loopRequiredSteps_le_loopPeriod h token
+
 def trainingFreeLoopBudget (loopPeriod sample maxLoops : Nat) : Nat :=
   min (loopRequiredSteps loopPeriod sample) maxLoops
 
@@ -117,8 +123,23 @@ theorem trainingFreeLoopBudget_le_requiredSteps (loopPeriod sample maxLoops : Na
   unfold trainingFreeLoopBudget
   exact Nat.min_le_left _ _
 
+theorem trainingFreeLoopBudget_add_loopPeriod {loopPeriod : Nat} (h : 0 < loopPeriod)
+    (sample maxLoops : Nat) :
+    trainingFreeLoopBudget loopPeriod (sample + loopPeriod) maxLoops =
+      trainingFreeLoopBudget loopPeriod sample maxLoops := by
+  unfold trainingFreeLoopBudget
+  rw [loopRequiredSteps_add_loopPeriod h]
+
 def loopExitAvailable (loopPeriod sample maxLoops : Nat) : Prop :=
   loopRequiredSteps loopPeriod sample ≤ maxLoops
+
+theorem trainingFreeLoopBudget_eq_required_of_available
+    (loopPeriod sample maxLoops : Nat)
+    (hbudget : loopExitAvailable loopPeriod sample maxLoops) :
+    trainingFreeLoopBudget loopPeriod sample maxLoops =
+      loopRequiredSteps loopPeriod sample := by
+  unfold trainingFreeLoopBudget loopExitAvailable at *
+  exact Nat.min_eq_left hbudget
 
 def loopOverthinkingBoundary (loopPeriod sample tolerance : Nat) : Nat :=
   loopRequiredSteps loopPeriod sample + tolerance
@@ -154,6 +175,14 @@ theorem loopOverthinkingBoundary_ge_required
       loopOverthinkingBoundary loopPeriod sample tolerance := by
   unfold loopOverthinkingBoundary
   exact Nat.le_add_right _ _
+
+theorem loopOverthinkingBoundary_add_loopPeriod
+    {loopPeriod : Nat} (hpositive : 0 < loopPeriod)
+    (sample tolerance : Nat) :
+    loopOverthinkingBoundary loopPeriod (sample + loopPeriod) tolerance =
+      loopOverthinkingBoundary loopPeriod sample tolerance := by
+  unfold loopOverthinkingBoundary
+  rw [loopRequiredSteps_add_loopPeriod hpositive]
 
 theorem loopExitAvailable_of_loopPeriod_le_budget
     {loopPeriod maxLoops : Nat} (hpositive : 0 < loopPeriod)

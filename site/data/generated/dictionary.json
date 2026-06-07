@@ -299,6 +299,12 @@
           "status": "proved"
         },
         {
+          "id": "CC-T0062",
+          "lean_name": "Circle.erdos_ginzburg_ziv",
+          "name": "Erd\u0151s-Ginzburg-Ziv circle bridge",
+          "status": "proved"
+        },
+        {
           "id": "GEN-T0001",
           "lean_name": "Circle.Generative.finiteCircleGenerator_regenerates_nodes",
           "name": "Circle.Generative.finiteCircleGenerator_regenerates_nodes",
@@ -5105,6 +5111,30 @@
           "lean_name": "Circle.Applications.loopExitCertificate_within_guardrail",
           "name": "Circle.Applications.loopExitCertificate_within_guardrail",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0018",
+          "lean_name": "Circle.Applications.tokenRecurrenceBudget_le_loopPeriod",
+          "name": "Circle.Applications.tokenRecurrenceBudget_le_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0019",
+          "lean_name": "Circle.Applications.trainingFreeLoopBudget_add_loopPeriod",
+          "name": "Circle.Applications.trainingFreeLoopBudget_add_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0020",
+          "lean_name": "Circle.Applications.trainingFreeLoopBudget_eq_required_of_available",
+          "name": "Circle.Applications.trainingFreeLoopBudget_eq_required_of_available",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0021",
+          "lean_name": "Circle.Applications.loopOverthinkingBoundary_add_loopPeriod",
+          "name": "Circle.Applications.loopOverthinkingBoundary_add_loopPeriod",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -5208,6 +5238,30 @@
           "lean_name": "Circle.Applications.loopExitCertificate_within_guardrail",
           "name": "Circle.Applications.loopExitCertificate_within_guardrail",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0018",
+          "lean_name": "Circle.Applications.tokenRecurrenceBudget_le_loopPeriod",
+          "name": "Circle.Applications.tokenRecurrenceBudget_le_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0019",
+          "lean_name": "Circle.Applications.trainingFreeLoopBudget_add_loopPeriod",
+          "name": "Circle.Applications.trainingFreeLoopBudget_add_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0020",
+          "lean_name": "Circle.Applications.trainingFreeLoopBudget_eq_required_of_available",
+          "name": "Circle.Applications.trainingFreeLoopBudget_eq_required_of_available",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0021",
+          "lean_name": "Circle.Applications.loopOverthinkingBoundary_add_loopPeriod",
+          "name": "Circle.Applications.loopOverthinkingBoundary_add_loopPeriod",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -5250,6 +5304,12 @@
           "id": "AIM-T0017",
           "lean_name": "Circle.Applications.loopExitCertificate_within_guardrail",
           "name": "Circle.Applications.loopExitCertificate_within_guardrail",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0021",
+          "lean_name": "Circle.Applications.loopOverthinkingBoundary_add_loopPeriod",
+          "name": "Circle.Applications.loopOverthinkingBoundary_add_loopPeriod",
           "status": "proved"
         }
       ],
@@ -5410,6 +5470,12 @@
           "id": "AIM-T0009",
           "lean_name": "Circle.Applications.tokenRecurrenceBudget_add_loopPeriod",
           "name": "Circle.Applications.tokenRecurrenceBudget_add_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0018",
+          "lean_name": "Circle.Applications.tokenRecurrenceBudget_le_loopPeriod",
+          "name": "Circle.Applications.tokenRecurrenceBudget_le_loopPeriod",
           "status": "proved"
         }
       ],
@@ -6518,6 +6584,18 @@
           "id": "AIM-T0011",
           "lean_name": "Circle.Applications.trainingFreeLoopBudget_le_requiredSteps",
           "name": "Circle.Applications.trainingFreeLoopBudget_le_requiredSteps",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0019",
+          "lean_name": "Circle.Applications.trainingFreeLoopBudget_add_loopPeriod",
+          "name": "Circle.Applications.trainingFreeLoopBudget_add_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0020",
+          "lean_name": "Circle.Applications.trainingFreeLoopBudget_eq_required_of_available",
+          "name": "Circle.Applications.trainingFreeLoopBudget_eq_required_of_available",
           "status": "proved"
         }
       ],

@@ -125,6 +125,22 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.loopExitCertificate_within_guardrail
     dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054"]
+  - id: AIM-T0018
+    status: lean_proved
+    lean_name: Circle.Applications.tokenRecurrenceBudget_le_loopPeriod
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0019
+    status: lean_proved
+    lean_name: Circle.Applications.trainingFreeLoopBudget_add_loopPeriod
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0067"]
+  - id: AIM-T0020
+    status: lean_proved
+    lean_name: Circle.Applications.trainingFreeLoopBudget_eq_required_of_available
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0067"]
+  - id: AIM-T0021
+    status: lean_proved
+    lean_name: Circle.Applications.loopOverthinkingBoundary_add_loopPeriod
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054"]
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize

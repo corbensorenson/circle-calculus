@@ -313,7 +313,7 @@
       "id": "AIM-T0010",
       "lean_name": "Circle.Applications.trainingFreeLoopBudget_le_maxLoops",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 109,
+      "lean_source_line": 115,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -336,7 +336,7 @@
       "id": "AIM-T0011",
       "lean_name": "Circle.Applications.trainingFreeLoopBudget_le_requiredSteps",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 114,
+      "lean_source_line": 120,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -359,7 +359,7 @@
       "id": "AIM-T0012",
       "lean_name": "Circle.Applications.loopOverthinkingBoundary_ge_required",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 151,
+      "lean_source_line": 172,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -381,7 +381,7 @@
       "id": "AIM-T0013",
       "lean_name": "Circle.Applications.loopExitAvailable_of_loopPeriod_le_budget",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 158,
+      "lean_source_line": 187,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -403,7 +403,7 @@
       "id": "AIM-T0014",
       "lean_name": "Circle.Applications.loopExitAvailable_add_loopPeriod",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 165,
+      "lean_source_line": 194,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -425,7 +425,7 @@
       "id": "AIM-T0015",
       "lean_name": "Circle.Applications.loopExitCertificate_exit_eq_required",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 173,
+      "lean_source_line": 202,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -447,7 +447,7 @@
       "id": "AIM-T0016",
       "lean_name": "Circle.Applications.loopExitCertificate_within_budget",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 179,
+      "lean_source_line": 208,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -470,7 +470,99 @@
       "id": "AIM-T0017",
       "lean_name": "Circle.Applications.loopExitCertificate_within_guardrail",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 184,
+      "lean_source_line": 213,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0052",
+        "COMMON-0053",
+        "COMMON-0059"
+      ],
+      "id": "AIM-T0018",
+      "lean_name": "Circle.Applications.tokenRecurrenceBudget_le_loopPeriod",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 106,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0052",
+        "COMMON-0053",
+        "COMMON-0067"
+      ],
+      "id": "AIM-T0019",
+      "lean_name": "Circle.Applications.trainingFreeLoopBudget_add_loopPeriod",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 126,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0052",
+        "COMMON-0053",
+        "COMMON-0067"
+      ],
+      "id": "AIM-T0020",
+      "lean_name": "Circle.Applications.trainingFreeLoopBudget_eq_required_of_available",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 136,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0052",
+        "COMMON-0053",
+        "COMMON-0054"
+      ],
+      "id": "AIM-T0021",
+      "lean_name": "Circle.Applications.loopOverthinkingBoundary_add_loopPeriod",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 179,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -491,7 +583,7 @@
       "id": "AIRA-T0001",
       "lean_name": "Circle.Applications.adapterBlock_lt_blockSize",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 194,
+      "lean_source_line": 223,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -513,7 +605,7 @@
       "id": "AIRA-T0002",
       "lean_name": "Circle.Applications.adapterBlock_add_blockSize",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 199,
+      "lean_source_line": 228,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -534,7 +626,7 @@
       "id": "AIRA-T0003",
       "lean_name": "Circle.Applications.adapterBlock_zero",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 218,
+      "lean_source_line": 247,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -556,7 +648,7 @@
       "id": "AIRA-T0004",
       "lean_name": "Circle.Applications.adapterBlock_add_mul_blockSize",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 205,
+      "lean_source_line": 234,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -577,7 +669,7 @@
       "id": "AIRA-T0005",
       "lean_name": "Circle.Applications.adapterBlock_idempotent",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 211,
+      "lean_source_line": 240,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3360,6 +3452,34 @@
         "python_property_tests": [
           "bounded examples: same orbit by generated cycle decomposition iff representatives are congruent modulo gcd(n,k)"
         ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001"
+      ],
+      "formal_statement": "forall {\u03b9 : Type*} {n : Nat} {s : Finset \u03b9} (a : \u03b9 -> Circle.C n), 2*n-1 <= s.card -> exists t, t subset s and t.card = n and sum over t of a is zero",
+      "id": "CC-T0062",
+      "informal_statement": "Any finite family of at least 2*n-1 addresses in C_n contains n addresses whose sum is zero in C_n.",
+      "lean_name": "Circle.erdos_ginzburg_ziv",
+      "lean_source": "Circle/Erdos/EGZ.lean",
+      "lean_source_line": 11,
+      "name": "Erd\u0151s-Ginzburg-Ziv circle bridge",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/ERDOS_CIRCLE_MATH_REVIEW.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Erdos/EGZ.lean as a Circle.C wrapper around mathlib's ZMod.erdos_ginzburg_ziv theorem.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
       }
     },
     {
