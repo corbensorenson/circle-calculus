@@ -90,15 +90,16 @@ Each chapter must distinguish intuition, example, Python model, and formal theor
 ## Dedicated Circle AI Deep Program
 
 - Treat Circle AI as a dedicated active program, not just one application page.
-- Explore phase channels, cyclic memory, coil/sparse attention, adapter blocks, RoPE and MultiCoil positional structure, recurrent state, harmonic features, geometry-aware models, proof-carrying model components, and MLX/Mac-compatible prototypes.
+- Explore phase channels, cyclic memory, coil/sparse attention, looped/recursive transformer schedules, adapter blocks, RoPE and MultiCoil positional structure, recurrent state, harmonic features, geometry-aware models, proof-carrying model components, and MLX/Mac-compatible prototypes.
 - For each AI avenue, keep four lanes separate: Lean-proved finite safety/indexing facts, Python/MLX executable fixtures, benchmark comparisons against ordinary AI baselines, and speculative research hypotheses.
+- Include looped/recursive transformer schedules as a specific AI lesson lane: loop phase, recurrence budget, exit certificate, score trace, overthinking guardrail, and ordinary recursive-transformer baselines.
 - Require negative controls for positive periodic fixtures, especially nonperiodic tasks where circular structure should not help.
 - Report quality, runtime, memory, parameter count, and interpretability separately.
 - Do not claim model improvement, attention replacement, parameter efficiency, or speed without a reproducible benchmark artifact and clear baseline.
 - Link AI proof cards, dictionary terms, papers, benchmark fixtures, and future widgets into the Living Book so readers can distinguish proved address structure from empirical claims.
-- Build the AI Living Book path as lessons, not a link farm: phase channels -> learned-feature baselines -> harmonic/Fourier features -> backend parity -> cyclic memory -> coil retrieval -> adapters -> MultiCoil positions -> RoPE relative phase -> learned model baselines -> MLX prototypes -> geometry-aware AI.
+- Build the AI Living Book path as lessons, not a link farm: phase channels -> learned-feature baselines -> harmonic/Fourier features -> backend parity -> cyclic memory -> coil retrieval -> looped recurrence schedules -> adapters -> MultiCoil positions -> RoPE relative phase -> learned model baselines -> MLX prototypes -> geometry-aware AI.
 - Each mature AI lesson should show the ordinary baseline, the circular hypothesis, the Lean-proved boundary, the Python/MLX fixture, the benchmark status, and the limitation before linking to the source files.
-- Current benchmark anchors are `AIA-B0001`, `AIA-B0002`, `AIA-B0003`, `AIA-B0004`, `AIA-B0005`, `AIM-B0001`, `AIM-B0002`, `AIRA-B0001`, `AIRA-B0002`, and `AIRA-B0003`; they are scaffolds for phase, learned-feature baselines, harmonic/Fourier-feature baselines, backend parity, memory, coil-retrieval reachability, adapter-block, MultiCoil/RoPE-style positional structure, and RoPE-style relative phase, not model-quality results.
+- Current benchmark anchors are `AIA-B0001`, `AIA-B0002`, `AIA-B0003`, `AIA-B0004`, `AIA-B0005`, `AIM-B0001`, `AIM-B0002`, `AIRA-B0001`, `AIRA-B0002`, and `AIRA-B0003`; they are scaffolds for phase, learned-feature baselines, harmonic/Fourier-feature baselines, backend parity, memory, coil-retrieval reachability, adapter-block, MultiCoil/RoPE-style positional structure, and RoPE-style relative phase, not model-quality results. The looped/recursive transformer lane is planned through `P5-EDGE-010` and dictionary ids `COMMON-0052` through `COMMON-0054`.
 
 ## Phase 6: Optional Manim Embedding
 

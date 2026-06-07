@@ -6,7 +6,7 @@ Status: polished draft with a proved finite phase-channel seed and an explorator
 
 This paper states the disciplined Circle AI thesis: circle/coil structure may help when a model or dataset has real phase, recurrence, rotation, sparse cyclic mixing, circular memory, harmonic transforms, or geometry-aware structure. It does not imply that circles improve all neural networks.
 
-Many existing AI components already contain circle-shaped ingredients: RoPE and rotary embeddings, Fourier neural operators, FFT-style sequence mixers, SIREN-like periodic activations, circulant or block-circulant layers, long convolution systems, structured state-space models, spherical CNNs, and quaternion neural networks. The possible contribution here is not inventing those ingredients. It is making the phase/coil/proof interface systematic.
+Many existing AI components already contain circle-shaped ingredients: RoPE and rotary embeddings, Fourier neural operators, FFT-style sequence mixers, SIREN-like periodic activations, circulant or block-circulant layers, long convolution systems, structured state-space models, looped/recursive transformers, spherical CNNs, and quaternion neural networks. The possible contribution here is not inventing those ingredients. It is making the phase/coil/proof interface systematic.
 
 ## Current Model
 
@@ -87,6 +87,7 @@ The test sidecar checks that the fixture is deterministic, that phase lookup sol
 The first architecture track should build MLX/Mac-compatible prototypes around structures that already have a reason to be cyclic:
 
 - phase features for periodic or seasonal sequences;
+- looped/recursive transformer schedules where recurrence depth, loop phase, exit status, and overthinking boundaries are explicitly tracked;
 - sparse cyclic mixing for selected stride/orbit patterns;
 - circular memory banks with explicit alias diagnostics;
 - harmonic or circulant layers where convolutional structure is real;
@@ -99,6 +100,7 @@ Every experiment should compare against strong ordinary baselines and report neg
 - Use `AIA-B0004` as the current learned-feature baseline scaffold.
 - Use `AIA-B0005` as the current harmonic/Fourier feature scaffold.
 - Compare next against dense MLP/attention, standard RoPE, learned positional encodings, convolution, Hyena-like mixers, and S4/Mamba-like baselines as appropriate.
+- Compare looped/recursive transformer ideas against dense transformer depth, Universal Transformer recurrence, fixed looped transformers, adaptive early-exit models, recurrent-memory transformers, sparse/MoE looped models, RWKV/Mamba-style recurrent/state-space models, and ordinary nonrecursive transformer baselines before reasoning or quality claims.
 - Add separate memory-slot and adapter-block benchmarks before making CoilKV, Coil Attention, CoilRA, or MultiCoil RoPE claims.
 - Use `AIA-B0003` as backend parity scaffolding only; real MLX model prototypes and timing remain separate work.
 - Keep MLX/Mac-compatible prototypes first.

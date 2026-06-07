@@ -49,6 +49,7 @@ AI is an active first-class application phase. The project should explore all pl
 - coil/sparse attention and long-context path selection,
 - adapter blocks, CoilRA, block-cyclic adapters, and parameter-sharing layouts,
 - RoPE, MultiCoil RoPE, winding-aware positional structure, and torus-valued position views,
+- looped and recursive transformers with phase-indexed recurrence schedules, loop-exit certificates, and overthinking guardrails,
 - recurrent, state-space, and convolutional sequence models with explicit period structure,
 - harmonic, Fourier, circulant, and NTT-adjacent features,
 - geometry-aware quaternion, spherical, Hopf/fiber, and rotation representations,
@@ -69,8 +70,23 @@ Roadmap-grade AI acceptance criteria:
 - Every positive benchmark fixture needs at least one ordinary baseline and at least one negative or mismatch control.
 - MLX prototypes must start from CPU-reference parity and report MLX availability honestly.
 - Learned-model work should compare against standard dense, RoPE, LoRA, sliding-window, dilated, full-attention, long-convolution, and state-space baselines when those baselines match the question; `AIA-B0004` and `AIA-B0005` are only the first learned-feature and harmonic-feature baseline scaffolds.
+- Looped/recursive transformer work should compare against dense transformer depth, Universal Transformer recurrence, fixed looped transformers, adaptive early-exit models, recurrent-memory transformers, sparse/MoE looped models, RWKV/Mamba-style recurrent/state-space models, and ordinary nonrecursive transformer baselines before any reasoning-depth, quality, context-length, or parameter-efficiency claim.
 - Geometry-aware AI work should be staged: `S^1` phase first, `S^3` quaternion/orientation next, and `S^7` or octonionic hypotheses only after the lower-dimensional evidence is stable.
 - The Living Book AI path should teach the idea before source links: problem, ordinary baseline, circular hypothesis, Lean-proved boundary, Python/MLX fixture, benchmark result, and limitations.
+
+## Looped And Recursive Transformer Lane
+
+The 2026-06-06 source review is archived at `circle_calculus_codex_handoff/source_logs/06_looped_recursive_transformer_research.md`. It covers Universal Transformers, linear-attention recurrence, Recurrent Memory Transformer, looped transformers for learning algorithms and length generalization, RWKV, Mamba, LoopFormer, SpiralFormer, recurrent-depth reasoning, Parcae, recurrence-equivalence scaling laws, sparse/MoE looped models, and training-free loop wrappers.
+
+The Circle Calculus opportunity is narrow and useful:
+
+- treat loop step as an explicit finite phase,
+- treat recurrence depth as a schedule with a budget and closure/exit status,
+- record loop-state provenance instead of hiding it in an architecture diagram,
+- measure overthinking boundaries where extra loops degrade a metric,
+- compare recurrence schedules against ordinary fixed-depth, adaptive-exit, recurrent-memory, sparse/MoE, state-space, and dense transformer baselines.
+
+The first implementation target is `P5-EDGE-010`: a deterministic recurrence-schedule fixture. It should report loop budget, exit step, score trace, over-loop control, and baseline labels before any MLX model training begins. Lean theorem targets should stay at finite schedule/index/closure facts unless a stronger formal model is explicitly built.
 
 ## First Demonstrators
 

@@ -721,7 +721,11 @@
     {
       "dictionary_ids": [
         "COMMON-0028",
-        "COMMON-0029"
+        "COMMON-0029",
+        "COMMON-0047",
+        "COMMON-0052",
+        "COMMON-0053",
+        "COMMON-0054"
       ],
       "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
       "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",

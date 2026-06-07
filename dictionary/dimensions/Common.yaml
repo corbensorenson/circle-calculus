@@ -587,3 +587,39 @@ entries:
       - "A proof that RoPE improves language models."
       - "A replacement for standard RoPE benchmarks."
       - "Evidence about attention quality, context length, perplexity, or runtime."
+  - id: COMMON-0052
+    name: "Looped transformer recurrence schedule"
+    kind: interface
+    symbol: "loop_schedule(block, step, budget)"
+    formal_definition: "A planned Circle AI protocol for applying a shared transformer block across an indexed recurrence budget, recording the loop step, phase channel, candidate exit points, and baseline model family for each experiment."
+    intuition: "The recurrence-depth version of a coil: the same block is revisited, but each pass has a phase, state, and exit status that should be explicit instead of hidden in prose."
+    dependencies: ["COMMON-0026", "COMMON-0048"]
+    introduced_in: "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+    forbidden_meanings:
+      - "A proved looped-transformer architecture."
+      - "Evidence that recursive transformers improve model quality."
+      - "A replacement for Universal Transformer, looped-transformer, recurrent-memory, MoE, state-space, or dense-transformer baselines."
+  - id: COMMON-0053
+    name: "Recurrence closure and exit certificate"
+    kind: interface
+    symbol: "loop_exit_certificate"
+    formal_definition: "A planned proof/benchmark record tying recurrence step, loop phase, halting or early-exit decision, score trace, and theorem/manifest ids for finite schedule facts."
+    intuition: "A way to make adaptive loop depth auditable: each loop either continues, exits, or exceeds a budget with a recorded reason."
+    dependencies: ["COMMON-0052", "COMMON-0013"]
+    introduced_in: "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+    forbidden_meanings:
+      - "A proof that an early-exit model is accurate."
+      - "A proof that recurrence has converged semantically."
+      - "A benchmark result without a standard fixed-depth, adaptive-exit, or dense baseline."
+  - id: COMMON-0054
+    name: "Overthinking guardrail"
+    kind: metric
+    symbol: "max_loop_without_degradation"
+    formal_definition: "A planned benchmark guardrail that records when additional recurrence steps stop helping or begin degrading a task metric, with the workload, metric, baseline, and loop budget fixed in the experiment manifest."
+    intuition: "Looping can help, but too many passes can drift or degrade; Circle AI should track the failure boundary as carefully as positive cases."
+    dependencies: ["COMMON-0052", "COMMON-0053"]
+    introduced_in: "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+    forbidden_meanings:
+      - "A universal bound on reasoning steps."
+      - "Evidence that all recursive models overthink."
+      - "A model-quality claim without a reproducible benchmark and ordinary baselines."
