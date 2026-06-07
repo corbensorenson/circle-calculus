@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from math import gcd
 
 from circle_math.applications import (
@@ -21,8 +22,12 @@ from circle_math.applications import (
 )
 from circle_math.finite import Circle
 from circle_math.generative import (
+    SeedRuleProvenance,
+    bounded_generator_search,
     coil_orbit_generator,
+    compare_generator_to_explicit,
     finite_circle_diagram_generator,
+    finite_circle_generator,
     orbit_decomposition_generator,
     physics_loop_diagram_generator,
     proof_glyph_generator,
@@ -85,6 +90,57 @@ def js_proof_glyph(glyph_id: str, theorem_id: str, lean_name: str) -> dict[str, 
         "glyph_id": glyph_id,
         "theorem_id": theorem_id,
         "lean_name": lean_name,
+    }
+
+
+def js_json_length(value: object) -> int:
+    return len(json.dumps(value, sort_keys=True, separators=(",", ":")))
+
+
+def js_finite_circle_record(n: int, *, broken: bool = False) -> dict:
+    generated = (0, 1) if broken else tuple(range(n))
+    return {
+        "artifact_id": "finite_circle",
+        "seed": (("n", n),),
+        "rules": (("enumerate_nodes", (("start", 0), ("stop", n))),),
+        "iteration_schedule": "i = 0..n-1",
+        "closure_condition": "stop before node n, since nodes are residues modulo n",
+        "generated_object": generated,
+        "theorem_ids": ("CC-T0001",),
+        "dictionary_ids": ("CC-0001", "CC-0002", "COMMON-0064", "COMMON-0066"),
+    }
+
+
+def js_regenerate(record: dict) -> object:
+    seed = dict(record["seed"])
+    if record["artifact_id"] == "finite_circle":
+        return tuple(range(int(seed["n"])))
+    raise ValueError(f"unknown artifact id: {record['artifact_id']}")
+
+
+def js_record_description(record: dict) -> dict:
+    return {
+        "artifact_id": record["artifact_id"],
+        "seed": record["seed"],
+        "rules": record["rules"],
+        "iteration_schedule": record["iteration_schedule"],
+        "closure_condition": record["closure_condition"],
+        "theorem_ids": record["theorem_ids"],
+        "dictionary_ids": record["dictionary_ids"],
+    }
+
+
+def js_compare_generator_to_explicit(record: dict) -> dict:
+    explicit = {"artifact_id": record["artifact_id"], "generated_object": record["generated_object"]}
+    generator = js_record_description(record)
+    explicit_length = js_json_length(explicit)
+    generator_length = js_json_length(generator)
+    return {
+        "artifact_id": record["artifact_id"],
+        "exact_regeneration": js_regenerate(record) == record["generated_object"],
+        "explicit_length": explicit_length,
+        "generator_length": generator_length,
+        "generator_shorter": generator_length < explicit_length,
     }
 
 
@@ -317,6 +373,53 @@ def main() -> int:
         "glyph:c13_stride5_period",
         "CC-T0005",
         "Circle.period_eq_n_div_gcd",
+    )
+
+    for n in (1, 8, 128):
+        comparison = compare_generator_to_explicit(finite_circle_generator(n))
+        js_comparison = js_compare_generator_to_explicit(js_finite_circle_record(n))
+        assert comparison.exact_regeneration == js_comparison["exact_regeneration"]
+        assert comparison.explicit_length == js_comparison["explicit_length"]
+        assert comparison.generator_length == js_comparison["generator_length"]
+        assert comparison.generator_shorter == js_comparison["generator_shorter"]
+
+    broken = finite_circle_generator(12)
+    broken = SeedRuleProvenance(
+        artifact_id=broken.artifact_id,
+        seed=broken.seed,
+        rules=broken.rules,
+        iteration_schedule=broken.iteration_schedule,
+        closure_condition=broken.closure_condition,
+        generated_object=(0, 1),
+        theorem_ids=broken.theorem_ids,
+        dictionary_ids=broken.dictionary_ids,
+        note=broken.note,
+    )
+    search = bounded_generator_search(
+        [finite_circle_generator(1), finite_circle_generator(128), broken],
+        search_id="finite_circle_node_generators",
+    )
+    js_search_comparisons = tuple(
+        js_compare_generator_to_explicit(record)
+        for record in (
+            js_finite_circle_record(1),
+            js_finite_circle_record(128),
+            js_finite_circle_record(12, broken=True),
+        )
+    )
+    js_exact = tuple(comparison for comparison in js_search_comparisons if comparison["exact_regeneration"])
+    js_shorter = tuple(comparison for comparison in js_exact if comparison["generator_shorter"])
+    assert search.candidate_count == len(js_search_comparisons)
+    assert search.exact_candidate_count == len(js_exact)
+    assert search.best_exact is not None
+    assert search.best_shorter is not None
+    assert search.best_exact.generator_length == min(
+        comparison["generator_length"]
+        for comparison in js_exact
+    )
+    assert search.best_shorter.generator_length == min(
+        comparison["generator_length"]
+        for comparison in js_shorter
     )
 
     gauge_cases = [

@@ -225,6 +225,13 @@ def export_widget_index() -> dict:
             "python_reference": "circle_math.generative.finite_circle_diagram_generator; circle_math.generative.physics_loop_diagram_generator; circle_math.generative.coil_orbit_generator; circle_math.generative.orbit_decomposition_generator; circle_math.generative.proof_glyph_generator",
         },
         {
+            "id": "generator_comparison_search",
+            "path": "site/widgets/generative/generator_comparison_search.js",
+            "theorem_ids": ["GEN-T0005", "GEN-T0017", "GEN-T0018", "GEN-T0019"],
+            "dictionary_ids": ["COMMON-0064", "COMMON-0065", "COMMON-0066"],
+            "python_reference": "circle_math.generative.compare_generator_to_explicit; circle_math.generative.bounded_generator_search; circle_math.generative.finite_circle_generator",
+        },
+        {
             "id": "loop_recurrence_budget",
             "path": "site/widgets/ai/loop_recurrence_budget.js",
             "theorem_ids": ["AIM-T0018", "AIM-T0019", "AIM-T0020", "AIM-T0021"],

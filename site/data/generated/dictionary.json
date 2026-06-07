@@ -6515,6 +6515,11 @@
       ],
       "used_by_widgets": [
         {
+          "id": "generator_comparison_search",
+          "path": "site/widgets/generative/generator_comparison_search.js",
+          "python_reference": "circle_math.generative.compare_generator_to_explicit; circle_math.generative.bounded_generator_search; circle_math.generative.finite_circle_generator"
+        },
+        {
           "id": "seed_rule_diagram_generator",
           "path": "site/widgets/generative/seed_rule_diagram_generator.js",
           "python_reference": "circle_math.generative.finite_circle_diagram_generator; circle_math.generative.physics_loop_diagram_generator; circle_math.generative.coil_orbit_generator; circle_math.generative.orbit_decomposition_generator; circle_math.generative.proof_glyph_generator"
@@ -6592,7 +6597,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "generator_comparison_search",
+          "path": "site/widgets/generative/generator_comparison_search.js",
+          "python_reference": "circle_math.generative.compare_generator_to_explicit; circle_math.generative.bounded_generator_search; circle_math.generative.finite_circle_generator"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -6738,6 +6749,11 @@
         }
       ],
       "used_by_widgets": [
+        {
+          "id": "generator_comparison_search",
+          "path": "site/widgets/generative/generator_comparison_search.js",
+          "python_reference": "circle_math.generative.compare_generator_to_explicit; circle_math.generative.bounded_generator_search; circle_math.generative.finite_circle_generator"
+        },
         {
           "id": "seed_rule_diagram_generator",
           "path": "site/widgets/generative/seed_rule_diagram_generator.js",

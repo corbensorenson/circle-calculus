@@ -79,6 +79,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is generated explanation only. It displays linked proof statuses from the theorem manifest, but the generated diagram or metadata is not a proof and does not prove compression minimality, search optimality, or physics claims.
 - Validation: deterministic JavaScript generation formulas are parity-checked against the Python seed-rule fixtures.
 
+### generator_comparison_search
+
+- Inputs: finite-circle size `n`.
+- Outputs: explicit-vs-generator description lengths, exact regeneration flag, generator-shorter flag, a broken non-exact candidate, bounded finite search count, exact candidate count, best exact candidate, best shorter exact candidate, theorem-status badges, and dictionary links.
+- Theorem ids: `GEN-T0005`, `GEN-T0017`, `GEN-T0018`, and `GEN-T0019`.
+- Dictionary ids: `COMMON-0064`, `COMMON-0065`, and `COMMON-0066`.
+- Python references: `circle_math.generative.compare_generator_to_explicit`, `circle_math.generative.bounded_generator_search`, and `circle_math.generative.finite_circle_generator`.
+- Guardrail: the widget is bounded finite description-length bookkeeping only. It does not prove global optimality, Kolmogorov complexity, universal compression, or that smaller descriptions are always better.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python generator-comparison and bounded-search helpers.
+
 ## AI Widgets
 
 ### loop_recurrence_budget
@@ -173,6 +183,7 @@ Minimum parity cases:
 - finite-circle generated diagram nodes and successor edges;
 - finite physics-loop generated diagram normalized phases, closed-loop flag, and holonomy.
 - generated coil orbit sequences, orbit decompositions, and proof-glyph metadata fields.
+- generator comparison exactness, description lengths, shorter-than-explicit flag, and bounded-search candidate counts.
 - AI recurrence phase, required loop count, token recurrence budget, capped training-free budget, exit availability, overthinking boundary, and one-period-shift periodicity.
 - cyclic memory slot reduction, one-bank closure, multi-bank closure, idempotent normalization, slot loads, and collision count.
 - coil-retrieval target index, selected coil path, local window, wrong-stride path, full-attention oracle hit, and near-lag local/coil controls.
