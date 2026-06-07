@@ -290,6 +290,19 @@ def export_widget_index() -> dict:
             "python_reference": "circle_math.applications.circle_ai.fit_loop_block_lookup; circle_math.applications.circle_ai.predict_loop_block_lookup; circle_math.applications.circle_ai.fit_loop_budget_lookup; circle_math.applications.circle_ai.predict_loop_budget_lookup; circle_math.applications.circle_ai.run_learned_middle_block_recurrence_benchmark",
         },
         {
+            "id": "learned_multi_resolution_recurrence",
+            "path": "site/widgets/ai/learned_multi_resolution_recurrence.js",
+            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018"],
+            "dictionary_ids": [
+                "COMMON-0052",
+                "COMMON-0053",
+                "COMMON-0059",
+                "COMMON-0069",
+                "COMMON-0070",
+            ],
+            "python_reference": "circle_math.applications.circle_ai.fit_loop_budget_lookup; circle_math.applications.circle_ai.predict_loop_budget_lookup; circle_math.applications.circle_ai.fit_recurrence_resolution_lookup; circle_math.applications.circle_ai.predict_recurrence_resolution_lookup; circle_math.applications.circle_ai.run_learned_multi_resolution_recurrence_benchmark",
+        },
+        {
             "id": "cyclic_memory_slots",
             "path": "site/widgets/ai/cyclic_memory_slots.js",
             "theorem_ids": ["AIM-T0001", "AIM-T0002", "AIM-T0003", "AIM-T0004", "AIM-T0005"],

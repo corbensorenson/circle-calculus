@@ -18,6 +18,7 @@ from circle_math.applications import (
     dense_adapter_parameter_count,
     fit_loop_budget_lookup,
     fit_loop_block_lookup,
+    fit_recurrence_resolution_lookup,
     local_window_indices,
     loop_block_indices,
     loop_exit_certificate,
@@ -28,6 +29,7 @@ from circle_math.applications import (
     memory_slot_loads,
     middle_block_required_blocks,
     mixed_retrieval_target_lags,
+    multi_resolution_required_resolutions,
     multicoil_cycle_length,
     multicoil_phase,
     multicoil_phase_label,
@@ -37,11 +39,13 @@ from circle_math.applications import (
     retrieval_target_index,
     predict_loop_budget_lookup,
     predict_loop_block_lookup,
+    predict_recurrence_resolution_lookup,
     rope_relative_feature,
     run_adapter_parameter_budget_benchmark,
     run_content_gated_retrieval_benchmark,
     run_circulant_mixer_benchmark,
     run_learned_middle_block_recurrence_benchmark,
+    run_learned_multi_resolution_recurrence_benchmark,
     run_learned_token_level_recurrence_benchmark,
     run_token_level_recurrence_benchmark,
     token_recurrence_budget,
@@ -418,6 +422,62 @@ def js_sampled_middle_block_predictions(
             required_budgets,
             planned_blocks,
             planned_budgets,
+        )
+    )
+
+
+def js_multi_resolution_required_resolutions(
+    max_budget: int,
+    required_budgets: tuple[int, ...],
+) -> tuple[str, ...]:
+    levels = js_recurrence_resolution_levels(max_budget)
+    return tuple(levels[budget - 1] for budget in required_budgets)
+
+
+def js_majority_str(values: tuple[str, ...]) -> str:
+    counts: dict[str, int] = {}
+    for value in values:
+        counts[value] = counts.get(value, 0) + 1
+    return min(counts, key=lambda value: (-counts[value], value))
+
+
+def js_fit_recurrence_resolution_lookup(
+    period: int,
+    positions: tuple[int, ...],
+    resolutions: tuple[str, ...],
+) -> tuple[str, ...]:
+    fallback = js_majority_str(resolutions)
+    buckets: list[list[str]] = [[] for _ in range(period)]
+    for position, resolution in zip(positions, resolutions):
+        buckets[js_mod(position, period)].append(resolution)
+    return tuple(
+        fallback if not bucket else js_majority_str(tuple(bucket))
+        for bucket in buckets
+    )
+
+
+def js_predict_recurrence_resolution_lookup(
+    period: int,
+    lookup: tuple[str, ...],
+    positions: tuple[int, ...],
+) -> tuple[str, ...]:
+    return tuple(lookup[js_mod(position, period)] for position in positions)
+
+
+def js_multi_resolution_predictions(
+    required_budgets: tuple[int, ...],
+    required_resolutions: tuple[str, ...],
+    planned_budgets: tuple[int, ...],
+    planned_resolutions: tuple[str, ...],
+    tolerance: int,
+) -> tuple[int, ...]:
+    return tuple(
+        1 if required_resolution == planned_resolution and required <= planned <= required + tolerance else 0
+        for required, required_resolution, planned, planned_resolution in zip(
+            required_budgets,
+            required_resolutions,
+            planned_budgets,
+            planned_resolutions,
         )
     )
 
@@ -1229,6 +1289,169 @@ def main() -> int:
                 required_budgets,
                 learned_blocks,
                 over_budgets,
+                tolerance,
+            ),
+            labels,
+        )
+
+    learned_multi_resolution_cases = [
+        (4, 3, 3, 64, 32, 4, 4, 8, 0),
+        (5, 3, 4, 50, 25, 5, 3, 9, 1),
+        (3, 4, 5, 36, 18, 4, 2, 6, 0),
+    ]
+    for (
+        loop_period,
+        wrong_budget_period,
+        wrong_resolution_period,
+        train_length,
+        test_length,
+        max_budget,
+        fixed_budget,
+        over_budget,
+        tolerance,
+    ) in learned_multi_resolution_cases:
+        train_samples = tuple(range(train_length))
+        train_budgets = tuple(js_token_recurrence_budget(loop_period, sample) for sample in train_samples)
+        train_resolutions = js_multi_resolution_required_resolutions(max_budget, train_budgets)
+        test_samples = tuple(range(train_length, train_length + test_length))
+        required_budgets = tuple(js_token_recurrence_budget(loop_period, sample) for sample in test_samples)
+        required_resolutions = js_multi_resolution_required_resolutions(max_budget, required_budgets)
+        labels = tuple(1 for _ in test_samples)
+        learned_budget_lookup = js_fit_loop_budget_lookup(loop_period, train_samples, train_budgets)
+        learned_budgets = tuple(
+            min(budget, max_budget)
+            for budget in js_predict_loop_budget_lookup(loop_period, learned_budget_lookup, test_samples)
+        )
+        learned_resolution_lookup = js_fit_recurrence_resolution_lookup(
+            loop_period,
+            train_samples,
+            train_resolutions,
+        )
+        learned_resolutions = js_predict_recurrence_resolution_lookup(
+            loop_period,
+            learned_resolution_lookup,
+            test_samples,
+        )
+        wrong_budget_lookup = js_fit_loop_budget_lookup(wrong_budget_period, train_samples, train_budgets)
+        wrong_budgets = tuple(
+            min(budget, max_budget)
+            for budget in js_predict_loop_budget_lookup(wrong_budget_period, wrong_budget_lookup, test_samples)
+        )
+        wrong_resolution_lookup = js_fit_recurrence_resolution_lookup(
+            wrong_resolution_period,
+            train_samples,
+            train_resolutions,
+        )
+        wrong_resolutions = js_predict_recurrence_resolution_lookup(
+            wrong_resolution_period,
+            wrong_resolution_lookup,
+            test_samples,
+        )
+        fixed_budgets = tuple(fixed_budget for _ in test_samples)
+        over_budgets = tuple(over_budget for _ in test_samples)
+        coarse_resolutions = tuple("coarse" for _ in test_samples)
+        fine_resolutions = tuple("fine" for _ in test_samples)
+        benchmark = run_learned_multi_resolution_recurrence_benchmark(
+            loop_period=loop_period,
+            wrong_budget_period=wrong_budget_period,
+            wrong_resolution_period=wrong_resolution_period,
+            train_length=train_length,
+            test_length=test_length,
+            max_budget=max_budget,
+            fixed_loop_budget=fixed_budget,
+            over_loop_budget=over_budget,
+            overthink_tolerance=tolerance,
+        )
+
+        assert multi_resolution_required_resolutions(max_budget, train_budgets) == train_resolutions
+        assert fit_recurrence_resolution_lookup(
+            loop_period,
+            train_samples,
+            train_resolutions,
+        ) == learned_resolution_lookup
+        assert predict_recurrence_resolution_lookup(
+            loop_period,
+            learned_resolution_lookup,
+            test_samples,
+        ) == learned_resolutions
+        assert benchmark.resolution_levels == js_recurrence_resolution_levels(max_budget)
+        assert benchmark.learned_budget_lookup == learned_budget_lookup
+        assert benchmark.learned_resolution_lookup == learned_resolution_lookup
+        assert benchmark.wrong_budget_period_lookup == wrong_budget_lookup
+        assert benchmark.wrong_resolution_period_lookup == wrong_resolution_lookup
+        assert benchmark.required_budget_sample == required_budgets[: min(12, len(required_budgets))]
+        assert benchmark.learned_budget_sample == learned_budgets[: min(12, len(learned_budgets))]
+        assert benchmark.wrong_budget_sample == wrong_budgets[: min(12, len(wrong_budgets))]
+        assert benchmark.required_resolution_sample == required_resolutions[: min(12, len(required_resolutions))]
+        assert benchmark.learned_resolution_sample == learned_resolutions[: min(12, len(learned_resolutions))]
+        assert benchmark.wrong_resolution_sample == wrong_resolutions[: min(12, len(wrong_resolutions))]
+        assert benchmark.active_sample_counts == js_active_token_counts_by_budget(learned_budgets, max_budget)
+        assert benchmark.learned_multi_resolution_router_accuracy == js_accuracy(
+            js_multi_resolution_predictions(
+                required_budgets,
+                required_resolutions,
+                learned_budgets,
+                learned_resolutions,
+                tolerance,
+            ),
+            labels,
+        )
+        assert benchmark.single_resolution_coarse_accuracy == js_accuracy(
+            js_multi_resolution_predictions(
+                required_budgets,
+                required_resolutions,
+                learned_budgets,
+                coarse_resolutions,
+                tolerance,
+            ),
+            labels,
+        )
+        assert benchmark.single_resolution_fine_accuracy == js_accuracy(
+            js_multi_resolution_predictions(
+                required_budgets,
+                required_resolutions,
+                learned_budgets,
+                fine_resolutions,
+                tolerance,
+            ),
+            labels,
+        )
+        assert benchmark.fixed_budget_accuracy == js_accuracy(
+            js_multi_resolution_predictions(
+                required_budgets,
+                required_resolutions,
+                fixed_budgets,
+                learned_resolutions,
+                tolerance,
+            ),
+            labels,
+        )
+        assert benchmark.wrong_budget_period_accuracy == js_accuracy(
+            js_multi_resolution_predictions(
+                required_budgets,
+                required_resolutions,
+                wrong_budgets,
+                learned_resolutions,
+                tolerance,
+            ),
+            labels,
+        )
+        assert benchmark.wrong_resolution_period_accuracy == js_accuracy(
+            js_multi_resolution_predictions(
+                required_budgets,
+                required_resolutions,
+                learned_budgets,
+                wrong_resolutions,
+                tolerance,
+            ),
+            labels,
+        )
+        assert benchmark.over_looped_accuracy == js_accuracy(
+            js_multi_resolution_predictions(
+                required_budgets,
+                required_resolutions,
+                over_budgets,
+                learned_resolutions,
                 tolerance,
             ),
             labels,

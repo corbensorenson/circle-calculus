@@ -207,6 +207,10 @@ training sample
 
 This is useful only as a learned-router harness. It is not evidence that a learned compressed/full-resolution recursive transformer improves quality, speed, memory, context length, perplexity, or reasoning.
 
+The widget below exposes the deterministic `AIM-B0014` fixture. It fits phase-to-budget and phase-to-resolution tables, then compares the held-out route with single-resolution, fixed-budget, wrong-period, and over-loop controls.
+
+<div class="widget-panel" data-widget="learned_multi_resolution_recurrence" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0059 COMMON-0069 COMMON-0070"></div>
+
 `AIM-B0009` turns learned recurrence schedules into auditable bookkeeping:
 
 ```text
@@ -348,4 +352,5 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 <script type="module" src="../../widgets/ai/token_level_recurrence.js"></script>
 <script type="module" src="../../widgets/ai/learned_token_recurrence.js"></script>
 <script type="module" src="../../widgets/ai/learned_middle_block_recurrence.js"></script>
+<script type="module" src="../../widgets/ai/learned_multi_resolution_recurrence.js"></script>
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

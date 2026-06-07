@@ -132,6 +132,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is learned middle-block schedule bookkeeping for a constructed finite fixture only. It does not prove neural block-router quality, recursive reasoning, perplexity improvement, throughput, memory improvement, context-length improvement, or model-quality improvement.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python learned middle-block recurrence benchmark fixture.
 
+### learned_multi_resolution_recurrence
+
+- Inputs: loop period, wrong budget period, wrong resolution period, train-sample count, held-out test-sample count, maximum budget, fixed budget, over-loop budget, and overthinking tolerance.
+- Outputs: coarse/fine resolution levels, learned phase-to-budget lookup, learned phase-to-resolution lookup, wrong-period lookup tables, held-out required/learned/wrong budget samples, held-out required/learned/wrong resolution samples, active-sample counts, learned-router accuracy, single-resolution coarse/fine accuracies, fixed-budget accuracy, wrong budget-period accuracy, wrong resolution-period accuracy, over-loop accuracy, and average active samples.
+- Theorem ids: `AIM-T0006`, `AIM-T0007`, `AIM-T0008`, `AIM-T0009`, and `AIM-T0018` as finite loop-budget primitives.
+- Dictionary ids: `COMMON-0052`, `COMMON-0053`, `COMMON-0059`, `COMMON-0069`, and `COMMON-0070`.
+- Python references: `circle_math.applications.circle_ai.fit_loop_budget_lookup`, `circle_math.applications.circle_ai.predict_loop_budget_lookup`, `circle_math.applications.circle_ai.fit_recurrence_resolution_lookup`, `circle_math.applications.circle_ai.predict_recurrence_resolution_lookup`, and `circle_math.applications.circle_ai.run_learned_multi_resolution_recurrence_benchmark`.
+- Guardrail: the widget is learned multi-resolution schedule bookkeeping for a constructed finite fixture only. It does not prove neural compressed/full-resolution routing quality, recursive reasoning, perplexity improvement, throughput, memory improvement, context-length improvement, or model-quality improvement.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python learned multi-resolution recurrence benchmark fixture.
+
 ### cyclic_memory_slots
 
 - Inputs: memory-bank size, token index, full-bank pass count, and token-window length.
