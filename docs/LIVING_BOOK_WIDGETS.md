@@ -111,6 +111,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is finite candidate-set reachability only. It does not prove retrieval quality, context length, runtime, memory scaling, attention replacement, or model-quality improvement.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python coil-retrieval helpers.
 
+### content_gated_retrieval
+
+- Inputs: sequence length, query count, inspected query, long lag, near lag, selected stride, path length, and local-window width.
+- Outputs: content-gated, static-coil, static-local, wrong-gate, union-candidate, and full-attention oracle rows; hit rates; average candidate counts; inspected-query route; inspected target; selected candidates; finite primitive theorem links; and dictionary links.
+- Theorem ids: `CC-T0002` and `CC-T0005` as finite rotation/orbit primitives only.
+- Dictionary ids: `COMMON-0057`, `COMMON-0047`, and `COMMON-0028`.
+- Python references: `circle_math.applications.circle_ai.mixed_retrieval_target_lags`, `circle_math.applications.circle_ai.retrieval_hit_rate_by_lag`, `circle_math.applications.circle_ai.average_candidate_count`, and `circle_math.applications.circle_ai.run_content_gated_retrieval_benchmark`.
+- Guardrail: the widget is deterministic route and candidate-budget bookkeeping only. It does not prove learned-gate quality, retrieval quality, context length, runtime, memory scaling, attention replacement, or model-quality improvement.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python content-gated retrieval helpers.
+
 ## Physics Widgets
 
 ### finite_gauge_loop_holonomy
@@ -156,4 +166,5 @@ Minimum parity cases:
 - AI recurrence phase, required loop count, token recurrence budget, capped training-free budget, exit availability, overthinking boundary, and one-period-shift periodicity.
 - cyclic memory slot reduction, one-bank closure, multi-bank closure, idempotent normalization, slot loads, and collision count.
 - coil-retrieval target index, selected coil path, local window, wrong-stride path, full-attention oracle hit, and near-lag local/coil controls.
+- content-gated retrieval mixed lags, gated/static/wrong/union/full hit rates, and average candidate counts.
 - finite gauge-loop normalized phases, gauge-transformed phases, original/transformed holonomy, and closed endpoint cancellation.

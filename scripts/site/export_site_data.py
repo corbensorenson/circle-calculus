@@ -252,6 +252,13 @@ def export_widget_index() -> dict:
             "python_reference": "circle_math.applications.circle_ai.coil_attention_path; circle_math.applications.circle_ai.local_window_indices; circle_math.applications.circle_ai.retrieval_target_index; circle_math.applications.circle_ai.retrieval_hit_rate",
         },
         {
+            "id": "content_gated_retrieval",
+            "path": "site/widgets/ai/content_gated_retrieval.js",
+            "theorem_ids": ["CC-T0002", "CC-T0005"],
+            "dictionary_ids": ["COMMON-0057", "COMMON-0047", "COMMON-0028"],
+            "python_reference": "circle_math.applications.circle_ai.mixed_retrieval_target_lags; circle_math.applications.circle_ai.retrieval_hit_rate_by_lag; circle_math.applications.circle_ai.average_candidate_count; circle_math.applications.circle_ai.run_content_gated_retrieval_benchmark",
+        },
+        {
             "id": "finite_gauge_loop_holonomy",
             "path": "site/widgets/physics/finite_gauge_loop_holonomy.js",
             "theorem_ids": ["PHYS-T0004", "PHYS-T0005", "PHYS-T0012", "PHYS-T0045"],

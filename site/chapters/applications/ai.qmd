@@ -47,6 +47,14 @@ Coil retrieval asks a narrower question than "does this improve attention?": can
 
 <div class="widget-panel" data-widget="coil_retrieval_reachability" data-dictionary-ids="COMMON-0047 COMMON-0028 COMMON-0029"></div>
 
+## Content-Gated Coil/Local Path
+
+The next retrieval question is routing: if a query needs a long dependency, use the coil path; if it needs a near dependency, use the local window. The current `AIM-B0004` fixture is hand-coded so the route is visible and auditable before any learned gate is introduced.
+
+The widget below compares content-gated routing against static coil, static local, wrong-gate, union-candidate, and full-attention oracle baselines. Candidate budget is shown beside hit rate so a full oracle does not look cheaper than it is.
+
+<div class="widget-panel" data-widget="content_gated_retrieval" data-dictionary-ids="COMMON-0057 COMMON-0047 COMMON-0028"></div>
+
 ## Looped Recurrence Path
 
 Looped and recursive transformers reuse model blocks across multiple computation passes. The Circle Calculus version should make each pass explicit: loop phase, recurrence budget, state provenance, exit decision, and overthinking boundary. That is a possible interface contribution, not a proved model improvement.
@@ -287,5 +295,6 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 
 <script type="module" src="../../widgets/ai/cyclic_memory_slots.js"></script>
 <script type="module" src="../../widgets/ai/coil_retrieval_reachability.js"></script>
+<script type="module" src="../../widgets/ai/content_gated_retrieval.js"></script>
 <script type="module" src="../../widgets/ai/loop_recurrence_budget.js"></script>
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

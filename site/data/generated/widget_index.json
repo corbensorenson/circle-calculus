@@ -177,6 +177,20 @@
     },
     {
       "dictionary_ids": [
+        "COMMON-0057",
+        "COMMON-0047",
+        "COMMON-0028"
+      ],
+      "id": "content_gated_retrieval",
+      "path": "site/widgets/ai/content_gated_retrieval.js",
+      "python_reference": "circle_math.applications.circle_ai.mixed_retrieval_target_lags; circle_math.applications.circle_ai.retrieval_hit_rate_by_lag; circle_math.applications.circle_ai.average_candidate_count; circle_math.applications.circle_ai.run_content_gated_retrieval_benchmark",
+      "theorem_ids": [
+        "CC-T0002",
+        "CC-T0005"
+      ]
+    },
+    {
+      "dictionary_ids": [
         "COMMON-0060",
         "COMMON-0061",
         "COMMON-0062",

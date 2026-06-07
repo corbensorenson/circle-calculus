@@ -3,6 +3,7 @@ from __future__ import annotations
 from math import gcd
 
 from circle_math.applications import (
+    average_candidate_count,
     coil_attention_path,
     local_window_indices,
     loop_exit_certificate,
@@ -10,8 +11,11 @@ from circle_math.applications import (
     memory_slot,
     memory_slot_collision_count,
     memory_slot_loads,
+    mixed_retrieval_target_lags,
     retrieval_hit_rate,
+    retrieval_hit_rate_by_lag,
     retrieval_target_index,
+    run_content_gated_retrieval_benchmark,
     token_recurrence_budget,
     training_free_loop_budget,
 )
@@ -212,6 +216,33 @@ def js_retrieval_hit_rate(
         if target in set(candidates):
             hits += 1
     return hits / len(query_indices)
+
+
+def js_mixed_retrieval_target_lags(
+    query_indices: tuple[int, ...],
+    *,
+    long_target_lag: int,
+    near_target_lag: int,
+) -> tuple[int, ...]:
+    return tuple(long_target_lag if query_index % 2 == 0 else near_target_lag for query_index in query_indices)
+
+
+def js_retrieval_hit_rate_by_lag(
+    sequence_length: int,
+    query_indices: tuple[int, ...],
+    target_lags: tuple[int, ...],
+    candidate_sets: tuple[tuple[int, ...], ...],
+) -> float:
+    hits = 0
+    for query_index, target_lag, candidates in zip(query_indices, target_lags, candidate_sets):
+        target = js_retrieval_target_index(sequence_length, query_index, target_lag)
+        if target in set(candidates):
+            hits += 1
+    return hits / len(query_indices)
+
+
+def js_average_candidate_count(candidate_sets: tuple[tuple[int, ...], ...]) -> float:
+    return sum(len(set(candidates)) for candidates in candidate_sets) / len(candidate_sets)
 
 
 def js_loop_exit_available(loop_period: int, sample_index: int, max_loops: int) -> bool:
@@ -452,6 +483,137 @@ def main() -> int:
             near_lag,
             coil_candidates,
         ) == js_retrieval_hit_rate(sequence_length, query_indices, near_lag, js_coil_candidates)
+
+    content_cases = [
+        (64, 64, 21, 3, 7, 3, 8),
+        (31, 16, 12, 2, 4, 3, 5),
+    ]
+    for sequence_length, query_count, long_lag, near_lag, stride, path_length, local_window in content_cases:
+        query_indices = tuple(range(query_count))
+        target_lags = mixed_retrieval_target_lags(
+            query_indices,
+            long_target_lag=long_lag,
+            near_target_lag=near_lag,
+        )
+        js_target_lags = js_mixed_retrieval_target_lags(
+            query_indices,
+            long_target_lag=long_lag,
+            near_target_lag=near_lag,
+        )
+        assert target_lags == js_target_lags
+        coil_candidates = tuple(
+            coil_attention_path(sequence_length, query, stride, path_length)
+            for query in query_indices
+        )
+        local_candidates = tuple(
+            local_window_indices(sequence_length, query, local_window)
+            for query in query_indices
+        )
+        gated_candidates = tuple(
+            coil if query % 2 == 0 else local
+            for query, coil, local in zip(query_indices, coil_candidates, local_candidates)
+        )
+        wrong_gate_candidates = tuple(
+            local if query % 2 == 0 else coil
+            for query, coil, local in zip(query_indices, coil_candidates, local_candidates)
+        )
+        union_candidates = tuple(
+            tuple(sorted(set(coil) | set(local)))
+            for coil, local in zip(coil_candidates, local_candidates)
+        )
+        full_candidates = tuple(tuple(range(sequence_length)) for _ in query_indices)
+        js_coil_candidates = tuple(
+            js_coil_attention_path(sequence_length, query, stride, path_length)
+            for query in query_indices
+        )
+        js_local_candidates = tuple(
+            js_local_window_indices(sequence_length, query, local_window)
+            for query in query_indices
+        )
+        js_gated_candidates = tuple(
+            coil if query % 2 == 0 else local
+            for query, coil, local in zip(query_indices, js_coil_candidates, js_local_candidates)
+        )
+        js_wrong_gate_candidates = tuple(
+            local if query % 2 == 0 else coil
+            for query, coil, local in zip(query_indices, js_coil_candidates, js_local_candidates)
+        )
+        js_union_candidates = tuple(
+            tuple(sorted(set(coil) | set(local)))
+            for coil, local in zip(js_coil_candidates, js_local_candidates)
+        )
+        assert gated_candidates == js_gated_candidates
+        assert wrong_gate_candidates == js_wrong_gate_candidates
+        assert union_candidates == js_union_candidates
+        for python_sets, js_sets in [
+            (gated_candidates, js_gated_candidates),
+            (coil_candidates, js_coil_candidates),
+            (local_candidates, js_local_candidates),
+            (wrong_gate_candidates, js_wrong_gate_candidates),
+            (union_candidates, js_union_candidates),
+            (full_candidates, full_candidates),
+        ]:
+            assert retrieval_hit_rate_by_lag(
+                sequence_length,
+                query_indices,
+                target_lags,
+                python_sets,
+            ) == js_retrieval_hit_rate_by_lag(
+                sequence_length,
+                query_indices,
+                js_target_lags,
+                js_sets,
+            )
+            assert average_candidate_count(python_sets) == js_average_candidate_count(js_sets)
+
+        benchmark = run_content_gated_retrieval_benchmark(
+            sequence_length=sequence_length,
+            query_count=query_count,
+            long_target_lag=long_lag,
+            near_target_lag=near_lag,
+            stride=stride,
+            path_length=path_length,
+            local_window=local_window,
+        )
+        assert benchmark.content_gated_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            js_target_lags,
+            js_gated_candidates,
+        )
+        assert benchmark.static_coil_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            js_target_lags,
+            js_coil_candidates,
+        )
+        assert benchmark.static_local_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            js_target_lags,
+            js_local_candidates,
+        )
+        assert benchmark.wrong_gate_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            js_target_lags,
+            js_wrong_gate_candidates,
+        )
+        assert benchmark.union_candidate_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            js_target_lags,
+            js_union_candidates,
+        )
+        assert benchmark.full_attention_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            js_target_lags,
+            full_candidates,
+        )
+        assert benchmark.average_gated_candidate_count == js_average_candidate_count(js_gated_candidates)
+        assert benchmark.average_union_candidate_count == js_average_candidate_count(js_union_candidates)
+        assert benchmark.average_full_candidate_count == js_average_candidate_count(full_candidates)
 
     print("widget Python parity ok")
     return 0
