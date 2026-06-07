@@ -351,6 +351,22 @@ class AdapterParameterBudgetResult:
 
 
 @dataclass(frozen=True)
+class CirculantMixerBenchmarkResult:
+    period: int
+    dense_parameters: int
+    circulant_parameters: int
+    parameter_ratio: float
+    input_values: tuple[int, ...]
+    kernel_values: tuple[int, ...]
+    circulant_output: tuple[int, ...]
+    dense_output: tuple[int, ...]
+    wrong_shift_output: tuple[int, ...]
+    max_abs_dense_delta: int
+    wrong_shift_mismatch_count: int
+    note: str = "Synthetic circulant mixer fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
 class MultiCoilRoPEBenchmarkResult:
     periods: tuple[int, ...]
     train_length: int
@@ -1650,6 +1666,122 @@ def run_adapter_parameter_budget_benchmark(
         block_to_dense_ratio=block_count / dense_count,
         channel_collision_count=adapter_block_collision_count(block_size, channels),
         max_block_load=max(block_loads),
+    )
+
+
+def default_circulant_input(period: int) -> tuple[int, ...]:
+    """Return a deterministic input vector for circulant mixer fixtures."""
+    _require_positive(period, "period")
+    return tuple(((index * index + 3 * index + 1) % 7) - 3 for index in range(period))
+
+
+def default_circulant_kernel(period: int) -> tuple[int, ...]:
+    """Return a deterministic sparse kernel for circular convolution."""
+    _require_positive(period, "period")
+    kernel = [0 for _ in range(period)]
+    kernel[0] = 2
+    if period > 1:
+        kernel[1] = -1
+    if period > 2:
+        kernel[2] = 1
+    if period > 4:
+        kernel[4] = -2
+    return tuple(kernel)
+
+
+def normalize_circulant_vector(values: Optional[Sequence[int]], period: int, name: str) -> tuple[int, ...]:
+    """Validate or create an integer vector of length ``period``."""
+    _require_positive(period, "period")
+    vector = default_circulant_input(period) if values is None and name == "input_values" else values
+    if vector is None:
+        vector = default_circulant_kernel(period)
+    normalized = tuple(int(value) for value in vector)
+    if len(normalized) != period:
+        raise ValueError(f"{name} length must equal period")
+    return normalized
+
+
+def circulant_mixer_output(input_values: Sequence[int], kernel_values: Sequence[int]) -> tuple[int, ...]:
+    """Apply a circular convolution mixer to an input vector."""
+    values = tuple(input_values)
+    kernel = tuple(kernel_values)
+    if len(values) != len(kernel):
+        raise ValueError("input_values and kernel_values must have the same length")
+    period = len(values)
+    _require_positive(period, "period")
+    return tuple(
+        sum(kernel[offset] * values[(index - offset) % period] for offset in range(period))
+        for index in range(period)
+    )
+
+
+def dense_circulant_matrix(kernel_values: Sequence[int]) -> tuple[tuple[int, ...], ...]:
+    """Return the dense matrix equivalent of a circular convolution kernel."""
+    kernel = tuple(kernel_values)
+    period = len(kernel)
+    _require_positive(period, "period")
+    return tuple(
+        tuple(kernel[(row - column) % period] for column in range(period))
+        for row in range(period)
+    )
+
+
+def dense_matrix_vector_product(matrix: Sequence[Sequence[int]], vector: Sequence[int]) -> tuple[int, ...]:
+    """Apply an integer dense matrix to an integer vector."""
+    rows = tuple(tuple(row) for row in matrix)
+    values = tuple(vector)
+    if not rows:
+        raise ValueError("matrix must be nonempty")
+    if any(len(row) != len(values) for row in rows):
+        raise ValueError("each matrix row length must equal vector length")
+    return tuple(sum(entry * value for entry, value in zip(row, values)) for row in rows)
+
+
+def rotate_kernel(kernel_values: Sequence[int], shift: int) -> tuple[int, ...]:
+    """Rotate a circulant kernel by a fixed offset."""
+    kernel = tuple(kernel_values)
+    period = len(kernel)
+    _require_positive(period, "period")
+    return tuple(kernel[(index - shift) % period] for index in range(period))
+
+
+def run_circulant_mixer_benchmark(
+    *,
+    period: int = 8,
+    input_values: Optional[Sequence[int]] = None,
+    kernel_values: Optional[Sequence[int]] = None,
+    wrong_shift: int = 1,
+) -> CirculantMixerBenchmarkResult:
+    """Validate a circulant mixer against its dense matrix baseline.
+
+    This fixture checks exact output parity and parameter counts for a circular
+    convolution mixer. It also reports a wrong-shift control. It is not a
+    neural layer quality, runtime, memory, or hardware-efficiency benchmark.
+    """
+    _require_positive(period, "period")
+    values = normalize_circulant_vector(input_values, period, "input_values")
+    kernel = normalize_circulant_vector(kernel_values, period, "kernel_values")
+    circulant_output = circulant_mixer_output(values, kernel)
+    dense_output = dense_matrix_vector_product(dense_circulant_matrix(kernel), values)
+    wrong_output = circulant_mixer_output(values, rotate_kernel(kernel, wrong_shift))
+    deltas = tuple(abs(left - right) for left, right in zip(circulant_output, dense_output))
+
+    dense_parameters = period * period
+    circulant_parameters = period
+    return CirculantMixerBenchmarkResult(
+        period=period,
+        dense_parameters=dense_parameters,
+        circulant_parameters=circulant_parameters,
+        parameter_ratio=circulant_parameters / dense_parameters,
+        input_values=values,
+        kernel_values=kernel,
+        circulant_output=circulant_output,
+        dense_output=dense_output,
+        wrong_shift_output=wrong_output,
+        max_abs_dense_delta=max(deltas) if deltas else 0,
+        wrong_shift_mismatch_count=sum(
+            1 for correct, wrong in zip(circulant_output, wrong_output) if correct != wrong
+        ),
     )
 
 

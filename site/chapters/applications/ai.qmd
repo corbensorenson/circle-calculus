@@ -4,7 +4,7 @@ title: "AI"
 
 The AI application page tracks phase channels, coil attention, cyclic memory, looped/recursive transformer schedules, and adapter/block indexing. Local compute language is MLX/Mac-first.
 
-The current proved layer is finite indexing only. `AIA-B0001` adds an exploratory deterministic phase-channel benchmark fixture for a known-period synthetic task. `AIA-B0002` adds a tiny learned-baseline control: phase lookup wins on a periodic task, while an ordinary scalar threshold wins on a nonperiodic control. `AIA-B0003` adds CPU/optional-MLX backend parity scoring across the current deterministic AI fixtures; if MLX is unavailable, it reports that directly. `AIA-B0004` adds learned-feature baseline controls: cyclic phase features are compared with dense-scalar, learned-position, and wrong-period baselines, plus a nonperiodic scalar-control task. `AIA-B0005` adds harmonic/Fourier feature controls: cyclic phase lookup and correct sine/cosine lookup solve the constructed periodic task, while wrong-frequency, scalar, and learned-position baselines remain controls. `AIM-B0001` adds the same discipline to cyclic memory: a positive slot-lookup fixture, constant/scalar-threshold baselines, collision diagnostics, and a nonperiodic control. `AIM-B0002` adds a coil-retrieval reachability fixture: a selected coil path reaches a constructed long-lag dependency, local and wrong-stride baselines miss it, full attention is the oracle upper bound, and local attention wins the near-lag control. `AIM-B0004` adds content-gated retrieval routing: the gate chooses coil or local candidates for mixed long/near dependencies while static, wrong-gate, union, and full-attention controls report reachability and budget. `AIM-B0003` adds a looped-recurrence schedule fixture: adaptive-exit and recurrent-memory controls retain useful intermediate steps, while single-pass, fixed-loop, sparse phase-router, over-looped, and nonperiodic dense-threshold controls keep the claim bounded. `AIRA-B0001` adds the adapter-block version: a positive block-index fixture, ordinary baselines, collision diagnostics, and a nonperiodic control. `AIRA-B0002` adds a MultiCoil/RoPE-style positional fixture: combined-period phase lookup beats single-period, constant, and scalar-threshold baselines on a constructed multi-period task, while the scalar threshold wins the nonperiodic control. `AIRA-B0003` adds a RoPE-style relative phase fixture: correct-period relative lookup recovers constructed query/key lag labels, while wrong-period, query-position, scalar-threshold, and nonperiodic controls remain separated. `AIRA-B0004` adds adapter parameter-budget accounting across dense adapter, LoRA-style low-rank, and block-cyclic shared-table baselines with alias/load diagnostics. These are not model-quality claims.
+The current proved layer is finite indexing only. `AIA-B0001` adds an exploratory deterministic phase-channel benchmark fixture for a known-period synthetic task. `AIA-B0002` adds a tiny learned-baseline control: phase lookup wins on a periodic task, while an ordinary scalar threshold wins on a nonperiodic control. `AIA-B0003` adds CPU/optional-MLX backend parity scoring across the current deterministic AI fixtures; if MLX is unavailable, it reports that directly. `AIA-B0004` adds learned-feature baseline controls: cyclic phase features are compared with dense-scalar, learned-position, and wrong-period baselines, plus a nonperiodic scalar-control task. `AIA-B0005` adds harmonic/Fourier feature controls: cyclic phase lookup and correct sine/cosine lookup solve the constructed periodic task, while wrong-frequency, scalar, and learned-position baselines remain controls. `AIM-B0001` adds the same discipline to cyclic memory: a positive slot-lookup fixture, constant/scalar-threshold baselines, collision diagnostics, and a nonperiodic control. `AIM-B0002` adds a coil-retrieval reachability fixture: a selected coil path reaches a constructed long-lag dependency, local and wrong-stride baselines miss it, full attention is the oracle upper bound, and local attention wins the near-lag control. `AIM-B0004` adds content-gated retrieval routing: the gate chooses coil or local candidates for mixed long/near dependencies while static, wrong-gate, union, and full-attention controls report reachability and budget. `AIM-B0003` adds a looped-recurrence schedule fixture: adaptive-exit and recurrent-memory controls retain useful intermediate steps, while single-pass, fixed-loop, sparse phase-router, over-looped, and nonperiodic dense-threshold controls keep the claim bounded. `AIRA-B0001` adds the adapter-block version: a positive block-index fixture, ordinary baselines, collision diagnostics, and a nonperiodic control. `AIRA-B0002` adds a MultiCoil/RoPE-style positional fixture: combined-period phase lookup beats single-period, constant, and scalar-threshold baselines on a constructed multi-period task, while the scalar threshold wins the nonperiodic control. `AIRA-B0003` adds a RoPE-style relative phase fixture: correct-period relative lookup recovers constructed query/key lag labels, while wrong-period, query-position, scalar-threshold, and nonperiodic controls remain separated. `AIRA-B0004` adds adapter parameter-budget accounting across dense adapter, LoRA-style low-rank, and block-cyclic shared-table baselines with alias/load diagnostics. `AIRA-B0005` adds circulant mixer validation: circular convolution matches the equivalent dense circulant-matrix baseline while a wrong-shift control and parameter counts keep the claim bounded. These are not model-quality claims.
 
 ::: {.learning-unit}
 
@@ -22,7 +22,7 @@ AI is now a dedicated Circle Calculus program, not a side note. The avenues to e
 - cyclic memory slots, alias diagnostics, and retrieval fixtures,
 - coil/sparse attention for long-context path selection,
 - looped and recursive transformer schedules with loop phase, exit certificates, and overthinking guardrails,
-- adapter blocks, CoilRA, and block-cyclic parameter sharing,
+- adapter blocks, CoilLinear/circulant mixers, CoilRA, and block-cyclic parameter sharing,
 - RoPE, MultiCoil RoPE, winding-aware positions, and torus-valued positional views,
 - recurrent, state-space, and convolutional sequence models with explicit period structure,
 - harmonic, Fourier, circulant, and NTT-adjacent features,
@@ -35,13 +35,14 @@ Every avenue needs ordinary baselines, negative controls, and reproducible scrip
 
 Looped and recursive transformers reuse model blocks across multiple computation passes. The Circle Calculus version should make each pass explicit: loop phase, recurrence budget, state provenance, exit decision, and overthinking boundary. That is a possible interface contribution, not a proved model improvement.
 
-The benchmark lane is `P5-EDGE-010`, seeded by `AIM-B0003`. It should expand toward ordinary dense transformer depth, Universal Transformer recurrence, fixed looped transformers, adaptive early-exit models, recurrent-memory transformers, sparse/MoE looped models, RWKV/Mamba-style recurrent or state-space models, and nonrecursive transformer baselines.
+The benchmark lane is `P5-EDGE-010`, seeded by `AIM-B0003`. It should expand toward ordinary dense transformer depth, Universal Transformer recurrence, fixed looped transformers, adaptive early-exit models, recurrent-memory transformers, token-level Mixture-of-Recursions, middle-block recurrence, multi-resolution recurrence, training-free loop wrappers, sparse/MoE looped models, RWKV/Mamba-style recurrent or state-space models, and nonrecursive transformer baselines.
 
 The first lesson goal is to make recurrence readable:
 
 ```text
 shared block
   -> loop phase
+  -> active token set / resolution level
   -> state update
   -> exit or continue
   -> score trace
@@ -60,10 +61,11 @@ The proof boundary stays strict: Lean can certify finite schedule and indexing f
 6. Study coil retrieval: selected long-lag paths, local baselines, wrong-stride baselines, and full-attention oracle behavior.
 7. Add content-gated retrieval: coil/local routing, wrong-gate controls, union/full-attention baselines, and candidate-budget accounting.
 8. Add looped recurrence: loop phase, exit certificates, score traces, over-loop controls, and recursive transformer baselines.
-9. Move to adapters and MultiCoil positions: block sharing, RoPE-style phase structure, and mismatch controls.
-10. Compare RoPE-style relative phase: query/key lag labels, wrong-period controls, query-only controls, and scalar controls.
-11. Only then compare learned model baselines and MLX prototypes, with quality, runtime, memory, parameter count, and interpretability reported separately.
-12. Treat quaternion, spherical, Hopf/fiber, and `S^7` ideas as later geometry-aware AI lessons, not as shortcuts around the lower-dimensional evidence.
+9. Move to adapters and circulant mixers: block sharing, circular-convolution parity, parameter accounting, and wrong-structure controls.
+10. Add MultiCoil positions: combined periods, RoPE-style phase structure, and mismatch controls.
+11. Compare RoPE-style relative phase: query/key lag labels, wrong-period controls, query-only controls, and scalar controls.
+12. Only then compare learned model baselines and MLX prototypes, with quality, runtime, memory, parameter count, and interpretability reported separately.
+13. Treat quaternion, spherical, Hopf/fiber, and `S^7` ideas as later geometry-aware AI lessons, not as shortcuts around the lower-dimensional evidence.
 
 ## What To Notice
 
@@ -80,6 +82,7 @@ The proof boundary stays strict: Lean can certify finite schedule and indexing f
 - `AIRA-B0002` is a MultiCoil/RoPE-style positional harness, not a standard-RoPE comparison or language-model theorem.
 - `AIRA-B0003` is a RoPE-style relative phase harness, not an attention-quality, context-length, or language-model theorem.
 - `AIRA-B0004` is parameter-count accounting, not evidence about quality, runtime, memory, training stability, or fine-tuning behavior.
+- `AIRA-B0005` is circulant-mixer validation and parameter accounting, not evidence about neural-layer quality, runtime, memory, training stability, or hardware efficiency.
 - MLX/Mac-first experiments should be reported as benchmarks, not proofs.
 
 ::: {.checkpoint-box}
@@ -115,6 +118,7 @@ Why is the nonperiodic control in `AIA-B0002` important before making any AI-imp
 <div class="dictionary-box" data-dictionary-id="COMMON-0055"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0056"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0057"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0058"></div>
 
 <p data-paper-ref="papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md">AI architecture paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md">Circle AI Architectures</a></p>
 <p data-paper-ref="papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Memory paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Coil Attention And Memory</a></p>

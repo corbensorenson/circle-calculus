@@ -81,13 +81,14 @@ This fixture checks schedule bookkeeping only. It is not evidence that looped tr
 
 ## Looped And Recursive Transformer Program
 
-Recent looped and recursive transformer work makes recurrence depth an active modeling axis: a model can reuse blocks through multiple loop steps, add memory tokens, exit at loop boundaries, use sparse/MoE routing across passes, or retrofit damped recurrence at inference time. Circle Calculus can contribute only if it makes the schedule explicit and testable.
+Recent looped and recursive transformer work makes recurrence depth an active modeling axis: a model can reuse blocks through multiple loop steps, add memory tokens, exit at loop boundaries, route different tokens to different recursion depths, loop only a middle block, recurse over compressed and full-resolution views, use sparse/MoE routing across passes, or retrofit damped recurrence at inference time. Circle Calculus can contribute only if it makes the schedule explicit and testable.
 
 The Circle version should treat a loop step as a finite phase and every recurrence pass as a recorded state transition:
 
 ```text
 input state
   -> shared block at loop phase t
+  -> active token set / resolution level
   -> recurrence state
   -> exit/continue decision
   -> score trace and overthinking boundary
@@ -123,7 +124,7 @@ Measurements should include accuracy, sequence length scaling, memory use, runti
 - Treat `AIM-B0004` as content-gated route scaffolding only; learned gates, attention quality, context length, runtime, and memory-scaling claims remain separate work.
 - Treat `AIM-B0003` as looped/recursive transformer schedule scaffolding only; learned recursive model quality remains separate work.
 - Test fixed, learned, and content-gated coil paths separately.
-- Expand recurrence schedule, loop-exit certificate, and overthinking-boundary fixtures toward dense, Universal Transformer, fixed-loop, adaptive-exit, recurrent-memory, sparse/MoE, RWKV/Mamba-style, and state-space baseline implementations.
+- Expand recurrence schedule, loop-exit certificate, and overthinking-boundary fixtures toward dense, Universal Transformer, fixed-loop, adaptive-exit, recurrent-memory, token-level Mixture-of-Recursions, middle-block recurrence, multi-resolution recurrence, training-free loop wrappers, sparse/MoE, RWKV/Mamba-style, and state-space baseline implementations.
 - Track gcd/orbit coverage and aliasing explicitly.
 - Add local/global attention fallbacks before claiming a practical model.
 - Keep MLX/Mac-compatible experiments first.

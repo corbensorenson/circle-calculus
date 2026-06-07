@@ -15,10 +15,15 @@ Purpose: preserve the online research context behind the Circle AI looped/recurs
 - Looped Transformers for Length Generalization, arXiv:2409.15647, https://arxiv.org/abs/2409.15647
 - LoopFormer: Elastic-Depth Looped Transformers for Latent Reasoning via Shortcut Modulation, arXiv:2602.11451, https://arxiv.org/abs/2602.11451
 - SpiralFormer: Looped Transformers Can Learn Hierarchical Dependencies via Multi-Resolution Recursion, arXiv:2602.11698, https://arxiv.org/abs/2602.11698
+- Looping Back to Move Forward: Recursive Transformers for Efficient and Flexible Large Multimodal Models, arXiv:2602.09080, https://arxiv.org/abs/2602.09080
+- Thinking Deeper, Not Longer: Depth-Recurrent Transformers for Compositional Generalization, arXiv:2603.21676, https://arxiv.org/abs/2603.21676
 - Loop, Think, & Generalize: Implicit Reasoning in Recurrent-Depth Transformers, arXiv:2604.07822, https://arxiv.org/abs/2604.07822
 - Parcae: Scaling Laws For Stable Looped Language Models, arXiv:2604.12946, https://arxiv.org/abs/2604.12946
 - How Much Is One Recurrence Worth? Iso-Depth Scaling Laws for Looped Language Models, arXiv:2604.21106, https://arxiv.org/abs/2604.21106
 - Sparse Layers are Critical to Scaling Looped Language Models, arXiv:2605.09165, https://arxiv.org/abs/2605.09165
+- Mixture-of-Recursions: Learning Dynamic Recursive Depths for Adaptive Token-Level Computation, arXiv:2507.10524, https://arxiv.org/abs/2507.10524
+- Reasoning with Latent Thoughts: On the Power of Looped Transformers, arXiv:2502.17416, https://arxiv.org/abs/2502.17416
+- Loop the Middle: Adaptive Depth Transformers via Selective Middle-Layer Recurrence, OpenReview MSLD 2026, https://openreview.net/forum?id=3gPSHQIJbj
 - Training-Free Looped Transformers, arXiv:2605.23872, https://arxiv.org/abs/2605.23872
 
 ## Synthesis
@@ -35,6 +40,13 @@ The immediate Circle Calculus opportunity is not to claim a better language mode
 - sparse/MoE loop routing as a phase-conditioned or divergence-tracked path,
 - multi-resolution recursion as nested coils over compressed and full token views.
 
+The 2026 update adds four especially relevant axes for Circle AI:
+
+- token-level recursion depth: a router can assign different loop budgets to different tokens, so a Circle fixture should record per-token loop phase, active-token set, and exit certificate rather than only one global depth;
+- middle-block recurrence: several approaches loop a selected middle stack while preserving a prefix/suffix pass, making "where the coil lives" a manifest field;
+- multi-resolution recurrence: loop steps may alternate compressed latent views and full-token views, which suggests nested coil schedules over resolution levels;
+- training-free recurrence wrappers: frozen checkpoints can be looped at inference time, but naive looping can degrade quality, so wrong-loop and over-loop controls must be first-class baselines.
+
 ## Proposed Circle AI Work
 
 Add a looped/recursive transformer lane under the dedicated Circle AI program:
@@ -43,7 +55,7 @@ Add a looped/recursive transformer lane under the dedicated Circle AI program:
 2. Add a Python fixture that compares fixed-depth, looped-depth, adaptive-exit, and over-looped controls on a small deterministic task. Initial fixture: `AIM-B0003`, implemented by `circle_math.applications.circle_ai.run_looped_recurrence_benchmark` and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_looped_recurrence.py`.
 3. Add a Lean seed for bounded loop phase and recurrence-budget indexing if it is not already covered by phase-channel facts.
 4. Add a Living Book lesson that teaches recurrence depth, exit certificates, and overthinking guardrails without claiming model quality.
-5. Later, add MLX prototypes against ordinary dense, Universal Transformer, looped-transformer, recurrent-memory, sparse/MoE, RWKV/Mamba-style, and standard transformer baselines.
+5. Later, add MLX prototypes against ordinary dense, Universal Transformer, looped-transformer, recurrent-memory, sparse/MoE, token-level Mixture-of-Recursions, middle-block recurrence, multi-resolution recurrence, training-free loop wrappers, RWKV/Mamba-style, and standard transformer baselines.
 
 ## Guardrail
 

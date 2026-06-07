@@ -659,3 +659,15 @@ entries:
       - "A proof that content-gated attention improves language models."
       - "Evidence about learned retrieval quality, context length, runtime, or memory scaling."
       - "A replacement for full attention, sparse attention, recurrent-memory, Hyena-like, or state-space baselines."
+  - id: COMMON-0058
+    name: "Circulant mixer validation fixture"
+    kind: experiment
+    symbol: "circulant_mixer_fixture"
+    formal_definition: "`circle_math.applications.circle_ai.run_circulant_mixer_benchmark`, a deterministic fixture comparing circular-convolution output against an equivalent dense circulant-matrix baseline, a wrong-shift control, and dense-vs-circulant parameter counts."
+    intuition: "A first CoilLinear harness: validate circular structure and parameter accounting before model, training, runtime, or hardware-efficiency claims."
+    dependencies: ["COMMON-0056", "COMMON-0046"]
+    introduced_in: "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
+    forbidden_meanings:
+      - "A proof that circulant neural layers improve quality."
+      - "Evidence about runtime, memory, training stability, or hardware efficiency."
+      - "A replacement for dense, LoRA, block-circulant, FFT, NTT, or learned linear-layer baselines."

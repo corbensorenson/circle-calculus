@@ -3,7 +3,10 @@ from circle_math.applications.circle_ai import (
     adapter_block_collision_count,
     adapter_block_loads,
     block_cyclic_adapter_parameter_count,
+    circulant_mixer_output,
+    dense_circulant_matrix,
     dense_adapter_parameter_count,
+    dense_matrix_vector_product,
     fit_adapter_block_lookup,
     fit_multicoil_phase_lookup,
     fit_rope_relative_lookup,
@@ -16,8 +19,10 @@ from circle_math.applications.circle_ai import (
     rope_relative_feature,
     run_adapter_block_benchmark,
     run_adapter_parameter_budget_benchmark,
+    run_circulant_mixer_benchmark,
     run_multicoil_rope_benchmark,
     run_rope_relative_phase_benchmark,
+    rotate_kernel,
     synthetic_adapter_block_dataset,
     synthetic_multicoil_phase_dataset,
     synthetic_rope_relative_dataset,
@@ -114,6 +119,30 @@ def test_adapter_parameter_budget_fixture_has_dense_lora_and_block_baselines() -
     assert result.block_to_dense_ratio == 0.0625
     assert result.channel_collision_count == 120
     assert result.max_block_load == 16
+    assert result.note.endswith("not a model-quality claim.")
+
+
+def test_circulant_mixer_matches_dense_circulant_baseline() -> None:
+    values = (1, -1, 2, 0)
+    kernel = (2, -1, 0, 1)
+
+    assert circulant_mixer_output(values, kernel) == dense_matrix_vector_product(
+        dense_circulant_matrix(kernel),
+        values,
+    )
+    assert rotate_kernel(kernel, 1) == (1, 2, -1, 0)
+
+
+def test_circulant_mixer_benchmark_matches_dense_baseline_and_wrong_shift_control() -> None:
+    result = run_circulant_mixer_benchmark(period=8)
+
+    assert result == run_circulant_mixer_benchmark(period=8)
+    assert result.dense_parameters == 64
+    assert result.circulant_parameters == 8
+    assert result.parameter_ratio == 0.125
+    assert result.max_abs_dense_delta == 0
+    assert result.circulant_output == result.dense_output
+    assert result.wrong_shift_mismatch_count > 0
     assert result.note.endswith("not a model-quality claim.")
 
 

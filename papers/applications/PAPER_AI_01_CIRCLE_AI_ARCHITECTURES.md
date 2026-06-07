@@ -100,7 +100,7 @@ Every experiment should compare against strong ordinary baselines and report neg
 - Use `AIA-B0004` as the current learned-feature baseline scaffold.
 - Use `AIA-B0005` as the current harmonic/Fourier feature scaffold.
 - Compare next against dense MLP/attention, standard RoPE, learned positional encodings, convolution, Hyena-like mixers, and S4/Mamba-like baselines as appropriate.
-- Use `AIM-B0003` as the first looped/recursive transformer schedule scaffold, then compare learned recurrence ideas against dense transformer depth, Universal Transformer recurrence, fixed looped transformers, adaptive early-exit models, recurrent-memory transformers, sparse/MoE looped models, RWKV/Mamba-style recurrent/state-space models, and ordinary nonrecursive transformer baselines before reasoning or quality claims.
+- Use `AIM-B0003` as the first looped/recursive transformer schedule scaffold, then compare learned recurrence ideas against dense transformer depth, Universal Transformer recurrence, fixed looped transformers, adaptive early-exit models, recurrent-memory transformers, token-level Mixture-of-Recursions, middle-block recurrence, multi-resolution recurrence, training-free loop wrappers, sparse/MoE looped models, RWKV/Mamba-style recurrent/state-space models, and ordinary nonrecursive transformer baselines before reasoning or quality claims.
 - Add separate memory-slot and adapter-block benchmarks before making CoilKV, Coil Attention, CoilRA, or MultiCoil RoPE claims.
 - Use `AIA-B0003` as backend parity scaffolding only; real MLX model prototypes and timing remain separate work.
 - Keep MLX/Mac-compatible prototypes first.
