@@ -13,6 +13,9 @@ from circle_math.applications import (
     memory_slot_collision_count,
     memory_slot_loads,
     mixed_retrieval_target_lags,
+    multicoil_cycle_length,
+    multicoil_phase,
+    multicoil_phase_label,
     retrieval_hit_rate,
     retrieval_hit_rate_by_lag,
     retrieval_target_index,
@@ -245,6 +248,27 @@ def js_token_recurrence_budget(loop_period: int, token_index: int) -> int:
 
 def js_training_free_loop_budget(loop_period: int, sample_index: int, max_loops: int) -> int:
     return min(js_loop_required_steps(loop_period, sample_index), max_loops)
+
+
+def js_lcm(left: int, right: int) -> int:
+    return abs(left * right) // gcd(left, right)
+
+
+def js_multicoil_phase(periods: tuple[int, ...], position: int) -> tuple[int, ...]:
+    return tuple(js_mod(position, period) for period in periods)
+
+
+def js_multicoil_cycle_length(periods: tuple[int, ...]) -> int:
+    cycle = 1
+    for period in periods:
+        cycle = js_lcm(cycle, period)
+    return cycle
+
+
+def js_multicoil_phase_label(periods: tuple[int, ...], position: int) -> int:
+    phase = js_multicoil_phase(periods, position)
+    score = sum((index + 1) * residue for index, residue in enumerate(phase))
+    return 1 if score % 4 == 1 else 0
 
 
 def js_memory_slot(bank_size: int, token: int) -> int:
@@ -786,6 +810,19 @@ def main() -> int:
         assert benchmark.average_gated_candidate_count == js_average_candidate_count(js_gated_candidates)
         assert benchmark.average_union_candidate_count == js_average_candidate_count(js_union_candidates)
         assert benchmark.average_full_candidate_count == js_average_candidate_count(full_candidates)
+
+    multicoil_cases = [
+        ((5, 7), 42),
+        ((4, 6, 9), 35),
+        ((8, 11), 140),
+    ]
+    for periods, position in multicoil_cases:
+        cycle = multicoil_cycle_length(periods)
+        assert multicoil_phase(periods, position) == js_multicoil_phase(periods, position)
+        assert cycle == js_multicoil_cycle_length(periods)
+        assert multicoil_phase(periods, position + cycle) == multicoil_phase(periods, position)
+        assert multicoil_phase_label(periods, position) == js_multicoil_phase_label(periods, position)
+        assert multicoil_phase_label(periods, position + cycle) == multicoil_phase_label(periods, position)
 
     print("widget Python parity ok")
     return 0

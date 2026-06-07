@@ -55,6 +55,14 @@ The widget below compares content-gated routing against static coil, static loca
 
 <div class="widget-panel" data-widget="content_gated_retrieval" data-dictionary-ids="COMMON-0057 COMMON-0047 COMMON-0028"></div>
 
+## MultiCoil Positional Phase Path
+
+MultiCoil/RoPE-style work begins with a modest bookkeeping question: if a position has several phase periods, what is its combined phase tuple and when does that tuple repeat?
+
+`AIRA-B0002` is the current executable fixture for this positional structure. The widget below shows the combined phase tuple and joint repeat horizon. It is not evidence that MultiCoil improves RoPE, attention, or language models.
+
+<div class="widget-panel" data-widget="multicoil_phase_explorer" data-dictionary-ids="COMMON-0046 COMMON-0026 COMMON-0027"></div>
+
 ## Looped Recurrence Path
 
 Looped and recursive transformers reuse model blocks across multiple computation passes. The Circle Calculus version should make each pass explicit: loop phase, recurrence budget, state provenance, exit decision, and overthinking boundary. That is a possible interface contribution, not a proved model improvement.
@@ -296,5 +304,6 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 <script type="module" src="../../widgets/ai/cyclic_memory_slots.js"></script>
 <script type="module" src="../../widgets/ai/coil_retrieval_reachability.js"></script>
 <script type="module" src="../../widgets/ai/content_gated_retrieval.js"></script>
+<script type="module" src="../../widgets/ai/multicoil_phase_explorer.js"></script>
 <script type="module" src="../../widgets/ai/loop_recurrence_budget.js"></script>
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

@@ -207,6 +207,22 @@
     },
     {
       "dictionary_ids": [
+        "COMMON-0046",
+        "COMMON-0026",
+        "COMMON-0027"
+      ],
+      "id": "multicoil_phase_explorer",
+      "path": "site/widgets/ai/multicoil_phase_explorer.js",
+      "python_reference": "circle_math.applications.circle_ai.multicoil_phase; circle_math.applications.circle_ai.multicoil_cycle_length; circle_math.applications.circle_ai.multicoil_phase_label",
+      "theorem_ids": [
+        "AIA-T0001",
+        "AIA-T0002",
+        "AIA-T0004",
+        "AIA-T0005"
+      ]
+    },
+    {
+      "dictionary_ids": [
         "COMMON-0060",
         "COMMON-0061",
         "COMMON-0063"

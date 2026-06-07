@@ -4096,7 +4096,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "multicoil_phase_explorer",
+          "path": "site/widgets/ai/multicoil_phase_explorer.js",
+          "python_reference": "circle_math.applications.circle_ai.multicoil_phase; circle_math.applications.circle_ai.multicoil_cycle_length; circle_math.applications.circle_ai.multicoil_phase_label"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -4137,7 +4143,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "multicoil_phase_explorer",
+          "path": "site/widgets/ai/multicoil_phase_explorer.js",
+          "python_reference": "circle_math.applications.circle_ai.multicoil_phase; circle_math.applications.circle_ai.multicoil_cycle_length; circle_math.applications.circle_ai.multicoil_phase_label"
+        }
+      ]
     },
     {
       "dependencies": [],
@@ -4921,7 +4933,13 @@
         }
       ],
       "used_by_theorems": [],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "multicoil_phase_explorer",
+          "path": "site/widgets/ai/multicoil_phase_explorer.js",
+          "python_reference": "circle_math.applications.circle_ai.multicoil_phase; circle_math.applications.circle_ai.multicoil_cycle_length; circle_math.applications.circle_ai.multicoil_phase_label"
+        }
+      ]
     },
     {
       "dependencies": [

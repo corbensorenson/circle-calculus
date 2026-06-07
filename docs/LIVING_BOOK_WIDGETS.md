@@ -131,6 +131,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is deterministic route and candidate-budget bookkeeping only. It does not prove learned-gate quality, retrieval quality, context length, runtime, memory scaling, attention replacement, or model-quality improvement.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python content-gated retrieval helpers.
 
+### multicoil_phase_explorer
+
+- Inputs: two required phase periods, one optional third phase period, and a position.
+- Outputs: combined phase tuple, joint repeat horizon, shifted phase tuple after one joint cycle, constructed synthetic fixture label, per-period closure rows, finite phase-channel theorem links, and dictionary links.
+- Theorem ids: `AIA-T0001`, `AIA-T0002`, `AIA-T0004`, and `AIA-T0005` as finite phase-channel primitives only.
+- Dictionary ids: `COMMON-0046`, `COMMON-0026`, and `COMMON-0027`.
+- Python references: `circle_math.applications.circle_ai.multicoil_phase`, `circle_math.applications.circle_ai.multicoil_cycle_length`, and `circle_math.applications.circle_ai.multicoil_phase_label`.
+- Guardrail: the widget is positional phase bookkeeping for a synthetic fixture only. It does not prove RoPE improvement, language-model quality, attention replacement, context-length improvement, or runtime improvement.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python MultiCoil phase helpers.
+
 ## Physics Widgets
 
 ### finite_path_algebra
@@ -188,5 +198,6 @@ Minimum parity cases:
 - cyclic memory slot reduction, one-bank closure, multi-bank closure, idempotent normalization, slot loads, and collision count.
 - coil-retrieval target index, selected coil path, local window, wrong-stride path, full-attention oracle hit, and near-lag local/coil controls.
 - content-gated retrieval mixed lags, gated/static/wrong/union/full hit rates, and average candidate counts.
+- MultiCoil phase tuple, joint cycle length, phase closure after one joint cycle, and constructed synthetic label.
 - finite path concatenation holonomy, reverse-path holonomy, path-plus-reverse closure, and open-path gauge endpoint prediction.
 - finite gauge-loop normalized phases, gauge-transformed phases, original/transformed holonomy, and closed endpoint cancellation.
