@@ -4,7 +4,7 @@ title: "AI"
 
 The AI application page tracks phase channels, coil attention, cyclic memory, and adapter/block indexing. Local compute language is MLX/Mac-first.
 
-The current proved layer is finite indexing only. `AIA-B0001` adds an exploratory deterministic phase-channel benchmark fixture for a known-period synthetic task. `AIA-B0002` adds a tiny learned-baseline control: phase lookup wins on a periodic task, while an ordinary scalar threshold wins on a nonperiodic control. `AIA-B0003` adds CPU/optional-MLX backend parity scoring across the current deterministic AI fixtures; if MLX is unavailable, it reports that directly. `AIA-B0004` adds learned-feature baseline controls: cyclic phase features are compared with dense-scalar, learned-position, and wrong-period baselines, plus a nonperiodic scalar-control task. `AIM-B0001` adds the same discipline to cyclic memory: a positive slot-lookup fixture, constant/scalar-threshold baselines, collision diagnostics, and a nonperiodic control. `AIM-B0002` adds a coil-retrieval reachability fixture: a selected coil path reaches a constructed long-lag dependency, local and wrong-stride baselines miss it, full attention is the oracle upper bound, and local attention wins the near-lag control. `AIRA-B0001` adds the adapter-block version: a positive block-index fixture, ordinary baselines, collision diagnostics, and a nonperiodic control. `AIRA-B0002` adds a MultiCoil/RoPE-style positional fixture: combined-period phase lookup beats single-period, constant, and scalar-threshold baselines on a constructed multi-period task, while the scalar threshold wins the nonperiodic control. These are not model-quality claims.
+The current proved layer is finite indexing only. `AIA-B0001` adds an exploratory deterministic phase-channel benchmark fixture for a known-period synthetic task. `AIA-B0002` adds a tiny learned-baseline control: phase lookup wins on a periodic task, while an ordinary scalar threshold wins on a nonperiodic control. `AIA-B0003` adds CPU/optional-MLX backend parity scoring across the current deterministic AI fixtures; if MLX is unavailable, it reports that directly. `AIA-B0004` adds learned-feature baseline controls: cyclic phase features are compared with dense-scalar, learned-position, and wrong-period baselines, plus a nonperiodic scalar-control task. `AIA-B0005` adds harmonic/Fourier feature controls: cyclic phase lookup and correct sine/cosine lookup solve the constructed periodic task, while wrong-frequency, scalar, and learned-position baselines remain controls. `AIM-B0001` adds the same discipline to cyclic memory: a positive slot-lookup fixture, constant/scalar-threshold baselines, collision diagnostics, and a nonperiodic control. `AIM-B0002` adds a coil-retrieval reachability fixture: a selected coil path reaches a constructed long-lag dependency, local and wrong-stride baselines miss it, full attention is the oracle upper bound, and local attention wins the near-lag control. `AIRA-B0001` adds the adapter-block version: a positive block-index fixture, ordinary baselines, collision diagnostics, and a nonperiodic control. `AIRA-B0002` adds a MultiCoil/RoPE-style positional fixture: combined-period phase lookup beats single-period, constant, and scalar-threshold baselines on a constructed multi-period task, while the scalar threshold wins the nonperiodic control. These are not model-quality claims.
 
 ::: {.learning-unit}
 
@@ -34,18 +34,20 @@ Every avenue needs ordinary baselines, negative controls, and reproducible scrip
 
 1. Start with phase channels: finite indices, closure, and known-period examples.
 2. Compare learned-feature baselines: cyclic features, dense scalar thresholds, learned absolute positions, and wrong-period controls.
-3. Check backend parity: CPU references first, optional MLX only when available.
-4. Add cyclic memory: slots, alias diagnostics, and nonperiodic controls.
-5. Study coil retrieval: selected long-lag paths, local baselines, wrong-stride baselines, and full-attention oracle behavior.
-6. Move to adapters and MultiCoil positions: block sharing, RoPE-style phase structure, and mismatch controls.
-7. Only then compare learned model baselines and MLX prototypes, with quality, runtime, memory, parameter count, and interpretability reported separately.
-8. Treat quaternion, spherical, Hopf/fiber, and `S^7` ideas as later geometry-aware AI lessons, not as shortcuts around the lower-dimensional evidence.
+3. Compare harmonic/Fourier features: correct sine/cosine phase features, wrong-frequency controls, and scalar controls.
+4. Check backend parity: CPU references first, optional MLX only when available.
+5. Add cyclic memory: slots, alias diagnostics, and nonperiodic controls.
+6. Study coil retrieval: selected long-lag paths, local baselines, wrong-stride baselines, and full-attention oracle behavior.
+7. Move to adapters and MultiCoil positions: block sharing, RoPE-style phase structure, and mismatch controls.
+8. Only then compare learned model baselines and MLX prototypes, with quality, runtime, memory, parameter count, and interpretability reported separately.
+9. Treat quaternion, spherical, Hopf/fiber, and `S^7` ideas as later geometry-aware AI lessons, not as shortcuts around the lower-dimensional evidence.
 
 ## What To Notice
 
 - Phase-channel proofs are about finite indices, not model quality.
 - `AIA-B0003` is backend parity scaffolding, not a speed, quality, or acceleration claim.
 - `AIA-B0004` is a learned-feature baseline scaffold, not a neural-network result or real-workload benchmark.
+- `AIA-B0005` is a harmonic/Fourier-feature scaffold, not a standard RoPE or language-model benchmark.
 - Positive periodic fixtures must be paired with negative controls.
 - `AIM-B0001` is a cyclic-memory benchmark harness, not a retrieval or attention theorem.
 - `AIM-B0002` is a reachability harness over candidate index sets, not an attention-quality theorem.
@@ -78,6 +80,7 @@ Why is the nonperiodic control in `AIA-B0002` important before making any AI-imp
 <div class="dictionary-box" data-dictionary-id="COMMON-0047"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0048"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0049"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0050"></div>
 
 <p data-paper-ref="papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md">AI architecture paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md">Circle AI Architectures</a></p>
 <p data-paper-ref="papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Memory paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Coil Attention And Memory</a></p>

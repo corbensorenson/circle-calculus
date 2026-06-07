@@ -1,7 +1,9 @@
 from circle_math.applications.circle_ai import (
     mlx_available,
+    harmonic_feature,
     phase_channel,
     run_ai_backend_parity_check,
+    run_harmonic_feature_baseline_benchmark,
     run_learned_feature_baseline_benchmark,
     run_learned_phase_baseline_benchmark,
     run_phase_channel_benchmark,
@@ -37,6 +39,12 @@ def test_phase_channel_is_idempotent() -> None:
 def test_phase_channel_zero() -> None:
     for period in range(1, 65):
         assert phase_channel(period, 0) == 0
+
+
+def test_harmonic_feature_closes_after_period() -> None:
+    for period in range(1, 65):
+        for position in range(0, 128):
+            assert harmonic_feature(period, position + period) == harmonic_feature(period, position)
 
 
 def test_phase_channel_benchmark_fixture_is_deterministic() -> None:
@@ -82,13 +90,32 @@ def test_learned_feature_baseline_fixture_has_baselines_and_controls() -> None:
     assert result.note.endswith("not a model-quality claim.")
 
 
+def test_harmonic_feature_baseline_fixture_has_frequency_controls() -> None:
+    result = run_harmonic_feature_baseline_benchmark(
+        period=8,
+        wrong_period=7,
+        train_length=64,
+        test_length=32,
+    )
+    assert result.observed_feature_count == result.period
+    assert result.cyclic_phase_accuracy == 1.0
+    assert result.harmonic_feature_accuracy == result.cyclic_phase_accuracy
+    assert result.wrong_harmonic_accuracy < result.harmonic_feature_accuracy
+    assert result.scalar_threshold_accuracy < result.harmonic_feature_accuracy
+    assert result.learned_position_accuracy < result.harmonic_feature_accuracy
+    assert result.nonperiodic_scalar_threshold_accuracy == 1.0
+    assert result.nonperiodic_scalar_threshold_accuracy > result.nonperiodic_harmonic_accuracy
+    assert result.note.endswith("not a model-quality claim.")
+
+
 def test_ai_backend_parity_fixture_is_deterministic() -> None:
     first = run_ai_backend_parity_check()
     second = run_ai_backend_parity_check()
     assert first == second
-    assert first.fixture_count >= 9
+    assert first.fixture_count >= 10
     assert dict(first.cpu_scores)["phase_lookup"] == 1.0
     assert dict(first.cpu_scores)["learned_feature_cyclic"] == 1.0
+    assert dict(first.cpu_scores)["harmonic_feature_lookup"] == 1.0
     assert dict(first.cpu_scores)["learned_feature_nonperiodic_dense_scalar"] == 1.0
     assert dict(first.cpu_scores)["memory_lookup"] == 1.0
     assert dict(first.cpu_scores)["adapter_lookup"] == 1.0

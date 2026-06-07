@@ -4771,6 +4771,37 @@
       "used_by_widgets": []
     },
     {
+      "dependencies": [
+        "COMMON-0026",
+        "COMMON-0044",
+        "COMMON-0049"
+      ],
+      "forbidden_meanings": [
+        "A standard RoPE benchmark.",
+        "Evidence that Fourier features improve real AI workloads.",
+        "A proof that harmonic features beat attention, state-space models, or learned embeddings."
+      ],
+      "formal_definition": "`circle_math.applications.circle_ai.run_harmonic_feature_baseline_benchmark`, a deterministic comparison between cyclic phase lookup, correct sine/cosine harmonic feature lookup, wrong-frequency harmonic lookup, scalar-threshold, and learned-position baselines, with a nonperiodic scalar-control task.",
+      "id": "COMMON-0050",
+      "introduced_in": "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES",
+      "intuition": "A bridge from Circle AI language to ordinary Fourier/RoPE-style phase features: correct harmonic features can represent the constructed phase task, but this does not make them a model-quality result.",
+      "kind": "experiment",
+      "name": "Harmonic feature baseline fixture",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "harmonic_feature_baseline",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES",
+          "path": "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 1: Circle AI Architectures"
+        }
+      ],
+      "used_by_theorems": [],
+      "used_by_widgets": []
+    },
+    {
       "dependencies": [],
       "forbidden_meanings": [
         "The one-node circle C_1.",

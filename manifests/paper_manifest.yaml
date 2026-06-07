@@ -583,6 +583,7 @@ papers:
       - COMMON-0044
       - COMMON-0048
       - COMMON-0049
+      - COMMON-0050
 
   - id: PAPER_AI_02_COIL_ATTENTION_AND_MEMORY
     title: "Circle Calculus AI 2: Coil Attention and Memory"

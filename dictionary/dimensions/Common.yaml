@@ -563,3 +563,15 @@ entries:
       - "A neural-network benchmark."
       - "Evidence that cyclic features improve real AI workloads."
       - "A replacement for standard RoPE, attention, LoRA, state-space, or learned dense baselines."
+  - id: COMMON-0050
+    name: "Harmonic feature baseline fixture"
+    kind: experiment
+    symbol: "harmonic_feature_baseline"
+    formal_definition: "`circle_math.applications.circle_ai.run_harmonic_feature_baseline_benchmark`, a deterministic comparison between cyclic phase lookup, correct sine/cosine harmonic feature lookup, wrong-frequency harmonic lookup, scalar-threshold, and learned-position baselines, with a nonperiodic scalar-control task."
+    intuition: "A bridge from Circle AI language to ordinary Fourier/RoPE-style phase features: correct harmonic features can represent the constructed phase task, but this does not make them a model-quality result."
+    dependencies: ["COMMON-0026", "COMMON-0044", "COMMON-0049"]
+    introduced_in: "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES"
+    forbidden_meanings:
+      - "A standard RoPE benchmark."
+      - "Evidence that Fourier features improve real AI workloads."
+      - "A proof that harmonic features beat attention, state-space models, or learned embeddings."

@@ -32,6 +32,8 @@ It compares that phase lookup against a constant baseline on a task whose labels
 
 `COMMON-0049` adds a learned-feature baseline fixture. It compares the correct cyclic phase feature against three small ordinary baselines: a dense scalar threshold, a learned absolute-position lookup, and a wrong-period phase lookup. The same fixture includes a nonperiodic scalar-control task where the dense scalar baseline wins. This is still a synthetic guardrail, not a neural-network result.
 
+`COMMON-0050` adds a harmonic feature baseline fixture. It compares cyclic phase lookup with a correct sine/cosine feature lookup, a wrong-frequency sine/cosine lookup, a scalar threshold, and a learned-position lookup. This is a bridge to ordinary Fourier/RoPE-style phase encodings, not a standard RoPE benchmark or language-model result.
+
 ## Source Trail
 
 The Lean sidecar is:
@@ -47,6 +49,7 @@ sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/test_phase_channel_examples.
 sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_phase_channel.py
 sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_backend_parity.py
 sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_learned_feature_baselines.py
+sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_harmonic_feature_baselines.py
 ```
 
 The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. Benchmark fixtures are exploratory executable evidence; Lean declarations determine proof status.
@@ -67,16 +70,17 @@ These facts certify only a finite phase-indexing primitive. They do not prove lo
 
 ## Benchmark Fixture
 
-`AIA-B0001` is the first exploratory Python benchmark fixture for this paper. `AIA-B0002` adds the periodic/nonperiodic learned-baseline control. `AIA-B0003` adds CPU/optional-MLX backend parity scoring across the current deterministic AI fixtures. `AIA-B0004` adds learned-feature baseline comparisons against dense scalar, learned-position, and wrong-period baselines, plus a nonperiodic scalar-control task. They live in:
+`AIA-B0001` is the first exploratory Python benchmark fixture for this paper. `AIA-B0002` adds the periodic/nonperiodic learned-baseline control. `AIA-B0003` adds CPU/optional-MLX backend parity scoring across the current deterministic AI fixtures. `AIA-B0004` adds learned-feature baseline comparisons against dense scalar, learned-position, and wrong-period baselines, plus a nonperiodic scalar-control task. `AIA-B0005` adds harmonic/Fourier feature comparisons against wrong-frequency, scalar, and learned-position baselines. They live in:
 
 ```text
 circle_math/applications/circle_ai.py
 sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_phase_channel.py
 sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_backend_parity.py
 sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_learned_feature_baselines.py
+sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_harmonic_feature_baselines.py
 ```
 
-The test sidecar checks that the fixture is deterministic, that phase lookup solves the constructed known-period task while the constant baseline does not, that an ordinary scalar threshold baseline wins on a nonperiodic control, that learned-position and wrong-period baselines do not get mistaken for evidence, and that CPU/MLX parity is reported honestly. The fixture intentionally does not compare against dense neural networks, standard RoPE, attention, state-space models, real sequence data, or runtime measurements yet.
+The test sidecar checks that the fixture is deterministic, that phase lookup solves the constructed known-period task while the constant baseline does not, that an ordinary scalar threshold baseline wins on a nonperiodic control, that learned-position, wrong-period, and wrong-frequency baselines do not get mistaken for evidence, that correct harmonic features match the constructed phase task, and that CPU/MLX parity is reported honestly. The fixture intentionally does not compare against dense neural networks, standard RoPE, attention, state-space models, real sequence data, or runtime measurements yet.
 
 ## Architecture Program
 
@@ -93,6 +97,7 @@ Every experiment should compare against strong ordinary baselines and report neg
 ## Next Program
 
 - Use `AIA-B0004` as the current learned-feature baseline scaffold.
+- Use `AIA-B0005` as the current harmonic/Fourier feature scaffold.
 - Compare next against dense MLP/attention, standard RoPE, learned positional encodings, convolution, Hyena-like mixers, and S4/Mamba-like baselines as appropriate.
 - Add separate memory-slot and adapter-block benchmarks before making CoilKV, Coil Attention, CoilRA, or MultiCoil RoPE claims.
 - Use `AIA-B0003` as backend parity scaffolding only; real MLX model prototypes and timing remain separate work.

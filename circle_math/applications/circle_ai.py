@@ -7,7 +7,7 @@ They are not formal proofs and they are not model-quality claims.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from math import lcm
+from math import cos, lcm, sin, tau
 from typing import Optional, Sequence
 
 
@@ -215,6 +215,23 @@ class LearnedFeatureBaselineResult:
 
 
 @dataclass(frozen=True)
+class HarmonicFeatureBaselineResult:
+    period: int
+    wrong_period: int
+    train_length: int
+    test_length: int
+    observed_feature_count: int
+    cyclic_phase_accuracy: float
+    harmonic_feature_accuracy: float
+    wrong_harmonic_accuracy: float
+    scalar_threshold_accuracy: float
+    learned_position_accuracy: float
+    nonperiodic_harmonic_accuracy: float
+    nonperiodic_scalar_threshold_accuracy: float
+    note: str = "Tiny harmonic-feature baseline fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
 class AIBackendParityResult:
     fixture_count: int
     cpu_scores: tuple[tuple[str, float], ...]
@@ -413,6 +430,66 @@ def _predict_position_lookup(
     return tuple(lookup_map.get(position, fallback) for position in positions)
 
 
+def harmonic_feature(period: int, position: int, *, harmonic: int = 1) -> tuple[float, float]:
+    """Return a rounded sine/cosine feature for a circular position.
+
+    This is a tiny Fourier/RoPE-style feature, not a learned embedding. Values
+    are rounded so deterministic lookup tables can use them as dictionary keys.
+    """
+    _require_positive(period, "period")
+    _require_positive(harmonic, "harmonic")
+    angle = tau * harmonic * phase_channel(period, position) / period
+    return (round(cos(angle), 12), round(sin(angle), 12))
+
+
+def fit_harmonic_feature_lookup(
+    period: int,
+    positions: Sequence[int],
+    labels: Sequence[int],
+    *,
+    harmonic: int = 1,
+) -> tuple[tuple[tuple[float, float], int], ...]:
+    """Fit a deterministic lookup table over sine/cosine phase features."""
+    _require_positive(period, "period")
+    _require_positive(harmonic, "harmonic")
+    if len(positions) != len(labels):
+        raise ValueError("positions and labels must have the same length")
+    if not positions:
+        raise ValueError("positions must be nonempty")
+    counts: dict[tuple[float, float], list[int]] = {}
+    for position, label in zip(positions, labels):
+        if label not in (0, 1):
+            raise ValueError("labels must be binary")
+        feature = harmonic_feature(period, position, harmonic=harmonic)
+        if feature not in counts:
+            counts[feature] = [0, 0]
+        counts[feature][label] += 1
+    entries = []
+    for feature, (zero_count, one_count) in counts.items():
+        entries.append((feature, 1 if one_count >= zero_count else 0))
+    return tuple(sorted(entries))
+
+
+def predict_harmonic_feature_lookup(
+    period: int,
+    lookup: Sequence[tuple[tuple[float, float], int]],
+    positions: Sequence[int],
+    *,
+    harmonic: int = 1,
+) -> tuple[int, ...]:
+    """Predict labels from a fitted sine/cosine phase-feature table."""
+    _require_positive(period, "period")
+    _require_positive(harmonic, "harmonic")
+    lookup_map = {feature: label for feature, label in lookup}
+    if not lookup_map:
+        raise ValueError("lookup must be nonempty")
+    fallback = majority_label(tuple(lookup_map.values()))
+    return tuple(
+        lookup_map.get(harmonic_feature(period, position, harmonic=harmonic), fallback)
+        for position in positions
+    )
+
+
 def run_learned_phase_baseline_benchmark(
     *,
     period: int = 8,
@@ -510,6 +587,84 @@ def run_learned_feature_baseline_benchmark(
         nonperiodic_cyclic_feature_accuracy=accuracy(control_cyclic_predictions, control_test_labels),
         nonperiodic_dense_scalar_accuracy=accuracy(control_dense_predictions, control_test_labels),
         nonperiodic_learned_position_accuracy=accuracy(control_position_predictions, control_test_labels),
+    )
+
+
+def run_harmonic_feature_baseline_benchmark(
+    *,
+    period: int = 8,
+    wrong_period: int = 7,
+    train_length: int = 64,
+    test_length: int = 32,
+) -> HarmonicFeatureBaselineResult:
+    """Compare cyclic phase lookup with Fourier/RoPE-style feature baselines.
+
+    The positive task is generated from the true period. A correct harmonic
+    feature lookup and a phase lookup should both solve it; wrong-period,
+    scalar-threshold, and absolute-position lookup baselines should not be
+    confused with real evidence. The nonperiodic control must still favor the
+    scalar baseline. This is not a neural-network or RoPE quality benchmark.
+    """
+    _require_positive(period, "period")
+    _require_positive(wrong_period, "wrong_period")
+    if train_length <= 0:
+        raise ValueError("train_length must be positive")
+    if test_length <= 0:
+        raise ValueError("test_length must be positive")
+
+    train_positions, periodic_train_labels = synthetic_phase_dataset(period, train_length)
+    test_positions, periodic_test_labels = synthetic_phase_dataset(period, test_length, start=train_length)
+
+    phase_lookup = fit_phase_lookup(period, train_positions, periodic_train_labels)
+    phase_predictions = predict_phase_lookup(period, phase_lookup, test_positions)
+    harmonic_lookup = fit_harmonic_feature_lookup(period, train_positions, periodic_train_labels)
+    harmonic_predictions = predict_harmonic_feature_lookup(period, harmonic_lookup, test_positions)
+    wrong_harmonic_lookup = fit_harmonic_feature_lookup(wrong_period, train_positions, periodic_train_labels)
+    wrong_harmonic_predictions = predict_harmonic_feature_lookup(
+        wrong_period,
+        wrong_harmonic_lookup,
+        test_positions,
+    )
+    threshold, polarity = fit_threshold_classifier(train_positions, periodic_train_labels)
+    threshold_predictions = predict_threshold_classifier(test_positions, threshold, polarity)
+    position_lookup = _fit_position_lookup(train_positions, periodic_train_labels)
+    position_predictions = _predict_position_lookup(position_lookup, test_positions)
+
+    control_threshold = (3 * train_length) // 4
+    control_train_labels = tuple(nonperiodic_threshold_label(position, control_threshold) for position in train_positions)
+    control_test_labels = tuple(nonperiodic_threshold_label(position, control_threshold) for position in test_positions)
+    control_harmonic_lookup = fit_harmonic_feature_lookup(period, train_positions, control_train_labels)
+    control_harmonic_predictions = predict_harmonic_feature_lookup(
+        period,
+        control_harmonic_lookup,
+        test_positions,
+    )
+    control_threshold_fit, control_polarity = fit_threshold_classifier(
+        train_positions,
+        control_train_labels,
+    )
+    control_threshold_predictions = predict_threshold_classifier(
+        test_positions,
+        control_threshold_fit,
+        control_polarity,
+    )
+
+    return HarmonicFeatureBaselineResult(
+        period=period,
+        wrong_period=wrong_period,
+        train_length=train_length,
+        test_length=test_length,
+        observed_feature_count=len(harmonic_lookup),
+        cyclic_phase_accuracy=accuracy(phase_predictions, periodic_test_labels),
+        harmonic_feature_accuracy=accuracy(harmonic_predictions, periodic_test_labels),
+        wrong_harmonic_accuracy=accuracy(wrong_harmonic_predictions, periodic_test_labels),
+        scalar_threshold_accuracy=accuracy(threshold_predictions, periodic_test_labels),
+        learned_position_accuracy=accuracy(position_predictions, periodic_test_labels),
+        nonperiodic_harmonic_accuracy=accuracy(control_harmonic_predictions, control_test_labels),
+        nonperiodic_scalar_threshold_accuracy=accuracy(
+            control_threshold_predictions,
+            control_test_labels,
+        ),
     )
 
 
@@ -1202,6 +1357,11 @@ def ai_backend_parity_cases() -> tuple[tuple[str, tuple[int, ...], tuple[int, ..
         learned_control_polarity,
     )
 
+    harmonic_train_positions, harmonic_train_labels = synthetic_phase_dataset(8, 64)
+    harmonic_test_positions, harmonic_test_labels = synthetic_phase_dataset(8, 32, start=64)
+    harmonic_lookup = fit_harmonic_feature_lookup(8, harmonic_train_positions, harmonic_train_labels)
+    harmonic_predictions = predict_harmonic_feature_lookup(8, harmonic_lookup, harmonic_test_positions)
+
     near_local_candidates = tuple(
         local_window_indices(64, query_index, window=8)
         for query_index in retrieval_queries
@@ -1222,6 +1382,7 @@ def ai_backend_parity_cases() -> tuple[tuple[str, tuple[int, ...], tuple[int, ..
         ("retrieval_coil_path", retrieval_predictions, retrieval_labels),
         ("retrieval_near_local_window", near_local_predictions, near_local_labels),
         ("learned_feature_cyclic", learned_predictions, learned_test_labels),
+        ("harmonic_feature_lookup", harmonic_predictions, harmonic_test_labels),
         (
             "learned_feature_nonperiodic_dense_scalar",
             learned_control_predictions,

@@ -68,7 +68,7 @@ Roadmap-grade AI acceptance criteria:
 - Every AI avenue should have a paper section, manifest anchor, dictionary vocabulary, executable fixture, and Living Book explanation before it is treated as a mature project claim.
 - Every positive benchmark fixture needs at least one ordinary baseline and at least one negative or mismatch control.
 - MLX prototypes must start from CPU-reference parity and report MLX availability honestly.
-- Learned-model work should compare against standard dense, RoPE, LoRA, sliding-window, dilated, full-attention, long-convolution, and state-space baselines when those baselines match the question; `AIA-B0004` is only the first learned-feature baseline scaffold.
+- Learned-model work should compare against standard dense, RoPE, LoRA, sliding-window, dilated, full-attention, long-convolution, and state-space baselines when those baselines match the question; `AIA-B0004` and `AIA-B0005` are only the first learned-feature and harmonic-feature baseline scaffolds.
 - Geometry-aware AI work should be staged: `S^1` phase first, `S^3` quaternion/orientation next, and `S^7` or octonionic hypotheses only after the lower-dimensional evidence is stable.
 - The Living Book AI path should teach the idea before source links: problem, ordinary baseline, circular hypothesis, Lean-proved boundary, Python/MLX fixture, benchmark result, and limitations.
 
@@ -138,10 +138,10 @@ Current active Phase II proof seed:
 - This is address-level structure plus a starter benchmark scaffold with expected-output checks, not a proof of cache locality, stencil correctness, NTT correctness, or backend speed.
 - `PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS` proves the round-robin schedule facts `COMPS-T0001` through `COMPS-T0004` in Lean through `Circle.Applications.roundRobinSlot_lt_slotCount`, `Circle.Applications.roundRobinSlot_add_slotCount`, `Circle.Applications.roundRobinSlot_zero`, and `Circle.Applications.roundRobinSlot_add_mul_slotCount`, with matching Python examples.
 - This is a finite scheduler primitive, not a fairness, load-balancing, robotics, ANN, codec, acquisition, CAM, torsion, detection, or quantum-computing theorem.
-- `PAPER_AI_01_CIRCLE_AI_ARCHITECTURES` proves the phase-channel facts `AIA-T0001` through `AIA-T0005` in Lean through `Circle.Applications.phaseChannel_lt_period`, `Circle.Applications.phaseChannel_add_period`, `Circle.Applications.phaseChannel_zero`, `Circle.Applications.phaseChannel_add_mul_period`, and `Circle.Applications.phaseChannel_idempotent`, with matching Python examples plus the exploratory deterministic benchmark fixtures `AIA-B0001`, `AIA-B0002`, `AIA-B0003`, and `AIA-B0004`.
+- `PAPER_AI_01_CIRCLE_AI_ARCHITECTURES` proves the phase-channel facts `AIA-T0001` through `AIA-T0005` in Lean through `Circle.Applications.phaseChannel_lt_period`, `Circle.Applications.phaseChannel_add_period`, `Circle.Applications.phaseChannel_zero`, `Circle.Applications.phaseChannel_add_mul_period`, and `Circle.Applications.phaseChannel_idempotent`, with matching Python examples plus the exploratory deterministic benchmark fixtures `AIA-B0001`, `AIA-B0002`, `AIA-B0003`, `AIA-B0004`, and `AIA-B0005`.
 - `PAPER_AI_02_COIL_ATTENTION_AND_MEMORY` proves the cyclic-memory-slot facts `AIM-T0001` through `AIM-T0005` in Lean through `Circle.Applications.memorySlot_lt_bankSize`, `Circle.Applications.memorySlot_add_bankSize`, `Circle.Applications.memorySlot_zero`, `Circle.Applications.memorySlot_add_mul_bankSize`, and `Circle.Applications.memorySlot_idempotent`, with matching Python examples plus the exploratory cyclic-memory benchmark fixture `AIM-B0001` and the exploratory coil-retrieval reachability fixture `AIM-B0002`.
 - `PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE` proves the adapter-block facts `AIRA-T0001` through `AIRA-T0005` in Lean through `Circle.Applications.adapterBlock_lt_blockSize`, `Circle.Applications.adapterBlock_add_blockSize`, `Circle.Applications.adapterBlock_zero`, `Circle.Applications.adapterBlock_add_mul_blockSize`, and `Circle.Applications.adapterBlock_idempotent`, with matching Python examples plus the exploratory adapter-block benchmark fixture `AIRA-B0001` and the exploratory MultiCoil/RoPE-style positional fixture `AIRA-B0002`.
-- These are finite indexing primitives for AI prototypes plus starter phase-channel, learned-feature baseline, backend-parity, cyclic-memory, coil-retrieval, adapter-block, and MultiCoil positional harnesses, not model-quality, parameter-efficiency, attention-replacement, RoPE, retrieval, or runtime claims.
+- These are finite indexing primitives for AI prototypes plus starter phase-channel, learned-feature baseline, harmonic-feature baseline, backend-parity, cyclic-memory, coil-retrieval, adapter-block, and MultiCoil positional harnesses, not model-quality, parameter-efficiency, attention-replacement, RoPE, retrieval, or runtime claims.
 
 ## Compute Track
 
@@ -297,7 +297,7 @@ Deferred Circle AI subprojects:
 First Circle AI prototypes:
 
 1. Phase-channel learned-task benchmarks built from `AIA-B0001` and `AIA-B0002`.
-   Use `AIA-B0003` as backend parity scaffolding and `AIA-B0004` as learned-feature baseline scaffolding while expanding from scalar/position/wrong-period controls to standard RoPE, Fourier-feature, dense learned, and MLX model baselines before making model-quality claims.
+   Use `AIA-B0003` as backend parity scaffolding, `AIA-B0004` as learned-feature baseline scaffolding, and `AIA-B0005` as harmonic/Fourier-feature scaffolding while expanding from scalar/position/wrong-frequency controls to standard RoPE, dense learned, and MLX model baselines before making model-quality claims.
 
 2. Coil Attention plus MultiCoil RoPE on synthetic long-context retrieval.
    Start from `AIM-B0002` as the coil-retrieval reachability scaffold and `AIRA-B0002` as the MultiCoil/RoPE-style positional scaffold only. Compare against full attention, standard RoPE, learned positional encodings, sliding window, dilated attention, BigBird-like sparse attention, Hyena-like long convolution, and S4/Mamba-like state-space baselines.
