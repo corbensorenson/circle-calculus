@@ -1,9 +1,15 @@
 from __future__ import annotations
 
 import re
+import sys
+from dataclasses import asdict, is_dataclass
 from pathlib import Path
+from typing import Any
 
 from site_lib import GENERATED, ROOT, load_yaml, repo_relative, write_json
+
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 
 DECL_RE = re.compile(r"^\s*(?:theorem|lemma|def|abbrev|structure|inductive)\s+([A-Za-z0-9_'.]+)")
@@ -341,6 +347,84 @@ def export_widget_index() -> dict:
     return {"widgets": widgets}
 
 
+def jsonable(value: Any) -> Any:
+    if is_dataclass(value):
+        return jsonable(asdict(value))
+    if isinstance(value, tuple):
+        return [jsonable(item) for item in value]
+    if isinstance(value, list):
+        return [jsonable(item) for item in value]
+    if isinstance(value, dict):
+        return {str(key): jsonable(item) for key, item in value.items()}
+    return value
+
+
+def export_generator_index() -> dict:
+    from circle_math.generative import (
+        coil_orbit_generator,
+        finite_circle_diagram_generator,
+        orbit_decomposition_generator,
+        physics_loop_diagram_generator,
+        proof_glyph_generator,
+    )
+
+    records = [
+        (
+            "finite_circle_diagram",
+            "Finite circle diagram",
+            finite_circle_diagram_generator(8),
+        ),
+        (
+            "physics_loop_diagram",
+            "Finite physics-loop diagram",
+            physics_loop_diagram_generator(7, bottom=2, right=3, top=-1, left=5),
+        ),
+        (
+            "coil_orbit",
+            "Coil orbit record",
+            coil_orbit_generator(12, 8, start=0),
+        ),
+        (
+            "orbit_decomposition",
+            "Orbit decomposition record",
+            orbit_decomposition_generator(12, 8),
+        ),
+        (
+            "proof_glyph",
+            "Proof-glyph record",
+            proof_glyph_generator(
+                "glyph:c13_stride5_period",
+                "CC-T0005",
+                "Circle.period_eq_n_div_gcd",
+            ),
+        ),
+    ]
+    generators = []
+    for record_id, label, record in records:
+        generators.append(
+            {
+                "id": record_id,
+                "label": label,
+                "artifact_id": record.artifact_id,
+                "seed": dict(record.seed),
+                "rules": [
+                    {
+                        "ruleId": rule.rule_id,
+                        "parameters": dict(rule.parameters),
+                    }
+                    for rule in record.rules
+                ],
+                "iterationSchedule": record.iteration_schedule,
+                "closureCondition": record.closure_condition,
+                "generatedObject": jsonable(record.generated_object),
+                "theoremIds": list(record.theorem_ids),
+                "dictionaryIds": list(record.dictionary_ids),
+                "note": record.note,
+            }
+        )
+    return {"generators": generators}
+
+
 def add_dictionary_backlinks(
     dictionary: dict,
     theorem_manifest: dict,
@@ -556,6 +640,7 @@ def export_all() -> None:
     write_json(GENERATED / "phase6_targets.json", export_phase6_targets())
     write_json(GENERATED / "phase7_targets.json", export_phase7_targets())
     write_json(GENERATED / "glyph_index.json", glyph_index)
+    write_json(GENERATED / "generator_index.json", export_generator_index())
 
 
 def main() -> int:

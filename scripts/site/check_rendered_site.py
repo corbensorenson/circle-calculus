@@ -33,6 +33,7 @@ REQUIRED_RENDERED_FILES = [
     "data/generated/paper_index.json",
     "data/generated/widget_index.json",
     "data/generated/glyph_index.json",
+    "data/generated/generator_index.json",
     "data/generated/phase4_targets.json",
     "data/generated/phase5_targets.json",
     "data/generated/phase6_targets.json",

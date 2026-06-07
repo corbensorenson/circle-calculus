@@ -29,6 +29,7 @@ def test_export_site_data_writes_required_indexes() -> None:
         "paper_index.json",
         "widget_index.json",
         "glyph_index.json",
+        "generator_index.json",
         "phase4_targets.json",
         "phase5_targets.json",
         "phase6_targets.json",
@@ -61,6 +62,13 @@ def test_export_site_data_writes_required_indexes() -> None:
     glyph_by_id = {item["id"]: item for item in glyphs["glyphs"]}
     assert glyph_by_id["glyph:c13_stride5_period"]["status_label"] == "Lean-proved"
     assert glyph_by_id["glyph:s15_roadmap_marker"]["status_label"] != "Lean-proved"
+
+    generators = json.loads((generated / "generator_index.json").read_text())
+    generator_by_id = {item["id"]: item for item in generators["generators"]}
+    assert generator_by_id["finite_circle_diagram"]["generatedObject"]["edges"][-1]["target"] == 0
+    assert generator_by_id["physics_loop_diagram"]["generatedObject"]["closed"]
+    assert generator_by_id["orbit_decomposition"]["generatedObject"][0] == [0, 8, 4]
+    assert generator_by_id["proof_glyph"]["generatedObject"]["theorem_id"] == "CC-T0005"
 
     targets = json.loads((generated / "phase4_targets.json").read_text())
     target_ids = {item["id"] for item in targets["targets"]}

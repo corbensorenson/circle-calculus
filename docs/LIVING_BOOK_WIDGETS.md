@@ -76,8 +76,9 @@ Implemented shared JavaScript:
 - Theorem ids: finite circle, finite coil/orbit, finite physics-loop, proof-glyph, and generator-comparison theorem ids exposed by the selected record.
 - Dictionary ids: finite circle/node/coil/orbit ids plus proof-glyph, finite gauge, and generative provenance ids.
 - Python references: `circle_math.generative.finite_circle_diagram_generator`, `circle_math.generative.physics_loop_diagram_generator`, `circle_math.generative.coil_orbit_generator`, `circle_math.generative.orbit_decomposition_generator`, and `circle_math.generative.proof_glyph_generator`.
+- Data source: `site/data/generated/generator_index.json`, exported from the Python seed-rule fixtures by `scripts/site/export_site_data.py`.
 - Guardrail: the widget is generated explanation only. It displays linked proof statuses from the theorem manifest, but the generated diagram or metadata is not a proof and does not prove compression minimality, search optimality, or physics claims.
-- Validation: deterministic JavaScript generation formulas are parity-checked against the Python seed-rule fixtures.
+- Validation: generated records are exported from the Python fixtures; deterministic JavaScript display paths are parity-checked against the same seed-rule behavior.
 
 ### generator_comparison_search
 

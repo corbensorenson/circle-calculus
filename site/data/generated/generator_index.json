@@ -1,0 +1,331 @@
+{
+  "generators": [
+    {
+      "artifact_id": "finite_circle_diagram",
+      "closureCondition": "successor edge from n-1 returns to node 0",
+      "dictionaryIds": [
+        "CC-0001",
+        "CC-0002",
+        "COMMON-0064",
+        "COMMON-0066"
+      ],
+      "generatedObject": {
+        "edges": [
+          {
+            "rule": "successor_mod_n",
+            "source": 0,
+            "target": 1
+          },
+          {
+            "rule": "successor_mod_n",
+            "source": 1,
+            "target": 2
+          },
+          {
+            "rule": "successor_mod_n",
+            "source": 2,
+            "target": 3
+          },
+          {
+            "rule": "successor_mod_n",
+            "source": 3,
+            "target": 4
+          },
+          {
+            "rule": "successor_mod_n",
+            "source": 4,
+            "target": 5
+          },
+          {
+            "rule": "successor_mod_n",
+            "source": 5,
+            "target": 6
+          },
+          {
+            "rule": "successor_mod_n",
+            "source": 6,
+            "target": 7
+          },
+          {
+            "rule": "successor_mod_n",
+            "source": 7,
+            "target": 0
+          }
+        ],
+        "nodes": [
+          {
+            "id": 0,
+            "label": "0 mod 8"
+          },
+          {
+            "id": 1,
+            "label": "1 mod 8"
+          },
+          {
+            "id": 2,
+            "label": "2 mod 8"
+          },
+          {
+            "id": 3,
+            "label": "3 mod 8"
+          },
+          {
+            "id": 4,
+            "label": "4 mod 8"
+          },
+          {
+            "id": 5,
+            "label": "5 mod 8"
+          },
+          {
+            "id": 6,
+            "label": "6 mod 8"
+          },
+          {
+            "id": 7,
+            "label": "7 mod 8"
+          }
+        ]
+      },
+      "id": "finite_circle_diagram",
+      "iterationSchedule": "nodes i=0..n-1; edges i -> (i+1) mod n",
+      "label": "Finite circle diagram",
+      "note": "Generated diagram fixture only; not a formal proof or minimality theorem.",
+      "rules": [
+        {
+          "parameters": {
+            "start": 0,
+            "stop": 8
+          },
+          "ruleId": "enumerate_nodes"
+        },
+        {
+          "parameters": {},
+          "ruleId": "connect_successor_mod_n"
+        }
+      ],
+      "seed": {
+        "n": 8
+      },
+      "theoremIds": [
+        "CC-T0001",
+        "CC-T0002"
+      ]
+    },
+    {
+      "artifact_id": "physics_loop_diagram",
+      "closureCondition": "fourth edge returns to v00, so the finite loop is closed",
+      "dictionaryIds": [
+        "COMMON-0060",
+        "COMMON-0061",
+        "COMMON-0062",
+        "COMMON-0063",
+        "COMMON-0064",
+        "COMMON-0066"
+      ],
+      "generatedObject": {
+        "closed": true,
+        "edges": [
+          {
+            "label": "2 mod 7",
+            "phase": 2,
+            "rule": "plaquette_edge_phase",
+            "source": "v00",
+            "target": "v10"
+          },
+          {
+            "label": "3 mod 7",
+            "phase": 3,
+            "rule": "plaquette_edge_phase",
+            "source": "v10",
+            "target": "v11"
+          },
+          {
+            "label": "6 mod 7",
+            "phase": 6,
+            "rule": "plaquette_edge_phase",
+            "source": "v11",
+            "target": "v01"
+          },
+          {
+            "label": "5 mod 7",
+            "phase": 5,
+            "rule": "plaquette_edge_phase",
+            "source": "v01",
+            "target": "v00"
+          }
+        ],
+        "holonomy": 2,
+        "modulus": 7,
+        "vertices": [
+          {
+            "id": "v00"
+          },
+          {
+            "id": "v10"
+          },
+          {
+            "id": "v11"
+          },
+          {
+            "id": "v01"
+          }
+        ]
+      },
+      "id": "physics_loop_diagram",
+      "iterationSchedule": "v00 -> v10 -> v11 -> v01 -> v00",
+      "label": "Finite physics-loop diagram",
+      "note": "Generated finite physics-loop diagram fixture only; not a formal proof, physics claim, or minimality theorem.",
+      "rules": [
+        {
+          "parameters": {},
+          "ruleId": "normalize_link_phases_mod_n"
+        },
+        {
+          "parameters": {},
+          "ruleId": "connect_square_plaquette"
+        },
+        {
+          "parameters": {},
+          "ruleId": "sum_closed_loop_holonomy"
+        }
+      ],
+      "seed": {
+        "bottom": 2,
+        "left": 5,
+        "modulus": 7,
+        "right": 3,
+        "top": -1
+      },
+      "theoremIds": [
+        "PHYS-T0005",
+        "PHYS-T0012"
+      ]
+    },
+    {
+      "artifact_id": "coil_orbit",
+      "closureCondition": "stop when the next node has already appeared",
+      "dictionaryIds": [
+        "CC-0201",
+        "CC-0205",
+        "COMMON-0064",
+        "COMMON-0066"
+      ],
+      "generatedObject": [
+        0,
+        8,
+        4
+      ],
+      "id": "coil_orbit",
+      "iterationSchedule": "x_0=start; x_{t+1}=x_t+stride mod n",
+      "label": "Coil orbit record",
+      "note": "Generator fixture only; not a minimality theorem.",
+      "rules": [
+        {
+          "parameters": {
+            "stride": 8
+          },
+          "ruleId": "repeat_rotation"
+        }
+      ],
+      "seed": {
+        "n": 12,
+        "start": 0,
+        "stride": 8
+      },
+      "theoremIds": [
+        "CC-T0005",
+        "CC-T0006"
+      ]
+    },
+    {
+      "artifact_id": "orbit_decomposition",
+      "closureCondition": "stop when every node in C_n has appeared exactly once",
+      "dictionaryIds": [
+        "CC-0205",
+        "CC-0208",
+        "COMMON-0064",
+        "COMMON-0066"
+      ],
+      "generatedObject": [
+        [
+          0,
+          8,
+          4
+        ],
+        [
+          1,
+          9,
+          5
+        ],
+        [
+          2,
+          10,
+          6
+        ],
+        [
+          3,
+          11,
+          7
+        ]
+      ],
+      "id": "orbit_decomposition",
+      "iterationSchedule": "generate one closed orbit, then restart at the smallest unvisited node",
+      "label": "Orbit decomposition record",
+      "note": "Generator fixture only; not a minimality theorem.",
+      "rules": [
+        {
+          "parameters": {
+            "stride": 8
+          },
+          "ruleId": "repeat_rotation"
+        },
+        {
+          "parameters": {},
+          "ruleId": "restart_at_smallest_unvisited"
+        }
+      ],
+      "seed": {
+        "n": 12,
+        "stride": 8
+      },
+      "theoremIds": [
+        "CC-T0006"
+      ]
+    },
+    {
+      "artifact_id": "proof_glyph",
+      "closureCondition": "generated fields match seed fields",
+      "dictionaryIds": [
+        "COMMON-0033",
+        "COMMON-0064",
+        "COMMON-0066"
+      ],
+      "generatedObject": {
+        "glyph_id": "glyph:c13_stride5_period",
+        "lean_name": "Circle.period_eq_n_div_gcd",
+        "theorem_id": "CC-T0005"
+      },
+      "id": "proof_glyph",
+      "iterationSchedule": "single certificate construction",
+      "label": "Proof-glyph record",
+      "note": "Generator fixture only; not a minimality theorem.",
+      "rules": [
+        {
+          "parameters": {},
+          "ruleId": "project_certificate_fields"
+        }
+      ],
+      "seed": {
+        "glyph_id": "glyph:c13_stride5_period",
+        "lean_name": "Circle.period_eq_n_div_gcd",
+        "theorem_id": "CC-T0005"
+      },
+      "theoremIds": [
+        "P2G-T0001",
+        "P2G-T0002",
+        "P2G-T0003"
+      ]
+    }
+  ]
+}

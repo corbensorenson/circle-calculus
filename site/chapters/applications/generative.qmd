@@ -69,7 +69,7 @@ compare_generator_to_explicit
 bounded_generator_search
 ```
 
-The sidecar tests regenerate finite circle nodes, a finite-circle diagram with successor edges, a finite physics-loop diagram with normalized plaquette phases and holonomy, a stride orbit, the full stride-orbit decomposition, and proof-glyph metadata. The comparison fixture checks exact regeneration before comparing description length. The bounded search fixture ranks only an explicitly supplied finite candidate list; it does not claim global minimality. The widget below exposes finite-circle, finite physics-loop, coil-orbit, orbit-family, and proof-glyph seed/rule records as generated explanation, with theorem-status badges pulled from the manifest.
+The sidecar tests regenerate finite circle nodes, a finite-circle diagram with successor edges, a finite physics-loop diagram with normalized plaquette phases and holonomy, a stride orbit, the full stride-orbit decomposition, and proof-glyph metadata. The comparison fixture checks exact regeneration before comparing description length. The bounded search fixture ranks only an explicitly supplied finite candidate list; it does not claim global minimality. The widget below reads `site/data/generated/generator_index.json`, which is exported from the Python seed-rule fixtures, and exposes finite-circle, finite physics-loop, coil-orbit, orbit-family, and proof-glyph records as generated explanation with theorem-status badges pulled from the manifest.
 
 <div class="widget-panel" data-widget="seed_rule_diagram_generator"></div>
 
