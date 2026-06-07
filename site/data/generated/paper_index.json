@@ -92,6 +92,67 @@
     },
     {
       "dictionary_ids": [
+        "CC-0001",
+        "CC-0201"
+      ],
+      "id": "PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD",
+      "path": "papers/erdos/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD.md",
+      "sidecar": "sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "CC-T0064",
+        "CC-T0065"
+      ],
+      "title": "Circle Calculus Erd\u0151s 2: Katona and Erd\u0151s-Ko-Rado"
+    },
+    {
+      "dictionary_ids": [
+        "CC-0001",
+        "CC-0201"
+      ],
+      "id": "PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES",
+      "path": "papers/erdos/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES.md",
+      "sidecar": "sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "CC-T0066",
+        "CC-T0067"
+      ],
+      "title": "Circle Calculus Erd\u0151s 3: Roth and Three-Term Progressions"
+    },
+    {
+      "dictionary_ids": [
+        "CC-0001",
+        "CC-0201"
+      ],
+      "id": "PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES",
+      "path": "papers/erdos/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES.md",
+      "sidecar": "sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "CC-T0068",
+        "CC-T0069"
+      ],
+      "title": "Circle Calculus Erd\u0151s 4: Hales-Jewett and Ramsey Lines"
+    },
+    {
+      "dictionary_ids": [
+        "CC-0001",
+        "CC-0201"
+      ],
+      "id": "PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS",
+      "path": "papers/erdos/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS.md",
+      "sidecar": "sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "CC-T0070",
+        "CC-T0071",
+        "CC-T0072"
+      ],
+      "title": "Circle Calculus Erd\u0151s 5: Unit-Distance Circulant Graphs"
+    },
+    {
+      "dictionary_ids": [
         "S1-0001",
         "CC-0105",
         "COMMON-0041",

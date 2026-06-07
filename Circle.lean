@@ -23,3 +23,7 @@ import Circle.Physics.LatticeGauge
 import Circle.Generative.SeedRule
 import Circle.Erdos.EGZ
 import Circle.Erdos.CauchyDavenport
+import Circle.Erdos.KatonaEKR
+import Circle.Erdos.RothAP
+import Circle.Erdos.RamseyHJ
+import Circle.Erdos.GraphLab

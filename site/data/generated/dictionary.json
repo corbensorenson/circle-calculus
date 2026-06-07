@@ -45,6 +45,30 @@
           "title": "Circle Calculus Erd\u0151s 1: Zero-Sum Circles"
         },
         {
+          "id": "PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD",
+          "path": "papers/erdos/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Erd\u0151s 2: Katona and Erd\u0151s-Ko-Rado"
+        },
+        {
+          "id": "PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES",
+          "path": "papers/erdos/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Erd\u0151s 3: Roth and Three-Term Progressions"
+        },
+        {
+          "id": "PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES",
+          "path": "papers/erdos/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Erd\u0151s 4: Hales-Jewett and Ramsey Lines"
+        },
+        {
+          "id": "PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS",
+          "path": "papers/erdos/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Erd\u0151s 5: Unit-Distance Circulant Graphs"
+        },
+        {
           "id": "PAPER_S1_01_FINITE_CIRCLES",
           "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
           "status": "polished_draft",
@@ -314,6 +338,60 @@
           "id": "CC-T0063",
           "lean_name": "Circle.cauchy_davenport_prime_circle",
           "name": "Cauchy-Davenport prime circle bridge",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0064",
+          "lean_name": "Circle.katona_prefixed_density_bridge",
+          "name": "Katona prefix-density circle-method bridge",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0065",
+          "lean_name": "Circle.erdos_ko_rado_circle_bridge",
+          "name": "Erd\u0151s-Ko-Rado circle-method bridge",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0066",
+          "lean_name": "Circle.roth_three_ap_nat_bridge",
+          "name": "Roth three-term AP natural-number bridge",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0067",
+          "lean_name": "Circle.roth_number_sublinear_bridge",
+          "name": "Roth-number sublinearity bridge",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0068",
+          "lean_name": "Circle.hales_jewett_bridge",
+          "name": "Hales-Jewett combinatorial-line bridge",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0069",
+          "lean_name": "Circle.van_der_waerden_homothetic_bridge",
+          "name": "Van der Waerden homothetic-copy bridge",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0070",
+          "lean_name": "Circle.cycle_graph_circulant_bridge",
+          "name": "Cycle graph circulant bridge",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0071",
+          "lean_name": "Circle.cycle_graph_connected_bridge",
+          "name": "Cycle graph connectedness bridge",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0072",
+          "lean_name": "Circle.empty_graph_unit_distance_embedding_bridge",
+          "name": "Empty graph unit-distance embedding constructor",
           "status": "proved"
         },
         {
@@ -1228,6 +1306,30 @@
           "path": "papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md",
           "status": "polished_draft",
           "title": "Circle Calculus Erd\u0151s 1: Zero-Sum Circles"
+        },
+        {
+          "id": "PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD",
+          "path": "papers/erdos/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Erd\u0151s 2: Katona and Erd\u0151s-Ko-Rado"
+        },
+        {
+          "id": "PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES",
+          "path": "papers/erdos/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Erd\u0151s 3: Roth and Three-Term Progressions"
+        },
+        {
+          "id": "PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES",
+          "path": "papers/erdos/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Erd\u0151s 4: Hales-Jewett and Ramsey Lines"
+        },
+        {
+          "id": "PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS",
+          "path": "papers/erdos/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Erd\u0151s 5: Unit-Distance Circulant Graphs"
         },
         {
           "id": "PAPER_S1_01_FINITE_CIRCLES",

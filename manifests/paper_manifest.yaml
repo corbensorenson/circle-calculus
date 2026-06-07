@@ -73,6 +73,51 @@ papers:
       - CC-0001
       - CC-0201
 
+  - id: PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD
+    title: "Circle Calculus Erdős 2: Katona and Erdős-Ko-Rado"
+    status: polished_draft
+    sidecar: sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD
+    theorem_ids:
+      - CC-T0064
+      - CC-T0065
+    dictionary_ids:
+      - CC-0001
+      - CC-0201
+
+  - id: PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES
+    title: "Circle Calculus Erdős 3: Roth and Three-Term Progressions"
+    status: polished_draft
+    sidecar: sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES
+    theorem_ids:
+      - CC-T0066
+      - CC-T0067
+    dictionary_ids:
+      - CC-0001
+      - CC-0201
+
+  - id: PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES
+    title: "Circle Calculus Erdős 4: Hales-Jewett and Ramsey Lines"
+    status: polished_draft
+    sidecar: sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES
+    theorem_ids:
+      - CC-T0068
+      - CC-T0069
+    dictionary_ids:
+      - CC-0001
+      - CC-0201
+
+  - id: PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS
+    title: "Circle Calculus Erdős 5: Unit-Distance Circulant Graphs"
+    status: polished_draft
+    sidecar: sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS
+    theorem_ids:
+      - CC-T0070
+      - CC-T0071
+      - CC-T0072
+    dictionary_ids:
+      - CC-0001
+      - CC-0201
+
   - id: PAPER_S1_04_FACTORS_SCALING_PRIME_COILS
     title: "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
     status: polished_draft

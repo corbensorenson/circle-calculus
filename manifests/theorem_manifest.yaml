@@ -1006,3 +1006,147 @@ theorems:
       lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["cauchy_davenport_example(p,A,B).passes_bound for deterministic prime-circle examples"]
+
+  - id: CC-T0064
+    name: Katona prefix-density circle-method bridge
+    status: proved
+    lean_name: Circle.katona_prefixed_density_bridge
+    informal_statement: "For a finite set, the density of numberings where a fixed subset is a prefix is the reciprocal binomial coefficient."
+    formal_statement: "forall {X : Type*} [Fintype X] [DecidableEq X] (s : Finset X), dens(Numbering.prefixed s) = ((Fintype.card X).choose s.card : NNReal)^-1"
+    dictionary_dependencies: ["CC-0001"]
+    paper_refs: ["papers/erdos/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD.md"]
+    python_tests: ["sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py::test_katona_prefixed_density_count"]
+    proof_notes: "Lean theorem is compiled in Circle/Erdos/KatonaEKR.lean as a Circle-facing wrapper around mathlib's Numbering.dens_prefixed theorem."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["katona_prefixed_density_example(n,s).density == 1 / choose(n, |s|) for deterministic examples"]
+
+  - id: CC-T0065
+    name: Erdős-Ko-Rado circle-method bridge
+    status: proved
+    lean_name: Circle.erdos_ko_rado_circle_bridge
+    informal_statement: "An intersecting family of r-subsets of Fin n, with r at most n/2, has size at most choose(n-1,r-1)."
+    formal_statement: "forall {n r : Nat} {A : Finset (Finset (Fin n))}, Intersecting A -> Sized A r -> r <= n/2 -> A.card <= (n-1).choose (r-1)"
+    dictionary_dependencies: ["CC-0001"]
+    paper_refs: ["papers/erdos/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD.md"]
+    python_tests: ["sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py::test_ekr_star_family_is_sharp_intersecting_example"]
+    proof_notes: "Lean theorem is compiled in Circle/Erdos/KatonaEKR.lean as a wrapper around mathlib's Finset.erdos_ko_rado theorem."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["ekr_star_example(n,r).is_sharp_example for deterministic finite examples"]
+
+  - id: CC-T0066
+    name: Roth three-term AP natural-number bridge
+    status: proved
+    lean_name: Circle.roth_three_ap_nat_bridge
+    informal_statement: "A sufficiently dense finite subset of the first n natural numbers is not free of nontrivial three-term arithmetic progressions."
+    formal_statement: "forall {n : Nat} {epsilon : Real}, 0 < epsilon -> cornersTheoremBound(epsilon/3) <= n -> forall A subset range n, epsilon*n <= A.card -> not ThreeAPFree A"
+    dictionary_dependencies: ["CC-0001"]
+    paper_refs: ["papers/erdos/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES.md"]
+    python_tests: ["sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py::test_roth_interval_example_records_density_and_witnesses"]
+    proof_notes: "Lean theorem is compiled in Circle/Erdos/RothAP.lean as a wrapper around mathlib's roth_3ap_theorem_nat theorem."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["roth_interval_example(n,A).has_progression for deterministic dense finite examples"]
+
+  - id: CC-T0067
+    name: Roth-number sublinearity bridge
+    status: proved
+    lean_name: Circle.roth_number_sublinear_bridge
+    informal_statement: "The maximum size of a three-term-AP-free subset of the first N naturals is little-o of N."
+    formal_statement: "Asymptotics.IsLittleO atTop (fun N => (rothNumberNat N : Real)) (fun N => (N : Real))"
+    dictionary_dependencies: ["CC-0001"]
+    paper_refs: ["papers/erdos/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Erdos/RothAP.lean as a wrapper around mathlib's rothNumberNat_isLittleO_id theorem."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0068
+    name: Hales-Jewett combinatorial-line bridge
+    status: proved
+    lean_name: Circle.hales_jewett_bridge
+    informal_statement: "For finite alphabet and finite color set, a high-dimensional word cube has a monochromatic combinatorial line."
+    formal_statement: "forall finite alpha kappa, exists finite index type iota such that every coloring (iota -> alpha) -> kappa has a monochromatic Combinatorics.Line"
+    dictionary_dependencies: ["CC-0001"]
+    paper_refs: ["papers/erdos/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES.md"]
+    python_tests: ["sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py::test_monochromatic_progression_and_hales_jewett_line_examples"]
+    proof_notes: "Lean theorem is compiled in Circle/Erdos/RamseyHJ.lean as a wrapper around mathlib's Combinatorics.Line.exists_mono_in_high_dimension theorem."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["find_monochromatic_combinatorial_line returns a monochromatic line for deterministic tiny colorings"]
+
+  - id: CC-T0069
+    name: Van der Waerden homothetic-copy bridge
+    status: proved
+    lean_name: Circle.van_der_waerden_homothetic_bridge
+    informal_statement: "Every finite coloring of an additive commutative monoid contains a monochromatic homothetic copy of any finite shape."
+    formal_statement: "forall {M kappa} [AddCommMonoid M] [Finite kappa] (S : Finset M) (C : M -> kappa), exists a > 0, exists b c, forall s in S, C(a • s + b) = c"
+    dictionary_dependencies: ["CC-0001"]
+    paper_refs: ["papers/erdos/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES.md"]
+    python_tests: ["sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py::test_monochromatic_homothetic_copy_example"]
+    proof_notes: "Lean theorem is compiled in Circle/Erdos/RamseyHJ.lean as a wrapper around mathlib's Combinatorics.exists_mono_homothetic_copy theorem."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["all_binary_colorings_have_3ap(9) and deterministic homothetic-copy search examples"]
+
+  - id: CC-T0070
+    name: Cycle graph circulant bridge
+    status: proved
+    lean_name: Circle.cycle_graph_circulant_bridge
+    informal_statement: "The cycle graph on n+1 vertices is the circulant graph on Fin(n+1) with jump set {1}."
+    formal_statement: "forall n : Nat, SimpleGraph.cycleGraph (n+1) = SimpleGraph.circulantGraph ({1} : Set (Fin (n+1)))"
+    dictionary_dependencies: ["CC-0001"]
+    paper_refs: ["papers/erdos/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS.md"]
+    python_tests: ["sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py::test_cycle_graph_edges_match_circulant_jump_one"]
+    proof_notes: "Lean theorem is compiled in Circle/Erdos/GraphLab.lean as a wrapper around mathlib's SimpleGraph.cycleGraph_eq_circulantGraph theorem."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["cycle_graph_edges(n) == circulant_edges(n,[1]) for deterministic examples"]
+
+  - id: CC-T0071
+    name: Cycle graph connectedness bridge
+    status: proved
+    lean_name: Circle.cycle_graph_connected_bridge
+    informal_statement: "The cycle graph on n+1 vertices is connected."
+    formal_statement: "forall n : Nat, (SimpleGraph.cycleGraph (n+1)).Connected"
+    dictionary_dependencies: ["CC-0001"]
+    paper_refs: ["papers/erdos/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS.md"]
+    python_tests: ["sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py::test_cycle_circulant_unit_distance_example"]
+    proof_notes: "Lean theorem is compiled in Circle/Erdos/GraphLab.lean as a wrapper around mathlib's SimpleGraph.cycleGraph_connected theorem."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["cycle_circulant_example(n).matches_circulant for deterministic examples"]
+
+  - id: CC-T0072
+    name: Empty graph unit-distance embedding constructor
+    status: proved
+    lean_name: Circle.empty_graph_unit_distance_embedding_bridge
+    informal_statement: "Any vertex injection into a metric space gives a unit-distance embedding of the empty graph."
+    formal_statement: "forall {V E : Type*} [MetricSpace E] (p : V -> E injective), (bottom : SimpleGraph V).UnitDistEmbedding E"
+    dictionary_dependencies: ["CC-0001"]
+    paper_refs: ["papers/erdos/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS.md"]
+    python_tests: ["sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py::test_cycle_circulant_unit_distance_example"]
+    proof_notes: "Lean declaration is compiled in Circle/Erdos/GraphLab.lean as a Circle-facing constructor around mathlib's SimpleGraph.UnitDistEmbedding.bot definition."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["regular_polygon_unit_embedding(n) gives unit-length cycle edges for deterministic examples"]

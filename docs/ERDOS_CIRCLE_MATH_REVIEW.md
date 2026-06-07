@@ -29,6 +29,20 @@ The Cauchy-Davenport bridge is now also tracked as:
 - Lean declaration: `Circle.cauchy_davenport_prime_circle`
 - source: `Circle/Erdos/CauchyDavenport.lean`
 
+A second bridge batch now widens the external theorem-contact surface:
+
+- `CC-T0064`: `Circle.katona_prefixed_density_bridge`
+- `CC-T0065`: `Circle.erdos_ko_rado_circle_bridge`
+- `CC-T0066`: `Circle.roth_three_ap_nat_bridge`
+- `CC-T0067`: `Circle.roth_number_sublinear_bridge`
+- `CC-T0068`: `Circle.hales_jewett_bridge`
+- `CC-T0069`: `Circle.van_der_waerden_homothetic_bridge`
+- `CC-T0070`: `Circle.cycle_graph_circulant_bridge`
+- `CC-T0071`: `Circle.cycle_graph_connected_bridge`
+- `CC-T0072`: `Circle.empty_graph_unit_distance_embedding_bridge`
+
+These are checked mathlib bridge statements, not new proofs of Katona, Erdős-Ko-Rado, Roth, Hales-Jewett, van der Waerden, circulant graph theory, or unit-distance geometry.
+
 The paper-backed artifact is:
 
 - paper: `papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md`
@@ -36,6 +50,16 @@ The paper-backed artifact is:
 
 This is not a claim of a new proof. It is a rigorous external theorem contact
 point: Circle's basic object is exactly the object in a nontrivial Erdős theorem.
+
+Follow-up work on the requested five-lane program is tracked in:
+
+- `docs/CIRCLE_METHODS_EXTREMAL_COMBINATORICS.md`
+- `papers/erdos/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD.md`
+- `papers/erdos/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES.md`
+- `papers/erdos/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES.md`
+- `papers/erdos/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS.md`
+
+The added Lean theorem ids are `CC-T0064` through `CC-T0072`.
 
 ## Current Project Fit
 
@@ -54,7 +78,9 @@ Weak or not-yet fit:
   finite address spaces, not Euclidean incidence geometry or algebraic number
   field norm constructions.
 - Ramsey/Erdős-Hajnal/sunflower graph-set systems: possible formalization
-  targets, but not specifically helped by the current circle-specific core.
+  targets. Hales-Jewett and homothetic-copy bridges are now present as checked
+  external theorem contacts, but the current Circle-specific contribution is
+  still proof-interface organization rather than a new proof engine.
 - Deep analytic/density statements: Circle needs asymptotic density,
   representation functions, and transfer from finite cyclic models to `Nat`
   before these become serious.
@@ -120,6 +146,26 @@ Notable status-sensitive items checked:
    certificate or search interface. That would be useful, but it should not be
    advertised as a likely route to a proof without a genuinely new reduction.
 
+## Wider Bridge Batch
+
+The new bridge batch is intentionally broad but conservative:
+
+- Katona/Erdős-Ko-Rado gives a real "circle method" theorem family where
+  circular ordering is a proof device.
+- Roth gives finite-coil intuition for arithmetic progressions while keeping
+  the proof source in mathlib.
+- Hales-Jewett/van der Waerden gives a future path for coloring, word-cube, and
+  generator/provenance examples.
+- Cycle/circulant graph bridges connect the `C_n` one-step graph to standard
+  graph language.
+- The empty unit-distance embedding bridge marks the safe boundary for future
+  geometry work: nonempty unit-distance claims still need real incidence
+  machinery.
+
+These bridges are useful because they give the Living Book and theorem browser
+recognized target families to explain. They do not show that Circle Calculus
+has solved or simplified those theorem proofs.
+
 ## What Would Count As Community-Rigorous
 
 A credible Circle-Erdős program should proceed in this order:
@@ -170,8 +216,12 @@ recognized, and aligned with the formal core.
 - Python additive examples: `circle_math/additive.py`
 - Paper sidecars: `sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/`
 - Python tests: `sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py`
-- Theorem registry entries: `CC-T0062` and `CC-T0063` in `manifests/theorem_manifest.yaml`
+- Theorem registry entries: `CC-T0062` through `CC-T0072` in `manifests/theorem_manifest.yaml`
 - mathlib EGZ documentation:
   https://leanprover-community.github.io/mathlib4_docs/Mathlib/Combinatorics/Additive/ErdosGinzburgZiv.html
 - mathlib Cauchy-Davenport documentation:
   https://leanprover-community.github.io/mathlib4_docs/Mathlib/Combinatorics/Additive/CauchyDavenport.html
+- mathlib Katona circle-method documentation:
+  https://leanprover-community.github.io/mathlib4_docs/Mathlib/Combinatorics/KatonaCircle.html
+- mathlib Hales-Jewett documentation:
+  https://leanprover-community.github.io/mathlib4_docs/Mathlib/Combinatorics/HalesJewett.html

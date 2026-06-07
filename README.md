@@ -102,9 +102,9 @@ This is an early public research scaffold with a working verification pipeline a
 
 The theorem manifest also includes `CC-T0008`, `CC-T0017` through `CC-T0054`, and `CC-T0056` through `CC-T0061`, proving the first scaling/full-coil/affine/orbit-membership spine: invertibility iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, the scaling-to-coil image bridge, bijectivity of nonzero scaling on prime circles, divisor-cofactor collapse to zero, cofactor-multiple collapse to zero, period-multiple collapse to zero, cofactor-shift and period-shift address collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and gcd cardinality, zero-fiber/kernel and scaled-target/fiber bridges, fiber-set equality modulo scaled value and stride period, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, the exact divisibility and period-divisibility criteria for scaling to zero, the exact product-congruence criterion for scaled-address equality, coprime reflection of address congruence, full-coil iff coprime, rotation bijectivity, affine composition normal form, coprime affine bijectivity, and same-orbit natural-representative congruence modulo `gcd(n,k)`.
 
-`CC-T0062` and `CC-T0063` are external theorem bridges: they restate mathlib's Erdős-Ginzburg-Ziv and Cauchy-Davenport theorems as zero-sum and sumset-growth theorems over finite circle types. These are Lean-checked wrappers around mathlib, not new Circle Calculus proofs or claims of progress on an open Erdős problem; see `docs/ERDOS_CIRCLE_MATH_REVIEW.md`.
+`CC-T0062` through `CC-T0072` are external theorem bridges: they restate mathlib-backed Erdős-Ginzburg-Ziv, Cauchy-Davenport, Katona/Erdős-Ko-Rado, Roth, Hales-Jewett/van der Waerden, cycle/circulant graph, and empty unit-distance boundary facts in Circle-facing language. These are Lean-checked wrappers around established mathlib results, not new Circle Calculus proofs or claims of progress on an open Erdős problem; see `docs/ERDOS_CIRCLE_MATH_REVIEW.md`.
 
-The executable support layer `circle_math/additive.py` now gives finite-circle sumset examples, Cauchy-Davenport example certificates, zero-sum witness search, and the standard EGZ sharpness family. These examples support the reader and tests; the formal theorem source remains Lean.
+The executable support layer `circle_math/additive.py` now gives finite-circle sumset examples, Cauchy-Davenport example certificates, zero-sum witness search, and the standard EGZ sharpness family. `circle_math/extremal.py` adds finite Katona/EKR, Roth/AP, Ramsey/Hales-Jewett, and cycle/circulant graph examples. These examples support the reader and tests; the formal theorem source remains Lean.
 
 The D0 dimensional scaffold is also in place: dimension manifests, dimension dictionaries, planned paper stubs, Lean/Python scaffolds, and dimension validation scripts. Future-dimension claims remain planned, deferred, exploratory, or stated until actual Lean proofs exist.
 
@@ -277,6 +277,7 @@ Proved finite-circle core:
 - `CC-T0061`: same orbit iff natural representatives are gcd-congruent
 - `CC-T0062`: Erdős-Ginzburg-Ziv zero-sum bridge on `C n`
 - `CC-T0063`: Cauchy-Davenport sumset-growth bridge on prime-size `C p`
+- `CC-T0064` through `CC-T0072`: external Katona/Erdős-Ko-Rado, Roth, Hales-Jewett/van der Waerden, cycle/circulant graph, and empty unit-distance boundary bridges
 - `CC-T0007`: prime full coil
 - `CC-T0054`: full coil iff coprime
 - `CC-T0008`: scaling invertible iff coprime

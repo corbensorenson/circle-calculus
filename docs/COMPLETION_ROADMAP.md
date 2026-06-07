@@ -204,7 +204,7 @@ Goal: make the executable examples line up with the Lean-backed papers without d
 - [x] `papers/S1/PAPER_S1_01_FINITE_CIRCLES.md`
   - Current source: `papers/PAPER_01_FINITE_CIRCLES.md`
   - Proof targets: `CC-T0001` through `CC-T0007`, plus `CC-T0054`, `CC-T0055`, and `CC-T0059` through `CC-T0061`
-  - Status: polished dimension guide draft links the proved theorem spine into the dimension layout while keeping the root paper as the detailed source. The full same-orbit iff gcd-congruence representative theorem is Lean-proved as `CC-T0061`; `CC-T0062` and `CC-T0063` add separate mathlib-backed Erdős-Ginzburg-Ziv zero-sum and Cauchy-Davenport sumset-growth bridges on finite circles; `P5-EDGE-002` adds an exploratory finite-coil theorem-signature index for proof navigation.
+  - Status: polished dimension guide draft links the proved theorem spine into the dimension layout while keeping the root paper as the detailed source. The full same-orbit iff gcd-congruence representative theorem is Lean-proved as `CC-T0061`; `CC-T0062` through `CC-T0072` add separate mathlib-backed Erdős-Ginzburg-Ziv, Cauchy-Davenport, Katona/Erdős-Ko-Rado, Roth, Hales-Jewett/van der Waerden, cycle/circulant graph, and empty unit-distance boundary bridges; `P5-EDGE-002` adds an exploratory finite-coil theorem-signature index for proof navigation.
 - [x] `papers/S1/PAPER_S1_02_WINDING_NATURALS.md`
   - Current source: `papers/PAPER_02_WINDING_NATURALS.md`
   - Proof targets: `CC-T0009` through `CC-T0016`
@@ -492,6 +492,7 @@ Already proved and linked:
 - [x] `CC-T0061`: same orbit iff natural representatives are congruent modulo `gcd(n,k)`
 - [x] `CC-T0062`: Erdős-Ginzburg-Ziv zero-sum bridge on `C n` as a mathlib-backed external theorem wrapper
 - [x] `CC-T0063`: Cauchy-Davenport sumset-growth bridge on prime-size `C p` as a mathlib-backed external theorem wrapper
+- [x] `CC-T0064` through `CC-T0072`: Katona/Erdős-Ko-Rado, Roth, Hales-Jewett/van der Waerden, cycle/circulant graph, and empty unit-distance boundary bridges as mathlib-backed external theorem wrappers
 - [x] `CC-T0007`: prime full coil
 - [x] `CC-T0054`: full coil iff coprime
 - [x] `CC-T0008`: scaling invertible iff coprime

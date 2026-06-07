@@ -6,12 +6,14 @@ Status: polished draft with mathlib-backed external theorem bridges and executab
 
 This paper starts an Erdős-facing additive-combinatorics pillar for Circle Calculus. The claim is deliberately narrow: finite circles `C_n` are cyclic address spaces, so theorems about `ZMod n` can be stated directly in Circle language when the proof source is explicit.
 
-The current seed has two proved Lean bridges:
+This paper owns two proved Lean bridges:
 
 - `CC-T0062`: `Circle.erdos_ginzburg_ziv`
 - `CC-T0063`: `Circle.cauchy_davenport_prime_circle`
 
 These are not new proofs of the underlying theorems. They are Circle-facing wrappers around mathlib theorem statements, packaged so the project can build paper, dictionary, executable witness, and Living Book interfaces without weakening proof-status boundaries.
+
+The broader five-lane extremal-combinatorics program is tracked in `docs/CIRCLE_METHODS_EXTREMAL_COMBINATORICS.md`, with separate papers for Katona/Erdős-Ko-Rado, Roth, Hales-Jewett/Ramsey, and unit-distance/circulant graph work.
 
 ## Source Trail
 
@@ -65,6 +67,8 @@ The Python sidecar records the standard EGZ sharpness family:
 This family has length `2*n - 2` and no length-`n` zero-sum subsequence. It shows why the EGZ threshold `2*n - 1` is the right boundary in the usual theorem statement. The sidecar checks this over a bounded deterministic range and also checks that adding one more `1` in a small example produces a zero-sum witness.
 
 The Cauchy-Davenport examples compute concrete sumsets in prime-size circles and compare them against the lower bound from `CC-T0063`.
+
+The separate bridge papers add small finite examples for intersecting families, arithmetic progressions, coloring lines, and circulant graphs. Those examples support readers without being mistaken for proof.
 
 ## Why This Matters
 
