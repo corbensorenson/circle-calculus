@@ -51,6 +51,8 @@ AI is a first-class project phase because it is one of the highest-impact places
 
 Every positive AI fixture needs an ordinary baseline and a negative control. A Lean theorem can certify finite address behavior; it cannot by itself certify model quality, speed, parameter efficiency, or usefulness.
 
+The current benchmark anchors are `AIA-B0001`, `AIA-B0002`, `AIM-B0001`, and `AIRA-B0001`. They demonstrate fixture discipline for phase, memory, and adapter-block structure; they do not prove model quality, speed, attention replacement, RoPE improvement, or parameter efficiency.
+
 <div class="warning-box">
 The Living Book must not say a theorem is proved unless the theorem id is proved in the generated theorem data and resolves to compiled Lean.
 </div>

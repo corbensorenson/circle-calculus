@@ -182,5 +182,5 @@ targets:
       - "site/chapters/applications/ai.qmd"
       - "circle_math/applications/circle_ai.py"
     dictionary_dependencies: ["COMMON-0026", "COMMON-0028", "COMMON-0030", "COMMON-0039", "COMMON-0044"]
-    next_action: "AIM-B0001 adds a deterministic cyclic-memory fixture with constant/scalar-threshold baselines and a nonperiodic control; expand next toward adapter blocks, RoPE-style periods, coil attention, and MLX/CPU parity fixtures, and record negative results with the same weight as positive results."
+    next_action: "AIM-B0001 adds a deterministic cyclic-memory fixture and AIRA-B0001 adds a deterministic adapter-block fixture, each with constant/scalar-threshold baselines and a nonperiodic control; expand next toward RoPE-style periods, coil attention, dense/LoRA/block-circulant baselines, and MLX/CPU parity fixtures, and record negative results with the same weight as positive results."
     guardrail: "AI importance does not relax proof status or benchmark discipline: finite index proofs are not model-quality claims."

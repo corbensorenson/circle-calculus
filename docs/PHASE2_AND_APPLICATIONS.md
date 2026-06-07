@@ -131,8 +131,8 @@ Current active Phase II proof seed:
 - This is a finite scheduler primitive, not a fairness, load-balancing, robotics, ANN, codec, acquisition, CAM, torsion, detection, or quantum-computing theorem.
 - `PAPER_AI_01_CIRCLE_AI_ARCHITECTURES` proves the phase-channel facts `AIA-T0001` through `AIA-T0005` in Lean through `Circle.Applications.phaseChannel_lt_period`, `Circle.Applications.phaseChannel_add_period`, `Circle.Applications.phaseChannel_zero`, `Circle.Applications.phaseChannel_add_mul_period`, and `Circle.Applications.phaseChannel_idempotent`, with matching Python examples and the exploratory deterministic benchmark fixtures `AIA-B0001` and `AIA-B0002`.
 - `PAPER_AI_02_COIL_ATTENTION_AND_MEMORY` proves the cyclic-memory-slot facts `AIM-T0001` through `AIM-T0005` in Lean through `Circle.Applications.memorySlot_lt_bankSize`, `Circle.Applications.memorySlot_add_bankSize`, `Circle.Applications.memorySlot_zero`, `Circle.Applications.memorySlot_add_mul_bankSize`, and `Circle.Applications.memorySlot_idempotent`, with matching Python examples and the exploratory cyclic-memory benchmark fixture `AIM-B0001`.
-- `PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE` proves the adapter-block facts `AIRA-T0001` through `AIRA-T0005` in Lean through `Circle.Applications.adapterBlock_lt_blockSize`, `Circle.Applications.adapterBlock_add_blockSize`, `Circle.Applications.adapterBlock_zero`, `Circle.Applications.adapterBlock_add_mul_blockSize`, and `Circle.Applications.adapterBlock_idempotent`, with matching Python examples.
-- These are finite indexing primitives for AI prototypes plus starter phase-channel and cyclic-memory harnesses, not model-quality, parameter-efficiency, attention-replacement, RoPE, retrieval, or runtime claims.
+- `PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE` proves the adapter-block facts `AIRA-T0001` through `AIRA-T0005` in Lean through `Circle.Applications.adapterBlock_lt_blockSize`, `Circle.Applications.adapterBlock_add_blockSize`, `Circle.Applications.adapterBlock_zero`, `Circle.Applications.adapterBlock_add_mul_blockSize`, and `Circle.Applications.adapterBlock_idempotent`, with matching Python examples and the exploratory adapter-block benchmark fixture `AIRA-B0001`.
+- These are finite indexing primitives for AI prototypes plus starter phase-channel, cyclic-memory, and adapter-block harnesses, not model-quality, parameter-efficiency, attention-replacement, RoPE, retrieval, or runtime claims.
 
 ## Compute Track
 
@@ -294,7 +294,7 @@ First Circle AI prototypes:
    Compare against full attention, sliding window, dilated attention, BigBird-like sparse attention, Hyena-like long convolution, and S4/Mamba-like state-space baselines.
 
 3. CoilRA adapters for small language-model fine-tuning.
-   Compare against dense adapters, LoRA, and block-circulant baselines. Measure quality, parameter count, inference cost, and MLX runtime on this Mac.
+   Start from `AIRA-B0001` as the adapter-block scaffold only. Compare against dense adapters, LoRA, and block-circulant baselines. Measure quality, parameter count, inference cost, and MLX runtime on this Mac.
 
 4. CoilKV memory for streaming sequence models.
    Compare against KV cache, recurrent summaries, retrieval buffers, and state-space baselines. Measure collision/alias behavior explicitly.

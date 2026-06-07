@@ -181,6 +181,22 @@ class MemorySlotBenchmarkResult:
     note: str = "Synthetic cyclic-memory fixture only; not a model-quality claim."
 
 
+@dataclass(frozen=True)
+class AdapterBlockBenchmarkResult:
+    block_size: int
+    train_channels: int
+    test_channels: int
+    block_values: tuple[int, ...]
+    adapter_block_accuracy: float
+    scalar_channel_threshold_accuracy: float
+    constant_accuracy: float
+    nonperiodic_adapter_block_accuracy: float
+    nonperiodic_scalar_threshold_accuracy: float
+    train_collision_count: int
+    max_train_block_load: int
+    note: str = "Synthetic adapter-block fixture only; not a model-quality claim."
+
+
 def run_phase_channel_benchmark(
     *,
     period: int = 8,
@@ -468,4 +484,175 @@ def run_memory_slot_benchmark(
         ),
         train_collision_count=memory_slot_collision_count(bank_size, train_tokens),
         max_train_slot_load=max(train_loads),
+    )
+
+
+def default_adapter_block_values(block_size: int) -> tuple[int, ...]:
+    """Choose a deterministic nontrivial binary value for each adapter block."""
+    _require_positive(block_size, "block_size")
+    values = tuple(1 if block % 3 == 1 else 0 for block in range(block_size))
+    if not any(values) or all(values):
+        raise ValueError("block_size must produce both positive and negative block values")
+    return values
+
+
+def normalize_adapter_block_values(
+    block_size: int,
+    block_values: Optional[Sequence[int]],
+) -> tuple[int, ...]:
+    """Validate or create a binary value table indexed by adapter block."""
+    _require_positive(block_size, "block_size")
+    values = default_adapter_block_values(block_size) if block_values is None else tuple(block_values)
+    if len(values) != block_size:
+        raise ValueError("block_values length must equal block_size")
+    if any(value not in (0, 1) for value in values):
+        raise ValueError("block_values must be binary")
+    if not any(values):
+        raise ValueError("block_values must contain at least one positive block")
+    if all(values):
+        raise ValueError("block_values must contain at least one negative block")
+    return values
+
+
+def synthetic_adapter_block_dataset(
+    block_size: int,
+    length: int,
+    *,
+    start: int = 0,
+    block_values: Optional[Sequence[int]] = None,
+) -> tuple[tuple[int, ...], tuple[int, ...]]:
+    """Return channels and binary labels controlled only by adapter block."""
+    if length <= 0:
+        raise ValueError("length must be positive")
+    values = normalize_adapter_block_values(block_size, block_values)
+    channels = tuple(range(start, start + length))
+    labels = tuple(values[adapter_block(block_size, channel)] for channel in channels)
+    return channels, labels
+
+
+def fit_adapter_block_lookup(
+    block_size: int,
+    channels: Sequence[int],
+    labels: Sequence[int],
+) -> tuple[int, ...]:
+    """Fit an adapter-block lookup table by majority label for each block."""
+    _require_positive(block_size, "block_size")
+    if len(channels) != len(labels):
+        raise ValueError("channels and labels must have the same length")
+    if not channels:
+        raise ValueError("channels must be nonempty")
+    fallback = majority_label(labels)
+    counts = [[0, 0] for _ in range(block_size)]
+    for channel, label in zip(channels, labels):
+        if label not in (0, 1):
+            raise ValueError("labels must be binary")
+        counts[adapter_block(block_size, channel)][label] += 1
+    return tuple(
+        fallback if zero_count + one_count == 0 else (1 if one_count >= zero_count else 0)
+        for zero_count, one_count in counts
+    )
+
+
+def predict_adapter_block_lookup(
+    block_size: int,
+    lookup: Sequence[int],
+    channels: Sequence[int],
+) -> tuple[int, ...]:
+    """Predict labels from a fitted adapter-block lookup table."""
+    _require_positive(block_size, "block_size")
+    if len(lookup) != block_size:
+        raise ValueError("lookup length must equal block_size")
+    return tuple(lookup[adapter_block(block_size, channel)] for channel in channels)
+
+
+def adapter_block_loads(block_size: int, channels: Sequence[int]) -> tuple[int, ...]:
+    """Return how many channels land in each adapter block."""
+    _require_positive(block_size, "block_size")
+    loads = [0 for _ in range(block_size)]
+    for channel in channels:
+        loads[adapter_block(block_size, channel)] += 1
+    return tuple(loads)
+
+
+def adapter_block_collision_count(block_size: int, channels: Sequence[int]) -> int:
+    """Count extra channels beyond the first occupant of each used block."""
+    loads = adapter_block_loads(block_size, channels)
+    return sum(max(0, load - 1) for load in loads)
+
+
+def run_adapter_block_benchmark(
+    *,
+    block_size: int = 8,
+    train_channels: int = 64,
+    test_channels: int = 32,
+    block_values: Optional[Sequence[int]] = None,
+) -> AdapterBlockBenchmarkResult:
+    """Run a deterministic adapter-block fixture with baselines and a control.
+
+    The positive fixture labels channels by their adapter block. The negative
+    control labels channels by a scalar threshold, where block lookup should
+    not be the winning representation. This is a benchmark harness sanity
+    check, not evidence that CoilRA improves neural networks.
+    """
+    values = normalize_adapter_block_values(block_size, block_values)
+    train_channel_ids, train_labels = synthetic_adapter_block_dataset(
+        block_size,
+        train_channels,
+        block_values=values,
+    )
+    test_channel_ids, test_labels = synthetic_adapter_block_dataset(
+        block_size,
+        test_channels,
+        start=train_channels,
+        block_values=values,
+    )
+
+    lookup = fit_adapter_block_lookup(block_size, train_channel_ids, train_labels)
+    adapter_predictions = predict_adapter_block_lookup(block_size, lookup, test_channel_ids)
+    threshold, polarity = fit_threshold_classifier(train_channel_ids, train_labels)
+    threshold_predictions = predict_threshold_classifier(test_channel_ids, threshold, polarity)
+    constant = majority_label(train_labels)
+    constant_predictions = tuple(constant for _ in test_channel_ids)
+
+    control_threshold = (3 * train_channels) // 4
+    control_train_labels = tuple(
+        nonperiodic_threshold_label(channel, control_threshold)
+        for channel in train_channel_ids
+    )
+    control_test_labels = tuple(
+        nonperiodic_threshold_label(channel, control_threshold)
+        for channel in test_channel_ids
+    )
+    control_lookup = fit_adapter_block_lookup(block_size, train_channel_ids, control_train_labels)
+    control_adapter_predictions = predict_adapter_block_lookup(
+        block_size,
+        control_lookup,
+        test_channel_ids,
+    )
+    control_threshold_fit, control_polarity = fit_threshold_classifier(
+        train_channel_ids,
+        control_train_labels,
+    )
+    control_threshold_predictions = predict_threshold_classifier(
+        test_channel_ids,
+        control_threshold_fit,
+        control_polarity,
+    )
+    train_loads = adapter_block_loads(block_size, train_channel_ids)
+
+    return AdapterBlockBenchmarkResult(
+        block_size=block_size,
+        train_channels=train_channels,
+        test_channels=test_channels,
+        block_values=values,
+        adapter_block_accuracy=accuracy(adapter_predictions, test_labels),
+        scalar_channel_threshold_accuracy=accuracy(threshold_predictions, test_labels),
+        constant_accuracy=accuracy(constant_predictions, test_labels),
+        nonperiodic_adapter_block_accuracy=accuracy(control_adapter_predictions, control_test_labels),
+        nonperiodic_scalar_threshold_accuracy=accuracy(
+            control_threshold_predictions,
+            control_test_labels,
+        ),
+        train_collision_count=adapter_block_collision_count(block_size, train_channel_ids),
+        max_train_block_load=max(train_loads),
     )
