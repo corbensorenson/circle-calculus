@@ -1,6 +1,7 @@
 from circle_math.applications.circle_ai import (
     mlx_available,
     phase_channel,
+    run_ai_backend_parity_check,
     run_learned_phase_baseline_benchmark,
     run_phase_channel_benchmark,
 )
@@ -61,3 +62,22 @@ def test_learned_phase_baseline_fixture_has_positive_and_negative_controls() -> 
     assert result.periodic_phase_accuracy > result.periodic_dense_accuracy
     assert result.nonperiodic_dense_accuracy > result.nonperiodic_phase_accuracy
     assert result.note.endswith("not a model-quality claim.")
+
+
+def test_ai_backend_parity_fixture_is_deterministic() -> None:
+    first = run_ai_backend_parity_check()
+    second = run_ai_backend_parity_check()
+    assert first == second
+    assert first.fixture_count >= 7
+    assert dict(first.cpu_scores)["phase_lookup"] == 1.0
+    assert dict(first.cpu_scores)["memory_lookup"] == 1.0
+    assert dict(first.cpu_scores)["adapter_lookup"] == 1.0
+    assert dict(first.cpu_scores)["multicoil_lookup"] == 1.0
+    assert dict(first.cpu_scores)["retrieval_coil_path"] == 1.0
+    if first.mlx_available:
+        assert first.mlx_scores
+        assert first.max_abs_delta is not None
+        assert first.max_abs_delta < 1e-6
+    else:
+        assert first.mlx_scores == ()
+        assert first.max_abs_delta is None

@@ -4708,6 +4708,31 @@
       "used_by_widgets": []
     },
     {
+      "dependencies": [
+        "COMMON-0039",
+        "COMMON-0044",
+        "COMMON-0046",
+        "COMMON-0047"
+      ],
+      "forbidden_meanings": [
+        "A speed benchmark.",
+        "Evidence that MLX improves model quality.",
+        "A claim that MLX was tested when the backend is unavailable."
+      ],
+      "formal_definition": "`circle_math.applications.circle_ai.run_ai_backend_parity_check`, a deterministic CPU-vs-optional-MLX scoring parity check over the current Circle AI synthetic fixtures.",
+      "id": "COMMON-0048",
+      "introduced_in": "PAPER_AI_01_CIRCLE_AI_ARCHITECTURES",
+      "intuition": "A Mac/MLX readiness guardrail: keep CPU reference scores as source-of-truth and only claim MLX parity when the local backend is actually available and matches.",
+      "kind": "experiment",
+      "name": "AI backend parity fixture",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "ai_backend_parity",
+      "used_by_glyphs": [],
+      "used_by_papers": [],
+      "used_by_theorems": [],
+      "used_by_widgets": []
+    },
+    {
       "dependencies": [],
       "forbidden_meanings": [
         "The one-node circle C_1.",

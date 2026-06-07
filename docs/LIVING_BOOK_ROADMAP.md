@@ -96,7 +96,9 @@ Each chapter must distinguish intuition, example, Python model, and formal theor
 - Report quality, runtime, memory, parameter count, and interpretability separately.
 - Do not claim model improvement, attention replacement, parameter efficiency, or speed without a reproducible benchmark artifact and clear baseline.
 - Link AI proof cards, dictionary terms, papers, benchmark fixtures, and future widgets into the Living Book so readers can distinguish proved address structure from empirical claims.
-- Current benchmark anchors are `AIA-B0001`, `AIA-B0002`, `AIM-B0001`, `AIM-B0002`, `AIRA-B0001`, and `AIRA-B0002`; they are scaffolds for phase, memory, coil-retrieval reachability, adapter-block, and MultiCoil/RoPE-style positional structure, not model-quality results.
+- Build the AI Living Book path as lessons, not a link farm: phase channels -> backend parity -> cyclic memory -> coil retrieval -> adapters -> MultiCoil positions -> learned baselines -> MLX prototypes -> geometry-aware AI.
+- Each mature AI lesson should show the ordinary baseline, the circular hypothesis, the Lean-proved boundary, the Python/MLX fixture, the benchmark status, and the limitation before linking to the source files.
+- Current benchmark anchors are `AIA-B0001`, `AIA-B0002`, `AIA-B0003`, `AIM-B0001`, `AIM-B0002`, `AIRA-B0001`, and `AIRA-B0002`; they are scaffolds for phase, backend parity, memory, coil-retrieval reachability, adapter-block, and MultiCoil/RoPE-style positional structure, not model-quality results.
 
 ## Phase 6: Optional Manim Embedding
 

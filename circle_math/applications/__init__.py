@@ -47,6 +47,7 @@ from .coil_compute import (
     validate_stencil_grid,
 )
 from .circle_ai import (
+    AIBackendParityResult,
     AdapterBlockBenchmarkResult,
     CoilRetrievalBenchmarkResult,
     LearnedPhaseBenchmarkResult,
@@ -57,6 +58,7 @@ from .circle_ai import (
     adapter_block,
     adapter_block_collision_count,
     adapter_block_loads,
+    ai_backend_parity_cases,
     coil_attention_path,
     default_adapter_block_values,
     default_positive_phases,
@@ -84,6 +86,7 @@ from .circle_ai import (
     retrieval_hit_rate,
     retrieval_target_index,
     run_adapter_block_benchmark,
+    run_ai_backend_parity_check,
     run_coil_retrieval_benchmark,
     run_learned_phase_baseline_benchmark,
     run_memory_slot_benchmark,
@@ -99,6 +102,7 @@ from .circle_ai import (
 __all__ = [
     "PeriodBenchmarkResult",
     "PeriodFixtureCaseResult",
+    "AIBackendParityResult",
     "AdapterBlockBenchmarkResult",
     "CoilRetrievalBenchmarkResult",
     "MultiCoilRoPEBenchmarkResult",
@@ -116,6 +120,7 @@ __all__ = [
     "adapter_block",
     "adapter_block_collision_count",
     "adapter_block_loads",
+    "ai_backend_parity_cases",
     "autocorrelation_score",
     "benchmark_known_period",
     "benchmark_period_fixture_suite",
@@ -160,6 +165,7 @@ __all__ = [
     "retrieval_target_index",
     "run_learned_phase_baseline_benchmark",
     "run_adapter_block_benchmark",
+    "run_ai_backend_parity_check",
     "run_coil_retrieval_benchmark",
     "rank_periods_by_autocorrelation",
     "rank_periods_by_coil_closure",

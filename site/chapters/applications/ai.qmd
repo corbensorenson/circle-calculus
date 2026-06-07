@@ -4,7 +4,7 @@ title: "AI"
 
 The AI application page tracks phase channels, coil attention, cyclic memory, and adapter/block indexing. Local compute language is MLX/Mac-first.
 
-The current proved layer is finite indexing only. `AIA-B0001` adds an exploratory deterministic phase-channel benchmark fixture for a known-period synthetic task. `AIA-B0002` adds a tiny learned-baseline control: phase lookup wins on a periodic task, while an ordinary scalar threshold wins on a nonperiodic control. `AIM-B0001` adds the same discipline to cyclic memory: a positive slot-lookup fixture, constant/scalar-threshold baselines, collision diagnostics, and a nonperiodic control. `AIM-B0002` adds a coil-retrieval reachability fixture: a selected coil path reaches a constructed long-lag dependency, local and wrong-stride baselines miss it, full attention is the oracle upper bound, and local attention wins the near-lag control. `AIRA-B0001` adds the adapter-block version: a positive block-index fixture, ordinary baselines, collision diagnostics, and a nonperiodic control. `AIRA-B0002` adds a MultiCoil/RoPE-style positional fixture: combined-period phase lookup beats single-period, constant, and scalar-threshold baselines on a constructed multi-period task, while the scalar threshold wins the nonperiodic control. These are not model-quality claims.
+The current proved layer is finite indexing only. `AIA-B0001` adds an exploratory deterministic phase-channel benchmark fixture for a known-period synthetic task. `AIA-B0002` adds a tiny learned-baseline control: phase lookup wins on a periodic task, while an ordinary scalar threshold wins on a nonperiodic control. `AIA-B0003` adds CPU/optional-MLX backend parity scoring across the current deterministic AI fixtures; if MLX is unavailable, it reports that directly. `AIM-B0001` adds the same discipline to cyclic memory: a positive slot-lookup fixture, constant/scalar-threshold baselines, collision diagnostics, and a nonperiodic control. `AIM-B0002` adds a coil-retrieval reachability fixture: a selected coil path reaches a constructed long-lag dependency, local and wrong-stride baselines miss it, full attention is the oracle upper bound, and local attention wins the near-lag control. `AIRA-B0001` adds the adapter-block version: a positive block-index fixture, ordinary baselines, collision diagnostics, and a nonperiodic control. `AIRA-B0002` adds a MultiCoil/RoPE-style positional fixture: combined-period phase lookup beats single-period, constant, and scalar-threshold baselines on a constructed multi-period task, while the scalar threshold wins the nonperiodic control. These are not model-quality claims.
 
 ::: {.learning-unit}
 
@@ -30,9 +30,20 @@ AI is now a dedicated Circle Calculus program, not a side note. The avenues to e
 
 Every avenue needs ordinary baselines, negative controls, and reproducible scripts before it becomes a claim about model quality or speed.
 
+## Learning Path
+
+1. Start with phase channels: finite indices, closure, and known-period examples.
+2. Check backend parity: CPU references first, optional MLX only when available.
+3. Add cyclic memory: slots, alias diagnostics, and nonperiodic controls.
+4. Study coil retrieval: selected long-lag paths, local baselines, wrong-stride baselines, and full-attention oracle behavior.
+5. Move to adapters and MultiCoil positions: block sharing, RoPE-style phase structure, and mismatch controls.
+6. Only then compare learned baselines and MLX prototypes, with quality, runtime, memory, parameter count, and interpretability reported separately.
+7. Treat quaternion, spherical, Hopf/fiber, and `S^7` ideas as later geometry-aware AI lessons, not as shortcuts around the lower-dimensional evidence.
+
 ## What To Notice
 
 - Phase-channel proofs are about finite indices, not model quality.
+- `AIA-B0003` is backend parity scaffolding, not a speed, quality, or acceleration claim.
 - Positive periodic fixtures must be paired with negative controls.
 - `AIM-B0001` is a cyclic-memory benchmark harness, not a retrieval or attention theorem.
 - `AIM-B0002` is a reachability harness over candidate index sets, not an attention-quality theorem.
@@ -63,6 +74,7 @@ Why is the nonperiodic control in `AIA-B0002` important before making any AI-imp
 <div class="dictionary-box" data-dictionary-id="COMMON-0039"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0046"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0047"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0048"></div>
 
 <p data-paper-ref="papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md">AI architecture paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md">Circle AI Architectures</a></p>
 <p data-paper-ref="papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Memory paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Coil Attention And Memory</a></p>

@@ -28,6 +28,8 @@ It compares that phase lookup against a constant baseline on a task whose labels
 
 `COMMON-0044` adds a second tiny fixture comparing phase lookup with a learned scalar threshold baseline on two controls. On the periodic synthetic task, phase lookup reaches `1.0` accuracy while the scalar threshold baseline does not. On the nonperiodic threshold-control task, the scalar threshold reaches `1.0` while phase lookup fails. This is the intended guardrail: phase features should help only when phase structure is real.
 
+`COMMON-0048` adds a backend parity fixture. It scores the current deterministic AI cases on CPU and, when `mlx.core` is available, repeats the same scoring through MLX arrays. If MLX is not installed, the script reports that directly. This is a parity/readiness check, not an acceleration or model-quality benchmark.
+
 ## Source Trail
 
 The Lean sidecar is:
@@ -41,6 +43,7 @@ The Python examples and benchmark fixture are:
 ```text
 sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/test_phase_channel_examples.py
 sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_phase_channel.py
+sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_backend_parity.py
 ```
 
 The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. Benchmark fixtures are exploratory executable evidence; Lean declarations determine proof status.
@@ -61,14 +64,15 @@ These facts certify only a finite phase-indexing primitive. They do not prove lo
 
 ## Benchmark Fixture
 
-`AIA-B0001` is the first exploratory Python benchmark fixture for this paper. `AIA-B0002` adds the periodic/nonperiodic learned-baseline control. They live in:
+`AIA-B0001` is the first exploratory Python benchmark fixture for this paper. `AIA-B0002` adds the periodic/nonperiodic learned-baseline control. `AIA-B0003` adds CPU/optional-MLX backend parity scoring across the current deterministic AI fixtures. They live in:
 
 ```text
 circle_math/applications/circle_ai.py
 sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_phase_channel.py
+sidecars/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES/python/benchmark_backend_parity.py
 ```
 
-The test sidecar checks that the fixture is deterministic, that phase lookup solves the constructed known-period task while the constant baseline does not, and that an ordinary scalar threshold baseline wins on a nonperiodic control. The fixture intentionally does not compare against dense neural networks, RoPE, attention, state-space models, or real sequence data yet.
+The test sidecar checks that the fixture is deterministic, that phase lookup solves the constructed known-period task while the constant baseline does not, that an ordinary scalar threshold baseline wins on a nonperiodic control, and that CPU/MLX parity is reported honestly. The fixture intentionally does not compare against dense neural networks, RoPE, attention, state-space models, real sequence data, or runtime measurements yet.
 
 ## Architecture Program
 
@@ -87,6 +91,7 @@ Every experiment should compare against strong ordinary baselines and report neg
 - Expand the learned phase fixture beyond scalar thresholds to dense, RoPE, and cyclic-feature baselines.
 - Compare against dense MLP/attention, standard RoPE, convolution, Hyena-like mixers, and S4/Mamba-like baselines as appropriate.
 - Add separate memory-slot and adapter-block benchmarks before making CoilKV, Coil Attention, CoilRA, or MultiCoil RoPE claims.
+- Use `AIA-B0003` as backend parity scaffolding only; real MLX model prototypes and timing remain separate work.
 - Keep MLX/Mac-compatible prototypes first.
 - Separate Lean-proved indexing facts from model-quality claims.
 

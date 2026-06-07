@@ -199,6 +199,16 @@ class LearnedPhaseBenchmarkResult:
 
 
 @dataclass(frozen=True)
+class AIBackendParityResult:
+    fixture_count: int
+    cpu_scores: tuple[tuple[str, float], ...]
+    mlx_available: bool
+    mlx_scores: tuple[tuple[str, float], ...]
+    max_abs_delta: Optional[float]
+    note: str = "AI backend parity fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
 class MemorySlotBenchmarkResult:
     bank_size: int
     train_length: int
@@ -1010,4 +1020,95 @@ def run_multicoil_rope_benchmark(
             control_threshold_predictions,
             control_test_labels,
         ),
+    )
+
+
+def _retrieval_hit_indicators(
+    sequence_length: int,
+    query_indices: Sequence[int],
+    target_lag: int,
+    candidate_sets: Sequence[Sequence[int]],
+) -> tuple[int, ...]:
+    if len(query_indices) != len(candidate_sets):
+        raise ValueError("query_indices and candidate_sets must have the same length")
+    return tuple(
+        1 if retrieval_target_index(sequence_length, query_index, target_lag) in set(candidates) else 0
+        for query_index, candidates in zip(query_indices, candidate_sets)
+    )
+
+
+def ai_backend_parity_cases() -> tuple[tuple[str, tuple[int, ...], tuple[int, ...]], ...]:
+    """Return deterministic binary scoring cases shared by CPU and MLX."""
+    phase_train_positions, phase_train_labels = synthetic_phase_dataset(8, 64)
+    phase_test_positions, phase_test_labels = synthetic_phase_dataset(8, 32, start=64)
+    phase_lookup = fit_phase_lookup(8, phase_train_positions, phase_train_labels)
+    phase_predictions = predict_phase_lookup(8, phase_lookup, phase_test_positions)
+    phase_constant = majority_label(phase_train_labels)
+
+    memory_train_tokens, memory_train_labels = synthetic_memory_slot_dataset(8, 64)
+    memory_test_tokens, memory_test_labels = synthetic_memory_slot_dataset(8, 32, start=64)
+    memory_lookup = fit_memory_slot_lookup(8, memory_train_tokens, memory_train_labels)
+    memory_predictions = predict_memory_slot_lookup(8, memory_lookup, memory_test_tokens)
+
+    adapter_train_channels, adapter_train_labels = synthetic_adapter_block_dataset(8, 64)
+    adapter_test_channels, adapter_test_labels = synthetic_adapter_block_dataset(8, 32, start=64)
+    adapter_lookup = fit_adapter_block_lookup(8, adapter_train_channels, adapter_train_labels)
+    adapter_predictions = predict_adapter_block_lookup(8, adapter_lookup, adapter_test_channels)
+
+    multicoil_train_positions, multicoil_train_labels = synthetic_multicoil_phase_dataset((5, 7), 140)
+    multicoil_test_positions, multicoil_test_labels = synthetic_multicoil_phase_dataset((5, 7), 70, start=140)
+    multicoil_lookup = fit_multicoil_phase_lookup((5, 7), multicoil_train_positions, multicoil_train_labels)
+    multicoil_predictions = predict_multicoil_phase_lookup((5, 7), multicoil_lookup, multicoil_test_positions)
+
+    retrieval_queries = tuple(range(64))
+    retrieval_candidates = tuple(
+        coil_attention_path(64, query_index, stride=7, path_length=3)
+        for query_index in retrieval_queries
+    )
+    retrieval_predictions = _retrieval_hit_indicators(64, retrieval_queries, 21, retrieval_candidates)
+    retrieval_labels = tuple(1 for _ in retrieval_queries)
+
+    near_local_candidates = tuple(
+        local_window_indices(64, query_index, window=8)
+        for query_index in retrieval_queries
+    )
+    near_local_predictions = _retrieval_hit_indicators(64, retrieval_queries, 3, near_local_candidates)
+    near_local_labels = tuple(1 for _ in retrieval_queries)
+
+    return (
+        ("phase_lookup", phase_predictions, phase_test_labels),
+        (
+            "phase_constant_baseline",
+            tuple(phase_constant for _ in phase_test_positions),
+            phase_test_labels,
+        ),
+        ("memory_lookup", memory_predictions, memory_test_labels),
+        ("adapter_lookup", adapter_predictions, adapter_test_labels),
+        ("multicoil_lookup", multicoil_predictions, multicoil_test_labels),
+        ("retrieval_coil_path", retrieval_predictions, retrieval_labels),
+        ("retrieval_near_local_window", near_local_predictions, near_local_labels),
+    )
+
+
+def run_ai_backend_parity_check() -> AIBackendParityResult:
+    """Compare CPU scoring with optional MLX scoring on deterministic cases."""
+    cases = ai_backend_parity_cases()
+    cpu_scores = tuple((name, accuracy(predictions, labels)) for name, predictions, labels in cases)
+    if not mlx_available():
+        return AIBackendParityResult(
+            fixture_count=len(cases),
+            cpu_scores=cpu_scores,
+            mlx_available=False,
+            mlx_scores=(),
+            max_abs_delta=None,
+        )
+
+    mlx_scores = tuple((name, _mlx_accuracy(predictions, labels)) for name, predictions, labels in cases)
+    deltas = tuple(abs(cpu_score - mlx_score) for (_, cpu_score), (_, mlx_score) in zip(cpu_scores, mlx_scores))
+    return AIBackendParityResult(
+        fixture_count=len(cases),
+        cpu_scores=cpu_scores,
+        mlx_available=True,
+        mlx_scores=mlx_scores,
+        max_abs_delta=max(deltas) if deltas else 0.0,
     )
