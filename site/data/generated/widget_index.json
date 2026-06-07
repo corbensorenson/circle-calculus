@@ -165,6 +165,23 @@
       "dictionary_ids": [
         "COMMON-0052",
         "COMMON-0053",
+        "COMMON-0054",
+        "COMMON-0067"
+      ],
+      "id": "training_free_loop_wrapper",
+      "path": "site/widgets/ai/training_free_loop_wrapper.js",
+      "python_reference": "circle_math.applications.circle_ai.training_free_loop_budget; circle_math.applications.circle_ai.training_free_loop_budgets; circle_math.applications.circle_ai.run_training_free_loop_wrapper_benchmark",
+      "theorem_ids": [
+        "AIM-T0010",
+        "AIM-T0011",
+        "AIM-T0019",
+        "AIM-T0020"
+      ]
+    },
+    {
+      "dictionary_ids": [
+        "COMMON-0052",
+        "COMMON-0053",
         "COMMON-0059",
         "COMMON-0068",
         "COMMON-0069"

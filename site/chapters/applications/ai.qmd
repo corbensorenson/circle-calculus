@@ -156,6 +156,10 @@ sample
 
 This is useful only as a schedule interface. It is not a claim that a reused block improves a real model.
 
+The widget below exposes the deterministic `AIM-B0006` fixture. It compares a fixed phase-derived loop budget against single-pass, fixed-budget, wrong-period, over-loop, and nonperiodic scalar-threshold controls.
+
+<div class="widget-panel" data-widget="training_free_loop_wrapper" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0054 COMMON-0067"></div>
+
 `AIM-B0007` turns middle-block recurrence into auditable bookkeeping:
 
 ```text
@@ -353,6 +357,7 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 <script type="module" src="../../widgets/ai/multicoil_phase_explorer.js"></script>
 <script type="module" src="../../widgets/ai/rope_relative_phase.js"></script>
 <script type="module" src="../../widgets/ai/loop_recurrence_budget.js"></script>
+<script type="module" src="../../widgets/ai/training_free_loop_wrapper.js"></script>
 <script type="module" src="../../widgets/ai/token_level_recurrence.js"></script>
 <script type="module" src="../../widgets/ai/learned_token_recurrence.js"></script>
 <script type="module" src="../../widgets/ai/learned_middle_block_recurrence.js"></script>

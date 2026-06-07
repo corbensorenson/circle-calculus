@@ -251,6 +251,18 @@ def export_widget_index() -> dict:
             "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.token_recurrence_budget; circle_math.applications.circle_ai.training_free_loop_budget",
         },
         {
+            "id": "training_free_loop_wrapper",
+            "path": "site/widgets/ai/training_free_loop_wrapper.js",
+            "theorem_ids": ["AIM-T0010", "AIM-T0011", "AIM-T0019", "AIM-T0020"],
+            "dictionary_ids": [
+                "COMMON-0052",
+                "COMMON-0053",
+                "COMMON-0054",
+                "COMMON-0067",
+            ],
+            "python_reference": "circle_math.applications.circle_ai.training_free_loop_budget; circle_math.applications.circle_ai.training_free_loop_budgets; circle_math.applications.circle_ai.run_training_free_loop_wrapper_benchmark",
+        },
+        {
             "id": "token_level_recurrence",
             "path": "site/widgets/ai/token_level_recurrence.js",
             "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018"],

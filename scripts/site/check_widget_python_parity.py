@@ -48,10 +48,12 @@ from circle_math.applications import (
     run_learned_multi_resolution_recurrence_benchmark,
     run_learned_recurrence_schedule_benchmark,
     run_learned_token_level_recurrence_benchmark,
+    run_training_free_loop_wrapper_benchmark,
     run_token_level_recurrence_benchmark,
     token_recurrence_budget,
     token_recurrence_budgets,
     training_free_loop_budget,
+    training_free_loop_budgets,
     rotate_kernel,
 )
 from circle_math.finite import Circle
@@ -529,6 +531,25 @@ def js_training_free_loop_budget(loop_period: int, sample_index: int, max_loops:
     return min(js_loop_required_steps(loop_period, sample_index), max_loops)
 
 
+def js_training_free_loop_budgets(
+    loop_period: int,
+    sample_indices: tuple[int, ...],
+    max_loops: int,
+) -> tuple[int, ...]:
+    return tuple(js_training_free_loop_budget(loop_period, sample, max_loops) for sample in sample_indices)
+
+
+def js_budget_is_full_depth_predictions(planned_budgets: tuple[int, ...], max_loops: int) -> tuple[int, ...]:
+    return tuple(1 if budget >= max_loops else 0 for budget in planned_budgets)
+
+
+def js_budget_histogram(planned_budgets: tuple[int, ...]) -> tuple[tuple[int, int], ...]:
+    return tuple(
+        (budget, planned_budgets.count(budget))
+        for budget in sorted(set(planned_budgets))
+    )
+
+
 def js_lcm(left: int, right: int) -> int:
     return abs(left * right) // gcd(left, right)
 
@@ -971,6 +992,68 @@ def main() -> int:
             max_loops,
             overthink_tolerance=tolerance,
         ).overthinking_boundary == certificate.overthinking_boundary
+
+    training_free_cases = [
+        (4, 32, 4, 2, 3, 8, 0),
+        (5, 25, 5, 3, 4, 9, 1),
+        (3, 18, 2, 2, 5, 6, 0),
+    ]
+    for loop_period, sample_count, max_loops, fixed_budget, wrong_period, over_budget, tolerance in training_free_cases:
+        samples = tuple(range(sample_count))
+        required_budgets = tuple(js_token_recurrence_budget(loop_period, sample) for sample in samples)
+        positive_labels = tuple(1 for _ in samples)
+        phase_budgets = js_training_free_loop_budgets(loop_period, samples, max_loops)
+        single_pass_budgets = tuple(1 for _ in samples)
+        fixed_budgets = tuple(fixed_budget for _ in samples)
+        wrong_period_budgets = js_training_free_loop_budgets(wrong_period, samples, max_loops)
+        over_budgets = tuple(over_budget for _ in samples)
+        control_threshold = (3 * sample_count) // 4
+        control_labels = tuple(js_nonperiodic_threshold_label(sample, control_threshold) for sample in samples)
+        control_phase_predictions = js_budget_is_full_depth_predictions(phase_budgets, max_loops)
+        threshold, polarity = js_fit_threshold_classifier(samples, control_labels)
+        threshold_predictions = js_predict_threshold_classifier(samples, threshold, polarity)
+        benchmark = run_training_free_loop_wrapper_benchmark(
+            loop_period=loop_period,
+            sample_count=sample_count,
+            max_loops=max_loops,
+            fixed_loop_budget=fixed_budget,
+            wrong_loop_period=wrong_period,
+            over_loop_budget=over_budget,
+            overthink_tolerance=tolerance,
+        )
+
+        assert training_free_loop_budgets(loop_period, samples, max_loops) == phase_budgets
+        assert benchmark.phase_budgets == phase_budgets
+        assert benchmark.active_sample_counts == js_active_token_counts_by_budget(phase_budgets, max_loops)
+        assert benchmark.budget_histogram == js_budget_histogram(phase_budgets)
+        assert benchmark.single_pass_accuracy == js_accuracy(
+            js_recurrence_budget_predictions(required_budgets, single_pass_budgets, tolerance),
+            positive_labels,
+        )
+        assert benchmark.fixed_loop_accuracy == js_accuracy(
+            js_recurrence_budget_predictions(required_budgets, fixed_budgets, tolerance),
+            positive_labels,
+        )
+        assert benchmark.training_free_phase_budget_accuracy == js_accuracy(
+            js_recurrence_budget_predictions(required_budgets, phase_budgets, tolerance),
+            positive_labels,
+        )
+        assert benchmark.wrong_period_budget_accuracy == js_accuracy(
+            js_recurrence_budget_predictions(required_budgets, wrong_period_budgets, tolerance),
+            positive_labels,
+        )
+        assert benchmark.over_loop_no_exit_accuracy == js_accuracy(
+            js_recurrence_budget_predictions(required_budgets, over_budgets, tolerance),
+            positive_labels,
+        )
+        assert benchmark.nonperiodic_phase_budget_accuracy == js_accuracy(
+            control_phase_predictions,
+            control_labels,
+        )
+        assert benchmark.nonperiodic_scalar_threshold_accuracy == js_accuracy(
+            threshold_predictions,
+            control_labels,
+        )
 
     token_recurrence_cases = [
         (4, 32, 4, 4, 8, 1, 0),

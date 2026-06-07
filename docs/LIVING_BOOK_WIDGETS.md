@@ -112,6 +112,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is deterministic token-level schedule bookkeeping only. It does not prove learned-router quality, recursive reasoning, perplexity improvement, throughput, memory improvement, context-length improvement, or model-quality improvement.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python token-level recurrence benchmark fixture.
 
+### training_free_loop_wrapper
+
+- Inputs: loop period, sample count, maximum loops, fixed loop budget, wrong loop period, over-loop budget, and overthinking tolerance.
+- Outputs: required-budget strip, phase-budget strip, phase-budget sample, wrong-period budget sample, active-sample counts, budget histogram, average phase budget, single-pass accuracy, fixed-budget accuracy, phase-budget accuracy, wrong-period accuracy, over-loop accuracy, nonperiodic phase-budget accuracy, and nonperiodic scalar-threshold accuracy.
+- Theorem ids: `AIM-T0010`, `AIM-T0011`, `AIM-T0019`, and `AIM-T0020` as finite training-free loop-budget primitives.
+- Dictionary ids: `COMMON-0052`, `COMMON-0053`, `COMMON-0054`, and `COMMON-0067`.
+- Python references: `circle_math.applications.circle_ai.training_free_loop_budget`, `circle_math.applications.circle_ai.training_free_loop_budgets`, and `circle_math.applications.circle_ai.run_training_free_loop_wrapper_benchmark`.
+- Guardrail: the widget is deterministic training-free loop-wrapper bookkeeping only. It does not prove learned recurrence, recursive reasoning, language-model quality, throughput, memory improvement, context-length improvement, or model-quality improvement.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python training-free loop-wrapper benchmark fixture.
+
 ### learned_token_recurrence
 
 - Inputs: loop period, wrong/control period, train-token count, held-out test-token count, maximum budget, fixed global budget, wrong-budget shift, over-loop budget, and overthinking tolerance.
