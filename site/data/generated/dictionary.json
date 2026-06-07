@@ -1648,6 +1648,30 @@
           "status": "proved"
         },
         {
+          "id": "GEN-T0010",
+          "lean_name": "Circle.Generative.orbitDecompositionGenerator_modRepresentative_lt_orbitCount",
+          "name": "Circle.Generative.orbitDecompositionGenerator_modRepresentative_lt_orbitCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0011",
+          "lean_name": "Circle.Generative.orbitDecompositionGenerator_modRepresentative_covers",
+          "name": "Circle.Generative.orbitDecompositionGenerator_modRepresentative_covers",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0012",
+          "lean_name": "Circle.Generative.orbitDecompositionGenerator_representatives_sameOrbit_iff_eq",
+          "name": "Circle.Generative.orbitDecompositionGenerator_representatives_sameOrbit_iff_eq",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0013",
+          "lean_name": "Circle.Generative.orbitDecompositionGenerator_distinct_representatives_disjoint",
+          "name": "Circle.Generative.orbitDecompositionGenerator_distinct_representatives_disjoint",
+          "status": "proved"
+        },
+        {
           "id": "S2-T0007",
           "lean_name": "Circle.S2.latitudeCoil_period",
           "name": "Circle.S2.latitudeCoil_period",
@@ -1933,6 +1957,30 @@
           "id": "GEN-T0009",
           "lean_name": "Circle.Generative.orbitDecompositionGenerator_orbitCount_eq_orbitClassCount",
           "name": "Circle.Generative.orbitDecompositionGenerator_orbitCount_eq_orbitClassCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0010",
+          "lean_name": "Circle.Generative.orbitDecompositionGenerator_modRepresentative_lt_orbitCount",
+          "name": "Circle.Generative.orbitDecompositionGenerator_modRepresentative_lt_orbitCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0011",
+          "lean_name": "Circle.Generative.orbitDecompositionGenerator_modRepresentative_covers",
+          "name": "Circle.Generative.orbitDecompositionGenerator_modRepresentative_covers",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0012",
+          "lean_name": "Circle.Generative.orbitDecompositionGenerator_representatives_sameOrbit_iff_eq",
+          "name": "Circle.Generative.orbitDecompositionGenerator_representatives_sameOrbit_iff_eq",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0013",
+          "lean_name": "Circle.Generative.orbitDecompositionGenerator_distinct_representatives_disjoint",
+          "name": "Circle.Generative.orbitDecompositionGenerator_distinct_representatives_disjoint",
           "status": "proved"
         },
         {
@@ -5932,6 +5980,30 @@
           "lean_name": "Circle.Generative.orbitDecompositionGenerator_orbitCount_eq_orbitClassCount",
           "name": "Circle.Generative.orbitDecompositionGenerator_orbitCount_eq_orbitClassCount",
           "status": "proved"
+        },
+        {
+          "id": "GEN-T0010",
+          "lean_name": "Circle.Generative.orbitDecompositionGenerator_modRepresentative_lt_orbitCount",
+          "name": "Circle.Generative.orbitDecompositionGenerator_modRepresentative_lt_orbitCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0011",
+          "lean_name": "Circle.Generative.orbitDecompositionGenerator_modRepresentative_covers",
+          "name": "Circle.Generative.orbitDecompositionGenerator_modRepresentative_covers",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0012",
+          "lean_name": "Circle.Generative.orbitDecompositionGenerator_representatives_sameOrbit_iff_eq",
+          "name": "Circle.Generative.orbitDecompositionGenerator_representatives_sameOrbit_iff_eq",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0013",
+          "lean_name": "Circle.Generative.orbitDecompositionGenerator_distinct_representatives_disjoint",
+          "name": "Circle.Generative.orbitDecompositionGenerator_distinct_representatives_disjoint",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -6053,6 +6125,30 @@
           "id": "GEN-T0009",
           "lean_name": "Circle.Generative.orbitDecompositionGenerator_orbitCount_eq_orbitClassCount",
           "name": "Circle.Generative.orbitDecompositionGenerator_orbitCount_eq_orbitClassCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0010",
+          "lean_name": "Circle.Generative.orbitDecompositionGenerator_modRepresentative_lt_orbitCount",
+          "name": "Circle.Generative.orbitDecompositionGenerator_modRepresentative_lt_orbitCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0011",
+          "lean_name": "Circle.Generative.orbitDecompositionGenerator_modRepresentative_covers",
+          "name": "Circle.Generative.orbitDecompositionGenerator_modRepresentative_covers",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0012",
+          "lean_name": "Circle.Generative.orbitDecompositionGenerator_representatives_sameOrbit_iff_eq",
+          "name": "Circle.Generative.orbitDecompositionGenerator_representatives_sameOrbit_iff_eq",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0013",
+          "lean_name": "Circle.Generative.orbitDecompositionGenerator_distinct_representatives_disjoint",
+          "name": "Circle.Generative.orbitDecompositionGenerator_distinct_representatives_disjoint",
           "status": "proved"
         }
       ],

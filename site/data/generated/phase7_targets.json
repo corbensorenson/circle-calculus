@@ -145,7 +145,7 @@
       ],
       "guardrail": "A smaller generator is not automatically optimal, meaningful, or new mathematics.",
       "id": "P7-GEN-001",
-      "next_action": "Exact representative-indexed orbit-decomposition regeneration plus orbit-count, representative orbit-length, coverage-product, and formal orbit-class count agreement are now Lean-proved; next strengthen toward disjoint canonical representative partition facts and route generator records into Living Book diagrams.",
+      "next_action": "Exact representative-indexed orbit-decomposition regeneration plus orbit-count, representative orbit-length, coverage-product, formal orbit-class count agreement, canonical representative coverage, and disjointness are now Lean-proved; next route generator records into Living Book diagrams and keep minimality claims scoped to explicit search spaces.",
       "ordinary_baseline": "Value-only objects, finished diagrams, ordinary compressed files, or informal procedural descriptions.",
       "priority": "high",
       "question": "Can Circle Calculus represent an object by a small seed plus checked rules that regenerate the object, with proof status and provenance attached?",

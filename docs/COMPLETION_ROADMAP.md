@@ -856,8 +856,8 @@ Generative work order:
 - [x] Build a finite Python fixture that regenerates `C_n`, a generated finite-circle diagram, a finite physics-loop diagram, a stride-`k` coil, orbit decomposition, and a proof-glyph diagram from seed/rule records.
 - [x] Compare seed-plus-rule descriptions against explicit object-only descriptions for length, exact regeneration, reader clarity, and proof coverage.
 - [x] Include negative cases where generation is longer, noisier, or less clear than explicit description.
-- [x] Add Lean targets only for finite generation/equality/closure facts that are precise enough to prove; the current Lean seed covers finite-circle node regeneration, period-indexed coil-orbit schedule regeneration, representative-indexed orbit-decomposition schedule regeneration, orbit-count/period/coverage/orbit-class agreement facts, proof-glyph field regeneration, and exact-regeneration comparison.
-- [ ] Strengthen exact representative-indexed orbit regeneration toward explicit disjoint canonical representative partition facts before calling the decomposition fully canonical.
+- [x] Add Lean targets only for finite generation/equality/closure facts that are precise enough to prove; the current Lean seed covers finite-circle node regeneration, period-indexed coil-orbit schedule regeneration, representative-indexed orbit-decomposition schedule regeneration, orbit-count/period/coverage/orbit-class agreement facts, canonical representative coverage/disjointness facts, proof-glyph field regeneration, and exact-regeneration comparison.
+- [x] Strengthen exact representative-indexed orbit regeneration toward explicit disjoint canonical representative partition facts before calling the decomposition fully canonical.
 - [ ] Add generated-diagram Living Book widgets/status badges, with diagrams generated from the same records used by tests.
 
 Accepted Phase VII targets:

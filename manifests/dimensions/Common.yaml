@@ -1682,4 +1682,60 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_orbit_decomposition_generator_partitions_circle
     blocker: ""
+  - id: GEN-T0010
+    status: lean_proved
+    lean_name: Circle.Generative.orbitDecompositionGenerator_modRepresentative_lt_orbitCount
+    informal_statement: "A modulo representative is within the orbit-decomposition generator's representative range when the range is positive."
+    formal_statement: "For n, stride, x, and positive orbitCount, x % orbitCount < orbitCount for orbitDecompositionGenerator n stride."
+    dictionary_dependencies: ["CC-0205", "CC-0208", "COMMON-0064", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_orbit_decomposition_generator_partitions_circle
+    blocker: ""
+  - id: GEN-T0011
+    status: lean_proved
+    lean_name: Circle.Generative.orbitDecompositionGenerator_modRepresentative_covers
+    informal_statement: "Every natural node is in the same finite stride-orbit class as its modulo-gcd representative."
+    formal_statement: "For n, stride, and x, sameOrbit n stride ((x % orbitCount) : C n) (x : C n) for orbitDecompositionGenerator n stride."
+    dictionary_dependencies: ["CC-0205", "CC-0208", "COMMON-0064", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_orbit_decomposition_generator_partitions_circle
+    blocker: ""
+  - id: GEN-T0012
+    status: lean_proved
+    lean_name: Circle.Generative.orbitDecompositionGenerator_representatives_sameOrbit_iff_eq
+    informal_statement: "Two canonical finite orbit-decomposition representatives are in the same stride-orbit class exactly when the representatives are equal."
+    formal_statement: "For left and right representatives in Fin orbitCount, sameOrbit n stride left right iff left = right."
+    dictionary_dependencies: ["CC-0205", "CC-0208", "COMMON-0064", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_orbit_decomposition_generator_partitions_circle
+    blocker: ""
+  - id: GEN-T0013
+    status: lean_proved
+    lean_name: Circle.Generative.orbitDecompositionGenerator_distinct_representatives_disjoint
+    informal_statement: "Distinct canonical finite orbit-decomposition representatives are disjoint at the stride-orbit class level."
+    formal_statement: "For distinct left and right representatives in Fin orbitCount, not sameOrbit n stride left right."
+    dictionary_dependencies: ["CC-0205", "CC-0208", "COMMON-0064", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_orbit_decomposition_generator_partitions_circle
+    blocker: ""
 warnings: []

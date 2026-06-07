@@ -124,7 +124,7 @@ The first concrete lane is finite and implemented in `PAPER_GEN_01_SEED_RULE_PRO
 - report description length, regeneration exactness, proof coverage, and where the generator adds noise;
 - never call a generator minimal unless the minimization criterion and search space are explicit.
 
-The first Lean seed lives in `Circle.Generative.SeedRule`: finite-circle node regeneration, period-indexed coil-orbit schedule regeneration, representative-indexed orbit-decomposition schedule regeneration, orbit-count/period/coverage/orbit-class agreement facts, proof-glyph field regeneration, and exact-regeneration comparison are checked there. The Python fixture also regenerates finite-circle and finite physics-loop diagrams from the same seed/rule/provenance contract. Full disjoint canonical partition and compression-minimality claims remain future work.
+The first Lean seed lives in `Circle.Generative.SeedRule`: finite-circle node regeneration, period-indexed coil-orbit schedule regeneration, representative-indexed orbit-decomposition schedule regeneration, orbit-count/period/coverage/orbit-class agreement facts, canonical representative coverage/disjointness facts, proof-glyph field regeneration, and exact-regeneration comparison are checked there. The Python fixture also regenerates finite-circle and finite physics-loop diagrams from the same seed/rule/provenance contract. Generated-diagram Living Book widgets and compression-minimality claims remain future work; minimality claims need an explicit search space before they can be formal targets.
 
 This reframes compression as constructive provenance. The useful question is not only "how short is the encoding?" but:
 

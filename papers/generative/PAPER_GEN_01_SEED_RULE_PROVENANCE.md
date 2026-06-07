@@ -72,9 +72,13 @@ The paper links back to finite circles, coils, orbit decompositions, and proof-c
 - `GEN-T0007`: `Circle.Generative.orbitDecompositionGenerator_generatedOrbitFor_length`, each generated representative orbit schedule has length equal to the finite coil period.
 - `GEN-T0008`: `Circle.Generative.orbitDecompositionGenerator_orbitCount_mul_period`, for `n != 0`, representative count times generated orbit period equals the circle size.
 - `GEN-T0009`: `Circle.Generative.orbitDecompositionGenerator_orbitCount_eq_orbitClassCount`, for `n != 0`, the generator's representative count agrees with the formal stride-orbit class count.
+- `GEN-T0010`: `Circle.Generative.orbitDecompositionGenerator_modRepresentative_lt_orbitCount`, a modulo representative is inside the orbit-decomposition generator's representative range when the range is positive.
+- `GEN-T0011`: `Circle.Generative.orbitDecompositionGenerator_modRepresentative_covers`, every natural node is in the same finite stride-orbit class as its modulo-gcd representative.
+- `GEN-T0012`: `Circle.Generative.orbitDecompositionGenerator_representatives_sameOrbit_iff_eq`, two canonical finite representatives are in the same stride-orbit class exactly when the representatives are equal.
+- `GEN-T0013`: `Circle.Generative.orbitDecompositionGenerator_distinct_representatives_disjoint`, distinct canonical finite representatives are disjoint at the stride-orbit class level.
 
-`GEN-T0001` through `GEN-T0009` are Lean-proved finite seeds in `Circle.Generative.SeedRule`.
-`GEN-T0003` proves exact regeneration of the declared representative-indexed list model. `GEN-T0006` through `GEN-T0009` strengthen that model with count, period, coverage, and formal orbit-class agreement facts. They do not prove that the list is an optimal or minimal compression.
+`GEN-T0001` through `GEN-T0013` are Lean-proved finite seeds in `Circle.Generative.SeedRule`.
+`GEN-T0003` proves exact regeneration of the declared representative-indexed list model. `GEN-T0006` through `GEN-T0013` strengthen that model with count, period, coverage, formal orbit-class agreement, canonical representative coverage, and representative disjointness facts. They do not prove that the list is an optimal or minimal compression.
 
 ## Seed-Rule Record
 
@@ -128,4 +132,4 @@ Seed-rule provenance turns that construction into a first-class object. It can c
 
 This paper does not prove Kolmogorov complexity results, optimal compression, universal generative modeling, or that smaller descriptions are always better. It gives a finite, auditable interface for exact regeneration and provenance.
 
-The next formal step is to move from these count, period, coverage, and orbit-class agreement facts toward explicit disjointness/canonical-representative partition facts, then route the generated finite-circle and physics-loop diagrams into Living Book widgets with visible proof-status metadata.
+The next formal step is to route the generated finite-circle and physics-loop diagrams into Living Book widgets with visible seed/rule/proof-status metadata, while keeping compression-minimality claims out of scope until a precise search space exists.

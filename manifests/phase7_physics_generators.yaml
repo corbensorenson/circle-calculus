@@ -105,7 +105,7 @@ targets:
       - "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"
       - "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md"
     dictionary_dependencies: ["COMMON-0042", "COMMON-0064", "COMMON-0065", "COMMON-0066", "COMMON-0033"]
-    next_action: "Exact representative-indexed orbit-decomposition regeneration plus orbit-count, representative orbit-length, coverage-product, and formal orbit-class count agreement are now Lean-proved; next strengthen toward disjoint canonical representative partition facts and route generator records into Living Book diagrams."
+    next_action: "Exact representative-indexed orbit-decomposition regeneration plus orbit-count, representative orbit-length, coverage-product, formal orbit-class count agreement, canonical representative coverage, and disjointness are now Lean-proved; next route generator records into Living Book diagrams and keep minimality claims scoped to explicit search spaces."
     guardrail: "A smaller generator is not automatically optimal, meaningful, or new mathematics."
 
   - id: P7-GEN-002

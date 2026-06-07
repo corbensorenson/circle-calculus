@@ -108,6 +108,52 @@ theorem orbitDecompositionGenerator_orbitCount_eq_orbitClassCount
   rw [Circle.orbit_decomposition_count (n := n) (k := stride) hn]
   rfl
 
+theorem orbitDecompositionGenerator_modRepresentative_lt_orbitCount
+    {n stride x : Nat}
+    (hpositive : 0 < (orbitDecompositionGenerator n stride).orbitCount) :
+    x % (orbitDecompositionGenerator n stride).orbitCount <
+      (orbitDecompositionGenerator n stride).orbitCount := by
+  exact Nat.mod_lt x hpositive
+
+theorem orbitDecompositionGenerator_modRepresentative_covers
+    (n stride x : Nat) :
+    Circle.sameOrbit n stride
+      (((x % (orbitDecompositionGenerator n stride).orbitCount) : Nat) : C n)
+      ((x : Nat) : C n) := by
+  simpa [OrbitDecompositionGenerator.orbitCount, orbitDecompositionGenerator] using
+    (Circle.sameOrbit_nat_iff_modEq_gcd
+      n stride (x % Nat.gcd n stride) x).mpr
+        (Nat.mod_modEq x (Nat.gcd n stride))
+
+theorem orbitDecompositionGenerator_representatives_sameOrbit_iff_eq
+    (n stride : Nat)
+    (left right : Fin (orbitDecompositionGenerator n stride).orbitCount) :
+    Circle.sameOrbit n stride ((left : Nat) : C n) ((right : Nat) : C n) ↔
+      left = right := by
+  constructor
+  · intro h
+    have hmod :
+        (left : Nat) ≡ (right : Nat) [MOD Nat.gcd n stride] :=
+      (Circle.sameOrbit_nat_iff_modEq_gcd n stride (left : Nat) (right : Nat)).mp h
+    have hleft : (left : Nat) < Nat.gcd n stride := by
+      simp [OrbitDecompositionGenerator.orbitCount, orbitDecompositionGenerator]
+    have hright : (right : Nat) < Nat.gcd n stride := by
+      simp [OrbitDecompositionGenerator.orbitCount, orbitDecompositionGenerator]
+    exact Fin.ext (Nat.ModEq.eq_of_lt_of_lt hmod hleft hright)
+  · intro h
+    subst h
+    exact (Circle.sameOrbit_nat_iff_modEq_gcd n stride (left : Nat) (left : Nat)).mpr
+      (Nat.ModEq.refl (left : Nat))
+
+theorem orbitDecompositionGenerator_distinct_representatives_disjoint
+    (n stride : Nat)
+    (left right : Fin (orbitDecompositionGenerator n stride).orbitCount)
+    (hdistinct : left ≠ right) :
+    ¬ Circle.sameOrbit n stride ((left : Nat) : C n) ((right : Nat) : C n) := by
+  intro hsame
+  exact hdistinct
+    ((orbitDecompositionGenerator_representatives_sameOrbit_iff_eq n stride left right).mp hsame)
+
 structure ProofGlyphGenerator where
   glyphId : String
   theoremId : String
