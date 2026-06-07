@@ -122,6 +122,7 @@ def test_ai_backend_parity_fixture_is_deterministic() -> None:
     assert dict(first.cpu_scores)["adapter_lookup"] == 1.0
     assert dict(first.cpu_scores)["multicoil_lookup"] == 1.0
     assert dict(first.cpu_scores)["retrieval_coil_path"] == 1.0
+    assert dict(first.cpu_scores)["retrieval_content_gated"] == 1.0
     if first.mlx_available:
         assert first.mlx_scores
         assert first.max_abs_delta is not None

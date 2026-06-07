@@ -647,3 +647,15 @@ entries:
       - "A proof that CoilRA improves fine-tuning."
       - "Evidence that fewer parameters improve quality, runtime, memory, or training stability."
       - "A replacement for dense adapter, LoRA, block-circulant, or learned adapter baselines."
+  - id: COMMON-0057
+    name: "Content-gated coil retrieval fixture"
+    kind: experiment
+    symbol: "content_gated_retrieval"
+    formal_definition: "`circle_math.applications.circle_ai.run_content_gated_retrieval_benchmark`, a deterministic mixed long/near dependency fixture comparing content-gated coil/local candidate sets against static coil, static local, wrong-gate, union, and full-attention baselines."
+    intuition: "A small routing harness: use a gate to choose the candidate path that can reach the dependency, then report the candidate budget rather than pretending this is neural attention quality."
+    dependencies: ["COMMON-0028", "COMMON-0047"]
+    introduced_in: "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+    forbidden_meanings:
+      - "A proof that content-gated attention improves language models."
+      - "Evidence about learned retrieval quality, context length, runtime, or memory scaling."
+      - "A replacement for full attention, sparse attention, recurrent-memory, Hyena-like, or state-space baselines."

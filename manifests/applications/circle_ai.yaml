@@ -15,6 +15,7 @@ sidecars:
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_memory_slot.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_coil_retrieval.py
+  - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_content_gated_retrieval.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_looped_recurrence.py
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/lean/PaperAI03.lean
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py
@@ -88,7 +89,7 @@ theorems:
 next_targets:
   - "Use COMMON-0052 through COMMON-0055 as the looped/recursive transformer roadmap lane: AIA/AIM/AIRA proofs still cover finite indexing only, while AIM-B0003 provides a deterministic recurrence-schedule fixture with single-pass, fixed-loop, adaptive-exit, recurrent-memory, sparse phase-router, over-looped, and dense-threshold controls; compare future learned models against dense transformer, Universal Transformer, fixed looped-transformer, adaptive-exit, recurrent-memory, sparse/MoE, RWKV/Mamba-style, and standard state-space baselines."
   - "AIA-B0004 expands the learned phase fixture to dense-scalar, learned-position, wrong-period, and cyclic-feature baselines; AIA-B0005 adds a correct-frequency versus wrong-frequency harmonic/Fourier feature scaffold; next compare against standard RoPE, learned positional encodings, and learned dense models before model-quality claims."
-  - "Use AIM-B0002 as coil-retrieval reachability scaffolding only; expand toward learned/content-gated coil paths, alias-control, full-attention, sparse-attention, Hyena-like, and state-space baselines before retrieval-quality claims."
+  - "Use AIM-B0002 as fixed coil-retrieval reachability scaffolding and AIM-B0004 as content-gated coil/local routing scaffolding only; expand toward learned gates, alias-control, full-attention, sparse-attention, Hyena-like, recurrent-memory, and state-space baselines before retrieval-quality claims."
   - "Use AIRA-B0001 as adapter-block scaffolding and AIRA-B0004 as adapter parameter-budget scaffolding only; expand toward CoilRA, block-circulant, LoRA, dense-adapter, learned quality, runtime, memory, and training-stability baselines before making parameter-efficiency or quality claims."
   - "Use AIRA-B0002 as MultiCoil/RoPE-style positional scaffolding and AIRA-B0003 as relative RoPE-style phase scaffolding only; expand toward standard RoPE, learned positional encodings, attention, dense sequence, Fourier-feature, and MLX/CPU parity baselines before model-quality claims."
   - "Use AIA-B0003 as CPU/MLX scoring parity scaffolding only; expand toward actual MLX model prototypes and timing only after parity and baseline semantics are stable."
@@ -128,6 +129,11 @@ benchmarks:
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_coil_retrieval_benchmark_has_baselines_and_near_control
     script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_coil_retrieval.py
     description: "Deterministic coil-retrieval reachability fixture comparing selected coil-path candidate sets against local-window, wrong-stride, and full-attention oracle baselines, with a near-lag local-attention control."
+  - id: AIM-B0004
+    status: exploratory_python
+    path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_content_gated_retrieval_benchmark_has_route_and_budget_baselines
+    script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_content_gated_retrieval.py
+    description: "Deterministic content-gated retrieval fixture comparing gated coil/local routing against static coil, static local, wrong-gate, union-candidate, and full-attention baselines, with candidate-budget diagnostics."
   - id: AIM-B0003
     status: exploratory_python
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_looped_recurrence_benchmark_has_baselines_and_overloop_control

@@ -1,4 +1,5 @@
 from circle_math.applications.circle_ai import (
+    average_candidate_count,
     coil_attention_path,
     fit_memory_slot_lookup,
     local_window_indices,
@@ -8,9 +9,12 @@ from circle_math.applications.circle_ai import (
     memory_slot,
     memory_slot_collision_count,
     memory_slot_loads,
+    mixed_retrieval_target_lags,
     predict_memory_slot_lookup,
+    retrieval_hit_rate_by_lag,
     retrieval_target_index,
     run_coil_retrieval_benchmark,
+    run_content_gated_retrieval_benchmark,
     run_looped_recurrence_benchmark,
     run_memory_slot_benchmark,
     synthetic_memory_slot_dataset,
@@ -110,6 +114,60 @@ def test_coil_retrieval_benchmark_has_baselines_and_near_control() -> None:
     assert result.near_control_local_window_accuracy == 1.0
     assert result.near_control_full_attention_accuracy == 1.0
     assert result.near_control_coil_path_accuracy == 0.0
+
+
+def test_mixed_retrieval_target_lags_and_budget_helpers_are_deterministic() -> None:
+    queries = tuple(range(6))
+    target_lags = mixed_retrieval_target_lags(queries, long_target_lag=21, near_target_lag=3)
+    candidate_sets = (
+        (1, 2, 3),
+        (4, 5),
+        (7, 7, 8),
+        (9,),
+        (10, 11, 12),
+        (13, 14),
+    )
+
+    assert target_lags == (21, 3, 21, 3, 21, 3)
+    assert average_candidate_count(candidate_sets) == 13 / 6
+    assert retrieval_hit_rate_by_lag(
+        64,
+        (24,),
+        (21,),
+        ((3, 17, 45),),
+    ) == 1.0
+
+
+def test_content_gated_retrieval_benchmark_has_route_and_budget_baselines() -> None:
+    result = run_content_gated_retrieval_benchmark(
+        sequence_length=64,
+        query_count=64,
+        long_target_lag=21,
+        near_target_lag=3,
+        stride=7,
+        path_length=3,
+        local_window=8,
+    )
+
+    assert result == run_content_gated_retrieval_benchmark(
+        sequence_length=64,
+        query_count=64,
+        long_target_lag=21,
+        near_target_lag=3,
+        stride=7,
+        path_length=3,
+        local_window=8,
+    )
+    assert result.content_gated_accuracy == 1.0
+    assert result.union_candidate_accuracy == 1.0
+    assert result.full_attention_accuracy == 1.0
+    assert result.static_coil_accuracy == 0.5
+    assert result.static_local_accuracy == 0.5
+    assert result.wrong_gate_accuracy == 0.0
+    assert result.average_gated_candidate_count == 5.5
+    assert result.average_union_candidate_count == 10.0
+    assert result.average_full_candidate_count == 64.0
+    assert result.note.endswith("not a model-quality claim.")
 
 
 def test_looped_recurrence_schedule_traces_overthinking_boundary() -> None:

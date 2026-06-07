@@ -277,6 +277,27 @@ class CoilRetrievalBenchmarkResult:
 
 
 @dataclass(frozen=True)
+class ContentGatedRetrievalBenchmarkResult:
+    sequence_length: int
+    query_count: int
+    long_target_lag: int
+    near_target_lag: int
+    stride: int
+    path_length: int
+    local_window: int
+    content_gated_accuracy: float
+    static_coil_accuracy: float
+    static_local_accuracy: float
+    union_candidate_accuracy: float
+    wrong_gate_accuracy: float
+    full_attention_accuracy: float
+    average_gated_candidate_count: float
+    average_union_candidate_count: float
+    average_full_candidate_count: float
+    note: str = "Synthetic content-gated retrieval fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
 class LoopedRecurrenceBenchmarkResult:
     loop_period: int
     train_length: int
@@ -933,6 +954,51 @@ def retrieval_hit_rate(
     return hits / len(query_indices)
 
 
+def mixed_retrieval_target_lags(
+    query_indices: Sequence[int],
+    *,
+    long_target_lag: int,
+    near_target_lag: int,
+) -> tuple[int, ...]:
+    """Return alternating long/near target lags for gated retrieval fixtures."""
+    if long_target_lag < 0:
+        raise ValueError("long_target_lag must be nonnegative")
+    if near_target_lag < 0:
+        raise ValueError("near_target_lag must be nonnegative")
+    if not query_indices:
+        raise ValueError("query_indices must be nonempty")
+    return tuple(long_target_lag if query_index % 2 == 0 else near_target_lag for query_index in query_indices)
+
+
+def retrieval_hit_rate_by_lag(
+    sequence_length: int,
+    query_indices: Sequence[int],
+    target_lags: Sequence[int],
+    candidate_sets: Sequence[Sequence[int]],
+) -> float:
+    """Return hit rate when each query has its own target lag."""
+    _require_positive(sequence_length, "sequence_length")
+    if len(query_indices) != len(target_lags):
+        raise ValueError("query_indices and target_lags must have the same length")
+    if len(query_indices) != len(candidate_sets):
+        raise ValueError("query_indices and candidate_sets must have the same length")
+    if not query_indices:
+        raise ValueError("query_indices must be nonempty")
+    hits = 0
+    for query_index, target_lag, candidates in zip(query_indices, target_lags, candidate_sets):
+        target = retrieval_target_index(sequence_length, query_index, target_lag)
+        if target in set(candidates):
+            hits += 1
+    return hits / len(query_indices)
+
+
+def average_candidate_count(candidate_sets: Sequence[Sequence[int]]) -> float:
+    """Return the average unique candidate count in a retrieval fixture."""
+    if not candidate_sets:
+        raise ValueError("candidate_sets must be nonempty")
+    return sum(len(set(candidates)) for candidates in candidate_sets) / len(candidate_sets)
+
+
 def run_coil_retrieval_benchmark(
     *,
     sequence_length: int = 64,
@@ -1028,6 +1094,113 @@ def run_coil_retrieval_benchmark(
             near_control_lag,
             full_candidates,
         ),
+    )
+
+
+def run_content_gated_retrieval_benchmark(
+    *,
+    sequence_length: int = 64,
+    query_count: int = 64,
+    long_target_lag: int = 21,
+    near_target_lag: int = 3,
+    stride: int = 7,
+    path_length: int = 3,
+    local_window: int = 8,
+) -> ContentGatedRetrievalBenchmarkResult:
+    """Run a deterministic content-gated coil/local retrieval fixture.
+
+    Even-indexed queries require a long dependency that the selected coil path
+    can reach; odd-indexed queries require a near dependency that the local
+    window can reach. The content-gated route chooses between those candidate
+    sets. This checks reachability and candidate budgets only, not neural
+    attention quality.
+    """
+    _require_positive(sequence_length, "sequence_length")
+    _require_positive(query_count, "query_count")
+    _require_positive(path_length, "path_length")
+    _require_positive(local_window, "local_window")
+    if long_target_lag < 0:
+        raise ValueError("long_target_lag must be nonnegative")
+    if near_target_lag < 0:
+        raise ValueError("near_target_lag must be nonnegative")
+    if stride < 0:
+        raise ValueError("stride must be nonnegative")
+
+    query_indices = tuple(range(query_count))
+    target_lags = mixed_retrieval_target_lags(
+        query_indices,
+        long_target_lag=long_target_lag,
+        near_target_lag=near_target_lag,
+    )
+    coil_candidates = tuple(
+        coil_attention_path(sequence_length, query_index, stride, path_length)
+        for query_index in query_indices
+    )
+    local_candidates = tuple(
+        local_window_indices(sequence_length, query_index, local_window)
+        for query_index in query_indices
+    )
+    gated_candidates = tuple(
+        coil if query_index % 2 == 0 else local
+        for query_index, coil, local in zip(query_indices, coil_candidates, local_candidates)
+    )
+    wrong_gate_candidates = tuple(
+        local if query_index % 2 == 0 else coil
+        for query_index, coil, local in zip(query_indices, coil_candidates, local_candidates)
+    )
+    union_candidates = tuple(
+        tuple(sorted(set(coil) | set(local)))
+        for coil, local in zip(coil_candidates, local_candidates)
+    )
+    full_candidates = tuple(tuple(range(sequence_length)) for _ in query_indices)
+
+    return ContentGatedRetrievalBenchmarkResult(
+        sequence_length=sequence_length,
+        query_count=query_count,
+        long_target_lag=long_target_lag,
+        near_target_lag=near_target_lag,
+        stride=stride,
+        path_length=path_length,
+        local_window=local_window,
+        content_gated_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            target_lags,
+            gated_candidates,
+        ),
+        static_coil_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            target_lags,
+            coil_candidates,
+        ),
+        static_local_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            target_lags,
+            local_candidates,
+        ),
+        union_candidate_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            target_lags,
+            union_candidates,
+        ),
+        wrong_gate_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            target_lags,
+            wrong_gate_candidates,
+        ),
+        full_attention_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            target_lags,
+            full_candidates,
+        ),
+        average_gated_candidate_count=average_candidate_count(gated_candidates),
+        average_union_candidate_count=average_candidate_count(union_candidates),
+        average_full_candidate_count=average_candidate_count(full_candidates),
     )
 
 
@@ -1894,6 +2067,29 @@ def ai_backend_parity_cases() -> tuple[tuple[str, tuple[int, ...], tuple[int, ..
     near_local_predictions = _retrieval_hit_indicators(64, retrieval_queries, 3, near_local_candidates)
     near_local_labels = tuple(1 for _ in retrieval_queries)
 
+    gated_target_lags = mixed_retrieval_target_lags(
+        retrieval_queries,
+        long_target_lag=21,
+        near_target_lag=3,
+    )
+    gated_coil_candidates = tuple(
+        coil_attention_path(64, query_index, stride=7, path_length=3)
+        for query_index in retrieval_queries
+    )
+    gated_local_candidates = tuple(
+        local_window_indices(64, query_index, window=8)
+        for query_index in retrieval_queries
+    )
+    gated_candidates = tuple(
+        coil if query_index % 2 == 0 else local
+        for query_index, coil, local in zip(retrieval_queries, gated_coil_candidates, gated_local_candidates)
+    )
+    gated_predictions = tuple(
+        1 if retrieval_target_index(64, query_index, target_lag) in set(candidates) else 0
+        for query_index, target_lag, candidates in zip(retrieval_queries, gated_target_lags, gated_candidates)
+    )
+    gated_labels = tuple(1 for _ in retrieval_queries)
+
     looped_test_indices = tuple(range(64, 96))
     looped_predictions = _loop_adaptive_exit_predictions(
         4,
@@ -1915,6 +2111,7 @@ def ai_backend_parity_cases() -> tuple[tuple[str, tuple[int, ...], tuple[int, ..
         ("multicoil_lookup", multicoil_predictions, multicoil_test_labels),
         ("retrieval_coil_path", retrieval_predictions, retrieval_labels),
         ("retrieval_near_local_window", near_local_predictions, near_local_labels),
+        ("retrieval_content_gated", gated_predictions, gated_labels),
         ("learned_feature_cyclic", learned_predictions, learned_test_labels),
         ("harmonic_feature_lookup", harmonic_predictions, harmonic_test_labels),
         ("rope_relative_phase", rope_predictions, rope_test_labels),
