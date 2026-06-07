@@ -7,6 +7,7 @@ from circle_math.applications.circle_ai import (
     fit_loop_block_lookup,
     fit_content_route_lookup,
     fit_memory_slot_lookup,
+    fit_recurrence_resolution_lookup,
     local_window_indices,
     loop_exit_certificate,
     loop_exit_step,
@@ -23,6 +24,7 @@ from circle_math.applications.circle_ai import (
     predict_loop_block_lookup,
     predict_content_route_lookup,
     predict_memory_slot_lookup,
+    predict_recurrence_resolution_lookup,
     retrieval_hit_rate_by_lag,
     retrieval_target_index,
     recurrence_resolution_levels,
@@ -30,6 +32,7 @@ from circle_math.applications.circle_ai import (
     run_content_gated_retrieval_benchmark,
     run_learned_content_gate_retrieval_benchmark,
     run_learned_middle_block_recurrence_benchmark,
+    run_learned_multi_resolution_recurrence_benchmark,
     run_learned_token_level_recurrence_benchmark,
     run_looped_recurrence_benchmark,
     run_learned_recurrence_schedule_benchmark,
@@ -495,6 +498,25 @@ def test_learned_middle_block_lookup_helpers_are_deterministic() -> None:
     assert predict_loop_block_lookup(3, lookup, tuple(range(12, 20))) == (2, 3, 4, 2, 3, 4, 2, 3)
 
 
+def test_learned_resolution_lookup_helpers_are_deterministic() -> None:
+    samples = tuple(range(16))
+    budgets = token_recurrence_budgets(4, samples)
+    resolutions = multi_resolution_required_resolutions(4, budgets)
+    lookup = fit_recurrence_resolution_lookup(4, samples, resolutions)
+
+    assert lookup == ("coarse", "fine", "coarse", "fine")
+    assert predict_recurrence_resolution_lookup(4, lookup, tuple(range(16, 24))) == (
+        "coarse",
+        "fine",
+        "coarse",
+        "fine",
+        "coarse",
+        "fine",
+        "coarse",
+        "fine",
+    )
+
+
 def test_learned_recurrence_schedule_benchmark_has_baselines_and_controls() -> None:
     result = run_learned_recurrence_schedule_benchmark(
         loop_period=4,
@@ -521,6 +543,61 @@ def test_learned_recurrence_schedule_benchmark_has_baselines_and_controls() -> N
     assert result.learned_phase_router_accuracy == 1.0
     assert result.fixed_loop_budget_accuracy == 0.25
     assert result.wrong_period_router_accuracy < result.learned_phase_router_accuracy
+    assert result.over_looped_accuracy == 0.0
+    assert result.note.endswith("not a model-quality claim.")
+
+
+def test_learned_multi_resolution_recurrence_benchmark_has_resolution_controls() -> None:
+    result = run_learned_multi_resolution_recurrence_benchmark(
+        loop_period=4,
+        wrong_budget_period=3,
+        wrong_resolution_period=3,
+        train_length=64,
+        test_length=32,
+        max_budget=4,
+        fixed_loop_budget=4,
+        over_loop_budget=8,
+        overthink_tolerance=0,
+    )
+
+    assert result == run_learned_multi_resolution_recurrence_benchmark(
+        loop_period=4,
+        wrong_budget_period=3,
+        wrong_resolution_period=3,
+        train_length=64,
+        test_length=32,
+        max_budget=4,
+        fixed_loop_budget=4,
+        over_loop_budget=8,
+        overthink_tolerance=0,
+    )
+    assert result.learned_budget_lookup == (1, 2, 3, 4)
+    assert result.learned_resolution_lookup == ("coarse", "fine", "coarse", "fine")
+    assert result.required_budget_sample == (1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4)
+    assert result.learned_budget_sample == result.required_budget_sample
+    assert result.required_resolution_sample == (
+        "coarse",
+        "fine",
+        "coarse",
+        "fine",
+        "coarse",
+        "fine",
+        "coarse",
+        "fine",
+        "coarse",
+        "fine",
+        "coarse",
+        "fine",
+    )
+    assert result.learned_resolution_sample == result.required_resolution_sample
+    assert result.active_sample_counts == (32, 24, 16, 8)
+    assert result.average_active_samples == 20.0
+    assert result.learned_multi_resolution_router_accuracy == 1.0
+    assert result.single_resolution_coarse_accuracy == 0.5
+    assert result.single_resolution_fine_accuracy == 0.5
+    assert result.fixed_budget_accuracy == 0.25
+    assert result.wrong_budget_period_accuracy < result.learned_multi_resolution_router_accuracy
+    assert result.wrong_resolution_period_accuracy < result.learned_multi_resolution_router_accuracy
     assert result.over_looped_accuracy == 0.0
     assert result.note.endswith("not a model-quality claim.")
 

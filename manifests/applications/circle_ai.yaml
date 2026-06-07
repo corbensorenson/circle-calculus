@@ -25,6 +25,7 @@ sidecars:
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_training_free_loop_wrapper.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_middle_block_recurrence.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_multi_resolution_recurrence.py
+  - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_learned_multi_resolution_recurrence.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_learned_recurrence_schedule.py
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/lean/PaperAI03.lean
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py
@@ -154,7 +155,9 @@ next_targets:
     adds learned token-level recurrence routing with a phase-to-budget lookup, wrong-period, shifted-budget,
     fixed-budget, over-loop, and nonperiodic scalar controls, AIM-B0013 adds learned middle-block recurrence
     routing with separate phase-to-block and phase-to-budget lookups plus wrong-period, selected-band,
-    full-block, fixed-budget, wrong-block, and over-loop controls, AIM-B0006
+    full-block, fixed-budget, wrong-block, and over-loop controls, AIM-B0014 adds learned multi-resolution
+    recurrence routing with phase-to-budget and phase-to-resolution lookups plus single-resolution,
+    fixed-budget, wrong-period, and over-loop controls, AIM-B0006
     adds a deterministic training-free loop-wrapper fixture with CPU/optional-MLX scoring, fixed-loop,
     wrong-period, over-loop, and scalar-threshold baselines, and AIM-B0007 adds a middle-block recurrence
     fixture with selected-block, full-block, fixed-budget, wrong-block, and over-loop controls, and AIM-B0008
@@ -256,6 +259,11 @@ benchmarks:
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_multi_resolution_recurrence_benchmark_has_resolution_and_budget_controls
     script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_multi_resolution_recurrence.py
     description: "Deterministic multi-resolution recurrence fixture comparing phase-routed coarse/fine scheduling against single-resolution and fixed-budget baselines plus wrong-resolution and over-loop controls with active-sample accounting."
+  - id: AIM-B0014
+    status: exploratory_python
+    path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_learned_multi_resolution_recurrence_benchmark_has_resolution_controls
+    script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_learned_multi_resolution_recurrence.py
+    description: "Deterministic learned multi-resolution recurrence fixture fitting phase-to-budget and phase-to-resolution lookups and comparing them against single-resolution and fixed-budget baselines plus wrong-period and over-loop controls with active-sample accounting."
   - id: AIM-B0009
     status: exploratory_python
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_learned_recurrence_schedule_benchmark_has_baselines_and_controls
