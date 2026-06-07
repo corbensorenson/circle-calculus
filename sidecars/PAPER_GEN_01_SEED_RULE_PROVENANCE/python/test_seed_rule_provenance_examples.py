@@ -1,4 +1,6 @@
 from circle_math.generative import (
+    SeedRuleProvenance,
+    bounded_generator_search,
     coil_orbit_generator,
     compare_generator_to_explicit,
     finite_circle_diagram_generator,
@@ -108,3 +110,31 @@ def test_generator_comparison_has_positive_and_negative_cases() -> None:
     assert physics_loop.exact_regeneration
     assert noisy.exact_regeneration
     assert not noisy.generator_shorter
+
+
+def test_bounded_generator_search_reports_scope_and_exact_candidates() -> None:
+    broken = finite_circle_generator(12)
+    broken = SeedRuleProvenance(
+        artifact_id=broken.artifact_id,
+        seed=broken.seed,
+        rules=broken.rules,
+        iteration_schedule=broken.iteration_schedule,
+        closure_condition=broken.closure_condition,
+        generated_object=(0, 1),
+        theorem_ids=broken.theorem_ids,
+        dictionary_ids=broken.dictionary_ids,
+        note=broken.note,
+    )
+    search = bounded_generator_search(
+        [finite_circle_generator(1), finite_circle_generator(128), broken],
+        search_id="finite_circle_node_generators",
+    )
+
+    assert search.search_id == "finite_circle_node_generators"
+    assert search.finite_search_space
+    assert search.candidate_count == 3
+    assert search.exact_candidate_count == 2
+    assert search.best_exact is not None
+    assert search.best_shorter is not None
+    assert search.best_shorter.generator_shorter
+    assert search.note.endswith("not an optimality theorem.")

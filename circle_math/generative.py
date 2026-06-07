@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
-from typing import Any, Mapping
+from typing import Any, Mapping, Optional, Sequence
 
 from circle_math.finite import Circle
 from circle_math.physics import path_holonomy, square_plaquette_path
@@ -42,6 +42,17 @@ class GeneratorComparison:
     generator_length: int
     generator_shorter: bool
     note: str = "Description-length fixture only; not universal compression."
+
+
+@dataclass(frozen=True)
+class BoundedGeneratorSearch:
+    search_id: str
+    candidate_count: int
+    exact_candidate_count: int
+    best_exact: Optional[GeneratorComparison]
+    best_shorter: Optional[GeneratorComparison]
+    finite_search_space: bool = True
+    note: str = "Bounded finite search only; not an optimality theorem."
 
 
 def _sorted_pairs(mapping: Mapping[str, int | str]) -> tuple[tuple[str, int | str], ...]:
@@ -281,4 +292,31 @@ def compare_generator_to_explicit(record: SeedRuleProvenance) -> GeneratorCompar
         explicit_length=_json_length(explicit),
         generator_length=_json_length(generator),
         generator_shorter=_json_length(generator) < _json_length(explicit),
+    )
+
+
+def bounded_generator_search(
+    records: Sequence[SeedRuleProvenance],
+    *,
+    search_id: str = "bounded_generator_search",
+) -> BoundedGeneratorSearch:
+    """Rank a declared finite set of generator records by description length.
+
+    The result is scoped only to the supplied finite candidate list. It does not
+    claim global minimality, Kolmogorov complexity, or universal compression.
+    """
+
+    comparisons = tuple(compare_generator_to_explicit(record) for record in records)
+    exact = tuple(comparison for comparison in comparisons if comparison.exact_regeneration)
+    shorter = tuple(comparison for comparison in exact if comparison.generator_shorter)
+
+    def key(comparison: GeneratorComparison) -> tuple[int, int, str]:
+        return (comparison.generator_length, comparison.explicit_length, comparison.artifact_id)
+
+    return BoundedGeneratorSearch(
+        search_id=search_id,
+        candidate_count=len(comparisons),
+        exact_candidate_count=len(exact),
+        best_exact=min(exact, key=key) if exact else None,
+        best_shorter=min(shorter, key=key) if shorter else None,
     )

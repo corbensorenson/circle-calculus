@@ -875,7 +875,7 @@ Generative work order:
 
 - [x] Define a `SeedRuleProvenance` record for seed, rule set, iteration schedule, closure condition, generated object, theorem ids, dictionary ids, source artifacts, and proof status.
 - [x] Build a finite Python fixture that regenerates `C_n`, a generated finite-circle diagram, a finite physics-loop diagram, a stride-`k` coil, orbit decomposition, and a proof-glyph diagram from seed/rule records.
-- [x] Compare seed-plus-rule descriptions against explicit object-only descriptions for length, exact regeneration, reader clarity, and proof coverage.
+- [x] Compare seed-plus-rule descriptions against explicit object-only descriptions for length, exact regeneration, reader clarity, proof coverage, and bounded finite-list search results.
 - [x] Include negative cases where generation is longer, noisier, or less clear than explicit description.
 - [x] Add Lean targets only for finite generation/equality/closure facts that are precise enough to prove; the current Lean seed covers finite-circle node regeneration, period-indexed coil-orbit schedule regeneration, representative-indexed orbit-decomposition schedule regeneration, orbit-count/period/coverage/orbit-class agreement facts, canonical representative coverage/disjointness facts, proof-glyph field regeneration, and exact-regeneration comparison.
 - [x] Strengthen exact representative-indexed orbit regeneration toward explicit disjoint canonical representative partition facts before calling the decomposition fully canonical.
@@ -889,7 +889,7 @@ Accepted Phase VII targets:
 - [x] `P7-PHYS-003`: quaternion spin quotient extension.
 - [x] `P7-PHYS-004`: Floquet, action-angle, and winding-defect finite fixtures.
 - [x] `P7-GEN-001`: minimal generator provenance.
-- [x] `P7-GEN-002`: seed-plus-rules versus object-only description benchmark.
+- [x] `P7-GEN-002`: seed-plus-rules versus object-only description benchmark with bounded finite-list generator search.
 - [x] `P7-GEN-003`: proof-carrying generative diagrams.
 
 Phase VII guardrails:
