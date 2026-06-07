@@ -127,6 +127,10 @@ website:
             text: Application Overview
           - href: chapters/applications/ai.qmd
             text: AI
+          - href: chapters/applications/physics.qmd
+            text: Physics
+          - href: chapters/applications/generative.qmd
+            text: Generative Structures
           - href: chapters/applications/compute.qmd
             text: Compute
           - href: chapters/applications/rendering.qmd

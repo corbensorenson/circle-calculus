@@ -31,6 +31,8 @@ def test_export_site_data_writes_required_indexes() -> None:
         "glyph_index.json",
         "phase4_targets.json",
         "phase5_targets.json",
+        "phase6_targets.json",
+        "phase7_targets.json",
     ]:
         assert (generated / name).exists()
 
@@ -73,3 +75,8 @@ def test_export_site_data_writes_required_indexes() -> None:
     phase6 = json.loads((generated / "phase6_targets.json").read_text())
     phase6_ids = {item["id"] for item in phase6["targets"]}
     assert "P6-SWEEP-001" in phase6_ids
+
+    phase7 = json.loads((generated / "phase7_targets.json").read_text())
+    phase7_ids = {item["id"] for item in phase7["targets"]}
+    assert "P7-PHYS-001" in phase7_ids
+    assert "P7-GEN-001" in phase7_ids

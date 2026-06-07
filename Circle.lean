@@ -19,3 +19,5 @@ import Circle.Applications.CoilCompute
 import Circle.Applications.CoilRendering
 import Circle.Applications.CoilSystems
 import Circle.Applications.CircleAI
+import Circle.Physics.LatticeGauge
+import Circle.Generative.SeedRule

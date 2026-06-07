@@ -1,0 +1,44 @@
+import Circle.Physics.LatticeGauge
+
+/-!
+This sidecar imports the Lean source trail for the finite lattice-gauge paper.
+The checked declarations live in `Circle.Physics.LatticeGauge`; the Python
+sidecar remains an executable reference, not a formal proof source.
+-/
+
+#check Circle.Physics.pathHolonomy_concat
+#check Circle.Physics.pathHolonomy_reverse
+#check Circle.Physics.gaugeLink_reverse_reverse
+#check Circle.Physics.gaugeLinkPath_reverse_reverse
+#check Circle.Physics.gaugeLinkPath_reverse_concat
+#check Circle.Physics.linksComposable_append_of_composable
+#check Circle.Physics.gaugeLinkPath_concat_composable_of_boundary
+#check Circle.Physics.gaugeLinkPath_sourceOpt_concat_cons_left
+#check Circle.Physics.gaugeLinkPath_targetOpt_concat_cons_right
+#check Circle.Physics.linksBoundaryComposable_of_endpoints
+#check Circle.Physics.linksHaveEndpoints_append
+#check Circle.Physics.checkedGaugePath_identity_source
+#check Circle.Physics.checkedGaugePath_identity_target
+#check Circle.Physics.checkedGaugePath_singleton_source
+#check Circle.Physics.checkedGaugePath_singleton_target
+#check Circle.Physics.checkedGaugePath_concat_source
+#check Circle.Physics.checkedGaugePath_concat_target
+#check Circle.Physics.checkedGaugePath_concat_identity_left
+#check Circle.Physics.checkedGaugePath_concat_identity_right
+#check Circle.Physics.checkedGaugePath_concat_assoc
+#check Circle.Physics.gaugeLinkPathHolonomy_concat
+#check Circle.Physics.gaugeLinkPathHolonomy_reverse
+#check Circle.Physics.gaugeLinkPath_concat_empty_left
+#check Circle.Physics.gaugeLinkPath_concat_empty_right
+#check Circle.Physics.gaugeLinkPath_concat_assoc
+#check Circle.Physics.gaugeLinkPath_empty_composable
+#check Circle.Physics.gaugeLinkPath_concat_empty_left_composable
+#check Circle.Physics.gaugeLinkPath_concat_empty_right_composable
+#check Circle.Physics.gaugeLinkPath_singleton_composable
+#check Circle.Physics.gaugeLinkPath_pair_composable_iff
+#check Circle.Physics.gaugeLinkPath_concat_singletons_composable_iff
+#check Circle.Physics.gaugeLinkPath_triple_composable_iff
+#check Circle.Physics.gaugeLinkPath_quad_composable_iff
+#check Circle.Physics.gaugeTransform_pathHolonomy_endpoints
+#check Circle.Physics.closedWilsonLoop_gaugeInvariant
+#check Circle.Physics.plaquetteHolonomy_gaugeInvariant

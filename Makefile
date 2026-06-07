@@ -4,11 +4,11 @@ QUARTO_HOME ?= $(CURDIR)/.tools/quarto-home
 QUARTO_DENO_DIR ?= $(CURDIR)/.tools/quarto-deno
 QUARTO_ENV := HOME="$(QUARTO_HOME)" DENO_DIR="$(QUARTO_DENO_DIR)"
 
-.PHONY: check sourcecheck lean sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests claimlanguage phase4targets phase5targets phase6targets applicationguardrails glyphfixtures dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples site-data sitenavcontract sitecheck quarto-dirs site-render site-render-check site-preview living-book-check
+.PHONY: check sourcecheck lean sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests claimlanguage phase4targets phase5targets phase6targets phase7targets applicationguardrails glyphfixtures dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples site-data sitenavcontract sitecheck quarto-dirs site-render site-render-check site-preview living-book-check
 
 check: lean sourcecheck
 
-sourcecheck: sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests claimlanguage phase4targets phase5targets phase6targets applicationguardrails glyphfixtures dimensioncheck nofake sitecheck
+sourcecheck: sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests claimlanguage phase4targets phase5targets phase6targets phase7targets applicationguardrails glyphfixtures dimensioncheck nofake sitecheck
 
 lean:
 	$(LAKE) build
@@ -48,6 +48,9 @@ phase5targets:
 
 phase6targets:
 	python scripts/check_phase6_sweep_targets.py
+
+phase7targets:
+	python scripts/check_phase7_targets.py
 
 applicationguardrails:
 	python scripts/check_application_guardrails.py

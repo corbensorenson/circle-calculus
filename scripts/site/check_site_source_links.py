@@ -58,6 +58,7 @@ def main() -> int:
         load_json(GENERATED / "phase4_targets.json"),
         load_json(GENERATED / "phase5_targets.json"),
         load_json(GENERATED / "phase6_targets.json"),
+        load_json(GENERATED / "phase7_targets.json"),
     ]
 
     theorem_ids = {item["id"] for item in theorem_manifest.get("theorems", [])}

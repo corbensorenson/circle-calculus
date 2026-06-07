@@ -917,6 +917,76 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["memory_slot(bank_size, memory_slot(bank_size, token)) == memory_slot(bank_size, token)"]
     blocker: ""
+  - id: AIM-T0006
+    status: lean_proved
+    lean_name: Circle.Applications.loopRequiredSteps_pos
+    informal_statement: "Every finite looped-recurrence schedule sample has a positive required loop depth."
+    formal_statement: "forall loopPeriod sample : Nat, 0 < loopRequiredSteps loopPeriod sample"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_required_steps_are_positive_bounded_and_periodic
+    blocker: ""
+  - id: AIM-T0007
+    status: lean_proved
+    lean_name: Circle.Applications.loopRequiredSteps_le_loopPeriod
+    informal_statement: "For a positive loop period, the required loop depth is bounded by that period."
+    formal_statement: "forall {loopPeriod : Nat}, 0 < loopPeriod -> forall sample : Nat, loopRequiredSteps loopPeriod sample <= loopPeriod"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_required_steps_are_positive_bounded_and_periodic
+    blocker: ""
+  - id: AIM-T0008
+    status: lean_proved
+    lean_name: Circle.Applications.loopRequiredSteps_add_loopPeriod
+    informal_statement: "For a positive loop period, shifting a sample index by one full period preserves its required loop depth."
+    formal_statement: "forall {loopPeriod : Nat}, 0 < loopPeriod -> forall sample : Nat, loopRequiredSteps loopPeriod (sample + loopPeriod) = loopRequiredSteps loopPeriod sample"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_required_steps_are_positive_bounded_and_periodic
+    blocker: ""
+  - id: AIM-T0009
+    status: lean_proved
+    lean_name: Circle.Applications.tokenRecurrenceBudget_add_loopPeriod
+    informal_statement: "For a positive loop period, shifting a token index by one full period preserves its token recurrence budget."
+    formal_statement: "forall {loopPeriod : Nat}, 0 < loopPeriod -> forall token : Nat, tokenRecurrenceBudget loopPeriod (token + loopPeriod) = tokenRecurrenceBudget loopPeriod token"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0010
+    status: lean_proved
+    lean_name: Circle.Applications.trainingFreeLoopBudget_le_maxLoops
+    informal_statement: "A training-free phase-budget wrapper never assigns more loop passes than the configured maximum."
+    formal_statement: "forall loopPeriod sample maxLoops : Nat, trainingFreeLoopBudget loopPeriod sample maxLoops <= maxLoops"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0067"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_training_free_loop_wrapper_budget_helpers_are_deterministic
+    blocker: ""
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize
@@ -981,5 +1051,635 @@ theorems:
       lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["adapter_block(block_size, adapter_block(block_size, channel)) == adapter_block(block_size, channel)"]
+    blocker: ""
+  - id: PHYS-T0001
+    status: lean_proved
+    lean_name: Circle.Physics.pathHolonomy_concat
+    informal_statement: "Finite path holonomy is additive under concatenation of composable gauge paths."
+    formal_statement: "For finite ZMod n phase lists left and right, pathHolonomy(left ++ right) = pathHolonomy(left) + pathHolonomy(right)."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_path_holonomy_concatenates_by_addition_mod_n
+    blocker: ""
+  - id: PHYS-T0002
+    status: lean_proved
+    lean_name: Circle.Physics.pathHolonomy_reverse
+    informal_statement: "Reversing a finite gauge path negates its holonomy modulo the path modulus."
+    formal_statement: "For a finite ZMod n phase list phases, pathHolonomy(reversePhases phases) = -pathHolonomy(phases)."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_reverse_path_inverts_holonomy
+    blocker: ""
+  - id: PHYS-T0003
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeTransform_pathHolonomy_endpoints
+    informal_statement: "A finite vertex gauge transform changes open-path holonomy only by the endpoint gauge values."
+    formal_statement: "For a finite GaugePath over ZMod n, gaugeTransformHolonomy(path) = pathHolonomy(path.phases) + path.sourceGauge - path.targetGauge."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0063"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_gauge_transform_changes_open_path_by_endpoint_values
+    blocker: ""
+  - id: PHYS-T0004
+    status: lean_proved
+    lean_name: Circle.Physics.closedWilsonLoop_gaugeInvariant
+    informal_statement: "Closed finite Wilson-loop holonomy is invariant under sampled finite vertex gauge transforms."
+    formal_statement: "For a finite GaugePath over ZMod n with equal sourceGauge and targetGauge, gaugeTransformHolonomy(path) = pathHolonomy(path.phases)."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_closed_wilson_loop_is_gauge_invariant_under_sampled_gauges
+    blocker: ""
+  - id: PHYS-T0005
+    status: lean_proved
+    lean_name: Circle.Physics.plaquetteHolonomy_gaugeInvariant
+    informal_statement: "A finite square plaquette loop has gauge-invariant holonomy in the finite link model."
+    formal_statement: "For a finite Plaquette over ZMod n, gaugeTransformHolonomy(p.path) = pathHolonomy(p.phases)."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_square_plaquette_fixture_is_closed_and_gauge_invariant
+    blocker: ""
+  - id: PHYS-T0006
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPathHolonomy_concat
+    informal_statement: "Finite link-path holonomy is additive under concatenating finite gauge-link path records."
+    formal_statement: "For finite GaugeLinkPath records left and right, holonomy(left.concat right) = holonomy(left) + holonomy(right)."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_path_holonomy_concatenates_by_addition_mod_n
+    blocker: ""
+  - id: PHYS-T0007
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPathHolonomy_reverse
+    informal_statement: "Reversing a finite gauge-link path record negates its link-path holonomy."
+    formal_statement: "For a finite GaugeLinkPath record path, holonomy(path.reverse) = -holonomy(path)."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_reverse_path_inverts_holonomy
+    blocker: ""
+  - id: PHYS-T0008
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPath_singleton_composable
+    informal_statement: "A one-link finite gauge-link path record is compositionally valid."
+    formal_statement: "For a finite GaugeLink record link, GaugeLinkPath.mk [link] satisfies the link-list composability predicate."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_path_holonomy_concatenates_by_addition_mod_n
+    blocker: ""
+  - id: PHYS-T0009
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPath_pair_composable_iff
+    informal_statement: "A two-link finite gauge-link path record is composable exactly when the first target is the second source."
+    formal_statement: "For finite GaugeLink records first and second, GaugeLinkPath.mk [first, second] is composable iff first.target = second.source."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_path_holonomy_concatenates_by_addition_mod_n
+    blocker: ""
+  - id: PHYS-T0010
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPath_concat_singletons_composable_iff
+    informal_statement: "Concatenating two one-link finite gauge-link path records is composable exactly when the left target is the right source."
+    formal_statement: "For finite GaugeLink records first and second, (GaugeLinkPath.mk [first]).concat (GaugeLinkPath.mk [second]) is composable iff first.target = second.source."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_path_holonomy_concatenates_by_addition_mod_n
+    blocker: ""
+  - id: PHYS-T0011
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPath_triple_composable_iff
+    informal_statement: "A three-link finite gauge-link path record is composable exactly when both adjacent source-target boundaries match."
+    formal_statement: "For finite GaugeLink records first, second, and third, GaugeLinkPath.mk [first, second, third] is composable iff first.target = second.source and second.target = third.source."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_path_holonomy_concatenates_by_addition_mod_n
+    blocker: ""
+  - id: PHYS-T0012
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPath_quad_composable_iff
+    informal_statement: "A four-link finite gauge-link path record is composable exactly when all three adjacent source-target boundaries match."
+    formal_statement: "For finite GaugeLink records first, second, third, and fourth, GaugeLinkPath.mk [first, second, third, fourth] is composable iff first.target = second.source, second.target = third.source, and third.target = fourth.source."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0062"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_square_plaquette_fixture_is_closed_and_gauge_invariant
+    blocker: ""
+  - id: PHYS-T0013
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPath_empty_composable
+    informal_statement: "The empty finite gauge-link path record is compositionally valid."
+    formal_statement: "For any finite phase modulus n, GaugeLinkPath.empty n satisfies the link-list composability predicate."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py
+    blocker: ""
+  - id: PHYS-T0014
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPath_concat_empty_left_composable
+    informal_statement: "Left-concatenating the empty finite gauge-link path record preserves composability."
+    formal_statement: "For any finite GaugeLinkPath path, (GaugeLinkPath.empty n).concat path is composable iff path is composable."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py
+    blocker: ""
+  - id: PHYS-T0015
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPath_concat_empty_right_composable
+    informal_statement: "Right-concatenating the empty finite gauge-link path record preserves composability."
+    formal_statement: "For any finite GaugeLinkPath path, path.concat (GaugeLinkPath.empty n) is composable iff path is composable."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py
+    blocker: ""
+  - id: PHYS-T0016
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPath_concat_empty_left
+    informal_statement: "Left-concatenating the empty finite gauge-link path record returns the original path record."
+    formal_statement: "For any finite GaugeLinkPath path, (GaugeLinkPath.empty n).concat path = path."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py
+    blocker: ""
+  - id: PHYS-T0017
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPath_concat_empty_right
+    informal_statement: "Right-concatenating the empty finite gauge-link path record returns the original path record."
+    formal_statement: "For any finite GaugeLinkPath path, path.concat (GaugeLinkPath.empty n) = path."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py
+    blocker: ""
+  - id: PHYS-T0018
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPath_concat_assoc
+    informal_statement: "Finite gauge-link path-record concatenation is associative."
+    formal_statement: "For finite GaugeLinkPath records left, middle, and right, (left.concat middle).concat right = left.concat (middle.concat right)."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py
+    blocker: ""
+  - id: PHYS-T0019
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLink_reverse_reverse
+    informal_statement: "Reversing a finite gauge link twice returns the original link record."
+    formal_statement: "For any finite GaugeLink link, link.reverse.reverse = link."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_reverse_path_inverts_holonomy
+    blocker: ""
+  - id: PHYS-T0020
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPath_reverse_reverse
+    informal_statement: "Reversing a finite gauge-link path record twice returns the original path record."
+    formal_statement: "For any finite GaugeLinkPath path, path.reverse.reverse = path."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_reverse_path_inverts_holonomy
+    blocker: ""
+  - id: PHYS-T0021
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPath_reverse_concat
+    informal_statement: "Reversing a concatenated finite gauge-link path record equals concatenating the reversed right path before the reversed left path."
+    formal_statement: "For finite GaugeLinkPath records left and right, (left.concat right).reverse = right.reverse.concat left.reverse."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_reverse_path_inverts_holonomy
+    blocker: ""
+  - id: PHYS-T0022
+    status: lean_proved
+    lean_name: Circle.Physics.linksComposable_append_of_composable
+    informal_statement: "Two finite gauge-link lists append to a composable list when both lists are composable and their shared boundary target/source matches."
+    formal_statement: "For finite GaugeLink lists left and right, if linksComposable left, linksComposable right, and linksBoundaryComposable left right, then linksComposable (left ++ right)."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_path_holonomy_concatenates_by_addition_mod_n
+    blocker: ""
+  - id: PHYS-T0023
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPath_concat_composable_of_boundary
+    informal_statement: "Two finite gauge-link path records concatenate to a composable path record when each side is composable and the boundary matches."
+    formal_statement: "For finite GaugeLinkPath records left and right, if left.composable, right.composable, and left.boundaryComposable right, then (left.concat right).composable."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_path_holonomy_concatenates_by_addition_mod_n
+    blocker: ""
+  - id: PHYS-T0024
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPath_sourceOpt_concat_cons_left
+    informal_statement: "Concatenating a finite gauge-link path record with a nonempty left side keeps the source of the leftmost link."
+    formal_statement: "For finite GaugeLink first, leftRest, and right path, ((GaugeLinkPath.mk (first :: leftRest)).concat right).source? = some first.source."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_path_holonomy_concatenates_by_addition_mod_n
+    blocker: ""
+  - id: PHYS-T0025
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPath_targetOpt_concat_cons_right
+    informal_statement: "Concatenating a finite gauge-link path record with a nonempty right side keeps the target of the right path."
+    formal_statement: "For finite GaugeLinkPath left and nonempty right path GaugeLinkPath.mk (first :: rightRest), (left.concat right).target? = right.target?."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_path_holonomy_concatenates_by_addition_mod_n
+    blocker: ""
+  - id: PHYS-T0026
+    status: lean_proved
+    lean_name: Circle.Physics.linksBoundaryComposable_of_endpoints
+    informal_statement: "Two finite gauge-link lists are boundary-composable when their explicit endpoint records match."
+    formal_statement: "For finite gauge-link lists left and right, linksHaveEndpoints leftSource leftTarget left, linksHaveEndpoints rightSource rightTarget right, and leftTarget = rightSource imply linksBoundaryComposable left right."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py
+    blocker: ""
+  - id: PHYS-T0027
+    status: lean_proved
+    lean_name: Circle.Physics.linksHaveEndpoints_append
+    informal_statement: "Appending finite gauge-link lists preserves explicit source and target endpoint records when the middle endpoint matches."
+    formal_statement: "For finite gauge-link lists left and right, linksHaveEndpoints source middle left and linksHaveEndpoints middle target right imply linksHaveEndpoints source target (left ++ right)."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py
+    blocker: ""
+  - id: PHYS-T0028
+    status: lean_proved
+    lean_name: Circle.Physics.checkedGaugePath_identity_source
+    informal_statement: "A checked finite gauge path identity has source equal to its vertex."
+    formal_statement: "For n and vertex, (CheckedGaugePath.identity n vertex).source = vertex."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py
+    blocker: ""
+  - id: PHYS-T0029
+    status: lean_proved
+    lean_name: Circle.Physics.checkedGaugePath_identity_target
+    informal_statement: "A checked finite gauge path identity has target equal to its vertex."
+    formal_statement: "For n and vertex, (CheckedGaugePath.identity n vertex).target = vertex."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py
+    blocker: ""
+  - id: PHYS-T0030
+    status: lean_proved
+    lean_name: Circle.Physics.checkedGaugePath_singleton_source
+    informal_statement: "A checked singleton finite gauge path has source equal to the link source."
+    formal_statement: "For a finite GaugeLink link, (CheckedGaugePath.singleton link).source = link.source."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py
+    blocker: ""
+  - id: PHYS-T0031
+    status: lean_proved
+    lean_name: Circle.Physics.checkedGaugePath_singleton_target
+    informal_statement: "A checked singleton finite gauge path has target equal to the link target."
+    formal_statement: "For a finite GaugeLink link, (CheckedGaugePath.singleton link).target = link.target."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py
+    blocker: ""
+  - id: PHYS-T0032
+    status: lean_proved
+    lean_name: Circle.Physics.checkedGaugePath_concat_source
+    informal_statement: "A checked finite gauge path concatenation keeps the source of the left path."
+    formal_statement: "For checked finite gauge paths left and right with left.target = right.source, (left.concat right h).source = left.source."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py
+    blocker: ""
+  - id: PHYS-T0033
+    status: lean_proved
+    lean_name: Circle.Physics.checkedGaugePath_concat_target
+    informal_statement: "A checked finite gauge path concatenation keeps the target of the right path."
+    formal_statement: "For checked finite gauge paths left and right with left.target = right.source, (left.concat right h).target = right.target."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py
+    blocker: ""
+  - id: PHYS-T0034
+    status: lean_proved
+    lean_name: Circle.Physics.checkedGaugePath_concat_identity_left
+    informal_statement: "Left concatenation by a checked finite gauge identity path returns the checked path."
+    formal_statement: "For a checked finite gauge path path, (CheckedGaugePath.identity n path.source).concat path rfl = path."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py
+    blocker: ""
+  - id: PHYS-T0035
+    status: lean_proved
+    lean_name: Circle.Physics.checkedGaugePath_concat_identity_right
+    informal_statement: "Right concatenation by a checked finite gauge identity path returns the checked path."
+    formal_statement: "For a checked finite gauge path path, path.concat (CheckedGaugePath.identity n path.target) rfl = path."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py
+    blocker: ""
+  - id: PHYS-T0036
+    status: lean_proved
+    lean_name: Circle.Physics.checkedGaugePath_concat_assoc
+    informal_statement: "Checked finite gauge path concatenation is associative when the two boundary equalities match."
+    formal_statement: "For checked finite gauge paths left, middle, and right, with left.target = middle.source and middle.target = right.source, the two checked concatenation associations are equal."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py
+    blocker: ""
+  - id: GEN-T0001
+    status: lean_proved
+    lean_name: Circle.Generative.finiteCircleGenerator_regenerates_nodes
+    informal_statement: "A finite-circle seed-rule record regenerates the listed nodes of C_n."
+    formal_statement: "For n, (finiteCircleGenerator n).generatedNodes = List.range n."
+    dictionary_dependencies: ["CC-0001", "CC-0002", "COMMON-0064", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_finite_circle_generator_regenerates_nodes
+    blocker: ""
+  - id: GEN-T0002
+    status: lean_proved
+    lean_name: Circle.Generative.coilOrbitGenerator_regenerates_orbit
+    informal_statement: "A coil seed-rule record regenerates the period-indexed stride orbit schedule from n, stride, and start."
+    formal_statement: "For n, stride, and start, (coilOrbitGenerator n stride start).generatedOrbit equals the period-indexed list of repeated coilStep values."
+    dictionary_dependencies: ["CC-0001", "CC-0101", "CC-0201", "COMMON-0064", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_coil_generator_regenerates_closed_stride_orbit
+    blocker: ""
+  - id: GEN-T0003
+    status: lean_proved
+    lean_name: Circle.Generative.orbitDecompositionGenerator_regenerates_orbits
+    informal_statement: "An orbit-decomposition seed-rule record regenerates its representative-indexed finite stride-orbit schedules."
+    formal_statement: "For n and stride, (orbitDecompositionGenerator n stride).generatedOrbits equals the list of gcd(n,stride) representative-indexed, period-indexed coilStep schedules."
+    dictionary_dependencies: ["CC-0001", "CC-0201", "COMMON-0064", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_orbit_decomposition_generator_partitions_circle
+    blocker: ""
+  - id: GEN-T0004
+    status: lean_proved
+    lean_name: Circle.Generative.proofGlyphGenerator_regenerates_certificate
+    informal_statement: "A proof-glyph seed-rule record regenerates theorem, glyph, and Lean-name metadata."
+    formal_statement: "For glyphId theoremId leanName, proofGlyphGenerator regenerates a ProofGlyph whose projected fields equal the seed fields."
+    dictionary_dependencies: ["COMMON-0033", "COMMON-0064", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_proof_glyph_generator_regenerates_certificate_fields
+    blocker: ""
+  - id: GEN-T0005
+    status: lean_proved
+    lean_name: Circle.Generative.generatorComparison_requires_exact_regeneration
+    informal_statement: "A generator comparison fixture checks exact regeneration before reporting description length."
+    formal_statement: "For regenerated and generated values, generatorComparison.exactRegeneration is equivalent to regenerated = generated."
+    dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_generator_comparison_has_positive_and_negative_cases
+    blocker: ""
+  - id: GEN-T0006
+    status: lean_proved
+    lean_name: Circle.Generative.orbitDecompositionGenerator_generatedOrbits_length
+    informal_statement: "The representative-indexed orbit-decomposition generator produces gcd(n,stride) orbit schedules."
+    formal_statement: "For n and stride, (orbitDecompositionGenerator n stride).generatedOrbits.length = Nat.gcd n stride."
+    dictionary_dependencies: ["CC-0205", "CC-0208", "COMMON-0064", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_orbit_decomposition_generator_partitions_circle
+    blocker: ""
+  - id: GEN-T0007
+    status: lean_proved
+    lean_name: Circle.Generative.orbitDecompositionGenerator_generatedOrbitFor_length
+    informal_statement: "Each generated representative orbit schedule has length equal to the finite coil period."
+    formal_statement: "For n, stride, and representative start, (orbitDecompositionGenerator n stride).generatedOrbitFor start has length Circle.period n stride."
+    dictionary_dependencies: ["CC-0201", "CC-0205", "COMMON-0064", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_orbit_decomposition_generator_partitions_circle
+    blocker: ""
+  - id: GEN-T0008
+    status: lean_proved
+    lean_name: Circle.Generative.orbitDecompositionGenerator_orbitCount_mul_period
+    informal_statement: "For a nonzero finite circle, representative count times generated orbit period equals the circle size."
+    formal_statement: "For n != 0 and stride, (orbitDecompositionGenerator n stride).orbitCount * (orbitDecompositionGenerator n stride).orbitPeriod = n."
+    dictionary_dependencies: ["CC-0205", "CC-0208", "COMMON-0064", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_orbit_decomposition_generator_partitions_circle
+    blocker: ""
+  - id: GEN-T0009
+    status: lean_proved
+    lean_name: Circle.Generative.orbitDecompositionGenerator_orbitCount_eq_orbitClassCount
+    informal_statement: "For a nonzero finite circle, the generator's representative count agrees with the formal stride-orbit class count."
+    formal_statement: "For n != 0 and stride, (orbitDecompositionGenerator n stride).orbitCount = Circle.orbitClassCount n stride."
+    dictionary_dependencies: ["CC-0205", "CC-0208", "COMMON-0064", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_orbit_decomposition_generator_partitions_circle
     blocker: ""
 warnings: []

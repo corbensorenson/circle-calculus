@@ -72,6 +72,51 @@ theorem memorySlot_zero (bankSize : Nat) :
   unfold memorySlot
   simp
 
+def loopRequiredSteps (loopPeriod sample : Nat) : Nat :=
+  phaseChannel loopPeriod sample + 1
+
+theorem loopRequiredSteps_pos (loopPeriod sample : Nat) :
+    0 < loopRequiredSteps loopPeriod sample := by
+  unfold loopRequiredSteps
+  exact Nat.succ_pos _
+
+theorem loopRequiredSteps_le_loopPeriod {loopPeriod : Nat} (h : 0 < loopPeriod)
+    (sample : Nat) :
+    loopRequiredSteps loopPeriod sample ≤ loopPeriod := by
+  unfold loopRequiredSteps phaseChannel
+  exact Nat.succ_le_of_lt (Nat.mod_lt sample h)
+
+theorem loopRequiredSteps_add_loopPeriod {loopPeriod : Nat} (h : 0 < loopPeriod)
+    (sample : Nat) :
+    loopRequiredSteps loopPeriod (sample + loopPeriod) =
+      loopRequiredSteps loopPeriod sample := by
+  unfold loopRequiredSteps
+  rw [phaseChannel_add_period h]
+
+def tokenRecurrenceBudget (loopPeriod token : Nat) : Nat :=
+  loopRequiredSteps loopPeriod token
+
+theorem tokenRecurrenceBudget_add_loopPeriod {loopPeriod : Nat} (h : 0 < loopPeriod)
+    (token : Nat) :
+    tokenRecurrenceBudget loopPeriod (token + loopPeriod) =
+      tokenRecurrenceBudget loopPeriod token := by
+  unfold tokenRecurrenceBudget
+  exact loopRequiredSteps_add_loopPeriod h token
+
+def trainingFreeLoopBudget (loopPeriod sample maxLoops : Nat) : Nat :=
+  min (loopRequiredSteps loopPeriod sample) maxLoops
+
+theorem trainingFreeLoopBudget_le_maxLoops (loopPeriod sample maxLoops : Nat) :
+    trainingFreeLoopBudget loopPeriod sample maxLoops ≤ maxLoops := by
+  unfold trainingFreeLoopBudget
+  exact Nat.min_le_right _ _
+
+theorem trainingFreeLoopBudget_le_requiredSteps (loopPeriod sample maxLoops : Nat) :
+    trainingFreeLoopBudget loopPeriod sample maxLoops ≤
+      loopRequiredSteps loopPeriod sample := by
+  unfold trainingFreeLoopBudget
+  exact Nat.min_le_left _ _
+
 def adapterBlock (blockSize channel : Nat) : Nat :=
   channel % blockSize
 

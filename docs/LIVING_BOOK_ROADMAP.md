@@ -86,20 +86,21 @@ Each chapter must distinguish intuition, example, Python model, and formal theor
 - Treat application pages as active proof/benchmark target tracks, not as indefinitely deferred notes.
 - Keep benchmark claims separate from Lean proofs.
 - Use MLX/Mac-first language for local compute work.
+- Add Phase VII physics/generative-structure lessons from the first bounded fixtures: finite gauge loops, holonomy, Hopf hidden phase, spin sign ambiguity, periodic dynamics, winding defects, seed-rule provenance, generator comparison, and proof-carrying generated diagrams.
 
 ## Dedicated Circle AI Deep Program
 
 - Treat Circle AI as a dedicated active program, not just one application page.
-- Explore phase channels, cyclic memory, coil/sparse attention, looped/recursive transformer schedules, token-level and middle-block recurrence, multi-resolution recurrence, training-free loop wrappers, adapter blocks, circulant mixers, RoPE and MultiCoil positional structure, recurrent state, harmonic features, geometry-aware models, proof-carrying model components, and MLX/Mac-compatible prototypes.
+- Explore phase channels, cyclic memory, coil/sparse attention, looped/recursive transformer schedules, token-level and middle-block recurrence, multi-resolution recurrence, learned recurrence schedules, training-free loop wrappers, adapter blocks, circulant mixers, RoPE and MultiCoil positional structure, recurrent state, harmonic features, geometry-aware models, proof-carrying model components, and MLX/Mac-compatible prototypes.
 - For each AI avenue, keep four lanes separate: Lean-proved finite safety/indexing facts, Python/MLX executable fixtures, benchmark comparisons against ordinary AI baselines, and speculative research hypotheses.
 - Include looped/recursive transformer schedules as a specific AI lesson lane: loop phase, recurrence budget, token-level active set, selected loop block, resolution level, exit certificate, score trace, overthinking guardrail, and ordinary recursive-transformer baselines.
 - Require negative controls for positive periodic fixtures, especially nonperiodic tasks where circular structure should not help.
 - Report quality, runtime, memory, parameter count, and interpretability separately.
 - Do not claim model improvement, attention replacement, parameter efficiency, or speed without a reproducible benchmark artifact and clear baseline.
 - Link AI proof cards, dictionary terms, papers, benchmark fixtures, and future widgets into the Living Book so readers can distinguish proved address structure from empirical claims.
-- Build the AI Living Book path as lessons, not a link farm: phase channels -> learned-feature baselines -> harmonic/Fourier features -> backend parity -> cyclic memory -> coil retrieval -> content-gated retrieval -> looped recurrence schedules -> token-level recurrence routing -> adapters -> circulant mixers -> MultiCoil positions -> RoPE relative phase -> learned model baselines -> MLX prototypes -> geometry-aware AI.
+- Build the AI Living Book path as lessons, not a link farm: phase channels -> learned-feature baselines -> harmonic/Fourier features -> backend parity -> cyclic memory -> coil retrieval -> content-gated retrieval -> looped recurrence schedules -> token-level recurrence routing -> training-free loop wrappers -> middle-block recurrence -> multi-resolution recurrence -> learned recurrence schedules -> adapters -> circulant mixers -> MultiCoil positions -> RoPE relative phase -> learned model baselines -> MLX prototypes -> geometry-aware AI.
 - Each mature AI lesson should show the ordinary baseline, the circular hypothesis, the Lean-proved boundary, the Python/MLX fixture, the benchmark status, and the limitation before linking to the source files.
-- Current benchmark anchors are `AIA-B0001`, `AIA-B0002`, `AIA-B0003`, `AIA-B0004`, `AIA-B0005`, `AIM-B0001`, `AIM-B0002`, `AIM-B0003`, `AIM-B0004`, `AIM-B0005`, `AIRA-B0001`, `AIRA-B0002`, `AIRA-B0003`, `AIRA-B0004`, and `AIRA-B0005`; they are scaffolds for phase, learned-feature baselines, harmonic/Fourier-feature baselines, backend parity, memory, coil-retrieval reachability, content-gated retrieval routing, looped-recurrence schedules, token-level recurrence routing, adapter-block, adapter parameter-budget accounting, circulant mixer validation, MultiCoil/RoPE-style positional structure, and RoPE-style relative phase, not model-quality results.
+- Current benchmark anchors are `AIA-B0001`, `AIA-B0002`, `AIA-B0003`, `AIA-B0004`, `AIA-B0005`, `AIM-B0001`, `AIM-B0002`, `AIM-B0003`, `AIM-B0004`, `AIM-B0005`, `AIM-B0006`, `AIM-B0007`, `AIM-B0008`, `AIM-B0009`, `AIM-B0010`, `AIRA-B0001`, `AIRA-B0002`, `AIRA-B0003`, `AIRA-B0004`, and `AIRA-B0005`; they are scaffolds for phase, learned-feature baselines, harmonic/Fourier-feature baselines, backend parity, memory, coil-retrieval reachability, content-gated retrieval routing, learned content-gate retrieval routing, looped-recurrence schedules, token-level recurrence routing, training-free loop-wrapper controls, middle-block recurrence controls, multi-resolution recurrence controls, learned recurrence-schedule controls, adapter-block, adapter parameter-budget accounting, circulant mixer validation, MultiCoil/RoPE-style positional structure, and RoPE-style relative phase, not model-quality results.
 
 ## Phase 6: Optional Manim Embedding
 
@@ -115,6 +116,16 @@ Each chapter must distinguish intuition, example, Python model, and formal theor
 
 - Add Lean Web deep links or embedded snippets for selected small theorems.
 - Lean Web is educational; local `lake build` remains the formal verification command.
+
+## Main Project Phase VII: Physics And Generative Structure
+
+The Living Book should teach the Phase VII roadmap as a guided path, not as a target table alone:
+
+```text
+finite gauge loops -> holonomy -> Hopf hidden phase -> spin sign ambiguity -> periodic dynamics -> winding defects -> minimal generators -> generator provenance -> proof-carrying generative diagrams
+```
+
+Each mature lesson must show the ordinary baseline, the Circle Calculus representation, the proof boundary, the executable fixture, the limitation, and then the source links. Physics pages must not imply a proved continuum model, and generator pages must not call a generator minimal without an explicit criterion and search space.
 
 ## First Milestone Acceptance Criteria
 

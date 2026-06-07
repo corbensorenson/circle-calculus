@@ -49,6 +49,8 @@ REQUIRED_NAV_HREFS = {
     "chapters/phase2/proof_carrying_glyphs.qmd",
     "chapters/applications/index.qmd",
     "chapters/applications/ai.qmd",
+    "chapters/applications/physics.qmd",
+    "chapters/applications/generative.qmd",
     "chapters/applications/compute.qmd",
     "chapters/applications/rendering.qmd",
     "chapters/applications/data_analysis.qmd",
@@ -125,6 +127,7 @@ PAGE_CONTRACTS = {
         ("phase IV target index", ["Phase IV"]),
         ("phase V target index", ["Phase V"]),
         ("phase VI target index", ["Phase VI"]),
+        ("phase VII target index", ["Phase VII"]),
         ("target status guardrail", ["not proved theorem claims"]),
     ],
 }

@@ -298,6 +298,37 @@ class ContentGatedRetrievalBenchmarkResult:
 
 
 @dataclass(frozen=True)
+class LearnedContentGateRetrievalBenchmarkResult:
+    sequence_length: int
+    train_length: int
+    test_length: int
+    route_period: int
+    wrong_route_period: int
+    long_target_lag: int
+    near_target_lag: int
+    stride: int
+    path_length: int
+    local_window: int
+    learned_route_lookup: tuple[int, ...]
+    wrong_period_route_lookup: tuple[int, ...]
+    required_route_sample: tuple[int, ...]
+    learned_route_sample: tuple[int, ...]
+    learned_route_accuracy: float
+    wrong_period_route_accuracy: float
+    learned_gate_accuracy: float
+    static_coil_accuracy: float
+    static_local_accuracy: float
+    wrong_period_gate_accuracy: float
+    flipped_gate_accuracy: float
+    union_candidate_accuracy: float
+    full_attention_accuracy: float
+    average_learned_candidate_count: float
+    average_union_candidate_count: float
+    average_full_candidate_count: float
+    note: str = "Synthetic learned content-gate retrieval fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
 class LoopedRecurrenceBenchmarkResult:
     loop_period: int
     train_length: int
@@ -339,6 +370,97 @@ class TokenLevelRecurrenceBenchmarkResult:
     nonperiodic_scalar_threshold_accuracy: float
     average_active_tokens: float
     note: str = "Synthetic token-level recurrence routing fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
+class MiddleBlockRecurrenceBenchmarkResult:
+    block_count: int
+    sample_count: int
+    loop_period: int
+    selected_loop_block: tuple[int, int]
+    wrong_loop_block: tuple[int, int]
+    max_budget: int
+    fixed_loop_budget: int
+    over_loop_budget: int
+    overthink_tolerance: int
+    selected_block_indices: tuple[int, ...]
+    required_block_sample: tuple[int, ...]
+    required_budget_sample: tuple[int, ...]
+    selected_middle_block_accuracy: float
+    full_block_phase_budget_accuracy: float
+    fixed_loop_budget_accuracy: float
+    wrong_block_accuracy: float
+    over_looped_accuracy: float
+    average_selected_block_passes: float
+    average_full_block_passes: float
+    note: str = "Synthetic middle-block recurrence fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
+class MultiResolutionRecurrenceBenchmarkResult:
+    loop_period: int
+    sample_count: int
+    max_budget: int
+    fixed_loop_budget: int
+    wrong_resolution_shift: int
+    over_loop_budget: int
+    overthink_tolerance: int
+    resolution_levels: tuple[str, ...]
+    required_budget_sample: tuple[int, ...]
+    required_resolution_sample: tuple[str, ...]
+    active_sample_counts: tuple[int, ...]
+    multi_resolution_accuracy: float
+    single_resolution_coarse_accuracy: float
+    single_resolution_fine_accuracy: float
+    fixed_budget_accuracy: float
+    wrong_resolution_accuracy: float
+    over_looped_accuracy: float
+    average_active_samples: float
+    note: str = "Synthetic multi-resolution recurrence fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
+class LearnedRecurrenceScheduleBenchmarkResult:
+    loop_period: int
+    wrong_period: int
+    train_length: int
+    test_length: int
+    fixed_loop_budget: int
+    over_loop_budget: int
+    overthink_tolerance: int
+    learned_budget_lookup: tuple[int, ...]
+    wrong_period_budget_lookup: tuple[int, ...]
+    required_budget_sample: tuple[int, ...]
+    learned_budget_sample: tuple[int, ...]
+    learned_phase_router_accuracy: float
+    fixed_loop_budget_accuracy: float
+    wrong_period_router_accuracy: float
+    over_looped_accuracy: float
+    note: str = "Synthetic learned recurrence-schedule fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
+class TrainingFreeLoopWrapperBenchmarkResult:
+    loop_period: int
+    sample_count: int
+    max_loops: int
+    fixed_loop_budget: int
+    wrong_loop_period: int
+    over_loop_budget: int
+    overthink_tolerance: int
+    backend: str
+    phase_budgets: tuple[int, ...]
+    active_sample_counts: tuple[int, ...]
+    budget_histogram: tuple[tuple[int, int], ...]
+    average_phase_budget: float
+    single_pass_accuracy: float
+    fixed_loop_accuracy: float
+    training_free_phase_budget_accuracy: float
+    wrong_period_budget_accuracy: float
+    over_loop_no_exit_accuracy: float
+    nonperiodic_phase_budget_accuracy: float
+    nonperiodic_scalar_threshold_accuracy: float
+    note: str = "Synthetic training-free loop-wrapper fixture only; not a model-quality claim."
 
 
 @dataclass(frozen=True)
@@ -1243,6 +1365,211 @@ def run_content_gated_retrieval_benchmark(
     )
 
 
+def content_route_label(query_index: int) -> int:
+    """Return the deterministic coil/local route label for mixed retrieval.
+
+    ``1`` means use the selected coil path for a long dependency. ``0`` means
+    use the local window for a near dependency.
+    """
+    return 1 if query_index % 2 == 0 else 0
+
+
+def fit_content_route_lookup(
+    route_period: int,
+    query_indices: Sequence[int],
+    route_labels: Sequence[int],
+) -> tuple[int, ...]:
+    """Fit a deterministic phase-to-route table by majority vote."""
+    _require_positive(route_period, "route_period")
+    query_tuple = tuple(query_indices)
+    route_tuple = tuple(route_labels)
+    if len(query_tuple) != len(route_tuple):
+        raise ValueError("query_indices and route_labels must have the same length")
+    if not query_tuple:
+        raise ValueError("query_indices must be nonempty")
+    for route in route_tuple:
+        if route not in (0, 1):
+            raise ValueError("route_labels must be binary")
+    fallback = _majority_int(route_tuple)
+    buckets: list[list[int]] = [[] for _ in range(route_period)]
+    for query_index, route in zip(query_tuple, route_tuple):
+        buckets[phase_channel(route_period, query_index)].append(route)
+    return tuple(fallback if not bucket else _majority_int(bucket) for bucket in buckets)
+
+
+def predict_content_route_lookup(
+    route_period: int,
+    lookup: Sequence[int],
+    query_indices: Sequence[int],
+) -> tuple[int, ...]:
+    """Predict coil/local route labels from a fitted phase-to-route table."""
+    _require_positive(route_period, "route_period")
+    lookup_tuple = tuple(lookup)
+    if len(lookup_tuple) != route_period:
+        raise ValueError("lookup length must equal route_period")
+    for route in lookup_tuple:
+        if route not in (0, 1):
+            raise ValueError("lookup values must be binary routes")
+    return tuple(lookup_tuple[phase_channel(route_period, query_index)] for query_index in query_indices)
+
+
+def _candidate_sets_for_routes(
+    routes: Sequence[int],
+    coil_candidates: Sequence[Sequence[int]],
+    local_candidates: Sequence[Sequence[int]],
+) -> tuple[tuple[int, ...], ...]:
+    route_tuple = tuple(routes)
+    if len(route_tuple) != len(coil_candidates):
+        raise ValueError("routes and coil_candidates must have the same length")
+    if len(route_tuple) != len(local_candidates):
+        raise ValueError("routes and local_candidates must have the same length")
+    candidates: list[tuple[int, ...]] = []
+    for route, coil, local in zip(route_tuple, coil_candidates, local_candidates):
+        if route == 1:
+            candidates.append(tuple(coil))
+        elif route == 0:
+            candidates.append(tuple(local))
+        else:
+            raise ValueError("routes must be binary")
+    return tuple(candidates)
+
+
+def run_learned_content_gate_retrieval_benchmark(
+    *,
+    sequence_length: int = 64,
+    train_length: int = 64,
+    test_length: int = 32,
+    route_period: int = 2,
+    wrong_route_period: int = 3,
+    long_target_lag: int = 21,
+    near_target_lag: int = 3,
+    stride: int = 7,
+    path_length: int = 3,
+    local_window: int = 8,
+) -> LearnedContentGateRetrievalBenchmarkResult:
+    """Run a learned phase-route fixture for coil/local retrieval.
+
+    The route table is fit from examples whose target type is known: even
+    query indices require the long coil path and odd query indices require the
+    local window. This checks whether a tiny learned phase gate can recover the
+    fixture route and candidate budget. It is not an attention-quality claim.
+    """
+    _require_positive(sequence_length, "sequence_length")
+    _require_positive(train_length, "train_length")
+    _require_positive(test_length, "test_length")
+    _require_positive(route_period, "route_period")
+    _require_positive(wrong_route_period, "wrong_route_period")
+    _require_positive(path_length, "path_length")
+    _require_positive(local_window, "local_window")
+    if long_target_lag < 0:
+        raise ValueError("long_target_lag must be nonnegative")
+    if near_target_lag < 0:
+        raise ValueError("near_target_lag must be nonnegative")
+    if stride < 0:
+        raise ValueError("stride must be nonnegative")
+
+    train_queries = tuple(range(train_length))
+    train_routes = tuple(content_route_label(query_index) for query_index in train_queries)
+    test_queries = tuple(range(train_length, train_length + test_length))
+    required_routes = tuple(content_route_label(query_index) for query_index in test_queries)
+    target_lags = mixed_retrieval_target_lags(
+        test_queries,
+        long_target_lag=long_target_lag,
+        near_target_lag=near_target_lag,
+    )
+
+    learned_lookup = fit_content_route_lookup(route_period, train_queries, train_routes)
+    wrong_lookup = fit_content_route_lookup(wrong_route_period, train_queries, train_routes)
+    learned_routes = predict_content_route_lookup(route_period, learned_lookup, test_queries)
+    wrong_period_routes = predict_content_route_lookup(wrong_route_period, wrong_lookup, test_queries)
+    flipped_routes = tuple(1 - route for route in required_routes)
+
+    coil_candidates = tuple(
+        coil_attention_path(sequence_length, query_index, stride, path_length)
+        for query_index in test_queries
+    )
+    local_candidates = tuple(
+        local_window_indices(sequence_length, query_index, local_window)
+        for query_index in test_queries
+    )
+    learned_candidates = _candidate_sets_for_routes(learned_routes, coil_candidates, local_candidates)
+    wrong_period_candidates = _candidate_sets_for_routes(
+        wrong_period_routes,
+        coil_candidates,
+        local_candidates,
+    )
+    flipped_candidates = _candidate_sets_for_routes(flipped_routes, coil_candidates, local_candidates)
+    union_candidates = tuple(
+        tuple(sorted(set(coil) | set(local)))
+        for coil, local in zip(coil_candidates, local_candidates)
+    )
+    full_candidates = tuple(tuple(range(sequence_length)) for _ in test_queries)
+
+    return LearnedContentGateRetrievalBenchmarkResult(
+        sequence_length=sequence_length,
+        train_length=train_length,
+        test_length=test_length,
+        route_period=route_period,
+        wrong_route_period=wrong_route_period,
+        long_target_lag=long_target_lag,
+        near_target_lag=near_target_lag,
+        stride=stride,
+        path_length=path_length,
+        local_window=local_window,
+        learned_route_lookup=learned_lookup,
+        wrong_period_route_lookup=wrong_lookup,
+        required_route_sample=required_routes[:12],
+        learned_route_sample=learned_routes[:12],
+        learned_route_accuracy=accuracy(learned_routes, required_routes),
+        wrong_period_route_accuracy=accuracy(wrong_period_routes, required_routes),
+        learned_gate_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            test_queries,
+            target_lags,
+            learned_candidates,
+        ),
+        static_coil_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            test_queries,
+            target_lags,
+            coil_candidates,
+        ),
+        static_local_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            test_queries,
+            target_lags,
+            local_candidates,
+        ),
+        wrong_period_gate_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            test_queries,
+            target_lags,
+            wrong_period_candidates,
+        ),
+        flipped_gate_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            test_queries,
+            target_lags,
+            flipped_candidates,
+        ),
+        union_candidate_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            test_queries,
+            target_lags,
+            union_candidates,
+        ),
+        full_attention_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            test_queries,
+            target_lags,
+            full_candidates,
+        ),
+        average_learned_candidate_count=average_candidate_count(learned_candidates),
+        average_union_candidate_count=average_candidate_count(union_candidates),
+        average_full_candidate_count=average_candidate_count(full_candidates),
+    )
+
+
 def loop_required_steps(loop_period: int, sample_index: int) -> int:
     """Return the synthetic recurrence depth required by a sample."""
     _require_positive(loop_period, "loop_period")
@@ -1488,6 +1815,41 @@ def recurrence_resolution_levels(max_budget: int) -> tuple[str, ...]:
     return tuple("coarse" if step % 2 == 1 else "fine" for step in range(1, max_budget + 1))
 
 
+def multi_resolution_required_resolutions(
+    max_budget: int,
+    required_budgets: Sequence[int],
+) -> tuple[str, ...]:
+    """Return the required coarse/fine label for each recurrence budget."""
+    levels = recurrence_resolution_levels(max_budget)
+    budgets = tuple(required_budgets)
+    if not budgets:
+        raise ValueError("required_budgets must be nonempty")
+    for budget in budgets:
+        _require_positive(budget, "required budget")
+        if budget > max_budget:
+            raise ValueError("required budget must be within max_budget")
+    return tuple(levels[budget - 1] for budget in budgets)
+
+
+def shifted_recurrence_resolutions(
+    max_budget: int,
+    required_budgets: Sequence[int],
+    shift: int,
+) -> tuple[str, ...]:
+    """Return a deterministic wrong-resolution control by rotating labels."""
+    if shift == 0:
+        raise ValueError("shift must be nonzero")
+    levels = recurrence_resolution_levels(max_budget)
+    budgets = tuple(required_budgets)
+    if not budgets:
+        raise ValueError("required_budgets must be nonempty")
+    for budget in budgets:
+        _require_positive(budget, "required budget")
+        if budget > max_budget:
+            raise ValueError("required budget must be within max_budget")
+    return tuple(levels[(budget - 1 + shift) % max_budget] for budget in budgets)
+
+
 def active_token_counts_by_budget(token_budgets: Sequence[int], max_budget: int) -> tuple[int, ...]:
     """Count how many tokens are still active at each loop step."""
     _require_positive(max_budget, "max_budget")
@@ -1497,6 +1859,28 @@ def active_token_counts_by_budget(token_budgets: Sequence[int], max_budget: int)
     for budget in budgets:
         _require_positive(budget, "token budget")
     return tuple(sum(1 for budget in budgets if budget >= step) for step in range(1, max_budget + 1))
+
+
+def loop_block_indices(block_count: int, selected_loop_block: Optional[Sequence[int]] = None) -> tuple[int, ...]:
+    """Return the model-block indices selected for a middle-block recurrence fixture."""
+    _require_positive(block_count, "block_count")
+    start, stop = normalize_selected_loop_block(selected_loop_block)
+    if stop > block_count:
+        raise ValueError("selected_loop_block stop must be within block_count")
+    return tuple(range(start, stop))
+
+
+def middle_block_required_blocks(
+    block_count: int,
+    selected_loop_block: Optional[Sequence[int]],
+    sample_indices: Sequence[int],
+) -> tuple[int, ...]:
+    """Assign each sample a required block inside the selected recurrence range."""
+    samples = tuple(sample_indices)
+    if not samples:
+        raise ValueError("sample_indices must be nonempty")
+    selected = loop_block_indices(block_count, selected_loop_block)
+    return tuple(selected[phase_channel(len(selected), sample)] for sample in samples)
 
 
 def _recurrence_budget_predictions(
@@ -1516,6 +1900,119 @@ def _recurrence_budget_predictions(
     return tuple(
         loop_score_trace(required_budget, planned_budget, overthink_tolerance=overthink_tolerance)[-1]
         for required_budget, planned_budget in zip(required, planned)
+    )
+
+
+def _majority_int(values: Sequence[int]) -> int:
+    value_tuple = tuple(values)
+    if not value_tuple:
+        raise ValueError("values must be nonempty")
+    counts: dict[int, int] = {}
+    for value in value_tuple:
+        counts[value] = counts.get(value, 0) + 1
+    return min(counts, key=lambda value: (-counts[value], value))
+
+
+def fit_loop_budget_lookup(
+    period: int,
+    positions: Sequence[int],
+    budgets: Sequence[int],
+) -> tuple[int, ...]:
+    """Fit a deterministic phase-to-loop-budget table by majority vote."""
+    _require_positive(period, "period")
+    position_tuple = tuple(positions)
+    budget_tuple = tuple(budgets)
+    if len(position_tuple) != len(budget_tuple):
+        raise ValueError("positions and budgets must have the same length")
+    if not position_tuple:
+        raise ValueError("positions must be nonempty")
+    fallback = _majority_int(budget_tuple)
+    buckets: list[list[int]] = [[] for _ in range(period)]
+    for position, budget in zip(position_tuple, budget_tuple):
+        _require_positive(budget, "budget")
+        buckets[phase_channel(period, position)].append(budget)
+    return tuple(fallback if not bucket else _majority_int(bucket) for bucket in buckets)
+
+
+def predict_loop_budget_lookup(
+    period: int,
+    lookup: Sequence[int],
+    positions: Sequence[int],
+) -> tuple[int, ...]:
+    """Predict loop budgets from a fitted phase-to-budget lookup table."""
+    _require_positive(period, "period")
+    lookup_tuple = tuple(lookup)
+    if len(lookup_tuple) != period:
+        raise ValueError("lookup length must equal period")
+    return tuple(lookup_tuple[phase_channel(period, position)] for position in positions)
+
+
+def _middle_block_predictions(
+    required_blocks: Sequence[int],
+    required_budgets: Sequence[int],
+    candidate_blocks: Sequence[int],
+    planned_budgets: Sequence[int],
+    *,
+    overthink_tolerance: int,
+) -> tuple[int, ...]:
+    required_block_tuple = tuple(required_blocks)
+    required_budget_tuple = tuple(required_budgets)
+    planned_budget_tuple = tuple(planned_budgets)
+    if len(required_block_tuple) != len(required_budget_tuple):
+        raise ValueError("required_blocks and required_budgets must have the same length")
+    if len(required_block_tuple) != len(planned_budget_tuple):
+        raise ValueError("required_blocks and planned_budgets must have the same length")
+    if overthink_tolerance < 0:
+        raise ValueError("overthink_tolerance must be nonnegative")
+    candidates = set(candidate_blocks)
+    if not candidates:
+        raise ValueError("candidate_blocks must be nonempty")
+    return tuple(
+        1
+        if required_block in candidates
+        and required_budget <= planned_budget <= required_budget + overthink_tolerance
+        else 0
+        for required_block, required_budget, planned_budget in zip(
+            required_block_tuple,
+            required_budget_tuple,
+            planned_budget_tuple,
+        )
+    )
+
+
+def _multi_resolution_predictions(
+    required_budgets: Sequence[int],
+    required_resolutions: Sequence[str],
+    planned_budgets: Sequence[int],
+    planned_resolutions: Sequence[str],
+    *,
+    overthink_tolerance: int,
+) -> tuple[int, ...]:
+    required_budget_tuple = tuple(required_budgets)
+    required_resolution_tuple = tuple(required_resolutions)
+    planned_budget_tuple = tuple(planned_budgets)
+    planned_resolution_tuple = tuple(planned_resolutions)
+    if len(required_budget_tuple) != len(required_resolution_tuple):
+        raise ValueError("required_budgets and required_resolutions must have the same length")
+    if len(required_budget_tuple) != len(planned_budget_tuple):
+        raise ValueError("required_budgets and planned_budgets must have the same length")
+    if len(required_budget_tuple) != len(planned_resolution_tuple):
+        raise ValueError("required_budgets and planned_resolutions must have the same length")
+    if not required_budget_tuple:
+        raise ValueError("required_budgets must be nonempty")
+    if overthink_tolerance < 0:
+        raise ValueError("overthink_tolerance must be nonnegative")
+    return tuple(
+        1
+        if required_resolution == planned_resolution
+        and required_budget <= planned_budget <= required_budget + overthink_tolerance
+        else 0
+        for required_budget, required_resolution, planned_budget, planned_resolution in zip(
+            required_budget_tuple,
+            required_resolution_tuple,
+            planned_budget_tuple,
+            planned_resolution_tuple,
+        )
     )
 
 
@@ -1610,6 +2107,442 @@ def run_token_level_recurrence_benchmark(
         nonperiodic_token_level_accuracy=accuracy(control_loop_predictions, control_labels),
         nonperiodic_scalar_threshold_accuracy=accuracy(control_threshold_predictions, control_labels),
         average_active_tokens=sum(active_counts) / len(active_counts),
+    )
+
+
+def run_middle_block_recurrence_benchmark(
+    *,
+    block_count: int = 8,
+    sample_count: int = 32,
+    loop_period: int = 4,
+    selected_loop_block: Optional[Sequence[int]] = None,
+    wrong_loop_block: Optional[Sequence[int]] = (0, 2),
+    max_budget: int = 4,
+    fixed_loop_budget: int = 4,
+    over_loop_budget: int = 8,
+    overthink_tolerance: int = 0,
+) -> MiddleBlockRecurrenceBenchmarkResult:
+    """Run a deterministic middle-block recurrence scheduling fixture.
+
+    The positive fixture assigns every sample a required loop depth and a
+    required model block inside the selected middle-block range. The selected
+    route and a full-block route can both satisfy the constructed schedule;
+    fixed-budget, wrong-block, and over-loop controls keep the claim bounded.
+    This is recurrence bookkeeping only, not evidence about learned model
+    quality or efficiency.
+    """
+    _require_positive(block_count, "block_count")
+    _require_positive(sample_count, "sample_count")
+    _require_positive(loop_period, "loop_period")
+    _require_positive(max_budget, "max_budget")
+    _require_positive(fixed_loop_budget, "fixed_loop_budget")
+    _require_positive(over_loop_budget, "over_loop_budget")
+    if overthink_tolerance < 0:
+        raise ValueError("overthink_tolerance must be nonnegative")
+
+    selected_block = normalize_selected_loop_block(selected_loop_block)
+    wrong_block = normalize_selected_loop_block(wrong_loop_block)
+    selected_blocks = loop_block_indices(block_count, selected_block)
+    wrong_blocks = loop_block_indices(block_count, wrong_block)
+    full_blocks = tuple(range(block_count))
+    samples = tuple(range(sample_count))
+    required_blocks = middle_block_required_blocks(block_count, selected_block, samples)
+    required_budgets = token_recurrence_budgets(loop_period, samples)
+    phase_budgets = tuple(min(budget, max_budget) for budget in required_budgets)
+    fixed_budgets = tuple(fixed_loop_budget for _ in samples)
+    over_budgets = tuple(over_loop_budget for _ in samples)
+    labels = tuple(1 for _ in samples)
+
+    selected_predictions = _middle_block_predictions(
+        required_blocks,
+        required_budgets,
+        selected_blocks,
+        phase_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+    full_predictions = _middle_block_predictions(
+        required_blocks,
+        required_budgets,
+        full_blocks,
+        phase_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+    fixed_predictions = _middle_block_predictions(
+        required_blocks,
+        required_budgets,
+        selected_blocks,
+        fixed_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+    wrong_predictions = _middle_block_predictions(
+        required_blocks,
+        required_budgets,
+        wrong_blocks,
+        phase_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+    over_predictions = _middle_block_predictions(
+        required_blocks,
+        required_budgets,
+        selected_blocks,
+        over_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+
+    average_phase_budget = sum(phase_budgets) / len(phase_budgets)
+    return MiddleBlockRecurrenceBenchmarkResult(
+        block_count=block_count,
+        sample_count=sample_count,
+        loop_period=loop_period,
+        selected_loop_block=selected_block,
+        wrong_loop_block=wrong_block,
+        max_budget=max_budget,
+        fixed_loop_budget=fixed_loop_budget,
+        over_loop_budget=over_loop_budget,
+        overthink_tolerance=overthink_tolerance,
+        selected_block_indices=selected_blocks,
+        required_block_sample=required_blocks[: min(12, len(required_blocks))],
+        required_budget_sample=required_budgets[: min(12, len(required_budgets))],
+        selected_middle_block_accuracy=accuracy(selected_predictions, labels),
+        full_block_phase_budget_accuracy=accuracy(full_predictions, labels),
+        fixed_loop_budget_accuracy=accuracy(fixed_predictions, labels),
+        wrong_block_accuracy=accuracy(wrong_predictions, labels),
+        over_looped_accuracy=accuracy(over_predictions, labels),
+        average_selected_block_passes=average_phase_budget * len(selected_blocks),
+        average_full_block_passes=average_phase_budget * len(full_blocks),
+    )
+
+
+def run_multi_resolution_recurrence_benchmark(
+    *,
+    loop_period: int = 4,
+    sample_count: int = 32,
+    max_budget: int = 4,
+    fixed_loop_budget: int = 4,
+    wrong_resolution_shift: int = 1,
+    over_loop_budget: int = 8,
+    overthink_tolerance: int = 0,
+) -> MultiResolutionRecurrenceBenchmarkResult:
+    """Run a deterministic multi-resolution recurrence routing fixture.
+
+    The positive route chooses the required loop budget and the required
+    coarse/fine resolution label for each sample. Single-resolution,
+    fixed-budget, wrong-resolution, and over-loop controls keep the result as
+    schedule bookkeeping only, not evidence about learned model quality.
+    """
+    _require_positive(loop_period, "loop_period")
+    _require_positive(sample_count, "sample_count")
+    _require_positive(max_budget, "max_budget")
+    _require_positive(fixed_loop_budget, "fixed_loop_budget")
+    _require_positive(over_loop_budget, "over_loop_budget")
+    if loop_period > max_budget:
+        raise ValueError("loop_period must be no larger than max_budget")
+    if wrong_resolution_shift == 0:
+        raise ValueError("wrong_resolution_shift must be nonzero")
+    if overthink_tolerance < 0:
+        raise ValueError("overthink_tolerance must be nonnegative")
+
+    samples = tuple(range(sample_count))
+    required_budgets = token_recurrence_budgets(loop_period, samples)
+    required_resolutions = multi_resolution_required_resolutions(max_budget, required_budgets)
+    labels = tuple(1 for _ in samples)
+    routed_budgets = tuple(min(budget, max_budget) for budget in required_budgets)
+    fixed_budgets = tuple(fixed_loop_budget for _ in samples)
+    over_budgets = tuple(over_loop_budget for _ in samples)
+    coarse_resolutions = tuple("coarse" for _ in samples)
+    fine_resolutions = tuple("fine" for _ in samples)
+    wrong_resolutions = shifted_recurrence_resolutions(
+        max_budget,
+        required_budgets,
+        wrong_resolution_shift,
+    )
+
+    multi_resolution_predictions = _multi_resolution_predictions(
+        required_budgets,
+        required_resolutions,
+        routed_budgets,
+        required_resolutions,
+        overthink_tolerance=overthink_tolerance,
+    )
+    coarse_predictions = _multi_resolution_predictions(
+        required_budgets,
+        required_resolutions,
+        routed_budgets,
+        coarse_resolutions,
+        overthink_tolerance=overthink_tolerance,
+    )
+    fine_predictions = _multi_resolution_predictions(
+        required_budgets,
+        required_resolutions,
+        routed_budgets,
+        fine_resolutions,
+        overthink_tolerance=overthink_tolerance,
+    )
+    fixed_predictions = _multi_resolution_predictions(
+        required_budgets,
+        required_resolutions,
+        fixed_budgets,
+        required_resolutions,
+        overthink_tolerance=overthink_tolerance,
+    )
+    wrong_predictions = _multi_resolution_predictions(
+        required_budgets,
+        required_resolutions,
+        routed_budgets,
+        wrong_resolutions,
+        overthink_tolerance=overthink_tolerance,
+    )
+    over_predictions = _multi_resolution_predictions(
+        required_budgets,
+        required_resolutions,
+        over_budgets,
+        required_resolutions,
+        overthink_tolerance=overthink_tolerance,
+    )
+    active_counts = active_token_counts_by_budget(required_budgets, max_budget)
+
+    return MultiResolutionRecurrenceBenchmarkResult(
+        loop_period=loop_period,
+        sample_count=sample_count,
+        max_budget=max_budget,
+        fixed_loop_budget=fixed_loop_budget,
+        wrong_resolution_shift=wrong_resolution_shift,
+        over_loop_budget=over_loop_budget,
+        overthink_tolerance=overthink_tolerance,
+        resolution_levels=recurrence_resolution_levels(max_budget),
+        required_budget_sample=required_budgets[: min(12, len(required_budgets))],
+        required_resolution_sample=required_resolutions[: min(12, len(required_resolutions))],
+        active_sample_counts=active_counts,
+        multi_resolution_accuracy=accuracy(multi_resolution_predictions, labels),
+        single_resolution_coarse_accuracy=accuracy(coarse_predictions, labels),
+        single_resolution_fine_accuracy=accuracy(fine_predictions, labels),
+        fixed_budget_accuracy=accuracy(fixed_predictions, labels),
+        wrong_resolution_accuracy=accuracy(wrong_predictions, labels),
+        over_looped_accuracy=accuracy(over_predictions, labels),
+        average_active_samples=sum(active_counts) / len(active_counts),
+    )
+
+
+def run_learned_recurrence_schedule_benchmark(
+    *,
+    loop_period: int = 4,
+    wrong_period: int = 3,
+    train_length: int = 64,
+    test_length: int = 32,
+    fixed_loop_budget: int = 4,
+    over_loop_budget: int = 8,
+    overthink_tolerance: int = 0,
+) -> LearnedRecurrenceScheduleBenchmarkResult:
+    """Run a deterministic learned phase-to-recurrence-budget fixture.
+
+    The positive fixture fits a tiny phase lookup table from training examples
+    whose labels are required loop depths. Wrong-period, fixed-budget, and
+    over-loop controls keep this as schedule-learning bookkeeping only.
+    """
+    _require_positive(loop_period, "loop_period")
+    _require_positive(wrong_period, "wrong_period")
+    _require_positive(train_length, "train_length")
+    _require_positive(test_length, "test_length")
+    _require_positive(fixed_loop_budget, "fixed_loop_budget")
+    _require_positive(over_loop_budget, "over_loop_budget")
+    if wrong_period == loop_period:
+        raise ValueError("wrong_period must differ from loop_period")
+    if overthink_tolerance < 0:
+        raise ValueError("overthink_tolerance must be nonnegative")
+
+    train_positions = tuple(range(train_length))
+    train_budgets = token_recurrence_budgets(loop_period, train_positions)
+    test_positions = tuple(range(train_length, train_length + test_length))
+    required_budgets = token_recurrence_budgets(loop_period, test_positions)
+    labels = tuple(1 for _ in test_positions)
+
+    learned_lookup = fit_loop_budget_lookup(loop_period, train_positions, train_budgets)
+    learned_budgets = predict_loop_budget_lookup(loop_period, learned_lookup, test_positions)
+    wrong_lookup = fit_loop_budget_lookup(wrong_period, train_positions, train_budgets)
+    wrong_budgets = predict_loop_budget_lookup(wrong_period, wrong_lookup, test_positions)
+    fixed_budgets = tuple(fixed_loop_budget for _ in test_positions)
+    over_budgets = tuple(over_loop_budget for _ in test_positions)
+
+    learned_predictions = _recurrence_budget_predictions(
+        required_budgets,
+        learned_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+    fixed_predictions = _recurrence_budget_predictions(
+        required_budgets,
+        fixed_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+    wrong_predictions = _recurrence_budget_predictions(
+        required_budgets,
+        wrong_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+    over_predictions = _recurrence_budget_predictions(
+        required_budgets,
+        over_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+
+    return LearnedRecurrenceScheduleBenchmarkResult(
+        loop_period=loop_period,
+        wrong_period=wrong_period,
+        train_length=train_length,
+        test_length=test_length,
+        fixed_loop_budget=fixed_loop_budget,
+        over_loop_budget=over_loop_budget,
+        overthink_tolerance=overthink_tolerance,
+        learned_budget_lookup=learned_lookup,
+        wrong_period_budget_lookup=wrong_lookup,
+        required_budget_sample=required_budgets[: min(12, len(required_budgets))],
+        learned_budget_sample=learned_budgets[: min(12, len(learned_budgets))],
+        learned_phase_router_accuracy=accuracy(learned_predictions, labels),
+        fixed_loop_budget_accuracy=accuracy(fixed_predictions, labels),
+        wrong_period_router_accuracy=accuracy(wrong_predictions, labels),
+        over_looped_accuracy=accuracy(over_predictions, labels),
+    )
+
+
+def training_free_loop_budget(loop_period: int, sample_index: int, max_loops: int) -> int:
+    """Return a phase-prior loop budget for a training-free wrapper fixture."""
+    _require_positive(max_loops, "max_loops")
+    return min(loop_required_steps(loop_period, sample_index), max_loops)
+
+
+def training_free_loop_budgets(
+    loop_period: int,
+    sample_indices: Sequence[int],
+    max_loops: int,
+) -> tuple[int, ...]:
+    """Return phase-prior budgets for a batch of samples."""
+    samples = tuple(sample_indices)
+    if not samples:
+        raise ValueError("sample_indices must be nonempty")
+    return tuple(training_free_loop_budget(loop_period, sample, max_loops) for sample in samples)
+
+
+def _backend_accuracy(predictions: Sequence[int], labels: Sequence[int], backend: str) -> float:
+    if backend == "cpu":
+        return accuracy(predictions, labels)
+    if backend == "mlx":
+        return _mlx_accuracy(predictions, labels)
+    raise ValueError("backend must be 'cpu' or 'mlx'")
+
+
+def _budget_is_full_depth_predictions(
+    planned_budgets: Sequence[int],
+    max_loops: int,
+) -> tuple[int, ...]:
+    _require_positive(max_loops, "max_loops")
+    return tuple(1 if budget >= max_loops else 0 for budget in planned_budgets)
+
+
+def _budget_histogram(planned_budgets: Sequence[int]) -> tuple[tuple[int, int], ...]:
+    budgets = tuple(planned_budgets)
+    if not budgets:
+        raise ValueError("planned_budgets must be nonempty")
+    return tuple((budget, budgets.count(budget)) for budget in sorted(set(budgets)))
+
+
+def run_training_free_loop_wrapper_benchmark(
+    *,
+    loop_period: int = 4,
+    sample_count: int = 32,
+    max_loops: int = 4,
+    fixed_loop_budget: int = 2,
+    wrong_loop_period: int = 3,
+    over_loop_budget: int = 8,
+    overthink_tolerance: int = 0,
+    backend: str = "cpu",
+) -> TrainingFreeLoopWrapperBenchmarkResult:
+    """Run a deterministic training-free loop-wrapper fixture.
+
+    The wrapper uses the known circular phase as a fixed prior for how many
+    loop passes to run. It compares single-pass, fixed-budget, wrong-period,
+    and over-loop controls, plus a nonperiodic scalar-threshold control. This
+    is schedule bookkeeping only, not evidence about learned model quality.
+    """
+    _require_positive(loop_period, "loop_period")
+    _require_positive(sample_count, "sample_count")
+    _require_positive(max_loops, "max_loops")
+    _require_positive(fixed_loop_budget, "fixed_loop_budget")
+    _require_positive(wrong_loop_period, "wrong_loop_period")
+    _require_positive(over_loop_budget, "over_loop_budget")
+    if wrong_loop_period == loop_period:
+        raise ValueError("wrong_loop_period must differ from loop_period")
+    if overthink_tolerance < 0:
+        raise ValueError("overthink_tolerance must be nonnegative")
+
+    samples = tuple(range(sample_count))
+    required_budgets = token_recurrence_budgets(loop_period, samples)
+    positive_labels = tuple(1 for _ in samples)
+    phase_budgets = training_free_loop_budgets(loop_period, samples, max_loops)
+    single_pass_budgets = tuple(1 for _ in samples)
+    fixed_budgets = tuple(fixed_loop_budget for _ in samples)
+    wrong_period_budgets = training_free_loop_budgets(wrong_loop_period, samples, max_loops)
+    over_budgets = tuple(over_loop_budget for _ in samples)
+
+    single_pass_predictions = _recurrence_budget_predictions(
+        required_budgets,
+        single_pass_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+    fixed_predictions = _recurrence_budget_predictions(
+        required_budgets,
+        fixed_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+    phase_predictions = _recurrence_budget_predictions(
+        required_budgets,
+        phase_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+    wrong_predictions = _recurrence_budget_predictions(
+        required_budgets,
+        wrong_period_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+    over_predictions = _recurrence_budget_predictions(
+        required_budgets,
+        over_budgets,
+        overthink_tolerance=overthink_tolerance,
+    )
+
+    control_threshold = (3 * sample_count) // 4
+    control_labels = tuple(nonperiodic_threshold_label(sample, control_threshold) for sample in samples)
+    control_phase_predictions = _budget_is_full_depth_predictions(phase_budgets, max_loops)
+    threshold_fit, threshold_polarity = fit_threshold_classifier(samples, control_labels)
+    control_threshold_predictions = predict_threshold_classifier(
+        samples,
+        threshold_fit,
+        threshold_polarity,
+    )
+    active_counts = active_token_counts_by_budget(phase_budgets, max_loops)
+
+    return TrainingFreeLoopWrapperBenchmarkResult(
+        loop_period=loop_period,
+        sample_count=sample_count,
+        max_loops=max_loops,
+        fixed_loop_budget=fixed_loop_budget,
+        wrong_loop_period=wrong_loop_period,
+        over_loop_budget=over_loop_budget,
+        overthink_tolerance=overthink_tolerance,
+        backend=backend,
+        phase_budgets=phase_budgets,
+        active_sample_counts=active_counts,
+        budget_histogram=_budget_histogram(phase_budgets),
+        average_phase_budget=sum(phase_budgets) / len(phase_budgets),
+        single_pass_accuracy=_backend_accuracy(single_pass_predictions, positive_labels, backend),
+        fixed_loop_accuracy=_backend_accuracy(fixed_predictions, positive_labels, backend),
+        training_free_phase_budget_accuracy=_backend_accuracy(phase_predictions, positive_labels, backend),
+        wrong_period_budget_accuracy=_backend_accuracy(wrong_predictions, positive_labels, backend),
+        over_loop_no_exit_accuracy=_backend_accuracy(over_predictions, positive_labels, backend),
+        nonperiodic_phase_budget_accuracy=_backend_accuracy(control_phase_predictions, control_labels, backend),
+        nonperiodic_scalar_threshold_accuracy=_backend_accuracy(
+            control_threshold_predictions,
+            control_labels,
+            backend,
+        ),
     )
 
 

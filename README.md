@@ -16,7 +16,7 @@ The long-term aim is not just to write essays. The aim is to keep every serious 
 - shared dictionary files under `dictionary/`, and
 - theorem metadata in `manifests/theorem_manifest.yaml`.
 
-The Phase IV wide/deep theorem-target audit is tracked in `manifests/phase4_theorem_targets.yaml` and validated by `scripts/check_phase4_targets.py`, including required layer coverage and promoted/supporting theorem references. Phase V edge problem-space targets are tracked in `manifests/phase5_edge_targets.yaml`, explained in `docs/PHASE5_EDGE_TARGETS.md`, and validated by `scripts/check_phase5_targets.py`. Phase VI global sweep targets are tracked in `manifests/phase6_sweep_targets.yaml` and validated by `scripts/check_phase6_sweep_targets.py`; application benchmark and edge-claim guardrails are additionally checked by `scripts/check_application_guardrails.py`.
+The Phase IV wide/deep theorem-target audit is tracked in `manifests/phase4_theorem_targets.yaml` and validated by `scripts/check_phase4_targets.py`, including required layer coverage and promoted/supporting theorem references. Phase V edge problem-space targets are tracked in `manifests/phase5_edge_targets.yaml`, explained in `docs/PHASE5_EDGE_TARGETS.md`, and validated by `scripts/check_phase5_targets.py`. Phase VI global sweep targets are tracked in `manifests/phase6_sweep_targets.yaml` and validated by `scripts/check_phase6_sweep_targets.py`. Phase VII physics/generator targets are tracked in `manifests/phase7_physics_generators.yaml`, explained in `docs/PHASE7_PHYSICS_AND_GENERATORS.md`, and validated by `scripts/check_phase7_targets.py`; application benchmark and edge-claim guardrails are additionally checked by `scripts/check_application_guardrails.py`.
 
 The rule is simple: papers are allowed to be ambitious, but claimed theorems must be traceable.
 
@@ -95,8 +95,10 @@ This is an early public research scaffold with a working verification pipeline a
 | `papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md` | polished draft/proved finite seed | `COMPL-T0001` through `COMPL-T0005` are Lean-proved stride-address facts with Python examples; `COMPL-B0001` and `COMPL-B0002` are exploratory CoilLayout/stencil validation fixtures |
 | `papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md` | polished draft/proved finite seed | `COMPS-T0001` through `COMPS-T0004` are Lean-proved round-robin schedule facts with Python examples |
 | `papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md` | polished draft/proved finite seed | `AIA-T0001` through `AIA-T0005` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` through `AIA-B0005` are exploratory deterministic phase/backend/learned/harmonic-feature benchmark fixtures |
-| `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md` | polished draft/proved finite seed | `AIM-T0001` through `AIM-T0005` are Lean-proved cyclic-memory-slot facts with Python examples; `AIM-B0001` adds an exploratory cyclic-memory fixture, `AIM-B0002` adds an exploratory coil-retrieval reachability fixture, `AIM-B0003` adds an exploratory looped-recurrence schedule fixture, `AIM-B0004` adds an exploratory content-gated retrieval fixture, and `AIM-B0005` adds an exploratory token-level recurrence routing fixture |
+| `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md` | polished draft/proved finite seed | `AIM-T0001` through `AIM-T0010` are Lean-proved cyclic-memory-slot and finite loop-schedule facts with Python examples; `AIM-B0001` adds an exploratory cyclic-memory fixture, `AIM-B0002` adds an exploratory coil-retrieval reachability fixture, `AIM-B0003` adds an exploratory looped-recurrence schedule fixture, `AIM-B0004` adds an exploratory content-gated retrieval fixture, `AIM-B0005` adds an exploratory token-level recurrence routing fixture, `AIM-B0006` adds an exploratory training-free loop-wrapper fixture, `AIM-B0007` adds an exploratory middle-block recurrence fixture, `AIM-B0008` adds an exploratory multi-resolution recurrence fixture, `AIM-B0009` adds an exploratory learned recurrence-schedule fixture, and `AIM-B0010` adds an exploratory learned content-gate retrieval fixture |
 | `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md` | polished draft/proved finite seed | `AIRA-T0001` through `AIRA-T0005` are Lean-proved adapter-block facts with Python examples; `AIRA-B0001` adds an exploratory adapter-block fixture, `AIRA-B0002` adds an exploratory MultiCoil/RoPE-style positional fixture, `AIRA-B0003` adds an exploratory RoPE-style relative phase fixture, `AIRA-B0004` adds an exploratory adapter parameter-budget fixture, and `AIRA-B0005` adds an exploratory circulant-mixer validation fixture |
+| `papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md` | draft/proved finite seed | `PHYS-T0001` through `PHYS-T0036` are Lean-proved finite `ZMod n` phase-list and link-path holonomy, source-target composability, singleton-concat/triple/four-link, empty-identity, concat-identity, concat-associativity, reversal-algebra, boundary-append composability, source/target projection, checked path identity/associativity interface, gauge-transform, Wilson-loop, and plaquette invariance facts with Python examples |
+| `papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md` | draft/proved finite seed | `GEN-T0001` through `GEN-T0009` have checked Lean declarations for finite seed-rule, coil-orbit, representative-indexed orbit-decomposition, orbit-count/period/coverage/orbit-class agreement, proof-glyph, and exact-comparison regeneration seeds |
 
 The theorem manifest also includes `CC-T0008`, `CC-T0017` through `CC-T0054`, and `CC-T0056` through `CC-T0061`, proving the first scaling/full-coil/affine/orbit-membership spine: invertibility iff coprime, scale-by-zero collapse, scale-by-one identity, scaling composition, scale-factor congruence normalization, scaling transport of rotation stride, scaling transport of finite coil steps, the scaling-to-coil image bridge, bijectivity of nonzero scaling on prime circles, divisor-cofactor collapse to zero, cofactor-multiple collapse to zero, period-multiple collapse to zero, cofactor-shift and period-shift address collapse, period-normal representatives, period-congruence scaled equality, bounded period-representative injectivity, period-representative image cardinality and membership, whole-circle scaling image equality and cardinality, canonical kernel/fiber representative equality and gcd cardinality, zero-fiber/kernel and scaled-target/fiber bridges, fiber-set equality modulo scaled value and stride period, arbitrary target-fiber emptiness/cardinality, image-times-fiber and image-times-kernel scaling factorizations, kernel-subgroup membership, the exact divisibility and period-divisibility criteria for scaling to zero, the exact product-congruence criterion for scaled-address equality, coprime reflection of address congruence, full-coil iff coprime, rotation bijectivity, affine composition normal form, coprime affine bijectivity, and same-orbit natural-representative congruence modulo `gcd(n,k)`.
 
@@ -104,13 +106,15 @@ The D0 dimensional scaffold is also in place: dimension manifests, dimension dic
 
 Phase II and application scaffolds are also in place under `papers/phase2/`, `papers/applications/`, `manifests/theories/`, and `manifests/applications/`. `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_05_PROOF_CARRYING_GLYPHS`, `PAPER_APP_01_COIL_DATA_ANALYSIS`, `PAPER_COMP_01` through `PAPER_COMP_04`, and `PAPER_AI_01` through `PAPER_AI_03` now have proved seeds. The 2026-06-05 compute-applications handoff is preserved in `docs/PHASE2_AND_APPLICATIONS.md` and `circle_calculus_codex_handoff/source_logs/04_compute_applications_browser_note.md`. Benchmark claims remain benchmark work, not proof claims.
 
-AI is now treated as a dedicated active program rather than a single application lane. The roadmap tracks phase channels, cyclic memory, coil/sparse attention, adapter blocks, RoPE/MultiCoil positional structure, looped/recursive transformer recurrence schedules, token-level and middle-block recurrence, multi-resolution recurrence, training-free loop wrappers, recurrent/state-space/convolutional models, harmonic/circulant features, geometry-aware representations, proof-carrying model components, and MLX/Mac-compatible prototypes. The proof rule remains strict: Lean can certify finite indexing and rewrite facts, while model quality, speed, parameter efficiency, and usefulness require reproducible benchmarks with ordinary baselines and negative controls. The starter AI fixtures now cover phase channels, learned-feature and harmonic-feature baselines, backend parity, cyclic memory, coil-retrieval reachability, content-gated retrieval routing, looped-recurrence schedule controls, token-level recurrence routing, adapter blocks, adapter parameter budgets, circulant-mixer validation, MultiCoil/RoPE-style positional structure, and RoPE-style relative phase.
+AI is now treated as a dedicated active program rather than a single application lane. The roadmap tracks phase channels, cyclic memory, coil/sparse attention, adapter blocks, RoPE/MultiCoil positional structure, looped/recursive transformer recurrence schedules, token-level and middle-block recurrence, multi-resolution recurrence, learned recurrence schedules, training-free loop wrappers, recurrent/state-space/convolutional models, harmonic/circulant features, geometry-aware representations, proof-carrying model components, and MLX/Mac-compatible prototypes. The proof rule remains strict: Lean can certify finite indexing, loop-budget, and rewrite facts, while model quality, speed, parameter efficiency, and usefulness require reproducible benchmarks with ordinary baselines and negative controls. The starter AI fixtures now cover phase channels, learned-feature and harmonic-feature baselines, backend parity, cyclic memory, coil-retrieval reachability, content-gated retrieval routing, learned content-gate retrieval routing, looped-recurrence schedule controls, token-level recurrence routing, training-free loop-wrapper controls, middle-block recurrence controls, multi-resolution recurrence controls, learned recurrence-schedule controls, adapter blocks, adapter parameter budgets, circulant-mixer validation, MultiCoil/RoPE-style positional structure, and RoPE-style relative phase.
 
 Phase III is now implemented as the first Circle Calculus Living Book milestone: a Quarto-based interactive explainer site generated from manifests, dictionary entries, papers, Python reference models, and Lean proof metadata. Its policy and roadmap live in `docs/LIVING_BOOK_POLICY.md`, `docs/LIVING_BOOK_ROADMAP.md`, and `docs/LIVING_BOOK_WIDGETS.md`; `site/reader_path.qmd` gives a proof-status-safe tour through dimensions, applications, source trails, and local verification; the source browser handoff is archived at `circle_calculus_codex_handoff/source_logs/05_living_book_browser_note.md`. The Living Book is an explanation layer, not a proof layer. The intended public URL is `https://corbensorenson.github.io/circle-calculus/`, deployed from the static Quarto render only after proof/status/source-link checks pass in GitHub Actions.
 
-The next project phases are intentionally wide, deep, application-aware, and correctness-driven: Phase IV audits every dimensional level and application area for missing theorem targets, paper improvements, reusable lemmas, dictionary gaps, and stronger proof spines; Phase V searches edge problem spaces where Circle Calculus may provide leverage that is hard, awkward, or unavailable in ordinary presentations; the dedicated Circle AI program explores all serious AI avenues with proof/benchmark separation; Phase VI sweeps the whole corpus so the writing is cleaner, the claims are more correct, and the proof-status links are easy for outsiders to consume.
+The next project phases are intentionally wide, deep, application-aware, and correctness-driven: Phase IV audits every dimensional level and application area for missing theorem targets, paper improvements, reusable lemmas, dictionary gaps, and stronger proof spines; Phase V searches edge problem spaces where Circle Calculus may provide leverage that is hard, awkward, or unavailable in ordinary presentations; the dedicated Circle AI program explores all serious AI avenues with proof/benchmark separation; Phase VI sweeps the whole corpus so the writing is cleaner, the claims are more correct, and the proof-status links are easy for outsiders to consume; Phase VII turns physics-facing phase/gauge/holonomy/spin/winding ideas and seed-plus-rules generative compression into bounded proof targets, fixtures, papers, and Living Book lessons.
 
-Current Phase VI maintenance state: all 35 manifest papers now include source trails linking paper prose to Lean/Python sidecars and proof-status boundaries. `make check` also validates paper source trails, root plus dimension dictionary entries, the 10 application/theory research manifests that connect papers, sidecars, benchmarks, theorem ids, and dictionary dependencies, and application guardrails for baseline language, benchmark/proof separation, and MLX/CUDA wording.
+Phase VII is now an active research lane. The first finite physics slice has Lean-proved `ZMod n` phase-list holonomy, finite link-path record holonomy, singleton/two-link/singleton-concat/three-link/four-link, empty-identity, concat-identity, concat-associativity, reversal-algebra, boundary-append composability, source/target projection, a checked finite path interface with identity and associativity laws, endpoint-gauge, Wilson-loop, and plaquette facts, plus Python Wilson-loop certificates. The generative slice has Lean-proved finite seed-rule, coil-orbit schedule, representative-indexed orbit-decomposition, orbit-count/period/coverage/orbit-class agreement, proof-glyph, and exact-comparison seeds plus Python fixtures for finite circles, finite-circle generated diagrams, finite physics-loop diagrams, coils, orbit decompositions, proof glyphs, and generator-vs-explicit comparisons. Hopf/Berry-style holonomy primers, quaternion spin sign ambiguity, Floquet/action-angle/winding fixtures, physics-loop Living Book widgets, explicit disjoint canonical partition facts, and stronger minimality criteria remain next targets. The repo does not claim new physics or universal compression.
+
+Current Phase VI maintenance state: all 37 manifest papers now include source trails linking paper prose to Lean/Python sidecars and proof-status boundaries. `make check` also validates paper source trails, root plus dimension dictionary entries, the application/theory/target manifests that connect papers, sidecars, benchmarks, theorem ids, and dictionary dependencies, and application guardrails for baseline language, benchmark/proof separation, and MLX/CUDA wording.
 
 The README is updated after meaningful proof batches, paper batches, roadmap changes, or application-context additions. Tiny internal-only edits should update the relevant source files without creating README churn.
 
@@ -186,6 +190,7 @@ make claimlanguage # audit proved-language against theorem statuses
 make phase4targets # validate the wide/deep theorem target registry
 make phase5targets # validate the edge problem-space target registry
 make phase6targets # validate the global sweep target registry
+make phase7targets # validate the physics/generator target registry
 make dimensioncheck # validate dimension manifests, imports, and paper links
 make nofake      # reject forbidden proof placeholders
 make examples    # regenerate current example diagrams
@@ -400,11 +405,21 @@ Proved common and dimensional spine:
 - `AIM-T0003`: cyclic memory slot at zero is zero
 - `AIM-T0004`: cyclic memory slot closes after any whole number of full bank passes
 - `AIM-T0005`: cyclic memory-slot normalization is idempotent
+- `AIM-T0006`: looped-recurrence required depth is positive
+- `AIM-T0007`: looped-recurrence required depth is bounded by a positive loop period
+- `AIM-T0008`: looped-recurrence required depth closes after one full loop-period shift
+- `AIM-T0009`: token recurrence budget closes after one full loop-period shift
+- `AIM-T0010`: training-free loop budget is capped by the configured maximum
 - `AIM-B0001`: exploratory cyclic-memory benchmark fixture with constant/scalar-threshold baselines and a nonperiodic control
 - `AIM-B0002`: exploratory coil-retrieval reachability fixture with coil-path, local-window, wrong-stride, full-attention oracle, and near-lag controls
 - `AIM-B0003`: exploratory looped-recurrence schedule fixture with single-pass, fixed-loop, adaptive-exit, recurrent-memory, sparse phase-router, over-looped, and dense-threshold controls
 - `AIM-B0004`: exploratory content-gated retrieval fixture with static coil, static local, wrong-gate, union-candidate, full-attention, and candidate-budget controls
 - `AIM-B0005`: exploratory token-level recurrence routing fixture with per-token budgets, active-token counts, selected middle block, resolution labels, fixed/wrong/over-loop controls, and a nonperiodic scalar-threshold control
+- `AIM-B0006`: exploratory training-free loop-wrapper fixture with circular phase budgets, single-pass/fixed-loop/wrong-period/over-loop controls, a nonperiodic scalar-threshold baseline, and CPU/optional-MLX scoring
+- `AIM-B0007`: exploratory middle-block recurrence fixture with selected-block, full-block, fixed-budget, wrong-block, over-loop controls, and block-pass accounting
+- `AIM-B0008`: exploratory multi-resolution recurrence fixture with coarse/fine phase routing, single-resolution, fixed-budget, wrong-resolution, over-loop controls, and active-sample accounting
+- `AIM-B0009`: exploratory learned recurrence-schedule fixture with a phase-to-budget lookup, fixed-budget baseline, wrong-period control, and over-loop control
+- `AIM-B0010`: exploratory learned content-gate retrieval fixture with a phase-to-route lookup, static coil/local baselines, wrong-period and flipped-gate controls, union/full-attention baselines, route accuracy, and candidate-budget diagnostics
 - `AIRA-T0001`: adapter block index is bounded by a positive block size
 - `AIRA-T0002`: adapter block index closes after one full block pass
 - `AIRA-T0003`: adapter block index at zero is zero
@@ -415,6 +430,51 @@ Proved common and dimensional spine:
 - `AIRA-B0003`: exploratory RoPE-style relative phase fixture with wrong-period, query-position, scalar-threshold, and nonperiodic controls
 - `AIRA-B0004`: exploratory adapter parameter-budget fixture with dense adapter, LoRA-style low-rank, block-cyclic shared-table, and alias/load diagnostics
 - `AIRA-B0005`: exploratory circulant-mixer validation fixture with dense circulant-matrix parity, wrong-shift control, and parameter-count diagnostics
+- `PHYS-T0001`: Lean-proved finite path holonomy concatenation theorem
+- `PHYS-T0002`: Lean-proved finite reversed-path holonomy theorem
+- `PHYS-T0003`: Lean-proved finite gauge-transform endpoint theorem
+- `PHYS-T0004`: Lean-proved finite closed Wilson-loop invariance theorem
+- `PHYS-T0005`: Lean-proved finite square-plaquette invariance theorem
+- `PHYS-T0006`: Lean-proved finite link-path holonomy concatenation theorem
+- `PHYS-T0007`: Lean-proved finite reversed-link-path holonomy theorem
+- `PHYS-T0008`: Lean-proved singleton finite link-path composability theorem
+- `PHYS-T0009`: Lean-proved two-link finite link-path composability iff theorem
+- `PHYS-T0010`: Lean-proved singleton-concat finite link-path composability iff theorem
+- `PHYS-T0011`: Lean-proved three-link finite link-path composability iff theorem
+- `PHYS-T0012`: Lean-proved four-link finite link-path composability iff theorem
+- `PHYS-T0013`: Lean-proved empty finite link-path composability theorem
+- `PHYS-T0014`: Lean-proved left empty-concat finite link-path composability theorem
+- `PHYS-T0015`: Lean-proved right empty-concat finite link-path composability theorem
+- `PHYS-T0016`: Lean-proved left empty-concat finite link-path identity theorem
+- `PHYS-T0017`: Lean-proved right empty-concat finite link-path identity theorem
+- `PHYS-T0018`: Lean-proved finite link-path concatenation associativity theorem
+- `PHYS-T0019`: Lean-proved finite gauge-link double-reversal theorem
+- `PHYS-T0020`: Lean-proved finite gauge-link path double-reversal theorem
+- `PHYS-T0021`: Lean-proved finite gauge-link path reverse-concat theorem
+- `PHYS-T0022`: Lean-proved finite gauge-link list boundary-append composability theorem
+- `PHYS-T0023`: Lean-proved finite gauge-link path boundary-append composability theorem
+- `PHYS-T0024`: Lean-proved finite gauge-link path source projection under nonempty-left concatenation theorem
+- `PHYS-T0025`: Lean-proved finite gauge-link path target projection under nonempty-right concatenation theorem
+- `PHYS-T0026`: Lean-proved endpoint-record boundary composability theorem
+- `PHYS-T0027`: Lean-proved endpoint-record append theorem
+- `PHYS-T0028`: Lean-proved checked identity-path source theorem
+- `PHYS-T0029`: Lean-proved checked identity-path target theorem
+- `PHYS-T0030`: Lean-proved checked singleton-path source theorem
+- `PHYS-T0031`: Lean-proved checked singleton-path target theorem
+- `PHYS-T0032`: Lean-proved checked path-concat source theorem
+- `PHYS-T0033`: Lean-proved checked path-concat target theorem
+- `PHYS-T0034`: Lean-proved checked path left-identity theorem
+- `PHYS-T0035`: Lean-proved checked path right-identity theorem
+- `PHYS-T0036`: Lean-proved checked path associativity theorem
+- `GEN-T0001`: Lean-proved finite-circle seed-rule regeneration theorem
+- `GEN-T0002`: Lean-proved period-indexed coil-orbit schedule regeneration theorem
+- `GEN-T0003`: orbit-decomposition seed-rule record regenerates its representative-indexed finite stride-orbit schedules
+- `GEN-T0004`: Lean-proved proof-glyph seed-rule regeneration theorem
+- `GEN-T0005`: Lean-proved exact-regeneration comparison theorem
+- `GEN-T0006`: Lean-proved orbit-decomposition generator orbit-count theorem
+- `GEN-T0007`: Lean-proved generated representative orbit-length theorem
+- `GEN-T0008`: Lean-proved orbit-count times period coverage theorem
+- `GEN-T0009`: Lean-proved generator orbit-count/formal orbit-class-count agreement theorem
 - `S0-T0001`: the finite `S^0` opposition type has two points
 - `S0-T0002`: the opposition antipode is involutive
 - `S0-T0003`: the opposition antipode has no fixed point

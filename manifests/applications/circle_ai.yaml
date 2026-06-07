@@ -16,8 +16,13 @@ sidecars:
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_memory_slot.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_coil_retrieval.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_content_gated_retrieval.py
+  - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_learned_content_gate_retrieval.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_looped_recurrence.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_token_level_recurrence.py
+  - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_training_free_loop_wrapper.py
+  - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_middle_block_recurrence.py
+  - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_multi_resolution_recurrence.py
+  - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_learned_recurrence_schedule.py
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/lean/PaperAI03.lean
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_adapter_block.py
@@ -68,6 +73,26 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.memorySlot_idempotent
     dictionary_dependencies: ["COMMON-0028"]
+  - id: AIM-T0006
+    status: lean_proved
+    lean_name: Circle.Applications.loopRequiredSteps_pos
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+  - id: AIM-T0007
+    status: lean_proved
+    lean_name: Circle.Applications.loopRequiredSteps_le_loopPeriod
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+  - id: AIM-T0008
+    status: lean_proved
+    lean_name: Circle.Applications.loopRequiredSteps_add_loopPeriod
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+  - id: AIM-T0009
+    status: lean_proved
+    lean_name: Circle.Applications.tokenRecurrenceBudget_add_loopPeriod
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0010
+    status: lean_proved
+    lean_name: Circle.Applications.trainingFreeLoopBudget_le_maxLoops
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0067"]
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize
@@ -89,9 +114,23 @@ theorems:
     lean_name: Circle.Applications.adapterBlock_idempotent
     dictionary_dependencies: ["COMMON-0030"]
 next_targets:
-  - "Use COMMON-0052 through COMMON-0055 and COMMON-0059 as the looped/recursive transformer roadmap lane: AIA/AIM/AIRA proofs still cover finite indexing only, while AIM-B0003 provides a deterministic recurrence-schedule fixture with single-pass, fixed-loop, adaptive-exit, recurrent-memory, sparse phase-router, over-looped, and dense-threshold controls, and AIM-B0005 records token-level budgets, active-token counts, selected middle block, resolution labels, and wrong/over-loop controls; compare future learned models against dense transformer, Universal Transformer, fixed looped-transformer, adaptive-exit, recurrent-memory, token-level Mixture-of-Recursions, middle-block recurrence, multi-resolution recurrence, training-free loop wrappers, sparse/MoE, RWKV/Mamba-style, and standard state-space baselines."
+  - >-
+    Use COMMON-0052 through COMMON-0055 and COMMON-0059 as the looped/recursive transformer roadmap lane:
+    AIA/AIM/AIRA proofs cover finite indexing and loop-budget schedule facts only, while AIM-B0003 provides
+    a deterministic recurrence-schedule fixture with single-pass, fixed-loop, adaptive-exit, recurrent-memory,
+    sparse phase-router, over-looped, and dense-threshold controls, AIM-B0005 records token-level budgets,
+    active-token counts, selected middle block, resolution labels, and wrong/over-loop controls, AIM-B0006
+    adds a deterministic training-free loop-wrapper fixture with CPU/optional-MLX scoring, fixed-loop,
+    wrong-period, over-loop, and scalar-threshold baselines, and AIM-B0007 adds a middle-block recurrence
+    fixture with selected-block, full-block, fixed-budget, wrong-block, and over-loop controls, and AIM-B0008
+    adds a multi-resolution recurrence fixture with single-resolution, fixed-budget, wrong-resolution, and
+    over-loop controls, AIM-B0009 adds a learned recurrence-schedule fixture with fixed-budget,
+    wrong-period, and over-loop controls; compare future learned models against dense transformer, Universal Transformer,
+    fixed looped-transformer, adaptive-exit, recurrent-memory, token-level Mixture-of-Recursions,
+    middle-block recurrence, multi-resolution recurrence,
+    sparse/MoE, RWKV/Mamba-style, and standard state-space baselines.
   - "AIA-B0004 expands the learned phase fixture to dense-scalar, learned-position, wrong-period, and cyclic-feature baselines; AIA-B0005 adds a correct-frequency versus wrong-frequency harmonic/Fourier feature scaffold; next compare against standard RoPE, learned positional encodings, and learned dense models before model-quality claims."
-  - "Use AIM-B0002 as fixed coil-retrieval reachability scaffolding and AIM-B0004 as content-gated coil/local routing scaffolding only; expand toward learned gates, alias-control, full-attention, sparse-attention, Hyena-like, recurrent-memory, and state-space baselines before retrieval-quality claims."
+  - "Use AIM-B0002 as fixed coil-retrieval reachability scaffolding, AIM-B0004 as hand-coded content-gated coil/local routing scaffolding, and AIM-B0010 as learned route-table scaffolding only; expand toward learned gates, alias-control, full-attention, sparse-attention, Hyena-like, recurrent-memory, and state-space baselines before retrieval-quality claims."
   - "Use AIRA-B0001 as adapter-block scaffolding, AIRA-B0004 as adapter parameter-budget scaffolding, and AIRA-B0005 as CoilLinear/circulant-mixer scaffolding only; expand toward CoilRA, block-circulant, LoRA, dense-adapter, learned quality, runtime, memory, and training-stability baselines before making parameter-efficiency or quality claims."
   - "Use AIRA-B0002 as MultiCoil/RoPE-style positional scaffolding and AIRA-B0003 as relative RoPE-style phase scaffolding only; expand toward standard RoPE, learned positional encodings, attention, dense sequence, Fourier-feature, and MLX/CPU parity baselines before model-quality claims."
   - "Use AIA-B0003 as CPU/MLX scoring parity scaffolding only; expand toward actual MLX model prototypes and timing only after parity and baseline semantics are stable."
@@ -136,6 +175,11 @@ benchmarks:
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_content_gated_retrieval_benchmark_has_route_and_budget_baselines
     script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_content_gated_retrieval.py
     description: "Deterministic content-gated retrieval fixture comparing gated coil/local routing against static coil, static local, wrong-gate, union-candidate, and full-attention baselines, with candidate-budget diagnostics."
+  - id: AIM-B0010
+    status: exploratory_python
+    path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_learned_content_gate_retrieval_benchmark_has_baselines_and_controls
+    script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_learned_content_gate_retrieval.py
+    description: "Deterministic learned content-gate retrieval fixture fitting a phase-to-route lookup for coil/local routing and comparing it against static coil, static local, wrong-period, flipped-gate, union-candidate, and full-attention baselines with route-accuracy and candidate-budget diagnostics."
   - id: AIM-B0003
     status: exploratory_python
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_looped_recurrence_benchmark_has_baselines_and_overloop_control
@@ -146,6 +190,26 @@ benchmarks:
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_benchmark_has_per_token_and_wrong_loop_controls
     script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_token_level_recurrence.py
     description: "Deterministic token-level recurrence routing fixture recording per-token budgets, active-token counts, selected middle block, resolution labels, fixed global-budget baseline, wrong-budget control, over-loop control, and nonperiodic scalar-threshold control."
+  - id: AIM-B0006
+    status: exploratory_python
+    path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_training_free_loop_wrapper_benchmark_has_baselines_and_controls
+    script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_training_free_loop_wrapper.py
+    description: "Deterministic training-free loop-wrapper fixture comparing a circular phase-budget wrapper against single-pass, fixed-loop, wrong-period, over-loop, and nonperiodic scalar-threshold baselines with CPU/optional-MLX scoring."
+  - id: AIM-B0007
+    status: exploratory_python
+    path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_middle_block_recurrence_benchmark_has_block_and_budget_controls
+    script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_middle_block_recurrence.py
+    description: "Deterministic middle-block recurrence fixture comparing selected middle-block scheduling against full-block and fixed-budget baselines plus wrong-block and over-loop controls with block-pass accounting."
+  - id: AIM-B0008
+    status: exploratory_python
+    path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_multi_resolution_recurrence_benchmark_has_resolution_and_budget_controls
+    script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_multi_resolution_recurrence.py
+    description: "Deterministic multi-resolution recurrence fixture comparing phase-routed coarse/fine scheduling against single-resolution and fixed-budget baselines plus wrong-resolution and over-loop controls with active-sample accounting."
+  - id: AIM-B0009
+    status: exploratory_python
+    path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_learned_recurrence_schedule_benchmark_has_baselines_and_controls
+    script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_learned_recurrence_schedule.py
+    description: "Deterministic learned recurrence-schedule fixture fitting a phase-to-budget lookup and comparing it against fixed-budget baseline plus wrong-period and over-loop controls."
   - id: AIRA-B0001
     status: exploratory_python
     path: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_adapter_block_benchmark_has_baseline_and_negative_control

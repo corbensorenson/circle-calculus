@@ -683,3 +683,147 @@ entries:
       - "A learned token-level recursive transformer."
       - "Evidence that adaptive recurrence improves reasoning, perplexity, throughput, memory, or context length."
       - "A replacement for Universal Transformer, Mixture-of-Recursions, middle-block recurrence, multi-resolution recurrence, training-free loop wrappers, or dense transformer baselines."
+  - id: COMMON-0067
+    name: "Training-free loop-wrapper fixture"
+    kind: experiment
+    symbol: "training_free_loop_wrapper"
+    formal_definition: "`circle_math.applications.circle_ai.run_training_free_loop_wrapper_benchmark`, a deterministic fixture that uses circular phase as a fixed loop-budget prior and compares it against single-pass, fixed-loop, wrong-period, over-loop, and nonperiodic scalar-threshold baselines with CPU/optional-MLX scoring."
+    intuition: "A small harness for recurrence retrofits: before training or claiming a better model, make the phase-derived loop budget, active sample counts, wrong-period control, and over-loop failure boundary visible."
+    dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054", "COMMON-0055", "COMMON-0059"]
+    introduced_in: "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+    forbidden_meanings:
+      - "A learned recursive transformer."
+      - "Evidence that a training-free loop wrapper improves reasoning, language-model quality, context length, runtime, memory, or parameter efficiency."
+      - "A replacement for dense transformer, Universal Transformer, fixed looped-transformer, recurrent-memory, sparse/MoE, RWKV/Mamba-style, or state-space baselines."
+  - id: COMMON-0068
+    name: "Middle-block recurrence fixture"
+    kind: experiment
+    symbol: "middle_block_recurrence_fixture"
+    formal_definition: "`circle_math.applications.circle_ai.run_middle_block_recurrence_benchmark`, a deterministic fixture that compares selected middle-block recurrence scheduling against full-block, fixed-budget, wrong-block, and over-loop controls with block-pass accounting."
+    intuition: "A first harness for middle-block recurrence: make the selected loop-block range, required block, recurrence budget, wrong-block control, and full-block accounting visible before training a recursive model."
+    dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054", "COMMON-0055", "COMMON-0059"]
+    introduced_in: "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+    forbidden_meanings:
+      - "A learned middle-block recursive transformer."
+      - "Evidence that looping only selected model blocks improves reasoning, perplexity, throughput, memory, or context length."
+      - "A replacement for dense transformer, Universal Transformer, fixed looped-transformer, Mixture-of-Recursions, multi-resolution recurrence, or state-space baselines."
+  - id: COMMON-0069
+    name: "Multi-resolution recurrence fixture"
+    kind: experiment
+    symbol: "multi_resolution_recurrence_fixture"
+    formal_definition: "`circle_math.applications.circle_ai.run_multi_resolution_recurrence_benchmark`, a deterministic fixture that compares phase-routed coarse/fine recurrence scheduling against single-resolution, fixed-budget, wrong-resolution, and over-loop controls with active-sample accounting."
+    intuition: "A first harness for compressed/full-resolution recurrence: make the required loop budget, required resolution label, active sample count, and wrong-resolution control visible before training a multi-resolution recursive model."
+    dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054", "COMMON-0055", "COMMON-0059"]
+    introduced_in: "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+    forbidden_meanings:
+      - "A learned multi-resolution recursive transformer."
+      - "Evidence that alternating coarse/fine recurrence improves reasoning, perplexity, throughput, memory, context length, or parameter efficiency."
+      - "A replacement for dense transformer, Universal Transformer, fixed looped-transformer, Mixture-of-Recursions, middle-block recurrence, training-free loop wrappers, or state-space baselines."
+  - id: COMMON-0070
+    name: "Learned recurrence schedule fixture"
+    kind: experiment
+    symbol: "learned_recurrence_schedule_fixture"
+    formal_definition: "`circle_math.applications.circle_ai.run_learned_recurrence_schedule_benchmark`, a deterministic fixture that fits a phase-to-loop-budget lookup from training examples and compares it against fixed-budget, wrong-period, and over-loop controls."
+    intuition: "A first harness for learned loop-depth routing: make the learned phase table, required budgets, wrong-period control, and over-loop boundary visible before training a real recursive model."
+    dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054", "COMMON-0055", "COMMON-0059"]
+    introduced_in: "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+    forbidden_meanings:
+      - "A neural recursive transformer or trained language model."
+      - "Evidence that learned recurrence schedules improve reasoning, perplexity, throughput, memory, context length, or parameter efficiency."
+      - "A replacement for dense transformer, Universal Transformer, fixed looped-transformer, recurrent-memory, token-level Mixture-of-Recursions, middle-block recurrence, multi-resolution recurrence, training-free loop wrappers, sparse/MoE, RWKV, Mamba, or state-space baselines."
+  - id: COMMON-0071
+    name: "Learned content-gate retrieval fixture"
+    kind: experiment
+    symbol: "learned_content_gate_retrieval_fixture"
+    formal_definition: "`circle_math.applications.circle_ai.run_learned_content_gate_retrieval_benchmark`, a deterministic fixture that fits a phase-to-route lookup for coil/local candidate routing and compares it against static coil, static local, wrong-period, flipped-gate, union, and full-attention baselines."
+    intuition: "A small harness for learned coil/local attention routing: make the learned route table, route accuracy, reachability, and candidate budget visible before claiming learned attention quality."
+    dependencies: ["COMMON-0047", "COMMON-0057"]
+    introduced_in: "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+    forbidden_meanings:
+      - "A learned neural attention mechanism or trained language model."
+      - "Evidence that learned content gates improve retrieval quality, context length, runtime, memory, or parameter efficiency."
+      - "A replacement for full attention, sparse attention, learned gates, recurrent-memory, Hyena-like, RWKV, Mamba, or state-space baselines."
+  - id: COMMON-0060
+    name: "Proof-carrying physics model"
+    kind: interface
+    symbol: "PhysicsModel(theorems,examples,guardrails)"
+    formal_definition: "A planned Phase VII record connecting a bounded physics-style mathematical model to theorem ids, dictionary terms, Python examples, paper sections, Living Book explanations, and explicit non-proof guardrails."
+    intuition: "A way to discuss phase, gauge, spin, holonomy, and winding with proof status attached instead of relying on persuasive diagrams alone."
+    dependencies: ["COMMON-0033", "COMMON-0063"]
+    introduced_in: "PHASE7_PHYSICS_AND_GENERATORS"
+    forbidden_meanings:
+      - "A new physical theory."
+      - "A replacement for standard mathematical physics."
+      - "Evidence that a physics claim is proved without a Lean theorem id and compiled declaration."
+  - id: COMMON-0061
+    name: "Finite gauge-link model"
+    kind: model
+    symbol: "GaugeLink(C_n, graph)"
+    formal_definition: "A planned finite graph model whose oriented edges carry cyclic phase/link values and whose vertices carry gauge choices, intended as the first Circle Calculus seed for finite path holonomy and closed-loop invariance."
+    intuition: "Put phase data on the links of a finite graph, then track what changes under a gauge choice and what survives around a closed loop."
+    dependencies: ["CC-0001", "COMMON-0060"]
+    introduced_in: "PHASE7_PHYSICS_AND_GENERATORS"
+    forbidden_meanings:
+      - "A continuum gauge field."
+      - "A proof of electromagnetism, QED, or Yang-Mills theory."
+      - "A physics prediction."
+  - id: COMMON-0062
+    name: "Wilson-loop certificate"
+    kind: interface
+    symbol: "WilsonLoopCert(path, holonomy, theorem)"
+    formal_definition: "A planned certificate record for a closed finite path whose link-phase product or sum is paired with gauge-invariance theorem ids and source artifacts when those theorems exist."
+    intuition: "A closed loop should expose the accumulated phase and the checked reason it is invariant under allowed finite gauge changes."
+    dependencies: ["COMMON-0060", "COMMON-0061"]
+    introduced_in: "PHASE7_PHYSICS_AND_GENERATORS"
+    forbidden_meanings:
+      - "A continuum Wilson loop expectation value."
+      - "A confinement, QFT, or lattice-simulation result."
+      - "A proved certificate before the linked theorem id is Lean-proved."
+  - id: COMMON-0063
+    name: "Circle holonomy toy model"
+    kind: model
+    symbol: "Holonomy(loop) -> phase"
+    formal_definition: "A planned finite or bounded model that records phase accumulated around a loop, with source links to Hopf, bundle, winding, or gauge targets depending on the model."
+    intuition: "Walking around a loop may return to the same visible place with different hidden phase; Circle Calculus should make that bookkeeping explicit."
+    dependencies: ["COMMON-0007", "S3H-0002"]
+    introduced_in: "PHASE7_PHYSICS_AND_GENERATORS"
+    forbidden_meanings:
+      - "A proof of Berry phase or Aharonov-Bohm physics."
+      - "A full connection or curvature theory."
+      - "A reason to collapse nontrivial bundles into products."
+  - id: COMMON-0064
+    name: "Minimal generator"
+    kind: object
+    symbol: "Generator(seed,rules,stop)"
+    formal_definition: "A seed, finite rule set, and stopping or closure condition that regenerate a specified bounded Circle Calculus object under an explicit minimization criterion and search space."
+    intuition: "Instead of storing only the finished object, store the smallest honest recipe that can rebuild it and explain where it came from."
+    dependencies: ["COMMON-0042"]
+    introduced_in: "PHASE7_PHYSICS_AND_GENERATORS"
+    forbidden_meanings:
+      - "An automatically optimal program."
+      - "A Kolmogorov-complexity theorem."
+      - "Evidence that smaller is always more meaningful."
+  - id: COMMON-0065
+    name: "Generative compression fixture"
+    kind: experiment
+    symbol: "generator_vs_explicit_fixture"
+    formal_definition: "A planned deterministic fixture comparing explicit object descriptions with seed-plus-rule descriptions on bounded finite-circle, coil, orbit, or glyph artifacts, reporting exact regeneration, description length, proof coverage, and negative cases."
+    intuition: "Test the reframing that useful compression is constructive generation: a compact seed is valuable only if it rebuilds, explains, and links to checks."
+    dependencies: ["COMMON-0064", "COMMON-0066"]
+    introduced_in: "PHASE7_PHYSICS_AND_GENERATORS"
+    forbidden_meanings:
+      - "Universal compression."
+      - "A proof that the selected generator is minimal."
+      - "A benchmark win without explicit object-only baselines and negative controls."
+  - id: COMMON-0066
+    name: "Seed-rule provenance"
+    kind: interface
+    symbol: "SeedRuleProvenance"
+    formal_definition: "A planned provenance record that stores the seed, rule applications, iteration schedule, generated object, theorem ids, dictionary ids, source artifacts, and proof status for a generative Circle Calculus construction."
+    intuition: "The generation history is part of the mathematical object when it helps a reader or checker rebuild the result."
+    dependencies: ["COMMON-0042", "COMMON-0064"]
+    introduced_in: "PHASE7_PHYSICS_AND_GENERATORS"
+    forbidden_meanings:
+      - "A substitute for a proof."
+      - "A guarantee that the construction history is unique."
+      - "A claim that generated artifacts are correct without parity tests or Lean theorem ids where formal claims are made."

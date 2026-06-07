@@ -595,6 +595,11 @@ papers:
       - AIM-T0003
       - AIM-T0004
       - AIM-T0005
+      - AIM-T0006
+      - AIM-T0007
+      - AIM-T0008
+      - AIM-T0009
+      - AIM-T0010
     dictionary_ids:
       - COMMON-0028
       - COMMON-0029
@@ -605,6 +610,11 @@ papers:
       - COMMON-0055
       - COMMON-0057
       - COMMON-0059
+      - COMMON-0067
+      - COMMON-0068
+      - COMMON-0069
+      - COMMON-0070
+      - COMMON-0071
 
   - id: PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE
     title: "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
@@ -623,3 +633,70 @@ papers:
       - COMMON-0051
       - COMMON-0056
       - COMMON-0058
+
+  - id: PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE
+    title: "Circle Calculus Physics 1: Proof-Carrying Finite Lattice Gauge Links"
+    status: draft
+    sidecar: sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE
+    theorem_ids:
+      - PHYS-T0001
+      - PHYS-T0002
+      - PHYS-T0003
+      - PHYS-T0004
+      - PHYS-T0005
+      - PHYS-T0006
+      - PHYS-T0007
+      - PHYS-T0008
+      - PHYS-T0009
+      - PHYS-T0010
+      - PHYS-T0011
+      - PHYS-T0012
+      - PHYS-T0013
+      - PHYS-T0014
+      - PHYS-T0015
+      - PHYS-T0016
+      - PHYS-T0017
+      - PHYS-T0018
+      - PHYS-T0019
+      - PHYS-T0020
+      - PHYS-T0021
+      - PHYS-T0022
+      - PHYS-T0023
+      - PHYS-T0024
+      - PHYS-T0025
+      - PHYS-T0026
+      - PHYS-T0027
+      - PHYS-T0028
+      - PHYS-T0029
+      - PHYS-T0030
+      - PHYS-T0031
+      - PHYS-T0032
+      - PHYS-T0033
+      - PHYS-T0034
+      - PHYS-T0035
+      - PHYS-T0036
+    dictionary_ids:
+      - COMMON-0060
+      - COMMON-0061
+      - COMMON-0062
+      - COMMON-0063
+
+  - id: PAPER_GEN_01_SEED_RULE_PROVENANCE
+    title: "Circle Calculus Generative 1: Seed-Rule Provenance"
+    status: draft
+    sidecar: sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE
+    theorem_ids:
+      - GEN-T0001
+      - GEN-T0002
+      - GEN-T0003
+      - GEN-T0004
+      - GEN-T0005
+      - GEN-T0006
+      - GEN-T0007
+      - GEN-T0008
+      - GEN-T0009
+    dictionary_ids:
+      - COMMON-0064
+      - COMMON-0065
+      - COMMON-0066
+      - COMMON-0033

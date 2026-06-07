@@ -33,6 +33,8 @@ For each application page, ask three questions:
 - [Data analysis](data_analysis.qmd): finite phase coordinates plus synthetic periodic-data fixtures.
 - [Compute](compute.qmd): cyclic addresses, direction bins, stride layouts, and round-robin schedule seeds.
 - [AI](ai.qmd): finite phase channels, cyclic memory slots, and adapter-block indexing seeds.
+- [Physics](physics.qmd): finite gauge links, path holonomy, Wilson-loop certificates, and plaquette-loop targets.
+- [Generative structures](generative.qmd): seed-rule provenance, exact regeneration fixtures, and generator-vs-explicit comparison.
 - [Rendering](rendering.qmd): CoilRay and sampling vocabulary, currently limited to finite direction-bin scheduling facts.
 
 ::: {.checkpoint-box}
@@ -52,6 +54,7 @@ Choose one application page and name its finite circular address space before re
 <div class="theorem-box" data-theorem-id="COMPS-T0004"></div>
 <div class="theorem-box" data-theorem-id="AIA-T0005"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0005"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0010"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0005"></div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

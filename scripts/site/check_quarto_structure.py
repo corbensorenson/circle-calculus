@@ -41,6 +41,7 @@ REQUIRED = [
     "site/data/generated/phase4_targets.json",
     "site/data/generated/phase5_targets.json",
     "site/data/generated/phase6_targets.json",
+    "site/data/generated/phase7_targets.json",
     "docs/LIVING_BOOK_POLICY.md",
     "docs/LIVING_BOOK_ROADMAP.md",
     "docs/LIVING_BOOK_WIDGETS.md",

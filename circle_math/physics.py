@@ -1,0 +1,159 @@
+"""Finite physics-style fixtures for Circle Calculus.
+
+The models here are bounded executable references. They are not continuum
+physics, QFT, electromagnetism, or formal proofs.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Mapping, Sequence
+
+
+def _require_positive(value: int, name: str) -> None:
+    if value <= 0:
+        raise ValueError(f"{name} must be positive")
+
+
+@dataclass(frozen=True)
+class GaugeEdge:
+    source: str
+    target: str
+    phase: int
+
+    def normalized(self, modulus: int) -> "GaugeEdge":
+        _require_positive(modulus, "modulus")
+        return GaugeEdge(self.source, self.target, self.phase % modulus)
+
+    def reversed(self, modulus: int) -> "GaugeEdge":
+        _require_positive(modulus, "modulus")
+        return GaugeEdge(self.target, self.source, (-self.phase) % modulus)
+
+
+@dataclass(frozen=True)
+class GaugePath:
+    modulus: int
+    edges: tuple[GaugeEdge, ...]
+
+    def __post_init__(self) -> None:
+        _require_positive(self.modulus, "modulus")
+        if not self.edges:
+            raise ValueError("path must contain at least one edge")
+        normalized = tuple(edge.normalized(self.modulus) for edge in self.edges)
+        object.__setattr__(self, "edges", normalized)
+        for left, right in zip(normalized, normalized[1:]):
+            if left.target != right.source:
+                raise ValueError("path edges must compose target-to-source")
+
+    @property
+    def source(self) -> str:
+        return self.edges[0].source
+
+    @property
+    def target(self) -> str:
+        return self.edges[-1].target
+
+    @property
+    def closed(self) -> bool:
+        return self.source == self.target
+
+
+@dataclass(frozen=True)
+class WilsonLoopCertificate:
+    modulus: int
+    holonomy: int
+    closed: bool
+    gauge_invariant_under: tuple[str, ...]
+    theorem_ids: tuple[str, ...]
+    target_ids: tuple[str, ...] = ()
+    note: str = "Finite Wilson-loop fixture only; not a continuum physics claim."
+
+
+def path_holonomy(path: GaugePath) -> int:
+    """Return the additive finite phase accumulated along a path."""
+    return sum(edge.phase for edge in path.edges) % path.modulus
+
+
+def concat_paths(left: GaugePath, right: GaugePath) -> GaugePath:
+    """Concatenate composable paths with the same finite phase modulus."""
+    if left.modulus != right.modulus:
+        raise ValueError("paths must use the same modulus")
+    if left.target != right.source:
+        raise ValueError("left target must equal right source")
+    return GaugePath(left.modulus, (*left.edges, *right.edges))
+
+
+def reverse_path(path: GaugePath) -> GaugePath:
+    """Reverse a path and invert every finite link phase."""
+    return GaugePath(path.modulus, tuple(edge.reversed(path.modulus) for edge in reversed(path.edges)))
+
+
+def gauge_value(gauge: Mapping[str, int], vertex: str, modulus: int) -> int:
+    _require_positive(modulus, "modulus")
+    return gauge.get(vertex, 0) % modulus
+
+
+def gauge_transform_edge(edge: GaugeEdge, gauge: Mapping[str, int], modulus: int) -> GaugeEdge:
+    """Apply the finite additive gauge transform g(source)+U-g(target)."""
+    _require_positive(modulus, "modulus")
+    source_shift = gauge_value(gauge, edge.source, modulus)
+    target_shift = gauge_value(gauge, edge.target, modulus)
+    return GaugeEdge(edge.source, edge.target, (edge.phase + source_shift - target_shift) % modulus)
+
+
+def gauge_transform_path(path: GaugePath, gauge: Mapping[str, int]) -> GaugePath:
+    return GaugePath(
+        path.modulus,
+        tuple(gauge_transform_edge(edge, gauge, path.modulus) for edge in path.edges),
+    )
+
+
+def transformed_holonomy_endpoint_prediction(path: GaugePath, gauge: Mapping[str, int]) -> int:
+    """Predict transformed path holonomy from only endpoint gauge values."""
+    source_shift = gauge_value(gauge, path.source, path.modulus)
+    target_shift = gauge_value(gauge, path.target, path.modulus)
+    return (path_holonomy(path) + source_shift - target_shift) % path.modulus
+
+
+def square_plaquette_path(
+    modulus: int,
+    *,
+    bottom: int,
+    right: int,
+    top: int,
+    left: int,
+    origin: str = "v00",
+) -> GaugePath:
+    """Return a four-edge closed plaquette loop.
+
+    The vertex names are fixed to keep fixture output deterministic. ``origin``
+    can be changed for display, but the same origin is reused at closure.
+    """
+    return GaugePath(
+        modulus,
+        (
+            GaugeEdge(origin, "v10", bottom),
+            GaugeEdge("v10", "v11", right),
+            GaugeEdge("v11", "v01", top),
+            GaugeEdge("v01", origin, left),
+        ),
+    )
+
+
+def wilson_loop_certificate(path: GaugePath, gauges: Sequence[Mapping[str, int]]) -> WilsonLoopCertificate:
+    """Build a finite closed-loop certificate over sampled gauge choices."""
+    holonomy = path_holonomy(path)
+    invariant_under: list[str] = []
+    if path.closed:
+        for index, gauge in enumerate(gauges):
+            transformed = gauge_transform_path(path, gauge)
+            if path_holonomy(transformed) == holonomy:
+                invariant_under.append(f"gauge:{index}")
+    return WilsonLoopCertificate(
+        modulus=path.modulus,
+        holonomy=holonomy,
+        closed=path.closed,
+        gauge_invariant_under=tuple(invariant_under),
+        theorem_ids=("PHYS-T0004", "PHYS-T0005"),
+        target_ids=("P7-PHYS-001",),
+    )

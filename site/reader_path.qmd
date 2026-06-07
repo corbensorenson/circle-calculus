@@ -126,6 +126,8 @@ Application chapters are case studies, not hype pages. They reuse S1 language: a
 - [Data Analysis](chapters/applications/data_analysis.qmd): periodic coordinates and benchmark guardrails.
 - [Compute](chapters/applications/compute.qmd): cyclic addresses, stride layouts, and schedules.
 - [AI](chapters/applications/ai.qmd): phase channels, memory slots, and adapter blocks.
+- [Physics](chapters/applications/physics.qmd): finite gauge links, path holonomy, and Wilson-loop certificates.
+- [Generative Structures](chapters/applications/generative.qmd): seed-rule provenance and exact regeneration fixtures.
 - [Rendering](chapters/applications/rendering.qmd): direction bins and visual-compute scaffolds.
 
 You are ready to trust an application claim only when you can say whether it is a Lean theorem, a deterministic fixture, a benchmark target, or a research hypothesis.

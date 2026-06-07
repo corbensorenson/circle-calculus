@@ -1,0 +1,221 @@
+{
+  "targets": [
+    {
+      "acceptance_criteria": [
+        "A finite graph model records vertex gauge choices, edge link phases, oriented paths, and closed loops.",
+        "Python examples compute path holonomy, path reversal, path concatenation, and plaquette loops.",
+        "Lean theorem targets are limited to finite path algebra and gauge-invariance facts.",
+        "The Living Book labels diagrams and widgets as explanations unless corresponding theorem ids are proved."
+      ],
+      "area": "Proof-carrying finite physics",
+      "artifact_refs": [
+        "docs/PHASE7_PHYSICS_AND_GENERATORS.md",
+        "Circle/Physics/LatticeGauge.lean",
+        "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md",
+        "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py",
+        "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md",
+        "papers/S3/PAPER_S3_03_HOPF_COILS.md"
+      ],
+      "dictionary_dependencies": [
+        "COMMON-0060",
+        "COMMON-0061",
+        "COMMON-0062",
+        "COMMON-0063",
+        "S3H-0002"
+      ],
+      "guardrail": "A finite gauge-link seed is not continuum electromagnetism, QED, Yang-Mills theory, or a physics prediction.",
+      "id": "P7-PHYS-001",
+      "next_action": "Finite link-path record holonomy plus singleton, two-link, singleton-concat, three-link, four-link, empty-identity, concat-associativity, reversal-algebra, general boundary-checked append composability, first nonempty source/target laws, and a checked finite path interface with explicit endpoints, identity laws, and associative boundary-checked composition are now Lean-proved; next decide whether a full finite graph path category is worth adding.",
+      "ordinary_baseline": "Standard lattice gauge notation with link variables, Wilson loops, and separate prose or textbook derivations.",
+      "priority": "high",
+      "question": "Can Circle Calculus turn finite gauge-link diagrams into proof-carrying path holonomy and closed-loop invariance artifacts?",
+      "status": "exploratory_python",
+      "target_type": "proof_program",
+      "title": "Finite U(1)/Z_n lattice gauge Wilson-loop seed"
+    },
+    {
+      "acceptance_criteria": [
+        "The paper clearly separates standard physics background from Circle Calculus interface claims.",
+        "Existing Hopf theorem ids are linked without claiming a full topological fibration proof.",
+        "At least one finite holonomy toy example is executable before any continuum claim is discussed.",
+        "The Living Book warning explains that Python examples and diagrams are not physics proofs."
+      ],
+      "area": "Geometric phase and holonomy",
+      "artifact_refs": [
+        "docs/PHASE7_PHYSICS_AND_GENERATORS.md",
+        "papers/S3/PAPER_S3_03_HOPF_COILS.md",
+        "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md"
+      ],
+      "dictionary_dependencies": [
+        "COMMON-0060",
+        "COMMON-0063",
+        "S3H-0001",
+        "S3H-0002",
+        "S3H-W0001"
+      ],
+      "guardrail": "Do not claim Circle Calculus proves Berry phase, Aharonov-Bohm physics, or the full Hopf fibration before those objects are modeled.",
+      "id": "P7-PHYS-002",
+      "next_action": "Draft a scoped holonomy primer that starts from finite loop phase and only then points to Berry/Hopf background.",
+      "ordinary_baseline": "Separate treatments of Berry phase, fiber bundles, Bloch sphere, and Hopf fibration.",
+      "priority": "high",
+      "question": "Can the existing Hopf phase-fiber spine become a proof-status-safe reader path for geometric phase, hidden phase, and holonomy?",
+      "status": "planned",
+      "target_type": "paper_program",
+      "title": "Berry/Hopf holonomy primer"
+    },
+    {
+      "acceptance_criteria": [
+        "The next theorem targets model pure-imaginary vectors, norm preservation, and action composition only when the formal vector model is ready.",
+        "The paper keeps q/-q representative equality distinct from a completed SO(3) quotient.",
+        "Python orientation records compare raw representative state with action-equivalent state."
+      ],
+      "area": "Spin and orientation physics",
+      "artifact_refs": [
+        "docs/PHASE7_PHYSICS_AND_GENERATORS.md",
+        "papers/S3/PAPER_S3_02_QUATERNION_COILS.md",
+        "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
+      ],
+      "dictionary_dependencies": [
+        "COMMON-0060",
+        "S3Q-0001",
+        "S3S-0001",
+        "S3S-0002"
+      ],
+      "guardrail": "Do not claim a complete Spin(3), SO(3), spinor, or quantum-spin formalization from the current sign-cancellation seed.",
+      "id": "P7-PHYS-003",
+      "next_action": "Audit the S3 spin sidecar for the smallest next Lean theorem that improves orientation physics without requiring full SO(3).",
+      "ordinary_baseline": "Quaternion rotation formulas, rotation matrices, and separate sign-convention debugging tools.",
+      "priority": "medium",
+      "question": "Can the current q/-q sign-cancellation proof grow into a verified spin/orientation lesson without overclaiming SO(3)?",
+      "status": "planned",
+      "target_type": "proof_program",
+      "title": "Quaternion spin quotient extension"
+    },
+    {
+      "acceptance_criteria": [
+        "Finite periodic-dynamics examples record phase, winding, residue, period, and closure status.",
+        "Vortex-style examples are restricted to finite loop/winding toys before any continuum defect language.",
+        "Ordinary periodogram/Fourier or direct simulation baselines are named where benchmarking is involved."
+      ],
+      "area": "Periodic dynamics and defects",
+      "artifact_refs": [
+        "docs/PHASE7_PHYSICS_AND_GENERATORS.md",
+        "papers/PAPER_02_WINDING_NATURALS.md",
+        "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md"
+      ],
+      "dictionary_dependencies": [
+        "COMMON-0060",
+        "COMMON-0063",
+        "COMMON-0036",
+        "COMMON-0038",
+        "CC-0301"
+      ],
+      "guardrail": "Do not treat finite winding examples as proofs of continuum vortices, Kosterlitz-Thouless physics, or real material behavior.",
+      "id": "P7-PHYS-004",
+      "next_action": "Add finite examples for stroboscopic phase, lifted winding count, and closed-loop winding around a marked defect.",
+      "ordinary_baseline": "Standard Floquet, action-angle, and topological-defect notation with separate diagrams and numerical examples.",
+      "priority": "medium",
+      "question": "Can winding, residue, period, and closure make periodic dynamics and vortex-style winding examples easier to audit?",
+      "status": "planned",
+      "target_type": "benchmark",
+      "title": "Floquet, action-angle, and winding-defect finite fixtures"
+    },
+    {
+      "acceptance_criteria": [
+        "A generator record stores seed, rule set, iteration schedule, closure condition, generated object, theorem ids, and dictionary ids.",
+        "Python examples regenerate finite circles, finite-circle diagrams, finite physics-loop diagrams, coils, orbit decompositions, or glyph fixtures exactly from generator records.",
+        "Lean targets prove finite generation/equality/closure facts where tractable.",
+        "The paper states the minimization criterion before using the word minimal."
+      ],
+      "area": "Generative structure and constructive compression",
+      "artifact_refs": [
+        "docs/PHASE7_PHYSICS_AND_GENERATORS.md",
+        "Circle/Generative/SeedRule.lean",
+        "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md",
+        "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py",
+        "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+        "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md"
+      ],
+      "dictionary_dependencies": [
+        "COMMON-0042",
+        "COMMON-0064",
+        "COMMON-0065",
+        "COMMON-0066",
+        "COMMON-0033"
+      ],
+      "guardrail": "A smaller generator is not automatically optimal, meaningful, or new mathematics.",
+      "id": "P7-GEN-001",
+      "next_action": "Exact representative-indexed orbit-decomposition regeneration plus orbit-count, representative orbit-length, coverage-product, and formal orbit-class count agreement are now Lean-proved; next strengthen toward disjoint canonical representative partition facts and route generator records into Living Book diagrams.",
+      "ordinary_baseline": "Value-only objects, finished diagrams, ordinary compressed files, or informal procedural descriptions.",
+      "priority": "high",
+      "question": "Can Circle Calculus represent an object by a small seed plus checked rules that regenerate the object, with proof status and provenance attached?",
+      "status": "exploratory_python",
+      "target_type": "proof_program",
+      "title": "Minimal generator provenance"
+    },
+    {
+      "acceptance_criteria": [
+        "A deterministic benchmark compares explicit description length with seed-plus-rule description length.",
+        "The fixture checks exact regeneration before reporting any compactness or explanation result.",
+        "Negative cases are included where a generator is longer, less clear, or too contrived.",
+        "The benchmark reports proof coverage separately from byte/string length."
+      ],
+      "area": "Generator search and rule discovery",
+      "artifact_refs": [
+        "docs/PHASE7_PHYSICS_AND_GENERATORS.md",
+        "Circle/Generative/SeedRule.lean",
+        "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md",
+        "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py",
+        "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
+        "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md"
+      ],
+      "dictionary_dependencies": [
+        "COMMON-0064",
+        "COMMON-0065",
+        "COMMON-0066",
+        "COMMON-0041",
+        "COMMON-0042"
+      ],
+      "guardrail": "Do not call this universal compression, Kolmogorov complexity, or an optimal generator theorem.",
+      "id": "P7-GEN-002",
+      "next_action": "Finite-circle and finite physics-loop diagram generation are now in the comparison fixture; expand next toward orbit-family diagrams and Living Book widget/status-badge integration, using the Lean exact-regeneration comparison seed as the finite proof boundary.",
+      "ordinary_baseline": "Explicitly listing every node, edge, orbit, generated point, or diagram element.",
+      "priority": "high",
+      "question": "Can generator records give better explanation or reconstruction discipline than object-only descriptions on bounded Circle Calculus artifacts?",
+      "status": "exploratory_python",
+      "target_type": "benchmark",
+      "title": "Seed-plus-rules versus object-only description benchmark"
+    },
+    {
+      "acceptance_criteria": [
+        "A generated diagram exposes its seed, rules, theorem ids, dictionary ids, and proof-status badges.",
+        "The site distinguishes generated explanation from formal proof.",
+        "At least one S1 generator diagram and one physics/gauge-loop placeholder use the same component contract."
+      ],
+      "area": "Generative diagrams and Living Book lessons",
+      "artifact_refs": [
+        "docs/PHASE7_PHYSICS_AND_GENERATORS.md",
+        "Circle/Generative/SeedRule.lean",
+        "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md",
+        "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py",
+        "site/targets.qmd",
+        "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md"
+      ],
+      "dictionary_dependencies": [
+        "COMMON-0033",
+        "COMMON-0064",
+        "COMMON-0065",
+        "COMMON-0066"
+      ],
+      "guardrail": "Generated diagrams are explanations and interfaces; they are not proofs unless a linked theorem id is independently Lean-proved.",
+      "id": "P7-GEN-003",
+      "next_action": "Finite-circle and finite physics-loop diagram generation now expose seed, rules, theorem ids, and dictionary ids in Python; next add Living Book widgets/status badges using the same component contract.",
+      "ordinary_baseline": "Hand-authored static diagrams with separate source code and theorem references.",
+      "priority": "medium",
+      "question": "Can a Living Book diagram be generated from the same seed/rule/provenance record that feeds Python examples and theorem ids?",
+      "status": "exploratory_python",
+      "target_type": "living_book",
+      "title": "Proof-carrying generative diagrams"
+    }
+  ]
+}

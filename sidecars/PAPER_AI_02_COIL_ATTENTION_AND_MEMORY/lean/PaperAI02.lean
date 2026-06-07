@@ -15,5 +15,10 @@ namespace Circle.PaperAI02
 #check Circle.Applications.memorySlot_add_mul_bankSize
 #check Circle.Applications.memorySlot_idempotent
 #check Circle.Applications.memorySlot_zero
+#check Circle.Applications.loopRequiredSteps_pos
+#check Circle.Applications.loopRequiredSteps_le_loopPeriod
+#check Circle.Applications.loopRequiredSteps_add_loopPeriod
+#check Circle.Applications.tokenRecurrenceBudget_add_loopPeriod
+#check Circle.Applications.trainingFreeLoopBudget_le_maxLoops
 
 end Circle.PaperAI02

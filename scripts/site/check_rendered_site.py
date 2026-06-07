@@ -36,6 +36,7 @@ REQUIRED_RENDERED_FILES = [
     "data/generated/phase4_targets.json",
     "data/generated/phase5_targets.json",
     "data/generated/phase6_targets.json",
+    "data/generated/phase7_targets.json",
     "widgets/shared/circle_math_core.js",
     "widgets/shared/svg_helpers.js",
     "widgets/shared/widget_base.js",

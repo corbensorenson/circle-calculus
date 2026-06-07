@@ -71,6 +71,7 @@ The project is complete only when all of these are true:
 - Phase V edge problem-space exploration has identified hard, awkward, or ordinary-math-resistant problem spaces where Circle Calculus might give practical leverage, with experiments and claims kept honest.
 - The dedicated Circle AI program has explored phase channels, cyclic memory, coil/sparse attention, adapter blocks, RoPE/MultiCoil positional structure, looped/recursive transformer recurrence schedules, token-level and middle-block recurrence, multi-resolution recurrence, training-free loop wrappers, recurrent/state-space/convolutional sequence models, harmonic/circulant features, geometry-aware representations, proof-carrying model components, and MLX/Mac-compatible prototypes with proof status and benchmark claims kept separate.
 - Phase VI global sweep has cleaned the whole corpus for correctness, soundness, prose quality, link integrity, proof status, and reader usability.
+- Phase VII physics and generative-structure work has converted phase, gauge, holonomy, spin, winding, and smallest-generator ideas into honest theorem targets, executable fixtures, papers, dictionary entries, and Living Book lessons without overclaiming physics or compression results.
 - `make check` passes.
 - Living Book checks and `quarto render site` pass once the Quarto site exists, unless Quarto is explicitly unavailable and the blocker is documented.
 - Dimension-specific checks pass once the dimension scaffolding exists.
@@ -106,6 +107,9 @@ The project is complete only when all of these are true:
 - Phase IV target coverage/theorem-reference check: `scripts/check_phase4_targets.py`
 - Dedicated Circle AI edge targets: `P5-EDGE-009` and `P5-EDGE-010` in `manifests/phase5_edge_targets.yaml`
 - Phase VI sweep registry: `manifests/phase6_sweep_targets.yaml`
+- Phase VII physics/generator registry: `manifests/phase7_physics_generators.yaml`
+- Phase VII physics/generator validator: `scripts/check_phase7_targets.py`
+- Phase VII context: `docs/PHASE7_PHYSICS_AND_GENERATORS.md`
 - Application benchmark/edge-claim guardrails: `scripts/check_application_guardrails.py`
 - Dimensional plan: `docs/DIMENSIONAL_LADDER.md`
 - Phase II and applications context: `docs/PHASE2_AND_APPLICATIONS.md`
@@ -136,7 +140,8 @@ Prefer this order. Only skip ahead when blocked and record the blocker. During l
 17. Build Phase V: search edge problem spaces where Circle Calculus might do something hard, awkward, or unavailable in ordinary presentations, and turn promising leads into honest experiments, papers, models, or theorem targets.
 18. Build the dedicated Circle AI deep program. Treat AI as an active first-class track that explores phase channels, cyclic memory, coil/sparse attention, adapter blocks, RoPE/MultiCoil positional structure, looped/recursive transformer recurrence schedules, token-level and middle-block recurrence, multi-resolution recurrence, training-free loop wrappers, recurrent/state-space/convolutional sequence models, harmonic/circulant features, geometry-aware representations, proof-carrying model components, and MLX/Mac-compatible prototypes. For each avenue, add proof targets where tractable, executable fixtures, ordinary baselines, negative controls, benchmark scripts, paper improvements, and Living Book links.
 19. Build Phase VI: sweep the entire project for correctness, clarity, style, consistency, proof status, broken links, missing citations, overclaims, and prose that should sound cleaner to a new reader.
-20. If the roadmap is exhausted or blocked, search authoritative sources for additional theorem targets and convert the best candidates into manifests, dictionary entries, papers, Lean/Python sidecars, and Living Book links.
+20. Build Phase VII: physics-facing Circle Calculus and generative-structure research. Start with finite gauge-link/Wilson-loop models, holonomy/Hopf phase lessons, quaternion spin-sign extensions, periodic dynamics/winding fixtures, minimal-generator provenance, seed-rule generation fixtures, and proof-carrying generative diagrams.
+21. If the roadmap is exhausted or blocked, search authoritative sources for additional theorem targets and convert the best candidates into manifests, dictionary entries, papers, Lean/Python sidecars, and Living Book links.
 
 ## Stage D0: Dimensional Scaffolding
 
@@ -333,7 +338,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `AIA-T0001` through `AIA-T0005` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` and `AIA-B0002` are exploratory deterministic phase-channel benchmark fixtures; `AIA-B0003` is an exploratory CPU/optional-MLX backend parity fixture; `AIA-B0004` is an exploratory learned-feature baseline fixture; `AIA-B0005` is an exploratory harmonic/Fourier-feature baseline fixture; model-quality and speed claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`
   - Program: Coil Attention, CoilKV, long-context retrieval, alias control, stride/orbit coverage, looped/recursive transformer recurrence schedules, and comparisons against full attention, sparse attention, Universal Transformer, fixed looped-transformer, adaptive-exit, token-level recursion, middle-block recurrence, multi-resolution recurrence, training-free loop wrappers, recurrent-memory, Hyena-like, RWKV/Mamba-style, and S4/Mamba-like baselines.
-  - Status: polished draft; `AIM-T0001` through `AIM-T0005` are Lean-proved cyclic-memory-slot facts with Python examples; `AIM-B0001` is an exploratory cyclic-memory fixture with constant/scalar-threshold baselines and a nonperiodic control; `AIM-B0002` is an exploratory coil-retrieval reachability fixture with coil-path, local-window, wrong-stride, full-attention oracle, and near-lag controls; `AIM-B0003` is an exploratory looped-recurrence schedule fixture with single-pass, fixed-loop, adaptive-exit, recurrent-memory, sparse phase-router, over-looped, and dense-threshold controls; `AIM-B0004` is an exploratory content-gated retrieval fixture with static coil, static local, wrong-gate, union-candidate, full-attention, and candidate-budget controls; `AIM-B0005` is an exploratory token-level recurrence routing fixture with per-token budgets, active-token counts, selected middle block, resolution labels, fixed/wrong/over-loop controls, and nonperiodic scalar-threshold control; retrieval quality, alias control, attention replacement, recursive reasoning, and looped-model quality claims remain benchmark work.
+  - Status: polished draft; `AIM-T0001` through `AIM-T0010` are Lean-proved cyclic-memory-slot and finite loop-schedule facts with Python examples; `AIM-B0001` is an exploratory cyclic-memory fixture with constant/scalar-threshold baselines and a nonperiodic control; `AIM-B0002` is an exploratory coil-retrieval reachability fixture with coil-path, local-window, wrong-stride, full-attention oracle, and near-lag controls; `AIM-B0003` is an exploratory looped-recurrence schedule fixture with single-pass, fixed-loop, adaptive-exit, recurrent-memory, sparse phase-router, over-looped, and dense-threshold controls; `AIM-B0004` is an exploratory content-gated retrieval fixture with static coil, static local, wrong-gate, union-candidate, full-attention, and candidate-budget controls; `AIM-B0005` is an exploratory token-level recurrence routing fixture with per-token budgets, active-token counts, selected middle block, resolution labels, fixed/wrong/over-loop controls, and nonperiodic scalar-threshold control; `AIM-B0006` is an exploratory training-free loop-wrapper fixture with circular phase budgets, fixed-loop, wrong-period, over-loop, scalar-threshold baselines, and CPU/optional-MLX scoring; `AIM-B0007` is an exploratory middle-block recurrence fixture with selected-block, full-block, fixed-budget, wrong-block, over-loop controls, and block-pass accounting; `AIM-B0008` is an exploratory multi-resolution recurrence fixture with coarse/fine phase routing, single-resolution, fixed-budget, wrong-resolution, over-loop controls, and active-sample accounting; `AIM-B0009` is an exploratory learned recurrence-schedule fixture with a phase-to-budget lookup, fixed-budget baseline, wrong-period control, and over-loop control; `AIM-B0010` is an exploratory learned content-gate retrieval fixture with a phase-to-route lookup, wrong-period and flipped-gate controls, route accuracy, and candidate-budget diagnostics; retrieval quality, alias control, attention replacement, recursive reasoning, and looped-model quality claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md`
   - Program: CoilLinear, CoilRA, MultiCoil RoPE, periodic activations, and MLX-first benchmarks against dense, LoRA, block-circulant, and standard RoPE baselines.
   - Status: polished draft; `AIRA-T0001` through `AIRA-T0005` are Lean-proved adapter-block facts with Python examples; `AIRA-B0001` is an exploratory adapter-block fixture with constant/scalar-threshold baselines and a nonperiodic control; `AIRA-B0002` is an exploratory MultiCoil/RoPE-style positional fixture with single-period, constant, scalar-threshold, and nonperiodic controls; `AIRA-B0003` is an exploratory RoPE-style relative phase fixture with wrong-period, query-position, scalar-threshold, and nonperiodic controls; `AIRA-B0004` is an exploratory adapter parameter-budget fixture with dense adapter, LoRA-style low-rank, block-cyclic shared-table, and alias/load diagnostics; `AIRA-B0005` is an exploratory circulant-mixer validation fixture with dense circulant-matrix parity, wrong-shift control, and parameter-count diagnostics; CoilLinear, CoilRA, MultiCoil RoPE, model quality, parameter efficiency, memory, training stability, and runtime claims remain benchmark work.
@@ -443,6 +448,11 @@ Application guardrails:
 - [x] `AIM-T0003`: cyclic memory slot at zero is zero.
 - [x] `AIM-T0004`: cyclic memory slot closes after any whole number of full bank passes.
 - [x] `AIM-T0005`: cyclic memory-slot normalization is idempotent.
+- [x] `AIM-T0006`: looped-recurrence required depth is positive.
+- [x] `AIM-T0007`: looped-recurrence required depth is bounded by a positive loop period.
+- [x] `AIM-T0008`: looped-recurrence required depth closes after one full loop-period shift.
+- [x] `AIM-T0009`: token recurrence budget closes after one full loop-period shift.
+- [x] `AIM-T0010`: training-free loop budget is capped by the configured maximum.
 - [x] `AIM-B0001`: exploratory cyclic-memory benchmark fixture with baselines and a nonperiodic control.
 - [x] `AIM-B0002`: exploratory coil-retrieval reachability fixture with baselines and a near-lag control.
 - [x] `AIRA-T0001`: adapter block index is bounded by a positive block size.
@@ -710,7 +720,7 @@ Outputs:
 - [x] `P5-EDGE-006`: periodic-boundary stencil validation fixture checks direct, dense, and gcd-cycle traversal outputs before backend or speed claims.
 - [x] `P5-EDGE-007`: orientation-debugging note records q/-q sign ambiguity against existing S3 spin theorem ids without claiming full SO(3) or robotics verification.
 - [x] `P5-EDGE-008`: Living Book reader path links dimensions, applications, theorem status, dictionary entries, source trails, and local verification commands.
-- [x] `P5-EDGE-009`: full-spectrum Circle AI program target separates proof targets, benchmarks, baselines, controls, model prototypes, and speculative hypotheses; `AIA-B0003` adds CPU/optional-MLX backend parity scaffolding, `AIA-B0004` adds learned-feature baseline controls, `AIA-B0005` adds harmonic/Fourier-feature baseline controls, `AIM-B0002` extends the starter fixtures to coil-retrieval reachability, `AIM-B0003` adds looped-recurrence schedule controls, `AIM-B0004` adds content-gated retrieval routing, `AIM-B0005` adds token-level recurrence routing, `AIRA-B0001` extends them to adapter-block structure, `AIRA-B0002` extends them to MultiCoil/RoPE-style positional structure, `AIRA-B0003` adds RoPE-style relative phase controls, `AIRA-B0004` adds adapter parameter-budget controls, and `AIRA-B0005` adds circulant-mixer validation.
+- [x] `P5-EDGE-009`: full-spectrum Circle AI program target separates proof targets, benchmarks, baselines, controls, model prototypes, and speculative hypotheses; `AIA-B0003` adds CPU/optional-MLX backend parity scaffolding, `AIA-B0004` adds learned-feature baseline controls, `AIA-B0005` adds harmonic/Fourier-feature baseline controls, `AIM-B0002` extends the starter fixtures to coil-retrieval reachability, `AIM-B0003` adds looped-recurrence schedule controls, `AIM-B0004` adds content-gated retrieval routing, `AIM-B0005` adds token-level recurrence routing, `AIM-B0006` adds training-free loop-wrapper controls, `AIM-B0007` adds middle-block recurrence controls, `AIM-B0008` adds multi-resolution recurrence controls, `AIM-B0009` adds learned recurrence-schedule controls, `AIM-B0010` adds learned content-gate retrieval controls, `AIRA-B0001` extends them to adapter-block structure, `AIRA-B0002` extends them to MultiCoil/RoPE-style positional structure, `AIRA-B0003` adds RoPE-style relative phase controls, `AIRA-B0004` adds adapter parameter-budget controls, and `AIRA-B0005` adds circulant-mixer validation.
 - [ ] At least one experiment-ready paper or application note for each accepted edge direction.
 - [ ] Python/MLX or other executable sidecars where the claim is computational.
 - [ ] Lean theorem targets where the claim is formal.
@@ -761,6 +771,11 @@ Current accepted benchmark anchors:
 - [x] `AIM-B0003`: looped-recurrence schedule fixture with single-pass, fixed-loop, adaptive-exit, recurrent-memory, sparse phase-router, over-looped, and dense-threshold controls.
 - [x] `AIM-B0004`: content-gated retrieval fixture with static coil, static local, wrong-gate, union, full-attention, and candidate-budget controls.
 - [x] `AIM-B0005`: token-level recurrence routing fixture with per-token budgets, active-token counts, selected middle block, resolution labels, fixed/wrong/over-loop controls, and nonperiodic scalar-threshold control.
+- [x] `AIM-B0006`: training-free loop-wrapper fixture with circular phase budgets, single-pass, fixed-loop, wrong-period, over-loop, nonperiodic scalar-threshold controls, and CPU/optional-MLX scoring.
+- [x] `AIM-B0007`: middle-block recurrence fixture with selected-block, full-block, fixed-budget, wrong-block, over-loop controls, and block-pass accounting.
+- [x] `AIM-B0008`: multi-resolution recurrence fixture with coarse/fine phase routing, single-resolution, fixed-budget, wrong-resolution, over-loop controls, and active-sample accounting.
+- [x] `AIM-B0009`: learned recurrence-schedule fixture with phase-to-budget lookup, fixed-budget baseline, wrong-period control, and over-loop control.
+- [x] `AIM-B0010`: learned content-gate retrieval fixture with phase-to-route lookup, static coil/local baselines, wrong-period and flipped-gate controls, union/full-attention baselines, route accuracy, and candidate-budget diagnostics.
 - [x] `AIRA-B0001`: adapter-block fixture with ordinary baselines and nonperiodic control.
 - [x] `AIRA-B0002`: MultiCoil/RoPE-style positional fixture with ordinary baselines and nonperiodic control.
 - [x] `AIRA-B0003`: RoPE-style relative phase fixture with ordinary baselines and nonperiodic control.
@@ -808,6 +823,60 @@ Completion criteria:
 - [ ] No Living Book theorem card or widget caption upgrades status beyond the manifest.
 - [ ] No major broken links remain in README, papers, docs, or site pages.
 - [ ] The public repo can be consumed by a new reader through README, papers, theorem index, dictionary index, and Living Book without needing hidden context.
+
+## Phase VII: Physics And Generative Structure
+
+Goal:
+Turn the physics and smallest-generator ideas into concrete Circle Calculus research targets. Physics work should focus where circles, phases, fibers, holonomy, spin, winding, and periodic dynamics are real mathematical structure. Generative work should test the reframing that the useful answer to compression is often not to store a smaller opaque object, but to find the smallest honest seed and rule system that can rebuild, explain, and prove properties of the object.
+
+Source of truth:
+
+- `manifests/phase7_physics_generators.yaml`
+- `docs/PHASE7_PHYSICS_AND_GENERATORS.md`
+- `scripts/check_phase7_targets.py`
+
+Physics standard:
+Do not claim new physics. The initial contribution should be a proof-carrying interface for bounded models. Start finite, where Lean and Python can check the algebra cleanly, then use the Living Book to explain how the same ideas appear in standard physics.
+
+Physics work order:
+
+- [x] Build `PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md` around finite `U(1)`/`Z_n` gauge links, path holonomy, closed Wilson loops, and plaquette loops.
+- [x] Promote the tractable finite theorem ids for path holonomy concatenation, reversal, link-path record holonomy, singleton/two-link/singleton-concat/three-link/four-link, empty-identity, concat-identity, concat-associativity, reversal-algebra facts, boundary-append composability, nonempty source/target projection, checked finite path endpoints, checked finite path identity/associativity, gauge-transformed endpoint behavior, closed-loop gauge invariance, and plaquette invariance to Lean-proved `ZMod n` declarations.
+- [x] Add Python examples for finite graph paths and closed loops before claiming any Lean theorem.
+- [x] Link the first physics paper to the existing bundle calculus, Hopf phase, and S3 spin-sign papers.
+- [ ] Add a Living Book physics lesson path: finite gauge loops -> holonomy -> Hopf hidden phase -> spin sign ambiguity -> periodic dynamics -> winding defects.
+- [ ] Keep Berry phase, Aharonov-Bohm, electromagnetism, Floquet systems, vortices, and topological phases as standard-background or planned targets until bounded models exist.
+
+Generative-structure standard:
+A generator is useful only when it exactly rebuilds the target object under explicit rules and a declared search/minimization criterion. A smaller generator is not automatically optimal, meaningful, or new mathematics.
+
+Generative work order:
+
+- [x] Define a `SeedRuleProvenance` record for seed, rule set, iteration schedule, closure condition, generated object, theorem ids, dictionary ids, source artifacts, and proof status.
+- [x] Build a finite Python fixture that regenerates `C_n`, a generated finite-circle diagram, a finite physics-loop diagram, a stride-`k` coil, orbit decomposition, and a proof-glyph diagram from seed/rule records.
+- [x] Compare seed-plus-rule descriptions against explicit object-only descriptions for length, exact regeneration, reader clarity, and proof coverage.
+- [x] Include negative cases where generation is longer, noisier, or less clear than explicit description.
+- [x] Add Lean targets only for finite generation/equality/closure facts that are precise enough to prove; the current Lean seed covers finite-circle node regeneration, period-indexed coil-orbit schedule regeneration, representative-indexed orbit-decomposition schedule regeneration, orbit-count/period/coverage/orbit-class agreement facts, proof-glyph field regeneration, and exact-regeneration comparison.
+- [ ] Strengthen exact representative-indexed orbit regeneration toward explicit disjoint canonical representative partition facts before calling the decomposition fully canonical.
+- [ ] Add generated-diagram Living Book widgets/status badges, with diagrams generated from the same records used by tests.
+
+Accepted Phase VII targets:
+
+- [x] `P7-PHYS-001`: finite `U(1)`/`Z_n` lattice gauge Wilson-loop seed with Lean-proved `ZMod n` phase-list holonomy, link-path record holonomy, first source-target composability, checked finite path identity/associativity, endpoint-gauge, closed-loop, and plaquette facts.
+- [x] `P7-PHYS-002`: Berry/Hopf holonomy primer.
+- [x] `P7-PHYS-003`: quaternion spin quotient extension.
+- [x] `P7-PHYS-004`: Floquet, action-angle, and winding-defect finite fixtures.
+- [x] `P7-GEN-001`: minimal generator provenance.
+- [x] `P7-GEN-002`: seed-plus-rules versus object-only description benchmark.
+- [x] `P7-GEN-003`: proof-carrying generative diagrams.
+
+Phase VII guardrails:
+
+- [ ] A finite gauge model is not continuum QFT.
+- [ ] A holonomy widget is not a proof of Berry phase, electromagnetism, or quantum mechanics.
+- [ ] A generator fixture is not a minimality theorem.
+- [ ] Python regeneration tests are executable references, not formal proofs.
+- [ ] Lean proofs can certify finite generation, closure, equality, and invariance; they do not prove empirical physics usefulness or universal compression optimality.
 
 ## Verification Checklist
 

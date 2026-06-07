@@ -1,0 +1,148 @@
+import Circle.Basic
+import Circle.Phase2.GlyphProof
+
+/-!
+Finite seed-rule provenance seeds for Circle Calculus.
+
+This module formalizes exact regeneration checks for small bounded records. It
+does not prove minimality, compression optimality, or universal generative
+claims.
+-/
+
+namespace Circle.Generative
+
+structure FiniteCircleGenerator where
+  n : Nat
+
+def finiteCircleGenerator (n : Nat) : FiniteCircleGenerator :=
+  { n := n }
+
+def FiniteCircleGenerator.generatedNodes (generator : FiniteCircleGenerator) : List Nat :=
+  List.range generator.n
+
+theorem finiteCircleGenerator_regenerates_nodes (n : Nat) :
+    (finiteCircleGenerator n).generatedNodes = List.range n := by
+  rfl
+
+structure CoilOrbitGenerator where
+  n : Nat
+  stride : Nat
+  start : Nat
+
+def coilOrbitGenerator (n stride start : Nat) : CoilOrbitGenerator :=
+  { n := n, stride := stride, start := start }
+
+noncomputable def CoilOrbitGenerator.period (generator : CoilOrbitGenerator) : Nat :=
+  Circle.period generator.n generator.stride
+
+noncomputable def CoilOrbitGenerator.generatedOrbit
+    (generator : CoilOrbitGenerator) : List (C generator.n) :=
+  List.ofFn fun step : Fin generator.period =>
+    Circle.coilStep generator.n generator.stride generator.start step
+
+theorem coilOrbitGenerator_regenerates_orbit (n stride start : Nat) :
+    (coilOrbitGenerator n stride start).generatedOrbit =
+      List.ofFn (fun step : Fin (Circle.period n stride) =>
+        Circle.coilStep n stride start step) := by
+  rfl
+
+structure OrbitDecompositionGenerator where
+  n : Nat
+  stride : Nat
+
+def orbitDecompositionGenerator (n stride : Nat) : OrbitDecompositionGenerator :=
+  { n := n, stride := stride }
+
+def OrbitDecompositionGenerator.orbitCount (generator : OrbitDecompositionGenerator) : Nat :=
+  Nat.gcd generator.n generator.stride
+
+noncomputable def OrbitDecompositionGenerator.orbitPeriod
+    (generator : OrbitDecompositionGenerator) : Nat :=
+  Circle.period generator.n generator.stride
+
+noncomputable def OrbitDecompositionGenerator.generatedOrbitFor
+    (generator : OrbitDecompositionGenerator)
+    (start : Fin generator.orbitCount) : List (C generator.n) :=
+  List.ofFn fun step : Fin generator.orbitPeriod =>
+    Circle.coilStep generator.n generator.stride start step
+
+noncomputable def OrbitDecompositionGenerator.generatedOrbits
+    (generator : OrbitDecompositionGenerator) : List (List (C generator.n)) :=
+  List.ofFn fun start : Fin generator.orbitCount =>
+    generator.generatedOrbitFor start
+
+theorem orbitDecompositionGenerator_regenerates_orbits (n stride : Nat) :
+    (orbitDecompositionGenerator n stride).generatedOrbits =
+      List.ofFn (fun start : Fin (Nat.gcd n stride) =>
+        List.ofFn fun step : Fin (Circle.period n stride) =>
+          Circle.coilStep n stride start step) := by
+  rfl
+
+theorem orbitDecompositionGenerator_generatedOrbits_length (n stride : Nat) :
+    (orbitDecompositionGenerator n stride).generatedOrbits.length =
+      Nat.gcd n stride := by
+  simp [OrbitDecompositionGenerator.generatedOrbits,
+    OrbitDecompositionGenerator.orbitCount, orbitDecompositionGenerator]
+
+theorem orbitDecompositionGenerator_generatedOrbitFor_length
+    (n stride : Nat) (start : Fin (Nat.gcd n stride)) :
+    ((orbitDecompositionGenerator n stride).generatedOrbitFor start).length =
+      Circle.period n stride := by
+  simp [OrbitDecompositionGenerator.generatedOrbitFor,
+    OrbitDecompositionGenerator.orbitPeriod, orbitDecompositionGenerator]
+
+theorem orbitDecompositionGenerator_orbitCount_mul_period
+    {n stride : Nat} (hn : n ≠ 0) :
+    (orbitDecompositionGenerator n stride).orbitCount *
+        (orbitDecompositionGenerator n stride).orbitPeriod = n := by
+  simp [OrbitDecompositionGenerator.orbitCount,
+    OrbitDecompositionGenerator.orbitPeriod, orbitDecompositionGenerator,
+    Circle.period_eq_n_div_gcd hn]
+  rw [Nat.mul_comm]
+  exact Nat.div_mul_cancel (Nat.gcd_dvd_left n stride)
+
+theorem orbitDecompositionGenerator_orbitCount_eq_orbitClassCount
+    {n stride : Nat} (hn : n ≠ 0) :
+    (orbitDecompositionGenerator n stride).orbitCount =
+      Circle.orbitClassCount n stride := by
+  rw [Circle.orbit_decomposition_count (n := n) (k := stride) hn]
+  rfl
+
+structure ProofGlyphGenerator where
+  glyphId : String
+  theoremId : String
+  leanName : String
+
+def proofGlyphGenerator (glyphId theoremId leanName : String) : ProofGlyphGenerator :=
+  { glyphId := glyphId, theoremId := theoremId, leanName := leanName }
+
+def ProofGlyphGenerator.generatedCertificate
+    (generator : ProofGlyphGenerator) : Circle.Phase2.ProofGlyph :=
+  Circle.Phase2.proofGlyph generator.glyphId generator.theoremId generator.leanName
+
+theorem proofGlyphGenerator_regenerates_certificate
+    (glyphId theoremId leanName : String) :
+    let generator := proofGlyphGenerator glyphId theoremId leanName
+    Circle.Phase2.proofGlyphGlyphId generator.generatedCertificate = glyphId ∧
+      Circle.Phase2.proofGlyphTheoremId generator.generatedCertificate = theoremId ∧
+      Circle.Phase2.proofGlyphLeanName generator.generatedCertificate = leanName := by
+  simp [proofGlyphGenerator, ProofGlyphGenerator.generatedCertificate,
+    Circle.Phase2.proofGlyphGlyphId, Circle.Phase2.proofGlyphTheoremId,
+    Circle.Phase2.proofGlyphLeanName, Circle.Phase2.proofGlyph]
+
+structure GeneratorComparison (α : Type) where
+  regenerated : α
+  generated : α
+  exactRegeneration : Prop
+
+def generatorComparison (regenerated generated : α) : GeneratorComparison α :=
+  { regenerated := regenerated,
+    generated := generated,
+    exactRegeneration := regenerated = generated }
+
+theorem generatorComparison_requires_exact_regeneration
+    (regenerated generated : α) :
+    (generatorComparison regenerated generated).exactRegeneration ↔ regenerated = generated := by
+  rfl
+
+end Circle.Generative

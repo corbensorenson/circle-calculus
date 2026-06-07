@@ -1,0 +1,117 @@
+---
+title: "Generative Structures"
+---
+
+This lesson treats an object as something that can be regenerated from a seed, rules, a schedule, and a closure condition.
+
+The ordinary baseline is value-only storage:
+
+```text
+list every node
+list every orbit element
+list every diagram field
+list every physics-loop edge
+```
+
+The Circle Calculus version records the construction:
+
+```text
+seed + rule set + schedule + closure condition
+  -> generated object
+  -> theorem ids
+  -> dictionary ids
+  -> regeneration check
+```
+
+::: {.warning-box}
+A generator record is not automatically smaller, optimal, or more meaningful. Its Python fixtures are executable references, not proof artifacts. It is useful only when exact regeneration, reader clarity, or proof linkage improves.
+:::
+
+::: {.learning-unit}
+
+## What You Should Learn
+
+By the end of the page, you should be able to explain why `C_128` can be clearer as a seed-rule record while `C_1` can be clearer as an explicit object.
+
+:::
+
+## Ordinary Baseline
+
+Explicit storage is straightforward. For a finite circle, store all nodes. For a coil, store the entire orbit. For a proof glyph, store the final displayed metadata. That baseline is important because the generator has to beat or explain something real.
+
+## Circle Calculus Framing
+
+Coils already have a generative shape:
+
+```text
+start node
+  -> stride rule
+  -> repeated rotation
+  -> closure
+```
+
+Seed-rule provenance makes the construction explicit. The generated object still exists, but it is paired with the record that rebuilt it and the theorem/dictionary ids that explain what the record means.
+
+## Executable Fixture
+
+The Python reference model under `circle_math/generative.py` provides:
+
+```text
+SeedRuleProvenance
+finite_circle_generator
+finite_circle_diagram_generator
+physics_loop_diagram_generator
+coil_orbit_generator
+orbit_decomposition_generator
+proof_glyph_generator
+regenerate
+compare_generator_to_explicit
+```
+
+The sidecar tests regenerate finite circle nodes, a finite-circle diagram with successor edges, a finite physics-loop diagram with normalized plaquette phases and holonomy, a stride orbit, the full stride-orbit decomposition, and proof-glyph metadata. The comparison fixture checks exact regeneration before comparing description length.
+
+::: {.checkpoint-box}
+
+Why should exact regeneration be checked before reporting that a generator is shorter than an explicit object?
+
+:::
+
+## Positive And Negative Cases
+
+For a large finite circle, storing the seed `n` plus the rule "generate nodes `0` through `n-1`" is shorter than listing every node. For a one-node circle, the provenance metadata is longer than the object itself.
+
+Both results are useful. The positive case shows constructive compression. The negative case prevents overclaiming.
+
+## Proof Boundary
+
+The theorem cards below are checked by Lean for finite regeneration statements. `GEN-T0003` proves exact regeneration of the representative-indexed orbit-schedule list. `GEN-T0006` through `GEN-T0009` add count, period, coverage, and formal orbit-class agreement facts. They still do not prove optimality, minimality, or full canonical partition structure.
+
+<div class="theorem-box" data-theorem-id="GEN-T0001"></div>
+<div class="theorem-box" data-theorem-id="GEN-T0002"></div>
+<div class="theorem-box" data-theorem-id="GEN-T0003"></div>
+<div class="theorem-box" data-theorem-id="GEN-T0004"></div>
+<div class="theorem-box" data-theorem-id="GEN-T0005"></div>
+<div class="theorem-box" data-theorem-id="GEN-T0006"></div>
+<div class="theorem-box" data-theorem-id="GEN-T0007"></div>
+<div class="theorem-box" data-theorem-id="GEN-T0008"></div>
+<div class="theorem-box" data-theorem-id="GEN-T0009"></div>
+
+## Dictionary Trail
+
+<div class="dictionary-box" data-dictionary-id="COMMON-0064"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0065"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0066"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0033"></div>
+
+## Source Trail
+
+<p data-paper-ref="papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md">Generative paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md">Seed-Rule Provenance</a></p>
+<p data-paper-ref="papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md">S1 source paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md">Factors, Scaling, And Prime Coils</a></p>
+<p data-paper-ref="papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md">Glyph paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md">Proof-Carrying Glyphs</a></p>
+<p data-paper-ref="papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md">Physics source paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md">Proof-Carrying Finite Lattice Gauge Links</a></p>
+
+::: {.warning-box}
+The Python fixture is an executable reference. The formal path is to encode exact finite regeneration facts in Lean and keep description-length comparisons separate from optimal-compression claims.
+:::
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

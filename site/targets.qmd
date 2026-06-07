@@ -28,4 +28,10 @@ Source: `manifests/phase6_sweep_targets.yaml`
 
 <div class="target-index" data-target-index="phase6"></div>
 
+## Phase VII Physics And Generative Structure Targets
+
+Source: `manifests/phase7_physics_generators.yaml`
+
+<div class="target-index" data-target-index="phase7"></div>
+
 <script type="module" src="widgets/shared/widget_base.js"></script>
