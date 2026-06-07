@@ -91,6 +91,18 @@ Implemented shared JavaScript:
 - Guardrail: the widget is finite schedule bookkeeping only. It does not prove model quality, speed, reasoning improvement, memory improvement, or context-length improvement.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python AI recurrence helpers.
 
+## Physics Widgets
+
+### finite_gauge_loop_holonomy
+
+- Inputs: finite phase modulus, four square-plaquette edge phases, and four vertex gauge values.
+- Outputs: original normalized edge phases, transformed edge phases, original holonomy, transformed holonomy, closed-path endpoint-shift cancellation, theorem-status badges, and dictionary links.
+- Theorem ids: `PHYS-T0004`, `PHYS-T0005`, `PHYS-T0012`, and `PHYS-T0045`.
+- Dictionary ids: `COMMON-0060`, `COMMON-0061`, `COMMON-0062`, and `COMMON-0063`.
+- Python references: `circle_math.physics.square_plaquette_path`, `circle_math.physics.gauge_transform_path`, and `circle_math.physics.path_holonomy`.
+- Guardrail: the widget is finite `Z_n` bookkeeping only. It is not a proof artifact, continuum gauge theory, QFT, Yang-Mills theory, Berry phase, electromagnetism, or a physics prediction.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python finite lattice-gauge fixture.
+
 ## Future Placeholders
 
 - `site/widgets/S2/sphere_grid_placeholder.js`
@@ -121,3 +133,4 @@ Minimum parity cases:
 - finite-circle generated diagram nodes and successor edges;
 - finite physics-loop generated diagram normalized phases, closed-loop flag, and holonomy.
 - AI recurrence phase, required loop count, token recurrence budget, capped training-free budget, exit availability, overthinking boundary, and one-period-shift periodicity.
+- finite gauge-loop normalized phases, gauge-transformed phases, original/transformed holonomy, and closed endpoint cancellation.

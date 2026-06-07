@@ -3469,15 +3469,22 @@
       "name": "Erd\u0151s-Ginzburg-Ziv circle bridge",
       "original_status": "proved",
       "paper_refs": [
-        "docs/ERDOS_CIRCLE_MATH_REVIEW.md"
+        "papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md"
       ],
       "proof_notes": "Lean theorem is compiled in Circle/Erdos/EGZ.lean as a Circle.C wrapper around mathlib's ZMod.erdos_ginzburg_ziv theorem.",
       "python_tests": [
-        "sidecars/PAPER_01_FINITE_CIRCLES/python/test_additive_combinatorics_examples.py::test_egz_sharpness_family_has_no_length_n_zero_sum"
+        "sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py::test_egz_sharpness_circle_family"
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
-      "used_by_papers": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_ERDOS_01_ZERO_SUM_CIRCLES",
+          "path": "papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Erd\u0151s 1: Zero-Sum Circles"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
@@ -3501,15 +3508,22 @@
       "name": "Cauchy-Davenport prime circle bridge",
       "original_status": "proved",
       "paper_refs": [
-        "docs/ERDOS_CIRCLE_MATH_REVIEW.md"
+        "papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md"
       ],
       "proof_notes": "Lean theorem is compiled in Circle/Erdos/CauchyDavenport.lean as a Circle.C wrapper around mathlib's ZMod.cauchy_davenport theorem.",
       "python_tests": [
-        "sidecars/PAPER_01_FINITE_CIRCLES/python/test_additive_combinatorics_examples.py::test_cauchy_davenport_examples_meet_lower_bound"
+        "sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py::test_cauchy_davenport_circle_example"
       ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
-      "used_by_papers": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_ERDOS_01_ZERO_SUM_CIRCLES",
+          "path": "papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Erd\u0151s 1: Zero-Sum Circles"
+        }
+      ],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,

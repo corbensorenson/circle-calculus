@@ -29,6 +29,11 @@ The Cauchy-Davenport bridge is now also tracked as:
 - Lean declaration: `Circle.cauchy_davenport_prime_circle`
 - source: `Circle/Erdos/CauchyDavenport.lean`
 
+The paper-backed artifact is:
+
+- paper: `papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md`
+- sidecars: `sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/`
+
 This is not a claim of a new proof. It is a rigorous external theorem contact
 point: Circle's basic object is exactly the object in a nontrivial Erdős theorem.
 
@@ -159,10 +164,12 @@ recognized, and aligned with the formal core.
 
 - Circle formal core: `docs/FORMAL_CORE_V0.md`
 - Circle proof policy: `docs/PROOF_POLICY.md`
+- Paper artifact: `papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md`
 - EGZ bridge: `Circle/Erdos/EGZ.lean`
 - Cauchy-Davenport bridge: `Circle/Erdos/CauchyDavenport.lean`
 - Python additive examples: `circle_math/additive.py`
-- Python tests: `sidecars/PAPER_01_FINITE_CIRCLES/python/test_additive_combinatorics_examples.py`
+- Paper sidecars: `sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/`
+- Python tests: `sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py`
 - Theorem registry entries: `CC-T0062` and `CC-T0063` in `manifests/theorem_manifest.yaml`
 - mathlib EGZ documentation:
   https://leanprover-community.github.io/mathlib4_docs/Mathlib/Combinatorics/Additive/ErdosGinzburgZiv.html

@@ -77,6 +77,21 @@
     },
     {
       "dictionary_ids": [
+        "CC-0001",
+        "CC-0201"
+      ],
+      "id": "PAPER_ERDOS_01_ZERO_SUM_CIRCLES",
+      "path": "papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md",
+      "sidecar": "sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES",
+      "status": "polished_draft",
+      "theorem_ids": [
+        "CC-T0062",
+        "CC-T0063"
+      ],
+      "title": "Circle Calculus Erd\u0151s 1: Zero-Sum Circles"
+    },
+    {
+      "dictionary_ids": [
         "S1-0001",
         "CC-0105",
         "COMMON-0041",

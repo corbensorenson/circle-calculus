@@ -222,6 +222,18 @@ def export_widget_index() -> dict:
             ],
             "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.token_recurrence_budget; circle_math.applications.circle_ai.training_free_loop_budget",
         },
+        {
+            "id": "finite_gauge_loop_holonomy",
+            "path": "site/widgets/physics/finite_gauge_loop_holonomy.js",
+            "theorem_ids": ["PHYS-T0004", "PHYS-T0005", "PHYS-T0012", "PHYS-T0045"],
+            "dictionary_ids": [
+                "COMMON-0060",
+                "COMMON-0061",
+                "COMMON-0062",
+                "COMMON-0063",
+            ],
+            "python_reference": "circle_math.physics.square_plaquette_path; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy",
+        },
     ]
     return {"widgets": widgets}
 

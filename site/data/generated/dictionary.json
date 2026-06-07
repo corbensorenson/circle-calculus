@@ -39,6 +39,12 @@
           "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
         },
         {
+          "id": "PAPER_ERDOS_01_ZERO_SUM_CIRCLES",
+          "path": "papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Erd\u0151s 1: Zero-Sum Circles"
+        },
+        {
           "id": "PAPER_S1_01_FINITE_CIRCLES",
           "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
           "status": "polished_draft",
@@ -1216,6 +1222,12 @@
           "path": "papers/PAPER_01_FINITE_CIRCLES.md",
           "status": "polished_draft",
           "title": "Circle Calculus I: Finite Circles, Rotations, and Coils"
+        },
+        {
+          "id": "PAPER_ERDOS_01_ZERO_SUM_CIRCLES",
+          "path": "papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus Erd\u0151s 1: Zero-Sum Circles"
         },
         {
           "id": "PAPER_S1_01_FINITE_CIRCLES",
@@ -5812,6 +5824,11 @@
       ],
       "used_by_widgets": [
         {
+          "id": "finite_gauge_loop_holonomy",
+          "path": "site/widgets/physics/finite_gauge_loop_holonomy.js",
+          "python_reference": "circle_math.physics.square_plaquette_path; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy"
+        },
+        {
           "id": "seed_rule_diagram_generator",
           "path": "site/widgets/generative/seed_rule_diagram_generator.js",
           "python_reference": "circle_math.generative.finite_circle_diagram_generator; circle_math.generative.physics_loop_diagram_generator"
@@ -6119,6 +6136,11 @@
       ],
       "used_by_widgets": [
         {
+          "id": "finite_gauge_loop_holonomy",
+          "path": "site/widgets/physics/finite_gauge_loop_holonomy.js",
+          "python_reference": "circle_math.physics.square_plaquette_path; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy"
+        },
+        {
           "id": "seed_rule_diagram_generator",
           "path": "site/widgets/generative/seed_rule_diagram_generator.js",
           "python_reference": "circle_math.generative.finite_circle_diagram_generator; circle_math.generative.physics_loop_diagram_generator"
@@ -6192,6 +6214,11 @@
       ],
       "used_by_widgets": [
         {
+          "id": "finite_gauge_loop_holonomy",
+          "path": "site/widgets/physics/finite_gauge_loop_holonomy.js",
+          "python_reference": "circle_math.physics.square_plaquette_path; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy"
+        },
+        {
           "id": "seed_rule_diagram_generator",
           "path": "site/widgets/generative/seed_rule_diagram_generator.js",
           "python_reference": "circle_math.generative.finite_circle_diagram_generator; circle_math.generative.physics_loop_diagram_generator"
@@ -6252,6 +6279,11 @@
         }
       ],
       "used_by_widgets": [
+        {
+          "id": "finite_gauge_loop_holonomy",
+          "path": "site/widgets/physics/finite_gauge_loop_holonomy.js",
+          "python_reference": "circle_math.physics.square_plaquette_path; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy"
+        },
         {
           "id": "seed_rule_diagram_generator",
           "path": "site/widgets/generative/seed_rule_diagram_generator.js",

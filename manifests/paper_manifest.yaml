@@ -62,6 +62,17 @@ papers:
       - CC-0303
       - CC-0304
 
+  - id: PAPER_ERDOS_01_ZERO_SUM_CIRCLES
+    title: "Circle Calculus Erdős 1: Zero-Sum Circles"
+    status: polished_draft
+    sidecar: sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES
+    theorem_ids:
+      - CC-T0062
+      - CC-T0063
+    dictionary_ids:
+      - CC-0001
+      - CC-0201
+
   - id: PAPER_S1_04_FACTORS_SCALING_PRIME_COILS
     title: "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
     status: polished_draft

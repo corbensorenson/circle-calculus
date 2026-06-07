@@ -14,6 +14,12 @@ from circle_math.generative import (
     physics_loop_diagram_generator,
     regenerate,
 )
+from circle_math.physics import (
+    gauge_transform_path,
+    path_holonomy,
+    square_plaquette_path,
+    transformed_holonomy_endpoint_prediction,
+)
 from circle_math.winding import lift
 
 
@@ -78,6 +84,46 @@ def js_physics_loop_diagram(
     }
 
 
+def js_square_plaquette_edges(
+    modulus: int,
+    *,
+    bottom: int,
+    right: int,
+    top: int,
+    left: int,
+) -> tuple[dict, ...]:
+    return (
+        {"source": "v00", "target": "v10", "phase": js_mod(bottom, modulus)},
+        {"source": "v10", "target": "v11", "phase": js_mod(right, modulus)},
+        {"source": "v11", "target": "v01", "phase": js_mod(top, modulus)},
+        {"source": "v01", "target": "v00", "phase": js_mod(left, modulus)},
+    )
+
+
+def js_gauge_value(gauge: dict[str, int], vertex: str, modulus: int) -> int:
+    return js_mod(gauge.get(vertex, 0), modulus)
+
+
+def js_gauge_transformed_edges(edges: tuple[dict, ...], gauge: dict[str, int], modulus: int) -> tuple[dict, ...]:
+    return tuple(
+        {
+            "source": edge["source"],
+            "target": edge["target"],
+            "phase": js_mod(
+                edge["phase"]
+                + js_gauge_value(gauge, edge["source"], modulus)
+                - js_gauge_value(gauge, edge["target"], modulus),
+                modulus,
+            ),
+        }
+        for edge in edges
+    )
+
+
+def js_path_holonomy(edges: tuple[dict, ...], modulus: int) -> int:
+    return js_mod(sum(edge["phase"] for edge in edges), modulus)
+
+
 def js_loop_required_steps(loop_period: int, sample_index: int) -> int:
     return js_mod(sample_index, loop_period) + 1
 
@@ -124,6 +170,41 @@ def main() -> int:
 
     physics_diagram = physics_loop_diagram_generator(7, bottom=2, right=3, top=-1, left=5)
     assert regenerate(physics_diagram) == js_physics_loop_diagram(7, bottom=2, right=3, top=-1, left=5)
+
+    gauge_cases = [
+        (23, 2, 5, -7, 4, {"v00": 3, "v10": 9, "v11": 1, "v01": 17}),
+        (11, -3, 14, 5, 8, {"v00": -2, "v10": 6, "v11": 13, "v01": 1}),
+        (5, 0, 0, 0, 0, {"v00": 4, "v10": 3, "v11": 2, "v01": 1}),
+    ]
+    for modulus, bottom, right, top, left, gauge in gauge_cases:
+        plaquette = square_plaquette_path(
+            modulus,
+            bottom=bottom,
+            right=right,
+            top=top,
+            left=left,
+        )
+        js_edges = js_square_plaquette_edges(
+            modulus,
+            bottom=bottom,
+            right=right,
+            top=top,
+            left=left,
+        )
+        transformed = gauge_transform_path(plaquette, gauge)
+        js_transformed = js_gauge_transformed_edges(js_edges, gauge, modulus)
+        assert tuple(
+            {"source": edge.source, "target": edge.target, "phase": edge.phase}
+            for edge in plaquette.edges
+        ) == js_edges
+        assert tuple(
+            {"source": edge.source, "target": edge.target, "phase": edge.phase}
+            for edge in transformed.edges
+        ) == js_transformed
+        assert path_holonomy(plaquette) == js_path_holonomy(js_edges, modulus)
+        assert path_holonomy(transformed) == js_path_holonomy(js_transformed, modulus)
+        assert transformed_holonomy_endpoint_prediction(plaquette, gauge) == path_holonomy(plaquette)
+        assert path_holonomy(transformed) == path_holonomy(plaquette)
 
     ai_cases = [
         (1, 0, 1, 0),
