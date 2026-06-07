@@ -79,6 +79,9 @@ checkedGaugePath_concat_holonomy
 checkedGaugePath_toLinkPath_composable
 checkedGaugePath_toLinkPath_holonomy
 checkedGaugePath_toLinkPath_concat
+checkedGaugePath_identity_closed
+checkedGaugePath_concat_closed_of_cycle
+checkedGaugePath_closed_gaugeInvariant
 gaugeTransform_pathHolonomy_endpoints
 closedWilsonLoop_gaugeInvariant
 plaquetteHolonomy_gaugeInvariant
@@ -90,7 +93,7 @@ This is a good Circle Calculus target because a loop diagram can become:
 glyph -> finite path object -> theorem id -> Lean declaration -> paper section -> Living Book widget
 ```
 
-The finite-gauge seed now includes singleton/two-link/singleton-concat/three-link/four-link/empty-identity, record-associativity, reversal-algebra, general boundary-checked append composability, first source/target laws for nonempty concatenations, and a checked finite path interface with explicit endpoints, identity laws, associative boundary-checked composition, checked-path holonomy identity/singleton/concat laws, and projection bridges back to the link-path carrier. The next finite-gauge step is to decide whether a full finite graph path-category instance is worth the abstraction:
+The finite-gauge seed now includes singleton/two-link/singleton-concat/three-link/four-link/empty-identity, record-associativity, reversal-algebra, general boundary-checked append composability, first source/target laws for nonempty concatenations, and a checked finite path interface with explicit endpoints, identity laws, associative boundary-checked composition, checked-path holonomy identity/singleton/concat laws, projection bridges back to the link-path carrier, and closed checked-path gauge-invariance facts. The next finite-gauge step is to decide whether a full finite graph path-category instance is worth the abstraction:
 
 - Berry/geometric phase and Aharonov-Bohm-style holonomy primers;
 - Hopf/Bloch-sphere hidden phase lessons linked to the existing `S3` Hopf spine;

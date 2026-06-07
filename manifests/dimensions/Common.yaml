@@ -1794,6 +1794,48 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_path_holonomy_concatenates_by_addition_mod_n
     blocker: ""
+  - id: PHYS-T0043
+    status: lean_proved
+    lean_name: Circle.Physics.checkedGaugePath_identity_closed
+    informal_statement: "A checked finite gauge identity path is closed."
+    formal_statement: "For n and vertex, (CheckedGaugePath.identity n vertex).closed."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0062"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_singleton_path_holonomy_is_edge_phase_mod_n
+    blocker: ""
+  - id: PHYS-T0044
+    status: lean_proved
+    lean_name: Circle.Physics.checkedGaugePath_concat_closed_of_cycle
+    informal_statement: "Concatenating two checked finite gauge paths closes when their endpoints cycle back."
+    formal_statement: "For checked finite gauge paths left and right, if left.target = right.source and right.target = left.source, then (left.concat right h).closed."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0062"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_path_holonomy_concatenates_by_addition_mod_n
+    blocker: ""
+  - id: PHYS-T0045
+    status: lean_proved
+    lean_name: Circle.Physics.checkedGaugePath_closed_gaugeInvariant
+    informal_statement: "A closed checked finite gauge path has gauge-shifted holonomy equal to its original holonomy because endpoint shifts cancel."
+    formal_statement: "For a checked finite gauge path path and gauge function, path.closed implies path.gaugeShiftedHolonomy gauge = path.holonomy."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_square_plaquette_fixture_is_closed_and_gauge_invariant
+    blocker: ""
   - id: GEN-T0001
     status: lean_proved
     lean_name: Circle.Generative.finiteCircleGenerator_regenerates_nodes

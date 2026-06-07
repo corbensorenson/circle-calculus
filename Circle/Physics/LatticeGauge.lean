@@ -319,6 +319,13 @@ def CheckedGaugePath.holonomy (path : CheckedGaugePath n) : ZMod n :=
 def CheckedGaugePath.toLinkPath (path : CheckedGaugePath n) : GaugeLinkPath n :=
   { links := path.links }
 
+def CheckedGaugePath.closed (path : CheckedGaugePath n) : Prop :=
+  path.source = path.target
+
+def CheckedGaugePath.gaugeShiftedHolonomy
+    (path : CheckedGaugePath n) (gauge : Nat → ZMod n) : ZMod n :=
+  path.holonomy + gauge path.source - gauge path.target
+
 theorem checkedGaugePath_identity_source (n vertex : Nat) :
     (CheckedGaugePath.identity n vertex).source = vertex := by
   rfl
@@ -396,6 +403,26 @@ theorem checkedGaugePath_toLinkPath_concat
     (left.concat right hboundary).toLinkPath =
       left.toLinkPath.concat right.toLinkPath := by
   rfl
+
+theorem checkedGaugePath_identity_closed (n vertex : Nat) :
+    (CheckedGaugePath.identity n vertex).closed := by
+  rfl
+
+theorem checkedGaugePath_concat_closed_of_cycle
+    (left right : CheckedGaugePath n)
+    (hforward : left.target = right.source)
+    (hback : right.target = left.source) :
+    (left.concat right hforward).closed := by
+  unfold CheckedGaugePath.closed
+  simpa [CheckedGaugePath.concat] using hback.symm
+
+theorem checkedGaugePath_closed_gaugeInvariant
+    (path : CheckedGaugePath n) (gauge : Nat → ZMod n)
+    (hclosed : path.closed) :
+    path.gaugeShiftedHolonomy gauge = path.holonomy := by
+  unfold CheckedGaugePath.gaugeShiftedHolonomy CheckedGaugePath.closed at *
+  rw [hclosed]
+  simp
 
 theorem gaugeLinkPath_reverse_phases (path : GaugeLinkPath n) :
     path.reverse.phases = reversePhases path.phases := by

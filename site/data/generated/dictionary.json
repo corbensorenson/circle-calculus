@@ -5766,6 +5766,24 @@
           "lean_name": "Circle.Physics.checkedGaugePath_toLinkPath_concat",
           "name": "Circle.Physics.checkedGaugePath_toLinkPath_concat",
           "status": "proved"
+        },
+        {
+          "id": "PHYS-T0043",
+          "lean_name": "Circle.Physics.checkedGaugePath_identity_closed",
+          "name": "Circle.Physics.checkedGaugePath_identity_closed",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0044",
+          "lean_name": "Circle.Physics.checkedGaugePath_concat_closed_of_cycle",
+          "name": "Circle.Physics.checkedGaugePath_concat_closed_of_cycle",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0045",
+          "lean_name": "Circle.Physics.checkedGaugePath_closed_gaugeInvariant",
+          "name": "Circle.Physics.checkedGaugePath_closed_gaugeInvariant",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -6055,6 +6073,24 @@
           "lean_name": "Circle.Physics.checkedGaugePath_toLinkPath_concat",
           "name": "Circle.Physics.checkedGaugePath_toLinkPath_concat",
           "status": "proved"
+        },
+        {
+          "id": "PHYS-T0043",
+          "lean_name": "Circle.Physics.checkedGaugePath_identity_closed",
+          "name": "Circle.Physics.checkedGaugePath_identity_closed",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0044",
+          "lean_name": "Circle.Physics.checkedGaugePath_concat_closed_of_cycle",
+          "name": "Circle.Physics.checkedGaugePath_concat_closed_of_cycle",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0045",
+          "lean_name": "Circle.Physics.checkedGaugePath_closed_gaugeInvariant",
+          "name": "Circle.Physics.checkedGaugePath_closed_gaugeInvariant",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -6110,6 +6146,24 @@
           "lean_name": "Circle.Physics.gaugeLinkPath_quad_composable_iff",
           "name": "Circle.Physics.gaugeLinkPath_quad_composable_iff",
           "status": "proved"
+        },
+        {
+          "id": "PHYS-T0043",
+          "lean_name": "Circle.Physics.checkedGaugePath_identity_closed",
+          "name": "Circle.Physics.checkedGaugePath_identity_closed",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0044",
+          "lean_name": "Circle.Physics.checkedGaugePath_concat_closed_of_cycle",
+          "name": "Circle.Physics.checkedGaugePath_concat_closed_of_cycle",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0045",
+          "lean_name": "Circle.Physics.checkedGaugePath_closed_gaugeInvariant",
+          "name": "Circle.Physics.checkedGaugePath_closed_gaugeInvariant",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -6164,6 +6218,12 @@
           "id": "PHYS-T0005",
           "lean_name": "Circle.Physics.plaquetteHolonomy_gaugeInvariant",
           "name": "Circle.Physics.plaquetteHolonomy_gaugeInvariant",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0045",
+          "lean_name": "Circle.Physics.checkedGaugePath_closed_gaugeInvariant",
+          "name": "Circle.Physics.checkedGaugePath_closed_gaugeInvariant",
           "status": "proved"
         }
       ],

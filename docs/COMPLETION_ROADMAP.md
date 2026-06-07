@@ -862,7 +862,7 @@ Do not claim new physics. The initial contribution should be a proof-carrying in
 Physics work order:
 
 - [x] Build `PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md` around finite `U(1)`/`Z_n` gauge links, path holonomy, closed Wilson loops, and plaquette loops.
-- [x] Promote the tractable finite theorem ids for path holonomy concatenation, reversal, link-path record holonomy, singleton/two-link/singleton-concat/three-link/four-link, empty-identity, concat-identity, concat-associativity, reversal-algebra facts, boundary-append composability, nonempty source/target projection, checked finite path endpoints, checked finite path identity/associativity/holonomy, checked-to-link-path projection bridges, gauge-transformed endpoint behavior, closed-loop gauge invariance, and plaquette invariance to Lean-proved `ZMod n` declarations.
+- [x] Promote the tractable finite theorem ids for path holonomy concatenation, reversal, link-path record holonomy, singleton/two-link/singleton-concat/three-link/four-link, empty-identity, concat-identity, concat-associativity, reversal-algebra facts, boundary-append composability, nonempty source/target projection, checked finite path endpoints, checked finite path identity/associativity/holonomy, checked-to-link-path projection bridges, checked closed-loop gauge-invariance facts, gauge-transformed endpoint behavior, closed-loop gauge invariance, and plaquette invariance to Lean-proved `ZMod n` declarations.
 - [x] Add Python examples for finite graph paths and closed loops before claiming any Lean theorem.
 - [x] Link the first physics paper to the existing bundle calculus, Hopf phase, and S3 spin-sign papers.
 - [ ] Add a Living Book physics lesson path: finite gauge loops -> holonomy -> Hopf hidden phase -> spin sign ambiguity -> periodic dynamics -> winding defects.
@@ -884,7 +884,7 @@ Generative work order:
 
 Accepted Phase VII targets:
 
-- [x] `P7-PHYS-001`: finite `U(1)`/`Z_n` lattice gauge Wilson-loop seed with Lean-proved `ZMod n` phase-list holonomy, link-path record holonomy, first source-target composability, checked finite path identity/associativity/holonomy, checked-to-link-path projection bridges, endpoint-gauge, closed-loop, and plaquette facts.
+- [x] `P7-PHYS-001`: finite `U(1)`/`Z_n` lattice gauge Wilson-loop seed with Lean-proved `ZMod n` phase-list holonomy, link-path record holonomy, first source-target composability, checked finite path identity/associativity/holonomy, checked-to-link-path projection bridges, checked closed-loop gauge-invariance facts, endpoint-gauge, closed-loop, and plaquette facts.
 - [x] `P7-PHYS-002`: Berry/Hopf holonomy primer.
 - [x] `P7-PHYS-003`: quaternion spin quotient extension.
 - [x] `P7-PHYS-004`: Floquet, action-angle, and winding-defect finite fixtures.

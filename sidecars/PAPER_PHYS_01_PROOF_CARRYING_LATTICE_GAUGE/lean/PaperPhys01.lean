@@ -32,6 +32,9 @@ sidecar remains an executable reference, not a formal proof source.
 #check Circle.Physics.checkedGaugePath_toLinkPath_composable
 #check Circle.Physics.checkedGaugePath_toLinkPath_holonomy
 #check Circle.Physics.checkedGaugePath_toLinkPath_concat
+#check Circle.Physics.checkedGaugePath_identity_closed
+#check Circle.Physics.checkedGaugePath_concat_closed_of_cycle
+#check Circle.Physics.checkedGaugePath_closed_gaugeInvariant
 #check Circle.Physics.gaugeLinkPathHolonomy_concat
 #check Circle.Physics.gaugeLinkPathHolonomy_reverse
 #check Circle.Physics.gaugeLinkPath_concat_empty_left
