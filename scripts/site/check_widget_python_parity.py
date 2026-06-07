@@ -17,13 +17,16 @@ from circle_math.applications import (
     dense_matrix_vector_product,
     dense_adapter_parameter_count,
     fit_loop_budget_lookup,
+    fit_loop_block_lookup,
     local_window_indices,
+    loop_block_indices,
     loop_exit_certificate,
     loop_required_steps,
     lora_adapter_parameter_count,
     memory_slot,
     memory_slot_collision_count,
     memory_slot_loads,
+    middle_block_required_blocks,
     mixed_retrieval_target_lags,
     multicoil_cycle_length,
     multicoil_phase,
@@ -33,10 +36,12 @@ from circle_math.applications import (
     retrieval_hit_rate_by_lag,
     retrieval_target_index,
     predict_loop_budget_lookup,
+    predict_loop_block_lookup,
     rope_relative_feature,
     run_adapter_parameter_budget_benchmark,
     run_content_gated_retrieval_benchmark,
     run_circulant_mixer_benchmark,
+    run_learned_middle_block_recurrence_benchmark,
     run_learned_token_level_recurrence_benchmark,
     run_token_level_recurrence_benchmark,
     token_recurrence_budget,
@@ -353,6 +358,68 @@ def js_predict_loop_budget_lookup(
     positions: tuple[int, ...],
 ) -> tuple[int, ...]:
     return tuple(lookup[js_mod(position, period)] for position in positions)
+
+
+def js_loop_block_indices(block_count: int, selected_loop_block: tuple[int, int]) -> tuple[int, ...]:
+    start, stop = selected_loop_block
+    return tuple(range(start, min(stop, block_count)))
+
+
+def js_middle_block_required_blocks(
+    block_count: int,
+    selected_loop_block: tuple[int, int],
+    sample_indices: tuple[int, ...],
+) -> tuple[int, ...]:
+    selected = js_loop_block_indices(block_count, selected_loop_block)
+    return tuple(selected[js_mod(sample, len(selected))] for sample in sample_indices)
+
+
+def js_fit_loop_block_lookup(
+    period: int,
+    positions: tuple[int, ...],
+    blocks: tuple[int, ...],
+) -> tuple[int, ...]:
+    return js_fit_loop_budget_lookup(period, positions, blocks)
+
+
+def js_predict_loop_block_lookup(
+    period: int,
+    lookup: tuple[int, ...],
+    positions: tuple[int, ...],
+) -> tuple[int, ...]:
+    return tuple(lookup[js_mod(position, period)] for position in positions)
+
+
+def js_middle_block_predictions(
+    required_blocks: tuple[int, ...],
+    required_budgets: tuple[int, ...],
+    candidate_blocks: tuple[int, ...],
+    planned_budgets: tuple[int, ...],
+    tolerance: int,
+) -> tuple[int, ...]:
+    candidates = set(candidate_blocks)
+    return tuple(
+        1 if required_block in candidates and required <= planned <= required + tolerance else 0
+        for required_block, required, planned in zip(required_blocks, required_budgets, planned_budgets)
+    )
+
+
+def js_sampled_middle_block_predictions(
+    required_blocks: tuple[int, ...],
+    required_budgets: tuple[int, ...],
+    planned_blocks: tuple[int, ...],
+    planned_budgets: tuple[int, ...],
+    tolerance: int,
+) -> tuple[int, ...]:
+    return tuple(
+        1 if required_block == planned_block and required <= planned <= required + tolerance else 0
+        for required_block, required, planned_block, planned in zip(
+            required_blocks,
+            required_budgets,
+            planned_blocks,
+            planned_budgets,
+        )
+    )
 
 
 def js_fit_phase_lookup(period: int, positions: tuple[int, ...], labels: tuple[int, ...]) -> tuple[int, ...]:
@@ -1004,6 +1071,167 @@ def main() -> int:
         assert benchmark.nonperiodic_scalar_threshold_accuracy == js_accuracy(
             threshold_predictions,
             control_test_labels,
+        )
+
+    learned_middle_block_cases = [
+        (8, 64, 32, 4, 2, 3, (2, 5), (0, 2), 4, 4, 8, 0),
+        (10, 50, 25, 5, 2, 4, (3, 7), (0, 3), 5, 3, 9, 1),
+        (12, 48, 24, 3, 5, 4, (4, 8), (1, 4), 4, 2, 6, 0),
+    ]
+    for (
+        block_count,
+        train_length,
+        test_length,
+        loop_period,
+        wrong_block_period,
+        wrong_budget_period,
+        selected_block,
+        wrong_block,
+        max_budget,
+        fixed_budget,
+        over_budget,
+        tolerance,
+    ) in learned_middle_block_cases:
+        train_samples = tuple(range(train_length))
+        test_samples = tuple(range(train_length, train_length + test_length))
+        selected_blocks = js_loop_block_indices(block_count, selected_block)
+        wrong_blocks = js_loop_block_indices(block_count, wrong_block)
+        full_blocks = tuple(range(block_count))
+        block_period = len(selected_blocks)
+        train_required_blocks = js_middle_block_required_blocks(block_count, selected_block, train_samples)
+        train_budgets = tuple(js_token_recurrence_budget(loop_period, sample) for sample in train_samples)
+        required_blocks = js_middle_block_required_blocks(block_count, selected_block, test_samples)
+        required_budgets = tuple(js_token_recurrence_budget(loop_period, sample) for sample in test_samples)
+        labels = tuple(1 for _ in test_samples)
+        learned_block_lookup = js_fit_loop_block_lookup(block_period, train_samples, train_required_blocks)
+        learned_blocks = js_predict_loop_block_lookup(block_period, learned_block_lookup, test_samples)
+        learned_budget_lookup = js_fit_loop_budget_lookup(loop_period, train_samples, train_budgets)
+        learned_budgets = tuple(
+            min(budget, max_budget)
+            for budget in js_predict_loop_budget_lookup(loop_period, learned_budget_lookup, test_samples)
+        )
+        wrong_block_lookup = js_fit_loop_block_lookup(wrong_block_period, train_samples, train_required_blocks)
+        wrong_period_blocks = js_predict_loop_block_lookup(wrong_block_period, wrong_block_lookup, test_samples)
+        wrong_budget_lookup = js_fit_loop_budget_lookup(wrong_budget_period, train_samples, train_budgets)
+        wrong_period_budgets = tuple(
+            min(budget, max_budget)
+            for budget in js_predict_loop_budget_lookup(wrong_budget_period, wrong_budget_lookup, test_samples)
+        )
+        fixed_budgets = tuple(fixed_budget for _ in test_samples)
+        over_budgets = tuple(over_budget for _ in test_samples)
+        benchmark = run_learned_middle_block_recurrence_benchmark(
+            block_count=block_count,
+            train_length=train_length,
+            test_length=test_length,
+            loop_period=loop_period,
+            wrong_block_period=wrong_block_period,
+            wrong_budget_period=wrong_budget_period,
+            selected_loop_block=selected_block,
+            wrong_loop_block=wrong_block,
+            max_budget=max_budget,
+            fixed_loop_budget=fixed_budget,
+            over_loop_budget=over_budget,
+            overthink_tolerance=tolerance,
+        )
+
+        assert loop_block_indices(block_count, selected_block) == selected_blocks
+        assert loop_block_indices(block_count, wrong_block) == wrong_blocks
+        assert middle_block_required_blocks(block_count, selected_block, test_samples) == required_blocks
+        assert fit_loop_block_lookup(block_period, train_samples, train_required_blocks) == learned_block_lookup
+        assert predict_loop_block_lookup(block_period, learned_block_lookup, test_samples) == learned_blocks
+        assert fit_loop_budget_lookup(loop_period, train_samples, train_budgets) == learned_budget_lookup
+        assert benchmark.block_period == block_period
+        assert benchmark.selected_block_indices == selected_blocks
+        assert benchmark.learned_block_lookup == learned_block_lookup
+        assert benchmark.learned_budget_lookup == learned_budget_lookup
+        assert benchmark.wrong_block_period_lookup == wrong_block_lookup
+        assert benchmark.wrong_budget_period_lookup == wrong_budget_lookup
+        assert benchmark.required_block_sample == required_blocks[: min(12, len(required_blocks))]
+        assert benchmark.learned_block_sample == learned_blocks[: min(12, len(learned_blocks))]
+        assert benchmark.wrong_block_sample == wrong_period_blocks[: min(12, len(wrong_period_blocks))]
+        assert benchmark.required_budget_sample == required_budgets[: min(12, len(required_budgets))]
+        assert benchmark.learned_budget_sample == learned_budgets[: min(12, len(learned_budgets))]
+        assert benchmark.wrong_budget_sample == wrong_period_budgets[: min(12, len(wrong_period_budgets))]
+        assert benchmark.active_sample_counts == js_active_token_counts_by_budget(learned_budgets, max_budget)
+        assert benchmark.learned_middle_block_router_accuracy == js_accuracy(
+            js_sampled_middle_block_predictions(
+                required_blocks,
+                required_budgets,
+                learned_blocks,
+                learned_budgets,
+                tolerance,
+            ),
+            labels,
+        )
+        assert benchmark.selected_band_phase_budget_accuracy == js_accuracy(
+            js_middle_block_predictions(
+                required_blocks,
+                required_budgets,
+                selected_blocks,
+                learned_budgets,
+                tolerance,
+            ),
+            labels,
+        )
+        assert benchmark.full_block_phase_budget_accuracy == js_accuracy(
+            js_middle_block_predictions(
+                required_blocks,
+                required_budgets,
+                full_blocks,
+                learned_budgets,
+                tolerance,
+            ),
+            labels,
+        )
+        assert benchmark.fixed_loop_budget_accuracy == js_accuracy(
+            js_sampled_middle_block_predictions(
+                required_blocks,
+                required_budgets,
+                learned_blocks,
+                fixed_budgets,
+                tolerance,
+            ),
+            labels,
+        )
+        assert benchmark.wrong_block_period_accuracy == js_accuracy(
+            js_sampled_middle_block_predictions(
+                required_blocks,
+                required_budgets,
+                wrong_period_blocks,
+                learned_budgets,
+                tolerance,
+            ),
+            labels,
+        )
+        assert benchmark.wrong_budget_period_accuracy == js_accuracy(
+            js_sampled_middle_block_predictions(
+                required_blocks,
+                required_budgets,
+                learned_blocks,
+                wrong_period_budgets,
+                tolerance,
+            ),
+            labels,
+        )
+        assert benchmark.wrong_loop_block_accuracy == js_accuracy(
+            js_middle_block_predictions(
+                required_blocks,
+                required_budgets,
+                wrong_blocks,
+                learned_budgets,
+                tolerance,
+            ),
+            labels,
+        )
+        assert benchmark.over_looped_accuracy == js_accuracy(
+            js_sampled_middle_block_predictions(
+                required_blocks,
+                required_budgets,
+                learned_blocks,
+                over_budgets,
+                tolerance,
+            ),
+            labels,
         )
 
     memory_cases = [

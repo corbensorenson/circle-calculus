@@ -179,6 +179,10 @@ training samples
 
 This is useful only as a learned-router harness. It is not evidence that a learned middle-block recursive transformer improves quality, speed, memory, context length, perplexity, or reasoning.
 
+The widget below exposes the deterministic `AIM-B0013` fixture. It fits one phase table for required model block and another phase table for loop budget, then compares the held-out route with selected-band, full-block, fixed-budget, wrong-period, wrong-block, and over-loop controls.
+
+<div class="widget-panel" data-widget="learned_middle_block_recurrence" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0059 COMMON-0068 COMMON-0070"></div>
+
 `AIM-B0008` turns multi-resolution recurrence into auditable bookkeeping:
 
 ```text
@@ -343,4 +347,5 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 <script type="module" src="../../widgets/ai/loop_recurrence_budget.js"></script>
 <script type="module" src="../../widgets/ai/token_level_recurrence.js"></script>
 <script type="module" src="../../widgets/ai/learned_token_recurrence.js"></script>
+<script type="module" src="../../widgets/ai/learned_middle_block_recurrence.js"></script>
 <script type="module" src="../../widgets/shared/widget_base.js"></script>
