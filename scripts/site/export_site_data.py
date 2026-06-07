@@ -209,6 +209,19 @@ def export_widget_index() -> dict:
             ],
             "python_reference": "circle_math.generative.finite_circle_diagram_generator; circle_math.generative.physics_loop_diagram_generator",
         },
+        {
+            "id": "loop_recurrence_budget",
+            "path": "site/widgets/ai/loop_recurrence_budget.js",
+            "theorem_ids": ["AIM-T0018", "AIM-T0019", "AIM-T0020", "AIM-T0021"],
+            "dictionary_ids": [
+                "COMMON-0052",
+                "COMMON-0053",
+                "COMMON-0054",
+                "COMMON-0059",
+                "COMMON-0067",
+            ],
+            "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.token_recurrence_budget; circle_math.applications.circle_ai.training_free_loop_budget",
+        },
     ]
     return {"widgets": widgets}
 

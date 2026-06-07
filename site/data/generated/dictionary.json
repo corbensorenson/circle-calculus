@@ -5143,7 +5143,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "loop_recurrence_budget",
+          "path": "site/widgets/ai/loop_recurrence_budget.js",
+          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.token_recurrence_budget; circle_math.applications.circle_ai.training_free_loop_budget"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -5270,7 +5276,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "loop_recurrence_budget",
+          "path": "site/widgets/ai/loop_recurrence_budget.js",
+          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.token_recurrence_budget; circle_math.applications.circle_ai.training_free_loop_budget"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -5319,7 +5331,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "loop_recurrence_budget",
+          "path": "site/widgets/ai/loop_recurrence_budget.js",
+          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.token_recurrence_budget; circle_math.applications.circle_ai.training_free_loop_budget"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -5485,7 +5503,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "loop_recurrence_budget",
+          "path": "site/widgets/ai/loop_recurrence_budget.js",
+          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.token_recurrence_budget; circle_math.applications.circle_ai.training_free_loop_budget"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -6665,7 +6689,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "loop_recurrence_budget",
+          "path": "site/widgets/ai/loop_recurrence_budget.js",
+          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.token_recurrence_budget; circle_math.applications.circle_ai.training_free_loop_budget"
+        }
+      ]
     },
     {
       "dependencies": [

@@ -79,6 +79,18 @@ Implemented shared JavaScript:
 - Guardrail: the widget is generated explanation only. It displays linked proof statuses from the theorem manifest, but the diagram itself is not a proof and does not prove compression minimality or physics claims.
 - Validation: deterministic JavaScript diagram formulas are parity-checked against the Python seed-rule fixtures.
 
+## AI Widgets
+
+### loop_recurrence_budget
+
+- Inputs: loop period, sample/token index, maximum loops, overthinking tolerance.
+- Outputs: loop phase, required loop count, token recurrence budget, capped training-free loop budget, exit availability, overthinking boundary, and one-period-shift periodicity checks.
+- Theorem ids: `AIM-T0018`, `AIM-T0019`, `AIM-T0020`, and `AIM-T0021`.
+- Dictionary ids: `COMMON-0052`, `COMMON-0053`, `COMMON-0054`, `COMMON-0059`, and `COMMON-0067`.
+- Python references: `circle_math.applications.circle_ai.loop_required_steps`, `circle_math.applications.circle_ai.token_recurrence_budget`, and `circle_math.applications.circle_ai.training_free_loop_budget`.
+- Guardrail: the widget is finite schedule bookkeeping only. It does not prove model quality, speed, reasoning improvement, memory improvement, or context-length improvement.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python AI recurrence helpers.
+
 ## Future Placeholders
 
 - `site/widgets/S2/sphere_grid_placeholder.js`
@@ -108,3 +120,4 @@ Minimum parity cases:
 - winding/residue decomposition.
 - finite-circle generated diagram nodes and successor edges;
 - finite physics-loop generated diagram normalized phases, closed-loop flag, and holonomy.
+- AI recurrence phase, required loop count, token recurrence budget, capped training-free budget, exit availability, overthinking boundary, and one-period-shift periodicity.

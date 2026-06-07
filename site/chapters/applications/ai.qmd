@@ -51,6 +51,10 @@ shared block
 
 The proof boundary stays strict: Lean can certify finite schedule and indexing facts; Python or MLX benchmarks must carry model-quality, runtime, memory, and parameter claims.
 
+The widget below is the smallest interactive version of that boundary. It computes the same finite schedule quantities used by the current Lean/Python layer: phase, required loop depth, token recurrence budget, capped training-free budget, exit availability, and overthinking boundary. It is not a proof and it is not evidence of model quality.
+
+<div class="widget-panel" data-widget="loop_recurrence_budget" data-theorem-id="AIM-T0018" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0054 COMMON-0059 COMMON-0067"></div>
+
 `AIM-B0005` turns that lesson into token-level bookkeeping:
 
 ```text
@@ -265,4 +269,5 @@ Why is the nonperiodic control in `AIA-B0002` important before making any AI-imp
 Python and optional MLX benchmark fixtures are executable references only. They do not replace Lean proofs and do not prove that circles improve neural networks.
 :::
 
+<script type="module" src="../../widgets/ai/loop_recurrence_budget.js"></script>
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

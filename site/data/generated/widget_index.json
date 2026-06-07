@@ -111,6 +111,24 @@
         "GEN-T0017",
         "GEN-T0019"
       ]
+    },
+    {
+      "dictionary_ids": [
+        "COMMON-0052",
+        "COMMON-0053",
+        "COMMON-0054",
+        "COMMON-0059",
+        "COMMON-0067"
+      ],
+      "id": "loop_recurrence_budget",
+      "path": "site/widgets/ai/loop_recurrence_budget.js",
+      "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.token_recurrence_budget; circle_math.applications.circle_ai.training_free_loop_budget",
+      "theorem_ids": [
+        "AIM-T0018",
+        "AIM-T0019",
+        "AIM-T0020",
+        "AIM-T0021"
+      ]
     }
   ]
 }

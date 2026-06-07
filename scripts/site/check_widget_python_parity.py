@@ -2,6 +2,12 @@ from __future__ import annotations
 
 from math import gcd
 
+from circle_math.applications import (
+    loop_exit_certificate,
+    loop_required_steps,
+    token_recurrence_budget,
+    training_free_loop_budget,
+)
 from circle_math.finite import Circle
 from circle_math.generative import (
     finite_circle_diagram_generator,
@@ -72,6 +78,26 @@ def js_physics_loop_diagram(
     }
 
 
+def js_loop_required_steps(loop_period: int, sample_index: int) -> int:
+    return js_mod(sample_index, loop_period) + 1
+
+
+def js_token_recurrence_budget(loop_period: int, token_index: int) -> int:
+    return js_loop_required_steps(loop_period, token_index)
+
+
+def js_training_free_loop_budget(loop_period: int, sample_index: int, max_loops: int) -> int:
+    return min(js_loop_required_steps(loop_period, sample_index), max_loops)
+
+
+def js_loop_exit_available(loop_period: int, sample_index: int, max_loops: int) -> bool:
+    return js_loop_required_steps(loop_period, sample_index) <= max_loops
+
+
+def js_loop_overthinking_boundary(loop_period: int, sample_index: int, tolerance: int) -> int:
+    return js_loop_required_steps(loop_period, sample_index) + tolerance
+
+
 def main() -> int:
     cases = [
         (1, 0, 0),
@@ -98,6 +124,51 @@ def main() -> int:
 
     physics_diagram = physics_loop_diagram_generator(7, bottom=2, right=3, top=-1, left=5)
     assert regenerate(physics_diagram) == js_physics_loop_diagram(7, bottom=2, right=3, top=-1, left=5)
+
+    ai_cases = [
+        (1, 0, 1, 0),
+        (4, 11, 3, 1),
+        (5, 22, 5, 2),
+        (8, 19, 2, 3),
+        (13, 42, 9, 0),
+    ]
+    for loop_period, sample_index, max_loops, tolerance in ai_cases:
+        required = loop_required_steps(loop_period, sample_index)
+        shifted_sample = sample_index + loop_period
+        certificate = loop_exit_certificate(
+            loop_period,
+            sample_index,
+            max_loops,
+            overthink_tolerance=tolerance,
+        )
+        assert required == js_loop_required_steps(loop_period, sample_index)
+        assert token_recurrence_budget(loop_period, sample_index) == js_token_recurrence_budget(
+            loop_period,
+            sample_index,
+        )
+        assert training_free_loop_budget(
+            loop_period,
+            sample_index,
+            max_loops,
+        ) == js_training_free_loop_budget(loop_period, sample_index, max_loops)
+        assert certificate.exit_available == js_loop_exit_available(loop_period, sample_index, max_loops)
+        assert certificate.overthinking_boundary == js_loop_overthinking_boundary(
+            loop_period,
+            sample_index,
+            tolerance,
+        )
+        assert loop_required_steps(loop_period, shifted_sample) == required
+        assert training_free_loop_budget(
+            loop_period,
+            shifted_sample,
+            max_loops,
+        ) == js_training_free_loop_budget(loop_period, sample_index, max_loops)
+        assert loop_exit_certificate(
+            loop_period,
+            shifted_sample,
+            max_loops,
+            overthink_tolerance=tolerance,
+        ).overthinking_boundary == certificate.overthinking_boundary
 
     print("widget Python parity ok")
     return 0
