@@ -163,6 +163,20 @@
     },
     {
       "dictionary_ids": [
+        "COMMON-0047",
+        "COMMON-0028",
+        "COMMON-0029"
+      ],
+      "id": "coil_retrieval_reachability",
+      "path": "site/widgets/ai/coil_retrieval_reachability.js",
+      "python_reference": "circle_math.applications.circle_ai.coil_attention_path; circle_math.applications.circle_ai.local_window_indices; circle_math.applications.circle_ai.retrieval_target_index; circle_math.applications.circle_ai.retrieval_hit_rate",
+      "theorem_ids": [
+        "CC-T0002",
+        "CC-T0005"
+      ]
+    },
+    {
+      "dictionary_ids": [
         "COMMON-0060",
         "COMMON-0061",
         "COMMON-0062",

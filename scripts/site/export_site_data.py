@@ -245,6 +245,13 @@ def export_widget_index() -> dict:
             "python_reference": "circle_math.applications.circle_ai.memory_slot; circle_math.applications.circle_ai.memory_slot_loads; circle_math.applications.circle_ai.memory_slot_collision_count",
         },
         {
+            "id": "coil_retrieval_reachability",
+            "path": "site/widgets/ai/coil_retrieval_reachability.js",
+            "theorem_ids": ["CC-T0002", "CC-T0005"],
+            "dictionary_ids": ["COMMON-0047", "COMMON-0028", "COMMON-0029"],
+            "python_reference": "circle_math.applications.circle_ai.coil_attention_path; circle_math.applications.circle_ai.local_window_indices; circle_math.applications.circle_ai.retrieval_target_index; circle_math.applications.circle_ai.retrieval_hit_rate",
+        },
+        {
             "id": "finite_gauge_loop_holonomy",
             "path": "site/widgets/physics/finite_gauge_loop_holonomy.js",
             "theorem_ids": ["PHYS-T0004", "PHYS-T0005", "PHYS-T0012", "PHYS-T0045"],

@@ -3,11 +3,15 @@ from __future__ import annotations
 from math import gcd
 
 from circle_math.applications import (
+    coil_attention_path,
+    local_window_indices,
     loop_exit_certificate,
     loop_required_steps,
     memory_slot,
     memory_slot_collision_count,
     memory_slot_loads,
+    retrieval_hit_rate,
+    retrieval_target_index,
     token_recurrence_budget,
     training_free_loop_budget,
 )
@@ -176,6 +180,40 @@ def js_memory_slot_collision_count(bank_size: int, tokens: tuple[int, ...]) -> i
     return sum(max(0, load - 1) for load in js_memory_slot_loads(bank_size, tokens))
 
 
+def js_coil_attention_path(
+    sequence_length: int,
+    query_index: int,
+    stride: int,
+    path_length: int,
+) -> tuple[int, ...]:
+    return tuple(
+        js_mod(query_index - step * stride, sequence_length)
+        for step in range(1, path_length + 1)
+    )
+
+
+def js_local_window_indices(sequence_length: int, query_index: int, window: int) -> tuple[int, ...]:
+    return tuple(js_mod(query_index - step, sequence_length) for step in range(1, window + 1))
+
+
+def js_retrieval_target_index(sequence_length: int, query_index: int, target_lag: int) -> int:
+    return js_mod(query_index - target_lag, sequence_length)
+
+
+def js_retrieval_hit_rate(
+    sequence_length: int,
+    query_indices: tuple[int, ...],
+    target_lag: int,
+    candidate_sets: tuple[tuple[int, ...], ...],
+) -> float:
+    hits = 0
+    for query_index, candidates in zip(query_indices, candidate_sets):
+        target = js_retrieval_target_index(sequence_length, query_index, target_lag)
+        if target in set(candidates):
+            hits += 1
+    return hits / len(query_indices)
+
+
 def js_loop_exit_available(loop_period: int, sample_index: int, max_loops: int) -> bool:
     return js_loop_required_steps(loop_period, sample_index) <= max_loops
 
@@ -326,6 +364,94 @@ def main() -> int:
             bank_size,
             tokens,
         )
+
+    retrieval_cases = [
+        (64, tuple(range(64)), 21, 7, 3, 8, 5, 3),
+        (31, tuple(range(16)), 12, 4, 3, 5, 6, 2),
+    ]
+    for sequence_length, query_indices, target_lag, stride, path_length, local_window, wrong_stride, near_lag in retrieval_cases:
+        query_index = query_indices[-1]
+        assert retrieval_target_index(
+            sequence_length,
+            query_index,
+            target_lag,
+        ) == js_retrieval_target_index(sequence_length, query_index, target_lag)
+        assert coil_attention_path(
+            sequence_length,
+            query_index,
+            stride,
+            path_length,
+        ) == js_coil_attention_path(sequence_length, query_index, stride, path_length)
+        assert local_window_indices(
+            sequence_length,
+            query_index,
+            local_window,
+        ) == js_local_window_indices(sequence_length, query_index, local_window)
+
+        coil_candidates = tuple(
+            coil_attention_path(sequence_length, query, stride, path_length)
+            for query in query_indices
+        )
+        local_candidates = tuple(
+            local_window_indices(sequence_length, query, local_window)
+            for query in query_indices
+        )
+        wrong_candidates = tuple(
+            coil_attention_path(sequence_length, query, wrong_stride, path_length)
+            for query in query_indices
+        )
+        full_candidates = tuple(tuple(range(sequence_length)) for _ in query_indices)
+        js_coil_candidates = tuple(
+            js_coil_attention_path(sequence_length, query, stride, path_length)
+            for query in query_indices
+        )
+        js_local_candidates = tuple(
+            js_local_window_indices(sequence_length, query, local_window)
+            for query in query_indices
+        )
+        js_wrong_candidates = tuple(
+            js_coil_attention_path(sequence_length, query, wrong_stride, path_length)
+            for query in query_indices
+        )
+        assert coil_candidates == js_coil_candidates
+        assert local_candidates == js_local_candidates
+        assert wrong_candidates == js_wrong_candidates
+        assert retrieval_hit_rate(
+            sequence_length,
+            query_indices,
+            target_lag,
+            coil_candidates,
+        ) == js_retrieval_hit_rate(sequence_length, query_indices, target_lag, js_coil_candidates)
+        assert retrieval_hit_rate(
+            sequence_length,
+            query_indices,
+            target_lag,
+            local_candidates,
+        ) == js_retrieval_hit_rate(sequence_length, query_indices, target_lag, js_local_candidates)
+        assert retrieval_hit_rate(
+            sequence_length,
+            query_indices,
+            target_lag,
+            wrong_candidates,
+        ) == js_retrieval_hit_rate(sequence_length, query_indices, target_lag, js_wrong_candidates)
+        assert retrieval_hit_rate(
+            sequence_length,
+            query_indices,
+            target_lag,
+            full_candidates,
+        ) == js_retrieval_hit_rate(sequence_length, query_indices, target_lag, full_candidates)
+        assert retrieval_hit_rate(
+            sequence_length,
+            query_indices,
+            near_lag,
+            local_candidates,
+        ) == js_retrieval_hit_rate(sequence_length, query_indices, near_lag, js_local_candidates)
+        assert retrieval_hit_rate(
+            sequence_length,
+            query_indices,
+            near_lag,
+            coil_candidates,
+        ) == js_retrieval_hit_rate(sequence_length, query_indices, near_lag, js_coil_candidates)
 
     print("widget Python parity ok")
     return 0

@@ -39,6 +39,14 @@ The widget below shows that finite layer. It is not a retrieval-quality result a
 
 <div class="widget-panel" data-widget="cyclic_memory_slots" data-theorem-id="AIM-T0001" data-dictionary-ids="COMMON-0028 COMMON-0029"></div>
 
+## Coil Retrieval Reachability Path
+
+Coil retrieval asks a narrower question than "does this improve attention?": can a fixed finite stride path reach a known long-lag dependency that a local window misses, while ordinary local attention still wins on a near-lag control?
+
+`AIM-B0002` is the current executable fixture for that question. The widget below exposes the candidate-set arithmetic behind it: selected coil path, local window, wrong stride, full-attention oracle, and near-lag controls. It is not a retrieval-quality claim and not a replacement for learned attention baselines.
+
+<div class="widget-panel" data-widget="coil_retrieval_reachability" data-dictionary-ids="COMMON-0047 COMMON-0028 COMMON-0029"></div>
+
 ## Looped Recurrence Path
 
 Looped and recursive transformers reuse model blocks across multiple computation passes. The Circle Calculus version should make each pass explicit: loop phase, recurrence budget, state provenance, exit decision, and overthinking boundary. That is a possible interface contribution, not a proved model improvement.
@@ -278,5 +286,6 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 :::
 
 <script type="module" src="../../widgets/ai/cyclic_memory_slots.js"></script>
+<script type="module" src="../../widgets/ai/coil_retrieval_reachability.js"></script>
 <script type="module" src="../../widgets/ai/loop_recurrence_budget.js"></script>
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

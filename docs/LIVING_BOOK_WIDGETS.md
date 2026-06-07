@@ -101,6 +101,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is finite indexing and alias bookkeeping only. It does not prove retrieval quality, memory scaling, model-quality improvement, speedup, or training effectiveness.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python cyclic-memory helpers.
 
+### coil_retrieval_reachability
+
+- Inputs: sequence length, query index, target lag, selected stride, path length, local-window width, wrong stride, and near-control lag.
+- Outputs: long-lag target index, selected coil-path candidates, local-window candidates, wrong-stride candidates, full-attention oracle row, near-lag local and coil controls, candidate counts, hit/miss status, finite primitive theorem links, and dictionary links.
+- Theorem ids: `CC-T0002` and `CC-T0005` as finite rotation/orbit primitives only.
+- Dictionary ids: `COMMON-0047`, `COMMON-0028`, and `COMMON-0029`.
+- Python references: `circle_math.applications.circle_ai.coil_attention_path`, `circle_math.applications.circle_ai.local_window_indices`, `circle_math.applications.circle_ai.retrieval_target_index`, and `circle_math.applications.circle_ai.retrieval_hit_rate`.
+- Guardrail: the widget is finite candidate-set reachability only. It does not prove retrieval quality, context length, runtime, memory scaling, attention replacement, or model-quality improvement.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python coil-retrieval helpers.
+
 ## Physics Widgets
 
 ### finite_gauge_loop_holonomy
@@ -145,4 +155,5 @@ Minimum parity cases:
 - generated coil orbit sequences, orbit decompositions, and proof-glyph metadata fields.
 - AI recurrence phase, required loop count, token recurrence budget, capped training-free budget, exit availability, overthinking boundary, and one-period-shift periodicity.
 - cyclic memory slot reduction, one-bank closure, multi-bank closure, idempotent normalization, slot loads, and collision count.
+- coil-retrieval target index, selected coil path, local window, wrong-stride path, full-attention oracle hit, and near-lag local/coil controls.
 - finite gauge-loop normalized phases, gauge-transformed phases, original/transformed holonomy, and closed endpoint cancellation.
