@@ -545,7 +545,7 @@ Already proved and linked:
 
 Still planned:
 
-- Scaling/factor refinements beyond the current `CC-T0058` affine spine: affine classification and additional factor-lattice/provenance links. Orbit packaging beyond the current `CC-T0061` gcd-congruence theorem remains a separate future refinement. Additive-combinatorics bridge work beyond the current `CC-T0062` EGZ wrapper and `CC-T0063` Cauchy-Davenport wrapper should start with explicit sumset vocabulary, EGZ sharpness examples, zero-sum witness tooling, and representation-count fixtures before any open-problem claims.
+- Scaling/factor refinements beyond the current `CC-T0058` affine spine: affine classification and additional factor-lattice/provenance links. Orbit packaging beyond the current `CC-T0061` gcd-congruence theorem remains a separate future refinement. Additive-combinatorics bridge work now has Python support for finite-circle sumsets, Cauchy-Davenport examples, EGZ sharpness examples, zero-sum witness search, and representation-count fixtures; the next work is formal sumset vocabulary, formal sharpness statements where tractable, and clearer theorem-search links before any open-problem claims.
 
 ## Latest Application Handoff Queue
 

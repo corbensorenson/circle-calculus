@@ -983,13 +983,13 @@ theorems:
     formal_statement: "forall {ι : Type*} {n : Nat} {s : Finset ι} (a : ι -> Circle.C n), 2*n-1 <= s.card -> exists t, t subset s and t.card = n and sum over t of a is zero"
     dictionary_dependencies: ["CC-0001"]
     paper_refs: ["docs/ERDOS_CIRCLE_MATH_REVIEW.md"]
-    python_tests: []
+    python_tests: ["sidecars/PAPER_01_FINITE_CIRCLES/python/test_additive_combinatorics_examples.py::test_egz_sharpness_family_has_no_length_n_zero_sum"]
     proof_notes: "Lean theorem is compiled in Circle/Erdos/EGZ.lean as a Circle.C wrapper around mathlib's ZMod.erdos_ginzburg_ziv theorem."
     blocker: ""
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests: ["egz_sharpness_family(n) has length 2*n-2 and no length-n zero-sum witness for tested finite n"]
 
   - id: CC-T0063
     name: Cauchy-Davenport prime circle bridge
@@ -999,10 +999,10 @@ theorems:
     formal_statement: "forall {p : Nat}, p.Prime -> forall {s t : Finset (Circle.C p)}, s.Nonempty -> t.Nonempty -> min p (s.card + t.card - 1) <= (s + t).card"
     dictionary_dependencies: ["CC-0001"]
     paper_refs: ["docs/ERDOS_CIRCLE_MATH_REVIEW.md"]
-    python_tests: []
+    python_tests: ["sidecars/PAPER_01_FINITE_CIRCLES/python/test_additive_combinatorics_examples.py::test_cauchy_davenport_examples_meet_lower_bound"]
     proof_notes: "Lean theorem is compiled in Circle/Erdos/CauchyDavenport.lean as a Circle.C wrapper around mathlib's ZMod.cauchy_davenport theorem."
     blocker: ""
     verification:
       lean_build_required: true
       no_sorry_required: true
-      python_property_tests: []
+      python_property_tests: ["cauchy_davenport_example(p,A,B).passes_bound for deterministic prime-circle examples"]

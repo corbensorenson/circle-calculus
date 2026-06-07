@@ -104,6 +104,8 @@ The theorem manifest also includes `CC-T0008`, `CC-T0017` through `CC-T0054`, an
 
 `CC-T0062` and `CC-T0063` are external theorem bridges: they restate mathlib's Erdős-Ginzburg-Ziv and Cauchy-Davenport theorems as zero-sum and sumset-growth theorems over finite circle types. These are Lean-checked wrappers around mathlib, not new Circle Calculus proofs or claims of progress on an open Erdős problem; see `docs/ERDOS_CIRCLE_MATH_REVIEW.md`.
 
+The executable support layer `circle_math/additive.py` now gives finite-circle sumset examples, Cauchy-Davenport example certificates, zero-sum witness search, and the standard EGZ sharpness family. These examples support the reader and tests; the formal theorem source remains Lean.
+
 The D0 dimensional scaffold is also in place: dimension manifests, dimension dictionaries, planned paper stubs, Lean/Python scaffolds, and dimension validation scripts. Future-dimension claims remain planned, deferred, exploratory, or stated until actual Lean proofs exist.
 
 Phase II and application scaffolds are also in place under `papers/phase2/`, `papers/applications/`, `manifests/theories/`, and `manifests/applications/`. `PAPER_P2_01_STABLE_SPHERE_CALCULUS` through `PAPER_P2_05_PROOF_CARRYING_GLYPHS`, `PAPER_APP_01_COIL_DATA_ANALYSIS`, `PAPER_COMP_01` through `PAPER_COMP_04`, and `PAPER_AI_01` through `PAPER_AI_03` now have proved seeds. The 2026-06-05 compute-applications handoff is preserved in `docs/PHASE2_AND_APPLICATIONS.md` and `circle_calculus_codex_handoff/source_logs/04_compute_applications_browser_note.md`. Benchmark claims remain benchmark work, not proof claims.

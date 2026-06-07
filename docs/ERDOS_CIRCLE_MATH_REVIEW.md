@@ -96,8 +96,8 @@ Notable status-sensitive items checked:
 2. Best second formal bridge: Cauchy-Davenport on `ZMod p`.
    This is not itself an Erdős problem, but it is core additive combinatorics and
    a standard route into zero-sum results. Mathlib has `ZMod.cauchy_davenport`.
-   Circle now wraps it as `CC-T0063`; a richer local sumset API remains future
-   work.
+   Circle now wraps it as `CC-T0063`; the Python reference layer now includes
+   local sumset examples and Cauchy-Davenport example certificates.
 
 3. Best hard solved Erdős problem for explanatory fixtures: Erdős discrepancy.
    Homogeneous arithmetic progressions look like finite coils. The honest target
@@ -131,13 +131,15 @@ A credible Circle-Erdős program should proceed in this order:
 
 3. Add `Circle.cauchy_davenport_prime_circle`.
    This now connects Circle's finite-address language to sumset growth, the
-   standard engine behind many additive-combinatorics arguments. The next work
-   is to add local sumset vocabulary and examples rather than claim a new proof.
+   standard engine behind many additive-combinatorics arguments. The Python
+   support layer now adds local sumset examples; the next formal work is Lean
+   vocabulary and examples rather than a claim of a new proof.
 
 4. Build zero-sum witness tooling.
-   Define finite address families, zero-sum subsequences, witness certificates,
-   and small deterministic search examples. Keep Python as executable support,
-   not proof.
+   Python now defines finite address-family examples, zero-sum witness search,
+   the standard EGZ sharpness family, and small deterministic search examples.
+   Keep Python as executable support, not proof; the next step is deciding which
+   witness statements are worth formalizing in Lean.
 
 5. Only then attempt an open Erdős problem lane.
    For #28, start with finite cyclic representation functions and known finite
@@ -159,6 +161,8 @@ recognized, and aligned with the formal core.
 - Circle proof policy: `docs/PROOF_POLICY.md`
 - EGZ bridge: `Circle/Erdos/EGZ.lean`
 - Cauchy-Davenport bridge: `Circle/Erdos/CauchyDavenport.lean`
+- Python additive examples: `circle_math/additive.py`
+- Python tests: `sidecars/PAPER_01_FINITE_CIRCLES/python/test_additive_combinatorics_examples.py`
 - Theorem registry entries: `CC-T0062` and `CC-T0063` in `manifests/theorem_manifest.yaml`
 - mathlib EGZ documentation:
   https://leanprover-community.github.io/mathlib4_docs/Mathlib/Combinatorics/Additive/ErdosGinzburgZiv.html

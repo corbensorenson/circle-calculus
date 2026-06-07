@@ -3472,14 +3472,18 @@
         "docs/ERDOS_CIRCLE_MATH_REVIEW.md"
       ],
       "proof_notes": "Lean theorem is compiled in Circle/Erdos/EGZ.lean as a Circle.C wrapper around mathlib's ZMod.erdos_ginzburg_ziv theorem.",
-      "python_tests": [],
+      "python_tests": [
+        "sidecars/PAPER_01_FINITE_CIRCLES/python/test_additive_combinatorics_examples.py::test_egz_sharpness_family_has_no_length_n_zero_sum"
+      ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
       "used_by_papers": [],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
-        "python_property_tests": []
+        "python_property_tests": [
+          "egz_sharpness_family(n) has length 2*n-2 and no length-n zero-sum witness for tested finite n"
+        ]
       }
     },
     {
@@ -3500,14 +3504,18 @@
         "docs/ERDOS_CIRCLE_MATH_REVIEW.md"
       ],
       "proof_notes": "Lean theorem is compiled in Circle/Erdos/CauchyDavenport.lean as a Circle.C wrapper around mathlib's ZMod.cauchy_davenport theorem.",
-      "python_tests": [],
+      "python_tests": [
+        "sidecars/PAPER_01_FINITE_CIRCLES/python/test_additive_combinatorics_examples.py::test_cauchy_davenport_examples_meet_lower_bound"
+      ],
       "source_manifest": "manifests/theorem_manifest.yaml",
       "status": "proved",
       "used_by_papers": [],
       "verification": {
         "lean_build_required": true,
         "no_sorry_required": true,
-        "python_property_tests": []
+        "python_property_tests": [
+          "cauchy_davenport_example(p,A,B).passes_bound for deterministic prime-circle examples"
+        ]
       }
     },
     {
