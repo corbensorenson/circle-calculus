@@ -72,12 +72,12 @@ Implemented shared JavaScript:
 ### seed_rule_diagram_generator
 
 - Inputs: selected generated artifact.
-- Outputs: a generated finite-circle successor diagram or finite physics-loop plaquette diagram; seed; rules; schedule; closure condition; generated-object summary; theorem-status badges; dictionary links.
-- Theorem ids: `CC-T0001`, `CC-T0002`, `PHYS-T0005`, `PHYS-T0012`, `GEN-T0017`, and `GEN-T0019`.
-- Dictionary ids: finite circle/node ids plus finite gauge/generative provenance ids.
-- Python references: `circle_math.generative.finite_circle_diagram_generator` and `circle_math.generative.physics_loop_diagram_generator`.
-- Guardrail: the widget is generated explanation only. It displays linked proof statuses from the theorem manifest, but the diagram itself is not a proof and does not prove compression minimality or physics claims.
-- Validation: deterministic JavaScript diagram formulas are parity-checked against the Python seed-rule fixtures.
+- Outputs: generated finite-circle successor diagram, finite physics-loop plaquette diagram, coil-orbit record, orbit-decomposition record, or proof-glyph metadata; seed; rules; schedule; closure condition; generated-object summary; theorem-status badges; dictionary links.
+- Theorem ids: finite circle, finite coil/orbit, finite physics-loop, proof-glyph, and generator-comparison theorem ids exposed by the selected record.
+- Dictionary ids: finite circle/node/coil/orbit ids plus proof-glyph, finite gauge, and generative provenance ids.
+- Python references: `circle_math.generative.finite_circle_diagram_generator`, `circle_math.generative.physics_loop_diagram_generator`, `circle_math.generative.coil_orbit_generator`, `circle_math.generative.orbit_decomposition_generator`, and `circle_math.generative.proof_glyph_generator`.
+- Guardrail: the widget is generated explanation only. It displays linked proof statuses from the theorem manifest, but the generated diagram or metadata is not a proof and does not prove compression minimality, search optimality, or physics claims.
+- Validation: deterministic JavaScript generation formulas are parity-checked against the Python seed-rule fixtures.
 
 ## AI Widgets
 
@@ -132,5 +132,6 @@ Minimum parity cases:
 - winding/residue decomposition.
 - finite-circle generated diagram nodes and successor edges;
 - finite physics-loop generated diagram normalized phases, closed-loop flag, and holonomy.
+- generated coil orbit sequences, orbit decompositions, and proof-glyph metadata fields.
 - AI recurrence phase, required loop count, token recurrence budget, capped training-free budget, exit availability, overthinking boundary, and one-period-shift periodicity.
 - finite gauge-loop normalized phases, gauge-transformed phases, original/transformed holonomy, and closed endpoint cancellation.

@@ -10,8 +10,11 @@ from circle_math.applications import (
 )
 from circle_math.finite import Circle
 from circle_math.generative import (
+    coil_orbit_generator,
     finite_circle_diagram_generator,
+    orbit_decomposition_generator,
     physics_loop_diagram_generator,
+    proof_glyph_generator,
     regenerate,
 )
 from circle_math.physics import (
@@ -42,6 +45,17 @@ def js_orbit(n: int, stride: int, start: int) -> list[int]:
     return out
 
 
+def js_orbit_decomposition(n: int, stride: int) -> tuple[tuple[int, ...], ...]:
+    remaining = set(range(n))
+    cycles: list[tuple[int, ...]] = []
+    while remaining:
+        start = min(remaining)
+        cycle = tuple(js_orbit(n, stride, start))
+        cycles.append(cycle)
+        remaining.difference_update(cycle)
+    return tuple(cycles)
+
+
 def js_finite_circle_diagram(n: int) -> dict:
     nodes = tuple({"id": node, "label": f"{node} mod {n}"} for node in range(n))
     edges = tuple(
@@ -49,6 +63,14 @@ def js_finite_circle_diagram(n: int) -> dict:
         for node in range(n)
     )
     return {"nodes": nodes, "edges": edges}
+
+
+def js_proof_glyph(glyph_id: str, theorem_id: str, lean_name: str) -> dict[str, str]:
+    return {
+        "glyph_id": glyph_id,
+        "theorem_id": theorem_id,
+        "lean_name": lean_name,
+    }
 
 
 def js_physics_loop_diagram(
@@ -170,6 +192,23 @@ def main() -> int:
 
     physics_diagram = physics_loop_diagram_generator(7, bottom=2, right=3, top=-1, left=5)
     assert regenerate(physics_diagram) == js_physics_loop_diagram(7, bottom=2, right=3, top=-1, left=5)
+
+    coil_record = coil_orbit_generator(12, 8, start=0)
+    assert regenerate(coil_record) == tuple(js_orbit(12, 8, 0))
+
+    orbit_record = orbit_decomposition_generator(12, 8)
+    assert regenerate(orbit_record) == js_orbit_decomposition(12, 8)
+
+    glyph_record = proof_glyph_generator(
+        "glyph:c13_stride5_period",
+        "CC-T0005",
+        "Circle.period_eq_n_div_gcd",
+    )
+    assert regenerate(glyph_record) == js_proof_glyph(
+        "glyph:c13_stride5_period",
+        "CC-T0005",
+        "Circle.period_eq_n_div_gcd",
+    )
 
     gauge_cases = [
         (23, 2, 5, -7, 4, {"v00": 3, "v10": 9, "v11": 1, "v01": 17}),

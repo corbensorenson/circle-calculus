@@ -29,10 +29,86 @@ const EXAMPLES = {
     closureCondition: "fourth edge returns to v00, so the finite loop is closed",
     note: "Generated finite physics-loop diagram fixture only; not a formal proof, physics claim, or minimality theorem.",
   },
+  coil_orbit: {
+    label: "Coil orbit record",
+    seed: { n: 12, stride: 8, start: 0 },
+    theoremIds: ["GEN-T0002", "CC-T0005", "CC-T0006", "GEN-T0017", "GEN-T0019"],
+    dictionaryIds: ["CC-0201", "CC-0205", "COMMON-0064", "COMMON-0066"],
+    rules: [
+      { ruleId: "repeat_rotation", parameters: { stride: 8 } },
+    ],
+    iterationSchedule: "x_0=start; x_{t+1}=x_t+stride mod n",
+    closureCondition: "stop when the next node has already appeared",
+    note: "Generated coil-orbit record only; not a minimality theorem or proof by itself.",
+  },
+  orbit_decomposition: {
+    label: "Orbit decomposition record",
+    seed: { n: 12, stride: 8 },
+    theoremIds: ["GEN-T0003", "GEN-T0006", "GEN-T0008", "GEN-T0009"],
+    dictionaryIds: ["CC-0205", "CC-0208", "COMMON-0064", "COMMON-0066"],
+    rules: [
+      { ruleId: "repeat_rotation", parameters: { stride: 8 } },
+      { ruleId: "restart_at_smallest_unvisited", parameters: {} },
+    ],
+    iterationSchedule: "generate one closed orbit, then restart at the smallest unvisited node",
+    closureCondition: "stop when every node in C_n has appeared exactly once",
+    note: "Generated orbit-family record only; not a global compression or search-optimality theorem.",
+  },
+  proof_glyph: {
+    label: "Proof-glyph record",
+    seed: {
+      glyphId: "glyph:c13_stride5_period",
+      theoremId: "CC-T0005",
+      leanName: "Circle.period_eq_n_div_gcd",
+    },
+    theoremIds: ["GEN-T0004", "P2G-T0001", "P2G-T0002", "P2G-T0003"],
+    dictionaryIds: ["COMMON-0033", "COMMON-0064", "COMMON-0066"],
+    rules: [
+      { ruleId: "project_certificate_fields", parameters: {} },
+    ],
+    iterationSchedule: "single certificate construction",
+    closureCondition: "generated fields match seed fields",
+    note: "Generated proof-glyph metadata only; the linked theorem card remains the proof-status source.",
+  },
 };
 
 function mod(value, n) {
   return ((value % n) + n) % n;
+}
+
+function gcd(a, b) {
+  let x = Math.abs(a);
+  let y = Math.abs(b);
+  while (y !== 0) {
+    const next = x % y;
+    x = y;
+    y = next;
+  }
+  return x;
+}
+
+function orbit(n, stride, start) {
+  const seen = new Set();
+  const out = [];
+  let value = mod(start, n);
+  while (!seen.has(value)) {
+    seen.add(value);
+    out.push(value);
+    value = mod(value + stride, n);
+  }
+  return out;
+}
+
+function orbitDecomposition(n, stride) {
+  const remaining = new Set(Array.from({ length: n }, (_, index) => index));
+  const orbits = [];
+  while (remaining.size > 0) {
+    const start = Math.min(...remaining);
+    const generated = orbit(n, stride, start);
+    orbits.push(generated);
+    for (const node of generated) remaining.delete(node);
+  }
+  return orbits;
 }
 
 function finiteCircleDiagram(n) {
@@ -76,7 +152,14 @@ function physicsLoopDiagram(seed) {
 function generatedObjectFor(exampleId) {
   const example = EXAMPLES[exampleId];
   if (exampleId === "finite_circle_diagram") return finiteCircleDiagram(example.seed.n);
-  return physicsLoopDiagram(example.seed);
+  if (exampleId === "physics_loop_diagram") return physicsLoopDiagram(example.seed);
+  if (exampleId === "coil_orbit") return orbit(example.seed.n, example.seed.stride, example.seed.start);
+  if (exampleId === "orbit_decomposition") return orbitDecomposition(example.seed.n, example.seed.stride);
+  return {
+    glyph_id: example.seed.glyphId,
+    theorem_id: example.seed.theoremId,
+    lean_name: example.seed.leanName,
+  };
 }
 
 function addLabeledSelect(panel, id, label, options) {
@@ -170,6 +253,20 @@ function renderPhysicsLoopSvg(diagram) {
   return svg;
 }
 
+function renderProofGlyphPanel(glyph) {
+  const panel = document.createElement("div");
+  panel.className = "widget-data";
+  panel.setAttribute("role", "img");
+  panel.setAttribute("aria-label", `Proof glyph ${glyph.glyph_id} links theorem ${glyph.theorem_id} to Lean declaration ${glyph.lean_name}.`);
+  panel.textContent = [
+    "proof glyph",
+    `glyph id: ${glyph.glyph_id}`,
+    `theorem id: ${glyph.theorem_id}`,
+    `Lean name: ${glyph.lean_name}`,
+  ].join("\n");
+  return panel;
+}
+
 function makeLink(id, page) {
   const href = new URL(`../../${page}#${encodeURIComponent(id)}`, import.meta.url).toString();
   const link = document.createElement("a");
@@ -249,8 +346,24 @@ function mount(panel) {
     clear(output);
     if (exampleId === "finite_circle_diagram") {
       output.appendChild(renderCircleSvg({ n: example.seed.n, title: `Generated C_${example.seed.n} diagram` }));
-    } else {
+    } else if (exampleId === "physics_loop_diagram") {
       output.appendChild(renderPhysicsLoopSvg(diagram));
+    } else if (exampleId === "coil_orbit") {
+      output.appendChild(renderCircleSvg({
+        n: example.seed.n,
+        selected: example.seed.start,
+        visited: diagram,
+        title: "Generated coil orbit",
+      }));
+    } else if (exampleId === "orbit_decomposition") {
+      output.appendChild(renderCircleSvg({
+        n: example.seed.n,
+        selected: 0,
+        visited: diagram.flat(),
+        title: `Generated ${gcd(example.seed.n, example.seed.stride)}-orbit family`,
+      }));
+    } else {
+      output.appendChild(renderProofGlyphPanel(diagram));
     }
     appendRecord(output, example, diagram, theoremById);
   }
