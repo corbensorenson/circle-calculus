@@ -333,7 +333,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `AIA-T0001` through `AIA-T0005` are Lean-proved phase-channel facts with Python examples; `AIA-B0001` and `AIA-B0002` are exploratory deterministic phase-channel benchmark fixtures; model-quality and speed claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`
   - Program: Coil Attention, CoilKV, long-context retrieval, alias control, stride/orbit coverage, and comparisons against full attention, sparse attention, Hyena-like mixers, and S4/Mamba-like baselines.
-  - Status: polished draft; `AIM-T0001` through `AIM-T0005` are Lean-proved cyclic-memory-slot facts with Python examples; retrieval quality, alias control, and attention replacement claims remain benchmark work.
+  - Status: polished draft; `AIM-T0001` through `AIM-T0005` are Lean-proved cyclic-memory-slot facts with Python examples; `AIM-B0001` is an exploratory cyclic-memory fixture with constant/scalar-threshold baselines and a nonperiodic control; retrieval quality, alias control, and attention replacement claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md`
   - Program: CoilLinear, CoilRA, MultiCoil RoPE, periodic activations, and MLX-first benchmarks against dense, LoRA, block-circulant, and standard RoPE baselines.
   - Status: polished draft; `AIRA-T0001` through `AIRA-T0005` are Lean-proved adapter-block facts with Python examples; CoilRA, MultiCoil RoPE, model quality, parameter efficiency, and runtime claims remain benchmark work.
@@ -440,6 +440,7 @@ Application guardrails:
 - [x] `AIM-T0003`: cyclic memory slot at zero is zero.
 - [x] `AIM-T0004`: cyclic memory slot closes after any whole number of full bank passes.
 - [x] `AIM-T0005`: cyclic memory-slot normalization is idempotent.
+- [x] `AIM-B0001`: exploratory cyclic-memory benchmark fixture with baselines and a nonperiodic control.
 - [x] `AIRA-T0001`: adapter block index is bounded by a positive block size.
 - [x] `AIRA-T0002`: adapter block index closes after one full block pass.
 - [x] `AIRA-T0003`: adapter block index at zero is zero.

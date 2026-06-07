@@ -26,6 +26,7 @@ The Python examples are:
 
 ```text
 sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py
+sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_memory_slot.py
 ```
 
 The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks cyclic memory-slot examples; Lean declarations determine proof status.
@@ -51,9 +52,15 @@ memorySlot bankSize (token + bankSize) =
 
 These theorems certify the cyclic slot address only. They do not prove retrieval quality, alias control, attention replacement, or long-context scaling.
 
+## Exploratory Benchmark Fixture
+
+`AIM-B0001` adds a deterministic cyclic-memory fixture. The positive synthetic task labels tokens by memory slot, so a slot lookup recovers the pattern while constant and scalar-threshold baselines do worse. The negative control labels tokens by an ordinary scalar threshold; there the threshold baseline wins and the memory-slot lookup fails.
+
+The fixture also records collision diagnostics: how many training tokens alias into already-used slots and the maximum training load of a slot. These are executable checks for the benchmark harness only. They are not evidence that cyclic memory improves language modeling, retrieval, attention, or long-context scaling.
+
 ## Prototype Program
 
-The first benchmark should be synthetic long-context retrieval where the target dependency is known. A useful comparison set is:
+The next benchmark should be synthetic long-context retrieval where the target dependency is known. A useful comparison set is:
 
 ```text
 full attention
@@ -69,7 +76,7 @@ Measurements should include accuracy, sequence length scaling, memory use, runti
 
 ## Next Program
 
-- Treat `AIA-B0001` as phase-channel benchmark scaffolding only; cyclic-memory retrieval still needs its own fixture.
+- Treat `AIM-B0001` as cyclic-memory benchmark scaffolding only; long-context retrieval still needs task-specific fixtures.
 - Test fixed, learned, and content-gated coil paths separately.
 - Track gcd/orbit coverage and aliasing explicitly.
 - Add local/global attention fallbacks before claiming a practical model.

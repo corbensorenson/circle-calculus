@@ -4,7 +4,7 @@ title: "AI"
 
 The AI application page tracks phase channels, coil attention, cyclic memory, and adapter/block indexing. Local compute language is MLX/Mac-first.
 
-The current proved layer is finite indexing only. `AIA-B0001` adds an exploratory deterministic phase-channel benchmark fixture for a known-period synthetic task. `AIA-B0002` adds a tiny learned-baseline control: phase lookup wins on a periodic task, while an ordinary scalar threshold wins on a nonperiodic control. These are not model-quality claims.
+The current proved layer is finite indexing only. `AIA-B0001` adds an exploratory deterministic phase-channel benchmark fixture for a known-period synthetic task. `AIA-B0002` adds a tiny learned-baseline control: phase lookup wins on a periodic task, while an ordinary scalar threshold wins on a nonperiodic control. `AIM-B0001` adds the same discipline to cyclic memory: a positive slot-lookup fixture, constant/scalar-threshold baselines, collision diagnostics, and a nonperiodic control. These are not model-quality claims.
 
 ::: {.learning-unit}
 
@@ -34,6 +34,7 @@ Every avenue needs ordinary baselines, negative controls, and reproducible scrip
 
 - Phase-channel proofs are about finite indices, not model quality.
 - Positive periodic fixtures must be paired with negative controls.
+- `AIM-B0001` is a cyclic-memory benchmark harness, not a retrieval or attention theorem.
 - MLX/Mac-first experiments should be reported as benchmarks, not proofs.
 
 ::: {.checkpoint-box}

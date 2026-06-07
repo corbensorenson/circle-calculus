@@ -165,6 +165,22 @@ class LearnedPhaseBenchmarkResult:
     note: str = "Tiny learned-baseline fixture only; not a model-quality claim."
 
 
+@dataclass(frozen=True)
+class MemorySlotBenchmarkResult:
+    bank_size: int
+    train_length: int
+    test_length: int
+    slot_values: tuple[int, ...]
+    cyclic_memory_accuracy: float
+    scalar_threshold_accuracy: float
+    constant_accuracy: float
+    nonperiodic_cyclic_memory_accuracy: float
+    nonperiodic_scalar_threshold_accuracy: float
+    train_collision_count: int
+    max_train_slot_load: int
+    note: str = "Synthetic cyclic-memory fixture only; not a model-quality claim."
+
+
 def run_phase_channel_benchmark(
     *,
     period: int = 8,
@@ -289,4 +305,167 @@ def run_learned_phase_baseline_benchmark(
         periodic_dense_accuracy=accuracy(periodic_dense_predictions, periodic_test_labels),
         nonperiodic_phase_accuracy=accuracy(control_phase_predictions, control_test_labels),
         nonperiodic_dense_accuracy=accuracy(control_dense_predictions, control_test_labels),
+    )
+
+
+def default_memory_slot_values(bank_size: int) -> tuple[int, ...]:
+    """Choose a deterministic nontrivial binary value for each memory slot."""
+    _require_positive(bank_size, "bank_size")
+    values = tuple(1 if slot % 3 == 1 else 0 for slot in range(bank_size))
+    if not any(values) or all(values):
+        raise ValueError("bank_size must produce both positive and negative slot values")
+    return values
+
+
+def normalize_memory_slot_values(
+    bank_size: int,
+    slot_values: Optional[Sequence[int]],
+) -> tuple[int, ...]:
+    """Validate or create a binary value table indexed by memory slot."""
+    _require_positive(bank_size, "bank_size")
+    values = default_memory_slot_values(bank_size) if slot_values is None else tuple(slot_values)
+    if len(values) != bank_size:
+        raise ValueError("slot_values length must equal bank_size")
+    if any(value not in (0, 1) for value in values):
+        raise ValueError("slot_values must be binary")
+    if not any(values):
+        raise ValueError("slot_values must contain at least one positive slot")
+    if all(values):
+        raise ValueError("slot_values must contain at least one negative slot")
+    return values
+
+
+def synthetic_memory_slot_dataset(
+    bank_size: int,
+    length: int,
+    *,
+    start: int = 0,
+    slot_values: Optional[Sequence[int]] = None,
+) -> tuple[tuple[int, ...], tuple[int, ...]]:
+    """Return tokens and binary labels controlled only by cyclic memory slot."""
+    if length <= 0:
+        raise ValueError("length must be positive")
+    values = normalize_memory_slot_values(bank_size, slot_values)
+    tokens = tuple(range(start, start + length))
+    labels = tuple(values[memory_slot(bank_size, token)] for token in tokens)
+    return tokens, labels
+
+
+def fit_memory_slot_lookup(bank_size: int, tokens: Sequence[int], labels: Sequence[int]) -> tuple[int, ...]:
+    """Fit a slot-index lookup table by majority label for each memory slot."""
+    _require_positive(bank_size, "bank_size")
+    if len(tokens) != len(labels):
+        raise ValueError("tokens and labels must have the same length")
+    if not tokens:
+        raise ValueError("tokens must be nonempty")
+    fallback = majority_label(labels)
+    counts = [[0, 0] for _ in range(bank_size)]
+    for token, label in zip(tokens, labels):
+        if label not in (0, 1):
+            raise ValueError("labels must be binary")
+        counts[memory_slot(bank_size, token)][label] += 1
+    return tuple(
+        fallback if zero_count + one_count == 0 else (1 if one_count >= zero_count else 0)
+        for zero_count, one_count in counts
+    )
+
+
+def predict_memory_slot_lookup(
+    bank_size: int,
+    lookup: Sequence[int],
+    tokens: Sequence[int],
+) -> tuple[int, ...]:
+    """Predict labels from a fitted memory-slot lookup table."""
+    _require_positive(bank_size, "bank_size")
+    if len(lookup) != bank_size:
+        raise ValueError("lookup length must equal bank_size")
+    return tuple(lookup[memory_slot(bank_size, token)] for token in tokens)
+
+
+def memory_slot_loads(bank_size: int, tokens: Sequence[int]) -> tuple[int, ...]:
+    """Return how many tokens land in each cyclic memory slot."""
+    _require_positive(bank_size, "bank_size")
+    loads = [0 for _ in range(bank_size)]
+    for token in tokens:
+        loads[memory_slot(bank_size, token)] += 1
+    return tuple(loads)
+
+
+def memory_slot_collision_count(bank_size: int, tokens: Sequence[int]) -> int:
+    """Count extra tokens beyond the first occupant of each used slot."""
+    loads = memory_slot_loads(bank_size, tokens)
+    return sum(max(0, load - 1) for load in loads)
+
+
+def run_memory_slot_benchmark(
+    *,
+    bank_size: int = 8,
+    train_length: int = 64,
+    test_length: int = 32,
+    slot_values: Optional[Sequence[int]] = None,
+) -> MemorySlotBenchmarkResult:
+    """Run a deterministic cyclic-memory fixture with baselines and a control.
+
+    The positive fixture labels tokens by their memory slot. The negative
+    control labels tokens by a scalar threshold, where circular slot lookup
+    should not be the winning representation. This is a benchmark harness
+    sanity check, not evidence that cyclic memory improves neural networks.
+    """
+    values = normalize_memory_slot_values(bank_size, slot_values)
+    train_tokens, train_labels = synthetic_memory_slot_dataset(
+        bank_size,
+        train_length,
+        slot_values=values,
+    )
+    test_tokens, test_labels = synthetic_memory_slot_dataset(
+        bank_size,
+        test_length,
+        start=train_length,
+        slot_values=values,
+    )
+
+    lookup = fit_memory_slot_lookup(bank_size, train_tokens, train_labels)
+    memory_predictions = predict_memory_slot_lookup(bank_size, lookup, test_tokens)
+    threshold, polarity = fit_threshold_classifier(train_tokens, train_labels)
+    threshold_predictions = predict_threshold_classifier(test_tokens, threshold, polarity)
+    constant = majority_label(train_labels)
+    constant_predictions = tuple(constant for _ in test_tokens)
+
+    control_threshold = (3 * train_length) // 4
+    control_train_labels = tuple(
+        nonperiodic_threshold_label(token, control_threshold)
+        for token in train_tokens
+    )
+    control_test_labels = tuple(
+        nonperiodic_threshold_label(token, control_threshold)
+        for token in test_tokens
+    )
+    control_lookup = fit_memory_slot_lookup(bank_size, train_tokens, control_train_labels)
+    control_memory_predictions = predict_memory_slot_lookup(bank_size, control_lookup, test_tokens)
+    control_threshold_fit, control_polarity = fit_threshold_classifier(
+        train_tokens,
+        control_train_labels,
+    )
+    control_threshold_predictions = predict_threshold_classifier(
+        test_tokens,
+        control_threshold_fit,
+        control_polarity,
+    )
+    train_loads = memory_slot_loads(bank_size, train_tokens)
+
+    return MemorySlotBenchmarkResult(
+        bank_size=bank_size,
+        train_length=train_length,
+        test_length=test_length,
+        slot_values=values,
+        cyclic_memory_accuracy=accuracy(memory_predictions, test_labels),
+        scalar_threshold_accuracy=accuracy(threshold_predictions, test_labels),
+        constant_accuracy=accuracy(constant_predictions, test_labels),
+        nonperiodic_cyclic_memory_accuracy=accuracy(control_memory_predictions, control_test_labels),
+        nonperiodic_scalar_threshold_accuracy=accuracy(
+            control_threshold_predictions,
+            control_test_labels,
+        ),
+        train_collision_count=memory_slot_collision_count(bank_size, train_tokens),
+        max_train_slot_load=max(train_loads),
     )
