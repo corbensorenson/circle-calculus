@@ -5,6 +5,9 @@ from math import gcd
 from circle_math.applications import (
     loop_exit_certificate,
     loop_required_steps,
+    memory_slot,
+    memory_slot_collision_count,
+    memory_slot_loads,
     token_recurrence_budget,
     training_free_loop_budget,
 )
@@ -158,6 +161,21 @@ def js_training_free_loop_budget(loop_period: int, sample_index: int, max_loops:
     return min(js_loop_required_steps(loop_period, sample_index), max_loops)
 
 
+def js_memory_slot(bank_size: int, token: int) -> int:
+    return js_mod(token, bank_size)
+
+
+def js_memory_slot_loads(bank_size: int, tokens: tuple[int, ...]) -> tuple[int, ...]:
+    loads = [0 for _ in range(bank_size)]
+    for token in tokens:
+        loads[js_memory_slot(bank_size, token)] += 1
+    return tuple(loads)
+
+
+def js_memory_slot_collision_count(bank_size: int, tokens: tuple[int, ...]) -> int:
+    return sum(max(0, load - 1) for load in js_memory_slot_loads(bank_size, tokens))
+
+
 def js_loop_exit_available(loop_period: int, sample_index: int, max_loops: int) -> bool:
     return js_loop_required_steps(loop_period, sample_index) <= max_loops
 
@@ -289,6 +307,25 @@ def main() -> int:
             max_loops,
             overthink_tolerance=tolerance,
         ).overthinking_boundary == certificate.overthinking_boundary
+
+    memory_cases = [
+        (1, 0, 0, 1),
+        (8, 19, 3, 20),
+        (13, 42, 5, 32),
+    ]
+    for bank_size, token, passes, window_length in memory_cases:
+        tokens = tuple(range(window_length))
+        slot = memory_slot(bank_size, token)
+        assert slot == js_memory_slot(bank_size, token)
+        assert memory_slot(bank_size, token + bank_size) == slot
+        assert memory_slot(bank_size, token + passes * bank_size) == slot
+        assert memory_slot(bank_size, slot) == slot
+        assert memory_slot(bank_size, 0) == 0
+        assert memory_slot_loads(bank_size, tokens) == js_memory_slot_loads(bank_size, tokens)
+        assert memory_slot_collision_count(bank_size, tokens) == js_memory_slot_collision_count(
+            bank_size,
+            tokens,
+        )
 
     print("widget Python parity ok")
     return 0

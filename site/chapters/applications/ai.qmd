@@ -31,6 +31,14 @@ AI is now a dedicated Circle Calculus program, not a side note. The avenues to e
 
 Every avenue needs ordinary baselines, negative controls, and reproducible scripts before it becomes a claim about model quality or speed.
 
+## Cyclic Memory Slot Path
+
+Cyclic memory starts with a plain finite address: `memory_slot(bank_size, token) = token mod bank_size`. The useful interface question is not whether this improves a model by itself, but whether slot assignment, alias collisions, and closure after full bank passes are visible before running a benchmark.
+
+The widget below shows that finite layer. It is not a retrieval-quality result and not a memory-scaling claim; it is only the indexing and collision bookkeeping used by the current Lean/Python artifacts.
+
+<div class="widget-panel" data-widget="cyclic_memory_slots" data-theorem-id="AIM-T0001" data-dictionary-ids="COMMON-0028 COMMON-0029"></div>
+
 ## Looped Recurrence Path
 
 Looped and recursive transformers reuse model blocks across multiple computation passes. The Circle Calculus version should make each pass explicit: loop phase, recurrence budget, state provenance, exit decision, and overthinking boundary. That is a possible interface contribution, not a proved model improvement.
@@ -269,5 +277,6 @@ Why is the nonperiodic control in `AIA-B0002` important before making any AI-imp
 Python and optional MLX benchmark fixtures are executable references only. They do not replace Lean proofs and do not prove that circles improve neural networks.
 :::
 
+<script type="module" src="../../widgets/ai/cyclic_memory_slots.js"></script>
 <script type="module" src="../../widgets/ai/loop_recurrence_budget.js"></script>
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

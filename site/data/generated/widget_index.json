@@ -147,6 +147,22 @@
     },
     {
       "dictionary_ids": [
+        "COMMON-0028",
+        "COMMON-0029"
+      ],
+      "id": "cyclic_memory_slots",
+      "path": "site/widgets/ai/cyclic_memory_slots.js",
+      "python_reference": "circle_math.applications.circle_ai.memory_slot; circle_math.applications.circle_ai.memory_slot_loads; circle_math.applications.circle_ai.memory_slot_collision_count",
+      "theorem_ids": [
+        "AIM-T0001",
+        "AIM-T0002",
+        "AIM-T0003",
+        "AIM-T0004",
+        "AIM-T0005"
+      ]
+    },
+    {
+      "dictionary_ids": [
         "COMMON-0060",
         "COMMON-0061",
         "COMMON-0062",

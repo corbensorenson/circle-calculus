@@ -91,6 +91,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is finite schedule bookkeeping only. It does not prove model quality, speed, reasoning improvement, memory improvement, or context-length improvement.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python AI recurrence helpers.
 
+### cyclic_memory_slots
+
+- Inputs: memory-bank size, token index, full-bank pass count, and token-window length.
+- Outputs: selected slot, one-bank closure, multi-bank closure, idempotent slot normalization, slot zero, per-slot load counts, collision count, theorem-status badges, and dictionary links.
+- Theorem ids: `AIM-T0001`, `AIM-T0002`, `AIM-T0003`, `AIM-T0004`, and `AIM-T0005`.
+- Dictionary ids: `COMMON-0028` and `COMMON-0029`.
+- Python references: `circle_math.applications.circle_ai.memory_slot`, `circle_math.applications.circle_ai.memory_slot_loads`, and `circle_math.applications.circle_ai.memory_slot_collision_count`.
+- Guardrail: the widget is finite indexing and alias bookkeeping only. It does not prove retrieval quality, memory scaling, model-quality improvement, speedup, or training effectiveness.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python cyclic-memory helpers.
+
 ## Physics Widgets
 
 ### finite_gauge_loop_holonomy
@@ -134,4 +144,5 @@ Minimum parity cases:
 - finite physics-loop generated diagram normalized phases, closed-loop flag, and holonomy.
 - generated coil orbit sequences, orbit decompositions, and proof-glyph metadata fields.
 - AI recurrence phase, required loop count, token recurrence budget, capped training-free budget, exit availability, overthinking boundary, and one-period-shift periodicity.
+- cyclic memory slot reduction, one-bank closure, multi-bank closure, idempotent normalization, slot loads, and collision count.
 - finite gauge-loop normalized phases, gauge-transformed phases, original/transformed holonomy, and closed endpoint cancellation.

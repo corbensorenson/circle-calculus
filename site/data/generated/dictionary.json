@@ -4194,7 +4194,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "cyclic_memory_slots",
+          "path": "site/widgets/ai/cyclic_memory_slots.js",
+          "python_reference": "circle_math.applications.circle_ai.memory_slot; circle_math.applications.circle_ai.memory_slot_loads; circle_math.applications.circle_ai.memory_slot_collision_count"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -4235,7 +4241,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "cyclic_memory_slots",
+          "path": "site/widgets/ai/cyclic_memory_slots.js",
+          "python_reference": "circle_math.applications.circle_ai.memory_slot; circle_math.applications.circle_ai.memory_slot_loads; circle_math.applications.circle_ai.memory_slot_collision_count"
+        }
+      ]
     },
     {
       "dependencies": [],

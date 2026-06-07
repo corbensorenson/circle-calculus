@@ -238,6 +238,13 @@ def export_widget_index() -> dict:
             "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.token_recurrence_budget; circle_math.applications.circle_ai.training_free_loop_budget",
         },
         {
+            "id": "cyclic_memory_slots",
+            "path": "site/widgets/ai/cyclic_memory_slots.js",
+            "theorem_ids": ["AIM-T0001", "AIM-T0002", "AIM-T0003", "AIM-T0004", "AIM-T0005"],
+            "dictionary_ids": ["COMMON-0028", "COMMON-0029"],
+            "python_reference": "circle_math.applications.circle_ai.memory_slot; circle_math.applications.circle_ai.memory_slot_loads; circle_math.applications.circle_ai.memory_slot_collision_count",
+        },
+        {
             "id": "finite_gauge_loop_holonomy",
             "path": "site/widgets/physics/finite_gauge_loop_holonomy.js",
             "theorem_ids": ["PHYS-T0004", "PHYS-T0005", "PHYS-T0012", "PHYS-T0045"],
