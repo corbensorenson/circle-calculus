@@ -140,6 +140,10 @@ training tokens
 
 This is useful only as a learned-router harness. It is not evidence that token-level recursive transformers improve a real model.
 
+The widget below exposes the deterministic `AIM-B0012` fixture: a phase-to-budget lookup is fit on training tokens, applied to held-out tokens, and compared with wrong-period, shifted-budget, fixed-budget, over-loop, and nonperiodic scalar controls.
+
+<div class="widget-panel" data-widget="learned_token_recurrence" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0059 COMMON-0068 COMMON-0069"></div>
+
 `AIM-B0006` turns the training-free wrapper idea into an auditable fixture:
 
 ```text
@@ -338,4 +342,5 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 <script type="module" src="../../widgets/ai/rope_relative_phase.js"></script>
 <script type="module" src="../../widgets/ai/loop_recurrence_budget.js"></script>
 <script type="module" src="../../widgets/ai/token_level_recurrence.js"></script>
+<script type="module" src="../../widgets/ai/learned_token_recurrence.js"></script>
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

@@ -112,6 +112,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is deterministic token-level schedule bookkeeping only. It does not prove learned-router quality, recursive reasoning, perplexity improvement, throughput, memory improvement, context-length improvement, or model-quality improvement.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python token-level recurrence benchmark fixture.
 
+### learned_token_recurrence
+
+- Inputs: loop period, wrong/control period, train-token count, held-out test-token count, maximum budget, fixed global budget, wrong-budget shift, over-loop budget, and overthinking tolerance.
+- Outputs: fitted phase-to-budget lookup table, wrong-period lookup table, required held-out budget sample, learned held-out budget sample, shifted-budget control sample, active-token counts by loop step, learned-router accuracy, fixed-budget accuracy, wrong-period accuracy, wrong-shift accuracy, over-loop accuracy, nonperiodic phase-lookup accuracy, and nonperiodic scalar-threshold accuracy.
+- Theorem ids: `AIM-T0006`, `AIM-T0007`, `AIM-T0008`, `AIM-T0009`, and `AIM-T0018` as finite loop-budget primitives.
+- Dictionary ids: `COMMON-0052`, `COMMON-0053`, `COMMON-0059`, `COMMON-0068`, and `COMMON-0069`.
+- Python references: `circle_math.applications.circle_ai.fit_loop_budget_lookup`, `circle_math.applications.circle_ai.predict_loop_budget_lookup`, and `circle_math.applications.circle_ai.run_learned_token_level_recurrence_benchmark`.
+- Guardrail: the widget is learned lookup-table bookkeeping for a constructed finite fixture only. It does not prove neural-router quality, recursive reasoning, perplexity improvement, throughput, memory improvement, context-length improvement, or model-quality improvement.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python learned token-level recurrence benchmark fixture.
+
 ### cyclic_memory_slots
 
 - Inputs: memory-bank size, token index, full-bank pass count, and token-window length.

@@ -264,6 +264,19 @@ def export_widget_index() -> dict:
             "python_reference": "circle_math.applications.circle_ai.token_recurrence_budgets; circle_math.applications.circle_ai.active_token_counts_by_budget; circle_math.applications.circle_ai.recurrence_resolution_levels; circle_math.applications.circle_ai.run_token_level_recurrence_benchmark",
         },
         {
+            "id": "learned_token_recurrence",
+            "path": "site/widgets/ai/learned_token_recurrence.js",
+            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018"],
+            "dictionary_ids": [
+                "COMMON-0052",
+                "COMMON-0053",
+                "COMMON-0059",
+                "COMMON-0068",
+                "COMMON-0069",
+            ],
+            "python_reference": "circle_math.applications.circle_ai.fit_loop_budget_lookup; circle_math.applications.circle_ai.predict_loop_budget_lookup; circle_math.applications.circle_ai.run_learned_token_level_recurrence_benchmark",
+        },
+        {
             "id": "cyclic_memory_slots",
             "path": "site/widgets/ai/cyclic_memory_slots.js",
             "theorem_ids": ["AIM-T0001", "AIM-T0002", "AIM-T0003", "AIM-T0004", "AIM-T0005"],
@@ -568,6 +581,14 @@ def export_phase7_targets() -> dict:
     return {"targets": data.get("targets", [])}
 
 
+def export_capability_showcase() -> dict:
+    path = ROOT / "manifests" / "capability_showcase.yaml"
+    if not path.exists():
+        return {"capabilities": []}
+    data = load_yaml(path)
+    return {"capabilities": data.get("capabilities", [])}
+
+
 def glyph_status_label(canonical_status: str) -> str:
     if canonical_status == "proved":
         return "Lean-proved"
@@ -639,6 +660,7 @@ def export_all() -> None:
     write_json(GENERATED / "phase5_targets.json", export_phase5_targets())
     write_json(GENERATED / "phase6_targets.json", export_phase6_targets())
     write_json(GENERATED / "phase7_targets.json", export_phase7_targets())
+    write_json(GENERATED / "capability_showcase.json", export_capability_showcase())
     write_json(GENERATED / "glyph_index.json", glyph_index)
     write_json(GENERATED / "generator_index.json", export_generator_index())
 

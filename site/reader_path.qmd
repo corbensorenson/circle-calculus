@@ -123,6 +123,7 @@ Read these as bridge chapters. They are valuable because their finite seeds are 
 
 Application chapters are case studies, not hype pages. They reuse S1 language: address, rotation, stride, period, phase, closure, and proof status.
 
+- [Proof-Backed Showcase](showcase.qmd): a public-facing capability map where every advertised item cites papers and proved theorem ids.
 - [Data Analysis](chapters/applications/data_analysis.qmd): periodic coordinates and benchmark guardrails.
 - [Compute](chapters/applications/compute.qmd): cyclic addresses, stride layouts, and schedules.
 - [AI](chapters/applications/ai.qmd): phase channels, memory slots, and adapter blocks.

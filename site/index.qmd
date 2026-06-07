@@ -76,7 +76,8 @@ Compare widget behavior against Python reference models and tests. Python exampl
 2. Read [Lesson 0: Mathematical Building Blocks](chapters/foundations/00_mathematical_building_blocks.qmd).
 3. Begin [Lesson 1: Finite Circles](chapters/S1/01_finite_circles.qmd).
 4. Finish the S1 review before moving to higher dimensions.
-5. Use [How To Verify A Claim](verify_claim.qmd) whenever a theorem, widget, paper paragraph, or diagram matters.
+5. Open the [Proof-Backed Showcase](showcase.qmd) when you want to see why the project matters.
+6. Use [How To Verify A Claim](verify_claim.qmd) whenever a theorem, widget, paper paragraph, or diagram matters.
 
 ## Source Pipeline
 
@@ -91,6 +92,7 @@ That pipeline is why the book can be readable without becoming loose. The prose 
 ## Reference Shelves
 
 - [Dictionary Index](dictionary.qmd): project terms and forbidden meanings.
+- [Proof-Backed Showcase](showcase.qmd): advertised capabilities with paper and theorem backing.
 - [Theorem Index](theorems.qmd): theorem ids, status, Lean names, and source links.
 - [Paper Index](papers.qmd): long-form exposition.
 - [Target Index](targets.qmd): planned, exploratory, blocked, and future work.

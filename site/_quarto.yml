@@ -24,6 +24,8 @@ website:
         text: Lesson 1
       - href: verify_claim.qmd
         text: Verify
+      - href: showcase.qmd
+        text: Showcase
       - text: Reference
         menu:
           - href: dictionary.qmd
@@ -51,6 +53,8 @@ website:
             text: Guided Learning Path
           - href: verify_claim.qmd
             text: How To Verify A Claim
+          - href: showcase.qmd
+            text: Proof-Backed Showcase
       - section: "Part I: Learning Toolkit"
         contents:
           - href: chapters/foundations/index.qmd

@@ -16,6 +16,7 @@ from circle_math.applications import (
     dense_circulant_matrix,
     dense_matrix_vector_product,
     dense_adapter_parameter_count,
+    fit_loop_budget_lookup,
     local_window_indices,
     loop_exit_certificate,
     loop_required_steps,
@@ -31,10 +32,12 @@ from circle_math.applications import (
     retrieval_hit_rate,
     retrieval_hit_rate_by_lag,
     retrieval_target_index,
+    predict_loop_budget_lookup,
     rope_relative_feature,
     run_adapter_parameter_budget_benchmark,
     run_content_gated_retrieval_benchmark,
     run_circulant_mixer_benchmark,
+    run_learned_token_level_recurrence_benchmark,
     run_token_level_recurrence_benchmark,
     token_recurrence_budget,
     token_recurrence_budgets,
@@ -320,6 +323,36 @@ def js_majority_label(labels: tuple[int, ...]) -> int:
     positives = sum(1 for label in labels if label == 1)
     negatives = len(labels) - positives
     return 1 if positives >= negatives else 0
+
+
+def js_majority_int(values: tuple[int, ...]) -> int:
+    counts: dict[int, int] = {}
+    for value in values:
+        counts[value] = counts.get(value, 0) + 1
+    return min(counts, key=lambda value: (-counts[value], value))
+
+
+def js_fit_loop_budget_lookup(
+    period: int,
+    positions: tuple[int, ...],
+    budgets: tuple[int, ...],
+) -> tuple[int, ...]:
+    fallback = js_majority_int(budgets)
+    buckets: list[list[int]] = [[] for _ in range(period)]
+    for position, budget in zip(positions, budgets):
+        buckets[js_mod(position, period)].append(budget)
+    return tuple(
+        fallback if not bucket else js_majority_int(tuple(bucket))
+        for bucket in buckets
+    )
+
+
+def js_predict_loop_budget_lookup(
+    period: int,
+    lookup: tuple[int, ...],
+    positions: tuple[int, ...],
+) -> tuple[int, ...]:
+    return tuple(lookup[js_mod(position, period)] for position in positions)
 
 
 def js_fit_phase_lookup(period: int, positions: tuple[int, ...], labels: tuple[int, ...]) -> tuple[int, ...]:
@@ -872,6 +905,105 @@ def main() -> int:
         assert benchmark.nonperiodic_scalar_threshold_accuracy == js_accuracy(
             control_threshold_predictions,
             control_labels,
+        )
+
+    learned_token_cases = [
+        (4, 3, 64, 32, 4, 4, 8, 1, 0),
+        (5, 4, 50, 25, 5, 3, 9, 2, 1),
+        (3, 5, 36, 18, 4, 2, 6, 1, 0),
+    ]
+    for (
+        loop_period,
+        wrong_period,
+        train_token_count,
+        test_token_count,
+        max_budget,
+        fixed_budget,
+        over_budget,
+        wrong_shift,
+        tolerance,
+    ) in learned_token_cases:
+        train_tokens = tuple(range(train_token_count))
+        train_budgets = js_token_recurrence_budgets(loop_period, train_token_count)
+        test_tokens = tuple(range(train_token_count, train_token_count + test_token_count))
+        required_budgets = tuple(
+            js_token_recurrence_budget(loop_period, token)
+            for token in test_tokens
+        )
+        labels = tuple(1 for _ in test_tokens)
+        learned_lookup = js_fit_loop_budget_lookup(loop_period, train_tokens, train_budgets)
+        learned_budgets = tuple(
+            min(budget, max_budget)
+            for budget in js_predict_loop_budget_lookup(loop_period, learned_lookup, test_tokens)
+        )
+        wrong_lookup = js_fit_loop_budget_lookup(wrong_period, train_tokens, train_budgets)
+        wrong_period_budgets = tuple(
+            min(budget, max_budget)
+            for budget in js_predict_loop_budget_lookup(wrong_period, wrong_lookup, test_tokens)
+        )
+        fixed_budgets = tuple(fixed_budget for _ in test_tokens)
+        wrong_shift_budgets = js_shifted_budgets(required_budgets, max_budget, wrong_shift)
+        over_budgets = tuple(over_budget for _ in test_tokens)
+        control_threshold = (3 * train_token_count) // 4
+        control_train_labels = tuple(
+            js_nonperiodic_threshold_label(token, control_threshold)
+            for token in train_tokens
+        )
+        control_test_labels = tuple(
+            js_nonperiodic_threshold_label(token, control_threshold)
+            for token in test_tokens
+        )
+        control_phase_lookup = js_fit_phase_lookup(loop_period, train_tokens, control_train_labels)
+        control_phase_predictions = js_predict_phase_lookup(loop_period, control_phase_lookup, test_tokens)
+        threshold, polarity = js_fit_threshold_classifier(train_tokens, control_train_labels)
+        threshold_predictions = js_predict_threshold_classifier(test_tokens, threshold, polarity)
+        benchmark = run_learned_token_level_recurrence_benchmark(
+            loop_period=loop_period,
+            wrong_period=wrong_period,
+            train_token_count=train_token_count,
+            test_token_count=test_token_count,
+            max_budget=max_budget,
+            fixed_global_budget=fixed_budget,
+            over_loop_budget=over_budget,
+            wrong_budget_shift=wrong_shift,
+            overthink_tolerance=tolerance,
+        )
+
+        assert fit_loop_budget_lookup(loop_period, train_tokens, train_budgets) == learned_lookup
+        assert predict_loop_budget_lookup(loop_period, learned_lookup, test_tokens) == learned_budgets
+        assert benchmark.learned_budget_lookup == learned_lookup
+        assert benchmark.wrong_period_budget_lookup == wrong_lookup
+        assert benchmark.required_budget_sample == required_budgets[: min(12, len(required_budgets))]
+        assert benchmark.learned_budget_sample == learned_budgets[: min(12, len(learned_budgets))]
+        assert benchmark.wrong_shift_budget_sample == wrong_shift_budgets[: min(12, len(wrong_shift_budgets))]
+        assert benchmark.active_token_counts == js_active_token_counts_by_budget(learned_budgets, max_budget)
+        assert benchmark.learned_token_router_accuracy == js_accuracy(
+            js_recurrence_budget_predictions(required_budgets, learned_budgets, tolerance),
+            labels,
+        )
+        assert benchmark.fixed_global_budget_accuracy == js_accuracy(
+            js_recurrence_budget_predictions(required_budgets, fixed_budgets, tolerance),
+            labels,
+        )
+        assert benchmark.wrong_period_router_accuracy == js_accuracy(
+            js_recurrence_budget_predictions(required_budgets, wrong_period_budgets, tolerance),
+            labels,
+        )
+        assert benchmark.wrong_shift_accuracy == js_accuracy(
+            js_recurrence_budget_predictions(required_budgets, wrong_shift_budgets, tolerance),
+            labels,
+        )
+        assert benchmark.over_looped_accuracy == js_accuracy(
+            js_recurrence_budget_predictions(required_budgets, over_budgets, tolerance),
+            labels,
+        )
+        assert benchmark.nonperiodic_phase_lookup_accuracy == js_accuracy(
+            control_phase_predictions,
+            control_test_labels,
+        )
+        assert benchmark.nonperiodic_scalar_threshold_accuracy == js_accuracy(
+            threshold_predictions,
+            control_test_labels,
         )
 
     memory_cases = [

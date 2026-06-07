@@ -4,11 +4,11 @@ QUARTO_HOME ?= $(CURDIR)/.tools/quarto-home
 QUARTO_DENO_DIR ?= $(CURDIR)/.tools/quarto-deno
 QUARTO_ENV := HOME="$(QUARTO_HOME)" DENO_DIR="$(QUARTO_DENO_DIR)"
 
-.PHONY: check sourcecheck lean sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests claimlanguage phase4targets phase5targets phase6targets phase7targets applicationguardrails glyphfixtures dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples site-data sitenavcontract sitecheck quarto-dirs site-render site-render-check site-preview living-book-check
+.PHONY: check sourcecheck lean sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests capabilityshowcase claimlanguage phase4targets phase5targets phase6targets phase7targets applicationguardrails glyphfixtures dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples site-data sitenavcontract sitecheck quarto-dirs site-render site-render-check site-preview living-book-check
 
 check: lean sourcecheck
 
-sourcecheck: sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests claimlanguage phase4targets phase5targets phase6targets phase7targets applicationguardrails glyphfixtures dimensioncheck nofake sitecheck
+sourcecheck: sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests capabilityshowcase claimlanguage phase4targets phase5targets phase6targets phase7targets applicationguardrails glyphfixtures dimensioncheck nofake sitecheck
 
 lean:
 	$(LAKE) build
@@ -36,6 +36,9 @@ papersources:
 
 researchmanifests:
 	python scripts/check_research_manifests.py
+
+capabilityshowcase:
+	python scripts/check_capability_showcase.py
 
 claimlanguage:
 	python scripts/check_claim_language.py

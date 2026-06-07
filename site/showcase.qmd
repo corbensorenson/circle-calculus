@@ -1,0 +1,183 @@
+---
+title: "Proof-Backed Showcase"
+---
+
+This page is the public-facing capability map for Circle Calculus. It is allowed to be inviting, but it is not allowed to float free of the proof corpus.
+
+Every advertised item below is backed by `manifests/capability_showcase.yaml`. The validator `scripts/check_capability_showcase.py` requires each item to cite known papers, proved theorem ids, dictionary ids, and source files. If any theorem is unproved, unknown, or not carried by the cited papers, the check fails.
+
+::: {.warning-box}
+This page advertises expressiveness and proof-linked interfaces. It does not upgrade executable examples, benchmark fixtures, imported theorem bridges, or roadmap ideas into new mathematical proofs.
+:::
+
+## Why This Page Exists
+
+Circle Calculus should be judged by whether it can express serious structures in a way that is readable, executable, and formally auditable. The strongest current answer is not one slogan. It is a portfolio of checked handles:
+
+- famous additive-combinatorics theorems stated in circle vocabulary,
+- extremal and Ramsey theorem bridges with small finite examples,
+- detailed modular period/fiber arithmetic,
+- bounded quaternion and Hopf phase facts,
+- finite gauge-path and holonomy interfaces,
+- proof-carrying generated structures,
+- cyclic AI schedule/index facts, and
+- cyclic compute layout facts.
+
+## Hard Mathematics Bridges
+
+### Zero-Sum And Sumset Theorems
+
+Circle Calculus states EGZ and Cauchy-Davenport directly over `C_n` and `C_p`.
+
+<p data-paper-ref="papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md">Zero-Sum Circles</a></p>
+- Scope: imported theorem bridges, not new proofs.
+- Boundary: no open Erdos problem progress claim.
+
+<div class="theorem-box" data-theorem-id="CC-T0062"></div>
+<div class="theorem-box" data-theorem-id="CC-T0063"></div>
+
+### Katona And Erdos-Ko-Rado
+
+The Katona lane makes cyclic-order double counting and intersecting-family bounds visible while keeping the theorem source formal.
+
+<p data-paper-ref="papers/erdos/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD.md">Katona and Erdos-Ko-Rado</a></p>
+- Scope: prefix-density and EKR theorem bridges.
+- Boundary: no new EKR proof or extremal-family classification.
+
+<div class="theorem-box" data-theorem-id="CC-T0064"></div>
+<div class="theorem-box" data-theorem-id="CC-T0065"></div>
+
+### Roth And Three-Term Progressions
+
+The Roth lane gives Circle Calculus a serious density-additive-combinatorics target with finite witness searches as examples.
+
+<p data-paper-ref="papers/erdos/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES.md">Roth and Three-Term Progressions</a></p>
+- Scope: Roth theorem and Roth-number sublinearity bridges.
+- Boundary: no improved bounds and no cyclic-to-natural transfer theorem yet.
+
+<div class="theorem-box" data-theorem-id="CC-T0066"></div>
+<div class="theorem-box" data-theorem-id="CC-T0067"></div>
+
+### Ramsey Lines And Hales-Jewett
+
+The Ramsey lane shows unavoidable structure through formal Hales-Jewett and homothetic-copy handles.
+
+<p data-paper-ref="papers/erdos/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES.md">Hales-Jewett and Ramsey Lines</a></p>
+- Scope: theorem bridges plus finite search examples.
+- Boundary: tiny searches are demonstrations, not the proof.
+
+<div class="theorem-box" data-theorem-id="CC-T0068"></div>
+<div class="theorem-box" data-theorem-id="CC-T0069"></div>
+
+### Circulant Graph Geometry
+
+The graph lane starts conservatively with cycle graphs, circulant graphs, connectedness, and unit-distance vocabulary.
+
+<p data-paper-ref="papers/erdos/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS.md">Unit-Distance Circulant Graphs</a></p>
+- Scope: cycle/circulant and connectedness bridges.
+- Boundary: no hard unit-distance or distinct-distance progress claim.
+
+<div class="theorem-box" data-theorem-id="CC-T0070"></div>
+<div class="theorem-box" data-theorem-id="CC-T0071"></div>
+<div class="theorem-box" data-theorem-id="CC-T0072"></div>
+
+## Circle-Native Strengths
+
+### Periods, Fibers, Kernels, And Normal Forms
+
+The S1 spine is the internal proof engine: period, gcd orbit count, scaling images, fibers, kernel representatives, and full-coil conditions.
+
+<p data-paper-ref="papers/PAPER_01_FINITE_CIRCLES.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/PAPER_01_FINITE_CIRCLES.md">Finite Circles</a></p>
+<p data-paper-ref="papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md">Factors, Scaling, Prime Coils</a></p>
+- Scope: Lean-proved cyclic arithmetic and representative-set facts.
+- Boundary: this is a proof-carrying presentation of standard modular structure, not a replacement for standard modular arithmetic.
+
+<div class="theorem-box" data-theorem-id="CC-T0005"></div>
+<div class="theorem-box" data-theorem-id="CC-T0048"></div>
+<div class="theorem-box" data-theorem-id="CC-T0054"></div>
+<div class="theorem-box" data-theorem-id="CC-T0061"></div>
+
+### Quaternion And Hopf Phase Coordinates
+
+The S3 lane gives bounded phase-coordinate and quaternion facts that are useful for rotation, hidden phase, and sign-ambiguity explanations.
+
+<p data-paper-ref="papers/S3/PAPER_S3_02_QUATERNION_COILS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S3/PAPER_S3_02_QUATERNION_COILS.md">Quaternion Coils</a></p>
+<p data-paper-ref="papers/S3/PAPER_S3_03_HOPF_COILS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S3/PAPER_S3_03_HOPF_COILS.md">Hopf Coils</a></p>
+- Scope: Lean-proved unit-quaternion and bounded Hopf phase facts.
+- Boundary: no full smooth Hopf fibration or SO(3) robotics formalization yet.
+
+<div class="theorem-box" data-theorem-id="S3Q-T0005"></div>
+<div class="theorem-box" data-theorem-id="S3H-T0005"></div>
+<div class="theorem-box" data-theorem-id="S3H-T0008"></div>
+
+## Application Interfaces
+
+### Finite Gauge Paths
+
+The physics lane builds proof-carrying finite gauge paths with checked path composition and holonomy interfaces.
+
+<p data-paper-ref="papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md">Proof-Carrying Lattice Gauge</a></p>
+- Scope: Lean-proved finite path, gauge, Wilson-loop, and plaquette facts.
+- Boundary: no continuum physics or lattice-QCD correctness claim.
+
+<div class="theorem-box" data-theorem-id="PHYS-T0012"></div>
+<div class="theorem-box" data-theorem-id="PHYS-T0038"></div>
+<div class="theorem-box" data-theorem-id="PHYS-T0042"></div>
+
+### Generative Provenance
+
+The generative lane pairs seed-rule construction with exact-regeneration checks and negative-case gates.
+
+<p data-paper-ref="papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md">Seed-Rule Provenance</a></p>
+<p data-paper-ref="papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md">Proof-Carrying Glyphs</a></p>
+- Scope: Lean-proved provenance and exact-comparison gates.
+- Boundary: no universal compression or automatic-interest claim.
+
+<div class="theorem-box" data-theorem-id="GEN-T0017"></div>
+<div class="theorem-box" data-theorem-id="GEN-T0019"></div>
+<div class="theorem-box" data-theorem-id="P2G-T0006"></div>
+
+### AI Schedules And Index Safety
+
+The AI lane proves finite schedule/index facts that can support experiments without pretending proofs imply model quality.
+
+<p data-paper-ref="papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Coil Attention And Memory</a></p>
+<p data-paper-ref="papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md">CoilRA And MultiCoil RoPE</a></p>
+- Scope: Lean-proved memory-slot, loop-budget, loop-exit, and adapter-block facts.
+- Boundary: no quality, speed, context-length, or reasoning improvement without benchmarks.
+
+<div class="theorem-box" data-theorem-id="AIM-T0001"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0017"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0005"></div>
+
+### Circular Compute Layouts
+
+The compute lane proves address-safety and schedule-normalization facts before any backend performance claim is allowed.
+
+<p data-paper-ref="papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md">Circular Computation</a></p>
+<p data-paper-ref="papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md">Coil Layout Stencil NTT</a></p>
+<p data-paper-ref="papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md">Coil Systems Applications</a></p>
+- Scope: Lean-proved cyclic-address, stride-address, and round-robin laws.
+- Boundary: no speedup claim without direct baseline measurements.
+
+<div class="theorem-box" data-theorem-id="COMPC-T0005"></div>
+<div class="theorem-box" data-theorem-id="COMPL-T0005"></div>
+<div class="theorem-box" data-theorem-id="COMPS-T0004"></div>
+
+## Verification Contract
+
+The showcase source is:
+
+```text
+manifests/capability_showcase.yaml
+```
+
+The validator is:
+
+```text
+python scripts/check_capability_showcase.py
+```
+
+That check is part of `make sourcecheck`, so the advertised surface is kept under the same proof-status discipline as the rest of the project.
+
+<script type="module" src="widgets/shared/widget_base.js"></script>

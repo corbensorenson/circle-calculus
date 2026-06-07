@@ -5370,6 +5370,11 @@
       ],
       "used_by_widgets": [
         {
+          "id": "learned_token_recurrence",
+          "path": "site/widgets/ai/learned_token_recurrence.js",
+          "python_reference": "circle_math.applications.circle_ai.fit_loop_budget_lookup; circle_math.applications.circle_ai.predict_loop_budget_lookup; circle_math.applications.circle_ai.run_learned_token_level_recurrence_benchmark"
+        },
+        {
           "id": "loop_recurrence_budget",
           "path": "site/widgets/ai/loop_recurrence_budget.js",
           "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.token_recurrence_budget; circle_math.applications.circle_ai.training_free_loop_budget"
@@ -5507,6 +5512,11 @@
         }
       ],
       "used_by_widgets": [
+        {
+          "id": "learned_token_recurrence",
+          "path": "site/widgets/ai/learned_token_recurrence.js",
+          "python_reference": "circle_math.applications.circle_ai.fit_loop_budget_lookup; circle_math.applications.circle_ai.predict_loop_budget_lookup; circle_math.applications.circle_ai.run_learned_token_level_recurrence_benchmark"
+        },
         {
           "id": "loop_recurrence_budget",
           "path": "site/widgets/ai/loop_recurrence_budget.js",
@@ -5762,6 +5772,11 @@
         }
       ],
       "used_by_widgets": [
+        {
+          "id": "learned_token_recurrence",
+          "path": "site/widgets/ai/learned_token_recurrence.js",
+          "python_reference": "circle_math.applications.circle_ai.fit_loop_budget_lookup; circle_math.applications.circle_ai.predict_loop_budget_lookup; circle_math.applications.circle_ai.run_learned_token_level_recurrence_benchmark"
+        },
         {
           "id": "loop_recurrence_budget",
           "path": "site/widgets/ai/loop_recurrence_budget.js",
@@ -7064,6 +7079,11 @@
       "used_by_theorems": [],
       "used_by_widgets": [
         {
+          "id": "learned_token_recurrence",
+          "path": "site/widgets/ai/learned_token_recurrence.js",
+          "python_reference": "circle_math.applications.circle_ai.fit_loop_budget_lookup; circle_math.applications.circle_ai.predict_loop_budget_lookup; circle_math.applications.circle_ai.run_learned_token_level_recurrence_benchmark"
+        },
+        {
           "id": "token_level_recurrence",
           "path": "site/widgets/ai/token_level_recurrence.js",
           "python_reference": "circle_math.applications.circle_ai.token_recurrence_budgets; circle_math.applications.circle_ai.active_token_counts_by_budget; circle_math.applications.circle_ai.recurrence_resolution_levels; circle_math.applications.circle_ai.run_token_level_recurrence_benchmark"
@@ -7102,6 +7122,11 @@
       ],
       "used_by_theorems": [],
       "used_by_widgets": [
+        {
+          "id": "learned_token_recurrence",
+          "path": "site/widgets/ai/learned_token_recurrence.js",
+          "python_reference": "circle_math.applications.circle_ai.fit_loop_budget_lookup; circle_math.applications.circle_ai.predict_loop_budget_lookup; circle_math.applications.circle_ai.run_learned_token_level_recurrence_benchmark"
+        },
         {
           "id": "token_level_recurrence",
           "path": "site/widgets/ai/token_level_recurrence.js",
