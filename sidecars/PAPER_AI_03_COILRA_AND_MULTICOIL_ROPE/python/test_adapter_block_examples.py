@@ -2,9 +2,12 @@ from circle_math.applications.circle_ai import (
     adapter_block,
     adapter_block_collision_count,
     adapter_block_loads,
+    block_cyclic_adapter_parameter_count,
+    dense_adapter_parameter_count,
     fit_adapter_block_lookup,
     fit_multicoil_phase_lookup,
     fit_rope_relative_lookup,
+    lora_adapter_parameter_count,
     multicoil_cycle_length,
     multicoil_phase,
     predict_adapter_block_lookup,
@@ -12,6 +15,7 @@ from circle_math.applications.circle_ai import (
     predict_rope_relative_lookup,
     rope_relative_feature,
     run_adapter_block_benchmark,
+    run_adapter_parameter_budget_benchmark,
     run_multicoil_rope_benchmark,
     run_rope_relative_phase_benchmark,
     synthetic_adapter_block_dataset,
@@ -80,6 +84,37 @@ def test_adapter_block_benchmark_has_baseline_and_negative_control() -> None:
     assert result.nonperiodic_adapter_block_accuracy < result.nonperiodic_scalar_threshold_accuracy
     assert result.train_collision_count == 56
     assert result.max_train_block_load == 8
+
+
+def test_adapter_parameter_budget_counts_are_deterministic() -> None:
+    assert dense_adapter_parameter_count(128, 16) == 2048
+    assert lora_adapter_parameter_count(128, 16, 4) == 576
+    assert block_cyclic_adapter_parameter_count(8, 16) == 128
+
+
+def test_adapter_parameter_budget_fixture_has_dense_lora_and_block_baselines() -> None:
+    result = run_adapter_parameter_budget_benchmark(
+        channel_count=128,
+        block_size=8,
+        rank=4,
+        parameters_per_channel=16,
+    )
+
+    assert result == run_adapter_parameter_budget_benchmark(
+        channel_count=128,
+        block_size=8,
+        rank=4,
+        parameters_per_channel=16,
+    )
+    assert result.dense_adapter_parameters == 2048
+    assert result.lora_parameters == 576
+    assert result.block_cyclic_parameters == 128
+    assert result.block_cyclic_parameters < result.lora_parameters < result.dense_adapter_parameters
+    assert result.lora_to_dense_ratio == 0.28125
+    assert result.block_to_dense_ratio == 0.0625
+    assert result.channel_collision_count == 120
+    assert result.max_block_load == 16
+    assert result.note.endswith("not a model-quality claim.")
 
 
 def test_multicoil_phase_components_are_bounded() -> None:

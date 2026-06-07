@@ -27,6 +27,7 @@ The Python examples are:
 ```text
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_adapter_block.py
+sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_adapter_parameter_budget.py
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_multicoil_rope.py
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_rope_relative_phase.py
 ```
@@ -55,6 +56,10 @@ The fixture also reports block collision diagnostics: how many training channels
 
 This fixture is not evidence that CoilRA improves fine-tuning, that block-cyclic adapters beat LoRA, that MultiCoil RoPE improves positional encoding, or that a model runs faster. It is a small reproducible harness that separates a block-periodic task from a nonperiodic control before stronger experiments begin.
 
+`AIRA-B0004` adds a deterministic adapter parameter-budget fixture. It compares a dense per-channel adapter count, a LoRA-style low-rank count, and a block-cyclic shared-table count, then reports alias/load diagnostics for `channel mod block_size`.
+
+This fixture is only parameter accounting. It is not evidence that block-cyclic adapters improve fine-tuning, that fewer parameters improve quality, that LoRA is beaten, or that runtime/memory/training stability improves.
+
 `AIRA-B0002` adds the first MultiCoil/RoPE-style positional fixture. The positive synthetic task labels positions by a combined phase tuple over periods `(5,7)`. A combined-period lookup recovers the pattern, while a single-period phase lookup, a constant baseline, and a scalar-threshold baseline do worse. The nonperiodic control labels positions by a scalar threshold; there the threshold baseline wins and the combined-period lookup fails.
 
 This fixture is not evidence that MultiCoil RoPE improves a language model, that multiple periods beat standard RoPE, that learned positional encodings are unnecessary, or that attention should be replaced. It is a small reproducible check that multi-period phase structure can be represented and compared before real model experiments begin.
@@ -75,11 +80,11 @@ Periodic activations should be evaluated on signal, coordinate, and neural-field
 
 ## Next Program
 
-- Treat `AIRA-B0001` as adapter-block benchmark scaffolding only; CoilRA, model quality, parameter efficiency, and runtime claims remain separate work.
+- Treat `AIRA-B0001` as adapter-block benchmark scaffolding and `AIRA-B0004` as parameter-budget scaffolding only; CoilRA, model quality, parameter efficiency, memory, training stability, and runtime claims remain separate work.
 - Treat `AIRA-B0002` as MultiCoil/RoPE-style positional scaffolding and `AIRA-B0003` as relative RoPE-style phase scaffolding only; standard RoPE, learned-position, attention, dense sequence, and MLX comparisons remain separate work.
 - Start with small MLX prototypes and synthetic tasks.
 - Compare against dense, LoRA, block-circulant, and standard RoPE baselines.
-- Measure quality and runtime together; parameter reduction alone is not enough.
+- Measure quality, memory, training stability, and runtime together; parameter reduction alone is not enough.
 - Keep spherical/quaternion AI separate and keep octonion AI exploratory.
 
 ## Guardrail

@@ -314,6 +314,22 @@ class AdapterBlockBenchmarkResult:
 
 
 @dataclass(frozen=True)
+class AdapterParameterBudgetResult:
+    channel_count: int
+    block_size: int
+    rank: int
+    parameters_per_channel: int
+    dense_adapter_parameters: int
+    lora_parameters: int
+    block_cyclic_parameters: int
+    lora_to_dense_ratio: float
+    block_to_dense_ratio: float
+    channel_collision_count: int
+    max_block_load: int
+    note: str = "Synthetic adapter parameter-budget fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
 class MultiCoilRoPEBenchmarkResult:
     periods: tuple[int, ...]
     train_length: int
@@ -1399,6 +1415,68 @@ def run_adapter_block_benchmark(
         ),
         train_collision_count=adapter_block_collision_count(block_size, train_channel_ids),
         max_train_block_load=max(train_loads),
+    )
+
+
+def dense_adapter_parameter_count(channel_count: int, parameters_per_channel: int) -> int:
+    """Return a dense per-channel adapter parameter count."""
+    _require_positive(channel_count, "channel_count")
+    _require_positive(parameters_per_channel, "parameters_per_channel")
+    return channel_count * parameters_per_channel
+
+
+def lora_adapter_parameter_count(channel_count: int, parameters_per_channel: int, rank: int) -> int:
+    """Return a LoRA-style low-rank adapter parameter count."""
+    _require_positive(channel_count, "channel_count")
+    _require_positive(parameters_per_channel, "parameters_per_channel")
+    _require_positive(rank, "rank")
+    return rank * (channel_count + parameters_per_channel)
+
+
+def block_cyclic_adapter_parameter_count(block_size: int, parameters_per_block: int) -> int:
+    """Return a block-cyclic shared-table parameter count."""
+    _require_positive(block_size, "block_size")
+    _require_positive(parameters_per_block, "parameters_per_block")
+    return block_size * parameters_per_block
+
+
+def run_adapter_parameter_budget_benchmark(
+    *,
+    channel_count: int = 128,
+    block_size: int = 8,
+    rank: int = 4,
+    parameters_per_channel: int = 16,
+) -> AdapterParameterBudgetResult:
+    """Compare adapter parameter budgets against ordinary baselines.
+
+    This fixture counts parameters only. It compares a dense per-channel
+    adapter, a LoRA-style low-rank baseline, and a block-cyclic table shared
+    by ``channel mod block_size``. It does not measure model quality, runtime,
+    training stability, or hardware efficiency.
+    """
+    _require_positive(channel_count, "channel_count")
+    _require_positive(block_size, "block_size")
+    _require_positive(rank, "rank")
+    _require_positive(parameters_per_channel, "parameters_per_channel")
+
+    channels = tuple(range(channel_count))
+    dense_count = dense_adapter_parameter_count(channel_count, parameters_per_channel)
+    lora_count = lora_adapter_parameter_count(channel_count, parameters_per_channel, rank)
+    block_count = block_cyclic_adapter_parameter_count(block_size, parameters_per_channel)
+    block_loads = adapter_block_loads(block_size, channels)
+
+    return AdapterParameterBudgetResult(
+        channel_count=channel_count,
+        block_size=block_size,
+        rank=rank,
+        parameters_per_channel=parameters_per_channel,
+        dense_adapter_parameters=dense_count,
+        lora_parameters=lora_count,
+        block_cyclic_parameters=block_count,
+        lora_to_dense_ratio=lora_count / dense_count,
+        block_to_dense_ratio=block_count / dense_count,
+        channel_collision_count=adapter_block_collision_count(block_size, channels),
+        max_block_load=max(block_loads),
     )
 
 

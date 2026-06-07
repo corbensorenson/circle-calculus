@@ -635,3 +635,15 @@ entries:
       - "A recursive-transformer quality benchmark."
       - "Evidence that Circle AI improves reasoning, context length, runtime, or parameter efficiency."
       - "A replacement for dense transformer, Universal Transformer, looped-transformer, recurrent-memory, sparse/MoE, RWKV/Mamba-style, or state-space baselines."
+  - id: COMMON-0056
+    name: "Adapter parameter-budget fixture"
+    kind: experiment
+    symbol: "adapter_parameter_budget"
+    formal_definition: "`circle_math.applications.circle_ai.run_adapter_parameter_budget_benchmark`, a deterministic parameter-count fixture comparing dense per-channel, LoRA-style low-rank, and block-cyclic shared-table adapter counts with alias/load diagnostics."
+    intuition: "A small accounting harness for CoilRA-style work: before claiming efficiency, count the parameters and the alias pressure against ordinary dense and LoRA baselines."
+    dependencies: ["COMMON-0030", "COMMON-0046"]
+    introduced_in: "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
+    forbidden_meanings:
+      - "A proof that CoilRA improves fine-tuning."
+      - "Evidence that fewer parameters improve quality, runtime, memory, or training stability."
+      - "A replacement for dense adapter, LoRA, block-circulant, or learned adapter baselines."

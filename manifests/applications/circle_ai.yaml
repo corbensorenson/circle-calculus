@@ -19,6 +19,7 @@ sidecars:
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/lean/PaperAI03.lean
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_adapter_block.py
+  - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_adapter_parameter_budget.py
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_multicoil_rope.py
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_rope_relative_phase.py
 python_reference:
@@ -88,7 +89,7 @@ next_targets:
   - "Use COMMON-0052 through COMMON-0055 as the looped/recursive transformer roadmap lane: AIA/AIM/AIRA proofs still cover finite indexing only, while AIM-B0003 provides a deterministic recurrence-schedule fixture with single-pass, fixed-loop, adaptive-exit, recurrent-memory, sparse phase-router, over-looped, and dense-threshold controls; compare future learned models against dense transformer, Universal Transformer, fixed looped-transformer, adaptive-exit, recurrent-memory, sparse/MoE, RWKV/Mamba-style, and standard state-space baselines."
   - "AIA-B0004 expands the learned phase fixture to dense-scalar, learned-position, wrong-period, and cyclic-feature baselines; AIA-B0005 adds a correct-frequency versus wrong-frequency harmonic/Fourier feature scaffold; next compare against standard RoPE, learned positional encodings, and learned dense models before model-quality claims."
   - "Use AIM-B0002 as coil-retrieval reachability scaffolding only; expand toward learned/content-gated coil paths, alias-control, full-attention, sparse-attention, Hyena-like, and state-space baselines before retrieval-quality claims."
-  - "Use AIRA-B0001 as adapter-block scaffolding only; expand toward CoilRA, block-circulant, LoRA, and dense-adapter baselines before making parameter-efficiency or quality claims."
+  - "Use AIRA-B0001 as adapter-block scaffolding and AIRA-B0004 as adapter parameter-budget scaffolding only; expand toward CoilRA, block-circulant, LoRA, dense-adapter, learned quality, runtime, memory, and training-stability baselines before making parameter-efficiency or quality claims."
   - "Use AIRA-B0002 as MultiCoil/RoPE-style positional scaffolding and AIRA-B0003 as relative RoPE-style phase scaffolding only; expand toward standard RoPE, learned positional encodings, attention, dense sequence, Fourier-feature, and MLX/CPU parity baselines before model-quality claims."
   - "Use AIA-B0003 as CPU/MLX scoring parity scaffolding only; expand toward actual MLX model prototypes and timing only after parity and baseline semantics are stable."
   - "Compare against dense, LoRA, block-circulant, standard RoPE, learned positional encoding, full attention, sparse attention, Hyena-like, recurrent-memory, looped-transformer, state-space, convolutional, Fourier-feature, and MLX/CPU parity baselines as appropriate."
@@ -137,6 +138,11 @@ benchmarks:
     path: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_adapter_block_benchmark_has_baseline_and_negative_control
     script: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_adapter_block.py
     description: "Deterministic adapter-block synthetic fixture comparing adapter-block lookup against constant and scalar-threshold baselines, with a nonperiodic negative control."
+  - id: AIRA-B0004
+    status: exploratory_python
+    path: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_adapter_parameter_budget_fixture_has_dense_lora_and_block_baselines
+    script: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_adapter_parameter_budget.py
+    description: "Deterministic adapter parameter-budget fixture comparing block-cyclic shared-table counts against dense adapter and LoRA-style low-rank baselines, with alias/load diagnostics."
   - id: AIRA-B0002
     status: exploratory_python
     path: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_multicoil_rope_benchmark_has_baselines_and_negative_control
