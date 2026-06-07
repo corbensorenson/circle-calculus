@@ -6191,6 +6191,24 @@
           "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_trans",
           "name": "Circle.Generative.generatorComparison_exact_regeneration_trans",
           "status": "proved"
+        },
+        {
+          "id": "GEN-T0017",
+          "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_iff_fields_eq",
+          "name": "Circle.Generative.generatorComparison_exact_regeneration_iff_fields_eq",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0018",
+          "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_fields_eq",
+          "name": "Circle.Generative.generatorComparison_exact_regeneration_fields_eq",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0019",
+          "lean_name": "Circle.Generative.generatorComparison_not_exact_of_ne",
+          "name": "Circle.Generative.generatorComparison_not_exact_of_ne",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -6245,6 +6263,24 @@
           "id": "GEN-T0016",
           "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_trans",
           "name": "Circle.Generative.generatorComparison_exact_regeneration_trans",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0017",
+          "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_iff_fields_eq",
+          "name": "Circle.Generative.generatorComparison_exact_regeneration_iff_fields_eq",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0018",
+          "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_fields_eq",
+          "name": "Circle.Generative.generatorComparison_exact_regeneration_fields_eq",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0019",
+          "lean_name": "Circle.Generative.generatorComparison_not_exact_of_ne",
+          "name": "Circle.Generative.generatorComparison_not_exact_of_ne",
           "status": "proved"
         }
       ],
@@ -6372,6 +6408,24 @@
           "id": "GEN-T0016",
           "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_trans",
           "name": "Circle.Generative.generatorComparison_exact_regeneration_trans",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0017",
+          "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_iff_fields_eq",
+          "name": "Circle.Generative.generatorComparison_exact_regeneration_iff_fields_eq",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0018",
+          "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_fields_eq",
+          "name": "Circle.Generative.generatorComparison_exact_regeneration_fields_eq",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0019",
+          "lean_name": "Circle.Generative.generatorComparison_not_exact_of_ne",
+          "name": "Circle.Generative.generatorComparison_not_exact_of_ne",
           "status": "proved"
         }
       ],

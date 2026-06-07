@@ -129,7 +129,7 @@ targets:
       - "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"
       - "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md"
     dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066", "COMMON-0041", "COMMON-0042"]
-    next_action: "Finite-circle and finite physics-loop diagram generation are now in the comparison fixture; exact-regeneration self/symmetry/transitivity are Lean-proved; expand next toward orbit-family diagrams and Living Book widget/status-badge integration, using the Lean exact-regeneration comparison seed as the finite proof boundary."
+    next_action: "Finite-circle and finite physics-loop diagram generation are now in the comparison fixture; exact-regeneration self/symmetry/transitivity, field-equality gates, and unequal-value negative gates are Lean-proved; expand next toward orbit-family diagrams and Living Book widget/status-badge integration, using the Lean exact-regeneration comparison seed as the finite proof boundary."
     guardrail: "Do not call this universal compression, Kolmogorov complexity, or an optimal generator theorem."
 
   - id: P7-GEN-003

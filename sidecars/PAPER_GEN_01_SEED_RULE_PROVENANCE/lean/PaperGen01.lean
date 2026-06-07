@@ -23,3 +23,6 @@ optimality.
 #check Circle.Generative.generatorComparison_self_exact
 #check Circle.Generative.generatorComparison_exact_regeneration_symm
 #check Circle.Generative.generatorComparison_exact_regeneration_trans
+#check Circle.Generative.generatorComparison_exact_regeneration_iff_fields_eq
+#check Circle.Generative.generatorComparison_exact_regeneration_fields_eq
+#check Circle.Generative.generatorComparison_not_exact_of_ne

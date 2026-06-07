@@ -79,9 +79,12 @@ The paper links back to finite circles, coils, orbit decompositions, and proof-c
 - `GEN-T0014`: `Circle.Generative.generatorComparison_self_exact`, a generator comparison from an artifact to itself has exact regeneration.
 - `GEN-T0015`: `Circle.Generative.generatorComparison_exact_regeneration_symm`, exact regeneration is symmetric for generator comparison records.
 - `GEN-T0016`: `Circle.Generative.generatorComparison_exact_regeneration_trans`, exact regeneration is transitive across generator comparison records.
+- `GEN-T0017`: `Circle.Generative.generatorComparison_exact_regeneration_iff_fields_eq`, exact regeneration for a constructed comparison is equivalent to equality of its regenerated and generated fields.
+- `GEN-T0018`: `Circle.Generative.generatorComparison_exact_regeneration_fields_eq`, an exact-regeneration witness for a constructed comparison gives equality of those fields.
+- `GEN-T0019`: `Circle.Generative.generatorComparison_not_exact_of_ne`, unequal regenerated and generated values cannot pass the exact-regeneration check.
 
-`GEN-T0001` through `GEN-T0016` are Lean-proved finite seeds in `Circle.Generative.SeedRule`.
-`GEN-T0003` proves exact regeneration of the declared representative-indexed list model. `GEN-T0006` through `GEN-T0013` strengthen that model with count, period, coverage, formal orbit-class agreement, canonical representative coverage, and representative disjointness facts. `GEN-T0014` through `GEN-T0016` make exact regeneration reusable as a reflexive, symmetric, and transitive equality-style relation for generator comparisons. They do not prove that the list is an optimal or minimal compression.
+`GEN-T0001` through `GEN-T0019` are Lean-proved finite seeds in `Circle.Generative.SeedRule`.
+`GEN-T0003` proves exact regeneration of the declared representative-indexed list model. `GEN-T0006` through `GEN-T0013` strengthen that model with count, period, coverage, formal orbit-class agreement, canonical representative coverage, and representative disjointness facts. `GEN-T0014` through `GEN-T0019` make exact regeneration reusable as a reflexive, symmetric, transitive, and field-equality-gated relation for constructed generator comparisons. They do not prove that the list is an optimal or minimal compression.
 
 ## Seed-Rule Record
 
@@ -110,7 +113,7 @@ orbit_decomposition
 proof_glyph
 ```
 
-Each record regenerates its object deterministically. The finite-circle diagram generator returns node labels and successor edges from the same `n` seed, theorem ids, and dictionary ids as the node generator. The physics-loop diagram generator returns a finite square plaquette diagram with normalized link phases, closed-loop status, holonomy, physics theorem ids, and dictionary ids. A comparison fixture serializes the regenerated explicit object and the seed-rule record, then reports whether the generator description is shorter. Exact regeneration is checked before any length result is trusted.
+Each record regenerates its object deterministically. The finite-circle diagram generator returns node labels and successor edges from the same `n` seed, theorem ids, and dictionary ids as the node generator. The physics-loop diagram generator returns a finite square plaquette diagram with normalized link phases, closed-loop status, holonomy, physics theorem ids, and dictionary ids. A comparison fixture serializes the regenerated explicit object and the seed-rule record, then reports whether the generator description is shorter. Exact regeneration is checked before any length result is trusted, and the Lean comparison facts now expose the exact check as equality of the regenerated/generated fields for constructed comparison records.
 
 ## Positive And Negative Cases
 

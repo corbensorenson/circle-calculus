@@ -178,7 +178,7 @@
       ],
       "guardrail": "Do not call this universal compression, Kolmogorov complexity, or an optimal generator theorem.",
       "id": "P7-GEN-002",
-      "next_action": "Finite-circle and finite physics-loop diagram generation are now in the comparison fixture; exact-regeneration self/symmetry/transitivity are Lean-proved; expand next toward orbit-family diagrams and Living Book widget/status-badge integration, using the Lean exact-regeneration comparison seed as the finite proof boundary.",
+      "next_action": "Finite-circle and finite physics-loop diagram generation are now in the comparison fixture; exact-regeneration self/symmetry/transitivity, field-equality gates, and unequal-value negative gates are Lean-proved; expand next toward orbit-family diagrams and Living Book widget/status-badge integration, using the Lean exact-regeneration comparison seed as the finite proof boundary.",
       "ordinary_baseline": "Explicitly listing every node, edge, orbit, generated point, or diagram element.",
       "priority": "high",
       "question": "Can generator records give better explanation or reconstruction discipline than object-only descriptions on bounded Circle Calculus artifacts?",

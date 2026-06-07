@@ -210,4 +210,26 @@ theorem generatorComparison_exact_regeneration_trans
   intro hfirst hsecond
   exact hfirst.trans hsecond
 
+theorem generatorComparison_exact_regeneration_iff_fields_eq
+    (regenerated generated : α) :
+    (generatorComparison regenerated generated).exactRegeneration ↔
+      (generatorComparison regenerated generated).regenerated =
+        (generatorComparison regenerated generated).generated := by
+  rfl
+
+theorem generatorComparison_exact_regeneration_fields_eq
+    (regenerated generated : α) :
+    (generatorComparison regenerated generated).exactRegeneration →
+      (generatorComparison regenerated generated).regenerated =
+        (generatorComparison regenerated generated).generated := by
+  intro h
+  exact h
+
+theorem generatorComparison_not_exact_of_ne
+    (regenerated generated : α) :
+    regenerated ≠ generated →
+      ¬ (generatorComparison regenerated generated).exactRegeneration := by
+  intro hne hexact
+  exact hne hexact
+
 end Circle.Generative

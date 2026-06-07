@@ -1962,4 +1962,46 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_generator_comparison_has_positive_and_negative_cases
     blocker: ""
+  - id: GEN-T0017
+    status: lean_proved
+    lean_name: Circle.Generative.generatorComparison_exact_regeneration_iff_fields_eq
+    informal_statement: "For a constructed generator comparison, exact regeneration is equivalent to equality of the regenerated and generated fields."
+    formal_statement: "For regenerated and generated values, (generatorComparison regenerated generated).exactRegeneration iff its regenerated field equals its generated field."
+    dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_generator_comparison_has_positive_and_negative_cases
+    blocker: ""
+  - id: GEN-T0018
+    status: lean_proved
+    lean_name: Circle.Generative.generatorComparison_exact_regeneration_fields_eq
+    informal_statement: "For a constructed generator comparison, an exact-regeneration witness gives equality of the regenerated and generated fields."
+    formal_statement: "For regenerated and generated values, exactRegeneration for generatorComparison regenerated generated implies the regenerated field equals the generated field."
+    dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_generator_comparison_has_positive_and_negative_cases
+    blocker: ""
+  - id: GEN-T0019
+    status: lean_proved
+    lean_name: Circle.Generative.generatorComparison_not_exact_of_ne
+    informal_statement: "For a constructed generator comparison, unequal regenerated and generated values cannot pass the exact-regeneration check."
+    formal_statement: "For regenerated and generated values, regenerated != generated implies not (generatorComparison regenerated generated).exactRegeneration."
+    dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_generator_comparison_has_positive_and_negative_cases
+    blocker: ""
 warnings: []
