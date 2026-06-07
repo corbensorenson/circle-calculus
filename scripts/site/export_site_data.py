@@ -280,6 +280,13 @@ def export_widget_index() -> dict:
             "python_reference": "circle_math.applications.circle_ai.rope_relative_feature; circle_math.applications.circle_ai.run_rope_relative_phase_benchmark",
         },
         {
+            "id": "circulant_mixer_validation",
+            "path": "site/widgets/ai/circulant_mixer_validation.js",
+            "theorem_ids": [],
+            "dictionary_ids": ["COMMON-0058", "COMMON-0056", "COMMON-0046"],
+            "python_reference": "circle_math.applications.circle_ai.circulant_mixer_output; circle_math.applications.circle_ai.dense_circulant_matrix; circle_math.applications.circle_ai.run_circulant_mixer_benchmark",
+        },
+        {
             "id": "finite_path_algebra",
             "path": "site/widgets/physics/finite_path_algebra.js",
             "theorem_ids": ["PHYS-T0001", "PHYS-T0002", "PHYS-T0003", "PHYS-T0006", "PHYS-T0007", "PHYS-T0039"],

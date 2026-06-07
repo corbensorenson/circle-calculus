@@ -6,6 +6,11 @@ from math import cos, gcd, sin, tau
 from circle_math.applications import (
     average_candidate_count,
     coil_attention_path,
+    circulant_mixer_output,
+    default_circulant_input,
+    default_circulant_kernel,
+    dense_circulant_matrix,
+    dense_matrix_vector_product,
     local_window_indices,
     loop_exit_certificate,
     loop_required_steps,
@@ -21,8 +26,10 @@ from circle_math.applications import (
     retrieval_target_index,
     rope_relative_feature,
     run_content_gated_retrieval_benchmark,
+    run_circulant_mixer_benchmark,
     token_recurrence_budget,
     training_free_loop_budget,
+    rotate_kernel,
 )
 from circle_math.finite import Circle
 from circle_math.generative import (
@@ -276,6 +283,49 @@ def js_rope_relative_feature(period: int, query_position: int, key_position: int
     lag = js_mod(query_position - key_position, period)
     angle = tau * lag / period
     return (round(cos(angle), 12), round(sin(angle), 12))
+
+
+def js_default_circulant_input(period: int) -> tuple[int, ...]:
+    return tuple(((index * index + 3 * index + 1) % 7) - 3 for index in range(period))
+
+
+def js_default_circulant_kernel(period: int) -> tuple[int, ...]:
+    kernel = [0 for _ in range(period)]
+    kernel[0] = 2
+    if period > 1:
+        kernel[1] = -1
+    if period > 2:
+        kernel[2] = 1
+    if period > 4:
+        kernel[4] = -2
+    return tuple(kernel)
+
+
+def js_circulant_mixer_output(values: tuple[int, ...], kernel: tuple[int, ...]) -> tuple[int, ...]:
+    period = len(values)
+    return tuple(
+        sum(kernel[offset] * values[js_mod(index - offset, period)] for offset in range(period))
+        for index in range(period)
+    )
+
+
+def js_dense_circulant_matrix(kernel: tuple[int, ...]) -> tuple[tuple[int, ...], ...]:
+    period = len(kernel)
+    return tuple(
+        tuple(kernel[js_mod(row - column, period)] for column in range(period))
+        for row in range(period)
+    )
+
+
+def js_dense_matrix_vector_product(
+    matrix: tuple[tuple[int, ...], ...], values: tuple[int, ...]
+) -> tuple[int, ...]:
+    return tuple(sum(entry * value for entry, value in zip(row, values)) for row in matrix)
+
+
+def js_rotate_kernel(kernel: tuple[int, ...], shift: int) -> tuple[int, ...]:
+    period = len(kernel)
+    return tuple(kernel[js_mod(index - shift, period)] for index in range(period))
 
 
 def js_memory_slot(bank_size: int, token: int) -> int:
@@ -857,6 +907,37 @@ def main() -> int:
             query_position,
             key_position,
         )
+
+    circulant_cases = [
+        (5, 1),
+        (8, 1),
+        (11, 3),
+    ]
+    for period, wrong_shift in circulant_cases:
+        values = js_default_circulant_input(period)
+        kernel = js_default_circulant_kernel(period)
+        assert default_circulant_input(period) == values
+        assert default_circulant_kernel(period) == kernel
+        assert circulant_mixer_output(values, kernel) == js_circulant_mixer_output(values, kernel)
+        assert dense_circulant_matrix(kernel) == js_dense_circulant_matrix(kernel)
+        assert dense_matrix_vector_product(dense_circulant_matrix(kernel), values) == js_dense_matrix_vector_product(
+            js_dense_circulant_matrix(kernel),
+            values,
+        )
+        assert rotate_kernel(kernel, wrong_shift) == js_rotate_kernel(kernel, wrong_shift)
+        benchmark = run_circulant_mixer_benchmark(period=period, wrong_shift=wrong_shift)
+        assert benchmark.circulant_output == js_circulant_mixer_output(values, kernel)
+        assert benchmark.dense_output == js_dense_matrix_vector_product(
+            js_dense_circulant_matrix(kernel),
+            values,
+        )
+        assert benchmark.wrong_shift_output == js_circulant_mixer_output(
+            values,
+            js_rotate_kernel(kernel, wrong_shift),
+        )
+        assert benchmark.max_abs_dense_delta == 0
+        assert benchmark.dense_parameters == period * period
+        assert benchmark.circulant_parameters == period
 
     print("widget Python parity ok")
     return 0

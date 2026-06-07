@@ -151,6 +151,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is a relative phase fixture only. It does not prove standard RoPE quality, attention quality, context-length improvement, perplexity improvement, or runtime improvement.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python RoPE relative phase helper.
 
+### circulant_mixer_validation
+
+- Inputs: period and wrong-shift control.
+- Outputs: deterministic input vector, deterministic sparse kernel, circular-convolution output, dense circulant-matrix output, wrong-shift output, max absolute dense delta, wrong-shift mismatch count, dense parameter count, circulant parameter count, parameter ratio, and dictionary links.
+- Theorem ids: none dedicated yet. This is an executable validation fixture for `AIRA-B0005`; finite proof work remains in adjacent indexing theorem cards.
+- Dictionary ids: `COMMON-0058`, `COMMON-0056`, and `COMMON-0046`.
+- Python references: `circle_math.applications.circle_ai.circulant_mixer_output`, `circle_math.applications.circle_ai.dense_circulant_matrix`, and `circle_math.applications.circle_ai.run_circulant_mixer_benchmark`.
+- Guardrail: the widget validates circular-convolution bookkeeping only. It does not prove neural-layer quality, runtime, memory, training stability, hardware efficiency, or CoilLinear usefulness.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python circulant mixer helpers.
+
 ## Physics Widgets
 
 ### finite_path_algebra
@@ -210,5 +220,6 @@ Minimum parity cases:
 - content-gated retrieval mixed lags, gated/static/wrong/union/full hit rates, and average candidate counts.
 - MultiCoil phase tuple, joint cycle length, phase closure after one joint cycle, and constructed synthetic label.
 - RoPE-style relative phase lag, sine/cosine feature, query-period closure, and key-period closure.
+- circulant mixer circular-convolution output, dense circulant-matrix output, wrong-shift output, max dense delta, and parameter counts.
 - finite path concatenation holonomy, reverse-path holonomy, path-plus-reverse closure, and open-path gauge endpoint prediction.
 - finite gauge-loop normalized phases, gauge-transformed phases, original/transformed holonomy, and closed endpoint cancellation.

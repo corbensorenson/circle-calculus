@@ -239,6 +239,17 @@
     },
     {
       "dictionary_ids": [
+        "COMMON-0058",
+        "COMMON-0056",
+        "COMMON-0046"
+      ],
+      "id": "circulant_mixer_validation",
+      "path": "site/widgets/ai/circulant_mixer_validation.js",
+      "python_reference": "circle_math.applications.circle_ai.circulant_mixer_output; circle_math.applications.circle_ai.dense_circulant_matrix; circle_math.applications.circle_ai.run_circulant_mixer_benchmark",
+      "theorem_ids": []
+    },
+    {
+      "dictionary_ids": [
         "COMMON-0060",
         "COMMON-0061",
         "COMMON-0063"

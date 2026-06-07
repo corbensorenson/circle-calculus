@@ -5042,6 +5042,11 @@
       "used_by_theorems": [],
       "used_by_widgets": [
         {
+          "id": "circulant_mixer_validation",
+          "path": "site/widgets/ai/circulant_mixer_validation.js",
+          "python_reference": "circle_math.applications.circle_ai.circulant_mixer_output; circle_math.applications.circle_ai.dense_circulant_matrix; circle_math.applications.circle_ai.run_circulant_mixer_benchmark"
+        },
+        {
           "id": "multicoil_phase_explorer",
           "path": "site/widgets/ai/multicoil_phase_explorer.js",
           "python_reference": "circle_math.applications.circle_ai.multicoil_phase; circle_math.applications.circle_ai.multicoil_cycle_length; circle_math.applications.circle_ai.multicoil_phase_label"
@@ -5606,7 +5611,13 @@
         }
       ],
       "used_by_theorems": [],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "circulant_mixer_validation",
+          "path": "site/widgets/ai/circulant_mixer_validation.js",
+          "python_reference": "circle_math.applications.circle_ai.circulant_mixer_output; circle_math.applications.circle_ai.dense_circulant_matrix; circle_math.applications.circle_ai.run_circulant_mixer_benchmark"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -5672,7 +5683,13 @@
         }
       ],
       "used_by_theorems": [],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "circulant_mixer_validation",
+          "path": "site/widgets/ai/circulant_mixer_validation.js",
+          "python_reference": "circle_math.applications.circle_ai.circulant_mixer_output; circle_math.applications.circle_ai.dense_circulant_matrix; circle_math.applications.circle_ai.run_circulant_mixer_benchmark"
+        }
+      ]
     },
     {
       "dependencies": [

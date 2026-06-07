@@ -55,6 +55,14 @@ The widget below compares content-gated routing against static coil, static loca
 
 <div class="widget-panel" data-widget="content_gated_retrieval" data-dictionary-ids="COMMON-0057 COMMON-0047 COMMON-0028"></div>
 
+## Circulant Mixer Validation Path
+
+CoilLinear/circulant-mixer work starts with a basic validation question: does the circular convolution path produce exactly the same output as the dense circulant matrix it claims to represent?
+
+`AIRA-B0005` is the current executable fixture for that boundary. The widget below compares circular convolution with the dense circulant-matrix product, shows a wrong-shift control, and reports dense-vs-circulant parameter counts. It is not a neural-layer quality, runtime, memory, training-stability, or hardware-efficiency result.
+
+<div class="widget-panel" data-widget="circulant_mixer_validation" data-dictionary-ids="COMMON-0058 COMMON-0056 COMMON-0046"></div>
+
 ## MultiCoil Positional Phase Path
 
 MultiCoil/RoPE-style work begins with a modest bookkeeping question: if a position has several phase periods, what is its combined phase tuple and when does that tuple repeat?
@@ -312,6 +320,7 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 <script type="module" src="../../widgets/ai/cyclic_memory_slots.js"></script>
 <script type="module" src="../../widgets/ai/coil_retrieval_reachability.js"></script>
 <script type="module" src="../../widgets/ai/content_gated_retrieval.js"></script>
+<script type="module" src="../../widgets/ai/circulant_mixer_validation.js"></script>
 <script type="module" src="../../widgets/ai/multicoil_phase_explorer.js"></script>
 <script type="module" src="../../widgets/ai/rope_relative_phase.js"></script>
 <script type="module" src="../../widgets/ai/loop_recurrence_budget.js"></script>
