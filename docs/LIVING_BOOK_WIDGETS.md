@@ -151,6 +151,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is a relative phase fixture only. It does not prove standard RoPE quality, attention quality, context-length improvement, perplexity improvement, or runtime improvement.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python RoPE relative phase helper.
 
+### adapter_parameter_budget
+
+- Inputs: channel count, block size, LoRA-style rank, and parameters per channel/block.
+- Outputs: dense adapter parameters, LoRA-style parameters, block-cyclic shared-table parameters, ratios to dense, channel collision count, maximum block load, per-block load rows, adapter-block theorem links, and dictionary links.
+- Theorem ids: `AIRA-T0001`, `AIRA-T0002`, `AIRA-T0004`, and `AIRA-T0005` as finite adapter-block indexing primitives only.
+- Dictionary ids: `COMMON-0056`, `COMMON-0030`, and `COMMON-0031`.
+- Python references: `circle_math.applications.circle_ai.dense_adapter_parameter_count`, `circle_math.applications.circle_ai.lora_adapter_parameter_count`, `circle_math.applications.circle_ai.block_cyclic_adapter_parameter_count`, and `circle_math.applications.circle_ai.run_adapter_parameter_budget_benchmark`.
+- Guardrail: the widget counts parameters and alias/load pressure only. It does not prove fine-tuning quality, runtime, memory, training stability, hardware efficiency, or CoilRA usefulness.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python adapter parameter-budget helpers.
+
 ### circulant_mixer_validation
 
 - Inputs: period and wrong-shift control.
@@ -220,6 +230,7 @@ Minimum parity cases:
 - content-gated retrieval mixed lags, gated/static/wrong/union/full hit rates, and average candidate counts.
 - MultiCoil phase tuple, joint cycle length, phase closure after one joint cycle, and constructed synthetic label.
 - RoPE-style relative phase lag, sine/cosine feature, query-period closure, and key-period closure.
+- adapter parameter-budget dense, LoRA-style, and block-cyclic counts; ratios; block loads; and collision count.
 - circulant mixer circular-convolution output, dense circulant-matrix output, wrong-shift output, max dense delta, and parameter counts.
 - finite path concatenation holonomy, reverse-path holonomy, path-plus-reverse closure, and open-path gauge endpoint prediction.
 - finite gauge-loop normalized phases, gauge-transformed phases, original/transformed holonomy, and closed endpoint cancellation.

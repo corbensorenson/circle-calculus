@@ -280,6 +280,13 @@ def export_widget_index() -> dict:
             "python_reference": "circle_math.applications.circle_ai.rope_relative_feature; circle_math.applications.circle_ai.run_rope_relative_phase_benchmark",
         },
         {
+            "id": "adapter_parameter_budget",
+            "path": "site/widgets/ai/adapter_parameter_budget.js",
+            "theorem_ids": ["AIRA-T0001", "AIRA-T0002", "AIRA-T0004", "AIRA-T0005"],
+            "dictionary_ids": ["COMMON-0056", "COMMON-0030", "COMMON-0031"],
+            "python_reference": "circle_math.applications.circle_ai.dense_adapter_parameter_count; circle_math.applications.circle_ai.lora_adapter_parameter_count; circle_math.applications.circle_ai.block_cyclic_adapter_parameter_count; circle_math.applications.circle_ai.run_adapter_parameter_budget_benchmark",
+        },
+        {
             "id": "circulant_mixer_validation",
             "path": "site/widgets/ai/circulant_mixer_validation.js",
             "theorem_ids": [],

@@ -4439,7 +4439,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "adapter_parameter_budget",
+          "path": "site/widgets/ai/adapter_parameter_budget.js",
+          "python_reference": "circle_math.applications.circle_ai.dense_adapter_parameter_count; circle_math.applications.circle_ai.lora_adapter_parameter_count; circle_math.applications.circle_ai.block_cyclic_adapter_parameter_count; circle_math.applications.circle_ai.run_adapter_parameter_budget_benchmark"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -4480,7 +4486,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "adapter_parameter_budget",
+          "path": "site/widgets/ai/adapter_parameter_budget.js",
+          "python_reference": "circle_math.applications.circle_ai.dense_adapter_parameter_count; circle_math.applications.circle_ai.lora_adapter_parameter_count; circle_math.applications.circle_ai.block_cyclic_adapter_parameter_count; circle_math.applications.circle_ai.run_adapter_parameter_budget_benchmark"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -5612,6 +5624,11 @@
       ],
       "used_by_theorems": [],
       "used_by_widgets": [
+        {
+          "id": "adapter_parameter_budget",
+          "path": "site/widgets/ai/adapter_parameter_budget.js",
+          "python_reference": "circle_math.applications.circle_ai.dense_adapter_parameter_count; circle_math.applications.circle_ai.lora_adapter_parameter_count; circle_math.applications.circle_ai.block_cyclic_adapter_parameter_count; circle_math.applications.circle_ai.run_adapter_parameter_budget_benchmark"
+        },
         {
           "id": "circulant_mixer_validation",
           "path": "site/widgets/ai/circulant_mixer_validation.js",

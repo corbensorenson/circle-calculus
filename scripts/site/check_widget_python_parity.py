@@ -4,16 +4,21 @@ import json
 from math import cos, gcd, sin, tau
 
 from circle_math.applications import (
+    adapter_block_collision_count,
+    adapter_block_loads,
     average_candidate_count,
+    block_cyclic_adapter_parameter_count,
     coil_attention_path,
     circulant_mixer_output,
     default_circulant_input,
     default_circulant_kernel,
     dense_circulant_matrix,
     dense_matrix_vector_product,
+    dense_adapter_parameter_count,
     local_window_indices,
     loop_exit_certificate,
     loop_required_steps,
+    lora_adapter_parameter_count,
     memory_slot,
     memory_slot_collision_count,
     memory_slot_loads,
@@ -25,6 +30,7 @@ from circle_math.applications import (
     retrieval_hit_rate_by_lag,
     retrieval_target_index,
     rope_relative_feature,
+    run_adapter_parameter_budget_benchmark,
     run_content_gated_retrieval_benchmark,
     run_circulant_mixer_benchmark,
     token_recurrence_budget,
@@ -330,6 +336,29 @@ def js_rotate_kernel(kernel: tuple[int, ...], shift: int) -> tuple[int, ...]:
 
 def js_memory_slot(bank_size: int, token: int) -> int:
     return js_mod(token, bank_size)
+
+
+def js_dense_adapter_parameter_count(channel_count: int, parameters_per_channel: int) -> int:
+    return channel_count * parameters_per_channel
+
+
+def js_lora_adapter_parameter_count(channel_count: int, parameters_per_channel: int, rank: int) -> int:
+    return rank * (channel_count + parameters_per_channel)
+
+
+def js_block_cyclic_adapter_parameter_count(block_size: int, parameters_per_block: int) -> int:
+    return block_size * parameters_per_block
+
+
+def js_adapter_block_loads(block_size: int, channel_count: int) -> tuple[int, ...]:
+    loads = [0 for _ in range(block_size)]
+    for channel in range(channel_count):
+        loads[js_mod(channel, block_size)] += 1
+    return tuple(loads)
+
+
+def js_adapter_block_collision_count(loads: tuple[int, ...]) -> int:
+    return sum(max(0, load - 1) for load in loads)
 
 
 def js_memory_slot_loads(bank_size: int, tokens: tuple[int, ...]) -> tuple[int, ...]:
@@ -907,6 +936,34 @@ def main() -> int:
             query_position,
             key_position,
         )
+
+    adapter_budget_cases = [
+        (64, 8, 4, 16),
+        (96, 12, 6, 10),
+        (128, 7, 3, 5),
+    ]
+    for channel_count, block_size, rank, parameters_per_channel in adapter_budget_cases:
+        channels = tuple(range(channel_count))
+        loads = js_adapter_block_loads(block_size, channel_count)
+        dense_count = js_dense_adapter_parameter_count(channel_count, parameters_per_channel)
+        lora_count = js_lora_adapter_parameter_count(channel_count, parameters_per_channel, rank)
+        block_count = js_block_cyclic_adapter_parameter_count(block_size, parameters_per_channel)
+        assert dense_adapter_parameter_count(channel_count, parameters_per_channel) == dense_count
+        assert lora_adapter_parameter_count(channel_count, parameters_per_channel, rank) == lora_count
+        assert block_cyclic_adapter_parameter_count(block_size, parameters_per_channel) == block_count
+        assert adapter_block_loads(block_size, channels) == loads
+        assert adapter_block_collision_count(block_size, channels) == js_adapter_block_collision_count(loads)
+        benchmark = run_adapter_parameter_budget_benchmark(
+            channel_count=channel_count,
+            block_size=block_size,
+            rank=rank,
+            parameters_per_channel=parameters_per_channel,
+        )
+        assert benchmark.dense_adapter_parameters == dense_count
+        assert benchmark.lora_parameters == lora_count
+        assert benchmark.block_cyclic_parameters == block_count
+        assert benchmark.channel_collision_count == js_adapter_block_collision_count(loads)
+        assert benchmark.max_block_load == max(loads)
 
     circulant_cases = [
         (5, 1),

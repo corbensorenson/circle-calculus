@@ -239,6 +239,22 @@
     },
     {
       "dictionary_ids": [
+        "COMMON-0056",
+        "COMMON-0030",
+        "COMMON-0031"
+      ],
+      "id": "adapter_parameter_budget",
+      "path": "site/widgets/ai/adapter_parameter_budget.js",
+      "python_reference": "circle_math.applications.circle_ai.dense_adapter_parameter_count; circle_math.applications.circle_ai.lora_adapter_parameter_count; circle_math.applications.circle_ai.block_cyclic_adapter_parameter_count; circle_math.applications.circle_ai.run_adapter_parameter_budget_benchmark",
+      "theorem_ids": [
+        "AIRA-T0001",
+        "AIRA-T0002",
+        "AIRA-T0004",
+        "AIRA-T0005"
+      ]
+    },
+    {
+      "dictionary_ids": [
         "COMMON-0058",
         "COMMON-0056",
         "COMMON-0046"

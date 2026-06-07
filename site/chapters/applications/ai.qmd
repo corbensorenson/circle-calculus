@@ -55,6 +55,14 @@ The widget below compares content-gated routing against static coil, static loca
 
 <div class="widget-panel" data-widget="content_gated_retrieval" data-dictionary-ids="COMMON-0057 COMMON-0047 COMMON-0028"></div>
 
+## Adapter Parameter-Budget Path
+
+CoilRA-style adapter work needs ordinary accounting before it can make any efficiency claim: how many parameters does a dense adapter use, how many does a LoRA-style count use, and how much alias pressure is introduced when channels share a block-cyclic table?
+
+`AIRA-B0004` is the current executable fixture for that boundary. The widget below compares dense per-channel, LoRA-style low-rank, and block-cyclic shared-table counts, then shows how channels load into adapter blocks. It is not evidence about fine-tuning quality, runtime, memory, training stability, or hardware efficiency.
+
+<div class="widget-panel" data-widget="adapter_parameter_budget" data-dictionary-ids="COMMON-0056 COMMON-0030 COMMON-0031"></div>
+
 ## Circulant Mixer Validation Path
 
 CoilLinear/circulant-mixer work starts with a basic validation question: does the circular convolution path produce exactly the same output as the dense circulant matrix it claims to represent?
@@ -320,6 +328,7 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 <script type="module" src="../../widgets/ai/cyclic_memory_slots.js"></script>
 <script type="module" src="../../widgets/ai/coil_retrieval_reachability.js"></script>
 <script type="module" src="../../widgets/ai/content_gated_retrieval.js"></script>
+<script type="module" src="../../widgets/ai/adapter_parameter_budget.js"></script>
 <script type="module" src="../../widgets/ai/circulant_mixer_validation.js"></script>
 <script type="module" src="../../widgets/ai/multicoil_phase_explorer.js"></script>
 <script type="module" src="../../widgets/ai/rope_relative_phase.js"></script>
