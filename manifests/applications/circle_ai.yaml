@@ -19,6 +19,7 @@ sidecars:
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_adapter_block.py
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_multicoil_rope.py
+  - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_rope_relative_phase.py
 python_reference:
   - circle_math/applications/circle_ai.py
 theorems:
@@ -86,7 +87,7 @@ next_targets:
   - "AIA-B0004 expands the learned phase fixture to dense-scalar, learned-position, wrong-period, and cyclic-feature baselines; AIA-B0005 adds a correct-frequency versus wrong-frequency harmonic/Fourier feature scaffold; next compare against standard RoPE, learned positional encodings, and learned dense models before model-quality claims."
   - "Use AIM-B0002 as coil-retrieval reachability scaffolding only; expand toward learned/content-gated coil paths, alias-control, full-attention, sparse-attention, Hyena-like, and state-space baselines before retrieval-quality claims."
   - "Use AIRA-B0001 as adapter-block scaffolding only; expand toward CoilRA, block-circulant, LoRA, and dense-adapter baselines before making parameter-efficiency or quality claims."
-  - "Use AIRA-B0002 as MultiCoil/RoPE-style positional scaffolding only; expand toward standard RoPE, learned positional encodings, attention, dense sequence, Fourier-feature, and MLX/CPU parity baselines before model-quality claims."
+  - "Use AIRA-B0002 as MultiCoil/RoPE-style positional scaffolding and AIRA-B0003 as relative RoPE-style phase scaffolding only; expand toward standard RoPE, learned positional encodings, attention, dense sequence, Fourier-feature, and MLX/CPU parity baselines before model-quality claims."
   - "Use AIA-B0003 as CPU/MLX scoring parity scaffolding only; expand toward actual MLX model prototypes and timing only after parity and baseline semantics are stable."
   - "Compare against dense, LoRA, block-circulant, standard RoPE, learned positional encoding, full attention, sparse attention, Hyena-like, state-space, convolutional, Fourier-feature, and MLX/CPU parity baselines as appropriate."
 benchmarks:
@@ -134,4 +135,9 @@ benchmarks:
     path: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_multicoil_rope_benchmark_has_baselines_and_negative_control
     script: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_multicoil_rope.py
     description: "Deterministic MultiCoil/RoPE-style synthetic fixture comparing combined-period phase lookup against single-period, constant, and scalar-threshold baselines, with a nonperiodic negative control."
+  - id: AIRA-B0003
+    status: exploratory_python
+    path: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_rope_relative_phase_benchmark_has_baselines_and_negative_control
+    script: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_rope_relative_phase.py
+    description: "Deterministic RoPE-style relative-phase synthetic fixture comparing correct-period relative lookup against wrong-period, query-position, and scalar-threshold baselines, with a nonperiodic scalar-control baseline."
 guardrail: "No claim that circles improve all AI."

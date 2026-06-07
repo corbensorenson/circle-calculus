@@ -336,7 +336,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `AIM-T0001` through `AIM-T0005` are Lean-proved cyclic-memory-slot facts with Python examples; `AIM-B0001` is an exploratory cyclic-memory fixture with constant/scalar-threshold baselines and a nonperiodic control; `AIM-B0002` is an exploratory coil-retrieval reachability fixture with coil-path, local-window, wrong-stride, full-attention oracle, and near-lag controls; retrieval quality, alias control, and attention replacement claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md`
   - Program: CoilLinear, CoilRA, MultiCoil RoPE, periodic activations, and MLX-first benchmarks against dense, LoRA, block-circulant, and standard RoPE baselines.
-  - Status: polished draft; `AIRA-T0001` through `AIRA-T0005` are Lean-proved adapter-block facts with Python examples; `AIRA-B0001` is an exploratory adapter-block fixture with constant/scalar-threshold baselines and a nonperiodic control; `AIRA-B0002` is an exploratory MultiCoil/RoPE-style positional fixture with single-period, constant, scalar-threshold, and nonperiodic controls; CoilRA, MultiCoil RoPE, model quality, parameter efficiency, and runtime claims remain benchmark work.
+  - Status: polished draft; `AIRA-T0001` through `AIRA-T0005` are Lean-proved adapter-block facts with Python examples; `AIRA-B0001` is an exploratory adapter-block fixture with constant/scalar-threshold baselines and a nonperiodic control; `AIRA-B0002` is an exploratory MultiCoil/RoPE-style positional fixture with single-period, constant, scalar-threshold, and nonperiodic controls; `AIRA-B0003` is an exploratory RoPE-style relative phase fixture with wrong-period, query-position, scalar-threshold, and nonperiodic controls; CoilRA, MultiCoil RoPE, model quality, parameter efficiency, and runtime claims remain benchmark work.
 
 Created planned manifest families:
 
@@ -452,6 +452,7 @@ Application guardrails:
 - [x] `AIRA-T0005`: adapter-block normalization is idempotent.
 - [x] `AIRA-B0001`: exploratory adapter-block benchmark fixture with baselines and a nonperiodic control.
 - [x] `AIRA-B0002`: exploratory MultiCoil/RoPE-style positional fixture with baselines and a nonperiodic control.
+- [x] `AIRA-B0003`: exploratory RoPE-style relative phase fixture with baselines and a nonperiodic control.
 
 ## Current S1 Proof Status
 
@@ -709,7 +710,7 @@ Outputs:
 - [x] `P5-EDGE-006`: periodic-boundary stencil validation fixture checks direct, dense, and gcd-cycle traversal outputs before backend or speed claims.
 - [x] `P5-EDGE-007`: orientation-debugging note records q/-q sign ambiguity against existing S3 spin theorem ids without claiming full SO(3) or robotics verification.
 - [x] `P5-EDGE-008`: Living Book reader path links dimensions, applications, theorem status, dictionary entries, source trails, and local verification commands.
-- [x] `P5-EDGE-009`: full-spectrum Circle AI program target separates proof targets, benchmarks, baselines, controls, model prototypes, and speculative hypotheses; `AIA-B0003` adds CPU/optional-MLX backend parity scaffolding, `AIA-B0004` adds learned-feature baseline controls, `AIA-B0005` adds harmonic/Fourier-feature baseline controls, `AIM-B0002` extends the starter fixtures to coil-retrieval reachability, `AIRA-B0001` extends them to adapter-block structure, and `AIRA-B0002` extends them to MultiCoil/RoPE-style positional structure.
+- [x] `P5-EDGE-009`: full-spectrum Circle AI program target separates proof targets, benchmarks, baselines, controls, model prototypes, and speculative hypotheses; `AIA-B0003` adds CPU/optional-MLX backend parity scaffolding, `AIA-B0004` adds learned-feature baseline controls, `AIA-B0005` adds harmonic/Fourier-feature baseline controls, `AIM-B0002` extends the starter fixtures to coil-retrieval reachability, `AIRA-B0001` extends them to adapter-block structure, `AIRA-B0002` extends them to MultiCoil/RoPE-style positional structure, and `AIRA-B0003` adds RoPE-style relative phase controls.
 - [ ] At least one experiment-ready paper or application note for each accepted edge direction.
 - [ ] Python/MLX or other executable sidecars where the claim is computational.
 - [ ] Lean theorem targets where the claim is formal.
@@ -730,6 +731,7 @@ Program lanes:
 - [x] Coil/sparse attention reachability fixtures with local, wrong-stride, and full-attention baselines.
 - [x] Adapter-block and block-cyclic parameter-sharing fixtures.
 - [x] MultiCoil/RoPE-style positional fixtures with single-period, constant, scalar-threshold, and nonperiodic controls.
+- [x] RoPE-style relative phase fixture with wrong-period, query-position, scalar-threshold, and nonperiodic controls.
 - [ ] Learned dense-model, standard-RoPE, LoRA, sliding-window, dilated, full-attention, long-convolution, and state-space baselines for the starter fixtures.
 - [ ] Recurrent, state-space, and convolutional sequence-model prototypes with explicit period structure.
 - [ ] Circulant and NTT-adjacent feature prototypes beyond the first harmonic/Fourier scaffold.
@@ -755,6 +757,7 @@ Current accepted benchmark anchors:
 - [x] `AIM-B0002`: coil-retrieval reachability fixture with local, wrong-stride, full-attention oracle, and near-lag controls.
 - [x] `AIRA-B0001`: adapter-block fixture with ordinary baselines and nonperiodic control.
 - [x] `AIRA-B0002`: MultiCoil/RoPE-style positional fixture with ordinary baselines and nonperiodic control.
+- [x] `AIRA-B0003`: RoPE-style relative phase fixture with ordinary baselines and nonperiodic control.
 
 AI guardrails:
 

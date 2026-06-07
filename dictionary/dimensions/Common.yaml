@@ -575,3 +575,15 @@ entries:
       - "A standard RoPE benchmark."
       - "Evidence that Fourier features improve real AI workloads."
       - "A proof that harmonic features beat attention, state-space models, or learned embeddings."
+  - id: COMMON-0051
+    name: "RoPE relative phase fixture"
+    kind: experiment
+    symbol: "rope_relative_phase"
+    formal_definition: "`circle_math.applications.circle_ai.run_rope_relative_phase_benchmark`, a deterministic query/key relative-phase fixture comparing correct-period RoPE-style relative lookup against wrong-period, query-position, and scalar-threshold baselines, with a nonperiodic scalar-control task."
+    intuition: "A small bridge from phase features to RoPE-style relative position: the fixture checks whether relative phase can recover a constructed lag pattern before making any claim about language models."
+    dependencies: ["COMMON-0026", "COMMON-0046", "COMMON-0050"]
+    introduced_in: "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
+    forbidden_meanings:
+      - "A proof that RoPE improves language models."
+      - "A replacement for standard RoPE benchmarks."
+      - "Evidence about attention quality, context length, perplexity, or runtime."

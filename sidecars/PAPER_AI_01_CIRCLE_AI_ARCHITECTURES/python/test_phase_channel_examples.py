@@ -112,10 +112,11 @@ def test_ai_backend_parity_fixture_is_deterministic() -> None:
     first = run_ai_backend_parity_check()
     second = run_ai_backend_parity_check()
     assert first == second
-    assert first.fixture_count >= 10
+    assert first.fixture_count >= 11
     assert dict(first.cpu_scores)["phase_lookup"] == 1.0
     assert dict(first.cpu_scores)["learned_feature_cyclic"] == 1.0
     assert dict(first.cpu_scores)["harmonic_feature_lookup"] == 1.0
+    assert dict(first.cpu_scores)["rope_relative_phase"] == 1.0
     assert dict(first.cpu_scores)["learned_feature_nonperiodic_dense_scalar"] == 1.0
     assert dict(first.cpu_scores)["memory_lookup"] == 1.0
     assert dict(first.cpu_scores)["adapter_lookup"] == 1.0

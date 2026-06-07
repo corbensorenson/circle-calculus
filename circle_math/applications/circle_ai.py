@@ -308,6 +308,23 @@ class MultiCoilRoPEBenchmarkResult:
     note: str = "Synthetic MultiCoil/RoPE-style phase fixture only; not a model-quality claim."
 
 
+@dataclass(frozen=True)
+class RoPERelativePhaseBenchmarkResult:
+    period: int
+    wrong_period: int
+    train_length: int
+    test_length: int
+    positive_lags: tuple[int, ...]
+    observed_relative_feature_count: int
+    rope_relative_accuracy: float
+    wrong_period_rope_accuracy: float
+    query_position_accuracy: float
+    scalar_query_threshold_accuracy: float
+    nonperiodic_rope_relative_accuracy: float
+    nonperiodic_scalar_query_threshold_accuracy: float
+    note: str = "Synthetic RoPE-style relative phase fixture only; not a model-quality claim."
+
+
 def run_phase_channel_benchmark(
     *,
     period: int = 8,
@@ -1163,6 +1180,103 @@ def synthetic_multicoil_phase_dataset(
     return positions, labels
 
 
+def default_positive_lags(period: int) -> tuple[int, ...]:
+    """Choose a deterministic nontrivial relative-lag pattern."""
+    _require_positive(period, "period")
+    lags = tuple(lag for lag in range(period) if lag % 3 == 1)
+    if not lags or len(lags) == period:
+        raise ValueError("period must produce a nontrivial lag pattern")
+    return lags
+
+
+def normalize_positive_lags(period: int, positive_lags: Optional[Sequence[int]]) -> tuple[int, ...]:
+    _require_positive(period, "period")
+    lags = default_positive_lags(period) if positive_lags is None else tuple(positive_lags)
+    normalized = tuple(sorted({lag % period for lag in lags}))
+    if not normalized:
+        raise ValueError("positive_lags must contain at least one lag")
+    if len(normalized) == period:
+        raise ValueError("positive_lags must not contain every lag")
+    return normalized
+
+
+def rope_relative_feature(period: int, query_position: int, key_position: int) -> tuple[float, float]:
+    """Return a rounded sine/cosine feature for a relative RoPE-style phase."""
+    _require_positive(period, "period")
+    lag = (query_position - key_position) % period
+    angle = tau * lag / period
+    return (round(cos(angle), 12), round(sin(angle), 12))
+
+
+def synthetic_rope_relative_dataset(
+    period: int,
+    length: int,
+    *,
+    start: int = 0,
+    positive_lags: Optional[Sequence[int]] = None,
+) -> tuple[tuple[tuple[int, int], ...], tuple[int, ...]]:
+    """Return query/key pairs and labels controlled by relative phase."""
+    _require_positive(period, "period")
+    if length <= 0:
+        raise ValueError("length must be positive")
+    lags = normalize_positive_lags(period, positive_lags)
+    pairs = []
+    labels = []
+    for sample_index in range(start, start + length):
+        query_position = sample_index // period
+        lag = sample_index % period
+        key_position = query_position - lag
+        pairs.append((query_position, key_position))
+        labels.append(1 if lag in lags else 0)
+    return tuple(pairs), tuple(labels)
+
+
+def fit_rope_relative_lookup(
+    period: int,
+    pairs: Sequence[tuple[int, int]],
+    labels: Sequence[int],
+) -> tuple[tuple[tuple[float, float], int], ...]:
+    """Fit a lookup table over relative sine/cosine phase features."""
+    _require_positive(period, "period")
+    if len(pairs) != len(labels):
+        raise ValueError("pairs and labels must have the same length")
+    if not pairs:
+        raise ValueError("pairs must be nonempty")
+    counts: dict[tuple[float, float], list[int]] = {}
+    for (query_position, key_position), label in zip(pairs, labels):
+        if label not in (0, 1):
+            raise ValueError("labels must be binary")
+        feature = rope_relative_feature(period, query_position, key_position)
+        if feature not in counts:
+            counts[feature] = [0, 0]
+        counts[feature][label] += 1
+    entries = []
+    for feature, (zero_count, one_count) in counts.items():
+        entries.append((feature, 1 if one_count >= zero_count else 0))
+    return tuple(sorted(entries))
+
+
+def predict_rope_relative_lookup(
+    period: int,
+    lookup: Sequence[tuple[tuple[float, float], int]],
+    pairs: Sequence[tuple[int, int]],
+) -> tuple[int, ...]:
+    """Predict labels from a fitted relative phase lookup table."""
+    _require_positive(period, "period")
+    lookup_map = {feature: label for feature, label in lookup}
+    if not lookup_map:
+        raise ValueError("lookup must be nonempty")
+    fallback = majority_label(tuple(lookup_map.values()))
+    return tuple(
+        lookup_map.get(rope_relative_feature(period, query_position, key_position), fallback)
+        for query_position, key_position in pairs
+    )
+
+
+def _query_positions_from_pairs(pairs: Sequence[tuple[int, int]]) -> tuple[int, ...]:
+    return tuple(query_position for query_position, _ in pairs)
+
+
 def fit_multicoil_phase_lookup(
     periods: Sequence[int],
     positions: Sequence[int],
@@ -1289,6 +1403,97 @@ def run_multicoil_rope_benchmark(
     )
 
 
+def run_rope_relative_phase_benchmark(
+    *,
+    period: int = 8,
+    wrong_period: int = 7,
+    train_length: int = 64,
+    test_length: int = 32,
+    positive_lags: Optional[Sequence[int]] = None,
+) -> RoPERelativePhaseBenchmarkResult:
+    """Run a deterministic RoPE-style relative phase fixture.
+
+    The positive task labels query/key pairs by their relative lag modulo the
+    true period. A correct relative phase lookup should solve the task, while
+    a wrong-period relative lookup, query-only lookup, and scalar threshold
+    baseline should stay weaker. The nonperiodic control labels pairs by the
+    query index so the scalar threshold should win. This is not a RoPE quality
+    or language-model benchmark.
+    """
+    _require_positive(period, "period")
+    _require_positive(wrong_period, "wrong_period")
+    if train_length <= 0:
+        raise ValueError("train_length must be positive")
+    if test_length <= 0:
+        raise ValueError("test_length must be positive")
+    lags = normalize_positive_lags(period, positive_lags)
+
+    train_pairs, train_labels = synthetic_rope_relative_dataset(
+        period,
+        train_length,
+        positive_lags=lags,
+    )
+    test_pairs, test_labels = synthetic_rope_relative_dataset(
+        period,
+        test_length,
+        start=train_length,
+        positive_lags=lags,
+    )
+
+    rope_lookup = fit_rope_relative_lookup(period, train_pairs, train_labels)
+    rope_predictions = predict_rope_relative_lookup(period, rope_lookup, test_pairs)
+    wrong_lookup = fit_rope_relative_lookup(wrong_period, train_pairs, train_labels)
+    wrong_predictions = predict_rope_relative_lookup(wrong_period, wrong_lookup, test_pairs)
+    train_queries = _query_positions_from_pairs(train_pairs)
+    test_queries = _query_positions_from_pairs(test_pairs)
+    query_lookup = _fit_position_lookup(train_queries, train_labels)
+    query_predictions = _predict_position_lookup(query_lookup, test_queries)
+    threshold, polarity = fit_threshold_classifier(train_queries, train_labels)
+    threshold_predictions = predict_threshold_classifier(test_queries, threshold, polarity)
+
+    control_threshold = (3 * (train_length // period)) // 4
+    control_train_labels = tuple(
+        nonperiodic_threshold_label(query_position, control_threshold)
+        for query_position in train_queries
+    )
+    control_test_labels = tuple(
+        nonperiodic_threshold_label(query_position, control_threshold)
+        for query_position in test_queries
+    )
+    control_rope_lookup = fit_rope_relative_lookup(period, train_pairs, control_train_labels)
+    control_rope_predictions = predict_rope_relative_lookup(period, control_rope_lookup, test_pairs)
+    control_threshold_fit, control_polarity = fit_threshold_classifier(
+        train_queries,
+        control_train_labels,
+    )
+    control_threshold_predictions = predict_threshold_classifier(
+        test_queries,
+        control_threshold_fit,
+        control_polarity,
+    )
+
+    return RoPERelativePhaseBenchmarkResult(
+        period=period,
+        wrong_period=wrong_period,
+        train_length=train_length,
+        test_length=test_length,
+        positive_lags=lags,
+        observed_relative_feature_count=len(rope_lookup),
+        rope_relative_accuracy=accuracy(rope_predictions, test_labels),
+        wrong_period_rope_accuracy=accuracy(wrong_predictions, test_labels),
+        query_position_accuracy=accuracy(query_predictions, test_labels),
+        scalar_query_threshold_accuracy=accuracy(threshold_predictions, test_labels),
+        nonperiodic_rope_relative_accuracy=accuracy(
+            control_rope_predictions,
+            control_test_labels,
+        ),
+        nonperiodic_scalar_query_threshold_accuracy=accuracy(
+            control_threshold_predictions,
+            control_test_labels,
+        ),
+    )
+
+
 def _retrieval_hit_indicators(
     sequence_length: int,
     query_indices: Sequence[int],
@@ -1362,6 +1567,11 @@ def ai_backend_parity_cases() -> tuple[tuple[str, tuple[int, ...], tuple[int, ..
     harmonic_lookup = fit_harmonic_feature_lookup(8, harmonic_train_positions, harmonic_train_labels)
     harmonic_predictions = predict_harmonic_feature_lookup(8, harmonic_lookup, harmonic_test_positions)
 
+    rope_train_pairs, rope_train_labels = synthetic_rope_relative_dataset(8, 64)
+    rope_test_pairs, rope_test_labels = synthetic_rope_relative_dataset(8, 32, start=64)
+    rope_lookup = fit_rope_relative_lookup(8, rope_train_pairs, rope_train_labels)
+    rope_predictions = predict_rope_relative_lookup(8, rope_lookup, rope_test_pairs)
+
     near_local_candidates = tuple(
         local_window_indices(64, query_index, window=8)
         for query_index in retrieval_queries
@@ -1383,6 +1593,7 @@ def ai_backend_parity_cases() -> tuple[tuple[str, tuple[int, ...], tuple[int, ..
         ("retrieval_near_local_window", near_local_predictions, near_local_labels),
         ("learned_feature_cyclic", learned_predictions, learned_test_labels),
         ("harmonic_feature_lookup", harmonic_predictions, harmonic_test_labels),
+        ("rope_relative_phase", rope_predictions, rope_test_labels),
         (
             "learned_feature_nonperiodic_dense_scalar",
             learned_control_predictions,
