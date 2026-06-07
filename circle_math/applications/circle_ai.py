@@ -350,6 +350,22 @@ class LoopedRecurrenceBenchmarkResult:
 
 
 @dataclass(frozen=True)
+class LoopExitCertificateResult:
+    loop_period: int
+    sample_index: int
+    max_loops: int
+    overthink_tolerance: int
+    required_steps: int
+    overthinking_boundary: int
+    score_trace: tuple[int, ...]
+    exit_step: Optional[int]
+    exit_available: bool
+    within_budget: bool
+    within_guardrail: bool
+    note: str = "Synthetic loop-exit certificate fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
 class TokenLevelRecurrenceBenchmarkResult:
     loop_period: int
     token_count: int
@@ -1601,6 +1617,37 @@ def loop_exit_step(required_steps: int, max_loops: int, *, overthink_tolerance: 
         if score == 1:
             return index
     return None
+
+
+def loop_exit_certificate(
+    loop_period: int,
+    sample_index: int,
+    max_loops: int,
+    *,
+    overthink_tolerance: int = 1,
+) -> LoopExitCertificateResult:
+    """Return a deterministic loop-exit certificate for one synthetic sample."""
+    _require_positive(loop_period, "loop_period")
+    _require_positive(max_loops, "max_loops")
+    if overthink_tolerance < 0:
+        raise ValueError("overthink_tolerance must be nonnegative")
+    required = loop_required_steps(loop_period, sample_index)
+    boundary = required + overthink_tolerance
+    trace = loop_score_trace(required, max_loops, overthink_tolerance=overthink_tolerance)
+    exit_step = loop_exit_step(required, max_loops, overthink_tolerance=overthink_tolerance)
+    return LoopExitCertificateResult(
+        loop_period=loop_period,
+        sample_index=sample_index,
+        max_loops=max_loops,
+        overthink_tolerance=overthink_tolerance,
+        required_steps=required,
+        overthinking_boundary=boundary,
+        score_trace=trace,
+        exit_step=exit_step,
+        exit_available=exit_step is not None,
+        within_budget=exit_step is not None and exit_step <= max_loops,
+        within_guardrail=exit_step is not None and exit_step <= boundary,
+    )
 
 
 def _loop_fixed_budget_predictions(

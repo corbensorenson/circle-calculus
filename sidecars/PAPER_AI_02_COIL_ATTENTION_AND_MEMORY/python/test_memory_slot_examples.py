@@ -7,6 +7,7 @@ from circle_math.applications.circle_ai import (
     fit_content_route_lookup,
     fit_memory_slot_lookup,
     local_window_indices,
+    loop_exit_certificate,
     loop_exit_step,
     loop_block_indices,
     loop_required_steps,
@@ -250,6 +251,26 @@ def test_looped_recurrence_schedule_traces_overthinking_boundary() -> None:
     assert loop_score_trace(3, 6, overthink_tolerance=1) == (0, 0, 1, 1, 0, 0)
     assert loop_exit_step(3, 6, overthink_tolerance=1) == 3
     assert loop_exit_step(7, 4, overthink_tolerance=1) is None
+
+
+def test_loop_exit_certificate_records_budget_and_guardrail() -> None:
+    certificate = loop_exit_certificate(4, sample_index=6, max_loops=4, overthink_tolerance=1)
+    blocked = loop_exit_certificate(4, sample_index=3, max_loops=2, overthink_tolerance=1)
+
+    assert certificate.required_steps == 3
+    assert certificate.overthinking_boundary == 4
+    assert certificate.score_trace == (0, 0, 1, 1)
+    assert certificate.exit_step == 3
+    assert certificate.exit_available
+    assert certificate.within_budget
+    assert certificate.within_guardrail
+    assert certificate.note.endswith("not a model-quality claim.")
+    assert blocked.required_steps == 4
+    assert blocked.score_trace == (0, 0)
+    assert blocked.exit_step is None
+    assert not blocked.exit_available
+    assert not blocked.within_budget
+    assert not blocked.within_guardrail
 
 
 def test_loop_required_steps_are_positive_bounded_and_periodic() -> None:

@@ -749,7 +749,14 @@
         "AIM-T0007",
         "AIM-T0008",
         "AIM-T0009",
-        "AIM-T0010"
+        "AIM-T0010",
+        "AIM-T0011",
+        "AIM-T0012",
+        "AIM-T0013",
+        "AIM-T0014",
+        "AIM-T0015",
+        "AIM-T0016",
+        "AIM-T0017"
       ],
       "title": "Circle Calculus AI 2: Coil Attention and Memory"
     },

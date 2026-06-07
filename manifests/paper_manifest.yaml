@@ -600,6 +600,13 @@ papers:
       - AIM-T0008
       - AIM-T0009
       - AIM-T0010
+      - AIM-T0011
+      - AIM-T0012
+      - AIM-T0013
+      - AIM-T0014
+      - AIM-T0015
+      - AIM-T0016
+      - AIM-T0017
     dictionary_ids:
       - COMMON-0028
       - COMMON-0029

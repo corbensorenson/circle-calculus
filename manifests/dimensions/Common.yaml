@@ -987,6 +987,104 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_training_free_loop_wrapper_budget_helpers_are_deterministic
     blocker: ""
+  - id: AIM-T0011
+    status: lean_proved
+    lean_name: Circle.Applications.trainingFreeLoopBudget_le_requiredSteps
+    informal_statement: "A training-free phase-budget wrapper never assigns more loop passes than the sample's required loop depth."
+    formal_statement: "forall loopPeriod sample maxLoops : Nat, trainingFreeLoopBudget loopPeriod sample maxLoops <= loopRequiredSteps loopPeriod sample"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0067"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_training_free_loop_wrapper_budget_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0012
+    status: lean_proved
+    lean_name: Circle.Applications.loopOverthinkingBoundary_ge_required
+    informal_statement: "A finite loop overthinking boundary is at least the required loop depth."
+    formal_statement: "forall loopPeriod sample tolerance : Nat, loopRequiredSteps loopPeriod sample <= loopOverthinkingBoundary loopPeriod sample tolerance"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
+    blocker: ""
+  - id: AIM-T0013
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitAvailable_of_loopPeriod_le_budget
+    informal_statement: "If the loop budget is at least a positive loop period, every sample has a finite loop exit available."
+    formal_statement: "For positive loopPeriod, loopPeriod <= maxLoops implies loopExitAvailable loopPeriod sample maxLoops."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
+    blocker: ""
+  - id: AIM-T0014
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitAvailable_add_loopPeriod
+    informal_statement: "Loop-exit availability is periodic under a full loop-period shift of the sample index."
+    formal_statement: "For positive loopPeriod, loopExitAvailable loopPeriod (sample + loopPeriod) maxLoops iff loopExitAvailable loopPeriod sample maxLoops."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
+    blocker: ""
+  - id: AIM-T0015
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitCertificate_exit_eq_required
+    informal_statement: "A finite loop-exit certificate records an exit step equal to the required loop depth."
+    formal_statement: "For a LoopExitCertificate certificate, certificate.exitStep = loopRequiredSteps certificate.loopPeriod certificate.sample."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
+    blocker: ""
+  - id: AIM-T0016
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitCertificate_within_budget
+    informal_statement: "A finite loop-exit certificate records an exit step within the configured loop budget."
+    formal_statement: "For a LoopExitCertificate certificate, certificate.exitStep <= certificate.maxLoops."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
+    blocker: ""
+  - id: AIM-T0017
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitCertificate_within_guardrail
+    informal_statement: "A finite loop-exit certificate records an exit step within the overthinking guardrail boundary."
+    formal_statement: "For a LoopExitCertificate certificate, certificate.exitStep <= loopOverthinkingBoundary certificate.loopPeriod certificate.sample certificate.tolerance."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
+    blocker: ""
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize

@@ -57,6 +57,13 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `AIM-T0008`: `Circle.Applications.loopRequiredSteps_add_loopPeriod`
 - `AIM-T0009`: `Circle.Applications.tokenRecurrenceBudget_add_loopPeriod`
 - `AIM-T0010`: `Circle.Applications.trainingFreeLoopBudget_le_maxLoops`
+- `AIM-T0011`: `Circle.Applications.trainingFreeLoopBudget_le_requiredSteps`
+- `AIM-T0012`: `Circle.Applications.loopOverthinkingBoundary_ge_required`
+- `AIM-T0013`: `Circle.Applications.loopExitAvailable_of_loopPeriod_le_budget`
+- `AIM-T0014`: `Circle.Applications.loopExitAvailable_add_loopPeriod`
+- `AIM-T0015`: `Circle.Applications.loopExitCertificate_exit_eq_required`
+- `AIM-T0016`: `Circle.Applications.loopExitCertificate_within_budget`
+- `AIM-T0017`: `Circle.Applications.loopExitCertificate_within_guardrail`
 
 ## Proved Core
 
@@ -69,7 +76,7 @@ memorySlot bankSize (token + bankSize) =
 
 `AIM-T0004` proves closure after any whole number of full memory-bank passes. `AIM-T0005` proves that normalizing a memory slot twice is the same as normalizing it once. `AIM-T0003` proves the zero anchor. The Python sidecar checks the same finite examples.
 
-`AIM-T0006` through `AIM-T0010` prove finite loop-schedule facts: required loop depth is positive, bounded by a positive loop period, periodic under one full loop-period shift, token recurrence budgets have the same closure behavior, and the training-free wrapper budget is capped by `maxLoops`.
+`AIM-T0006` through `AIM-T0017` prove finite loop-schedule and loop-exit certificate facts: required loop depth is positive, bounded by a positive loop period, periodic under one full loop-period shift, token recurrence budgets have the same closure behavior, the training-free wrapper budget is capped by `maxLoops` and by the required depth, overthinking boundaries are at least the required depth, exit availability is guaranteed when the loop budget covers the full period, exit availability is periodic, and a loop-exit certificate records the exact required step, budget bound, and guardrail bound.
 
 These theorems certify cyclic slot addresses and finite loop-budget arithmetic only. They do not prove retrieval quality, alias control, attention replacement, recursive reasoning, runtime, memory use, parameter efficiency, or long-context scaling.
 
@@ -94,6 +101,10 @@ This fixture checks whether the benchmark harness can learn a constructed finite
 `AIM-B0003` adds a deterministic looped-recurrence schedule fixture. The positive synthetic task assigns each sample a required recurrence depth. The fixture compares single-pass, fixed-loop, adaptive-exit, recurrent-memory, sparse phase-router, and over-looped controls. The adaptive-exit and recurrent-memory controls can retain the successful intermediate step; the over-looped control deliberately demonstrates degradation after the overthinking boundary. A nonperiodic scalar-threshold control checks that loop phase is not treated as useful when the target is ordinary scalar structure.
 
 This fixture checks schedule bookkeeping only. It is not evidence that looped transformers improve reasoning, language-model quality, context length, runtime, memory use, or parameter efficiency.
+
+`AIM-B0011` adds a deterministic loop-exit certificate fixture for one synthetic sample plus a fixed-budget no-exit control. It records required depth, score trace, exit availability, whether the exit is within budget, and whether the exit stays within the overthinking guardrail.
+
+This fixture checks certificate bookkeeping only. It is not evidence that adaptive exit improves reasoning, language-model quality, context length, runtime, memory use, or parameter efficiency.
 
 `AIM-B0005` adds a deterministic token-level recurrence routing fixture. It records per-token recurrence budgets, active-token counts by loop step, a selected middle-block range, alternating coarse/fine resolution labels, a fixed global-budget baseline, a wrong-budget control, an over-loop control, and a nonperiodic scalar-threshold control.
 
@@ -160,6 +171,7 @@ Measurements should include accuracy, sequence length scaling, memory use, runti
 - Treat `AIM-B0004` as content-gated route scaffolding only; learned gates, attention quality, context length, runtime, and memory-scaling claims remain separate work.
 - Treat `AIM-B0010` as learned route-table scaffolding only; neural learned gates, retrieval quality, context length, runtime, and memory-scaling claims remain separate work.
 - Treat `AIM-B0003` as looped/recursive transformer schedule scaffolding only; learned recursive model quality remains separate work.
+- Treat `AIM-B0011` as loop-exit certificate scaffolding only; adaptive-exit quality, reasoning, runtime, and throughput claims remain separate work.
 - Treat `AIM-B0005` as token-level recurrence routing scaffolding only; learned token routers, middle-block recurrence, multi-resolution recurrence, training-free loop wrappers, model quality, runtime, memory, and throughput claims remain separate work.
 - Treat `AIM-B0006` as training-free loop-wrapper scaffolding only; learned recurrence, real model quality, runtime, memory, throughput, and reasoning claims remain separate work.
 - Treat `AIM-B0007` as middle-block recurrence scaffolding only; learned middle-block recurrence, throughput, memory, context length, perplexity, and reasoning claims remain separate work.

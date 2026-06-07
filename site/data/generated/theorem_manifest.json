@@ -329,12 +329,169 @@
     {
       "canonical_status": "proved",
       "dictionary_dependencies": [
+        "COMMON-0052",
+        "COMMON-0053",
+        "COMMON-0067"
+      ],
+      "id": "AIM-T0011",
+      "lean_name": "Circle.Applications.trainingFreeLoopBudget_le_requiredSteps",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 114,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0052",
+        "COMMON-0053",
+        "COMMON-0054"
+      ],
+      "id": "AIM-T0012",
+      "lean_name": "Circle.Applications.loopOverthinkingBoundary_ge_required",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 151,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0052",
+        "COMMON-0053"
+      ],
+      "id": "AIM-T0013",
+      "lean_name": "Circle.Applications.loopExitAvailable_of_loopPeriod_le_budget",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 158,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0052",
+        "COMMON-0053"
+      ],
+      "id": "AIM-T0014",
+      "lean_name": "Circle.Applications.loopExitAvailable_add_loopPeriod",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 165,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0052",
+        "COMMON-0053"
+      ],
+      "id": "AIM-T0015",
+      "lean_name": "Circle.Applications.loopExitCertificate_exit_eq_required",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 173,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0052",
+        "COMMON-0053"
+      ],
+      "id": "AIM-T0016",
+      "lean_name": "Circle.Applications.loopExitCertificate_within_budget",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 179,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0052",
+        "COMMON-0053",
+        "COMMON-0054"
+      ],
+      "id": "AIM-T0017",
+      "lean_name": "Circle.Applications.loopExitCertificate_within_guardrail",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 184,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
         "COMMON-0030"
       ],
       "id": "AIRA-T0001",
       "lean_name": "Circle.Applications.adapterBlock_lt_blockSize",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 123,
+      "lean_source_line": 194,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -356,7 +513,7 @@
       "id": "AIRA-T0002",
       "lean_name": "Circle.Applications.adapterBlock_add_blockSize",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 128,
+      "lean_source_line": 199,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -377,7 +534,7 @@
       "id": "AIRA-T0003",
       "lean_name": "Circle.Applications.adapterBlock_zero",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 147,
+      "lean_source_line": 218,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -399,7 +556,7 @@
       "id": "AIRA-T0004",
       "lean_name": "Circle.Applications.adapterBlock_add_mul_blockSize",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 134,
+      "lean_source_line": 205,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -420,7 +577,7 @@
       "id": "AIRA-T0005",
       "lean_name": "Circle.Applications.adapterBlock_idempotent",
       "lean_source": "Circle/Applications/CircleAI.lean",
-      "lean_source_line": 140,
+      "lean_source_line": 211,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",

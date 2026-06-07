@@ -18,6 +18,7 @@ sidecars:
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_content_gated_retrieval.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_learned_content_gate_retrieval.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_looped_recurrence.py
+  - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_loop_exit_certificate.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_token_level_recurrence.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_training_free_loop_wrapper.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_middle_block_recurrence.py
@@ -93,6 +94,34 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.trainingFreeLoopBudget_le_maxLoops
     dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0067"]
+  - id: AIM-T0011
+    status: lean_proved
+    lean_name: Circle.Applications.trainingFreeLoopBudget_le_requiredSteps
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0067"]
+  - id: AIM-T0012
+    status: lean_proved
+    lean_name: Circle.Applications.loopOverthinkingBoundary_ge_required
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054"]
+  - id: AIM-T0013
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitAvailable_of_loopPeriod_le_budget
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+  - id: AIM-T0014
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitAvailable_add_loopPeriod
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+  - id: AIM-T0015
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitCertificate_exit_eq_required
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+  - id: AIM-T0016
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitCertificate_within_budget
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+  - id: AIM-T0017
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitCertificate_within_guardrail
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054"]
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize
@@ -125,7 +154,8 @@ next_targets:
     fixture with selected-block, full-block, fixed-budget, wrong-block, and over-loop controls, and AIM-B0008
     adds a multi-resolution recurrence fixture with single-resolution, fixed-budget, wrong-resolution, and
     over-loop controls, AIM-B0009 adds a learned recurrence-schedule fixture with fixed-budget,
-    wrong-period, and over-loop controls; compare future learned models against dense transformer, Universal Transformer,
+    wrong-period, and over-loop controls, and AIM-B0011 records loop-exit certificate traces, budget status,
+    and overthinking guardrails; compare future learned models against dense transformer, Universal Transformer,
     fixed looped-transformer, adaptive-exit, recurrent-memory, token-level Mixture-of-Recursions,
     middle-block recurrence, multi-resolution recurrence,
     sparse/MoE, RWKV/Mamba-style, and standard state-space baselines.
@@ -185,6 +215,11 @@ benchmarks:
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_looped_recurrence_benchmark_has_baselines_and_overloop_control
     script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_looped_recurrence.py
     description: "Deterministic looped-recurrence schedule fixture comparing adaptive exit against single-pass, fixed-loop, recurrent-memory, sparse phase-router, over-looped, and dense-threshold baselines, with a nonperiodic scalar-control baseline."
+  - id: AIM-B0011
+    status: exploratory_python
+    path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
+    script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_loop_exit_certificate.py
+    description: "Deterministic loop-exit certificate fixture recording required depth, score trace, exit availability, budget status, and overthinking guardrail status for one synthetic sample against a fixed-budget no-exit control baseline."
   - id: AIM-B0005
     status: exploratory_python
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_benchmark_has_per_token_and_wrong_loop_controls

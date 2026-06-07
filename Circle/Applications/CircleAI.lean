@@ -117,6 +117,77 @@ theorem trainingFreeLoopBudget_le_requiredSteps (loopPeriod sample maxLoops : Na
   unfold trainingFreeLoopBudget
   exact Nat.min_le_left _ _
 
+def loopExitAvailable (loopPeriod sample maxLoops : Nat) : Prop :=
+  loopRequiredSteps loopPeriod sample ≤ maxLoops
+
+def loopOverthinkingBoundary (loopPeriod sample tolerance : Nat) : Nat :=
+  loopRequiredSteps loopPeriod sample + tolerance
+
+structure LoopExitCertificate where
+  loopPeriod : Nat
+  sample : Nat
+  maxLoops : Nat
+  tolerance : Nat
+  exitStep : Nat
+  exactRequired : exitStep = loopRequiredSteps loopPeriod sample
+  withinBudget : exitStep ≤ maxLoops
+  withinGuardrail : exitStep ≤ loopOverthinkingBoundary loopPeriod sample tolerance
+
+def loopExitCertificate
+    (loopPeriod sample maxLoops tolerance : Nat)
+    (hbudget : loopExitAvailable loopPeriod sample maxLoops) :
+    LoopExitCertificate :=
+  { loopPeriod := loopPeriod,
+    sample := sample,
+    maxLoops := maxLoops,
+    tolerance := tolerance,
+    exitStep := loopRequiredSteps loopPeriod sample,
+    exactRequired := rfl,
+    withinBudget := hbudget,
+    withinGuardrail := by
+      unfold loopOverthinkingBoundary
+      exact Nat.le_add_right _ _ }
+
+theorem loopOverthinkingBoundary_ge_required
+    (loopPeriod sample tolerance : Nat) :
+    loopRequiredSteps loopPeriod sample ≤
+      loopOverthinkingBoundary loopPeriod sample tolerance := by
+  unfold loopOverthinkingBoundary
+  exact Nat.le_add_right _ _
+
+theorem loopExitAvailable_of_loopPeriod_le_budget
+    {loopPeriod maxLoops : Nat} (hpositive : 0 < loopPeriod)
+    (hbudget : loopPeriod ≤ maxLoops) (sample : Nat) :
+    loopExitAvailable loopPeriod sample maxLoops := by
+  unfold loopExitAvailable
+  exact Nat.le_trans (loopRequiredSteps_le_loopPeriod hpositive sample) hbudget
+
+theorem loopExitAvailable_add_loopPeriod
+    {loopPeriod maxLoops : Nat} (hpositive : 0 < loopPeriod)
+    (sample : Nat) :
+    loopExitAvailable loopPeriod (sample + loopPeriod) maxLoops ↔
+      loopExitAvailable loopPeriod sample maxLoops := by
+  unfold loopExitAvailable
+  rw [loopRequiredSteps_add_loopPeriod hpositive]
+
+theorem loopExitCertificate_exit_eq_required
+    (certificate : LoopExitCertificate) :
+    certificate.exitStep =
+      loopRequiredSteps certificate.loopPeriod certificate.sample :=
+  certificate.exactRequired
+
+theorem loopExitCertificate_within_budget
+    (certificate : LoopExitCertificate) :
+    certificate.exitStep ≤ certificate.maxLoops :=
+  certificate.withinBudget
+
+theorem loopExitCertificate_within_guardrail
+    (certificate : LoopExitCertificate) :
+    certificate.exitStep ≤
+      loopOverthinkingBoundary
+        certificate.loopPeriod certificate.sample certificate.tolerance :=
+  certificate.withinGuardrail
+
 def adapterBlock (blockSize channel : Nat) : Nat :=
   channel % blockSize
 
