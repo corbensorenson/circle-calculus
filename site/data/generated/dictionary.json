@@ -6137,6 +6137,24 @@
           "lean_name": "Circle.Generative.orbitDecompositionGenerator_distinct_representatives_disjoint",
           "name": "Circle.Generative.orbitDecompositionGenerator_distinct_representatives_disjoint",
           "status": "proved"
+        },
+        {
+          "id": "GEN-T0014",
+          "lean_name": "Circle.Generative.generatorComparison_self_exact",
+          "name": "Circle.Generative.generatorComparison_self_exact",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0015",
+          "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_symm",
+          "name": "Circle.Generative.generatorComparison_exact_regeneration_symm",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0016",
+          "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_trans",
+          "name": "Circle.Generative.generatorComparison_exact_regeneration_trans",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -6173,6 +6191,24 @@
           "id": "GEN-T0005",
           "lean_name": "Circle.Generative.generatorComparison_requires_exact_regeneration",
           "name": "Circle.Generative.generatorComparison_requires_exact_regeneration",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0014",
+          "lean_name": "Circle.Generative.generatorComparison_self_exact",
+          "name": "Circle.Generative.generatorComparison_self_exact",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0015",
+          "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_symm",
+          "name": "Circle.Generative.generatorComparison_exact_regeneration_symm",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0016",
+          "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_trans",
+          "name": "Circle.Generative.generatorComparison_exact_regeneration_trans",
           "status": "proved"
         }
       ],
@@ -6282,6 +6318,24 @@
           "id": "GEN-T0013",
           "lean_name": "Circle.Generative.orbitDecompositionGenerator_distinct_representatives_disjoint",
           "name": "Circle.Generative.orbitDecompositionGenerator_distinct_representatives_disjoint",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0014",
+          "lean_name": "Circle.Generative.generatorComparison_self_exact",
+          "name": "Circle.Generative.generatorComparison_self_exact",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0015",
+          "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_symm",
+          "name": "Circle.Generative.generatorComparison_exact_regeneration_symm",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0016",
+          "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_trans",
+          "name": "Circle.Generative.generatorComparison_exact_regeneration_trans",
           "status": "proved"
         }
       ],

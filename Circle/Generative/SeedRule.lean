@@ -191,4 +191,23 @@ theorem generatorComparison_requires_exact_regeneration
     (generatorComparison regenerated generated).exactRegeneration ↔ regenerated = generated := by
   rfl
 
+theorem generatorComparison_self_exact (value : α) :
+    (generatorComparison value value).exactRegeneration := by
+  rfl
+
+theorem generatorComparison_exact_regeneration_symm
+    (regenerated generated : α) :
+    (generatorComparison regenerated generated).exactRegeneration →
+      (generatorComparison generated regenerated).exactRegeneration := by
+  intro h
+  exact h.symm
+
+theorem generatorComparison_exact_regeneration_trans
+    (first second third : α) :
+    (generatorComparison first second).exactRegeneration →
+      (generatorComparison second third).exactRegeneration →
+      (generatorComparison first third).exactRegeneration := by
+  intro hfirst hsecond
+  exact hfirst.trans hsecond
+
 end Circle.Generative

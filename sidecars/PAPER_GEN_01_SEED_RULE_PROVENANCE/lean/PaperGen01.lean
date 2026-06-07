@@ -20,3 +20,6 @@ optimality.
 #check Circle.Generative.orbitDecompositionGenerator_distinct_representatives_disjoint
 #check Circle.Generative.proofGlyphGenerator_regenerates_certificate
 #check Circle.Generative.generatorComparison_requires_exact_regeneration
+#check Circle.Generative.generatorComparison_self_exact
+#check Circle.Generative.generatorComparison_exact_regeneration_symm
+#check Circle.Generative.generatorComparison_exact_regeneration_trans

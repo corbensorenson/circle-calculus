@@ -76,9 +76,12 @@ The paper links back to finite circles, coils, orbit decompositions, and proof-c
 - `GEN-T0011`: `Circle.Generative.orbitDecompositionGenerator_modRepresentative_covers`, every natural node is in the same finite stride-orbit class as its modulo-gcd representative.
 - `GEN-T0012`: `Circle.Generative.orbitDecompositionGenerator_representatives_sameOrbit_iff_eq`, two canonical finite representatives are in the same stride-orbit class exactly when the representatives are equal.
 - `GEN-T0013`: `Circle.Generative.orbitDecompositionGenerator_distinct_representatives_disjoint`, distinct canonical finite representatives are disjoint at the stride-orbit class level.
+- `GEN-T0014`: `Circle.Generative.generatorComparison_self_exact`, a generator comparison from an artifact to itself has exact regeneration.
+- `GEN-T0015`: `Circle.Generative.generatorComparison_exact_regeneration_symm`, exact regeneration is symmetric for generator comparison records.
+- `GEN-T0016`: `Circle.Generative.generatorComparison_exact_regeneration_trans`, exact regeneration is transitive across generator comparison records.
 
-`GEN-T0001` through `GEN-T0013` are Lean-proved finite seeds in `Circle.Generative.SeedRule`.
-`GEN-T0003` proves exact regeneration of the declared representative-indexed list model. `GEN-T0006` through `GEN-T0013` strengthen that model with count, period, coverage, formal orbit-class agreement, canonical representative coverage, and representative disjointness facts. They do not prove that the list is an optimal or minimal compression.
+`GEN-T0001` through `GEN-T0016` are Lean-proved finite seeds in `Circle.Generative.SeedRule`.
+`GEN-T0003` proves exact regeneration of the declared representative-indexed list model. `GEN-T0006` through `GEN-T0013` strengthen that model with count, period, coverage, formal orbit-class agreement, canonical representative coverage, and representative disjointness facts. `GEN-T0014` through `GEN-T0016` make exact regeneration reusable as a reflexive, symmetric, and transitive equality-style relation for generator comparisons. They do not prove that the list is an optimal or minimal compression.
 
 ## Seed-Rule Record
 

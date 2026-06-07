@@ -860,7 +860,10 @@
         "GEN-T0010",
         "GEN-T0011",
         "GEN-T0012",
-        "GEN-T0013"
+        "GEN-T0013",
+        "GEN-T0014",
+        "GEN-T0015",
+        "GEN-T0016"
       ],
       "title": "Circle Calculus Generative 1: Seed-Rule Provenance"
     }
