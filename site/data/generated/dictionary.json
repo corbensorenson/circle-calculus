@@ -4937,6 +4937,37 @@
       "used_by_widgets": []
     },
     {
+      "dependencies": [
+        "COMMON-0052",
+        "COMMON-0053",
+        "COMMON-0054"
+      ],
+      "forbidden_meanings": [
+        "A recursive-transformer quality benchmark.",
+        "Evidence that Circle AI improves reasoning, context length, runtime, or parameter efficiency.",
+        "A replacement for dense transformer, Universal Transformer, looped-transformer, recurrent-memory, sparse/MoE, RWKV/Mamba-style, or state-space baselines."
+      ],
+      "formal_definition": "`circle_math.applications.circle_ai.run_looped_recurrence_benchmark`, a deterministic recurrence-schedule fixture comparing single-pass, fixed-loop, adaptive-exit, recurrent-memory, sparse phase-router, over-looped, and dense-threshold control baselines.",
+      "id": "COMMON-0055",
+      "introduced_in": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+      "intuition": "A first executable harness for looped/recursive transformer ideas: make loop phase, exit steps, score traces, and overthinking failure boundaries explicit before training models.",
+      "kind": "experiment",
+      "name": "Looped recurrence benchmark fixture",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "looped_recurrence_fixture",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "used_by_theorems": [],
+      "used_by_widgets": []
+    },
+    {
       "dependencies": [],
       "forbidden_meanings": [
         "The one-node circle C_1.",

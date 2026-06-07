@@ -2,12 +2,16 @@ from circle_math.applications.circle_ai import (
     coil_attention_path,
     fit_memory_slot_lookup,
     local_window_indices,
+    loop_exit_step,
+    loop_required_steps,
+    loop_score_trace,
     memory_slot,
     memory_slot_collision_count,
     memory_slot_loads,
     predict_memory_slot_lookup,
     retrieval_target_index,
     run_coil_retrieval_benchmark,
+    run_looped_recurrence_benchmark,
     run_memory_slot_benchmark,
     synthetic_memory_slot_dataset,
 )
@@ -106,3 +110,40 @@ def test_coil_retrieval_benchmark_has_baselines_and_near_control() -> None:
     assert result.near_control_local_window_accuracy == 1.0
     assert result.near_control_full_attention_accuracy == 1.0
     assert result.near_control_coil_path_accuracy == 0.0
+
+
+def test_looped_recurrence_schedule_traces_overthinking_boundary() -> None:
+    assert tuple(loop_required_steps(4, sample) for sample in range(8)) == (1, 2, 3, 4, 1, 2, 3, 4)
+    assert loop_score_trace(3, 6, overthink_tolerance=1) == (0, 0, 1, 1, 0, 0)
+    assert loop_exit_step(3, 6, overthink_tolerance=1) == 3
+    assert loop_exit_step(7, 4, overthink_tolerance=1) is None
+
+
+def test_looped_recurrence_benchmark_has_baselines_and_overloop_control() -> None:
+    result = run_looped_recurrence_benchmark(
+        loop_period=4,
+        train_length=64,
+        test_length=32,
+        fixed_loop_budget=4,
+        over_loop_budget=8,
+        overthink_tolerance=1,
+    )
+
+    assert result == run_looped_recurrence_benchmark(
+        loop_period=4,
+        train_length=64,
+        test_length=32,
+        fixed_loop_budget=4,
+        over_loop_budget=8,
+        overthink_tolerance=1,
+    )
+    assert result.observed_exit_steps == (1, 2, 3, 4)
+    assert result.single_pass_accuracy == 0.25
+    assert result.fixed_loop_accuracy == 0.5
+    assert result.adaptive_exit_accuracy == 1.0
+    assert result.recurrent_memory_accuracy == 1.0
+    assert result.sparse_phase_router_accuracy == 0.5
+    assert result.over_looped_accuracy == 0.0
+    assert result.nonperiodic_dense_threshold_accuracy == 1.0
+    assert result.nonperiodic_dense_threshold_accuracy > result.nonperiodic_loop_phase_accuracy
+    assert result.note.endswith("not a model-quality claim.")

@@ -15,6 +15,7 @@ sidecars:
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_memory_slot.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_coil_retrieval.py
+  - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_looped_recurrence.py
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/lean/PaperAI03.lean
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_adapter_block.py
@@ -84,7 +85,7 @@ theorems:
     lean_name: Circle.Applications.adapterBlock_idempotent
     dictionary_dependencies: ["COMMON-0030"]
 next_targets:
-  - "Use COMMON-0052 through COMMON-0054 as the looped/recursive transformer roadmap lane: define recurrence schedules, loop-exit certificates, and overthinking guardrails before claiming reasoning, quality, or speed improvements; compare against dense transformer, Universal Transformer, fixed looped-transformer, adaptive-exit, recurrent-memory, sparse/MoE, RWKV/Mamba-style, and standard state-space baselines."
+  - "Use COMMON-0052 through COMMON-0055 as the looped/recursive transformer roadmap lane: AIA/AIM/AIRA proofs still cover finite indexing only, while AIM-B0003 provides a deterministic recurrence-schedule fixture with single-pass, fixed-loop, adaptive-exit, recurrent-memory, sparse phase-router, over-looped, and dense-threshold controls; compare future learned models against dense transformer, Universal Transformer, fixed looped-transformer, adaptive-exit, recurrent-memory, sparse/MoE, RWKV/Mamba-style, and standard state-space baselines."
   - "AIA-B0004 expands the learned phase fixture to dense-scalar, learned-position, wrong-period, and cyclic-feature baselines; AIA-B0005 adds a correct-frequency versus wrong-frequency harmonic/Fourier feature scaffold; next compare against standard RoPE, learned positional encodings, and learned dense models before model-quality claims."
   - "Use AIM-B0002 as coil-retrieval reachability scaffolding only; expand toward learned/content-gated coil paths, alias-control, full-attention, sparse-attention, Hyena-like, and state-space baselines before retrieval-quality claims."
   - "Use AIRA-B0001 as adapter-block scaffolding only; expand toward CoilRA, block-circulant, LoRA, and dense-adapter baselines before making parameter-efficiency or quality claims."
@@ -126,6 +127,11 @@ benchmarks:
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_coil_retrieval_benchmark_has_baselines_and_near_control
     script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_coil_retrieval.py
     description: "Deterministic coil-retrieval reachability fixture comparing selected coil-path candidate sets against local-window, wrong-stride, and full-attention oracle baselines, with a near-lag local-attention control."
+  - id: AIM-B0003
+    status: exploratory_python
+    path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_looped_recurrence_benchmark_has_baselines_and_overloop_control
+    script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_looped_recurrence.py
+    description: "Deterministic looped-recurrence schedule fixture comparing adaptive exit against single-pass, fixed-loop, recurrent-memory, sparse phase-router, over-looped, and dense-threshold baselines, with a nonperiodic scalar-control baseline."
   - id: AIRA-B0001
     status: exploratory_python
     path: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_adapter_block_benchmark_has_baseline_and_negative_control

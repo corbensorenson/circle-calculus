@@ -456,8 +456,8 @@ targets:
       - "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md"
       - "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md"
       - "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md"
-    dictionary_dependencies: ["COMMON-0026", "COMMON-0028", "COMMON-0030", "COMMON-0039", "COMMON-0044", "COMMON-0046", "COMMON-0047", "COMMON-0048", "COMMON-0049", "COMMON-0050", "COMMON-0051", "COMMON-0052", "COMMON-0053", "COMMON-0054"]
-    next_action: "Tiny deterministic phase-channel, backend-parity, learned-feature, harmonic/Fourier-feature, cyclic-memory, coil-retrieval, adapter-block, MultiCoil/RoPE-style, and RoPE-style relative phase fixtures added; looped/recursive transformer recurrence schedules are now planned through COMMON-0052 through COMMON-0054; expand toward learned dense-model, standard RoPE, LoRA, attention, Universal Transformer, fixed/adaptive looped transformer, recurrent-memory, sparse/MoE, state-space, and actual MLX model baselines before quality claims."
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0028", "COMMON-0030", "COMMON-0039", "COMMON-0044", "COMMON-0046", "COMMON-0047", "COMMON-0048", "COMMON-0049", "COMMON-0050", "COMMON-0051", "COMMON-0052", "COMMON-0053", "COMMON-0054", "COMMON-0055"]
+    next_action: "Tiny deterministic phase-channel, backend-parity, learned-feature, harmonic/Fourier-feature, cyclic-memory, coil-retrieval, looped-recurrence, adapter-block, MultiCoil/RoPE-style, and RoPE-style relative phase fixtures added; expand toward learned dense-model, standard RoPE, LoRA, attention, Universal Transformer, fixed/adaptive looped transformer, recurrent-memory, sparse/MoE, state-space, and actual MLX model baselines before quality claims."
     guardrail: "No claim that circles improve all AI."
 
   - id: P4-APP-003

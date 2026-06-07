@@ -277,6 +277,27 @@ class CoilRetrievalBenchmarkResult:
 
 
 @dataclass(frozen=True)
+class LoopedRecurrenceBenchmarkResult:
+    loop_period: int
+    train_length: int
+    test_length: int
+    fixed_loop_budget: int
+    over_loop_budget: int
+    overthink_tolerance: int
+    sparse_phase_router_steps: tuple[int, ...]
+    observed_exit_steps: tuple[int, ...]
+    single_pass_accuracy: float
+    fixed_loop_accuracy: float
+    adaptive_exit_accuracy: float
+    recurrent_memory_accuracy: float
+    sparse_phase_router_accuracy: float
+    over_looped_accuracy: float
+    nonperiodic_loop_phase_accuracy: float
+    nonperiodic_dense_threshold_accuracy: float
+    note: str = "Synthetic looped-recurrence schedule fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
 class AdapterBlockBenchmarkResult:
     block_size: int
     train_channels: int
@@ -994,6 +1015,222 @@ def run_coil_retrieval_benchmark(
     )
 
 
+def loop_required_steps(loop_period: int, sample_index: int) -> int:
+    """Return the synthetic recurrence depth required by a sample."""
+    _require_positive(loop_period, "loop_period")
+    return phase_channel(loop_period, sample_index) + 1
+
+
+def loop_score_trace(required_steps: int, max_loops: int, *, overthink_tolerance: int = 1) -> tuple[int, ...]:
+    """Return a binary success trace over recurrence steps.
+
+    A sample becomes solvable at its required loop step. It remains valid for
+    ``overthink_tolerance`` extra steps, then degrades. This models the
+    overthinking guardrail as a fixture condition, not as a theorem about
+    real models.
+    """
+    _require_positive(required_steps, "required_steps")
+    _require_positive(max_loops, "max_loops")
+    if overthink_tolerance < 0:
+        raise ValueError("overthink_tolerance must be nonnegative")
+    return tuple(
+        1 if required_steps <= step <= required_steps + overthink_tolerance else 0
+        for step in range(1, max_loops + 1)
+    )
+
+
+def loop_exit_step(required_steps: int, max_loops: int, *, overthink_tolerance: int = 1) -> Optional[int]:
+    """Return the first successful loop step, if one exists."""
+    trace = loop_score_trace(required_steps, max_loops, overthink_tolerance=overthink_tolerance)
+    for index, score in enumerate(trace, start=1):
+        if score == 1:
+            return index
+    return None
+
+
+def _loop_fixed_budget_predictions(
+    loop_period: int,
+    sample_indices: Sequence[int],
+    budget: int,
+    *,
+    overthink_tolerance: int,
+) -> tuple[int, ...]:
+    _require_positive(budget, "budget")
+    return tuple(
+        loop_score_trace(
+            loop_required_steps(loop_period, sample_index),
+            budget,
+            overthink_tolerance=overthink_tolerance,
+        )[-1]
+        for sample_index in sample_indices
+    )
+
+
+def _loop_adaptive_exit_predictions(
+    loop_period: int,
+    sample_indices: Sequence[int],
+    budget: int,
+    *,
+    overthink_tolerance: int,
+) -> tuple[int, ...]:
+    _require_positive(budget, "budget")
+    return tuple(
+        1
+        if loop_exit_step(
+            loop_required_steps(loop_period, sample_index),
+            budget,
+            overthink_tolerance=overthink_tolerance,
+        )
+        is not None
+        else 0
+        for sample_index in sample_indices
+    )
+
+
+def _loop_sparse_router_predictions(
+    loop_period: int,
+    sample_indices: Sequence[int],
+    routed_steps: Sequence[int],
+) -> tuple[int, ...]:
+    normalized_steps = tuple(sorted(set(routed_steps)))
+    if not normalized_steps:
+        raise ValueError("routed_steps must be nonempty")
+    for step in normalized_steps:
+        _require_positive(step, "routed step")
+    return tuple(
+        1 if loop_required_steps(loop_period, sample_index) in normalized_steps else 0
+        for sample_index in sample_indices
+    )
+
+
+def _observed_loop_exit_steps(
+    loop_period: int,
+    sample_indices: Sequence[int],
+    budget: int,
+    *,
+    overthink_tolerance: int,
+) -> tuple[int, ...]:
+    exits = {
+        step
+        for sample_index in sample_indices
+        for step in [
+            loop_exit_step(
+                loop_required_steps(loop_period, sample_index),
+                budget,
+                overthink_tolerance=overthink_tolerance,
+            )
+        ]
+        if step is not None
+    }
+    return tuple(sorted(exits))
+
+
+def run_looped_recurrence_benchmark(
+    *,
+    loop_period: int = 4,
+    train_length: int = 64,
+    test_length: int = 32,
+    fixed_loop_budget: int = 4,
+    over_loop_budget: int = 8,
+    overthink_tolerance: int = 1,
+    sparse_phase_router_steps: Optional[Sequence[int]] = None,
+) -> LoopedRecurrenceBenchmarkResult:
+    """Run a deterministic looped/recursive transformer schedule fixture.
+
+    The positive fixture gives each sample a required recurrence depth. It
+    compares a single pass, a fixed loop budget, adaptive exit, recurrent
+    memory that keeps any successful intermediate state, a sparse phase-router
+    baseline, and an over-looped control. The nonperiodic control compares a
+    loop-phase lookup against a dense scalar threshold baseline.
+    """
+    _require_positive(loop_period, "loop_period")
+    if train_length <= 0:
+        raise ValueError("train_length must be positive")
+    if test_length <= 0:
+        raise ValueError("test_length must be positive")
+    _require_positive(fixed_loop_budget, "fixed_loop_budget")
+    _require_positive(over_loop_budget, "over_loop_budget")
+    if overthink_tolerance < 0:
+        raise ValueError("overthink_tolerance must be nonnegative")
+    routed_steps = tuple(sparse_phase_router_steps) if sparse_phase_router_steps is not None else (1, 3)
+
+    train_indices = tuple(range(train_length))
+    test_indices = tuple(range(train_length, train_length + test_length))
+    positive_labels = tuple(1 for _ in test_indices)
+
+    single_pass_predictions = _loop_fixed_budget_predictions(
+        loop_period,
+        test_indices,
+        1,
+        overthink_tolerance=overthink_tolerance,
+    )
+    fixed_loop_predictions = _loop_fixed_budget_predictions(
+        loop_period,
+        test_indices,
+        fixed_loop_budget,
+        overthink_tolerance=overthink_tolerance,
+    )
+    adaptive_predictions = _loop_adaptive_exit_predictions(
+        loop_period,
+        test_indices,
+        fixed_loop_budget,
+        overthink_tolerance=overthink_tolerance,
+    )
+    recurrent_memory_predictions = tuple(
+        1 if value else 0
+        for value in adaptive_predictions
+    )
+    sparse_router_predictions = _loop_sparse_router_predictions(loop_period, test_indices, routed_steps)
+    over_looped_predictions = _loop_fixed_budget_predictions(
+        loop_period,
+        test_indices,
+        over_loop_budget,
+        overthink_tolerance=overthink_tolerance,
+    )
+
+    control_threshold = (3 * train_length) // 4
+    control_train_labels = tuple(
+        nonperiodic_threshold_label(sample_index, control_threshold)
+        for sample_index in train_indices
+    )
+    control_test_labels = tuple(
+        nonperiodic_threshold_label(sample_index, control_threshold)
+        for sample_index in test_indices
+    )
+    control_loop_lookup = fit_phase_lookup(loop_period, train_indices, control_train_labels)
+    control_loop_predictions = predict_phase_lookup(loop_period, control_loop_lookup, test_indices)
+    control_threshold_fit, control_polarity = fit_threshold_classifier(train_indices, control_train_labels)
+    control_threshold_predictions = predict_threshold_classifier(
+        test_indices,
+        control_threshold_fit,
+        control_polarity,
+    )
+
+    return LoopedRecurrenceBenchmarkResult(
+        loop_period=loop_period,
+        train_length=train_length,
+        test_length=test_length,
+        fixed_loop_budget=fixed_loop_budget,
+        over_loop_budget=over_loop_budget,
+        overthink_tolerance=overthink_tolerance,
+        sparse_phase_router_steps=tuple(sorted(set(routed_steps))),
+        observed_exit_steps=_observed_loop_exit_steps(
+            loop_period,
+            test_indices,
+            fixed_loop_budget,
+            overthink_tolerance=overthink_tolerance,
+        ),
+        single_pass_accuracy=accuracy(single_pass_predictions, positive_labels),
+        fixed_loop_accuracy=accuracy(fixed_loop_predictions, positive_labels),
+        adaptive_exit_accuracy=accuracy(adaptive_predictions, positive_labels),
+        recurrent_memory_accuracy=accuracy(recurrent_memory_predictions, positive_labels),
+        sparse_phase_router_accuracy=accuracy(sparse_router_predictions, positive_labels),
+        over_looped_accuracy=accuracy(over_looped_predictions, positive_labels),
+        nonperiodic_loop_phase_accuracy=accuracy(control_loop_predictions, control_test_labels),
+        nonperiodic_dense_threshold_accuracy=accuracy(control_threshold_predictions, control_test_labels),
+    )
+
+
 def default_adapter_block_values(block_size: int) -> tuple[int, ...]:
     """Choose a deterministic nontrivial binary value for each adapter block."""
     _require_positive(block_size, "block_size")
@@ -1579,6 +1816,15 @@ def ai_backend_parity_cases() -> tuple[tuple[str, tuple[int, ...], tuple[int, ..
     near_local_predictions = _retrieval_hit_indicators(64, retrieval_queries, 3, near_local_candidates)
     near_local_labels = tuple(1 for _ in retrieval_queries)
 
+    looped_test_indices = tuple(range(64, 96))
+    looped_predictions = _loop_adaptive_exit_predictions(
+        4,
+        looped_test_indices,
+        4,
+        overthink_tolerance=1,
+    )
+    looped_labels = tuple(1 for _ in looped_test_indices)
+
     return (
         ("phase_lookup", phase_predictions, phase_test_labels),
         (
@@ -1594,6 +1840,7 @@ def ai_backend_parity_cases() -> tuple[tuple[str, tuple[int, ...], tuple[int, ..
         ("learned_feature_cyclic", learned_predictions, learned_test_labels),
         ("harmonic_feature_lookup", harmonic_predictions, harmonic_test_labels),
         ("rope_relative_phase", rope_predictions, rope_test_labels),
+        ("looped_recurrence_adaptive_exit", looped_predictions, looped_labels),
         (
             "learned_feature_nonperiodic_dense_scalar",
             learned_control_predictions,

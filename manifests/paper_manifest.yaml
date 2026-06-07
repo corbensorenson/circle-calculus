@@ -602,6 +602,7 @@ papers:
       - COMMON-0052
       - COMMON-0053
       - COMMON-0054
+      - COMMON-0055
 
   - id: PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE
     title: "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"

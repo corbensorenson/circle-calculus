@@ -34,6 +34,7 @@ The Python examples are:
 sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py
 sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_memory_slot.py
 sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_coil_retrieval.py
+sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_looped_recurrence.py
 ```
 
 The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks cyclic memory-slot examples; Lean declarations determine proof status. The looped/recursive transformer source review is archived in the handoff source log; it does not change theorem status.
@@ -69,6 +70,10 @@ The fixture also records collision diagnostics: how many training tokens alias i
 
 This fixture checks candidate-set reachability only. It is not evidence that Coil Attention improves model quality, that fixed coils replace full attention, that alias behavior is solved, or that a model runs faster.
 
+`AIM-B0003` adds a deterministic looped-recurrence schedule fixture. The positive synthetic task assigns each sample a required recurrence depth. The fixture compares single-pass, fixed-loop, adaptive-exit, recurrent-memory, sparse phase-router, and over-looped controls. The adaptive-exit and recurrent-memory controls can retain the successful intermediate step; the over-looped control deliberately demonstrates degradation after the overthinking boundary. A nonperiodic scalar-threshold control checks that loop phase is not treated as useful when the target is ordinary scalar structure.
+
+This fixture checks schedule bookkeeping only. It is not evidence that looped transformers improve reasoning, language-model quality, context length, runtime, memory use, or parameter efficiency.
+
 ## Looped And Recursive Transformer Program
 
 Recent looped and recursive transformer work makes recurrence depth an active modeling axis: a model can reuse blocks through multiple loop steps, add memory tokens, exit at loop boundaries, use sparse/MoE routing across passes, or retrofit damped recurrence at inference time. Circle Calculus can contribute only if it makes the schedule explicit and testable.
@@ -83,7 +88,7 @@ input state
   -> score trace and overthinking boundary
 ```
 
-The planned first fixture should compare fixed-depth, fixed-loop, adaptive-exit, over-looped, recurrent-memory, sparse/MoE, state-space, and dense baselines on a deterministic task. It should record when extra recurrence helps, does nothing, or degrades the metric. Lean theorem targets should stay at finite phase, budget, and closure facts unless a stronger formal model is introduced.
+The first fixture is now `AIM-B0003`. It compares fixed-depth, fixed-loop, adaptive-exit, over-looped, recurrent-memory, sparse phase-router, and dense-threshold controls on a deterministic task. It records when extra recurrence helps, does nothing, or degrades the metric. Lean theorem targets should stay at finite phase, budget, and closure facts unless a stronger formal model is introduced.
 
 This is the potential semi-novel Circle contribution: proof/manifest-linked recurrence provenance and loop-exit certificates around a looped transformer, not a claim that Circle Math has already built a better recursive language model.
 
@@ -110,9 +115,9 @@ Measurements should include accuracy, sequence length scaling, memory use, runti
 
 - Treat `AIM-B0001` as cyclic-memory benchmark scaffolding only.
 - Treat `AIM-B0002` as coil-retrieval reachability scaffolding only; learned/content-gated retrieval quality remains separate work.
-- Treat `COMMON-0052` through `COMMON-0054` as looped/recursive transformer roadmap vocabulary only; recurrence-schedule benchmarks remain to be built.
+- Treat `AIM-B0003` as looped/recursive transformer schedule scaffolding only; learned recursive model quality remains separate work.
 - Test fixed, learned, and content-gated coil paths separately.
-- Add recurrence schedule, loop-exit certificate, and overthinking-boundary fixtures with dense, Universal Transformer, fixed-loop, adaptive-exit, recurrent-memory, sparse/MoE, RWKV/Mamba-style, and state-space baselines.
+- Expand recurrence schedule, loop-exit certificate, and overthinking-boundary fixtures toward dense, Universal Transformer, fixed-loop, adaptive-exit, recurrent-memory, sparse/MoE, RWKV/Mamba-style, and state-space baseline implementations.
 - Track gcd/orbit coverage and aliasing explicitly.
 - Add local/global attention fallbacks before claiming a practical model.
 - Keep MLX/Mac-compatible experiments first.
