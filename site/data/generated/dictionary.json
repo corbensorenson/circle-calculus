@@ -5380,6 +5380,11 @@
           "python_reference": "circle_math.applications.circle_ai.fit_loop_budget_lookup; circle_math.applications.circle_ai.predict_loop_budget_lookup; circle_math.applications.circle_ai.fit_recurrence_resolution_lookup; circle_math.applications.circle_ai.predict_recurrence_resolution_lookup; circle_math.applications.circle_ai.run_learned_multi_resolution_recurrence_benchmark"
         },
         {
+          "id": "learned_recurrence_schedule",
+          "path": "site/widgets/ai/learned_recurrence_schedule.js",
+          "python_reference": "circle_math.applications.circle_ai.fit_loop_budget_lookup; circle_math.applications.circle_ai.predict_loop_budget_lookup; circle_math.applications.circle_ai.run_learned_recurrence_schedule_benchmark"
+        },
+        {
           "id": "learned_token_recurrence",
           "path": "site/widgets/ai/learned_token_recurrence.js",
           "python_reference": "circle_math.applications.circle_ai.fit_loop_budget_lookup; circle_math.applications.circle_ai.predict_loop_budget_lookup; circle_math.applications.circle_ai.run_learned_token_level_recurrence_benchmark"
@@ -5531,6 +5536,11 @@
           "id": "learned_multi_resolution_recurrence",
           "path": "site/widgets/ai/learned_multi_resolution_recurrence.js",
           "python_reference": "circle_math.applications.circle_ai.fit_loop_budget_lookup; circle_math.applications.circle_ai.predict_loop_budget_lookup; circle_math.applications.circle_ai.fit_recurrence_resolution_lookup; circle_math.applications.circle_ai.predict_recurrence_resolution_lookup; circle_math.applications.circle_ai.run_learned_multi_resolution_recurrence_benchmark"
+        },
+        {
+          "id": "learned_recurrence_schedule",
+          "path": "site/widgets/ai/learned_recurrence_schedule.js",
+          "python_reference": "circle_math.applications.circle_ai.fit_loop_budget_lookup; circle_math.applications.circle_ai.predict_loop_budget_lookup; circle_math.applications.circle_ai.run_learned_recurrence_schedule_benchmark"
         },
         {
           "id": "learned_token_recurrence",
@@ -7215,6 +7225,11 @@
           "id": "learned_multi_resolution_recurrence",
           "path": "site/widgets/ai/learned_multi_resolution_recurrence.js",
           "python_reference": "circle_math.applications.circle_ai.fit_loop_budget_lookup; circle_math.applications.circle_ai.predict_loop_budget_lookup; circle_math.applications.circle_ai.fit_recurrence_resolution_lookup; circle_math.applications.circle_ai.predict_recurrence_resolution_lookup; circle_math.applications.circle_ai.run_learned_multi_resolution_recurrence_benchmark"
+        },
+        {
+          "id": "learned_recurrence_schedule",
+          "path": "site/widgets/ai/learned_recurrence_schedule.js",
+          "python_reference": "circle_math.applications.circle_ai.fit_loop_budget_lookup; circle_math.applications.circle_ai.predict_loop_budget_lookup; circle_math.applications.circle_ai.run_learned_recurrence_schedule_benchmark"
         }
       ]
     },

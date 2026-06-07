@@ -46,6 +46,7 @@ from circle_math.applications import (
     run_circulant_mixer_benchmark,
     run_learned_middle_block_recurrence_benchmark,
     run_learned_multi_resolution_recurrence_benchmark,
+    run_learned_recurrence_schedule_benchmark,
     run_learned_token_level_recurrence_benchmark,
     run_token_level_recurrence_benchmark,
     token_recurrence_budget,
@@ -1454,6 +1455,64 @@ def main() -> int:
                 learned_resolutions,
                 tolerance,
             ),
+            labels,
+        )
+
+    learned_schedule_cases = [
+        (4, 3, 64, 32, 4, 8, 0),
+        (5, 4, 50, 25, 3, 9, 1),
+        (3, 5, 36, 18, 2, 6, 0),
+    ]
+    for (
+        loop_period,
+        wrong_period,
+        train_length,
+        test_length,
+        fixed_budget,
+        over_budget,
+        tolerance,
+    ) in learned_schedule_cases:
+        train_positions = tuple(range(train_length))
+        train_budgets = tuple(js_token_recurrence_budget(loop_period, position) for position in train_positions)
+        test_positions = tuple(range(train_length, train_length + test_length))
+        required_budgets = tuple(js_token_recurrence_budget(loop_period, position) for position in test_positions)
+        labels = tuple(1 for _ in test_positions)
+        learned_lookup = js_fit_loop_budget_lookup(loop_period, train_positions, train_budgets)
+        learned_budgets = js_predict_loop_budget_lookup(loop_period, learned_lookup, test_positions)
+        wrong_lookup = js_fit_loop_budget_lookup(wrong_period, train_positions, train_budgets)
+        wrong_budgets = js_predict_loop_budget_lookup(wrong_period, wrong_lookup, test_positions)
+        fixed_budgets = tuple(fixed_budget for _ in test_positions)
+        over_budgets = tuple(over_budget for _ in test_positions)
+        benchmark = run_learned_recurrence_schedule_benchmark(
+            loop_period=loop_period,
+            wrong_period=wrong_period,
+            train_length=train_length,
+            test_length=test_length,
+            fixed_loop_budget=fixed_budget,
+            over_loop_budget=over_budget,
+            overthink_tolerance=tolerance,
+        )
+
+        assert fit_loop_budget_lookup(loop_period, train_positions, train_budgets) == learned_lookup
+        assert predict_loop_budget_lookup(loop_period, learned_lookup, test_positions) == learned_budgets
+        assert benchmark.learned_budget_lookup == learned_lookup
+        assert benchmark.wrong_period_budget_lookup == wrong_lookup
+        assert benchmark.required_budget_sample == required_budgets[: min(12, len(required_budgets))]
+        assert benchmark.learned_budget_sample == learned_budgets[: min(12, len(learned_budgets))]
+        assert benchmark.learned_phase_router_accuracy == js_accuracy(
+            js_recurrence_budget_predictions(required_budgets, learned_budgets, tolerance),
+            labels,
+        )
+        assert benchmark.fixed_loop_budget_accuracy == js_accuracy(
+            js_recurrence_budget_predictions(required_budgets, fixed_budgets, tolerance),
+            labels,
+        )
+        assert benchmark.wrong_period_router_accuracy == js_accuracy(
+            js_recurrence_budget_predictions(required_budgets, wrong_budgets, tolerance),
+            labels,
+        )
+        assert benchmark.over_looped_accuracy == js_accuracy(
+            js_recurrence_budget_predictions(required_budgets, over_budgets, tolerance),
             labels,
         )
 

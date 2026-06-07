@@ -142,6 +142,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is learned multi-resolution schedule bookkeeping for a constructed finite fixture only. It does not prove neural compressed/full-resolution routing quality, recursive reasoning, perplexity improvement, throughput, memory improvement, context-length improvement, or model-quality improvement.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python learned multi-resolution recurrence benchmark fixture.
 
+### learned_recurrence_schedule
+
+- Inputs: loop period, wrong/control period, train-sample count, held-out test-sample count, fixed loop budget, over-loop budget, and overthinking tolerance.
+- Outputs: learned phase-to-budget lookup, wrong-period lookup, required held-out budget sample, learned held-out budget sample, wrong-period budget sample, learned-router accuracy, fixed-budget accuracy, wrong-period accuracy, and over-loop accuracy.
+- Theorem ids: `AIM-T0006`, `AIM-T0007`, `AIM-T0008`, and `AIM-T0009` as finite loop-budget primitives.
+- Dictionary ids: `COMMON-0052`, `COMMON-0053`, and `COMMON-0070`.
+- Python references: `circle_math.applications.circle_ai.fit_loop_budget_lookup`, `circle_math.applications.circle_ai.predict_loop_budget_lookup`, and `circle_math.applications.circle_ai.run_learned_recurrence_schedule_benchmark`.
+- Guardrail: the widget is learned recurrence-schedule bookkeeping for a constructed finite fixture only. It does not prove neural-router quality, recursive reasoning, perplexity improvement, throughput, memory improvement, context-length improvement, or model-quality improvement.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python learned recurrence-schedule benchmark fixture.
+
 ### cyclic_memory_slots
 
 - Inputs: memory-bank size, token index, full-bank pass count, and token-window length.

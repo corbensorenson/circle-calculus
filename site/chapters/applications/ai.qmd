@@ -223,6 +223,10 @@ training sample
 
 This is useful only as a learned-schedule harness. It is not evidence that a learned recursive transformer improves quality, speed, memory, context length, perplexity, or reasoning.
 
+The widget below exposes the deterministic `AIM-B0009` fixture. It is the baseline learned schedule case: fit a phase-to-budget table, then compare held-out budgets with fixed-budget, wrong-period, and over-loop controls.
+
+<div class="widget-panel" data-widget="learned_recurrence_schedule" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0070"></div>
+
 ## Learning Path
 
 1. Start with phase channels: finite indices, closure, and known-period examples.
@@ -353,4 +357,5 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 <script type="module" src="../../widgets/ai/learned_token_recurrence.js"></script>
 <script type="module" src="../../widgets/ai/learned_middle_block_recurrence.js"></script>
 <script type="module" src="../../widgets/ai/learned_multi_resolution_recurrence.js"></script>
+<script type="module" src="../../widgets/ai/learned_recurrence_schedule.js"></script>
 <script type="module" src="../../widgets/shared/widget_base.js"></script>
