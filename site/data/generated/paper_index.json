@@ -728,7 +728,8 @@
         "AIM-T0001",
         "AIM-T0002",
         "AIM-T0003",
-        "AIM-T0004"
+        "AIM-T0004",
+        "AIM-T0005"
       ],
       "title": "Circle Calculus AI 2: Coil Attention and Memory"
     },
@@ -745,7 +746,8 @@
         "AIRA-T0001",
         "AIRA-T0002",
         "AIRA-T0003",
-        "AIRA-T0004"
+        "AIRA-T0004",
+        "AIRA-T0005"
       ],
       "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
     }

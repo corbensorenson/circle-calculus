@@ -40,6 +40,29 @@ These are the application tracks to keep visible as the proof corpus grows:
 - Signal and harmonic interfaces: circular convolution, Fourier modes, spherical harmonics, and rotation-aware transforms.
 - Physics-style explanation layers for phase, gauge-like redundancy, spin, holonomy, fields, boundaries, and defects, with no physics claims marked as proved before formal support exists.
 
+## Dedicated Circle AI Deep Program
+
+AI is an active first-class application phase. The project should explore all plausible Circle AI avenues, but the claims must stay disciplined:
+
+- phase channels and periodic feature routing,
+- cyclic memory slots, alias diagnostics, and retrieval fixtures,
+- coil/sparse attention and long-context path selection,
+- adapter blocks, CoilRA, block-cyclic adapters, and parameter-sharing layouts,
+- RoPE, MultiCoil RoPE, winding-aware positional structure, and torus-valued position views,
+- recurrent, state-space, and convolutional sequence models with explicit period structure,
+- harmonic, Fourier, circulant, and NTT-adjacent features,
+- geometry-aware quaternion, spherical, Hopf/fiber, and rotation representations,
+- proof-carrying model components where finite indexing, rewrite legality, or schedule behavior can be Lean-checked, and
+- MLX/Mac-compatible prototypes with CPU reference parity.
+
+For each avenue, keep four lanes separate:
+
+```text
+Lean theorem target -> Python/MLX executable fixture -> benchmark against ordinary baselines -> research hypothesis
+```
+
+Positive periodic fixtures must include negative controls where circular structure should not help. Benchmarks should report quality, runtime, memory, parameter count, and interpretability separately. Do not claim AI improvement, attention replacement, better RoPE, parameter efficiency, or speed without a reproducible benchmark script, an ordinary baseline, and a clear metric.
+
 ## First Demonstrators
 
 The first useful artifacts should be small enough to verify end to end.
@@ -107,8 +130,8 @@ Current active Phase II proof seed:
 - `PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS` proves the round-robin schedule facts `COMPS-T0001` through `COMPS-T0004` in Lean through `Circle.Applications.roundRobinSlot_lt_slotCount`, `Circle.Applications.roundRobinSlot_add_slotCount`, `Circle.Applications.roundRobinSlot_zero`, and `Circle.Applications.roundRobinSlot_add_mul_slotCount`, with matching Python examples.
 - This is a finite scheduler primitive, not a fairness, load-balancing, robotics, ANN, codec, acquisition, CAM, torsion, detection, or quantum-computing theorem.
 - `PAPER_AI_01_CIRCLE_AI_ARCHITECTURES` proves the phase-channel facts `AIA-T0001` through `AIA-T0005` in Lean through `Circle.Applications.phaseChannel_lt_period`, `Circle.Applications.phaseChannel_add_period`, `Circle.Applications.phaseChannel_zero`, `Circle.Applications.phaseChannel_add_mul_period`, and `Circle.Applications.phaseChannel_idempotent`, with matching Python examples and the exploratory deterministic benchmark fixtures `AIA-B0001` and `AIA-B0002`.
-- `PAPER_AI_02_COIL_ATTENTION_AND_MEMORY` proves the cyclic-memory-slot facts `AIM-T0001` through `AIM-T0004` in Lean through `Circle.Applications.memorySlot_lt_bankSize`, `Circle.Applications.memorySlot_add_bankSize`, `Circle.Applications.memorySlot_zero`, and `Circle.Applications.memorySlot_add_mul_bankSize`, with matching Python examples.
-- `PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE` proves the adapter-block facts `AIRA-T0001` through `AIRA-T0004` in Lean through `Circle.Applications.adapterBlock_lt_blockSize`, `Circle.Applications.adapterBlock_add_blockSize`, `Circle.Applications.adapterBlock_zero`, and `Circle.Applications.adapterBlock_add_mul_blockSize`, with matching Python examples.
+- `PAPER_AI_02_COIL_ATTENTION_AND_MEMORY` proves the cyclic-memory-slot facts `AIM-T0001` through `AIM-T0005` in Lean through `Circle.Applications.memorySlot_lt_bankSize`, `Circle.Applications.memorySlot_add_bankSize`, `Circle.Applications.memorySlot_zero`, `Circle.Applications.memorySlot_add_mul_bankSize`, and `Circle.Applications.memorySlot_idempotent`, with matching Python examples.
+- `PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE` proves the adapter-block facts `AIRA-T0001` through `AIRA-T0005` in Lean through `Circle.Applications.adapterBlock_lt_blockSize`, `Circle.Applications.adapterBlock_add_blockSize`, `Circle.Applications.adapterBlock_zero`, `Circle.Applications.adapterBlock_add_mul_blockSize`, and `Circle.Applications.adapterBlock_idempotent`, with matching Python examples.
 - These are finite indexing primitives for AI prototypes plus one starter phase-channel harness, not model-quality, parameter-efficiency, attention-replacement, RoPE, or runtime claims.
 
 ## Compute Track

@@ -220,6 +220,38 @@
       "priority": "high",
       "status": "active",
       "title": "Living Book learning-path evaluation"
+    },
+    {
+      "acceptance_criteria": [
+        "The AI roadmap separates proof targets, benchmark fixtures, model prototypes, and speculative research hypotheses.",
+        "Every positive fixture includes at least one negative or nonperiodic control.",
+        "Benchmarks compare against ordinary AI baselines and report quality, runtime, memory, parameter count, and interpretability when relevant.",
+        "No AI improvement claim is promoted unless the exact workload, baseline, metric, and reproducible script are present."
+      ],
+      "area": "Circle AI deep applications",
+      "artifact_refs": [
+        "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md",
+        "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+        "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+        "site/chapters/applications/ai.qmd",
+        "circle_math/applications/circle_ai.py"
+      ],
+      "claim_type": "benchmark",
+      "dictionary_dependencies": [
+        "COMMON-0026",
+        "COMMON-0028",
+        "COMMON-0030",
+        "COMMON-0039",
+        "COMMON-0044"
+      ],
+      "edge_question": "Across phase features, cyclic memory, sparse/coil attention, adapter blocks, RoPE variants, recurrent state, harmonic features, and geometry-aware models, where does explicit circle structure actually help compared with ordinary AI baselines?",
+      "guardrail": "AI importance does not relax proof status or benchmark discipline: finite index proofs are not model-quality claims.",
+      "id": "P5-EDGE-009",
+      "next_action": "Promote AI from one application lane into a dedicated roadmap phase: expand proof targets for cyclic address safety, build MLX/CPU fixtures for phase channels, memory slots, adapter blocks, RoPE-style periods, and coil attention, and record negative results with the same weight as positive results.",
+      "ordinary_baseline": "Dense learned features, standard attention, sliding-window and sparse attention, RoPE and learned positional encodings, LoRA and dense adapters, state-space and convolutional sequence models, Fourier features, and ordinary periodic feature engineering.",
+      "priority": "high",
+      "status": "active",
+      "title": "Full-spectrum Circle AI application program"
     }
   ]
 }

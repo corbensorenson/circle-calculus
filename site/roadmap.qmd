@@ -17,6 +17,7 @@ The dimensional ladder is organized so lower-dimensional material does not rely 
 | Phase III | Living Book explanation layer | <span class="status-badge status-active">active</span> |
 | Phase IV | Wide/deep theorem discovery | <span class="status-badge status-active">active</span> |
 | Phase V | Edge problem-space search | <span class="status-badge status-active">active target scaffold</span> |
+| Circle AI Program | Full-spectrum AI proof/benchmark track | <span class="status-badge status-active">active proof/benchmark program</span> |
 | Phase VI | Global correctness and polish sweep | <span class="status-badge status-active">active sweep registry</span> |
 | Applications | AI, compute, rendering, data analysis | <span class="status-badge status-active">active proof/benchmark targets</span> |
 
@@ -32,7 +33,23 @@ finite addresses -> rotation -> coils -> closure -> gcd/period -> primes -> wind
 
 Each mature lesson should have an explanation, a diagram or widget, a small reader task, a checkpoint, and a source trail. The theorem, dictionary, paper, and target indexes remain available for audit, but they are not supposed to replace the chapter path.
 
-Phase IV, Phase V, and Phase VI are the wide/deep/correctness loop: first audit every dimension and application area for better theorem coverage and paper/proof spines, then search edge problem spaces for concrete Circle Calculus leverage, then sweep the full corpus for correctness, clarity, proof-status discipline, and reader usability.
+Phase IV, Phase V, the dedicated Circle AI Program, and Phase VI are the wide/deep/application/correctness loop: first audit every dimension and application area for better theorem coverage and paper/proof spines, then search edge problem spaces for concrete Circle Calculus leverage, then run a dedicated Circle AI program across phase channels, cyclic memory, coil attention, adapters, RoPE variants, recurrent state, harmonic features, geometry-aware models, and MLX-compatible prototypes, then sweep the full corpus for correctness, clarity, proof-status discipline, and reader usability.
+
+## Dedicated Circle AI Program
+
+AI is a first-class project phase because it is one of the highest-impact places to test whether Circle Calculus is useful beyond exposition. The Living Book must explore all plausible AI avenues while keeping proof and benchmark claims separate:
+
+- phase channels and periodic feature routing,
+- cyclic memory slots and alias diagnostics,
+- coil/sparse attention and long-context retrieval,
+- adapter blocks, CoilRA, and block-cyclic parameter sharing,
+- RoPE, MultiCoil RoPE, winding-aware positional structure, and torus-valued views,
+- recurrent/state-space/convolutional sequence models with explicit periods,
+- harmonic/Fourier/circulant features,
+- geometry-aware quaternion, spherical, and fibered representations, and
+- proof-carrying model components whose indexing or rewrite behavior is Lean-checked.
+
+Every positive AI fixture needs an ordinary baseline and a negative control. A Lean theorem can certify finite address behavior; it cannot by itself certify model quality, speed, parameter efficiency, or usefulness.
 
 <div class="warning-box">
 The Living Book must not say a theorem is proved unless the theorem id is proved in the generated theorem data and resolves to compiled Lean.

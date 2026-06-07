@@ -3999,6 +3999,12 @@
           "lean_name": "Circle.Applications.memorySlot_add_mul_bankSize",
           "name": "Circle.Applications.memorySlot_add_mul_bankSize",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0005",
+          "lean_name": "Circle.Applications.memorySlot_idempotent",
+          "name": "Circle.Applications.memorySlot_idempotent",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -4091,6 +4097,12 @@
           "id": "AIRA-T0004",
           "lean_name": "Circle.Applications.adapterBlock_add_mul_blockSize",
           "name": "Circle.Applications.adapterBlock_add_mul_blockSize",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0005",
+          "lean_name": "Circle.Applications.adapterBlock_idempotent",
+          "name": "Circle.Applications.adapterBlock_idempotent",
           "status": "proved"
         }
       ],

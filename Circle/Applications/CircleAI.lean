@@ -60,6 +60,13 @@ theorem memorySlot_add_mul_bankSize {bankSize : Nat} (_h : 0 < bankSize)
   unfold memorySlot
   exact Nat.add_mul_mod_self_right token passes bankSize
 
+theorem memorySlot_idempotent (bankSize token : Nat) :
+    memorySlot bankSize (memorySlot bankSize token) = memorySlot bankSize token := by
+  unfold memorySlot
+  by_cases h : bankSize = 0
+  · simp [h]
+  · exact Nat.mod_eq_of_lt (Nat.mod_lt token (Nat.pos_of_ne_zero h))
+
 theorem memorySlot_zero (bankSize : Nat) :
     memorySlot bankSize 0 = 0 := by
   unfold memorySlot
@@ -84,6 +91,13 @@ theorem adapterBlock_add_mul_blockSize {blockSize : Nat} (_h : 0 < blockSize)
     adapterBlock blockSize (channel + passes * blockSize) = adapterBlock blockSize channel := by
   unfold adapterBlock
   exact Nat.add_mul_mod_self_right channel passes blockSize
+
+theorem adapterBlock_idempotent (blockSize channel : Nat) :
+    adapterBlock blockSize (adapterBlock blockSize channel) = adapterBlock blockSize channel := by
+  unfold adapterBlock
+  by_cases h : blockSize = 0
+  · simp [h]
+  · exact Nat.mod_eq_of_lt (Nat.mod_lt channel (Nat.pos_of_ne_zero h))
 
 theorem adapterBlock_zero (blockSize : Nat) :
     adapterBlock blockSize 0 = 0 := by

@@ -51,6 +51,10 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.memorySlot_add_mul_bankSize
     dictionary_dependencies: ["COMMON-0028", "COMMON-0029"]
+  - id: AIM-T0005
+    status: lean_proved
+    lean_name: Circle.Applications.memorySlot_idempotent
+    dictionary_dependencies: ["COMMON-0028"]
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize
@@ -67,6 +71,10 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_add_mul_blockSize
     dictionary_dependencies: ["COMMON-0030", "COMMON-0031"]
+  - id: AIRA-T0005
+    status: lean_proved
+    lean_name: Circle.Applications.adapterBlock_idempotent
+    dictionary_dependencies: ["COMMON-0030"]
 next_targets:
   - "Expand the learned phase fixture beyond scalar thresholds to dense, RoPE, and cyclic-feature baselines."
   - "Add separate cyclic-memory and adapter-block benchmarks before making memory, attention, or CoilRA claims."

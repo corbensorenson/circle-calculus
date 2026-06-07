@@ -36,10 +36,11 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `AIRA-T0002`: `Circle.Applications.adapterBlock_add_blockSize`
 - `AIRA-T0003`: `Circle.Applications.adapterBlock_zero`
 - `AIRA-T0004`: `Circle.Applications.adapterBlock_add_mul_blockSize`
+- `AIRA-T0005`: `Circle.Applications.adapterBlock_idempotent`
 
 ## Proved Core
 
-`AIRA-T0001` proves that the adapter block index is bounded by the positive block size. `AIRA-T0002` proves closure after one full block pass, `AIRA-T0004` proves closure after any whole number of full block passes, and `AIRA-T0003` proves the zero anchor. The Python sidecar checks the same finite examples.
+`AIRA-T0001` proves that the adapter block index is bounded by the positive block size. `AIRA-T0002` proves closure after one full block pass, `AIRA-T0004` proves closure after any whole number of full block passes, `AIRA-T0005` proves that normalizing an adapter block index twice is the same as normalizing it once, and `AIRA-T0003` proves the zero anchor. The Python sidecar checks the same finite examples.
 
 These facts certify only block indexing. They do not prove parameter efficiency, better fine-tuning, RoPE improvement, periodic-activation value, or runtime gains.
 

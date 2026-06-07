@@ -591,6 +591,7 @@ papers:
       - AIM-T0002
       - AIM-T0003
       - AIM-T0004
+      - AIM-T0005
     dictionary_ids:
       - COMMON-0028
       - COMMON-0029
@@ -604,6 +605,7 @@ papers:
       - AIRA-T0002
       - AIRA-T0003
       - AIRA-T0004
+      - AIRA-T0005
     dictionary_ids:
       - COMMON-0030
       - COMMON-0031

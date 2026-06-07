@@ -904,6 +904,19 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["memory_slot(bank_size, token + passes * bank_size) == memory_slot(bank_size, token)"]
     blocker: ""
+  - id: AIM-T0005
+    status: lean_proved
+    lean_name: Circle.Applications.memorySlot_idempotent
+    informal_statement: "Normalizing a cyclic memory slot twice is the same as normalizing it once."
+    formal_statement: "forall bankSize token : Nat, memorySlot bankSize (memorySlot bankSize token) = memorySlot bankSize token"
+    dictionary_dependencies: ["COMMON-0028"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["memory_slot(bank_size, memory_slot(bank_size, token)) == memory_slot(bank_size, token)"]
+    blocker: ""
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize
@@ -955,5 +968,18 @@ theorems:
       lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["adapter_block(block_size, channel + passes * block_size) == adapter_block(block_size, channel)"]
+    blocker: ""
+  - id: AIRA-T0005
+    status: lean_proved
+    lean_name: Circle.Applications.adapterBlock_idempotent
+    informal_statement: "Normalizing an adapter block index twice is the same as normalizing it once."
+    formal_statement: "forall blockSize channel : Nat, adapterBlock blockSize (adapterBlock blockSize channel) = adapterBlock blockSize channel"
+    dictionary_dependencies: ["COMMON-0030"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["adapter_block(block_size, adapter_block(block_size, channel)) == adapter_block(block_size, channel)"]
     blocker: ""
 warnings: []

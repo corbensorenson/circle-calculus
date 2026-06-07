@@ -87,6 +87,16 @@ Each chapter must distinguish intuition, example, Python model, and formal theor
 - Keep benchmark claims separate from Lean proofs.
 - Use MLX/Mac-first language for local compute work.
 
+## Dedicated Circle AI Deep Program
+
+- Treat Circle AI as a dedicated active program, not just one application page.
+- Explore phase channels, cyclic memory, coil/sparse attention, adapter blocks, RoPE and MultiCoil positional structure, recurrent state, harmonic features, geometry-aware models, proof-carrying model components, and MLX/Mac-compatible prototypes.
+- For each AI avenue, keep four lanes separate: Lean-proved finite safety/indexing facts, Python/MLX executable fixtures, benchmark comparisons against ordinary AI baselines, and speculative research hypotheses.
+- Require negative controls for positive periodic fixtures, especially nonperiodic tasks where circular structure should not help.
+- Report quality, runtime, memory, parameter count, and interpretability separately.
+- Do not claim model improvement, attention replacement, parameter efficiency, or speed without a reproducible benchmark artifact and clear baseline.
+- Link AI proof cards, dictionary terms, papers, benchmark fixtures, and future widgets into the Living Book so readers can distinguish proved address structure from empirical claims.
+
 ## Phase 6: Optional Manim Embedding
 
 - Defer Manim-generated media until the static site and S1 widgets are stable.
