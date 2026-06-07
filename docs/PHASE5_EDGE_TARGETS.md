@@ -14,7 +14,7 @@ The source of truth is `manifests/phase5_edge_targets.yaml`, validated by `scrip
 - `P5-EDGE-006`: circular layout and sampling backend comparison. Status: exploratory periodic-stencil validation fixture.
 - `P5-EDGE-007`: quaternion and Hopf orientation-debugging note. Status: exploratory paper/Python sign-ambiguity example.
 - `P5-EDGE-008`: Living Book learning-path evaluation. Status: active reader-path page.
-- `P5-EDGE-009`: full-spectrum Circle AI application program. Status: active proof/benchmark roadmap target with `AIM-B0001` cyclic-memory and `AIRA-B0001` adapter-block fixtures.
+- `P5-EDGE-009`: full-spectrum Circle AI application program. Status: active proof/benchmark roadmap target with `AIM-B0001` cyclic-memory, `AIRA-B0001` adapter-block, and `AIRA-B0002` MultiCoil/RoPE-style positional fixtures.
 
 ## Discipline
 

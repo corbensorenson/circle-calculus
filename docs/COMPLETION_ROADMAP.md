@@ -336,7 +336,7 @@ Guardrail: after `S^15`, do not invent a false classical Hopf/division-algebra c
   - Status: polished draft; `AIM-T0001` through `AIM-T0005` are Lean-proved cyclic-memory-slot facts with Python examples; `AIM-B0001` is an exploratory cyclic-memory fixture with constant/scalar-threshold baselines and a nonperiodic control; retrieval quality, alias control, and attention replacement claims remain benchmark work.
 - [x] `papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md`
   - Program: CoilLinear, CoilRA, MultiCoil RoPE, periodic activations, and MLX-first benchmarks against dense, LoRA, block-circulant, and standard RoPE baselines.
-  - Status: polished draft; `AIRA-T0001` through `AIRA-T0005` are Lean-proved adapter-block facts with Python examples; `AIRA-B0001` is an exploratory adapter-block fixture with constant/scalar-threshold baselines and a nonperiodic control; CoilRA, MultiCoil RoPE, model quality, parameter efficiency, and runtime claims remain benchmark work.
+  - Status: polished draft; `AIRA-T0001` through `AIRA-T0005` are Lean-proved adapter-block facts with Python examples; `AIRA-B0001` is an exploratory adapter-block fixture with constant/scalar-threshold baselines and a nonperiodic control; `AIRA-B0002` is an exploratory MultiCoil/RoPE-style positional fixture with single-period, constant, scalar-threshold, and nonperiodic controls; CoilRA, MultiCoil RoPE, model quality, parameter efficiency, and runtime claims remain benchmark work.
 
 Created planned manifest families:
 
@@ -447,6 +447,7 @@ Application guardrails:
 - [x] `AIRA-T0004`: adapter block index closes after any whole number of full block passes.
 - [x] `AIRA-T0005`: adapter-block normalization is idempotent.
 - [x] `AIRA-B0001`: exploratory adapter-block benchmark fixture with baselines and a nonperiodic control.
+- [x] `AIRA-B0002`: exploratory MultiCoil/RoPE-style positional fixture with baselines and a nonperiodic control.
 
 ## Current S1 Proof Status
 
@@ -704,7 +705,7 @@ Outputs:
 - [x] `P5-EDGE-006`: periodic-boundary stencil validation fixture checks direct, dense, and gcd-cycle traversal outputs before backend or speed claims.
 - [x] `P5-EDGE-007`: orientation-debugging note records q/-q sign ambiguity against existing S3 spin theorem ids without claiming full SO(3) or robotics verification.
 - [x] `P5-EDGE-008`: Living Book reader path links dimensions, applications, theorem status, dictionary entries, source trails, and local verification commands.
-- [x] `P5-EDGE-009`: full-spectrum Circle AI program target separates proof targets, benchmarks, baselines, controls, model prototypes, and speculative hypotheses; `AIRA-B0001` extends the starter fixtures to adapter-block structure.
+- [x] `P5-EDGE-009`: full-spectrum Circle AI program target separates proof targets, benchmarks, baselines, controls, model prototypes, and speculative hypotheses; `AIRA-B0001` extends the starter fixtures to adapter-block structure and `AIRA-B0002` extends them to MultiCoil/RoPE-style positional structure.
 - [ ] At least one experiment-ready paper or application note for each accepted edge direction.
 - [ ] Python/MLX or other executable sidecars where the claim is computational.
 - [ ] Lean theorem targets where the claim is formal.

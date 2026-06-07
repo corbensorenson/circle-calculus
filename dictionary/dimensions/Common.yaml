@@ -515,3 +515,15 @@ entries:
       - "A cache-locality proof."
       - "Evidence that gcd-cycle layout is faster."
       - "A proof of FFT, NTT, or MLX backend correctness."
+  - id: COMMON-0046
+    name: "MultiCoil RoPE-style benchmark fixture"
+    kind: experiment
+    symbol: "multicoil_rope_fixture"
+    formal_definition: "`circle_math.applications.circle_ai.run_multicoil_rope_benchmark`, a deterministic comparison between combined-period phase lookup, a single-period phase baseline, a scalar-threshold baseline, and a nonperiodic control."
+    intuition: "A small positional-structure harness for checking whether multiple phase periods are actually needed on a constructed task before making RoPE or model-quality claims."
+    dependencies: ["COMMON-0026", "COMMON-0039", "COMMON-0044"]
+    introduced_in: "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
+    forbidden_meanings:
+      - "A proof that MultiCoil RoPE improves language models."
+      - "A replacement for standard RoPE, learned positional encodings, attention, or dense baselines."
+      - "A speed or parameter-efficiency benchmark."

@@ -27,6 +27,7 @@ The Python examples are:
 ```text
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_adapter_block.py
+sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_multicoil_rope.py
 ```
 
 The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks adapter-block examples; Lean declarations determine proof status.
@@ -53,6 +54,10 @@ The fixture also reports block collision diagnostics: how many training channels
 
 This fixture is not evidence that CoilRA improves fine-tuning, that block-cyclic adapters beat LoRA, that MultiCoil RoPE improves positional encoding, or that a model runs faster. It is a small reproducible harness that separates a block-periodic task from a nonperiodic control before stronger experiments begin.
 
+`AIRA-B0002` adds the first MultiCoil/RoPE-style positional fixture. The positive synthetic task labels positions by a combined phase tuple over periods `(5,7)`. A combined-period lookup recovers the pattern, while a single-period phase lookup, a constant baseline, and a scalar-threshold baseline do worse. The nonperiodic control labels positions by a scalar threshold; there the threshold baseline wins and the combined-period lookup fails.
+
+This fixture is not evidence that MultiCoil RoPE improves a language model, that multiple periods beat standard RoPE, that learned positional encodings are unnecessary, or that attention should be replaced. It is a small reproducible check that multi-period phase structure can be represented and compared before real model experiments begin.
+
 ## Prototype Program
 
 `CoilLinear` should test circulant and block-circulant layers against dense layers on tasks where convolutional or periodic structure is plausible.
@@ -65,7 +70,8 @@ Periodic activations should be evaluated on signal, coordinate, and neural-field
 
 ## Next Program
 
-- Treat `AIRA-B0001` as adapter-block benchmark scaffolding only; CoilRA, MultiCoil RoPE, model quality, parameter efficiency, and runtime claims remain separate work.
+- Treat `AIRA-B0001` as adapter-block benchmark scaffolding only; CoilRA, model quality, parameter efficiency, and runtime claims remain separate work.
+- Treat `AIRA-B0002` as MultiCoil/RoPE-style positional scaffolding only; standard RoPE, learned-position, attention, dense sequence, and MLX comparisons remain separate work.
 - Start with small MLX prototypes and synthetic tasks.
 - Compare against dense, LoRA, block-circulant, and standard RoPE baselines.
 - Measure quality and runtime together; parameter reduction alone is not enough.

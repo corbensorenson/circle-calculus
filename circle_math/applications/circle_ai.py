@@ -7,6 +7,7 @@ They are not formal proofs and they are not model-quality claims.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from math import lcm
 from typing import Optional, Sequence
 
 
@@ -31,6 +32,38 @@ def adapter_block(block_size: int, channel: int) -> int:
     """Return the adapter block index ``channel mod block_size``."""
     _require_positive(block_size, "block_size")
     return channel % block_size
+
+
+def normalize_multicoil_periods(periods: Sequence[int]) -> tuple[int, ...]:
+    """Validate a nonempty tuple of positive MultiCoil periods."""
+    normalized = tuple(periods)
+    if not normalized:
+        raise ValueError("periods must be nonempty")
+    for period in normalized:
+        _require_positive(period, "period")
+    return normalized
+
+
+def multicoil_phase(periods: Sequence[int], position: int) -> tuple[int, ...]:
+    """Return the tuple of residues for a MultiCoil/RoPE-style position."""
+    normalized = normalize_multicoil_periods(periods)
+    return tuple(position % period for period in normalized)
+
+
+def multicoil_cycle_length(periods: Sequence[int]) -> int:
+    """Return the least common repeat horizon for a set of periods."""
+    normalized = normalize_multicoil_periods(periods)
+    cycle = 1
+    for period in normalized:
+        cycle = lcm(cycle, period)
+    return cycle
+
+
+def multicoil_phase_label(periods: Sequence[int], position: int) -> int:
+    """Return a deterministic binary label controlled by combined phases."""
+    phase = multicoil_phase(periods, position)
+    score = sum((index + 1) * residue for index, residue in enumerate(phase))
+    return 1 if score % 4 == 1 else 0
 
 
 def default_positive_phases(period: int) -> tuple[int, ...]:
@@ -195,6 +228,22 @@ class AdapterBlockBenchmarkResult:
     train_collision_count: int
     max_train_block_load: int
     note: str = "Synthetic adapter-block fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
+class MultiCoilRoPEBenchmarkResult:
+    periods: tuple[int, ...]
+    train_length: int
+    test_length: int
+    cycle_length: int
+    observed_phase_count: int
+    multicoil_phase_accuracy: float
+    single_period_phase_accuracy: float
+    scalar_threshold_accuracy: float
+    constant_accuracy: float
+    nonperiodic_multicoil_phase_accuracy: float
+    nonperiodic_scalar_threshold_accuracy: float
+    note: str = "Synthetic MultiCoil/RoPE-style phase fixture only; not a model-quality claim."
 
 
 def run_phase_channel_benchmark(
@@ -655,4 +704,145 @@ def run_adapter_block_benchmark(
         ),
         train_collision_count=adapter_block_collision_count(block_size, train_channel_ids),
         max_train_block_load=max(train_loads),
+    )
+
+
+def synthetic_multicoil_phase_dataset(
+    periods: Sequence[int],
+    length: int,
+    *,
+    start: int = 0,
+) -> tuple[tuple[int, ...], tuple[int, ...]]:
+    """Return positions and binary labels controlled by combined phases."""
+    normalize_multicoil_periods(periods)
+    if length <= 0:
+        raise ValueError("length must be positive")
+    positions = tuple(range(start, start + length))
+    labels = tuple(multicoil_phase_label(periods, position) for position in positions)
+    return positions, labels
+
+
+def fit_multicoil_phase_lookup(
+    periods: Sequence[int],
+    positions: Sequence[int],
+    labels: Sequence[int],
+) -> tuple[tuple[tuple[int, ...], int], ...]:
+    """Fit a combined-phase lookup table by majority label."""
+    normalized = normalize_multicoil_periods(periods)
+    if len(positions) != len(labels):
+        raise ValueError("positions and labels must have the same length")
+    if not positions:
+        raise ValueError("positions must be nonempty")
+    counts: dict[tuple[int, ...], list[int]] = {}
+    for position, label in zip(positions, labels):
+        if label not in (0, 1):
+            raise ValueError("labels must be binary")
+        phase = multicoil_phase(normalized, position)
+        if phase not in counts:
+            counts[phase] = [0, 0]
+        counts[phase][label] += 1
+    entries = []
+    for phase, (zero_count, one_count) in counts.items():
+        entries.append((phase, 1 if one_count >= zero_count else 0))
+    return tuple(sorted(entries))
+
+
+def predict_multicoil_phase_lookup(
+    periods: Sequence[int],
+    lookup: Sequence[tuple[tuple[int, ...], int]],
+    positions: Sequence[int],
+) -> tuple[int, ...]:
+    """Predict labels from a fitted combined-phase lookup table."""
+    normalized = normalize_multicoil_periods(periods)
+    lookup_map = {phase: label for phase, label in lookup}
+    if not lookup_map:
+        raise ValueError("lookup must be nonempty")
+    fallback = majority_label(tuple(lookup_map.values()))
+    return tuple(lookup_map.get(multicoil_phase(normalized, position), fallback) for position in positions)
+
+
+def run_multicoil_rope_benchmark(
+    *,
+    periods: Sequence[int] = (5, 7),
+    train_length: int = 140,
+    test_length: int = 70,
+) -> MultiCoilRoPEBenchmarkResult:
+    """Run a deterministic MultiCoil/RoPE-style fixture with baselines.
+
+    The positive fixture labels positions by a combined phase tuple. A
+    multi-period lookup should recover that synthetic pattern, while a
+    single-period lookup and scalar threshold baseline should be weaker. The
+    nonperiodic control labels positions by a scalar threshold, where circular
+    phase lookup should not win. This is not a RoPE quality claim.
+    """
+    normalized = normalize_multicoil_periods(periods)
+    if train_length <= 0:
+        raise ValueError("train_length must be positive")
+    if test_length <= 0:
+        raise ValueError("test_length must be positive")
+
+    train_positions, train_labels = synthetic_multicoil_phase_dataset(normalized, train_length)
+    test_positions, test_labels = synthetic_multicoil_phase_dataset(
+        normalized,
+        test_length,
+        start=train_length,
+    )
+
+    multicoil_lookup = fit_multicoil_phase_lookup(normalized, train_positions, train_labels)
+    multicoil_predictions = predict_multicoil_phase_lookup(normalized, multicoil_lookup, test_positions)
+    single_period = normalized[0]
+    single_lookup = fit_phase_lookup(single_period, train_positions, train_labels)
+    single_predictions = predict_phase_lookup(single_period, single_lookup, test_positions)
+    threshold, polarity = fit_threshold_classifier(train_positions, train_labels)
+    threshold_predictions = predict_threshold_classifier(test_positions, threshold, polarity)
+    constant = majority_label(train_labels)
+    constant_predictions = tuple(constant for _ in test_positions)
+
+    control_threshold = (3 * train_length) // 4
+    control_train_labels = tuple(
+        nonperiodic_threshold_label(position, control_threshold)
+        for position in train_positions
+    )
+    control_test_labels = tuple(
+        nonperiodic_threshold_label(position, control_threshold)
+        for position in test_positions
+    )
+    control_multicoil_lookup = fit_multicoil_phase_lookup(
+        normalized,
+        train_positions,
+        control_train_labels,
+    )
+    control_multicoil_predictions = predict_multicoil_phase_lookup(
+        normalized,
+        control_multicoil_lookup,
+        test_positions,
+    )
+    control_threshold_fit, control_polarity = fit_threshold_classifier(
+        train_positions,
+        control_train_labels,
+    )
+    control_threshold_predictions = predict_threshold_classifier(
+        test_positions,
+        control_threshold_fit,
+        control_polarity,
+    )
+
+    return MultiCoilRoPEBenchmarkResult(
+        periods=normalized,
+        train_length=train_length,
+        test_length=test_length,
+        cycle_length=multicoil_cycle_length(normalized),
+        observed_phase_count=len(multicoil_lookup),
+        multicoil_phase_accuracy=accuracy(multicoil_predictions, test_labels),
+        single_period_phase_accuracy=accuracy(single_predictions, test_labels),
+        scalar_threshold_accuracy=accuracy(threshold_predictions, test_labels),
+        constant_accuracy=accuracy(constant_predictions, test_labels),
+        nonperiodic_multicoil_phase_accuracy=accuracy(
+            control_multicoil_predictions,
+            control_test_labels,
+        ),
+        nonperiodic_scalar_threshold_accuracy=accuracy(
+            control_threshold_predictions,
+            control_test_labels,
+        ),
     )

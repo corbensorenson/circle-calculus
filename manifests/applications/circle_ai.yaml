@@ -14,6 +14,7 @@ sidecars:
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/lean/PaperAI03.lean
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_adapter_block.py
+  - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_multicoil_rope.py
 python_reference:
   - circle_math/applications/circle_ai.py
 theorems:
@@ -80,8 +81,9 @@ theorems:
 next_targets:
   - "Expand the learned phase fixture beyond scalar thresholds to dense, RoPE, and cyclic-feature baselines."
   - "Expand the cyclic-memory fixture beyond slot lookup to retrieval, alias-control, full-attention, sparse-attention, Hyena-like, and state-space baselines."
-  - "Use AIRA-B0001 as adapter-block scaffolding only; expand toward CoilRA, block-circulant, LoRA, dense-adapter, standard RoPE, and MultiCoil RoPE baselines before making parameter-efficiency or quality claims."
-  - "Compare against dense, LoRA, block-circulant, standard RoPE, full attention, sparse attention, Hyena-like, state-space, convolutional, Fourier-feature, and MLX/CPU parity baselines as appropriate."
+  - "Use AIRA-B0001 as adapter-block scaffolding only; expand toward CoilRA, block-circulant, LoRA, and dense-adapter baselines before making parameter-efficiency or quality claims."
+  - "Use AIRA-B0002 as MultiCoil/RoPE-style positional scaffolding only; expand toward standard RoPE, learned positional encodings, attention, dense sequence, Fourier-feature, and MLX/CPU parity baselines before model-quality claims."
+  - "Compare against dense, LoRA, block-circulant, standard RoPE, learned positional encoding, full attention, sparse attention, Hyena-like, state-space, convolutional, Fourier-feature, and MLX/CPU parity baselines as appropriate."
 benchmarks:
   - id: AIA-B0001
     status: exploratory_python
@@ -102,4 +104,9 @@ benchmarks:
     path: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_adapter_block_benchmark_has_baseline_and_negative_control
     script: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_adapter_block.py
     description: "Deterministic adapter-block synthetic fixture comparing adapter-block lookup against constant and scalar-threshold baselines, with a nonperiodic negative control."
+  - id: AIRA-B0002
+    status: exploratory_python
+    path: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_multicoil_rope_benchmark_has_baselines_and_negative_control
+    script: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_multicoil_rope.py
+    description: "Deterministic MultiCoil/RoPE-style synthetic fixture comparing combined-period phase lookup against single-period, constant, and scalar-threshold baselines, with a nonperiodic negative control."
 guardrail: "No claim that circles improve all AI."

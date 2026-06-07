@@ -96,7 +96,7 @@ Each chapter must distinguish intuition, example, Python model, and formal theor
 - Report quality, runtime, memory, parameter count, and interpretability separately.
 - Do not claim model improvement, attention replacement, parameter efficiency, or speed without a reproducible benchmark artifact and clear baseline.
 - Link AI proof cards, dictionary terms, papers, benchmark fixtures, and future widgets into the Living Book so readers can distinguish proved address structure from empirical claims.
-- Current benchmark anchors are `AIA-B0001`, `AIA-B0002`, `AIM-B0001`, and `AIRA-B0001`; they are scaffolds for phase, memory, and adapter-block structure, not model-quality results.
+- Current benchmark anchors are `AIA-B0001`, `AIA-B0002`, `AIM-B0001`, `AIRA-B0001`, and `AIRA-B0002`; they are scaffolds for phase, memory, adapter-block, and MultiCoil/RoPE-style positional structure, not model-quality results.
 
 ## Phase 6: Optional Manim Embedding
 

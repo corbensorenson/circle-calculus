@@ -3,9 +3,15 @@ from circle_math.applications.circle_ai import (
     adapter_block_collision_count,
     adapter_block_loads,
     fit_adapter_block_lookup,
+    fit_multicoil_phase_lookup,
+    multicoil_cycle_length,
+    multicoil_phase,
     predict_adapter_block_lookup,
+    predict_multicoil_phase_lookup,
     run_adapter_block_benchmark,
+    run_multicoil_rope_benchmark,
     synthetic_adapter_block_dataset,
+    synthetic_multicoil_phase_dataset,
 )
 
 
@@ -69,3 +75,44 @@ def test_adapter_block_benchmark_has_baseline_and_negative_control() -> None:
     assert result.nonperiodic_adapter_block_accuracy < result.nonperiodic_scalar_threshold_accuracy
     assert result.train_collision_count == 56
     assert result.max_train_block_load == 8
+
+
+def test_multicoil_phase_components_are_bounded() -> None:
+    periods = (5, 7)
+    for position in range(0, 512):
+        phase = multicoil_phase(periods, position)
+        assert len(phase) == len(periods)
+        assert all(0 <= residue < period for residue, period in zip(phase, periods))
+
+
+def test_multicoil_phase_closes_after_joint_cycle() -> None:
+    periods = (5, 7)
+    cycle = multicoil_cycle_length(periods)
+    assert cycle == 35
+    for position in range(0, 512):
+        assert multicoil_phase(periods, position + cycle) == multicoil_phase(periods, position)
+
+
+def test_multicoil_lookup_recovers_combined_phase_fixture() -> None:
+    periods = (5, 7)
+    train_positions, train_labels = synthetic_multicoil_phase_dataset(periods, 140)
+    test_positions, test_labels = synthetic_multicoil_phase_dataset(periods, 70, start=140)
+
+    lookup = fit_multicoil_phase_lookup(periods, train_positions, train_labels)
+    predictions = predict_multicoil_phase_lookup(periods, lookup, test_positions)
+
+    assert len(lookup) == 35
+    assert predictions == test_labels
+
+
+def test_multicoil_rope_benchmark_has_baselines_and_negative_control() -> None:
+    result = run_multicoil_rope_benchmark(periods=(5, 7), train_length=140, test_length=70)
+
+    assert result.cycle_length == 35
+    assert result.observed_phase_count == 35
+    assert result.multicoil_phase_accuracy == 1.0
+    assert result.single_period_phase_accuracy < result.multicoil_phase_accuracy
+    assert result.scalar_threshold_accuracy < result.multicoil_phase_accuracy
+    assert result.constant_accuracy < result.multicoil_phase_accuracy
+    assert result.nonperiodic_scalar_threshold_accuracy == 1.0
+    assert result.nonperiodic_multicoil_phase_accuracy < result.nonperiodic_scalar_threshold_accuracy
