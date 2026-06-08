@@ -52,6 +52,7 @@ class BoundedGeneratorSearch:
     best_exact: Optional[GeneratorComparison]
     best_shorter: Optional[GeneratorComparison]
     finite_search_space: bool = True
+    theorem_ids: tuple[str, ...] = ("GEN-T0022", "GEN-T0023", "GEN-T0024")
     note: str = "Bounded finite search only; not an optimality theorem."
 
 

@@ -193,7 +193,7 @@
       ],
       "guardrail": "Do not call this universal compression, Kolmogorov complexity, or an optimal generator theorem.",
       "id": "P7-GEN-002",
-      "next_action": "Finite-circle, finite physics-loop, and orbit-family generation are now represented in Living Book widgets; exact-regeneration self/symmetry/transitivity, field-equality gates, and unequal-value negative gates are Lean-proved; bounded_generator_search now ranks only declared finite candidate lists with exact and shorter-candidate counts; expand next toward stronger explicit search-space baselines.",
+      "next_action": "Finite-circle, finite physics-loop, and orbit-family generation are now represented in Living Book widgets; exact-regeneration self/symmetry/transitivity, field-equality gates, unequal-value negative gates, and the empty declared-search boundary are Lean-proved; bounded_generator_search now ranks only declared finite candidate lists with exact and shorter-candidate counts; expand next toward stronger nonempty explicit search-space baselines.",
       "ordinary_baseline": "Explicitly listing every node, edge, orbit, generated point, or diagram element.",
       "priority": "high",
       "question": "Can generator records give better explanation or reconstruction discipline than object-only descriptions on bounded Circle Calculus artifacts?",

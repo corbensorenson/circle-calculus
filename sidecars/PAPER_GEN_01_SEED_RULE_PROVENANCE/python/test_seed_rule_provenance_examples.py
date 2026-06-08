@@ -145,3 +145,15 @@ def test_bounded_generator_search_reports_scope_and_exact_candidates() -> None:
     assert search.best_shorter is not None
     assert search.best_shorter.generator_shorter
     assert search.note.endswith("not an optimality theorem.")
+
+
+def test_empty_bounded_generator_search_has_no_best_candidate() -> None:
+    search = bounded_generator_search([], search_id="empty_declared_search")
+
+    assert search.search_id == "empty_declared_search"
+    assert search.finite_search_space
+    assert search.candidate_count == 0
+    assert search.exact_candidate_count == 0
+    assert search.best_exact is None
+    assert search.best_shorter is None
+    assert search.theorem_ids == ("GEN-T0022", "GEN-T0023", "GEN-T0024")

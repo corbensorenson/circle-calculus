@@ -2,7 +2,7 @@ import { positiveInt } from "../shared/circle_math_core.js";
 import { addLabeledNumber, addOutput, addWidgetHeader, clear } from "../shared/svg_helpers.js";
 import { loadJson, mountWidgets, statusClass, statusLabel } from "../shared/widget_base.js";
 
-const THEOREM_IDS = ["GEN-T0001", "GEN-T0005", "GEN-T0017", "GEN-T0018", "GEN-T0019", "GEN-T0020"];
+const THEOREM_IDS = ["GEN-T0001", "GEN-T0005", "GEN-T0017", "GEN-T0018", "GEN-T0019", "GEN-T0020", "GEN-T0022", "GEN-T0023", "GEN-T0024"];
 const DICTIONARY_IDS = ["COMMON-0064", "COMMON-0065", "COMMON-0066"];
 
 function sortedPairs(object) {
@@ -110,6 +110,7 @@ function boundedSearch(records) {
     best_exact: exact.slice().sort(compareKey)[0] || null,
     best_shorter: shorter.slice().sort(compareKey)[0] || null,
     finite_search_space: true,
+    theorem_ids: ["GEN-T0022", "GEN-T0023", "GEN-T0024"],
     note: "Bounded finite search only; not an optimality theorem.",
     comparisons,
   };
@@ -209,6 +210,7 @@ function appendRecord(output, values, theoremById) {
     `exact candidate count: ${search.exact_candidate_count}`,
     `best exact generator length: ${search.best_exact ? search.best_exact.generator_length : "none"}`,
     `best shorter generator length: ${search.best_shorter ? search.best_shorter.generator_length : "none"}`,
+    "empty search boundary: candidate_count=0, exact_candidate_count=0, best_exact=none",
     `positive case n=${values.n}: ${search.comparisons[1].generator_shorter ? "generator shorter than explicit" : "explicit not beaten by generator"}`,
     `negative/broken case exact: ${search.comparisons[2].exact_regeneration}`,
   ].join("\n");

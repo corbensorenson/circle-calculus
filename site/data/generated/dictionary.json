@@ -7102,6 +7102,24 @@
           "lean_name": "Circle.Generative.coilOrbitGenerator_generatedOrbit_length",
           "name": "Circle.Generative.coilOrbitGenerator_generatedOrbit_length",
           "status": "proved"
+        },
+        {
+          "id": "GEN-T0022",
+          "lean_name": "Circle.Generative.emptyBoundedGeneratorSearch_candidateCount",
+          "name": "Circle.Generative.emptyBoundedGeneratorSearch_candidateCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0023",
+          "lean_name": "Circle.Generative.emptyBoundedGeneratorSearch_exactCandidateCount",
+          "name": "Circle.Generative.emptyBoundedGeneratorSearch_exactCandidateCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0024",
+          "lean_name": "Circle.Generative.emptyBoundedGeneratorSearch_bestExact_none",
+          "name": "Circle.Generative.emptyBoundedGeneratorSearch_bestExact_none",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -7195,6 +7213,24 @@
           "id": "GEN-T0019",
           "lean_name": "Circle.Generative.generatorComparison_not_exact_of_ne",
           "name": "Circle.Generative.generatorComparison_not_exact_of_ne",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0022",
+          "lean_name": "Circle.Generative.emptyBoundedGeneratorSearch_candidateCount",
+          "name": "Circle.Generative.emptyBoundedGeneratorSearch_candidateCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0023",
+          "lean_name": "Circle.Generative.emptyBoundedGeneratorSearch_exactCandidateCount",
+          "name": "Circle.Generative.emptyBoundedGeneratorSearch_exactCandidateCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0024",
+          "lean_name": "Circle.Generative.emptyBoundedGeneratorSearch_bestExact_none",
+          "name": "Circle.Generative.emptyBoundedGeneratorSearch_bestExact_none",
           "status": "proved"
         }
       ],
@@ -7358,6 +7394,24 @@
           "id": "GEN-T0021",
           "lean_name": "Circle.Generative.coilOrbitGenerator_generatedOrbit_length",
           "name": "Circle.Generative.coilOrbitGenerator_generatedOrbit_length",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0022",
+          "lean_name": "Circle.Generative.emptyBoundedGeneratorSearch_candidateCount",
+          "name": "Circle.Generative.emptyBoundedGeneratorSearch_candidateCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0023",
+          "lean_name": "Circle.Generative.emptyBoundedGeneratorSearch_exactCandidateCount",
+          "name": "Circle.Generative.emptyBoundedGeneratorSearch_exactCandidateCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0024",
+          "lean_name": "Circle.Generative.emptyBoundedGeneratorSearch_bestExact_none",
+          "name": "Circle.Generative.emptyBoundedGeneratorSearch_bestExact_none",
           "status": "proved"
         }
       ],

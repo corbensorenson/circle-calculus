@@ -1658,6 +1658,13 @@ def main() -> int:
         comparison["generator_length"]
         for comparison in js_shorter
     )
+    assert search.theorem_ids == ("GEN-T0022", "GEN-T0023", "GEN-T0024")
+    empty_search = bounded_generator_search([], search_id="empty_declared_search")
+    assert empty_search.candidate_count == 0
+    assert empty_search.exact_candidate_count == 0
+    assert empty_search.best_exact is None
+    assert empty_search.best_shorter is None
+    assert empty_search.theorem_ids == ("GEN-T0022", "GEN-T0023", "GEN-T0024")
 
     gauge_cases = [
         (23, 2, 5, -7, 4, {"v00": 3, "v10": 9, "v11": 1, "v01": 17}),

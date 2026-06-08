@@ -226,7 +226,17 @@ def export_widget_index() -> dict:
         {
             "id": "generator_comparison_search",
             "path": "site/widgets/generative/generator_comparison_search.js",
-            "theorem_ids": ["GEN-T0005", "GEN-T0017", "GEN-T0018", "GEN-T0019"],
+            "theorem_ids": [
+                "GEN-T0001",
+                "GEN-T0005",
+                "GEN-T0017",
+                "GEN-T0018",
+                "GEN-T0019",
+                "GEN-T0020",
+                "GEN-T0022",
+                "GEN-T0023",
+                "GEN-T0024",
+            ],
             "dictionary_ids": ["COMMON-0064", "COMMON-0065", "COMMON-0066"],
             "python_reference": "circle_math.generative.compare_generator_to_explicit; circle_math.generative.bounded_generator_search; circle_math.generative.finite_circle_generator",
         },

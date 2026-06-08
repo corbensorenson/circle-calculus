@@ -127,10 +127,15 @@
       "path": "site/widgets/generative/generator_comparison_search.js",
       "python_reference": "circle_math.generative.compare_generator_to_explicit; circle_math.generative.bounded_generator_search; circle_math.generative.finite_circle_generator",
       "theorem_ids": [
+        "GEN-T0001",
         "GEN-T0005",
         "GEN-T0017",
         "GEN-T0018",
-        "GEN-T0019"
+        "GEN-T0019",
+        "GEN-T0020",
+        "GEN-T0022",
+        "GEN-T0023",
+        "GEN-T0024"
       ]
     },
     {

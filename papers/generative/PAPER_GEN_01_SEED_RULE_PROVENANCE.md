@@ -84,9 +84,12 @@ The paper links back to finite circles, coils, orbit decompositions, and proof-c
 - `GEN-T0019`: `Circle.Generative.generatorComparison_not_exact_of_ne`, unequal regenerated and generated values cannot pass the exact-regeneration check.
 - `GEN-T0020`: `Circle.Generative.finiteCircleGenerator_generatedNodes_length`, a finite-circle seed-rule record generates exactly `n` node entries.
 - `GEN-T0021`: `Circle.Generative.coilOrbitGenerator_generatedOrbit_length`, a coil seed-rule record generates an orbit schedule whose length is the formal finite coil period.
+- `GEN-T0022`: `Circle.Generative.emptyBoundedGeneratorSearch_candidateCount`, an empty declared finite generator search space has zero candidate records.
+- `GEN-T0023`: `Circle.Generative.emptyBoundedGeneratorSearch_exactCandidateCount`, an empty declared finite generator search space has zero exact-regeneration candidates.
+- `GEN-T0024`: `Circle.Generative.emptyBoundedGeneratorSearch_bestExact_none`, an empty declared finite generator search space has no best exact-regeneration candidate.
 
-`GEN-T0001` through `GEN-T0021` are Lean-proved finite seeds in `Circle.Generative.SeedRule`.
-`GEN-T0003` proves exact regeneration of the declared representative-indexed list model. `GEN-T0006` through `GEN-T0013` strengthen that model with count, period, coverage, formal orbit-class agreement, canonical representative coverage, and representative disjointness facts. `GEN-T0014` through `GEN-T0019` make exact regeneration reusable as a reflexive, symmetric, transitive, and field-equality-gated relation for constructed generator comparisons. `GEN-T0020` and `GEN-T0021` add direct generated-list length certificates for finite-circle nodes and single coil-orbit schedules. They do not prove that the list is an optimal or minimal compression.
+`GEN-T0001` through `GEN-T0024` are Lean-proved finite seeds in `Circle.Generative.SeedRule`.
+`GEN-T0003` proves exact regeneration of the declared representative-indexed list model. `GEN-T0006` through `GEN-T0013` strengthen that model with count, period, coverage, formal orbit-class agreement, canonical representative coverage, and representative disjointness facts. `GEN-T0014` through `GEN-T0019` make exact regeneration reusable as a reflexive, symmetric, transitive, and field-equality-gated relation for constructed generator comparisons. `GEN-T0020` and `GEN-T0021` add direct generated-list length certificates for finite-circle nodes and single coil-orbit schedules. `GEN-T0022` through `GEN-T0024` prove the empty declared-search boundary: zero candidates, zero exact candidates, and no best exact candidate. They do not prove that the list is an optimal or minimal compression.
 
 ## Seed-Rule Record
 
@@ -117,7 +120,7 @@ proof_glyph
 
 Each record regenerates its object deterministically. The finite-circle diagram generator returns node labels and successor edges from the same `n` seed, theorem ids, and dictionary ids as the node generator. The physics-loop diagram generator returns a finite square plaquette diagram with normalized link phases, closed-loop status, holonomy, physics theorem ids, and dictionary ids. A comparison fixture serializes the regenerated explicit object and the seed-rule record, then reports whether the generator description is shorter. Exact regeneration is checked before any length result is trusted, and the Lean comparison facts now expose the exact check as equality of the regenerated/generated fields for constructed comparison records.
 
-The Python sidecar also includes a bounded generator-search fixture. It ranks only a declared finite candidate list, reports how many candidates regenerate exactly, and separates the shortest exact candidate from the shortest exact candidate that is also shorter than explicit storage. This is a scoped search report, not a proof of global minimality.
+The Python sidecar also includes a bounded generator-search fixture. It ranks only a declared finite candidate list, reports how many candidates regenerate exactly, and separates the shortest exact candidate from the shortest exact candidate that is also shorter than explicit storage. The empty-search fixture records the zero-candidate boundary explicitly. This is a scoped search report, not a proof of global minimality.
 
 The Living Book page for generative structures now includes a static `seed_rule_diagram_generator` widget. It renders the finite-circle and finite physics-loop diagram records with visible seeds, rules, theorem-status badges, and dictionary links. The widget is an explanation layer; its diagram output is not a proof, and its description-length display is not a minimality theorem.
 

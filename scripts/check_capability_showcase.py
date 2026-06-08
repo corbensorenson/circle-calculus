@@ -39,6 +39,14 @@ CAPABILITY_ATTR_RE = re.compile(
 EXECUTABLE_ATTR_RE = re.compile(
     r'data-capability-id="([^"]+)"[^>]*data-executable-ref="([^"]+)"'
 )
+THEOREM_BOX_RE = re.compile(r'<div class="theorem-box"([^>]*)>')
+
+
+def html_attr(attrs: str, name: str) -> str | None:
+    match = re.search(rf'{re.escape(name)}="([^"]+)"', attrs)
+    if match:
+        return match.group(1)
+    return None
 
 
 def load_yaml(path: Path) -> dict:
@@ -93,6 +101,21 @@ def page_executable_pairs() -> list[tuple[str, str]]:
     if not SHOWCASE_PAGE.exists():
         return []
     return EXECUTABLE_ATTR_RE.findall(SHOWCASE_PAGE.read_text())
+
+
+def page_theorem_pairs() -> tuple[list[tuple[str, str]], list[str]]:
+    if not SHOWCASE_PAGE.exists():
+        return [], []
+    pairs: list[tuple[str, str]] = []
+    missing_capabilities: list[str] = []
+    for attrs in THEOREM_BOX_RE.findall(SHOWCASE_PAGE.read_text()):
+        theorem_id = html_attr(attrs, "data-theorem-id")
+        capability_id = html_attr(attrs, "data-capability-id")
+        if theorem_id and capability_id:
+            pairs.append((capability_id, theorem_id))
+        elif theorem_id:
+            missing_capabilities.append(theorem_id)
+    return pairs, missing_capabilities
 
 
 def main() -> int:
@@ -153,6 +176,30 @@ def main() -> int:
             failures.append(
                 f"unknown page executable refs: {unknown_executables}"
             )
+        page_theorems, theorem_boxes_without_capability = page_theorem_pairs()
+        if theorem_boxes_without_capability:
+            failures.append(
+                "page theorem boxes missing data-capability-id: "
+                f"{sorted(theorem_boxes_without_capability)}"
+            )
+        theorem_duplicates = sorted(
+            {pair for pair in page_theorems if page_theorems.count(pair) > 1}
+        )
+        if theorem_duplicates:
+            failures.append(f"duplicate page theorem refs: {theorem_duplicates}")
+        expected_theorems = {
+            (item.get("id"), theorem_id)
+            for item in capabilities
+            if item.get("id") and isinstance(item.get("theorem_ids", []), list)
+            for theorem_id in item.get("theorem_ids", [])
+        }
+        page_theorem_set = set(page_theorems)
+        missing_theorems = sorted(expected_theorems - page_theorem_set)
+        unknown_theorems = sorted(page_theorem_set - expected_theorems)
+        if missing_theorems:
+            failures.append(f"theorem refs missing from page: {missing_theorems}")
+        if unknown_theorems:
+            failures.append(f"unknown page theorem refs: {unknown_theorems}")
 
     for item in capabilities:
         capability_id = item.get("id", "<missing id>")

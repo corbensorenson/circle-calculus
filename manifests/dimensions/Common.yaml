@@ -2228,4 +2228,46 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_coil_generator_regenerates_closed_stride_orbit
     blocker: ""
+  - id: GEN-T0022
+    status: lean_proved
+    lean_name: Circle.Generative.emptyBoundedGeneratorSearch_candidateCount
+    informal_statement: "An empty declared finite generator search space has zero candidate records."
+    formal_statement: "For any type alpha, (emptyBoundedGeneratorSearch alpha).candidateCount = 0."
+    dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_empty_bounded_generator_search_has_no_best_candidate
+    blocker: ""
+  - id: GEN-T0023
+    status: lean_proved
+    lean_name: Circle.Generative.emptyBoundedGeneratorSearch_exactCandidateCount
+    informal_statement: "An empty declared finite generator search space has zero exact-regeneration candidates."
+    formal_statement: "For any type alpha, (emptyBoundedGeneratorSearch alpha).exactCandidateCount = 0."
+    dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_empty_bounded_generator_search_has_no_best_candidate
+    blocker: ""
+  - id: GEN-T0024
+    status: lean_proved
+    lean_name: Circle.Generative.emptyBoundedGeneratorSearch_bestExact_none
+    informal_statement: "An empty declared finite generator search space has no best exact-regeneration candidate."
+    formal_statement: "For any type alpha, (emptyBoundedGeneratorSearch alpha).bestExact? = none."
+    dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_empty_bounded_generator_search_has_no_best_candidate
+    blocker: ""
 warnings: []

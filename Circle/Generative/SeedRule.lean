@@ -242,4 +242,46 @@ theorem generatorComparison_not_exact_of_ne
   intro hne hexact
   exact hne hexact
 
+structure BoundedGeneratorSearch (α : Type) where
+  candidates : List (GeneratorComparison α)
+  exactCandidates : List (GeneratorComparison α)
+  exactSubset :
+    ∀ candidate, candidate ∈ exactCandidates → candidate ∈ candidates
+  exactSound :
+    ∀ candidate, candidate ∈ exactCandidates → candidate.exactRegeneration
+
+def emptyBoundedGeneratorSearch (α : Type) : BoundedGeneratorSearch α :=
+  { candidates := [],
+    exactCandidates := [],
+    exactSubset := (by
+      intro candidate hmember
+      cases hmember),
+    exactSound := (by
+      intro candidate hmember
+      cases hmember) }
+
+def BoundedGeneratorSearch.candidateCount
+    (search : BoundedGeneratorSearch α) : Nat :=
+  search.candidates.length
+
+def BoundedGeneratorSearch.exactCandidateCount
+    (search : BoundedGeneratorSearch α) : Nat :=
+  search.exactCandidates.length
+
+def BoundedGeneratorSearch.bestExact?
+    (search : BoundedGeneratorSearch α) : Option (GeneratorComparison α) :=
+  search.exactCandidates.head?
+
+theorem emptyBoundedGeneratorSearch_candidateCount (α : Type) :
+    (emptyBoundedGeneratorSearch α).candidateCount = 0 := by
+  rfl
+
+theorem emptyBoundedGeneratorSearch_exactCandidateCount (α : Type) :
+    (emptyBoundedGeneratorSearch α).exactCandidateCount = 0 := by
+  rfl
+
+theorem emptyBoundedGeneratorSearch_bestExact_none (α : Type) :
+    (emptyBoundedGeneratorSearch α).bestExact? = none := by
+  rfl
+
 end Circle.Generative

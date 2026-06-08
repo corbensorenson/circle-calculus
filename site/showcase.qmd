@@ -39,8 +39,8 @@ Circle Calculus states EGZ and Cauchy-Davenport directly over `C_n` and `C_p`.
 - Scope: imported theorem bridges, not new proofs.
 - Boundary: no open Erdos problem progress claim.
 
-<div class="theorem-box" data-theorem-id="CC-T0062"></div>
-<div class="theorem-box" data-theorem-id="CC-T0063"></div>
+<div class="theorem-box" data-capability-id="SHOW-001" data-theorem-id="CC-T0062"></div>
+<div class="theorem-box" data-capability-id="SHOW-001" data-theorem-id="CC-T0063"></div>
 
 ### Katona And Erdos-Ko-Rado
 
@@ -56,8 +56,8 @@ The Katona lane makes cyclic-order double counting and intersecting-family bound
 - Scope: prefix-density and EKR theorem bridges.
 - Boundary: no new EKR proof or extremal-family classification.
 
-<div class="theorem-box" data-theorem-id="CC-T0064"></div>
-<div class="theorem-box" data-theorem-id="CC-T0065"></div>
+<div class="theorem-box" data-capability-id="SHOW-002" data-theorem-id="CC-T0064"></div>
+<div class="theorem-box" data-capability-id="SHOW-002" data-theorem-id="CC-T0065"></div>
 
 ### Roth And Three-Term Progressions
 
@@ -73,8 +73,8 @@ The Roth lane gives Circle Calculus a serious density-additive-combinatorics tar
 - Scope: Roth theorem and Roth-number sublinearity bridges.
 - Boundary: no improved bounds and no cyclic-to-natural transfer theorem yet.
 
-<div class="theorem-box" data-theorem-id="CC-T0066"></div>
-<div class="theorem-box" data-theorem-id="CC-T0067"></div>
+<div class="theorem-box" data-capability-id="SHOW-003" data-theorem-id="CC-T0066"></div>
+<div class="theorem-box" data-capability-id="SHOW-003" data-theorem-id="CC-T0067"></div>
 
 ### Ramsey Lines And Hales-Jewett
 
@@ -90,8 +90,8 @@ The Ramsey lane shows unavoidable structure through formal Hales-Jewett and homo
 - Scope: theorem bridges plus finite search examples.
 - Boundary: tiny searches are demonstrations, not the proof.
 
-<div class="theorem-box" data-theorem-id="CC-T0068"></div>
-<div class="theorem-box" data-theorem-id="CC-T0069"></div>
+<div class="theorem-box" data-capability-id="SHOW-004" data-theorem-id="CC-T0068"></div>
+<div class="theorem-box" data-capability-id="SHOW-004" data-theorem-id="CC-T0069"></div>
 
 ### Circulant Graph Geometry
 
@@ -107,9 +107,9 @@ The graph lane starts conservatively with cycle graphs, circulant graphs, connec
 - Scope: cycle/circulant and connectedness bridges.
 - Boundary: no hard unit-distance or distinct-distance progress claim.
 
-<div class="theorem-box" data-theorem-id="CC-T0070"></div>
-<div class="theorem-box" data-theorem-id="CC-T0071"></div>
-<div class="theorem-box" data-theorem-id="CC-T0072"></div>
+<div class="theorem-box" data-capability-id="SHOW-005" data-theorem-id="CC-T0070"></div>
+<div class="theorem-box" data-capability-id="SHOW-005" data-theorem-id="CC-T0071"></div>
+<div class="theorem-box" data-capability-id="SHOW-005" data-theorem-id="CC-T0072"></div>
 
 ## Circle-Native Strengths
 
@@ -128,10 +128,12 @@ The S1 spine is the internal proof engine: period, gcd orbit count, scaling imag
 - Scope: Lean-proved cyclic arithmetic and representative-set facts.
 - Boundary: this is a proof-carrying presentation of standard modular structure, not a replacement for standard modular arithmetic.
 
-<div class="theorem-box" data-theorem-id="CC-T0005"></div>
-<div class="theorem-box" data-theorem-id="CC-T0048"></div>
-<div class="theorem-box" data-theorem-id="CC-T0054"></div>
-<div class="theorem-box" data-theorem-id="CC-T0061"></div>
+<div class="theorem-box" data-capability-id="SHOW-006" data-theorem-id="CC-T0005"></div>
+<div class="theorem-box" data-capability-id="SHOW-006" data-theorem-id="CC-T0006"></div>
+<div class="theorem-box" data-capability-id="SHOW-006" data-theorem-id="CC-T0048"></div>
+<div class="theorem-box" data-capability-id="SHOW-006" data-theorem-id="CC-T0049"></div>
+<div class="theorem-box" data-capability-id="SHOW-006" data-theorem-id="CC-T0054"></div>
+<div class="theorem-box" data-capability-id="SHOW-006" data-theorem-id="CC-T0061"></div>
 
 ### Quaternion And Hopf Phase Coordinates
 
@@ -148,9 +150,11 @@ The S3 lane gives bounded phase-coordinate and quaternion facts that are useful 
 - Scope: Lean-proved unit-quaternion and bounded Hopf phase facts.
 - Boundary: no full smooth Hopf fibration or SO(3) robotics formalization yet.
 
-<div class="theorem-box" data-theorem-id="S3Q-T0005"></div>
-<div class="theorem-box" data-theorem-id="S3H-T0005"></div>
-<div class="theorem-box" data-theorem-id="S3H-T0008"></div>
+<div class="theorem-box" data-capability-id="SHOW-007" data-theorem-id="S3Q-T0005"></div>
+<div class="theorem-box" data-capability-id="SHOW-007" data-theorem-id="S3Q-T0008"></div>
+<div class="theorem-box" data-capability-id="SHOW-007" data-theorem-id="S3H-T0001"></div>
+<div class="theorem-box" data-capability-id="SHOW-007" data-theorem-id="S3H-T0005"></div>
+<div class="theorem-box" data-capability-id="SHOW-007" data-theorem-id="S3H-T0008"></div>
 
 ## Application Interfaces
 
@@ -168,12 +172,14 @@ The physics lane builds proof-carrying finite gauge paths with checked path comp
 - Scope: Lean-proved finite path, gauge, Wilson-loop, plaquette, closed-loop record, and two-path cycle gauge-invariance facts.
 - Boundary: no continuum physics or lattice-QCD correctness claim.
 
-<div class="theorem-box" data-theorem-id="PHYS-T0012"></div>
-<div class="theorem-box" data-theorem-id="PHYS-T0038"></div>
-<div class="theorem-box" data-theorem-id="PHYS-T0042"></div>
-<div class="theorem-box" data-theorem-id="PHYS-T0046"></div>
-<div class="theorem-box" data-theorem-id="PHYS-T0047"></div>
-<div class="theorem-box" data-theorem-id="PHYS-T0049"></div>
+<div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0001"></div>
+<div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0012"></div>
+<div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0026"></div>
+<div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0038"></div>
+<div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0042"></div>
+<div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0046"></div>
+<div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0047"></div>
+<div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0049"></div>
 
 ### Generative Provenance
 
@@ -187,14 +193,18 @@ The generative lane pairs seed-rule construction with exact-regeneration checks 
 - Circle expression: seed rules, generator comparisons, proof glyphs, and exactness gates are finite Circle records.
 - Circle-native value: generated artifacts can carry exact source trails and negative-case checks.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-009" data-executable-ref="sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py"></span><code>sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-009" data-executable-ref="sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py"></span><code>sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py</code>.
-- Scope: Lean-proved provenance, generated-list length, and exact-comparison gates.
+- Scope: Lean-proved provenance, generated-list length, exact-comparison gates, and empty declared-search boundary facts.
 - Boundary: no universal compression or automatic-interest claim.
 
-<div class="theorem-box" data-theorem-id="GEN-T0017"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0019"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0020"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0021"></div>
-<div class="theorem-box" data-theorem-id="P2G-T0006"></div>
+<div class="theorem-box" data-capability-id="SHOW-009" data-theorem-id="GEN-T0001"></div>
+<div class="theorem-box" data-capability-id="SHOW-009" data-theorem-id="GEN-T0008"></div>
+<div class="theorem-box" data-capability-id="SHOW-009" data-theorem-id="GEN-T0017"></div>
+<div class="theorem-box" data-capability-id="SHOW-009" data-theorem-id="GEN-T0019"></div>
+<div class="theorem-box" data-capability-id="SHOW-009" data-theorem-id="GEN-T0020"></div>
+<div class="theorem-box" data-capability-id="SHOW-009" data-theorem-id="GEN-T0021"></div>
+<div class="theorem-box" data-capability-id="SHOW-009" data-theorem-id="GEN-T0022"></div>
+<div class="theorem-box" data-capability-id="SHOW-009" data-theorem-id="GEN-T0024"></div>
+<div class="theorem-box" data-capability-id="SHOW-009" data-theorem-id="P2G-T0006"></div>
 
 ### AI Schedules And Index Safety
 
@@ -211,11 +221,13 @@ The AI lane proves finite schedule/index facts that can support experiments with
 - Scope: Lean-proved memory-slot, loop-budget, recurrence-budget positivity, loop-exit, and adapter-block facts.
 - Boundary: no quality, speed, context-length, or reasoning improvement without benchmarks.
 
-<div class="theorem-box" data-theorem-id="AIM-T0001"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0017"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0022"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0024"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0005"></div>
+<div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0001"></div>
+<div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0005"></div>
+<div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0011"></div>
+<div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0017"></div>
+<div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0022"></div>
+<div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0024"></div>
+<div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIRA-T0005"></div>
 
 ### Circular Compute Layouts
 
@@ -233,9 +245,9 @@ The compute lane proves address-safety and schedule-normalization facts before a
 - Scope: Lean-proved cyclic-address, stride-address, and round-robin laws.
 - Boundary: no speedup claim without direct baseline measurements.
 
-<div class="theorem-box" data-theorem-id="COMPC-T0005"></div>
-<div class="theorem-box" data-theorem-id="COMPL-T0005"></div>
-<div class="theorem-box" data-theorem-id="COMPS-T0004"></div>
+<div class="theorem-box" data-capability-id="SHOW-011" data-theorem-id="COMPC-T0005"></div>
+<div class="theorem-box" data-capability-id="SHOW-011" data-theorem-id="COMPL-T0005"></div>
+<div class="theorem-box" data-capability-id="SHOW-011" data-theorem-id="COMPS-T0004"></div>
 
 ## Verification Contract
 

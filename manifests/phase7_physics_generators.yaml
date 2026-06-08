@@ -144,7 +144,7 @@ targets:
       - "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"
       - "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md"
     dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066", "COMMON-0041", "COMMON-0042"]
-    next_action: "Finite-circle, finite physics-loop, and orbit-family generation are now represented in Living Book widgets; exact-regeneration self/symmetry/transitivity, field-equality gates, and unequal-value negative gates are Lean-proved; bounded_generator_search now ranks only declared finite candidate lists with exact and shorter-candidate counts; expand next toward stronger explicit search-space baselines."
+    next_action: "Finite-circle, finite physics-loop, and orbit-family generation are now represented in Living Book widgets; exact-regeneration self/symmetry/transitivity, field-equality gates, unequal-value negative gates, and the empty declared-search boundary are Lean-proved; bounded_generator_search now ranks only declared finite candidate lists with exact and shorter-candidate counts; expand next toward stronger nonempty explicit search-space baselines."
     guardrail: "Do not call this universal compression, Kolmogorov complexity, or an optimal generator theorem."
 
   - id: P7-GEN-003
