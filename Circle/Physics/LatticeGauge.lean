@@ -489,6 +489,31 @@ theorem closedGaugeLoop_fromCycle_gaugeShiftedHolonomy
       left.holonomy + right.holonomy := by
   rw [closedGaugeLoop_gaugeInvariant, closedGaugeLoop_fromCycle_holonomy]
 
+theorem closedGaugeLoop_fromCycle_swap_holonomy
+    (left right : CheckedGaugePath n)
+    (hforward : left.target = right.source)
+    (hback : right.target = left.source) :
+    (ClosedGaugeLoop.fromCycle right left hback hforward).holonomy =
+      (ClosedGaugeLoop.fromCycle left right hforward hback).holonomy := by
+  rw [
+    closedGaugeLoop_fromCycle_holonomy right left hback hforward,
+    closedGaugeLoop_fromCycle_holonomy left right hforward hback,
+  ]
+  ac_rfl
+
+theorem closedGaugeLoop_fromCycle_swap_gaugeShiftedHolonomy
+    (left right : CheckedGaugePath n)
+    (hforward : left.target = right.source)
+    (hback : right.target = left.source)
+    (gauge : Nat → ZMod n) :
+    (ClosedGaugeLoop.fromCycle right left hback hforward).gaugeShiftedHolonomy gauge =
+      (ClosedGaugeLoop.fromCycle left right hforward hback).gaugeShiftedHolonomy gauge := by
+  rw [
+    closedGaugeLoop_fromCycle_gaugeShiftedHolonomy right left hback hforward gauge,
+    closedGaugeLoop_fromCycle_gaugeShiftedHolonomy left right hforward hback gauge,
+  ]
+  ac_rfl
+
 theorem gaugeLinkPath_reverse_phases (path : GaugeLinkPath n) :
     path.reverse.phases = reversePhases path.phases := by
   unfold GaugeLinkPath.reverse GaugeLinkPath.phases reversePhases GaugeLink.reverse

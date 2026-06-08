@@ -159,6 +159,8 @@ The theorem cards below are Lean-proved for the finite `ZMod n` phase and link-p
 <div class="theorem-box" data-theorem-id="PHYS-T0051"></div>
 <div class="theorem-box" data-theorem-id="PHYS-T0052"></div>
 <div class="theorem-box" data-theorem-id="PHYS-T0053"></div>
+<div class="theorem-box" data-theorem-id="PHYS-T0054"></div>
+<div class="theorem-box" data-theorem-id="PHYS-T0055"></div>
 
 The Hopf cards are Lean-proved coordinate facts: normalized pairs land on the unit base equation, unit phase rotation preserves the visible base, and phase actions obey identity/composition laws. They do not prove Berry phase, quantum mechanics, or the full topology of the Hopf fibration.
 

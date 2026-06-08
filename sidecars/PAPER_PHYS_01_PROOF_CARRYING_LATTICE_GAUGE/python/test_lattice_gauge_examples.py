@@ -86,6 +86,9 @@ def test_closed_loop_records_identity_and_cycle_holonomy() -> None:
     combined = concat_paths(left, right)
     transformed_cycle = gauge_transform_path(combined, gauge)
     cycle = cycle_closed_loop_record(left, right)
+    swapped_combined = concat_paths(right, left)
+    transformed_swapped = gauge_transform_path(swapped_combined, gauge)
+    swapped = cycle_closed_loop_record(right, left)
 
     assert identity.closed
     assert identity.source == identity.target == "a"
@@ -97,7 +100,11 @@ def test_closed_loop_records_identity_and_cycle_holonomy() -> None:
     assert cycle.holonomy == (path_holonomy(left) + path_holonomy(right)) % 13
     assert path_holonomy(transformed_cycle) == cycle.holonomy
     assert path_holonomy(transformed_cycle) == (path_holonomy(left) + path_holonomy(right)) % 13
-    assert cycle.theorem_ids == ("PHYS-T0047", "PHYS-T0049", "PHYS-T0053")
+    assert cycle.theorem_ids == ("PHYS-T0047", "PHYS-T0049", "PHYS-T0053", "PHYS-T0054", "PHYS-T0055")
+    assert swapped.closed
+    assert swapped.source == swapped.target == "c"
+    assert swapped.holonomy == cycle.holonomy
+    assert path_holonomy(transformed_swapped) == cycle.holonomy
 
 
 def test_closed_loop_record_rejects_open_paths() -> None:

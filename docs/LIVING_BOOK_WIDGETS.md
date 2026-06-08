@@ -356,7 +356,7 @@ Implemented shared JavaScript:
 
 - Inputs: finite phase modulus, three triangular-loop edge phases, and one editable sampled vertex gauge.
 - Outputs: identity-loop gauge samples, normalized triangular loop, original holonomy, transformed edge rows for three sampled gauges, transformed holonomies, sampled invariance flags, theorem-status badges, and dictionary links.
-- Theorem ids: `PHYS-T0004`, `PHYS-T0005`, `PHYS-T0046`, `PHYS-T0047`, `PHYS-T0049`, `PHYS-T0052`, and `PHYS-T0053`, linking the sampled Python certificate to the Lean-proved closed-loop identity and two-path cycle invariance boundaries.
+- Theorem ids: `PHYS-T0004`, `PHYS-T0005`, `PHYS-T0046`, `PHYS-T0047`, `PHYS-T0049`, `PHYS-T0052`, `PHYS-T0053`, `PHYS-T0054`, and `PHYS-T0055`, linking the sampled Python certificate to the Lean-proved closed-loop identity, two-path cycle invariance, and two-path basepoint-swap boundaries.
 - Dictionary ids: `COMMON-0060`, `COMMON-0061`, `COMMON-0062`, and `COMMON-0063`.
 - Python references: `circle_math.physics.GaugePath`, `circle_math.physics.GaugeEdge`, `circle_math.physics.gauge_transform_path`, `circle_math.physics.path_holonomy`, and `circle_math.physics.wilson_loop_certificate`.
 - Guardrail: the widget is a sampled finite Wilson-loop certificate only. It does not prove continuum gauge theory, electromagnetism, QFT, Berry phase, or a physics prediction.

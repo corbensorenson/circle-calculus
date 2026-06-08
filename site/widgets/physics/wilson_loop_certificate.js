@@ -2,7 +2,7 @@ import { mod, positiveInt } from "../shared/circle_math_core.js";
 import { addLabeledNumber, addOutput, addWidgetHeader, clear } from "../shared/svg_helpers.js";
 import { loadJson, mountWidgets, statusClass, statusLabel } from "../shared/widget_base.js";
 
-const THEOREM_IDS = ["PHYS-T0004", "PHYS-T0005", "PHYS-T0046", "PHYS-T0047", "PHYS-T0049", "PHYS-T0052", "PHYS-T0053"];
+const THEOREM_IDS = ["PHYS-T0004", "PHYS-T0005", "PHYS-T0046", "PHYS-T0047", "PHYS-T0049", "PHYS-T0052", "PHYS-T0053", "PHYS-T0054", "PHYS-T0055"];
 const DICTIONARY_IDS = ["COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063"];
 
 function signedInt(value, fallback, min = -99, max = 99) {
@@ -165,7 +165,7 @@ function appendRecord(output, seed, theoremById) {
   record.appendChild(data);
 
   appendGaugeTable(record, identityRows, "Identity-loop samples (PHYS-T0052)");
-  appendGaugeTable(record, cycleRows, "Two-path cycle samples (PHYS-T0053)");
+  appendGaugeTable(record, cycleRows, "Two-path cycle samples and basepoint swap boundary (PHYS-T0053-PHYS-T0055)");
 
   const warning = document.createElement("p");
   warning.className = "warning-box";

@@ -1206,7 +1206,7 @@
             "passed": true
           },
           {
-            "evidence": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, and two-path cycle gauge-invariance facts.",
+            "evidence": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, and two-path basepoint-swap facts.",
             "id": "proof_scope",
             "label": "proof scope",
             "passed": true
@@ -1230,7 +1230,7 @@
             "passed": true
           },
           {
-            "evidence": "12",
+            "evidence": "14",
             "id": "proved_theorem_ids",
             "label": "proved theorem ids",
             "passed": true
@@ -1290,7 +1290,7 @@
         "living_book_widget_count": 3,
         "paper_count": 1,
         "source_count": 2,
-        "theorem_count": 12
+        "theorem_count": 14
       },
       "executable_refs": [
         "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
@@ -1317,7 +1317,7 @@
       ],
       "proof_provenance": "Proof provenance is project-native Lean code for finite gauge-link/path records and holonomy laws, with Python fixtures serving as executable references.",
       "proof_provenance_kind": "project_native",
-      "proof_scope": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, and two-path cycle gauge-invariance facts.",
+      "proof_scope": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, and two-path basepoint-swap facts.",
       "source_refs": [
         "Circle/Physics/LatticeGauge.lean",
         "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
@@ -1335,7 +1335,9 @@
         "PHYS-T0050",
         "PHYS-T0051",
         "PHYS-T0052",
-        "PHYS-T0053"
+        "PHYS-T0053",
+        "PHYS-T0054",
+        "PHYS-T0055"
       ],
       "title": "Proof-carrying finite gauge paths",
       "verification_recipe": {
@@ -1910,7 +1912,7 @@
       "living_book_widget_count": 18,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 73
+      "theorem_count": 75
     },
     "proof_provenance_counts": {
       "mathlib_bridge": 4,
@@ -1928,7 +1930,7 @@
       "living_book_widget_count": 18,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 73
+      "theorem_count": 75
     },
     "unique_living_book_pages": [
       "site/chapters/S1/03_coils_orbits_closure.qmd",

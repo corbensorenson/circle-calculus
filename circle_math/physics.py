@@ -245,7 +245,7 @@ def cycle_closed_loop_record(left: GaugePath, right: GaugePath) -> ClosedGaugeLo
         phases=record.phases,
         holonomy=record.holonomy,
         closed=record.closed,
-        theorem_ids=("PHYS-T0047", "PHYS-T0049", "PHYS-T0053"),
+        theorem_ids=("PHYS-T0047", "PHYS-T0049", "PHYS-T0053", "PHYS-T0054", "PHYS-T0055"),
         target_ids=record.target_ids,
         note=record.note,
     )

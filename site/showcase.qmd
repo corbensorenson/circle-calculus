@@ -213,7 +213,7 @@ The physics lane builds proof-carrying finite gauge paths with checked path comp
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-008" data-executable-ref="sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"></span><code>sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-008" data-dictionary-id="COMMON-0060"></span><code>COMMON-0060</code>; <span class="dictionary-evidence" data-capability-id="SHOW-008" data-dictionary-id="COMMON-0061"></span><code>COMMON-0061</code>; <span class="dictionary-evidence" data-capability-id="SHOW-008" data-dictionary-id="COMMON-0062"></span><code>COMMON-0062</code>; <span class="dictionary-evidence" data-capability-id="SHOW-008" data-dictionary-id="COMMON-0063"></span><code>COMMON-0063</code>.
 - Living Book evidence: <span class="living-book-evidence" data-capability-id="SHOW-008" data-page-ref="site/chapters/applications/physics.qmd"></span><code>site/chapters/applications/physics.qmd</code>; widgets <span class="living-book-widget-evidence" data-capability-id="SHOW-008" data-widget-id="finite_path_algebra"></span><code>finite_path_algebra</code>, <span class="living-book-widget-evidence" data-capability-id="SHOW-008" data-widget-id="finite_gauge_loop_holonomy"></span><code>finite_gauge_loop_holonomy</code>, <span class="living-book-widget-evidence" data-capability-id="SHOW-008" data-widget-id="wilson_loop_certificate"></span><code>wilson_loop_certificate</code>.
-- Scope: <span class="claim-field-evidence" data-capability-id="SHOW-008" data-claim-field="proof_scope"></span>Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, and two-path cycle gauge-invariance facts.
+- Scope: <span class="claim-field-evidence" data-capability-id="SHOW-008" data-claim-field="proof_scope"></span>Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, and two-path basepoint-swap facts.
 - Proof provenance: <span class="claim-field-evidence" data-capability-id="SHOW-008" data-claim-field="proof_provenance"></span>Proof provenance is project-native Lean code for finite gauge-link/path records and holonomy laws, with Python fixtures serving as executable references.
 - Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-008" data-claim-field="not_claimed"></span>No continuum gauge theory, no physics discovery, and no lattice-QCD correctness claim.
 
@@ -229,6 +229,8 @@ The physics lane builds proof-carrying finite gauge paths with checked path comp
 <div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0051"></div>
 <div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0052"></div>
 <div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0053"></div>
+<div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0054"></div>
+<div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0055"></div>
 
 ### Generative Provenance
 
