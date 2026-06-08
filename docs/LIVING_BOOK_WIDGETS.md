@@ -328,7 +328,7 @@ Implemented shared JavaScript:
 
 - Inputs: finite phase modulus, four square-plaquette edge phases, and four vertex gauge values.
 - Outputs: original normalized edge phases, transformed edge phases, original holonomy, transformed holonomy, closed-path endpoint-shift cancellation, theorem-status badges, and dictionary links.
-- Theorem ids: `PHYS-T0004`, `PHYS-T0005`, `PHYS-T0012`, and `PHYS-T0045`.
+- Theorem ids: `PHYS-T0004`, `PHYS-T0005`, `PHYS-T0012`, `PHYS-T0045`, and `PHYS-T0047`.
 - Dictionary ids: `COMMON-0060`, `COMMON-0061`, `COMMON-0062`, and `COMMON-0063`.
 - Python references: `circle_math.physics.square_plaquette_path`, `circle_math.physics.gauge_transform_path`, and `circle_math.physics.path_holonomy`.
 - Guardrail: the widget is finite `Z_n` bookkeeping only. It is not a proof artifact, continuum gauge theory, QFT, Yang-Mills theory, Berry phase, electromagnetism, or a physics prediction.
@@ -338,7 +338,7 @@ Implemented shared JavaScript:
 
 - Inputs: finite phase modulus, three triangular-loop edge phases, and one editable sampled vertex gauge.
 - Outputs: normalized triangular loop, original holonomy, transformed edge rows for three sampled gauges, transformed holonomies, sampled invariance flags, theorem-status badges, and dictionary links.
-- Theorem ids: `PHYS-T0004`, `PHYS-T0005`, and `PHYS-T0046`, linking the sampled Python certificate to the Lean-proved closed-loop and two-path cycle invariance boundaries.
+- Theorem ids: `PHYS-T0004`, `PHYS-T0005`, `PHYS-T0046`, `PHYS-T0047`, and `PHYS-T0049`, linking the sampled Python certificate to the Lean-proved closed-loop and two-path cycle invariance boundaries.
 - Dictionary ids: `COMMON-0060`, `COMMON-0061`, `COMMON-0062`, and `COMMON-0063`.
 - Python references: `circle_math.physics.GaugePath`, `circle_math.physics.GaugeEdge`, `circle_math.physics.gauge_transform_path`, `circle_math.physics.path_holonomy`, and `circle_math.physics.wilson_loop_certificate`.
 - Guardrail: the widget is a sampled finite Wilson-loop certificate only. It does not prove continuum gauge theory, electromagnetism, QFT, Berry phase, or a physics prediction.

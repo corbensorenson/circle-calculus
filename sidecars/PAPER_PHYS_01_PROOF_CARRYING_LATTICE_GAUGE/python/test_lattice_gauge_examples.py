@@ -1,12 +1,15 @@
 from circle_math.physics import (
     GaugeEdge,
     GaugePath,
+    closed_loop_record,
     concat_paths,
+    cycle_closed_loop_record,
     finite_defect_winding,
     finite_periodic_dynamics,
     gauge_transform_path,
     path_holonomy,
     reverse_path,
+    identity_closed_loop_record,
     square_plaquette_path,
     transformed_holonomy_endpoint_prediction,
     wilson_loop_certificate,
@@ -72,6 +75,37 @@ def test_closed_wilson_loop_is_invariant_under_sampled_gauges() -> None:
     assert loop.closed
     assert certificate.holonomy == path_holonomy(loop)
     assert certificate.gauge_invariant_under == ("gauge:0", "gauge:1", "gauge:2")
+    assert "PHYS-T0047" in certificate.theorem_ids
+
+
+def test_closed_loop_records_identity_and_cycle_holonomy() -> None:
+    identity = identity_closed_loop_record(11, "a")
+    left = GaugePath(13, (GaugeEdge("a", "b", 5), GaugeEdge("b", "c", 4)))
+    right = GaugePath(13, (GaugeEdge("c", "a", 2),))
+    cycle = cycle_closed_loop_record(left, right)
+
+    assert identity.closed
+    assert identity.source == identity.target == "a"
+    assert identity.phases == ()
+    assert identity.holonomy == 0
+    assert identity.theorem_ids == ("PHYS-T0048",)
+    assert cycle.closed
+    assert cycle.source == cycle.target == "a"
+    assert cycle.holonomy == (path_holonomy(left) + path_holonomy(right)) % 13
+    assert cycle.theorem_ids == ("PHYS-T0047", "PHYS-T0049")
+
+
+def test_closed_loop_record_rejects_open_paths() -> None:
+    open_path = GaugePath(17, (GaugeEdge("a", "b", 3),))
+    closed_path = GaugePath(17, (GaugeEdge("a", "b", 3), GaugeEdge("b", "a", 5)))
+
+    assert closed_loop_record(closed_path).closed
+    try:
+        closed_loop_record(open_path)
+    except ValueError as error:
+        assert "requires a closed path" in str(error)
+    else:
+        raise AssertionError("open paths must not produce closed-loop records")
 
 
 def test_square_plaquette_fixture_is_closed_and_gauge_invariant() -> None:

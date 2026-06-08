@@ -282,7 +282,7 @@
         "circle_native_value",
         "application_guardrail"
       ],
-      "proof_scope": "Lean-proved finite link-path, checked-path, gauge-transform, Wilson-loop, plaquette, and two-path cycle gauge-invariance facts.",
+      "proof_scope": "Lean-proved finite link-path, checked-path, gauge-transform, Wilson-loop, plaquette, closed-loop record, and two-path cycle gauge-invariance facts.",
       "source_refs": [
         "Circle/Physics/LatticeGauge.lean",
         "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
@@ -294,7 +294,9 @@
         "PHYS-T0026",
         "PHYS-T0038",
         "PHYS-T0042",
-        "PHYS-T0046"
+        "PHYS-T0046",
+        "PHYS-T0047",
+        "PHYS-T0049"
       ],
       "title": "Proof-carrying finite gauge paths"
     },

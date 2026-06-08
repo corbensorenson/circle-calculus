@@ -98,8 +98,11 @@ The paper also connects backward to bundle vocabulary in `PAPER_P2_03_BUNDLE_CAL
 - `PHYS-T0044`: `Circle.Physics.checkedGaugePath_concat_closed_of_cycle`, two checked paths form a closed loop when their endpoints cycle back.
 - `PHYS-T0045`: `Circle.Physics.checkedGaugePath_closed_gaugeInvariant`, a closed checked path has gauge-shifted holonomy equal to its original holonomy because endpoint shifts cancel.
 - `PHYS-T0046`: `Circle.Physics.checkedGaugePath_concat_cycle_gaugeInvariant`, two checked paths whose endpoints cycle back have gauge-invariant concatenated holonomy.
+- `PHYS-T0047`: `Circle.Physics.closedGaugeLoop_gaugeInvariant`, a closed finite gauge-loop record has gauge-shifted holonomy equal to its original holonomy.
+- `PHYS-T0048`: `Circle.Physics.closedGaugeLoop_identity_holonomy`, the checked finite identity loop has zero holonomy.
+- `PHYS-T0049`: `Circle.Physics.closedGaugeLoop_fromCycle_holonomy`, a closed finite two-path cycle has holonomy equal to the sum of the two checked path holonomies.
 
-These theorem ids are Lean-proved in `Circle.Physics.LatticeGauge` for the finite `ZMod n` phase model. `PHYS-T0006` through `PHYS-T0046` move from bare phase lists toward finite link/path records, source-target composability, singleton concatenation, three-/four-link source-target laws, empty-path identity-style composability laws, record-level identity/associativity laws for concatenation, record-level reversal laws, general boundary-checked append composability, first source/target laws for nonempty concatenations, a checked finite path interface with explicit endpoints, identities, associative boundary-checked composition, checked-path holonomy identity/singleton/concat laws, projection bridges back to the link-path carrier, closed checked-path gauge-invariance facts, and a packaged two-path cycle gauge-invariance certificate. They do not yet install a full mathlib category instance for finite graph paths. They do not prove continuum gauge theory.
+These theorem ids are Lean-proved in `Circle.Physics.LatticeGauge` for the finite `ZMod n` phase model. `PHYS-T0006` through `PHYS-T0049` move from bare phase lists toward finite link/path records, source-target composability, singleton concatenation, three-/four-link source-target laws, empty-path identity-style composability laws, record-level identity/associativity laws for concatenation, record-level reversal laws, general boundary-checked append composability, first source/target laws for nonempty concatenations, a checked finite path interface with explicit endpoints, identities, associative boundary-checked composition, checked-path holonomy identity/singleton/concat laws, projection bridges back to the link-path carrier, closed checked-path gauge-invariance facts, a packaged two-path cycle gauge-invariance certificate, and a reusable closed-loop record with identity/cycle holonomy facts. They do not yet install a full mathlib category instance for finite graph paths. They do not prove continuum gauge theory.
 
 ## Finite Model
 
@@ -171,9 +174,12 @@ gauge_transform_path
 transformed_holonomy_endpoint_prediction
 square_plaquette_path
 wilson_loop_certificate
+closed_loop_record
+identity_closed_loop_record
+cycle_closed_loop_record
 ```
 
-The tests cover concatenation, reversal, open-path endpoint behavior, closed Wilson-loop invariance, and a square plaquette. The fixture deliberately reports a finite certificate, not a continuum field strength.
+The tests cover concatenation, reversal, open-path endpoint behavior, closed Wilson-loop invariance, identity/cycle closed-loop records, open-path rejection for closed-loop records, and a square plaquette. The fixture deliberately reports a finite certificate, not a continuum field strength.
 
 ## Circle Calculus Framing
 
@@ -194,4 +200,4 @@ That framing is useful only if the source trail stays attached. A visual loop or
 
 This paper does not model a continuum manifold, a differentiable connection, curvature forms, electric or magnetic fields, Berry phase, QED, QCD, Yang-Mills theory, lattice simulation, or experimental physics. It is a finite proof-carrying interface for gauge-link bookkeeping.
 
-The next formal step is to decide whether a full finite graph path-category instance is useful enough to justify the extra abstraction, or whether the explicit `CheckedGaugePath` interface is the clearer paper-facing artifact.
+The next formal step is to decide whether a full finite graph path-category instance is useful enough to justify the extra abstraction, or whether the explicit `CheckedGaugePath` plus `ClosedGaugeLoop` interface is the clearer paper-facing artifact.

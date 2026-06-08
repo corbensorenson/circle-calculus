@@ -320,7 +320,7 @@ def js_wilson_loop_certificate(
         "holonomy": holonomy,
         "closed": closed,
         "gauge_invariant_under": tuple(invariant_under),
-        "theorem_ids": ("PHYS-T0004", "PHYS-T0005"),
+        "theorem_ids": ("PHYS-T0004", "PHYS-T0005", "PHYS-T0047"),
     }
 
 

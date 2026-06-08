@@ -542,7 +542,8 @@
         "PHYS-T0004",
         "PHYS-T0005",
         "PHYS-T0012",
-        "PHYS-T0045"
+        "PHYS-T0045",
+        "PHYS-T0047"
       ]
     },
     {
@@ -558,7 +559,9 @@
       "theorem_ids": [
         "PHYS-T0004",
         "PHYS-T0005",
-        "PHYS-T0046"
+        "PHYS-T0046",
+        "PHYS-T0047",
+        "PHYS-T0049"
       ]
     },
     {

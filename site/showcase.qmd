@@ -165,13 +165,15 @@ The physics lane builds proof-carrying finite gauge paths with checked path comp
 - Circle expression: source-target and holonomy laws are finite Lean records.
 - Circle-native value: path widgets and experiments can reject invalid compositions before making physics claims.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-008" data-executable-ref="sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"></span><code>sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py</code>.
-- Scope: Lean-proved finite path, gauge, Wilson-loop, plaquette, and two-path cycle gauge-invariance facts.
+- Scope: Lean-proved finite path, gauge, Wilson-loop, plaquette, closed-loop record, and two-path cycle gauge-invariance facts.
 - Boundary: no continuum physics or lattice-QCD correctness claim.
 
 <div class="theorem-box" data-theorem-id="PHYS-T0012"></div>
 <div class="theorem-box" data-theorem-id="PHYS-T0038"></div>
 <div class="theorem-box" data-theorem-id="PHYS-T0042"></div>
 <div class="theorem-box" data-theorem-id="PHYS-T0046"></div>
+<div class="theorem-box" data-theorem-id="PHYS-T0047"></div>
+<div class="theorem-box" data-theorem-id="PHYS-T0049"></div>
 
 ### Generative Provenance
 

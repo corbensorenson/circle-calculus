@@ -1892,6 +1892,48 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_closed_wilson_loop_is_invariant_under_sampled_gauges
     blocker: ""
+  - id: PHYS-T0047
+    status: lean_proved
+    lean_name: Circle.Physics.closedGaugeLoop_gaugeInvariant
+    informal_statement: "A closed finite gauge-loop record has gauge-shifted holonomy equal to its original holonomy."
+    formal_statement: "For a ClosedGaugeLoop over ZMod n and any finite vertex gauge function, loop.gaugeShiftedHolonomy gauge = loop.holonomy."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_closed_loop_record_rejects_open_paths
+    blocker: ""
+  - id: PHYS-T0048
+    status: lean_proved
+    lean_name: Circle.Physics.closedGaugeLoop_identity_holonomy
+    informal_statement: "The checked finite identity loop has zero holonomy."
+    formal_statement: "For n and vertex, (ClosedGaugeLoop.identity n vertex).holonomy = 0."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0062"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_closed_loop_records_identity_and_cycle_holonomy
+    blocker: ""
+  - id: PHYS-T0049
+    status: lean_proved
+    lean_name: Circle.Physics.closedGaugeLoop_fromCycle_holonomy
+    informal_statement: "A closed finite two-path cycle has holonomy equal to the sum of the two checked path holonomies."
+    formal_statement: "For checked finite gauge paths left and right whose endpoints cycle back, ClosedGaugeLoop.fromCycle left right hforward hback has holonomy left.holonomy + right.holonomy."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0062"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_closed_loop_records_identity_and_cycle_holonomy
+    blocker: ""
   - id: GEN-T0001
     status: lean_proved
     lean_name: Circle.Generative.finiteCircleGenerator_regenerates_nodes

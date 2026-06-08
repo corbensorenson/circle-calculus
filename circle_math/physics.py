@@ -73,6 +73,19 @@ class WilsonLoopCertificate:
 
 
 @dataclass(frozen=True)
+class ClosedGaugeLoopRecord:
+    modulus: int
+    source: str
+    target: str
+    phases: tuple[int, ...]
+    holonomy: int
+    closed: bool
+    theorem_ids: tuple[str, ...]
+    target_ids: tuple[str, ...] = ("P7-PHYS-001",)
+    note: str = "Finite closed-gauge-loop record only; not a continuum physics claim."
+
+
+@dataclass(frozen=True)
 class PeriodicDynamicsRecord:
     modulus: int
     stride: int
@@ -185,8 +198,56 @@ def wilson_loop_certificate(path: GaugePath, gauges: Sequence[Mapping[str, int]]
         holonomy=holonomy,
         closed=path.closed,
         gauge_invariant_under=tuple(invariant_under),
-        theorem_ids=("PHYS-T0004", "PHYS-T0005"),
+        theorem_ids=("PHYS-T0004", "PHYS-T0005", "PHYS-T0047"),
         target_ids=("P7-PHYS-001",),
+    )
+
+
+def closed_loop_record(path: GaugePath) -> ClosedGaugeLoopRecord:
+    """Build a finite closed-loop record from an already composable path."""
+    if not path.closed:
+        raise ValueError("closed loop record requires a closed path")
+    return ClosedGaugeLoopRecord(
+        modulus=path.modulus,
+        source=path.source,
+        target=path.target,
+        phases=tuple(edge.phase for edge in path.edges),
+        holonomy=path_holonomy(path),
+        closed=True,
+        theorem_ids=("PHYS-T0047",),
+    )
+
+
+def identity_closed_loop_record(modulus: int, vertex: str) -> ClosedGaugeLoopRecord:
+    """Return the empty checked-loop analogue used by the Lean identity theorem."""
+    _require_positive(modulus, "modulus")
+    return ClosedGaugeLoopRecord(
+        modulus=modulus,
+        source=vertex,
+        target=vertex,
+        phases=(),
+        holonomy=0,
+        closed=True,
+        theorem_ids=("PHYS-T0048",),
+    )
+
+
+def cycle_closed_loop_record(left: GaugePath, right: GaugePath) -> ClosedGaugeLoopRecord:
+    """Concatenate two finite paths that close into a cycle and record holonomy."""
+    combined = concat_paths(left, right)
+    if combined.target != combined.source:
+        raise ValueError("cycle loop record requires endpoints to cycle back")
+    record = closed_loop_record(combined)
+    return ClosedGaugeLoopRecord(
+        modulus=record.modulus,
+        source=record.source,
+        target=record.target,
+        phases=record.phases,
+        holonomy=record.holonomy,
+        closed=record.closed,
+        theorem_ids=("PHYS-T0047", "PHYS-T0049"),
+        target_ids=record.target_ids,
+        note=record.note,
     )
 
 

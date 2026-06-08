@@ -63,7 +63,7 @@ square_plaquette_path
 wilson_loop_certificate
 ```
 
-The sidecar tests check a composable path, a reversed path, an open-path gauge transform, a closed Wilson loop, and a square plaquette.
+The sidecar tests check a composable path, a reversed path, an open-path gauge transform, a closed Wilson loop, identity/cycle closed-loop records, open-path rejection for closed-loop records, and a square plaquette.
 
 The first widget shows the path algebra before the closed-loop case: concatenate a composable path, reverse it, close it by following the reverse, and compare an open-path gauge transform against its endpoint prediction. It is finite bookkeeping only; the theorem cards remain the formal status source.
 
@@ -76,6 +76,8 @@ The second widget specializes that idea to a square plaquette. Change the edge p
 The third widget turns the closed-loop calculation into a certificate-style record. It checks the same triangular Wilson loop under several sampled vertex gauges and records exactly which finite theorem cards support the closed-loop boundary.
 
 <div class="widget-panel" data-widget="wilson_loop_certificate" data-theorem-id="PHYS-T0004" data-dictionary-ids="COMMON-0060 COMMON-0061 COMMON-0062 COMMON-0063"></div>
+
+The same finite idea now has a reusable `ClosedGaugeLoop` Lean record. The record stores a checked path plus the proof that its endpoints close, so identity-loop and two-path-cycle holonomy facts can be linked directly to theorem cards instead of living only in prose.
 
 The Hopf hidden-phase widget shows the next layer of the same idea: a visible base coordinate can stay fixed while a hidden circular phase changes the lifted `S3` pair. This is a bounded coordinate fixture linked to S3 Hopf theorem cards, not a claim about Berry phase or a complete fiber-bundle formalization.
 
@@ -145,6 +147,9 @@ The theorem cards below are Lean-proved for the finite `ZMod n` phase and link-p
 <div class="theorem-box" data-theorem-id="PHYS-T0044"></div>
 <div class="theorem-box" data-theorem-id="PHYS-T0045"></div>
 <div class="theorem-box" data-theorem-id="PHYS-T0046"></div>
+<div class="theorem-box" data-theorem-id="PHYS-T0047"></div>
+<div class="theorem-box" data-theorem-id="PHYS-T0048"></div>
+<div class="theorem-box" data-theorem-id="PHYS-T0049"></div>
 
 The Hopf cards are Lean-proved coordinate facts: normalized pairs land on the unit base equation, unit phase rotation preserves the visible base, and phase actions obey identity/composition laws. They do not prove Berry phase, quantum mechanics, or the full topology of the Hopf fibration.
 
@@ -188,7 +193,7 @@ The spin-sign cards are Lean-proved S3 algebraic facts. They support the bounded
 <p data-paper-ref="papers/PAPER_02_WINDING_NATURALS.md">Winding paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/PAPER_02_WINDING_NATURALS.md">Winding Naturals</a></p>
 
 ::: {.warning-box}
-The Python fixture is an executable reference. The current Lean model proves finite phase-list and link-path holonomy facts plus singleton, two-link, singleton-concat, three-link, four-link, empty-identity, concat-identity, concat-associativity, reversal-algebra, boundary-append composability, first source/target projection facts, checked finite path endpoint facts, checked finite path identity/associativity laws, checked finite path holonomy identity/singleton/concat laws, projection bridges from checked paths back to the link-path carrier, closed checked-path gauge-invariance facts, and a two-path cycle gauge-invariance certificate. A full finite graph path category remains future graph-path work.
+The Python fixture is an executable reference. The current Lean model proves finite phase-list and link-path holonomy facts plus singleton, two-link, singleton-concat, three-link, four-link, empty-identity, concat-identity, concat-associativity, reversal-algebra, boundary-append composability, first source/target projection facts, checked finite path endpoint facts, checked finite path identity/associativity laws, checked finite path holonomy identity/singleton/concat laws, projection bridges from checked paths back to the link-path carrier, closed checked-path gauge-invariance facts, a two-path cycle gauge-invariance certificate, and a reusable `ClosedGaugeLoop` record with identity/cycle holonomy facts. A full finite graph path category remains future graph-path work.
 :::
 
 <script type="module" src="../../widgets/physics/finite_path_algebra.js"></script>

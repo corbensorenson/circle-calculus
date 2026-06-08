@@ -326,6 +326,17 @@ def CheckedGaugePath.gaugeShiftedHolonomy
     (path : CheckedGaugePath n) (gauge : Nat → ZMod n) : ZMod n :=
   path.holonomy + gauge path.source - gauge path.target
 
+structure ClosedGaugeLoop (n : Nat) where
+  path : CheckedGaugePath n
+  closed : path.closed
+
+def ClosedGaugeLoop.holonomy (loop : ClosedGaugeLoop n) : ZMod n :=
+  loop.path.holonomy
+
+def ClosedGaugeLoop.gaugeShiftedHolonomy
+    (loop : ClosedGaugeLoop n) (gauge : Nat → ZMod n) : ZMod n :=
+  loop.path.gaugeShiftedHolonomy gauge
+
 theorem checkedGaugePath_identity_source (n vertex : Nat) :
     (CheckedGaugePath.identity n vertex).source = vertex := by
   rfl
@@ -416,6 +427,17 @@ theorem checkedGaugePath_concat_closed_of_cycle
   unfold CheckedGaugePath.closed
   simpa [CheckedGaugePath.concat] using hback.symm
 
+def ClosedGaugeLoop.identity (n vertex : Nat) : ClosedGaugeLoop n :=
+  { path := CheckedGaugePath.identity n vertex,
+    closed := checkedGaugePath_identity_closed n vertex }
+
+def ClosedGaugeLoop.fromCycle
+    (left right : CheckedGaugePath n)
+    (hforward : left.target = right.source)
+    (hback : right.target = left.source) : ClosedGaugeLoop n :=
+  { path := left.concat right hforward,
+    closed := checkedGaugePath_concat_closed_of_cycle left right hforward hback }
+
 theorem checkedGaugePath_closed_gaugeInvariant
     (path : CheckedGaugePath n) (gauge : Nat → ZMod n)
     (hclosed : path.closed) :
@@ -433,6 +455,25 @@ theorem checkedGaugePath_concat_cycle_gaugeInvariant
       (left.concat right hforward).holonomy := by
   apply checkedGaugePath_closed_gaugeInvariant
   exact checkedGaugePath_concat_closed_of_cycle left right hforward hback
+
+theorem closedGaugeLoop_gaugeInvariant
+    (loop : ClosedGaugeLoop n) (gauge : Nat → ZMod n) :
+    loop.gaugeShiftedHolonomy gauge = loop.holonomy := by
+  cases loop with
+  | mk path closed =>
+      exact checkedGaugePath_closed_gaugeInvariant path gauge closed
+
+theorem closedGaugeLoop_identity_holonomy (n vertex : Nat) :
+    (ClosedGaugeLoop.identity n vertex).holonomy = 0 := by
+  exact checkedGaugePath_identity_holonomy n vertex
+
+theorem closedGaugeLoop_fromCycle_holonomy
+    (left right : CheckedGaugePath n)
+    (hforward : left.target = right.source)
+    (hback : right.target = left.source) :
+    (ClosedGaugeLoop.fromCycle left right hforward hback).holonomy =
+      left.holonomy + right.holonomy := by
+  exact checkedGaugePath_concat_holonomy left right hforward
 
 theorem gaugeLinkPath_reverse_phases (path : GaugeLinkPath n) :
     path.reverse.phases = reversePhases path.phases := by

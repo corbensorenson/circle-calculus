@@ -465,7 +465,7 @@ def export_widget_index() -> dict:
         {
             "id": "finite_gauge_loop_holonomy",
             "path": "site/widgets/physics/finite_gauge_loop_holonomy.js",
-            "theorem_ids": ["PHYS-T0004", "PHYS-T0005", "PHYS-T0012", "PHYS-T0045"],
+            "theorem_ids": ["PHYS-T0004", "PHYS-T0005", "PHYS-T0012", "PHYS-T0045", "PHYS-T0047"],
             "dictionary_ids": [
                 "COMMON-0060",
                 "COMMON-0061",
@@ -477,7 +477,7 @@ def export_widget_index() -> dict:
         {
             "id": "wilson_loop_certificate",
             "path": "site/widgets/physics/wilson_loop_certificate.js",
-            "theorem_ids": ["PHYS-T0004", "PHYS-T0005", "PHYS-T0046"],
+            "theorem_ids": ["PHYS-T0004", "PHYS-T0005", "PHYS-T0046", "PHYS-T0047", "PHYS-T0049"],
             "dictionary_ids": [
                 "COMMON-0060",
                 "COMMON-0061",
