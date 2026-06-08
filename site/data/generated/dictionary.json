@@ -5405,6 +5405,11 @@
           "python_reference": "circle_math.applications.circle_ai.fit_loop_budget_lookup; circle_math.applications.circle_ai.predict_loop_budget_lookup; circle_math.applications.circle_ai.run_learned_token_level_recurrence_benchmark"
         },
         {
+          "id": "loop_exit_certificate",
+          "path": "site/widgets/ai/loop_exit_certificate.js",
+          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate"
+        },
+        {
           "id": "loop_recurrence_budget",
           "path": "site/widgets/ai/loop_recurrence_budget.js",
           "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.token_recurrence_budget; circle_math.applications.circle_ai.training_free_loop_budget"
@@ -5568,6 +5573,11 @@
           "python_reference": "circle_math.applications.circle_ai.fit_loop_budget_lookup; circle_math.applications.circle_ai.predict_loop_budget_lookup; circle_math.applications.circle_ai.run_learned_token_level_recurrence_benchmark"
         },
         {
+          "id": "loop_exit_certificate",
+          "path": "site/widgets/ai/loop_exit_certificate.js",
+          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate"
+        },
+        {
           "id": "loop_recurrence_budget",
           "path": "site/widgets/ai/loop_recurrence_budget.js",
           "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.token_recurrence_budget; circle_math.applications.circle_ai.training_free_loop_budget"
@@ -5632,6 +5642,11 @@
         }
       ],
       "used_by_widgets": [
+        {
+          "id": "loop_exit_certificate",
+          "path": "site/widgets/ai/loop_exit_certificate.js",
+          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate"
+        },
         {
           "id": "loop_recurrence_budget",
           "path": "site/widgets/ai/loop_recurrence_budget.js",
@@ -5851,6 +5866,11 @@
           "id": "learned_token_recurrence",
           "path": "site/widgets/ai/learned_token_recurrence.js",
           "python_reference": "circle_math.applications.circle_ai.fit_loop_budget_lookup; circle_math.applications.circle_ai.predict_loop_budget_lookup; circle_math.applications.circle_ai.run_learned_token_level_recurrence_benchmark"
+        },
+        {
+          "id": "loop_exit_certificate",
+          "path": "site/widgets/ai/loop_exit_certificate.js",
+          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate"
         },
         {
           "id": "loop_recurrence_budget",
@@ -7124,6 +7144,11 @@
         }
       ],
       "used_by_widgets": [
+        {
+          "id": "loop_exit_certificate",
+          "path": "site/widgets/ai/loop_exit_certificate.js",
+          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate"
+        },
         {
           "id": "loop_recurrence_budget",
           "path": "site/widgets/ai/loop_recurrence_budget.js",

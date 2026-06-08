@@ -112,6 +112,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is finite schedule bookkeeping only. It does not prove model quality, speed, reasoning improvement, memory improvement, or context-length improvement.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python AI recurrence helpers.
 
+### loop_exit_certificate
+
+- Inputs: loop period, primary sample index, primary maximum loops, fixed-budget control sample index, fixed-budget control maximum loops, and overthinking tolerance.
+- Outputs: primary and control score traces, required loop depth, first exit step, exit availability, budget status, guardrail status, one-period-shift exit-availability check, theorem-status badges, and dictionary links.
+- Theorem ids: `AIM-T0012`, `AIM-T0013`, `AIM-T0014`, `AIM-T0015`, `AIM-T0016`, and `AIM-T0017`.
+- Dictionary ids: `COMMON-0052`, `COMMON-0053`, `COMMON-0054`, `COMMON-0059`, and `COMMON-0067`.
+- Python references: `circle_math.applications.circle_ai.loop_required_steps`, `circle_math.applications.circle_ai.loop_score_trace`, `circle_math.applications.circle_ai.loop_exit_step`, and `circle_math.applications.circle_ai.loop_exit_certificate`.
+- Guardrail: the widget is deterministic finite loop-schedule certificate bookkeeping only. It does not prove trained early-exit quality, recursive reasoning, speed, memory improvement, context-length improvement, or overthinking behavior in real transformers.
+- Validation: deterministic JavaScript-equivalent score traces, exit steps, availability flags, budget flags, guardrail flags, and one-period-shift checks are parity-checked against the Python loop-exit certificate helper.
+
 ### token_level_recurrence
 
 - Inputs: loop period, token count, maximum budget, fixed global budget, wrong-budget shift, over-loop budget, and overthinking tolerance.

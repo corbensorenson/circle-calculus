@@ -24,6 +24,8 @@ from circle_math.applications import (
     local_window_indices,
     loop_block_indices,
     loop_exit_certificate,
+    loop_exit_step,
+    loop_score_trace,
     loop_required_steps,
     lora_adapter_parameter_count,
     memory_slot,
@@ -315,6 +317,44 @@ def gauge_path_edges(path: GaugePath) -> tuple[dict, ...]:
 
 def js_loop_required_steps(loop_period: int, sample_index: int) -> int:
     return js_mod(sample_index, loop_period) + 1
+
+
+def js_loop_score_trace(required_steps: int, max_loops: int, overthink_tolerance: int) -> tuple[int, ...]:
+    return tuple(
+        1 if required_steps <= step <= required_steps + overthink_tolerance else 0
+        for step in range(1, max_loops + 1)
+    )
+
+
+def js_loop_exit_step(required_steps: int, max_loops: int, overthink_tolerance: int) -> int | None:
+    for index, score in enumerate(
+        js_loop_score_trace(required_steps, max_loops, overthink_tolerance),
+        start=1,
+    ):
+        if score == 1:
+            return index
+    return None
+
+
+def js_loop_exit_certificate(
+    loop_period: int,
+    sample_index: int,
+    max_loops: int,
+    overthink_tolerance: int,
+) -> dict[str, object]:
+    required = js_loop_required_steps(loop_period, sample_index)
+    boundary = required + overthink_tolerance
+    trace = js_loop_score_trace(required, max_loops, overthink_tolerance)
+    exit_step = js_loop_exit_step(required, max_loops, overthink_tolerance)
+    return {
+        "required_steps": required,
+        "overthinking_boundary": boundary,
+        "score_trace": trace,
+        "exit_step": exit_step,
+        "exit_available": exit_step is not None,
+        "within_budget": exit_step is not None and exit_step <= max_loops,
+        "within_guardrail": exit_step is not None and exit_step <= boundary,
+    }
 
 
 def js_token_recurrence_budget(loop_period: int, token_index: int) -> int:
@@ -1135,7 +1175,23 @@ def main() -> int:
             max_loops,
             overthink_tolerance=tolerance,
         )
+        js_certificate = js_loop_exit_certificate(loop_period, sample_index, max_loops, tolerance)
         assert required == js_loop_required_steps(loop_period, sample_index)
+        assert loop_score_trace(required, max_loops, overthink_tolerance=tolerance) == js_loop_score_trace(
+            required,
+            max_loops,
+            tolerance,
+        )
+        assert loop_exit_step(required, max_loops, overthink_tolerance=tolerance) == js_loop_exit_step(
+            required,
+            max_loops,
+            tolerance,
+        )
+        assert certificate.required_steps == js_certificate["required_steps"]
+        assert certificate.score_trace == js_certificate["score_trace"]
+        assert certificate.exit_step == js_certificate["exit_step"]
+        assert certificate.within_budget == js_certificate["within_budget"]
+        assert certificate.within_guardrail == js_certificate["within_guardrail"]
         assert token_recurrence_budget(loop_period, sample_index) == js_token_recurrence_budget(
             loop_period,
             sample_index,

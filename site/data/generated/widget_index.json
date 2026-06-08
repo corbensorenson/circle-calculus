@@ -173,6 +173,26 @@
         "COMMON-0052",
         "COMMON-0053",
         "COMMON-0054",
+        "COMMON-0059",
+        "COMMON-0067"
+      ],
+      "id": "loop_exit_certificate",
+      "path": "site/widgets/ai/loop_exit_certificate.js",
+      "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate",
+      "theorem_ids": [
+        "AIM-T0012",
+        "AIM-T0013",
+        "AIM-T0014",
+        "AIM-T0015",
+        "AIM-T0016",
+        "AIM-T0017"
+      ]
+    },
+    {
+      "dictionary_ids": [
+        "COMMON-0052",
+        "COMMON-0053",
+        "COMMON-0054",
         "COMMON-0067"
       ],
       "id": "training_free_loop_wrapper",

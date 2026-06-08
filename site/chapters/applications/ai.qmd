@@ -115,6 +115,10 @@ The widget below is the smallest interactive version of that boundary. It comput
 
 <div class="widget-panel" data-widget="loop_recurrence_budget" data-theorem-id="AIM-T0018" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0054 COMMON-0059 COMMON-0067"></div>
 
+`AIM-B0011` turns the exit decision into a small certificate: required depth, score trace, first exit step, budget status, and guardrail status. The control keeps the same finite logic but uses a deliberately insufficient fixed budget, so the no-exit case is visible.
+
+<div class="widget-panel" data-widget="loop_exit_certificate" data-theorem-id="AIM-T0015" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0054 COMMON-0059 COMMON-0067"></div>
+
 `AIM-B0005` turns that lesson into token-level bookkeeping:
 
 ```text
@@ -362,6 +366,7 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 <script type="module" src="../../widgets/ai/multicoil_phase_explorer.js"></script>
 <script type="module" src="../../widgets/ai/rope_relative_phase.js"></script>
 <script type="module" src="../../widgets/ai/loop_recurrence_budget.js"></script>
+<script type="module" src="../../widgets/ai/loop_exit_certificate.js"></script>
 <script type="module" src="../../widgets/ai/training_free_loop_wrapper.js"></script>
 <script type="module" src="../../widgets/ai/token_level_recurrence.js"></script>
 <script type="module" src="../../widgets/ai/learned_token_recurrence.js"></script>
