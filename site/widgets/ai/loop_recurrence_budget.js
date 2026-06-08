@@ -2,7 +2,7 @@ import { mod, positiveInt } from "../shared/circle_math_core.js";
 import { addLabeledNumber, addOutput, addWidgetHeader, clear } from "../shared/svg_helpers.js";
 import { loadJson, mountWidgets, statusClass, statusLabel } from "../shared/widget_base.js";
 
-const THEOREM_IDS = ["AIM-T0018", "AIM-T0019", "AIM-T0020", "AIM-T0021"];
+const THEOREM_IDS = ["AIM-T0018", "AIM-T0019", "AIM-T0020", "AIM-T0021", "AIM-T0022", "AIM-T0023"];
 const DICTIONARY_IDS = ["COMMON-0052", "COMMON-0053", "COMMON-0054", "COMMON-0059", "COMMON-0067"];
 
 let timelineIdCounter = 0;

@@ -10,6 +10,9 @@
         "CC-0001",
         "CC-0201"
       ],
+      "executable_refs": [
+        "sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py"
+      ],
       "id": "SHOW-001",
       "not_claimed": "No new proof of EGZ, no new proof of Cauchy-Davenport, and no progress claim on an open Erdos problem.",
       "paper_ids": [
@@ -42,6 +45,9 @@
         "CC-0001",
         "CC-0201"
       ],
+      "executable_refs": [
+        "sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py"
+      ],
       "id": "SHOW-002",
       "not_claimed": "No new EKR proof and no classification of all extremal families.",
       "paper_ids": [
@@ -72,6 +78,9 @@
       "dictionary_ids": [
         "CC-0001",
         "CC-0201"
+      ],
+      "executable_refs": [
+        "sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py"
       ],
       "id": "SHOW-003",
       "not_claimed": "No new Roth proof, no improved bounds, and no cyclic-to-natural transfer theorem yet.",
@@ -104,6 +113,9 @@
         "CC-0001",
         "CC-0201"
       ],
+      "executable_refs": [
+        "sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py"
+      ],
       "id": "SHOW-004",
       "not_claimed": "Finite Python searches are examples only; they are not the Hales-Jewett proof.",
       "paper_ids": [
@@ -134,6 +146,9 @@
       "dictionary_ids": [
         "CC-0001",
         "CC-0201"
+      ],
+      "executable_refs": [
+        "sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py"
       ],
       "id": "SHOW-005",
       "not_claimed": "No progress on hard unit-distance or distinct-distance problems.",
@@ -169,6 +184,9 @@
         "CC-0205",
         "CC-0207",
         "COMMON-0041"
+      ],
+      "executable_refs": [
+        "sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py"
       ],
       "id": "SHOW-006",
       "not_claimed": "No claim that this replaces standard modular arithmetic; it is a proof-carrying cyclic presentation.",
@@ -209,6 +227,10 @@
         "S3H-0001",
         "S3H-0002"
       ],
+      "executable_refs": [
+        "sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py",
+        "sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py"
+      ],
       "id": "SHOW-007",
       "not_claimed": "No full smooth Hopf fibration formalization and no complete SO(3) robotics formalization.",
       "paper_ids": [
@@ -222,6 +244,7 @@
       "proof_scope": "Lean-proved quaternion unit laws and bounded Hopf phase-action facts.",
       "source_refs": [
         "Circle/S3/Scaffold.lean",
+        "sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py",
         "sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py"
       ],
       "standard_math_anchor": "Quaternion unit algebra, Hopf-style phase coordinates, conjugation, and hidden phase symmetries.",
@@ -245,6 +268,9 @@
         "COMMON-0061",
         "COMMON-0062",
         "COMMON-0063"
+      ],
+      "executable_refs": [
+        "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
       ],
       "id": "SHOW-008",
       "not_claimed": "No continuum gauge theory, no physics discovery, and no lattice-QCD correctness claim.",
@@ -284,6 +310,10 @@
         "COMMON-0065",
         "COMMON-0066"
       ],
+      "executable_refs": [
+        "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py",
+        "sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py"
+      ],
       "id": "SHOW-009",
       "not_claimed": "No universal compression claim and no guarantee that generated artifacts are mathematically interesting.",
       "paper_ids": [
@@ -298,7 +328,8 @@
       "source_refs": [
         "Circle/Generative/SeedRule.lean",
         "Circle/Phase2/GlyphProof.lean",
-        "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py"
+        "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py",
+        "sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py"
       ],
       "standard_math_anchor": "Formal provenance, exact regeneration checks, orbit decompositions, and proof-carrying artifact records.",
       "theorem_ids": [
@@ -325,6 +356,10 @@
         "COMMON-0067",
         "COMMON-0071"
       ],
+      "executable_refs": [
+        "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
+        "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"
+      ],
       "id": "SHOW-010",
       "not_claimed": "No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence.",
       "paper_ids": [
@@ -336,11 +371,13 @@
         "circle_native_value",
         "application_guardrail"
       ],
-      "proof_scope": "Lean-proved finite memory-slot, loop-budget, loop-exit, and adapter-block normalization facts.",
+      "proof_scope": "Lean-proved finite memory-slot, loop-budget, recurrence-budget positivity, loop-exit, and adapter-block normalization facts.",
       "source_refs": [
         "Circle/Applications/CircleAI.lean",
         "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/lean/PaperAI02.lean",
-        "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/lean/PaperAI03.lean"
+        "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/lean/PaperAI03.lean",
+        "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
+        "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"
       ],
       "standard_math_anchor": "Finite cyclic buffers, schedule normalization, recurrence budgets, and modular adapter indexing.",
       "theorem_ids": [
@@ -348,6 +385,8 @@
         "AIM-T0005",
         "AIM-T0011",
         "AIM-T0017",
+        "AIM-T0022",
+        "AIM-T0024",
         "AIRA-T0005"
       ],
       "title": "AI memory, loop, and adapter schedules"
@@ -363,6 +402,11 @@
         "COMMON-0022",
         "COMMON-0040",
         "COMMON-0045"
+      ],
+      "executable_refs": [
+        "sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py",
+        "sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py",
+        "sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py"
       ],
       "id": "SHOW-011",
       "not_claimed": "No performance claim without direct dense, FFT/NTT, and backend baselines.",
@@ -380,7 +424,9 @@
       "source_refs": [
         "Circle/Applications/CoilCompute.lean",
         "Circle/Applications/CoilSystems.lean",
-        "sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py"
+        "sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py",
+        "sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py",
+        "sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py"
       ],
       "standard_math_anchor": "Circular buffers, periodic stencils, stride-address formulas, and round-robin scheduling laws.",
       "theorem_ids": [

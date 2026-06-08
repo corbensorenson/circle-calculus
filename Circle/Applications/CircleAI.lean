@@ -96,6 +96,11 @@ theorem loopRequiredSteps_add_loopPeriod {loopPeriod : Nat} (h : 0 < loopPeriod)
 def tokenRecurrenceBudget (loopPeriod token : Nat) : Nat :=
   loopRequiredSteps loopPeriod token
 
+theorem tokenRecurrenceBudget_pos (loopPeriod token : Nat) :
+    0 < tokenRecurrenceBudget loopPeriod token := by
+  unfold tokenRecurrenceBudget
+  exact loopRequiredSteps_pos loopPeriod token
+
 theorem tokenRecurrenceBudget_add_loopPeriod {loopPeriod : Nat} (h : 0 < loopPeriod)
     (token : Nat) :
     tokenRecurrenceBudget loopPeriod (token + loopPeriod) =
@@ -140,6 +145,13 @@ theorem trainingFreeLoopBudget_eq_required_of_available
       loopRequiredSteps loopPeriod sample := by
   unfold trainingFreeLoopBudget loopExitAvailable at *
   exact Nat.min_eq_left hbudget
+
+theorem trainingFreeLoopBudget_pos_of_available
+    (loopPeriod sample maxLoops : Nat)
+    (hbudget : loopExitAvailable loopPeriod sample maxLoops) :
+    0 < trainingFreeLoopBudget loopPeriod sample maxLoops := by
+  rw [trainingFreeLoopBudget_eq_required_of_available loopPeriod sample maxLoops hbudget]
+  exact loopRequiredSteps_pos loopPeriod sample
 
 def loopOverthinkingBoundary (loopPeriod sample tolerance : Nat) : Nat :=
   loopRequiredSteps loopPeriod sample + tolerance
@@ -204,6 +216,12 @@ theorem loopExitCertificate_exit_eq_required
     certificate.exitStep =
       loopRequiredSteps certificate.loopPeriod certificate.sample :=
   certificate.exactRequired
+
+theorem loopExitCertificate_exit_pos
+    (certificate : LoopExitCertificate) :
+    0 < certificate.exitStep := by
+  rw [loopExitCertificate_exit_eq_required certificate]
+  exact loopRequiredSteps_pos certificate.loopPeriod certificate.sample
 
 theorem loopExitCertificate_within_budget
     (certificate : LoopExitCertificate) :

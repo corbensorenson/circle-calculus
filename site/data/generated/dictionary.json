@@ -5497,6 +5497,24 @@
           "lean_name": "Circle.Applications.loopOverthinkingBoundary_add_loopPeriod",
           "name": "Circle.Applications.loopOverthinkingBoundary_add_loopPeriod",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0022",
+          "lean_name": "Circle.Applications.tokenRecurrenceBudget_pos",
+          "name": "Circle.Applications.tokenRecurrenceBudget_pos",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0023",
+          "lean_name": "Circle.Applications.trainingFreeLoopBudget_pos_of_available",
+          "name": "Circle.Applications.trainingFreeLoopBudget_pos_of_available",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0024",
+          "lean_name": "Circle.Applications.loopExitCertificate_exit_pos",
+          "name": "Circle.Applications.loopExitCertificate_exit_pos",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5670,6 +5688,24 @@
           "lean_name": "Circle.Applications.loopOverthinkingBoundary_add_loopPeriod",
           "name": "Circle.Applications.loopOverthinkingBoundary_add_loopPeriod",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0022",
+          "lean_name": "Circle.Applications.tokenRecurrenceBudget_pos",
+          "name": "Circle.Applications.tokenRecurrenceBudget_pos",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0023",
+          "lean_name": "Circle.Applications.trainingFreeLoopBudget_pos_of_available",
+          "name": "Circle.Applications.trainingFreeLoopBudget_pos_of_available",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0024",
+          "lean_name": "Circle.Applications.loopExitCertificate_exit_pos",
+          "name": "Circle.Applications.loopExitCertificate_exit_pos",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5759,6 +5795,12 @@
           "id": "AIM-T0021",
           "lean_name": "Circle.Applications.loopOverthinkingBoundary_add_loopPeriod",
           "name": "Circle.Applications.loopOverthinkingBoundary_add_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0024",
+          "lean_name": "Circle.Applications.loopExitCertificate_exit_pos",
+          "name": "Circle.Applications.loopExitCertificate_exit_pos",
           "status": "proved"
         }
       ],
@@ -5969,6 +6011,12 @@
           "id": "AIM-T0018",
           "lean_name": "Circle.Applications.tokenRecurrenceBudget_le_loopPeriod",
           "name": "Circle.Applications.tokenRecurrenceBudget_le_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0022",
+          "lean_name": "Circle.Applications.tokenRecurrenceBudget_pos",
+          "name": "Circle.Applications.tokenRecurrenceBudget_pos",
           "status": "proved"
         }
       ],
@@ -7329,6 +7377,12 @@
           "id": "AIM-T0020",
           "lean_name": "Circle.Applications.trainingFreeLoopBudget_eq_required_of_available",
           "name": "Circle.Applications.trainingFreeLoopBudget_eq_required_of_available",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0023",
+          "lean_name": "Circle.Applications.trainingFreeLoopBudget_pos_of_available",
+          "name": "Circle.Applications.trainingFreeLoopBudget_pos_of_available",
           "status": "proved"
         }
       ],

@@ -13,6 +13,8 @@ capabilities:
     paper_ids: ["PAPER_ERDOS_01_ZERO_SUM_CIRCLES"]
     theorem_ids: ["CC-T0062", "CC-T0063"]
     dictionary_ids: ["CC-0001", "CC-0201"]
+    executable_refs:
+      - "sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py"
     source_refs:
       - "Circle/Erdos/EGZ.lean"
       - "Circle/Erdos/CauchyDavenport.lean"
@@ -32,6 +34,8 @@ capabilities:
     paper_ids: ["PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD"]
     theorem_ids: ["CC-T0064", "CC-T0065"]
     dictionary_ids: ["CC-0001", "CC-0201"]
+    executable_refs:
+      - "sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py"
     source_refs:
       - "Circle/Erdos/KatonaEKR.lean"
       - "sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py"
@@ -50,6 +54,8 @@ capabilities:
     paper_ids: ["PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES"]
     theorem_ids: ["CC-T0066", "CC-T0067"]
     dictionary_ids: ["CC-0001", "CC-0201"]
+    executable_refs:
+      - "sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py"
     source_refs:
       - "Circle/Erdos/RothAP.lean"
       - "sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py"
@@ -68,6 +74,8 @@ capabilities:
     paper_ids: ["PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES"]
     theorem_ids: ["CC-T0068", "CC-T0069"]
     dictionary_ids: ["CC-0001", "CC-0201"]
+    executable_refs:
+      - "sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py"
     source_refs:
       - "Circle/Erdos/RamseyHJ.lean"
       - "sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py"
@@ -86,6 +94,8 @@ capabilities:
     paper_ids: ["PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS"]
     theorem_ids: ["CC-T0070", "CC-T0071", "CC-T0072"]
     dictionary_ids: ["CC-0001", "CC-0201"]
+    executable_refs:
+      - "sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py"
     source_refs:
       - "Circle/Erdos/GraphLab.lean"
       - "sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py"
@@ -104,6 +114,8 @@ capabilities:
     paper_ids: ["PAPER_S1_04_FACTORS_SCALING_PRIME_COILS", "PAPER_01_FINITE_CIRCLES"]
     theorem_ids: ["CC-T0005", "CC-T0006", "CC-T0048", "CC-T0049", "CC-T0054", "CC-T0061"]
     dictionary_ids: ["S1-0001", "CC-0105", "CC-0205", "CC-0207", "COMMON-0041"]
+    executable_refs:
+      - "sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py"
     source_refs:
       - "Circle/Core/Period.lean"
       - "Circle/Core/Orbit.lean"
@@ -124,8 +136,12 @@ capabilities:
     paper_ids: ["PAPER_S3_02_QUATERNION_COILS", "PAPER_S3_03_HOPF_COILS"]
     theorem_ids: ["S3Q-T0005", "S3Q-T0008", "S3H-T0001", "S3H-T0005", "S3H-T0008"]
     dictionary_ids: ["S3Q-0001", "S3H-0001", "S3H-0002"]
+    executable_refs:
+      - "sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py"
+      - "sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py"
     source_refs:
       - "Circle/S3/Scaffold.lean"
+      - "sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py"
       - "sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py"
 
   - id: SHOW-008
@@ -142,6 +158,8 @@ capabilities:
     paper_ids: ["PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"]
     theorem_ids: ["PHYS-T0001", "PHYS-T0012", "PHYS-T0026", "PHYS-T0038", "PHYS-T0042", "PHYS-T0046"]
     dictionary_ids: ["COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063"]
+    executable_refs:
+      - "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
     source_refs:
       - "Circle/Physics/LatticeGauge.lean"
       - "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
@@ -160,10 +178,14 @@ capabilities:
     paper_ids: ["PAPER_GEN_01_SEED_RULE_PROVENANCE", "PAPER_P2_05_PROOF_CARRYING_GLYPHS"]
     theorem_ids: ["GEN-T0001", "GEN-T0008", "GEN-T0017", "GEN-T0019", "GEN-T0020", "GEN-T0021", "P2G-T0006"]
     dictionary_ids: ["COMMON-0033", "COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    executable_refs:
+      - "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py"
+      - "sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py"
     source_refs:
       - "Circle/Generative/SeedRule.lean"
       - "Circle/Phase2/GlyphProof.lean"
       - "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py"
+      - "sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py"
 
   - id: SHOW-010
     title: "AI memory, loop, and adapter schedules"
@@ -174,15 +196,20 @@ capabilities:
     circle_math_expression: "AI-facing memory slots, loop budgets, exit certificates, and adapter blocks are encoded as finite cyclic address/schedule theorems."
     circle_native_value: "Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made."
     advertised_claim: "Circle Calculus can prove finite indexing and schedule-safety facts that AI experiments can reuse."
-    proof_scope: "Lean-proved finite memory-slot, loop-budget, loop-exit, and adapter-block normalization facts."
+    proof_scope: "Lean-proved finite memory-slot, loop-budget, recurrence-budget positivity, loop-exit, and adapter-block normalization facts."
     not_claimed: "No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence."
     paper_ids: ["PAPER_AI_02_COIL_ATTENTION_AND_MEMORY", "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"]
-    theorem_ids: ["AIM-T0001", "AIM-T0005", "AIM-T0011", "AIM-T0017", "AIRA-T0005"]
+    theorem_ids: ["AIM-T0001", "AIM-T0005", "AIM-T0011", "AIM-T0017", "AIM-T0022", "AIM-T0024", "AIRA-T0005"]
     dictionary_ids: ["COMMON-0028", "COMMON-0047", "COMMON-0052", "COMMON-0067", "COMMON-0071"]
+    executable_refs:
+      - "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py"
+      - "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"
     source_refs:
       - "Circle/Applications/CircleAI.lean"
       - "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/lean/PaperAI02.lean"
       - "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/lean/PaperAI03.lean"
+      - "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py"
+      - "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"
 
   - id: SHOW-011
     title: "Circular compute layouts and schedules"
@@ -198,7 +225,13 @@ capabilities:
     paper_ids: ["PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION", "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT", "PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS"]
     theorem_ids: ["COMPC-T0005", "COMPL-T0005", "COMPS-T0004"]
     dictionary_ids: ["COMMON-0018", "COMMON-0022", "COMMON-0040", "COMMON-0045"]
+    executable_refs:
+      - "sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py"
+      - "sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py"
+      - "sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py"
     source_refs:
       - "Circle/Applications/CoilCompute.lean"
       - "Circle/Applications/CoilSystems.lean"
+      - "sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py"
       - "sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py"
+      - "sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py"

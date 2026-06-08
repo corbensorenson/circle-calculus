@@ -1141,6 +1141,48 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
     blocker: ""
+  - id: AIM-T0022
+    status: lean_proved
+    lean_name: Circle.Applications.tokenRecurrenceBudget_pos
+    informal_statement: "Token recurrence budgets are always positive in the finite loop-schedule model."
+    formal_statement: "For loopPeriod and token, 0 < tokenRecurrenceBudget loopPeriod token."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_required_steps_are_positive_bounded_and_periodic
+    blocker: ""
+  - id: AIM-T0023
+    status: lean_proved
+    lean_name: Circle.Applications.trainingFreeLoopBudget_pos_of_available
+    informal_statement: "When a loop exit is available, the training-free loop-wrapper budget is positive."
+    formal_statement: "For loopPeriod sample maxLoops, loopExitAvailable loopPeriod sample maxLoops implies 0 < trainingFreeLoopBudget loopPeriod sample maxLoops."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0067"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_required_steps_are_positive_bounded_and_periodic
+    blocker: ""
+  - id: AIM-T0024
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitCertificate_exit_pos
+    informal_statement: "Every finite loop-exit certificate carries a positive exit step."
+    formal_statement: "For certificate : LoopExitCertificate, 0 < certificate.exitStep."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
+    blocker: ""
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize

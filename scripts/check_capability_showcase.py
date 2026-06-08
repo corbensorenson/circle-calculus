@@ -129,6 +129,7 @@ def main() -> int:
         theorem_ids = item.get("theorem_ids", [])
         paper_ids = item.get("paper_ids", [])
         refs = item.get("source_refs", [])
+        executable_refs = item.get("executable_refs", [])
         roles = item.get("portfolio_roles", [])
 
         if not theorem_ids:
@@ -137,6 +138,9 @@ def main() -> int:
             failures.append(f"{capability_id}: must cite at least one paper id")
         if not refs:
             failures.append(f"{capability_id}: must cite at least one source ref")
+        if not isinstance(executable_refs, list) or not executable_refs:
+            failures.append(f"{capability_id}: must cite at least one executable ref")
+            executable_refs = []
         if not isinstance(roles, list) or not roles:
             failures.append(f"{capability_id}: must declare portfolio_roles")
             roles = []
@@ -155,6 +159,14 @@ def main() -> int:
         duplicate_papers = sorted({pid for pid in paper_ids if paper_ids.count(pid) > 1})
         if duplicate_papers:
             failures.append(f"{capability_id}: duplicate paper ids {duplicate_papers}")
+
+        duplicate_executables = sorted(
+            {ref for ref in executable_refs if executable_refs.count(ref) > 1}
+        )
+        if duplicate_executables:
+            failures.append(
+                f"{capability_id}: duplicate executable refs {duplicate_executables}"
+            )
 
         paper_theorem_ids: set[str] = set()
         for paper_id in paper_ids:
@@ -188,6 +200,26 @@ def main() -> int:
                 failures.append(f"{capability_id}: unsafe source ref {ref}")
             elif not ref_path.exists():
                 failures.append(f"{capability_id}: missing source ref {ref}")
+
+        for ref in executable_refs:
+            local_ref = Path(ref)
+            ref_path = ROOT / local_ref
+            if ref not in refs:
+                failures.append(
+                    f"{capability_id}: executable ref {ref} must also be listed in source_refs"
+                )
+            if local_ref.is_absolute() or ".." in local_ref.parts:
+                failures.append(f"{capability_id}: unsafe executable ref {ref}")
+            elif not ref_path.exists():
+                failures.append(f"{capability_id}: missing executable ref {ref}")
+            elif local_ref.parts[0] not in {"sidecars", "tests"}:
+                failures.append(
+                    f"{capability_id}: executable ref {ref} must live under sidecars/ or tests/"
+                )
+            elif ref_path.suffix != ".py" or not ref_path.name.startswith("test_"):
+                failures.append(
+                    f"{capability_id}: executable ref {ref} must be a pytest test_*.py file"
+                )
 
     if failures:
         print("capability showcase failures:", file=sys.stderr)

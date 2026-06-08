@@ -667,6 +667,9 @@ papers:
       - AIM-T0019
       - AIM-T0020
       - AIM-T0021
+      - AIM-T0022
+      - AIM-T0023
+      - AIM-T0024
     dictionary_ids:
       - COMMON-0028
       - COMMON-0029

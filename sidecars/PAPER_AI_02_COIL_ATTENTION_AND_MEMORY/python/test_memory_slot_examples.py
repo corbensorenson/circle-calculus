@@ -268,6 +268,7 @@ def test_loop_exit_certificate_records_budget_and_guardrail() -> None:
     assert certificate.overthinking_boundary == 4
     assert certificate.score_trace == (0, 0, 1, 1)
     assert certificate.exit_step == 3
+    assert certificate.exit_step > 0
     assert certificate.exit_available
     assert certificate.within_budget
     assert certificate.within_guardrail
@@ -285,7 +286,10 @@ def test_loop_required_steps_are_positive_bounded_and_periodic() -> None:
         for sample in range(0, 128):
             required = loop_required_steps(loop_period, sample)
             assert 0 < required <= loop_period
+            assert token_recurrence_budget(loop_period, sample) > 0
             assert loop_required_steps(loop_period, sample + loop_period) == required
+            if required <= loop_period:
+                assert training_free_loop_budget(loop_period, sample, loop_period) > 0
 
 
 def test_looped_recurrence_benchmark_has_baselines_and_overloop_control() -> None:

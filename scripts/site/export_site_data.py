@@ -257,7 +257,7 @@ def export_widget_index() -> dict:
         {
             "id": "loop_recurrence_budget",
             "path": "site/widgets/ai/loop_recurrence_budget.js",
-            "theorem_ids": ["AIM-T0018", "AIM-T0019", "AIM-T0020", "AIM-T0021"],
+            "theorem_ids": ["AIM-T0018", "AIM-T0019", "AIM-T0020", "AIM-T0021", "AIM-T0022", "AIM-T0023"],
             "dictionary_ids": [
                 "COMMON-0052",
                 "COMMON-0053",
@@ -277,6 +277,7 @@ def export_widget_index() -> dict:
                 "AIM-T0015",
                 "AIM-T0016",
                 "AIM-T0017",
+                "AIM-T0024",
             ],
             "dictionary_ids": [
                 "COMMON-0052",
@@ -290,7 +291,7 @@ def export_widget_index() -> dict:
         {
             "id": "training_free_loop_wrapper",
             "path": "site/widgets/ai/training_free_loop_wrapper.js",
-            "theorem_ids": ["AIM-T0010", "AIM-T0011", "AIM-T0019", "AIM-T0020"],
+            "theorem_ids": ["AIM-T0010", "AIM-T0011", "AIM-T0019", "AIM-T0020", "AIM-T0023"],
             "dictionary_ids": [
                 "COMMON-0052",
                 "COMMON-0053",
@@ -302,7 +303,7 @@ def export_widget_index() -> dict:
         {
             "id": "token_level_recurrence",
             "path": "site/widgets/ai/token_level_recurrence.js",
-            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018"],
+            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0022"],
             "dictionary_ids": [
                 "COMMON-0052",
                 "COMMON-0053",
@@ -315,7 +316,7 @@ def export_widget_index() -> dict:
         {
             "id": "learned_token_recurrence",
             "path": "site/widgets/ai/learned_token_recurrence.js",
-            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018"],
+            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0022"],
             "dictionary_ids": [
                 "COMMON-0052",
                 "COMMON-0053",
