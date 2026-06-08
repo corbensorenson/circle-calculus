@@ -15,6 +15,48 @@ if str(ROOT) not in sys.path:
 
 DECL_RE = re.compile(r"^\s*(?:theorem|lemma|def|abbrev|structure|inductive)\s+([A-Za-z0-9_'.]+)")
 
+CLAIM_LANGUAGE_PATTERNS = [
+    ("open_problem_solution", re.compile(r"\bsolv(?:e|es|ed|ing)\b", re.IGNORECASE)),
+    ("new_proof", re.compile(r"\bnew proof\b", re.IGNORECASE)),
+    ("open_problem_progress", re.compile(r"\bprogress on (?:an? )?open\b", re.IGNORECASE)),
+    ("improved_bounds", re.compile(r"\bimprov(?:e|es|ed|ing|ement)\s+bounds?\b", re.IGNORECASE)),
+    ("universal_compression", re.compile(r"\buniversal compression\b", re.IGNORECASE)),
+    ("model_quality_improvement", re.compile(r"\bmodel-quality improvement\b", re.IGNORECASE)),
+    ("context_length_improvement", re.compile(r"\bcontext-length improvement\b", re.IGNORECASE)),
+    ("speedup_claim", re.compile(r"\bspeedup\b|\bfaster\b", re.IGNORECASE)),
+    ("physics_discovery", re.compile(r"\bphysics discovery\b", re.IGNORECASE)),
+    ("continuum_physics", re.compile(r"\bcontinuum (?:gauge|physics)\b", re.IGNORECASE)),
+    ("lattice_qcd_correctness", re.compile(r"\blattice-QCD correctness\b", re.IGNORECASE)),
+    ("full_smooth_hopf", re.compile(r"\bfull smooth Hopf\b", re.IGNORECASE)),
+    ("complete_so3", re.compile(r"\bcomplete SO\(3\)\b", re.IGNORECASE)),
+]
+
+CLAIM_BOUNDARY_MARKERS = [
+    "no ",
+    "not ",
+    "does not",
+    "without",
+    "examples only",
+    "future",
+    "boundary",
+]
+
+CAPABILITY_CLAIM_LANGUAGE_FIELDS = [
+    "audience_interest",
+    "standard_math_anchor",
+    "circle_math_expression",
+    "circle_native_value",
+    "advertised_claim",
+    "proof_scope",
+    "proof_provenance",
+]
+
+ROUTE_CLAIM_LANGUAGE_FIELDS = [
+    "title",
+    "audience",
+    "route_claim",
+]
+
 STATUS_MAP = {
     "proved": "proved",
     "lean_proved": "proved",
@@ -531,14 +573,28 @@ def export_widget_index() -> dict:
         {
             "id": "wilson_loop_certificate",
             "path": "site/widgets/physics/wilson_loop_certificate.js",
-            "theorem_ids": ["PHYS-T0004", "PHYS-T0005", "PHYS-T0046", "PHYS-T0047", "PHYS-T0049", "PHYS-T0052", "PHYS-T0053"],
+            "theorem_ids": [
+                "PHYS-T0004",
+                "PHYS-T0005",
+                "PHYS-T0046",
+                "PHYS-T0047",
+                "PHYS-T0049",
+                "PHYS-T0052",
+                "PHYS-T0053",
+                "PHYS-T0054",
+                "PHYS-T0055",
+                "PHYS-T0056",
+                "PHYS-T0057",
+                "PHYS-T0058",
+                "PHYS-T0059",
+            ],
             "dictionary_ids": [
                 "COMMON-0060",
                 "COMMON-0061",
                 "COMMON-0062",
                 "COMMON-0063",
             ],
-            "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy; circle_math.physics.wilson_loop_certificate",
+            "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy; circle_math.physics.wilson_loop_certificate; circle_math.physics.three_path_cycle_closed_loop_record",
         },
         {
             "id": "hopf_hidden_phase",
@@ -1160,6 +1216,31 @@ def capability_verification_recipe(item: dict) -> dict:
     }
 
 
+def claim_language_contract(item: dict, checked_fields: list[str]) -> dict:
+    flagged_phrases = []
+    for field in checked_fields:
+        value = str(item.get(field, "") or "")
+        for pattern_id, pattern in CLAIM_LANGUAGE_PATTERNS:
+            for match in pattern.finditer(value):
+                flagged_phrases.append(
+                    {
+                        "field": field,
+                        "pattern": pattern_id,
+                        "phrase": match.group(0),
+                    }
+                )
+    boundary_text = str(item.get("not_claimed", "") or "")
+    boundary_lower = boundary_text.lower()
+    explicit_boundary = any(marker in boundary_lower for marker in CLAIM_BOUNDARY_MARKERS)
+    return {
+        "ready_to_advertise": not flagged_phrases and explicit_boundary,
+        "checked_fields": checked_fields,
+        "flagged_phrases": flagged_phrases,
+        "boundary_field": "not_claimed",
+        "explicit_boundary": explicit_boundary,
+    }
+
+
 def capability_claim_contract(
     item: dict,
     evidence_counts: dict[str, int],
@@ -1168,6 +1249,7 @@ def capability_claim_contract(
     theorem_ref_contract: dict,
     source_ref_contract: dict,
     living_book_ref_contract: dict,
+    claim_language_contract: dict,
 ) -> dict:
     roles = set(item.get("portfolio_roles", []) or [])
     provenance_kind = item.get("proof_provenance_kind", "")
@@ -1331,9 +1413,24 @@ def capability_claim_contract(
             ),
         ),
         contract_gate(
+            "claim_language_guardrail",
+            "advertising language guardrail",
+            claim_language_contract.get("ready_to_advertise", False),
+            (
+                "clean"
+                if claim_language_contract.get("ready_to_advertise", False)
+                else ", ".join(
+                    f"{item.get('field', '')}:{item.get('pattern', '')}"
+                    for item in claim_language_contract.get("flagged_phrases", [])
+                )
+                or "missing explicit boundary"
+            ),
+        ),
+        contract_gate(
             "claim_boundary",
             "not-claimed boundary",
-            nonempty_text(item, "not_claimed"),
+            nonempty_text(item, "not_claimed")
+            and claim_language_contract.get("explicit_boundary", False),
             item.get("not_claimed", ""),
         ),
     ]
@@ -1431,6 +1528,195 @@ def portfolio_backing_contract_summary(capabilities: list[dict]) -> dict:
     }
 
 
+def route_backing_contract(route: dict, capability_by_id: dict[str, dict]) -> dict:
+    capability_ids = route.get("capability_ids", []) or []
+    unknown_capability_ids = [
+        capability_id
+        for capability_id in capability_ids
+        if capability_id not in capability_by_id
+    ]
+    route_capabilities = [
+        capability_by_id[capability_id]
+        for capability_id in capability_ids
+        if capability_id in capability_by_id
+    ]
+    incomplete_capability_ids = [
+        capability.get("id", "<missing id>")
+        for capability in route_capabilities
+        if not (capability.get("claim_contract", {}) or {}).get("ready_to_advertise")
+    ]
+    theorem_refs = {
+        "proved_and_paper_backed_count": 0,
+        "total_count": 0,
+        "unproved_or_unbacked_refs": [],
+    }
+    source_refs = {
+        "backed_count": 0,
+        "total_count": 0,
+        "unbacked_refs": [],
+    }
+    living_book_refs = {
+        "backed_page_count": 0,
+        "total_page_count": 0,
+        "backed_widget_count": 0,
+        "total_widget_count": 0,
+        "unbacked_pages": [],
+        "unbacked_widgets": [],
+    }
+    paper_ids: set[str] = set()
+    theorem_ids: set[str] = set()
+    dictionary_ids: set[str] = set()
+    executable_refs: set[str] = set()
+    source_ref_ids: set[str] = set()
+    living_book_pages: set[str] = set()
+    living_book_widgets: set[str] = set()
+    roles: set[str] = set()
+    provenance_kinds: set[str] = set()
+
+    for capability in route_capabilities:
+        capability_id = capability.get("id", "<missing id>")
+        roles.update(capability.get("portfolio_roles", []) or [])
+        provenance_kind = capability.get("proof_provenance_kind", "")
+        if provenance_kind:
+            provenance_kinds.add(provenance_kind)
+        paper_ids.update(capability.get("paper_ids", []) or [])
+        theorem_ids.update(capability.get("theorem_ids", []) or [])
+        dictionary_ids.update(capability.get("dictionary_ids", []) or [])
+        executable_refs.update(capability.get("executable_refs", []) or [])
+        source_ref_ids.update(capability.get("source_refs", []) or [])
+        for ref in capability.get("living_book_refs", []) or []:
+            if not isinstance(ref, dict):
+                continue
+            page = ref.get("page", "")
+            if page:
+                living_book_pages.add(page)
+            for widget_id in ref.get("widget_ids", []) or []:
+                if widget_id:
+                    living_book_widgets.add(widget_id)
+
+        theorem_contract = capability.get("theorem_ref_contract", {}) or {}
+        source_contract = capability.get("source_ref_contract", {}) or {}
+        living_contract = capability.get("living_book_ref_contract", {}) or {}
+        theorem_refs["proved_and_paper_backed_count"] += theorem_contract.get(
+            "proved_and_paper_backed_count", 0
+        )
+        theorem_refs["total_count"] += theorem_contract.get("total_count", 0)
+        theorem_refs["unproved_or_unbacked_refs"].extend(
+            f"{capability_id}#{theorem_id}"
+            for theorem_id in theorem_contract.get("unproved_or_unbacked_ids", []) or []
+        )
+        source_refs["backed_count"] += source_contract.get("backed_count", 0)
+        source_refs["total_count"] += source_contract.get("total_count", 0)
+        source_refs["unbacked_refs"].extend(
+            f"{capability_id}#{ref}"
+            for ref in source_contract.get("unbacked_refs", []) or []
+        )
+        living_book_refs["backed_page_count"] += living_contract.get(
+            "backed_page_count", 0
+        )
+        living_book_refs["total_page_count"] += living_contract.get(
+            "total_page_count", 0
+        )
+        living_book_refs["backed_widget_count"] += living_contract.get(
+            "backed_widget_count", 0
+        )
+        living_book_refs["total_widget_count"] += living_contract.get(
+            "total_widget_count", 0
+        )
+        living_book_refs["unbacked_pages"].extend(
+            f"{capability_id}#{page}"
+            for page in living_contract.get("unbacked_pages", []) or []
+        )
+        living_book_refs["unbacked_widgets"].extend(
+            f"{capability_id}#{widget}"
+            for widget in living_contract.get("unbacked_widgets", []) or []
+        )
+
+    theorem_ready = (
+        theorem_refs["proved_and_paper_backed_count"] == theorem_refs["total_count"]
+        and not theorem_refs["unproved_or_unbacked_refs"]
+    )
+    source_ready = (
+        source_refs["backed_count"] == source_refs["total_count"]
+        and not source_refs["unbacked_refs"]
+    )
+    living_ready = (
+        living_book_refs["backed_page_count"] == living_book_refs["total_page_count"]
+        and living_book_refs["backed_widget_count"] == living_book_refs["total_widget_count"]
+        and not living_book_refs["unbacked_pages"]
+        and not living_book_refs["unbacked_widgets"]
+    )
+    route_claim_language_contract = claim_language_contract(
+        route,
+        ROUTE_CLAIM_LANGUAGE_FIELDS,
+    )
+    return {
+        "ready_to_advertise": (
+            bool(capability_ids)
+            and not unknown_capability_ids
+            and not incomplete_capability_ids
+            and theorem_ready
+            and source_ready
+            and living_ready
+            and route_claim_language_contract["ready_to_advertise"]
+        ),
+        "capability_count": len(capability_ids),
+        "ready_capability_count": len(route_capabilities) - len(incomplete_capability_ids),
+        "unknown_capability_ids": unknown_capability_ids,
+        "incomplete_capability_ids": incomplete_capability_ids,
+        "covered_roles": sorted(roles),
+        "proof_provenance_kinds": sorted(provenance_kinds),
+        "unique_evidence_counts": {
+            "paper_count": len(paper_ids),
+            "theorem_count": len(theorem_ids),
+            "dictionary_count": len(dictionary_ids),
+            "executable_count": len(executable_refs),
+            "source_count": len(source_ref_ids),
+            "living_book_page_count": len(living_book_pages),
+            "living_book_widget_count": len(living_book_widgets),
+        },
+        "theorem_refs": theorem_refs,
+        "source_refs": source_refs,
+        "living_book_refs": living_book_refs,
+        "claim_language_contract": route_claim_language_contract,
+    }
+
+
+def export_portfolio_routes(
+    route_entries: list[dict],
+    capability_by_id: dict[str, dict],
+) -> list[dict]:
+    routes: list[dict] = []
+    for route in route_entries:
+        item = dict(route)
+        item["route_contract"] = route_backing_contract(item, capability_by_id)
+        routes.append(item)
+    return routes
+
+
+def portfolio_route_summary(routes: list[dict]) -> dict:
+    ready_count = sum(
+        1
+        for route in routes
+        if (route.get("route_contract", {}) or {}).get("ready_to_advertise")
+    )
+    return {
+        "route_count": len(routes),
+        "ready_count": ready_count,
+        "incomplete_count": len(routes) - ready_count,
+        "unknown_capability_ids": sorted(
+            {
+                capability_id
+                for route in routes
+                for capability_id in (
+                    (route.get("route_contract", {}) or {}).get("unknown_capability_ids", [])
+                    or []
+                )
+            }
+        ),
+    }
+
+
 def export_capability_showcase() -> dict:
     path = ROOT / "manifests" / "capability_showcase.yaml"
     if not path.exists():
@@ -1498,6 +1784,10 @@ def export_capability_showcase() -> dict:
             item,
             known_widget_ids,
         )
+        item["claim_language_contract"] = claim_language_contract(
+            item,
+            CAPABILITY_CLAIM_LANGUAGE_FIELDS,
+        )
         item["claim_contract"] = capability_claim_contract(
             item,
             item["evidence_counts"],
@@ -1506,6 +1796,7 @@ def export_capability_showcase() -> dict:
             item["theorem_ref_contract"],
             item["source_ref_contract"],
             item["living_book_ref_contract"],
+            item["claim_language_contract"],
         )
         if item["claim_contract"]["ready_to_advertise"]:
             contract_ready_count += 1
@@ -1530,6 +1821,15 @@ def export_capability_showcase() -> dict:
         unique_living_pages.update(living_pages)
         unique_living_widgets.update(living_widgets)
         capabilities.append(item)
+    capability_by_id = {
+        item["id"]: item
+        for item in capabilities
+        if item.get("id")
+    }
+    portfolio_routes = export_portfolio_routes(
+        data.get("portfolio_routes", []) or [],
+        capability_by_id,
+    )
     portfolio_summary = {
         "capability_count": len(capabilities),
         "role_counts": dict(sorted(role_counts.items())),
@@ -1551,8 +1851,13 @@ def export_capability_showcase() -> dict:
             "gate_failure_counts": dict(sorted(contract_gate_failures.items())),
         },
         "backing_contract_summary": portfolio_backing_contract_summary(capabilities),
+        "route_summary": portfolio_route_summary(portfolio_routes),
     }
-    return {"capabilities": capabilities, "portfolio_summary": portfolio_summary}
+    return {
+        "capabilities": capabilities,
+        "portfolio_routes": portfolio_routes,
+        "portfolio_summary": portfolio_summary,
+    }
 
 
 def glyph_status_label(canonical_status: str) -> str:

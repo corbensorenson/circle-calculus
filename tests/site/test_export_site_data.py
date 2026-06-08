@@ -85,6 +85,7 @@ def test_export_site_data_writes_required_indexes() -> None:
 
     capabilities = json.loads((generated / "capability_showcase.json").read_text())
     capability_by_id = {item["id"]: item for item in capabilities["capabilities"]}
+    route_by_id = {item["id"]: item for item in capabilities["portfolio_routes"]}
     summary = capabilities["portfolio_summary"]
     assert summary["capability_count"] == len(capabilities["capabilities"])
     assert summary["role_counts"]["standard_math_parity"] == sum(
@@ -159,6 +160,14 @@ def test_export_site_data_writes_required_indexes() -> None:
         item["claim_contract"]["ready_to_advertise"]
         for item in capabilities["capabilities"]
     )
+    assert all(
+        item["claim_language_contract"]["ready_to_advertise"]
+        for item in capabilities["capabilities"]
+    )
+    assert all(
+        item["claim_language_contract"]["flagged_phrases"] == []
+        for item in capabilities["capabilities"]
+    )
     assert capability_by_id["SHOW-001"]["claim_contract"]["status"] == "ready"
     assert capability_by_id["SHOW-001"]["claim_contract"]["passed_gate_count"] == (
         capability_by_id["SHOW-001"]["claim_contract"]["total_gate_count"]
@@ -167,6 +176,9 @@ def test_export_site_data_writes_required_indexes() -> None:
         gate["id"] for gate in capability_by_id["SHOW-001"]["claim_contract"]["gates"]
     }
     assert "verification_recipe" in {
+        gate["id"] for gate in capability_by_id["SHOW-001"]["claim_contract"]["gates"]
+    }
+    assert "claim_language_guardrail" in {
         gate["id"] for gate in capability_by_id["SHOW-001"]["claim_contract"]["gates"]
     }
     assert capability_by_id["SHOW-001"]["verification_recipe"]["pytest_command"] == (
@@ -178,6 +190,43 @@ def test_export_site_data_writes_required_indexes() -> None:
     assert summary["claim_contract_summary"]["ready_count"] == len(capabilities["capabilities"])
     assert summary["claim_contract_summary"]["incomplete_count"] == 0
     assert summary["claim_contract_summary"]["gate_failure_counts"] == {}
+    assert summary["route_summary"]["route_count"] == 4
+    assert summary["route_summary"]["ready_count"] == 4
+    assert summary["route_summary"]["incomplete_count"] == 0
+    assert summary["route_summary"]["unknown_capability_ids"] == []
+    hard_math_route = route_by_id["ROUTE-001"]
+    assert hard_math_route["capability_ids"] == [
+        "SHOW-001",
+        "SHOW-002",
+        "SHOW-003",
+        "SHOW-004",
+        "SHOW-005",
+    ]
+    assert hard_math_route["route_contract"]["ready_to_advertise"]
+    assert hard_math_route["route_contract"]["claim_language_contract"][
+        "ready_to_advertise"
+    ]
+    assert hard_math_route["route_contract"]["claim_language_contract"][
+        "flagged_phrases"
+    ] == []
+    assert hard_math_route["route_contract"]["capability_count"] == 5
+    assert hard_math_route["route_contract"]["ready_capability_count"] == 5
+    assert hard_math_route["route_contract"]["unknown_capability_ids"] == []
+    assert hard_math_route["route_contract"]["incomplete_capability_ids"] == []
+    assert hard_math_route["route_contract"]["theorem_refs"][
+        "proved_and_paper_backed_count"
+    ] == hard_math_route["route_contract"]["theorem_refs"]["total_count"]
+    assert hard_math_route["route_contract"]["source_refs"]["backed_count"] == (
+        hard_math_route["route_contract"]["source_refs"]["total_count"]
+    )
+    systems_route = route_by_id["ROUTE-004"]
+    assert systems_route["route_contract"]["ready_to_advertise"]
+    assert systems_route["route_contract"]["claim_language_contract"][
+        "ready_to_advertise"
+    ]
+    assert systems_route["route_contract"]["living_book_refs"][
+        "backed_widget_count"
+    ] == systems_route["route_contract"]["living_book_refs"]["total_widget_count"]
     backing_summary = summary["backing_contract_summary"]
     assert backing_summary["ready_to_advertise"]
     total_theorem_refs = sum(

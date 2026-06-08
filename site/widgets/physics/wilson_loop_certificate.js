@@ -2,7 +2,7 @@ import { mod, positiveInt } from "../shared/circle_math_core.js";
 import { addLabeledNumber, addOutput, addWidgetHeader, clear } from "../shared/svg_helpers.js";
 import { loadJson, mountWidgets, statusClass, statusLabel } from "../shared/widget_base.js";
 
-const THEOREM_IDS = ["PHYS-T0004", "PHYS-T0005", "PHYS-T0046", "PHYS-T0047", "PHYS-T0049", "PHYS-T0052", "PHYS-T0053", "PHYS-T0054", "PHYS-T0055"];
+const THEOREM_IDS = ["PHYS-T0004", "PHYS-T0005", "PHYS-T0046", "PHYS-T0047", "PHYS-T0049", "PHYS-T0052", "PHYS-T0053", "PHYS-T0054", "PHYS-T0055", "PHYS-T0056", "PHYS-T0057", "PHYS-T0058", "PHYS-T0059"];
 const DICTIONARY_IDS = ["COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063"];
 
 function signedInt(value, fallback, min = -99, max = 99) {
@@ -124,6 +124,7 @@ function appendGaugeTable(record, rows, titleText) {
 
 function appendRecord(output, seed, theoremById) {
   const edges = loopEdges(seed);
+  const rotatedEdges = [edges[1], edges[2], edges[0]];
   const holonomy = pathHolonomy(edges, seed.modulus);
   const gaugeSamples = sampleGauges(seed);
   const identityRows = gaugeSamples.map((gauge, index) => ({
@@ -144,6 +145,17 @@ function appendRecord(output, seed, theoremById) {
       invariant: shiftedHolonomy === holonomy,
     };
   });
+  const rotatedRows = gaugeSamples.map((gauge, index) => {
+    const shifted = transformedEdges(rotatedEdges, gauge, seed.modulus);
+    const shiftedHolonomy = pathHolonomy(shifted, seed.modulus);
+    return {
+      sample: `rotated gauge:${index}`,
+      gauge: `a=${gaugeValue(gauge, "a", seed.modulus)}, b=${gaugeValue(gauge, "b", seed.modulus)}, c=${gaugeValue(gauge, "c", seed.modulus)}`,
+      edges: formatEdges(shifted),
+      holonomy: shiftedHolonomy,
+      invariant: shiftedHolonomy === holonomy,
+    };
+  });
 
   const record = document.createElement("section");
   record.className = "seed-rule-record";
@@ -157,19 +169,22 @@ function appendRecord(output, seed, theoremById) {
     `modulus: ${seed.modulus}`,
     `closed loop: a -> b -> c -> a`,
     `normalized edges: ${formatEdges(edges)}`,
+    `rotated basepoint edges: ${formatEdges(rotatedEdges)}`,
     `original holonomy: ${holonomy}`,
     `identity gauge-shifted holonomy: 0`,
     `cycle gauge-invariant under all sampled gauges: ${cycleRows.every((row) => row.invariant)}`,
+    `rotated basepoint gauge-invariant under all sampled gauges: ${rotatedRows.every((row) => row.invariant)}`,
     `certificate theorem ids: ${THEOREM_IDS.join(", ")}`,
   ].join("\n");
   record.appendChild(data);
 
   appendGaugeTable(record, identityRows, "Identity-loop samples (PHYS-T0052)");
   appendGaugeTable(record, cycleRows, "Two-path cycle samples and basepoint swap boundary (PHYS-T0053-PHYS-T0055)");
+  appendGaugeTable(record, rotatedRows, "Three-path cycle samples and basepoint rotation boundary (PHYS-T0056-PHYS-T0059)");
 
   const warning = document.createElement("p");
   warning.className = "warning-box";
-  warning.textContent = "Boundary: this widget checks finite identity-loop and two-path-cycle certificates across sampled vertex gauges. It is not continuum gauge theory, electromagnetism, quantum field theory, Berry phase, or a physics prediction.";
+  warning.textContent = "Boundary: this widget checks finite identity-loop, two-path-cycle, and three-path-cycle certificates across sampled vertex gauges. It is not continuum gauge theory, electromagnetism, quantum field theory, Berry phase, or a physics prediction.";
   record.appendChild(warning);
 
   appendBadgeRow(record, theoremById);

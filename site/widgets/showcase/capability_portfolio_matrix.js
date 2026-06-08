@@ -42,18 +42,29 @@ function provenanceLabel(kind) {
   return String(kind || "unspecified").replaceAll("_", " ");
 }
 
-function capabilityLink(capability) {
+function capabilityIdLink(capabilityId) {
   const link = document.createElement("a");
-  link.href = `#${encodeURIComponent(capability.id)}`;
-  link.textContent = capability.id;
+  link.href = `#${encodeURIComponent(capabilityId)}`;
+  link.textContent = capabilityId;
   link.addEventListener("click", (event) => {
-    const target = document.querySelector(`[data-capability-id="${capability.id}"]`);
+    const target = document.querySelector(`[data-capability-id="${capabilityId}"]`);
     if (!target) return;
     event.preventDefault();
     target.scrollIntoView({ behavior: "smooth", block: "start" });
-    history.replaceState(null, "", `#${encodeURIComponent(capability.id)}`);
+    history.replaceState(null, "", `#${encodeURIComponent(capabilityId)}`);
   });
   return link;
+}
+
+function capabilityLink(capability) {
+  return capabilityIdLink(capability.id);
+}
+
+function appendSeparated(fragment, nodes, separator = ", ") {
+  nodes.forEach((node, index) => {
+    if (index > 0) fragment.append(separator);
+    fragment.append(node);
+  });
 }
 
 function appendCell(row, value) {
@@ -138,6 +149,62 @@ function renderTable(capabilities) {
   return wrap;
 }
 
+function routeCapabilityLinks(route) {
+  const fragment = document.createDocumentFragment();
+  appendSeparated(fragment, (route.capability_ids || []).map((id) => capabilityIdLink(id)));
+  return fragment;
+}
+
+function routeBackingText(route) {
+  const contract = route.route_contract || {};
+  const theoremRefs = contract.theorem_refs || {};
+  const sourceRefs = contract.source_refs || {};
+  const livingRefs = contract.living_book_refs || {};
+  const language = contract.claim_language_contract || {};
+  return [
+    contract.ready_to_advertise ? "ready" : "incomplete",
+    `capabilities ${contract.ready_capability_count ?? 0}/${contract.capability_count ?? 0}`,
+    `theorems ${theoremRefs.proved_and_paper_backed_count ?? 0}/${theoremRefs.total_count ?? 0}`,
+    `sources ${sourceRefs.backed_count ?? 0}/${sourceRefs.total_count ?? 0}`,
+    `Living Book pages ${livingRefs.backed_page_count ?? 0}/${livingRefs.total_page_count ?? 0}`,
+    `widgets ${livingRefs.backed_widget_count ?? 0}/${livingRefs.total_widget_count ?? 0}`,
+    `language ${language.ready_to_advertise ? "pass" : "fail"}`,
+  ].join("; ");
+}
+
+function renderRouteTable(routes) {
+  if (!Array.isArray(routes) || routes.length === 0) return "";
+  const wrap = document.createElement("div");
+  wrap.className = "index-table-wrap";
+  const table = document.createElement("table");
+  table.className = "capability-route-table";
+  const thead = document.createElement("thead");
+  const header = document.createElement("tr");
+  for (const label of ["Route", "Audience", "Route claim", "Capabilities", "Backing", "Boundary"]) {
+    const th = document.createElement("th");
+    th.scope = "col";
+    th.textContent = label;
+    header.appendChild(th);
+  }
+  thead.appendChild(header);
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  for (const route of routes) {
+    const row = document.createElement("tr");
+    appendCell(row, `${route.id || ""} ${route.title || ""}`);
+    appendCell(row, route.audience || "");
+    appendCell(row, route.route_claim || "");
+    appendCell(row, routeCapabilityLinks(route));
+    appendCell(row, routeBackingText(route));
+    appendCell(row, route.not_claimed || "");
+    tbody.appendChild(row);
+  }
+  table.appendChild(tbody);
+  wrap.appendChild(table);
+  return wrap;
+}
+
 function renderSummary(capabilities) {
   const totals = capabilities.reduce((acc, capability) => {
     const counts = evidenceCounts(capability);
@@ -186,11 +253,13 @@ function renderManifestSummary(capabilities, summary) {
   const totals = summary.evidence_totals || {};
   const provenanceCoverage = provenanceCoverageLine(summary);
   const backing = summary.backing_contract_summary || {};
+  const routeSummary = summary.route_summary || {};
   const theoremRefs = backing.theorem_refs || {};
   const sourceRefs = backing.source_refs || {};
   const livingRefs = backing.living_book_refs || {};
   const lines = [
     `capability lanes: ${summary.capability_count ?? capabilities.length}`,
+    `portfolio routes: ready ${routeSummary.ready_count ?? 0}/${routeSummary.route_count ?? 0}`,
     `role coverage:\n${roleCoverageLine(summary)}`,
     provenanceCoverage ? `proof provenance:\n${provenanceCoverage}` : "",
     `portfolio backing: ${backing.ready_to_advertise ? "ready" : "incomplete"}`,
@@ -213,6 +282,7 @@ function renderManifestSummary(capabilities, summary) {
 
 function render(panel, data) {
   const capabilities = data.capabilities || [];
+  const routes = data.portfolio_routes || [];
   const section = document.createElement("section");
   section.className = "seed-rule-record";
 
@@ -220,7 +290,12 @@ function render(panel, data) {
   warning.className = "warning-box";
   warning.textContent = "Boundary: this matrix summarizes manifest-backed evidence only. It does not turn imported theorem bridges, executable examples, widgets, or benchmarks into new mathematical proofs.";
 
-  section.append(renderManifestSummary(capabilities, data.portfolio_summary), renderTable(capabilities), warning);
+  section.append(
+    renderManifestSummary(capabilities, data.portfolio_summary),
+    renderRouteTable(routes),
+    renderTable(capabilities),
+    warning,
+  );
   panel.replaceChildren(section);
 }
 

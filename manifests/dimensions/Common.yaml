@@ -2356,6 +2356,62 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_closed_loop_records_identity_and_cycle_holonomy
     blocker: ""
+  - id: PHYS-T0056
+    status: lean_proved
+    lean_name: Circle.Physics.closedGaugeLoop_fromThreeCycle_holonomy
+    informal_statement: "A closed finite three-path cycle has holonomy equal to the sum of the three checked path holonomies."
+    formal_statement: "For checked finite gauge paths first, second, and third whose endpoints cycle back, ClosedGaugeLoop.fromThreeCycle first second third h12 h23 h31 has holonomy first.holonomy + second.holonomy + third.holonomy."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0062"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_three_path_cycle_record_preserves_rotated_basepoint_holonomy
+    blocker: ""
+  - id: PHYS-T0057
+    status: lean_proved
+    lean_name: Circle.Physics.closedGaugeLoop_fromThreeCycle_gaugeShiftedHolonomy
+    informal_statement: "A closed finite three-path cycle has gauge-shifted holonomy equal to the sum of the three checked path holonomies."
+    formal_statement: "For checked finite gauge paths first, second, and third whose endpoints cycle back and any gauge : Nat -> ZMod n, ClosedGaugeLoop.fromThreeCycle first second third h12 h23 h31 has gauge-shifted holonomy first.holonomy + second.holonomy + third.holonomy."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_three_path_cycle_record_preserves_rotated_basepoint_holonomy
+    blocker: ""
+  - id: PHYS-T0058
+    status: lean_proved
+    lean_name: Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_holonomy
+    informal_statement: "Rotating the basepoint order of a finite three-path closed cycle preserves packaged loop holonomy."
+    formal_statement: "For checked finite gauge paths first, second, and third whose endpoints cycle back, ClosedGaugeLoop.fromThreeCycle second third first h23 h31 h12 has the same holonomy as ClosedGaugeLoop.fromThreeCycle first second third h12 h23 h31."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0062"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_three_path_cycle_record_preserves_rotated_basepoint_holonomy
+    blocker: ""
+  - id: PHYS-T0059
+    status: lean_proved
+    lean_name: Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy
+    informal_statement: "Rotating the basepoint order of a finite three-path closed cycle preserves sampled gauge-shifted holonomy."
+    formal_statement: "For checked finite gauge paths first, second, and third whose endpoints cycle back and any gauge : Nat -> ZMod n, ClosedGaugeLoop.fromThreeCycle second third first h23 h31 h12 has the same gauge-shifted holonomy as ClosedGaugeLoop.fromThreeCycle first second third h12 h23 h31."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_three_path_cycle_record_preserves_rotated_basepoint_holonomy
+    blocker: ""
   - id: GEN-T0001
     status: lean_proved
     lean_name: Circle.Generative.finiteCircleGenerator_regenerates_nodes

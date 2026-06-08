@@ -1,3 +1,32 @@
+portfolio_routes:
+  - id: ROUTE-001
+    title: "Hard mathematics bridge"
+    audience: "Mathematicians who want to know whether Circle Calculus can speak established theorem language."
+    route_claim: "Start with Erdős-adjacent additive combinatorics, extremal set theory, Ramsey theory, and cyclic graph geometry, then inspect the theorem ids, papers, and executable examples behind each bridge."
+    capability_ids: ["SHOW-001", "SHOW-002", "SHOW-003", "SHOW-004", "SHOW-005"]
+    not_claimed: "This route does not claim new solutions to open Erdős problems; it demonstrates proof-backed standard-math parity and conservative cyclic reformulations."
+
+  - id: ROUTE-002
+    title: "Cyclic proof spine"
+    audience: "Readers who want the internal algebra that makes the notation useful rather than decorative."
+    route_claim: "Follow modular periods, gcd orbits, kernels, fibers, normal forms, circular buffers, stride layouts, and schedule laws as Lean-backed finite cyclic structure."
+    capability_ids: ["SHOW-006", "SHOW-011"]
+    not_claimed: "This route does not claim to replace modular arithmetic or standard computation theory; it packages them as proof-carrying cyclic interfaces."
+
+  - id: ROUTE-003
+    title: "Phase, rotation, and finite physics"
+    audience: "Geometry, robotics, and physics-facing readers interested in hidden phase, spin sign, holonomy, and path certificates."
+    route_claim: "Use bounded quaternion/Hopf phase facts and proof-carrying finite gauge paths to see where Circle vocabulary clarifies phase and endpoint bookkeeping."
+    capability_ids: ["SHOW-007", "SHOW-008"]
+    not_claimed: "This route does not claim continuum physics, full smooth Hopf formalization, or model discovery."
+
+  - id: ROUTE-004
+    title: "Proof-carrying generated and AI structures"
+    audience: "Builders who want generated artifacts, cyclic AI schedules, and compute layouts to carry checkable provenance before performance or quality claims."
+    route_claim: "Connect seed-rule provenance, exact regeneration gates, cyclic AI memory and route budgets, adapter indexing, and circular compute schedules into reusable proof-carrying systems interfaces."
+    capability_ids: ["SHOW-009", "SHOW-010", "SHOW-011"]
+    not_claimed: "This route does not claim universal compression, model-quality improvement, speedup, or context-length improvement without benchmark evidence."
+
 capabilities:
   - id: SHOW-001
     title: "Zero-sum and sumset theorems on finite circles"
@@ -189,12 +218,12 @@ capabilities:
     circle_math_expression: "Finite gauge links and paths are represented with Lean-checked source-target and holonomy laws."
     circle_native_value: "Circle Math contributes proof-carrying finite records that can guard simulations and widgets against invalid path composition."
     advertised_claim: "Circle Calculus can build a finite proof-carrying gauge-path model with endpoint and holonomy laws."
-    proof_scope: "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, and two-path basepoint-swap facts."
+    proof_scope: "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, two-path basepoint-swap facts, and three-path cycle/basepoint-rotation facts."
     proof_provenance_kind: "project_native"
     proof_provenance: "Proof provenance is project-native Lean code for finite gauge-link/path records and holonomy laws, with Python fixtures serving as executable references."
     not_claimed: "No continuum gauge theory, no physics discovery, and no lattice-QCD correctness claim."
     paper_ids: ["PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"]
-    theorem_ids: ["PHYS-T0001", "PHYS-T0012", "PHYS-T0026", "PHYS-T0038", "PHYS-T0042", "PHYS-T0046", "PHYS-T0047", "PHYS-T0049", "PHYS-T0050", "PHYS-T0051", "PHYS-T0052", "PHYS-T0053", "PHYS-T0054", "PHYS-T0055"]
+    theorem_ids: ["PHYS-T0001", "PHYS-T0012", "PHYS-T0026", "PHYS-T0038", "PHYS-T0042", "PHYS-T0046", "PHYS-T0047", "PHYS-T0049", "PHYS-T0050", "PHYS-T0051", "PHYS-T0052", "PHYS-T0053", "PHYS-T0054", "PHYS-T0055", "PHYS-T0056", "PHYS-T0057", "PHYS-T0058", "PHYS-T0059"]
     dictionary_ids: ["COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063"]
     executable_refs:
       - "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"

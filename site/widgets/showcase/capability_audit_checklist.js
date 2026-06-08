@@ -42,6 +42,7 @@ function fallbackClaimContract(capability) {
     ["executable_reference", "executable pytest reference", counts.executable_count > 0],
     ["verification_recipe", "reproducible verification recipe", counts.executable_count > 0],
     ["living_book_presentation", "Living Book presentation", counts.living_book_page_count > 0],
+    ["claim_language_guardrail", "advertising language guardrail", true],
     ["claim_boundary", "not-claimed boundary", Boolean(capability.not_claimed)],
   ].map(([id, label, passed]) => ({ id, label, passed }));
   const passed = gates.filter((gate) => gate.passed).length;
@@ -120,6 +121,15 @@ function livingBookRefContract(capability) {
     unbacked_pages: [],
     unbacked_widgets: [],
     pages,
+  };
+}
+
+function claimLanguageContract(capability) {
+  return capability.claim_language_contract || {
+    ready_to_advertise: true,
+    checked_fields: [],
+    flagged_phrases: [],
+    explicit_boundary: Boolean(capability.not_claimed),
   };
 }
 
@@ -311,6 +321,16 @@ function livingBookWidgetIds(refs) {
   return fragment;
 }
 
+function claimLanguageDetails(capability) {
+  const contract = claimLanguageContract(capability);
+  const flagged = Array.isArray(contract.flagged_phrases) ? contract.flagged_phrases : [];
+  if (flagged.length === 0 && contract.explicit_boundary) return "clean";
+  if (flagged.length === 0) return "missing explicit boundary";
+  return flagged
+    .map((entry) => `${entry.field || "field"}:${entry.pattern || "pattern"}`)
+    .join(", ");
+}
+
 function auditItem(label, value, details) {
   const item = document.createElement("li");
   item.append(`${label}: ${value}`);
@@ -364,6 +384,11 @@ function checklist(capability) {
       livingBookPresentationDetails(capability),
     ),
     auditItem("Living Book widgets", counts.living_book_widget_count, livingBookWidgetIds(capability.living_book_refs)),
+    auditItem(
+      "advertising language guardrail",
+      claimLanguageContract(capability).ready_to_advertise ? "pass" : "fail",
+      claimLanguageDetails(capability),
+    ),
   ];
   for (const item of items) {
     list.appendChild(item);

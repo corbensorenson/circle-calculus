@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import shlex
 import sys
 
@@ -22,6 +23,7 @@ REQUIRED_GATE_IDS = {
     "executable_reference",
     "verification_recipe",
     "living_book_presentation",
+    "claim_language_guardrail",
     "claim_boundary",
 }
 
@@ -34,6 +36,81 @@ EVIDENCE_COUNT_KEYS = [
     "living_book_page_count",
     "living_book_widget_count",
 ]
+
+REQUIRED_ROUTE_FIELDS = [
+    "id",
+    "title",
+    "audience",
+    "route_claim",
+    "not_claimed",
+]
+
+CLAIM_LANGUAGE_PATTERNS = [
+    ("open_problem_solution", re.compile(r"\bsolv(?:e|es|ed|ing)\b", re.IGNORECASE)),
+    ("new_proof", re.compile(r"\bnew proof\b", re.IGNORECASE)),
+    ("open_problem_progress", re.compile(r"\bprogress on (?:an? )?open\b", re.IGNORECASE)),
+    ("improved_bounds", re.compile(r"\bimprov(?:e|es|ed|ing|ement)\s+bounds?\b", re.IGNORECASE)),
+    ("universal_compression", re.compile(r"\buniversal compression\b", re.IGNORECASE)),
+    ("model_quality_improvement", re.compile(r"\bmodel-quality improvement\b", re.IGNORECASE)),
+    ("context_length_improvement", re.compile(r"\bcontext-length improvement\b", re.IGNORECASE)),
+    ("speedup_claim", re.compile(r"\bspeedup\b|\bfaster\b", re.IGNORECASE)),
+    ("physics_discovery", re.compile(r"\bphysics discovery\b", re.IGNORECASE)),
+    ("continuum_physics", re.compile(r"\bcontinuum (?:gauge|physics)\b", re.IGNORECASE)),
+    ("lattice_qcd_correctness", re.compile(r"\blattice-QCD correctness\b", re.IGNORECASE)),
+    ("full_smooth_hopf", re.compile(r"\bfull smooth Hopf\b", re.IGNORECASE)),
+    ("complete_so3", re.compile(r"\bcomplete SO\(3\)\b", re.IGNORECASE)),
+]
+
+CLAIM_BOUNDARY_MARKERS = [
+    "no ",
+    "not ",
+    "does not",
+    "without",
+    "examples only",
+    "future",
+    "boundary",
+]
+
+CAPABILITY_CLAIM_LANGUAGE_FIELDS = [
+    "audience_interest",
+    "standard_math_anchor",
+    "circle_math_expression",
+    "circle_native_value",
+    "advertised_claim",
+    "proof_scope",
+    "proof_provenance",
+]
+
+ROUTE_CLAIM_LANGUAGE_FIELDS = [
+    "title",
+    "audience",
+    "route_claim",
+]
+
+
+def claim_language_contract(item: dict, checked_fields: list[str]) -> dict:
+    flagged_phrases = []
+    for field in checked_fields:
+        value = str(item.get(field, "") or "")
+        for pattern_id, pattern in CLAIM_LANGUAGE_PATTERNS:
+            for match in pattern.finditer(value):
+                flagged_phrases.append(
+                    {
+                        "field": field,
+                        "pattern": pattern_id,
+                        "phrase": match.group(0),
+                    }
+                )
+    boundary_text = str(item.get("not_claimed", "") or "")
+    boundary_lower = boundary_text.lower()
+    explicit_boundary = any(marker in boundary_lower for marker in CLAIM_BOUNDARY_MARKERS)
+    return {
+        "ready_to_advertise": not flagged_phrases and explicit_boundary,
+        "checked_fields": checked_fields,
+        "flagged_phrases": flagged_phrases,
+        "boundary_field": "not_claimed",
+        "explicit_boundary": explicit_boundary,
+    }
 
 
 def capability_living_book_sets(capability: dict) -> tuple[set[str], set[str]]:
@@ -148,8 +225,186 @@ def portfolio_backing_contract_summary(capabilities: list[dict]) -> dict:
     }
 
 
+def route_backing_contract(route: dict, capability_by_id: dict[str, dict]) -> dict:
+    capability_ids = route.get("capability_ids", []) or []
+    unknown_capability_ids = [
+        capability_id
+        for capability_id in capability_ids
+        if capability_id not in capability_by_id
+    ]
+    route_capabilities = [
+        capability_by_id[capability_id]
+        for capability_id in capability_ids
+        if capability_id in capability_by_id
+    ]
+    incomplete_capability_ids = [
+        capability.get("id", "<missing id>")
+        for capability in route_capabilities
+        if not (capability.get("claim_contract", {}) or {}).get("ready_to_advertise")
+    ]
+    theorem_refs = {
+        "proved_and_paper_backed_count": 0,
+        "total_count": 0,
+        "unproved_or_unbacked_refs": [],
+    }
+    source_refs = {
+        "backed_count": 0,
+        "total_count": 0,
+        "unbacked_refs": [],
+    }
+    living_book_refs = {
+        "backed_page_count": 0,
+        "total_page_count": 0,
+        "backed_widget_count": 0,
+        "total_widget_count": 0,
+        "unbacked_pages": [],
+        "unbacked_widgets": [],
+    }
+    paper_ids: set[str] = set()
+    theorem_ids: set[str] = set()
+    dictionary_ids: set[str] = set()
+    executable_refs: set[str] = set()
+    source_ref_ids: set[str] = set()
+    living_book_pages: set[str] = set()
+    living_book_widgets: set[str] = set()
+    roles: set[str] = set()
+    provenance_kinds: set[str] = set()
+
+    for capability in route_capabilities:
+        capability_id = capability.get("id", "<missing id>")
+        roles.update(capability.get("portfolio_roles", []) or [])
+        provenance_kind = capability.get("proof_provenance_kind", "")
+        if provenance_kind:
+            provenance_kinds.add(provenance_kind)
+        paper_ids.update(capability.get("paper_ids", []) or [])
+        theorem_ids.update(capability.get("theorem_ids", []) or [])
+        dictionary_ids.update(capability.get("dictionary_ids", []) or [])
+        executable_refs.update(capability.get("executable_refs", []) or [])
+        source_ref_ids.update(capability.get("source_refs", []) or [])
+        for ref in capability.get("living_book_refs", []) or []:
+            if not isinstance(ref, dict):
+                continue
+            page = ref.get("page", "")
+            if page:
+                living_book_pages.add(page)
+            for widget_id in ref.get("widget_ids", []) or []:
+                if widget_id:
+                    living_book_widgets.add(widget_id)
+
+        theorem_contract = capability.get("theorem_ref_contract", {}) or {}
+        source_contract = capability.get("source_ref_contract", {}) or {}
+        living_contract = capability.get("living_book_ref_contract", {}) or {}
+        theorem_refs["proved_and_paper_backed_count"] += theorem_contract.get(
+            "proved_and_paper_backed_count", 0
+        )
+        theorem_refs["total_count"] += theorem_contract.get("total_count", 0)
+        theorem_refs["unproved_or_unbacked_refs"].extend(
+            f"{capability_id}#{theorem_id}"
+            for theorem_id in theorem_contract.get("unproved_or_unbacked_ids", []) or []
+        )
+        source_refs["backed_count"] += source_contract.get("backed_count", 0)
+        source_refs["total_count"] += source_contract.get("total_count", 0)
+        source_refs["unbacked_refs"].extend(
+            f"{capability_id}#{ref}"
+            for ref in source_contract.get("unbacked_refs", []) or []
+        )
+        living_book_refs["backed_page_count"] += living_contract.get(
+            "backed_page_count", 0
+        )
+        living_book_refs["total_page_count"] += living_contract.get(
+            "total_page_count", 0
+        )
+        living_book_refs["backed_widget_count"] += living_contract.get(
+            "backed_widget_count", 0
+        )
+        living_book_refs["total_widget_count"] += living_contract.get(
+            "total_widget_count", 0
+        )
+        living_book_refs["unbacked_pages"].extend(
+            f"{capability_id}#{page}"
+            for page in living_contract.get("unbacked_pages", []) or []
+        )
+        living_book_refs["unbacked_widgets"].extend(
+            f"{capability_id}#{widget}"
+            for widget in living_contract.get("unbacked_widgets", []) or []
+        )
+
+    theorem_ready = (
+        theorem_refs["proved_and_paper_backed_count"] == theorem_refs["total_count"]
+        and not theorem_refs["unproved_or_unbacked_refs"]
+    )
+    source_ready = (
+        source_refs["backed_count"] == source_refs["total_count"]
+        and not source_refs["unbacked_refs"]
+    )
+    living_ready = (
+        living_book_refs["backed_page_count"] == living_book_refs["total_page_count"]
+        and living_book_refs["backed_widget_count"] == living_book_refs["total_widget_count"]
+        and not living_book_refs["unbacked_pages"]
+        and not living_book_refs["unbacked_widgets"]
+    )
+    route_claim_language_contract = claim_language_contract(
+        route,
+        ROUTE_CLAIM_LANGUAGE_FIELDS,
+    )
+    return {
+        "ready_to_advertise": (
+            bool(capability_ids)
+            and not unknown_capability_ids
+            and not incomplete_capability_ids
+            and theorem_ready
+            and source_ready
+            and living_ready
+            and route_claim_language_contract["ready_to_advertise"]
+        ),
+        "capability_count": len(capability_ids),
+        "ready_capability_count": len(route_capabilities) - len(incomplete_capability_ids),
+        "unknown_capability_ids": unknown_capability_ids,
+        "incomplete_capability_ids": incomplete_capability_ids,
+        "covered_roles": sorted(roles),
+        "proof_provenance_kinds": sorted(provenance_kinds),
+        "unique_evidence_counts": {
+            "paper_count": len(paper_ids),
+            "theorem_count": len(theorem_ids),
+            "dictionary_count": len(dictionary_ids),
+            "executable_count": len(executable_refs),
+            "source_count": len(source_ref_ids),
+            "living_book_page_count": len(living_book_pages),
+            "living_book_widget_count": len(living_book_widgets),
+        },
+        "theorem_refs": theorem_refs,
+        "source_refs": source_refs,
+        "living_book_refs": living_book_refs,
+        "claim_language_contract": route_claim_language_contract,
+    }
+
+
+def portfolio_route_summary(routes: list[dict]) -> dict:
+    ready_count = sum(
+        1
+        for route in routes
+        if (route.get("route_contract", {}) or {}).get("ready_to_advertise")
+    )
+    return {
+        "route_count": len(routes),
+        "ready_count": ready_count,
+        "incomplete_count": len(routes) - ready_count,
+        "unknown_capability_ids": sorted(
+            {
+                capability_id
+                for route in routes
+                for capability_id in (
+                    (route.get("route_contract", {}) or {}).get("unknown_capability_ids", [])
+                    or []
+                )
+            }
+        ),
+    }
+
+
 def expected_portfolio_summary(
     capabilities: list[dict],
+    routes: list[dict],
     ready_count: int,
     gate_failure_counts: dict[str, int],
 ) -> dict:
@@ -206,6 +461,7 @@ def expected_portfolio_summary(
             "gate_failure_counts": dict(sorted(gate_failure_counts.items())),
         },
         "backing_contract_summary": portfolio_backing_contract_summary(capabilities),
+        "route_summary": portfolio_route_summary(routes),
     }
 
 
@@ -213,6 +469,7 @@ def main() -> int:
     failures: list[str] = []
     data = load_json(GENERATED / "capability_showcase.json")
     capabilities = data.get("capabilities", [])
+    routes = data.get("portfolio_routes", [])
     portfolio_summary = data.get("portfolio_summary", {})
     summary = portfolio_summary.get("claim_contract_summary", {})
 
@@ -227,6 +484,18 @@ def main() -> int:
             failures.append(
                 f"{capability_id}: evidence_counts {evidence_counts} "
                 f"do not match refs {expected_counts}"
+            )
+        expected_claim_language_contract = claim_language_contract(
+            capability,
+            CAPABILITY_CLAIM_LANGUAGE_FIELDS,
+        )
+        if capability.get("claim_language_contract") != expected_claim_language_contract:
+            failures.append(
+                f"{capability_id}: claim_language_contract does not match claim text"
+            )
+        if not expected_claim_language_contract["ready_to_advertise"]:
+            failures.append(
+                f"{capability_id}: advertising language guardrail is incomplete"
             )
         expected_pytest_command = shlex.join(["python", "-m", "pytest", *executable_refs])
         recipe = capability.get("verification_recipe")
@@ -557,8 +826,48 @@ def main() -> int:
         )
     if summary.get("gate_failure_counts", {}) != dict(sorted(gate_failure_counts.items())):
         failures.append("claim contract summary gate_failure_counts do not match gates")
+    capability_by_id = {
+        capability.get("id"): capability
+        for capability in capabilities
+        if capability.get("id")
+    }
+    route_ids = [route.get("id") for route in routes if isinstance(route, dict)]
+    duplicate_route_ids = sorted(
+        {route_id for route_id in route_ids if route_id and route_ids.count(route_id) > 1}
+    )
+    if duplicate_route_ids:
+        failures.append(f"duplicate portfolio route ids: {duplicate_route_ids}")
+    for route in routes:
+        if not isinstance(route, dict):
+            failures.append("portfolio route must be a mapping")
+            continue
+        route_id = route.get("id", "<missing route id>")
+        for field in REQUIRED_ROUTE_FIELDS:
+            if not str(route.get(field, "")).strip():
+                failures.append(f"{route_id}: route {field} is required")
+        capability_ids = route.get("capability_ids", [])
+        if not isinstance(capability_ids, list) or not capability_ids:
+            failures.append(f"{route_id}: route capability_ids must be a nonempty list")
+            capability_ids = []
+        duplicate_capability_ids = sorted(
+            {
+                capability_id
+                for capability_id in capability_ids
+                if capability_id and capability_ids.count(capability_id) > 1
+            }
+        )
+        if duplicate_capability_ids:
+            failures.append(
+                f"{route_id}: duplicate route capability ids {duplicate_capability_ids}"
+            )
+        expected_contract = route_backing_contract(route, capability_by_id)
+        if route.get("route_contract") != expected_contract:
+            failures.append(f"{route_id}: route_contract does not match capabilities")
+        if not expected_contract["ready_to_advertise"]:
+            failures.append(f"{route_id}: route contract is incomplete")
     expected_summary = expected_portfolio_summary(
         capabilities,
+        routes,
         ready_count,
         gate_failure_counts,
     )

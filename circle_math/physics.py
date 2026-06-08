@@ -251,6 +251,29 @@ def cycle_closed_loop_record(left: GaugePath, right: GaugePath) -> ClosedGaugeLo
     )
 
 
+def three_path_cycle_closed_loop_record(
+    first: GaugePath,
+    second: GaugePath,
+    third: GaugePath,
+) -> ClosedGaugeLoopRecord:
+    """Concatenate three finite paths that close into a cycle and record holonomy."""
+    combined = concat_paths(concat_paths(first, second), third)
+    if combined.target != combined.source:
+        raise ValueError("three-path cycle record requires endpoints to cycle back")
+    record = closed_loop_record(combined)
+    return ClosedGaugeLoopRecord(
+        modulus=record.modulus,
+        source=record.source,
+        target=record.target,
+        phases=record.phases,
+        holonomy=record.holonomy,
+        closed=record.closed,
+        theorem_ids=("PHYS-T0047", "PHYS-T0056", "PHYS-T0057", "PHYS-T0058", "PHYS-T0059"),
+        target_ids=record.target_ids,
+        note=record.note,
+    )
+
+
 def finite_periodic_dynamics(modulus: int, stride: int, steps: int) -> PeriodicDynamicsRecord:
     """Return a bounded stroboscopic phase/winding record.
 

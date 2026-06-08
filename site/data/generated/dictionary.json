@@ -6746,6 +6746,30 @@
           "lean_name": "Circle.Physics.closedGaugeLoop_fromCycle_swap_gaugeShiftedHolonomy",
           "name": "Circle.Physics.closedGaugeLoop_fromCycle_swap_gaugeShiftedHolonomy",
           "status": "proved"
+        },
+        {
+          "id": "PHYS-T0056",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_holonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_holonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0057",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_gaugeShiftedHolonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_gaugeShiftedHolonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0058",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_holonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_holonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0059",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -6772,7 +6796,7 @@
         {
           "id": "wilson_loop_certificate",
           "path": "site/widgets/physics/wilson_loop_certificate.js",
-          "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy; circle_math.physics.wilson_loop_certificate"
+          "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy; circle_math.physics.wilson_loop_certificate; circle_math.physics.three_path_cycle_closed_loop_record"
         }
       ]
     },
@@ -7133,6 +7157,30 @@
           "lean_name": "Circle.Physics.closedGaugeLoop_fromCycle_swap_gaugeShiftedHolonomy",
           "name": "Circle.Physics.closedGaugeLoop_fromCycle_swap_gaugeShiftedHolonomy",
           "status": "proved"
+        },
+        {
+          "id": "PHYS-T0056",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_holonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_holonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0057",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_gaugeShiftedHolonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_gaugeShiftedHolonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0058",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_holonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_holonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0059",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -7154,7 +7202,7 @@
         {
           "id": "wilson_loop_certificate",
           "path": "site/widgets/physics/wilson_loop_certificate.js",
-          "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy; circle_math.physics.wilson_loop_certificate"
+          "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy; circle_math.physics.wilson_loop_certificate; circle_math.physics.three_path_cycle_closed_loop_record"
         }
       ]
     },
@@ -7269,6 +7317,30 @@
           "lean_name": "Circle.Physics.closedGaugeLoop_fromCycle_swap_gaugeShiftedHolonomy",
           "name": "Circle.Physics.closedGaugeLoop_fromCycle_swap_gaugeShiftedHolonomy",
           "status": "proved"
+        },
+        {
+          "id": "PHYS-T0056",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_holonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_holonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0057",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_gaugeShiftedHolonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_gaugeShiftedHolonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0058",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_holonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_holonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0059",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -7285,7 +7357,7 @@
         {
           "id": "wilson_loop_certificate",
           "path": "site/widgets/physics/wilson_loop_certificate.js",
-          "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy; circle_math.physics.wilson_loop_certificate"
+          "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy; circle_math.physics.wilson_loop_certificate; circle_math.physics.three_path_cycle_closed_loop_record"
         }
       ]
     },
@@ -7382,6 +7454,18 @@
           "lean_name": "Circle.Physics.closedGaugeLoop_fromCycle_swap_gaugeShiftedHolonomy",
           "name": "Circle.Physics.closedGaugeLoop_fromCycle_swap_gaugeShiftedHolonomy",
           "status": "proved"
+        },
+        {
+          "id": "PHYS-T0057",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_gaugeShiftedHolonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_gaugeShiftedHolonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0059",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -7408,7 +7492,7 @@
         {
           "id": "wilson_loop_certificate",
           "path": "site/widgets/physics/wilson_loop_certificate.js",
-          "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy; circle_math.physics.wilson_loop_certificate"
+          "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy; circle_math.physics.wilson_loop_certificate; circle_math.physics.three_path_cycle_closed_loop_record"
         }
       ]
     },

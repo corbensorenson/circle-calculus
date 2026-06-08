@@ -11,6 +11,7 @@ from circle_math.physics import (
     reverse_path,
     identity_closed_loop_record,
     square_plaquette_path,
+    three_path_cycle_closed_loop_record,
     transformed_holonomy_endpoint_prediction,
     wilson_loop_certificate,
 )
@@ -105,6 +106,30 @@ def test_closed_loop_records_identity_and_cycle_holonomy() -> None:
     assert swapped.source == swapped.target == "c"
     assert swapped.holonomy == cycle.holonomy
     assert path_holonomy(transformed_swapped) == cycle.holonomy
+
+
+def test_three_path_cycle_record_preserves_rotated_basepoint_holonomy() -> None:
+    first = GaugePath(17, (GaugeEdge("a", "b", 5),))
+    second = GaugePath(17, (GaugeEdge("b", "c", 8),))
+    third = GaugePath(17, (GaugeEdge("c", "a", -3),))
+    gauge = {"a": 4, "b": 9, "c": 13}
+    combined = concat_paths(concat_paths(first, second), third)
+    transformed = gauge_transform_path(combined, gauge)
+    record = three_path_cycle_closed_loop_record(first, second, third)
+
+    rotated = concat_paths(concat_paths(second, third), first)
+    transformed_rotated = gauge_transform_path(rotated, gauge)
+    rotated_record = three_path_cycle_closed_loop_record(second, third, first)
+
+    assert record.closed
+    assert record.source == record.target == "a"
+    assert record.holonomy == (path_holonomy(first) + path_holonomy(second) + path_holonomy(third)) % 17
+    assert path_holonomy(transformed) == record.holonomy
+    assert record.theorem_ids == ("PHYS-T0047", "PHYS-T0056", "PHYS-T0057", "PHYS-T0058", "PHYS-T0059")
+    assert rotated_record.closed
+    assert rotated_record.source == rotated_record.target == "b"
+    assert rotated_record.holonomy == record.holonomy
+    assert path_holonomy(transformed_rotated) == record.holonomy
 
 
 def test_closed_loop_record_rejects_open_paths() -> None:

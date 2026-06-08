@@ -119,6 +119,7 @@ from circle_math.physics import (
     path_holonomy,
     reverse_path,
     square_plaquette_path,
+    three_path_cycle_closed_loop_record,
     transformed_holonomy_endpoint_prediction,
     wilson_loop_certificate,
 )
@@ -324,6 +325,21 @@ def js_wilson_loop_certificate(
         "closed": closed,
         "gauge_invariant_under": tuple(invariant_under),
         "theorem_ids": ("PHYS-T0004", "PHYS-T0005", "PHYS-T0047"),
+    }
+
+
+def js_three_path_cycle_closed_loop_record(edges: tuple[dict, ...], modulus: int) -> dict:
+    closed = bool(edges) and edges[0]["source"] == edges[-1]["target"]
+    if not closed:
+        raise ValueError("three-path cycle record requires endpoints to cycle back")
+    return {
+        "modulus": modulus,
+        "source": edges[0]["source"],
+        "target": edges[-1]["target"],
+        "phases": tuple(edge["phase"] for edge in edges),
+        "holonomy": js_path_holonomy(edges, modulus),
+        "closed": closed,
+        "theorem_ids": ("PHYS-T0047", "PHYS-T0056", "PHYS-T0057", "PHYS-T0058", "PHYS-T0059"),
     }
 
 
@@ -1805,14 +1821,10 @@ def main() -> int:
         ),
     ]
     for modulus, (ab, bc, ca), gauges in wilson_cases:
-        loop = GaugePath(
-            modulus,
-            (
-                GaugeEdge("a", "b", ab),
-                GaugeEdge("b", "c", bc),
-                GaugeEdge("c", "a", ca),
-            ),
-        )
+        first = GaugePath(modulus, (GaugeEdge("a", "b", ab),))
+        second = GaugePath(modulus, (GaugeEdge("b", "c", bc),))
+        third = GaugePath(modulus, (GaugeEdge("c", "a", ca),))
+        loop = concat_paths(concat_paths(first, second), third)
         js_edges = (
             js_gauge_edge("a", "b", ab, modulus),
             js_gauge_edge("b", "c", bc, modulus),
@@ -1820,17 +1832,34 @@ def main() -> int:
         )
         certificate = wilson_loop_certificate(loop, gauges)
         js_certificate = js_wilson_loop_certificate(js_edges, gauges, modulus)
+        record = three_path_cycle_closed_loop_record(first, second, third)
+        js_record = js_three_path_cycle_closed_loop_record(js_edges, modulus)
+        rotated = concat_paths(concat_paths(second, third), first)
+        rotated_record = three_path_cycle_closed_loop_record(second, third, first)
+        js_rotated_edges = (js_edges[1], js_edges[2], js_edges[0])
         assert gauge_path_edges(loop) == js_edges
         assert certificate.holonomy == js_certificate["holonomy"]
         assert certificate.closed == js_certificate["closed"]
         assert certificate.gauge_invariant_under == js_certificate["gauge_invariant_under"]
         assert certificate.theorem_ids == js_certificate["theorem_ids"]
+        assert record.source == js_record["source"]
+        assert record.target == js_record["target"]
+        assert record.phases == js_record["phases"]
+        assert record.holonomy == js_record["holonomy"]
+        assert record.closed == js_record["closed"]
+        assert record.theorem_ids == js_record["theorem_ids"]
+        assert gauge_path_edges(rotated) == js_rotated_edges
+        assert rotated_record.holonomy == record.holonomy
         for gauge in gauges:
             transformed = gauge_transform_path(loop, gauge)
             js_transformed = js_gauge_transformed_edges(js_edges, gauge, modulus)
+            transformed_rotated = gauge_transform_path(rotated, gauge)
+            js_transformed_rotated = js_gauge_transformed_edges(js_rotated_edges, gauge, modulus)
             assert gauge_path_edges(transformed) == js_transformed
+            assert gauge_path_edges(transformed_rotated) == js_transformed_rotated
             assert path_holonomy(transformed) == js_path_holonomy(js_transformed, modulus)
             assert path_holonomy(transformed) == certificate.holonomy
+            assert path_holonomy(transformed_rotated) == record.holonomy
 
     periodic_cases = [
         (12, 5, 7, 4, 2, 1),

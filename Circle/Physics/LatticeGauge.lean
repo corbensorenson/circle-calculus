@@ -438,6 +438,17 @@ def ClosedGaugeLoop.fromCycle
   { path := left.concat right hforward,
     closed := checkedGaugePath_concat_closed_of_cycle left right hforward hback }
 
+def ClosedGaugeLoop.fromThreeCycle
+    (first second third : CheckedGaugePath n)
+    (h12 : first.target = second.source)
+    (h23 : second.target = third.source)
+    (h31 : third.target = first.source) : ClosedGaugeLoop n :=
+  ClosedGaugeLoop.fromCycle
+    (first.concat second h12)
+    third
+    (by simpa [CheckedGaugePath.concat] using h23)
+    (by simpa [CheckedGaugePath.concat] using h31)
+
 theorem checkedGaugePath_closed_gaugeInvariant
     (path : CheckedGaugePath n) (gauge : Nat → ZMod n)
     (hclosed : path.closed) :
@@ -511,6 +522,56 @@ theorem closedGaugeLoop_fromCycle_swap_gaugeShiftedHolonomy
   rw [
     closedGaugeLoop_fromCycle_gaugeShiftedHolonomy right left hback hforward gauge,
     closedGaugeLoop_fromCycle_gaugeShiftedHolonomy left right hforward hback gauge,
+  ]
+  ac_rfl
+
+theorem closedGaugeLoop_fromThreeCycle_holonomy
+    (first second third : CheckedGaugePath n)
+    (h12 : first.target = second.source)
+    (h23 : second.target = third.source)
+    (h31 : third.target = first.source) :
+    (ClosedGaugeLoop.fromThreeCycle first second third h12 h23 h31).holonomy =
+      first.holonomy + second.holonomy + third.holonomy := by
+  rw [
+    ClosedGaugeLoop.fromThreeCycle,
+    closedGaugeLoop_fromCycle_holonomy,
+    checkedGaugePath_concat_holonomy,
+  ]
+
+theorem closedGaugeLoop_fromThreeCycle_gaugeShiftedHolonomy
+    (first second third : CheckedGaugePath n)
+    (h12 : first.target = second.source)
+    (h23 : second.target = third.source)
+    (h31 : third.target = first.source)
+    (gauge : Nat → ZMod n) :
+    (ClosedGaugeLoop.fromThreeCycle first second third h12 h23 h31).gaugeShiftedHolonomy gauge =
+      first.holonomy + second.holonomy + third.holonomy := by
+  rw [closedGaugeLoop_gaugeInvariant, closedGaugeLoop_fromThreeCycle_holonomy]
+
+theorem closedGaugeLoop_fromThreeCycle_rotate_holonomy
+    (first second third : CheckedGaugePath n)
+    (h12 : first.target = second.source)
+    (h23 : second.target = third.source)
+    (h31 : third.target = first.source) :
+    (ClosedGaugeLoop.fromThreeCycle second third first h23 h31 h12).holonomy =
+      (ClosedGaugeLoop.fromThreeCycle first second third h12 h23 h31).holonomy := by
+  rw [
+    closedGaugeLoop_fromThreeCycle_holonomy second third first h23 h31 h12,
+    closedGaugeLoop_fromThreeCycle_holonomy first second third h12 h23 h31,
+  ]
+  ac_rfl
+
+theorem closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy
+    (first second third : CheckedGaugePath n)
+    (h12 : first.target = second.source)
+    (h23 : second.target = third.source)
+    (h31 : third.target = first.source)
+    (gauge : Nat → ZMod n) :
+    (ClosedGaugeLoop.fromThreeCycle second third first h23 h31 h12).gaugeShiftedHolonomy gauge =
+      (ClosedGaugeLoop.fromThreeCycle first second third h12 h23 h31).gaugeShiftedHolonomy gauge := by
+  rw [
+    closedGaugeLoop_fromThreeCycle_gaugeShiftedHolonomy second third first h23 h31 h12 gauge,
+    closedGaugeLoop_fromThreeCycle_gaugeShiftedHolonomy first second third h12 h23 h31 gauge,
   ]
   ac_rfl
 

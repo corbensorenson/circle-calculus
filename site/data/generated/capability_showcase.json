@@ -99,16 +99,37 @@
             "passed": true
           },
           {
+            "evidence": "clean",
+            "id": "claim_language_guardrail",
+            "label": "advertising language guardrail",
+            "passed": true
+          },
+          {
             "evidence": "No new proof of EGZ, no new proof of Cauchy-Davenport, and no progress claim on an open Erdos problem.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 16,
+        "passed_gate_count": 17,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 16
+        "total_gate_count": 17
+      },
+      "claim_language_contract": {
+        "boundary_field": "not_claimed",
+        "checked_fields": [
+          "audience_interest",
+          "standard_math_anchor",
+          "circle_math_expression",
+          "circle_native_value",
+          "advertised_claim",
+          "proof_scope",
+          "proof_provenance"
+        ],
+        "explicit_boundary": true,
+        "flagged_phrases": [],
+        "ready_to_advertise": true
       },
       "dictionary_ids": [
         "CC-0001",
@@ -329,16 +350,37 @@
             "passed": true
           },
           {
+            "evidence": "clean",
+            "id": "claim_language_guardrail",
+            "label": "advertising language guardrail",
+            "passed": true
+          },
+          {
             "evidence": "No new EKR proof and no classification of all extremal families.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 16,
+        "passed_gate_count": 17,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 16
+        "total_gate_count": 17
+      },
+      "claim_language_contract": {
+        "boundary_field": "not_claimed",
+        "checked_fields": [
+          "audience_interest",
+          "standard_math_anchor",
+          "circle_math_expression",
+          "circle_native_value",
+          "advertised_claim",
+          "proof_scope",
+          "proof_provenance"
+        ],
+        "explicit_boundary": true,
+        "flagged_phrases": [],
+        "ready_to_advertise": true
       },
       "dictionary_ids": [
         "CC-0001",
@@ -553,16 +595,37 @@
             "passed": true
           },
           {
+            "evidence": "clean",
+            "id": "claim_language_guardrail",
+            "label": "advertising language guardrail",
+            "passed": true
+          },
+          {
             "evidence": "No new Roth proof, no improved bounds, and no cyclic-to-natural transfer theorem yet.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 16,
+        "passed_gate_count": 17,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 16
+        "total_gate_count": 17
+      },
+      "claim_language_contract": {
+        "boundary_field": "not_claimed",
+        "checked_fields": [
+          "audience_interest",
+          "standard_math_anchor",
+          "circle_math_expression",
+          "circle_native_value",
+          "advertised_claim",
+          "proof_scope",
+          "proof_provenance"
+        ],
+        "explicit_boundary": true,
+        "flagged_phrases": [],
+        "ready_to_advertise": true
       },
       "dictionary_ids": [
         "CC-0001",
@@ -777,16 +840,37 @@
             "passed": true
           },
           {
+            "evidence": "clean",
+            "id": "claim_language_guardrail",
+            "label": "advertising language guardrail",
+            "passed": true
+          },
+          {
             "evidence": "Finite Python searches are examples only; they are not the Hales-Jewett proof.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 16,
+        "passed_gate_count": 17,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 16
+        "total_gate_count": 17
+      },
+      "claim_language_contract": {
+        "boundary_field": "not_claimed",
+        "checked_fields": [
+          "audience_interest",
+          "standard_math_anchor",
+          "circle_math_expression",
+          "circle_native_value",
+          "advertised_claim",
+          "proof_scope",
+          "proof_provenance"
+        ],
+        "explicit_boundary": true,
+        "flagged_phrases": [],
+        "ready_to_advertise": true
       },
       "dictionary_ids": [
         "CC-0001",
@@ -1001,16 +1085,37 @@
             "passed": true
           },
           {
+            "evidence": "clean",
+            "id": "claim_language_guardrail",
+            "label": "advertising language guardrail",
+            "passed": true
+          },
+          {
             "evidence": "No progress on hard unit-distance or distinct-distance problems.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 16,
+        "passed_gate_count": 17,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 16
+        "total_gate_count": 17
+      },
+      "claim_language_contract": {
+        "boundary_field": "not_claimed",
+        "checked_fields": [
+          "audience_interest",
+          "standard_math_anchor",
+          "circle_math_expression",
+          "circle_native_value",
+          "advertised_claim",
+          "proof_scope",
+          "proof_provenance"
+        ],
+        "explicit_boundary": true,
+        "flagged_phrases": [],
+        "ready_to_advertise": true
       },
       "dictionary_ids": [
         "CC-0001",
@@ -1237,16 +1342,37 @@
             "passed": true
           },
           {
+            "evidence": "clean",
+            "id": "claim_language_guardrail",
+            "label": "advertising language guardrail",
+            "passed": true
+          },
+          {
             "evidence": "No claim that this replaces standard modular arithmetic; it is a proof-carrying cyclic presentation.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 16,
+        "passed_gate_count": 17,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 16
+        "total_gate_count": 17
+      },
+      "claim_language_contract": {
+        "boundary_field": "not_claimed",
+        "checked_fields": [
+          "audience_interest",
+          "standard_math_anchor",
+          "circle_math_expression",
+          "circle_native_value",
+          "advertised_claim",
+          "proof_scope",
+          "proof_provenance"
+        ],
+        "explicit_boundary": true,
+        "flagged_phrases": [],
+        "ready_to_advertise": true
       },
       "dictionary_ids": [
         "S1-0001",
@@ -1564,16 +1690,37 @@
             "passed": true
           },
           {
+            "evidence": "clean",
+            "id": "claim_language_guardrail",
+            "label": "advertising language guardrail",
+            "passed": true
+          },
+          {
             "evidence": "No full smooth Hopf fibration formalization and no complete SO(3) robotics formalization.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 16,
+        "passed_gate_count": 17,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 16
+        "total_gate_count": 17
+      },
+      "claim_language_contract": {
+        "boundary_field": "not_claimed",
+        "checked_fields": [
+          "audience_interest",
+          "standard_math_anchor",
+          "circle_math_expression",
+          "circle_native_value",
+          "advertised_claim",
+          "proof_scope",
+          "proof_provenance"
+        ],
+        "explicit_boundary": true,
+        "flagged_phrases": [],
+        "ready_to_advertise": true
       },
       "dictionary_ids": [
         "S3Q-0001",
@@ -1846,7 +1993,7 @@
             "passed": true
           },
           {
-            "evidence": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, and two-path basepoint-swap facts.",
+            "evidence": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, two-path basepoint-swap facts, and three-path cycle/basepoint-rotation facts.",
             "id": "proof_scope",
             "label": "proof scope",
             "passed": true
@@ -1870,7 +2017,7 @@
             "passed": true
           },
           {
-            "evidence": "14",
+            "evidence": "18",
             "id": "proved_theorem_ids",
             "label": "proved paper-carried theorem ids",
             "passed": true
@@ -1906,16 +2053,37 @@
             "passed": true
           },
           {
+            "evidence": "clean",
+            "id": "claim_language_guardrail",
+            "label": "advertising language guardrail",
+            "passed": true
+          },
+          {
             "evidence": "No continuum gauge theory, no physics discovery, and no lattice-QCD correctness claim.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 16,
+        "passed_gate_count": 17,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 16
+        "total_gate_count": 17
+      },
+      "claim_language_contract": {
+        "boundary_field": "not_claimed",
+        "checked_fields": [
+          "audience_interest",
+          "standard_math_anchor",
+          "circle_math_expression",
+          "circle_native_value",
+          "advertised_claim",
+          "proof_scope",
+          "proof_provenance"
+        ],
+        "explicit_boundary": true,
+        "flagged_phrases": [],
+        "ready_to_advertise": true
       },
       "dictionary_ids": [
         "COMMON-0060",
@@ -1930,7 +2098,7 @@
         "living_book_widget_count": 3,
         "paper_count": 1,
         "source_count": 2,
-        "theorem_count": 14
+        "theorem_count": 18
       },
       "executable_refs": [
         "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
@@ -1994,7 +2162,7 @@
       ],
       "proof_provenance": "Proof provenance is project-native Lean code for finite gauge-link/path records and holonomy laws, with Python fixtures serving as executable references.",
       "proof_provenance_kind": "project_native",
-      "proof_scope": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, and two-path basepoint-swap facts.",
+      "proof_scope": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, two-path basepoint-swap facts, and three-path cycle/basepoint-rotation facts.",
       "source_ref_contract": {
         "backed_count": 2,
         "refs": [
@@ -2031,10 +2199,14 @@
         "PHYS-T0052",
         "PHYS-T0053",
         "PHYS-T0054",
-        "PHYS-T0055"
+        "PHYS-T0055",
+        "PHYS-T0056",
+        "PHYS-T0057",
+        "PHYS-T0058",
+        "PHYS-T0059"
       ],
       "theorem_ref_contract": {
-        "proved_and_paper_backed_count": 14,
+        "proved_and_paper_backed_count": 18,
         "refs": [
           {
             "canonical_status": "proved",
@@ -2189,9 +2361,53 @@
             "paper_backed": true,
             "proved": true,
             "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0056",
+            "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_holonomy",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0057",
+            "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_gaugeShiftedHolonomy",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0058",
+            "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_holonomy",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0059",
+            "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
           }
         ],
-        "total_count": 14,
+        "total_count": 18,
         "unproved_or_unbacked_ids": []
       },
       "title": "Proof-carrying finite gauge paths",
@@ -2301,16 +2517,37 @@
             "passed": true
           },
           {
+            "evidence": "clean",
+            "id": "claim_language_guardrail",
+            "label": "advertising language guardrail",
+            "passed": true
+          },
+          {
             "evidence": "No universal compression claim and no guarantee that generated artifacts are mathematically interesting.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 16,
+        "passed_gate_count": 17,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 16
+        "total_gate_count": 17
+      },
+      "claim_language_contract": {
+        "boundary_field": "not_claimed",
+        "checked_fields": [
+          "audience_interest",
+          "standard_math_anchor",
+          "circle_math_expression",
+          "circle_native_value",
+          "advertised_claim",
+          "proof_scope",
+          "proof_provenance"
+        ],
+        "explicit_boundary": true,
+        "flagged_phrases": [],
+        "ready_to_advertise": true
       },
       "dictionary_ids": [
         "COMMON-0033",
@@ -2824,16 +3061,37 @@
             "passed": true
           },
           {
+            "evidence": "clean",
+            "id": "claim_language_guardrail",
+            "label": "advertising language guardrail",
+            "passed": true
+          },
+          {
             "evidence": "No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 16,
+        "passed_gate_count": 17,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 16
+        "total_gate_count": 17
+      },
+      "claim_language_contract": {
+        "boundary_field": "not_claimed",
+        "checked_fields": [
+          "audience_interest",
+          "standard_math_anchor",
+          "circle_math_expression",
+          "circle_native_value",
+          "advertised_claim",
+          "proof_scope",
+          "proof_provenance"
+        ],
+        "explicit_boundary": true,
+        "flagged_phrases": [],
+        "ready_to_advertise": true
       },
       "dictionary_ids": [
         "COMMON-0028",
@@ -3413,16 +3671,37 @@
             "passed": true
           },
           {
+            "evidence": "clean",
+            "id": "claim_language_guardrail",
+            "label": "advertising language guardrail",
+            "passed": true
+          },
+          {
             "evidence": "No performance claim without direct dense, FFT/NTT, and backend baselines.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 16,
+        "passed_gate_count": 17,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 16
+        "total_gate_count": 17
+      },
+      "claim_language_contract": {
+        "boundary_field": "not_claimed",
+        "checked_fields": [
+          "audience_interest",
+          "standard_math_anchor",
+          "circle_math_expression",
+          "circle_native_value",
+          "advertised_claim",
+          "proof_scope",
+          "proof_provenance"
+        ],
+        "explicit_boundary": true,
+        "flagged_phrases": [],
+        "ready_to_advertise": true
       },
       "dictionary_ids": [
         "COMMON-0018",
@@ -3576,6 +3855,268 @@
       }
     }
   ],
+  "portfolio_routes": [
+    {
+      "audience": "Mathematicians who want to know whether Circle Calculus can speak established theorem language.",
+      "capability_ids": [
+        "SHOW-001",
+        "SHOW-002",
+        "SHOW-003",
+        "SHOW-004",
+        "SHOW-005"
+      ],
+      "id": "ROUTE-001",
+      "not_claimed": "This route does not claim new solutions to open Erd\u0151s problems; it demonstrates proof-backed standard-math parity and conservative cyclic reformulations.",
+      "route_claim": "Start with Erd\u0151s-adjacent additive combinatorics, extremal set theory, Ramsey theory, and cyclic graph geometry, then inspect the theorem ids, papers, and executable examples behind each bridge.",
+      "route_contract": {
+        "capability_count": 5,
+        "claim_language_contract": {
+          "boundary_field": "not_claimed",
+          "checked_fields": [
+            "title",
+            "audience",
+            "route_claim"
+          ],
+          "explicit_boundary": true,
+          "flagged_phrases": [],
+          "ready_to_advertise": true
+        },
+        "covered_roles": [
+          "circle_native_value",
+          "standard_math_parity"
+        ],
+        "incomplete_capability_ids": [],
+        "living_book_refs": {
+          "backed_page_count": 5,
+          "backed_widget_count": 0,
+          "total_page_count": 5,
+          "total_widget_count": 0,
+          "unbacked_pages": [],
+          "unbacked_widgets": []
+        },
+        "proof_provenance_kinds": [
+          "mathlib_bridge",
+          "project_native"
+        ],
+        "ready_capability_count": 5,
+        "ready_to_advertise": true,
+        "source_refs": {
+          "backed_count": 11,
+          "total_count": 11,
+          "unbacked_refs": []
+        },
+        "theorem_refs": {
+          "proved_and_paper_backed_count": 11,
+          "total_count": 11,
+          "unproved_or_unbacked_refs": []
+        },
+        "unique_evidence_counts": {
+          "dictionary_count": 2,
+          "executable_count": 5,
+          "living_book_page_count": 1,
+          "living_book_widget_count": 0,
+          "paper_count": 5,
+          "source_count": 11,
+          "theorem_count": 11
+        },
+        "unknown_capability_ids": []
+      },
+      "title": "Hard mathematics bridge"
+    },
+    {
+      "audience": "Readers who want the internal algebra that makes the notation useful rather than decorative.",
+      "capability_ids": [
+        "SHOW-006",
+        "SHOW-011"
+      ],
+      "id": "ROUTE-002",
+      "not_claimed": "This route does not claim to replace modular arithmetic or standard computation theory; it packages them as proof-carrying cyclic interfaces.",
+      "route_claim": "Follow modular periods, gcd orbits, kernels, fibers, normal forms, circular buffers, stride layouts, and schedule laws as Lean-backed finite cyclic structure.",
+      "route_contract": {
+        "capability_count": 2,
+        "claim_language_contract": {
+          "boundary_field": "not_claimed",
+          "checked_fields": [
+            "title",
+            "audience",
+            "route_claim"
+          ],
+          "explicit_boundary": true,
+          "flagged_phrases": [],
+          "ready_to_advertise": true
+        },
+        "covered_roles": [
+          "application_guardrail",
+          "circle_native_value",
+          "standard_math_parity"
+        ],
+        "incomplete_capability_ids": [],
+        "living_book_refs": {
+          "backed_page_count": 3,
+          "backed_widget_count": 3,
+          "total_page_count": 3,
+          "total_widget_count": 3,
+          "unbacked_pages": [],
+          "unbacked_widgets": []
+        },
+        "proof_provenance_kinds": [
+          "project_native"
+        ],
+        "ready_capability_count": 2,
+        "ready_to_advertise": true,
+        "source_refs": {
+          "backed_count": 9,
+          "total_count": 9,
+          "unbacked_refs": []
+        },
+        "theorem_refs": {
+          "proved_and_paper_backed_count": 9,
+          "total_count": 9,
+          "unproved_or_unbacked_refs": []
+        },
+        "unique_evidence_counts": {
+          "dictionary_count": 9,
+          "executable_count": 4,
+          "living_book_page_count": 3,
+          "living_book_widget_count": 3,
+          "paper_count": 5,
+          "source_count": 9,
+          "theorem_count": 9
+        },
+        "unknown_capability_ids": []
+      },
+      "title": "Cyclic proof spine"
+    },
+    {
+      "audience": "Geometry, robotics, and physics-facing readers interested in hidden phase, spin sign, holonomy, and path certificates.",
+      "capability_ids": [
+        "SHOW-007",
+        "SHOW-008"
+      ],
+      "id": "ROUTE-003",
+      "not_claimed": "This route does not claim continuum physics, full smooth Hopf formalization, or model discovery.",
+      "route_claim": "Use bounded quaternion/Hopf phase facts and proof-carrying finite gauge paths to see where Circle vocabulary clarifies phase and endpoint bookkeeping.",
+      "route_contract": {
+        "capability_count": 2,
+        "claim_language_contract": {
+          "boundary_field": "not_claimed",
+          "checked_fields": [
+            "title",
+            "audience",
+            "route_claim"
+          ],
+          "explicit_boundary": true,
+          "flagged_phrases": [],
+          "ready_to_advertise": true
+        },
+        "covered_roles": [
+          "application_guardrail",
+          "circle_native_value",
+          "standard_math_parity"
+        ],
+        "incomplete_capability_ids": [],
+        "living_book_refs": {
+          "backed_page_count": 3,
+          "backed_widget_count": 5,
+          "total_page_count": 3,
+          "total_widget_count": 5,
+          "unbacked_pages": [],
+          "unbacked_widgets": []
+        },
+        "proof_provenance_kinds": [
+          "project_native"
+        ],
+        "ready_capability_count": 2,
+        "ready_to_advertise": true,
+        "source_refs": {
+          "backed_count": 6,
+          "total_count": 6,
+          "unbacked_refs": []
+        },
+        "theorem_refs": {
+          "proved_and_paper_backed_count": 25,
+          "total_count": 25,
+          "unproved_or_unbacked_refs": []
+        },
+        "unique_evidence_counts": {
+          "dictionary_count": 10,
+          "executable_count": 4,
+          "living_book_page_count": 2,
+          "living_book_widget_count": 5,
+          "paper_count": 4,
+          "source_count": 6,
+          "theorem_count": 25
+        },
+        "unknown_capability_ids": []
+      },
+      "title": "Phase, rotation, and finite physics"
+    },
+    {
+      "audience": "Builders who want generated artifacts, cyclic AI schedules, and compute layouts to carry checkable provenance before performance or quality claims.",
+      "capability_ids": [
+        "SHOW-009",
+        "SHOW-010",
+        "SHOW-011"
+      ],
+      "id": "ROUTE-004",
+      "not_claimed": "This route does not claim universal compression, model-quality improvement, speedup, or context-length improvement without benchmark evidence.",
+      "route_claim": "Connect seed-rule provenance, exact regeneration gates, cyclic AI memory and route budgets, adapter indexing, and circular compute schedules into reusable proof-carrying systems interfaces.",
+      "route_contract": {
+        "capability_count": 3,
+        "claim_language_contract": {
+          "boundary_field": "not_claimed",
+          "checked_fields": [
+            "title",
+            "audience",
+            "route_claim"
+          ],
+          "explicit_boundary": true,
+          "flagged_phrases": [],
+          "ready_to_advertise": true
+        },
+        "covered_roles": [
+          "application_guardrail",
+          "circle_native_value",
+          "standard_math_parity"
+        ],
+        "incomplete_capability_ids": [],
+        "living_book_refs": {
+          "backed_page_count": 3,
+          "backed_widget_count": 11,
+          "total_page_count": 3,
+          "total_widget_count": 11,
+          "unbacked_pages": [],
+          "unbacked_widgets": []
+        },
+        "proof_provenance_kinds": [
+          "project_native"
+        ],
+        "ready_capability_count": 3,
+        "ready_to_advertise": true,
+        "source_refs": {
+          "backed_count": 14,
+          "total_count": 14,
+          "unbacked_refs": []
+        },
+        "theorem_refs": {
+          "proved_and_paper_backed_count": 52,
+          "total_count": 52,
+          "unproved_or_unbacked_refs": []
+        },
+        "unique_evidence_counts": {
+          "dictionary_count": 14,
+          "executable_count": 7,
+          "living_book_page_count": 3,
+          "living_book_widget_count": 11,
+          "paper_count": 7,
+          "source_count": 14,
+          "theorem_count": 52
+        },
+        "unknown_capability_ids": []
+      },
+      "title": "Proof-carrying generated and AI structures"
+    }
+  ],
   "portfolio_summary": {
     "backing_contract_summary": {
       "living_book_refs": {
@@ -3593,8 +4134,8 @@
         "unbacked_refs": []
       },
       "theorem_refs": {
-        "proved_and_paper_backed_count": 90,
-        "total_count": 90,
+        "proved_and_paper_backed_count": 94,
+        "total_count": 94,
         "unproved_or_unbacked_refs": []
       }
     },
@@ -3611,7 +4152,7 @@
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 90
+      "theorem_count": 94
     },
     "proof_provenance_counts": {
       "mathlib_bridge": 4,
@@ -3622,6 +4163,12 @@
       "circle_native_value": 11,
       "standard_math_parity": 10
     },
+    "route_summary": {
+      "incomplete_count": 0,
+      "ready_count": 4,
+      "route_count": 4,
+      "unknown_capability_ids": []
+    },
     "unique_evidence_counts": {
       "dictionary_count": 31,
       "executable_count": 17,
@@ -3629,7 +4176,7 @@
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 90
+      "theorem_count": 94
     },
     "unique_living_book_pages": [
       "site/chapters/S1/03_coils_orbits_closure.qmd",
