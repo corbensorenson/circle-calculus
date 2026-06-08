@@ -329,6 +329,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py::test_spin_sign_relation_is_equivalence_on_examples
     blocker: ""
+  - id: S3S-T0005
+    status: lean_proved
+    lean_name: Circle.S3.quaternionConjugation_pure_of_pure
+    informal_statement: "Quaternion conjugation sends pure-imaginary quaternion inputs to pure-imaginary quaternion outputs."
+    formal_statement: "forall q v : Circle.S3.RealQuaternion, Circle.S3.isPureQuaternion v -> Circle.S3.isPureQuaternion (Circle.S3.quaternionConjugationAction q v)"
+    dictionary_dependencies: ["S3S-0001", "S3S-0003", "S3Q-0001"]
+    paper_refs: ["papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"]
+    imports_allowed: ["Common", "S1", "S2"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py::test_quaternion_conjugation_preserves_pure_vector_inputs
+    blocker: ""
 warnings:
   - id: S3H-W0001
     status: active

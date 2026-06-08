@@ -89,6 +89,11 @@ def conjugation_action(q: Quaternion, v: Quaternion) -> Quaternion:
     return q * v * q.conjugate()
 
 
+def is_pure_quaternion(value: Quaternion, *, tol: float = DEFAULT_QUATERNION_TOLERANCE) -> bool:
+    """Return whether the executable quaternion has zero real coordinate."""
+    return abs(value.r) <= tol
+
+
 def quaternion_close(
     left: Quaternion,
     right: Quaternion,
@@ -117,6 +122,9 @@ def orientation_debug_record(q: Quaternion, v: Quaternion) -> dict[str, bool | t
         "vector_coordinates": v.coordinates(),
         "q_action_coordinates": q_action.coordinates(),
         "neg_q_action_coordinates": neg_action.coordinates(),
+        "input_is_pure": is_pure_quaternion(v),
+        "q_action_is_pure": is_pure_quaternion(q_action),
+        "neg_q_action_is_pure": is_pure_quaternion(neg_action),
         "representatives_are_distinct": not quaternion_close(q, -q),
         "actions_match": quaternion_close(q_action, neg_action),
         "spin_sign_related": spin_sign_related(q, -q),

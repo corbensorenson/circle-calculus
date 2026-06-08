@@ -10,8 +10,10 @@ This file re-exports the quaternion sign-cancellation declaration used by
 namespace Circle.PaperS304
 
 #check Circle.S3.quaternionConjugationAction
+#check Circle.S3.isPureQuaternion
 #check Circle.S3.quaternionConjugation_one
 #check Circle.S3.quaternionConjugation_zero_vector
+#check Circle.S3.quaternionConjugation_pure_of_pure
 #check Circle.S3.quaternionConjugation_neg
 #check Circle.S3.unitQuaternionNeg
 #check Circle.S3.unitQuaternion_neg_involutive

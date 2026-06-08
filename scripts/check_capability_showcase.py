@@ -40,6 +40,7 @@ EXECUTABLE_ATTR_RE = re.compile(
     r'data-capability-id="([^"]+)"[^>]*data-executable-ref="([^"]+)"'
 )
 THEOREM_BOX_RE = re.compile(r'<div class="theorem-box"([^>]*)>')
+PAPER_REF_RE = re.compile(r'<p([^>]*data-paper-ref="[^"]+"[^>]*)>')
 
 
 def html_attr(attrs: str, name: str) -> str | None:
@@ -116,6 +117,24 @@ def page_theorem_pairs() -> tuple[list[tuple[str, str]], list[str]]:
         elif theorem_id:
             missing_capabilities.append(theorem_id)
     return pairs, missing_capabilities
+
+
+def page_paper_entries() -> tuple[list[tuple[str, str]], list[str], list[tuple[str, str, str]]]:
+    if not SHOWCASE_PAGE.exists():
+        return [], [], []
+    pairs: list[tuple[str, str]] = []
+    missing_attrs: list[str] = []
+    paths: list[tuple[str, str, str]] = []
+    for attrs in PAPER_REF_RE.findall(SHOWCASE_PAGE.read_text()):
+        paper_ref = html_attr(attrs, "data-paper-ref")
+        paper_id = html_attr(attrs, "data-paper-id")
+        capability_id = html_attr(attrs, "data-capability-id")
+        if paper_ref and paper_id and capability_id:
+            pairs.append((capability_id, paper_id))
+            paths.append((capability_id, paper_id, paper_ref))
+        elif paper_ref:
+            missing_attrs.append(paper_ref)
+    return pairs, missing_attrs, paths
 
 
 def main() -> int:
@@ -200,6 +219,40 @@ def main() -> int:
             failures.append(f"theorem refs missing from page: {missing_theorems}")
         if unknown_theorems:
             failures.append(f"unknown page theorem refs: {unknown_theorems}")
+        page_papers, paper_refs_without_attrs, page_paper_paths = page_paper_entries()
+        if paper_refs_without_attrs:
+            failures.append(
+                "page paper refs missing data-capability-id or data-paper-id: "
+                f"{sorted(paper_refs_without_attrs)}"
+            )
+        paper_duplicates = sorted(
+            {pair for pair in page_papers if page_papers.count(pair) > 1}
+        )
+        if paper_duplicates:
+            failures.append(f"duplicate page paper refs: {paper_duplicates}")
+        expected_papers = {
+            (item.get("id"), paper_id)
+            for item in capabilities
+            if item.get("id") and isinstance(item.get("paper_ids", []), list)
+            for paper_id in item.get("paper_ids", [])
+        }
+        page_paper_set = set(page_papers)
+        missing_papers = sorted(expected_papers - page_paper_set)
+        unknown_papers = sorted(page_paper_set - expected_papers)
+        if missing_papers:
+            failures.append(f"paper refs missing from page: {missing_papers}")
+        if unknown_papers:
+            failures.append(f"unknown page paper refs: {unknown_papers}")
+        for capability_id, paper_id, paper_ref in page_paper_paths:
+            paper_path = path_for_paper_id(paper_id)
+            if paper_path is None:
+                continue
+            expected_ref = str(paper_path.relative_to(ROOT))
+            if paper_ref != expected_ref:
+                failures.append(
+                    f"{capability_id}: paper {paper_id} page ref {paper_ref} "
+                    f"does not match {expected_ref}"
+                )
 
     for item in capabilities:
         capability_id = item.get("id", "<missing id>")

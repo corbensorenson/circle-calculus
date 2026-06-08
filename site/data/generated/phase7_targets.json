@@ -70,7 +70,7 @@
     },
     {
       "acceptance_criteria": [
-        "The next theorem targets model pure-imaginary vectors, norm preservation, and action composition only when the formal vector model is ready.",
+        "The current theorem targets model q/-q sign cancellation, pure-imaginary vector preservation, and bounded sign relation; norm preservation and action composition remain future work until the formal vector model is ready.",
         "The paper keeps q/-q representative equality distinct from a completed SO(3) quotient.",
         "Python orientation records compare raw representative state with action-equivalent state.",
         "The Living Book exposes the q/-q sign ambiguity as a bounded conjugation-action widget with theorem-status badges and SO(3) guardrails."
@@ -92,7 +92,7 @@
       ],
       "guardrail": "Do not claim a complete Spin(3), SO(3), spinor, or quantum-spin formalization from the current sign-cancellation seed.",
       "id": "P7-PHYS-003",
-      "next_action": "The first q/-q Living Book widget and Python parity check are in place; next audit the S3 spin sidecar for pure-imaginary vector preservation, norm preservation, or action-composition theorems that improve orientation physics without requiring full SO(3).",
+      "next_action": "The first q/-q Living Book widget, Python parity check, and Lean pure-imaginary preservation theorem are in place; next audit the S3 spin sidecar for norm preservation or action-composition theorems that improve orientation physics without requiring full SO(3).",
       "ordinary_baseline": "Quaternion rotation formulas, rotation matrices, and separate sign-convention debugging tools.",
       "priority": "medium",
       "question": "Can the current q/-q sign-cancellation proof grow into a verified spin/orientation lesson without overclaiming SO(3)?",

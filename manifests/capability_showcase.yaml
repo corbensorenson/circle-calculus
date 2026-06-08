@@ -125,24 +125,26 @@ capabilities:
   - id: SHOW-007
     title: "Quaternion, Hopf, and phase coordinates"
     area: "Geometry and rotation algebra"
-    audience_interest: "Unit quaternions, Hopf coordinates, hidden phase, and sign ambiguity."
+    audience_interest: "Unit quaternions, Hopf coordinates, hidden phase, pure-vector boundaries, and sign ambiguity."
     portfolio_roles: ["standard_math_parity", "circle_native_value"]
     standard_math_anchor: "Quaternion unit algebra, Hopf-style phase coordinates, conjugation, and hidden phase symmetries."
-    circle_math_expression: "Bounded quaternion and Hopf coordinate facts are exposed through finite theorem spines with explicit topology warnings."
+    circle_math_expression: "Bounded quaternion, spin-sign, pure-vector, and Hopf coordinate facts are exposed through finite theorem spines with explicit topology warnings."
     circle_native_value: "The Circle framing separates visible base coordinates from hidden phase in a way that is useful for teaching, widgets, and proof audits."
-    advertised_claim: "Circle Calculus can express bounded quaternion and Hopf phase facts with explicit warnings about topology boundaries."
-    proof_scope: "Lean-proved quaternion unit laws and bounded Hopf phase-action facts."
+    advertised_claim: "Circle Calculus can express bounded quaternion, spin-sign, pure-vector, and Hopf phase facts with explicit warnings about topology boundaries."
+    proof_scope: "Lean-proved quaternion unit laws, pure-vector conjugation boundary, sign-cancellation facts, and bounded Hopf phase-action facts."
     not_claimed: "No full smooth Hopf fibration formalization and no complete SO(3) robotics formalization."
-    paper_ids: ["PAPER_S3_02_QUATERNION_COILS", "PAPER_S3_03_HOPF_COILS"]
-    theorem_ids: ["S3Q-T0005", "S3Q-T0008", "S3H-T0001", "S3H-T0005", "S3H-T0008"]
-    dictionary_ids: ["S3Q-0001", "S3H-0001", "S3H-0002"]
+    paper_ids: ["PAPER_S3_02_QUATERNION_COILS", "PAPER_S3_03_HOPF_COILS", "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP"]
+    theorem_ids: ["S3Q-T0005", "S3Q-T0008", "S3H-T0001", "S3H-T0005", "S3H-T0008", "S3S-T0001", "S3S-T0005"]
+    dictionary_ids: ["S3Q-0001", "S3H-0001", "S3H-0002", "S3S-0001", "S3S-0002", "S3S-0003"]
     executable_refs:
       - "sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py"
       - "sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py"
+      - "sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py"
     source_refs:
       - "Circle/S3/Scaffold.lean"
       - "sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py"
       - "sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py"
+      - "sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py"
 
   - id: SHOW-008
     title: "Proof-carrying finite gauge paths"

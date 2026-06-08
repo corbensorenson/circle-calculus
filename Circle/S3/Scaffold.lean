@@ -202,6 +202,9 @@ theorem quaternion_mul_assoc (a b c : RealQuaternion) :
 noncomputable def quaternionConjugationAction (q v : RealQuaternion) : RealQuaternion :=
   q * v * star q
 
+def isPureQuaternion (v : RealQuaternion) : Prop :=
+  v.re = 0
+
 theorem quaternionConjugation_one (v : RealQuaternion) :
     quaternionConjugationAction 1 v = v := by
   simp [quaternionConjugationAction]
@@ -209,6 +212,15 @@ theorem quaternionConjugation_one (v : RealQuaternion) :
 theorem quaternionConjugation_zero_vector (q : RealQuaternion) :
     quaternionConjugationAction q 0 = 0 := by
   simp [quaternionConjugationAction]
+
+theorem quaternionConjugation_pure_of_pure (q v : RealQuaternion)
+    (hv : isPureQuaternion v) :
+    isPureQuaternion (quaternionConjugationAction q v) := by
+  rcases q with ⟨a, b, c, d⟩
+  rcases v with ⟨x, y, z, w⟩
+  simp [isPureQuaternion, quaternionConjugationAction] at hv ⊢
+  rw [hv]
+  ring
 
 theorem quaternionConjugation_neg (q v : RealQuaternion) :
     quaternionConjugationAction (-q) v = quaternionConjugationAction q v := by

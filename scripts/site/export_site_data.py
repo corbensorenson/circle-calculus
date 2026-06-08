@@ -506,8 +506,8 @@ def export_widget_index() -> dict:
         {
             "id": "spin_sign_ambiguity",
             "path": "site/widgets/physics/spin_sign_ambiguity.js",
-            "theorem_ids": ["S3S-T0001", "S3S-T0002", "S3S-T0003", "S3S-T0004"],
-            "dictionary_ids": ["S3S-0001", "S3S-0002", "S3Q-0001", "S3Q-0002"],
+            "theorem_ids": ["S3S-T0001", "S3S-T0002", "S3S-T0003", "S3S-T0004", "S3S-T0005"],
+            "dictionary_ids": ["S3S-0001", "S3S-0002", "S3S-0003", "S3Q-0001", "S3Q-0002"],
             "python_reference": "circle_math.dimensions.quaternion.unit_i_phase; circle_math.dimensions.quaternion.conjugation_action; circle_math.dimensions.quaternion.orientation_debug_record",
         },
         {

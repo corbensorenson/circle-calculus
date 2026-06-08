@@ -357,9 +357,9 @@ Implemented shared JavaScript:
 ### spin_sign_ambiguity
 
 - Inputs: finite phase period, phase step, and three integer coordinates for a pure-vector quaternion input.
-- Outputs: sampled unit `i`-phase representative `q`, the opposite representative `-q`, the input vector, both conjugation-action outputs, distinct-representative flag, sign-related flag, action-equivalence flag, theorem-status badges, and dictionary links.
-- Theorem ids: `S3S-T0001`, `S3S-T0002`, `S3S-T0003`, and `S3S-T0004`.
-- Dictionary ids: `S3S-0001`, `S3S-0002`, `S3Q-0001`, and `S3Q-0002`.
+- Outputs: sampled unit `i`-phase representative `q`, the opposite representative `-q`, the input vector, both conjugation-action outputs, distinct-representative flag, sign-related flag, action-equivalence flag, pure-vector preservation flag, theorem-status badges, and dictionary links.
+- Theorem ids: `S3S-T0001`, `S3S-T0002`, `S3S-T0003`, `S3S-T0004`, and `S3S-T0005`.
+- Dictionary ids: `S3S-0001`, `S3S-0002`, `S3S-0003`, `S3Q-0001`, and `S3Q-0002`.
 - Python references: `circle_math.dimensions.quaternion.unit_i_phase`, `circle_math.dimensions.quaternion.conjugation_action`, and `circle_math.dimensions.quaternion.orientation_debug_record`.
 - Guardrail: the widget is a bounded quaternion conjugation-action fixture. It does not prove a complete `SO(3)` quotient, robotics verification, spinor theory, or a physical rotation model.
 - Validation: deterministic JavaScript-equivalent quaternion multiplication, conjugation, and sign-comparison formulas are parity-checked against the Python S3 spin helpers.

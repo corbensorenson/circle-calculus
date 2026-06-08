@@ -31,7 +31,7 @@ Circle Calculus should be judged by whether it can express serious structures in
 
 Circle Calculus states EGZ and Cauchy-Davenport directly over `C_n` and `C_p`.
 
-<p data-paper-ref="papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md">Zero-Sum Circles</a></p>
+<p data-capability-id="SHOW-001" data-paper-id="PAPER_ERDOS_01_ZERO_SUM_CIRCLES" data-paper-ref="papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md">Zero-Sum Circles</a></p>
 - Standard anchor: EGZ and Cauchy-Davenport over cyclic groups.
 - Circle expression: finite circle types `C_n` and `C_p` carry the cyclic statements directly.
 - Circle-native value: zero-sum witnesses, sharpness families, and sumsets become inspectable finite address-space examples.
@@ -48,7 +48,7 @@ Circle Calculus states EGZ and Cauchy-Davenport directly over `C_n` and `C_p`.
 
 The Katona lane makes cyclic-order double counting and intersecting-family bounds visible while keeping the theorem source formal.
 
-<p data-paper-ref="papers/erdos/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD.md">Katona and Erdos-Ko-Rado</a></p>
+<p data-capability-id="SHOW-002" data-paper-id="PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD" data-paper-ref="papers/erdos/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD.md">Katona and Erdos-Ko-Rado</a></p>
 - Standard anchor: Katona circle-method counting and Erdos-Ko-Rado intersecting-family bounds.
 - Circle expression: numberings, prefix density, and intersecting families are surfaced as theorem cards.
 - Circle-native value: the circle-method proof atom can be shown as an exact finite count before the formal EKR bridge.
@@ -65,7 +65,7 @@ The Katona lane makes cyclic-order double counting and intersecting-family bound
 
 The Roth lane gives Circle Calculus a serious density-additive-combinatorics target with finite witness searches as examples.
 
-<p data-paper-ref="papers/erdos/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES.md">Roth and Three-Term Progressions</a></p>
+<p data-capability-id="SHOW-003" data-paper-id="PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES" data-paper-ref="papers/erdos/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES.md">Roth and Three-Term Progressions</a></p>
 - Standard anchor: Roth's theorem and Roth-number sublinearity.
 - Circle expression: dense interval examples and AP witness searches point to formal Roth handles.
 - Circle-native value: cyclic AP models can grow from a disciplined separation of density, witnesses, and proof status.
@@ -82,7 +82,7 @@ The Roth lane gives Circle Calculus a serious density-additive-combinatorics tar
 
 The Ramsey lane shows unavoidable structure through formal Hales-Jewett and homothetic-copy handles.
 
-<p data-paper-ref="papers/erdos/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES.md">Hales-Jewett and Ramsey Lines</a></p>
+<p data-capability-id="SHOW-004" data-paper-id="PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES" data-paper-ref="papers/erdos/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES.md">Hales-Jewett and Ramsey Lines</a></p>
 - Standard anchor: Hales-Jewett and Van der Waerden style unavoidable monochromatic structure.
 - Circle expression: finite coloring examples and combinatorial-line searches are linked to theorem ids.
 - Circle-native value: unavoidable structure can be explored in finite widgets while the general proof remains in Lean/mathlib.
@@ -99,7 +99,7 @@ The Ramsey lane shows unavoidable structure through formal Hales-Jewett and homo
 
 The graph lane starts conservatively with cycle graphs, circulant graphs, connectedness, and unit-distance vocabulary.
 
-<p data-paper-ref="papers/erdos/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS.md">Unit-Distance Circulant Graphs</a></p>
+<p data-capability-id="SHOW-005" data-paper-id="PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS" data-paper-ref="papers/erdos/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS.md">Unit-Distance Circulant Graphs</a></p>
 - Standard anchor: cycle graphs, circulant graphs, connectedness, and unit-distance embedding vocabulary.
 - Circle expression: the one-step finite circle graph is a circulant graph with checked connectedness.
 - Circle-native value: graph geometry starts from explicit cyclic structure before harder incidence claims.
@@ -119,8 +119,8 @@ The graph lane starts conservatively with cycle graphs, circulant graphs, connec
 
 The S1 spine is the internal proof engine: period, gcd orbit count, scaling images, fibers, kernel representatives, and full-coil conditions.
 
-<p data-paper-ref="papers/PAPER_01_FINITE_CIRCLES.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/PAPER_01_FINITE_CIRCLES.md">Finite Circles</a></p>
-<p data-paper-ref="papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md">Factors, Scaling, Prime Coils</a></p>
+<p data-capability-id="SHOW-006" data-paper-id="PAPER_01_FINITE_CIRCLES" data-paper-ref="papers/PAPER_01_FINITE_CIRCLES.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/PAPER_01_FINITE_CIRCLES.md">Finite Circles</a></p>
+<p data-capability-id="SHOW-006" data-paper-id="PAPER_S1_04_FACTORS_SCALING_PRIME_COILS" data-paper-ref="papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md">Factors, Scaling, Prime Coils</a></p>
 - Standard anchor: modular arithmetic, cyclic group orbits, gcd periods, kernels, images, and fibers.
 - Circle expression: these are expressed as finite-circle period, orbit, scaling, image, kernel, and fiber theorems.
 - Circle-native value: modular facts become navigable as movement, closure, fibers, and representatives.
@@ -139,15 +139,16 @@ The S1 spine is the internal proof engine: period, gcd orbit count, scaling imag
 
 <div class="capability-anchor" data-capability-id="SHOW-007"></div>
 
-The S3 lane gives bounded phase-coordinate and quaternion facts that are useful for rotation, hidden phase, and sign-ambiguity explanations.
+The S3 lane gives bounded phase-coordinate, quaternion, pure-vector, and spin-sign facts that are useful for rotation, hidden phase, and sign-ambiguity explanations.
 
-<p data-paper-ref="papers/S3/PAPER_S3_02_QUATERNION_COILS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S3/PAPER_S3_02_QUATERNION_COILS.md">Quaternion Coils</a></p>
-<p data-paper-ref="papers/S3/PAPER_S3_03_HOPF_COILS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S3/PAPER_S3_03_HOPF_COILS.md">Hopf Coils</a></p>
-- Standard anchor: quaternion unit algebra, Hopf-style phase coordinates, conjugation, and hidden phase.
-- Circle expression: bounded quaternion and Hopf facts are exposed through theorem spines with topology warnings.
+<p data-capability-id="SHOW-007" data-paper-id="PAPER_S3_02_QUATERNION_COILS" data-paper-ref="papers/S3/PAPER_S3_02_QUATERNION_COILS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S3/PAPER_S3_02_QUATERNION_COILS.md">Quaternion Coils</a></p>
+<p data-capability-id="SHOW-007" data-paper-id="PAPER_S3_03_HOPF_COILS" data-paper-ref="papers/S3/PAPER_S3_03_HOPF_COILS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S3/PAPER_S3_03_HOPF_COILS.md">Hopf Coils</a></p>
+<p data-capability-id="SHOW-007" data-paper-id="PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP" data-paper-ref="papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md">Spin Double Cover Roadmap</a></p>
+- Standard anchor: quaternion unit algebra, Hopf-style phase coordinates, conjugation, pure-imaginary vector representatives, and hidden phase.
+- Circle expression: bounded quaternion, spin-sign, pure-vector, and Hopf facts are exposed through theorem spines with topology warnings.
 - Circle-native value: visible base coordinates and hidden phase are separated in a way that supports teaching and proof audits.
-- Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-007" data-executable-ref="sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py"></span><code>sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-007" data-executable-ref="sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py"></span><code>sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py</code>.
-- Scope: Lean-proved unit-quaternion and bounded Hopf phase facts.
+- Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-007" data-executable-ref="sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py"></span><code>sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-007" data-executable-ref="sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py"></span><code>sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-007" data-executable-ref="sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py"></span><code>sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py</code>.
+- Scope: Lean-proved unit-quaternion, pure-vector conjugation, sign-cancellation, and bounded Hopf phase facts.
 - Boundary: no full smooth Hopf fibration or SO(3) robotics formalization yet.
 
 <div class="theorem-box" data-capability-id="SHOW-007" data-theorem-id="S3Q-T0005"></div>
@@ -155,6 +156,8 @@ The S3 lane gives bounded phase-coordinate and quaternion facts that are useful 
 <div class="theorem-box" data-capability-id="SHOW-007" data-theorem-id="S3H-T0001"></div>
 <div class="theorem-box" data-capability-id="SHOW-007" data-theorem-id="S3H-T0005"></div>
 <div class="theorem-box" data-capability-id="SHOW-007" data-theorem-id="S3H-T0008"></div>
+<div class="theorem-box" data-capability-id="SHOW-007" data-theorem-id="S3S-T0001"></div>
+<div class="theorem-box" data-capability-id="SHOW-007" data-theorem-id="S3S-T0005"></div>
 
 ## Application Interfaces
 
@@ -164,7 +167,7 @@ The S3 lane gives bounded phase-coordinate and quaternion facts that are useful 
 
 The physics lane builds proof-carrying finite gauge paths with checked path composition and holonomy interfaces.
 
-<p data-paper-ref="papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md">Proof-Carrying Lattice Gauge</a></p>
+<p data-capability-id="SHOW-008" data-paper-id="PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE" data-paper-ref="papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md">Proof-Carrying Lattice Gauge</a></p>
 - Standard anchor: finite gauge-link paths, holonomy products, Wilson-loop invariants, and checked concatenation.
 - Circle expression: source-target and holonomy laws are finite Lean records.
 - Circle-native value: path widgets and experiments can reject invalid compositions before making physics claims.
@@ -187,8 +190,8 @@ The physics lane builds proof-carrying finite gauge paths with checked path comp
 
 The generative lane pairs seed-rule construction with exact-regeneration checks and negative-case gates.
 
-<p data-paper-ref="papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md">Seed-Rule Provenance</a></p>
-<p data-paper-ref="papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md">Proof-Carrying Glyphs</a></p>
+<p data-capability-id="SHOW-009" data-paper-id="PAPER_GEN_01_SEED_RULE_PROVENANCE" data-paper-ref="papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md">Seed-Rule Provenance</a></p>
+<p data-capability-id="SHOW-009" data-paper-id="PAPER_P2_05_PROOF_CARRYING_GLYPHS" data-paper-ref="papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md">Proof-Carrying Glyphs</a></p>
 - Standard anchor: formal provenance, exact regeneration checks, and proof-carrying artifact records.
 - Circle expression: seed rules, generator comparisons, proof glyphs, and exactness gates are finite Circle records.
 - Circle-native value: generated artifacts can carry exact source trails and negative-case checks.
@@ -212,8 +215,8 @@ The generative lane pairs seed-rule construction with exact-regeneration checks 
 
 The AI lane proves finite schedule/index facts that can support experiments without pretending proofs imply model quality.
 
-<p data-paper-ref="papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Coil Attention And Memory</a></p>
-<p data-paper-ref="papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md">CoilRA And MultiCoil RoPE</a></p>
+<p data-capability-id="SHOW-010" data-paper-id="PAPER_AI_02_COIL_ATTENTION_AND_MEMORY" data-paper-ref="papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Coil Attention And Memory</a></p>
+<p data-capability-id="SHOW-010" data-paper-id="PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE" data-paper-ref="papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md">CoilRA And MultiCoil RoPE</a></p>
 - Standard anchor: cyclic buffers, recurrence schedules, loop-exit certificates, and modular adapter indexing.
 - Circle expression: memory slots, loop budgets, exit certificates, and adapter blocks become finite cyclic schedule theorems.
 - Circle-native value: experimental cyclic AI components can be audited before any model-quality claim.
@@ -236,9 +239,9 @@ The AI lane proves finite schedule/index facts that can support experiments with
 
 The compute lane proves address-safety and schedule-normalization facts before any backend performance claim is allowed.
 
-<p data-paper-ref="papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md">Circular Computation</a></p>
-<p data-paper-ref="papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md">Coil Layout Stencil NTT</a></p>
-<p data-paper-ref="papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md">Coil Systems Applications</a></p>
+<p data-capability-id="SHOW-011" data-paper-id="PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION" data-paper-ref="papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md">Circular Computation</a></p>
+<p data-capability-id="SHOW-011" data-paper-id="PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT" data-paper-ref="papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md">Coil Layout Stencil NTT</a></p>
+<p data-capability-id="SHOW-011" data-paper-id="PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS" data-paper-ref="papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md">Coil Systems Applications</a></p>
 - Standard anchor: circular buffers, periodic stencils, stride-address formulas, and round-robin schedules.
 - Circle expression: compute layouts are finite address-normalization and schedule-preservation theorems.
 - Circle-native value: backend experiments can be gated on proved cyclic structure before performance testing.

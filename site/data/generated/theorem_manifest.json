@@ -10274,7 +10274,7 @@
       "informal_statement": "The coordinate Hopf map sends normalized S^3 pairs to the unit S^2 equation.",
       "lean_name": "Circle.S3.hopfMap_lands_sphere",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 252,
+      "lean_source_line": 264,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -10314,7 +10314,7 @@
       "informal_statement": "Simultaneous unit phase rotation preserves the Hopf map.",
       "lean_name": "Circle.S3.hopfMap_phase_invariant",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 333,
+      "lean_source_line": 345,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -10354,7 +10354,7 @@
       "informal_statement": "A unit phase orbit stays on the normalized S3 pair space and preserves the Hopf base point.",
       "lean_name": "Circle.S3.hopfFiber_circle_like",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 356,
+      "lean_source_line": 368,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -10393,7 +10393,7 @@
       "informal_statement": "The identity phase leaves every Hopf pair unchanged.",
       "lean_name": "Circle.S3.phaseRotatePair_identity",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 293,
+      "lean_source_line": 305,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -10432,7 +10432,7 @@
       "informal_statement": "Composing two Hopf phase rotations follows the complex phase multiplication law.",
       "lean_name": "Circle.S3.phaseRotatePair_comp",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 298,
+      "lean_source_line": 310,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -10472,7 +10472,7 @@
       "informal_statement": "The Hopf phase wrapper has an identity phase and composition law matching complex phase multiplication.",
       "lean_name": "Circle.S3.hopfPhaseAction_laws",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 320,
+      "lean_source_line": 332,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -10512,7 +10512,7 @@
       "informal_statement": "The Hopf phase identity is a left and right identity for Hopf phase multiplication.",
       "lean_name": "Circle.S3.hopfPhaseMul_identity",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 275,
+      "lean_source_line": 287,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -10552,7 +10552,7 @@
       "informal_statement": "Hopf phase multiplication is associative.",
       "lean_name": "Circle.S3.hopfPhaseMul_assoc",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 281,
+      "lean_source_line": 293,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_03_HOPF_COILS.md"
@@ -10911,7 +10911,7 @@
       "informal_statement": "The quaternion conjugation action is unchanged by replacing q with -q.",
       "lean_name": "Circle.S3.quaternionConjugation_neg",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 213,
+      "lean_source_line": 225,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
@@ -10951,7 +10951,7 @@
       "informal_statement": "The identity quaternion conjugation action fixes every input quaternion.",
       "lean_name": "Circle.S3.quaternionConjugation_one",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 205,
+      "lean_source_line": 208,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
@@ -10991,7 +10991,7 @@
       "informal_statement": "Quaternion conjugation sends the zero input quaternion to zero.",
       "lean_name": "Circle.S3.quaternionConjugation_zero_vector",
       "lean_source": "Circle/S3/Scaffold.lean",
-      "lean_source_line": 209,
+      "lean_source_line": 212,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
@@ -11052,6 +11052,47 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py::test_spin_sign_relation_is_equivalence_on_examples"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S3S-0001",
+        "S3S-0003",
+        "S3Q-0001"
+      ],
+      "formal_statement": "forall q v : Circle.S3.RealQuaternion, Circle.S3.isPureQuaternion v -> Circle.S3.isPureQuaternion (Circle.S3.quaternionConjugationAction q v)",
+      "id": "S3S-T0005",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2"
+      ],
+      "informal_statement": "Quaternion conjugation sends pure-imaginary quaternion inputs to pure-imaginary quaternion outputs.",
+      "lean_name": "Circle.S3.quaternionConjugation_pure_of_pure",
+      "lean_source": "Circle/S3/Scaffold.lean",
+      "lean_source_line": 216,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
+      ],
+      "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP",
+          "path": "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.4: Spin, Double Covers, and Rotation Quotients"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py::test_quaternion_conjugation_preserves_pure_vector_inputs"
         ]
       }
     },

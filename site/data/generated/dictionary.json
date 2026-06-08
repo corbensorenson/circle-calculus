@@ -8948,6 +8948,12 @@
           "status": "proved"
         },
         {
+          "id": "S3S-T0005",
+          "lean_name": "Circle.S3.quaternionConjugation_pure_of_pure",
+          "name": "Circle.S3.quaternionConjugation_pure_of_pure",
+          "status": "proved"
+        },
+        {
           "id": "S7QH-T0001",
           "lean_name": "Circle.S7.quaternionicHopf_lands_sphere",
           "name": "Circle.S7.quaternionicHopf_lands_sphere",
@@ -9148,6 +9154,12 @@
           "lean_name": "Circle.S3.spinSignRelated_equivalence",
           "name": "Circle.S3.spinSignRelated_equivalence",
           "status": "proved"
+        },
+        {
+          "id": "S3S-T0005",
+          "lean_name": "Circle.S3.quaternionConjugation_pure_of_pure",
+          "name": "Circle.S3.quaternionConjugation_pure_of_pure",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -9192,6 +9204,46 @@
           "id": "S3S-T0004",
           "lean_name": "Circle.S3.spinSignRelated_equivalence",
           "name": "Circle.S3.spinSignRelated_equivalence",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": [
+        {
+          "id": "spin_sign_ambiguity",
+          "path": "site/widgets/physics/spin_sign_ambiguity.js",
+          "python_reference": "circle_math.dimensions.quaternion.unit_i_phase; circle_math.dimensions.quaternion.conjugation_action; circle_math.dimensions.quaternion.orientation_debug_record"
+        }
+      ]
+    },
+    {
+      "dependencies": [
+        "S3S-0001",
+        "S3Q-0001"
+      ],
+      "forbidden_meanings": [
+        "A complete Euclidean vector-space or physical rotation model."
+      ],
+      "formal_definition": "`Circle.S3.isPureQuaternion v` means the real coordinate of the quaternion is zero.",
+      "id": "S3S-0003",
+      "introduced_in": "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP",
+      "intuition": "A conservative algebraic way to say that a quaternion is being used as a vector-like imaginary input.",
+      "kind": "relation",
+      "name": "Pure quaternion vector boundary",
+      "source_dictionary": "dictionary/dimensions/S3.yaml",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP",
+          "path": "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.4: Spin, Double Covers, and Rotation Quotients"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "S3S-T0005",
+          "lean_name": "Circle.S3.quaternionConjugation_pure_of_pure",
+          "name": "Circle.S3.quaternionConjugation_pure_of_pure",
           "status": "proved"
         }
       ],

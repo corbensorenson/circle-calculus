@@ -255,8 +255,8 @@ Goal: make the executable examples line up with the Lean-backed papers without d
   - Start with Python numeric models if Lean analysis support is too heavy.
   - Status: polished draft; `S3H-T0001` through `S3H-T0008` are Lean-proved bounded Hopf coordinate, phase-multiplication, and phase-action facts, including the Hopf phase action wrapper; analytic circle parameterization beyond these algebraic phase laws, quotient topology, and global fibration formalization remain future work.
 - [x] `papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md`
-  - Proof target: `S3S-T0001` through `S3S-T0004`
-  - Status: polished draft proves quaternion conjugation identity action, zero preservation, sign cancellation, and the unit-quaternion sign equivalence relation; `P5-EDGE-007` adds a bounded orientation-debugging note and sign-ambiguity Python record; full `SO(3)` quotient remains future work.
+  - Proof target: `S3S-T0001` through `S3S-T0005`
+  - Status: polished draft proves quaternion conjugation identity action, zero preservation, pure-imaginary preservation, sign cancellation, and the unit-quaternion sign equivalence relation; `P5-EDGE-007` adds a bounded orientation-debugging note and sign-ambiguity Python record; full `SO(3)` quotient remains future work.
 
 ### S4-S6: Geometric Bridge
 

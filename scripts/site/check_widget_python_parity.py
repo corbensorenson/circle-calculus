@@ -80,6 +80,7 @@ from circle_math.finite import Circle
 from circle_math.dimensions.quaternion import (
     Quaternion,
     conjugation_action,
+    is_pure_quaternion,
     orientation_debug_record,
     quaternion_close,
     spin_sign_related,
@@ -868,6 +869,10 @@ def js_conjugation_action(q: Quaternion, v: Quaternion) -> Quaternion:
     return js_quaternion_mul(js_quaternion_mul(q, v), js_quaternion_conjugate(q))
 
 
+def js_is_pure_quaternion(value: Quaternion, *, tol: float = 1e-10) -> bool:
+    return abs(value.r) <= tol
+
+
 def js_quaternion_close(left: Quaternion, right: Quaternion, *, tol: float = 1e-10) -> bool:
     return all(
         abs(left_coord - right_coord) <= tol
@@ -890,6 +895,9 @@ def js_orientation_debug_record(period: int, step: int, vector: Quaternion) -> d
         "vector_coordinates": vector.coordinates(),
         "q_action_coordinates": q_action.coordinates(),
         "neg_q_action_coordinates": neg_q_action.coordinates(),
+        "input_is_pure": js_is_pure_quaternion(vector),
+        "q_action_is_pure": js_is_pure_quaternion(q_action),
+        "neg_q_action_is_pure": js_is_pure_quaternion(neg_q_action),
         "representatives_are_distinct": not js_quaternion_close(q, neg_q),
         "actions_match": js_quaternion_close(q_action, neg_q_action),
         "spin_sign_related": js_spin_sign_related(q, neg_q),
@@ -2997,7 +3005,12 @@ def main() -> int:
         assert py_record["representatives_are_distinct"] == js_record["representatives_are_distinct"]
         assert py_record["actions_match"] == js_record["actions_match"]
         assert py_record["spin_sign_related"] == js_record["spin_sign_related"]
+        assert py_record["input_is_pure"] == js_record["input_is_pure"]
+        assert py_record["q_action_is_pure"] == js_record["q_action_is_pure"]
+        assert py_record["neg_q_action_is_pure"] == js_record["neg_q_action_is_pure"]
         assert spin_sign_related(q, -q) == js_spin_sign_related(q, -q)
+        assert is_pure_quaternion(vector)
+        assert is_pure_quaternion(conjugation_action(q, vector))
         assert quaternion_close(conjugation_action(q, vector), conjugation_action(-q, vector))
 
     print("widget Python parity ok")

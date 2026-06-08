@@ -145,7 +145,7 @@ targets:
       - "site/widgets/physics/hopf_hidden_phase.js"
       - "site/widgets/physics/spin_sign_ambiguity.js"
     dictionary_dependencies: ["S3Q-0001", "S3H-0001", "S3S-0001", "S3S-0002"]
-    next_action: "Hopf hidden-phase and spin sign widgets are in place with Python parity checks; future work needs a precise SO(3) quotient/vector-space model before stronger robotics claims and a scoped physics model before Berry/geometric-phase claims."
+    next_action: "Hopf hidden-phase and spin sign widgets are in place with Python parity checks, and the spin lane now has Lean-proved pure-imaginary preservation for the bounded vector input convention; future work needs norm/action-composition proofs plus a precise SO(3) quotient/vector-space model before stronger robotics claims and a scoped physics model before Berry/geometric-phase claims."
     guardrail: "Do not claim a complete SO(3), robotics, gauge, or physics formalization."
 
   - id: P5-EDGE-008

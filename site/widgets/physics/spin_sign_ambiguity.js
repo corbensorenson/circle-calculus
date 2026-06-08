@@ -2,8 +2,8 @@ import { positiveInt } from "../shared/circle_math_core.js";
 import { addLabeledNumber, addOutput, addWidgetHeader, clear } from "../shared/svg_helpers.js";
 import { loadJson, mountWidgets, statusClass, statusLabel } from "../shared/widget_base.js";
 
-const THEOREM_IDS = ["S3S-T0001", "S3S-T0002", "S3S-T0003", "S3S-T0004"];
-const DICTIONARY_IDS = ["S3S-0001", "S3S-0002", "S3Q-0001", "S3Q-0002"];
+const THEOREM_IDS = ["S3S-T0001", "S3S-T0002", "S3S-T0003", "S3S-T0004", "S3S-T0005"];
+const DICTIONARY_IDS = ["S3S-0001", "S3S-0002", "S3S-0003", "S3Q-0001", "S3Q-0002"];
 const TOLERANCE = 1e-10;
 
 let spinSvgIdCounter = 0;
@@ -35,6 +35,10 @@ function quatMul(left, right) {
 
 function conjugationAction(q, v) {
   return quatMul(quatMul(q, v), quatConj(q));
+}
+
+function isPureQuaternion(q) {
+  return Math.abs(q.r) <= TOLERANCE;
 }
 
 function coords(q) {
@@ -70,6 +74,9 @@ function orientationDebugRecord(period, step, vector) {
     representativesAreDistinct: !quatClose(q, negQ),
     actionsMatch: quatClose(qAction, negAction),
     spinSignRelated: quatClose(negQ, q) || quatClose(negQ, quatNeg(q)),
+    inputIsPure: isPureQuaternion(vector),
+    qActionIsPure: isPureQuaternion(qAction),
+    negQActionIsPure: isPureQuaternion(negAction),
   };
 }
 
@@ -233,6 +240,7 @@ function appendRecord(output, values, theoremById) {
     `representatives distinct: ${record.representativesAreDistinct}`,
     `spin sign related: ${record.spinSignRelated}`,
     `conjugation actions match: ${record.actionsMatch}`,
+    `pure input stays pure: ${record.inputIsPure && record.qActionIsPure && record.negQActionIsPure}`,
   ].join("\n");
   section.appendChild(data);
   appendComparisonTable(section, record);

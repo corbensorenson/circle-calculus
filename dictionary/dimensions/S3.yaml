@@ -81,3 +81,12 @@ entries:
     introduced_in: "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP"
     forbidden_meanings:
       - "A claim that `q = -q`."
+  - id: S3S-0003
+    name: "Pure quaternion vector boundary"
+    kind: relation
+    formal_definition: "`Circle.S3.isPureQuaternion v` means the real coordinate of the quaternion is zero."
+    intuition: "A conservative algebraic way to say that a quaternion is being used as a vector-like imaginary input."
+    dependencies: ["S3S-0001", "S3Q-0001"]
+    introduced_in: "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP"
+    forbidden_meanings:
+      - "A complete Euclidean vector-space or physical rotation model."
