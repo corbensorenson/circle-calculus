@@ -1267,6 +1267,34 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
     blocker: ""
+  - id: AIM-T0031
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitCertificate_exit_available
+    informal_statement: "A finite loop-exit certificate implies that the certified sample has an available loop exit under its max-loop budget."
+    formal_statement: "For certificate : LoopExitCertificate, loopExitAvailable certificate.loopPeriod certificate.sample certificate.maxLoops."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
+    blocker: ""
+  - id: AIM-T0032
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitCertificate_budget_eq_exitStep
+    informal_statement: "For a finite loop-exit certificate, the training-free wrapper budget selects the certified exit step."
+    formal_statement: "For certificate : LoopExitCertificate, trainingFreeLoopBudget certificate.loopPeriod certificate.sample certificate.maxLoops = certificate.exitStep."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0067"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
+    blocker: ""
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize

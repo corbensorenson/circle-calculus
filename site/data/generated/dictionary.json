@@ -5551,6 +5551,18 @@
           "lean_name": "Circle.Applications.loopExitAvailable_add_mul_loopPeriod",
           "name": "Circle.Applications.loopExitAvailable_add_mul_loopPeriod",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0031",
+          "lean_name": "Circle.Applications.loopExitCertificate_exit_available",
+          "name": "Circle.Applications.loopExitCertificate_exit_available",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0032",
+          "lean_name": "Circle.Applications.loopExitCertificate_budget_eq_exitStep",
+          "name": "Circle.Applications.loopExitCertificate_budget_eq_exitStep",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5777,6 +5789,18 @@
           "id": "AIM-T0030",
           "lean_name": "Circle.Applications.loopExitAvailable_add_mul_loopPeriod",
           "name": "Circle.Applications.loopExitAvailable_add_mul_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0031",
+          "lean_name": "Circle.Applications.loopExitCertificate_exit_available",
+          "name": "Circle.Applications.loopExitCertificate_exit_available",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0032",
+          "lean_name": "Circle.Applications.loopExitCertificate_budget_eq_exitStep",
+          "name": "Circle.Applications.loopExitCertificate_budget_eq_exitStep",
           "status": "proved"
         }
       ],
@@ -7737,6 +7761,12 @@
           "id": "AIM-T0028",
           "lean_name": "Circle.Applications.trainingFreeLoopBudget_add_mul_loopPeriod",
           "name": "Circle.Applications.trainingFreeLoopBudget_add_mul_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0032",
+          "lean_name": "Circle.Applications.loopExitCertificate_budget_eq_exitStep",
+          "name": "Circle.Applications.loopExitCertificate_budget_eq_exitStep",
           "status": "proved"
         }
       ],

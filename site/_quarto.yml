@@ -129,6 +129,8 @@ website:
         contents:
           - href: chapters/applications/index.qmd
             text: Application Overview
+          - href: chapters/applications/erdos_bridges.qmd
+            text: Classical Bridges
           - href: chapters/applications/ai.qmd
             text: AI
           - href: chapters/applications/physics.qmd

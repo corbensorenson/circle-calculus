@@ -177,6 +177,14 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.loopExitAvailable_add_mul_loopPeriod
     dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+  - id: AIM-T0031
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitCertificate_exit_available
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+  - id: AIM-T0032
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitCertificate_budget_eq_exitStep
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0067"]
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize

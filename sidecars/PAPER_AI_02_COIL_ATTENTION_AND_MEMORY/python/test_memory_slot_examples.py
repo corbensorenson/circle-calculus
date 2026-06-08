@@ -270,6 +270,11 @@ def test_loop_exit_certificate_records_budget_and_guardrail() -> None:
     assert certificate.exit_step == 3
     assert certificate.exit_step > 0
     assert certificate.exit_available
+    assert training_free_loop_budget(
+        certificate.loop_period,
+        certificate.sample_index,
+        certificate.max_loops,
+    ) == certificate.exit_step
     assert certificate.within_budget
     assert certificate.within_guardrail
     assert certificate.note.endswith("not a model-quality claim.")

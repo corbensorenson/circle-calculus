@@ -25,7 +25,7 @@
       "id": "SHOW-001",
       "living_book_refs": [
         {
-          "page": "site/chapters/S1/04_period_gcd_prime_full_coils.qmd"
+          "page": "site/chapters/applications/erdos_bridges.qmd"
         }
       ],
       "not_claimed": "No new proof of EGZ, no new proof of Cauchy-Davenport, and no progress claim on an open Erdos problem.",
@@ -74,7 +74,7 @@
       "id": "SHOW-002",
       "living_book_refs": [
         {
-          "page": "site/chapters/S1/04_period_gcd_prime_full_coils.qmd"
+          "page": "site/chapters/applications/erdos_bridges.qmd"
         }
       ],
       "not_claimed": "No new EKR proof and no classification of all extremal families.",
@@ -122,7 +122,7 @@
       "id": "SHOW-003",
       "living_book_refs": [
         {
-          "page": "site/chapters/S1/04_period_gcd_prime_full_coils.qmd"
+          "page": "site/chapters/applications/erdos_bridges.qmd"
         }
       ],
       "not_claimed": "No new Roth proof, no improved bounds, and no cyclic-to-natural transfer theorem yet.",
@@ -170,7 +170,7 @@
       "id": "SHOW-004",
       "living_book_refs": [
         {
-          "page": "site/chapters/S1/04_period_gcd_prime_full_coils.qmd"
+          "page": "site/chapters/applications/erdos_bridges.qmd"
         }
       ],
       "not_claimed": "Finite Python searches are examples only; they are not the Hales-Jewett proof.",
@@ -218,7 +218,7 @@
       "id": "SHOW-005",
       "living_book_refs": [
         {
-          "page": "site/chapters/S1/04_period_gcd_prime_full_coils.qmd"
+          "page": "site/chapters/applications/erdos_bridges.qmd"
         }
       ],
       "not_claimed": "No progress on hard unit-distance or distinct-distance problems.",
@@ -539,7 +539,7 @@
         "living_book_widget_count": 5,
         "paper_count": 2,
         "source_count": 5,
-        "theorem_count": 8
+        "theorem_count": 10
       },
       "executable_refs": [
         "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
@@ -568,7 +568,7 @@
         "circle_native_value",
         "application_guardrail"
       ],
-      "proof_scope": "Lean-proved finite memory-slot, loop-budget, recurrence-budget positivity, unavailable-budget clamp, loop-exit, and adapter-block normalization facts.",
+      "proof_scope": "Lean-proved finite memory-slot, loop-budget, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, and adapter-block normalization facts.",
       "source_refs": [
         "Circle/Applications/CircleAI.lean",
         "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/lean/PaperAI02.lean",
@@ -585,6 +585,8 @@
         "AIM-T0022",
         "AIM-T0024",
         "AIM-T0025",
+        "AIM-T0031",
+        "AIM-T0032",
         "AIRA-T0005"
       ],
       "title": "AI memory, loop, and adapter schedules"
@@ -648,5 +650,41 @@
       ],
       "title": "Circular compute layouts and schedules"
     }
-  ]
+  ],
+  "portfolio_summary": {
+    "capability_count": 11,
+    "evidence_totals": {
+      "dictionary_count": 38,
+      "executable_count": 17,
+      "living_book_page_count": 13,
+      "living_book_widget_count": 17,
+      "paper_count": 18,
+      "source_count": 35,
+      "theorem_count": 61
+    },
+    "role_counts": {
+      "application_guardrail": 4,
+      "circle_native_value": 11,
+      "standard_math_parity": 10
+    },
+    "unique_evidence_counts": {
+      "dictionary_count": 30,
+      "executable_count": 17,
+      "living_book_page_count": 8,
+      "living_book_widget_count": 17,
+      "paper_count": 18,
+      "source_count": 35,
+      "theorem_count": 61
+    },
+    "unique_living_book_pages": [
+      "site/chapters/S1/03_coils_orbits_closure.qmd",
+      "site/chapters/S1/04_period_gcd_prime_full_coils.qmd",
+      "site/chapters/S3/hopf_coils.qmd",
+      "site/chapters/applications/ai.qmd",
+      "site/chapters/applications/compute.qmd",
+      "site/chapters/applications/erdos_bridges.qmd",
+      "site/chapters/applications/generative.qmd",
+      "site/chapters/applications/physics.qmd"
+    ]
+  }
 }

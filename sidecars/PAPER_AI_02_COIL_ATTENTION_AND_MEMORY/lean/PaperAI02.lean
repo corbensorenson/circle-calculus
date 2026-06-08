@@ -36,5 +36,7 @@ namespace Circle.PaperAI02
 #check Circle.Applications.loopExitCertificate_exit_eq_required
 #check Circle.Applications.loopExitCertificate_within_budget
 #check Circle.Applications.loopExitCertificate_within_guardrail
+#check Circle.Applications.loopExitCertificate_exit_available
+#check Circle.Applications.loopExitCertificate_budget_eq_exitStep
 
 end Circle.PaperAI02

@@ -1,0 +1,89 @@
+---
+title: "Classical Bridges"
+---
+
+This page is the reader-facing bridge between Circle Calculus and the established Erdos-style combinatorics lanes in the proof-backed showcase. It exists to make the hard-math advertisement auditable without forcing readers to start in the theorem index.
+
+::: {.warning-box}
+These are proof-backed bridges to established mathematics, not new proofs of the imported theorems and not progress claims on open Erdos problems. This page is not proof by itself; a theorem card below is Lean-proved only when the generated theorem data and local Lean build support that status.
+:::
+
+## Why This Page Matters
+
+Circle Calculus should earn attention by showing that it can express structures mathematicians already care about, then show where the Circle presentation adds inspection value. The current hard-math bridge set covers five lanes:
+
+- zero-sum and sumset structure on cyclic groups,
+- Katona's circle method and Erdos-Ko-Rado,
+- Roth-style three-term progression structure,
+- Hales-Jewett and Ramsey-style unavoidable lines, and
+- circulant graph geometry.
+
+Read these as standard-math parity demonstrations first. The Circle-native value is the audit trail: finite-circle vocabulary, examples in Python sidecars, theorem ids, papers, and explicit boundaries.
+
+## Bridge Map
+
+| Showcase | Standard Anchor | Circle Presentation | Boundary |
+| --- | --- | --- | --- |
+| [SHOW-001](../../showcase.qmd#SHOW-001) | EGZ and Cauchy-Davenport | zero-sum witnesses and prime-circle sumsets over `C_n` and `C_p` | no new EGZ or Cauchy-Davenport proof |
+| [SHOW-002](../../showcase.qmd#SHOW-002) | Katona and Erdos-Ko-Rado | cyclic-order counting atoms and intersecting-family handles | no new EKR proof or extremal classification |
+| [SHOW-003](../../showcase.qmd#SHOW-003) | Roth and three-term progressions | finite witness search tied to formal Roth handles | no improved bounds or cyclic transfer theorem |
+| [SHOW-004](../../showcase.qmd#SHOW-004) | Hales-Jewett and Ramsey structure | finite coloring examples tied to formal unavoidable-line theorems | finite searches are examples only |
+| [SHOW-005](../../showcase.qmd#SHOW-005) | cycle, circulant, connected, and unit-distance graph vocabulary | cyclic graph models with checked graph handles | no unit-distance or distinct-distance progress claim |
+
+## What To Check
+
+For each lane, verify the same evidence chain:
+
+1. Open the theorem cards below.
+2. Open the cited paper.
+3. Check the executable sidecar named in the showcase.
+4. Confirm the `not_claimed` boundary before repeating the claim.
+
+This page is useful only because that chain stays intact.
+
+## Zero-Sum And Sumset Circles
+
+<p data-paper-ref="papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md">Zero-Sum Circles</a></p>
+
+<div class="theorem-box" data-theorem-id="CC-T0062"></div>
+<div class="theorem-box" data-theorem-id="CC-T0063"></div>
+
+## Katona And Erdos-Ko-Rado
+
+<p data-paper-ref="papers/erdos/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD.md">Katona and Erdos-Ko-Rado</a></p>
+
+<div class="theorem-box" data-theorem-id="CC-T0064"></div>
+<div class="theorem-box" data-theorem-id="CC-T0065"></div>
+
+## Roth And Three-Term Progressions
+
+<p data-paper-ref="papers/erdos/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES.md">Roth and Three-Term Progressions</a></p>
+
+<div class="theorem-box" data-theorem-id="CC-T0066"></div>
+<div class="theorem-box" data-theorem-id="CC-T0067"></div>
+
+## Ramsey Lines And Hales-Jewett
+
+<p data-paper-ref="papers/erdos/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES.md">Hales-Jewett and Ramsey Lines</a></p>
+
+<div class="theorem-box" data-theorem-id="CC-T0068"></div>
+<div class="theorem-box" data-theorem-id="CC-T0069"></div>
+
+## Circulant Graph Geometry
+
+<p data-paper-ref="papers/erdos/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS.md">Unit-Distance Circulant Graphs</a></p>
+
+<div class="theorem-box" data-theorem-id="CC-T0070"></div>
+<div class="theorem-box" data-theorem-id="CC-T0071"></div>
+<div class="theorem-box" data-theorem-id="CC-T0072"></div>
+
+## Vocabulary
+
+<div class="dictionary-box" data-dictionary-id="CC-0001"></div>
+<div class="dictionary-box" data-dictionary-id="CC-0201"></div>
+
+::: {.checkpoint-box}
+Before citing this page, name one standard theorem, one Circle expression, and one boundary that prevents overclaiming.
+:::
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

@@ -153,7 +153,37 @@ function renderSummary(capabilities) {
   return summary;
 }
 
-function render(panel, capabilities) {
+function roleCoverageLine(summary) {
+  const roleCounts = summary?.role_counts || {};
+  const parts = [];
+  for (const role of ["standard_math_parity", "circle_native_value", "application_guardrail"]) {
+    if (roleCounts[role]) parts.push(`${roleLabel(role)} lanes: ${roleCounts[role]}`);
+  }
+  return parts.join("\n");
+}
+
+function renderManifestSummary(capabilities, summary) {
+  if (!summary || !summary.unique_evidence_counts) return renderSummary(capabilities);
+  const unique = summary.unique_evidence_counts;
+  const totals = summary.evidence_totals || {};
+  const lines = [
+    `capability lanes: ${summary.capability_count ?? capabilities.length}`,
+    `role coverage:\n${roleCoverageLine(summary)}`,
+    `unique paper ids: ${unique.paper_count}`,
+    `unique proved theorem ids advertised: ${unique.theorem_count}`,
+    `unique pytest executable refs: ${unique.executable_count}`,
+    `unique Living Book page refs: ${unique.living_book_page_count}`,
+    `unique Living Book widget refs: ${unique.living_book_widget_count}`,
+    `total evidence links: papers ${totals.paper_count ?? 0}; theorems ${totals.theorem_count ?? 0}; executables ${totals.executable_count ?? 0}; pages ${totals.living_book_page_count ?? 0}; widgets ${totals.living_book_widget_count ?? 0}`,
+  ];
+  const node = document.createElement("p");
+  node.className = "widget-data";
+  node.textContent = lines.filter(Boolean).join("\n");
+  return node;
+}
+
+function render(panel, data) {
+  const capabilities = data.capabilities || [];
   const section = document.createElement("section");
   section.className = "seed-rule-record";
 
@@ -161,14 +191,14 @@ function render(panel, capabilities) {
   warning.className = "warning-box";
   warning.textContent = "Boundary: this matrix summarizes manifest-backed evidence only. It does not turn imported theorem bridges, executable examples, widgets, or benchmarks into new mathematical proofs.";
 
-  section.append(renderSummary(capabilities), renderTable(capabilities), warning);
+  section.append(renderManifestSummary(capabilities, data.portfolio_summary), renderTable(capabilities), warning);
   panel.replaceChildren(section);
 }
 
 function mount(panel) {
   panel.textContent = "Loading capability portfolio matrix...";
   loadJson("../../data/generated/capability_showcase.json")
-    .then((data) => render(panel, data.capabilities || []))
+    .then((data) => render(panel, data))
     .catch((error) => {
       console.error(error);
       panel.textContent = "Capability portfolio matrix could not load.";

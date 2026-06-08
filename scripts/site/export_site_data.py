@@ -309,6 +309,8 @@ def export_widget_index() -> dict:
                 "AIM-T0024",
                 "AIM-T0029",
                 "AIM-T0030",
+                "AIM-T0031",
+                "AIM-T0032",
             ],
             "dictionary_ids": [
                 "COMMON-0052",
@@ -788,9 +790,26 @@ def export_phase7_targets() -> dict:
 def export_capability_showcase() -> dict:
     path = ROOT / "manifests" / "capability_showcase.yaml"
     if not path.exists():
-        return {"capabilities": []}
+        return {"capabilities": [], "portfolio_summary": {}}
     data = load_yaml(path)
     capabilities: list[dict] = []
+    role_counts: dict[str, int] = {}
+    evidence_totals = {
+        "paper_count": 0,
+        "theorem_count": 0,
+        "dictionary_count": 0,
+        "executable_count": 0,
+        "source_count": 0,
+        "living_book_page_count": 0,
+        "living_book_widget_count": 0,
+    }
+    unique_papers: set[str] = set()
+    unique_theorems: set[str] = set()
+    unique_dictionary_ids: set[str] = set()
+    unique_executables: set[str] = set()
+    unique_sources: set[str] = set()
+    unique_living_pages: set[str] = set()
+    unique_living_widgets: set[str] = set()
     for capability in data.get("capabilities", []):
         item = dict(capability)
         living_pages: set[str] = set()
@@ -811,8 +830,34 @@ def export_capability_showcase() -> dict:
             "living_book_page_count": len(living_pages),
             "living_book_widget_count": len(living_widgets),
         }
+        for role in item.get("portfolio_roles", []) or []:
+            role_counts[role] = role_counts.get(role, 0) + 1
+        for key, value in item["evidence_counts"].items():
+            evidence_totals[key] += value
+        unique_papers.update(item.get("paper_ids", []) or [])
+        unique_theorems.update(item.get("theorem_ids", []) or [])
+        unique_dictionary_ids.update(item.get("dictionary_ids", []) or [])
+        unique_executables.update(item.get("executable_refs", []) or [])
+        unique_sources.update(item.get("source_refs", []) or [])
+        unique_living_pages.update(living_pages)
+        unique_living_widgets.update(living_widgets)
         capabilities.append(item)
-    return {"capabilities": capabilities}
+    portfolio_summary = {
+        "capability_count": len(capabilities),
+        "role_counts": dict(sorted(role_counts.items())),
+        "evidence_totals": evidence_totals,
+        "unique_evidence_counts": {
+            "paper_count": len(unique_papers),
+            "theorem_count": len(unique_theorems),
+            "dictionary_count": len(unique_dictionary_ids),
+            "executable_count": len(unique_executables),
+            "source_count": len(unique_sources),
+            "living_book_page_count": len(unique_living_pages),
+            "living_book_widget_count": len(unique_living_widgets),
+        },
+        "unique_living_book_pages": sorted(unique_living_pages),
+    }
+    return {"capabilities": capabilities, "portfolio_summary": portfolio_summary}
 
 
 def glyph_status_label(canonical_status: str) -> str:

@@ -1881,6 +1881,12 @@ def main() -> int:
             sample_index,
             max_loops,
         ) == js_training_free_loop_budget(loop_period, sample_index, max_loops)
+        if certificate.exit_step is not None:
+            assert training_free_loop_budget(
+                loop_period,
+                sample_index,
+                max_loops,
+            ) == certificate.exit_step
         if required > max_loops:
             assert training_free_loop_budget(loop_period, sample_index, max_loops) == max_loops
         assert certificate.exit_available == js_loop_exit_available(loop_period, sample_index, max_loops)

@@ -12,6 +12,8 @@ const THEOREM_IDS = [
   "AIM-T0024",
   "AIM-T0029",
   "AIM-T0030",
+  "AIM-T0031",
+  "AIM-T0032",
 ];
 const DICTIONARY_IDS = ["COMMON-0052", "COMMON-0053", "COMMON-0054", "COMMON-0059", "COMMON-0067"];
 
@@ -19,6 +21,10 @@ let traceIdCounter = 0;
 
 function loopRequiredSteps(loopPeriod, sampleIndex) {
   return mod(sampleIndex, loopPeriod) + 1;
+}
+
+function trainingFreeLoopBudget(loopPeriod, sampleIndex, maxLoops) {
+  return Math.min(loopRequiredSteps(loopPeriod, sampleIndex), maxLoops);
 }
 
 function loopScoreTrace(requiredSteps, maxLoops, tolerance) {
@@ -246,6 +252,7 @@ function appendRecord(output, values, theoremById) {
     values.maxLoops,
     values.tolerance,
   );
+  const primaryBudget = trainingFreeLoopBudget(values.loopPeriod, values.sampleIndex, values.maxLoops);
 
   const section = document.createElement("section");
   section.className = "seed-rule-record";
@@ -264,6 +271,8 @@ function appendRecord(output, values, theoremById) {
     `fixed-budget control sample: ${values.controlSampleIndex}`,
     `fixed-budget control max loops: ${values.controlMaxLoops}`,
     `overthinking tolerance: ${values.tolerance}`,
+    `primary selected wrapper budget: ${primaryBudget}`,
+    `certified budget equals exit step: ${primary.exitStep !== null && primaryBudget === primary.exitStep}`,
     `one-period shifted sample: ${values.sampleIndex + values.loopPeriod}`,
     `shifted required steps: ${shifted.requiredSteps}`,
     `shifted exit available: ${yesNo(shifted.exitAvailable)}`,

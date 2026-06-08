@@ -16,7 +16,7 @@ capabilities:
     executable_refs:
       - "sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py"
     living_book_refs:
-      - page: "site/chapters/S1/04_period_gcd_prime_full_coils.qmd"
+      - page: "site/chapters/applications/erdos_bridges.qmd"
     source_refs:
       - "Circle/Erdos/EGZ.lean"
       - "Circle/Erdos/CauchyDavenport.lean"
@@ -39,7 +39,7 @@ capabilities:
     executable_refs:
       - "sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py"
     living_book_refs:
-      - page: "site/chapters/S1/04_period_gcd_prime_full_coils.qmd"
+      - page: "site/chapters/applications/erdos_bridges.qmd"
     source_refs:
       - "Circle/Erdos/KatonaEKR.lean"
       - "sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py"
@@ -61,7 +61,7 @@ capabilities:
     executable_refs:
       - "sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py"
     living_book_refs:
-      - page: "site/chapters/S1/04_period_gcd_prime_full_coils.qmd"
+      - page: "site/chapters/applications/erdos_bridges.qmd"
     source_refs:
       - "Circle/Erdos/RothAP.lean"
       - "sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py"
@@ -83,7 +83,7 @@ capabilities:
     executable_refs:
       - "sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py"
     living_book_refs:
-      - page: "site/chapters/S1/04_period_gcd_prime_full_coils.qmd"
+      - page: "site/chapters/applications/erdos_bridges.qmd"
     source_refs:
       - "Circle/Erdos/RamseyHJ.lean"
       - "sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py"
@@ -105,7 +105,7 @@ capabilities:
     executable_refs:
       - "sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py"
     living_book_refs:
-      - page: "site/chapters/S1/04_period_gcd_prime_full_coils.qmd"
+      - page: "site/chapters/applications/erdos_bridges.qmd"
     source_refs:
       - "Circle/Erdos/GraphLab.lean"
       - "sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py"
@@ -224,10 +224,10 @@ capabilities:
     circle_math_expression: "AI-facing memory slots, loop budgets, exit certificates, and adapter blocks are encoded as finite cyclic address/schedule theorems."
     circle_native_value: "Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made."
     advertised_claim: "Circle Calculus can prove finite indexing and schedule-safety facts that AI experiments can reuse."
-    proof_scope: "Lean-proved finite memory-slot, loop-budget, recurrence-budget positivity, unavailable-budget clamp, loop-exit, and adapter-block normalization facts."
+    proof_scope: "Lean-proved finite memory-slot, loop-budget, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, and adapter-block normalization facts."
     not_claimed: "No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence."
     paper_ids: ["PAPER_AI_02_COIL_ATTENTION_AND_MEMORY", "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"]
-    theorem_ids: ["AIM-T0001", "AIM-T0005", "AIM-T0011", "AIM-T0017", "AIM-T0022", "AIM-T0024", "AIM-T0025", "AIRA-T0005"]
+    theorem_ids: ["AIM-T0001", "AIM-T0005", "AIM-T0011", "AIM-T0017", "AIM-T0022", "AIM-T0024", "AIM-T0025", "AIM-T0031", "AIM-T0032", "AIRA-T0005"]
     dictionary_ids: ["COMMON-0028", "COMMON-0047", "COMMON-0052", "COMMON-0067", "COMMON-0071"]
     executable_refs:
       - "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py"

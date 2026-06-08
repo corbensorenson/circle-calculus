@@ -176,7 +176,7 @@ Implemented shared JavaScript:
 
 - Inputs: loop period, primary sample index, primary maximum loops, fixed-budget control sample index, fixed-budget control maximum loops, and overthinking tolerance.
 - Outputs: primary and control score traces, required loop depth, first exit step, exit availability, budget status, guardrail status, one-period and multi-pass exit-availability checks, theorem-status badges, and dictionary links.
-- Theorem ids: `AIM-T0012`, `AIM-T0013`, `AIM-T0014`, `AIM-T0015`, `AIM-T0016`, `AIM-T0017`, `AIM-T0024`, `AIM-T0029`, and `AIM-T0030`.
+- Theorem ids: `AIM-T0012`, `AIM-T0013`, `AIM-T0014`, `AIM-T0015`, `AIM-T0016`, `AIM-T0017`, `AIM-T0024`, `AIM-T0029`, `AIM-T0030`, `AIM-T0031`, and `AIM-T0032`.
 - Dictionary ids: `COMMON-0052`, `COMMON-0053`, `COMMON-0054`, `COMMON-0059`, and `COMMON-0067`.
 - Python references: `circle_math.applications.circle_ai.loop_required_steps`, `circle_math.applications.circle_ai.loop_score_trace`, `circle_math.applications.circle_ai.loop_exit_step`, and `circle_math.applications.circle_ai.loop_exit_certificate`.
 - Guardrail: the widget is deterministic finite loop-schedule certificate bookkeeping only. It does not prove trained early-exit quality, recursive reasoning, speed, memory improvement, context-length improvement, or overthinking behavior in real transformers.

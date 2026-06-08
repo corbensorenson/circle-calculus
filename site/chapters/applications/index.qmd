@@ -31,6 +31,7 @@ For each application page, ask three questions:
 ## Case-Study Tracks
 
 - [Data analysis](data_analysis.qmd): finite phase coordinates plus synthetic periodic-data fixtures.
+- [Classical bridges](erdos_bridges.qmd): Erdos-style combinatorics bridges with theorem cards, papers, executable sidecars, and explicit non-claim boundaries.
 - [Compute](compute.qmd): cyclic addresses, direction bins, stride layouts, and round-robin schedule seeds.
 - [AI](ai.qmd): finite phase channels, cyclic memory slots, coil-retrieval reachability, content-gated routing, looped recurrence schedules, and adapter-block indexing seeds.
 - [Physics](physics.qmd): finite gauge links, path holonomy, Wilson-loop certificates, and plaquette-loop targets.

@@ -279,6 +279,26 @@ theorem loopExitCertificate_within_guardrail
         certificate.loopPeriod certificate.sample certificate.tolerance :=
   certificate.withinGuardrail
 
+theorem loopExitCertificate_exit_available
+    (certificate : LoopExitCertificate) :
+    loopExitAvailable
+      certificate.loopPeriod certificate.sample certificate.maxLoops := by
+  unfold loopExitAvailable
+  rw [← loopExitCertificate_exit_eq_required certificate]
+  exact certificate.withinBudget
+
+theorem loopExitCertificate_budget_eq_exitStep
+    (certificate : LoopExitCertificate) :
+    trainingFreeLoopBudget
+      certificate.loopPeriod certificate.sample certificate.maxLoops =
+      certificate.exitStep := by
+  rw [
+    trainingFreeLoopBudget_eq_required_of_available
+      certificate.loopPeriod certificate.sample certificate.maxLoops
+      (loopExitCertificate_exit_available certificate),
+    ← loopExitCertificate_exit_eq_required certificate,
+  ]
+
 def adapterBlock (blockSize channel : Nat) : Nat :=
   channel % blockSize
 

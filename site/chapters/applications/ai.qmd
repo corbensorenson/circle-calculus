@@ -141,9 +141,9 @@ The widget below is the smallest interactive version of that boundary. It comput
 
 <div class="widget-panel" data-widget="loop_recurrence_budget" data-theorem-id="AIM-T0018" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0054 COMMON-0059 COMMON-0067"></div>
 
-`AIM-B0011` turns the exit decision into a small certificate: required depth, score trace, first exit step, budget status, and guardrail status. The control keeps the same finite logic but uses a deliberately insufficient fixed budget, so the no-exit case is visible.
+`AIM-B0011` turns the exit decision into a small certificate: required depth, score trace, first exit step, budget status, and guardrail status. Lean now proves that a certificate implies exit availability and that the training-free wrapper budget selects the certified exit step. The control keeps the same finite logic but uses a deliberately insufficient fixed budget, so the no-exit case is visible.
 
-<div class="widget-panel" data-widget="loop_exit_certificate" data-theorem-id="AIM-T0015" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0054 COMMON-0059 COMMON-0067"></div>
+<div class="widget-panel" data-widget="loop_exit_certificate" data-theorem-id="AIM-T0032" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0054 COMMON-0059 COMMON-0067"></div>
 
 `AIM-B0005` turns that lesson into token-level bookkeeping:
 
@@ -359,6 +359,8 @@ Why is the nonperiodic control in `AIA-B0002` important before making any AI-imp
 <div class="theorem-box" data-theorem-id="AIM-T0028"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0029"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0030"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0031"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0032"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0001"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0004"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0005"></div>

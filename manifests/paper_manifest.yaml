@@ -678,6 +678,8 @@ papers:
       - AIM-T0028
       - AIM-T0029
       - AIM-T0030
+      - AIM-T0031
+      - AIM-T0032
     dictionary_ids:
       - COMMON-0028
       - COMMON-0029

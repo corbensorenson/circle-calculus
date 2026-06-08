@@ -85,6 +85,27 @@ def test_export_site_data_writes_required_indexes() -> None:
 
     capabilities = json.loads((generated / "capability_showcase.json").read_text())
     capability_by_id = {item["id"]: item for item in capabilities["capabilities"]}
+    summary = capabilities["portfolio_summary"]
+    assert summary["capability_count"] == len(capabilities["capabilities"])
+    assert summary["role_counts"]["standard_math_parity"] == sum(
+        "standard_math_parity" in item["portfolio_roles"]
+        for item in capabilities["capabilities"]
+    )
+    assert summary["role_counts"]["circle_native_value"] == sum(
+        "circle_native_value" in item["portfolio_roles"]
+        for item in capabilities["capabilities"]
+    )
+    assert summary["role_counts"]["application_guardrail"] == sum(
+        "application_guardrail" in item["portfolio_roles"]
+        for item in capabilities["capabilities"]
+    )
+    unique_theorems = {
+        theorem_id
+        for item in capabilities["capabilities"]
+        for theorem_id in item["theorem_ids"]
+    }
+    assert summary["unique_evidence_counts"]["theorem_count"] == len(unique_theorems)
+    assert "site/chapters/applications/erdos_bridges.qmd" in summary["unique_living_book_pages"]
     assert capability_by_id["SHOW-001"]["evidence_counts"]["theorem_count"] == len(
         capability_by_id["SHOW-001"]["theorem_ids"]
     )
