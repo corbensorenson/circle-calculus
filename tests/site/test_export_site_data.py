@@ -117,6 +117,19 @@ def test_export_site_data_writes_required_indexes() -> None:
     assert capability_by_id["SHOW-001"]["evidence_counts"]["theorem_count"] == len(
         capability_by_id["SHOW-001"]["theorem_ids"]
     )
+    assert capability_by_id["SHOW-001"]["theorem_ref_contract"][
+        "proved_and_paper_backed_count"
+    ] == len(capability_by_id["SHOW-001"]["theorem_ids"])
+    assert capability_by_id["SHOW-001"]["theorem_ref_contract"][
+        "unproved_or_unbacked_ids"
+    ] == []
+    assert {
+        ref["id"]: tuple(ref["carried_by_papers"])
+        for ref in capability_by_id["SHOW-001"]["theorem_ref_contract"]["refs"]
+    } == {
+        "CC-T0062": ("PAPER_ERDOS_01_ZERO_SUM_CIRCLES",),
+        "CC-T0063": ("PAPER_ERDOS_01_ZERO_SUM_CIRCLES",),
+    }
     assert capability_by_id["SHOW-001"]["source_ref_contract"]["backed_count"] == len(
         capability_by_id["SHOW-001"]["source_refs"]
     )

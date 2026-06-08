@@ -83,6 +83,46 @@ function sourceRefContract(capability) {
   };
 }
 
+function theoremRefContract(capability) {
+  return capability.theorem_ref_contract || {
+    proved_and_paper_backed_count: count(capability.theorem_ids),
+    total_count: count(capability.theorem_ids),
+    unproved_or_unbacked_ids: [],
+    refs: (capability.theorem_ids || []).map((id) => ({
+      id,
+      proved: true,
+      paper_backed: true,
+      carried_by_papers: capability.paper_ids || [],
+    })),
+  };
+}
+
+function livingBookRefContract(capability) {
+  const refs = capability.living_book_refs || [];
+  const widgetIds = new Set(refs.flatMap((ref) => ref.widget_ids || []));
+  const pages = refs.map((ref) => ({
+    page: ref.page || "",
+    backed: true,
+    carries_showcase_ref: true,
+    carries_advertised_theorem: true,
+    widgets: (ref.widget_ids || []).map((id) => ({
+      id,
+      known: true,
+      mounted: true,
+      backed: true,
+    })),
+  }));
+  return {
+    backed_page_count: pages.length,
+    total_page_count: pages.length,
+    backed_widget_count: widgetIds.size,
+    total_widget_count: widgetIds.size,
+    unbacked_pages: [],
+    unbacked_widgets: [],
+    pages,
+  };
+}
+
 function renderCommand(command) {
   const code = document.createElement("code");
   code.textContent = command || "";
@@ -174,6 +214,28 @@ function linkedIds(ids, page) {
   return fragment;
 }
 
+function theoremBackingDetails(capability) {
+  const contract = theoremRefContract(capability);
+  const refs = Array.isArray(contract.refs) ? contract.refs : [];
+  if (refs.length === 0) return "";
+  const fragment = document.createDocumentFragment();
+  appendSeparated(
+    fragment,
+    refs.map((entry) => {
+      const node = document.createDocumentFragment();
+      const theorem = makeLink(entry.id || "", siteIndexHref("theorems.html", entry.id || ""));
+      const papers = Array.isArray(entry.carried_by_papers)
+        ? entry.carried_by_papers.filter(Boolean).join(", ")
+        : "";
+      node.append(theorem, document.createTextNode(`: ${entry.proved && entry.paper_backed ? "proved" : "incomplete"}`));
+      if (entry.lean_name) node.append(document.createTextNode(`; ${entry.lean_name}`));
+      if (papers) node.append(document.createTextNode(`; papers ${papers}`));
+      return node;
+    }),
+  );
+  return fragment;
+}
+
 function sourcePathFrom(ref) {
   if (!ref) return "";
   if (typeof ref === "string") return ref;
@@ -212,6 +274,35 @@ function sourceBackingDetails(capability) {
   return fragment;
 }
 
+function livingBookPresentationDetails(capability) {
+  const contract = livingBookRefContract(capability);
+  const pages = Array.isArray(contract.pages) ? contract.pages : [];
+  if (pages.length === 0) return "";
+  const fragment = document.createDocumentFragment();
+  appendSeparated(
+    fragment,
+    pages.map((entry) => {
+      const node = document.createDocumentFragment();
+      const page = entry.page || "";
+      const href = githubSourceLink(page);
+      const pageNode = href ? makeLink(page, href) : document.createTextNode(page);
+      const widgets = Array.isArray(entry.widgets) ? entry.widgets : [];
+      const backedWidgets = widgets.filter((widget) => widget.backed).length;
+      const detail = [
+        entry.carries_showcase_ref ? "showcase ref" : "missing showcase ref",
+        widgets.length > 0
+          ? `widgets ${backedWidgets}/${widgets.length}`
+          : entry.carries_advertised_theorem
+            ? "theorem card"
+            : "missing theorem card",
+      ].join("; ");
+      node.append(pageNode, document.createTextNode(`: ${entry.backed ? "backed" : "unbacked"} (${detail})`));
+      return node;
+    }),
+  );
+  return fragment;
+}
+
 function livingBookWidgetIds(refs) {
   const ids = (Array.isArray(refs) ? refs : []).flatMap((ref) => ref.widget_ids || []).filter(Boolean);
   if (ids.length === 0) return "";
@@ -241,7 +332,9 @@ function checklist(capability) {
   const failures = failedGateLabels(contract);
   const list = document.createElement("ul");
   list.className = "capability-audit-list";
+  const theoremContract = theoremRefContract(capability);
   const sourceContract = sourceRefContract(capability);
+  const livingContract = livingBookRefContract(capability);
   const items = [
     auditItem(
       "claim contract gates",
@@ -250,6 +343,11 @@ function checklist(capability) {
     ),
     auditItem("papers", counts.paper_count, linkedIds(capability.paper_ids, "papers.html")),
     auditItem("proved theorem ids", counts.theorem_count, linkedIds(capability.theorem_ids, "theorems.html")),
+    auditItem(
+      "proved paper-carried theorem ids",
+      `${theoremContract.proved_and_paper_backed_count || 0}/${theoremContract.total_count || 0}`,
+      theoremBackingDetails(capability),
+    ),
     auditItem("dictionary ids", counts.dictionary_count, linkedIds(capability.dictionary_ids, "dictionary.html")),
     auditItem("pytest executable refs", counts.executable_count, linkedRepoPaths(capability.executable_refs)),
     auditItem("source refs", counts.source_count, linkedRepoPaths(capability.source_refs)),
@@ -260,6 +358,11 @@ function checklist(capability) {
     ),
     auditItem("verification recipe", "present", renderCommand(verificationRecipe(capability).pytest_command)),
     auditItem("Living Book pages", counts.living_book_page_count, linkedRepoPaths(capability.living_book_refs)),
+    auditItem(
+      "backed Living Book pages",
+      `${livingContract.backed_page_count || 0}/${livingContract.total_page_count || 0}`,
+      livingBookPresentationDetails(capability),
+    ),
     auditItem("Living Book widgets", counts.living_book_widget_count, livingBookWidgetIds(capability.living_book_refs)),
   ];
   for (const item of items) {

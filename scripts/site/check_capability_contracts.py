@@ -57,6 +57,81 @@ def main() -> int:
                         f"{capability_id}: verification_recipe {key} "
                         f"{recipe.get(key)!r} does not match {expected_value!r}"
                     )
+        theorem_ref_contract = capability.get("theorem_ref_contract")
+        theorem_ids = capability.get("theorem_ids", []) or []
+        if not isinstance(theorem_ref_contract, dict):
+            failures.append(f"{capability_id}: missing theorem_ref_contract")
+        else:
+            theorem_refs = theorem_ref_contract.get("refs")
+            if not isinstance(theorem_refs, list):
+                failures.append(f"{capability_id}: theorem_ref_contract refs must be a list")
+                theorem_refs = []
+            contract_theorem_ids = [
+                ref.get("id") for ref in theorem_refs if isinstance(ref, dict)
+            ]
+            if contract_theorem_ids != theorem_ids:
+                failures.append(
+                    f"{capability_id}: theorem_ref_contract refs do not match theorem_ids"
+                )
+            proved_and_paper_backed_count = sum(
+                1
+                for ref in theorem_refs
+                if (
+                    isinstance(ref, dict)
+                    and ref.get("proved")
+                    and ref.get("paper_backed")
+                )
+            )
+            unproved_or_unbacked_ids = [
+                ref.get("id", "")
+                for ref in theorem_refs
+                if not (
+                    isinstance(ref, dict)
+                    and ref.get("proved")
+                    and ref.get("paper_backed")
+                )
+            ]
+            if theorem_ref_contract.get("proved_and_paper_backed_count") != proved_and_paper_backed_count:
+                failures.append(
+                    f"{capability_id}: theorem_ref_contract "
+                    "proved_and_paper_backed_count "
+                    f"{theorem_ref_contract.get('proved_and_paper_backed_count')} "
+                    f"does not match {proved_and_paper_backed_count}"
+                )
+            if theorem_ref_contract.get("total_count") != len(theorem_ids):
+                failures.append(
+                    f"{capability_id}: theorem_ref_contract total_count "
+                    f"{theorem_ref_contract.get('total_count')} does not match {len(theorem_ids)}"
+                )
+            if theorem_ref_contract.get("unproved_or_unbacked_ids") != unproved_or_unbacked_ids:
+                failures.append(
+                    f"{capability_id}: theorem_ref_contract "
+                    "unproved_or_unbacked_ids do not match refs"
+                )
+            for ref in theorem_refs:
+                if not isinstance(ref, dict):
+                    failures.append(
+                        f"{capability_id}: theorem_ref_contract ref must be a mapping"
+                    )
+                    continue
+                theorem_id = ref.get("id", "<missing theorem id>")
+                if ref.get("canonical_status") != "proved":
+                    failures.append(
+                        f"{capability_id}: theorem {theorem_id} is not canonically proved"
+                    )
+                if not ref.get("lean_name"):
+                    failures.append(
+                        f"{capability_id}: theorem {theorem_id} missing Lean name"
+                    )
+                if not ref.get("carried_by_papers"):
+                    failures.append(
+                        f"{capability_id}: theorem {theorem_id} is not carried by cited papers"
+                    )
+            if unproved_or_unbacked_ids:
+                failures.append(
+                    f"{capability_id}: theorem ids are not proved and paper-backed: "
+                    f"{unproved_or_unbacked_ids}"
+                )
         source_ref_contract = capability.get("source_ref_contract")
         source_refs = capability.get("source_refs", []) or []
         if not isinstance(source_ref_contract, dict):
@@ -98,6 +173,121 @@ def main() -> int:
             if unbacked_refs:
                 failures.append(
                     f"{capability_id}: source refs are not paper-backed: {unbacked_refs}"
+                )
+        living_book_ref_contract = capability.get("living_book_ref_contract")
+        evidence_counts = capability.get("evidence_counts", {}) or {}
+        living_book_refs = capability.get("living_book_refs", []) or []
+        expected_pages = [
+            ref.get("page", "")
+            for ref in living_book_refs
+            if isinstance(ref, dict)
+        ]
+        expected_widget_count = len(
+            {
+                widget_id
+                for ref in living_book_refs
+                if isinstance(ref, dict)
+                for widget_id in (ref.get("widget_ids", []) or [])
+            }
+        )
+        if not isinstance(living_book_ref_contract, dict):
+            failures.append(f"{capability_id}: missing living_book_ref_contract")
+        else:
+            pages = living_book_ref_contract.get("pages")
+            if not isinstance(pages, list):
+                failures.append(
+                    f"{capability_id}: living_book_ref_contract pages must be a list"
+                )
+                pages = []
+            contract_pages = [
+                page.get("page") for page in pages if isinstance(page, dict)
+            ]
+            if contract_pages != expected_pages:
+                failures.append(
+                    f"{capability_id}: living_book_ref_contract pages do not match living_book_refs"
+                )
+            backed_page_count = sum(
+                1 for page in pages if isinstance(page, dict) and page.get("backed")
+            )
+            backed_widget_count = len(
+                {
+                    widget.get("id")
+                    for page in pages
+                    if isinstance(page, dict)
+                    for widget in page.get("widgets", []) or []
+                    if isinstance(widget, dict) and widget.get("backed")
+                }
+            )
+            total_widget_count = len(
+                {
+                    widget.get("id")
+                    for page in pages
+                    if isinstance(page, dict)
+                    for widget in page.get("widgets", []) or []
+                    if isinstance(widget, dict)
+                }
+            )
+            unbacked_pages = [
+                page.get("page", "")
+                for page in pages
+                if isinstance(page, dict) and not page.get("backed")
+            ]
+            unbacked_widgets = [
+                f"{page.get('page', '')}#{widget.get('id', '')}"
+                for page in pages
+                if isinstance(page, dict)
+                for widget in page.get("widgets", []) or []
+                if isinstance(widget, dict) and not widget.get("backed")
+            ]
+            if living_book_ref_contract.get("backed_page_count") != backed_page_count:
+                failures.append(
+                    f"{capability_id}: living_book_ref_contract backed_page_count "
+                    f"{living_book_ref_contract.get('backed_page_count')} "
+                    f"does not match {backed_page_count}"
+                )
+            if living_book_ref_contract.get("total_page_count") != len(expected_pages):
+                failures.append(
+                    f"{capability_id}: living_book_ref_contract total_page_count "
+                    f"{living_book_ref_contract.get('total_page_count')} "
+                    f"does not match {len(expected_pages)}"
+                )
+            if living_book_ref_contract.get("backed_widget_count") != backed_widget_count:
+                failures.append(
+                    f"{capability_id}: living_book_ref_contract backed_widget_count "
+                    f"{living_book_ref_contract.get('backed_widget_count')} "
+                    f"does not match {backed_widget_count}"
+                )
+            if total_widget_count != expected_widget_count:
+                failures.append(
+                    f"{capability_id}: living_book_ref_contract widget ids "
+                    f"do not match living_book_refs"
+                )
+            if living_book_ref_contract.get("total_widget_count") != expected_widget_count:
+                failures.append(
+                    f"{capability_id}: living_book_ref_contract total_widget_count "
+                    f"{living_book_ref_contract.get('total_widget_count')} "
+                    f"does not match {expected_widget_count}"
+                )
+            if living_book_ref_contract.get("unbacked_pages") != unbacked_pages:
+                failures.append(
+                    f"{capability_id}: living_book_ref_contract unbacked_pages do not match pages"
+                )
+            if living_book_ref_contract.get("unbacked_widgets") != unbacked_widgets:
+                failures.append(
+                    f"{capability_id}: living_book_ref_contract unbacked_widgets do not match widgets"
+                )
+            if backed_page_count != evidence_counts.get("living_book_page_count"):
+                failures.append(
+                    f"{capability_id}: Living Book backed_page_count does not match evidence count"
+                )
+            if backed_widget_count != evidence_counts.get("living_book_widget_count"):
+                failures.append(
+                    f"{capability_id}: Living Book backed_widget_count does not match evidence count"
+                )
+            if unbacked_pages or unbacked_widgets:
+                failures.append(
+                    f"{capability_id}: Living Book refs are not backed: "
+                    f"{unbacked_pages + unbacked_widgets}"
                 )
         contract = capability.get("claim_contract")
         if not isinstance(contract, dict):

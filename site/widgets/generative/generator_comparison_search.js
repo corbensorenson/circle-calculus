@@ -22,6 +22,11 @@ const THEOREM_IDS = [
   "GEN-T0032",
   "GEN-T0033",
   "GEN-T0034",
+  "GEN-T0035",
+  "GEN-T0036",
+  "GEN-T0037",
+  "GEN-T0038",
+  "GEN-T0039",
 ];
 const DICTIONARY_IDS = ["COMMON-0064", "COMMON-0065", "COMMON-0066"];
 
@@ -144,6 +149,11 @@ function boundedSearch(records) {
       "GEN-T0032",
       "GEN-T0033",
       "GEN-T0034",
+      "GEN-T0035",
+      "GEN-T0036",
+      "GEN-T0037",
+      "GEN-T0038",
+      "GEN-T0039",
     ],
     note: "Bounded finite search only; not an optimality theorem.",
     comparisons,

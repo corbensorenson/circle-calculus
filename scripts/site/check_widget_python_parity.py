@@ -1686,6 +1686,11 @@ def main() -> int:
         "GEN-T0032",
         "GEN-T0033",
         "GEN-T0034",
+        "GEN-T0035",
+        "GEN-T0036",
+        "GEN-T0037",
+        "GEN-T0038",
+        "GEN-T0039",
     )
     assert search.theorem_ids == generator_search_theorem_ids
     empty_search = bounded_generator_search([], search_id="empty_declared_search")

@@ -7552,6 +7552,36 @@
           "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_exact",
           "name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_exact",
           "status": "proved"
+        },
+        {
+          "id": "GEN-T0035",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidate_mem_candidates",
+          "name": "Circle.Generative.boundedGeneratorSearch_exactCandidate_mem_candidates",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0036",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidate_exact",
+          "name": "Circle.Generative.boundedGeneratorSearch_exactCandidate_exact",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0037",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidateCount_pos_iff_exists_bestExact",
+          "name": "Circle.Generative.boundedGeneratorSearch_exactCandidateCount_pos_iff_exists_bestExact",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0038",
+          "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_exactCandidates",
+          "name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_exactCandidates",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0039",
+          "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_candidates",
+          "name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_candidates",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -7723,6 +7753,36 @@
           "id": "GEN-T0034",
           "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_exact",
           "name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_exact",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0035",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidate_mem_candidates",
+          "name": "Circle.Generative.boundedGeneratorSearch_exactCandidate_mem_candidates",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0036",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidate_exact",
+          "name": "Circle.Generative.boundedGeneratorSearch_exactCandidate_exact",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0037",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidateCount_pos_iff_exists_bestExact",
+          "name": "Circle.Generative.boundedGeneratorSearch_exactCandidateCount_pos_iff_exists_bestExact",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0038",
+          "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_exactCandidates",
+          "name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_exactCandidates",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0039",
+          "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_candidates",
+          "name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_candidates",
           "status": "proved"
         }
       ],
@@ -7964,6 +8024,36 @@
           "id": "GEN-T0034",
           "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_exact",
           "name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_exact",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0035",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidate_mem_candidates",
+          "name": "Circle.Generative.boundedGeneratorSearch_exactCandidate_mem_candidates",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0036",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidate_exact",
+          "name": "Circle.Generative.boundedGeneratorSearch_exactCandidate_exact",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0037",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidateCount_pos_iff_exists_bestExact",
+          "name": "Circle.Generative.boundedGeneratorSearch_exactCandidateCount_pos_iff_exists_bestExact",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0038",
+          "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_exactCandidates",
+          "name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_exactCandidates",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0039",
+          "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_candidates",
+          "name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_candidates",
           "status": "proved"
         }
       ],

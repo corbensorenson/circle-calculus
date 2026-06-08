@@ -247,6 +247,11 @@ def export_widget_index() -> dict:
                 "GEN-T0032",
                 "GEN-T0033",
                 "GEN-T0034",
+                "GEN-T0035",
+                "GEN-T0036",
+                "GEN-T0037",
+                "GEN-T0038",
+                "GEN-T0039",
             ],
             "dictionary_ids": ["COMMON-0064", "COMMON-0065", "COMMON-0066"],
             "python_reference": "circle_math.generative.compare_generator_to_explicit; circle_math.generative.bounded_generator_search; circle_math.generative.finite_circle_generator",
@@ -805,6 +810,9 @@ CLAIM_CONTRACT_ROLES = {"standard_math_parity", "circle_native_value"}
 CLAIM_CONTRACT_PROVENANCE_KINDS = {"mathlib_bridge", "project_native", "mixed"}
 SECTION_RE = re.compile(r"^##\s+", re.MULTILINE)
 IMPORT_RE = re.compile(r"^\s*import\s+(.+)$")
+SHOWCASE_REF_RE = re.compile(r'data-showcase-ref="([^"]+)"')
+THEOREM_ATTR_RE = re.compile(r'data-theorem-id="([^"]+)"')
+WIDGET_PANEL_RE = re.compile(r'data-widget="([^"]+)"')
 
 
 def nonempty_text(item: dict, key: str) -> bool:
@@ -829,6 +837,31 @@ def contract_count_or_failures(count: int, failures: list[str]) -> str:
 def unsafe_or_missing_path(ref: str) -> bool:
     path = Path(ref)
     return path.is_absolute() or ".." in path.parts or not (ROOT / path).exists()
+
+
+def showcase_refs_on_page(path: Path) -> set[str]:
+    if not path.exists():
+        return set()
+    return set(SHOWCASE_REF_RE.findall(path.read_text()))
+
+
+def theorem_ids_on_page(path: Path) -> set[str]:
+    if not path.exists():
+        return set()
+    return set(THEOREM_ATTR_RE.findall(path.read_text()))
+
+
+def widgets_on_page(path: Path) -> set[str]:
+    if not path.exists():
+        return set()
+    return set(WIDGET_PANEL_RE.findall(path.read_text()))
+
+
+def widget_ids_from_files() -> set[str]:
+    return {
+        path.stem
+        for path in sorted((ROOT / "site" / "widgets").glob("**/*.js"))
+    }
 
 
 def path_for_paper_id(paper_id: str) -> Path | None:
@@ -916,6 +949,67 @@ def paper_manifest_by_id() -> dict[str, dict]:
     return {paper["id"]: paper for paper in data.get("papers", []) if paper.get("id")}
 
 
+def theorem_manifest_by_id() -> dict[str, dict]:
+    theorems: dict[str, dict] = {}
+    for path in theorem_manifest_paths():
+        data = load_yaml(path)
+        for theorem in data.get("theorems", []):
+            theorem_id = theorem.get("id")
+            if theorem_id:
+                theorems[theorem_id] = theorem
+    return theorems
+
+
+def theorem_ref_status(
+    theorem_id: str,
+    paper_ids: list[str],
+    papers: dict[str, dict],
+    theorems: dict[str, dict],
+) -> dict:
+    theorem = theorems.get(theorem_id, {})
+    status = theorem.get("status", "missing")
+    carried_by = sorted(
+        paper_id
+        for paper_id in paper_ids
+        if theorem_id in (papers.get(paper_id, {}).get("theorem_ids", []) or [])
+    )
+    proved = canonical_status(status) == "proved"
+    paper_backed = bool(carried_by)
+    return {
+        "id": theorem_id,
+        "status": status,
+        "canonical_status": canonical_status(status),
+        "proved": proved,
+        "lean_name": theorem.get("lean_name", ""),
+        "paper_backed": paper_backed,
+        "carried_by_papers": carried_by,
+    }
+
+
+def capability_theorem_ref_contract(
+    item: dict,
+    papers: dict[str, dict],
+    theorems: dict[str, dict],
+) -> dict:
+    paper_ids = item.get("paper_ids", []) or []
+    theorem_ids = item.get("theorem_ids", []) or []
+    refs = [
+        theorem_ref_status(theorem_id, paper_ids, papers, theorems)
+        for theorem_id in theorem_ids
+    ]
+    proved_and_paper_backed_count = sum(
+        1 for ref in refs if ref["proved"] and ref["paper_backed"]
+    )
+    return {
+        "proved_and_paper_backed_count": proved_and_paper_backed_count,
+        "total_count": len(refs),
+        "unproved_or_unbacked_ids": [
+            ref["id"] for ref in refs if not (ref["proved"] and ref["paper_backed"])
+        ],
+        "refs": refs,
+    }
+
+
 def source_ref_backing_status(
     ref: str,
     paper_ids: list[str],
@@ -966,6 +1060,73 @@ def capability_source_ref_contract(
     }
 
 
+def capability_living_book_ref_contract(
+    item: dict,
+    known_widget_ids: set[str],
+) -> dict:
+    capability_id = item.get("id", "")
+    theorem_ids = set(item.get("theorem_ids", []) or [])
+    pages: list[dict] = []
+    for ref in item.get("living_book_refs", []) or []:
+        page_ref = ref.get("page", "")
+        page_path = ROOT / page_ref
+        page_exists = bool(page_ref) and not unsafe_or_missing_path(page_ref)
+        showcase_backed = capability_id in showcase_refs_on_page(page_path)
+        page_theorem_ids = theorem_ids_on_page(page_path)
+        widget_ids = ref.get("widget_ids", []) or []
+        widgets = []
+        for widget_id in widget_ids:
+            known = widget_id in known_widget_ids
+            mounted = widget_id in widgets_on_page(page_path)
+            widgets.append(
+                {
+                    "id": widget_id,
+                    "known": known,
+                    "mounted": mounted,
+                    "backed": known and mounted,
+                }
+            )
+        theorem_backed = bool(theorem_ids & page_theorem_ids)
+        widget_backed = all(widget["backed"] for widget in widgets)
+        presentation_backed = bool(widgets) and widget_backed or (
+            not widgets and theorem_backed
+        )
+        page_backed = page_exists and showcase_backed and presentation_backed
+        pages.append(
+            {
+                "page": page_ref,
+                "exists": page_exists,
+                "carries_showcase_ref": showcase_backed,
+                "carries_advertised_theorem": theorem_backed,
+                "backed": page_backed,
+                "widgets": widgets,
+            }
+        )
+    total_widget_ids = {
+        widget["id"] for page in pages for widget in page["widgets"]
+    }
+    backed_widget_ids = {
+        widget["id"]
+        for page in pages
+        for widget in page["widgets"]
+        if widget["backed"]
+    }
+    return {
+        "backed_page_count": sum(1 for page in pages if page["backed"]),
+        "total_page_count": len(pages),
+        "backed_widget_count": len(backed_widget_ids),
+        "total_widget_count": len(total_widget_ids),
+        "unbacked_pages": [page["page"] for page in pages if not page["backed"]],
+        "unbacked_widgets": [
+            f"{page['page']}#{widget['id']}"
+            for page in pages
+            for widget in page["widgets"]
+            if not widget["backed"]
+        ],
+        "pages": pages,
+    }
+
+
 def proved_theorem_id_set() -> set[str]:
     proved: set[str] = set()
     for path in theorem_manifest_paths():
@@ -1004,7 +1165,9 @@ def capability_claim_contract(
     evidence_counts: dict[str, int],
     proved_theorem_ids: set[str],
     known_paper_ids: set[str],
+    theorem_ref_contract: dict,
     source_ref_contract: dict,
+    living_book_ref_contract: dict,
 ) -> dict:
     roles = set(item.get("portfolio_roles", []) or [])
     provenance_kind = item.get("proof_provenance_kind", "")
@@ -1015,6 +1178,9 @@ def capability_claim_contract(
     living_book_refs = item.get("living_book_refs", []) or []
     unknown_papers = sorted(set(paper_ids) - known_paper_ids)
     unproved_theorems = sorted(set(theorem_ids) - proved_theorem_ids)
+    unproved_or_unbacked_theorems = sorted(
+        set(theorem_ref_contract.get("unproved_or_unbacked_ids", []) + unproved_theorems)
+    )
     missing_sources = sorted(ref for ref in source_refs if unsafe_or_missing_path(ref))
     unbacked_sources = source_ref_contract.get("unbacked_refs", [])
     executable_failures = sorted(
@@ -1027,11 +1193,8 @@ def capability_claim_contract(
             or Path(ref).suffix != ".py"
         )
     )
-    missing_living_pages = sorted(
-        ref.get("page", "")
-        for ref in living_book_refs
-        if not ref.get("page", "") or unsafe_or_missing_path(ref.get("page", ""))
-    )
+    unbacked_living_pages = living_book_ref_contract.get("unbacked_pages", [])
+    unbacked_living_widgets = living_book_ref_contract.get("unbacked_widgets", [])
     verification_recipe = capability_verification_recipe(item)
     expected_pytest_command = shlex.join(["python", "-m", "pytest", *executable_refs])
     recipe_failures = []
@@ -1098,9 +1261,17 @@ def capability_claim_contract(
         ),
         contract_gate(
             "proved_theorem_ids",
-            "proved theorem ids",
-            evidence_counts["theorem_count"] > 0 and not unproved_theorems,
-            contract_count_or_failures(evidence_counts["theorem_count"], unproved_theorems),
+            "proved paper-carried theorem ids",
+            (
+                evidence_counts["theorem_count"] > 0
+                and not unproved_or_unbacked_theorems
+                and theorem_ref_contract.get("proved_and_paper_backed_count")
+                == evidence_counts["theorem_count"]
+            ),
+            contract_count_or_failures(
+                theorem_ref_contract.get("proved_and_paper_backed_count", 0),
+                unproved_or_unbacked_theorems,
+            ),
         ),
         contract_gate(
             "dictionary_backing",
@@ -1137,10 +1308,26 @@ def capability_claim_contract(
         contract_gate(
             "living_book_presentation",
             "Living Book presentation",
-            evidence_counts["living_book_page_count"] > 0 and not missing_living_pages,
-            contract_count_or_failures(
-                evidence_counts["living_book_page_count"],
-                missing_living_pages,
+            (
+                evidence_counts["living_book_page_count"] > 0
+                and living_book_ref_contract.get("backed_page_count")
+                == evidence_counts["living_book_page_count"]
+                and living_book_ref_contract.get("backed_widget_count")
+                == evidence_counts["living_book_widget_count"]
+                and not unbacked_living_pages
+                and not unbacked_living_widgets
+            ),
+            (
+                f"pages {living_book_ref_contract.get('backed_page_count', 0)}/"
+                f"{living_book_ref_contract.get('total_page_count', 0)}; "
+                f"widgets {living_book_ref_contract.get('backed_widget_count', 0)}/"
+                f"{living_book_ref_contract.get('total_widget_count', 0)}"
+                + (
+                    "; failures: "
+                    + ", ".join(sorted(unbacked_living_pages + unbacked_living_widgets))
+                    if unbacked_living_pages or unbacked_living_widgets
+                    else ""
+                )
             ),
         ),
         contract_gate(
@@ -1189,7 +1376,9 @@ def export_capability_showcase() -> dict:
     proved_theorem_ids = proved_theorem_id_set()
     known_paper_ids = paper_id_set()
     papers = paper_manifest_by_id()
+    theorems = theorem_manifest_by_id()
     local_lean_modules = lean_modules_by_name()
+    known_widget_ids = widget_ids_from_files()
     for capability in data.get("capabilities", []):
         item = dict(capability)
         living_pages: set[str] = set()
@@ -1211,17 +1400,28 @@ def export_capability_showcase() -> dict:
             "living_book_widget_count": len(living_widgets),
         }
         item["verification_recipe"] = capability_verification_recipe(item)
+        item["theorem_ref_contract"] = capability_theorem_ref_contract(
+            item,
+            papers,
+            theorems,
+        )
         item["source_ref_contract"] = capability_source_ref_contract(
             item,
             papers,
             local_lean_modules,
+        )
+        item["living_book_ref_contract"] = capability_living_book_ref_contract(
+            item,
+            known_widget_ids,
         )
         item["claim_contract"] = capability_claim_contract(
             item,
             item["evidence_counts"],
             proved_theorem_ids,
             known_paper_ids,
+            item["theorem_ref_contract"],
             item["source_ref_contract"],
+            item["living_book_ref_contract"],
         )
         if item["claim_contract"]["ready_to_advertise"]:
             contract_ready_count += 1

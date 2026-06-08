@@ -65,7 +65,7 @@
           {
             "evidence": "2",
             "id": "proved_theorem_ids",
-            "label": "proved theorem ids",
+            "label": "proved paper-carried theorem ids",
             "passed": true
           },
           {
@@ -93,7 +93,7 @@
             "passed": true
           },
           {
-            "evidence": "1",
+            "evidence": "pages 1/1; widgets 0/0",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
             "passed": true
@@ -127,6 +127,24 @@
         "sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py"
       ],
       "id": "SHOW-001",
+      "living_book_ref_contract": {
+        "backed_page_count": 1,
+        "backed_widget_count": 0,
+        "pages": [
+          {
+            "backed": true,
+            "carries_advertised_theorem": true,
+            "carries_showcase_ref": true,
+            "exists": true,
+            "page": "site/chapters/applications/erdos_bridges.qmd",
+            "widgets": []
+          }
+        ],
+        "total_page_count": 1,
+        "total_widget_count": 0,
+        "unbacked_pages": [],
+        "unbacked_widgets": []
+      },
       "living_book_refs": [
         {
           "page": "site/chapters/applications/erdos_bridges.qmd"
@@ -175,6 +193,35 @@
         "CC-T0062",
         "CC-T0063"
       ],
+      "theorem_ref_contract": {
+        "proved_and_paper_backed_count": 2,
+        "refs": [
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_ERDOS_01_ZERO_SUM_CIRCLES"
+            ],
+            "id": "CC-T0062",
+            "lean_name": "Circle.erdos_ginzburg_ziv",
+            "paper_backed": true,
+            "proved": true,
+            "status": "proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_ERDOS_01_ZERO_SUM_CIRCLES"
+            ],
+            "id": "CC-T0063",
+            "lean_name": "Circle.cauchy_davenport_prime_circle",
+            "paper_backed": true,
+            "proved": true,
+            "status": "proved"
+          }
+        ],
+        "total_count": 2,
+        "unproved_or_unbacked_ids": []
+      },
       "title": "Zero-sum and sumset theorems on finite circles",
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
@@ -248,7 +295,7 @@
           {
             "evidence": "2",
             "id": "proved_theorem_ids",
-            "label": "proved theorem ids",
+            "label": "proved paper-carried theorem ids",
             "passed": true
           },
           {
@@ -276,7 +323,7 @@
             "passed": true
           },
           {
-            "evidence": "1",
+            "evidence": "pages 1/1; widgets 0/0",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
             "passed": true
@@ -310,6 +357,24 @@
         "sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py"
       ],
       "id": "SHOW-002",
+      "living_book_ref_contract": {
+        "backed_page_count": 1,
+        "backed_widget_count": 0,
+        "pages": [
+          {
+            "backed": true,
+            "carries_advertised_theorem": true,
+            "carries_showcase_ref": true,
+            "exists": true,
+            "page": "site/chapters/applications/erdos_bridges.qmd",
+            "widgets": []
+          }
+        ],
+        "total_page_count": 1,
+        "total_widget_count": 0,
+        "unbacked_pages": [],
+        "unbacked_widgets": []
+      },
       "living_book_refs": [
         {
           "page": "site/chapters/applications/erdos_bridges.qmd"
@@ -352,6 +417,35 @@
         "CC-T0064",
         "CC-T0065"
       ],
+      "theorem_ref_contract": {
+        "proved_and_paper_backed_count": 2,
+        "refs": [
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD"
+            ],
+            "id": "CC-T0064",
+            "lean_name": "Circle.katona_prefixed_density_bridge",
+            "paper_backed": true,
+            "proved": true,
+            "status": "proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD"
+            ],
+            "id": "CC-T0065",
+            "lean_name": "Circle.erdos_ko_rado_circle_bridge",
+            "paper_backed": true,
+            "proved": true,
+            "status": "proved"
+          }
+        ],
+        "total_count": 2,
+        "unproved_or_unbacked_ids": []
+      },
       "title": "Katona circle method and Erdos-Ko-Rado",
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
@@ -425,7 +519,7 @@
           {
             "evidence": "2",
             "id": "proved_theorem_ids",
-            "label": "proved theorem ids",
+            "label": "proved paper-carried theorem ids",
             "passed": true
           },
           {
@@ -453,7 +547,7 @@
             "passed": true
           },
           {
-            "evidence": "1",
+            "evidence": "pages 1/1; widgets 0/0",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
             "passed": true
@@ -487,6 +581,24 @@
         "sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py"
       ],
       "id": "SHOW-003",
+      "living_book_ref_contract": {
+        "backed_page_count": 1,
+        "backed_widget_count": 0,
+        "pages": [
+          {
+            "backed": true,
+            "carries_advertised_theorem": true,
+            "carries_showcase_ref": true,
+            "exists": true,
+            "page": "site/chapters/applications/erdos_bridges.qmd",
+            "widgets": []
+          }
+        ],
+        "total_page_count": 1,
+        "total_widget_count": 0,
+        "unbacked_pages": [],
+        "unbacked_widgets": []
+      },
       "living_book_refs": [
         {
           "page": "site/chapters/applications/erdos_bridges.qmd"
@@ -529,6 +641,35 @@
         "CC-T0066",
         "CC-T0067"
       ],
+      "theorem_ref_contract": {
+        "proved_and_paper_backed_count": 2,
+        "refs": [
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES"
+            ],
+            "id": "CC-T0066",
+            "lean_name": "Circle.roth_three_ap_nat_bridge",
+            "paper_backed": true,
+            "proved": true,
+            "status": "proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES"
+            ],
+            "id": "CC-T0067",
+            "lean_name": "Circle.roth_number_sublinear_bridge",
+            "paper_backed": true,
+            "proved": true,
+            "status": "proved"
+          }
+        ],
+        "total_count": 2,
+        "unproved_or_unbacked_ids": []
+      },
       "title": "Roth and three-term arithmetic progressions",
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
@@ -602,7 +743,7 @@
           {
             "evidence": "2",
             "id": "proved_theorem_ids",
-            "label": "proved theorem ids",
+            "label": "proved paper-carried theorem ids",
             "passed": true
           },
           {
@@ -630,7 +771,7 @@
             "passed": true
           },
           {
-            "evidence": "1",
+            "evidence": "pages 1/1; widgets 0/0",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
             "passed": true
@@ -664,6 +805,24 @@
         "sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py"
       ],
       "id": "SHOW-004",
+      "living_book_ref_contract": {
+        "backed_page_count": 1,
+        "backed_widget_count": 0,
+        "pages": [
+          {
+            "backed": true,
+            "carries_advertised_theorem": true,
+            "carries_showcase_ref": true,
+            "exists": true,
+            "page": "site/chapters/applications/erdos_bridges.qmd",
+            "widgets": []
+          }
+        ],
+        "total_page_count": 1,
+        "total_widget_count": 0,
+        "unbacked_pages": [],
+        "unbacked_widgets": []
+      },
       "living_book_refs": [
         {
           "page": "site/chapters/applications/erdos_bridges.qmd"
@@ -706,6 +865,35 @@
         "CC-T0068",
         "CC-T0069"
       ],
+      "theorem_ref_contract": {
+        "proved_and_paper_backed_count": 2,
+        "refs": [
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES"
+            ],
+            "id": "CC-T0068",
+            "lean_name": "Circle.hales_jewett_bridge",
+            "paper_backed": true,
+            "proved": true,
+            "status": "proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES"
+            ],
+            "id": "CC-T0069",
+            "lean_name": "Circle.van_der_waerden_homothetic_bridge",
+            "paper_backed": true,
+            "proved": true,
+            "status": "proved"
+          }
+        ],
+        "total_count": 2,
+        "unproved_or_unbacked_ids": []
+      },
       "title": "Ramsey lines and Hales-Jewett structure",
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
@@ -779,7 +967,7 @@
           {
             "evidence": "3",
             "id": "proved_theorem_ids",
-            "label": "proved theorem ids",
+            "label": "proved paper-carried theorem ids",
             "passed": true
           },
           {
@@ -807,7 +995,7 @@
             "passed": true
           },
           {
-            "evidence": "1",
+            "evidence": "pages 1/1; widgets 0/0",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
             "passed": true
@@ -841,6 +1029,24 @@
         "sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py"
       ],
       "id": "SHOW-005",
+      "living_book_ref_contract": {
+        "backed_page_count": 1,
+        "backed_widget_count": 0,
+        "pages": [
+          {
+            "backed": true,
+            "carries_advertised_theorem": true,
+            "carries_showcase_ref": true,
+            "exists": true,
+            "page": "site/chapters/applications/erdos_bridges.qmd",
+            "widgets": []
+          }
+        ],
+        "total_page_count": 1,
+        "total_widget_count": 0,
+        "unbacked_pages": [],
+        "unbacked_widgets": []
+      },
       "living_book_refs": [
         {
           "page": "site/chapters/applications/erdos_bridges.qmd"
@@ -884,6 +1090,46 @@
         "CC-T0071",
         "CC-T0072"
       ],
+      "theorem_ref_contract": {
+        "proved_and_paper_backed_count": 3,
+        "refs": [
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS"
+            ],
+            "id": "CC-T0070",
+            "lean_name": "Circle.cycle_graph_circulant_bridge",
+            "paper_backed": true,
+            "proved": true,
+            "status": "proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS"
+            ],
+            "id": "CC-T0071",
+            "lean_name": "Circle.cycle_graph_connected_bridge",
+            "paper_backed": true,
+            "proved": true,
+            "status": "proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS"
+            ],
+            "id": "CC-T0072",
+            "lean_name": "Circle.empty_graph_unit_distance_embedding_bridge",
+            "paper_backed": true,
+            "proved": true,
+            "status": "proved"
+          }
+        ],
+        "total_count": 3,
+        "unproved_or_unbacked_ids": []
+      },
       "title": "Circulant graph and unit-distance graph lab",
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
@@ -957,7 +1203,7 @@
           {
             "evidence": "6",
             "id": "proved_theorem_ids",
-            "label": "proved theorem ids",
+            "label": "proved paper-carried theorem ids",
             "passed": true
           },
           {
@@ -985,7 +1231,7 @@
             "passed": true
           },
           {
-            "evidence": "2",
+            "evidence": "pages 2/2; widgets 3/3",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
             "passed": true
@@ -1022,6 +1268,52 @@
         "sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py"
       ],
       "id": "SHOW-006",
+      "living_book_ref_contract": {
+        "backed_page_count": 2,
+        "backed_widget_count": 3,
+        "pages": [
+          {
+            "backed": true,
+            "carries_advertised_theorem": true,
+            "carries_showcase_ref": true,
+            "exists": true,
+            "page": "site/chapters/S1/03_coils_orbits_closure.qmd",
+            "widgets": [
+              {
+                "backed": true,
+                "id": "coil_orbit_explorer",
+                "known": true,
+                "mounted": true
+              }
+            ]
+          },
+          {
+            "backed": true,
+            "carries_advertised_theorem": true,
+            "carries_showcase_ref": true,
+            "exists": true,
+            "page": "site/chapters/S1/04_period_gcd_prime_full_coils.qmd",
+            "widgets": [
+              {
+                "backed": true,
+                "id": "period_gcd_visualizer",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "prime_full_coil_explorer",
+                "known": true,
+                "mounted": true
+              }
+            ]
+          }
+        ],
+        "total_page_count": 2,
+        "total_widget_count": 3,
+        "unbacked_pages": [],
+        "unbacked_widgets": []
+      },
       "living_book_refs": [
         {
           "page": "site/chapters/S1/03_coils_orbits_closure.qmd",
@@ -1091,6 +1383,80 @@
         "CC-T0054",
         "CC-T0061"
       ],
+      "theorem_ref_contract": {
+        "proved_and_paper_backed_count": 6,
+        "refs": [
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_01_FINITE_CIRCLES"
+            ],
+            "id": "CC-T0005",
+            "lean_name": "Circle.period_eq_n_div_gcd",
+            "paper_backed": true,
+            "proved": true,
+            "status": "proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_01_FINITE_CIRCLES"
+            ],
+            "id": "CC-T0006",
+            "lean_name": "Circle.orbit_decomposition_count",
+            "paper_backed": true,
+            "proved": true,
+            "status": "proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS"
+            ],
+            "id": "CC-T0048",
+            "lean_name": "Circle.scaleCircleImage_card_mul_targetFiberRepresentativeSet_card",
+            "paper_backed": true,
+            "proved": true,
+            "status": "proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS"
+            ],
+            "id": "CC-T0049",
+            "lean_name": "Circle.scaleCircleImage_card_mul_scaleKernelRepresentativeSet_card",
+            "paper_backed": true,
+            "proved": true,
+            "status": "proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_01_FINITE_CIRCLES",
+              "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS"
+            ],
+            "id": "CC-T0054",
+            "lean_name": "Circle.fullCoil_iff_coprime",
+            "paper_backed": true,
+            "proved": true,
+            "status": "proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_01_FINITE_CIRCLES"
+            ],
+            "id": "CC-T0061",
+            "lean_name": "Circle.sameOrbit_nat_iff_modEq_gcd",
+            "paper_backed": true,
+            "proved": true,
+            "status": "proved"
+          }
+        ],
+        "total_count": 6,
+        "unproved_or_unbacked_ids": []
+      },
       "title": "Factor, fiber, and period-normal modular arithmetic",
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
@@ -1164,7 +1530,7 @@
           {
             "evidence": "7",
             "id": "proved_theorem_ids",
-            "label": "proved theorem ids",
+            "label": "proved paper-carried theorem ids",
             "passed": true
           },
           {
@@ -1192,10 +1558,10 @@
             "passed": true
           },
           {
-            "evidence": "2",
+            "evidence": "pages 2/2; widgets 3/3",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
-            "passed": true
+            "passed": false
           },
           {
             "evidence": "No full smooth Hopf fibration formalization and no complete SO(3) robotics formalization.",
@@ -1204,9 +1570,9 @@
             "passed": true
           }
         ],
-        "passed_gate_count": 16,
-        "ready_to_advertise": true,
-        "status": "ready",
+        "passed_gate_count": 15,
+        "ready_to_advertise": false,
+        "status": "incomplete",
         "total_gate_count": 16
       },
       "dictionary_ids": [
@@ -1232,6 +1598,52 @@
         "sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py"
       ],
       "id": "SHOW-007",
+      "living_book_ref_contract": {
+        "backed_page_count": 2,
+        "backed_widget_count": 3,
+        "pages": [
+          {
+            "backed": true,
+            "carries_advertised_theorem": true,
+            "carries_showcase_ref": true,
+            "exists": true,
+            "page": "site/chapters/S3/hopf_coils.qmd",
+            "widgets": [
+              {
+                "backed": true,
+                "id": "hopf_hidden_phase",
+                "known": true,
+                "mounted": true
+              }
+            ]
+          },
+          {
+            "backed": true,
+            "carries_advertised_theorem": true,
+            "carries_showcase_ref": true,
+            "exists": true,
+            "page": "site/chapters/applications/physics.qmd",
+            "widgets": [
+              {
+                "backed": true,
+                "id": "hopf_hidden_phase",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "spin_sign_ambiguity",
+                "known": true,
+                "mounted": true
+              }
+            ]
+          }
+        ],
+        "total_page_count": 2,
+        "total_widget_count": 3,
+        "unbacked_pages": [],
+        "unbacked_widgets": []
+      },
       "living_book_refs": [
         {
           "page": "site/chapters/S3/hopf_coils.qmd",
@@ -1303,6 +1715,90 @@
         "S3S-T0001",
         "S3S-T0005"
       ],
+      "theorem_ref_contract": {
+        "proved_and_paper_backed_count": 7,
+        "refs": [
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_S3_02_QUATERNION_COILS"
+            ],
+            "id": "S3Q-T0005",
+            "lean_name": "Circle.S3.quaternion_mul_assoc",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_S3_02_QUATERNION_COILS"
+            ],
+            "id": "S3Q-T0008",
+            "lean_name": "Circle.S3.unitQuaternion_conj_involutive",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_S3_03_HOPF_COILS"
+            ],
+            "id": "S3H-T0001",
+            "lean_name": "Circle.S3.hopfMap_lands_sphere",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_S3_03_HOPF_COILS"
+            ],
+            "id": "S3H-T0005",
+            "lean_name": "Circle.S3.phaseRotatePair_comp",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_S3_03_HOPF_COILS"
+            ],
+            "id": "S3H-T0008",
+            "lean_name": "Circle.S3.hopfPhaseMul_assoc",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP"
+            ],
+            "id": "S3S-T0001",
+            "lean_name": "Circle.S3.quaternionConjugation_neg",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP"
+            ],
+            "id": "S3S-T0005",
+            "lean_name": "Circle.S3.quaternionConjugation_pure_of_pure",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          }
+        ],
+        "total_count": 7,
+        "unproved_or_unbacked_ids": []
+      },
       "title": "Quaternion, Hopf, and phase coordinates",
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
@@ -1376,7 +1872,7 @@
           {
             "evidence": "14",
             "id": "proved_theorem_ids",
-            "label": "proved theorem ids",
+            "label": "proved paper-carried theorem ids",
             "passed": true
           },
           {
@@ -1404,7 +1900,7 @@
             "passed": true
           },
           {
-            "evidence": "1",
+            "evidence": "pages 1/1; widgets 3/3",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
             "passed": true
@@ -1440,6 +1936,43 @@
         "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
       ],
       "id": "SHOW-008",
+      "living_book_ref_contract": {
+        "backed_page_count": 1,
+        "backed_widget_count": 3,
+        "pages": [
+          {
+            "backed": true,
+            "carries_advertised_theorem": true,
+            "carries_showcase_ref": true,
+            "exists": true,
+            "page": "site/chapters/applications/physics.qmd",
+            "widgets": [
+              {
+                "backed": true,
+                "id": "finite_path_algebra",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "finite_gauge_loop_holonomy",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "wilson_loop_certificate",
+                "known": true,
+                "mounted": true
+              }
+            ]
+          }
+        ],
+        "total_page_count": 1,
+        "total_widget_count": 3,
+        "unbacked_pages": [],
+        "unbacked_widgets": []
+      },
       "living_book_refs": [
         {
           "page": "site/chapters/applications/physics.qmd",
@@ -1500,6 +2033,167 @@
         "PHYS-T0054",
         "PHYS-T0055"
       ],
+      "theorem_ref_contract": {
+        "proved_and_paper_backed_count": 14,
+        "refs": [
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0001",
+            "lean_name": "Circle.Physics.pathHolonomy_concat",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0012",
+            "lean_name": "Circle.Physics.gaugeLinkPath_quad_composable_iff",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0026",
+            "lean_name": "Circle.Physics.linksBoundaryComposable_of_endpoints",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0038",
+            "lean_name": "Circle.Physics.checkedGaugePath_singleton_holonomy",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0042",
+            "lean_name": "Circle.Physics.checkedGaugePath_toLinkPath_concat",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0046",
+            "lean_name": "Circle.Physics.checkedGaugePath_concat_cycle_gaugeInvariant",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0047",
+            "lean_name": "Circle.Physics.closedGaugeLoop_gaugeInvariant",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0049",
+            "lean_name": "Circle.Physics.closedGaugeLoop_fromCycle_holonomy",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0050",
+            "lean_name": "Circle.Physics.gaugeLinkPath_concat_reverse_holonomy",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0051",
+            "lean_name": "Circle.Physics.gaugeLinkPath_reverse_concat_holonomy",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0052",
+            "lean_name": "Circle.Physics.closedGaugeLoop_identity_gaugeShiftedHolonomy",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0053",
+            "lean_name": "Circle.Physics.closedGaugeLoop_fromCycle_gaugeShiftedHolonomy",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0054",
+            "lean_name": "Circle.Physics.closedGaugeLoop_fromCycle_swap_holonomy",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0055",
+            "lean_name": "Circle.Physics.closedGaugeLoop_fromCycle_swap_gaugeShiftedHolonomy",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          }
+        ],
+        "total_count": 14,
+        "unproved_or_unbacked_ids": []
+      },
       "title": "Proof-carrying finite gauge paths",
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
@@ -1547,7 +2241,7 @@
             "passed": true
           },
           {
-            "evidence": "Lean-proved seed-rule, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, singleton exact-search, best-candidate soundness, and exact-candidate absence/count gates.",
+            "evidence": "Lean-proved seed-rule, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, singleton exact-search, best-candidate soundness, exact-candidate absence/count gates, exact-candidate list soundness, and singleton membership gates.",
             "id": "proof_scope",
             "label": "proof scope",
             "passed": true
@@ -1571,9 +2265,9 @@
             "passed": true
           },
           {
-            "evidence": "18",
+            "evidence": "23",
             "id": "proved_theorem_ids",
-            "label": "proved theorem ids",
+            "label": "proved paper-carried theorem ids",
             "passed": true
           },
           {
@@ -1601,7 +2295,7 @@
             "passed": true
           },
           {
-            "evidence": "1",
+            "evidence": "pages 1/1; widgets 4/4",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
             "passed": true
@@ -1631,13 +2325,56 @@
         "living_book_widget_count": 4,
         "paper_count": 2,
         "source_count": 4,
-        "theorem_count": 18
+        "theorem_count": 23
       },
       "executable_refs": [
         "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py",
         "sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py"
       ],
       "id": "SHOW-009",
+      "living_book_ref_contract": {
+        "backed_page_count": 1,
+        "backed_widget_count": 4,
+        "pages": [
+          {
+            "backed": true,
+            "carries_advertised_theorem": true,
+            "carries_showcase_ref": true,
+            "exists": true,
+            "page": "site/chapters/applications/generative.qmd",
+            "widgets": [
+              {
+                "backed": true,
+                "id": "seed_rule_diagram_generator",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "orbit_family_generator",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "proof_glyph_certificate",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "generator_comparison_search",
+                "known": true,
+                "mounted": true
+              }
+            ]
+          }
+        ],
+        "total_page_count": 1,
+        "total_widget_count": 4,
+        "unbacked_pages": [],
+        "unbacked_widgets": []
+      },
       "living_book_refs": [
         {
           "page": "site/chapters/applications/generative.qmd",
@@ -1660,7 +2397,7 @@
       ],
       "proof_provenance": "Proof provenance is project-native Lean code for seed-rule provenance, proof glyphs, exact-regeneration gates, and negative-case search boundaries.",
       "proof_provenance_kind": "project_native",
-      "proof_scope": "Lean-proved seed-rule, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, singleton exact-search, best-candidate soundness, and exact-candidate absence/count gates.",
+      "proof_scope": "Lean-proved seed-rule, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, singleton exact-search, best-candidate soundness, exact-candidate absence/count gates, exact-candidate list soundness, and singleton membership gates.",
       "source_ref_contract": {
         "backed_count": 4,
         "refs": [
@@ -1713,8 +2450,273 @@
         "GEN-T0032",
         "GEN-T0033",
         "GEN-T0034",
+        "GEN-T0035",
+        "GEN-T0036",
+        "GEN-T0037",
+        "GEN-T0038",
+        "GEN-T0039",
         "P2G-T0006"
       ],
+      "theorem_ref_contract": {
+        "proved_and_paper_backed_count": 23,
+        "refs": [
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0001",
+            "lean_name": "Circle.Generative.finiteCircleGenerator_regenerates_nodes",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0008",
+            "lean_name": "Circle.Generative.orbitDecompositionGenerator_orbitCount_mul_period",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0017",
+            "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_iff_fields_eq",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0019",
+            "lean_name": "Circle.Generative.generatorComparison_not_exact_of_ne",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0020",
+            "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_length",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0021",
+            "lean_name": "Circle.Generative.coilOrbitGenerator_generatedOrbit_length",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0022",
+            "lean_name": "Circle.Generative.emptyBoundedGeneratorSearch_candidateCount",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0024",
+            "lean_name": "Circle.Generative.emptyBoundedGeneratorSearch_bestExact_none",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0026",
+            "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_mem_candidates",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0027",
+            "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_exact",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0028",
+            "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_none_iff_exactCandidates_empty",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0029",
+            "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_none_iff_exactCandidateCount_zero",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0030",
+            "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_exactCandidateCount_pos",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0031",
+            "lean_name": "Circle.Generative.singletonExactGeneratorSearch_candidateCount",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0032",
+            "lean_name": "Circle.Generative.singletonExactGeneratorSearch_exactCandidateCount",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0033",
+            "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_some",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0034",
+            "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_exact",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0035",
+            "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidate_mem_candidates",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0036",
+            "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidate_exact",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0037",
+            "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidateCount_pos_iff_exists_bestExact",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0038",
+            "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_exactCandidates",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0039",
+            "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_candidates",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_P2_05_PROOF_CARRYING_GLYPHS"
+            ],
+            "id": "P2G-T0006",
+            "lean_name": "Circle.Phase2.proofGlyphValidAgainst_cons",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          }
+        ],
+        "total_count": 23,
+        "unproved_or_unbacked_ids": []
+      },
       "title": "Proof-carrying generative provenance",
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
@@ -1788,7 +2790,7 @@
           {
             "evidence": "21",
             "id": "proved_theorem_ids",
-            "label": "proved theorem ids",
+            "label": "proved paper-carried theorem ids",
             "passed": true
           },
           {
@@ -1816,7 +2818,7 @@
             "passed": true
           },
           {
-            "evidence": "1",
+            "evidence": "pages 1/1; widgets 7/7",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
             "passed": true
@@ -1855,6 +2857,67 @@
         "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"
       ],
       "id": "SHOW-010",
+      "living_book_ref_contract": {
+        "backed_page_count": 1,
+        "backed_widget_count": 7,
+        "pages": [
+          {
+            "backed": true,
+            "carries_advertised_theorem": true,
+            "carries_showcase_ref": true,
+            "exists": true,
+            "page": "site/chapters/applications/ai.qmd",
+            "widgets": [
+              {
+                "backed": true,
+                "id": "cyclic_memory_slots",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "loop_recurrence_budget",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "loop_exit_certificate",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "token_level_recurrence",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "learned_middle_block_recurrence",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "training_free_loop_wrapper",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "adapter_parameter_budget",
+                "known": true,
+                "mounted": true
+              }
+            ]
+          }
+        ],
+        "total_page_count": 1,
+        "total_widget_count": 7,
+        "unbacked_pages": [],
+        "unbacked_widgets": []
+      },
       "living_book_refs": [
         {
           "page": "site/chapters/applications/ai.qmd",
@@ -1945,6 +3008,244 @@
         "AIM-T0043",
         "AIRA-T0005"
       ],
+      "theorem_ref_contract": {
+        "proved_and_paper_backed_count": 21,
+        "refs": [
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0001",
+            "lean_name": "Circle.Applications.memorySlot_lt_bankSize",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0005",
+            "lean_name": "Circle.Applications.memorySlot_idempotent",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0011",
+            "lean_name": "Circle.Applications.trainingFreeLoopBudget_le_requiredSteps",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0017",
+            "lean_name": "Circle.Applications.loopExitCertificate_within_guardrail",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0022",
+            "lean_name": "Circle.Applications.tokenRecurrenceBudget_pos",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0024",
+            "lean_name": "Circle.Applications.loopExitCertificate_exit_pos",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0025",
+            "lean_name": "Circle.Applications.trainingFreeLoopBudget_eq_max_of_unavailable",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0031",
+            "lean_name": "Circle.Applications.loopExitCertificate_exit_available",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0032",
+            "lean_name": "Circle.Applications.loopExitCertificate_budget_eq_exitStep",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0033",
+            "lean_name": "Circle.Applications.loopExitCertificate_exitStep_add_mul_loopPeriod",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0034",
+            "lean_name": "Circle.Applications.loopExitCertificate_boundary_add_mul_loopPeriod",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0035",
+            "lean_name": "Circle.Applications.tokenActiveAtStep_one",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0036",
+            "lean_name": "Circle.Applications.tokenActiveAtStep_add_mul_loopPeriod",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0037",
+            "lean_name": "Circle.Applications.tokenActiveAtStep_step_le_loopPeriod",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0038",
+            "lean_name": "Circle.Applications.tokenInactiveAtStep_of_loopPeriod_lt_step",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0039",
+            "lean_name": "Circle.Applications.middleBlockRoute_ge_start",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0040",
+            "lean_name": "Circle.Applications.middleBlockRoute_lt_stop",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0041",
+            "lean_name": "Circle.Applications.middleBlockRoute_add_width",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0042",
+            "lean_name": "Circle.Applications.middleBlockRoute_add_mul_width",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0043",
+            "lean_name": "Circle.Applications.middleBlockRoute_zero",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
+            ],
+            "id": "AIRA-T0005",
+            "lean_name": "Circle.Applications.adapterBlock_idempotent",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          }
+        ],
+        "total_count": 21,
+        "unproved_or_unbacked_ids": []
+      },
       "title": "AI memory, loop, and adapter schedules",
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
@@ -2018,7 +3319,7 @@
           {
             "evidence": "3",
             "id": "proved_theorem_ids",
-            "label": "proved theorem ids",
+            "label": "proved paper-carried theorem ids",
             "passed": true
           },
           {
@@ -2046,7 +3347,7 @@
             "passed": true
           },
           {
-            "evidence": "1",
+            "evidence": "pages 1/1; widgets 0/0",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
             "passed": true
@@ -2084,6 +3385,24 @@
         "sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py"
       ],
       "id": "SHOW-011",
+      "living_book_ref_contract": {
+        "backed_page_count": 1,
+        "backed_widget_count": 0,
+        "pages": [
+          {
+            "backed": true,
+            "carries_advertised_theorem": true,
+            "carries_showcase_ref": true,
+            "exists": true,
+            "page": "site/chapters/applications/compute.qmd",
+            "widgets": []
+          }
+        ],
+        "total_page_count": 1,
+        "total_widget_count": 0,
+        "unbacked_pages": [],
+        "unbacked_widgets": []
+      },
       "living_book_refs": [
         {
           "page": "site/chapters/applications/compute.qmd"
@@ -2148,6 +3467,46 @@
         "COMPL-T0005",
         "COMPS-T0004"
       ],
+      "theorem_ref_contract": {
+        "proved_and_paper_backed_count": 3,
+        "refs": [
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION"
+            ],
+            "id": "COMPC-T0005",
+            "lean_name": "Circle.Applications.cyclicAddress_idempotent",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT"
+            ],
+            "id": "COMPL-T0005",
+            "lean_name": "Circle.Applications.strideAddress_add_mul_size_steps",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS"
+            ],
+            "id": "COMPS-T0004",
+            "lean_name": "Circle.Applications.roundRobinSlot_add_mul_slotCount",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          }
+        ],
+        "total_count": 3,
+        "unproved_or_unbacked_ids": []
+      },
       "title": "Circular compute layouts and schedules",
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
@@ -2160,9 +3519,11 @@
   "portfolio_summary": {
     "capability_count": 11,
     "claim_contract_summary": {
-      "gate_failure_counts": {},
-      "incomplete_count": 0,
-      "ready_count": 11
+      "gate_failure_counts": {
+        "living_book_presentation": 1
+      },
+      "incomplete_count": 1,
+      "ready_count": 10
     },
     "evidence_totals": {
       "dictionary_count": 39,
@@ -2171,7 +3532,7 @@
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 80
+      "theorem_count": 85
     },
     "proof_provenance_counts": {
       "mathlib_bridge": 4,
@@ -2189,7 +3550,7 @@
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 80
+      "theorem_count": 85
     },
     "unique_living_book_pages": [
       "site/chapters/S1/03_coils_orbits_closure.qmd",

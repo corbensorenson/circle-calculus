@@ -339,6 +339,18 @@ theorem boundedGeneratorSearch_bestExact_exact
   search.exactSound candidate
     (boundedGeneratorSearch_bestExact_mem_exactCandidates search hbest)
 
+theorem boundedGeneratorSearch_exactCandidate_mem_candidates
+    (search : BoundedGeneratorSearch α) {candidate : GeneratorComparison α}
+    (hmember : candidate ∈ search.exactCandidates) :
+    candidate ∈ search.candidates :=
+  search.exactSubset candidate hmember
+
+theorem boundedGeneratorSearch_exactCandidate_exact
+    (search : BoundedGeneratorSearch α) {candidate : GeneratorComparison α}
+    (hmember : candidate ∈ search.exactCandidates) :
+    candidate.exactRegeneration :=
+  search.exactSound candidate hmember
+
 theorem boundedGeneratorSearch_bestExact_none_iff_exactCandidates_empty
     (search : BoundedGeneratorSearch α) :
     search.bestExact? = none ↔ search.exactCandidates = [] := by
@@ -366,5 +378,34 @@ theorem boundedGeneratorSearch_bestExact_some_exactCandidateCount_pos
           simp [BoundedGeneratorSearch.bestExact?] at hbest
       | cons head tail =>
           simp [BoundedGeneratorSearch.exactCandidateCount]
+
+theorem boundedGeneratorSearch_exactCandidateCount_pos_iff_exists_bestExact
+    (search : BoundedGeneratorSearch α) :
+    0 < search.exactCandidateCount ↔
+      ∃ candidate, search.bestExact? = some candidate := by
+  cases search with
+  | mk candidates exactCandidates exactSubset exactSound =>
+      cases exactCandidates with
+      | nil =>
+          simp [BoundedGeneratorSearch.exactCandidateCount,
+            BoundedGeneratorSearch.bestExact?]
+      | cons head tail =>
+          constructor
+          · intro _
+            exact ⟨head, by simp [BoundedGeneratorSearch.bestExact?]⟩
+          · intro _
+            simp [BoundedGeneratorSearch.exactCandidateCount]
+
+theorem singletonExactGeneratorSearch_bestExact_mem_exactCandidates
+    (value : α) :
+    (generatorComparison value value) ∈
+      (singletonExactGeneratorSearch value).exactCandidates := by
+  simp [singletonExactGeneratorSearch]
+
+theorem singletonExactGeneratorSearch_bestExact_mem_candidates
+    (value : α) :
+    (generatorComparison value value) ∈
+      (singletonExactGeneratorSearch value).candidates := by
+  simp [singletonExactGeneratorSearch]
 
 end Circle.Generative
