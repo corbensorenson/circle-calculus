@@ -35,7 +35,7 @@ Circle Calculus states EGZ and Cauchy-Davenport directly over `C_n` and `C_p`.
 - Standard anchor: EGZ and Cauchy-Davenport over cyclic groups.
 - Circle expression: finite circle types `C_n` and `C_p` carry the cyclic statements directly.
 - Circle-native value: zero-sum witnesses, sharpness families, and sumsets become inspectable finite address-space examples.
-- Executable evidence: `sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py`.
+- Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-001" data-executable-ref="sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py"></span><code>sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py</code>.
 - Scope: imported theorem bridges, not new proofs.
 - Boundary: no open Erdos problem progress claim.
 
@@ -52,7 +52,7 @@ The Katona lane makes cyclic-order double counting and intersecting-family bound
 - Standard anchor: Katona circle-method counting and Erdos-Ko-Rado intersecting-family bounds.
 - Circle expression: numberings, prefix density, and intersecting families are surfaced as theorem cards.
 - Circle-native value: the circle-method proof atom can be shown as an exact finite count before the formal EKR bridge.
-- Executable evidence: `sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py`.
+- Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-002" data-executable-ref="sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py"></span><code>sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py</code>.
 - Scope: prefix-density and EKR theorem bridges.
 - Boundary: no new EKR proof or extremal-family classification.
 
@@ -69,7 +69,7 @@ The Roth lane gives Circle Calculus a serious density-additive-combinatorics tar
 - Standard anchor: Roth's theorem and Roth-number sublinearity.
 - Circle expression: dense interval examples and AP witness searches point to formal Roth handles.
 - Circle-native value: cyclic AP models can grow from a disciplined separation of density, witnesses, and proof status.
-- Executable evidence: `sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py`.
+- Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-003" data-executable-ref="sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py"></span><code>sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py</code>.
 - Scope: Roth theorem and Roth-number sublinearity bridges.
 - Boundary: no improved bounds and no cyclic-to-natural transfer theorem yet.
 
@@ -86,7 +86,7 @@ The Ramsey lane shows unavoidable structure through formal Hales-Jewett and homo
 - Standard anchor: Hales-Jewett and Van der Waerden style unavoidable monochromatic structure.
 - Circle expression: finite coloring examples and combinatorial-line searches are linked to theorem ids.
 - Circle-native value: unavoidable structure can be explored in finite widgets while the general proof remains in Lean/mathlib.
-- Executable evidence: `sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py`.
+- Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-004" data-executable-ref="sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py"></span><code>sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py</code>.
 - Scope: theorem bridges plus finite search examples.
 - Boundary: tiny searches are demonstrations, not the proof.
 
@@ -103,7 +103,7 @@ The graph lane starts conservatively with cycle graphs, circulant graphs, connec
 - Standard anchor: cycle graphs, circulant graphs, connectedness, and unit-distance embedding vocabulary.
 - Circle expression: the one-step finite circle graph is a circulant graph with checked connectedness.
 - Circle-native value: graph geometry starts from explicit cyclic structure before harder incidence claims.
-- Executable evidence: `sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py`.
+- Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-005" data-executable-ref="sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py"></span><code>sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py</code>.
 - Scope: cycle/circulant and connectedness bridges.
 - Boundary: no hard unit-distance or distinct-distance progress claim.
 
@@ -124,7 +124,7 @@ The S1 spine is the internal proof engine: period, gcd orbit count, scaling imag
 - Standard anchor: modular arithmetic, cyclic group orbits, gcd periods, kernels, images, and fibers.
 - Circle expression: these are expressed as finite-circle period, orbit, scaling, image, kernel, and fiber theorems.
 - Circle-native value: modular facts become navigable as movement, closure, fibers, and representatives.
-- Executable evidence: `sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py`.
+- Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-006" data-executable-ref="sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py"></span><code>sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py</code>.
 - Scope: Lean-proved cyclic arithmetic and representative-set facts.
 - Boundary: this is a proof-carrying presentation of standard modular structure, not a replacement for standard modular arithmetic.
 
@@ -144,7 +144,7 @@ The S3 lane gives bounded phase-coordinate and quaternion facts that are useful 
 - Standard anchor: quaternion unit algebra, Hopf-style phase coordinates, conjugation, and hidden phase.
 - Circle expression: bounded quaternion and Hopf facts are exposed through theorem spines with topology warnings.
 - Circle-native value: visible base coordinates and hidden phase are separated in a way that supports teaching and proof audits.
-- Executable evidence: `sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py`; `sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py`.
+- Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-007" data-executable-ref="sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py"></span><code>sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-007" data-executable-ref="sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py"></span><code>sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py</code>.
 - Scope: Lean-proved unit-quaternion and bounded Hopf phase facts.
 - Boundary: no full smooth Hopf fibration or SO(3) robotics formalization yet.
 
@@ -164,7 +164,7 @@ The physics lane builds proof-carrying finite gauge paths with checked path comp
 - Standard anchor: finite gauge-link paths, holonomy products, Wilson-loop invariants, and checked concatenation.
 - Circle expression: source-target and holonomy laws are finite Lean records.
 - Circle-native value: path widgets and experiments can reject invalid compositions before making physics claims.
-- Executable evidence: `sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py`.
+- Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-008" data-executable-ref="sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"></span><code>sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py</code>.
 - Scope: Lean-proved finite path, gauge, Wilson-loop, plaquette, and two-path cycle gauge-invariance facts.
 - Boundary: no continuum physics or lattice-QCD correctness claim.
 
@@ -184,7 +184,7 @@ The generative lane pairs seed-rule construction with exact-regeneration checks 
 - Standard anchor: formal provenance, exact regeneration checks, and proof-carrying artifact records.
 - Circle expression: seed rules, generator comparisons, proof glyphs, and exactness gates are finite Circle records.
 - Circle-native value: generated artifacts can carry exact source trails and negative-case checks.
-- Executable evidence: `sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py`; `sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py`.
+- Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-009" data-executable-ref="sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py"></span><code>sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-009" data-executable-ref="sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py"></span><code>sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py</code>.
 - Scope: Lean-proved provenance, generated-list length, and exact-comparison gates.
 - Boundary: no universal compression or automatic-interest claim.
 
@@ -205,7 +205,7 @@ The AI lane proves finite schedule/index facts that can support experiments with
 - Standard anchor: cyclic buffers, recurrence schedules, loop-exit certificates, and modular adapter indexing.
 - Circle expression: memory slots, loop budgets, exit certificates, and adapter blocks become finite cyclic schedule theorems.
 - Circle-native value: experimental cyclic AI components can be audited before any model-quality claim.
-- Executable evidence: `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py`; `sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py`.
+- Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-010" data-executable-ref="sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py"></span><code>sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-010" data-executable-ref="sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"></span><code>sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py</code>.
 - Scope: Lean-proved memory-slot, loop-budget, recurrence-budget positivity, loop-exit, and adapter-block facts.
 - Boundary: no quality, speed, context-length, or reasoning improvement without benchmarks.
 
@@ -227,7 +227,7 @@ The compute lane proves address-safety and schedule-normalization facts before a
 - Standard anchor: circular buffers, periodic stencils, stride-address formulas, and round-robin schedules.
 - Circle expression: compute layouts are finite address-normalization and schedule-preservation theorems.
 - Circle-native value: backend experiments can be gated on proved cyclic structure before performance testing.
-- Executable evidence: `sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py`; `sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py`; `sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py`.
+- Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-011" data-executable-ref="sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py"></span><code>sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-011" data-executable-ref="sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py"></span><code>sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-011" data-executable-ref="sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py"></span><code>sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py</code>.
 - Scope: Lean-proved cyclic-address, stride-address, and round-robin laws.
 - Boundary: no speedup claim without direct baseline measurements.
 

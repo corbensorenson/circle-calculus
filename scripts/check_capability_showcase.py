@@ -33,7 +33,12 @@ REQUIRED_TEXT_FIELDS = [
     "proof_scope",
     "not_claimed",
 ]
-CAPABILITY_ATTR_RE = re.compile(r'data-capability-id="([^"]+)"')
+CAPABILITY_ATTR_RE = re.compile(
+    r'<div class="capability-anchor"[^>]*data-capability-id="([^"]+)"'
+)
+EXECUTABLE_ATTR_RE = re.compile(
+    r'data-capability-id="([^"]+)"[^>]*data-executable-ref="([^"]+)"'
+)
 
 
 def load_yaml(path: Path) -> dict:
@@ -84,6 +89,12 @@ def page_capability_ids() -> list[str]:
     return CAPABILITY_ATTR_RE.findall(SHOWCASE_PAGE.read_text())
 
 
+def page_executable_pairs() -> list[tuple[str, str]]:
+    if not SHOWCASE_PAGE.exists():
+        return []
+    return EXECUTABLE_ATTR_RE.findall(SHOWCASE_PAGE.read_text())
+
+
 def main() -> int:
     data = load_yaml(SHOWCASE)
     capabilities = data.get("capabilities", [])
@@ -117,6 +128,31 @@ def main() -> int:
             failures.append(f"capability ids missing from page: {missing_on_page}")
         if unknown_on_page:
             failures.append(f"unknown page capability ids: {unknown_on_page}")
+        page_executables = page_executable_pairs()
+        executable_duplicates = sorted(
+            {pair for pair in page_executables if page_executables.count(pair) > 1}
+        )
+        if executable_duplicates:
+            failures.append(
+                f"duplicate page executable refs: {executable_duplicates}"
+            )
+        expected_executables = {
+            (item.get("id"), ref)
+            for item in capabilities
+            if item.get("id") and isinstance(item.get("executable_refs", []), list)
+            for ref in item.get("executable_refs", [])
+        }
+        page_executable_set = set(page_executables)
+        missing_executables = sorted(expected_executables - page_executable_set)
+        unknown_executables = sorted(page_executable_set - expected_executables)
+        if missing_executables:
+            failures.append(
+                f"executable refs missing from page: {missing_executables}"
+            )
+        if unknown_executables:
+            failures.append(
+                f"unknown page executable refs: {unknown_executables}"
+            )
 
     for item in capabilities:
         capability_id = item.get("id", "<missing id>")
