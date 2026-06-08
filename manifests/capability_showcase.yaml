@@ -3,6 +3,10 @@ capabilities:
     title: "Zero-sum and sumset theorems on finite circles"
     area: "Additive combinatorics"
     audience_interest: "Erdos-Ginzburg-Ziv, Cauchy-Davenport, zero-sum witnesses, and finite sumsets."
+    portfolio_roles: ["standard_math_parity", "circle_native_value"]
+    standard_math_anchor: "Classical zero-sum and additive-combinatorics theorems over cyclic groups, especially EGZ and Cauchy-Davenport."
+    circle_math_expression: "Finite circle types `C_n` and `C_p` present the cyclic groups directly, with theorem ids for zero-sum subsequences and prime-circle sumset growth."
+    circle_native_value: "The Circle framing makes zero-sum witnesses, sharpness families, and sumsets inspectable as finite address-space examples linked to Lean and Python sidecars."
     advertised_claim: "Circle Calculus can state established zero-sum and prime-circle sumset theorems directly in the native `C_n` vocabulary."
     proof_scope: "Lean-proved Circle wrappers around mathlib's EGZ and Cauchy-Davenport theorems."
     not_claimed: "No new proof of EGZ, no new proof of Cauchy-Davenport, and no progress claim on an open Erdos problem."
@@ -18,6 +22,10 @@ capabilities:
     title: "Katona circle method and Erdos-Ko-Rado"
     area: "Extremal set theory"
     audience_interest: "Intersecting families, cyclic-order double counting, and sharp extremal examples."
+    portfolio_roles: ["standard_math_parity", "circle_native_value"]
+    standard_math_anchor: "The Katona circle method and the Erdos-Ko-Rado theorem for intersecting uniform set families."
+    circle_math_expression: "Numberings, prefix-density counts, and intersecting families are exposed as theorem-backed finite-circle-method artifacts."
+    circle_native_value: "The project can show the circle-method proof atom as an executable finite count, then connect it to a formal EKR theorem card."
     advertised_claim: "Circle Calculus can expose a classical circle-method counting atom and the Erdos-Ko-Rado bound as proof-linked artifacts."
     proof_scope: "Lean-proved wrappers around mathlib's Katona prefix-density and Erdos-Ko-Rado declarations."
     not_claimed: "No new EKR proof and no classification of all extremal families."
@@ -32,6 +40,10 @@ capabilities:
     title: "Roth and three-term arithmetic progressions"
     area: "Density additive combinatorics"
     audience_interest: "Dense finite sets, arithmetic progressions, Roth numbers, and witness search."
+    portfolio_roles: ["standard_math_parity", "circle_native_value"]
+    standard_math_anchor: "Roth's theorem and the asymptotic sublinearity of maximal three-term-AP-free subsets of natural intervals."
+    circle_math_expression: "Dense finite interval examples and AP witness searches are connected to formal Roth theorem handles."
+    circle_native_value: "Circle Math supplies a bridge toward cyclic AP models while keeping finite witness search, density claims, and Lean theorem status separated."
     advertised_claim: "Circle Calculus can connect finite witness searches to formal Roth-theorem handles."
     proof_scope: "Lean-proved wrappers around mathlib's Roth theorem and Roth-number sublinearity statement."
     not_claimed: "No new Roth proof, no improved bounds, and no cyclic-to-natural transfer theorem yet."
@@ -46,6 +58,10 @@ capabilities:
     title: "Ramsey lines and Hales-Jewett structure"
     area: "Ramsey theory"
     audience_interest: "Unavoidable monochromatic structure, combinatorial lines, and finite coloring examples."
+    portfolio_roles: ["standard_math_parity", "circle_native_value"]
+    standard_math_anchor: "Hales-Jewett and Van der Waerden style unavoidable monochromatic-line or homothetic-copy theorems."
+    circle_math_expression: "Finite coloring examples and combinatorial-line widgets can be attached to Lean theorem ids for the general Ramsey statements."
+    circle_native_value: "The Circle presentation can turn unavoidable structure into inspectable finite search artifacts without confusing examples for proofs."
     advertised_claim: "Circle Calculus can present Ramsey-style unavoidable structure with theorem ids and executable finite searches."
     proof_scope: "Lean-proved wrappers around mathlib's Hales-Jewett and homothetic-copy theorems."
     not_claimed: "Finite Python searches are examples only; they are not the Hales-Jewett proof."
@@ -60,6 +76,10 @@ capabilities:
     title: "Circulant graph and unit-distance graph lab"
     area: "Graph geometry"
     audience_interest: "Cycle graphs, circulant graphs, connectedness, and unit-distance vocabulary."
+    portfolio_roles: ["standard_math_parity", "circle_native_value"]
+    standard_math_anchor: "Standard cycle graphs, circulant graphs, graph connectedness, and unit-distance embedding vocabulary."
+    circle_math_expression: "The one-step finite circle graph is presented as a circulant graph, with connectedness and a minimal unit-distance embedding constructor."
+    circle_native_value: "The graph lab makes cyclic graph structure explicit before moving to harder Euclidean incidence questions."
     advertised_claim: "Circle Calculus can use cyclic graph models as a proof-backed bridge toward graph-geometry language."
     proof_scope: "Lean-proved cycle/circulant and connectedness bridges plus a unit-distance embedding constructor for empty graphs."
     not_claimed: "No progress on hard unit-distance or distinct-distance problems."
@@ -74,6 +94,10 @@ capabilities:
     title: "Factor, fiber, and period-normal modular arithmetic"
     area: "Finite cyclic algebra"
     audience_interest: "GCD periods, kernels, fibers, image sizes, affine maps, and modular normal forms."
+    portfolio_roles: ["standard_math_parity", "circle_native_value"]
+    standard_math_anchor: "Standard modular arithmetic, cyclic group orbits, gcd periods, kernels, images, and fibers of multiplication maps."
+    circle_math_expression: "The S1 theorem spine expresses these facts as finite-circle period, orbit, scaling, image, kernel, and fiber theorems."
+    circle_native_value: "Circle Math organizes modular facts around movement, closure, fibers, and representatives, making them easier to browse and test."
     advertised_claim: "Circle Calculus can express detailed modular-arithmetic structure as period, orbit, kernel, and fiber theorems."
     proof_scope: "Lean-proved S1 scaling and orbit spine, including full-coil iff coprime and image-times-fiber factorizations."
     not_claimed: "No claim that this replaces standard modular arithmetic; it is a proof-carrying cyclic presentation."
@@ -90,6 +114,10 @@ capabilities:
     title: "Quaternion, Hopf, and phase coordinates"
     area: "Geometry and rotation algebra"
     audience_interest: "Unit quaternions, Hopf coordinates, hidden phase, and sign ambiguity."
+    portfolio_roles: ["standard_math_parity", "circle_native_value"]
+    standard_math_anchor: "Quaternion unit algebra, Hopf-style phase coordinates, conjugation, and hidden phase symmetries."
+    circle_math_expression: "Bounded quaternion and Hopf coordinate facts are exposed through finite theorem spines with explicit topology warnings."
+    circle_native_value: "The Circle framing separates visible base coordinates from hidden phase in a way that is useful for teaching, widgets, and proof audits."
     advertised_claim: "Circle Calculus can express bounded quaternion and Hopf phase facts with explicit warnings about topology boundaries."
     proof_scope: "Lean-proved quaternion unit laws and bounded Hopf phase-action facts."
     not_claimed: "No full smooth Hopf fibration formalization and no complete SO(3) robotics formalization."
@@ -104,11 +132,15 @@ capabilities:
     title: "Proof-carrying finite gauge paths"
     area: "Physics-facing finite models"
     audience_interest: "Gauge links, holonomy, Wilson loops, plaquette invariance, and checked path composition."
+    portfolio_roles: ["standard_math_parity", "circle_native_value", "application_guardrail"]
+    standard_math_anchor: "Discrete gauge-link paths, holonomy products, Wilson-loop style invariants, and checked path concatenation."
+    circle_math_expression: "Finite gauge links and paths are represented with Lean-checked source-target and holonomy laws."
+    circle_native_value: "Circle Math contributes proof-carrying finite records that can guard simulations and widgets against invalid path composition."
     advertised_claim: "Circle Calculus can build a finite proof-carrying gauge-path model with endpoint and holonomy laws."
-    proof_scope: "Lean-proved finite link-path, checked-path, gauge-transform, Wilson-loop, and plaquette facts."
+    proof_scope: "Lean-proved finite link-path, checked-path, gauge-transform, Wilson-loop, plaquette, and two-path cycle gauge-invariance facts."
     not_claimed: "No continuum gauge theory, no physics discovery, and no lattice-QCD correctness claim."
     paper_ids: ["PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"]
-    theorem_ids: ["PHYS-T0001", "PHYS-T0012", "PHYS-T0026", "PHYS-T0038", "PHYS-T0042"]
+    theorem_ids: ["PHYS-T0001", "PHYS-T0012", "PHYS-T0026", "PHYS-T0038", "PHYS-T0042", "PHYS-T0046"]
     dictionary_ids: ["COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063"]
     source_refs:
       - "Circle/Physics/LatticeGauge.lean"
@@ -118,11 +150,15 @@ capabilities:
     title: "Proof-carrying generative provenance"
     area: "Generation and compression interfaces"
     audience_interest: "Seed-rule records, exact regeneration, provenance, and generated diagram audit trails."
+    portfolio_roles: ["circle_native_value", "application_guardrail"]
+    standard_math_anchor: "Formal provenance, exact regeneration checks, orbit decompositions, and proof-carrying artifact records."
+    circle_math_expression: "Seed rules, generator comparisons, proof glyphs, and exactness gates are expressed as finite Circle records and Lean facts."
+    circle_native_value: "This is a Circle-native value proposition: generated artifacts can carry exact source trails and negative-case checks instead of loose visual claims."
     advertised_claim: "Circle Calculus can pair generated structures with checked provenance and exact-comparison gates."
-    proof_scope: "Lean-proved seed-rule, orbit-decomposition, proof-glyph, exact-regeneration, and negative-case gates."
+    proof_scope: "Lean-proved seed-rule, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, and negative-case gates."
     not_claimed: "No universal compression claim and no guarantee that generated artifacts are mathematically interesting."
     paper_ids: ["PAPER_GEN_01_SEED_RULE_PROVENANCE", "PAPER_P2_05_PROOF_CARRYING_GLYPHS"]
-    theorem_ids: ["GEN-T0001", "GEN-T0008", "GEN-T0017", "GEN-T0019", "P2G-T0006"]
+    theorem_ids: ["GEN-T0001", "GEN-T0008", "GEN-T0017", "GEN-T0019", "GEN-T0020", "GEN-T0021", "P2G-T0006"]
     dictionary_ids: ["COMMON-0033", "COMMON-0064", "COMMON-0065", "COMMON-0066"]
     source_refs:
       - "Circle/Generative/SeedRule.lean"
@@ -133,6 +169,10 @@ capabilities:
     title: "AI memory, loop, and adapter schedules"
     area: "AI systems"
     audience_interest: "Cyclic memory, recurrence budgets, loop-exit certificates, phase routing, and adapter indexing."
+    portfolio_roles: ["standard_math_parity", "circle_native_value", "application_guardrail"]
+    standard_math_anchor: "Finite cyclic buffers, schedule normalization, recurrence budgets, and modular adapter indexing."
+    circle_math_expression: "AI-facing memory slots, loop budgets, exit certificates, and adapter blocks are encoded as finite cyclic address/schedule theorems."
+    circle_native_value: "Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made."
     advertised_claim: "Circle Calculus can prove finite indexing and schedule-safety facts that AI experiments can reuse."
     proof_scope: "Lean-proved finite memory-slot, loop-budget, loop-exit, and adapter-block normalization facts."
     not_claimed: "No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence."
@@ -148,6 +188,10 @@ capabilities:
     title: "Circular compute layouts and schedules"
     area: "Computation"
     audience_interest: "Cyclic buffers, stride layouts, periodic stencils, round-robin scheduling, and backend-safe rewrites."
+    portfolio_roles: ["standard_math_parity", "circle_native_value", "application_guardrail"]
+    standard_math_anchor: "Circular buffers, periodic stencils, stride-address formulas, and round-robin scheduling laws."
+    circle_math_expression: "Compute layouts are expressed as finite address normalization, stride-address, and schedule-preservation theorems."
+    circle_native_value: "The Circle form can certify when cyclic structure is real enough to justify backend experiments, while requiring benchmarks for performance claims."
     advertised_claim: "Circle Calculus can prove finite address-safety and schedule-normalization facts for cyclic computation."
     proof_scope: "Lean-proved cyclic-address, stride-address, and round-robin schedule laws with Python layout fixtures."
     not_claimed: "No performance claim without direct dense, FFT/NTT, and backend baselines."

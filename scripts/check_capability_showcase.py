@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import sys
 from pathlib import Path
 
@@ -14,15 +15,25 @@ from repo_paths import (
 
 
 SHOWCASE = ROOT / "manifests" / "capability_showcase.yaml"
+SHOWCASE_PAGE = ROOT / "site" / "showcase.qmd"
 PROVED_STATUSES = {"proved", "lean_proved"}
+ALLOWED_PORTFOLIO_ROLES = {
+    "standard_math_parity",
+    "circle_native_value",
+    "application_guardrail",
+}
 REQUIRED_TEXT_FIELDS = [
     "title",
     "area",
     "audience_interest",
+    "standard_math_anchor",
+    "circle_math_expression",
+    "circle_native_value",
     "advertised_claim",
     "proof_scope",
     "not_claimed",
 ]
+CAPABILITY_ATTR_RE = re.compile(r'data-capability-id="([^"]+)"')
 
 
 def load_yaml(path: Path) -> dict:
@@ -67,6 +78,12 @@ def path_for_paper_id(paper_id: str) -> Path | None:
     return None
 
 
+def page_capability_ids() -> list[str]:
+    if not SHOWCASE_PAGE.exists():
+        return []
+    return CAPABILITY_ATTR_RE.findall(SHOWCASE_PAGE.read_text())
+
+
 def main() -> int:
     data = load_yaml(SHOWCASE)
     capabilities = data.get("capabilities", [])
@@ -80,6 +97,27 @@ def main() -> int:
     if duplicates:
         failures.append(f"duplicate capability ids: {duplicates}")
 
+    if not SHOWCASE_PAGE.exists():
+        failures.append(
+            f"missing showcase page {SHOWCASE_PAGE.relative_to(ROOT)}"
+        )
+        page_ids: list[str] = []
+    else:
+        page_ids = page_capability_ids()
+        page_duplicates = sorted(
+            {item for item in page_ids if page_ids.count(item) > 1}
+        )
+        if page_duplicates:
+            failures.append(f"duplicate page capability ids: {page_duplicates}")
+        manifest_ids = {item for item in ids if item}
+        page_id_set = set(page_ids)
+        missing_on_page = sorted(manifest_ids - page_id_set)
+        unknown_on_page = sorted(page_id_set - manifest_ids)
+        if missing_on_page:
+            failures.append(f"capability ids missing from page: {missing_on_page}")
+        if unknown_on_page:
+            failures.append(f"unknown page capability ids: {unknown_on_page}")
+
     for item in capabilities:
         capability_id = item.get("id", "<missing id>")
         if not item.get("id"):
@@ -91,6 +129,7 @@ def main() -> int:
         theorem_ids = item.get("theorem_ids", [])
         paper_ids = item.get("paper_ids", [])
         refs = item.get("source_refs", [])
+        roles = item.get("portfolio_roles", [])
 
         if not theorem_ids:
             failures.append(f"{capability_id}: must advertise at least one theorem id")
@@ -98,6 +137,16 @@ def main() -> int:
             failures.append(f"{capability_id}: must cite at least one paper id")
         if not refs:
             failures.append(f"{capability_id}: must cite at least one source ref")
+        if not isinstance(roles, list) or not roles:
+            failures.append(f"{capability_id}: must declare portfolio_roles")
+            roles = []
+        unknown_roles = sorted(set(roles) - ALLOWED_PORTFOLIO_ROLES)
+        if unknown_roles:
+            failures.append(f"{capability_id}: unknown portfolio roles {unknown_roles}")
+        if "standard_math_parity" not in roles and "circle_native_value" not in roles:
+            failures.append(
+                f"{capability_id}: must advertise either standard_math_parity or circle_native_value"
+            )
 
         duplicate_theorems = sorted({tid for tid in theorem_ids if theorem_ids.count(tid) > 1})
         if duplicate_theorems:
