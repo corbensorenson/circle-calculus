@@ -20,6 +20,7 @@ from circle_math.applications import (
     fit_content_route_lookup,
     fit_loop_budget_lookup,
     fit_loop_block_lookup,
+    fit_phase_lookup,
     fit_recurrence_resolution_lookup,
     local_window_indices,
     loop_block_indices,
@@ -37,11 +38,15 @@ from circle_math.applications import (
     multicoil_cycle_length,
     multicoil_phase,
     multicoil_phase_label,
+    nonperiodic_threshold_label,
+    periodic_phase_label,
+    phase_channel,
     recurrence_resolution_levels,
     retrieval_hit_rate,
     retrieval_hit_rate_by_lag,
     retrieval_target_index,
     predict_content_route_lookup,
+    predict_phase_lookup,
     predict_loop_budget_lookup,
     predict_loop_block_lookup,
     predict_recurrence_resolution_lookup,
@@ -50,10 +55,12 @@ from circle_math.applications import (
     run_content_gated_retrieval_benchmark,
     run_circulant_mixer_benchmark,
     run_learned_content_gate_retrieval_benchmark,
+    run_learned_phase_baseline_benchmark,
     run_learned_middle_block_recurrence_benchmark,
     run_learned_multi_resolution_recurrence_benchmark,
     run_learned_recurrence_schedule_benchmark,
     run_learned_token_level_recurrence_benchmark,
+    run_phase_channel_benchmark,
     run_training_free_loop_wrapper_benchmark,
     run_token_level_recurrence_benchmark,
     token_recurrence_budget,
@@ -424,6 +431,71 @@ def js_majority_label(labels: tuple[int, ...]) -> int:
     positives = sum(1 for label in labels if label == 1)
     negatives = len(labels) - positives
     return 1 if positives >= negatives else 0
+
+
+def js_default_positive_phases(period: int) -> tuple[int, ...]:
+    return tuple(phase for phase in range(period) if phase % 3 == 1)
+
+
+def js_phase_channel(period: int, position: int) -> int:
+    return js_mod(position, period)
+
+
+def js_periodic_phase_label(period: int, position: int, positive_phases: tuple[int, ...]) -> int:
+    return 1 if js_phase_channel(period, position) in positive_phases else 0
+
+
+def js_fit_phase_lookup(
+    period: int,
+    positions: tuple[int, ...],
+    labels: tuple[int, ...],
+) -> tuple[int, ...]:
+    fallback = js_majority_label(labels)
+    counts: list[list[int]] = [[0, 0] for _ in range(period)]
+    for position, label in zip(positions, labels):
+        counts[js_phase_channel(period, position)][label] += 1
+    return tuple(
+        fallback if zero_count + one_count == 0 else (1 if one_count >= zero_count else 0)
+        for zero_count, one_count in counts
+    )
+
+
+def js_predict_phase_lookup(
+    period: int,
+    lookup: tuple[int, ...],
+    positions: tuple[int, ...],
+) -> tuple[int, ...]:
+    return tuple(lookup[js_phase_channel(period, position)] for position in positions)
+
+
+def js_nonperiodic_threshold_label(position: int, threshold: int) -> int:
+    return 1 if position >= threshold else 0
+
+
+def js_fit_threshold_classifier(
+    positions: tuple[int, ...],
+    labels: tuple[int, ...],
+) -> tuple[int, int]:
+    candidates = tuple(range(min(positions), max(positions) + 2))
+    best = (-1.0, candidates[0], 1)
+    for threshold in candidates:
+        for polarity in (1, -1):
+            predictions = tuple(
+                1 if (position >= threshold) == (polarity == 1) else 0
+                for position in positions
+            )
+            score = js_accuracy(predictions, labels)
+            if score > best[0]:
+                best = (score, threshold, polarity)
+    return best[1], best[2]
+
+
+def js_predict_threshold_classifier(
+    positions: tuple[int, ...],
+    threshold: int,
+    polarity: int,
+) -> tuple[int, ...]:
+    return tuple(1 if (position >= threshold) == (polarity == 1) else 0 for position in positions)
 
 
 def js_majority_int(values: tuple[int, ...]) -> int:
@@ -986,6 +1058,99 @@ def main() -> int:
         assert lifted.winding == start // n
         assert lifted.residue == start % n
         assert lifted.value == start
+
+    phase_cases = [
+        (8, 64, 32),
+        (5, 40, 20),
+    ]
+    for period, train_length, test_length in phase_cases:
+        positive_phases = js_default_positive_phases(period)
+        train_positions = tuple(range(train_length))
+        test_positions = tuple(range(train_length, train_length + test_length))
+        train_labels = tuple(periodic_phase_label(period, position, positive_phases) for position in train_positions)
+        test_labels = tuple(periodic_phase_label(period, position, positive_phases) for position in test_positions)
+        js_train_labels = tuple(
+            js_periodic_phase_label(period, position, positive_phases)
+            for position in train_positions
+        )
+        js_test_labels = tuple(
+            js_periodic_phase_label(period, position, positive_phases)
+            for position in test_positions
+        )
+        assert train_labels == js_train_labels
+        assert test_labels == js_test_labels
+        for position in range(train_length + test_length):
+            assert phase_channel(period, position) == js_phase_channel(period, position)
+
+        lookup = fit_phase_lookup(period, train_positions, train_labels)
+        js_lookup = js_fit_phase_lookup(period, train_positions, js_train_labels)
+        assert lookup == js_lookup
+        phase_predictions = predict_phase_lookup(period, lookup, test_positions)
+        js_phase_predictions = js_predict_phase_lookup(period, js_lookup, test_positions)
+        assert phase_predictions == js_phase_predictions
+        constant = js_majority_label(js_train_labels)
+        constant_predictions = tuple(constant for _ in test_positions)
+        threshold, polarity = js_fit_threshold_classifier(train_positions, js_train_labels)
+        threshold_predictions = js_predict_threshold_classifier(test_positions, threshold, polarity)
+
+        control_threshold = (3 * train_length) // 4
+        control_train_labels = tuple(
+            nonperiodic_threshold_label(position, control_threshold)
+            for position in train_positions
+        )
+        control_test_labels = tuple(
+            nonperiodic_threshold_label(position, control_threshold)
+            for position in test_positions
+        )
+        js_control_train_labels = tuple(
+            js_nonperiodic_threshold_label(position, control_threshold)
+            for position in train_positions
+        )
+        js_control_test_labels = tuple(
+            js_nonperiodic_threshold_label(position, control_threshold)
+            for position in test_positions
+        )
+        assert control_train_labels == js_control_train_labels
+        assert control_test_labels == js_control_test_labels
+        control_lookup = fit_phase_lookup(period, train_positions, control_train_labels)
+        js_control_lookup = js_fit_phase_lookup(period, train_positions, js_control_train_labels)
+        assert control_lookup == js_control_lookup
+        control_phase_predictions = predict_phase_lookup(period, control_lookup, test_positions)
+        js_control_phase_predictions = js_predict_phase_lookup(period, js_control_lookup, test_positions)
+        assert control_phase_predictions == js_control_phase_predictions
+        control_scalar_threshold, control_polarity = js_fit_threshold_classifier(
+            train_positions,
+            js_control_train_labels,
+        )
+        control_scalar_predictions = js_predict_threshold_classifier(
+            test_positions,
+            control_scalar_threshold,
+            control_polarity,
+        )
+
+        phase_benchmark = run_phase_channel_benchmark(
+            period=period,
+            train_length=train_length,
+            test_length=test_length,
+        )
+        assert phase_benchmark.phase_channel_accuracy == js_accuracy(js_phase_predictions, js_test_labels)
+        assert phase_benchmark.constant_accuracy == js_accuracy(constant_predictions, js_test_labels)
+
+        learned_benchmark = run_learned_phase_baseline_benchmark(
+            period=period,
+            train_length=train_length,
+            test_length=test_length,
+        )
+        assert learned_benchmark.periodic_phase_accuracy == js_accuracy(js_phase_predictions, js_test_labels)
+        assert learned_benchmark.periodic_dense_accuracy == js_accuracy(threshold_predictions, js_test_labels)
+        assert learned_benchmark.nonperiodic_phase_accuracy == js_accuracy(
+            js_control_phase_predictions,
+            js_control_test_labels,
+        )
+        assert learned_benchmark.nonperiodic_dense_accuracy == js_accuracy(
+            control_scalar_predictions,
+            js_control_test_labels,
+        )
 
     finite_diagram = finite_circle_diagram_generator(8)
     assert regenerate(finite_diagram) == js_finite_circle_diagram(8)

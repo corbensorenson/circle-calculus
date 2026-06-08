@@ -31,6 +31,12 @@ AI is now a dedicated Circle Calculus program, not a side note. The avenues to e
 
 Every avenue needs ordinary baselines, negative controls, and reproducible scripts before it becomes a claim about model quality or speed.
 
+## Phase-Channel Baseline Path
+
+The first AI fixture asks the smallest useful question: if labels are actually periodic, can a phase-channel lookup recover them, and do ordinary controls stay visible? The same widget also includes a nonperiodic scalar-threshold task where the circular feature should not be treated as helpful.
+
+<div class="widget-panel" data-widget="phase_channel_baseline" data-theorem-id="AIA-T0001" data-dictionary-ids="COMMON-0026 COMMON-0027"></div>
+
 ## Cyclic Memory Slot Path
 
 Cyclic memory starts with a plain finite address: `memory_slot(bank_size, token) = token mod bank_size`. The useful interface question is not whether this improves a model by itself, but whether slot assignment, alias collisions, and closure after full bank passes are visible before running a benchmark.
@@ -357,6 +363,7 @@ Why is the nonperiodic control in `AIA-B0002` important before making any AI-imp
 Python and optional MLX benchmark fixtures are executable references only. They do not replace Lean proofs and do not prove that circles improve neural networks.
 :::
 
+<script type="module" src="../../widgets/ai/phase_channel_baseline.js"></script>
 <script type="module" src="../../widgets/ai/cyclic_memory_slots.js"></script>
 <script type="module" src="../../widgets/ai/coil_retrieval_reachability.js"></script>
 <script type="module" src="../../widgets/ai/content_gated_retrieval.js"></script>

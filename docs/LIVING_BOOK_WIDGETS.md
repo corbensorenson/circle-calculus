@@ -112,6 +112,16 @@ Implemented shared JavaScript:
 
 ## AI Widgets
 
+### phase_channel_baseline
+
+- Inputs: period, training length, and test length.
+- Outputs: positive phase set, learned phase lookup, periodic phase-lookup accuracy, periodic scalar-threshold accuracy, constant-majority accuracy, nonperiodic phase-lookup accuracy, nonperiodic scalar-threshold accuracy, theorem-status badges, and dictionary links.
+- Theorem ids: `AIA-T0001`, `AIA-T0002`, `AIA-T0003`, `AIA-T0004`, and `AIA-T0005`.
+- Dictionary ids: `COMMON-0026` and `COMMON-0027`.
+- Python references: `circle_math.applications.circle_ai.phase_channel`, `circle_math.applications.circle_ai.run_phase_channel_benchmark`, and `circle_math.applications.circle_ai.run_learned_phase_baseline_benchmark`.
+- Guardrail: the widget is a deterministic synthetic phase-feature control fixture only. It does not prove neural-network quality, model speed, real-task usefulness, or that cyclic features help nonperiodic tasks.
+- Validation: deterministic JavaScript-equivalent phase lookup, constant baseline, scalar-threshold baseline, and nonperiodic control formulas are parity-checked against the Python phase-channel benchmark helpers.
+
 ### loop_recurrence_budget
 
 - Inputs: loop period, sample/token index, maximum loops, overthinking tolerance.
