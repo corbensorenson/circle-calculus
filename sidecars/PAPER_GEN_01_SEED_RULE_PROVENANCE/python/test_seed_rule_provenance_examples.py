@@ -18,8 +18,15 @@ def test_finite_circle_generator_regenerates_nodes() -> None:
     assert regenerate(record) == tuple(range(8))
     assert record.generated_object == tuple(range(8))
     assert len(record.generated_object) == 8
+    assert set(record.generated_object) == set(range(8))
+    assert len(set(record.generated_object)) == len(record.generated_object)
+    assert all(0 <= node < 8 for node in record.generated_object)
     assert "GEN-T0001" in record.theorem_ids
     assert "GEN-T0020" in record.theorem_ids
+    assert "GEN-T0040" in record.theorem_ids
+    assert "GEN-T0041" in record.theorem_ids
+    assert "GEN-T0042" in record.theorem_ids
+    assert "GEN-T0043" in record.theorem_ids
 
 
 def test_finite_circle_diagram_generator_regenerates_successor_edges() -> None:

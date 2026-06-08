@@ -8,6 +8,10 @@ optimality.
 -/
 
 #check Circle.Generative.finiteCircleGenerator_regenerates_nodes
+#check Circle.Generative.finiteCircleGenerator_generatedNodes_mem_iff_lt
+#check Circle.Generative.finiteCircleGenerator_generatedNodes_nodup
+#check Circle.Generative.finiteCircleGenerator_generatedNodes_zero
+#check Circle.Generative.finiteCircleGenerator_generatedNodes_nonempty
 #check Circle.Generative.coilOrbitGenerator_regenerates_orbit
 #check Circle.Generative.orbitDecompositionGenerator_regenerates_orbits
 #check Circle.Generative.orbitDecompositionGenerator_generatedOrbits_length

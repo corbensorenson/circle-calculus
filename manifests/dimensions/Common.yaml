@@ -3028,4 +3028,60 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_singleton_bounded_generator_search_has_exact_best_candidate
     blocker: ""
+  - id: GEN-T0040
+    status: lean_proved
+    lean_name: Circle.Generative.finiteCircleGenerator_generatedNodes_mem_iff_lt
+    informal_statement: "A finite-circle seed-rule record generates exactly the node addresses below n."
+    formal_statement: "For n and node, node ∈ (finiteCircleGenerator n).generatedNodes iff node < n."
+    dictionary_dependencies: ["CC-0001", "CC-0002", "COMMON-0064", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_finite_circle_generator_regenerates_nodes
+    blocker: ""
+  - id: GEN-T0041
+    status: lean_proved
+    lean_name: Circle.Generative.finiteCircleGenerator_generatedNodes_nodup
+    informal_statement: "A finite-circle seed-rule record generates node addresses without duplicates."
+    formal_statement: "For n, (finiteCircleGenerator n).generatedNodes is Nodup."
+    dictionary_dependencies: ["CC-0001", "CC-0002", "COMMON-0064", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_finite_circle_generator_regenerates_nodes
+    blocker: ""
+  - id: GEN-T0042
+    status: lean_proved
+    lean_name: Circle.Generative.finiteCircleGenerator_generatedNodes_zero
+    informal_statement: "The zero-size finite-circle seed-rule record generates the empty node list."
+    formal_statement: "(finiteCircleGenerator 0).generatedNodes = []."
+    dictionary_dependencies: ["CC-0001", "CC-0002", "COMMON-0064", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_finite_circle_generator_regenerates_nodes
+    blocker: ""
+  - id: GEN-T0043
+    status: lean_proved
+    lean_name: Circle.Generative.finiteCircleGenerator_generatedNodes_nonempty
+    informal_statement: "A positive-size finite-circle seed-rule record generates a nonempty node list."
+    formal_statement: "For positive n, (finiteCircleGenerator n).generatedNodes != []."
+    dictionary_dependencies: ["CC-0001", "CC-0002", "COMMON-0064", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_finite_circle_generator_regenerates_nodes
+    blocker: ""
 warnings: []

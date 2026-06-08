@@ -91,7 +91,7 @@ Implemented shared JavaScript:
 
 - Inputs: selected generated artifact.
 - Outputs: generated finite-circle successor diagram, finite physics-loop plaquette diagram, coil-orbit record, orbit-decomposition record, or proof-glyph metadata; seed; rules; schedule; closure condition; generated-object summary; theorem-status badges; dictionary links.
-- Theorem ids: finite circle, finite coil/orbit, finite physics-loop, proof-glyph, generator-regeneration, generated-list length, and generator-comparison theorem ids exposed by the selected record.
+- Theorem ids: finite circle, finite-circle exact membership/no-duplicate/nonempty, finite coil/orbit, finite physics-loop, proof-glyph, generator-regeneration, generated-list length, and generator-comparison theorem ids exposed by the selected record.
 - Dictionary ids: finite circle/node/coil/orbit ids plus proof-glyph, finite gauge, and generative provenance ids.
 - Python references: `circle_math.generative.finite_circle_diagram_generator`, `circle_math.generative.physics_loop_diagram_generator`, `circle_math.generative.coil_orbit_generator`, `circle_math.generative.orbit_decomposition_generator`, and `circle_math.generative.proof_glyph_generator`.
 - Data source: `site/data/generated/generator_index.json`, exported from the Python seed-rule fixtures by `scripts/site/export_site_data.py`.
@@ -112,7 +112,7 @@ Implemented shared JavaScript:
 
 - Inputs: finite-circle size `n`.
 - Outputs: explicit-vs-generator description lengths, exact regeneration flag, generator-shorter flag, a broken non-exact candidate, bounded finite search count, exact candidate count, best exact candidate, best shorter exact candidate, no-best/zero-count checks, theorem-status badges, and dictionary links.
-- Theorem ids: `GEN-T0001`, `GEN-T0005`, `GEN-T0017`, `GEN-T0018`, `GEN-T0019`, `GEN-T0020`, `GEN-T0022`, `GEN-T0023`, `GEN-T0024`, `GEN-T0025`, `GEN-T0026`, `GEN-T0027`, `GEN-T0028`, `GEN-T0029`, `GEN-T0030`, `GEN-T0031`, `GEN-T0032`, `GEN-T0033`, `GEN-T0034`, `GEN-T0035`, `GEN-T0036`, `GEN-T0037`, `GEN-T0038`, and `GEN-T0039`.
+- Theorem ids: `GEN-T0001`, `GEN-T0005`, `GEN-T0017`, `GEN-T0018`, `GEN-T0019`, `GEN-T0020`, `GEN-T0022`, `GEN-T0023`, `GEN-T0024`, `GEN-T0025`, `GEN-T0026`, `GEN-T0027`, `GEN-T0028`, `GEN-T0029`, `GEN-T0030`, `GEN-T0031`, `GEN-T0032`, `GEN-T0033`, `GEN-T0034`, `GEN-T0035`, `GEN-T0036`, `GEN-T0037`, `GEN-T0038`, `GEN-T0039`, `GEN-T0040`, `GEN-T0041`, `GEN-T0042`, and `GEN-T0043`.
 - Dictionary ids: `COMMON-0064`, `COMMON-0065`, and `COMMON-0066`.
 - Python references: `circle_math.generative.compare_generator_to_explicit`, `circle_math.generative.bounded_generator_search`, and `circle_math.generative.finite_circle_generator`.
 - Guardrail: the widget is bounded finite description-length bookkeeping only. It does not prove global optimality, Kolmogorov complexity, universal compression, or that smaller descriptions are always better.

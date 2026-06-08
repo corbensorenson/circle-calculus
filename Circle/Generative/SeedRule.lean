@@ -28,6 +28,25 @@ theorem finiteCircleGenerator_generatedNodes_length (n : Nat) :
     (finiteCircleGenerator n).generatedNodes.length = n := by
   simp [FiniteCircleGenerator.generatedNodes, finiteCircleGenerator]
 
+theorem finiteCircleGenerator_generatedNodes_mem_iff_lt (n node : Nat) :
+    node ∈ (finiteCircleGenerator n).generatedNodes ↔ node < n := by
+  simp [FiniteCircleGenerator.generatedNodes, finiteCircleGenerator]
+
+theorem finiteCircleGenerator_generatedNodes_nodup (n : Nat) :
+    ((finiteCircleGenerator n).generatedNodes).Nodup := by
+  exact List.nodup_range
+
+theorem finiteCircleGenerator_generatedNodes_zero :
+    (finiteCircleGenerator 0).generatedNodes = [] := by
+  simp [FiniteCircleGenerator.generatedNodes, finiteCircleGenerator]
+
+theorem finiteCircleGenerator_generatedNodes_nonempty {n : Nat} (h : 0 < n) :
+    (finiteCircleGenerator n).generatedNodes ≠ [] := by
+  intro hempty
+  have hlength := finiteCircleGenerator_generatedNodes_length n
+  rw [hempty] at hlength
+  exact Nat.ne_of_gt h hlength.symm
+
 structure CoilOrbitGenerator where
   n : Nat
   stride : Nat

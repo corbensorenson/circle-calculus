@@ -179,7 +179,15 @@ def finite_circle_generator(n: int) -> SeedRuleProvenance:
         iteration_schedule="i = 0..n-1",
         closure_condition="stop before node n, since nodes are residues modulo n",
         generated_object=generated,
-        theorem_ids=("GEN-T0001", "GEN-T0020", "CC-T0001"),
+        theorem_ids=(
+            "GEN-T0001",
+            "GEN-T0020",
+            "GEN-T0040",
+            "GEN-T0041",
+            "GEN-T0042",
+            "GEN-T0043",
+            "CC-T0001",
+        ),
         dictionary_ids=("CC-0001", "CC-0002", "COMMON-0064", "COMMON-0066"),
     )
 

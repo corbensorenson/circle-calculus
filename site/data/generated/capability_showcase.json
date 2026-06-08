@@ -3105,7 +3105,7 @@
             "passed": true
           },
           {
-            "evidence": "Lean-proved seed-rule, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, singleton exact-search, best-candidate soundness, exact-candidate absence/count gates, exact-candidate list soundness, and singleton membership gates.",
+            "evidence": "Lean-proved seed-rule, finite-circle node membership/no-duplicate/nonempty, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, singleton exact-search, best-candidate soundness, exact-candidate absence/count gates, exact-candidate list soundness, and singleton membership gates.",
             "id": "proof_scope",
             "label": "proof scope",
             "passed": true
@@ -3129,7 +3129,7 @@
             "passed": true
           },
           {
-            "evidence": "23",
+            "evidence": "27",
             "id": "proved_theorem_ids",
             "label": "proved paper-carried theorem ids",
             "passed": true
@@ -3222,7 +3222,7 @@
         "living_book_widget_count": 4,
         "paper_count": 2,
         "source_count": 4,
-        "theorem_count": 23
+        "theorem_count": 27
       },
       "executable_refs": [
         "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py",
@@ -3294,7 +3294,7 @@
       ],
       "proof_provenance": "Proof provenance is project-native Lean code for seed-rule provenance, proof glyphs, exact-regeneration gates, and negative-case search boundaries.",
       "proof_provenance_kind": "project_native",
-      "proof_scope": "Lean-proved seed-rule, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, singleton exact-search, best-candidate soundness, exact-candidate absence/count gates, exact-candidate list soundness, and singleton membership gates.",
+      "proof_scope": "Lean-proved seed-rule, finite-circle node membership/no-duplicate/nonempty, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, singleton exact-search, best-candidate soundness, exact-candidate absence/count gates, exact-candidate list soundness, and singleton membership gates.",
       "proof_trail_contract": {
         "passed_step_count": 7,
         "ready_to_advertise": true,
@@ -3306,7 +3306,7 @@
             "ready": true
           },
           {
-            "evidence": "23/23 theorem refs",
+            "evidence": "27/27 theorem refs",
             "id": "theorem_refs",
             "label": "proved paper-carried theorem refs",
             "ready": true
@@ -3401,10 +3401,14 @@
         "GEN-T0037",
         "GEN-T0038",
         "GEN-T0039",
+        "GEN-T0040",
+        "GEN-T0041",
+        "GEN-T0042",
+        "GEN-T0043",
         "P2G-T0006"
       ],
       "theorem_ref_contract": {
-        "proved_and_paper_backed_count": 23,
+        "proved_and_paper_backed_count": 27,
         "refs": [
           {
             "canonical_status": "proved",
@@ -3651,6 +3655,50 @@
           {
             "canonical_status": "proved",
             "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0040",
+            "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_mem_iff_lt",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0041",
+            "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nodup",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0042",
+            "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_zero",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0043",
+            "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nonempty",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
               "PAPER_P2_05_PROOF_CARRYING_GLYPHS"
             ],
             "id": "P2G-T0006",
@@ -3660,7 +3708,7 @@
             "status": "lean_proved"
           }
         ],
-        "total_count": 23,
+        "total_count": 27,
         "unproved_or_unbacked_ids": []
       },
       "title": "Proof-carrying generative provenance",
@@ -3678,7 +3726,7 @@
             "required": true
           },
           "standard_math_parity": {
-            "evidence": "theorems 23/23",
+            "evidence": "theorems 27/27",
             "ready": true,
             "required": false
           }
@@ -5050,8 +5098,8 @@
           "unbacked_refs": []
         },
         "theorem_refs": {
-          "proved_and_paper_backed_count": 57,
-          "total_count": 57,
+          "proved_and_paper_backed_count": 61,
+          "total_count": 61,
           "unproved_or_unbacked_refs": []
         },
         "unique_evidence_counts": {
@@ -5061,7 +5109,7 @@
           "living_book_widget_count": 11,
           "paper_count": 7,
           "source_count": 14,
-          "theorem_count": 57
+          "theorem_count": 61
         },
         "unknown_capability_ids": []
       },
@@ -5085,8 +5133,8 @@
         "unbacked_refs": []
       },
       "theorem_refs": {
-        "proved_and_paper_backed_count": 99,
-        "total_count": 99,
+        "proved_and_paper_backed_count": 103,
+        "total_count": 103,
         "unproved_or_unbacked_refs": []
       }
     },
@@ -5103,7 +5151,7 @@
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 99
+      "theorem_count": 103
     },
     "proof_provenance_counts": {
       "mathlib_bridge": 4,
@@ -5127,7 +5175,7 @@
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 99
+      "theorem_count": 103
     },
     "unique_living_book_pages": [
       "site/chapters/S1/03_coils_orbits_closure.qmd",

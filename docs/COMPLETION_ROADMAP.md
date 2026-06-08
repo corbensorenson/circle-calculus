@@ -912,6 +912,7 @@ Generative work order:
 - [x] Compare seed-plus-rule descriptions against explicit object-only descriptions for length, exact regeneration, reader clarity, proof coverage, and bounded finite-list search results.
 - [x] Include negative cases where generation is longer, noisier, or less clear than explicit description.
 - [x] Add Lean targets only for finite generation/equality/closure facts that are precise enough to prove; the current Lean seed covers finite-circle node regeneration, period-indexed coil-orbit schedule regeneration, representative-indexed orbit-decomposition schedule regeneration, orbit-count/period/coverage/orbit-class agreement facts, canonical representative coverage/disjointness facts, proof-glyph field regeneration, and exact-regeneration comparison.
+- [x] Strengthen finite-circle seed generation with exact node membership, duplicate-free output, zero-size empty output, and positive-size nonempty output facts.
 - [x] Strengthen exact representative-indexed orbit regeneration toward explicit disjoint canonical representative partition facts before calling the decomposition fully canonical.
 - [x] Add exact-regeneration self/symmetry/transitivity facts plus field-equality and unequal-value negative gates for constructed generator comparisons, while keeping minimality and optimal-compression claims out of scope.
 - [x] Add bounded finite-list search gates for exact-candidate list soundness, best-exact existence, and singleton membership without promoting them to global optimality claims.

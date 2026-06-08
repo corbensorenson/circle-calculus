@@ -419,6 +419,30 @@
           "status": "proved"
         },
         {
+          "id": "GEN-T0040",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_mem_iff_lt",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_mem_iff_lt",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0041",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nodup",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nodup",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0042",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_zero",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_zero",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0043",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nonempty",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nonempty",
+          "status": "proved"
+        },
+        {
           "id": "S2-T0005",
           "lean_name": "Circle.S2.latitudeRing_isCircle",
           "name": "Circle.S2.latitudeRing_isCircle",
@@ -722,6 +746,30 @@
           "id": "GEN-T0020",
           "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_length",
           "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_length",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0040",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_mem_iff_lt",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_mem_iff_lt",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0041",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nodup",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nodup",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0042",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_zero",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_zero",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0043",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nonempty",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nonempty",
           "status": "proved"
         }
       ],
@@ -7864,6 +7912,30 @@
           "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_candidates",
           "name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_candidates",
           "status": "proved"
+        },
+        {
+          "id": "GEN-T0040",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_mem_iff_lt",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_mem_iff_lt",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0041",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nodup",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nodup",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0042",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_zero",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_zero",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0043",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nonempty",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nonempty",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -8336,6 +8408,30 @@
           "id": "GEN-T0039",
           "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_candidates",
           "name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_candidates",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0040",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_mem_iff_lt",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_mem_iff_lt",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0041",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nodup",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nodup",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0042",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_zero",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_zero",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0043",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nonempty",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nonempty",
           "status": "proved"
         }
       ],
