@@ -113,8 +113,10 @@ targets:
       - "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py"
       - "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"
       - "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md"
+      - "site/chapters/applications/generative.qmd"
+      - "site/widgets/generative/proof_glyph_certificate.js"
     dictionary_dependencies: ["COMMON-0042", "COMMON-0064", "COMMON-0065", "COMMON-0066", "COMMON-0033"]
-    next_action: "Exact representative-indexed orbit-decomposition regeneration, comparison gates, bounded finite-list generator search, and the first generated-diagram Living Book widget are in place; next extend the widget contract toward orbit-family and proof-glyph records while keeping minimality claims scoped to explicit search spaces."
+    next_action: "Exact representative-indexed orbit-decomposition regeneration, comparison gates, bounded finite-list generator search, generated-diagram widgets, and a proof-glyph certificate widget are in place; next extend the widget contract toward orbit-family records while keeping minimality claims scoped to explicit search spaces."
     guardrail: "A smaller generator is not automatically optimal, meaningful, or new mathematics."
 
   - id: P7-GEN-002
@@ -160,8 +162,9 @@ targets:
       - "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py"
       - "site/chapters/applications/generative.qmd"
       - "site/widgets/generative/seed_rule_diagram_generator.js"
+      - "site/widgets/generative/proof_glyph_certificate.js"
       - "site/targets.qmd"
       - "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md"
     dictionary_dependencies: ["CC-0001", "CC-0002", "COMMON-0033", "COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063", "COMMON-0064", "COMMON-0065", "COMMON-0066"]
-    next_action: "The first Living Book widget now exposes finite-circle and finite physics-loop seed/rule records with theorem-status badges; next add orbit-family and proof-glyph records or make the widget data-driven from generated site fixtures."
+    next_action: "The Living Book now exposes finite-circle, finite physics-loop, and proof-glyph seed/rule records with theorem-status badges; next add a dedicated orbit-family widget or make more generator widgets data-driven from generated site fixtures."
     guardrail: "Generated diagrams are explanations and interfaces; they are not proofs unless a linked theorem id is independently Lean-proved."

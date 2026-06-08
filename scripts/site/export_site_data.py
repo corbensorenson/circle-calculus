@@ -231,6 +231,13 @@ def export_widget_index() -> dict:
             "python_reference": "circle_math.generative.compare_generator_to_explicit; circle_math.generative.bounded_generator_search; circle_math.generative.finite_circle_generator",
         },
         {
+            "id": "proof_glyph_certificate",
+            "path": "site/widgets/generative/proof_glyph_certificate.js",
+            "theorem_ids": ["P2G-T0001", "P2G-T0002", "P2G-T0003", "P2G-T0004", "CC-T0005"],
+            "dictionary_ids": ["COMMON-0033", "COMMON-0064", "COMMON-0066"],
+            "python_reference": "circle_math.generative.proof_glyph_generator; circle_math.generative.regenerate",
+        },
+        {
             "id": "loop_recurrence_budget",
             "path": "site/widgets/ai/loop_recurrence_budget.js",
             "theorem_ids": ["AIM-T0018", "AIM-T0019", "AIM-T0020", "AIM-T0021"],

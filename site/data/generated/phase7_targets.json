@@ -143,7 +143,9 @@
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md",
         "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py",
         "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md",
-        "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md"
+        "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md",
+        "site/chapters/applications/generative.qmd",
+        "site/widgets/generative/proof_glyph_certificate.js"
       ],
       "dictionary_dependencies": [
         "COMMON-0042",
@@ -154,7 +156,7 @@
       ],
       "guardrail": "A smaller generator is not automatically optimal, meaningful, or new mathematics.",
       "id": "P7-GEN-001",
-      "next_action": "Exact representative-indexed orbit-decomposition regeneration, comparison gates, bounded finite-list generator search, and the first generated-diagram Living Book widget are in place; next extend the widget contract toward orbit-family and proof-glyph records while keeping minimality claims scoped to explicit search spaces.",
+      "next_action": "Exact representative-indexed orbit-decomposition regeneration, comparison gates, bounded finite-list generator search, generated-diagram widgets, and a proof-glyph certificate widget are in place; next extend the widget contract toward orbit-family records while keeping minimality claims scoped to explicit search spaces.",
       "ordinary_baseline": "Value-only objects, finished diagrams, ordinary compressed files, or informal procedural descriptions.",
       "priority": "high",
       "question": "Can Circle Calculus represent an object by a small seed plus checked rules that regenerate the object, with proof status and provenance attached?",
@@ -209,6 +211,7 @@
         "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py",
         "site/chapters/applications/generative.qmd",
         "site/widgets/generative/seed_rule_diagram_generator.js",
+        "site/widgets/generative/proof_glyph_certificate.js",
         "site/targets.qmd",
         "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md"
       ],
@@ -226,7 +229,7 @@
       ],
       "guardrail": "Generated diagrams are explanations and interfaces; they are not proofs unless a linked theorem id is independently Lean-proved.",
       "id": "P7-GEN-003",
-      "next_action": "The first Living Book widget now exposes finite-circle and finite physics-loop seed/rule records with theorem-status badges; next add orbit-family and proof-glyph records or make the widget data-driven from generated site fixtures.",
+      "next_action": "The Living Book now exposes finite-circle, finite physics-loop, and proof-glyph seed/rule records with theorem-status badges; next add a dedicated orbit-family widget or make more generator widgets data-driven from generated site fixtures.",
       "ordinary_baseline": "Hand-authored static diagrams with separate source code and theorem references.",
       "priority": "medium",
       "question": "Can a Living Book diagram be generated from the same seed/rule/provenance record that feeds Python examples and theorem ids?",

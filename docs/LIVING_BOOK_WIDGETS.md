@@ -90,6 +90,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is bounded finite description-length bookkeeping only. It does not prove global optimality, Kolmogorov complexity, universal compression, or that smaller descriptions are always better.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python generator-comparison and bounded-search helpers.
 
+### proof_glyph_certificate
+
+- Inputs: none; the widget reads the generated `proof_glyph` record from `site/data/generated/generator_index.json`.
+- Outputs: generated glyph id, theorem id, Lean declaration name, theorem manifest status, Lean source path, field-resolution table, theorem-status badges, and dictionary links.
+- Theorem ids: `P2G-T0001`, `P2G-T0002`, `P2G-T0003`, `P2G-T0004`, and the generated theorem id `CC-T0005`.
+- Dictionary ids: `COMMON-0033`, `COMMON-0064`, and `COMMON-0066`.
+- Python references: `circle_math.generative.proof_glyph_generator` and `circle_math.generative.regenerate`.
+- Guardrail: the widget is proof navigation and certificate-field checking only. It does not prove the target theorem; theorem status still comes from the manifest and local Lean build.
+- Validation: widget contract checks ensure the page mount, script import, theorem ids, and dictionary ids resolve; generator parity is covered by the existing proof-glyph regeneration case in `check_widget_python_parity.py`.
+
 ## AI Widgets
 
 ### loop_recurrence_budget

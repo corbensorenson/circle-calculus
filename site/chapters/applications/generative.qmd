@@ -73,11 +73,16 @@ The sidecar tests regenerate finite circle nodes, a finite-circle diagram with s
 
 <div class="widget-panel" data-widget="seed_rule_diagram_generator"></div>
 
+The proof-glyph certificate widget focuses on the theorem-navigation part of the same generator contract. It reads a generated glyph record, checks that the theorem id resolves in the manifest, and checks that the generated Lean declaration name matches the manifest entry. This is proof navigation, not the proof itself.
+
+<div class="widget-panel" data-widget="proof_glyph_certificate" data-theorem-id="P2G-T0004" data-dictionary-ids="COMMON-0033 COMMON-0064 COMMON-0066"></div>
+
 The next widget focuses on the compression reframing directly. It compares explicit object storage with a seed-plus-rule record, includes a broken non-exact candidate, and reports bounded-search scope. It is a finite fixture, not an optimal-compression theorem.
 
 <div class="widget-panel" data-widget="generator_comparison_search" data-theorem-id="GEN-T0005" data-dictionary-ids="COMMON-0064 COMMON-0065 COMMON-0066"></div>
 
 <script type="module" src="../../widgets/generative/seed_rule_diagram_generator.js"></script>
+<script type="module" src="../../widgets/generative/proof_glyph_certificate.js"></script>
 <script type="module" src="../../widgets/generative/generator_comparison_search.js"></script>
 
 ::: {.checkpoint-box}

@@ -87,7 +87,7 @@ Each chapter must distinguish intuition, example, Python model, and formal theor
 - Keep benchmark claims separate from Lean proofs.
 - Use MLX/Mac-first language for local compute work.
 - Add Phase VII physics/generative-structure lessons from the first bounded fixtures: finite gauge loops, holonomy, Hopf hidden phase, spin sign ambiguity, periodic dynamics, winding defects, seed-rule provenance, generator comparison, and proof-carrying generated diagrams.
-- Current physics/generative interactives cover finite path algebra, plaquette holonomy, Wilson-loop certificates, Hopf hidden phase, quaternion spin sign ambiguity, generated seed-rule records, and bounded generator comparisons.
+- Current physics/generative interactives cover finite path algebra, plaquette holonomy, Wilson-loop certificates, Hopf hidden phase, quaternion spin sign ambiguity, generated seed-rule records, proof-glyph certificates, and bounded generator comparisons.
 
 ## Dedicated Circle AI Deep Program
 

@@ -135,6 +135,23 @@
     },
     {
       "dictionary_ids": [
+        "COMMON-0033",
+        "COMMON-0064",
+        "COMMON-0066"
+      ],
+      "id": "proof_glyph_certificate",
+      "path": "site/widgets/generative/proof_glyph_certificate.js",
+      "python_reference": "circle_math.generative.proof_glyph_generator; circle_math.generative.regenerate",
+      "theorem_ids": [
+        "P2G-T0001",
+        "P2G-T0002",
+        "P2G-T0003",
+        "P2G-T0004",
+        "CC-T0005"
+      ]
+    },
+    {
+      "dictionary_ids": [
         "COMMON-0052",
         "COMMON-0053",
         "COMMON-0054",
