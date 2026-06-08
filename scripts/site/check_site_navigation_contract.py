@@ -4,7 +4,7 @@ import re
 import sys
 from typing import Any
 
-from site_lib import SITE, load_yaml, repo_relative
+from site_lib import ROOT, SITE, load_yaml, repo_relative
 
 
 REQUIRED_NAV_HREFS = {
@@ -67,6 +67,10 @@ PAGE_CONTRACTS = {
         ("intuition mode", ["Intuition Mode"]),
         ("formal mode", ["Formal Mode"]),
         ("code mode", ["Code Mode"]),
+        ("proof-backed portfolio", ["Proof-Backed Portfolio"]),
+        ("portfolio advertisement boundary", ["serious public advertisement", "does not prove universal expressiveness"]),
+        ("capability manifest", ["manifests/capability_showcase.yaml"]),
+        ("capability validator", ["scripts/check_capability_showcase.py"]),
         ("proof guardrail", ["not proofs", "not formal proof"]),
     ],
     "roadmap.qmd": [
@@ -151,6 +155,25 @@ WIDGET_GUARDRAIL_PHRASES = [
     "explanation rather than a proof",
 ]
 
+PORTFOLIO_ENTRYPOINT_CONTRACTS = [
+    {
+        "page": "index.qmd",
+        "marker": 'class="portfolio-entrypoint"',
+        "site_refs": ["showcase.qmd", "verify_claim.qmd"],
+        "repo_refs": [
+            "manifests/capability_showcase.yaml",
+            "scripts/check_capability_showcase.py",
+        ],
+        "phrases": [
+            "standard anchor",
+            "Circle expression",
+            "Circle-native value",
+            "proof scope",
+            "not-claimed boundary",
+        ],
+    }
+]
+
 
 def collect_hrefs(node: Any) -> set[str]:
     hrefs: set[str] = set()
@@ -219,11 +242,34 @@ def check_widget_page_contracts(failures: list[str]) -> None:
             failures.append(f"{repo_relative(path)}: widget page lacks an explicit non-proof guardrail")
 
 
+def check_portfolio_entrypoints(failures: list[str]) -> None:
+    for contract in PORTFOLIO_ENTRYPOINT_CONTRACTS:
+        path = SITE / contract["page"]
+        text = path.read_text()
+        marker = contract["marker"]
+        if marker not in text:
+            failures.append(f"{repo_relative(path)}: missing portfolio entrypoint marker {marker}")
+        for ref in contract["site_refs"]:
+            if f'"{ref}"' not in text or f"]({ref})" not in text:
+                failures.append(f"{repo_relative(path)}: missing portfolio site ref {ref}")
+            if not (SITE / ref).exists():
+                failures.append(f"{repo_relative(path)}: portfolio site ref does not exist: {ref}")
+        for ref in contract["repo_refs"]:
+            if f'"{ref}"' not in text:
+                failures.append(f"{repo_relative(path)}: missing portfolio repo ref {ref}")
+            if not (ROOT / ref).exists():
+                failures.append(f"{repo_relative(path)}: portfolio repo ref does not exist: {ref}")
+        for phrase in contract["phrases"]:
+            if not has_phrase(text, phrase):
+                failures.append(f"{repo_relative(path)}: missing portfolio phrase {phrase!r}")
+
+
 def main() -> int:
     failures: list[str] = []
     check_quarto_navigation(failures)
     check_page_contracts(failures)
     check_widget_page_contracts(failures)
+    check_portfolio_entrypoints(failures)
 
     if failures:
         print("site navigation contract failures:", file=sys.stderr)

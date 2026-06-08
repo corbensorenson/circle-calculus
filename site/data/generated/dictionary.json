@@ -7258,6 +7258,24 @@
           "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_exact",
           "name": "Circle.Generative.boundedGeneratorSearch_bestExact_exact",
           "status": "proved"
+        },
+        {
+          "id": "GEN-T0028",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_none_iff_exactCandidates_empty",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_none_iff_exactCandidates_empty",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0029",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_none_iff_exactCandidateCount_zero",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_none_iff_exactCandidateCount_zero",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0030",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_exactCandidateCount_pos",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_exactCandidateCount_pos",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -7387,6 +7405,24 @@
           "id": "GEN-T0027",
           "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_exact",
           "name": "Circle.Generative.boundedGeneratorSearch_bestExact_exact",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0028",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_none_iff_exactCandidates_empty",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_none_iff_exactCandidates_empty",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0029",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_none_iff_exactCandidateCount_zero",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_none_iff_exactCandidateCount_zero",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0030",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_exactCandidateCount_pos",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_exactCandidateCount_pos",
           "status": "proved"
         }
       ],
@@ -7586,6 +7622,24 @@
           "id": "GEN-T0027",
           "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_exact",
           "name": "Circle.Generative.boundedGeneratorSearch_bestExact_exact",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0028",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_none_iff_exactCandidates_empty",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_none_iff_exactCandidates_empty",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0029",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_none_iff_exactCandidateCount_zero",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_none_iff_exactCandidateCount_zero",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0030",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_exactCandidateCount_pos",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_exactCandidateCount_pos",
           "status": "proved"
         }
       ],

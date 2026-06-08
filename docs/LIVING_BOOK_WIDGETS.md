@@ -22,6 +22,16 @@ Implemented shared JavaScript:
 - `site/widgets/shared/svg_helpers.js`
 - `site/widgets/shared/widget_base.js`
 
+## Showcase Widgets
+
+### capability_portfolio_matrix
+
+- Inputs: none; the widget reads `site/data/generated/capability_showcase.json`.
+- Outputs: capability lane, area, portfolio roles, paper count, theorem count, executable count, Living Book page count, Living Book widget count, and the explicit claim boundary.
+- Data source: `manifests/capability_showcase.yaml`, exported by `scripts/site/export_site_data.py`.
+- Guardrail: the matrix is a manifest-backed evidence summary only. It does not turn imported theorem bridges, executable examples, widgets, or benchmarks into new mathematical proofs.
+- Validation: `scripts/check_capability_showcase.py` requires the matrix mount and script import on the public showcase page; `scripts/site/check_site_widget_contracts.py` verifies the widget index, page mount, and JavaScript mount call.
+
 ## S1 Widgets
 
 ### finite_circle_rotator
@@ -93,8 +103,8 @@ Implemented shared JavaScript:
 ### generator_comparison_search
 
 - Inputs: finite-circle size `n`.
-- Outputs: explicit-vs-generator description lengths, exact regeneration flag, generator-shorter flag, a broken non-exact candidate, bounded finite search count, exact candidate count, best exact candidate, best shorter exact candidate, theorem-status badges, and dictionary links.
-- Theorem ids: `GEN-T0001`, `GEN-T0005`, `GEN-T0017`, `GEN-T0018`, `GEN-T0019`, `GEN-T0020`, `GEN-T0022`, `GEN-T0023`, `GEN-T0024`, `GEN-T0025`, `GEN-T0026`, and `GEN-T0027`.
+- Outputs: explicit-vs-generator description lengths, exact regeneration flag, generator-shorter flag, a broken non-exact candidate, bounded finite search count, exact candidate count, best exact candidate, best shorter exact candidate, no-best/zero-count checks, theorem-status badges, and dictionary links.
+- Theorem ids: `GEN-T0001`, `GEN-T0005`, `GEN-T0017`, `GEN-T0018`, `GEN-T0019`, `GEN-T0020`, `GEN-T0022`, `GEN-T0023`, `GEN-T0024`, `GEN-T0025`, `GEN-T0026`, `GEN-T0027`, `GEN-T0028`, `GEN-T0029`, and `GEN-T0030`.
 - Dictionary ids: `COMMON-0064`, `COMMON-0065`, and `COMMON-0066`.
 - Python references: `circle_math.generative.compare_generator_to_explicit`, `circle_math.generative.bounded_generator_search`, and `circle_math.generative.finite_circle_generator`.
 - Guardrail: the widget is bounded finite description-length bookkeeping only. It does not prove global optimality, Kolmogorov complexity, universal compression, or that smaller descriptions are always better.

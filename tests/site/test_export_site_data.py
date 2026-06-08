@@ -30,6 +30,7 @@ def test_export_site_data_writes_required_indexes() -> None:
         "widget_index.json",
         "glyph_index.json",
         "generator_index.json",
+        "capability_showcase.json",
         "phase4_targets.json",
         "phase5_targets.json",
         "phase6_targets.json",
@@ -81,6 +82,14 @@ def test_export_site_data_writes_required_indexes() -> None:
     assert "GEN-T0021" in generator_by_id["coil_orbit"]["theoremIds"]
     assert generator_by_id["proof_glyph"]["generatedObject"]["theorem_id"] == "CC-T0005"
     assert "GEN-T0004" in generator_by_id["proof_glyph"]["theoremIds"]
+
+    capabilities = json.loads((generated / "capability_showcase.json").read_text())
+    capability_by_id = {item["id"]: item for item in capabilities["capabilities"]}
+    assert capability_by_id["SHOW-001"]["evidence_counts"]["theorem_count"] == len(
+        capability_by_id["SHOW-001"]["theorem_ids"]
+    )
+    assert capability_by_id["SHOW-009"]["evidence_counts"]["living_book_widget_count"] == 4
+    assert capability_by_id["SHOW-011"]["evidence_counts"]["living_book_page_count"] == 1
 
     targets = json.loads((generated / "phase4_targets.json").read_text())
     target_ids = {item["id"] for item in targets["targets"]}

@@ -16,6 +16,8 @@ from repo_paths import (
 
 SHOWCASE = ROOT / "manifests" / "capability_showcase.yaml"
 SHOWCASE_PAGE = ROOT / "site" / "showcase.qmd"
+SHOWCASE_MATRIX_WIDGET_ID = "capability_portfolio_matrix"
+SHOWCASE_MATRIX_SCRIPT = "widgets/showcase/capability_portfolio_matrix.js"
 PROVED_STATUSES = {"proved", "lean_proved"}
 ALLOWED_PORTFOLIO_ROLES = {
     "standard_math_parity",
@@ -42,7 +44,7 @@ PAGE_CLAIM_FIELDS = [
     "not_claimed",
 ]
 CAPABILITY_ATTR_RE = re.compile(
-    r'<div class="capability-anchor"[^>]*data-capability-id="([^"]+)"'
+    r'<div[^>]*class="capability-anchor"[^>]*data-capability-id="([^"]+)"'
 )
 ROLE_ATTR_RE = re.compile(
     r'data-capability-id="([^"]+)"[^>]*data-portfolio-role="([^"]+)"'
@@ -56,6 +58,14 @@ EXECUTABLE_ATTR_RE = re.compile(
 DICTIONARY_ATTR_RE = re.compile(
     r'data-capability-id="([^"]+)"[^>]*data-dictionary-id="([^"]+)"'
 )
+LIVING_BOOK_PAGE_REF_RE = re.compile(
+    r'<span class="living-book-evidence"([^>]*)></span>'
+)
+LIVING_BOOK_WIDGET_REF_RE = re.compile(
+    r'<span class="living-book-widget-evidence"([^>]*)></span>'
+)
+WIDGET_PANEL_RE = re.compile(r'data-widget="([^"]+)"')
+THEOREM_ATTR_RE = re.compile(r'data-theorem-id="([^"]+)"')
 THEOREM_BOX_RE = re.compile(r'<div class="theorem-box"([^>]*)>')
 PAPER_REF_RE = re.compile(r'<p([^>]*data-paper-ref="[^"]+"[^>]*)>')
 
@@ -158,6 +168,71 @@ def page_dictionary_pairs() -> list[tuple[str, str]]:
     return DICTIONARY_ATTR_RE.findall(SHOWCASE_PAGE.read_text())
 
 
+def page_living_book_entries() -> tuple[
+    list[tuple[str, str]],
+    list[str],
+    list[tuple[str, str]],
+]:
+    if not SHOWCASE_PAGE.exists():
+        return [], [], []
+    page_refs: list[tuple[str, str]] = []
+    missing_attrs: list[str] = []
+    widget_refs: list[tuple[str, str]] = []
+    text = SHOWCASE_PAGE.read_text()
+    for attrs in LIVING_BOOK_PAGE_REF_RE.findall(text):
+        capability_id = html_attr(attrs, "data-capability-id")
+        page_ref = html_attr(attrs, "data-page-ref")
+        if capability_id and page_ref:
+            page_refs.append((capability_id, page_ref))
+        else:
+            missing_attrs.append(attrs.strip()[:120])
+    for attrs in LIVING_BOOK_WIDGET_REF_RE.findall(text):
+        capability_id = html_attr(attrs, "data-capability-id")
+        widget_id = html_attr(attrs, "data-widget-id")
+        if capability_id and widget_id:
+            widget_refs.append((capability_id, widget_id))
+        else:
+            missing_attrs.append(attrs.strip()[:120])
+    return page_refs, missing_attrs, widget_refs
+
+
+def living_book_refs(item: dict) -> tuple[set[tuple[str, str]], set[tuple[str, str]]]:
+    capability_id = item.get("id")
+    page_refs: set[tuple[str, str]] = set()
+    widget_refs: set[tuple[str, str]] = set()
+    if not capability_id:
+        return page_refs, widget_refs
+    for entry in item.get("living_book_refs", []):
+        if not isinstance(entry, dict):
+            continue
+        page_ref = entry.get("page")
+        if not page_ref:
+            continue
+        page_refs.add((capability_id, page_ref))
+        for widget_id in entry.get("widget_ids", []) or []:
+            widget_refs.add((capability_id, widget_id))
+    return page_refs, widget_refs
+
+
+def widgets_on_page(path: Path) -> set[str]:
+    if not path.exists():
+        return set()
+    return set(WIDGET_PANEL_RE.findall(path.read_text()))
+
+
+def widget_paths() -> dict[str, Path]:
+    return {
+        path.stem: path
+        for path in sorted((ROOT / "site" / "widgets").glob("**/*.js"))
+    }
+
+
+def theorem_ids_on_page(path: Path) -> set[str]:
+    if not path.exists():
+        return set()
+    return set(THEOREM_ATTR_RE.findall(path.read_text()))
+
+
 def page_theorem_pairs() -> tuple[list[tuple[str, str]], list[str]]:
     if not SHOWCASE_PAGE.exists():
         return [], []
@@ -197,6 +272,7 @@ def main() -> int:
     statuses = theorem_statuses()
     papers = paper_index()
     known_dictionary_ids = dictionary_ids()
+    known_widgets = widget_paths()
     failures: list[str] = []
 
     ids = [item.get("id") for item in capabilities]
@@ -210,6 +286,15 @@ def main() -> int:
         )
         page_ids: list[str] = []
     else:
+        page_text = SHOWCASE_PAGE.read_text()
+        if f'data-widget="{SHOWCASE_MATRIX_WIDGET_ID}"' not in page_text:
+            failures.append(
+                f"showcase page must mount {SHOWCASE_MATRIX_WIDGET_ID}"
+            )
+        if SHOWCASE_MATRIX_SCRIPT not in page_text:
+            failures.append(
+                f"showcase page must import {SHOWCASE_MATRIX_SCRIPT}"
+            )
         page_ids = page_capability_ids()
         page_duplicates = sorted(
             {item for item in page_ids if page_ids.count(item) > 1}
@@ -331,6 +416,47 @@ def main() -> int:
             failures.append(
                 f"unknown page dictionary refs: {unknown_dictionaries}"
             )
+        page_living_refs, living_refs_without_attrs, page_living_widgets = page_living_book_entries()
+        if living_refs_without_attrs:
+            failures.append(
+                "page Living Book refs missing data-capability-id or "
+                f"data-page-ref/data-widget-id: {sorted(living_refs_without_attrs)}"
+            )
+        expected_living_refs: set[tuple[str, str]] = set()
+        expected_living_widgets: set[tuple[str, str]] = set()
+        for item in capabilities:
+            item_pages, item_widgets = living_book_refs(item)
+            expected_living_refs.update(item_pages)
+            expected_living_widgets.update(item_widgets)
+        page_living_set = set(page_living_refs)
+        missing_living_refs = sorted(expected_living_refs - page_living_set)
+        unknown_living_refs = sorted(page_living_set - expected_living_refs)
+        if missing_living_refs:
+            failures.append(
+                f"Living Book refs missing from page: {missing_living_refs}"
+            )
+        if unknown_living_refs:
+            failures.append(
+                f"unknown page Living Book refs: {unknown_living_refs}"
+            )
+        living_widget_duplicates = sorted(
+            {pair for pair in page_living_widgets if page_living_widgets.count(pair) > 1}
+        )
+        if living_widget_duplicates:
+            failures.append(
+                f"duplicate page Living Book widget refs: {living_widget_duplicates}"
+            )
+        page_living_widget_set = set(page_living_widgets)
+        missing_living_widgets = sorted(expected_living_widgets - page_living_widget_set)
+        unknown_living_widgets = sorted(page_living_widget_set - expected_living_widgets)
+        if missing_living_widgets:
+            failures.append(
+                f"Living Book widget refs missing from page: {missing_living_widgets}"
+            )
+        if unknown_living_widgets:
+            failures.append(
+                f"unknown page Living Book widget refs: {unknown_living_widgets}"
+            )
         page_theorems, theorem_boxes_without_capability = page_theorem_pairs()
         if theorem_boxes_without_capability:
             failures.append(
@@ -402,6 +528,7 @@ def main() -> int:
         paper_ids = item.get("paper_ids", [])
         refs = item.get("source_refs", [])
         executable_refs = item.get("executable_refs", [])
+        living_refs = item.get("living_book_refs", [])
         roles = item.get("portfolio_roles", [])
 
         if not theorem_ids:
@@ -413,6 +540,9 @@ def main() -> int:
         if not isinstance(executable_refs, list) or not executable_refs:
             failures.append(f"{capability_id}: must cite at least one executable ref")
             executable_refs = []
+        if not isinstance(living_refs, list) or not living_refs:
+            failures.append(f"{capability_id}: must cite at least one Living Book ref")
+            living_refs = []
         if not isinstance(roles, list) or not roles:
             failures.append(f"{capability_id}: must declare portfolio_roles")
             roles = []
@@ -438,6 +568,67 @@ def main() -> int:
         if duplicate_executables:
             failures.append(
                 f"{capability_id}: duplicate executable refs {duplicate_executables}"
+            )
+
+        seen_living_pages: list[str] = []
+        for living_ref in living_refs:
+            if not isinstance(living_ref, dict):
+                failures.append(f"{capability_id}: Living Book ref must be a mapping")
+                continue
+            page_ref = living_ref.get("page")
+            if not isinstance(page_ref, str) or not page_ref:
+                failures.append(f"{capability_id}: Living Book ref missing page")
+                continue
+            seen_living_pages.append(page_ref)
+            local_page = Path(page_ref)
+            page_path = ROOT / local_page
+            if local_page.is_absolute() or ".." in local_page.parts:
+                failures.append(f"{capability_id}: unsafe Living Book ref {page_ref}")
+                continue
+            if local_page.parts[0] != "site":
+                failures.append(
+                    f"{capability_id}: Living Book ref {page_ref} must live under site/"
+                )
+            if page_path.suffix != ".qmd":
+                failures.append(
+                    f"{capability_id}: Living Book page ref {page_ref} must be a .qmd file"
+                )
+            if not page_path.exists():
+                failures.append(f"{capability_id}: missing Living Book ref {page_ref}")
+                continue
+            widget_ids = living_ref.get("widget_ids", []) or []
+            if not isinstance(widget_ids, list):
+                failures.append(f"{capability_id}: widget_ids for {page_ref} must be a list")
+                widget_ids = []
+            duplicate_widgets = sorted(
+                {widget_id for widget_id in widget_ids if widget_ids.count(widget_id) > 1}
+            )
+            if duplicate_widgets:
+                failures.append(
+                    f"{capability_id}: duplicate Living Book widgets for {page_ref}: {duplicate_widgets}"
+                )
+            page_widgets = widgets_on_page(page_path)
+            for widget_id in widget_ids:
+                if not isinstance(widget_id, str) or not widget_id:
+                    failures.append(f"{capability_id}: empty Living Book widget id for {page_ref}")
+                elif widget_id not in known_widgets:
+                    failures.append(
+                        f"{capability_id}: unknown Living Book widget id {widget_id}"
+                    )
+                elif widget_id not in page_widgets:
+                    failures.append(
+                        f"{capability_id}: Living Book page {page_ref} does not mount widget {widget_id}"
+                    )
+            if not widget_ids and set(theorem_ids).isdisjoint(theorem_ids_on_page(page_path)):
+                failures.append(
+                    f"{capability_id}: Living Book page {page_ref} must carry at least one advertised theorem id or a widget"
+                )
+        duplicate_living_pages = sorted(
+            {page_ref for page_ref in seen_living_pages if seen_living_pages.count(page_ref) > 1}
+        )
+        if duplicate_living_pages:
+            failures.append(
+                f"{capability_id}: duplicate Living Book page refs {duplicate_living_pages}"
             )
 
         paper_theorem_ids: set[str] = set()

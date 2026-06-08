@@ -354,7 +354,8 @@ body {
 .theorem-index-table,
 .paper-index-table,
 .target-index-table,
-.glyph-index-table {
+.glyph-index-table,
+.capability-matrix-table {
   margin: 0;
   min-width: 760px;
   width: 100%;
@@ -365,8 +366,18 @@ body {
 .theorem-index-table td,
 .paper-index-table td,
 .target-index-table td,
-.glyph-index-table td {
+.glyph-index-table td,
+.capability-matrix-table td {
   vertical-align: top;
+}
+
+.capability-title-cell {
+  min-width: 12rem;
+}
+
+.capability-count {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-weight: 700;
 }
 
 .node-label {
@@ -410,7 +421,8 @@ body {
   .theorem-index-table,
   .paper-index-table,
   .target-index-table,
-  .glyph-index-table {
+  .glyph-index-table,
+  .capability-matrix-table {
     min-width: 640px;
   }
 

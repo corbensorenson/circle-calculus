@@ -239,6 +239,9 @@ def export_widget_index() -> dict:
                 "GEN-T0025",
                 "GEN-T0026",
                 "GEN-T0027",
+                "GEN-T0028",
+                "GEN-T0029",
+                "GEN-T0030",
             ],
             "dictionary_ids": ["COMMON-0064", "COMMON-0065", "COMMON-0066"],
             "python_reference": "circle_math.generative.compare_generator_to_explicit; circle_math.generative.bounded_generator_search; circle_math.generative.finite_circle_generator",
@@ -550,6 +553,13 @@ def export_widget_index() -> dict:
             ],
             "python_reference": "circle_math.physics.finite_periodic_dynamics; circle_math.physics.finite_defect_winding",
         },
+        {
+            "id": "capability_portfolio_matrix",
+            "path": "site/widgets/showcase/capability_portfolio_matrix.js",
+            "theorem_ids": [],
+            "dictionary_ids": [],
+            "python_reference": "manifests/capability_showcase.yaml; scripts/check_capability_showcase.py; scripts/site/export_site_data.py",
+        },
     ]
     return {"widgets": widgets}
 
@@ -780,7 +790,29 @@ def export_capability_showcase() -> dict:
     if not path.exists():
         return {"capabilities": []}
     data = load_yaml(path)
-    return {"capabilities": data.get("capabilities", [])}
+    capabilities: list[dict] = []
+    for capability in data.get("capabilities", []):
+        item = dict(capability)
+        living_pages: set[str] = set()
+        living_widgets: set[str] = set()
+        for ref in item.get("living_book_refs", []) or []:
+            page = ref.get("page", "")
+            if page:
+                living_pages.add(page)
+            for widget_id in ref.get("widget_ids", []) or []:
+                if widget_id:
+                    living_widgets.add(widget_id)
+        item["evidence_counts"] = {
+            "paper_count": len(item.get("paper_ids", []) or []),
+            "theorem_count": len(item.get("theorem_ids", []) or []),
+            "dictionary_count": len(item.get("dictionary_ids", []) or []),
+            "executable_count": len(item.get("executable_refs", []) or []),
+            "source_count": len(item.get("source_refs", []) or []),
+            "living_book_page_count": len(living_pages),
+            "living_book_widget_count": len(living_widgets),
+        }
+        capabilities.append(item)
+    return {"capabilities": capabilities}
 
 
 def glyph_status_label(canonical_status: str) -> str:

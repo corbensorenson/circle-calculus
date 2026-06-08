@@ -138,7 +138,10 @@
         "GEN-T0024",
         "GEN-T0025",
         "GEN-T0026",
-        "GEN-T0027"
+        "GEN-T0027",
+        "GEN-T0028",
+        "GEN-T0029",
+        "GEN-T0030"
       ]
     },
     {
@@ -639,6 +642,13 @@
         "CC-T0009",
         "CC-T0011"
       ]
+    },
+    {
+      "dictionary_ids": [],
+      "id": "capability_portfolio_matrix",
+      "path": "site/widgets/showcase/capability_portfolio_matrix.js",
+      "python_reference": "manifests/capability_showcase.yaml; scripts/check_capability_showcase.py; scripts/site/export_site_data.py",
+      "theorem_ids": []
     }
   ]
 }

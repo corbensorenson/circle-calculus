@@ -10,6 +10,15 @@
         "CC-0001",
         "CC-0201"
       ],
+      "evidence_counts": {
+        "dictionary_count": 2,
+        "executable_count": 1,
+        "living_book_page_count": 1,
+        "living_book_widget_count": 0,
+        "paper_count": 1,
+        "source_count": 3,
+        "theorem_count": 2
+      },
       "executable_refs": [
         "sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py"
       ],
@@ -50,6 +59,15 @@
         "CC-0001",
         "CC-0201"
       ],
+      "evidence_counts": {
+        "dictionary_count": 2,
+        "executable_count": 1,
+        "living_book_page_count": 1,
+        "living_book_widget_count": 0,
+        "paper_count": 1,
+        "source_count": 2,
+        "theorem_count": 2
+      },
       "executable_refs": [
         "sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py"
       ],
@@ -89,6 +107,15 @@
         "CC-0001",
         "CC-0201"
       ],
+      "evidence_counts": {
+        "dictionary_count": 2,
+        "executable_count": 1,
+        "living_book_page_count": 1,
+        "living_book_widget_count": 0,
+        "paper_count": 1,
+        "source_count": 2,
+        "theorem_count": 2
+      },
       "executable_refs": [
         "sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py"
       ],
@@ -128,6 +155,15 @@
         "CC-0001",
         "CC-0201"
       ],
+      "evidence_counts": {
+        "dictionary_count": 2,
+        "executable_count": 1,
+        "living_book_page_count": 1,
+        "living_book_widget_count": 0,
+        "paper_count": 1,
+        "source_count": 2,
+        "theorem_count": 2
+      },
       "executable_refs": [
         "sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py"
       ],
@@ -167,6 +203,15 @@
         "CC-0001",
         "CC-0201"
       ],
+      "evidence_counts": {
+        "dictionary_count": 2,
+        "executable_count": 1,
+        "living_book_page_count": 1,
+        "living_book_widget_count": 0,
+        "paper_count": 1,
+        "source_count": 2,
+        "theorem_count": 3
+      },
       "executable_refs": [
         "sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py"
       ],
@@ -210,6 +255,15 @@
         "CC-0207",
         "COMMON-0041"
       ],
+      "evidence_counts": {
+        "dictionary_count": 5,
+        "executable_count": 1,
+        "living_book_page_count": 2,
+        "living_book_widget_count": 3,
+        "paper_count": 2,
+        "source_count": 4,
+        "theorem_count": 6
+      },
       "executable_refs": [
         "sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py"
       ],
@@ -270,6 +324,15 @@
         "S3S-0002",
         "S3S-0003"
       ],
+      "evidence_counts": {
+        "dictionary_count": 6,
+        "executable_count": 3,
+        "living_book_page_count": 2,
+        "living_book_widget_count": 2,
+        "paper_count": 3,
+        "source_count": 4,
+        "theorem_count": 7
+      },
       "executable_refs": [
         "sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py",
         "sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py",
@@ -332,6 +395,15 @@
         "COMMON-0062",
         "COMMON-0063"
       ],
+      "evidence_counts": {
+        "dictionary_count": 4,
+        "executable_count": 1,
+        "living_book_page_count": 1,
+        "living_book_widget_count": 3,
+        "paper_count": 1,
+        "source_count": 2,
+        "theorem_count": 10
+      },
       "executable_refs": [
         "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
       ],
@@ -387,6 +459,15 @@
         "COMMON-0065",
         "COMMON-0066"
       ],
+      "evidence_counts": {
+        "dictionary_count": 4,
+        "executable_count": 2,
+        "living_book_page_count": 1,
+        "living_book_widget_count": 4,
+        "paper_count": 2,
+        "source_count": 4,
+        "theorem_count": 14
+      },
       "executable_refs": [
         "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py",
         "sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py"
@@ -412,7 +493,7 @@
         "circle_native_value",
         "application_guardrail"
       ],
-      "proof_scope": "Lean-proved seed-rule, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, and best-candidate soundness gates.",
+      "proof_scope": "Lean-proved seed-rule, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, best-candidate soundness, and exact-candidate absence/count gates.",
       "source_refs": [
         "Circle/Generative/SeedRule.lean",
         "Circle/Phase2/GlyphProof.lean",
@@ -431,6 +512,9 @@
         "GEN-T0024",
         "GEN-T0026",
         "GEN-T0027",
+        "GEN-T0028",
+        "GEN-T0029",
+        "GEN-T0030",
         "P2G-T0006"
       ],
       "title": "Proof-carrying generative provenance"
@@ -448,6 +532,15 @@
         "COMMON-0067",
         "COMMON-0071"
       ],
+      "evidence_counts": {
+        "dictionary_count": 5,
+        "executable_count": 2,
+        "living_book_page_count": 1,
+        "living_book_widget_count": 5,
+        "paper_count": 2,
+        "source_count": 5,
+        "theorem_count": 8
+      },
       "executable_refs": [
         "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
         "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"
@@ -508,6 +601,15 @@
         "COMMON-0040",
         "COMMON-0045"
       ],
+      "evidence_counts": {
+        "dictionary_count": 4,
+        "executable_count": 3,
+        "living_book_page_count": 1,
+        "living_book_widget_count": 0,
+        "paper_count": 3,
+        "source_count": 5,
+        "theorem_count": 3
+      },
       "executable_refs": [
         "sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py",
         "sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py",

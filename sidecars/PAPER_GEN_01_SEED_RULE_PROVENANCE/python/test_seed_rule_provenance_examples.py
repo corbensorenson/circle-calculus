@@ -152,6 +152,7 @@ def test_bounded_generator_search_reports_scope_and_exact_candidates() -> None:
     assert search.candidate_count == 3
     assert search.exact_candidate_count == 2
     assert search.best_exact is not None
+    assert search.exact_candidate_count > 0
     assert search.best_exact.exact_regeneration
     assert (
         search.best_exact.artifact_id,
@@ -164,6 +165,9 @@ def test_bounded_generator_search_reports_scope_and_exact_candidates() -> None:
     assert "GEN-T0025" in search.theorem_ids
     assert "GEN-T0026" in search.theorem_ids
     assert "GEN-T0027" in search.theorem_ids
+    assert "GEN-T0028" in search.theorem_ids
+    assert "GEN-T0029" in search.theorem_ids
+    assert "GEN-T0030" in search.theorem_ids
     assert search.note.endswith("not an optimality theorem.")
 
 
@@ -175,6 +179,7 @@ def test_empty_bounded_generator_search_has_no_best_candidate() -> None:
     assert search.candidate_count == 0
     assert search.exact_candidate_count == 0
     assert search.best_exact is None
+    assert (search.best_exact is None) == (search.exact_candidate_count == 0)
     assert search.best_shorter is None
     assert search.theorem_ids == (
         "GEN-T0022",
@@ -183,4 +188,7 @@ def test_empty_bounded_generator_search_has_no_best_candidate() -> None:
         "GEN-T0025",
         "GEN-T0026",
         "GEN-T0027",
+        "GEN-T0028",
+        "GEN-T0029",
+        "GEN-T0030",
     )

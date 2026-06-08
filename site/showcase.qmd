@@ -23,11 +23,13 @@ Circle Calculus should be judged by whether it can express serious structures in
 - cyclic AI schedule/index facts, and
 - cyclic compute layout facts.
 
+<div class="widget-panel" data-widget="capability_portfolio_matrix"></div>
+
 ## Hard Mathematics Bridges
 
 ### Zero-Sum And Sumset Theorems
 
-<div class="capability-anchor" data-capability-id="SHOW-001"></div>
+<div id="SHOW-001" class="capability-anchor" data-capability-id="SHOW-001"></div>
 
 Circle Calculus states EGZ and Cauchy-Davenport directly over `C_n` and `C_p`.
 
@@ -39,6 +41,7 @@ Circle Calculus states EGZ and Cauchy-Davenport directly over `C_n` and `C_p`.
 - Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-001" data-claim-field="advertised_claim"></span>Circle Calculus can state established zero-sum and prime-circle sumset theorems directly in the native `C_n` vocabulary.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-001" data-executable-ref="sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py"></span><code>sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-001" data-dictionary-id="CC-0001"></span><code>CC-0001</code>; <span class="dictionary-evidence" data-capability-id="SHOW-001" data-dictionary-id="CC-0201"></span><code>CC-0201</code>.
+- Living Book evidence: <span class="living-book-evidence" data-capability-id="SHOW-001" data-page-ref="site/chapters/S1/04_period_gcd_prime_full_coils.qmd"></span><code>site/chapters/S1/04_period_gcd_prime_full_coils.qmd</code>.
 - Scope: <span class="claim-field-evidence" data-capability-id="SHOW-001" data-claim-field="proof_scope"></span>Lean-proved Circle wrappers around mathlib's EGZ and Cauchy-Davenport theorems.
 - Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-001" data-claim-field="not_claimed"></span>No new proof of EGZ, no new proof of Cauchy-Davenport, and no progress claim on an open Erdos problem.
 
@@ -47,7 +50,7 @@ Circle Calculus states EGZ and Cauchy-Davenport directly over `C_n` and `C_p`.
 
 ### Katona And Erdos-Ko-Rado
 
-<div class="capability-anchor" data-capability-id="SHOW-002"></div>
+<div id="SHOW-002" class="capability-anchor" data-capability-id="SHOW-002"></div>
 
 The Katona lane makes cyclic-order double counting and intersecting-family bounds visible while keeping the theorem source formal.
 
@@ -59,6 +62,7 @@ The Katona lane makes cyclic-order double counting and intersecting-family bound
 - Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-002" data-claim-field="advertised_claim"></span>Circle Calculus can expose a classical circle-method counting atom and the Erdos-Ko-Rado bound as proof-linked artifacts.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-002" data-executable-ref="sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py"></span><code>sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-002" data-dictionary-id="CC-0001"></span><code>CC-0001</code>; <span class="dictionary-evidence" data-capability-id="SHOW-002" data-dictionary-id="CC-0201"></span><code>CC-0201</code>.
+- Living Book evidence: <span class="living-book-evidence" data-capability-id="SHOW-002" data-page-ref="site/chapters/S1/04_period_gcd_prime_full_coils.qmd"></span><code>site/chapters/S1/04_period_gcd_prime_full_coils.qmd</code>.
 - Scope: <span class="claim-field-evidence" data-capability-id="SHOW-002" data-claim-field="proof_scope"></span>Lean-proved wrappers around mathlib's Katona prefix-density and Erdos-Ko-Rado declarations.
 - Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-002" data-claim-field="not_claimed"></span>No new EKR proof and no classification of all extremal families.
 
@@ -67,7 +71,7 @@ The Katona lane makes cyclic-order double counting and intersecting-family bound
 
 ### Roth And Three-Term Progressions
 
-<div class="capability-anchor" data-capability-id="SHOW-003"></div>
+<div id="SHOW-003" class="capability-anchor" data-capability-id="SHOW-003"></div>
 
 The Roth lane gives Circle Calculus a serious density-additive-combinatorics target with finite witness searches as examples.
 
@@ -79,6 +83,7 @@ The Roth lane gives Circle Calculus a serious density-additive-combinatorics tar
 - Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-003" data-claim-field="advertised_claim"></span>Circle Calculus can connect finite witness searches to formal Roth-theorem handles.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-003" data-executable-ref="sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py"></span><code>sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-003" data-dictionary-id="CC-0001"></span><code>CC-0001</code>; <span class="dictionary-evidence" data-capability-id="SHOW-003" data-dictionary-id="CC-0201"></span><code>CC-0201</code>.
+- Living Book evidence: <span class="living-book-evidence" data-capability-id="SHOW-003" data-page-ref="site/chapters/S1/04_period_gcd_prime_full_coils.qmd"></span><code>site/chapters/S1/04_period_gcd_prime_full_coils.qmd</code>.
 - Scope: <span class="claim-field-evidence" data-capability-id="SHOW-003" data-claim-field="proof_scope"></span>Lean-proved wrappers around mathlib's Roth theorem and Roth-number sublinearity statement.
 - Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-003" data-claim-field="not_claimed"></span>No new Roth proof, no improved bounds, and no cyclic-to-natural transfer theorem yet.
 
@@ -87,7 +92,7 @@ The Roth lane gives Circle Calculus a serious density-additive-combinatorics tar
 
 ### Ramsey Lines And Hales-Jewett
 
-<div class="capability-anchor" data-capability-id="SHOW-004"></div>
+<div id="SHOW-004" class="capability-anchor" data-capability-id="SHOW-004"></div>
 
 The Ramsey lane shows unavoidable structure through formal Hales-Jewett and homothetic-copy handles.
 
@@ -99,6 +104,7 @@ The Ramsey lane shows unavoidable structure through formal Hales-Jewett and homo
 - Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-004" data-claim-field="advertised_claim"></span>Circle Calculus can present Ramsey-style unavoidable structure with theorem ids and executable finite searches.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-004" data-executable-ref="sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py"></span><code>sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-004" data-dictionary-id="CC-0001"></span><code>CC-0001</code>; <span class="dictionary-evidence" data-capability-id="SHOW-004" data-dictionary-id="CC-0201"></span><code>CC-0201</code>.
+- Living Book evidence: <span class="living-book-evidence" data-capability-id="SHOW-004" data-page-ref="site/chapters/S1/04_period_gcd_prime_full_coils.qmd"></span><code>site/chapters/S1/04_period_gcd_prime_full_coils.qmd</code>.
 - Scope: <span class="claim-field-evidence" data-capability-id="SHOW-004" data-claim-field="proof_scope"></span>Lean-proved wrappers around mathlib's Hales-Jewett and homothetic-copy theorems.
 - Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-004" data-claim-field="not_claimed"></span>Finite Python searches are examples only; they are not the Hales-Jewett proof.
 
@@ -107,7 +113,7 @@ The Ramsey lane shows unavoidable structure through formal Hales-Jewett and homo
 
 ### Circulant Graph Geometry
 
-<div class="capability-anchor" data-capability-id="SHOW-005"></div>
+<div id="SHOW-005" class="capability-anchor" data-capability-id="SHOW-005"></div>
 
 The graph lane starts conservatively with cycle graphs, circulant graphs, connectedness, and unit-distance vocabulary.
 
@@ -119,6 +125,7 @@ The graph lane starts conservatively with cycle graphs, circulant graphs, connec
 - Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-005" data-claim-field="advertised_claim"></span>Circle Calculus can use cyclic graph models as a proof-backed bridge toward graph-geometry language.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-005" data-executable-ref="sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py"></span><code>sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-005" data-dictionary-id="CC-0001"></span><code>CC-0001</code>; <span class="dictionary-evidence" data-capability-id="SHOW-005" data-dictionary-id="CC-0201"></span><code>CC-0201</code>.
+- Living Book evidence: <span class="living-book-evidence" data-capability-id="SHOW-005" data-page-ref="site/chapters/S1/04_period_gcd_prime_full_coils.qmd"></span><code>site/chapters/S1/04_period_gcd_prime_full_coils.qmd</code>.
 - Scope: <span class="claim-field-evidence" data-capability-id="SHOW-005" data-claim-field="proof_scope"></span>Lean-proved cycle/circulant and connectedness bridges plus a unit-distance embedding constructor for empty graphs.
 - Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-005" data-claim-field="not_claimed"></span>No progress on hard unit-distance or distinct-distance problems.
 
@@ -130,7 +137,7 @@ The graph lane starts conservatively with cycle graphs, circulant graphs, connec
 
 ### Periods, Fibers, Kernels, And Normal Forms
 
-<div class="capability-anchor" data-capability-id="SHOW-006"></div>
+<div id="SHOW-006" class="capability-anchor" data-capability-id="SHOW-006"></div>
 
 The S1 spine is the internal proof engine: period, gcd orbit count, scaling images, fibers, kernel representatives, and full-coil conditions.
 
@@ -143,6 +150,7 @@ The S1 spine is the internal proof engine: period, gcd orbit count, scaling imag
 - Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-006" data-claim-field="advertised_claim"></span>Circle Calculus can express detailed modular-arithmetic structure as period, orbit, kernel, and fiber theorems.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-006" data-executable-ref="sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py"></span><code>sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-006" data-dictionary-id="S1-0001"></span><code>S1-0001</code>; <span class="dictionary-evidence" data-capability-id="SHOW-006" data-dictionary-id="CC-0105"></span><code>CC-0105</code>; <span class="dictionary-evidence" data-capability-id="SHOW-006" data-dictionary-id="CC-0205"></span><code>CC-0205</code>; <span class="dictionary-evidence" data-capability-id="SHOW-006" data-dictionary-id="CC-0207"></span><code>CC-0207</code>; <span class="dictionary-evidence" data-capability-id="SHOW-006" data-dictionary-id="COMMON-0041"></span><code>COMMON-0041</code>.
+- Living Book evidence: <span class="living-book-evidence" data-capability-id="SHOW-006" data-page-ref="site/chapters/S1/03_coils_orbits_closure.qmd"></span><code>site/chapters/S1/03_coils_orbits_closure.qmd</code>; <span class="living-book-evidence" data-capability-id="SHOW-006" data-page-ref="site/chapters/S1/04_period_gcd_prime_full_coils.qmd"></span><code>site/chapters/S1/04_period_gcd_prime_full_coils.qmd</code>; widgets <span class="living-book-widget-evidence" data-capability-id="SHOW-006" data-widget-id="coil_orbit_explorer"></span><code>coil_orbit_explorer</code>, <span class="living-book-widget-evidence" data-capability-id="SHOW-006" data-widget-id="period_gcd_visualizer"></span><code>period_gcd_visualizer</code>, <span class="living-book-widget-evidence" data-capability-id="SHOW-006" data-widget-id="prime_full_coil_explorer"></span><code>prime_full_coil_explorer</code>.
 - Scope: <span class="claim-field-evidence" data-capability-id="SHOW-006" data-claim-field="proof_scope"></span>Lean-proved S1 scaling and orbit spine, including full-coil iff coprime and image-times-fiber factorizations.
 - Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-006" data-claim-field="not_claimed"></span>No claim that this replaces standard modular arithmetic; it is a proof-carrying cyclic presentation.
 
@@ -155,7 +163,7 @@ The S1 spine is the internal proof engine: period, gcd orbit count, scaling imag
 
 ### Quaternion And Hopf Phase Coordinates
 
-<div class="capability-anchor" data-capability-id="SHOW-007"></div>
+<div id="SHOW-007" class="capability-anchor" data-capability-id="SHOW-007"></div>
 
 The S3 lane gives bounded phase-coordinate, quaternion, pure-vector, and spin-sign facts that are useful for rotation, hidden phase, and sign-ambiguity explanations.
 
@@ -169,6 +177,7 @@ The S3 lane gives bounded phase-coordinate, quaternion, pure-vector, and spin-si
 - Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-007" data-claim-field="advertised_claim"></span>Circle Calculus can express bounded quaternion, spin-sign, pure-vector, and Hopf phase facts with explicit warnings about topology boundaries.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-007" data-executable-ref="sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py"></span><code>sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-007" data-executable-ref="sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py"></span><code>sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-007" data-executable-ref="sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py"></span><code>sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-007" data-dictionary-id="S3Q-0001"></span><code>S3Q-0001</code>; <span class="dictionary-evidence" data-capability-id="SHOW-007" data-dictionary-id="S3H-0001"></span><code>S3H-0001</code>; <span class="dictionary-evidence" data-capability-id="SHOW-007" data-dictionary-id="S3H-0002"></span><code>S3H-0002</code>; <span class="dictionary-evidence" data-capability-id="SHOW-007" data-dictionary-id="S3S-0001"></span><code>S3S-0001</code>; <span class="dictionary-evidence" data-capability-id="SHOW-007" data-dictionary-id="S3S-0002"></span><code>S3S-0002</code>; <span class="dictionary-evidence" data-capability-id="SHOW-007" data-dictionary-id="S3S-0003"></span><code>S3S-0003</code>.
+- Living Book evidence: <span class="living-book-evidence" data-capability-id="SHOW-007" data-page-ref="site/chapters/S3/hopf_coils.qmd"></span><code>site/chapters/S3/hopf_coils.qmd</code>; <span class="living-book-evidence" data-capability-id="SHOW-007" data-page-ref="site/chapters/applications/physics.qmd"></span><code>site/chapters/applications/physics.qmd</code>; widgets <span class="living-book-widget-evidence" data-capability-id="SHOW-007" data-widget-id="hopf_hidden_phase"></span><code>hopf_hidden_phase</code>, <span class="living-book-widget-evidence" data-capability-id="SHOW-007" data-widget-id="spin_sign_ambiguity"></span><code>spin_sign_ambiguity</code>.
 - Scope: <span class="claim-field-evidence" data-capability-id="SHOW-007" data-claim-field="proof_scope"></span>Lean-proved quaternion unit laws, pure-vector conjugation boundary, sign-cancellation facts, and bounded Hopf phase-action facts.
 - Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-007" data-claim-field="not_claimed"></span>No full smooth Hopf fibration formalization and no complete SO(3) robotics formalization.
 
@@ -184,7 +193,7 @@ The S3 lane gives bounded phase-coordinate, quaternion, pure-vector, and spin-si
 
 ### Finite Gauge Paths
 
-<div class="capability-anchor" data-capability-id="SHOW-008"></div>
+<div id="SHOW-008" class="capability-anchor" data-capability-id="SHOW-008"></div>
 
 The physics lane builds proof-carrying finite gauge paths with checked path composition and holonomy interfaces.
 
@@ -196,6 +205,7 @@ The physics lane builds proof-carrying finite gauge paths with checked path comp
 - Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-008" data-claim-field="advertised_claim"></span>Circle Calculus can build a finite proof-carrying gauge-path model with endpoint and holonomy laws.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-008" data-executable-ref="sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"></span><code>sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-008" data-dictionary-id="COMMON-0060"></span><code>COMMON-0060</code>; <span class="dictionary-evidence" data-capability-id="SHOW-008" data-dictionary-id="COMMON-0061"></span><code>COMMON-0061</code>; <span class="dictionary-evidence" data-capability-id="SHOW-008" data-dictionary-id="COMMON-0062"></span><code>COMMON-0062</code>; <span class="dictionary-evidence" data-capability-id="SHOW-008" data-dictionary-id="COMMON-0063"></span><code>COMMON-0063</code>.
+- Living Book evidence: <span class="living-book-evidence" data-capability-id="SHOW-008" data-page-ref="site/chapters/applications/physics.qmd"></span><code>site/chapters/applications/physics.qmd</code>; widgets <span class="living-book-widget-evidence" data-capability-id="SHOW-008" data-widget-id="finite_path_algebra"></span><code>finite_path_algebra</code>, <span class="living-book-widget-evidence" data-capability-id="SHOW-008" data-widget-id="finite_gauge_loop_holonomy"></span><code>finite_gauge_loop_holonomy</code>, <span class="living-book-widget-evidence" data-capability-id="SHOW-008" data-widget-id="wilson_loop_certificate"></span><code>wilson_loop_certificate</code>.
 - Scope: <span class="claim-field-evidence" data-capability-id="SHOW-008" data-claim-field="proof_scope"></span>Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, and two-path cycle gauge-invariance facts.
 - Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-008" data-claim-field="not_claimed"></span>No continuum gauge theory, no physics discovery, and no lattice-QCD correctness claim.
 
@@ -212,7 +222,7 @@ The physics lane builds proof-carrying finite gauge paths with checked path comp
 
 ### Generative Provenance
 
-<div class="capability-anchor" data-capability-id="SHOW-009"></div>
+<div id="SHOW-009" class="capability-anchor" data-capability-id="SHOW-009"></div>
 
 The generative lane pairs seed-rule construction with exact-regeneration checks and negative-case gates.
 
@@ -225,7 +235,8 @@ The generative lane pairs seed-rule construction with exact-regeneration checks 
 - Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-009" data-claim-field="advertised_claim"></span>Circle Calculus can pair generated structures with checked provenance and exact-comparison gates.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-009" data-executable-ref="sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py"></span><code>sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-009" data-executable-ref="sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py"></span><code>sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-009" data-dictionary-id="COMMON-0033"></span><code>COMMON-0033</code>; <span class="dictionary-evidence" data-capability-id="SHOW-009" data-dictionary-id="COMMON-0064"></span><code>COMMON-0064</code>; <span class="dictionary-evidence" data-capability-id="SHOW-009" data-dictionary-id="COMMON-0065"></span><code>COMMON-0065</code>; <span class="dictionary-evidence" data-capability-id="SHOW-009" data-dictionary-id="COMMON-0066"></span><code>COMMON-0066</code>.
-- Scope: <span class="claim-field-evidence" data-capability-id="SHOW-009" data-claim-field="proof_scope"></span>Lean-proved seed-rule, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, and best-candidate soundness gates.
+- Living Book evidence: <span class="living-book-evidence" data-capability-id="SHOW-009" data-page-ref="site/chapters/applications/generative.qmd"></span><code>site/chapters/applications/generative.qmd</code>; widgets <span class="living-book-widget-evidence" data-capability-id="SHOW-009" data-widget-id="seed_rule_diagram_generator"></span><code>seed_rule_diagram_generator</code>, <span class="living-book-widget-evidence" data-capability-id="SHOW-009" data-widget-id="orbit_family_generator"></span><code>orbit_family_generator</code>, <span class="living-book-widget-evidence" data-capability-id="SHOW-009" data-widget-id="proof_glyph_certificate"></span><code>proof_glyph_certificate</code>, <span class="living-book-widget-evidence" data-capability-id="SHOW-009" data-widget-id="generator_comparison_search"></span><code>generator_comparison_search</code>.
+- Scope: <span class="claim-field-evidence" data-capability-id="SHOW-009" data-claim-field="proof_scope"></span>Lean-proved seed-rule, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, best-candidate soundness, and exact-candidate absence/count gates.
 - Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-009" data-claim-field="not_claimed"></span>No universal compression claim and no guarantee that generated artifacts are mathematically interesting.
 
 <div class="theorem-box" data-capability-id="SHOW-009" data-theorem-id="GEN-T0001"></div>
@@ -238,11 +249,14 @@ The generative lane pairs seed-rule construction with exact-regeneration checks 
 <div class="theorem-box" data-capability-id="SHOW-009" data-theorem-id="GEN-T0024"></div>
 <div class="theorem-box" data-capability-id="SHOW-009" data-theorem-id="GEN-T0026"></div>
 <div class="theorem-box" data-capability-id="SHOW-009" data-theorem-id="GEN-T0027"></div>
+<div class="theorem-box" data-capability-id="SHOW-009" data-theorem-id="GEN-T0028"></div>
+<div class="theorem-box" data-capability-id="SHOW-009" data-theorem-id="GEN-T0029"></div>
+<div class="theorem-box" data-capability-id="SHOW-009" data-theorem-id="GEN-T0030"></div>
 <div class="theorem-box" data-capability-id="SHOW-009" data-theorem-id="P2G-T0006"></div>
 
 ### AI Schedules And Index Safety
 
-<div class="capability-anchor" data-capability-id="SHOW-010"></div>
+<div id="SHOW-010" class="capability-anchor" data-capability-id="SHOW-010"></div>
 
 The AI lane proves finite schedule/index facts that can support experiments without pretending proofs imply model quality.
 
@@ -255,6 +269,7 @@ The AI lane proves finite schedule/index facts that can support experiments with
 - Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-010" data-claim-field="advertised_claim"></span>Circle Calculus can prove finite indexing and schedule-safety facts that AI experiments can reuse.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-010" data-executable-ref="sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py"></span><code>sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-010" data-executable-ref="sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"></span><code>sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-010" data-dictionary-id="COMMON-0028"></span><code>COMMON-0028</code>; <span class="dictionary-evidence" data-capability-id="SHOW-010" data-dictionary-id="COMMON-0047"></span><code>COMMON-0047</code>; <span class="dictionary-evidence" data-capability-id="SHOW-010" data-dictionary-id="COMMON-0052"></span><code>COMMON-0052</code>; <span class="dictionary-evidence" data-capability-id="SHOW-010" data-dictionary-id="COMMON-0067"></span><code>COMMON-0067</code>; <span class="dictionary-evidence" data-capability-id="SHOW-010" data-dictionary-id="COMMON-0071"></span><code>COMMON-0071</code>.
+- Living Book evidence: <span class="living-book-evidence" data-capability-id="SHOW-010" data-page-ref="site/chapters/applications/ai.qmd"></span><code>site/chapters/applications/ai.qmd</code>; widgets <span class="living-book-widget-evidence" data-capability-id="SHOW-010" data-widget-id="cyclic_memory_slots"></span><code>cyclic_memory_slots</code>, <span class="living-book-widget-evidence" data-capability-id="SHOW-010" data-widget-id="loop_recurrence_budget"></span><code>loop_recurrence_budget</code>, <span class="living-book-widget-evidence" data-capability-id="SHOW-010" data-widget-id="loop_exit_certificate"></span><code>loop_exit_certificate</code>, <span class="living-book-widget-evidence" data-capability-id="SHOW-010" data-widget-id="training_free_loop_wrapper"></span><code>training_free_loop_wrapper</code>, <span class="living-book-widget-evidence" data-capability-id="SHOW-010" data-widget-id="adapter_parameter_budget"></span><code>adapter_parameter_budget</code>.
 - Scope: <span class="claim-field-evidence" data-capability-id="SHOW-010" data-claim-field="proof_scope"></span>Lean-proved finite memory-slot, loop-budget, recurrence-budget positivity, unavailable-budget clamp, loop-exit, and adapter-block normalization facts.
 - Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-010" data-claim-field="not_claimed"></span>No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence.
 
@@ -269,7 +284,7 @@ The AI lane proves finite schedule/index facts that can support experiments with
 
 ### Circular Compute Layouts
 
-<div class="capability-anchor" data-capability-id="SHOW-011"></div>
+<div id="SHOW-011" class="capability-anchor" data-capability-id="SHOW-011"></div>
 
 The compute lane proves address-safety and schedule-normalization facts before any backend performance claim is allowed.
 
@@ -283,6 +298,7 @@ The compute lane proves address-safety and schedule-normalization facts before a
 - Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-011" data-claim-field="advertised_claim"></span>Circle Calculus can prove finite address-safety and schedule-normalization facts for cyclic computation.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-011" data-executable-ref="sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py"></span><code>sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-011" data-executable-ref="sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py"></span><code>sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-011" data-executable-ref="sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py"></span><code>sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-011" data-dictionary-id="COMMON-0018"></span><code>COMMON-0018</code>; <span class="dictionary-evidence" data-capability-id="SHOW-011" data-dictionary-id="COMMON-0022"></span><code>COMMON-0022</code>; <span class="dictionary-evidence" data-capability-id="SHOW-011" data-dictionary-id="COMMON-0040"></span><code>COMMON-0040</code>; <span class="dictionary-evidence" data-capability-id="SHOW-011" data-dictionary-id="COMMON-0045"></span><code>COMMON-0045</code>.
+- Living Book evidence: <span class="living-book-evidence" data-capability-id="SHOW-011" data-page-ref="site/chapters/applications/compute.qmd"></span><code>site/chapters/applications/compute.qmd</code>.
 - Scope: <span class="claim-field-evidence" data-capability-id="SHOW-011" data-claim-field="proof_scope"></span>Lean-proved cyclic-address, stride-address, and round-robin schedule laws with Python layout fixtures.
 - Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-011" data-claim-field="not_claimed"></span>No performance claim without direct dense, FFT/NTT, and backend baselines.
 
@@ -307,3 +323,4 @@ python scripts/check_capability_showcase.py
 That check is part of `make sourcecheck`, so the advertised surface is kept under the same proof-status discipline as the rest of the project.
 
 <script type="module" src="widgets/shared/widget_base.js"></script>
+<script type="module" src="widgets/showcase/capability_portfolio_matrix.js"></script>

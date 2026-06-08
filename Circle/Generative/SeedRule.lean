@@ -305,4 +305,32 @@ theorem boundedGeneratorSearch_bestExact_exact
   search.exactSound candidate
     (boundedGeneratorSearch_bestExact_mem_exactCandidates search hbest)
 
+theorem boundedGeneratorSearch_bestExact_none_iff_exactCandidates_empty
+    (search : BoundedGeneratorSearch α) :
+    search.bestExact? = none ↔ search.exactCandidates = [] := by
+  cases search with
+  | mk candidates exactCandidates exactSubset exactSound =>
+      cases exactCandidates <;> simp [BoundedGeneratorSearch.bestExact?]
+
+theorem boundedGeneratorSearch_bestExact_none_iff_exactCandidateCount_zero
+    (search : BoundedGeneratorSearch α) :
+    search.bestExact? = none ↔ search.exactCandidateCount = 0 := by
+  cases search with
+  | mk candidates exactCandidates exactSubset exactSound =>
+      cases exactCandidates <;>
+        simp [BoundedGeneratorSearch.bestExact?,
+          BoundedGeneratorSearch.exactCandidateCount]
+
+theorem boundedGeneratorSearch_bestExact_some_exactCandidateCount_pos
+    (search : BoundedGeneratorSearch α) {candidate : GeneratorComparison α}
+    (hbest : search.bestExact? = some candidate) :
+    0 < search.exactCandidateCount := by
+  cases search with
+  | mk candidates exactCandidates exactSubset exactSound =>
+      cases exactCandidates with
+      | nil =>
+          simp [BoundedGeneratorSearch.bestExact?] at hbest
+      | cons head tail =>
+          simp [BoundedGeneratorSearch.exactCandidateCount]
+
 end Circle.Generative

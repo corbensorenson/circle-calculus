@@ -1658,6 +1658,7 @@ def main() -> int:
     assert search.exact_candidate_count == len(js_exact)
     assert search.best_exact is not None
     assert search.best_shorter is not None
+    assert (search.best_exact is not None) == (search.exact_candidate_count > 0)
     assert search.best_exact.generator_length == min(
         comparison["generator_length"]
         for comparison in js_exact
@@ -1673,12 +1674,16 @@ def main() -> int:
         "GEN-T0025",
         "GEN-T0026",
         "GEN-T0027",
+        "GEN-T0028",
+        "GEN-T0029",
+        "GEN-T0030",
     )
     assert search.theorem_ids == generator_search_theorem_ids
     empty_search = bounded_generator_search([], search_id="empty_declared_search")
     assert empty_search.candidate_count == 0
     assert empty_search.exact_candidate_count == 0
     assert empty_search.best_exact is None
+    assert (empty_search.best_exact is None) == (empty_search.exact_candidate_count == 0)
     assert empty_search.best_shorter is None
     assert empty_search.theorem_ids == generator_search_theorem_ids
 

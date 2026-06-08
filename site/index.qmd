@@ -70,6 +70,14 @@ Open theorem cards, Lean declaration names, manifests, and paper links. A theore
 
 Compare widget behavior against Python reference models and tests. Python examples are executable support, not formal proof.
 
+## Proof-Backed Portfolio
+
+<div class="portfolio-entrypoint" data-entrypoint-ref="showcase.qmd" data-verify-ref="verify_claim.qmd" data-manifest-ref="manifests/capability_showcase.yaml" data-validator-ref="scripts/check_capability_showcase.py"></div>
+
+If you are asking why someone should use Circle Calculus, start with the [Proof-Backed Showcase](showcase.qmd). It is the serious public advertisement for the project: every advertised capability is required to name a standard anchor, a Circle expression, a Circle-native value claim, a proof scope, a not-claimed boundary, paper ids, proved theorem ids, dictionary ids, executable examples, and Living Book pages or widgets.
+
+Use [How To Verify A Claim](verify_claim.qmd) beside it. The portfolio does not prove universal expressiveness by assertion; it shows the current checked surfaces and the source trail needed to audit each one.
+
 ## Start Here
 
 1. Read the [Guided Learning Path](reader_path.qmd).

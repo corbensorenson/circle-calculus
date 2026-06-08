@@ -15,6 +15,9 @@ const THEOREM_IDS = [
   "GEN-T0025",
   "GEN-T0026",
   "GEN-T0027",
+  "GEN-T0028",
+  "GEN-T0029",
+  "GEN-T0030",
 ];
 const DICTIONARY_IDS = ["COMMON-0064", "COMMON-0065", "COMMON-0066"];
 
@@ -123,7 +126,17 @@ function boundedSearch(records) {
     best_exact: exact.slice().sort(compareKey)[0] || null,
     best_shorter: shorter.slice().sort(compareKey)[0] || null,
     finite_search_space: true,
-    theorem_ids: ["GEN-T0022", "GEN-T0023", "GEN-T0024", "GEN-T0025", "GEN-T0026", "GEN-T0027"],
+    theorem_ids: [
+      "GEN-T0022",
+      "GEN-T0023",
+      "GEN-T0024",
+      "GEN-T0025",
+      "GEN-T0026",
+      "GEN-T0027",
+      "GEN-T0028",
+      "GEN-T0029",
+      "GEN-T0030",
+    ],
     note: "Bounded finite search only; not an optimality theorem.",
     comparisons,
   };
@@ -207,6 +220,7 @@ function appendRecord(output, values, theoremById) {
     brokenFiniteCircleGenerator(values.n),
   ];
   const search = boundedSearch(records);
+  const emptySearch = boundedSearch([]);
 
   const record = document.createElement("section");
   record.className = "seed-rule-record";
@@ -223,7 +237,9 @@ function appendRecord(output, values, theoremById) {
     `exact candidate count: ${search.exact_candidate_count}`,
     `best exact generator length: ${search.best_exact ? search.best_exact.generator_length : "none"}`,
     `best shorter generator length: ${search.best_shorter ? search.best_shorter.generator_length : "none"}`,
-    "empty search boundary: candidate_count=0, exact_candidate_count=0, best_exact=none",
+    `best-exact presence implies positive exact count: ${search.best_exact !== null ? search.exact_candidate_count > 0 : "not applicable"}`,
+    `empty search boundary: candidate_count=${emptySearch.candidate_count}, exact_candidate_count=${emptySearch.exact_candidate_count}, best_exact=${emptySearch.best_exact === null ? "none" : "present"}`,
+    `empty search no-best iff exact count zero: ${(emptySearch.best_exact === null) === (emptySearch.exact_candidate_count === 0)}`,
     `positive case n=${values.n}: ${search.comparisons[1].generator_shorter ? "generator shorter than explicit" : "explicit not beaten by generator"}`,
     `negative/broken case exact: ${search.comparisons[2].exact_regeneration}`,
   ].join("\n");
