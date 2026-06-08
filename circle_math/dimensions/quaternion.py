@@ -3,6 +3,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 
+DEFAULT_QUATERNION_TOLERANCE = 1e-12
+
+
 @dataclass(frozen=True)
 class Quaternion:
     """Small executable quaternion record for dimensional sidecars."""
@@ -79,3 +82,42 @@ def quaternionic_hopf_map(q0: Quaternion, q1: Quaternion) -> tuple[float, float,
 def r5_norm_sq(point: tuple[float, float, float, float, float]) -> float:
     """Return the squared Euclidean norm of a five-coordinate S4 candidate."""
     return sum(value * value for value in point)
+
+
+def conjugation_action(q: Quaternion, v: Quaternion) -> Quaternion:
+    """Return the bounded quaternion conjugation-action fixture q * v * conjugate(q)."""
+    return q * v * q.conjugate()
+
+
+def quaternion_close(
+    left: Quaternion,
+    right: Quaternion,
+    *,
+    tol: float = DEFAULT_QUATERNION_TOLERANCE,
+) -> bool:
+    """Compare two executable quaternion records coordinatewise."""
+    return all(
+        abs(left_coord - right_coord) <= tol
+        for left_coord, right_coord in zip(left.coordinates(), right.coordinates())
+    )
+
+
+def spin_sign_related(left: Quaternion, right: Quaternion) -> bool:
+    """Return whether two quaternion representatives match up to sign."""
+    return quaternion_close(right, left) or quaternion_close(right, -left)
+
+
+def orientation_debug_record(q: Quaternion, v: Quaternion) -> dict[str, bool | tuple[float, ...]]:
+    """Return the bounded sign-ambiguity checks used by the S3 spin note."""
+    q_action = conjugation_action(q, v)
+    neg_action = conjugation_action(-q, v)
+    return {
+        "q_coordinates": q.coordinates(),
+        "neg_q_coordinates": (-q).coordinates(),
+        "vector_coordinates": v.coordinates(),
+        "q_action_coordinates": q_action.coordinates(),
+        "neg_q_action_coordinates": neg_action.coordinates(),
+        "representatives_are_distinct": not quaternion_close(q, -q),
+        "actions_match": quaternion_close(q_action, neg_action),
+        "spin_sign_related": spin_sign_related(q, -q),
+    }

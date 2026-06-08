@@ -47,7 +47,7 @@ targets:
   - id: P7-PHYS-003
     area: "Spin and orientation physics"
     priority: medium
-    status: planned
+    status: active
     target_type: proof_program
     title: "Quaternion spin quotient extension"
     question: "Can the current q/-q sign-cancellation proof grow into a verified spin/orientation lesson without overclaiming SO(3)?"
@@ -56,12 +56,16 @@ targets:
       - "The next theorem targets model pure-imaginary vectors, norm preservation, and action composition only when the formal vector model is ready."
       - "The paper keeps q/-q representative equality distinct from a completed SO(3) quotient."
       - "Python orientation records compare raw representative state with action-equivalent state."
+      - "The Living Book exposes the q/-q sign ambiguity as a bounded conjugation-action widget with theorem-status badges and SO(3) guardrails."
     artifact_refs:
       - "docs/PHASE7_PHYSICS_AND_GENERATORS.md"
       - "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
       - "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
+      - "sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py"
+      - "site/chapters/applications/physics.qmd"
+      - "site/widgets/physics/spin_sign_ambiguity.js"
     dictionary_dependencies: ["COMMON-0060", "S3Q-0001", "S3S-0001", "S3S-0002"]
-    next_action: "Audit the S3 spin sidecar for the smallest next Lean theorem that improves orientation physics without requiring full SO(3)."
+    next_action: "The first q/-q Living Book widget and Python parity check are in place; next audit the S3 spin sidecar for pure-imaginary vector preservation, norm preservation, or action-composition theorems that improve orientation physics without requiring full SO(3)."
     guardrail: "Do not claim a complete Spin(3), SO(3), spinor, or quantum-spin formalization from the current sign-cancellation seed."
 
   - id: P7-PHYS-004

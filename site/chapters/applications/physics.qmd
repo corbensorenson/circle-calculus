@@ -23,7 +23,7 @@ This page is a finite bookkeeping lesson. Its diagrams and Python fixtures are e
 
 ## What You Should Learn
 
-By the end of the page, you should be able to separate an open-path endpoint effect from a closed-loop Wilson certificate in a finite `Z_n` phase model.
+By the end of the page, you should be able to separate an open-path endpoint effect from a closed-loop Wilson certificate in a finite `Z_n` phase model, and explain why quaternion representatives `q` and `-q` can be distinct records with the same bounded conjugation action.
 
 :::
 
@@ -76,6 +76,10 @@ The second widget specializes that idea to a square plaquette. Change the edge p
 The third widget turns the closed-loop calculation into a certificate-style record. It checks the same triangular Wilson loop under several sampled vertex gauges and records exactly which finite theorem cards support the closed-loop boundary.
 
 <div class="widget-panel" data-widget="wilson_loop_certificate" data-theorem-id="PHYS-T0004" data-dictionary-ids="COMMON-0060 COMMON-0061 COMMON-0062 COMMON-0063"></div>
+
+The next bounded physics-facing lesson moves from finite gauge loops to quaternion orientation debugging. Standard quaternion orientation code has a familiar sign ambiguity: `q` and `-q` are different representatives, but they should not be treated as different downstream orientations when the action being compared is quaternion conjugation. The widget below exposes exactly that finite algebraic claim and links it to the S3 spin theorem cards.
+
+<div class="widget-panel" data-widget="spin_sign_ambiguity" data-theorem-id="S3S-T0001" data-dictionary-ids="S3S-0001 S3S-0002 S3Q-0001 S3Q-0002"></div>
 
 ::: {.checkpoint-box}
 
@@ -133,12 +137,23 @@ The theorem cards below are Lean-proved for the finite `ZMod n` phase and link-p
 <div class="theorem-box" data-theorem-id="PHYS-T0044"></div>
 <div class="theorem-box" data-theorem-id="PHYS-T0045"></div>
 
+The spin-sign cards are Lean-proved S3 algebraic facts. They support the bounded orientation-debugging widget, but they are not a full formalization of `SO(3)`, robotics, spinors, or physical rotations.
+
+<div class="theorem-box" data-theorem-id="S3S-T0001"></div>
+<div class="theorem-box" data-theorem-id="S3S-T0002"></div>
+<div class="theorem-box" data-theorem-id="S3S-T0003"></div>
+<div class="theorem-box" data-theorem-id="S3S-T0004"></div>
+
 ## Dictionary Trail
 
 <div class="dictionary-box" data-dictionary-id="COMMON-0060"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0061"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0062"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0063"></div>
+<div class="dictionary-box" data-dictionary-id="S3S-0001"></div>
+<div class="dictionary-box" data-dictionary-id="S3S-0002"></div>
+<div class="dictionary-box" data-dictionary-id="S3Q-0001"></div>
+<div class="dictionary-box" data-dictionary-id="S3Q-0002"></div>
 
 ## Source Trail
 
@@ -154,4 +169,5 @@ The Python fixture is an executable reference. The current Lean model proves fin
 <script type="module" src="../../widgets/physics/finite_path_algebra.js"></script>
 <script type="module" src="../../widgets/physics/finite_gauge_loop_holonomy.js"></script>
 <script type="module" src="../../widgets/physics/wilson_loop_certificate.js"></script>
+<script type="module" src="../../widgets/physics/spin_sign_ambiguity.js"></script>
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

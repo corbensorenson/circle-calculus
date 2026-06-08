@@ -1,4 +1,10 @@
-from circle_math.dimensions.quaternion import Quaternion, unit_i_phase
+from circle_math.dimensions.quaternion import (
+    Quaternion,
+    conjugation_action,
+    orientation_debug_record,
+    quaternion_close,
+    unit_i_phase,
+)
 
 
 TOL = 1e-12
@@ -7,33 +13,13 @@ ONE = Quaternion(1.0, 0.0, 0.0, 0.0)
 ZERO = Quaternion(0.0, 0.0, 0.0, 0.0)
 
 
-def conjugation_action(q: Quaternion, v: Quaternion) -> Quaternion:
-    return q * v * q.conjugate()
-
-
 def assert_quaternion_close(left: Quaternion, right: Quaternion, *, tol: float = TOL) -> None:
     for left_coord, right_coord in zip(left.coordinates(), right.coordinates()):
         assert abs(left_coord - right_coord) <= tol
 
 
-def quaternion_close(left: Quaternion, right: Quaternion, *, tol: float = TOL) -> bool:
-    return all(
-        abs(left_coord - right_coord) <= tol
-        for left_coord, right_coord in zip(left.coordinates(), right.coordinates())
-    )
-
-
 def spin_sign_related(left: Quaternion, right: Quaternion) -> bool:
     return quaternion_close(right, left) or quaternion_close(right, -left)
-
-
-def orientation_debug_record(q: Quaternion, v: Quaternion) -> dict[str, bool]:
-    """Return the bounded sign-ambiguity checks used by the debugging note."""
-    return {
-        "representatives_are_distinct": not quaternion_close(q, -q),
-        "actions_match": quaternion_close(conjugation_action(q, v), conjugation_action(-q, v)),
-        "spin_sign_related": spin_sign_related(q, -q),
-    }
 
 
 def test_quaternion_conjugation_identity_action() -> None:

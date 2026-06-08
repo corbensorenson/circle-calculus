@@ -57,6 +57,14 @@ from circle_math.applications import (
     rotate_kernel,
 )
 from circle_math.finite import Circle
+from circle_math.dimensions.quaternion import (
+    Quaternion,
+    conjugation_action,
+    orientation_debug_record,
+    quaternion_close,
+    spin_sign_related,
+    unit_i_phase,
+)
 from circle_math.generative import (
     SeedRuleProvenance,
     bounded_generator_search,
@@ -618,6 +626,51 @@ def js_dense_matrix_vector_product(
 def js_rotate_kernel(kernel: tuple[int, ...], shift: int) -> tuple[int, ...]:
     period = len(kernel)
     return tuple(kernel[js_mod(index - shift, period)] for index in range(period))
+
+
+def js_quaternion_mul(left: Quaternion, right: Quaternion) -> Quaternion:
+    return Quaternion(
+        left.r * right.r - left.i * right.i - left.j * right.j - left.k * right.k,
+        left.r * right.i + left.i * right.r + left.j * right.k - left.k * right.j,
+        left.r * right.j - left.i * right.k + left.j * right.r + left.k * right.i,
+        left.r * right.k + left.i * right.j - left.j * right.i + left.k * right.r,
+    )
+
+
+def js_quaternion_conjugate(value: Quaternion) -> Quaternion:
+    return Quaternion(value.r, -value.i, -value.j, -value.k)
+
+
+def js_conjugation_action(q: Quaternion, v: Quaternion) -> Quaternion:
+    return js_quaternion_mul(js_quaternion_mul(q, v), js_quaternion_conjugate(q))
+
+
+def js_quaternion_close(left: Quaternion, right: Quaternion, *, tol: float = 1e-10) -> bool:
+    return all(
+        abs(left_coord - right_coord) <= tol
+        for left_coord, right_coord in zip(left.coordinates(), right.coordinates())
+    )
+
+
+def js_spin_sign_related(left: Quaternion, right: Quaternion) -> bool:
+    return js_quaternion_close(right, left) or js_quaternion_close(right, -left)
+
+
+def js_orientation_debug_record(period: int, step: int, vector: Quaternion) -> dict[str, bool | tuple[float, ...]]:
+    q = unit_i_phase(tau * js_mod(step, period) / period)
+    neg_q = -q
+    q_action = js_conjugation_action(q, vector)
+    neg_q_action = js_conjugation_action(neg_q, vector)
+    return {
+        "q_coordinates": q.coordinates(),
+        "neg_q_coordinates": neg_q.coordinates(),
+        "vector_coordinates": vector.coordinates(),
+        "q_action_coordinates": q_action.coordinates(),
+        "neg_q_action_coordinates": neg_q_action.coordinates(),
+        "representatives_are_distinct": not js_quaternion_close(q, neg_q),
+        "actions_match": js_quaternion_close(q_action, neg_q_action),
+        "spin_sign_related": js_spin_sign_related(q, neg_q),
+    }
 
 
 def js_memory_slot(bank_size: int, token: int) -> int:
@@ -1935,6 +1988,23 @@ def main() -> int:
         assert benchmark.max_abs_dense_delta == 0
         assert benchmark.dense_parameters == period * period
         assert benchmark.circulant_parameters == period
+
+    spin_cases = [
+        (8, 1, Quaternion(0.0, 1.0, 2.0, -1.0)),
+        (12, 5, Quaternion(0.0, -2.0, 1.0, 3.0)),
+        (7, 13, Quaternion(0.0, 0.0, -3.0, 2.0)),
+    ]
+    for period, step, vector in spin_cases:
+        q = unit_i_phase(tau * js_mod(step, period) / period)
+        py_record = orientation_debug_record(q, vector)
+        js_record = js_orientation_debug_record(period, step, vector)
+        assert quaternion_close(conjugation_action(q, vector), js_conjugation_action(q, vector))
+        assert quaternion_close(conjugation_action(-q, vector), js_conjugation_action(-q, vector))
+        assert py_record["representatives_are_distinct"] == js_record["representatives_are_distinct"]
+        assert py_record["actions_match"] == js_record["actions_match"]
+        assert py_record["spin_sign_related"] == js_record["spin_sign_related"]
+        assert spin_sign_related(q, -q) == js_spin_sign_related(q, -q)
+        assert quaternion_close(conjugation_action(q, vector), conjugation_action(-q, vector))
 
     print("widget Python parity ok")
     return 0

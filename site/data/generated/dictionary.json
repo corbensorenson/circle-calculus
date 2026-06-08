@@ -8536,7 +8536,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "spin_sign_ambiguity",
+          "path": "site/widgets/physics/spin_sign_ambiguity.js",
+          "python_reference": "circle_math.dimensions.quaternion.unit_i_phase; circle_math.dimensions.quaternion.conjugation_action; circle_math.dimensions.quaternion.orientation_debug_record"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -8617,7 +8623,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "spin_sign_ambiguity",
+          "path": "site/widgets/physics/spin_sign_ambiguity.js",
+          "python_reference": "circle_math.dimensions.quaternion.unit_i_phase; circle_math.dimensions.quaternion.conjugation_action; circle_math.dimensions.quaternion.orientation_debug_record"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -8702,7 +8714,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "spin_sign_ambiguity",
+          "path": "site/widgets/physics/spin_sign_ambiguity.js",
+          "python_reference": "circle_math.dimensions.quaternion.unit_i_phase; circle_math.dimensions.quaternion.conjugation_action; circle_math.dimensions.quaternion.orientation_debug_record"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -8741,7 +8759,13 @@
           "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "spin_sign_ambiguity",
+          "path": "site/widgets/physics/spin_sign_ambiguity.js",
+          "python_reference": "circle_math.dimensions.quaternion.unit_i_phase; circle_math.dimensions.quaternion.conjugation_action; circle_math.dimensions.quaternion.orientation_debug_record"
+        }
+      ]
     },
     {
       "dependencies": [

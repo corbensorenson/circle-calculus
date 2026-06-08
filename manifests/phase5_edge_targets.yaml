@@ -139,8 +139,10 @@ targets:
       - "papers/S3/PAPER_S3_03_HOPF_COILS.md"
       - "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
       - "sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py"
+      - "site/chapters/applications/physics.qmd"
+      - "site/widgets/physics/spin_sign_ambiguity.js"
     dictionary_dependencies: ["S3Q-0001", "S3H-0001", "S3S-0001", "S3S-0002"]
-    next_action: "Orientation-debugging note and Python sign-ambiguity record added; future work needs a precise SO(3) quotient/vector-space model before stronger robotics claims."
+    next_action: "Orientation-debugging note, Python sign-ambiguity record, and Living Book spin sign widget are in place; future work needs a precise SO(3) quotient/vector-space model before stronger robotics claims."
     guardrail: "Do not claim a complete SO(3), robotics, gauge, or physics formalization."
 
   - id: P5-EDGE-008

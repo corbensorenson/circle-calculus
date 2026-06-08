@@ -405,6 +405,13 @@ def export_widget_index() -> dict:
             ],
             "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy; circle_math.physics.wilson_loop_certificate",
         },
+        {
+            "id": "spin_sign_ambiguity",
+            "path": "site/widgets/physics/spin_sign_ambiguity.js",
+            "theorem_ids": ["S3S-T0001", "S3S-T0002", "S3S-T0003", "S3S-T0004"],
+            "dictionary_ids": ["S3S-0001", "S3S-0002", "S3Q-0001", "S3Q-0002"],
+            "python_reference": "circle_math.dimensions.quaternion.unit_i_phase; circle_math.dimensions.quaternion.conjugation_action; circle_math.dimensions.quaternion.orientation_debug_record",
+        },
     ]
     return {"widgets": widgets}
 

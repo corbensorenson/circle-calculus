@@ -93,11 +93,11 @@ This is a good Circle Calculus target because a loop diagram can become:
 glyph -> finite path object -> theorem id -> Lean declaration -> paper section -> Living Book widget
 ```
 
-The finite-gauge seed now includes singleton/two-link/singleton-concat/three-link/four-link/empty-identity, record-associativity, reversal-algebra, general boundary-checked append composability, first source/target laws for nonempty concatenations, and a checked finite path interface with explicit endpoints, identity laws, associative boundary-checked composition, checked-path holonomy identity/singleton/concat laws, projection bridges back to the link-path carrier, and closed checked-path gauge-invariance facts. The next finite-gauge step is to decide whether a full finite graph path-category instance is worth the abstraction:
+The finite-gauge seed now includes singleton/two-link/singleton-concat/three-link/four-link/empty-identity, record-associativity, reversal-algebra, general boundary-checked append composability, first source/target laws for nonempty concatenations, and a checked finite path interface with explicit endpoints, identity laws, associative boundary-checked composition, checked-path holonomy identity/singleton/concat laws, projection bridges back to the link-path carrier, and closed checked-path gauge-invariance facts. The Living Book now exposes finite path algebra, plaquette holonomy, Wilson-loop certificate, and quaternion spin sign ambiguity widgets with theorem/dictionary links. The next finite-gauge step is to decide whether a full finite graph path-category instance is worth the abstraction:
 
 - Berry/geometric phase and Aharonov-Bohm-style holonomy primers;
 - Hopf/Bloch-sphere hidden phase lessons linked to the existing `S3` Hopf spine;
-- quaternion spin and `q/-q` sign ambiguity lessons linked to the existing spin sidecar;
+- deeper quaternion quotient lessons beyond the current bounded `q/-q` sign widget;
 - Floquet and action-angle periodic dynamics using winding, residue, and lift vocabulary;
 - vortex and topological-defect winding examples with clear continuum guardrails;
 - topological phase/Bott/Clifford connections as later background and target discovery, not first-pass claims.
