@@ -79,7 +79,7 @@ site/data/generated/glyph_index.json
 
 The fixture resolves glyph theorem ids and dictionary ids against generated site data. It includes Lean-proved glyphs for already proved theorem ids.
 
-The fixture also includes `S15-T0001` as a future roadmap glyph. That roadmap glyph must render with planned status. This is a status compiler for the interface layer, not a proof of glyph syntax, semantics, or diagram normalization.
+The fixture also includes `S15-T0001` (`Circle.Future.S15.octonionicHopfRoadmap`) as a future roadmap glyph. That roadmap glyph must render with planned status. This is a status compiler for the interface layer, not a proof of glyph syntax, semantics, or diagram normalization.
 
 ## First Demonstrator
 
