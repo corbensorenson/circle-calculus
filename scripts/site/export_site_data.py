@@ -369,7 +369,7 @@ def export_widget_index() -> dict:
         {
             "id": "learned_middle_block_recurrence",
             "path": "site/widgets/ai/learned_middle_block_recurrence.js",
-            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018"],
+            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0039", "AIM-T0040", "AIM-T0041", "AIM-T0042", "AIM-T0043"],
             "dictionary_ids": [
                 "COMMON-0052",
                 "COMMON-0053",
@@ -803,6 +803,8 @@ def export_phase7_targets() -> dict:
 
 CLAIM_CONTRACT_ROLES = {"standard_math_parity", "circle_native_value"}
 CLAIM_CONTRACT_PROVENANCE_KINDS = {"mathlib_bridge", "project_native", "mixed"}
+SECTION_RE = re.compile(r"^##\s+", re.MULTILINE)
+IMPORT_RE = re.compile(r"^\s*import\s+(.+)$")
 
 
 def nonempty_text(item: dict, key: str) -> bool:
@@ -827,6 +829,141 @@ def contract_count_or_failures(count: int, failures: list[str]) -> str:
 def unsafe_or_missing_path(ref: str) -> bool:
     path = Path(ref)
     return path.is_absolute() or ".." in path.parts or not (ROOT / path).exists()
+
+
+def path_for_paper_id(paper_id: str) -> Path | None:
+    for path in sorted((ROOT / "papers").glob("**/*.md")):
+        if path.stem == paper_id:
+            return path
+    return None
+
+
+def source_trail_section(path: Path) -> str:
+    if not path.exists():
+        return ""
+    text = path.read_text()
+    marker = "## Source Trail"
+    start = text.find(marker)
+    if start == -1:
+        return ""
+    next_section = SECTION_RE.search(text, start + len(marker))
+    if next_section is None:
+        return text[start:]
+    return text[start : next_section.start()]
+
+
+def module_name_for_path(path: Path) -> str:
+    return ".".join(path.with_suffix("").parts)
+
+
+def module_name_for_ref(ref: str) -> str:
+    return module_name_for_path(Path(ref))
+
+
+def lean_modules_by_name() -> dict[str, Path]:
+    modules: dict[str, Path] = {}
+    for path in sorted(ROOT.glob("**/*.lean")):
+        if ".lake" in path.parts:
+            continue
+        relative = path.relative_to(ROOT)
+        modules[module_name_for_path(relative)] = path
+    return modules
+
+
+def imported_modules(path: Path) -> set[str]:
+    imports: set[str] = set()
+    if not path.exists():
+        return imports
+    for line in path.read_text().splitlines():
+        match = IMPORT_RE.match(line)
+        if not match:
+            continue
+        imports.update(part for part in match.group(1).split() if part)
+    return imports
+
+
+def paper_lean_sidecars(paper: dict) -> list[Path]:
+    sidecar = paper.get("sidecar")
+    if not sidecar:
+        return []
+    lean_dir = ROOT / sidecar / "lean"
+    if not lean_dir.exists():
+        return []
+    return sorted(lean_dir.glob("*.lean"))
+
+
+def transitive_local_imports(start_paths: list[Path], modules: dict[str, Path]) -> set[str]:
+    seen: set[str] = set()
+    stack: list[str] = []
+    for path in start_paths:
+        stack.extend(imported_modules(path))
+    while stack:
+        module = stack.pop()
+        if module in seen:
+            continue
+        seen.add(module)
+        local_path = modules.get(module)
+        if local_path is not None:
+            stack.extend(imported_modules(local_path) - seen)
+    return seen
+
+
+def paper_manifest_by_id() -> dict[str, dict]:
+    path = ROOT / "manifests" / "paper_manifest.yaml"
+    if not path.exists():
+        return {}
+    data = load_yaml(path)
+    return {paper["id"]: paper for paper in data.get("papers", []) if paper.get("id")}
+
+
+def source_ref_backing_status(
+    ref: str,
+    paper_ids: list[str],
+    papers: dict[str, dict],
+    local_lean_modules: dict[str, Path],
+) -> dict:
+    source_sections: list[str] = []
+    sidecar_paths: list[Path] = []
+    for paper_id in paper_ids:
+        paper = papers.get(paper_id)
+        if paper is None:
+            continue
+        paper_path = path_for_paper_id(paper_id)
+        if paper_path is not None:
+            source_sections.append(source_trail_section(paper_path))
+        sidecar_paths.extend(paper_lean_sidecars(paper))
+
+    if any(ref in section for section in source_sections):
+        return {"ref": ref, "backed": True, "backing": "source_trail"}
+
+    local_ref = Path(ref)
+    if local_ref.parts[:1] == ("Circle",) and local_ref.suffix == ".lean":
+        module_name = module_name_for_ref(ref)
+        imported = transitive_local_imports(sidecar_paths, local_lean_modules)
+        if module_name in imported:
+            return {"ref": ref, "backed": True, "backing": "lean_sidecar_import"}
+
+    return {"ref": ref, "backed": False, "backing": "missing"}
+
+
+def capability_source_ref_contract(
+    item: dict,
+    papers: dict[str, dict],
+    local_lean_modules: dict[str, Path],
+) -> dict:
+    paper_ids = item.get("paper_ids", []) or []
+    source_refs = item.get("source_refs", []) or []
+    refs = [
+        source_ref_backing_status(ref, paper_ids, papers, local_lean_modules)
+        for ref in source_refs
+    ]
+    backed_count = sum(1 for ref in refs if ref["backed"])
+    return {
+        "backed_count": backed_count,
+        "total_count": len(refs),
+        "unbacked_refs": [ref["ref"] for ref in refs if not ref["backed"]],
+        "refs": refs,
+    }
 
 
 def proved_theorem_id_set() -> set[str]:
@@ -867,6 +1004,7 @@ def capability_claim_contract(
     evidence_counts: dict[str, int],
     proved_theorem_ids: set[str],
     known_paper_ids: set[str],
+    source_ref_contract: dict,
 ) -> dict:
     roles = set(item.get("portfolio_roles", []) or [])
     provenance_kind = item.get("proof_provenance_kind", "")
@@ -878,6 +1016,7 @@ def capability_claim_contract(
     unknown_papers = sorted(set(paper_ids) - known_paper_ids)
     unproved_theorems = sorted(set(theorem_ids) - proved_theorem_ids)
     missing_sources = sorted(ref for ref in source_refs if unsafe_or_missing_path(ref))
+    unbacked_sources = source_ref_contract.get("unbacked_refs", [])
     executable_failures = sorted(
         ref
         for ref in executable_refs
@@ -971,9 +1110,17 @@ def capability_claim_contract(
         ),
         contract_gate(
             "source_trail",
-            "source trail",
-            evidence_counts["source_count"] > 0 and not missing_sources,
-            contract_count_or_failures(evidence_counts["source_count"], missing_sources),
+            "paper-backed source refs",
+            (
+                evidence_counts["source_count"] > 0
+                and not missing_sources
+                and not unbacked_sources
+                and source_ref_contract.get("backed_count") == evidence_counts["source_count"]
+            ),
+            contract_count_or_failures(
+                source_ref_contract.get("backed_count", 0),
+                sorted(set(missing_sources + unbacked_sources)),
+            ),
         ),
         contract_gate(
             "executable_reference",
@@ -1041,6 +1188,8 @@ def export_capability_showcase() -> dict:
     contract_gate_failures: dict[str, int] = {}
     proved_theorem_ids = proved_theorem_id_set()
     known_paper_ids = paper_id_set()
+    papers = paper_manifest_by_id()
+    local_lean_modules = lean_modules_by_name()
     for capability in data.get("capabilities", []):
         item = dict(capability)
         living_pages: set[str] = set()
@@ -1062,11 +1211,17 @@ def export_capability_showcase() -> dict:
             "living_book_widget_count": len(living_widgets),
         }
         item["verification_recipe"] = capability_verification_recipe(item)
+        item["source_ref_contract"] = capability_source_ref_contract(
+            item,
+            papers,
+            local_lean_modules,
+        )
         item["claim_contract"] = capability_claim_contract(
             item,
             item["evidence_counts"],
             proved_theorem_ids,
             known_paper_ids,
+            item["source_ref_contract"],
         )
         if item["claim_contract"]["ready_to_advertise"]:
             contract_ready_count += 1

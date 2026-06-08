@@ -1381,6 +1381,76 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
     blocker: ""
+  - id: AIM-T0039
+    status: lean_proved
+    lean_name: Circle.Applications.middleBlockRoute_ge_start
+    informal_statement: "Every finite middle-block route stays at or after the selected block-range start."
+    formal_statement: "For start, width, and sample, start <= middleBlockRoute start width sample."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_middle_block_recurrence_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0040
+    status: lean_proved
+    lean_name: Circle.Applications.middleBlockRoute_lt_stop
+    informal_statement: "For a positive selected-block width, every finite middle-block route stays before the selected block-range stop."
+    formal_statement: "For positive width, middleBlockRoute start width sample < start + width."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_middle_block_recurrence_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0041
+    status: lean_proved
+    lean_name: Circle.Applications.middleBlockRoute_add_width
+    informal_statement: "Finite middle-block routes are unchanged by shifting a sample by one selected-block width."
+    formal_statement: "For positive width, middleBlockRoute start width (sample + width) = middleBlockRoute start width sample."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_middle_block_recurrence_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0042
+    status: lean_proved
+    lean_name: Circle.Applications.middleBlockRoute_add_mul_width
+    informal_statement: "Finite middle-block routes are unchanged by shifting a sample by any whole number of selected-block widths."
+    formal_statement: "For positive width, middleBlockRoute start width (sample + passes * width) = middleBlockRoute start width sample."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_middle_block_recurrence_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0043
+    status: lean_proved
+    lean_name: Circle.Applications.middleBlockRoute_zero
+    informal_statement: "The zero sample of a finite middle-block route selects the block-range start."
+    formal_statement: "For start and width, middleBlockRoute start width 0 = start."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_middle_block_recurrence_helpers_are_deterministic
+    blocker: ""
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize

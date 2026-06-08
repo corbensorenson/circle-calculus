@@ -89,6 +89,11 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `AIM-T0036`: `Circle.Applications.tokenActiveAtStep_add_mul_loopPeriod`
 - `AIM-T0037`: `Circle.Applications.tokenActiveAtStep_step_le_loopPeriod`
 - `AIM-T0038`: `Circle.Applications.tokenInactiveAtStep_of_loopPeriod_lt_step`
+- `AIM-T0039`: `Circle.Applications.middleBlockRoute_ge_start`
+- `AIM-T0040`: `Circle.Applications.middleBlockRoute_lt_stop`
+- `AIM-T0041`: `Circle.Applications.middleBlockRoute_add_width`
+- `AIM-T0042`: `Circle.Applications.middleBlockRoute_add_mul_width`
+- `AIM-T0043`: `Circle.Applications.middleBlockRoute_zero`
 
 ## Proved Core
 
@@ -101,7 +106,7 @@ memorySlot bankSize (token + bankSize) =
 
 `AIM-T0004` proves closure after any whole number of full memory-bank passes. `AIM-T0005` proves that normalizing a memory slot twice is the same as normalizing it once. `AIM-T0003` proves the zero anchor. The Python sidecar checks the same finite examples.
 
-`AIM-T0006` through `AIM-T0038` prove finite loop-schedule, token-active-set, and loop-exit certificate facts: required loop depth is positive, bounded by a positive loop period, periodic under one full loop-period shift, and invariant under any whole number of loop-period passes; token recurrence budgets are positive, have the same one-period and multi-pass closure behavior, and are bounded by the loop period; token active-step membership includes the first loop step, is invariant under whole loop-period token shifts, is bounded by the loop period, and excludes steps beyond that period; the training-free wrapper budget is capped by `maxLoops` and by the required depth, is periodic, is invariant under whole loop-period passes, selects the exact positive required depth when an exit is available, and clamps to `maxLoops` when no exit is available; overthinking boundaries are at least the required depth and share the same one-period and multi-pass closure; exit availability is guaranteed when the loop budget covers the full period and is invariant under one or many loop-period passes; and a loop-exit certificate records a positive exact required step, budget bound, guardrail bound, implied exit availability, equality between the selected wrapper budget and the certified exit step, and multi-pass invariance of the certified exit step and guardrail boundary.
+`AIM-T0006` through `AIM-T0043` prove finite loop-schedule, token-active-set, middle-block-route, and loop-exit certificate facts: required loop depth is positive, bounded by a positive loop period, periodic under one full loop-period shift, and invariant under any whole number of loop-period passes; token recurrence budgets are positive, have the same one-period and multi-pass closure behavior, and are bounded by the loop period; token active-step membership includes the first loop step, is invariant under whole loop-period token shifts, is bounded by the loop period, and excludes steps beyond that period; middle-block routes stay inside the selected block range, close after one selected-width shift, close after any whole number of selected-width shifts, and select the range start at sample zero; the training-free wrapper budget is capped by `maxLoops` and by the required depth, is periodic, is invariant under whole loop-period passes, selects the exact positive required depth when an exit is available, and clamps to `maxLoops` when no exit is available; overthinking boundaries are at least the required depth and share the same one-period and multi-pass closure; exit availability is guaranteed when the loop budget covers the full period and is invariant under one or many loop-period passes; and a loop-exit certificate records a positive exact required step, budget bound, guardrail bound, implied exit availability, equality between the selected wrapper budget and the certified exit step, and multi-pass invariance of the certified exit step and guardrail boundary.
 
 These theorems certify cyclic slot addresses and finite loop-budget arithmetic only. They do not prove retrieval quality, alias control, attention replacement, recursive reasoning, runtime, memory use, parameter efficiency, or long-context scaling.
 
@@ -143,7 +148,7 @@ This fixture checks whether the benchmark harness can learn a constructed token-
 
 This fixture checks loop-budget bookkeeping only. It is not evidence that training-free recurrence improves reasoning, language-model quality, context length, runtime, memory use, or parameter efficiency.
 
-`AIM-B0007` adds a deterministic middle-block recurrence fixture. It records a selected loop-block range, the required block and recurrence budget for each sample, and compares selected-block scheduling against full-block, fixed-budget, wrong-block, and over-loop controls with block-pass accounting.
+`AIM-B0007` adds a deterministic middle-block recurrence fixture. It records a selected loop-block range, the required block and recurrence budget for each sample, and compares selected-block scheduling against full-block, fixed-budget, wrong-block, and over-loop controls with block-pass accounting. `AIM-T0039` through `AIM-T0043` prove the finite route boundary used by the contiguous selected-block helper.
 
 This fixture checks block and budget bookkeeping only. It is not evidence that looping a middle block improves reasoning, perplexity, throughput, memory use, context length, or parameter efficiency.
 

@@ -117,6 +117,14 @@ def test_export_site_data_writes_required_indexes() -> None:
     assert capability_by_id["SHOW-001"]["evidence_counts"]["theorem_count"] == len(
         capability_by_id["SHOW-001"]["theorem_ids"]
     )
+    assert capability_by_id["SHOW-001"]["source_ref_contract"]["backed_count"] == len(
+        capability_by_id["SHOW-001"]["source_refs"]
+    )
+    assert capability_by_id["SHOW-001"]["source_ref_contract"]["unbacked_refs"] == []
+    assert {
+        ref["backing"]
+        for ref in capability_by_id["SHOW-001"]["source_ref_contract"]["refs"]
+    } == {"lean_sidecar_import", "source_trail"}
     assert capability_by_id["SHOW-009"]["evidence_counts"]["living_book_widget_count"] == 4
     assert capability_by_id["SHOW-011"]["evidence_counts"]["living_book_page_count"] == 1
     assert all(

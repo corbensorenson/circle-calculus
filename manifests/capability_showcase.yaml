@@ -236,25 +236,25 @@ capabilities:
   - id: SHOW-010
     title: "AI memory, loop, and adapter schedules"
     area: "AI systems"
-    audience_interest: "Cyclic memory, recurrence budgets, loop-exit certificates, phase routing, and adapter indexing."
+    audience_interest: "Cyclic memory, recurrence budgets, loop-exit certificates, middle-block routing, phase routing, and adapter indexing."
     portfolio_roles: ["standard_math_parity", "circle_native_value", "application_guardrail"]
     standard_math_anchor: "Finite cyclic buffers, schedule normalization, recurrence budgets, and modular adapter indexing."
-    circle_math_expression: "AI-facing memory slots, loop budgets, exit certificates, and adapter blocks are encoded as finite cyclic address/schedule theorems."
+    circle_math_expression: "AI-facing memory slots, loop budgets, exit certificates, middle-block routes, and adapter blocks are encoded as finite cyclic address/schedule theorems."
     circle_native_value: "Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made."
     advertised_claim: "Circle Calculus can prove finite indexing and schedule-safety facts that AI experiments can reuse."
-    proof_scope: "Lean-proved finite memory-slot, loop-budget, active-token-step, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts."
+    proof_scope: "Lean-proved finite memory-slot, loop-budget, active-token-step, middle-block route, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts."
     proof_provenance_kind: "project_native"
-    proof_provenance: "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, active-step, certificate, and adapter-index safety facts; benchmarks remain separate."
+    proof_provenance: "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, active-step, middle-block route, certificate, and adapter-index safety facts; benchmarks remain separate."
     not_claimed: "No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence."
     paper_ids: ["PAPER_AI_02_COIL_ATTENTION_AND_MEMORY", "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"]
-    theorem_ids: ["AIM-T0001", "AIM-T0005", "AIM-T0011", "AIM-T0017", "AIM-T0022", "AIM-T0024", "AIM-T0025", "AIM-T0031", "AIM-T0032", "AIM-T0033", "AIM-T0034", "AIM-T0035", "AIM-T0036", "AIM-T0037", "AIM-T0038", "AIRA-T0005"]
-    dictionary_ids: ["COMMON-0028", "COMMON-0047", "COMMON-0052", "COMMON-0067", "COMMON-0071"]
+    theorem_ids: ["AIM-T0001", "AIM-T0005", "AIM-T0011", "AIM-T0017", "AIM-T0022", "AIM-T0024", "AIM-T0025", "AIM-T0031", "AIM-T0032", "AIM-T0033", "AIM-T0034", "AIM-T0035", "AIM-T0036", "AIM-T0037", "AIM-T0038", "AIM-T0039", "AIM-T0040", "AIM-T0041", "AIM-T0042", "AIM-T0043", "AIRA-T0005"]
+    dictionary_ids: ["COMMON-0028", "COMMON-0047", "COMMON-0052", "COMMON-0067", "COMMON-0068", "COMMON-0071"]
     executable_refs:
       - "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py"
       - "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"
     living_book_refs:
       - page: "site/chapters/applications/ai.qmd"
-        widget_ids: ["cyclic_memory_slots", "loop_recurrence_budget", "loop_exit_certificate", "token_level_recurrence", "training_free_loop_wrapper", "adapter_parameter_budget"]
+        widget_ids: ["cyclic_memory_slots", "loop_recurrence_budget", "loop_exit_certificate", "token_level_recurrence", "learned_middle_block_recurrence", "training_free_loop_wrapper", "adapter_parameter_budget"]
     source_refs:
       - "Circle/Applications/CircleAI.lean"
       - "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/lean/PaperAI02.lean"

@@ -57,7 +57,7 @@ Given a paper id or title:
 
 Use the [Proof-Backed Showcase](showcase.qmd) when the claim is not a single theorem but a portfolio lane such as `SHOW-001` or `SHOW-010`.
 
-The checklist below is generated from `site/data/generated/capability_showcase.json`, which is exported from `manifests/capability_showcase.yaml`. A capability is ready to advertise only when its generated claim contract passes: role, standard anchor, Circle expression, Circle-native value, advertised claim, proof scope, proof provenance, paper ids, theorem ids, dictionary ids, source refs, executable refs, reproduction commands, Living Book refs, and not-claimed boundary must all be present and in sync with that manifest. The showcase validator also requires each advertised source ref to be backed by a cited paper Source Trail or by the cited paper Lean sidecar's import closure.
+The checklist below is generated from `site/data/generated/capability_showcase.json`, which is exported from `manifests/capability_showcase.yaml`. A capability is ready to advertise only when its generated claim contract passes: role, standard anchor, Circle expression, Circle-native value, advertised claim, proof scope, proof provenance, paper ids, theorem ids, dictionary ids, source refs, executable refs, reproduction commands, Living Book refs, and not-claimed boundary must all be present and in sync with that manifest. The generated audit also exposes a per-source backing contract: each advertised source ref must be backed by a cited paper Source Trail or by the cited paper Lean sidecar's import closure.
 
 <div class="widget-panel" data-widget="capability_audit_checklist"></div>
 

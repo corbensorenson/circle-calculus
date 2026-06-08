@@ -77,7 +77,7 @@
           {
             "evidence": "3",
             "id": "source_trail",
-            "label": "source trail",
+            "label": "paper-backed source refs",
             "passed": true
           },
           {
@@ -143,6 +143,28 @@
       "proof_provenance": "Proof provenance is a Circle wrapper over mathlib-formalized EGZ and Cauchy-Davenport, with Circle-specific examples and vocabulary layered on top.",
       "proof_provenance_kind": "mathlib_bridge",
       "proof_scope": "Lean-proved Circle wrappers around mathlib's EGZ and Cauchy-Davenport theorems.",
+      "source_ref_contract": {
+        "backed_count": 3,
+        "refs": [
+          {
+            "backed": true,
+            "backing": "lean_sidecar_import",
+            "ref": "Circle/Erdos/EGZ.lean"
+          },
+          {
+            "backed": true,
+            "backing": "lean_sidecar_import",
+            "ref": "Circle/Erdos/CauchyDavenport.lean"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py"
+          }
+        ],
+        "total_count": 3,
+        "unbacked_refs": []
+      },
       "source_refs": [
         "Circle/Erdos/EGZ.lean",
         "Circle/Erdos/CauchyDavenport.lean",
@@ -238,7 +260,7 @@
           {
             "evidence": "2",
             "id": "source_trail",
-            "label": "source trail",
+            "label": "paper-backed source refs",
             "passed": true
           },
           {
@@ -304,6 +326,23 @@
       "proof_provenance": "Proof provenance is a Circle wrapper over mathlib-formalized Katona and Erdos-Ko-Rado declarations, plus finite Circle-method examples.",
       "proof_provenance_kind": "mathlib_bridge",
       "proof_scope": "Lean-proved wrappers around mathlib's Katona prefix-density and Erdos-Ko-Rado declarations.",
+      "source_ref_contract": {
+        "backed_count": 2,
+        "refs": [
+          {
+            "backed": true,
+            "backing": "lean_sidecar_import",
+            "ref": "Circle/Erdos/KatonaEKR.lean"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py"
+          }
+        ],
+        "total_count": 2,
+        "unbacked_refs": []
+      },
       "source_refs": [
         "Circle/Erdos/KatonaEKR.lean",
         "sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py"
@@ -398,7 +437,7 @@
           {
             "evidence": "2",
             "id": "source_trail",
-            "label": "source trail",
+            "label": "paper-backed source refs",
             "passed": true
           },
           {
@@ -464,6 +503,23 @@
       "proof_provenance": "Proof provenance is a Circle wrapper over mathlib-formalized Roth handles, with project finite-witness examples kept separate from the proof.",
       "proof_provenance_kind": "mathlib_bridge",
       "proof_scope": "Lean-proved wrappers around mathlib's Roth theorem and Roth-number sublinearity statement.",
+      "source_ref_contract": {
+        "backed_count": 2,
+        "refs": [
+          {
+            "backed": true,
+            "backing": "lean_sidecar_import",
+            "ref": "Circle/Erdos/RothAP.lean"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py"
+          }
+        ],
+        "total_count": 2,
+        "unbacked_refs": []
+      },
       "source_refs": [
         "Circle/Erdos/RothAP.lean",
         "sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py"
@@ -558,7 +614,7 @@
           {
             "evidence": "2",
             "id": "source_trail",
-            "label": "source trail",
+            "label": "paper-backed source refs",
             "passed": true
           },
           {
@@ -624,6 +680,23 @@
       "proof_provenance": "Proof provenance is a Circle wrapper over mathlib-formalized Ramsey/Hales-Jewett style theorems, with finite searches used only as examples.",
       "proof_provenance_kind": "mathlib_bridge",
       "proof_scope": "Lean-proved wrappers around mathlib's Hales-Jewett and homothetic-copy theorems.",
+      "source_ref_contract": {
+        "backed_count": 2,
+        "refs": [
+          {
+            "backed": true,
+            "backing": "lean_sidecar_import",
+            "ref": "Circle/Erdos/RamseyHJ.lean"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py"
+          }
+        ],
+        "total_count": 2,
+        "unbacked_refs": []
+      },
       "source_refs": [
         "Circle/Erdos/RamseyHJ.lean",
         "sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py"
@@ -718,7 +791,7 @@
           {
             "evidence": "2",
             "id": "source_trail",
-            "label": "source trail",
+            "label": "paper-backed source refs",
             "passed": true
           },
           {
@@ -784,6 +857,23 @@
       "proof_provenance": "Proof provenance is project-native Lean code for cyclic graph structures and a minimal unit-distance embedding constructor, aligned with standard graph vocabulary.",
       "proof_provenance_kind": "project_native",
       "proof_scope": "Lean-proved cycle/circulant and connectedness bridges plus a unit-distance embedding constructor for empty graphs.",
+      "source_ref_contract": {
+        "backed_count": 2,
+        "refs": [
+          {
+            "backed": true,
+            "backing": "lean_sidecar_import",
+            "ref": "Circle/Erdos/GraphLab.lean"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py"
+          }
+        ],
+        "total_count": 2,
+        "unbacked_refs": []
+      },
       "source_refs": [
         "Circle/Erdos/GraphLab.lean",
         "sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py"
@@ -879,7 +969,7 @@
           {
             "evidence": "4",
             "id": "source_trail",
-            "label": "source trail",
+            "label": "paper-backed source refs",
             "passed": true
           },
           {
@@ -959,6 +1049,33 @@
       "proof_provenance": "Proof provenance is project-native Lean code in the S1 finite-circle spine, backed by paper and Python sidecar examples.",
       "proof_provenance_kind": "project_native",
       "proof_scope": "Lean-proved S1 scaling and orbit spine, including full-coil iff coprime and image-times-fiber factorizations.",
+      "source_ref_contract": {
+        "backed_count": 4,
+        "refs": [
+          {
+            "backed": true,
+            "backing": "lean_sidecar_import",
+            "ref": "Circle/Core/Period.lean"
+          },
+          {
+            "backed": true,
+            "backing": "lean_sidecar_import",
+            "ref": "Circle/Core/Orbit.lean"
+          },
+          {
+            "backed": true,
+            "backing": "lean_sidecar_import",
+            "ref": "Circle/Core/Scaling.lean"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py"
+          }
+        ],
+        "total_count": 4,
+        "unbacked_refs": []
+      },
       "source_refs": [
         "Circle/Core/Period.lean",
         "Circle/Core/Orbit.lean",
@@ -1059,7 +1176,7 @@
           {
             "evidence": "4",
             "id": "source_trail",
-            "label": "source trail",
+            "label": "paper-backed source refs",
             "passed": true
           },
           {
@@ -1143,6 +1260,33 @@
       "proof_provenance": "Proof provenance is project-native Lean code for bounded quaternion, spin-sign, pure-vector, and Hopf-coordinate facts, with topology limits stated explicitly.",
       "proof_provenance_kind": "project_native",
       "proof_scope": "Lean-proved quaternion unit laws, pure-vector conjugation boundary, sign-cancellation facts, and bounded Hopf phase-action facts.",
+      "source_ref_contract": {
+        "backed_count": 4,
+        "refs": [
+          {
+            "backed": true,
+            "backing": "lean_sidecar_import",
+            "ref": "Circle/S3/Scaffold.lean"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py"
+          }
+        ],
+        "total_count": 4,
+        "unbacked_refs": []
+      },
       "source_refs": [
         "Circle/S3/Scaffold.lean",
         "sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py",
@@ -1244,7 +1388,7 @@
           {
             "evidence": "2",
             "id": "source_trail",
-            "label": "source trail",
+            "label": "paper-backed source refs",
             "passed": true
           },
           {
@@ -1318,6 +1462,23 @@
       "proof_provenance": "Proof provenance is project-native Lean code for finite gauge-link/path records and holonomy laws, with Python fixtures serving as executable references.",
       "proof_provenance_kind": "project_native",
       "proof_scope": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, and two-path basepoint-swap facts.",
+      "source_ref_contract": {
+        "backed_count": 2,
+        "refs": [
+          {
+            "backed": true,
+            "backing": "lean_sidecar_import",
+            "ref": "Circle/Physics/LatticeGauge.lean"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
+          }
+        ],
+        "total_count": 2,
+        "unbacked_refs": []
+      },
       "source_refs": [
         "Circle/Physics/LatticeGauge.lean",
         "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
@@ -1424,7 +1585,7 @@
           {
             "evidence": "4",
             "id": "source_trail",
-            "label": "source trail",
+            "label": "paper-backed source refs",
             "passed": true
           },
           {
@@ -1500,6 +1661,33 @@
       "proof_provenance": "Proof provenance is project-native Lean code for seed-rule provenance, proof glyphs, exact-regeneration gates, and negative-case search boundaries.",
       "proof_provenance_kind": "project_native",
       "proof_scope": "Lean-proved seed-rule, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, singleton exact-search, best-candidate soundness, and exact-candidate absence/count gates.",
+      "source_ref_contract": {
+        "backed_count": 4,
+        "refs": [
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "Circle/Generative/SeedRule.lean"
+          },
+          {
+            "backed": true,
+            "backing": "lean_sidecar_import",
+            "ref": "Circle/Phase2/GlyphProof.lean"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py"
+          }
+        ],
+        "total_count": 4,
+        "unbacked_refs": []
+      },
       "source_refs": [
         "Circle/Generative/SeedRule.lean",
         "Circle/Phase2/GlyphProof.lean",
@@ -1538,8 +1726,8 @@
     {
       "advertised_claim": "Circle Calculus can prove finite indexing and schedule-safety facts that AI experiments can reuse.",
       "area": "AI systems",
-      "audience_interest": "Cyclic memory, recurrence budgets, loop-exit certificates, phase routing, and adapter indexing.",
-      "circle_math_expression": "AI-facing memory slots, loop budgets, exit certificates, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
+      "audience_interest": "Cyclic memory, recurrence budgets, loop-exit certificates, middle-block routing, phase routing, and adapter indexing.",
+      "circle_math_expression": "AI-facing memory slots, loop budgets, exit certificates, middle-block routes, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
       "circle_native_value": "Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made.",
       "claim_contract": {
         "gates": [
@@ -1556,7 +1744,7 @@
             "passed": true
           },
           {
-            "evidence": "AI-facing memory slots, loop budgets, exit certificates, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
+            "evidence": "AI-facing memory slots, loop budgets, exit certificates, middle-block routes, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
             "id": "circle_expression",
             "label": "Circle Math expression",
             "passed": true
@@ -1574,7 +1762,7 @@
             "passed": true
           },
           {
-            "evidence": "Lean-proved finite memory-slot, loop-budget, active-token-step, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
+            "evidence": "Lean-proved finite memory-slot, loop-budget, active-token-step, middle-block route, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
             "id": "proof_scope",
             "label": "proof scope",
             "passed": true
@@ -1586,7 +1774,7 @@
             "passed": true
           },
           {
-            "evidence": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, active-step, certificate, and adapter-index safety facts; benchmarks remain separate.",
+            "evidence": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, active-step, middle-block route, certificate, and adapter-index safety facts; benchmarks remain separate.",
             "id": "proof_provenance",
             "label": "proof provenance text",
             "passed": true
@@ -1598,13 +1786,13 @@
             "passed": true
           },
           {
-            "evidence": "16",
+            "evidence": "21",
             "id": "proved_theorem_ids",
             "label": "proved theorem ids",
             "passed": true
           },
           {
-            "evidence": "5",
+            "evidence": "6",
             "id": "dictionary_backing",
             "label": "dictionary backing",
             "passed": true
@@ -1612,7 +1800,7 @@
           {
             "evidence": "5",
             "id": "source_trail",
-            "label": "source trail",
+            "label": "paper-backed source refs",
             "passed": true
           },
           {
@@ -1650,16 +1838,17 @@
         "COMMON-0047",
         "COMMON-0052",
         "COMMON-0067",
+        "COMMON-0068",
         "COMMON-0071"
       ],
       "evidence_counts": {
-        "dictionary_count": 5,
+        "dictionary_count": 6,
         "executable_count": 2,
         "living_book_page_count": 1,
-        "living_book_widget_count": 6,
+        "living_book_widget_count": 7,
         "paper_count": 2,
         "source_count": 5,
-        "theorem_count": 16
+        "theorem_count": 21
       },
       "executable_refs": [
         "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
@@ -1674,6 +1863,7 @@
             "loop_recurrence_budget",
             "loop_exit_certificate",
             "token_level_recurrence",
+            "learned_middle_block_recurrence",
             "training_free_loop_wrapper",
             "adapter_parameter_budget"
           ]
@@ -1689,9 +1879,41 @@
         "circle_native_value",
         "application_guardrail"
       ],
-      "proof_provenance": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, active-step, certificate, and adapter-index safety facts; benchmarks remain separate.",
+      "proof_provenance": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, active-step, middle-block route, certificate, and adapter-index safety facts; benchmarks remain separate.",
       "proof_provenance_kind": "project_native",
-      "proof_scope": "Lean-proved finite memory-slot, loop-budget, active-token-step, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
+      "proof_scope": "Lean-proved finite memory-slot, loop-budget, active-token-step, middle-block route, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
+      "source_ref_contract": {
+        "backed_count": 5,
+        "refs": [
+          {
+            "backed": true,
+            "backing": "lean_sidecar_import",
+            "ref": "Circle/Applications/CircleAI.lean"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/lean/PaperAI02.lean"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/lean/PaperAI03.lean"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"
+          }
+        ],
+        "total_count": 5,
+        "unbacked_refs": []
+      },
       "source_refs": [
         "Circle/Applications/CircleAI.lean",
         "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/lean/PaperAI02.lean",
@@ -1716,6 +1938,11 @@
         "AIM-T0036",
         "AIM-T0037",
         "AIM-T0038",
+        "AIM-T0039",
+        "AIM-T0040",
+        "AIM-T0041",
+        "AIM-T0042",
+        "AIM-T0043",
         "AIRA-T0005"
       ],
       "title": "AI memory, loop, and adapter schedules",
@@ -1803,7 +2030,7 @@
           {
             "evidence": "5",
             "id": "source_trail",
-            "label": "source trail",
+            "label": "paper-backed source refs",
             "passed": true
           },
           {
@@ -1876,6 +2103,38 @@
       "proof_provenance": "Proof provenance is project-native Lean code for cyclic-address, stride-layout, and round-robin schedule laws, with performance claims left to explicit benchmarks.",
       "proof_provenance_kind": "project_native",
       "proof_scope": "Lean-proved cyclic-address, stride-address, and round-robin schedule laws with Python layout fixtures.",
+      "source_ref_contract": {
+        "backed_count": 5,
+        "refs": [
+          {
+            "backed": true,
+            "backing": "lean_sidecar_import",
+            "ref": "Circle/Applications/CoilCompute.lean"
+          },
+          {
+            "backed": true,
+            "backing": "lean_sidecar_import",
+            "ref": "Circle/Applications/CoilSystems.lean"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
+            "ref": "sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py"
+          }
+        ],
+        "total_count": 5,
+        "unbacked_refs": []
+      },
       "source_refs": [
         "Circle/Applications/CoilCompute.lean",
         "Circle/Applications/CoilSystems.lean",
@@ -1906,13 +2165,13 @@
       "ready_count": 11
     },
     "evidence_totals": {
-      "dictionary_count": 38,
+      "dictionary_count": 39,
       "executable_count": 17,
       "living_book_page_count": 13,
-      "living_book_widget_count": 18,
+      "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 75
+      "theorem_count": 80
     },
     "proof_provenance_counts": {
       "mathlib_bridge": 4,
@@ -1924,13 +2183,13 @@
       "standard_math_parity": 10
     },
     "unique_evidence_counts": {
-      "dictionary_count": 30,
+      "dictionary_count": 31,
       "executable_count": 17,
       "living_book_page_count": 8,
-      "living_book_widget_count": 18,
+      "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 75
+      "theorem_count": 80
     },
     "unique_living_book_pages": [
       "site/chapters/S1/03_coils_orbits_closure.qmd",

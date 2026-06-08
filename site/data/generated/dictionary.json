@@ -5599,6 +5599,36 @@
           "lean_name": "Circle.Applications.tokenInactiveAtStep_of_loopPeriod_lt_step",
           "name": "Circle.Applications.tokenInactiveAtStep_of_loopPeriod_lt_step",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0039",
+          "lean_name": "Circle.Applications.middleBlockRoute_ge_start",
+          "name": "Circle.Applications.middleBlockRoute_ge_start",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0040",
+          "lean_name": "Circle.Applications.middleBlockRoute_lt_stop",
+          "name": "Circle.Applications.middleBlockRoute_lt_stop",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0041",
+          "lean_name": "Circle.Applications.middleBlockRoute_add_width",
+          "name": "Circle.Applications.middleBlockRoute_add_width",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0042",
+          "lean_name": "Circle.Applications.middleBlockRoute_add_mul_width",
+          "name": "Circle.Applications.middleBlockRoute_add_mul_width",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0043",
+          "lean_name": "Circle.Applications.middleBlockRoute_zero",
+          "name": "Circle.Applications.middleBlockRoute_zero",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -8088,7 +8118,38 @@
           "title": "Circle Calculus AI 2: Coil Attention and Memory"
         }
       ],
-      "used_by_theorems": [],
+      "used_by_theorems": [
+        {
+          "id": "AIM-T0039",
+          "lean_name": "Circle.Applications.middleBlockRoute_ge_start",
+          "name": "Circle.Applications.middleBlockRoute_ge_start",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0040",
+          "lean_name": "Circle.Applications.middleBlockRoute_lt_stop",
+          "name": "Circle.Applications.middleBlockRoute_lt_stop",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0041",
+          "lean_name": "Circle.Applications.middleBlockRoute_add_width",
+          "name": "Circle.Applications.middleBlockRoute_add_width",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0042",
+          "lean_name": "Circle.Applications.middleBlockRoute_add_mul_width",
+          "name": "Circle.Applications.middleBlockRoute_add_mul_width",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0043",
+          "lean_name": "Circle.Applications.middleBlockRoute_zero",
+          "name": "Circle.Applications.middleBlockRoute_zero",
+          "status": "proved"
+        }
+      ],
       "used_by_widgets": [
         {
           "id": "learned_middle_block_recurrence",

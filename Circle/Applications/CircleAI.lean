@@ -155,6 +155,40 @@ theorem tokenInactiveAtStep_of_loopPeriod_lt_step {loopPeriod : Nat}
   intro hactive
   exact Nat.not_lt_of_ge (tokenActiveAtStep_step_le_loopPeriod h hactive) hstep
 
+def middleBlockRoute (start width sample : Nat) : Nat :=
+  start + phaseChannel width sample
+
+theorem middleBlockRoute_ge_start (start width sample : Nat) :
+    start ≤ middleBlockRoute start width sample := by
+  unfold middleBlockRoute
+  exact Nat.le_add_right _ _
+
+theorem middleBlockRoute_lt_stop {width : Nat} (h : 0 < width)
+    (start sample : Nat) :
+    middleBlockRoute start width sample < start + width := by
+  unfold middleBlockRoute
+  exact Nat.add_lt_add_left (phaseChannel_lt_period h sample) start
+
+theorem middleBlockRoute_add_width {width : Nat} (h : 0 < width)
+    (start sample : Nat) :
+    middleBlockRoute start width (sample + width) =
+      middleBlockRoute start width sample := by
+  unfold middleBlockRoute
+  rw [phaseChannel_add_period h]
+
+theorem middleBlockRoute_add_mul_width {width : Nat} (h : 0 < width)
+    (start sample passes : Nat) :
+    middleBlockRoute start width (sample + passes * width) =
+      middleBlockRoute start width sample := by
+  unfold middleBlockRoute
+  rw [phaseChannel_add_mul_period h]
+
+theorem middleBlockRoute_zero (start width : Nat) :
+    middleBlockRoute start width 0 = start := by
+  unfold middleBlockRoute
+  rw [phaseChannel_zero]
+  simp
+
 def trainingFreeLoopBudget (loopPeriod sample maxLoops : Nat) : Nat :=
   min (loopRequiredSteps loopPeriod sample) maxLoops
 

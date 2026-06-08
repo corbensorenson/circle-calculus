@@ -26,6 +26,11 @@ namespace Circle.PaperAI02
 #check Circle.Applications.tokenActiveAtStep_add_mul_loopPeriod
 #check Circle.Applications.tokenActiveAtStep_step_le_loopPeriod
 #check Circle.Applications.tokenInactiveAtStep_of_loopPeriod_lt_step
+#check Circle.Applications.middleBlockRoute_ge_start
+#check Circle.Applications.middleBlockRoute_lt_stop
+#check Circle.Applications.middleBlockRoute_add_width
+#check Circle.Applications.middleBlockRoute_add_mul_width
+#check Circle.Applications.middleBlockRoute_zero
 #check Circle.Applications.trainingFreeLoopBudget_le_maxLoops
 #check Circle.Applications.trainingFreeLoopBudget_le_requiredSteps
 #check Circle.Applications.trainingFreeLoopBudget_add_loopPeriod

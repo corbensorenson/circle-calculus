@@ -74,6 +74,15 @@ function verificationRecipe(capability) {
   };
 }
 
+function sourceRefContract(capability) {
+  return capability.source_ref_contract || {
+    backed_count: count(capability.source_refs),
+    total_count: count(capability.source_refs),
+    unbacked_refs: [],
+    refs: (capability.source_refs || []).map((ref) => ({ ref, backed: true, backing: "unchecked" })),
+  };
+}
+
 function renderCommand(command) {
   const code = document.createElement("code");
   code.textContent = command || "";
@@ -185,6 +194,24 @@ function linkedRepoPaths(refs) {
   return fragment;
 }
 
+function sourceBackingDetails(capability) {
+  const contract = sourceRefContract(capability);
+  const refs = Array.isArray(contract.refs) ? contract.refs : [];
+  if (refs.length === 0) return "";
+  const fragment = document.createDocumentFragment();
+  appendSeparated(
+    fragment,
+    refs.map((entry) => {
+      const path = sourcePathFrom(entry);
+      const backing = entry.backing === "lean_sidecar_import" ? "Lean sidecar import" : "Source Trail";
+      const text = `${path}: ${entry.backed ? backing : "unbacked"}`;
+      const href = githubSourceLink(path);
+      return href ? makeLink(text, href) : document.createTextNode(text);
+    }),
+  );
+  return fragment;
+}
+
 function livingBookWidgetIds(refs) {
   const ids = (Array.isArray(refs) ? refs : []).flatMap((ref) => ref.widget_ids || []).filter(Boolean);
   if (ids.length === 0) return "";
@@ -214,6 +241,7 @@ function checklist(capability) {
   const failures = failedGateLabels(contract);
   const list = document.createElement("ul");
   list.className = "capability-audit-list";
+  const sourceContract = sourceRefContract(capability);
   const items = [
     auditItem(
       "claim contract gates",
@@ -225,6 +253,11 @@ function checklist(capability) {
     auditItem("dictionary ids", counts.dictionary_count, linkedIds(capability.dictionary_ids, "dictionary.html")),
     auditItem("pytest executable refs", counts.executable_count, linkedRepoPaths(capability.executable_refs)),
     auditItem("source refs", counts.source_count, linkedRepoPaths(capability.source_refs)),
+    auditItem(
+      "paper-backed source refs",
+      `${sourceContract.backed_count || 0}/${sourceContract.total_count || 0}`,
+      sourceBackingDetails(capability),
+    ),
     auditItem("verification recipe", "present", renderCommand(verificationRecipe(capability).pytest_command)),
     auditItem("Living Book pages", counts.living_book_page_count, linkedRepoPaths(capability.living_book_refs)),
     auditItem("Living Book widgets", counts.living_book_widget_count, livingBookWidgetIds(capability.living_book_refs)),

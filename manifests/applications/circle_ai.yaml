@@ -209,6 +209,26 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.tokenInactiveAtStep_of_loopPeriod_lt_step
     dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0039
+    status: lean_proved
+    lean_name: Circle.Applications.middleBlockRoute_ge_start
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0068"]
+  - id: AIM-T0040
+    status: lean_proved
+    lean_name: Circle.Applications.middleBlockRoute_lt_stop
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0068"]
+  - id: AIM-T0041
+    status: lean_proved
+    lean_name: Circle.Applications.middleBlockRoute_add_width
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0068"]
+  - id: AIM-T0042
+    status: lean_proved
+    lean_name: Circle.Applications.middleBlockRoute_add_mul_width
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0068"]
+  - id: AIM-T0043
+    status: lean_proved
+    lean_name: Circle.Applications.middleBlockRoute_zero
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0068"]
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize

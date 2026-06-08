@@ -1952,6 +1952,14 @@ def token_recurrence_budgets(loop_period: int, token_indices: Sequence[int]) -> 
     return tuple(token_recurrence_budget(loop_period, token_index) for token_index in token_indices)
 
 
+def middle_block_route(start: int, width: int, sample_index: int) -> int:
+    """Return the selected middle-block route ``start + sample_index mod width``."""
+    if start < 0:
+        raise ValueError("start must be nonnegative")
+    _require_positive(width, "width")
+    return start + phase_channel(width, sample_index)
+
+
 def normalize_selected_loop_block(selected_loop_block: Optional[Sequence[int]]) -> tuple[int, int]:
     """Validate the selected middle-block range recorded by the fixture."""
     block = (2, 5) if selected_loop_block is None else tuple(selected_loop_block)
@@ -2036,7 +2044,7 @@ def middle_block_required_blocks(
     if not samples:
         raise ValueError("sample_indices must be nonempty")
     selected = loop_block_indices(block_count, selected_loop_block)
-    return tuple(selected[phase_channel(len(selected), sample)] for sample in samples)
+    return tuple(middle_block_route(selected[0], len(selected), sample) for sample in samples)
 
 
 def _recurrence_budget_predictions(

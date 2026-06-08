@@ -16,6 +16,7 @@ from circle_math.applications.circle_ai import (
     loop_score_trace,
     memory_slot,
     middle_block_required_blocks,
+    middle_block_route,
     memory_slot_collision_count,
     memory_slot_loads,
     mixed_retrieval_target_lags,
@@ -411,6 +412,13 @@ def test_token_level_recurrence_benchmark_has_per_token_and_wrong_loop_controls(
 def test_middle_block_recurrence_helpers_are_deterministic() -> None:
     samples = tuple(range(8))
 
+    assert tuple(middle_block_route(2, 3, sample) for sample in samples) == (2, 3, 4, 2, 3, 4, 2, 3)
+    for sample in range(24):
+        routed = middle_block_route(2, 3, sample)
+        assert 2 <= routed < 5
+        assert middle_block_route(2, 3, sample + 3) == routed
+        assert middle_block_route(2, 3, sample + 4 * 3) == routed
+    assert middle_block_route(2, 3, 0) == 2
     assert loop_block_indices(8, (2, 5)) == (2, 3, 4)
     assert middle_block_required_blocks(8, (2, 5), samples) == (2, 3, 4, 2, 3, 4, 2, 3)
 

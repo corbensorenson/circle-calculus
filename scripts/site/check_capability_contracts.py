@@ -57,6 +57,48 @@ def main() -> int:
                         f"{capability_id}: verification_recipe {key} "
                         f"{recipe.get(key)!r} does not match {expected_value!r}"
                     )
+        source_ref_contract = capability.get("source_ref_contract")
+        source_refs = capability.get("source_refs", []) or []
+        if not isinstance(source_ref_contract, dict):
+            failures.append(f"{capability_id}: missing source_ref_contract")
+        else:
+            refs = source_ref_contract.get("refs")
+            if not isinstance(refs, list):
+                failures.append(f"{capability_id}: source_ref_contract refs must be a list")
+                refs = []
+            contract_refs = [ref.get("ref") for ref in refs if isinstance(ref, dict)]
+            if contract_refs != source_refs:
+                failures.append(
+                    f"{capability_id}: source_ref_contract refs do not match source_refs"
+                )
+            backed_count = sum(
+                1
+                for ref in refs
+                if isinstance(ref, dict) and ref.get("backed")
+            )
+            unbacked_refs = [
+                ref.get("ref", "")
+                for ref in refs
+                if isinstance(ref, dict) and not ref.get("backed")
+            ]
+            if source_ref_contract.get("backed_count") != backed_count:
+                failures.append(
+                    f"{capability_id}: source_ref_contract backed_count "
+                    f"{source_ref_contract.get('backed_count')} does not match {backed_count}"
+                )
+            if source_ref_contract.get("total_count") != len(source_refs):
+                failures.append(
+                    f"{capability_id}: source_ref_contract total_count "
+                    f"{source_ref_contract.get('total_count')} does not match {len(source_refs)}"
+                )
+            if source_ref_contract.get("unbacked_refs") != unbacked_refs:
+                failures.append(
+                    f"{capability_id}: source_ref_contract unbacked_refs do not match refs"
+                )
+            if unbacked_refs:
+                failures.append(
+                    f"{capability_id}: source refs are not paper-backed: {unbacked_refs}"
+                )
         contract = capability.get("claim_contract")
         if not isinstance(contract, dict):
             failures.append(f"{capability_id}: missing claim_contract")
