@@ -242,6 +242,10 @@ def export_widget_index() -> dict:
                 "GEN-T0028",
                 "GEN-T0029",
                 "GEN-T0030",
+                "GEN-T0031",
+                "GEN-T0032",
+                "GEN-T0033",
+                "GEN-T0034",
             ],
             "dictionary_ids": ["COMMON-0064", "COMMON-0065", "COMMON-0066"],
             "python_reference": "circle_math.generative.compare_generator_to_explicit; circle_math.generative.bounded_generator_search; circle_math.generative.finite_circle_generator",
@@ -569,7 +573,7 @@ def export_widget_index() -> dict:
             "path": "site/widgets/showcase/capability_audit_checklist.js",
             "theorem_ids": [],
             "dictionary_ids": [],
-            "python_reference": "manifests/capability_showcase.yaml; site/data/generated/capability_showcase.json; scripts/check_capability_showcase.py",
+            "python_reference": "manifests/capability_showcase.yaml; site/data/generated/capability_showcase.json; scripts/check_capability_showcase.py; scripts/site/check_capability_contracts.py",
         },
     ]
     return {"widgets": widgets}
@@ -796,6 +800,189 @@ def export_phase7_targets() -> dict:
     return {"targets": data.get("targets", [])}
 
 
+CLAIM_CONTRACT_ROLES = {"standard_math_parity", "circle_native_value"}
+CLAIM_CONTRACT_PROVENANCE_KINDS = {"mathlib_bridge", "project_native", "mixed"}
+
+
+def nonempty_text(item: dict, key: str) -> bool:
+    return bool(str(item.get(key, "")).strip())
+
+
+def contract_gate(gate_id: str, label: str, passed: bool, evidence: str) -> dict:
+    return {
+        "id": gate_id,
+        "label": label,
+        "passed": bool(passed),
+        "evidence": evidence,
+    }
+
+
+def contract_count_or_failures(count: int, failures: list[str]) -> str:
+    if not failures:
+        return str(count)
+    return f"{count}; failures: {', '.join(failures)}"
+
+
+def unsafe_or_missing_path(ref: str) -> bool:
+    path = Path(ref)
+    return path.is_absolute() or ".." in path.parts or not (ROOT / path).exists()
+
+
+def proved_theorem_id_set() -> set[str]:
+    proved: set[str] = set()
+    for path in theorem_manifest_paths():
+        data = load_yaml(path)
+        for theorem in data.get("theorems", []):
+            theorem_id = theorem.get("id")
+            if theorem_id and canonical_status(theorem.get("status", "")) == "proved":
+                proved.add(theorem_id)
+    return proved
+
+
+def paper_id_set() -> set[str]:
+    path = ROOT / "manifests" / "paper_manifest.yaml"
+    if not path.exists():
+        return set()
+    data = load_yaml(path)
+    return {paper["id"] for paper in data.get("papers", []) if paper.get("id")}
+
+
+def capability_claim_contract(
+    item: dict,
+    evidence_counts: dict[str, int],
+    proved_theorem_ids: set[str],
+    known_paper_ids: set[str],
+) -> dict:
+    roles = set(item.get("portfolio_roles", []) or [])
+    provenance_kind = item.get("proof_provenance_kind", "")
+    paper_ids = item.get("paper_ids", []) or []
+    theorem_ids = item.get("theorem_ids", []) or []
+    source_refs = item.get("source_refs", []) or []
+    executable_refs = item.get("executable_refs", []) or []
+    living_book_refs = item.get("living_book_refs", []) or []
+    unknown_papers = sorted(set(paper_ids) - known_paper_ids)
+    unproved_theorems = sorted(set(theorem_ids) - proved_theorem_ids)
+    missing_sources = sorted(ref for ref in source_refs if unsafe_or_missing_path(ref))
+    executable_failures = sorted(
+        ref
+        for ref in executable_refs
+        if (
+            ref not in source_refs
+            or unsafe_or_missing_path(ref)
+            or not Path(ref).name.startswith("test_")
+            or Path(ref).suffix != ".py"
+        )
+    )
+    missing_living_pages = sorted(
+        ref.get("page", "")
+        for ref in living_book_refs
+        if not ref.get("page", "") or unsafe_or_missing_path(ref.get("page", ""))
+    )
+    gates = [
+        contract_gate(
+            "role_contract",
+            "standard parity or Circle-native role",
+            bool(roles & CLAIM_CONTRACT_ROLES),
+            ", ".join(sorted(roles)) or "none",
+        ),
+        contract_gate(
+            "standard_anchor",
+            "standard math anchor",
+            nonempty_text(item, "standard_math_anchor"),
+            item.get("standard_math_anchor", ""),
+        ),
+        contract_gate(
+            "circle_expression",
+            "Circle Math expression",
+            nonempty_text(item, "circle_math_expression"),
+            item.get("circle_math_expression", ""),
+        ),
+        contract_gate(
+            "circle_native_value",
+            "Circle-native value",
+            nonempty_text(item, "circle_native_value"),
+            item.get("circle_native_value", ""),
+        ),
+        contract_gate(
+            "advertised_claim",
+            "advertised claim",
+            nonempty_text(item, "advertised_claim"),
+            item.get("advertised_claim", ""),
+        ),
+        contract_gate(
+            "proof_scope",
+            "proof scope",
+            nonempty_text(item, "proof_scope"),
+            item.get("proof_scope", ""),
+        ),
+        contract_gate(
+            "proof_provenance_kind",
+            "proof provenance kind",
+            provenance_kind in CLAIM_CONTRACT_PROVENANCE_KINDS,
+            provenance_kind or "none",
+        ),
+        contract_gate(
+            "proof_provenance",
+            "proof provenance text",
+            nonempty_text(item, "proof_provenance"),
+            item.get("proof_provenance", ""),
+        ),
+        contract_gate(
+            "paper_backing",
+            "paper backing",
+            evidence_counts["paper_count"] > 0 and not unknown_papers,
+            contract_count_or_failures(evidence_counts["paper_count"], unknown_papers),
+        ),
+        contract_gate(
+            "proved_theorem_ids",
+            "proved theorem ids",
+            evidence_counts["theorem_count"] > 0 and not unproved_theorems,
+            contract_count_or_failures(evidence_counts["theorem_count"], unproved_theorems),
+        ),
+        contract_gate(
+            "dictionary_backing",
+            "dictionary backing",
+            evidence_counts["dictionary_count"] > 0,
+            str(evidence_counts["dictionary_count"]),
+        ),
+        contract_gate(
+            "source_trail",
+            "source trail",
+            evidence_counts["source_count"] > 0 and not missing_sources,
+            contract_count_or_failures(evidence_counts["source_count"], missing_sources),
+        ),
+        contract_gate(
+            "executable_reference",
+            "executable pytest reference",
+            evidence_counts["executable_count"] > 0 and not executable_failures,
+            contract_count_or_failures(evidence_counts["executable_count"], executable_failures),
+        ),
+        contract_gate(
+            "living_book_presentation",
+            "Living Book presentation",
+            evidence_counts["living_book_page_count"] > 0 and not missing_living_pages,
+            contract_count_or_failures(
+                evidence_counts["living_book_page_count"],
+                missing_living_pages,
+            ),
+        ),
+        contract_gate(
+            "claim_boundary",
+            "not-claimed boundary",
+            nonempty_text(item, "not_claimed"),
+            item.get("not_claimed", ""),
+        ),
+    ]
+    ready = all(gate["passed"] for gate in gates)
+    return {
+        "status": "ready" if ready else "incomplete",
+        "ready_to_advertise": ready,
+        "passed_gate_count": sum(1 for gate in gates if gate["passed"]),
+        "total_gate_count": len(gates),
+        "gates": gates,
+    }
+
+
 def export_capability_showcase() -> dict:
     path = ROOT / "manifests" / "capability_showcase.yaml"
     if not path.exists():
@@ -820,6 +1007,10 @@ def export_capability_showcase() -> dict:
     unique_sources: set[str] = set()
     unique_living_pages: set[str] = set()
     unique_living_widgets: set[str] = set()
+    contract_ready_count = 0
+    contract_gate_failures: dict[str, int] = {}
+    proved_theorem_ids = proved_theorem_id_set()
+    known_paper_ids = paper_id_set()
     for capability in data.get("capabilities", []):
         item = dict(capability)
         living_pages: set[str] = set()
@@ -840,6 +1031,18 @@ def export_capability_showcase() -> dict:
             "living_book_page_count": len(living_pages),
             "living_book_widget_count": len(living_widgets),
         }
+        item["claim_contract"] = capability_claim_contract(
+            item,
+            item["evidence_counts"],
+            proved_theorem_ids,
+            known_paper_ids,
+        )
+        if item["claim_contract"]["ready_to_advertise"]:
+            contract_ready_count += 1
+        for gate in item["claim_contract"]["gates"]:
+            if not gate["passed"]:
+                gate_id = gate["id"]
+                contract_gate_failures[gate_id] = contract_gate_failures.get(gate_id, 0) + 1
         for role in item.get("portfolio_roles", []) or []:
             role_counts[role] = role_counts.get(role, 0) + 1
         proof_provenance_kind = item.get("proof_provenance_kind", "")
@@ -872,6 +1075,11 @@ def export_capability_showcase() -> dict:
             "living_book_widget_count": len(unique_living_widgets),
         },
         "unique_living_book_pages": sorted(unique_living_pages),
+        "claim_contract_summary": {
+            "ready_count": contract_ready_count,
+            "incomplete_count": len(capabilities) - contract_ready_count,
+            "gate_failure_counts": dict(sorted(contract_gate_failures.items())),
+        },
     }
     return {"capabilities": capabilities, "portfolio_summary": portfolio_summary}
 

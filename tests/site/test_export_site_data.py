@@ -119,6 +119,20 @@ def test_export_site_data_writes_required_indexes() -> None:
     )
     assert capability_by_id["SHOW-009"]["evidence_counts"]["living_book_widget_count"] == 4
     assert capability_by_id["SHOW-011"]["evidence_counts"]["living_book_page_count"] == 1
+    assert all(
+        item["claim_contract"]["ready_to_advertise"]
+        for item in capabilities["capabilities"]
+    )
+    assert capability_by_id["SHOW-001"]["claim_contract"]["status"] == "ready"
+    assert capability_by_id["SHOW-001"]["claim_contract"]["passed_gate_count"] == (
+        capability_by_id["SHOW-001"]["claim_contract"]["total_gate_count"]
+    )
+    assert "paper_backing" in {
+        gate["id"] for gate in capability_by_id["SHOW-001"]["claim_contract"]["gates"]
+    }
+    assert summary["claim_contract_summary"]["ready_count"] == len(capabilities["capabilities"])
+    assert summary["claim_contract_summary"]["incomplete_count"] == 0
+    assert summary["claim_contract_summary"]["gate_failure_counts"] == {}
 
     targets = json.loads((generated / "phase4_targets.json").read_text())
     target_ids = {item["id"] for item in targets["targets"]}

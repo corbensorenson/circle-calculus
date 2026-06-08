@@ -57,7 +57,7 @@ Given a paper id or title:
 
 Use the [Proof-Backed Showcase](showcase.qmd) when the claim is not a single theorem but a portfolio lane such as `SHOW-001` or `SHOW-010`.
 
-The checklist below is generated from `site/data/generated/capability_showcase.json`, which is exported from `manifests/capability_showcase.yaml`. A capability is ready to advertise only when its claim, proof provenance, theorem ids, paper ids, executable references, Living Book references, and not-claimed boundary all stay in sync with that manifest.
+The checklist below is generated from `site/data/generated/capability_showcase.json`, which is exported from `manifests/capability_showcase.yaml`. A capability is ready to advertise only when its generated claim contract passes: role, standard anchor, Circle expression, Circle-native value, advertised claim, proof scope, proof provenance, paper ids, theorem ids, dictionary ids, source refs, executable refs, Living Book refs, and not-claimed boundary must all be present and in sync with that manifest.
 
 <div class="widget-panel" data-widget="capability_audit_checklist"></div>
 

@@ -168,6 +168,10 @@ def test_bounded_generator_search_reports_scope_and_exact_candidates() -> None:
     assert "GEN-T0028" in search.theorem_ids
     assert "GEN-T0029" in search.theorem_ids
     assert "GEN-T0030" in search.theorem_ids
+    assert "GEN-T0031" in search.theorem_ids
+    assert "GEN-T0032" in search.theorem_ids
+    assert "GEN-T0033" in search.theorem_ids
+    assert "GEN-T0034" in search.theorem_ids
     assert search.note.endswith("not an optimality theorem.")
 
 
@@ -191,4 +195,27 @@ def test_empty_bounded_generator_search_has_no_best_candidate() -> None:
         "GEN-T0028",
         "GEN-T0029",
         "GEN-T0030",
+        "GEN-T0031",
+        "GEN-T0032",
+        "GEN-T0033",
+        "GEN-T0034",
     )
+
+
+def test_singleton_bounded_generator_search_has_exact_best_candidate() -> None:
+    search = bounded_generator_search(
+        [finite_circle_generator(8)],
+        search_id="singleton_exact_search",
+    )
+
+    assert search.search_id == "singleton_exact_search"
+    assert search.finite_search_space
+    assert search.candidate_count == 1
+    assert search.exact_candidate_count == 1
+    assert search.best_exact is not None
+    assert search.best_exact.exact_regeneration
+    assert search.best_exact.artifact_id == "finite_circle"
+    assert "GEN-T0031" in search.theorem_ids
+    assert "GEN-T0032" in search.theorem_ids
+    assert "GEN-T0033" in search.theorem_ids
+    assert "GEN-T0034" in search.theorem_ids

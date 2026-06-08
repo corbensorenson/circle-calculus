@@ -4,7 +4,7 @@ QUARTO_HOME ?= $(CURDIR)/.tools/quarto-home
 QUARTO_DENO_DIR ?= $(CURDIR)/.tools/quarto-deno
 QUARTO_ENV := HOME="$(QUARTO_HOME)" DENO_DIR="$(QUARTO_DENO_DIR)"
 
-.PHONY: check sourcecheck lean sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests capabilityshowcase claimlanguage phase4targets phase5targets phase6targets phase7targets applicationguardrails glyphfixtures dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples site-data sitenavcontract sitecheck quarto-dirs site-render site-render-check site-preview living-book-check
+.PHONY: check sourcecheck lean sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests capabilityshowcase claimlanguage phase4targets phase5targets phase6targets phase7targets applicationguardrails glyphfixtures dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples site-data sitenavcontract capabilitycontracts sitecheck quarto-dirs site-render site-render-check site-preview living-book-check
 
 check: lean sourcecheck
 
@@ -87,9 +87,13 @@ site-data:
 sitenavcontract:
 	python scripts/site/check_site_navigation_contract.py
 
+capabilitycontracts:
+	python scripts/site/check_capability_contracts.py
+
 sitecheck: site-data
 	python scripts/site/check_quarto_structure.py
 	python scripts/site/check_site_navigation_contract.py
+	python scripts/site/check_capability_contracts.py
 	python scripts/site/check_site_scaffold_contract.py
 	python scripts/site/check_site_manifest_links.py
 	python scripts/site/check_site_dictionary_links.py

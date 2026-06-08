@@ -355,7 +355,8 @@ body {
 .paper-index-table,
 .target-index-table,
 .glyph-index-table,
-.capability-matrix-table {
+.capability-matrix-table,
+.capability-audit-table {
   margin: 0;
   min-width: 760px;
   width: 100%;
@@ -367,7 +368,8 @@ body {
 .paper-index-table td,
 .target-index-table td,
 .glyph-index-table td,
-.capability-matrix-table td {
+.capability-matrix-table td,
+.capability-audit-table td {
   vertical-align: top;
 }
 
@@ -378,6 +380,36 @@ body {
 .capability-count {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-weight: 700;
+}
+
+.capability-contract {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 10rem;
+}
+
+.capability-contract-detail {
+  color: var(--cc-muted);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.capability-contract-failures {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.capability-audit-list {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.capability-audit-list li + li {
+  margin-top: 0.3rem;
+}
+
+.capability-audit-list a {
+  overflow-wrap: anywhere;
 }
 
 .node-label {
@@ -422,7 +454,8 @@ body {
   .paper-index-table,
   .target-index-table,
   .glyph-index-table,
-  .capability-matrix-table {
+  .capability-matrix-table,
+  .capability-audit-table {
     min-width: 640px;
   }
 

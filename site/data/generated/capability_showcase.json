@@ -6,6 +6,104 @@
       "audience_interest": "Erdos-Ginzburg-Ziv, Cauchy-Davenport, zero-sum witnesses, and finite sumsets.",
       "circle_math_expression": "Finite circle types `C_n` and `C_p` present the cyclic groups directly, with theorem ids for zero-sum subsequences and prime-circle sumset growth.",
       "circle_native_value": "The Circle framing makes zero-sum witnesses, sharpness families, and sumsets inspectable as finite address-space examples linked to Lean and Python sidecars.",
+      "claim_contract": {
+        "gates": [
+          {
+            "evidence": "circle_native_value, standard_math_parity",
+            "id": "role_contract",
+            "label": "standard parity or Circle-native role",
+            "passed": true
+          },
+          {
+            "evidence": "Classical zero-sum and additive-combinatorics theorems over cyclic groups, especially EGZ and Cauchy-Davenport.",
+            "id": "standard_anchor",
+            "label": "standard math anchor",
+            "passed": true
+          },
+          {
+            "evidence": "Finite circle types `C_n` and `C_p` present the cyclic groups directly, with theorem ids for zero-sum subsequences and prime-circle sumset growth.",
+            "id": "circle_expression",
+            "label": "Circle Math expression",
+            "passed": true
+          },
+          {
+            "evidence": "The Circle framing makes zero-sum witnesses, sharpness families, and sumsets inspectable as finite address-space examples linked to Lean and Python sidecars.",
+            "id": "circle_native_value",
+            "label": "Circle-native value",
+            "passed": true
+          },
+          {
+            "evidence": "Circle Calculus can state established zero-sum and prime-circle sumset theorems directly in the native `C_n` vocabulary.",
+            "id": "advertised_claim",
+            "label": "advertised claim",
+            "passed": true
+          },
+          {
+            "evidence": "Lean-proved Circle wrappers around mathlib's EGZ and Cauchy-Davenport theorems.",
+            "id": "proof_scope",
+            "label": "proof scope",
+            "passed": true
+          },
+          {
+            "evidence": "mathlib_bridge",
+            "id": "proof_provenance_kind",
+            "label": "proof provenance kind",
+            "passed": true
+          },
+          {
+            "evidence": "Proof provenance is a Circle wrapper over mathlib-formalized EGZ and Cauchy-Davenport, with Circle-specific examples and vocabulary layered on top.",
+            "id": "proof_provenance",
+            "label": "proof provenance text",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "paper_backing",
+            "label": "paper backing",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "proved_theorem_ids",
+            "label": "proved theorem ids",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "dictionary_backing",
+            "label": "dictionary backing",
+            "passed": true
+          },
+          {
+            "evidence": "3",
+            "id": "source_trail",
+            "label": "source trail",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "executable_reference",
+            "label": "executable pytest reference",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "living_book_presentation",
+            "label": "Living Book presentation",
+            "passed": true
+          },
+          {
+            "evidence": "No new proof of EGZ, no new proof of Cauchy-Davenport, and no progress claim on an open Erdos problem.",
+            "id": "claim_boundary",
+            "label": "not-claimed boundary",
+            "passed": true
+          }
+        ],
+        "passed_gate_count": 15,
+        "ready_to_advertise": true,
+        "status": "ready",
+        "total_gate_count": 15
+      },
       "dictionary_ids": [
         "CC-0001",
         "CC-0201"
@@ -57,6 +155,104 @@
       "audience_interest": "Intersecting families, cyclic-order double counting, and sharp extremal examples.",
       "circle_math_expression": "Numberings, prefix-density counts, and intersecting families are exposed as theorem-backed finite-circle-method artifacts.",
       "circle_native_value": "The project can show the circle-method proof atom as an executable finite count, then connect it to a formal EKR theorem card.",
+      "claim_contract": {
+        "gates": [
+          {
+            "evidence": "circle_native_value, standard_math_parity",
+            "id": "role_contract",
+            "label": "standard parity or Circle-native role",
+            "passed": true
+          },
+          {
+            "evidence": "The Katona circle method and the Erdos-Ko-Rado theorem for intersecting uniform set families.",
+            "id": "standard_anchor",
+            "label": "standard math anchor",
+            "passed": true
+          },
+          {
+            "evidence": "Numberings, prefix-density counts, and intersecting families are exposed as theorem-backed finite-circle-method artifacts.",
+            "id": "circle_expression",
+            "label": "Circle Math expression",
+            "passed": true
+          },
+          {
+            "evidence": "The project can show the circle-method proof atom as an executable finite count, then connect it to a formal EKR theorem card.",
+            "id": "circle_native_value",
+            "label": "Circle-native value",
+            "passed": true
+          },
+          {
+            "evidence": "Circle Calculus can expose a classical circle-method counting atom and the Erdos-Ko-Rado bound as proof-linked artifacts.",
+            "id": "advertised_claim",
+            "label": "advertised claim",
+            "passed": true
+          },
+          {
+            "evidence": "Lean-proved wrappers around mathlib's Katona prefix-density and Erdos-Ko-Rado declarations.",
+            "id": "proof_scope",
+            "label": "proof scope",
+            "passed": true
+          },
+          {
+            "evidence": "mathlib_bridge",
+            "id": "proof_provenance_kind",
+            "label": "proof provenance kind",
+            "passed": true
+          },
+          {
+            "evidence": "Proof provenance is a Circle wrapper over mathlib-formalized Katona and Erdos-Ko-Rado declarations, plus finite Circle-method examples.",
+            "id": "proof_provenance",
+            "label": "proof provenance text",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "paper_backing",
+            "label": "paper backing",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "proved_theorem_ids",
+            "label": "proved theorem ids",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "dictionary_backing",
+            "label": "dictionary backing",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "source_trail",
+            "label": "source trail",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "executable_reference",
+            "label": "executable pytest reference",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "living_book_presentation",
+            "label": "Living Book presentation",
+            "passed": true
+          },
+          {
+            "evidence": "No new EKR proof and no classification of all extremal families.",
+            "id": "claim_boundary",
+            "label": "not-claimed boundary",
+            "passed": true
+          }
+        ],
+        "passed_gate_count": 15,
+        "ready_to_advertise": true,
+        "status": "ready",
+        "total_gate_count": 15
+      },
       "dictionary_ids": [
         "CC-0001",
         "CC-0201"
@@ -107,6 +303,104 @@
       "audience_interest": "Dense finite sets, arithmetic progressions, Roth numbers, and witness search.",
       "circle_math_expression": "Dense finite interval examples and AP witness searches are connected to formal Roth theorem handles.",
       "circle_native_value": "Circle Math supplies a bridge toward cyclic AP models while keeping finite witness search, density claims, and Lean theorem status separated.",
+      "claim_contract": {
+        "gates": [
+          {
+            "evidence": "circle_native_value, standard_math_parity",
+            "id": "role_contract",
+            "label": "standard parity or Circle-native role",
+            "passed": true
+          },
+          {
+            "evidence": "Roth's theorem and the asymptotic sublinearity of maximal three-term-AP-free subsets of natural intervals.",
+            "id": "standard_anchor",
+            "label": "standard math anchor",
+            "passed": true
+          },
+          {
+            "evidence": "Dense finite interval examples and AP witness searches are connected to formal Roth theorem handles.",
+            "id": "circle_expression",
+            "label": "Circle Math expression",
+            "passed": true
+          },
+          {
+            "evidence": "Circle Math supplies a bridge toward cyclic AP models while keeping finite witness search, density claims, and Lean theorem status separated.",
+            "id": "circle_native_value",
+            "label": "Circle-native value",
+            "passed": true
+          },
+          {
+            "evidence": "Circle Calculus can connect finite witness searches to formal Roth-theorem handles.",
+            "id": "advertised_claim",
+            "label": "advertised claim",
+            "passed": true
+          },
+          {
+            "evidence": "Lean-proved wrappers around mathlib's Roth theorem and Roth-number sublinearity statement.",
+            "id": "proof_scope",
+            "label": "proof scope",
+            "passed": true
+          },
+          {
+            "evidence": "mathlib_bridge",
+            "id": "proof_provenance_kind",
+            "label": "proof provenance kind",
+            "passed": true
+          },
+          {
+            "evidence": "Proof provenance is a Circle wrapper over mathlib-formalized Roth handles, with project finite-witness examples kept separate from the proof.",
+            "id": "proof_provenance",
+            "label": "proof provenance text",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "paper_backing",
+            "label": "paper backing",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "proved_theorem_ids",
+            "label": "proved theorem ids",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "dictionary_backing",
+            "label": "dictionary backing",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "source_trail",
+            "label": "source trail",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "executable_reference",
+            "label": "executable pytest reference",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "living_book_presentation",
+            "label": "Living Book presentation",
+            "passed": true
+          },
+          {
+            "evidence": "No new Roth proof, no improved bounds, and no cyclic-to-natural transfer theorem yet.",
+            "id": "claim_boundary",
+            "label": "not-claimed boundary",
+            "passed": true
+          }
+        ],
+        "passed_gate_count": 15,
+        "ready_to_advertise": true,
+        "status": "ready",
+        "total_gate_count": 15
+      },
       "dictionary_ids": [
         "CC-0001",
         "CC-0201"
@@ -157,6 +451,104 @@
       "audience_interest": "Unavoidable monochromatic structure, combinatorial lines, and finite coloring examples.",
       "circle_math_expression": "Finite coloring examples and combinatorial-line widgets can be attached to Lean theorem ids for the general Ramsey statements.",
       "circle_native_value": "The Circle presentation can turn unavoidable structure into inspectable finite search artifacts without confusing examples for proofs.",
+      "claim_contract": {
+        "gates": [
+          {
+            "evidence": "circle_native_value, standard_math_parity",
+            "id": "role_contract",
+            "label": "standard parity or Circle-native role",
+            "passed": true
+          },
+          {
+            "evidence": "Hales-Jewett and Van der Waerden style unavoidable monochromatic-line or homothetic-copy theorems.",
+            "id": "standard_anchor",
+            "label": "standard math anchor",
+            "passed": true
+          },
+          {
+            "evidence": "Finite coloring examples and combinatorial-line widgets can be attached to Lean theorem ids for the general Ramsey statements.",
+            "id": "circle_expression",
+            "label": "Circle Math expression",
+            "passed": true
+          },
+          {
+            "evidence": "The Circle presentation can turn unavoidable structure into inspectable finite search artifacts without confusing examples for proofs.",
+            "id": "circle_native_value",
+            "label": "Circle-native value",
+            "passed": true
+          },
+          {
+            "evidence": "Circle Calculus can present Ramsey-style unavoidable structure with theorem ids and executable finite searches.",
+            "id": "advertised_claim",
+            "label": "advertised claim",
+            "passed": true
+          },
+          {
+            "evidence": "Lean-proved wrappers around mathlib's Hales-Jewett and homothetic-copy theorems.",
+            "id": "proof_scope",
+            "label": "proof scope",
+            "passed": true
+          },
+          {
+            "evidence": "mathlib_bridge",
+            "id": "proof_provenance_kind",
+            "label": "proof provenance kind",
+            "passed": true
+          },
+          {
+            "evidence": "Proof provenance is a Circle wrapper over mathlib-formalized Ramsey/Hales-Jewett style theorems, with finite searches used only as examples.",
+            "id": "proof_provenance",
+            "label": "proof provenance text",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "paper_backing",
+            "label": "paper backing",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "proved_theorem_ids",
+            "label": "proved theorem ids",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "dictionary_backing",
+            "label": "dictionary backing",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "source_trail",
+            "label": "source trail",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "executable_reference",
+            "label": "executable pytest reference",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "living_book_presentation",
+            "label": "Living Book presentation",
+            "passed": true
+          },
+          {
+            "evidence": "Finite Python searches are examples only; they are not the Hales-Jewett proof.",
+            "id": "claim_boundary",
+            "label": "not-claimed boundary",
+            "passed": true
+          }
+        ],
+        "passed_gate_count": 15,
+        "ready_to_advertise": true,
+        "status": "ready",
+        "total_gate_count": 15
+      },
       "dictionary_ids": [
         "CC-0001",
         "CC-0201"
@@ -207,6 +599,104 @@
       "audience_interest": "Cycle graphs, circulant graphs, connectedness, and unit-distance vocabulary.",
       "circle_math_expression": "The one-step finite circle graph is presented as a circulant graph, with connectedness and a minimal unit-distance embedding constructor.",
       "circle_native_value": "The graph lab makes cyclic graph structure explicit before moving to harder Euclidean incidence questions.",
+      "claim_contract": {
+        "gates": [
+          {
+            "evidence": "circle_native_value, standard_math_parity",
+            "id": "role_contract",
+            "label": "standard parity or Circle-native role",
+            "passed": true
+          },
+          {
+            "evidence": "Standard cycle graphs, circulant graphs, graph connectedness, and unit-distance embedding vocabulary.",
+            "id": "standard_anchor",
+            "label": "standard math anchor",
+            "passed": true
+          },
+          {
+            "evidence": "The one-step finite circle graph is presented as a circulant graph, with connectedness and a minimal unit-distance embedding constructor.",
+            "id": "circle_expression",
+            "label": "Circle Math expression",
+            "passed": true
+          },
+          {
+            "evidence": "The graph lab makes cyclic graph structure explicit before moving to harder Euclidean incidence questions.",
+            "id": "circle_native_value",
+            "label": "Circle-native value",
+            "passed": true
+          },
+          {
+            "evidence": "Circle Calculus can use cyclic graph models as a proof-backed bridge toward graph-geometry language.",
+            "id": "advertised_claim",
+            "label": "advertised claim",
+            "passed": true
+          },
+          {
+            "evidence": "Lean-proved cycle/circulant and connectedness bridges plus a unit-distance embedding constructor for empty graphs.",
+            "id": "proof_scope",
+            "label": "proof scope",
+            "passed": true
+          },
+          {
+            "evidence": "project_native",
+            "id": "proof_provenance_kind",
+            "label": "proof provenance kind",
+            "passed": true
+          },
+          {
+            "evidence": "Proof provenance is project-native Lean code for cyclic graph structures and a minimal unit-distance embedding constructor, aligned with standard graph vocabulary.",
+            "id": "proof_provenance",
+            "label": "proof provenance text",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "paper_backing",
+            "label": "paper backing",
+            "passed": true
+          },
+          {
+            "evidence": "3",
+            "id": "proved_theorem_ids",
+            "label": "proved theorem ids",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "dictionary_backing",
+            "label": "dictionary backing",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "source_trail",
+            "label": "source trail",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "executable_reference",
+            "label": "executable pytest reference",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "living_book_presentation",
+            "label": "Living Book presentation",
+            "passed": true
+          },
+          {
+            "evidence": "No progress on hard unit-distance or distinct-distance problems.",
+            "id": "claim_boundary",
+            "label": "not-claimed boundary",
+            "passed": true
+          }
+        ],
+        "passed_gate_count": 15,
+        "ready_to_advertise": true,
+        "status": "ready",
+        "total_gate_count": 15
+      },
       "dictionary_ids": [
         "CC-0001",
         "CC-0201"
@@ -258,6 +748,104 @@
       "audience_interest": "GCD periods, kernels, fibers, image sizes, affine maps, and modular normal forms.",
       "circle_math_expression": "The S1 theorem spine expresses these facts as finite-circle period, orbit, scaling, image, kernel, and fiber theorems.",
       "circle_native_value": "Circle Math organizes modular facts around movement, closure, fibers, and representatives, making them easier to browse and test.",
+      "claim_contract": {
+        "gates": [
+          {
+            "evidence": "circle_native_value, standard_math_parity",
+            "id": "role_contract",
+            "label": "standard parity or Circle-native role",
+            "passed": true
+          },
+          {
+            "evidence": "Standard modular arithmetic, cyclic group orbits, gcd periods, kernels, images, and fibers of multiplication maps.",
+            "id": "standard_anchor",
+            "label": "standard math anchor",
+            "passed": true
+          },
+          {
+            "evidence": "The S1 theorem spine expresses these facts as finite-circle period, orbit, scaling, image, kernel, and fiber theorems.",
+            "id": "circle_expression",
+            "label": "Circle Math expression",
+            "passed": true
+          },
+          {
+            "evidence": "Circle Math organizes modular facts around movement, closure, fibers, and representatives, making them easier to browse and test.",
+            "id": "circle_native_value",
+            "label": "Circle-native value",
+            "passed": true
+          },
+          {
+            "evidence": "Circle Calculus can express detailed modular-arithmetic structure as period, orbit, kernel, and fiber theorems.",
+            "id": "advertised_claim",
+            "label": "advertised claim",
+            "passed": true
+          },
+          {
+            "evidence": "Lean-proved S1 scaling and orbit spine, including full-coil iff coprime and image-times-fiber factorizations.",
+            "id": "proof_scope",
+            "label": "proof scope",
+            "passed": true
+          },
+          {
+            "evidence": "project_native",
+            "id": "proof_provenance_kind",
+            "label": "proof provenance kind",
+            "passed": true
+          },
+          {
+            "evidence": "Proof provenance is project-native Lean code in the S1 finite-circle spine, backed by paper and Python sidecar examples.",
+            "id": "proof_provenance",
+            "label": "proof provenance text",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "paper_backing",
+            "label": "paper backing",
+            "passed": true
+          },
+          {
+            "evidence": "6",
+            "id": "proved_theorem_ids",
+            "label": "proved theorem ids",
+            "passed": true
+          },
+          {
+            "evidence": "5",
+            "id": "dictionary_backing",
+            "label": "dictionary backing",
+            "passed": true
+          },
+          {
+            "evidence": "4",
+            "id": "source_trail",
+            "label": "source trail",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "executable_reference",
+            "label": "executable pytest reference",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "living_book_presentation",
+            "label": "Living Book presentation",
+            "passed": true
+          },
+          {
+            "evidence": "No claim that this replaces standard modular arithmetic; it is a proof-carrying cyclic presentation.",
+            "id": "claim_boundary",
+            "label": "not-claimed boundary",
+            "passed": true
+          }
+        ],
+        "passed_gate_count": 15,
+        "ready_to_advertise": true,
+        "status": "ready",
+        "total_gate_count": 15
+      },
       "dictionary_ids": [
         "S1-0001",
         "CC-0105",
@@ -328,6 +916,104 @@
       "audience_interest": "Unit quaternions, Hopf coordinates, hidden phase, pure-vector boundaries, and sign ambiguity.",
       "circle_math_expression": "Bounded quaternion, spin-sign, pure-vector, and Hopf coordinate facts are exposed through finite theorem spines with explicit topology warnings.",
       "circle_native_value": "The Circle framing separates visible base coordinates from hidden phase in a way that is useful for teaching, widgets, and proof audits.",
+      "claim_contract": {
+        "gates": [
+          {
+            "evidence": "circle_native_value, standard_math_parity",
+            "id": "role_contract",
+            "label": "standard parity or Circle-native role",
+            "passed": true
+          },
+          {
+            "evidence": "Quaternion unit algebra, Hopf-style phase coordinates, conjugation, and hidden phase symmetries.",
+            "id": "standard_anchor",
+            "label": "standard math anchor",
+            "passed": true
+          },
+          {
+            "evidence": "Bounded quaternion, spin-sign, pure-vector, and Hopf coordinate facts are exposed through finite theorem spines with explicit topology warnings.",
+            "id": "circle_expression",
+            "label": "Circle Math expression",
+            "passed": true
+          },
+          {
+            "evidence": "The Circle framing separates visible base coordinates from hidden phase in a way that is useful for teaching, widgets, and proof audits.",
+            "id": "circle_native_value",
+            "label": "Circle-native value",
+            "passed": true
+          },
+          {
+            "evidence": "Circle Calculus can express bounded quaternion, spin-sign, pure-vector, and Hopf phase facts with explicit warnings about topology boundaries.",
+            "id": "advertised_claim",
+            "label": "advertised claim",
+            "passed": true
+          },
+          {
+            "evidence": "Lean-proved quaternion unit laws, pure-vector conjugation boundary, sign-cancellation facts, and bounded Hopf phase-action facts.",
+            "id": "proof_scope",
+            "label": "proof scope",
+            "passed": true
+          },
+          {
+            "evidence": "project_native",
+            "id": "proof_provenance_kind",
+            "label": "proof provenance kind",
+            "passed": true
+          },
+          {
+            "evidence": "Proof provenance is project-native Lean code for bounded quaternion, spin-sign, pure-vector, and Hopf-coordinate facts, with topology limits stated explicitly.",
+            "id": "proof_provenance",
+            "label": "proof provenance text",
+            "passed": true
+          },
+          {
+            "evidence": "3",
+            "id": "paper_backing",
+            "label": "paper backing",
+            "passed": true
+          },
+          {
+            "evidence": "7",
+            "id": "proved_theorem_ids",
+            "label": "proved theorem ids",
+            "passed": true
+          },
+          {
+            "evidence": "6",
+            "id": "dictionary_backing",
+            "label": "dictionary backing",
+            "passed": true
+          },
+          {
+            "evidence": "4",
+            "id": "source_trail",
+            "label": "source trail",
+            "passed": true
+          },
+          {
+            "evidence": "3",
+            "id": "executable_reference",
+            "label": "executable pytest reference",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "living_book_presentation",
+            "label": "Living Book presentation",
+            "passed": true
+          },
+          {
+            "evidence": "No full smooth Hopf fibration formalization and no complete SO(3) robotics formalization.",
+            "id": "claim_boundary",
+            "label": "not-claimed boundary",
+            "passed": true
+          }
+        ],
+        "passed_gate_count": 15,
+        "ready_to_advertise": true,
+        "status": "ready",
+        "total_gate_count": 15
+      },
       "dictionary_ids": [
         "S3Q-0001",
         "S3H-0001",
@@ -403,6 +1089,104 @@
       "audience_interest": "Gauge links, holonomy, Wilson loops, plaquette invariance, and checked path composition.",
       "circle_math_expression": "Finite gauge links and paths are represented with Lean-checked source-target and holonomy laws.",
       "circle_native_value": "Circle Math contributes proof-carrying finite records that can guard simulations and widgets against invalid path composition.",
+      "claim_contract": {
+        "gates": [
+          {
+            "evidence": "application_guardrail, circle_native_value, standard_math_parity",
+            "id": "role_contract",
+            "label": "standard parity or Circle-native role",
+            "passed": true
+          },
+          {
+            "evidence": "Discrete gauge-link paths, holonomy products, Wilson-loop style invariants, and checked path concatenation.",
+            "id": "standard_anchor",
+            "label": "standard math anchor",
+            "passed": true
+          },
+          {
+            "evidence": "Finite gauge links and paths are represented with Lean-checked source-target and holonomy laws.",
+            "id": "circle_expression",
+            "label": "Circle Math expression",
+            "passed": true
+          },
+          {
+            "evidence": "Circle Math contributes proof-carrying finite records that can guard simulations and widgets against invalid path composition.",
+            "id": "circle_native_value",
+            "label": "Circle-native value",
+            "passed": true
+          },
+          {
+            "evidence": "Circle Calculus can build a finite proof-carrying gauge-path model with endpoint and holonomy laws.",
+            "id": "advertised_claim",
+            "label": "advertised claim",
+            "passed": true
+          },
+          {
+            "evidence": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, and two-path cycle gauge-invariance facts.",
+            "id": "proof_scope",
+            "label": "proof scope",
+            "passed": true
+          },
+          {
+            "evidence": "project_native",
+            "id": "proof_provenance_kind",
+            "label": "proof provenance kind",
+            "passed": true
+          },
+          {
+            "evidence": "Proof provenance is project-native Lean code for finite gauge-link/path records and holonomy laws, with Python fixtures serving as executable references.",
+            "id": "proof_provenance",
+            "label": "proof provenance text",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "paper_backing",
+            "label": "paper backing",
+            "passed": true
+          },
+          {
+            "evidence": "12",
+            "id": "proved_theorem_ids",
+            "label": "proved theorem ids",
+            "passed": true
+          },
+          {
+            "evidence": "4",
+            "id": "dictionary_backing",
+            "label": "dictionary backing",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "source_trail",
+            "label": "source trail",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "executable_reference",
+            "label": "executable pytest reference",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "living_book_presentation",
+            "label": "Living Book presentation",
+            "passed": true
+          },
+          {
+            "evidence": "No continuum gauge theory, no physics discovery, and no lattice-QCD correctness claim.",
+            "id": "claim_boundary",
+            "label": "not-claimed boundary",
+            "passed": true
+          }
+        ],
+        "passed_gate_count": 15,
+        "ready_to_advertise": true,
+        "status": "ready",
+        "total_gate_count": 15
+      },
       "dictionary_ids": [
         "COMMON-0060",
         "COMMON-0061",
@@ -471,6 +1255,104 @@
       "audience_interest": "Seed-rule records, exact regeneration, provenance, and generated diagram audit trails.",
       "circle_math_expression": "Seed rules, generator comparisons, proof glyphs, and exactness gates are expressed as finite Circle records and Lean facts.",
       "circle_native_value": "This is a Circle-native value proposition: generated artifacts can carry exact source trails and negative-case checks instead of loose visual claims.",
+      "claim_contract": {
+        "gates": [
+          {
+            "evidence": "application_guardrail, circle_native_value",
+            "id": "role_contract",
+            "label": "standard parity or Circle-native role",
+            "passed": true
+          },
+          {
+            "evidence": "Formal provenance, exact regeneration checks, orbit decompositions, and proof-carrying artifact records.",
+            "id": "standard_anchor",
+            "label": "standard math anchor",
+            "passed": true
+          },
+          {
+            "evidence": "Seed rules, generator comparisons, proof glyphs, and exactness gates are expressed as finite Circle records and Lean facts.",
+            "id": "circle_expression",
+            "label": "Circle Math expression",
+            "passed": true
+          },
+          {
+            "evidence": "This is a Circle-native value proposition: generated artifacts can carry exact source trails and negative-case checks instead of loose visual claims.",
+            "id": "circle_native_value",
+            "label": "Circle-native value",
+            "passed": true
+          },
+          {
+            "evidence": "Circle Calculus can pair generated structures with checked provenance and exact-comparison gates.",
+            "id": "advertised_claim",
+            "label": "advertised claim",
+            "passed": true
+          },
+          {
+            "evidence": "Lean-proved seed-rule, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, singleton exact-search, best-candidate soundness, and exact-candidate absence/count gates.",
+            "id": "proof_scope",
+            "label": "proof scope",
+            "passed": true
+          },
+          {
+            "evidence": "project_native",
+            "id": "proof_provenance_kind",
+            "label": "proof provenance kind",
+            "passed": true
+          },
+          {
+            "evidence": "Proof provenance is project-native Lean code for seed-rule provenance, proof glyphs, exact-regeneration gates, and negative-case search boundaries.",
+            "id": "proof_provenance",
+            "label": "proof provenance text",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "paper_backing",
+            "label": "paper backing",
+            "passed": true
+          },
+          {
+            "evidence": "18",
+            "id": "proved_theorem_ids",
+            "label": "proved theorem ids",
+            "passed": true
+          },
+          {
+            "evidence": "4",
+            "id": "dictionary_backing",
+            "label": "dictionary backing",
+            "passed": true
+          },
+          {
+            "evidence": "4",
+            "id": "source_trail",
+            "label": "source trail",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "executable_reference",
+            "label": "executable pytest reference",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "living_book_presentation",
+            "label": "Living Book presentation",
+            "passed": true
+          },
+          {
+            "evidence": "No universal compression claim and no guarantee that generated artifacts are mathematically interesting.",
+            "id": "claim_boundary",
+            "label": "not-claimed boundary",
+            "passed": true
+          }
+        ],
+        "passed_gate_count": 15,
+        "ready_to_advertise": true,
+        "status": "ready",
+        "total_gate_count": 15
+      },
       "dictionary_ids": [
         "COMMON-0033",
         "COMMON-0064",
@@ -484,7 +1366,7 @@
         "living_book_widget_count": 4,
         "paper_count": 2,
         "source_count": 4,
-        "theorem_count": 14
+        "theorem_count": 18
       },
       "executable_refs": [
         "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py",
@@ -513,7 +1395,7 @@
       ],
       "proof_provenance": "Proof provenance is project-native Lean code for seed-rule provenance, proof glyphs, exact-regeneration gates, and negative-case search boundaries.",
       "proof_provenance_kind": "project_native",
-      "proof_scope": "Lean-proved seed-rule, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, best-candidate soundness, and exact-candidate absence/count gates.",
+      "proof_scope": "Lean-proved seed-rule, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, singleton exact-search, best-candidate soundness, and exact-candidate absence/count gates.",
       "source_refs": [
         "Circle/Generative/SeedRule.lean",
         "Circle/Phase2/GlyphProof.lean",
@@ -535,6 +1417,10 @@
         "GEN-T0028",
         "GEN-T0029",
         "GEN-T0030",
+        "GEN-T0031",
+        "GEN-T0032",
+        "GEN-T0033",
+        "GEN-T0034",
         "P2G-T0006"
       ],
       "title": "Proof-carrying generative provenance"
@@ -545,6 +1431,104 @@
       "audience_interest": "Cyclic memory, recurrence budgets, loop-exit certificates, phase routing, and adapter indexing.",
       "circle_math_expression": "AI-facing memory slots, loop budgets, exit certificates, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
       "circle_native_value": "Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made.",
+      "claim_contract": {
+        "gates": [
+          {
+            "evidence": "application_guardrail, circle_native_value, standard_math_parity",
+            "id": "role_contract",
+            "label": "standard parity or Circle-native role",
+            "passed": true
+          },
+          {
+            "evidence": "Finite cyclic buffers, schedule normalization, recurrence budgets, and modular adapter indexing.",
+            "id": "standard_anchor",
+            "label": "standard math anchor",
+            "passed": true
+          },
+          {
+            "evidence": "AI-facing memory slots, loop budgets, exit certificates, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
+            "id": "circle_expression",
+            "label": "Circle Math expression",
+            "passed": true
+          },
+          {
+            "evidence": "Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made.",
+            "id": "circle_native_value",
+            "label": "Circle-native value",
+            "passed": true
+          },
+          {
+            "evidence": "Circle Calculus can prove finite indexing and schedule-safety facts that AI experiments can reuse.",
+            "id": "advertised_claim",
+            "label": "advertised claim",
+            "passed": true
+          },
+          {
+            "evidence": "Lean-proved finite memory-slot, loop-budget, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
+            "id": "proof_scope",
+            "label": "proof scope",
+            "passed": true
+          },
+          {
+            "evidence": "project_native",
+            "id": "proof_provenance_kind",
+            "label": "proof provenance kind",
+            "passed": true
+          },
+          {
+            "evidence": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, certificate, and adapter-index safety facts; benchmarks remain separate.",
+            "id": "proof_provenance",
+            "label": "proof provenance text",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "paper_backing",
+            "label": "paper backing",
+            "passed": true
+          },
+          {
+            "evidence": "12",
+            "id": "proved_theorem_ids",
+            "label": "proved theorem ids",
+            "passed": true
+          },
+          {
+            "evidence": "5",
+            "id": "dictionary_backing",
+            "label": "dictionary backing",
+            "passed": true
+          },
+          {
+            "evidence": "5",
+            "id": "source_trail",
+            "label": "source trail",
+            "passed": true
+          },
+          {
+            "evidence": "2",
+            "id": "executable_reference",
+            "label": "executable pytest reference",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "living_book_presentation",
+            "label": "Living Book presentation",
+            "passed": true
+          },
+          {
+            "evidence": "No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence.",
+            "id": "claim_boundary",
+            "label": "not-claimed boundary",
+            "passed": true
+          }
+        ],
+        "passed_gate_count": 15,
+        "ready_to_advertise": true,
+        "status": "ready",
+        "total_gate_count": 15
+      },
       "dictionary_ids": [
         "COMMON-0028",
         "COMMON-0047",
@@ -621,6 +1605,104 @@
       "audience_interest": "Cyclic buffers, stride layouts, periodic stencils, round-robin scheduling, and backend-safe rewrites.",
       "circle_math_expression": "Compute layouts are expressed as finite address normalization, stride-address, and schedule-preservation theorems.",
       "circle_native_value": "The Circle form can certify when cyclic structure is real enough to justify backend experiments, while requiring benchmarks for performance claims.",
+      "claim_contract": {
+        "gates": [
+          {
+            "evidence": "application_guardrail, circle_native_value, standard_math_parity",
+            "id": "role_contract",
+            "label": "standard parity or Circle-native role",
+            "passed": true
+          },
+          {
+            "evidence": "Circular buffers, periodic stencils, stride-address formulas, and round-robin scheduling laws.",
+            "id": "standard_anchor",
+            "label": "standard math anchor",
+            "passed": true
+          },
+          {
+            "evidence": "Compute layouts are expressed as finite address normalization, stride-address, and schedule-preservation theorems.",
+            "id": "circle_expression",
+            "label": "Circle Math expression",
+            "passed": true
+          },
+          {
+            "evidence": "The Circle form can certify when cyclic structure is real enough to justify backend experiments, while requiring benchmarks for performance claims.",
+            "id": "circle_native_value",
+            "label": "Circle-native value",
+            "passed": true
+          },
+          {
+            "evidence": "Circle Calculus can prove finite address-safety and schedule-normalization facts for cyclic computation.",
+            "id": "advertised_claim",
+            "label": "advertised claim",
+            "passed": true
+          },
+          {
+            "evidence": "Lean-proved cyclic-address, stride-address, and round-robin schedule laws with Python layout fixtures.",
+            "id": "proof_scope",
+            "label": "proof scope",
+            "passed": true
+          },
+          {
+            "evidence": "project_native",
+            "id": "proof_provenance_kind",
+            "label": "proof provenance kind",
+            "passed": true
+          },
+          {
+            "evidence": "Proof provenance is project-native Lean code for cyclic-address, stride-layout, and round-robin schedule laws, with performance claims left to explicit benchmarks.",
+            "id": "proof_provenance",
+            "label": "proof provenance text",
+            "passed": true
+          },
+          {
+            "evidence": "3",
+            "id": "paper_backing",
+            "label": "paper backing",
+            "passed": true
+          },
+          {
+            "evidence": "3",
+            "id": "proved_theorem_ids",
+            "label": "proved theorem ids",
+            "passed": true
+          },
+          {
+            "evidence": "4",
+            "id": "dictionary_backing",
+            "label": "dictionary backing",
+            "passed": true
+          },
+          {
+            "evidence": "5",
+            "id": "source_trail",
+            "label": "source trail",
+            "passed": true
+          },
+          {
+            "evidence": "3",
+            "id": "executable_reference",
+            "label": "executable pytest reference",
+            "passed": true
+          },
+          {
+            "evidence": "1",
+            "id": "living_book_presentation",
+            "label": "Living Book presentation",
+            "passed": true
+          },
+          {
+            "evidence": "No performance claim without direct dense, FFT/NTT, and backend baselines.",
+            "id": "claim_boundary",
+            "label": "not-claimed boundary",
+            "passed": true
+          }
+        ],
+        "passed_gate_count": 15,
+        "ready_to_advertise": true,
+        "status": "ready",
+        "total_gate_count": 15
+      },
       "dictionary_ids": [
         "COMMON-0018",
         "COMMON-0022",
@@ -679,6 +1761,11 @@
   ],
   "portfolio_summary": {
     "capability_count": 11,
+    "claim_contract_summary": {
+      "gate_failure_counts": {},
+      "incomplete_count": 0,
+      "ready_count": 11
+    },
     "evidence_totals": {
       "dictionary_count": 38,
       "executable_count": 17,
@@ -686,7 +1773,7 @@
       "living_book_widget_count": 17,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 65
+      "theorem_count": 69
     },
     "proof_provenance_counts": {
       "mathlib_bridge": 4,
@@ -704,7 +1791,7 @@
       "living_book_widget_count": 17,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 65
+      "theorem_count": 69
     },
     "unique_living_book_pages": [
       "site/chapters/S1/03_coils_orbits_closure.qmd",

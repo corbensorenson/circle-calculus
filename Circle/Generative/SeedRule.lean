@@ -260,6 +260,20 @@ def emptyBoundedGeneratorSearch (α : Type) : BoundedGeneratorSearch α :=
       intro candidate hmember
       cases hmember) }
 
+def singletonExactGeneratorSearch (value : α) : BoundedGeneratorSearch α :=
+  let exactCandidate := generatorComparison value value
+  { candidates := [exactCandidate],
+    exactCandidates := [exactCandidate],
+    exactSubset := (by
+      intro candidate hmember
+      simpa using hmember),
+    exactSound := (by
+      intro candidate hmember
+      have hcandidate : candidate = generatorComparison value value := by
+        simpa using hmember
+      subst candidate
+      exact generatorComparison_self_exact value) }
+
 def BoundedGeneratorSearch.candidateCount
     (search : BoundedGeneratorSearch α) : Nat :=
   search.candidates.length
@@ -283,6 +297,26 @@ theorem emptyBoundedGeneratorSearch_exactCandidateCount (α : Type) :
 theorem emptyBoundedGeneratorSearch_bestExact_none (α : Type) :
     (emptyBoundedGeneratorSearch α).bestExact? = none := by
   rfl
+
+theorem singletonExactGeneratorSearch_candidateCount (value : α) :
+    (singletonExactGeneratorSearch value).candidateCount = 1 := by
+  simp [singletonExactGeneratorSearch, BoundedGeneratorSearch.candidateCount]
+
+theorem singletonExactGeneratorSearch_exactCandidateCount (value : α) :
+    (singletonExactGeneratorSearch value).exactCandidateCount = 1 := by
+  simp [singletonExactGeneratorSearch, BoundedGeneratorSearch.exactCandidateCount]
+
+theorem singletonExactGeneratorSearch_bestExact_some (value : α) :
+    (singletonExactGeneratorSearch value).bestExact? =
+      some (generatorComparison value value) := by
+  simp [singletonExactGeneratorSearch, BoundedGeneratorSearch.bestExact?]
+
+theorem singletonExactGeneratorSearch_bestExact_exact (value : α) :
+    match (singletonExactGeneratorSearch value).bestExact? with
+    | some candidate => candidate.exactRegeneration
+    | none => False := by
+  simp [singletonExactGeneratorSearch, BoundedGeneratorSearch.bestExact?,
+    generatorComparison]
 
 theorem boundedGeneratorSearch_bestExact_mem_exactCandidates
     (search : BoundedGeneratorSearch α) {candidate : GeneratorComparison α}

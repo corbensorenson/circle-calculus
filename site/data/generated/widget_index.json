@@ -141,7 +141,11 @@
         "GEN-T0027",
         "GEN-T0028",
         "GEN-T0029",
-        "GEN-T0030"
+        "GEN-T0030",
+        "GEN-T0031",
+        "GEN-T0032",
+        "GEN-T0033",
+        "GEN-T0034"
       ]
     },
     {
@@ -660,7 +664,7 @@
       "dictionary_ids": [],
       "id": "capability_audit_checklist",
       "path": "site/widgets/showcase/capability_audit_checklist.js",
-      "python_reference": "manifests/capability_showcase.yaml; site/data/generated/capability_showcase.json; scripts/check_capability_showcase.py",
+      "python_reference": "manifests/capability_showcase.yaml; site/data/generated/capability_showcase.json; scripts/check_capability_showcase.py; scripts/site/check_capability_contracts.py",
       "theorem_ids": []
     }
   ]

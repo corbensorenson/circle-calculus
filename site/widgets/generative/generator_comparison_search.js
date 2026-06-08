@@ -18,6 +18,10 @@ const THEOREM_IDS = [
   "GEN-T0028",
   "GEN-T0029",
   "GEN-T0030",
+  "GEN-T0031",
+  "GEN-T0032",
+  "GEN-T0033",
+  "GEN-T0034",
 ];
 const DICTIONARY_IDS = ["COMMON-0064", "COMMON-0065", "COMMON-0066"];
 
@@ -136,6 +140,10 @@ function boundedSearch(records) {
       "GEN-T0028",
       "GEN-T0029",
       "GEN-T0030",
+      "GEN-T0031",
+      "GEN-T0032",
+      "GEN-T0033",
+      "GEN-T0034",
     ],
     note: "Bounded finite search only; not an optimality theorem.",
     comparisons,
@@ -221,6 +229,7 @@ function appendRecord(output, values, theoremById) {
   ];
   const search = boundedSearch(records);
   const emptySearch = boundedSearch([]);
+  const singletonSearch = boundedSearch([finiteCircleGenerator(values.n)]);
 
   const record = document.createElement("section");
   record.className = "seed-rule-record";
@@ -238,6 +247,8 @@ function appendRecord(output, values, theoremById) {
     `best exact generator length: ${search.best_exact ? search.best_exact.generator_length : "none"}`,
     `best shorter generator length: ${search.best_shorter ? search.best_shorter.generator_length : "none"}`,
     `best-exact presence implies positive exact count: ${search.best_exact !== null ? search.exact_candidate_count > 0 : "not applicable"}`,
+    `singleton exact boundary: candidate_count=${singletonSearch.candidate_count}, exact_candidate_count=${singletonSearch.exact_candidate_count}, best_exact=${singletonSearch.best_exact === null ? "none" : "present"}`,
+    `singleton best exact is exact: ${singletonSearch.best_exact !== null && singletonSearch.best_exact.exact_regeneration}`,
     `empty search boundary: candidate_count=${emptySearch.candidate_count}, exact_candidate_count=${emptySearch.exact_candidate_count}, best_exact=${emptySearch.best_exact === null ? "none" : "present"}`,
     `empty search no-best iff exact count zero: ${(emptySearch.best_exact === null) === (emptySearch.exact_candidate_count === 0)}`,
     `positive case n=${values.n}: ${search.comparisons[1].generator_shorter ? "generator shorter than explicit" : "explicit not beaten by generator"}`,

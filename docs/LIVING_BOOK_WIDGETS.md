@@ -35,10 +35,10 @@ Implemented shared JavaScript:
 ### capability_audit_checklist
 
 - Inputs: none; the widget reads `site/data/generated/capability_showcase.json`.
-- Outputs: capability lane, proof provenance text, advertised claim, paper/theorem/dictionary/executable/source/Living Book evidence counts, paper/theorem/dictionary id lists, and explicit claim boundary.
+- Outputs: capability lane, generated claim-contract readiness, claim-contract gate count, proof provenance text, advertised claim, paper/theorem/dictionary/executable/source/Living Book evidence counts, linked paper/theorem/dictionary id lists, linked pytest executable refs, linked source refs, linked Living Book page refs, Living Book widget ids, and explicit claim boundary.
 - Data source: `manifests/capability_showcase.yaml`, exported by `scripts/site/export_site_data.py`.
 - Guardrail: the checklist verifies traceability only. It does not turn standard theorem bridges, Python examples, widgets, or paper prose into new proofs.
-- Validation: `scripts/site/check_site_widget_contracts.py` verifies the widget index, page mount, and JavaScript mount call; `scripts/site/check_site_navigation_contract.py` keeps the verification-page audit route present.
+- Validation: `scripts/site/check_capability_contracts.py` requires every generated claim contract to be ready; `scripts/site/check_site_widget_contracts.py` verifies the widget index, page mount, and JavaScript mount call; `scripts/site/check_site_navigation_contract.py` keeps the verification-page audit route present.
 
 ## S1 Widgets
 
@@ -112,7 +112,7 @@ Implemented shared JavaScript:
 
 - Inputs: finite-circle size `n`.
 - Outputs: explicit-vs-generator description lengths, exact regeneration flag, generator-shorter flag, a broken non-exact candidate, bounded finite search count, exact candidate count, best exact candidate, best shorter exact candidate, no-best/zero-count checks, theorem-status badges, and dictionary links.
-- Theorem ids: `GEN-T0001`, `GEN-T0005`, `GEN-T0017`, `GEN-T0018`, `GEN-T0019`, `GEN-T0020`, `GEN-T0022`, `GEN-T0023`, `GEN-T0024`, `GEN-T0025`, `GEN-T0026`, `GEN-T0027`, `GEN-T0028`, `GEN-T0029`, and `GEN-T0030`.
+- Theorem ids: `GEN-T0001`, `GEN-T0005`, `GEN-T0017`, `GEN-T0018`, `GEN-T0019`, `GEN-T0020`, `GEN-T0022`, `GEN-T0023`, `GEN-T0024`, `GEN-T0025`, `GEN-T0026`, `GEN-T0027`, `GEN-T0028`, `GEN-T0029`, `GEN-T0030`, `GEN-T0031`, `GEN-T0032`, `GEN-T0033`, and `GEN-T0034`.
 - Dictionary ids: `COMMON-0064`, `COMMON-0065`, and `COMMON-0066`.
 - Python references: `circle_math.generative.compare_generator_to_explicit`, `circle_math.generative.bounded_generator_search`, and `circle_math.generative.finite_circle_generator`.
 - Guardrail: the widget is bounded finite description-length bookkeeping only. It does not prove global optimality, Kolmogorov complexity, universal compression, or that smaller descriptions are always better.
@@ -406,6 +406,7 @@ Checkers:
 
 - `scripts/site/check_site_widget_contracts.py` verifies that every `data-widget` page mount exists in `widget_index.json`, imports the matching widget script, and points to a JavaScript file that calls `mountWidgets("<widget_id>", ...)`.
 - `scripts/site/check_site_accessibility_contract.py` verifies shared widget accessibility contracts: named widget regions, labelled number inputs, live output regions, SVG title/description metadata, visible focus styling, and scaffold-only placeholder guardrails.
+- `scripts/site/check_capability_contracts.py` verifies generated proof-backed showcase claim contracts and fails if any advertised capability is missing its standard anchor, Circle expression, Circle-native value, proof provenance, source trail, executable support, Living Book presentation, or not-claimed boundary.
 - `scripts/site/check_widget_python_parity.py` validates deterministic S1 formulas against Python reference behavior.
 - `scripts/site/check_widget_runtime_links.py` imports the shared widget runtime under Node and verifies that real repository paths become GitHub source links while symbolic paper-section references remain plain text.
 

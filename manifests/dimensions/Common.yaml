@@ -2552,4 +2552,60 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_bounded_generator_search_reports_scope_and_exact_candidates
     blocker: ""
+  - id: GEN-T0031
+    status: lean_proved
+    lean_name: Circle.Generative.singletonExactGeneratorSearch_candidateCount
+    informal_statement: "A singleton exact generator search has exactly one declared candidate."
+    formal_statement: "For any value, (singletonExactGeneratorSearch value).candidateCount = 1."
+    dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_singleton_bounded_generator_search_has_exact_best_candidate
+    blocker: ""
+  - id: GEN-T0032
+    status: lean_proved
+    lean_name: Circle.Generative.singletonExactGeneratorSearch_exactCandidateCount
+    informal_statement: "A singleton exact generator search has exactly one exact-regeneration candidate."
+    formal_statement: "For any value, (singletonExactGeneratorSearch value).exactCandidateCount = 1."
+    dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_singleton_bounded_generator_search_has_exact_best_candidate
+    blocker: ""
+  - id: GEN-T0033
+    status: lean_proved
+    lean_name: Circle.Generative.singletonExactGeneratorSearch_bestExact_some
+    informal_statement: "A singleton exact generator search returns the self-comparison as its best exact candidate."
+    formal_statement: "For any value, (singletonExactGeneratorSearch value).bestExact? = some (generatorComparison value value)."
+    dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_singleton_bounded_generator_search_has_exact_best_candidate
+    blocker: ""
+  - id: GEN-T0034
+    status: lean_proved
+    lean_name: Circle.Generative.singletonExactGeneratorSearch_bestExact_exact
+    informal_statement: "The best candidate returned by a singleton exact generator search satisfies exact regeneration."
+    formal_statement: "For any value, matching on (singletonExactGeneratorSearch value).bestExact? yields an exact-regeneration candidate and never the none branch."
+    dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_singleton_bounded_generator_search_has_exact_best_candidate
+    blocker: ""
 warnings: []

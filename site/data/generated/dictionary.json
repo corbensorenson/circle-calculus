@@ -7384,6 +7384,30 @@
           "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_exactCandidateCount_pos",
           "name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_exactCandidateCount_pos",
           "status": "proved"
+        },
+        {
+          "id": "GEN-T0031",
+          "lean_name": "Circle.Generative.singletonExactGeneratorSearch_candidateCount",
+          "name": "Circle.Generative.singletonExactGeneratorSearch_candidateCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0032",
+          "lean_name": "Circle.Generative.singletonExactGeneratorSearch_exactCandidateCount",
+          "name": "Circle.Generative.singletonExactGeneratorSearch_exactCandidateCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0033",
+          "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_some",
+          "name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_some",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0034",
+          "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_exact",
+          "name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_exact",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -7531,6 +7555,30 @@
           "id": "GEN-T0030",
           "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_exactCandidateCount_pos",
           "name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_exactCandidateCount_pos",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0031",
+          "lean_name": "Circle.Generative.singletonExactGeneratorSearch_candidateCount",
+          "name": "Circle.Generative.singletonExactGeneratorSearch_candidateCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0032",
+          "lean_name": "Circle.Generative.singletonExactGeneratorSearch_exactCandidateCount",
+          "name": "Circle.Generative.singletonExactGeneratorSearch_exactCandidateCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0033",
+          "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_some",
+          "name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_some",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0034",
+          "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_exact",
+          "name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_exact",
           "status": "proved"
         }
       ],
@@ -7748,6 +7796,30 @@
           "id": "GEN-T0030",
           "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_exactCandidateCount_pos",
           "name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_exactCandidateCount_pos",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0031",
+          "lean_name": "Circle.Generative.singletonExactGeneratorSearch_candidateCount",
+          "name": "Circle.Generative.singletonExactGeneratorSearch_candidateCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0032",
+          "lean_name": "Circle.Generative.singletonExactGeneratorSearch_exactCandidateCount",
+          "name": "Circle.Generative.singletonExactGeneratorSearch_exactCandidateCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0033",
+          "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_some",
+          "name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_some",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0034",
+          "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_exact",
+          "name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_exact",
           "status": "proved"
         }
       ],
