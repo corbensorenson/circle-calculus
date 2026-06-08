@@ -17,7 +17,9 @@ def test_finite_circle_generator_regenerates_nodes() -> None:
 
     assert regenerate(record) == tuple(range(8))
     assert record.generated_object == tuple(range(8))
-    assert "CC-T0001" in record.theorem_ids
+    assert len(record.generated_object) == 8
+    assert "GEN-T0001" in record.theorem_ids
+    assert "GEN-T0020" in record.theorem_ids
 
 
 def test_finite_circle_diagram_generator_regenerates_successor_edges() -> None:
@@ -68,7 +70,10 @@ def test_coil_generator_regenerates_closed_stride_orbit() -> None:
 
     assert regenerate(record) == (0, 8, 4)
     assert record.generated_object == (0, 8, 4)
+    assert len(record.generated_object) == 3
     assert record.closure_condition == "stop when the next node has already appeared"
+    assert "GEN-T0002" in record.theorem_ids
+    assert "GEN-T0021" in record.theorem_ids
 
 
 def test_orbit_decomposition_generator_partitions_circle() -> None:
@@ -79,6 +84,8 @@ def test_orbit_decomposition_generator_partitions_circle() -> None:
     assert len(record.generated_object) == 4
     assert all(len(orbit) == 3 for orbit in record.generated_object)
     assert sorted(flattened) == list(range(12))
+    assert "GEN-T0003" in record.theorem_ids
+    assert "GEN-T0013" in record.theorem_ids
 
 
 def test_proof_glyph_generator_regenerates_certificate_fields() -> None:

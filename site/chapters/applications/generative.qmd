@@ -104,7 +104,7 @@ Both results are useful. The positive case shows constructive compression. The n
 
 ## Proof Boundary
 
-The theorem cards below are checked by Lean for finite regeneration statements. `GEN-T0003` proves exact regeneration of the representative-indexed orbit-schedule list. `GEN-T0006` through `GEN-T0013` add count, period, coverage, formal orbit-class agreement, canonical representative coverage, and disjointness facts. `GEN-T0014` through `GEN-T0019` make exact regeneration reusable as a reflexive, symmetric, transitive, and field-equality-gated relation for constructed generator comparisons. The bounded generator search is Python-only and finite-list scoped. These artifacts still do not prove optimality or minimality.
+The theorem cards below are checked by Lean for finite regeneration statements. `GEN-T0003` proves exact regeneration of the representative-indexed orbit-schedule list. `GEN-T0006` through `GEN-T0013` add count, period, coverage, formal orbit-class agreement, canonical representative coverage, and disjointness facts. `GEN-T0014` through `GEN-T0019` make exact regeneration reusable as a reflexive, symmetric, transitive, and field-equality-gated relation for constructed generator comparisons. `GEN-T0020` and `GEN-T0021` certify generated-list lengths for finite-circle nodes and single coil-orbit schedules. The bounded generator search is Python-only and finite-list scoped. These artifacts still do not prove optimality or minimality.
 
 <div class="theorem-box" data-theorem-id="GEN-T0001"></div>
 <div class="theorem-box" data-theorem-id="GEN-T0002"></div>
@@ -125,6 +125,8 @@ The theorem cards below are checked by Lean for finite regeneration statements. 
 <div class="theorem-box" data-theorem-id="GEN-T0017"></div>
 <div class="theorem-box" data-theorem-id="GEN-T0018"></div>
 <div class="theorem-box" data-theorem-id="GEN-T0019"></div>
+<div class="theorem-box" data-theorem-id="GEN-T0020"></div>
+<div class="theorem-box" data-theorem-id="GEN-T0021"></div>
 
 ## Dictionary Trail
 

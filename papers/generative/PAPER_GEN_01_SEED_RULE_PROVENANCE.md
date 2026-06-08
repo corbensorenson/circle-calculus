@@ -82,9 +82,11 @@ The paper links back to finite circles, coils, orbit decompositions, and proof-c
 - `GEN-T0017`: `Circle.Generative.generatorComparison_exact_regeneration_iff_fields_eq`, exact regeneration for a constructed comparison is equivalent to equality of its regenerated and generated fields.
 - `GEN-T0018`: `Circle.Generative.generatorComparison_exact_regeneration_fields_eq`, an exact-regeneration witness for a constructed comparison gives equality of those fields.
 - `GEN-T0019`: `Circle.Generative.generatorComparison_not_exact_of_ne`, unequal regenerated and generated values cannot pass the exact-regeneration check.
+- `GEN-T0020`: `Circle.Generative.finiteCircleGenerator_generatedNodes_length`, a finite-circle seed-rule record generates exactly `n` node entries.
+- `GEN-T0021`: `Circle.Generative.coilOrbitGenerator_generatedOrbit_length`, a coil seed-rule record generates an orbit schedule whose length is the formal finite coil period.
 
-`GEN-T0001` through `GEN-T0019` are Lean-proved finite seeds in `Circle.Generative.SeedRule`.
-`GEN-T0003` proves exact regeneration of the declared representative-indexed list model. `GEN-T0006` through `GEN-T0013` strengthen that model with count, period, coverage, formal orbit-class agreement, canonical representative coverage, and representative disjointness facts. `GEN-T0014` through `GEN-T0019` make exact regeneration reusable as a reflexive, symmetric, transitive, and field-equality-gated relation for constructed generator comparisons. They do not prove that the list is an optimal or minimal compression.
+`GEN-T0001` through `GEN-T0021` are Lean-proved finite seeds in `Circle.Generative.SeedRule`.
+`GEN-T0003` proves exact regeneration of the declared representative-indexed list model. `GEN-T0006` through `GEN-T0013` strengthen that model with count, period, coverage, formal orbit-class agreement, canonical representative coverage, and representative disjointness facts. `GEN-T0014` through `GEN-T0019` make exact regeneration reusable as a reflexive, symmetric, transitive, and field-equality-gated relation for constructed generator comparisons. `GEN-T0020` and `GEN-T0021` add direct generated-list length certificates for finite-circle nodes and single coil-orbit schedules. They do not prove that the list is an optimal or minimal compression.
 
 ## Seed-Rule Record
 

@@ -24,6 +24,10 @@ theorem finiteCircleGenerator_regenerates_nodes (n : Nat) :
     (finiteCircleGenerator n).generatedNodes = List.range n := by
   rfl
 
+theorem finiteCircleGenerator_generatedNodes_length (n : Nat) :
+    (finiteCircleGenerator n).generatedNodes.length = n := by
+  simp [FiniteCircleGenerator.generatedNodes, finiteCircleGenerator]
+
 structure CoilOrbitGenerator where
   n : Nat
   stride : Nat
@@ -45,6 +49,12 @@ theorem coilOrbitGenerator_regenerates_orbit (n stride start : Nat) :
       List.ofFn (fun step : Fin (Circle.period n stride) =>
         Circle.coilStep n stride start step) := by
   rfl
+
+theorem coilOrbitGenerator_generatedOrbit_length (n stride start : Nat) :
+    (coilOrbitGenerator n stride start).generatedOrbit.length =
+      Circle.period n stride := by
+  simp [CoilOrbitGenerator.generatedOrbit, CoilOrbitGenerator.period,
+    coilOrbitGenerator]
 
 structure OrbitDecompositionGenerator where
   n : Nat

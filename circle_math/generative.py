@@ -159,7 +159,7 @@ def finite_circle_generator(n: int) -> SeedRuleProvenance:
         iteration_schedule="i = 0..n-1",
         closure_condition="stop before node n, since nodes are residues modulo n",
         generated_object=generated,
-        theorem_ids=("CC-T0001",),
+        theorem_ids=("GEN-T0001", "GEN-T0020", "CC-T0001"),
         dictionary_ids=("CC-0001", "CC-0002", "COMMON-0064", "COMMON-0066"),
     )
 
@@ -241,7 +241,7 @@ def coil_orbit_generator(n: int, stride: int, start: int = 0) -> SeedRuleProvena
         iteration_schedule="x_0=start; x_{t+1}=x_t+stride mod n",
         closure_condition="stop when the next node has already appeared",
         generated_object=generated,
-        theorem_ids=("CC-T0005", "CC-T0006"),
+        theorem_ids=("GEN-T0002", "GEN-T0021", "CC-T0005", "CC-T0006"),
         dictionary_ids=("CC-0201", "CC-0205", "COMMON-0064", "COMMON-0066"),
     )
 
@@ -259,7 +259,18 @@ def orbit_decomposition_generator(n: int, stride: int) -> SeedRuleProvenance:
         iteration_schedule="generate one closed orbit, then restart at the smallest unvisited node",
         closure_condition="stop when every node in C_n has appeared exactly once",
         generated_object=generated,
-        theorem_ids=("CC-T0006",),
+        theorem_ids=(
+            "GEN-T0003",
+            "GEN-T0006",
+            "GEN-T0007",
+            "GEN-T0008",
+            "GEN-T0009",
+            "GEN-T0010",
+            "GEN-T0011",
+            "GEN-T0012",
+            "GEN-T0013",
+            "CC-T0006",
+        ),
         dictionary_ids=("CC-0205", "CC-0208", "COMMON-0064", "COMMON-0066"),
     )
 
@@ -277,7 +288,7 @@ def proof_glyph_generator(glyph_id: str, theorem_id: str, lean_name: str) -> See
         iteration_schedule="single certificate construction",
         closure_condition="generated fields match seed fields",
         generated_object=generated,
-        theorem_ids=("P2G-T0001", "P2G-T0002", "P2G-T0003"),
+        theorem_ids=("GEN-T0004", "P2G-T0001", "P2G-T0002", "P2G-T0003"),
         dictionary_ids=("COMMON-0033", "COMMON-0064", "COMMON-0066"),
     )
 

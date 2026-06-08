@@ -413,6 +413,12 @@
           "status": "proved"
         },
         {
+          "id": "GEN-T0020",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_length",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_length",
+          "status": "proved"
+        },
+        {
           "id": "S2-T0005",
           "lean_name": "Circle.S2.latitudeRing_isCircle",
           "name": "Circle.S2.latitudeRing_isCircle",
@@ -710,6 +716,12 @@
           "id": "GEN-T0001",
           "lean_name": "Circle.Generative.finiteCircleGenerator_regenerates_nodes",
           "name": "Circle.Generative.finiteCircleGenerator_regenerates_nodes",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0020",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_length",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_length",
           "status": "proved"
         }
       ],
@@ -1440,6 +1452,12 @@
           "lean_name": "Circle.Generative.orbitDecompositionGenerator_generatedOrbitFor_length",
           "name": "Circle.Generative.orbitDecompositionGenerator_generatedOrbitFor_length",
           "status": "proved"
+        },
+        {
+          "id": "GEN-T0021",
+          "lean_name": "Circle.Generative.coilOrbitGenerator_generatedOrbit_length",
+          "name": "Circle.Generative.coilOrbitGenerator_generatedOrbit_length",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -1810,6 +1828,12 @@
           "id": "GEN-T0013",
           "lean_name": "Circle.Generative.orbitDecompositionGenerator_distinct_representatives_disjoint",
           "name": "Circle.Generative.orbitDecompositionGenerator_distinct_representatives_disjoint",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0021",
+          "lean_name": "Circle.Generative.coilOrbitGenerator_generatedOrbit_length",
+          "name": "Circle.Generative.coilOrbitGenerator_generatedOrbit_length",
           "status": "proved"
         },
         {
@@ -6958,6 +6982,18 @@
           "lean_name": "Circle.Generative.generatorComparison_not_exact_of_ne",
           "name": "Circle.Generative.generatorComparison_not_exact_of_ne",
           "status": "proved"
+        },
+        {
+          "id": "GEN-T0020",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_length",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_length",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0021",
+          "lean_name": "Circle.Generative.coilOrbitGenerator_generatedOrbit_length",
+          "name": "Circle.Generative.coilOrbitGenerator_generatedOrbit_length",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -7202,6 +7238,18 @@
           "id": "GEN-T0019",
           "lean_name": "Circle.Generative.generatorComparison_not_exact_of_ne",
           "name": "Circle.Generative.generatorComparison_not_exact_of_ne",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0020",
+          "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_length",
+          "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_length",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0021",
+          "lean_name": "Circle.Generative.coilOrbitGenerator_generatedOrbit_length",
+          "name": "Circle.Generative.coilOrbitGenerator_generatedOrbit_length",
           "status": "proved"
         }
       ],

@@ -76,7 +76,11 @@ def test_export_site_data_writes_required_indexes() -> None:
     assert generator_by_id["finite_circle_diagram"]["generatedObject"]["edges"][-1]["target"] == 0
     assert generator_by_id["physics_loop_diagram"]["generatedObject"]["closed"]
     assert generator_by_id["orbit_decomposition"]["generatedObject"][0] == [0, 8, 4]
+    assert "GEN-T0003" in generator_by_id["orbit_decomposition"]["theoremIds"]
+    assert "GEN-T0013" in generator_by_id["orbit_decomposition"]["theoremIds"]
+    assert "GEN-T0021" in generator_by_id["coil_orbit"]["theoremIds"]
     assert generator_by_id["proof_glyph"]["generatedObject"]["theorem_id"] == "CC-T0005"
+    assert "GEN-T0004" in generator_by_id["proof_glyph"]["theoremIds"]
 
     targets = json.loads((generated / "phase4_targets.json").read_text())
     target_ids = {item["id"] for item in targets["targets"]}

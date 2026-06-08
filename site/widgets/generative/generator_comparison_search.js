@@ -2,7 +2,7 @@ import { positiveInt } from "../shared/circle_math_core.js";
 import { addLabeledNumber, addOutput, addWidgetHeader, clear } from "../shared/svg_helpers.js";
 import { loadJson, mountWidgets, statusClass, statusLabel } from "../shared/widget_base.js";
 
-const THEOREM_IDS = ["GEN-T0005", "GEN-T0017", "GEN-T0018", "GEN-T0019"];
+const THEOREM_IDS = ["GEN-T0001", "GEN-T0005", "GEN-T0017", "GEN-T0018", "GEN-T0019", "GEN-T0020"];
 const DICTIONARY_IDS = ["COMMON-0064", "COMMON-0065", "COMMON-0066"];
 
 function sortedPairs(object) {
@@ -37,7 +37,7 @@ function finiteCircleGenerator(n) {
     iteration_schedule: "i = 0..n-1",
     closure_condition: "stop before node n, since nodes are residues modulo n",
     generated_object: generated,
-    theorem_ids: ["CC-T0001"],
+    theorem_ids: ["GEN-T0001", "GEN-T0020", "CC-T0001"],
     dictionary_ids: ["CC-0001", "CC-0002", "COMMON-0064", "COMMON-0066"],
   };
 }

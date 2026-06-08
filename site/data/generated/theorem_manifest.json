@@ -4574,7 +4574,7 @@
       "informal_statement": "A coil seed-rule record regenerates the period-indexed stride orbit schedule from n, stride, and start.",
       "lean_name": "Circle.Generative.coilOrbitGenerator_regenerates_orbit",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 43,
+      "lean_source_line": 47,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -4614,7 +4614,7 @@
       "informal_statement": "An orbit-decomposition seed-rule record regenerates its representative-indexed finite stride-orbit schedules.",
       "lean_name": "Circle.Generative.orbitDecompositionGenerator_regenerates_orbits",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 74,
+      "lean_source_line": 84,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -4653,7 +4653,7 @@
       "informal_statement": "A proof-glyph seed-rule record regenerates theorem, glyph, and Lean-name metadata.",
       "lean_name": "Circle.Generative.proofGlyphGenerator_regenerates_certificate",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 169,
+      "lean_source_line": 179,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -4692,7 +4692,7 @@
       "informal_statement": "A generator comparison fixture checks exact regeneration before reporting description length.",
       "lean_name": "Circle.Generative.generatorComparison_requires_exact_regeneration",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 189,
+      "lean_source_line": 199,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -4732,7 +4732,7 @@
       "informal_statement": "The representative-indexed orbit-decomposition generator produces gcd(n,stride) orbit schedules.",
       "lean_name": "Circle.Generative.orbitDecompositionGenerator_generatedOrbits_length",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 81,
+      "lean_source_line": 91,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -4772,7 +4772,7 @@
       "informal_statement": "Each generated representative orbit schedule has length equal to the finite coil period.",
       "lean_name": "Circle.Generative.orbitDecompositionGenerator_generatedOrbitFor_length",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 87,
+      "lean_source_line": 97,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -4812,7 +4812,7 @@
       "informal_statement": "For a nonzero finite circle, representative count times generated orbit period equals the circle size.",
       "lean_name": "Circle.Generative.orbitDecompositionGenerator_orbitCount_mul_period",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 94,
+      "lean_source_line": 104,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -4852,7 +4852,7 @@
       "informal_statement": "For a nonzero finite circle, the generator's representative count agrees with the formal stride-orbit class count.",
       "lean_name": "Circle.Generative.orbitDecompositionGenerator_orbitCount_eq_orbitClassCount",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 104,
+      "lean_source_line": 114,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -4892,7 +4892,7 @@
       "informal_statement": "A modulo representative is within the orbit-decomposition generator's representative range when the range is positive.",
       "lean_name": "Circle.Generative.orbitDecompositionGenerator_modRepresentative_lt_orbitCount",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 111,
+      "lean_source_line": 121,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -4932,7 +4932,7 @@
       "informal_statement": "Every natural node is in the same finite stride-orbit class as its modulo-gcd representative.",
       "lean_name": "Circle.Generative.orbitDecompositionGenerator_modRepresentative_covers",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 118,
+      "lean_source_line": 128,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -4972,7 +4972,7 @@
       "informal_statement": "Two canonical finite orbit-decomposition representatives are in the same stride-orbit class exactly when the representatives are equal.",
       "lean_name": "Circle.Generative.orbitDecompositionGenerator_representatives_sameOrbit_iff_eq",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 128,
+      "lean_source_line": 138,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -5012,7 +5012,7 @@
       "informal_statement": "Distinct canonical finite orbit-decomposition representatives are disjoint at the stride-orbit class level.",
       "lean_name": "Circle.Generative.orbitDecompositionGenerator_distinct_representatives_disjoint",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 148,
+      "lean_source_line": 158,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -5051,7 +5051,7 @@
       "informal_statement": "A generator comparison from an artifact to itself has exact regeneration.",
       "lean_name": "Circle.Generative.generatorComparison_self_exact",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 194,
+      "lean_source_line": 204,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -5090,7 +5090,7 @@
       "informal_statement": "Exact regeneration is symmetric for generator comparison records.",
       "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_symm",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 198,
+      "lean_source_line": 208,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -5129,7 +5129,7 @@
       "informal_statement": "Exact regeneration is transitive across generator comparison records.",
       "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_trans",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 205,
+      "lean_source_line": 215,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -5168,7 +5168,7 @@
       "informal_statement": "For a constructed generator comparison, exact regeneration is equivalent to equality of the regenerated and generated fields.",
       "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_iff_fields_eq",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 213,
+      "lean_source_line": 223,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -5207,7 +5207,7 @@
       "informal_statement": "For a constructed generator comparison, an exact-regeneration witness gives equality of the regenerated and generated fields.",
       "lean_name": "Circle.Generative.generatorComparison_exact_regeneration_fields_eq",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 220,
+      "lean_source_line": 230,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -5246,7 +5246,7 @@
       "informal_statement": "For a constructed generator comparison, unequal regenerated and generated values cannot pass the exact-regeneration check.",
       "lean_name": "Circle.Generative.generatorComparison_not_exact_of_ne",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 228,
+      "lean_source_line": 238,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -5266,6 +5266,86 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_generator_comparison_has_positive_and_negative_cases"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0002",
+        "COMMON-0064",
+        "COMMON-0066"
+      ],
+      "formal_statement": "For n, (finiteCircleGenerator n).generatedNodes.length = n.",
+      "id": "GEN-T0020",
+      "imports_allowed": [
+        "Generative"
+      ],
+      "informal_statement": "A finite-circle seed-rule record generates exactly n node entries.",
+      "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_length",
+      "lean_source": "Circle/Generative/SeedRule.lean",
+      "lean_source_line": 27,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_GEN_01_SEED_RULE_PROVENANCE",
+          "path": "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md",
+          "status": "draft",
+          "title": "Circle Calculus Generative 1: Seed-Rule Provenance"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_finite_circle_generator_regenerates_nodes"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0205",
+        "COMMON-0064",
+        "COMMON-0066"
+      ],
+      "formal_statement": "For n, stride, and start, (coilOrbitGenerator n stride start).generatedOrbit.length = Circle.period n stride.",
+      "id": "GEN-T0021",
+      "imports_allowed": [
+        "Generative"
+      ],
+      "informal_statement": "A coil seed-rule record generates an orbit schedule whose length is the formal finite coil period.",
+      "lean_name": "Circle.Generative.coilOrbitGenerator_generatedOrbit_length",
+      "lean_source": "Circle/Generative/SeedRule.lean",
+      "lean_source_line": 53,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_GEN_01_SEED_RULE_PROVENANCE",
+          "path": "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md",
+          "status": "draft",
+          "title": "Circle Calculus Generative 1: Seed-Rule Provenance"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_coil_generator_regenerates_closed_stride_orbit"
         ]
       }
     },

@@ -73,7 +73,7 @@ Implemented shared JavaScript:
 
 - Inputs: selected generated artifact.
 - Outputs: generated finite-circle successor diagram, finite physics-loop plaquette diagram, coil-orbit record, orbit-decomposition record, or proof-glyph metadata; seed; rules; schedule; closure condition; generated-object summary; theorem-status badges; dictionary links.
-- Theorem ids: finite circle, finite coil/orbit, finite physics-loop, proof-glyph, and generator-comparison theorem ids exposed by the selected record.
+- Theorem ids: finite circle, finite coil/orbit, finite physics-loop, proof-glyph, generator-regeneration, generated-list length, and generator-comparison theorem ids exposed by the selected record.
 - Dictionary ids: finite circle/node/coil/orbit ids plus proof-glyph, finite gauge, and generative provenance ids.
 - Python references: `circle_math.generative.finite_circle_diagram_generator`, `circle_math.generative.physics_loop_diagram_generator`, `circle_math.generative.coil_orbit_generator`, `circle_math.generative.orbit_decomposition_generator`, and `circle_math.generative.proof_glyph_generator`.
 - Data source: `site/data/generated/generator_index.json`, exported from the Python seed-rule fixtures by `scripts/site/export_site_data.py`.
@@ -94,7 +94,7 @@ Implemented shared JavaScript:
 
 - Inputs: finite-circle size `n`.
 - Outputs: explicit-vs-generator description lengths, exact regeneration flag, generator-shorter flag, a broken non-exact candidate, bounded finite search count, exact candidate count, best exact candidate, best shorter exact candidate, theorem-status badges, and dictionary links.
-- Theorem ids: `GEN-T0005`, `GEN-T0017`, `GEN-T0018`, and `GEN-T0019`.
+- Theorem ids: `GEN-T0001`, `GEN-T0005`, `GEN-T0017`, `GEN-T0018`, `GEN-T0019`, and `GEN-T0020`.
 - Dictionary ids: `COMMON-0064`, `COMMON-0065`, and `COMMON-0066`.
 - Python references: `circle_math.generative.compare_generator_to_explicit`, `circle_math.generative.bounded_generator_search`, and `circle_math.generative.finite_circle_generator`.
 - Guardrail: the widget is bounded finite description-length bookkeeping only. It does not prove global optimality, Kolmogorov complexity, universal compression, or that smaller descriptions are always better.
