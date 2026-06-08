@@ -569,6 +569,8 @@ class TinyLoopedRecurrentPrototypeResult:
     required_state_sample: tuple[int, ...]
     learned_state_sample: tuple[int, ...]
     one_step_state_sample: tuple[int, ...]
+    raw_budget_state_sample: tuple[int, ...]
+    shifted_raw_budget_state_sample: tuple[int, ...]
     looped_recurrent_accuracy: float
     one_step_accuracy: float
     phase_lookup_accuracy: float
@@ -3251,6 +3253,12 @@ def run_tiny_looped_recurrent_prototype(
     looped_predictions = predict_phase_lookup(period, state_lookup, required_states)
     one_step_states = tuple(looped_recurrent_state(period, 1) for _ in test_positions)
     one_step_predictions = predict_phase_lookup(period, state_lookup, one_step_states)
+    raw_budgets = tuple(range(1, min(12, test_length) + 1))
+    raw_budget_states = looped_recurrent_states(period, raw_budgets)
+    shifted_raw_budget_states = looped_recurrent_states(
+        period,
+        tuple(budget + period for budget in raw_budgets),
+    )
 
     phase_lookup = fit_phase_lookup(period, train_positions, train_labels)
     phase_predictions = predict_phase_lookup(period, phase_lookup, test_positions)
@@ -3299,6 +3307,8 @@ def run_tiny_looped_recurrent_prototype(
         required_state_sample=required_states[: min(12, len(required_states))],
         learned_state_sample=required_states[: min(12, len(required_states))],
         one_step_state_sample=one_step_states[: min(12, len(one_step_states))],
+        raw_budget_state_sample=raw_budget_states,
+        shifted_raw_budget_state_sample=shifted_raw_budget_states,
         looped_recurrent_accuracy=accuracy(looped_predictions, test_labels),
         one_step_accuracy=accuracy(one_step_predictions, test_labels),
         phase_lookup_accuracy=accuracy(phase_predictions, test_labels),

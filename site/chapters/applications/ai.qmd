@@ -281,7 +281,7 @@ sample
   -> one-step, wrong-period, scalar, and nonperiodic controls
 ```
 
-The Lean facts `AIM-T0049` through `AIM-T0053` certify only the finite state arithmetic: the state is bounded, one loop starts at zero, the certified budget recovers the sample phase, and whole-period token shifts do not change the certified state read. This is useful as a prototype harness boundary. It is not evidence that a learned recursive transformer improves quality, speed, memory, context length, perplexity, or reasoning.
+The Lean facts `AIM-T0049` through `AIM-T0055` certify only the finite state arithmetic: the state is bounded, one loop starts at zero, the certified budget recovers the sample phase, whole-period token shifts do not change the certified state read, and positive raw budgets close after one or many whole recurrent periods. This is useful as a prototype harness boundary. It is not evidence that a learned recursive transformer improves quality, speed, memory, context length, perplexity, or reasoning.
 
 ## Learning Path
 
@@ -402,6 +402,8 @@ Why is the nonperiodic control in `AIA-B0002` important before making any AI-imp
 <div class="theorem-box" data-theorem-id="AIM-T0051"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0052"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0053"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0054"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0055"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0001"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0004"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0005"></div>

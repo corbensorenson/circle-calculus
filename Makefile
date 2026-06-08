@@ -108,7 +108,8 @@ sitecheck: site-data
 	python scripts/site/check_widget_runtime_links.py
 
 quarto-dirs:
-	mkdir -p "$(QUARTO_HOME)" "$(QUARTO_DENO_DIR)"
+	mkdir -p "$(QUARTO_HOME)" "$(QUARTO_DENO_DIR)" "site/_site"
+	python -c 'from pathlib import Path; root = Path("site"); out = root / "_site"; [((out / path.relative_to(root)).mkdir(parents=True, exist_ok=True)) for path in root.rglob("*") if path.is_dir() and "_site" not in path.parts]'
 
 site-render: site-data quarto-dirs
 	$(QUARTO_ENV) $(QUARTO) render site

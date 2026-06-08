@@ -2260,6 +2260,164 @@ def route_review_dossier_contract(route: dict, capability_by_id: dict[str, dict]
     }
 
 
+def route_impact_summary_contract(route: dict, capability_by_id: dict[str, dict]) -> dict:
+    capability_ids = route.get("capability_ids", []) or []
+    route_capabilities = [
+        capability_by_id[capability_id]
+        for capability_id in capability_ids
+        if capability_id in capability_by_id
+    ]
+    route_contract = route_backing_contract(route, capability_by_id)
+    route_dossier = route_review_dossier_contract(route, capability_by_id)
+    unique_counts = route_contract.get("unique_evidence_counts", {}) or {}
+    route_language = route_contract.get("claim_language_contract", {}) or {}
+    areas = sorted(
+        {
+            str(capability.get("area", "")).strip()
+            for capability in route_capabilities
+            if str(capability.get("area", "")).strip()
+        }
+    )
+    standard_interest_refs = [
+        {
+            "capability_id": capability.get("id", ""),
+            "area": capability.get("area", ""),
+            "audience_interest": capability.get("audience_interest", ""),
+            "standard_math_anchor": capability.get("standard_math_anchor", ""),
+        }
+        for capability in route_capabilities
+    ]
+    circle_native_value_refs = [
+        {
+            "capability_id": capability.get("id", ""),
+            "circle_math_expression": capability.get("circle_math_expression", ""),
+            "circle_native_value": capability.get("circle_native_value", ""),
+        }
+        for capability in route_capabilities
+    ]
+    capability_language_ready_count = sum(
+        1
+        for capability in route_capabilities
+        if (capability.get("claim_language_contract", {}) or {}).get(
+            "ready_to_advertise",
+            False,
+        )
+    )
+    audience_ready = (
+        nonempty_text(route, "title")
+        and nonempty_text(route, "audience")
+        and nonempty_text(route, "route_claim")
+    )
+    interest_ready = bool(standard_interest_refs) and all(
+        str(ref.get("area", "")).strip()
+        and str(ref.get("audience_interest", "")).strip()
+        and str(ref.get("standard_math_anchor", "")).strip()
+        for ref in standard_interest_refs
+    )
+    circle_value_ready = bool(circle_native_value_refs) and all(
+        str(ref.get("circle_math_expression", "")).strip()
+        and str(ref.get("circle_native_value", "")).strip()
+        for ref in circle_native_value_refs
+    )
+    proof_backing_ready = (
+        route_contract.get("ready_to_advertise", False)
+        and unique_counts.get("paper_count", 0) > 0
+        and unique_counts.get("theorem_count", 0) > 0
+        and unique_counts.get("source_count", 0) > 0
+        and unique_counts.get("executable_count", 0) > 0
+        and unique_counts.get("living_book_page_count", 0) > 0
+    )
+    boundary_ready = (
+        route_language.get("ready_to_advertise", False)
+        and nonempty_text(route, "not_claimed")
+        and capability_language_ready_count == len(route_capabilities)
+    )
+    sections = [
+        {
+            "id": "audience_signal",
+            "label": "audience and route signal",
+            "ready": audience_ready,
+            "evidence": route.get("audience", ""),
+            "refs": [],
+        },
+        {
+            "id": "standard_interest_surface",
+            "label": "respected standard-math interest surface",
+            "ready": interest_ready,
+            "evidence": f"{len(standard_interest_refs)} capability interest anchors",
+            "refs": [ref["capability_id"] for ref in standard_interest_refs],
+        },
+        {
+            "id": "circle_native_value_surface",
+            "label": "Circle-native value surface",
+            "ready": circle_value_ready,
+            "evidence": f"{len(circle_native_value_refs)} Circle-native value statements",
+            "refs": [ref["capability_id"] for ref in circle_native_value_refs],
+        },
+        {
+            "id": "proof_backing_counts",
+            "label": "proof-backed evidence counts",
+            "ready": proof_backing_ready,
+            "evidence": (
+                f"papers {unique_counts.get('paper_count', 0)}; "
+                f"theorem refs {unique_counts.get('theorem_count', 0)}; "
+                f"source refs {unique_counts.get('source_count', 0)}; "
+                f"executables {unique_counts.get('executable_count', 0)}; "
+                f"Living Book pages {unique_counts.get('living_book_page_count', 0)}"
+            ),
+            "refs": [],
+        },
+        {
+            "id": "review_path",
+            "label": "review path",
+            "ready": route_dossier.get("ready_to_review", False),
+            "evidence": (
+                f"route dossier {route_dossier.get('ready_section_count', 0)}/"
+                f"{route_dossier.get('total_section_count', 0)} sections"
+            ),
+            "refs": [],
+        },
+        {
+            "id": "advertising_boundary",
+            "label": "advertising boundary",
+            "ready": boundary_ready,
+            "evidence": route.get("not_claimed", ""),
+            "refs": capability_ids,
+        },
+    ]
+    ready = all(section["ready"] for section in sections)
+    summary_lines = [
+        f"Audience: {route.get('audience', '')}",
+        (
+            f"Capability surface: {len(route_capabilities)} route lanes"
+            + (f" across {', '.join(areas)}." if areas else ".")
+        ),
+        (
+            f"Proof backing: {unique_counts.get('theorem_count', 0)} proved theorem refs, "
+            f"{unique_counts.get('paper_count', 0)} paper ids, "
+            f"{unique_counts.get('source_count', 0)} source refs, "
+            f"{unique_counts.get('executable_count', 0)} executable refs, "
+            f"and {unique_counts.get('living_book_page_count', 0)} Living Book page refs."
+        ),
+        (
+            f"Circle-native value: {len(circle_native_value_refs)} lanes state explicit "
+            "Circle expression/value statements with role-backed checks."
+        ),
+        f"Boundary: {route.get('not_claimed', '')}",
+    ]
+    return {
+        "ready_to_review": ready,
+        "ready_to_advertise": ready,
+        "ready_section_count": sum(1 for section in sections if section["ready"]),
+        "total_section_count": len(sections),
+        "areas": areas,
+        "summary_lines": summary_lines,
+        "standard_interest_refs": standard_interest_refs,
+        "circle_native_value_refs": circle_native_value_refs,
+        "sections": sections,
+    }
+
+
 def export_portfolio_routes(
     route_entries: list[dict],
     capability_by_id: dict[str, dict],
@@ -2269,6 +2427,10 @@ def export_portfolio_routes(
         item = dict(route)
         item["route_contract"] = route_backing_contract(item, capability_by_id)
         item["route_review_dossier_contract"] = route_review_dossier_contract(
+            item,
+            capability_by_id,
+        )
+        item["route_impact_summary_contract"] = route_impact_summary_contract(
             item,
             capability_by_id,
         )
@@ -2298,6 +2460,22 @@ def portfolio_route_summary(routes: list[dict]) -> dict:
             route.get("id", "")
             for route in routes
             if not (route.get("route_review_dossier_contract", {}) or {}).get(
+                "ready_to_review",
+                False,
+            )
+        ),
+        "ready_impact_summary_count": sum(
+            1
+            for route in routes
+            if (route.get("route_impact_summary_contract", {}) or {}).get(
+                "ready_to_review",
+                False,
+            )
+        ),
+        "incomplete_impact_summary_ids": sorted(
+            route.get("id", "")
+            for route in routes
+            if not (route.get("route_impact_summary_contract", {}) or {}).get(
                 "ready_to_review",
                 False,
             )

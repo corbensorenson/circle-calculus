@@ -1591,6 +1591,34 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_looped_recurrent_state_matches_certified_budget_phase
     blocker: ""
+  - id: AIM-T0054
+    status: lean_proved
+    lean_name: Circle.Applications.loopedRecurrentState_budget_add_period
+    informal_statement: "A positive raw looped recurrent-state budget has the same hidden-state read after adding one whole period."
+    formal_statement: "For positive period and positive budget, loopedRecurrentState period (budget + period) = loopedRecurrentState period budget."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_looped_recurrent_state_matches_certified_budget_phase
+    blocker: ""
+  - id: AIM-T0055
+    status: lean_proved
+    lean_name: Circle.Applications.loopedRecurrentState_budget_add_mul_period
+    informal_statement: "A positive raw looped recurrent-state budget has the same hidden-state read after adding any whole number of periods."
+    formal_statement: "For positive period and positive budget, loopedRecurrentState period (budget + passes * period) = loopedRecurrentState period budget."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_looped_recurrent_state_matches_certified_budget_phase
+    blocker: ""
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize

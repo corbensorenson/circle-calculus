@@ -164,6 +164,25 @@ theorem loopedRecurrentState_tokenBudget_add_mul_loopPeriod
         (tokenRecurrenceBudget loopPeriod sample) := by
   rw [tokenRecurrenceBudget_add_mul_loopPeriod h]
 
+theorem loopedRecurrentState_budget_add_period
+    {period budget : Nat} (hperiod : 0 < period) (hbudget : 0 < budget) :
+    loopedRecurrentState period (budget + period) =
+      loopedRecurrentState period budget := by
+  rcases Nat.exists_eq_succ_of_ne_zero (Nat.ne_of_gt hbudget) with ⟨base, rfl⟩
+  unfold loopedRecurrentState
+  simp
+  exact phaseChannel_add_period hperiod base
+
+theorem loopedRecurrentState_budget_add_mul_period
+    {period budget : Nat} (hperiod : 0 < period) (hbudget : 0 < budget)
+    (passes : Nat) :
+    loopedRecurrentState period (budget + passes * period) =
+      loopedRecurrentState period budget := by
+  rcases Nat.exists_eq_succ_of_ne_zero (Nat.ne_of_gt hbudget) with ⟨base, rfl⟩
+  unfold loopedRecurrentState
+  simp
+  exact phaseChannel_add_mul_period hperiod base passes
+
 def tokenActiveAtStep (loopPeriod token step : Nat) : Prop :=
   step ≤ tokenRecurrenceBudget loopPeriod token
 

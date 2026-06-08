@@ -396,6 +396,15 @@ def test_looped_recurrent_state_matches_certified_budget_phase() -> None:
         == looped_recurrent_state(4, token_recurrence_budget(4, sample))
         for sample in range(32)
     )
+    assert all(
+        looped_recurrent_state(4, budget + 4) == looped_recurrent_state(4, budget)
+        for budget in range(1, 17)
+    )
+    assert all(
+        looped_recurrent_state(4, budget + passes * 4) == looped_recurrent_state(4, budget)
+        for budget in range(1, 17)
+        for passes in range(6)
+    )
 
 
 def test_token_level_recurrence_benchmark_has_per_token_and_wrong_loop_controls() -> None:
@@ -451,6 +460,8 @@ def test_tiny_looped_recurrent_prototype_has_baselines_and_controls() -> None:
     assert result.required_state_sample == (0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3)
     assert result.learned_state_sample == result.required_state_sample
     assert result.one_step_state_sample == (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    assert result.raw_budget_state_sample == (0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3)
+    assert result.shifted_raw_budget_state_sample == result.raw_budget_state_sample
     assert result.looped_recurrent_accuracy == 1.0
     assert result.phase_lookup_accuracy == 1.0
     assert result.one_step_accuracy < result.looped_recurrent_accuracy

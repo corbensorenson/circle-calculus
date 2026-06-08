@@ -197,6 +197,21 @@ function routeDossierText(route) {
   ].filter(Boolean).join("; ");
 }
 
+function routeImpactText(route) {
+  const impact = route.route_impact_summary_contract || {};
+  const lines = Array.isArray(impact.summary_lines) ? impact.summary_lines : [];
+  const sections = Array.isArray(impact.sections) ? impact.sections : [];
+  const sectionText = sections
+    .map((section) => `${section.label || section.id}: ${section.ready ? "ready" : "incomplete"}`)
+    .join("; ");
+  return [
+    impact.ready_to_review ? "ready" : "incomplete",
+    `sections ${impact.ready_section_count ?? 0}/${impact.total_section_count ?? 0}`,
+    ...lines,
+    sectionText,
+  ].filter(Boolean).join("\n");
+}
+
 function renderRouteTable(routes) {
   if (!Array.isArray(routes) || routes.length === 0) return "";
   const wrap = document.createElement("div");
@@ -205,7 +220,7 @@ function renderRouteTable(routes) {
   table.className = "capability-route-table";
   const thead = document.createElement("thead");
   const header = document.createElement("tr");
-  for (const label of ["Route", "Audience", "Route claim", "Capabilities", "Backing", "Reviewer dossier", "Boundary"]) {
+  for (const label of ["Route", "Audience", "Why this route matters", "Route claim", "Capabilities", "Backing", "Reviewer dossier", "Boundary"]) {
     const th = document.createElement("th");
     th.scope = "col";
     th.textContent = label;
@@ -219,6 +234,7 @@ function renderRouteTable(routes) {
     const row = document.createElement("tr");
     appendCell(row, `${route.id || ""} ${route.title || ""}`);
     appendCell(row, route.audience || "");
+    appendCell(row, routeImpactText(route));
     appendCell(row, route.route_claim || "");
     appendCell(row, routeCapabilityLinks(route));
     appendCell(row, routeBackingText(route));
@@ -288,6 +304,7 @@ function renderManifestSummary(capabilities, summary) {
     `capability lanes: ${summary.capability_count ?? capabilities.length}`,
     `portfolio routes: ready ${routeSummary.ready_count ?? 0}/${routeSummary.route_count ?? 0}`,
     `route reviewer dossiers: ready ${routeSummary.ready_dossier_count ?? 0}/${routeSummary.route_count ?? 0}`,
+    `route impact summaries: ready ${routeSummary.ready_impact_summary_count ?? 0}/${routeSummary.route_count ?? 0}`,
     `role coverage:\n${roleCoverageLine(summary)}`,
     provenanceCoverage ? `proof provenance:\n${provenanceCoverage}` : "",
     `portfolio backing: ${backing.ready_to_advertise ? "ready" : "incomplete"}`,

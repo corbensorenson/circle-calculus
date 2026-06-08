@@ -267,6 +267,8 @@ def test_export_site_data_writes_required_indexes() -> None:
     assert summary["route_summary"]["incomplete_count"] == 0
     assert summary["route_summary"]["ready_dossier_count"] == 4
     assert summary["route_summary"]["incomplete_dossier_ids"] == []
+    assert summary["route_summary"]["ready_impact_summary_count"] == 4
+    assert summary["route_summary"]["incomplete_impact_summary_ids"] == []
     assert summary["route_summary"]["unknown_capability_ids"] == []
     hard_math_route = route_by_id["ROUTE-001"]
     assert hard_math_route["capability_ids"] == [
@@ -329,6 +331,39 @@ def test_export_site_data_writes_required_indexes() -> None:
         "sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py "
         "sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py"
     )
+    assert hard_math_route["route_impact_summary_contract"]["ready_section_count"] == (
+        hard_math_route["route_impact_summary_contract"]["total_section_count"]
+    )
+    assert [
+        section["id"]
+        for section in hard_math_route["route_impact_summary_contract"]["sections"]
+    ] == [
+        "audience_signal",
+        "standard_interest_surface",
+        "circle_native_value_surface",
+        "proof_backing_counts",
+        "review_path",
+        "advertising_boundary",
+    ]
+    hard_route_counts = hard_math_route["route_contract"]["unique_evidence_counts"]
+    assert hard_math_route["route_impact_summary_contract"]["sections"][3][
+        "evidence"
+    ] == (
+        f"papers {hard_route_counts['paper_count']}; "
+        f"theorem refs {hard_route_counts['theorem_count']}; "
+        f"source refs {hard_route_counts['source_count']}; "
+        f"executables {hard_route_counts['executable_count']}; "
+        f"Living Book pages {hard_route_counts['living_book_page_count']}"
+    )
+    assert hard_math_route["route_impact_summary_contract"]["summary_lines"][1].startswith(
+        "Capability surface: 5 route lanes across Additive combinatorics"
+    )
+    assert len(
+        hard_math_route["route_impact_summary_contract"]["standard_interest_refs"]
+    ) == 5
+    assert len(
+        hard_math_route["route_impact_summary_contract"]["circle_native_value_refs"]
+    ) == 5
     systems_route = route_by_id["ROUTE-004"]
     assert systems_route["route_contract"]["ready_to_advertise"]
     assert systems_route["route_contract"]["claim_language_contract"][
