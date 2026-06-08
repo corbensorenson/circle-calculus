@@ -128,6 +128,33 @@ theorem tokenRecurrenceBudget_le_loopPeriod {loopPeriod : Nat} (h : 0 < loopPeri
   unfold tokenRecurrenceBudget
   exact loopRequiredSteps_le_loopPeriod h token
 
+def tokenActiveAtStep (loopPeriod token step : Nat) : Prop :=
+  step ≤ tokenRecurrenceBudget loopPeriod token
+
+theorem tokenActiveAtStep_one (loopPeriod token : Nat) :
+    tokenActiveAtStep loopPeriod token 1 := by
+  unfold tokenActiveAtStep
+  exact tokenRecurrenceBudget_pos loopPeriod token
+
+theorem tokenActiveAtStep_add_mul_loopPeriod {loopPeriod : Nat}
+    (h : 0 < loopPeriod) (token step passes : Nat) :
+    tokenActiveAtStep loopPeriod (token + passes * loopPeriod) step ↔
+      tokenActiveAtStep loopPeriod token step := by
+  unfold tokenActiveAtStep
+  rw [tokenRecurrenceBudget_add_mul_loopPeriod h]
+
+theorem tokenActiveAtStep_step_le_loopPeriod {loopPeriod : Nat}
+    (h : 0 < loopPeriod) {token step : Nat}
+    (hactive : tokenActiveAtStep loopPeriod token step) :
+    step ≤ loopPeriod :=
+  Nat.le_trans hactive (tokenRecurrenceBudget_le_loopPeriod h token)
+
+theorem tokenInactiveAtStep_of_loopPeriod_lt_step {loopPeriod : Nat}
+    (h : 0 < loopPeriod) {token step : Nat} (hstep : loopPeriod < step) :
+    ¬ tokenActiveAtStep loopPeriod token step := by
+  intro hactive
+  exact Nat.not_lt_of_ge (tokenActiveAtStep_step_le_loopPeriod h hactive) hstep
+
 def trainingFreeLoopBudget (loopPeriod sample maxLoops : Nat) : Nat :=
   min (loopRequiredSteps loopPeriod sample) maxLoops
 

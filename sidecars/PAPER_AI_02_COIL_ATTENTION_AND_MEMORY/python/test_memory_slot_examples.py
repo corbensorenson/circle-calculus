@@ -42,6 +42,7 @@ from circle_math.applications.circle_ai import (
     run_training_free_loop_wrapper_benchmark,
     run_token_level_recurrence_benchmark,
     shifted_recurrence_resolutions,
+    token_active_at_step,
     synthetic_memory_slot_dataset,
     token_recurrence_budget,
     token_recurrence_budgets,
@@ -366,6 +367,9 @@ def test_token_level_recurrence_budget_helpers_are_deterministic() -> None:
     assert budgets == (1, 2, 3, 4, 1, 2, 3, 4)
     assert tuple(token_recurrence_budget(4, token) for token in tokens) == budgets
     assert tuple(token_recurrence_budget(4, token + 4) for token in tokens) == budgets
+    assert all(token_active_at_step(4, token, 1) for token in tokens)
+    assert all(token_active_at_step(4, token + 3 * 4, 2) == token_active_at_step(4, token, 2) for token in tokens)
+    assert all(not token_active_at_step(4, token, 5) for token in tokens)
     assert active_token_counts_by_budget(budgets, 4) == (8, 6, 4, 2)
     assert recurrence_resolution_levels(4) == ("coarse", "fine", "coarse", "fine")
 

@@ -40,6 +40,7 @@ function fallbackClaimContract(capability) {
     ["dictionary_backing", "dictionary backing", counts.dictionary_count > 0],
     ["source_trail", "source trail", counts.source_count > 0],
     ["executable_reference", "executable pytest reference", counts.executable_count > 0],
+    ["verification_recipe", "reproducible verification recipe", counts.executable_count > 0],
     ["living_book_presentation", "Living Book presentation", counts.living_book_page_count > 0],
     ["claim_boundary", "not-claimed boundary", Boolean(capability.not_claimed)],
   ].map(([id, label, passed]) => ({ id, label, passed }));
@@ -62,6 +63,40 @@ function failedGateLabels(contract) {
     .filter((gate) => !gate.passed)
     .map((gate) => gate.label || gate.id)
     .filter(Boolean);
+}
+
+function verificationRecipe(capability) {
+  return capability.verification_recipe || {
+    lean_command: "lake build",
+    pytest_command: `python -m pytest ${(capability.executable_refs || []).join(" ")}`.trim(),
+    capability_contract_command: "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+    site_command: "make sitecheck",
+  };
+}
+
+function renderCommand(command) {
+  const code = document.createElement("code");
+  code.textContent = command || "";
+  return code;
+}
+
+function renderVerificationRecipe(capability) {
+  const recipe = verificationRecipe(capability);
+  const dl = document.createElement("dl");
+  dl.className = "capability-recipe";
+  for (const [label, command] of [
+    ["Lean", recipe.lean_command],
+    ["Examples", recipe.pytest_command],
+    ["Contracts", recipe.capability_contract_command],
+    ["Site", recipe.site_command],
+  ]) {
+    const dt = document.createElement("dt");
+    dt.textContent = label;
+    const dd = document.createElement("dd");
+    dd.appendChild(renderCommand(command));
+    dl.append(dt, dd);
+  }
+  return dl;
 }
 
 function renderClaimContract(capability) {
@@ -190,6 +225,7 @@ function checklist(capability) {
     auditItem("dictionary ids", counts.dictionary_count, linkedIds(capability.dictionary_ids, "dictionary.html")),
     auditItem("pytest executable refs", counts.executable_count, linkedRepoPaths(capability.executable_refs)),
     auditItem("source refs", counts.source_count, linkedRepoPaths(capability.source_refs)),
+    auditItem("verification recipe", "present", renderCommand(verificationRecipe(capability).pytest_command)),
     auditItem("Living Book pages", counts.living_book_page_count, linkedRepoPaths(capability.living_book_refs)),
     auditItem("Living Book widgets", counts.living_book_widget_count, livingBookWidgetIds(capability.living_book_refs)),
   ];
@@ -207,7 +243,7 @@ function renderTable(capabilities) {
   table.className = "capability-audit-table";
   const thead = document.createElement("thead");
   const header = document.createElement("tr");
-  for (const label of ["Capability", "Claim contract", "Proof provenance", "Advertised claim", "Audit checklist", "Boundary"]) {
+  for (const label of ["Capability", "Claim contract", "Proof provenance", "Advertised claim", "Audit checklist", "Reproduce", "Boundary"]) {
     const th = document.createElement("th");
     th.scope = "col";
     th.textContent = label;
@@ -225,6 +261,7 @@ function renderTable(capabilities) {
     appendCell(row, `${provenanceLabel(capability.proof_provenance_kind)}: ${capability.proof_provenance || ""}`);
     appendCell(row, capability.advertised_claim || "");
     appendCell(row, checklist(capability));
+    appendCell(row, renderVerificationRecipe(capability));
     appendCell(row, capability.not_claimed || "");
     tbody.appendChild(row);
   }

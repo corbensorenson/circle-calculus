@@ -88,6 +88,12 @@
           },
           {
             "evidence": "1",
+            "id": "verification_recipe",
+            "label": "reproducible verification recipe",
+            "passed": true
+          },
+          {
+            "evidence": "1",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
             "passed": true
@@ -99,10 +105,10 @@
             "passed": true
           }
         ],
-        "passed_gate_count": 15,
+        "passed_gate_count": 16,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 15
+        "total_gate_count": 16
       },
       "dictionary_ids": [
         "CC-0001",
@@ -147,7 +153,13 @@
         "CC-T0062",
         "CC-T0063"
       ],
-      "title": "Zero-sum and sumset theorems on finite circles"
+      "title": "Zero-sum and sumset theorems on finite circles",
+      "verification_recipe": {
+        "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+        "lean_command": "lake build",
+        "pytest_command": "python -m pytest sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py",
+        "site_command": "make sitecheck"
+      }
     },
     {
       "advertised_claim": "Circle Calculus can expose a classical circle-method counting atom and the Erdos-Ko-Rado bound as proof-linked artifacts.",
@@ -237,6 +249,12 @@
           },
           {
             "evidence": "1",
+            "id": "verification_recipe",
+            "label": "reproducible verification recipe",
+            "passed": true
+          },
+          {
+            "evidence": "1",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
             "passed": true
@@ -248,10 +266,10 @@
             "passed": true
           }
         ],
-        "passed_gate_count": 15,
+        "passed_gate_count": 16,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 15
+        "total_gate_count": 16
       },
       "dictionary_ids": [
         "CC-0001",
@@ -295,7 +313,13 @@
         "CC-T0064",
         "CC-T0065"
       ],
-      "title": "Katona circle method and Erdos-Ko-Rado"
+      "title": "Katona circle method and Erdos-Ko-Rado",
+      "verification_recipe": {
+        "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+        "lean_command": "lake build",
+        "pytest_command": "python -m pytest sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py",
+        "site_command": "make sitecheck"
+      }
     },
     {
       "advertised_claim": "Circle Calculus can connect finite witness searches to formal Roth-theorem handles.",
@@ -385,6 +409,12 @@
           },
           {
             "evidence": "1",
+            "id": "verification_recipe",
+            "label": "reproducible verification recipe",
+            "passed": true
+          },
+          {
+            "evidence": "1",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
             "passed": true
@@ -396,10 +426,10 @@
             "passed": true
           }
         ],
-        "passed_gate_count": 15,
+        "passed_gate_count": 16,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 15
+        "total_gate_count": 16
       },
       "dictionary_ids": [
         "CC-0001",
@@ -443,7 +473,13 @@
         "CC-T0066",
         "CC-T0067"
       ],
-      "title": "Roth and three-term arithmetic progressions"
+      "title": "Roth and three-term arithmetic progressions",
+      "verification_recipe": {
+        "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+        "lean_command": "lake build",
+        "pytest_command": "python -m pytest sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py",
+        "site_command": "make sitecheck"
+      }
     },
     {
       "advertised_claim": "Circle Calculus can present Ramsey-style unavoidable structure with theorem ids and executable finite searches.",
@@ -533,6 +569,12 @@
           },
           {
             "evidence": "1",
+            "id": "verification_recipe",
+            "label": "reproducible verification recipe",
+            "passed": true
+          },
+          {
+            "evidence": "1",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
             "passed": true
@@ -544,10 +586,10 @@
             "passed": true
           }
         ],
-        "passed_gate_count": 15,
+        "passed_gate_count": 16,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 15
+        "total_gate_count": 16
       },
       "dictionary_ids": [
         "CC-0001",
@@ -591,7 +633,13 @@
         "CC-T0068",
         "CC-T0069"
       ],
-      "title": "Ramsey lines and Hales-Jewett structure"
+      "title": "Ramsey lines and Hales-Jewett structure",
+      "verification_recipe": {
+        "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+        "lean_command": "lake build",
+        "pytest_command": "python -m pytest sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py",
+        "site_command": "make sitecheck"
+      }
     },
     {
       "advertised_claim": "Circle Calculus can use cyclic graph models as a proof-backed bridge toward graph-geometry language.",
@@ -681,6 +729,12 @@
           },
           {
             "evidence": "1",
+            "id": "verification_recipe",
+            "label": "reproducible verification recipe",
+            "passed": true
+          },
+          {
+            "evidence": "1",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
             "passed": true
@@ -692,10 +746,10 @@
             "passed": true
           }
         ],
-        "passed_gate_count": 15,
+        "passed_gate_count": 16,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 15
+        "total_gate_count": 16
       },
       "dictionary_ids": [
         "CC-0001",
@@ -740,7 +794,13 @@
         "CC-T0071",
         "CC-T0072"
       ],
-      "title": "Circulant graph and unit-distance graph lab"
+      "title": "Circulant graph and unit-distance graph lab",
+      "verification_recipe": {
+        "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+        "lean_command": "lake build",
+        "pytest_command": "python -m pytest sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py",
+        "site_command": "make sitecheck"
+      }
     },
     {
       "advertised_claim": "Circle Calculus can express detailed modular-arithmetic structure as period, orbit, kernel, and fiber theorems.",
@@ -829,6 +889,12 @@
             "passed": true
           },
           {
+            "evidence": "1",
+            "id": "verification_recipe",
+            "label": "reproducible verification recipe",
+            "passed": true
+          },
+          {
             "evidence": "2",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
@@ -841,10 +907,10 @@
             "passed": true
           }
         ],
-        "passed_gate_count": 15,
+        "passed_gate_count": 16,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 15
+        "total_gate_count": 16
       },
       "dictionary_ids": [
         "S1-0001",
@@ -908,7 +974,13 @@
         "CC-T0054",
         "CC-T0061"
       ],
-      "title": "Factor, fiber, and period-normal modular arithmetic"
+      "title": "Factor, fiber, and period-normal modular arithmetic",
+      "verification_recipe": {
+        "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+        "lean_command": "lake build",
+        "pytest_command": "python -m pytest sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py",
+        "site_command": "make sitecheck"
+      }
     },
     {
       "advertised_claim": "Circle Calculus can express bounded quaternion, spin-sign, pure-vector, and Hopf phase facts with explicit warnings about topology boundaries.",
@@ -997,6 +1069,12 @@
             "passed": true
           },
           {
+            "evidence": "3",
+            "id": "verification_recipe",
+            "label": "reproducible verification recipe",
+            "passed": true
+          },
+          {
             "evidence": "2",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
@@ -1009,10 +1087,10 @@
             "passed": true
           }
         ],
-        "passed_gate_count": 15,
+        "passed_gate_count": 16,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 15
+        "total_gate_count": 16
       },
       "dictionary_ids": [
         "S3Q-0001",
@@ -1081,7 +1159,13 @@
         "S3S-T0001",
         "S3S-T0005"
       ],
-      "title": "Quaternion, Hopf, and phase coordinates"
+      "title": "Quaternion, Hopf, and phase coordinates",
+      "verification_recipe": {
+        "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+        "lean_command": "lake build",
+        "pytest_command": "python -m pytest sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py",
+        "site_command": "make sitecheck"
+      }
     },
     {
       "advertised_claim": "Circle Calculus can build a finite proof-carrying gauge-path model with endpoint and holonomy laws.",
@@ -1171,6 +1255,12 @@
           },
           {
             "evidence": "1",
+            "id": "verification_recipe",
+            "label": "reproducible verification recipe",
+            "passed": true
+          },
+          {
+            "evidence": "1",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
             "passed": true
@@ -1182,10 +1272,10 @@
             "passed": true
           }
         ],
-        "passed_gate_count": 15,
+        "passed_gate_count": 16,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 15
+        "total_gate_count": 16
       },
       "dictionary_ids": [
         "COMMON-0060",
@@ -1247,7 +1337,13 @@
         "PHYS-T0052",
         "PHYS-T0053"
       ],
-      "title": "Proof-carrying finite gauge paths"
+      "title": "Proof-carrying finite gauge paths",
+      "verification_recipe": {
+        "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+        "lean_command": "lake build",
+        "pytest_command": "python -m pytest sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py",
+        "site_command": "make sitecheck"
+      }
     },
     {
       "advertised_claim": "Circle Calculus can pair generated structures with checked provenance and exact-comparison gates.",
@@ -1336,6 +1432,12 @@
             "passed": true
           },
           {
+            "evidence": "2",
+            "id": "verification_recipe",
+            "label": "reproducible verification recipe",
+            "passed": true
+          },
+          {
             "evidence": "1",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
@@ -1348,10 +1450,10 @@
             "passed": true
           }
         ],
-        "passed_gate_count": 15,
+        "passed_gate_count": 16,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 15
+        "total_gate_count": 16
       },
       "dictionary_ids": [
         "COMMON-0033",
@@ -1423,7 +1525,13 @@
         "GEN-T0034",
         "P2G-T0006"
       ],
-      "title": "Proof-carrying generative provenance"
+      "title": "Proof-carrying generative provenance",
+      "verification_recipe": {
+        "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+        "lean_command": "lake build",
+        "pytest_command": "python -m pytest sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py",
+        "site_command": "make sitecheck"
+      }
     },
     {
       "advertised_claim": "Circle Calculus can prove finite indexing and schedule-safety facts that AI experiments can reuse.",
@@ -1464,7 +1572,7 @@
             "passed": true
           },
           {
-            "evidence": "Lean-proved finite memory-slot, loop-budget, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
+            "evidence": "Lean-proved finite memory-slot, loop-budget, active-token-step, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
             "id": "proof_scope",
             "label": "proof scope",
             "passed": true
@@ -1476,7 +1584,7 @@
             "passed": true
           },
           {
-            "evidence": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, certificate, and adapter-index safety facts; benchmarks remain separate.",
+            "evidence": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, active-step, certificate, and adapter-index safety facts; benchmarks remain separate.",
             "id": "proof_provenance",
             "label": "proof provenance text",
             "passed": true
@@ -1488,7 +1596,7 @@
             "passed": true
           },
           {
-            "evidence": "12",
+            "evidence": "16",
             "id": "proved_theorem_ids",
             "label": "proved theorem ids",
             "passed": true
@@ -1512,6 +1620,12 @@
             "passed": true
           },
           {
+            "evidence": "2",
+            "id": "verification_recipe",
+            "label": "reproducible verification recipe",
+            "passed": true
+          },
+          {
             "evidence": "1",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
@@ -1524,10 +1638,10 @@
             "passed": true
           }
         ],
-        "passed_gate_count": 15,
+        "passed_gate_count": 16,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 15
+        "total_gate_count": 16
       },
       "dictionary_ids": [
         "COMMON-0028",
@@ -1540,10 +1654,10 @@
         "dictionary_count": 5,
         "executable_count": 2,
         "living_book_page_count": 1,
-        "living_book_widget_count": 5,
+        "living_book_widget_count": 6,
         "paper_count": 2,
         "source_count": 5,
-        "theorem_count": 12
+        "theorem_count": 16
       },
       "executable_refs": [
         "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
@@ -1557,6 +1671,7 @@
             "cyclic_memory_slots",
             "loop_recurrence_budget",
             "loop_exit_certificate",
+            "token_level_recurrence",
             "training_free_loop_wrapper",
             "adapter_parameter_budget"
           ]
@@ -1572,9 +1687,9 @@
         "circle_native_value",
         "application_guardrail"
       ],
-      "proof_provenance": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, certificate, and adapter-index safety facts; benchmarks remain separate.",
+      "proof_provenance": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, active-step, certificate, and adapter-index safety facts; benchmarks remain separate.",
       "proof_provenance_kind": "project_native",
-      "proof_scope": "Lean-proved finite memory-slot, loop-budget, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
+      "proof_scope": "Lean-proved finite memory-slot, loop-budget, active-token-step, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
       "source_refs": [
         "Circle/Applications/CircleAI.lean",
         "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/lean/PaperAI02.lean",
@@ -1595,9 +1710,19 @@
         "AIM-T0032",
         "AIM-T0033",
         "AIM-T0034",
+        "AIM-T0035",
+        "AIM-T0036",
+        "AIM-T0037",
+        "AIM-T0038",
         "AIRA-T0005"
       ],
-      "title": "AI memory, loop, and adapter schedules"
+      "title": "AI memory, loop, and adapter schedules",
+      "verification_recipe": {
+        "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+        "lean_command": "lake build",
+        "pytest_command": "python -m pytest sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py",
+        "site_command": "make sitecheck"
+      }
     },
     {
       "advertised_claim": "Circle Calculus can prove finite address-safety and schedule-normalization facts for cyclic computation.",
@@ -1686,6 +1811,12 @@
             "passed": true
           },
           {
+            "evidence": "3",
+            "id": "verification_recipe",
+            "label": "reproducible verification recipe",
+            "passed": true
+          },
+          {
             "evidence": "1",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
@@ -1698,10 +1829,10 @@
             "passed": true
           }
         ],
-        "passed_gate_count": 15,
+        "passed_gate_count": 16,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 15
+        "total_gate_count": 16
       },
       "dictionary_ids": [
         "COMMON-0018",
@@ -1756,7 +1887,13 @@
         "COMPL-T0005",
         "COMPS-T0004"
       ],
-      "title": "Circular compute layouts and schedules"
+      "title": "Circular compute layouts and schedules",
+      "verification_recipe": {
+        "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+        "lean_command": "lake build",
+        "pytest_command": "python -m pytest sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py",
+        "site_command": "make sitecheck"
+      }
     }
   ],
   "portfolio_summary": {
@@ -1770,10 +1907,10 @@
       "dictionary_count": 38,
       "executable_count": 17,
       "living_book_page_count": 13,
-      "living_book_widget_count": 17,
+      "living_book_widget_count": 18,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 69
+      "theorem_count": 73
     },
     "proof_provenance_counts": {
       "mathlib_bridge": 4,
@@ -1788,10 +1925,10 @@
       "dictionary_count": 30,
       "executable_count": 17,
       "living_book_page_count": 8,
-      "living_book_widget_count": 17,
+      "living_book_widget_count": 18,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 69
+      "theorem_count": 73
     },
     "unique_living_book_pages": [
       "site/chapters/S1/03_coils_orbits_closure.qmd",

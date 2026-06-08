@@ -130,6 +130,15 @@ def test_export_site_data_writes_required_indexes() -> None:
     assert "paper_backing" in {
         gate["id"] for gate in capability_by_id["SHOW-001"]["claim_contract"]["gates"]
     }
+    assert "verification_recipe" in {
+        gate["id"] for gate in capability_by_id["SHOW-001"]["claim_contract"]["gates"]
+    }
+    assert capability_by_id["SHOW-001"]["verification_recipe"]["pytest_command"] == (
+        "python -m pytest "
+        "sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py"
+    )
+    assert capability_by_id["SHOW-001"]["verification_recipe"]["lean_command"] == "lake build"
+    assert capability_by_id["SHOW-001"]["verification_recipe"]["site_command"] == "make sitecheck"
     assert summary["claim_contract_summary"]["ready_count"] == len(capabilities["capabilities"])
     assert summary["claim_contract_summary"]["incomplete_count"] == 0
     assert summary["claim_contract_summary"]["gate_failure_counts"] == {}

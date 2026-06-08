@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import shlex
 import sys
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
@@ -847,6 +848,20 @@ def paper_id_set() -> set[str]:
     return {paper["id"] for paper in data.get("papers", []) if paper.get("id")}
 
 
+def capability_verification_recipe(item: dict) -> dict:
+    executable_refs = item.get("executable_refs", []) or []
+    return {
+        "lean_command": "lake build",
+        "pytest_command": shlex.join(["python", "-m", "pytest", *executable_refs]),
+        "capability_contract_command": shlex.join(
+            ["python", "scripts/check_capability_showcase.py"]
+        )
+        + " && "
+        + shlex.join(["python", "scripts/site/check_capability_contracts.py"]),
+        "site_command": "make sitecheck",
+    }
+
+
 def capability_claim_contract(
     item: dict,
     evidence_counts: dict[str, int],
@@ -878,6 +893,15 @@ def capability_claim_contract(
         for ref in living_book_refs
         if not ref.get("page", "") or unsafe_or_missing_path(ref.get("page", ""))
     )
+    verification_recipe = capability_verification_recipe(item)
+    expected_pytest_command = shlex.join(["python", "-m", "pytest", *executable_refs])
+    recipe_failures = []
+    if verification_recipe["pytest_command"] != expected_pytest_command:
+        recipe_failures.append("pytest command does not match executable refs")
+    if verification_recipe["lean_command"] != "lake build":
+        recipe_failures.append("Lean command is not lake build")
+    if verification_recipe["site_command"] != "make sitecheck":
+        recipe_failures.append("site command is not make sitecheck")
     gates = [
         contract_gate(
             "role_contract",
@@ -958,6 +982,12 @@ def capability_claim_contract(
             contract_count_or_failures(evidence_counts["executable_count"], executable_failures),
         ),
         contract_gate(
+            "verification_recipe",
+            "reproducible verification recipe",
+            evidence_counts["executable_count"] > 0 and not recipe_failures,
+            contract_count_or_failures(evidence_counts["executable_count"], recipe_failures),
+        ),
+        contract_gate(
             "living_book_presentation",
             "Living Book presentation",
             evidence_counts["living_book_page_count"] > 0 and not missing_living_pages,
@@ -1031,6 +1061,7 @@ def export_capability_showcase() -> dict:
             "living_book_page_count": len(living_pages),
             "living_book_widget_count": len(living_widgets),
         }
+        item["verification_recipe"] = capability_verification_recipe(item)
         item["claim_contract"] = capability_claim_contract(
             item,
             item["evidence_counts"],

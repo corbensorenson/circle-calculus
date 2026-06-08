@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import shlex
 import sys
 
 from site_lib import GENERATED, load_json
@@ -19,6 +20,7 @@ REQUIRED_GATE_IDS = {
     "dictionary_backing",
     "source_trail",
     "executable_reference",
+    "verification_recipe",
     "living_book_presentation",
     "claim_boundary",
 }
@@ -34,6 +36,27 @@ def main() -> int:
     gate_failure_counts: dict[str, int] = {}
     for capability in capabilities:
         capability_id = capability.get("id", "<missing id>")
+        executable_refs = capability.get("executable_refs", []) or []
+        expected_pytest_command = shlex.join(["python", "-m", "pytest", *executable_refs])
+        recipe = capability.get("verification_recipe")
+        if not isinstance(recipe, dict):
+            failures.append(f"{capability_id}: missing verification_recipe")
+        else:
+            expected_recipe = {
+                "lean_command": "lake build",
+                "pytest_command": expected_pytest_command,
+                "capability_contract_command": (
+                    "python scripts/check_capability_showcase.py && "
+                    "python scripts/site/check_capability_contracts.py"
+                ),
+                "site_command": "make sitecheck",
+            }
+            for key, expected_value in expected_recipe.items():
+                if recipe.get(key) != expected_value:
+                    failures.append(
+                        f"{capability_id}: verification_recipe {key} "
+                        f"{recipe.get(key)!r} does not match {expected_value!r}"
+                    )
         contract = capability.get("claim_contract")
         if not isinstance(contract, dict):
             failures.append(f"{capability_id}: missing claim_contract")

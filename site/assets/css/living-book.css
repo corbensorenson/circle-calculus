@@ -399,6 +399,29 @@ body {
   padding-left: 1.1rem;
 }
 
+.capability-recipe {
+  display: grid;
+  gap: 0.25rem 0.5rem;
+  grid-template-columns: max-content minmax(12rem, 1fr);
+  margin: 0;
+}
+
+.capability-recipe dt {
+  color: var(--cc-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.capability-recipe dd {
+  margin: 0;
+}
+
+.capability-recipe code,
+.capability-audit-list code {
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
 .capability-audit-list {
   margin: 0;
   padding-left: 1.1rem;

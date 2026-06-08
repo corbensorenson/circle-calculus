@@ -22,6 +22,10 @@ namespace Circle.PaperAI02
 #check Circle.Applications.tokenRecurrenceBudget_add_loopPeriod
 #check Circle.Applications.tokenRecurrenceBudget_add_mul_loopPeriod
 #check Circle.Applications.tokenRecurrenceBudget_le_loopPeriod
+#check Circle.Applications.tokenActiveAtStep_one
+#check Circle.Applications.tokenActiveAtStep_add_mul_loopPeriod
+#check Circle.Applications.tokenActiveAtStep_step_le_loopPeriod
+#check Circle.Applications.tokenInactiveAtStep_of_loopPeriod_lt_step
 #check Circle.Applications.trainingFreeLoopBudget_le_maxLoops
 #check Circle.Applications.trainingFreeLoopBudget_le_requiredSteps
 #check Circle.Applications.trainingFreeLoopBudget_add_loopPeriod

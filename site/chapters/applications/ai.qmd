@@ -162,9 +162,9 @@ token
 
 This is the Circle Calculus contribution to the interface: recurrence provenance should be visible before it is sold as reasoning or throughput.
 
-The widget below exposes the deterministic `AIM-B0005` fixture: each token gets a finite recurrence budget, loop steps show how many tokens remain active, resolution labels alternate by step, and fixed/wrong/over-loop controls remain visible. It is not a learned-router result or a model-quality claim.
+Lean now pins down the active-step boundary used by that fixture: every token is active at step one, active-step membership is invariant under whole loop-period token shifts, active steps stay inside the positive loop period, and steps beyond that period are inactive. The widget below exposes the deterministic `AIM-B0005` fixture: each token gets a finite recurrence budget, loop steps show how many tokens remain active, resolution labels alternate by step, and fixed/wrong/over-loop controls remain visible. It is not a learned-router result or a model-quality claim.
 
-<div class="widget-panel" data-widget="token_level_recurrence" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0059 COMMON-0068 COMMON-0069"></div>
+<div class="widget-panel" data-widget="token_level_recurrence" data-theorem-id="AIM-T0035" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0059 COMMON-0068 COMMON-0069"></div>
 
 `AIM-B0012` turns learned token-level routing into auditable bookkeeping:
 
@@ -367,6 +367,10 @@ Why is the nonperiodic control in `AIA-B0002` important before making any AI-imp
 <div class="theorem-box" data-theorem-id="AIM-T0032"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0033"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0034"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0035"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0036"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0037"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0038"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0001"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0004"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0005"></div>

@@ -1325,6 +1325,62 @@ theorems:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_required_steps_are_positive_bounded_and_periodic
     blocker: ""
+  - id: AIM-T0035
+    status: lean_proved
+    lean_name: Circle.Applications.tokenActiveAtStep_one
+    informal_statement: "Every token remains active at the first one-indexed loop step of the finite token-level recurrence schedule."
+    formal_statement: "For loopPeriod and token, tokenActiveAtStep loopPeriod token 1."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0036
+    status: lean_proved
+    lean_name: Circle.Applications.tokenActiveAtStep_add_mul_loopPeriod
+    informal_statement: "Token active-step membership is invariant when a token index is shifted by any whole number of loop periods."
+    formal_statement: "For positive loopPeriod, tokenActiveAtStep loopPeriod (token + passes * loopPeriod) step iff tokenActiveAtStep loopPeriod token step."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0037
+    status: lean_proved
+    lean_name: Circle.Applications.tokenActiveAtStep_step_le_loopPeriod
+    informal_statement: "For a positive loop period, every active token step is bounded by the finite loop period."
+    formal_statement: "For positive loopPeriod, tokenActiveAtStep loopPeriod token step implies step <= loopPeriod."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0038
+    status: lean_proved
+    lean_name: Circle.Applications.tokenInactiveAtStep_of_loopPeriod_lt_step
+    informal_statement: "For a positive loop period, loop steps beyond the period cannot be active in the finite token-level recurrence schedule."
+    formal_statement: "For positive loopPeriod, loopPeriod < step implies not tokenActiveAtStep loopPeriod token step."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+    blocker: ""
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize

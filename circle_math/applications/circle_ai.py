@@ -1941,6 +1941,12 @@ def token_recurrence_budget(loop_period: int, token_index: int) -> int:
     return loop_required_steps(loop_period, token_index)
 
 
+def token_active_at_step(loop_period: int, token_index: int, step: int) -> bool:
+    """Return whether a token remains active at a one-indexed loop step."""
+    _require_positive(step, "step")
+    return step <= token_recurrence_budget(loop_period, token_index)
+
+
 def token_recurrence_budgets(loop_period: int, token_indices: Sequence[int]) -> tuple[int, ...]:
     """Return per-token recurrence budgets for token-level routing fixtures."""
     return tuple(token_recurrence_budget(loop_period, token_index) for token_index in token_indices)

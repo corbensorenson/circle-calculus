@@ -35,10 +35,10 @@ Implemented shared JavaScript:
 ### capability_audit_checklist
 
 - Inputs: none; the widget reads `site/data/generated/capability_showcase.json`.
-- Outputs: capability lane, generated claim-contract readiness, claim-contract gate count, proof provenance text, advertised claim, paper/theorem/dictionary/executable/source/Living Book evidence counts, linked paper/theorem/dictionary id lists, linked pytest executable refs, linked source refs, linked Living Book page refs, Living Book widget ids, and explicit claim boundary.
+- Outputs: capability lane, generated claim-contract readiness, claim-contract gate count, proof provenance text, advertised claim, paper/theorem/dictionary/executable/source/Living Book evidence counts, linked paper/theorem/dictionary id lists, linked pytest executable refs, linked source refs, generated reproduction commands, linked Living Book page refs, Living Book widget ids, and explicit claim boundary.
 - Data source: `manifests/capability_showcase.yaml`, exported by `scripts/site/export_site_data.py`.
 - Guardrail: the checklist verifies traceability only. It does not turn standard theorem bridges, Python examples, widgets, or paper prose into new proofs.
-- Validation: `scripts/site/check_capability_contracts.py` requires every generated claim contract to be ready; `scripts/site/check_site_widget_contracts.py` verifies the widget index, page mount, and JavaScript mount call; `scripts/site/check_site_navigation_contract.py` keeps the verification-page audit route present.
+- Validation: `scripts/check_capability_showcase.py` requires every advertised source ref to be backed by a cited paper Source Trail or cited Lean sidecar import closure; `scripts/site/check_capability_contracts.py` requires every generated claim contract to be ready and every reproduction recipe to match its executable refs; `scripts/site/check_site_widget_contracts.py` verifies the widget index, page mount, and JavaScript mount call; `scripts/site/check_site_navigation_contract.py` keeps the verification-page audit route present.
 
 ## S1 Widgets
 
@@ -193,8 +193,8 @@ Implemented shared JavaScript:
 ### token_level_recurrence
 
 - Inputs: loop period, token count, maximum budget, fixed global budget, wrong-budget shift, over-loop budget, and overthinking tolerance.
-- Outputs: per-token recurrence-budget strip, selected middle-block record, coarse/fine resolution labels, active-token counts by loop step, fixed-budget control, wrong-budget control, over-loop control, nonperiodic phase-lookup control, and scalar-threshold control.
-- Theorem ids: `AIM-T0006`, `AIM-T0007`, `AIM-T0008`, `AIM-T0009`, `AIM-T0018`, `AIM-T0022`, `AIM-T0026`, and `AIM-T0027` as finite loop-budget primitives.
+- Outputs: per-token recurrence-budget strip, selected middle-block record, coarse/fine resolution labels, active-token counts by loop step, first-step/beyond-period active-step boundary, fixed-budget control, wrong-budget control, over-loop control, nonperiodic phase-lookup control, and scalar-threshold control.
+- Theorem ids: `AIM-T0006`, `AIM-T0007`, `AIM-T0008`, `AIM-T0009`, `AIM-T0018`, `AIM-T0022`, `AIM-T0026`, `AIM-T0027`, `AIM-T0035`, `AIM-T0036`, `AIM-T0037`, and `AIM-T0038` as finite loop-budget and active-step primitives.
 - Dictionary ids: `COMMON-0052`, `COMMON-0053`, `COMMON-0059`, `COMMON-0068`, and `COMMON-0069`.
 - Python references: `circle_math.applications.circle_ai.token_recurrence_budgets`, `circle_math.applications.circle_ai.active_token_counts_by_budget`, `circle_math.applications.circle_ai.recurrence_resolution_levels`, and `circle_math.applications.circle_ai.run_token_level_recurrence_benchmark`.
 - Guardrail: the widget is deterministic token-level schedule bookkeeping only. It does not prove learned-router quality, recursive reasoning, perplexity improvement, throughput, memory improvement, context-length improvement, or model-quality improvement.
@@ -406,7 +406,7 @@ Checkers:
 
 - `scripts/site/check_site_widget_contracts.py` verifies that every `data-widget` page mount exists in `widget_index.json`, imports the matching widget script, and points to a JavaScript file that calls `mountWidgets("<widget_id>", ...)`.
 - `scripts/site/check_site_accessibility_contract.py` verifies shared widget accessibility contracts: named widget regions, labelled number inputs, live output regions, SVG title/description metadata, visible focus styling, and scaffold-only placeholder guardrails.
-- `scripts/site/check_capability_contracts.py` verifies generated proof-backed showcase claim contracts and fails if any advertised capability is missing its standard anchor, Circle expression, Circle-native value, proof provenance, source trail, executable support, Living Book presentation, or not-claimed boundary.
+- `scripts/site/check_capability_contracts.py` verifies generated proof-backed showcase claim contracts and fails if any advertised capability is missing its standard anchor, Circle expression, Circle-native value, proof provenance, source trail, executable support, generated reproduction recipe, Living Book presentation, or not-claimed boundary.
 - `scripts/site/check_widget_python_parity.py` validates deterministic S1 formulas against Python reference behavior.
 - `scripts/site/check_widget_runtime_links.py` imports the shared widget runtime under Node and verifies that real repository paths become GitHub source links while symbolic paper-section references remain plain text.
 

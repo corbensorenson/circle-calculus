@@ -193,6 +193,22 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.loopExitCertificate_boundary_add_mul_loopPeriod
     dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054"]
+  - id: AIM-T0035
+    status: lean_proved
+    lean_name: Circle.Applications.tokenActiveAtStep_one
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0036
+    status: lean_proved
+    lean_name: Circle.Applications.tokenActiveAtStep_add_mul_loopPeriod
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0037
+    status: lean_proved
+    lean_name: Circle.Applications.tokenActiveAtStep_step_le_loopPeriod
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0038
+    status: lean_proved
+    lean_name: Circle.Applications.tokenInactiveAtStep_of_loopPeriod_lt_step
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize

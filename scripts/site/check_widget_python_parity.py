@@ -70,6 +70,7 @@ from circle_math.applications import (
     run_phase_channel_benchmark,
     run_training_free_loop_wrapper_benchmark,
     run_token_level_recurrence_benchmark,
+    token_active_at_step,
     token_recurrence_budget,
     token_recurrence_budgets,
     training_free_loop_budget,
@@ -402,6 +403,10 @@ def js_loop_exit_certificate(
 
 def js_token_recurrence_budget(loop_period: int, token_index: int) -> int:
     return js_loop_required_steps(loop_period, token_index)
+
+
+def js_token_active_at_step(loop_period: int, token_index: int, step: int) -> bool:
+    return step <= js_token_recurrence_budget(loop_period, token_index)
 
 
 def js_token_recurrence_budgets(loop_period: int, token_count: int) -> tuple[int, ...]:
@@ -2013,6 +2018,13 @@ def main() -> int:
         )
 
         assert token_recurrence_budgets(loop_period, tokens) == budgets
+        for token in tokens:
+            for step in range(1, max_budget + 2):
+                assert token_active_at_step(loop_period, token, step) == js_token_active_at_step(
+                    loop_period,
+                    token,
+                    step,
+                )
         assert active_token_counts_by_budget(budgets, max_budget) == js_active_token_counts_by_budget(
             budgets,
             max_budget,

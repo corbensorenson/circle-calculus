@@ -76,6 +76,8 @@ THEOREM_ATTR_RE = re.compile(r'data-theorem-id="([^"]+)"')
 SHOWCASE_REF_RE = re.compile(r'data-showcase-ref="([^"]+)"')
 THEOREM_BOX_RE = re.compile(r'<div class="theorem-box"([^>]*)>')
 PAPER_REF_RE = re.compile(r'<p([^>]*data-paper-ref="[^"]+"[^>]*)>')
+SECTION_RE = re.compile(r"^##\s+", re.MULTILINE)
+IMPORT_RE = re.compile(r"^\s*import\s+(.+)$")
 
 
 def html_attr(attrs: str, name: str) -> str | None:
@@ -125,6 +127,97 @@ def path_for_paper_id(paper_id: str) -> Path | None:
         if path.stem == paper_id:
             return path
     return None
+
+
+def source_trail_section(path: Path) -> str:
+    if not path.exists():
+        return ""
+    text = path.read_text()
+    marker = "## Source Trail"
+    start = text.find(marker)
+    if start == -1:
+        return ""
+    next_section = SECTION_RE.search(text, start + len(marker))
+    if next_section is None:
+        return text[start:]
+    return text[start : next_section.start()]
+
+
+def module_name_for_path(path: Path) -> str:
+    return ".".join(path.with_suffix("").parts)
+
+
+def module_name_for_ref(ref: str) -> str:
+    return module_name_for_path(Path(ref))
+
+
+def lean_modules_by_name() -> dict[str, Path]:
+    modules: dict[str, Path] = {}
+    for path in sorted(ROOT.glob("**/*.lean")):
+        if ".lake" in path.parts:
+            continue
+        relative = path.relative_to(ROOT)
+        modules[module_name_for_path(relative)] = path
+    return modules
+
+
+def imported_modules(path: Path) -> set[str]:
+    imports: set[str] = set()
+    if not path.exists():
+        return imports
+    for line in path.read_text().splitlines():
+        match = IMPORT_RE.match(line)
+        if not match:
+            continue
+        imports.update(part for part in match.group(1).split() if part)
+    return imports
+
+
+def paper_lean_sidecars(paper: dict) -> list[Path]:
+    sidecar = paper.get("sidecar")
+    if not sidecar:
+        return []
+    lean_dir = ROOT / sidecar / "lean"
+    if not lean_dir.exists():
+        return []
+    return sorted(lean_dir.glob("*.lean"))
+
+
+def transitive_local_imports(start_paths: list[Path], modules: dict[str, Path]) -> set[str]:
+    seen: set[str] = set()
+    stack: list[str] = []
+    for path in start_paths:
+        stack.extend(imported_modules(path))
+    while stack:
+        module = stack.pop()
+        if module in seen:
+            continue
+        seen.add(module)
+        local_path = modules.get(module)
+        if local_path is not None:
+            stack.extend(imported_modules(local_path) - seen)
+    return seen
+
+
+def paper_source_ref_backed(ref: str, paper_ids: list[str], papers: dict[str, dict], modules: dict[str, Path]) -> bool:
+    source_sections: list[str] = []
+    sidecar_paths: list[Path] = []
+    for paper_id in paper_ids:
+        paper = papers.get(paper_id)
+        if paper is None:
+            continue
+        paper_path = path_for_paper_id(paper_id)
+        if paper_path is not None:
+            source_sections.append(source_trail_section(paper_path))
+        sidecar_paths.extend(paper_lean_sidecars(paper))
+
+    if any(ref in section for section in source_sections):
+        return True
+    local_ref = Path(ref)
+    if local_ref.parts[:1] == ("Circle",) and local_ref.suffix == ".lean":
+        module_name = module_name_for_ref(ref)
+        return module_name in transitive_local_imports(sidecar_paths, modules)
+    return False
 
 
 def page_capability_ids() -> list[str]:
@@ -287,6 +380,7 @@ def main() -> int:
     papers = paper_index()
     known_dictionary_ids = dictionary_ids()
     known_widgets = widget_paths()
+    local_lean_modules = lean_modules_by_name()
     failures: list[str] = []
 
     ids = [item.get("id") for item in capabilities]
@@ -688,6 +782,11 @@ def main() -> int:
                 failures.append(f"{capability_id}: unsafe source ref {ref}")
             elif not ref_path.exists():
                 failures.append(f"{capability_id}: missing source ref {ref}")
+            elif not paper_source_ref_backed(ref, paper_ids, papers, local_lean_modules):
+                failures.append(
+                    f"{capability_id}: source ref {ref} is not backed by cited "
+                    "paper source trails or Lean sidecar imports"
+                )
 
         for ref in executable_refs:
             local_ref = Path(ref)

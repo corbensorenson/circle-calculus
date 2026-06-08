@@ -5575,6 +5575,30 @@
           "lean_name": "Circle.Applications.loopExitCertificate_boundary_add_mul_loopPeriod",
           "name": "Circle.Applications.loopExitCertificate_boundary_add_mul_loopPeriod",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0035",
+          "lean_name": "Circle.Applications.tokenActiveAtStep_one",
+          "name": "Circle.Applications.tokenActiveAtStep_one",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0036",
+          "lean_name": "Circle.Applications.tokenActiveAtStep_add_mul_loopPeriod",
+          "name": "Circle.Applications.tokenActiveAtStep_add_mul_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0037",
+          "lean_name": "Circle.Applications.tokenActiveAtStep_step_le_loopPeriod",
+          "name": "Circle.Applications.tokenActiveAtStep_step_le_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0038",
+          "lean_name": "Circle.Applications.tokenInactiveAtStep_of_loopPeriod_lt_step",
+          "name": "Circle.Applications.tokenInactiveAtStep_of_loopPeriod_lt_step",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5825,6 +5849,30 @@
           "id": "AIM-T0034",
           "lean_name": "Circle.Applications.loopExitCertificate_boundary_add_mul_loopPeriod",
           "name": "Circle.Applications.loopExitCertificate_boundary_add_mul_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0035",
+          "lean_name": "Circle.Applications.tokenActiveAtStep_one",
+          "name": "Circle.Applications.tokenActiveAtStep_one",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0036",
+          "lean_name": "Circle.Applications.tokenActiveAtStep_add_mul_loopPeriod",
+          "name": "Circle.Applications.tokenActiveAtStep_add_mul_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0037",
+          "lean_name": "Circle.Applications.tokenActiveAtStep_step_le_loopPeriod",
+          "name": "Circle.Applications.tokenActiveAtStep_step_le_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0038",
+          "lean_name": "Circle.Applications.tokenInactiveAtStep_of_loopPeriod_lt_step",
+          "name": "Circle.Applications.tokenInactiveAtStep_of_loopPeriod_lt_step",
           "status": "proved"
         }
       ],
@@ -6161,6 +6209,30 @@
           "id": "AIM-T0027",
           "lean_name": "Circle.Applications.tokenRecurrenceBudget_add_mul_loopPeriod",
           "name": "Circle.Applications.tokenRecurrenceBudget_add_mul_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0035",
+          "lean_name": "Circle.Applications.tokenActiveAtStep_one",
+          "name": "Circle.Applications.tokenActiveAtStep_one",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0036",
+          "lean_name": "Circle.Applications.tokenActiveAtStep_add_mul_loopPeriod",
+          "name": "Circle.Applications.tokenActiveAtStep_add_mul_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0037",
+          "lean_name": "Circle.Applications.tokenActiveAtStep_step_le_loopPeriod",
+          "name": "Circle.Applications.tokenActiveAtStep_step_le_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0038",
+          "lean_name": "Circle.Applications.tokenInactiveAtStep_of_loopPeriod_lt_step",
+          "name": "Circle.Applications.tokenInactiveAtStep_of_loopPeriod_lt_step",
           "status": "proved"
         }
       ],
