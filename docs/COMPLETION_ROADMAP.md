@@ -486,6 +486,11 @@ Application guardrails:
 - [x] `AIM-T0041`: selected middle-block routes close after one selected-width shift.
 - [x] `AIM-T0042`: selected middle-block routes close after any whole number of selected-width shifts.
 - [x] `AIM-T0043`: selected middle-block route sample zero anchors at the selected range start.
+- [x] `AIM-T0044`: combined middle-block/budget routes keep the block component at or after the selected range start.
+- [x] `AIM-T0045`: combined middle-block/budget routes keep the block component before the selected range stop.
+- [x] `AIM-T0046`: combined middle-block/budget routes keep the budget component positive.
+- [x] `AIM-T0047`: combined middle-block/budget routes keep the budget component bounded by a positive loop period.
+- [x] `AIM-T0048`: combined middle-block/budget routes close after the product common cycle `width * loopPeriod`.
 - [x] `AIM-B0001`: exploratory cyclic-memory benchmark fixture with baselines and a nonperiodic control.
 - [x] `AIM-B0002`: exploratory coil-retrieval reachability fixture with baselines and a near-lag control.
 - [x] `AIRA-T0001`: adapter block index is bounded by a positive block size.

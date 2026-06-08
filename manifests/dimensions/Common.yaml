@@ -1451,6 +1451,76 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_middle_block_recurrence_helpers_are_deterministic
     blocker: ""
+  - id: AIM-T0044
+    status: lean_proved
+    lean_name: Circle.Applications.middleBlockBudgetRoute_block_ge_start
+    informal_statement: "The block component of a combined middle-block/budget route stays at or after the selected range start."
+    formal_statement: "For start, width, loopPeriod, and sample, start <= (middleBlockBudgetRoute start width loopPeriod sample).1."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_middle_block_recurrence_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0045
+    status: lean_proved
+    lean_name: Circle.Applications.middleBlockBudgetRoute_block_lt_stop
+    informal_statement: "For positive selected width, the block component of a combined middle-block/budget route stays before the selected range stop."
+    formal_statement: "For positive width, (middleBlockBudgetRoute start width loopPeriod sample).1 < start + width."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_middle_block_recurrence_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0046
+    status: lean_proved
+    lean_name: Circle.Applications.middleBlockBudgetRoute_budget_pos
+    informal_statement: "The budget component of a combined middle-block/budget route is positive."
+    formal_statement: "For start, width, loopPeriod, and sample, 0 < (middleBlockBudgetRoute start width loopPeriod sample).2."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_middle_block_recurrence_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0047
+    status: lean_proved
+    lean_name: Circle.Applications.middleBlockBudgetRoute_budget_le_loopPeriod
+    informal_statement: "For a positive loop period, the budget component of a combined middle-block/budget route is bounded by the loop period."
+    formal_statement: "For positive loopPeriod, (middleBlockBudgetRoute start width loopPeriod sample).2 <= loopPeriod."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_middle_block_recurrence_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0048
+    status: lean_proved
+    lean_name: Circle.Applications.middleBlockBudgetRoute_add_commonCycle
+    informal_statement: "A combined middle-block/budget route closes after a product-width/loop-period common cycle."
+    formal_statement: "For positive width and loopPeriod, middleBlockBudgetRoute start width loopPeriod (sample + width * loopPeriod) = middleBlockBudgetRoute start width loopPeriod sample."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_middle_block_recurrence_helpers_are_deterministic
+    blocker: ""
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize

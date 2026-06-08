@@ -185,16 +185,25 @@ function renderManifestSummary(capabilities, summary) {
   const unique = summary.unique_evidence_counts;
   const totals = summary.evidence_totals || {};
   const provenanceCoverage = provenanceCoverageLine(summary);
+  const backing = summary.backing_contract_summary || {};
+  const theoremRefs = backing.theorem_refs || {};
+  const sourceRefs = backing.source_refs || {};
+  const livingRefs = backing.living_book_refs || {};
   const lines = [
     `capability lanes: ${summary.capability_count ?? capabilities.length}`,
     `role coverage:\n${roleCoverageLine(summary)}`,
     provenanceCoverage ? `proof provenance:\n${provenanceCoverage}` : "",
+    `portfolio backing: ${backing.ready_to_advertise ? "ready" : "incomplete"}`,
+    `backed theorem refs: ${theoremRefs.proved_and_paper_backed_count ?? 0}/${theoremRefs.total_count ?? 0}`,
+    `backed source refs: ${sourceRefs.backed_count ?? 0}/${sourceRefs.total_count ?? 0}`,
+    `backed Living Book refs: pages ${livingRefs.backed_page_count ?? 0}/${livingRefs.total_page_count ?? 0}; widgets ${livingRefs.backed_widget_count ?? 0}/${livingRefs.total_widget_count ?? 0}`,
     `unique paper ids: ${unique.paper_count}`,
     `unique proved theorem ids advertised: ${unique.theorem_count}`,
     `unique pytest executable refs: ${unique.executable_count}`,
+    `unique source refs: ${unique.source_count}`,
     `unique Living Book page refs: ${unique.living_book_page_count}`,
     `unique Living Book widget refs: ${unique.living_book_widget_count}`,
-    `total evidence links: papers ${totals.paper_count ?? 0}; theorems ${totals.theorem_count ?? 0}; executables ${totals.executable_count ?? 0}; pages ${totals.living_book_page_count ?? 0}; widgets ${totals.living_book_widget_count ?? 0}`,
+    `total evidence links: papers ${totals.paper_count ?? 0}; theorems ${totals.theorem_count ?? 0}; sources ${totals.source_count ?? 0}; executables ${totals.executable_count ?? 0}; pages ${totals.living_book_page_count ?? 0}; widgets ${totals.living_book_widget_count ?? 0}`,
   ];
   const node = document.createElement("p");
   node.className = "widget-data";

@@ -2,7 +2,7 @@ import { mod, positiveInt } from "../shared/circle_math_core.js";
 import { addLabeledNumber, addOutput, addWidgetHeader, clear } from "../shared/svg_helpers.js";
 import { loadJson, mountWidgets, statusClass, statusLabel } from "../shared/widget_base.js";
 
-const THEOREM_IDS = ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0039", "AIM-T0040", "AIM-T0041", "AIM-T0042", "AIM-T0043"];
+const THEOREM_IDS = ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0039", "AIM-T0040", "AIM-T0041", "AIM-T0042", "AIM-T0043", "AIM-T0044", "AIM-T0045", "AIM-T0046", "AIM-T0047", "AIM-T0048"];
 const DICTIONARY_IDS = ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068", "COMMON-0070"];
 
 let chartIdCounter = 0;
@@ -28,6 +28,10 @@ function loopBlockIndices(blockCount, selectedBlock) {
 function middleBlockRequiredBlocks(blockCount, selectedBlock, samples) {
   const selected = loopBlockIndices(blockCount, selectedBlock);
   return samples.map((sample) => selected[mod(sample, selected.length)]);
+}
+
+function middleBlockBudgetRoute(start, width, loopPeriod, sample) {
+  return [start + mod(sample, width), tokenBudget(loopPeriod, sample)];
 }
 
 function majorityInt(values) {
@@ -108,6 +112,7 @@ function learnedFixture(values) {
   const wrongBlocks = loopBlockIndices(values.blockCount, values.wrongLoopBlock);
   const fullBlocks = range(0, values.blockCount);
   const blockPeriod = selectedBlocks.length;
+  const commonCycle = blockPeriod * values.loopPeriod;
   const trainRequiredBlocks = middleBlockRequiredBlocks(values.blockCount, values.selectedLoopBlock, trainSamples);
   const trainBudgets = tokenBudgets(values.loopPeriod, trainSamples);
   const requiredBlocks = middleBlockRequiredBlocks(values.blockCount, values.selectedLoopBlock, testSamples);
@@ -126,11 +131,18 @@ function learnedFixture(values) {
   const overBudgets = testSamples.map(() => values.overLoopBudget);
   const activeCounts = activeCountsByBudget(learnedBudgets, values.maxBudget);
   const averageBudget = learnedBudgets.reduce((total, budget) => total + budget, 0) / learnedBudgets.length;
+  const routeBudgetClosure = testSamples.slice(0, 12).every((sample) => {
+    const base = middleBlockBudgetRoute(selectedBlocks[0], blockPeriod, values.loopPeriod, sample);
+    const shifted = middleBlockBudgetRoute(selectedBlocks[0], blockPeriod, values.loopPeriod, sample + commonCycle);
+    return base[0] === shifted[0] && base[1] === shifted[1];
+  });
 
   return {
     selectedBlocks,
     wrongBlocks,
     blockPeriod,
+    commonCycle,
+    routeBudgetClosure,
     learnedBlockLookup,
     learnedBudgetLookup,
     wrongBlockLookup,
@@ -314,6 +326,8 @@ function appendRecord(output, values, fixture, theoremById) {
     `selected block indices: ${fixture.selectedBlocks.join(", ")}`,
     `loop period: ${values.loopPeriod}`,
     `block period: ${fixture.blockPeriod}`,
+    `route/budget common cycle: ${fixture.commonCycle}`,
+    `route/budget common-cycle closure: ${fixture.routeBudgetClosure}`,
     `wrong block period: ${values.wrongBlockPeriod}`,
     `wrong budget period: ${values.wrongBudgetPeriod}`,
     `train samples: ${values.trainLength}`,

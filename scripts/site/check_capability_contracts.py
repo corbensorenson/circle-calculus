@@ -25,18 +25,209 @@ REQUIRED_GATE_IDS = {
     "claim_boundary",
 }
 
+EVIDENCE_COUNT_KEYS = [
+    "paper_count",
+    "theorem_count",
+    "dictionary_count",
+    "executable_count",
+    "source_count",
+    "living_book_page_count",
+    "living_book_widget_count",
+]
+
+
+def capability_living_book_sets(capability: dict) -> tuple[set[str], set[str]]:
+    pages: set[str] = set()
+    widgets: set[str] = set()
+    for ref in capability.get("living_book_refs", []) or []:
+        if not isinstance(ref, dict):
+            continue
+        page = ref.get("page", "")
+        if page:
+            pages.add(page)
+        for widget_id in ref.get("widget_ids", []) or []:
+            if widget_id:
+                widgets.add(widget_id)
+    return pages, widgets
+
+
+def expected_evidence_counts(capability: dict) -> dict[str, int]:
+    living_pages, living_widgets = capability_living_book_sets(capability)
+    return {
+        "paper_count": len(capability.get("paper_ids", []) or []),
+        "theorem_count": len(capability.get("theorem_ids", []) or []),
+        "dictionary_count": len(capability.get("dictionary_ids", []) or []),
+        "executable_count": len(capability.get("executable_refs", []) or []),
+        "source_count": len(capability.get("source_refs", []) or []),
+        "living_book_page_count": len(living_pages),
+        "living_book_widget_count": len(living_widgets),
+    }
+
+
+def portfolio_backing_contract_summary(capabilities: list[dict]) -> dict:
+    theorem_refs = {
+        "proved_and_paper_backed_count": 0,
+        "total_count": 0,
+        "unproved_or_unbacked_refs": [],
+    }
+    source_refs = {
+        "backed_count": 0,
+        "total_count": 0,
+        "unbacked_refs": [],
+    }
+    living_book_refs = {
+        "backed_page_count": 0,
+        "total_page_count": 0,
+        "backed_widget_count": 0,
+        "total_widget_count": 0,
+        "unbacked_pages": [],
+        "unbacked_widgets": [],
+    }
+    for capability in capabilities:
+        capability_id = capability.get("id", "<missing id>")
+        theorem_contract = capability.get("theorem_ref_contract", {}) or {}
+        source_contract = capability.get("source_ref_contract", {}) or {}
+        living_contract = capability.get("living_book_ref_contract", {}) or {}
+
+        theorem_refs["proved_and_paper_backed_count"] += theorem_contract.get(
+            "proved_and_paper_backed_count", 0
+        )
+        theorem_refs["total_count"] += theorem_contract.get("total_count", 0)
+        theorem_refs["unproved_or_unbacked_refs"].extend(
+            f"{capability_id}#{theorem_id}"
+            for theorem_id in theorem_contract.get("unproved_or_unbacked_ids", []) or []
+        )
+
+        source_refs["backed_count"] += source_contract.get("backed_count", 0)
+        source_refs["total_count"] += source_contract.get("total_count", 0)
+        source_refs["unbacked_refs"].extend(
+            f"{capability_id}#{ref}"
+            for ref in source_contract.get("unbacked_refs", []) or []
+        )
+
+        living_book_refs["backed_page_count"] += living_contract.get(
+            "backed_page_count", 0
+        )
+        living_book_refs["total_page_count"] += living_contract.get(
+            "total_page_count", 0
+        )
+        living_book_refs["backed_widget_count"] += living_contract.get(
+            "backed_widget_count", 0
+        )
+        living_book_refs["total_widget_count"] += living_contract.get(
+            "total_widget_count", 0
+        )
+        living_book_refs["unbacked_pages"].extend(
+            f"{capability_id}#{page}"
+            for page in living_contract.get("unbacked_pages", []) or []
+        )
+        living_book_refs["unbacked_widgets"].extend(
+            f"{capability_id}#{widget}"
+            for widget in living_contract.get("unbacked_widgets", []) or []
+        )
+
+    theorem_ready = (
+        theorem_refs["proved_and_paper_backed_count"] == theorem_refs["total_count"]
+        and not theorem_refs["unproved_or_unbacked_refs"]
+    )
+    source_ready = (
+        source_refs["backed_count"] == source_refs["total_count"]
+        and not source_refs["unbacked_refs"]
+    )
+    living_ready = (
+        living_book_refs["backed_page_count"] == living_book_refs["total_page_count"]
+        and living_book_refs["backed_widget_count"] == living_book_refs["total_widget_count"]
+        and not living_book_refs["unbacked_pages"]
+        and not living_book_refs["unbacked_widgets"]
+    )
+    return {
+        "ready_to_advertise": theorem_ready and source_ready and living_ready,
+        "theorem_refs": theorem_refs,
+        "source_refs": source_refs,
+        "living_book_refs": living_book_refs,
+    }
+
+
+def expected_portfolio_summary(
+    capabilities: list[dict],
+    ready_count: int,
+    gate_failure_counts: dict[str, int],
+) -> dict:
+    role_counts: dict[str, int] = {}
+    proof_provenance_counts: dict[str, int] = {}
+    evidence_totals = {key: 0 for key in EVIDENCE_COUNT_KEYS}
+    unique_papers: set[str] = set()
+    unique_theorems: set[str] = set()
+    unique_dictionary_ids: set[str] = set()
+    unique_executables: set[str] = set()
+    unique_sources: set[str] = set()
+    unique_living_pages: set[str] = set()
+    unique_living_widgets: set[str] = set()
+
+    for capability in capabilities:
+        for role in capability.get("portfolio_roles", []) or []:
+            role_counts[role] = role_counts.get(role, 0) + 1
+        proof_provenance_kind = capability.get("proof_provenance_kind", "")
+        if proof_provenance_kind:
+            proof_provenance_counts[proof_provenance_kind] = (
+                proof_provenance_counts.get(proof_provenance_kind, 0) + 1
+            )
+
+        counts = expected_evidence_counts(capability)
+        for key, value in counts.items():
+            evidence_totals[key] += value
+        living_pages, living_widgets = capability_living_book_sets(capability)
+        unique_papers.update(capability.get("paper_ids", []) or [])
+        unique_theorems.update(capability.get("theorem_ids", []) or [])
+        unique_dictionary_ids.update(capability.get("dictionary_ids", []) or [])
+        unique_executables.update(capability.get("executable_refs", []) or [])
+        unique_sources.update(capability.get("source_refs", []) or [])
+        unique_living_pages.update(living_pages)
+        unique_living_widgets.update(living_widgets)
+
+    return {
+        "capability_count": len(capabilities),
+        "role_counts": dict(sorted(role_counts.items())),
+        "proof_provenance_counts": dict(sorted(proof_provenance_counts.items())),
+        "evidence_totals": evidence_totals,
+        "unique_evidence_counts": {
+            "paper_count": len(unique_papers),
+            "theorem_count": len(unique_theorems),
+            "dictionary_count": len(unique_dictionary_ids),
+            "executable_count": len(unique_executables),
+            "source_count": len(unique_sources),
+            "living_book_page_count": len(unique_living_pages),
+            "living_book_widget_count": len(unique_living_widgets),
+        },
+        "unique_living_book_pages": sorted(unique_living_pages),
+        "claim_contract_summary": {
+            "ready_count": ready_count,
+            "incomplete_count": len(capabilities) - ready_count,
+            "gate_failure_counts": dict(sorted(gate_failure_counts.items())),
+        },
+        "backing_contract_summary": portfolio_backing_contract_summary(capabilities),
+    }
+
 
 def main() -> int:
     failures: list[str] = []
     data = load_json(GENERATED / "capability_showcase.json")
     capabilities = data.get("capabilities", [])
-    summary = data.get("portfolio_summary", {}).get("claim_contract_summary", {})
+    portfolio_summary = data.get("portfolio_summary", {})
+    summary = portfolio_summary.get("claim_contract_summary", {})
 
     ready_count = 0
     gate_failure_counts: dict[str, int] = {}
     for capability in capabilities:
         capability_id = capability.get("id", "<missing id>")
         executable_refs = capability.get("executable_refs", []) or []
+        evidence_counts = capability.get("evidence_counts", {}) or {}
+        expected_counts = expected_evidence_counts(capability)
+        if evidence_counts != expected_counts:
+            failures.append(
+                f"{capability_id}: evidence_counts {evidence_counts} "
+                f"do not match refs {expected_counts}"
+            )
         expected_pytest_command = shlex.join(["python", "-m", "pytest", *executable_refs])
         recipe = capability.get("verification_recipe")
         if not isinstance(recipe, dict):
@@ -175,7 +366,6 @@ def main() -> int:
                     f"{capability_id}: source refs are not paper-backed: {unbacked_refs}"
                 )
         living_book_ref_contract = capability.get("living_book_ref_contract")
-        evidence_counts = capability.get("evidence_counts", {}) or {}
         living_book_refs = capability.get("living_book_refs", []) or []
         expected_pages = [
             ref.get("page", "")
@@ -367,6 +557,14 @@ def main() -> int:
         )
     if summary.get("gate_failure_counts", {}) != dict(sorted(gate_failure_counts.items())):
         failures.append("claim contract summary gate_failure_counts do not match gates")
+    expected_summary = expected_portfolio_summary(
+        capabilities,
+        ready_count,
+        gate_failure_counts,
+    )
+    for key, expected_value in expected_summary.items():
+        if portfolio_summary.get(key) != expected_value:
+            failures.append(f"portfolio_summary {key} does not match generated data")
 
     if failures:
         print("capability contract failures:", file=sys.stderr)

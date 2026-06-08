@@ -410,11 +410,19 @@ function renderSummary(capabilities, summary) {
   const unique = summary?.unique_evidence_counts || {};
   const provenance = summary?.proof_provenance_counts || {};
   const contracts = summary?.claim_contract_summary || {};
+  const backing = summary?.backing_contract_summary || {};
+  const theoremRefs = backing.theorem_refs || {};
+  const sourceRefs = backing.source_refs || {};
+  const livingRefs = backing.living_book_refs || {};
   const node = document.createElement("p");
   node.className = "widget-data";
   node.textContent = [
     `capability lanes: ${summary?.capability_count ?? capabilities.length}`,
     `claim contracts: ready ${contracts.ready_count ?? 0}; incomplete ${contracts.incomplete_count ?? 0}`,
+    `portfolio backing: ${backing.ready_to_advertise ? "ready" : "incomplete"}`,
+    `backed theorem refs: ${theoremRefs.proved_and_paper_backed_count ?? 0}/${theoremRefs.total_count ?? 0}`,
+    `backed source refs: ${sourceRefs.backed_count ?? 0}/${sourceRefs.total_count ?? 0}`,
+    `backed Living Book refs: pages ${livingRefs.backed_page_count ?? 0}/${livingRefs.total_page_count ?? 0}; widgets ${livingRefs.backed_widget_count ?? 0}/${livingRefs.total_widget_count ?? 0}`,
     `proof provenance: mathlib bridge ${provenance.mathlib_bridge || 0}; project-native ${provenance.project_native || 0}; mixed ${provenance.mixed || 0}`,
     `unique evidence: papers ${unique.paper_count || 0}; theorem ids ${unique.theorem_count || 0}; executables ${unique.executable_count || 0}; Living Book pages ${unique.living_book_page_count || 0}; widgets ${unique.living_book_widget_count || 0}`,
   ].join("\n");

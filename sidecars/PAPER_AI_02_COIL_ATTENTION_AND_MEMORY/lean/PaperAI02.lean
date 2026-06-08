@@ -31,6 +31,11 @@ namespace Circle.PaperAI02
 #check Circle.Applications.middleBlockRoute_add_width
 #check Circle.Applications.middleBlockRoute_add_mul_width
 #check Circle.Applications.middleBlockRoute_zero
+#check Circle.Applications.middleBlockBudgetRoute_block_ge_start
+#check Circle.Applications.middleBlockBudgetRoute_block_lt_stop
+#check Circle.Applications.middleBlockBudgetRoute_budget_pos
+#check Circle.Applications.middleBlockBudgetRoute_budget_le_loopPeriod
+#check Circle.Applications.middleBlockBudgetRoute_add_commonCycle
 #check Circle.Applications.trainingFreeLoopBudget_le_maxLoops
 #check Circle.Applications.trainingFreeLoopBudget_le_requiredSteps
 #check Circle.Applications.trainingFreeLoopBudget_add_loopPeriod

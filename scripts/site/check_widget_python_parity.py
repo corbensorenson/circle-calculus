@@ -35,6 +35,7 @@ from circle_math.applications import (
     memory_slot,
     memory_slot_collision_count,
     memory_slot_loads,
+    middle_block_budget_route,
     middle_block_required_blocks,
     mixed_retrieval_target_lags,
     multi_resolution_required_resolutions,
@@ -2187,6 +2188,7 @@ def main() -> int:
         wrong_blocks = js_loop_block_indices(block_count, wrong_block)
         full_blocks = tuple(range(block_count))
         block_period = len(selected_blocks)
+        common_cycle = block_period * loop_period
         train_required_blocks = js_middle_block_required_blocks(block_count, selected_block, train_samples)
         train_budgets = tuple(js_token_recurrence_budget(loop_period, sample) for sample in train_samples)
         required_blocks = js_middle_block_required_blocks(block_count, selected_block, test_samples)
@@ -2226,6 +2228,15 @@ def main() -> int:
         assert loop_block_indices(block_count, selected_block) == selected_blocks
         assert loop_block_indices(block_count, wrong_block) == wrong_blocks
         assert middle_block_required_blocks(block_count, selected_block, test_samples) == required_blocks
+        assert tuple(
+            middle_block_budget_route(selected_blocks[0], block_period, loop_period, sample)
+            for sample in test_samples
+        ) == tuple(zip(required_blocks, required_budgets))
+        assert all(
+            middle_block_budget_route(selected_blocks[0], block_period, loop_period, sample + common_cycle)
+            == middle_block_budget_route(selected_blocks[0], block_period, loop_period, sample)
+            for sample in test_samples[: min(12, len(test_samples))]
+        )
         assert fit_loop_block_lookup(block_period, train_samples, train_required_blocks) == learned_block_lookup
         assert predict_loop_block_lookup(block_period, learned_block_lookup, test_samples) == learned_blocks
         assert fit_loop_budget_lookup(loop_period, train_samples, train_budgets) == learned_budget_lookup

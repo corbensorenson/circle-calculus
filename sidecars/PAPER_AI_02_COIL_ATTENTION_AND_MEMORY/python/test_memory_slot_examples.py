@@ -19,6 +19,7 @@ from circle_math.applications.circle_ai import (
     middle_block_route,
     memory_slot_collision_count,
     memory_slot_loads,
+    middle_block_budget_route,
     mixed_retrieval_target_lags,
     multi_resolution_required_resolutions,
     predict_loop_budget_lookup,
@@ -413,11 +414,26 @@ def test_middle_block_recurrence_helpers_are_deterministic() -> None:
     samples = tuple(range(8))
 
     assert tuple(middle_block_route(2, 3, sample) for sample in samples) == (2, 3, 4, 2, 3, 4, 2, 3)
+    assert tuple(middle_block_budget_route(2, 3, 4, sample) for sample in samples) == (
+        (2, 1),
+        (3, 2),
+        (4, 3),
+        (2, 4),
+        (3, 1),
+        (4, 2),
+        (2, 3),
+        (3, 4),
+    )
     for sample in range(24):
         routed = middle_block_route(2, 3, sample)
+        routed_with_budget = middle_block_budget_route(2, 3, 4, sample)
         assert 2 <= routed < 5
+        assert routed_with_budget[0] == routed
+        assert 2 <= routed_with_budget[0] < 5
+        assert 0 < routed_with_budget[1] <= 4
         assert middle_block_route(2, 3, sample + 3) == routed
         assert middle_block_route(2, 3, sample + 4 * 3) == routed
+        assert middle_block_budget_route(2, 3, 4, sample + 3 * 4) == routed_with_budget
     assert middle_block_route(2, 3, 0) == 2
     assert loop_block_indices(8, (2, 5)) == (2, 3, 4)
     assert middle_block_required_blocks(8, (2, 5), samples) == (2, 3, 4, 2, 3, 4, 2, 3)

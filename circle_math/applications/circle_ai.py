@@ -1960,6 +1960,19 @@ def middle_block_route(start: int, width: int, sample_index: int) -> int:
     return start + phase_channel(width, sample_index)
 
 
+def middle_block_budget_route(
+    start: int,
+    width: int,
+    loop_period: int,
+    sample_index: int,
+) -> tuple[int, int]:
+    """Return the selected block and recurrence budget for one sample."""
+    return (
+        middle_block_route(start, width, sample_index),
+        token_recurrence_budget(loop_period, sample_index),
+    )
+
+
 def normalize_selected_loop_block(selected_loop_block: Optional[Sequence[int]]) -> tuple[int, int]:
     """Validate the selected middle-block range recorded by the fixture."""
     block = (2, 5) if selected_loop_block is None else tuple(selected_loop_block)

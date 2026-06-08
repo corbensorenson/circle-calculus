@@ -189,6 +189,46 @@ theorem middleBlockRoute_zero (start width : Nat) :
   rw [phaseChannel_zero]
   simp
 
+def middleBlockBudgetRoute
+    (start width loopPeriod sample : Nat) : Nat × Nat :=
+  (middleBlockRoute start width sample,
+    tokenRecurrenceBudget loopPeriod sample)
+
+theorem middleBlockBudgetRoute_block_ge_start
+    (start width loopPeriod sample : Nat) :
+    start ≤ (middleBlockBudgetRoute start width loopPeriod sample).1 := by
+  unfold middleBlockBudgetRoute
+  exact middleBlockRoute_ge_start start width sample
+
+theorem middleBlockBudgetRoute_block_lt_stop {width : Nat} (hwidth : 0 < width)
+    (start loopPeriod sample : Nat) :
+    (middleBlockBudgetRoute start width loopPeriod sample).1 < start + width := by
+  unfold middleBlockBudgetRoute
+  exact middleBlockRoute_lt_stop hwidth start sample
+
+theorem middleBlockBudgetRoute_budget_pos
+    (start width loopPeriod sample : Nat) :
+    0 < (middleBlockBudgetRoute start width loopPeriod sample).2 := by
+  unfold middleBlockBudgetRoute
+  exact tokenRecurrenceBudget_pos loopPeriod sample
+
+theorem middleBlockBudgetRoute_budget_le_loopPeriod {loopPeriod : Nat}
+    (hloop : 0 < loopPeriod) (start width sample : Nat) :
+    (middleBlockBudgetRoute start width loopPeriod sample).2 ≤ loopPeriod := by
+  unfold middleBlockBudgetRoute
+  exact tokenRecurrenceBudget_le_loopPeriod hloop sample
+
+theorem middleBlockBudgetRoute_add_commonCycle
+    {width loopPeriod : Nat} (hwidth : 0 < width) (hloop : 0 < loopPeriod)
+    (start sample : Nat) :
+    middleBlockBudgetRoute start width loopPeriod (sample + width * loopPeriod) =
+      middleBlockBudgetRoute start width loopPeriod sample := by
+  unfold middleBlockBudgetRoute
+  apply Prod.ext
+  · rw [Nat.mul_comm width loopPeriod]
+    exact middleBlockRoute_add_mul_width hwidth start sample loopPeriod
+  · exact tokenRecurrenceBudget_add_mul_loopPeriod hloop sample width
+
 def trainingFreeLoopBudget (loopPeriod sample maxLoops : Nat) : Nat :=
   min (loopRequiredSteps loopPeriod sample) maxLoops
 

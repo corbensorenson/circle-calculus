@@ -5629,6 +5629,36 @@
           "lean_name": "Circle.Applications.middleBlockRoute_zero",
           "name": "Circle.Applications.middleBlockRoute_zero",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0044",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_block_ge_start",
+          "name": "Circle.Applications.middleBlockBudgetRoute_block_ge_start",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0045",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_block_lt_stop",
+          "name": "Circle.Applications.middleBlockBudgetRoute_block_lt_stop",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0046",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_budget_pos",
+          "name": "Circle.Applications.middleBlockBudgetRoute_budget_pos",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0047",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_budget_le_loopPeriod",
+          "name": "Circle.Applications.middleBlockBudgetRoute_budget_le_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0048",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_add_commonCycle",
+          "name": "Circle.Applications.middleBlockBudgetRoute_add_commonCycle",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5903,6 +5933,36 @@
           "id": "AIM-T0038",
           "lean_name": "Circle.Applications.tokenInactiveAtStep_of_loopPeriod_lt_step",
           "name": "Circle.Applications.tokenInactiveAtStep_of_loopPeriod_lt_step",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0044",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_block_ge_start",
+          "name": "Circle.Applications.middleBlockBudgetRoute_block_ge_start",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0045",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_block_lt_stop",
+          "name": "Circle.Applications.middleBlockBudgetRoute_block_lt_stop",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0046",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_budget_pos",
+          "name": "Circle.Applications.middleBlockBudgetRoute_budget_pos",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0047",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_budget_le_loopPeriod",
+          "name": "Circle.Applications.middleBlockBudgetRoute_budget_le_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0048",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_add_commonCycle",
+          "name": "Circle.Applications.middleBlockBudgetRoute_add_commonCycle",
           "status": "proved"
         }
       ],
@@ -6263,6 +6323,36 @@
           "id": "AIM-T0038",
           "lean_name": "Circle.Applications.tokenInactiveAtStep_of_loopPeriod_lt_step",
           "name": "Circle.Applications.tokenInactiveAtStep_of_loopPeriod_lt_step",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0044",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_block_ge_start",
+          "name": "Circle.Applications.middleBlockBudgetRoute_block_ge_start",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0045",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_block_lt_stop",
+          "name": "Circle.Applications.middleBlockBudgetRoute_block_lt_stop",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0046",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_budget_pos",
+          "name": "Circle.Applications.middleBlockBudgetRoute_budget_pos",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0047",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_budget_le_loopPeriod",
+          "name": "Circle.Applications.middleBlockBudgetRoute_budget_le_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0048",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_add_commonCycle",
+          "name": "Circle.Applications.middleBlockBudgetRoute_add_commonCycle",
           "status": "proved"
         }
       ],
@@ -8237,6 +8327,36 @@
           "id": "AIM-T0043",
           "lean_name": "Circle.Applications.middleBlockRoute_zero",
           "name": "Circle.Applications.middleBlockRoute_zero",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0044",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_block_ge_start",
+          "name": "Circle.Applications.middleBlockBudgetRoute_block_ge_start",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0045",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_block_lt_stop",
+          "name": "Circle.Applications.middleBlockBudgetRoute_block_lt_stop",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0046",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_budget_pos",
+          "name": "Circle.Applications.middleBlockBudgetRoute_budget_pos",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0047",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_budget_le_loopPeriod",
+          "name": "Circle.Applications.middleBlockBudgetRoute_budget_le_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0048",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_add_commonCycle",
+          "name": "Circle.Applications.middleBlockBudgetRoute_add_commonCycle",
           "status": "proved"
         }
       ],

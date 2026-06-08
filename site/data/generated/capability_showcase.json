@@ -1558,10 +1558,10 @@
             "passed": true
           },
           {
-            "evidence": "pages 2/2; widgets 3/3",
+            "evidence": "pages 2/2; widgets 2/2",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
-            "passed": false
+            "passed": true
           },
           {
             "evidence": "No full smooth Hopf fibration formalization and no complete SO(3) robotics formalization.",
@@ -1570,9 +1570,9 @@
             "passed": true
           }
         ],
-        "passed_gate_count": 15,
-        "ready_to_advertise": false,
-        "status": "incomplete",
+        "passed_gate_count": 16,
+        "ready_to_advertise": true,
+        "status": "ready",
         "total_gate_count": 16
       },
       "dictionary_ids": [
@@ -1600,7 +1600,7 @@
       "id": "SHOW-007",
       "living_book_ref_contract": {
         "backed_page_count": 2,
-        "backed_widget_count": 3,
+        "backed_widget_count": 2,
         "pages": [
           {
             "backed": true,
@@ -1640,7 +1640,7 @@
           }
         ],
         "total_page_count": 2,
-        "total_widget_count": 3,
+        "total_widget_count": 2,
         "unbacked_pages": [],
         "unbacked_widgets": []
       },
@@ -2729,7 +2729,7 @@
       "advertised_claim": "Circle Calculus can prove finite indexing and schedule-safety facts that AI experiments can reuse.",
       "area": "AI systems",
       "audience_interest": "Cyclic memory, recurrence budgets, loop-exit certificates, middle-block routing, phase routing, and adapter indexing.",
-      "circle_math_expression": "AI-facing memory slots, loop budgets, exit certificates, middle-block routes, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
+      "circle_math_expression": "AI-facing memory slots, loop budgets, exit certificates, middle-block routes, combined route/budget schedules, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
       "circle_native_value": "Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made.",
       "claim_contract": {
         "gates": [
@@ -2746,7 +2746,7 @@
             "passed": true
           },
           {
-            "evidence": "AI-facing memory slots, loop budgets, exit certificates, middle-block routes, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
+            "evidence": "AI-facing memory slots, loop budgets, exit certificates, middle-block routes, combined route/budget schedules, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
             "id": "circle_expression",
             "label": "Circle Math expression",
             "passed": true
@@ -2764,7 +2764,7 @@
             "passed": true
           },
           {
-            "evidence": "Lean-proved finite memory-slot, loop-budget, active-token-step, middle-block route, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
+            "evidence": "Lean-proved finite memory-slot, loop-budget, active-token-step, middle-block route, combined route/budget common-cycle, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
             "id": "proof_scope",
             "label": "proof scope",
             "passed": true
@@ -2776,7 +2776,7 @@
             "passed": true
           },
           {
-            "evidence": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, active-step, middle-block route, certificate, and adapter-index safety facts; benchmarks remain separate.",
+            "evidence": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, active-step, middle-block route, combined route/budget, certificate, and adapter-index safety facts; benchmarks remain separate.",
             "id": "proof_provenance",
             "label": "proof provenance text",
             "passed": true
@@ -2788,7 +2788,7 @@
             "passed": true
           },
           {
-            "evidence": "21",
+            "evidence": "26",
             "id": "proved_theorem_ids",
             "label": "proved paper-carried theorem ids",
             "passed": true
@@ -2850,7 +2850,7 @@
         "living_book_widget_count": 7,
         "paper_count": 2,
         "source_count": 5,
-        "theorem_count": 21
+        "theorem_count": 26
       },
       "executable_refs": [
         "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
@@ -2942,9 +2942,9 @@
         "circle_native_value",
         "application_guardrail"
       ],
-      "proof_provenance": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, active-step, middle-block route, certificate, and adapter-index safety facts; benchmarks remain separate.",
+      "proof_provenance": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, active-step, middle-block route, combined route/budget, certificate, and adapter-index safety facts; benchmarks remain separate.",
       "proof_provenance_kind": "project_native",
-      "proof_scope": "Lean-proved finite memory-slot, loop-budget, active-token-step, middle-block route, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
+      "proof_scope": "Lean-proved finite memory-slot, loop-budget, active-token-step, middle-block route, combined route/budget common-cycle, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
       "source_ref_contract": {
         "backed_count": 5,
         "refs": [
@@ -3006,10 +3006,15 @@
         "AIM-T0041",
         "AIM-T0042",
         "AIM-T0043",
+        "AIM-T0044",
+        "AIM-T0045",
+        "AIM-T0046",
+        "AIM-T0047",
+        "AIM-T0048",
         "AIRA-T0005"
       ],
       "theorem_ref_contract": {
-        "proved_and_paper_backed_count": 21,
+        "proved_and_paper_backed_count": 26,
         "refs": [
           {
             "canonical_status": "proved",
@@ -3234,6 +3239,61 @@
           {
             "canonical_status": "proved",
             "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0044",
+            "lean_name": "Circle.Applications.middleBlockBudgetRoute_block_ge_start",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0045",
+            "lean_name": "Circle.Applications.middleBlockBudgetRoute_block_lt_stop",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0046",
+            "lean_name": "Circle.Applications.middleBlockBudgetRoute_budget_pos",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0047",
+            "lean_name": "Circle.Applications.middleBlockBudgetRoute_budget_le_loopPeriod",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0048",
+            "lean_name": "Circle.Applications.middleBlockBudgetRoute_add_commonCycle",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
               "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
             ],
             "id": "AIRA-T0005",
@@ -3243,7 +3303,7 @@
             "status": "lean_proved"
           }
         ],
-        "total_count": 21,
+        "total_count": 26,
         "unproved_or_unbacked_ids": []
       },
       "title": "AI memory, loop, and adapter schedules",
@@ -3517,13 +3577,32 @@
     }
   ],
   "portfolio_summary": {
+    "backing_contract_summary": {
+      "living_book_refs": {
+        "backed_page_count": 13,
+        "backed_widget_count": 19,
+        "total_page_count": 13,
+        "total_widget_count": 19,
+        "unbacked_pages": [],
+        "unbacked_widgets": []
+      },
+      "ready_to_advertise": true,
+      "source_refs": {
+        "backed_count": 35,
+        "total_count": 35,
+        "unbacked_refs": []
+      },
+      "theorem_refs": {
+        "proved_and_paper_backed_count": 90,
+        "total_count": 90,
+        "unproved_or_unbacked_refs": []
+      }
+    },
     "capability_count": 11,
     "claim_contract_summary": {
-      "gate_failure_counts": {
-        "living_book_presentation": 1
-      },
-      "incomplete_count": 1,
-      "ready_count": 10
+      "gate_failure_counts": {},
+      "incomplete_count": 0,
+      "ready_count": 11
     },
     "evidence_totals": {
       "dictionary_count": 39,
@@ -3532,7 +3611,7 @@
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 85
+      "theorem_count": 90
     },
     "proof_provenance_counts": {
       "mathlib_bridge": 4,
@@ -3550,7 +3629,7 @@
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 85
+      "theorem_count": 90
     },
     "unique_living_book_pages": [
       "site/chapters/S1/03_coils_orbits_closure.qmd",

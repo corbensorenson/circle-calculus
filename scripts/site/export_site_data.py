@@ -374,7 +374,7 @@ def export_widget_index() -> dict:
         {
             "id": "learned_middle_block_recurrence",
             "path": "site/widgets/ai/learned_middle_block_recurrence.js",
-            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0039", "AIM-T0040", "AIM-T0041", "AIM-T0042", "AIM-T0043"],
+            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0039", "AIM-T0040", "AIM-T0041", "AIM-T0042", "AIM-T0043", "AIM-T0044", "AIM-T0045", "AIM-T0046", "AIM-T0047", "AIM-T0048"],
             "dictionary_ids": [
                 "COMMON-0052",
                 "COMMON-0053",
@@ -1347,6 +1347,90 @@ def capability_claim_contract(
     }
 
 
+def portfolio_backing_contract_summary(capabilities: list[dict]) -> dict:
+    theorem_refs = {
+        "proved_and_paper_backed_count": 0,
+        "total_count": 0,
+        "unproved_or_unbacked_refs": [],
+    }
+    source_refs = {
+        "backed_count": 0,
+        "total_count": 0,
+        "unbacked_refs": [],
+    }
+    living_book_refs = {
+        "backed_page_count": 0,
+        "total_page_count": 0,
+        "backed_widget_count": 0,
+        "total_widget_count": 0,
+        "unbacked_pages": [],
+        "unbacked_widgets": [],
+    }
+    for capability in capabilities:
+        capability_id = capability.get("id", "<missing id>")
+        theorem_contract = capability.get("theorem_ref_contract", {}) or {}
+        source_contract = capability.get("source_ref_contract", {}) or {}
+        living_contract = capability.get("living_book_ref_contract", {}) or {}
+
+        theorem_refs["proved_and_paper_backed_count"] += theorem_contract.get(
+            "proved_and_paper_backed_count", 0
+        )
+        theorem_refs["total_count"] += theorem_contract.get("total_count", 0)
+        theorem_refs["unproved_or_unbacked_refs"].extend(
+            f"{capability_id}#{theorem_id}"
+            for theorem_id in theorem_contract.get("unproved_or_unbacked_ids", []) or []
+        )
+
+        source_refs["backed_count"] += source_contract.get("backed_count", 0)
+        source_refs["total_count"] += source_contract.get("total_count", 0)
+        source_refs["unbacked_refs"].extend(
+            f"{capability_id}#{ref}"
+            for ref in source_contract.get("unbacked_refs", []) or []
+        )
+
+        living_book_refs["backed_page_count"] += living_contract.get(
+            "backed_page_count", 0
+        )
+        living_book_refs["total_page_count"] += living_contract.get(
+            "total_page_count", 0
+        )
+        living_book_refs["backed_widget_count"] += living_contract.get(
+            "backed_widget_count", 0
+        )
+        living_book_refs["total_widget_count"] += living_contract.get(
+            "total_widget_count", 0
+        )
+        living_book_refs["unbacked_pages"].extend(
+            f"{capability_id}#{page}"
+            for page in living_contract.get("unbacked_pages", []) or []
+        )
+        living_book_refs["unbacked_widgets"].extend(
+            f"{capability_id}#{widget}"
+            for widget in living_contract.get("unbacked_widgets", []) or []
+        )
+
+    theorem_ready = (
+        theorem_refs["proved_and_paper_backed_count"] == theorem_refs["total_count"]
+        and not theorem_refs["unproved_or_unbacked_refs"]
+    )
+    source_ready = (
+        source_refs["backed_count"] == source_refs["total_count"]
+        and not source_refs["unbacked_refs"]
+    )
+    living_ready = (
+        living_book_refs["backed_page_count"] == living_book_refs["total_page_count"]
+        and living_book_refs["backed_widget_count"] == living_book_refs["total_widget_count"]
+        and not living_book_refs["unbacked_pages"]
+        and not living_book_refs["unbacked_widgets"]
+    )
+    return {
+        "ready_to_advertise": theorem_ready and source_ready and living_ready,
+        "theorem_refs": theorem_refs,
+        "source_refs": source_refs,
+        "living_book_refs": living_book_refs,
+    }
+
+
 def export_capability_showcase() -> dict:
     path = ROOT / "manifests" / "capability_showcase.yaml"
     if not path.exists():
@@ -1466,6 +1550,7 @@ def export_capability_showcase() -> dict:
             "incomplete_count": len(capabilities) - contract_ready_count,
             "gate_failure_counts": dict(sorted(contract_gate_failures.items())),
         },
+        "backing_contract_summary": portfolio_backing_contract_summary(capabilities),
     }
     return {"capabilities": capabilities, "portfolio_summary": portfolio_summary}
 

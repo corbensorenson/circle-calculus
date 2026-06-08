@@ -691,6 +691,11 @@ papers:
       - AIM-T0041
       - AIM-T0042
       - AIM-T0043
+      - AIM-T0044
+      - AIM-T0045
+      - AIM-T0046
+      - AIM-T0047
+      - AIM-T0048
     dictionary_ids:
       - COMMON-0028
       - COMMON-0029

@@ -138,6 +138,21 @@ def test_export_site_data_writes_required_indexes() -> None:
         ref["backing"]
         for ref in capability_by_id["SHOW-001"]["source_ref_contract"]["refs"]
     } == {"lean_sidecar_import", "source_trail"}
+    assert capability_by_id["SHOW-001"]["living_book_ref_contract"][
+        "backed_page_count"
+    ] == len(capability_by_id["SHOW-001"]["living_book_refs"])
+    assert capability_by_id["SHOW-001"]["living_book_ref_contract"][
+        "unbacked_pages"
+    ] == []
+    assert capability_by_id["SHOW-001"]["living_book_ref_contract"]["pages"][0][
+        "carries_showcase_ref"
+    ]
+    assert capability_by_id["SHOW-001"]["living_book_ref_contract"]["pages"][0][
+        "carries_advertised_theorem"
+    ]
+    assert capability_by_id["SHOW-010"]["living_book_ref_contract"][
+        "backed_widget_count"
+    ] == capability_by_id["SHOW-010"]["evidence_counts"]["living_book_widget_count"]
     assert capability_by_id["SHOW-009"]["evidence_counts"]["living_book_widget_count"] == 4
     assert capability_by_id["SHOW-011"]["evidence_counts"]["living_book_page_count"] == 1
     assert all(
@@ -163,6 +178,52 @@ def test_export_site_data_writes_required_indexes() -> None:
     assert summary["claim_contract_summary"]["ready_count"] == len(capabilities["capabilities"])
     assert summary["claim_contract_summary"]["incomplete_count"] == 0
     assert summary["claim_contract_summary"]["gate_failure_counts"] == {}
+    backing_summary = summary["backing_contract_summary"]
+    assert backing_summary["ready_to_advertise"]
+    total_theorem_refs = sum(
+        len(item["theorem_ids"]) for item in capabilities["capabilities"]
+    )
+    assert backing_summary["theorem_refs"]["total_count"] == total_theorem_refs
+    assert (
+        backing_summary["theorem_refs"]["proved_and_paper_backed_count"]
+        == total_theorem_refs
+    )
+    assert backing_summary["theorem_refs"]["unproved_or_unbacked_refs"] == []
+    total_source_refs = sum(
+        len(item["source_refs"]) for item in capabilities["capabilities"]
+    )
+    assert backing_summary["source_refs"]["total_count"] == total_source_refs
+    assert backing_summary["source_refs"]["backed_count"] == total_source_refs
+    assert backing_summary["source_refs"]["unbacked_refs"] == []
+    total_living_pages = sum(
+        len({ref["page"] for ref in item["living_book_refs"]})
+        for item in capabilities["capabilities"]
+    )
+    total_living_widgets = sum(
+        len(
+            {
+                widget_id
+                for ref in item["living_book_refs"]
+                for widget_id in ref.get("widget_ids", [])
+            }
+        )
+        for item in capabilities["capabilities"]
+    )
+    assert backing_summary["living_book_refs"]["total_page_count"] == total_living_pages
+    assert (
+        backing_summary["living_book_refs"]["backed_page_count"]
+        == total_living_pages
+    )
+    assert (
+        backing_summary["living_book_refs"]["total_widget_count"]
+        == total_living_widgets
+    )
+    assert (
+        backing_summary["living_book_refs"]["backed_widget_count"]
+        == total_living_widgets
+    )
+    assert backing_summary["living_book_refs"]["unbacked_pages"] == []
+    assert backing_summary["living_book_refs"]["unbacked_widgets"] == []
 
     targets = json.loads((generated / "phase4_targets.json").read_text())
     target_ids = {item["id"] for item in targets["targets"]}
