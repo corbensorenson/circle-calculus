@@ -297,6 +297,7 @@ def test_loop_exit_certificate_records_budget_and_guardrail() -> None:
 
 def test_loop_required_steps_are_positive_bounded_and_periodic() -> None:
     for loop_period in range(1, 17):
+        assert token_recurrence_budget(loop_period, 0) == 1
         for sample in range(0, 128):
             required = loop_required_steps(loop_period, sample)
             assert 0 < required <= loop_period
@@ -475,6 +476,7 @@ def test_tiny_looped_recurrent_prototype_has_baselines_and_controls() -> None:
 def test_middle_block_recurrence_helpers_are_deterministic() -> None:
     samples = tuple(range(8))
 
+    assert middle_block_budget_route(2, 3, 4, 0) == (2, 1)
     assert tuple(middle_block_route(2, 3, sample) for sample in samples) == (2, 3, 4, 2, 3, 4, 2, 3)
     assert tuple(middle_block_budget_route(2, 3, 4, sample) for sample in samples) == (
         (2, 1),

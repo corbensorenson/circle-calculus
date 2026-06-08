@@ -1953,6 +1953,8 @@ def main() -> int:
             loop_period,
             sample_index,
         )
+        assert token_recurrence_budget(loop_period, 0) == 1
+        assert js_token_recurrence_budget(loop_period, 0) == 1
         assert looped_recurrent_state(
             loop_period,
             token_recurrence_budget(loop_period, sample_index),
@@ -2097,6 +2099,8 @@ def main() -> int:
         )
 
         assert token_recurrence_budgets(loop_period, tokens) == budgets
+        assert token_recurrence_budget(loop_period, 0) == 1
+        assert js_token_recurrence_budget(loop_period, 0) == 1
         assert looped_recurrent_states(loop_period, budgets) == js_looped_recurrent_states(
             loop_period,
             budgets,
@@ -2178,6 +2182,8 @@ def main() -> int:
         fixed_budgets = tuple(fixed_budget for _ in test_tokens)
         wrong_shift_budgets = js_shifted_budgets(required_budgets, max_budget, wrong_shift)
         over_budgets = tuple(over_budget for _ in test_tokens)
+        assert token_recurrence_budget(loop_period, 0) == 1
+        assert js_token_recurrence_budget(loop_period, 0) == 1
         control_threshold = (3 * train_token_count) // 4
         control_train_labels = tuple(
             js_nonperiodic_threshold_label(token, control_threshold)
@@ -2305,6 +2311,10 @@ def main() -> int:
         assert loop_block_indices(block_count, selected_block) == selected_blocks
         assert loop_block_indices(block_count, wrong_block) == wrong_blocks
         assert middle_block_required_blocks(block_count, selected_block, test_samples) == required_blocks
+        assert middle_block_budget_route(selected_blocks[0], block_period, loop_period, 0) == (
+            selected_blocks[0],
+            1,
+        )
         assert tuple(
             middle_block_budget_route(selected_blocks[0], block_period, loop_period, sample)
             for sample in test_samples

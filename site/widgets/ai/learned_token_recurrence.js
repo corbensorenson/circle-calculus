@@ -2,7 +2,7 @@ import { mod, positiveInt } from "../shared/circle_math_core.js";
 import { addLabeledNumber, addOutput, addWidgetHeader, clear } from "../shared/svg_helpers.js";
 import { loadJson, mountWidgets, statusClass, statusLabel } from "../shared/widget_base.js";
 
-const THEOREM_IDS = ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0022"];
+const THEOREM_IDS = ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0022", "AIM-T0057"];
 const DICTIONARY_IDS = ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068", "COMMON-0069"];
 
 let chartIdCounter = 0;
@@ -287,6 +287,7 @@ function appendRecord(output, values, fixture, theoremById) {
     `wrong-period lookup: ${fixture.wrongLookup.join(", ")}`,
     `required budget sample: ${fixture.requiredBudgets.slice(0, 12).join(", ")}`,
     `learned budget sample: ${fixture.learnedBudgets.slice(0, 12).join(", ")}`,
+    `token budget at sample zero: ${tokenBudget(values.loopPeriod, 0)}`,
     `wrong-shift sample: ${fixture.wrongShiftBudgets.slice(0, 12).join(", ")}`,
     `active token counts by loop step: ${fixture.activeCounts.join(", ")}`,
     `average active tokens: ${(fixture.activeCounts.reduce((total, count) => total + count, 0) / fixture.activeCounts.length).toFixed(2)}`,

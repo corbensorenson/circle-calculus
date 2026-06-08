@@ -1535,6 +1535,34 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_middle_block_recurrence_helpers_are_deterministic
     blocker: ""
+  - id: AIM-T0057
+    status: lean_proved
+    lean_name: Circle.Applications.tokenRecurrenceBudget_zero
+    informal_statement: "A token recurrence budget at token/sample zero starts with one loop step."
+    formal_statement: "For loopPeriod, tokenRecurrenceBudget loopPeriod 0 = 1."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_required_steps_are_positive_bounded_and_periodic
+    blocker: ""
+  - id: AIM-T0058
+    status: lean_proved
+    lean_name: Circle.Applications.middleBlockBudgetRoute_zero
+    informal_statement: "The sample-zero combined middle-block/budget route selects the range start and one loop step."
+    formal_statement: "For start, width, and loopPeriod, middleBlockBudgetRoute start width loopPeriod 0 = (start, 1)."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_middle_block_recurrence_helpers_are_deterministic
+    blocker: ""
   - id: AIM-T0049
     status: lean_proved
     lean_name: Circle.Applications.loopedRecurrentState_lt_period

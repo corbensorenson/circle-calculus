@@ -2,7 +2,7 @@ import { mod, positiveInt } from "../shared/circle_math_core.js";
 import { addLabeledNumber, addOutput, addWidgetHeader, clear } from "../shared/svg_helpers.js";
 import { loadJson, mountWidgets, statusClass, statusLabel } from "../shared/widget_base.js";
 
-const THEOREM_IDS = ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0039", "AIM-T0040", "AIM-T0041", "AIM-T0042", "AIM-T0043", "AIM-T0044", "AIM-T0045", "AIM-T0046", "AIM-T0047", "AIM-T0048", "AIM-T0056"];
+const THEOREM_IDS = ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0039", "AIM-T0040", "AIM-T0041", "AIM-T0042", "AIM-T0043", "AIM-T0044", "AIM-T0045", "AIM-T0046", "AIM-T0047", "AIM-T0048", "AIM-T0056", "AIM-T0057", "AIM-T0058"];
 const DICTIONARY_IDS = ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068", "COMMON-0070"];
 
 let chartIdCounter = 0;
@@ -136,6 +136,8 @@ function learnedFixture(values) {
     const shifted = middleBlockBudgetRoute(selectedBlocks[0], blockPeriod, values.loopPeriod, sample + commonCycle);
     return base[0] === shifted[0] && base[1] === shifted[1];
   });
+  const routeZero = middleBlockBudgetRoute(selectedBlocks[0], blockPeriod, values.loopPeriod, 0);
+  const routeZeroAnchor = routeZero[0] === selectedBlocks[0] && routeZero[1] === 1;
 
   return {
     selectedBlocks,
@@ -143,6 +145,8 @@ function learnedFixture(values) {
     blockPeriod,
     commonCycle,
     routeBudgetClosure,
+    routeZero,
+    routeZeroAnchor,
     learnedBlockLookup,
     learnedBudgetLookup,
     wrongBlockLookup,
@@ -328,6 +332,8 @@ function appendRecord(output, values, fixture, theoremById) {
     `block period: ${fixture.blockPeriod}`,
     `route/budget common cycle: ${fixture.commonCycle}`,
     `route/budget common-cycle closure: ${fixture.routeBudgetClosure}`,
+    `route/budget sample-zero anchor: (${fixture.routeZero[0]}, ${fixture.routeZero[1]})`,
+    `route/budget zero-anchor check: ${fixture.routeZeroAnchor}`,
     `wrong block period: ${values.wrongBlockPeriod}`,
     `wrong budget period: ${values.wrongBudgetPeriod}`,
     `train samples: ${values.trainLength}`,

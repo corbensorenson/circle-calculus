@@ -5773,6 +5773,18 @@
           "lean_name": "Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle",
           "name": "Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0057",
+          "lean_name": "Circle.Applications.tokenRecurrenceBudget_zero",
+          "name": "Circle.Applications.tokenRecurrenceBudget_zero",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0058",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_zero",
+          "name": "Circle.Applications.middleBlockBudgetRoute_zero",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -6125,6 +6137,18 @@
           "id": "AIM-T0056",
           "lean_name": "Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle",
           "name": "Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0057",
+          "lean_name": "Circle.Applications.tokenRecurrenceBudget_zero",
+          "name": "Circle.Applications.tokenRecurrenceBudget_zero",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0058",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_zero",
+          "name": "Circle.Applications.middleBlockBudgetRoute_zero",
           "status": "proved"
         }
       ],
@@ -6563,6 +6587,18 @@
           "id": "AIM-T0056",
           "lean_name": "Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle",
           "name": "Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0057",
+          "lean_name": "Circle.Applications.tokenRecurrenceBudget_zero",
+          "name": "Circle.Applications.tokenRecurrenceBudget_zero",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0058",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_zero",
+          "name": "Circle.Applications.middleBlockBudgetRoute_zero",
           "status": "proved"
         }
       ],
@@ -8825,6 +8861,12 @@
           "id": "AIM-T0056",
           "lean_name": "Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle",
           "name": "Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0058",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_zero",
+          "name": "Circle.Applications.middleBlockBudgetRoute_zero",
           "status": "proved"
         }
       ],

@@ -128,6 +128,11 @@ theorem tokenRecurrenceBudget_le_loopPeriod {loopPeriod : Nat} (h : 0 < loopPeri
   unfold tokenRecurrenceBudget
   exact loopRequiredSteps_le_loopPeriod h token
 
+theorem tokenRecurrenceBudget_zero (loopPeriod : Nat) :
+    tokenRecurrenceBudget loopPeriod 0 = 1 := by
+  unfold tokenRecurrenceBudget loopRequiredSteps
+  rw [phaseChannel_zero]
+
 def loopedRecurrentState (period budget : Nat) : Nat :=
   phaseChannel period (budget - 1)
 
@@ -302,6 +307,11 @@ theorem middleBlockBudgetRoute_add_mul_commonCycle
         (passes * width) * loopPeriod by ac_rfl,
     ]
     exact tokenRecurrenceBudget_add_mul_loopPeriod hloop sample (passes * width)
+
+theorem middleBlockBudgetRoute_zero (start width loopPeriod : Nat) :
+    middleBlockBudgetRoute start width loopPeriod 0 = (start, 1) := by
+  unfold middleBlockBudgetRoute
+  rw [middleBlockRoute_zero, tokenRecurrenceBudget_zero]
 
 def trainingFreeLoopBudget (loopPeriod sample maxLoops : Nat) : Nat :=
   min (loopRequiredSteps loopPeriod sample) maxLoops

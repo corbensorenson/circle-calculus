@@ -392,7 +392,7 @@ def export_widget_index() -> dict:
         {
             "id": "token_level_recurrence",
             "path": "site/widgets/ai/token_level_recurrence.js",
-            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0022", "AIM-T0026", "AIM-T0027"],
+            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0022", "AIM-T0026", "AIM-T0027", "AIM-T0057"],
             "dictionary_ids": [
                 "COMMON-0052",
                 "COMMON-0053",
@@ -405,7 +405,7 @@ def export_widget_index() -> dict:
         {
             "id": "learned_token_recurrence",
             "path": "site/widgets/ai/learned_token_recurrence.js",
-            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0022"],
+            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0022", "AIM-T0057"],
             "dictionary_ids": [
                 "COMMON-0052",
                 "COMMON-0053",
@@ -418,7 +418,7 @@ def export_widget_index() -> dict:
         {
             "id": "learned_middle_block_recurrence",
             "path": "site/widgets/ai/learned_middle_block_recurrence.js",
-            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0039", "AIM-T0040", "AIM-T0041", "AIM-T0042", "AIM-T0043", "AIM-T0044", "AIM-T0045", "AIM-T0046", "AIM-T0047", "AIM-T0048"],
+            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0039", "AIM-T0040", "AIM-T0041", "AIM-T0042", "AIM-T0043", "AIM-T0044", "AIM-T0045", "AIM-T0046", "AIM-T0047", "AIM-T0048", "AIM-T0056", "AIM-T0057", "AIM-T0058"],
             "dictionary_ids": [
                 "COMMON-0052",
                 "COMMON-0053",

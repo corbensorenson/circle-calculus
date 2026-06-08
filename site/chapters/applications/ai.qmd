@@ -207,7 +207,7 @@ selected loop block
   -> block-pass accounting
 ```
 
-Lean now pins down the contiguous selected-block route used by this fixture: the route stays inside the selected block range, closes after one selected-width shift, closes after any whole number of selected-width shifts, and selects the range start at sample zero. The combined route/budget facts additionally prove that the selected block and recurrence budget stay bounded together and close after one product common cycle `width * loopPeriod` or any whole number of such cycles.
+Lean now pins down the contiguous selected-block route used by this fixture: the route stays inside the selected block range, closes after one selected-width shift, closes after any whole number of selected-width shifts, and selects the range start at sample zero. The combined route/budget facts additionally prove that the selected block and recurrence budget stay bounded together, initialize at `(start, 1)` for sample zero, and close after one product common cycle `width * loopPeriod` or any whole number of such cycles.
 
 This is useful only as a schedule interface. It is not a claim that looping a middle block improves a real model.
 
@@ -398,6 +398,8 @@ Why is the nonperiodic control in `AIA-B0002` important before making any AI-imp
 <div class="theorem-box" data-theorem-id="AIM-T0047"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0048"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0056"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0057"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0058"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0049"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0050"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0051"></div>

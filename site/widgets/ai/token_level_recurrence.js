@@ -2,7 +2,7 @@ import { mod, positiveInt } from "../shared/circle_math_core.js";
 import { addLabeledNumber, addOutput, addWidgetHeader, clear } from "../shared/svg_helpers.js";
 import { loadJson, mountWidgets, statusClass, statusLabel } from "../shared/widget_base.js";
 
-const THEOREM_IDS = ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0022", "AIM-T0026", "AIM-T0027", "AIM-T0035", "AIM-T0036", "AIM-T0037", "AIM-T0038"];
+const THEOREM_IDS = ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0022", "AIM-T0026", "AIM-T0027", "AIM-T0035", "AIM-T0036", "AIM-T0037", "AIM-T0038", "AIM-T0057"];
 const DICTIONARY_IDS = ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068", "COMMON-0069"];
 
 let stripIdCounter = 0;
@@ -234,6 +234,7 @@ function appendRecord(output, values, theoremById) {
     `selected middle block: [2, 5)`,
     `resolution levels: ${recurrenceResolutionLevels(values.maxBudget).join(", ")}`,
     `token budgets sample: ${budgets.slice(0, Math.min(16, budgets.length)).join(", ")}`,
+    `token budget at sample zero: ${tokenBudget(values.loopPeriod, 0)}`,
     `active token counts by loop step: ${activeCounts.join(", ")}`,
     `active-step boundary: step 1 active for every token; steps > loop period inactive`,
     `average active tokens: ${(activeCounts.reduce((total, count) => total + count, 0) / activeCounts.length).toFixed(2)}`,

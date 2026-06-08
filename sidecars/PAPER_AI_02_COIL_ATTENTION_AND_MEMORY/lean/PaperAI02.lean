@@ -22,6 +22,7 @@ namespace Circle.PaperAI02
 #check Circle.Applications.tokenRecurrenceBudget_add_loopPeriod
 #check Circle.Applications.tokenRecurrenceBudget_add_mul_loopPeriod
 #check Circle.Applications.tokenRecurrenceBudget_le_loopPeriod
+#check Circle.Applications.tokenRecurrenceBudget_zero
 #check Circle.Applications.loopedRecurrentState_lt_period
 #check Circle.Applications.loopedRecurrentState_one_zero
 #check Circle.Applications.loopedRecurrentState_of_requiredSteps
@@ -44,6 +45,7 @@ namespace Circle.PaperAI02
 #check Circle.Applications.middleBlockBudgetRoute_budget_le_loopPeriod
 #check Circle.Applications.middleBlockBudgetRoute_add_commonCycle
 #check Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle
+#check Circle.Applications.middleBlockBudgetRoute_zero
 #check Circle.Applications.trainingFreeLoopBudget_le_maxLoops
 #check Circle.Applications.trainingFreeLoopBudget_le_requiredSteps
 #check Circle.Applications.trainingFreeLoopBudget_add_loopPeriod
