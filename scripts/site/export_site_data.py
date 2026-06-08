@@ -486,7 +486,16 @@ def export_widget_index() -> dict:
         {
             "id": "finite_path_algebra",
             "path": "site/widgets/physics/finite_path_algebra.js",
-            "theorem_ids": ["PHYS-T0001", "PHYS-T0002", "PHYS-T0003", "PHYS-T0006", "PHYS-T0007", "PHYS-T0039"],
+            "theorem_ids": [
+                "PHYS-T0001",
+                "PHYS-T0002",
+                "PHYS-T0003",
+                "PHYS-T0006",
+                "PHYS-T0007",
+                "PHYS-T0039",
+                "PHYS-T0050",
+                "PHYS-T0051",
+            ],
             "dictionary_ids": ["COMMON-0060", "COMMON-0061", "COMMON-0063"],
             "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.path_holonomy; circle_math.physics.concat_paths; circle_math.physics.reverse_path; circle_math.physics.gauge_transform_path; circle_math.physics.transformed_holonomy_endpoint_prediction",
         },

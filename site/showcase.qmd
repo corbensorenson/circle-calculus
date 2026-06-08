@@ -196,7 +196,7 @@ The physics lane builds proof-carrying finite gauge paths with checked path comp
 - Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-008" data-claim-field="advertised_claim"></span>Circle Calculus can build a finite proof-carrying gauge-path model with endpoint and holonomy laws.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-008" data-executable-ref="sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"></span><code>sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-008" data-dictionary-id="COMMON-0060"></span><code>COMMON-0060</code>; <span class="dictionary-evidence" data-capability-id="SHOW-008" data-dictionary-id="COMMON-0061"></span><code>COMMON-0061</code>; <span class="dictionary-evidence" data-capability-id="SHOW-008" data-dictionary-id="COMMON-0062"></span><code>COMMON-0062</code>; <span class="dictionary-evidence" data-capability-id="SHOW-008" data-dictionary-id="COMMON-0063"></span><code>COMMON-0063</code>.
-- Scope: <span class="claim-field-evidence" data-capability-id="SHOW-008" data-claim-field="proof_scope"></span>Lean-proved finite link-path, checked-path, gauge-transform, Wilson-loop, plaquette, closed-loop record, and two-path cycle gauge-invariance facts.
+- Scope: <span class="claim-field-evidence" data-capability-id="SHOW-008" data-claim-field="proof_scope"></span>Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, and two-path cycle gauge-invariance facts.
 - Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-008" data-claim-field="not_claimed"></span>No continuum gauge theory, no physics discovery, and no lattice-QCD correctness claim.
 
 <div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0001"></div>
@@ -207,6 +207,8 @@ The physics lane builds proof-carrying finite gauge paths with checked path comp
 <div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0046"></div>
 <div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0047"></div>
 <div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0049"></div>
+<div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0050"></div>
+<div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0051"></div>
 
 ### Generative Provenance
 

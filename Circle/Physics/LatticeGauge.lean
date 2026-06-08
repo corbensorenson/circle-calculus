@@ -486,6 +486,16 @@ theorem gaugeLinkPathHolonomy_reverse (path : GaugeLinkPath n) :
   rw [gaugeLinkPath_reverse_phases]
   exact pathHolonomy_reverse path.phases
 
+theorem gaugeLinkPath_concat_reverse_holonomy (path : GaugeLinkPath n) :
+    (path.concat path.reverse).holonomy = 0 := by
+  rw [gaugeLinkPathHolonomy_concat, gaugeLinkPathHolonomy_reverse]
+  simp
+
+theorem gaugeLinkPath_reverse_concat_holonomy (path : GaugeLinkPath n) :
+    (path.reverse.concat path).holonomy = 0 := by
+  rw [gaugeLinkPathHolonomy_concat, gaugeLinkPathHolonomy_reverse]
+  simp
+
 theorem gaugeLinkPath_reverse_reverse (path : GaugeLinkPath n) :
     path.reverse.reverse = path := by
   cases path with

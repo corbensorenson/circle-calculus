@@ -6458,6 +6458,18 @@
           "lean_name": "Circle.Physics.closedGaugeLoop_fromCycle_holonomy",
           "name": "Circle.Physics.closedGaugeLoop_fromCycle_holonomy",
           "status": "proved"
+        },
+        {
+          "id": "PHYS-T0050",
+          "lean_name": "Circle.Physics.gaugeLinkPath_concat_reverse_holonomy",
+          "name": "Circle.Physics.gaugeLinkPath_concat_reverse_holonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0051",
+          "lean_name": "Circle.Physics.gaugeLinkPath_reverse_concat_holonomy",
+          "name": "Circle.Physics.gaugeLinkPath_reverse_concat_holonomy",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -6809,6 +6821,18 @@
           "lean_name": "Circle.Physics.closedGaugeLoop_fromCycle_holonomy",
           "name": "Circle.Physics.closedGaugeLoop_fromCycle_holonomy",
           "status": "proved"
+        },
+        {
+          "id": "PHYS-T0050",
+          "lean_name": "Circle.Physics.gaugeLinkPath_concat_reverse_holonomy",
+          "name": "Circle.Physics.gaugeLinkPath_concat_reverse_holonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0051",
+          "lean_name": "Circle.Physics.gaugeLinkPath_reverse_concat_holonomy",
+          "name": "Circle.Physics.gaugeLinkPath_reverse_concat_holonomy",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -7003,6 +7027,18 @@
           "id": "PHYS-T0047",
           "lean_name": "Circle.Physics.closedGaugeLoop_gaugeInvariant",
           "name": "Circle.Physics.closedGaugeLoop_gaugeInvariant",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0050",
+          "lean_name": "Circle.Physics.gaugeLinkPath_concat_reverse_holonomy",
+          "name": "Circle.Physics.gaugeLinkPath_concat_reverse_holonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0051",
+          "lean_name": "Circle.Physics.gaugeLinkPath_reverse_concat_holonomy",
+          "name": "Circle.Physics.gaugeLinkPath_reverse_concat_holonomy",
           "status": "proved"
         }
       ],

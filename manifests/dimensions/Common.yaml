@@ -1197,6 +1197,76 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_required_steps_are_positive_bounded_and_periodic
     blocker: ""
+  - id: AIM-T0026
+    status: lean_proved
+    lean_name: Circle.Applications.loopRequiredSteps_add_mul_loopPeriod
+    informal_statement: "Finite loop required steps are invariant under any whole number of loop-period passes."
+    formal_statement: "For positive loopPeriod, loopRequiredSteps loopPeriod (sample + passes * loopPeriod) = loopRequiredSteps loopPeriod sample."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_required_steps_are_positive_bounded_and_periodic
+    blocker: ""
+  - id: AIM-T0027
+    status: lean_proved
+    lean_name: Circle.Applications.tokenRecurrenceBudget_add_mul_loopPeriod
+    informal_statement: "Token recurrence budgets are invariant under any whole number of loop-period passes."
+    formal_statement: "For positive loopPeriod, tokenRecurrenceBudget loopPeriod (token + passes * loopPeriod) = tokenRecurrenceBudget loopPeriod token."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_required_steps_are_positive_bounded_and_periodic
+    blocker: ""
+  - id: AIM-T0028
+    status: lean_proved
+    lean_name: Circle.Applications.trainingFreeLoopBudget_add_mul_loopPeriod
+    informal_statement: "Training-free loop-wrapper budgets are invariant under any whole number of loop-period passes."
+    formal_statement: "For positive loopPeriod, trainingFreeLoopBudget loopPeriod (sample + passes * loopPeriod) maxLoops = trainingFreeLoopBudget loopPeriod sample maxLoops."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0067"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_training_free_loop_wrapper_budget_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0029
+    status: lean_proved
+    lean_name: Circle.Applications.loopOverthinkingBoundary_add_mul_loopPeriod
+    informal_statement: "Finite loop overthinking boundaries are invariant under any whole number of loop-period passes."
+    formal_statement: "For positive loopPeriod, loopOverthinkingBoundary loopPeriod (sample + passes * loopPeriod) tolerance = loopOverthinkingBoundary loopPeriod sample tolerance."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
+    blocker: ""
+  - id: AIM-T0030
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitAvailable_add_mul_loopPeriod
+    informal_statement: "Finite loop-exit availability is invariant under any whole number of loop-period passes."
+    formal_statement: "For positive loopPeriod, loopExitAvailable loopPeriod (sample + passes * loopPeriod) maxLoops iff loopExitAvailable loopPeriod sample maxLoops."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
+    blocker: ""
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize
@@ -1947,6 +2017,34 @@ theorems:
       no_sorry_required: true
       python_property_tests:
         - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_closed_loop_records_identity_and_cycle_holonomy
+    blocker: ""
+  - id: PHYS-T0050
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPath_concat_reverse_holonomy
+    informal_statement: "A finite gauge-link path followed by its reversed path has zero holonomy."
+    formal_statement: "For any finite gauge-link path, (path.concat path.reverse).holonomy = 0."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0063"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_reverse_path_inverts_holonomy
+    blocker: ""
+  - id: PHYS-T0051
+    status: lean_proved
+    lean_name: Circle.Physics.gaugeLinkPath_reverse_concat_holonomy
+    informal_statement: "A reversed finite gauge-link path followed by the original path has zero holonomy."
+    formal_statement: "For any finite gauge-link path, (path.reverse.concat path).holonomy = 0."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0063"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_reverse_path_inverts_holonomy
     blocker: ""
   - id: GEN-T0001
     status: lean_proved

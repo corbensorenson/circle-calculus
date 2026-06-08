@@ -14,6 +14,11 @@
         "sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py"
       ],
       "id": "SHOW-001",
+      "living_book_refs": [
+        {
+          "page": "site/chapters/S1/04_period_gcd_prime_full_coils.qmd"
+        }
+      ],
       "not_claimed": "No new proof of EGZ, no new proof of Cauchy-Davenport, and no progress claim on an open Erdos problem.",
       "paper_ids": [
         "PAPER_ERDOS_01_ZERO_SUM_CIRCLES"
@@ -49,6 +54,11 @@
         "sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py"
       ],
       "id": "SHOW-002",
+      "living_book_refs": [
+        {
+          "page": "site/chapters/S1/04_period_gcd_prime_full_coils.qmd"
+        }
+      ],
       "not_claimed": "No new EKR proof and no classification of all extremal families.",
       "paper_ids": [
         "PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD"
@@ -83,6 +93,11 @@
         "sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py"
       ],
       "id": "SHOW-003",
+      "living_book_refs": [
+        {
+          "page": "site/chapters/S1/04_period_gcd_prime_full_coils.qmd"
+        }
+      ],
       "not_claimed": "No new Roth proof, no improved bounds, and no cyclic-to-natural transfer theorem yet.",
       "paper_ids": [
         "PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES"
@@ -117,6 +132,11 @@
         "sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py"
       ],
       "id": "SHOW-004",
+      "living_book_refs": [
+        {
+          "page": "site/chapters/S1/04_period_gcd_prime_full_coils.qmd"
+        }
+      ],
       "not_claimed": "Finite Python searches are examples only; they are not the Hales-Jewett proof.",
       "paper_ids": [
         "PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES"
@@ -151,6 +171,11 @@
         "sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py"
       ],
       "id": "SHOW-005",
+      "living_book_refs": [
+        {
+          "page": "site/chapters/S1/04_period_gcd_prime_full_coils.qmd"
+        }
+      ],
       "not_claimed": "No progress on hard unit-distance or distinct-distance problems.",
       "paper_ids": [
         "PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS"
@@ -189,6 +214,21 @@
         "sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py"
       ],
       "id": "SHOW-006",
+      "living_book_refs": [
+        {
+          "page": "site/chapters/S1/03_coils_orbits_closure.qmd",
+          "widget_ids": [
+            "coil_orbit_explorer"
+          ]
+        },
+        {
+          "page": "site/chapters/S1/04_period_gcd_prime_full_coils.qmd",
+          "widget_ids": [
+            "period_gcd_visualizer",
+            "prime_full_coil_explorer"
+          ]
+        }
+      ],
       "not_claimed": "No claim that this replaces standard modular arithmetic; it is a proof-carrying cyclic presentation.",
       "paper_ids": [
         "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
@@ -236,6 +276,21 @@
         "sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py"
       ],
       "id": "SHOW-007",
+      "living_book_refs": [
+        {
+          "page": "site/chapters/S3/hopf_coils.qmd",
+          "widget_ids": [
+            "hopf_hidden_phase"
+          ]
+        },
+        {
+          "page": "site/chapters/applications/physics.qmd",
+          "widget_ids": [
+            "hopf_hidden_phase",
+            "spin_sign_ambiguity"
+          ]
+        }
+      ],
       "not_claimed": "No full smooth Hopf fibration formalization and no complete SO(3) robotics formalization.",
       "paper_ids": [
         "PAPER_S3_02_QUATERNION_COILS",
@@ -281,6 +336,16 @@
         "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
       ],
       "id": "SHOW-008",
+      "living_book_refs": [
+        {
+          "page": "site/chapters/applications/physics.qmd",
+          "widget_ids": [
+            "finite_path_algebra",
+            "finite_gauge_loop_holonomy",
+            "wilson_loop_certificate"
+          ]
+        }
+      ],
       "not_claimed": "No continuum gauge theory, no physics discovery, and no lattice-QCD correctness claim.",
       "paper_ids": [
         "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
@@ -290,7 +355,7 @@
         "circle_native_value",
         "application_guardrail"
       ],
-      "proof_scope": "Lean-proved finite link-path, checked-path, gauge-transform, Wilson-loop, plaquette, closed-loop record, and two-path cycle gauge-invariance facts.",
+      "proof_scope": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, and two-path cycle gauge-invariance facts.",
       "source_refs": [
         "Circle/Physics/LatticeGauge.lean",
         "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
@@ -304,7 +369,9 @@
         "PHYS-T0042",
         "PHYS-T0046",
         "PHYS-T0047",
-        "PHYS-T0049"
+        "PHYS-T0049",
+        "PHYS-T0050",
+        "PHYS-T0051"
       ],
       "title": "Proof-carrying finite gauge paths"
     },
@@ -325,6 +392,17 @@
         "sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py"
       ],
       "id": "SHOW-009",
+      "living_book_refs": [
+        {
+          "page": "site/chapters/applications/generative.qmd",
+          "widget_ids": [
+            "seed_rule_diagram_generator",
+            "orbit_family_generator",
+            "proof_glyph_certificate",
+            "generator_comparison_search"
+          ]
+        }
+      ],
       "not_claimed": "No universal compression claim and no guarantee that generated artifacts are mathematically interesting.",
       "paper_ids": [
         "PAPER_GEN_01_SEED_RULE_PROVENANCE",
@@ -375,6 +453,18 @@
         "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"
       ],
       "id": "SHOW-010",
+      "living_book_refs": [
+        {
+          "page": "site/chapters/applications/ai.qmd",
+          "widget_ids": [
+            "cyclic_memory_slots",
+            "loop_recurrence_budget",
+            "loop_exit_certificate",
+            "training_free_loop_wrapper",
+            "adapter_parameter_budget"
+          ]
+        }
+      ],
       "not_claimed": "No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence.",
       "paper_ids": [
         "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
@@ -424,6 +514,11 @@
         "sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py"
       ],
       "id": "SHOW-011",
+      "living_book_refs": [
+        {
+          "page": "site/chapters/applications/compute.qmd"
+        }
+      ],
       "not_claimed": "No performance claim without direct dense, FFT/NTT, and backend baselines.",
       "paper_ids": [
         "PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION",

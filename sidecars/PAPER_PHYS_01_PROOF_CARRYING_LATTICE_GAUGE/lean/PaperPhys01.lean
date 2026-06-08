@@ -40,6 +40,8 @@ sidecar remains an executable reference, not a formal proof source.
 #check Circle.Physics.gaugeLinkPath_concat_empty_left
 #check Circle.Physics.gaugeLinkPath_concat_empty_right
 #check Circle.Physics.gaugeLinkPath_concat_assoc
+#check Circle.Physics.gaugeLinkPath_concat_reverse_holonomy
+#check Circle.Physics.gaugeLinkPath_reverse_concat_holonomy
 #check Circle.Physics.gaugeLinkPath_empty_composable
 #check Circle.Physics.gaugeLinkPath_concat_empty_left_composable
 #check Circle.Physics.gaugeLinkPath_concat_empty_right_composable
