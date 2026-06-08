@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 import shlex
 import sys
+from pathlib import Path
 
 from site_lib import GENERATED, load_json
 
@@ -25,6 +26,7 @@ REQUIRED_GATE_IDS = {
     "living_book_presentation",
     "claim_language_guardrail",
     "value_proposition",
+    "proof_trail",
     "claim_boundary",
 }
 
@@ -205,6 +207,109 @@ def value_proposition_contract(
             check["ready"] for check in checks.values() if check["required"]
         ),
         "role_checks": checks,
+    }
+
+
+def proof_trail_contract(
+    item: dict,
+    theorem_ref_contract: dict,
+    source_ref_contract: dict,
+    living_book_ref_contract: dict,
+    claim_language_contract: dict,
+    value_proposition_contract: dict,
+) -> dict:
+    executable_refs = item.get("executable_refs", []) or []
+    source_refs = set(item.get("source_refs", []) or [])
+    executable_ready = (
+        bool(executable_refs)
+        and all(ref in source_refs for ref in executable_refs)
+        and all(
+            Path(ref).name.startswith("test_") and Path(ref).suffix == ".py"
+            for ref in executable_refs
+        )
+    )
+    steps = [
+        {
+            "id": "paper_backing",
+            "label": "cited paper backing",
+            "ready": bool(item.get("paper_ids", []) or []),
+            "evidence": f"{len(item.get('paper_ids', []) or [])} paper ids",
+        },
+        {
+            "id": "theorem_refs",
+            "label": "proved paper-carried theorem refs",
+            "ready": (
+                theorem_ref_contract.get("total_count", 0) > 0
+                and theorem_ref_contract.get("proved_and_paper_backed_count")
+                == theorem_ref_contract.get("total_count")
+                and not theorem_ref_contract.get("unproved_or_unbacked_ids", [])
+            ),
+            "evidence": (
+                f"{theorem_ref_contract.get('proved_and_paper_backed_count', 0)}/"
+                f"{theorem_ref_contract.get('total_count', 0)} theorem refs"
+            ),
+        },
+        {
+            "id": "source_refs",
+            "label": "paper-backed source refs",
+            "ready": (
+                source_ref_contract.get("total_count", 0) > 0
+                and source_ref_contract.get("backed_count")
+                == source_ref_contract.get("total_count")
+                and not source_ref_contract.get("unbacked_refs", [])
+            ),
+            "evidence": (
+                f"{source_ref_contract.get('backed_count', 0)}/"
+                f"{source_ref_contract.get('total_count', 0)} source refs"
+            ),
+        },
+        {
+            "id": "executable_refs",
+            "label": "pytest executable refs",
+            "ready": executable_ready,
+            "evidence": f"{len(executable_refs)} executable refs",
+        },
+        {
+            "id": "living_book_refs",
+            "label": "backed Living Book presentation",
+            "ready": (
+                living_book_ref_contract.get("total_page_count", 0) > 0
+                and living_book_ref_contract.get("backed_page_count")
+                == living_book_ref_contract.get("total_page_count")
+                and living_book_ref_contract.get("backed_widget_count")
+                == living_book_ref_contract.get("total_widget_count")
+                and not living_book_ref_contract.get("unbacked_pages", [])
+                and not living_book_ref_contract.get("unbacked_widgets", [])
+            ),
+            "evidence": (
+                f"pages {living_book_ref_contract.get('backed_page_count', 0)}/"
+                f"{living_book_ref_contract.get('total_page_count', 0)}; "
+                f"widgets {living_book_ref_contract.get('backed_widget_count', 0)}/"
+                f"{living_book_ref_contract.get('total_widget_count', 0)}"
+            ),
+        },
+        {
+            "id": "role_value",
+            "label": "role-backed value proposition",
+            "ready": value_proposition_contract.get("ready_to_advertise", False),
+            "evidence": (
+                "role checks ready"
+                if value_proposition_contract.get("ready_to_advertise", False)
+                else "role checks incomplete"
+            ),
+        },
+        {
+            "id": "claim_language",
+            "label": "advertising-language boundary",
+            "ready": claim_language_contract.get("ready_to_advertise", False),
+            "evidence": "clean" if claim_language_contract.get("ready_to_advertise", False) else "incomplete",
+        },
+    ]
+    return {
+        "ready_to_advertise": all(step["ready"] for step in steps),
+        "passed_step_count": sum(1 for step in steps if step["ready"]),
+        "total_step_count": len(steps),
+        "steps": steps,
     }
 
 
@@ -863,6 +968,20 @@ def main() -> int:
                 failures.append(
                     f"{capability_id}: role-backed value proposition is incomplete"
                 )
+            expected_proof_trail_contract = proof_trail_contract(
+                capability,
+                theorem_ref_contract,
+                source_ref_contract,
+                living_book_ref_contract,
+                expected_claim_language_contract,
+                expected_value_contract,
+            )
+            if capability.get("proof_trail_contract") != expected_proof_trail_contract:
+                failures.append(
+                    f"{capability_id}: proof_trail_contract does not match evidence"
+                )
+            if not expected_proof_trail_contract["ready_to_advertise"]:
+                failures.append(f"{capability_id}: ordered proof trail is incomplete")
         contract = capability.get("claim_contract")
         if not isinstance(contract, dict):
             failures.append(f"{capability_id}: missing claim_contract")

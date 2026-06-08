@@ -23,7 +23,7 @@ Circle Calculus should be judged by whether it can express serious structures in
 - cyclic AI schedule/index facts, and
 - cyclic compute layout facts.
 
-The generated matrix starts with four proof-backed reader routes: hard mathematics bridges, the cyclic proof spine, phase/finite-physics interfaces, and proof-carrying generated/AI structures. A route is ready only when every listed capability is known, fully claim-contracted, backed for its declared role, and backed by the same theorem/source/Living Book evidence used below.
+The generated matrix starts with four proof-backed reader routes: hard mathematics bridges, the cyclic proof spine, phase/finite-physics interfaces, and proof-carrying generated/AI structures. A route is ready only when every listed capability is known, fully claim-contracted, backed for its declared role, connected by an ordered proof trail, and backed by the same theorem/source/Living Book evidence used below.
 
 <div class="widget-panel" data-widget="capability_portfolio_matrix"></div>
 

@@ -44,6 +44,7 @@ function fallbackClaimContract(capability) {
     ["living_book_presentation", "Living Book presentation", counts.living_book_page_count > 0],
     ["claim_language_guardrail", "advertising language guardrail", true],
     ["value_proposition", "role-backed value proposition", true],
+    ["proof_trail", "ordered proof trail", true],
     ["claim_boundary", "not-claimed boundary", Boolean(capability.not_claimed)],
   ].map(([id, label, passed]) => ({ id, label, passed }));
   const passed = gates.filter((gate) => gate.passed).length;
@@ -138,6 +139,15 @@ function valuePropositionContract(capability) {
   return capability.value_proposition_contract || {
     ready_to_advertise: true,
     role_checks: {},
+  };
+}
+
+function proofTrailContract(capability) {
+  return capability.proof_trail_contract || {
+    ready_to_advertise: true,
+    passed_step_count: 0,
+    total_step_count: 0,
+    steps: [],
   };
 }
 
@@ -348,6 +358,15 @@ function valuePropositionDetails(capability) {
   return parts.length > 0 ? parts.join("; ") : "no required roles";
 }
 
+function proofTrailDetails(capability) {
+  const contract = proofTrailContract(capability);
+  const steps = Array.isArray(contract.steps) ? contract.steps : [];
+  if (steps.length === 0) return "";
+  return steps
+    .map((step) => `${step.label || step.id}: ${step.ready ? "ready" : "incomplete"} (${step.evidence || ""})`)
+    .join("; ");
+}
+
 function auditItem(label, value, details) {
   const item = document.createElement("li");
   item.append(`${label}: ${value}`);
@@ -410,6 +429,11 @@ function checklist(capability) {
       "role-backed value proposition",
       valuePropositionContract(capability).ready_to_advertise ? "pass" : "fail",
       valuePropositionDetails(capability),
+    ),
+    auditItem(
+      "ordered proof trail",
+      `${proofTrailContract(capability).passed_step_count || 0}/${proofTrailContract(capability).total_step_count || 0}`,
+      proofTrailDetails(capability),
     ),
   ];
   for (const item of items) {

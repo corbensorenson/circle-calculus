@@ -172,6 +172,10 @@ def test_export_site_data_writes_required_indexes() -> None:
         item["value_proposition_contract"]["ready_to_advertise"]
         for item in capabilities["capabilities"]
     )
+    assert all(
+        item["proof_trail_contract"]["ready_to_advertise"]
+        for item in capabilities["capabilities"]
+    )
     assert capability_by_id["SHOW-001"]["value_proposition_contract"]["role_checks"][
         "standard_math_parity"
     ]["ready"]
@@ -187,6 +191,21 @@ def test_export_site_data_writes_required_indexes() -> None:
     assert capability_by_id["SHOW-010"]["value_proposition_contract"]["role_checks"][
         "application_guardrail"
     ]["ready"]
+    assert capability_by_id["SHOW-001"]["proof_trail_contract"]["passed_step_count"] == (
+        capability_by_id["SHOW-001"]["proof_trail_contract"]["total_step_count"]
+    )
+    assert [
+        step["id"]
+        for step in capability_by_id["SHOW-001"]["proof_trail_contract"]["steps"]
+    ] == [
+        "paper_backing",
+        "theorem_refs",
+        "source_refs",
+        "executable_refs",
+        "living_book_refs",
+        "role_value",
+        "claim_language",
+    ]
     assert capability_by_id["SHOW-001"]["claim_contract"]["status"] == "ready"
     assert capability_by_id["SHOW-001"]["claim_contract"]["passed_gate_count"] == (
         capability_by_id["SHOW-001"]["claim_contract"]["total_gate_count"]
@@ -201,6 +220,9 @@ def test_export_site_data_writes_required_indexes() -> None:
         gate["id"] for gate in capability_by_id["SHOW-001"]["claim_contract"]["gates"]
     }
     assert "value_proposition" in {
+        gate["id"] for gate in capability_by_id["SHOW-001"]["claim_contract"]["gates"]
+    }
+    assert "proof_trail" in {
         gate["id"] for gate in capability_by_id["SHOW-001"]["claim_contract"]["gates"]
     }
     assert capability_by_id["SHOW-001"]["verification_recipe"]["pytest_command"] == (
