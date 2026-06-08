@@ -59,6 +59,7 @@ from circle_math.applications import (
     run_circulant_mixer_benchmark,
     run_harmonic_feature_baseline_benchmark,
     run_learned_content_gate_retrieval_benchmark,
+    run_learned_feature_baseline_benchmark,
     run_learned_phase_baseline_benchmark,
     run_learned_middle_block_recurrence_benchmark,
     run_learned_multi_resolution_recurrence_benchmark,
@@ -1220,6 +1221,51 @@ def main() -> int:
         )
 
         wrong_period = period - 1
+        wrong_lookup = fit_phase_lookup(wrong_period, train_positions, train_labels)
+        js_wrong_lookup = js_fit_phase_lookup(wrong_period, train_positions, js_train_labels)
+        assert wrong_lookup == js_wrong_lookup
+        wrong_predictions = predict_phase_lookup(wrong_period, wrong_lookup, test_positions)
+        js_wrong_predictions = js_predict_phase_lookup(wrong_period, js_wrong_lookup, test_positions)
+        assert wrong_predictions == js_wrong_predictions
+        position_lookup = js_fit_position_lookup(train_positions, js_train_labels)
+        position_predictions = js_predict_position_lookup(position_lookup, test_positions)
+        control_position_lookup = js_fit_position_lookup(train_positions, js_control_train_labels)
+        control_position_predictions = js_predict_position_lookup(control_position_lookup, test_positions)
+        learned_feature_benchmark = run_learned_feature_baseline_benchmark(
+            period=period,
+            wrong_period=wrong_period,
+            train_length=train_length,
+            test_length=test_length,
+        )
+        assert learned_feature_benchmark.periodic_cyclic_feature_accuracy == js_accuracy(
+            js_phase_predictions,
+            js_test_labels,
+        )
+        assert learned_feature_benchmark.periodic_dense_scalar_accuracy == js_accuracy(
+            threshold_predictions,
+            js_test_labels,
+        )
+        assert learned_feature_benchmark.periodic_learned_position_accuracy == js_accuracy(
+            position_predictions,
+            js_test_labels,
+        )
+        assert learned_feature_benchmark.periodic_wrong_period_accuracy == js_accuracy(
+            js_wrong_predictions,
+            js_test_labels,
+        )
+        assert learned_feature_benchmark.nonperiodic_cyclic_feature_accuracy == js_accuracy(
+            js_control_phase_predictions,
+            js_control_test_labels,
+        )
+        assert learned_feature_benchmark.nonperiodic_dense_scalar_accuracy == js_accuracy(
+            control_scalar_predictions,
+            js_control_test_labels,
+        )
+        assert learned_feature_benchmark.nonperiodic_learned_position_accuracy == js_accuracy(
+            control_position_predictions,
+            js_control_test_labels,
+        )
+
         for position in range(train_length + test_length):
             assert harmonic_feature(period, position) == js_harmonic_feature(period, position)
         harmonic_lookup = fit_harmonic_feature_lookup(period, train_positions, train_labels)
@@ -1250,8 +1296,6 @@ def main() -> int:
             test_positions,
         )
         assert wrong_harmonic_predictions == js_wrong_harmonic_predictions
-        position_lookup = js_fit_position_lookup(train_positions, js_train_labels)
-        position_predictions = js_predict_position_lookup(position_lookup, test_positions)
         control_harmonic_lookup = js_fit_harmonic_feature_lookup(
             period,
             train_positions,

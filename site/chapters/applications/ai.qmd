@@ -37,6 +37,12 @@ The first AI fixture asks the smallest useful question: if labels are actually p
 
 <div class="widget-panel" data-widget="phase_channel_baseline" data-theorem-id="AIA-T0001" data-dictionary-ids="COMMON-0026 COMMON-0027"></div>
 
+## Learned-Feature Baseline Path
+
+The next AI fixture keeps the feature tiny but adds ordinary learned controls. A correct cyclic phase table is compared against a dense scalar threshold, an absolute-position lookup, and a wrong-period phase table. The nonperiodic control keeps the scalar threshold visible as the right baseline when the target is not periodic.
+
+<div class="widget-panel" data-widget="learned_feature_baseline" data-theorem-id="AIA-T0001" data-dictionary-ids="COMMON-0026 COMMON-0027"></div>
+
 ## Harmonic/Fourier Feature Path
 
 The harmonic feature fixture asks the same known-period question with a sine/cosine encoding instead of an integer phase key. The correct period should match the phase lookup, while a wrong-frequency feature, scalar threshold, and absolute-position lookup remain visible controls.
@@ -372,6 +378,7 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 :::
 
 <script type="module" src="../../widgets/ai/phase_channel_baseline.js"></script>
+<script type="module" src="../../widgets/ai/learned_feature_baseline.js"></script>
 <script type="module" src="../../widgets/ai/harmonic_feature_baseline.js"></script>
 <script type="module" src="../../widgets/ai/cyclic_memory_slots.js"></script>
 <script type="module" src="../../widgets/ai/coil_retrieval_reachability.js"></script>

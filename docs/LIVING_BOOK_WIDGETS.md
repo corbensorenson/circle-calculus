@@ -122,6 +122,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is a deterministic synthetic phase-feature control fixture only. It does not prove neural-network quality, model speed, real-task usefulness, or that cyclic features help nonperiodic tasks.
 - Validation: deterministic JavaScript-equivalent phase lookup, constant baseline, scalar-threshold baseline, and nonperiodic control formulas are parity-checked against the Python phase-channel benchmark helpers.
 
+### learned_feature_baseline
+
+- Inputs: period, wrong period, training length, and test length.
+- Outputs: positive phase set, correct cyclic lookup, wrong-period lookup, periodic cyclic-feature accuracy, periodic dense-scalar accuracy, periodic learned-position accuracy, periodic wrong-period accuracy, nonperiodic cyclic accuracy, nonperiodic dense-scalar accuracy, nonperiodic learned-position accuracy, theorem-status badges, and dictionary links.
+- Theorem ids: `AIA-T0001`, `AIA-T0002`, `AIA-T0003`, `AIA-T0004`, and `AIA-T0005` as finite phase/indexing boundaries.
+- Dictionary ids: `COMMON-0026` and `COMMON-0027`.
+- Python references: `circle_math.applications.circle_ai.fit_phase_lookup`, `circle_math.applications.circle_ai.predict_phase_lookup`, and `circle_math.applications.circle_ai.run_learned_feature_baseline_benchmark`.
+- Guardrail: the widget is a deterministic synthetic learned-feature control fixture only. It does not prove representation learning, neural-network quality, speed, parameter efficiency, or usefulness on real workloads.
+- Validation: deterministic JavaScript-equivalent phase lookup, wrong-period phase lookup, scalar-threshold baseline, learned-position baseline, and nonperiodic control formulas are parity-checked against the Python learned-feature benchmark helpers.
+
 ### harmonic_feature_baseline
 
 - Inputs: period, wrong period, training length, and test length.
