@@ -589,6 +589,8 @@ def export_widget_index() -> dict:
                 "PHYS-T0059",
                 "PHYS-T0060",
                 "PHYS-T0061",
+                "PHYS-T0062",
+                "PHYS-T0063",
             ],
             "dictionary_ids": [
                 "COMMON-0060",

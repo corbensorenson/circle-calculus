@@ -72,6 +72,8 @@ make site-render
 make site-render-check
 ```
 
+`make site-render` uses `scripts/site/render_quarto_site.py` rather than treating a raw Quarto exit as the only signal. The helper cleans stale Quarto intermediates, retries once when the rendered artifact is incomplete, and accepts a nonzero Quarto exit only if `scripts/site/check_rendered_site.py` proves that `site/_site/` is complete and link-valid.
+
 `make sitecheck` validates generated source-link paths so rendered GitHub links for theorem manifests, Lean files, dictionary sources, papers, sidecars, widgets, glyphs, and roadmap targets do not silently drift after files move. It also validates hard-coded GitHub source links in the Living Book, docs, and README; scaffold/future/non-proof guardrails; reciprocal generated backlinks across theorem, dictionary, paper, widget, and glyph data; widget mount contracts; and basic widget accessibility contracts such as labelled inputs, named regions, live output regions, and SVG title/description metadata.
 
 `make site-render-check` validates the rendered `site/_site/` artifact after Quarto runs. It requires the Pages marker, fallback page, generated JSON indexes, widgets, CSS, and core HTML pages to exist, and it fails when built pages contain local links that escape or miss the published artifact.

@@ -45,6 +45,7 @@ REQUIRED = [
     "site/data/generated/phase6_targets.json",
     "site/data/generated/phase7_targets.json",
     "site/data/generated/capability_showcase.json",
+    "scripts/site/render_quarto_site.py",
     "docs/LIVING_BOOK_POLICY.md",
     "docs/LIVING_BOOK_ROADMAP.md",
     "docs/LIVING_BOOK_WIDGETS.md",

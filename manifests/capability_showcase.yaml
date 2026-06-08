@@ -218,12 +218,12 @@ capabilities:
     circle_math_expression: "Finite gauge links and paths are represented with Lean-checked source-target and holonomy laws."
     circle_native_value: "Circle Math contributes proof-carrying finite records that can guard simulations and widgets against invalid path composition."
     advertised_claim: "Circle Calculus can build a finite proof-carrying gauge-path model with endpoint and holonomy laws."
-    proof_scope: "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, two-path basepoint-swap facts, and one-step/two-step three-path cycle basepoint-rotation facts."
+    proof_scope: "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, two-path basepoint-swap facts, and complete cyclic three-path cycle basepoint-rotation packages."
     proof_provenance_kind: "project_native"
     proof_provenance: "Proof provenance is project-native Lean code for finite gauge-link/path records and holonomy laws, with Python fixtures serving as executable references."
     not_claimed: "No continuum gauge theory, no physics discovery, and no lattice-QCD correctness claim."
     paper_ids: ["PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"]
-    theorem_ids: ["PHYS-T0001", "PHYS-T0012", "PHYS-T0026", "PHYS-T0038", "PHYS-T0042", "PHYS-T0046", "PHYS-T0047", "PHYS-T0049", "PHYS-T0050", "PHYS-T0051", "PHYS-T0052", "PHYS-T0053", "PHYS-T0054", "PHYS-T0055", "PHYS-T0056", "PHYS-T0057", "PHYS-T0058", "PHYS-T0059", "PHYS-T0060", "PHYS-T0061"]
+    theorem_ids: ["PHYS-T0001", "PHYS-T0012", "PHYS-T0026", "PHYS-T0038", "PHYS-T0042", "PHYS-T0046", "PHYS-T0047", "PHYS-T0049", "PHYS-T0050", "PHYS-T0051", "PHYS-T0052", "PHYS-T0053", "PHYS-T0054", "PHYS-T0055", "PHYS-T0056", "PHYS-T0057", "PHYS-T0058", "PHYS-T0059", "PHYS-T0060", "PHYS-T0061", "PHYS-T0062", "PHYS-T0063"]
     dictionary_ids: ["COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063"]
     executable_refs:
       - "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"

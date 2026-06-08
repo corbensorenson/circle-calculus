@@ -358,6 +358,8 @@ def js_three_path_cycle_closed_loop_record(edges: tuple[dict, ...], modulus: int
             "PHYS-T0059",
             "PHYS-T0060",
             "PHYS-T0061",
+            "PHYS-T0062",
+            "PHYS-T0063",
         ),
     }
 

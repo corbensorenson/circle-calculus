@@ -136,6 +136,8 @@ def test_three_path_cycle_record_preserves_rotated_basepoint_holonomy() -> None:
         "PHYS-T0059",
         "PHYS-T0060",
         "PHYS-T0061",
+        "PHYS-T0062",
+        "PHYS-T0063",
     )
     assert rotated_record.closed
     assert rotated_record.source == rotated_record.target == "b"

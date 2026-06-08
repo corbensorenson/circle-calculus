@@ -276,6 +276,8 @@ def three_path_cycle_closed_loop_record(
             "PHYS-T0059",
             "PHYS-T0060",
             "PHYS-T0061",
+            "PHYS-T0062",
+            "PHYS-T0063",
         ),
         target_ids=record.target_ids,
         note=record.note,

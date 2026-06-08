@@ -3755,7 +3755,7 @@
             "passed": true
           },
           {
-            "evidence": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, two-path basepoint-swap facts, and one-step/two-step three-path cycle basepoint-rotation facts.",
+            "evidence": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, two-path basepoint-swap facts, and complete cyclic three-path cycle basepoint-rotation packages.",
             "id": "proof_scope",
             "label": "proof scope",
             "passed": true
@@ -3779,7 +3779,7 @@
             "passed": true
           },
           {
-            "evidence": "20",
+            "evidence": "22",
             "id": "proved_theorem_ids",
             "label": "proved paper-carried theorem ids",
             "passed": true
@@ -3821,7 +3821,7 @@
             "passed": true
           },
           {
-            "evidence": "standard_math_parity theorems 20/20; circle_native_value sources 2/2; Living Book pages 1/1; application_guardrail language clean",
+            "evidence": "standard_math_parity theorems 22/22; circle_native_value sources 2/2; Living Book pages 1/1; application_guardrail language clean",
             "id": "value_proposition",
             "label": "role-backed value proposition",
             "passed": true
@@ -3884,7 +3884,7 @@
         "living_book_widget_count": 3,
         "paper_count": 1,
         "source_count": 2,
-        "theorem_count": 20
+        "theorem_count": 22
       },
       "executable_refs": [
         "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
@@ -3972,7 +3972,9 @@
               "PHYS-T0058",
               "PHYS-T0059",
               "PHYS-T0060",
-              "PHYS-T0061"
+              "PHYS-T0061",
+              "PHYS-T0062",
+              "PHYS-T0063"
             ],
             "standard_parity_claimed": true
           },
@@ -4004,7 +4006,7 @@
             ]
           },
           {
-            "evidence": "papers 1; theorem refs 20/20; sources 2/2; executables 1; Living Book pages 1/1",
+            "evidence": "papers 1; theorem refs 22/22; sources 2/2; executables 1; Living Book pages 1/1",
             "id": "proof_backing",
             "label": "paper, theorem, source, executable, and Living Book backing",
             "ready": true,
@@ -4030,7 +4032,7 @@
           "Standard reference: Discrete gauge-link paths, holonomy products, Wilson-loop style invariants, and checked path concatenation.",
           "Circle expression: Finite gauge links and paths are represented with Lean-checked source-target and holonomy laws.",
           "Circle-native value: Circle Math contributes proof-carrying finite records that can guard simulations and widgets against invalid path composition.",
-          "Proof backing: 1 paper ids, 20/20 theorem refs, 2/2 source refs, 1 executable refs, and 1/1 Living Book page refs.",
+          "Proof backing: 1 paper ids, 22/22 theorem refs, 2/2 source refs, 1 executable refs, and 1/1 Living Book page refs.",
           "Boundary: No continuum gauge theory, no physics discovery, and no lattice-QCD correctness claim."
         ],
         "total_section_count": 6
@@ -4042,7 +4044,7 @@
       ],
       "proof_provenance": "Proof provenance is project-native Lean code for finite gauge-link/path records and holonomy laws, with Python fixtures serving as executable references.",
       "proof_provenance_kind": "project_native",
-      "proof_scope": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, two-path basepoint-swap facts, and one-step/two-step three-path cycle basepoint-rotation facts.",
+      "proof_scope": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, two-path basepoint-swap facts, and complete cyclic three-path cycle basepoint-rotation packages.",
       "proof_trail_contract": {
         "passed_step_count": 7,
         "ready_to_advertise": true,
@@ -4054,7 +4056,7 @@
             "ready": true
           },
           {
-            "evidence": "20/20 theorem refs",
+            "evidence": "22/22 theorem refs",
             "id": "theorem_refs",
             "label": "proved paper-carried theorem refs",
             "ready": true
@@ -4114,7 +4116,7 @@
             ]
           },
           {
-            "evidence": "20/20 theorem refs",
+            "evidence": "22/22 theorem refs",
             "id": "theorem_trail",
             "label": "proved theorem trail",
             "ready": true,
@@ -4138,7 +4140,9 @@
               "PHYS-T0058",
               "PHYS-T0059",
               "PHYS-T0060",
-              "PHYS-T0061"
+              "PHYS-T0061",
+              "PHYS-T0062",
+              "PHYS-T0063"
             ]
           },
           {
@@ -4234,10 +4238,12 @@
         "PHYS-T0058",
         "PHYS-T0059",
         "PHYS-T0060",
-        "PHYS-T0061"
+        "PHYS-T0061",
+        "PHYS-T0062",
+        "PHYS-T0063"
       ],
       "theorem_ref_contract": {
-        "proved_and_paper_backed_count": 20,
+        "proved_and_paper_backed_count": 22,
         "refs": [
           {
             "canonical_status": "proved",
@@ -4458,9 +4464,31 @@
             "paper_backed": true,
             "proved": true,
             "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0062",
+            "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_all_rotations_holonomy",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0063",
+            "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_all_rotations_gaugeShiftedHolonomy",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
           }
         ],
-        "total_count": 20,
+        "total_count": 22,
         "unproved_or_unbacked_ids": []
       },
       "title": "Proof-carrying finite gauge paths",
@@ -4478,7 +4506,7 @@
             "required": true
           },
           "standard_math_parity": {
-            "evidence": "theorems 20/20",
+            "evidence": "theorems 22/22",
             "ready": true,
             "required": true
           }
@@ -7592,8 +7620,8 @@
           "unbacked_refs": []
         },
         "theorem_refs": {
-          "proved_and_paper_backed_count": 27,
-          "total_count": 27,
+          "proved_and_paper_backed_count": 29,
+          "total_count": 29,
           "unproved_or_unbacked_refs": []
         },
         "unique_evidence_counts": {
@@ -7603,7 +7631,7 @@
           "living_book_widget_count": 5,
           "paper_count": 4,
           "source_count": 6,
-          "theorem_count": 27
+          "theorem_count": 29
         },
         "unknown_capability_ids": []
       },
@@ -7656,7 +7684,7 @@
             ]
           },
           {
-            "evidence": "papers 4; theorem refs 27; source refs 6; executables 4; Living Book pages 2",
+            "evidence": "papers 4; theorem refs 29; source refs 6; executables 4; Living Book pages 2",
             "id": "proof_backing_counts",
             "label": "proof-backed evidence counts",
             "ready": true,
@@ -7697,7 +7725,7 @@
         "summary_lines": [
           "Audience: Geometry, robotics, and physics-facing readers interested in hidden phase, spin sign, holonomy, and path certificates.",
           "Capability surface: 2 route lanes across Geometry and rotation algebra, Physics-facing finite models.",
-          "Proof backing: 27 proved theorem refs, 4 paper ids, 6 source refs, 4 executable refs, and 2 Living Book page refs.",
+          "Proof backing: 29 proved theorem refs, 4 paper ids, 6 source refs, 4 executable refs, and 2 Living Book page refs.",
           "Circle-native value: 2 lanes state explicit Circle expression/value statements with role-backed checks.",
           "Boundary: This route does not claim continuum physics, full smooth Hopf formalization, or model discovery."
         ],
@@ -7760,7 +7788,7 @@
             ]
           },
           {
-            "evidence": "provenance project_native; theorems 27/27; sources 6/6",
+            "evidence": "provenance project_native; theorems 29/29; sources 6/6",
             "id": "proof_provenance_surface",
             "label": "proof provenance and backing surface",
             "ready": true,
@@ -8102,8 +8130,8 @@
         "unbacked_refs": []
       },
       "theorem_refs": {
-        "proved_and_paper_backed_count": 108,
-        "total_count": 108,
+        "proved_and_paper_backed_count": 110,
+        "total_count": 110,
         "unproved_or_unbacked_refs": []
       }
     },
@@ -8120,7 +8148,7 @@
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 108
+      "theorem_count": 110
     },
     "proof_provenance_counts": {
       "mathlib_bridge": 4,
@@ -8148,7 +8176,7 @@
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 108
+      "theorem_count": 110
     },
     "unique_living_book_pages": [
       "site/chapters/S1/03_coils_orbits_closure.qmd",

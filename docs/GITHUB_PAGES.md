@@ -19,6 +19,8 @@ make site-render
 make site-render-check
 ```
 
+`make site-render` invokes `scripts/site/render_quarto_site.py`, which cleans Quarto intermediates, runs Quarto, retries once if the render artifact is incomplete, and requires `scripts/site/check_rendered_site.py` to accept `site/_site/`. This keeps the local and CI render path tolerant of Quarto rename-race failures only when the independent artifact validator proves the static site is complete.
+
 For the full local gate, including Lean and all repository checks:
 
 ```bash
@@ -46,7 +48,7 @@ This keeps publication downstream of the proof/status/data checks. A rendered pa
 
 `make sourcecheck` includes `make sitecheck`, and `sitecheck` validates generated source-link paths, hard-coded GitHub source links in source pages/docs, and reciprocal generated backlinks used by Living Book GitHub links and indexes. This protects the public site against stale links when Lean files, papers, dictionary files, sidecars, widgets, glyph fixtures, target manifests, or learning-resource entry points move.
 
-The Quarto config sets `repo-subdir: site` so generated `View source` links point to the actual `site/*.qmd` sources. `make site-render-check` validates those rendered GitHub links after Quarto builds the artifact.
+The Quarto config sets `repo-subdir: site` so generated `View source` links point to the actual `site/*.qmd` sources. `make site-render-check` validates those rendered GitHub links after the render helper builds the artifact.
 
 ## Repository Settings
 

@@ -52,6 +52,8 @@ sidecar remains an executable reference, not a formal proof source.
 #check Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy
 #check Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_holonomy
 #check Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_gaugeShiftedHolonomy
+#check Circle.Physics.closedGaugeLoop_fromThreeCycle_all_rotations_holonomy
+#check Circle.Physics.closedGaugeLoop_fromThreeCycle_all_rotations_gaugeShiftedHolonomy
 #check Circle.Physics.gaugeLinkPath_empty_composable
 #check Circle.Physics.gaugeLinkPath_concat_empty_left_composable
 #check Circle.Physics.gaugeLinkPath_concat_empty_right_composable
