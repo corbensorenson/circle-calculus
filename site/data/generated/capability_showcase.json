@@ -117,16 +117,22 @@
             "passed": true
           },
           {
+            "evidence": "7/7 sections",
+            "id": "review_packet",
+            "label": "skeptical-reader review packet",
+            "passed": true
+          },
+          {
             "evidence": "No new proof of EGZ, no new proof of Cauchy-Davenport, and no progress claim on an open Erdos problem.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 19,
+        "passed_gate_count": 20,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 19
+        "total_gate_count": 20
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -242,6 +248,84 @@
           }
         ],
         "total_step_count": 7
+      },
+      "review_packet_contract": {
+        "ready_section_count": 7,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "claim/scope/boundary present",
+            "id": "claim_scope_boundary",
+            "label": "claim, proof scope, and boundary",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "1 paper ids",
+            "id": "paper_trail",
+            "label": "paper trail",
+            "ready": true,
+            "refs": [
+              "PAPER_ERDOS_01_ZERO_SUM_CIRCLES"
+            ]
+          },
+          {
+            "evidence": "2/2 theorem refs",
+            "id": "theorem_trail",
+            "label": "proved theorem trail",
+            "ready": true,
+            "refs": [
+              "CC-T0062",
+              "CC-T0063"
+            ]
+          },
+          {
+            "evidence": "3/3 source refs",
+            "id": "source_trail",
+            "label": "paper-backed source trail",
+            "ready": true,
+            "refs": [
+              "Circle/Erdos/EGZ.lean",
+              "Circle/Erdos/CauchyDavenport.lean",
+              "sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py"
+            ]
+          },
+          {
+            "command": "python -m pytest sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py",
+            "evidence": "python -m pytest sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py",
+            "id": "example_command",
+            "label": "executable example command",
+            "ready": true,
+            "refs": [
+              "sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py"
+            ]
+          },
+          {
+            "evidence": "pages 1/1; widgets 0/0",
+            "id": "living_book_route",
+            "label": "Living Book route",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/applications/erdos_bridges.qmd"
+              }
+            ]
+          },
+          {
+            "commands": [
+              "lake build",
+              "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+              "make sitecheck"
+            ],
+            "evidence": "proof trail 7/7; role/value/language gates ready",
+            "id": "local_verification_gates",
+            "label": "local verification gates",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "total_section_count": 7
       },
       "source_ref_contract": {
         "backed_count": 3,
@@ -449,16 +533,22 @@
             "passed": true
           },
           {
+            "evidence": "7/7 sections",
+            "id": "review_packet",
+            "label": "skeptical-reader review packet",
+            "passed": true
+          },
+          {
             "evidence": "No new EKR proof and no classification of all extremal families.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 19,
+        "passed_gate_count": 20,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 19
+        "total_gate_count": 20
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -574,6 +664,83 @@
           }
         ],
         "total_step_count": 7
+      },
+      "review_packet_contract": {
+        "ready_section_count": 7,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "claim/scope/boundary present",
+            "id": "claim_scope_boundary",
+            "label": "claim, proof scope, and boundary",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "1 paper ids",
+            "id": "paper_trail",
+            "label": "paper trail",
+            "ready": true,
+            "refs": [
+              "PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD"
+            ]
+          },
+          {
+            "evidence": "2/2 theorem refs",
+            "id": "theorem_trail",
+            "label": "proved theorem trail",
+            "ready": true,
+            "refs": [
+              "CC-T0064",
+              "CC-T0065"
+            ]
+          },
+          {
+            "evidence": "2/2 source refs",
+            "id": "source_trail",
+            "label": "paper-backed source trail",
+            "ready": true,
+            "refs": [
+              "Circle/Erdos/KatonaEKR.lean",
+              "sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py"
+            ]
+          },
+          {
+            "command": "python -m pytest sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py",
+            "evidence": "python -m pytest sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py",
+            "id": "example_command",
+            "label": "executable example command",
+            "ready": true,
+            "refs": [
+              "sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py"
+            ]
+          },
+          {
+            "evidence": "pages 1/1; widgets 0/0",
+            "id": "living_book_route",
+            "label": "Living Book route",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/applications/erdos_bridges.qmd"
+              }
+            ]
+          },
+          {
+            "commands": [
+              "lake build",
+              "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+              "make sitecheck"
+            ],
+            "evidence": "proof trail 7/7; role/value/language gates ready",
+            "id": "local_verification_gates",
+            "label": "local verification gates",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "total_section_count": 7
       },
       "source_ref_contract": {
         "backed_count": 2,
@@ -775,16 +942,22 @@
             "passed": true
           },
           {
+            "evidence": "7/7 sections",
+            "id": "review_packet",
+            "label": "skeptical-reader review packet",
+            "passed": true
+          },
+          {
             "evidence": "No new Roth proof, no improved bounds, and no cyclic-to-natural transfer theorem yet.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 19,
+        "passed_gate_count": 20,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 19
+        "total_gate_count": 20
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -900,6 +1073,83 @@
           }
         ],
         "total_step_count": 7
+      },
+      "review_packet_contract": {
+        "ready_section_count": 7,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "claim/scope/boundary present",
+            "id": "claim_scope_boundary",
+            "label": "claim, proof scope, and boundary",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "1 paper ids",
+            "id": "paper_trail",
+            "label": "paper trail",
+            "ready": true,
+            "refs": [
+              "PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES"
+            ]
+          },
+          {
+            "evidence": "2/2 theorem refs",
+            "id": "theorem_trail",
+            "label": "proved theorem trail",
+            "ready": true,
+            "refs": [
+              "CC-T0066",
+              "CC-T0067"
+            ]
+          },
+          {
+            "evidence": "2/2 source refs",
+            "id": "source_trail",
+            "label": "paper-backed source trail",
+            "ready": true,
+            "refs": [
+              "Circle/Erdos/RothAP.lean",
+              "sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py"
+            ]
+          },
+          {
+            "command": "python -m pytest sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py",
+            "evidence": "python -m pytest sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py",
+            "id": "example_command",
+            "label": "executable example command",
+            "ready": true,
+            "refs": [
+              "sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py"
+            ]
+          },
+          {
+            "evidence": "pages 1/1; widgets 0/0",
+            "id": "living_book_route",
+            "label": "Living Book route",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/applications/erdos_bridges.qmd"
+              }
+            ]
+          },
+          {
+            "commands": [
+              "lake build",
+              "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+              "make sitecheck"
+            ],
+            "evidence": "proof trail 7/7; role/value/language gates ready",
+            "id": "local_verification_gates",
+            "label": "local verification gates",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "total_section_count": 7
       },
       "source_ref_contract": {
         "backed_count": 2,
@@ -1101,16 +1351,22 @@
             "passed": true
           },
           {
+            "evidence": "7/7 sections",
+            "id": "review_packet",
+            "label": "skeptical-reader review packet",
+            "passed": true
+          },
+          {
             "evidence": "Finite Python searches are examples only; they are not the Hales-Jewett proof.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 19,
+        "passed_gate_count": 20,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 19
+        "total_gate_count": 20
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -1226,6 +1482,83 @@
           }
         ],
         "total_step_count": 7
+      },
+      "review_packet_contract": {
+        "ready_section_count": 7,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "claim/scope/boundary present",
+            "id": "claim_scope_boundary",
+            "label": "claim, proof scope, and boundary",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "1 paper ids",
+            "id": "paper_trail",
+            "label": "paper trail",
+            "ready": true,
+            "refs": [
+              "PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES"
+            ]
+          },
+          {
+            "evidence": "2/2 theorem refs",
+            "id": "theorem_trail",
+            "label": "proved theorem trail",
+            "ready": true,
+            "refs": [
+              "CC-T0068",
+              "CC-T0069"
+            ]
+          },
+          {
+            "evidence": "2/2 source refs",
+            "id": "source_trail",
+            "label": "paper-backed source trail",
+            "ready": true,
+            "refs": [
+              "Circle/Erdos/RamseyHJ.lean",
+              "sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py"
+            ]
+          },
+          {
+            "command": "python -m pytest sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py",
+            "evidence": "python -m pytest sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py",
+            "id": "example_command",
+            "label": "executable example command",
+            "ready": true,
+            "refs": [
+              "sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py"
+            ]
+          },
+          {
+            "evidence": "pages 1/1; widgets 0/0",
+            "id": "living_book_route",
+            "label": "Living Book route",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/applications/erdos_bridges.qmd"
+              }
+            ]
+          },
+          {
+            "commands": [
+              "lake build",
+              "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+              "make sitecheck"
+            ],
+            "evidence": "proof trail 7/7; role/value/language gates ready",
+            "id": "local_verification_gates",
+            "label": "local verification gates",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "total_section_count": 7
       },
       "source_ref_contract": {
         "backed_count": 2,
@@ -1427,16 +1760,22 @@
             "passed": true
           },
           {
+            "evidence": "7/7 sections",
+            "id": "review_packet",
+            "label": "skeptical-reader review packet",
+            "passed": true
+          },
+          {
             "evidence": "No progress on hard unit-distance or distinct-distance problems.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 19,
+        "passed_gate_count": 20,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 19
+        "total_gate_count": 20
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -1552,6 +1891,84 @@
           }
         ],
         "total_step_count": 7
+      },
+      "review_packet_contract": {
+        "ready_section_count": 7,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "claim/scope/boundary present",
+            "id": "claim_scope_boundary",
+            "label": "claim, proof scope, and boundary",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "1 paper ids",
+            "id": "paper_trail",
+            "label": "paper trail",
+            "ready": true,
+            "refs": [
+              "PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS"
+            ]
+          },
+          {
+            "evidence": "3/3 theorem refs",
+            "id": "theorem_trail",
+            "label": "proved theorem trail",
+            "ready": true,
+            "refs": [
+              "CC-T0070",
+              "CC-T0071",
+              "CC-T0072"
+            ]
+          },
+          {
+            "evidence": "2/2 source refs",
+            "id": "source_trail",
+            "label": "paper-backed source trail",
+            "ready": true,
+            "refs": [
+              "Circle/Erdos/GraphLab.lean",
+              "sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py"
+            ]
+          },
+          {
+            "command": "python -m pytest sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py",
+            "evidence": "python -m pytest sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py",
+            "id": "example_command",
+            "label": "executable example command",
+            "ready": true,
+            "refs": [
+              "sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py"
+            ]
+          },
+          {
+            "evidence": "pages 1/1; widgets 0/0",
+            "id": "living_book_route",
+            "label": "Living Book route",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/applications/erdos_bridges.qmd"
+              }
+            ]
+          },
+          {
+            "commands": [
+              "lake build",
+              "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+              "make sitecheck"
+            ],
+            "evidence": "proof trail 7/7; role/value/language gates ready",
+            "id": "local_verification_gates",
+            "label": "local verification gates",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "total_section_count": 7
       },
       "source_ref_contract": {
         "backed_count": 2,
@@ -1765,16 +2182,22 @@
             "passed": true
           },
           {
+            "evidence": "7/7 sections",
+            "id": "review_packet",
+            "label": "skeptical-reader review packet",
+            "passed": true
+          },
+          {
             "evidence": "No claim that this replaces standard modular arithmetic; it is a proof-carrying cyclic presentation.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 19,
+        "passed_gate_count": 20,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 19
+        "total_gate_count": 20
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -1932,6 +2355,100 @@
           }
         ],
         "total_step_count": 7
+      },
+      "review_packet_contract": {
+        "ready_section_count": 7,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "claim/scope/boundary present",
+            "id": "claim_scope_boundary",
+            "label": "claim, proof scope, and boundary",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "2 paper ids",
+            "id": "paper_trail",
+            "label": "paper trail",
+            "ready": true,
+            "refs": [
+              "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
+              "PAPER_01_FINITE_CIRCLES"
+            ]
+          },
+          {
+            "evidence": "6/6 theorem refs",
+            "id": "theorem_trail",
+            "label": "proved theorem trail",
+            "ready": true,
+            "refs": [
+              "CC-T0005",
+              "CC-T0006",
+              "CC-T0048",
+              "CC-T0049",
+              "CC-T0054",
+              "CC-T0061"
+            ]
+          },
+          {
+            "evidence": "4/4 source refs",
+            "id": "source_trail",
+            "label": "paper-backed source trail",
+            "ready": true,
+            "refs": [
+              "Circle/Core/Period.lean",
+              "Circle/Core/Orbit.lean",
+              "Circle/Core/Scaling.lean",
+              "sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py"
+            ]
+          },
+          {
+            "command": "python -m pytest sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py",
+            "evidence": "python -m pytest sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py",
+            "id": "example_command",
+            "label": "executable example command",
+            "ready": true,
+            "refs": [
+              "sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py"
+            ]
+          },
+          {
+            "evidence": "pages 2/2; widgets 3/3",
+            "id": "living_book_route",
+            "label": "Living Book route",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/S1/03_coils_orbits_closure.qmd",
+                "widget_ids": [
+                  "coil_orbit_explorer"
+                ]
+              },
+              {
+                "page": "site/chapters/S1/04_period_gcd_prime_full_coils.qmd",
+                "widget_ids": [
+                  "period_gcd_visualizer",
+                  "prime_full_coil_explorer"
+                ]
+              }
+            ]
+          },
+          {
+            "commands": [
+              "lake build",
+              "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+              "make sitecheck"
+            ],
+            "evidence": "proof trail 7/7; role/value/language gates ready",
+            "id": "local_verification_gates",
+            "label": "local verification gates",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "total_section_count": 7
       },
       "source_ref_contract": {
         "backed_count": 4,
@@ -2194,16 +2711,22 @@
             "passed": true
           },
           {
+            "evidence": "7/7 sections",
+            "id": "review_packet",
+            "label": "skeptical-reader review packet",
+            "passed": true
+          },
+          {
             "evidence": "No full smooth Hopf fibration formalization and no complete SO(3) robotics formalization.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 19,
+        "passed_gate_count": 20,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 19
+        "total_gate_count": 20
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -2365,6 +2888,104 @@
           }
         ],
         "total_step_count": 7
+      },
+      "review_packet_contract": {
+        "ready_section_count": 7,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "claim/scope/boundary present",
+            "id": "claim_scope_boundary",
+            "label": "claim, proof scope, and boundary",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "3 paper ids",
+            "id": "paper_trail",
+            "label": "paper trail",
+            "ready": true,
+            "refs": [
+              "PAPER_S3_02_QUATERNION_COILS",
+              "PAPER_S3_03_HOPF_COILS",
+              "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP"
+            ]
+          },
+          {
+            "evidence": "7/7 theorem refs",
+            "id": "theorem_trail",
+            "label": "proved theorem trail",
+            "ready": true,
+            "refs": [
+              "S3Q-T0005",
+              "S3Q-T0008",
+              "S3H-T0001",
+              "S3H-T0005",
+              "S3H-T0008",
+              "S3S-T0001",
+              "S3S-T0005"
+            ]
+          },
+          {
+            "evidence": "4/4 source refs",
+            "id": "source_trail",
+            "label": "paper-backed source trail",
+            "ready": true,
+            "refs": [
+              "Circle/S3/Scaffold.lean",
+              "sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py",
+              "sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py",
+              "sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py"
+            ]
+          },
+          {
+            "command": "python -m pytest sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py",
+            "evidence": "python -m pytest sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py",
+            "id": "example_command",
+            "label": "executable example command",
+            "ready": true,
+            "refs": [
+              "sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py",
+              "sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py",
+              "sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py"
+            ]
+          },
+          {
+            "evidence": "pages 2/2; widgets 2/2",
+            "id": "living_book_route",
+            "label": "Living Book route",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/S3/hopf_coils.qmd",
+                "widget_ids": [
+                  "hopf_hidden_phase"
+                ]
+              },
+              {
+                "page": "site/chapters/applications/physics.qmd",
+                "widget_ids": [
+                  "hopf_hidden_phase",
+                  "spin_sign_ambiguity"
+                ]
+              }
+            ]
+          },
+          {
+            "commands": [
+              "lake build",
+              "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+              "make sitecheck"
+            ],
+            "evidence": "proof trail 7/7; role/value/language gates ready",
+            "id": "local_verification_gates",
+            "label": "local verification gates",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "total_section_count": 7
       },
       "source_ref_contract": {
         "backed_count": 4,
@@ -2560,7 +3181,7 @@
             "passed": true
           },
           {
-            "evidence": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, two-path basepoint-swap facts, and three-path cycle/basepoint-rotation facts.",
+            "evidence": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, two-path basepoint-swap facts, and one-step/two-step three-path cycle basepoint-rotation facts.",
             "id": "proof_scope",
             "label": "proof scope",
             "passed": true
@@ -2584,7 +3205,7 @@
             "passed": true
           },
           {
-            "evidence": "18",
+            "evidence": "20",
             "id": "proved_theorem_ids",
             "label": "proved paper-carried theorem ids",
             "passed": true
@@ -2626,7 +3247,7 @@
             "passed": true
           },
           {
-            "evidence": "standard_math_parity theorems 18/18; circle_native_value sources 2/2; Living Book pages 1/1; application_guardrail language clean",
+            "evidence": "standard_math_parity theorems 20/20; circle_native_value sources 2/2; Living Book pages 1/1; application_guardrail language clean",
             "id": "value_proposition",
             "label": "role-backed value proposition",
             "passed": true
@@ -2638,16 +3259,22 @@
             "passed": true
           },
           {
+            "evidence": "7/7 sections",
+            "id": "review_packet",
+            "label": "skeptical-reader review packet",
+            "passed": true
+          },
+          {
             "evidence": "No continuum gauge theory, no physics discovery, and no lattice-QCD correctness claim.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 19,
+        "passed_gate_count": 20,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 19
+        "total_gate_count": 20
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -2677,7 +3304,7 @@
         "living_book_widget_count": 3,
         "paper_count": 1,
         "source_count": 2,
-        "theorem_count": 18
+        "theorem_count": 20
       },
       "executable_refs": [
         "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
@@ -2741,7 +3368,7 @@
       ],
       "proof_provenance": "Proof provenance is project-native Lean code for finite gauge-link/path records and holonomy laws, with Python fixtures serving as executable references.",
       "proof_provenance_kind": "project_native",
-      "proof_scope": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, two-path basepoint-swap facts, and three-path cycle/basepoint-rotation facts.",
+      "proof_scope": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, two-path basepoint-swap facts, and one-step/two-step three-path cycle basepoint-rotation facts.",
       "proof_trail_contract": {
         "passed_step_count": 7,
         "ready_to_advertise": true,
@@ -2753,7 +3380,7 @@
             "ready": true
           },
           {
-            "evidence": "18/18 theorem refs",
+            "evidence": "20/20 theorem refs",
             "id": "theorem_refs",
             "label": "proved paper-carried theorem refs",
             "ready": true
@@ -2790,6 +3417,106 @@
           }
         ],
         "total_step_count": 7
+      },
+      "review_packet_contract": {
+        "ready_section_count": 7,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "claim/scope/boundary present",
+            "id": "claim_scope_boundary",
+            "label": "claim, proof scope, and boundary",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "1 paper ids",
+            "id": "paper_trail",
+            "label": "paper trail",
+            "ready": true,
+            "refs": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ]
+          },
+          {
+            "evidence": "20/20 theorem refs",
+            "id": "theorem_trail",
+            "label": "proved theorem trail",
+            "ready": true,
+            "refs": [
+              "PHYS-T0001",
+              "PHYS-T0012",
+              "PHYS-T0026",
+              "PHYS-T0038",
+              "PHYS-T0042",
+              "PHYS-T0046",
+              "PHYS-T0047",
+              "PHYS-T0049",
+              "PHYS-T0050",
+              "PHYS-T0051",
+              "PHYS-T0052",
+              "PHYS-T0053",
+              "PHYS-T0054",
+              "PHYS-T0055",
+              "PHYS-T0056",
+              "PHYS-T0057",
+              "PHYS-T0058",
+              "PHYS-T0059",
+              "PHYS-T0060",
+              "PHYS-T0061"
+            ]
+          },
+          {
+            "evidence": "2/2 source refs",
+            "id": "source_trail",
+            "label": "paper-backed source trail",
+            "ready": true,
+            "refs": [
+              "Circle/Physics/LatticeGauge.lean",
+              "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
+            ]
+          },
+          {
+            "command": "python -m pytest sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py",
+            "evidence": "python -m pytest sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py",
+            "id": "example_command",
+            "label": "executable example command",
+            "ready": true,
+            "refs": [
+              "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
+            ]
+          },
+          {
+            "evidence": "pages 1/1; widgets 3/3",
+            "id": "living_book_route",
+            "label": "Living Book route",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/applications/physics.qmd",
+                "widget_ids": [
+                  "finite_path_algebra",
+                  "finite_gauge_loop_holonomy",
+                  "wilson_loop_certificate"
+                ]
+              }
+            ]
+          },
+          {
+            "commands": [
+              "lake build",
+              "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+              "make sitecheck"
+            ],
+            "evidence": "proof trail 7/7; role/value/language gates ready",
+            "id": "local_verification_gates",
+            "label": "local verification gates",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "total_section_count": 7
       },
       "source_ref_contract": {
         "backed_count": 2,
@@ -2831,10 +3558,12 @@
         "PHYS-T0056",
         "PHYS-T0057",
         "PHYS-T0058",
-        "PHYS-T0059"
+        "PHYS-T0059",
+        "PHYS-T0060",
+        "PHYS-T0061"
       ],
       "theorem_ref_contract": {
-        "proved_and_paper_backed_count": 18,
+        "proved_and_paper_backed_count": 20,
         "refs": [
           {
             "canonical_status": "proved",
@@ -3033,9 +3762,31 @@
             "paper_backed": true,
             "proved": true,
             "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0060",
+            "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_holonomy",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0061",
+            "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_gaugeShiftedHolonomy",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
           }
         ],
-        "total_count": 18,
+        "total_count": 20,
         "unproved_or_unbacked_ids": []
       },
       "title": "Proof-carrying finite gauge paths",
@@ -3053,7 +3804,7 @@
             "required": true
           },
           "standard_math_parity": {
-            "evidence": "theorems 18/18",
+            "evidence": "theorems 20/20",
             "ready": true,
             "required": true
           }
@@ -3183,16 +3934,22 @@
             "passed": true
           },
           {
+            "evidence": "7/7 sections",
+            "id": "review_packet",
+            "label": "skeptical-reader review packet",
+            "passed": true
+          },
+          {
             "evidence": "No universal compression claim and no guarantee that generated artifacts are mathematically interesting.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 19,
+        "passed_gate_count": 20,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 19
+        "total_gate_count": 20
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -3343,6 +4100,118 @@
           }
         ],
         "total_step_count": 7
+      },
+      "review_packet_contract": {
+        "ready_section_count": 7,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "claim/scope/boundary present",
+            "id": "claim_scope_boundary",
+            "label": "claim, proof scope, and boundary",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "2 paper ids",
+            "id": "paper_trail",
+            "label": "paper trail",
+            "ready": true,
+            "refs": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE",
+              "PAPER_P2_05_PROOF_CARRYING_GLYPHS"
+            ]
+          },
+          {
+            "evidence": "27/27 theorem refs",
+            "id": "theorem_trail",
+            "label": "proved theorem trail",
+            "ready": true,
+            "refs": [
+              "GEN-T0001",
+              "GEN-T0008",
+              "GEN-T0017",
+              "GEN-T0019",
+              "GEN-T0020",
+              "GEN-T0021",
+              "GEN-T0022",
+              "GEN-T0024",
+              "GEN-T0026",
+              "GEN-T0027",
+              "GEN-T0028",
+              "GEN-T0029",
+              "GEN-T0030",
+              "GEN-T0031",
+              "GEN-T0032",
+              "GEN-T0033",
+              "GEN-T0034",
+              "GEN-T0035",
+              "GEN-T0036",
+              "GEN-T0037",
+              "GEN-T0038",
+              "GEN-T0039",
+              "GEN-T0040",
+              "GEN-T0041",
+              "GEN-T0042",
+              "GEN-T0043",
+              "P2G-T0006"
+            ]
+          },
+          {
+            "evidence": "4/4 source refs",
+            "id": "source_trail",
+            "label": "paper-backed source trail",
+            "ready": true,
+            "refs": [
+              "Circle/Generative/SeedRule.lean",
+              "Circle/Phase2/GlyphProof.lean",
+              "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py",
+              "sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py"
+            ]
+          },
+          {
+            "command": "python -m pytest sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py",
+            "evidence": "python -m pytest sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py",
+            "id": "example_command",
+            "label": "executable example command",
+            "ready": true,
+            "refs": [
+              "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py",
+              "sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py"
+            ]
+          },
+          {
+            "evidence": "pages 1/1; widgets 4/4",
+            "id": "living_book_route",
+            "label": "Living Book route",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/applications/generative.qmd",
+                "widget_ids": [
+                  "seed_rule_diagram_generator",
+                  "orbit_family_generator",
+                  "proof_glyph_certificate",
+                  "generator_comparison_search"
+                ]
+              }
+            ]
+          },
+          {
+            "commands": [
+              "lake build",
+              "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+              "make sitecheck"
+            ],
+            "evidence": "proof trail 7/7; role/value/language gates ready",
+            "id": "local_verification_gates",
+            "label": "local verification gates",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "total_section_count": 7
       },
       "source_ref_contract": {
         "backed_count": 4,
@@ -3856,16 +4725,22 @@
             "passed": true
           },
           {
+            "evidence": "7/7 sections",
+            "id": "review_packet",
+            "label": "skeptical-reader review packet",
+            "passed": true
+          },
+          {
             "evidence": "No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 19,
+        "passed_gate_count": 20,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 19
+        "total_gate_count": 20
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -4040,6 +4915,126 @@
           }
         ],
         "total_step_count": 7
+      },
+      "review_packet_contract": {
+        "ready_section_count": 7,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "claim/scope/boundary present",
+            "id": "claim_scope_boundary",
+            "label": "claim, proof scope, and boundary",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "2 paper ids",
+            "id": "paper_trail",
+            "label": "paper trail",
+            "ready": true,
+            "refs": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+              "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
+            ]
+          },
+          {
+            "evidence": "31/31 theorem refs",
+            "id": "theorem_trail",
+            "label": "proved theorem trail",
+            "ready": true,
+            "refs": [
+              "AIM-T0001",
+              "AIM-T0005",
+              "AIM-T0011",
+              "AIM-T0017",
+              "AIM-T0022",
+              "AIM-T0024",
+              "AIM-T0025",
+              "AIM-T0031",
+              "AIM-T0032",
+              "AIM-T0033",
+              "AIM-T0034",
+              "AIM-T0035",
+              "AIM-T0036",
+              "AIM-T0037",
+              "AIM-T0038",
+              "AIM-T0039",
+              "AIM-T0040",
+              "AIM-T0041",
+              "AIM-T0042",
+              "AIM-T0043",
+              "AIM-T0044",
+              "AIM-T0045",
+              "AIM-T0046",
+              "AIM-T0047",
+              "AIM-T0048",
+              "AIM-T0049",
+              "AIM-T0050",
+              "AIM-T0051",
+              "AIM-T0052",
+              "AIM-T0053",
+              "AIRA-T0005"
+            ]
+          },
+          {
+            "evidence": "5/5 source refs",
+            "id": "source_trail",
+            "label": "paper-backed source trail",
+            "ready": true,
+            "refs": [
+              "Circle/Applications/CircleAI.lean",
+              "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/lean/PaperAI02.lean",
+              "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/lean/PaperAI03.lean",
+              "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
+              "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"
+            ]
+          },
+          {
+            "command": "python -m pytest sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py",
+            "evidence": "python -m pytest sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py",
+            "id": "example_command",
+            "label": "executable example command",
+            "ready": true,
+            "refs": [
+              "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
+              "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"
+            ]
+          },
+          {
+            "evidence": "pages 1/1; widgets 7/7",
+            "id": "living_book_route",
+            "label": "Living Book route",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/applications/ai.qmd",
+                "widget_ids": [
+                  "cyclic_memory_slots",
+                  "loop_recurrence_budget",
+                  "loop_exit_certificate",
+                  "token_level_recurrence",
+                  "learned_middle_block_recurrence",
+                  "training_free_loop_wrapper",
+                  "adapter_parameter_budget"
+                ]
+              }
+            ]
+          },
+          {
+            "commands": [
+              "lake build",
+              "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+              "make sitecheck"
+            ],
+            "evidence": "proof trail 7/7; role/value/language gates ready",
+            "id": "local_verification_gates",
+            "label": "local verification gates",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "total_section_count": 7
       },
       "source_ref_contract": {
         "backed_count": 5,
@@ -4607,16 +5602,22 @@
             "passed": true
           },
           {
+            "evidence": "7/7 sections",
+            "id": "review_packet",
+            "label": "skeptical-reader review packet",
+            "passed": true
+          },
+          {
             "evidence": "No performance claim without direct dense, FFT/NTT, and backend baselines.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 19,
+        "passed_gate_count": 20,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 19
+        "total_gate_count": 20
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -4739,6 +5740,91 @@
           }
         ],
         "total_step_count": 7
+      },
+      "review_packet_contract": {
+        "ready_section_count": 7,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "claim/scope/boundary present",
+            "id": "claim_scope_boundary",
+            "label": "claim, proof scope, and boundary",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "3 paper ids",
+            "id": "paper_trail",
+            "label": "paper trail",
+            "ready": true,
+            "refs": [
+              "PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION",
+              "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT",
+              "PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS"
+            ]
+          },
+          {
+            "evidence": "3/3 theorem refs",
+            "id": "theorem_trail",
+            "label": "proved theorem trail",
+            "ready": true,
+            "refs": [
+              "COMPC-T0005",
+              "COMPL-T0005",
+              "COMPS-T0004"
+            ]
+          },
+          {
+            "evidence": "5/5 source refs",
+            "id": "source_trail",
+            "label": "paper-backed source trail",
+            "ready": true,
+            "refs": [
+              "Circle/Applications/CoilCompute.lean",
+              "Circle/Applications/CoilSystems.lean",
+              "sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py",
+              "sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py",
+              "sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py"
+            ]
+          },
+          {
+            "command": "python -m pytest sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py",
+            "evidence": "python -m pytest sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py",
+            "id": "example_command",
+            "label": "executable example command",
+            "ready": true,
+            "refs": [
+              "sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py",
+              "sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py",
+              "sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py"
+            ]
+          },
+          {
+            "evidence": "pages 1/1; widgets 0/0",
+            "id": "living_book_route",
+            "label": "Living Book route",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/applications/compute.qmd"
+              }
+            ]
+          },
+          {
+            "commands": [
+              "lake build",
+              "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
+              "make sitecheck"
+            ],
+            "evidence": "proof trail 7/7; role/value/language gates ready",
+            "id": "local_verification_gates",
+            "label": "local verification gates",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "total_section_count": 7
       },
       "source_ref_contract": {
         "backed_count": 5,
@@ -4899,6 +5985,11 @@
         ],
         "ready_capability_count": 5,
         "ready_to_advertise": true,
+        "review_packets": {
+          "incomplete_capability_ids": [],
+          "ready_count": 5,
+          "total_count": 5
+        },
         "source_refs": {
           "backed_count": 11,
           "total_count": 11,
@@ -4919,6 +6010,111 @@
           "theorem_count": 11
         },
         "unknown_capability_ids": []
+      },
+      "route_review_dossier_contract": {
+        "ready_section_count": 7,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "role_counts": {
+          "application_guardrail": {
+            "ready_count": 0,
+            "total_count": 0
+          },
+          "circle_native_value": {
+            "ready_count": 5,
+            "total_count": 5
+          },
+          "standard_math_parity": {
+            "ready_count": 5,
+            "total_count": 5
+          }
+        },
+        "sections": [
+          {
+            "evidence": "route claim language clean",
+            "id": "route_scope_boundary",
+            "label": "route claim, audience, and boundary",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "5/5 packets",
+            "id": "capability_review_packets",
+            "label": "capability review packets",
+            "ready": true,
+            "refs": [
+              "SHOW-001",
+              "SHOW-002",
+              "SHOW-003",
+              "SHOW-004",
+              "SHOW-005"
+            ]
+          },
+          {
+            "evidence": "5/5 standard-parity lanes",
+            "id": "standard_parity_surface",
+            "label": "standard-math parity surface",
+            "ready": true,
+            "refs": [
+              "SHOW-001",
+              "SHOW-002",
+              "SHOW-003",
+              "SHOW-004",
+              "SHOW-005"
+            ]
+          },
+          {
+            "evidence": "5/5 Circle-native lanes",
+            "id": "circle_native_surface",
+            "label": "Circle-native value surface",
+            "ready": true,
+            "refs": [
+              "SHOW-001",
+              "SHOW-002",
+              "SHOW-003",
+              "SHOW-004",
+              "SHOW-005"
+            ]
+          },
+          {
+            "evidence": "provenance mathlib_bridge, project_native; theorems 11/11; sources 11/11",
+            "id": "proof_provenance_surface",
+            "label": "proof provenance and backing surface",
+            "ready": true,
+            "refs": [
+              "mathlib_bridge",
+              "project_native"
+            ]
+          },
+          {
+            "command": "python -m pytest sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py",
+            "evidence": "python -m pytest sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py",
+            "id": "route_reproduction_command",
+            "label": "route-wide executable reproduction command",
+            "ready": true,
+            "refs": [
+              "sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py",
+              "sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py",
+              "sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py",
+              "sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py",
+              "sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py"
+            ]
+          },
+          {
+            "evidence": "route language pass; capability language 5/5",
+            "id": "advertising_guardrails",
+            "label": "route and capability advertising guardrails",
+            "ready": true,
+            "refs": [
+              "SHOW-001",
+              "SHOW-002",
+              "SHOW-003",
+              "SHOW-004",
+              "SHOW-005"
+            ]
+          }
+        ],
+        "total_section_count": 7
       },
       "title": "Hard mathematics bridge"
     },
@@ -4963,6 +6159,11 @@
         ],
         "ready_capability_count": 2,
         "ready_to_advertise": true,
+        "review_packets": {
+          "incomplete_capability_ids": [],
+          "ready_count": 2,
+          "total_count": 2
+        },
         "source_refs": {
           "backed_count": 9,
           "total_count": 9,
@@ -4983,6 +6184,97 @@
           "theorem_count": 9
         },
         "unknown_capability_ids": []
+      },
+      "route_review_dossier_contract": {
+        "ready_section_count": 7,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "role_counts": {
+          "application_guardrail": {
+            "ready_count": 1,
+            "total_count": 1
+          },
+          "circle_native_value": {
+            "ready_count": 2,
+            "total_count": 2
+          },
+          "standard_math_parity": {
+            "ready_count": 2,
+            "total_count": 2
+          }
+        },
+        "sections": [
+          {
+            "evidence": "route claim language clean",
+            "id": "route_scope_boundary",
+            "label": "route claim, audience, and boundary",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "2/2 packets",
+            "id": "capability_review_packets",
+            "label": "capability review packets",
+            "ready": true,
+            "refs": [
+              "SHOW-006",
+              "SHOW-011"
+            ]
+          },
+          {
+            "evidence": "2/2 standard-parity lanes",
+            "id": "standard_parity_surface",
+            "label": "standard-math parity surface",
+            "ready": true,
+            "refs": [
+              "SHOW-006",
+              "SHOW-011"
+            ]
+          },
+          {
+            "evidence": "2/2 Circle-native lanes",
+            "id": "circle_native_surface",
+            "label": "Circle-native value surface",
+            "ready": true,
+            "refs": [
+              "SHOW-006",
+              "SHOW-011"
+            ]
+          },
+          {
+            "evidence": "provenance project_native; theorems 9/9; sources 9/9",
+            "id": "proof_provenance_surface",
+            "label": "proof provenance and backing surface",
+            "ready": true,
+            "refs": [
+              "project_native"
+            ]
+          },
+          {
+            "command": "python -m pytest sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py",
+            "evidence": "python -m pytest sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py",
+            "id": "route_reproduction_command",
+            "label": "route-wide executable reproduction command",
+            "ready": true,
+            "refs": [
+              "sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py",
+              "sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py",
+              "sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py",
+              "sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py"
+            ]
+          },
+          {
+            "evidence": "route language pass; capability language 2/2",
+            "id": "advertising_guardrails",
+            "label": "route and capability advertising guardrails",
+            "ready": true,
+            "refs": [
+              "SHOW-006",
+              "SHOW-011"
+            ]
+          }
+        ],
+        "total_section_count": 7
       },
       "title": "Cyclic proof spine"
     },
@@ -5027,14 +6319,19 @@
         ],
         "ready_capability_count": 2,
         "ready_to_advertise": true,
+        "review_packets": {
+          "incomplete_capability_ids": [],
+          "ready_count": 2,
+          "total_count": 2
+        },
         "source_refs": {
           "backed_count": 6,
           "total_count": 6,
           "unbacked_refs": []
         },
         "theorem_refs": {
-          "proved_and_paper_backed_count": 25,
-          "total_count": 25,
+          "proved_and_paper_backed_count": 27,
+          "total_count": 27,
           "unproved_or_unbacked_refs": []
         },
         "unique_evidence_counts": {
@@ -5044,9 +6341,100 @@
           "living_book_widget_count": 5,
           "paper_count": 4,
           "source_count": 6,
-          "theorem_count": 25
+          "theorem_count": 27
         },
         "unknown_capability_ids": []
+      },
+      "route_review_dossier_contract": {
+        "ready_section_count": 7,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "role_counts": {
+          "application_guardrail": {
+            "ready_count": 1,
+            "total_count": 1
+          },
+          "circle_native_value": {
+            "ready_count": 2,
+            "total_count": 2
+          },
+          "standard_math_parity": {
+            "ready_count": 2,
+            "total_count": 2
+          }
+        },
+        "sections": [
+          {
+            "evidence": "route claim language clean",
+            "id": "route_scope_boundary",
+            "label": "route claim, audience, and boundary",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "2/2 packets",
+            "id": "capability_review_packets",
+            "label": "capability review packets",
+            "ready": true,
+            "refs": [
+              "SHOW-007",
+              "SHOW-008"
+            ]
+          },
+          {
+            "evidence": "2/2 standard-parity lanes",
+            "id": "standard_parity_surface",
+            "label": "standard-math parity surface",
+            "ready": true,
+            "refs": [
+              "SHOW-007",
+              "SHOW-008"
+            ]
+          },
+          {
+            "evidence": "2/2 Circle-native lanes",
+            "id": "circle_native_surface",
+            "label": "Circle-native value surface",
+            "ready": true,
+            "refs": [
+              "SHOW-007",
+              "SHOW-008"
+            ]
+          },
+          {
+            "evidence": "provenance project_native; theorems 27/27; sources 6/6",
+            "id": "proof_provenance_surface",
+            "label": "proof provenance and backing surface",
+            "ready": true,
+            "refs": [
+              "project_native"
+            ]
+          },
+          {
+            "command": "python -m pytest sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py",
+            "evidence": "python -m pytest sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py",
+            "id": "route_reproduction_command",
+            "label": "route-wide executable reproduction command",
+            "ready": true,
+            "refs": [
+              "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py",
+              "sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py",
+              "sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py",
+              "sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py"
+            ]
+          },
+          {
+            "evidence": "route language pass; capability language 2/2",
+            "id": "advertising_guardrails",
+            "label": "route and capability advertising guardrails",
+            "ready": true,
+            "refs": [
+              "SHOW-007",
+              "SHOW-008"
+            ]
+          }
+        ],
+        "total_section_count": 7
       },
       "title": "Phase, rotation, and finite physics"
     },
@@ -5092,6 +6480,11 @@
         ],
         "ready_capability_count": 3,
         "ready_to_advertise": true,
+        "review_packets": {
+          "incomplete_capability_ids": [],
+          "ready_count": 3,
+          "total_count": 3
+        },
         "source_refs": {
           "backed_count": 14,
           "total_count": 14,
@@ -5113,6 +6506,103 @@
         },
         "unknown_capability_ids": []
       },
+      "route_review_dossier_contract": {
+        "ready_section_count": 7,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "role_counts": {
+          "application_guardrail": {
+            "ready_count": 3,
+            "total_count": 3
+          },
+          "circle_native_value": {
+            "ready_count": 3,
+            "total_count": 3
+          },
+          "standard_math_parity": {
+            "ready_count": 2,
+            "total_count": 2
+          }
+        },
+        "sections": [
+          {
+            "evidence": "route claim language clean",
+            "id": "route_scope_boundary",
+            "label": "route claim, audience, and boundary",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "3/3 packets",
+            "id": "capability_review_packets",
+            "label": "capability review packets",
+            "ready": true,
+            "refs": [
+              "SHOW-009",
+              "SHOW-010",
+              "SHOW-011"
+            ]
+          },
+          {
+            "evidence": "2/2 standard-parity lanes",
+            "id": "standard_parity_surface",
+            "label": "standard-math parity surface",
+            "ready": true,
+            "refs": [
+              "SHOW-010",
+              "SHOW-011"
+            ]
+          },
+          {
+            "evidence": "3/3 Circle-native lanes",
+            "id": "circle_native_surface",
+            "label": "Circle-native value surface",
+            "ready": true,
+            "refs": [
+              "SHOW-009",
+              "SHOW-010",
+              "SHOW-011"
+            ]
+          },
+          {
+            "evidence": "provenance project_native; theorems 61/61; sources 14/14",
+            "id": "proof_provenance_surface",
+            "label": "proof provenance and backing surface",
+            "ready": true,
+            "refs": [
+              "project_native"
+            ]
+          },
+          {
+            "command": "python -m pytest sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py",
+            "evidence": "python -m pytest sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py",
+            "id": "route_reproduction_command",
+            "label": "route-wide executable reproduction command",
+            "ready": true,
+            "refs": [
+              "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
+              "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py",
+              "sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py",
+              "sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py",
+              "sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py",
+              "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py",
+              "sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py"
+            ]
+          },
+          {
+            "evidence": "route language pass; capability language 3/3",
+            "id": "advertising_guardrails",
+            "label": "route and capability advertising guardrails",
+            "ready": true,
+            "refs": [
+              "SHOW-009",
+              "SHOW-010",
+              "SHOW-011"
+            ]
+          }
+        ],
+        "total_section_count": 7
+      },
       "title": "Proof-carrying generated and AI structures"
     }
   ],
@@ -5127,14 +6617,19 @@
         "unbacked_widgets": []
       },
       "ready_to_advertise": true,
+      "review_packets": {
+        "incomplete_capability_ids": [],
+        "ready_count": 11,
+        "total_count": 11
+      },
       "source_refs": {
         "backed_count": 35,
         "total_count": 35,
         "unbacked_refs": []
       },
       "theorem_refs": {
-        "proved_and_paper_backed_count": 103,
-        "total_count": 103,
+        "proved_and_paper_backed_count": 105,
+        "total_count": 105,
         "unproved_or_unbacked_refs": []
       }
     },
@@ -5151,7 +6646,7 @@
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 103
+      "theorem_count": 105
     },
     "proof_provenance_counts": {
       "mathlib_bridge": 4,
@@ -5164,7 +6659,9 @@
     },
     "route_summary": {
       "incomplete_count": 0,
+      "incomplete_dossier_ids": [],
       "ready_count": 4,
+      "ready_dossier_count": 4,
       "route_count": 4,
       "unknown_capability_ids": []
     },
@@ -5175,7 +6672,7 @@
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 103
+      "theorem_count": 105
     },
     "unique_living_book_pages": [
       "site/chapters/S1/03_coils_orbits_closure.qmd",

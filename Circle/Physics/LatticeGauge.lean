@@ -575,6 +575,33 @@ theorem closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy
   ]
   ac_rfl
 
+theorem closedGaugeLoop_fromThreeCycle_rotate_twice_holonomy
+    (first second third : CheckedGaugePath n)
+    (h12 : first.target = second.source)
+    (h23 : second.target = third.source)
+    (h31 : third.target = first.source) :
+    (ClosedGaugeLoop.fromThreeCycle third first second h31 h12 h23).holonomy =
+      (ClosedGaugeLoop.fromThreeCycle first second third h12 h23 h31).holonomy := by
+  rw [
+    closedGaugeLoop_fromThreeCycle_holonomy third first second h31 h12 h23,
+    closedGaugeLoop_fromThreeCycle_holonomy first second third h12 h23 h31,
+  ]
+  ac_rfl
+
+theorem closedGaugeLoop_fromThreeCycle_rotate_twice_gaugeShiftedHolonomy
+    (first second third : CheckedGaugePath n)
+    (h12 : first.target = second.source)
+    (h23 : second.target = third.source)
+    (h31 : third.target = first.source)
+    (gauge : Nat → ZMod n) :
+    (ClosedGaugeLoop.fromThreeCycle third first second h31 h12 h23).gaugeShiftedHolonomy gauge =
+      (ClosedGaugeLoop.fromThreeCycle first second third h12 h23 h31).gaugeShiftedHolonomy gauge := by
+  rw [
+    closedGaugeLoop_fromThreeCycle_gaugeShiftedHolonomy third first second h31 h12 h23 gauge,
+    closedGaugeLoop_fromThreeCycle_gaugeShiftedHolonomy first second third h12 h23 h31 gauge,
+  ]
+  ac_rfl
+
 theorem gaugeLinkPath_reverse_phases (path : GaugeLinkPath n) :
     path.reverse.phases = reversePhases path.phases := by
   unfold GaugeLinkPath.reverse GaugeLinkPath.phases reversePhases GaugeLink.reverse

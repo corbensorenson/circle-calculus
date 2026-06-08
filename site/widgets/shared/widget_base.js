@@ -284,10 +284,22 @@ function updateHashFilter(value) {
   history.replaceState(null, "", url);
 }
 
+function yieldToBrowser() {
+  return new Promise((resolve) => {
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(resolve, { timeout: 50 });
+    } else {
+      window.setTimeout(resolve, 0);
+    }
+  });
+}
+
 async function hydrateTheorems() {
   const data = await loadJson("../../data/generated/theorem_manifest.json");
   const byId = new Map(data.theorems.map((item) => [item.id, item]));
-  for (const target of document.querySelectorAll(".theorem-box[data-theorem-id]")) {
+  const targets = [...document.querySelectorAll(".theorem-box[data-theorem-id]")];
+  for (let index = 0; index < targets.length; index += 1) {
+    const target = targets[index];
     const id = target.dataset.theoremId;
     const theorem = byId.get(id);
     target.classList.add("theorem-card");
@@ -319,13 +331,16 @@ async function hydrateTheorems() {
     ]);
 
     target.replaceChildren(header, statement, meta);
+    if ((index + 1) % 12 === 0) await yieldToBrowser();
   }
 }
 
 async function hydrateDictionary() {
   const data = await loadJson("../../data/generated/dictionary.json");
   const byId = new Map(data.entries.map((item) => [item.id, item]));
-  for (const target of document.querySelectorAll(".dictionary-box[data-dictionary-id]")) {
+  const targets = [...document.querySelectorAll(".dictionary-box[data-dictionary-id]")];
+  for (let index = 0; index < targets.length; index += 1) {
+    const target = targets[index];
     const id = target.dataset.dictionaryId;
     const entry = byId.get(id);
     target.classList.add("dictionary-card");
@@ -362,6 +377,7 @@ async function hydrateDictionary() {
     ]);
 
     target.replaceChildren(header, definition, intuition, forbidden, meta);
+    if ((index + 1) % 12 === 0) await yieldToBrowser();
   }
 }
 

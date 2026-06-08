@@ -120,16 +120,31 @@ def test_three_path_cycle_record_preserves_rotated_basepoint_holonomy() -> None:
     rotated = concat_paths(concat_paths(second, third), first)
     transformed_rotated = gauge_transform_path(rotated, gauge)
     rotated_record = three_path_cycle_closed_loop_record(second, third, first)
+    rotated_twice = concat_paths(concat_paths(third, first), second)
+    transformed_rotated_twice = gauge_transform_path(rotated_twice, gauge)
+    rotated_twice_record = three_path_cycle_closed_loop_record(third, first, second)
 
     assert record.closed
     assert record.source == record.target == "a"
     assert record.holonomy == (path_holonomy(first) + path_holonomy(second) + path_holonomy(third)) % 17
     assert path_holonomy(transformed) == record.holonomy
-    assert record.theorem_ids == ("PHYS-T0047", "PHYS-T0056", "PHYS-T0057", "PHYS-T0058", "PHYS-T0059")
+    assert record.theorem_ids == (
+        "PHYS-T0047",
+        "PHYS-T0056",
+        "PHYS-T0057",
+        "PHYS-T0058",
+        "PHYS-T0059",
+        "PHYS-T0060",
+        "PHYS-T0061",
+    )
     assert rotated_record.closed
     assert rotated_record.source == rotated_record.target == "b"
     assert rotated_record.holonomy == record.holonomy
     assert path_holonomy(transformed_rotated) == record.holonomy
+    assert rotated_twice_record.closed
+    assert rotated_twice_record.source == rotated_twice_record.target == "c"
+    assert rotated_twice_record.holonomy == record.holonomy
+    assert path_holonomy(transformed_rotated_twice) == record.holonomy
 
 
 def test_closed_loop_record_rejects_open_paths() -> None:

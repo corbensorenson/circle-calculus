@@ -587,6 +587,8 @@ def export_widget_index() -> dict:
                 "PHYS-T0057",
                 "PHYS-T0058",
                 "PHYS-T0059",
+                "PHYS-T0060",
+                "PHYS-T0061",
             ],
             "dictionary_ids": [
                 "COMMON-0060",
@@ -1431,6 +1433,141 @@ def proof_trail_contract(
     }
 
 
+def review_packet_contract(
+    item: dict,
+    theorem_ref_contract: dict,
+    source_ref_contract: dict,
+    living_book_ref_contract: dict,
+    claim_language_contract: dict,
+    value_proposition_contract: dict,
+    proof_trail_contract: dict,
+) -> dict:
+    executable_refs = item.get("executable_refs", []) or []
+    verification_recipe = capability_verification_recipe(item)
+    expected_pytest_command = shlex.join(["python", "-m", "pytest", *executable_refs])
+    theorem_ready = (
+        theorem_ref_contract.get("total_count", 0) > 0
+        and theorem_ref_contract.get("proved_and_paper_backed_count")
+        == theorem_ref_contract.get("total_count")
+        and not theorem_ref_contract.get("unproved_or_unbacked_ids", [])
+    )
+    source_ready = (
+        source_ref_contract.get("total_count", 0) > 0
+        and source_ref_contract.get("backed_count") == source_ref_contract.get("total_count")
+        and not source_ref_contract.get("unbacked_refs", [])
+    )
+    living_ready = (
+        living_book_ref_contract.get("total_page_count", 0) > 0
+        and living_book_ref_contract.get("backed_page_count")
+        == living_book_ref_contract.get("total_page_count")
+        and living_book_ref_contract.get("backed_widget_count")
+        == living_book_ref_contract.get("total_widget_count")
+        and not living_book_ref_contract.get("unbacked_pages", [])
+        and not living_book_ref_contract.get("unbacked_widgets", [])
+    )
+    claim_ready = (
+        nonempty_text(item, "advertised_claim")
+        and nonempty_text(item, "proof_scope")
+        and nonempty_text(item, "not_claimed")
+        and claim_language_contract.get("ready_to_advertise", False)
+    )
+    command_ready = (
+        bool(executable_refs)
+        and verification_recipe.get("pytest_command") == expected_pytest_command
+        and verification_recipe.get("lean_command") == "lake build"
+        and verification_recipe.get("site_command") == "make sitecheck"
+    )
+    local_gate_ready = (
+        proof_trail_contract.get("ready_to_advertise", False)
+        and value_proposition_contract.get("ready_to_advertise", False)
+        and claim_language_contract.get("ready_to_advertise", False)
+    )
+    sections = [
+        {
+            "id": "claim_scope_boundary",
+            "label": "claim, proof scope, and boundary",
+            "ready": claim_ready,
+            "evidence": (
+                "claim/scope/boundary present"
+                if claim_ready
+                else "missing claim, proof scope, clean language, or boundary"
+            ),
+            "refs": [],
+        },
+        {
+            "id": "paper_trail",
+            "label": "paper trail",
+            "ready": bool(item.get("paper_ids", []) or []),
+            "evidence": f"{len(item.get('paper_ids', []) or [])} paper ids",
+            "refs": item.get("paper_ids", []) or [],
+        },
+        {
+            "id": "theorem_trail",
+            "label": "proved theorem trail",
+            "ready": theorem_ready,
+            "evidence": (
+                f"{theorem_ref_contract.get('proved_and_paper_backed_count', 0)}/"
+                f"{theorem_ref_contract.get('total_count', 0)} theorem refs"
+            ),
+            "refs": item.get("theorem_ids", []) or [],
+        },
+        {
+            "id": "source_trail",
+            "label": "paper-backed source trail",
+            "ready": source_ready,
+            "evidence": (
+                f"{source_ref_contract.get('backed_count', 0)}/"
+                f"{source_ref_contract.get('total_count', 0)} source refs"
+            ),
+            "refs": item.get("source_refs", []) or [],
+        },
+        {
+            "id": "example_command",
+            "label": "executable example command",
+            "ready": command_ready,
+            "evidence": verification_recipe.get("pytest_command", ""),
+            "refs": executable_refs,
+            "command": verification_recipe.get("pytest_command", ""),
+        },
+        {
+            "id": "living_book_route",
+            "label": "Living Book route",
+            "ready": living_ready,
+            "evidence": (
+                f"pages {living_book_ref_contract.get('backed_page_count', 0)}/"
+                f"{living_book_ref_contract.get('total_page_count', 0)}; "
+                f"widgets {living_book_ref_contract.get('backed_widget_count', 0)}/"
+                f"{living_book_ref_contract.get('total_widget_count', 0)}"
+            ),
+            "refs": item.get("living_book_refs", []) or [],
+        },
+        {
+            "id": "local_verification_gates",
+            "label": "local verification gates",
+            "ready": local_gate_ready,
+            "evidence": (
+                f"proof trail {proof_trail_contract.get('passed_step_count', 0)}/"
+                f"{proof_trail_contract.get('total_step_count', 0)}; "
+                "role/value/language gates ready"
+            ),
+            "refs": [],
+            "commands": [
+                verification_recipe.get("lean_command", ""),
+                verification_recipe.get("capability_contract_command", ""),
+                verification_recipe.get("site_command", ""),
+            ],
+        },
+    ]
+    ready = all(section["ready"] for section in sections)
+    return {
+        "ready_to_review": ready,
+        "ready_to_advertise": ready,
+        "ready_section_count": sum(1 for section in sections if section["ready"]),
+        "total_section_count": len(sections),
+        "sections": sections,
+    }
+
+
 def capability_claim_contract(
     item: dict,
     evidence_counts: dict[str, int],
@@ -1442,6 +1579,7 @@ def capability_claim_contract(
     claim_language_contract: dict,
     value_proposition_contract: dict,
     proof_trail_contract: dict,
+    review_packet_contract: dict,
 ) -> dict:
     roles = set(item.get("portfolio_roles", []) or [])
     provenance_kind = item.get("proof_provenance_kind", "")
@@ -1637,6 +1775,13 @@ def capability_claim_contract(
             f"{proof_trail_contract.get('total_step_count', 0)} steps",
         ),
         contract_gate(
+            "review_packet",
+            "skeptical-reader review packet",
+            review_packet_contract.get("ready_to_review", False),
+            f"{review_packet_contract.get('ready_section_count', 0)}/"
+            f"{review_packet_contract.get('total_section_count', 0)} sections",
+        ),
+        contract_gate(
             "claim_boundary",
             "not-claimed boundary",
             nonempty_text(item, "not_claimed")
@@ -1673,11 +1818,17 @@ def portfolio_backing_contract_summary(capabilities: list[dict]) -> dict:
         "unbacked_pages": [],
         "unbacked_widgets": [],
     }
+    review_packets = {
+        "ready_count": 0,
+        "total_count": 0,
+        "incomplete_capability_ids": [],
+    }
     for capability in capabilities:
         capability_id = capability.get("id", "<missing id>")
         theorem_contract = capability.get("theorem_ref_contract", {}) or {}
         source_contract = capability.get("source_ref_contract", {}) or {}
         living_contract = capability.get("living_book_ref_contract", {}) or {}
+        review_contract = capability.get("review_packet_contract", {}) or {}
 
         theorem_refs["proved_and_paper_backed_count"] += theorem_contract.get(
             "proved_and_paper_backed_count", 0
@@ -1715,6 +1866,11 @@ def portfolio_backing_contract_summary(capabilities: list[dict]) -> dict:
             f"{capability_id}#{widget}"
             for widget in living_contract.get("unbacked_widgets", []) or []
         )
+        review_packets["total_count"] += 1
+        if review_contract.get("ready_to_review", False):
+            review_packets["ready_count"] += 1
+        else:
+            review_packets["incomplete_capability_ids"].append(capability_id)
 
     theorem_ready = (
         theorem_refs["proved_and_paper_backed_count"] == theorem_refs["total_count"]
@@ -1730,11 +1886,16 @@ def portfolio_backing_contract_summary(capabilities: list[dict]) -> dict:
         and not living_book_refs["unbacked_pages"]
         and not living_book_refs["unbacked_widgets"]
     )
+    review_ready = (
+        review_packets["ready_count"] == review_packets["total_count"]
+        and not review_packets["incomplete_capability_ids"]
+    )
     return {
-        "ready_to_advertise": theorem_ready and source_ready and living_ready,
+        "ready_to_advertise": theorem_ready and source_ready and living_ready and review_ready,
         "theorem_refs": theorem_refs,
         "source_refs": source_refs,
         "living_book_refs": living_book_refs,
+        "review_packets": review_packets,
     }
 
 
@@ -1773,6 +1934,11 @@ def route_backing_contract(route: dict, capability_by_id: dict[str, dict]) -> di
         "unbacked_pages": [],
         "unbacked_widgets": [],
     }
+    review_packets = {
+        "ready_count": 0,
+        "total_count": 0,
+        "incomplete_capability_ids": [],
+    }
     paper_ids: set[str] = set()
     theorem_ids: set[str] = set()
     dictionary_ids: set[str] = set()
@@ -1807,6 +1973,7 @@ def route_backing_contract(route: dict, capability_by_id: dict[str, dict]) -> di
         theorem_contract = capability.get("theorem_ref_contract", {}) or {}
         source_contract = capability.get("source_ref_contract", {}) or {}
         living_contract = capability.get("living_book_ref_contract", {}) or {}
+        review_contract = capability.get("review_packet_contract", {}) or {}
         theorem_refs["proved_and_paper_backed_count"] += theorem_contract.get(
             "proved_and_paper_backed_count", 0
         )
@@ -1841,6 +2008,11 @@ def route_backing_contract(route: dict, capability_by_id: dict[str, dict]) -> di
             f"{capability_id}#{widget}"
             for widget in living_contract.get("unbacked_widgets", []) or []
         )
+        review_packets["total_count"] += 1
+        if review_contract.get("ready_to_review", False):
+            review_packets["ready_count"] += 1
+        else:
+            review_packets["incomplete_capability_ids"].append(capability_id)
 
     theorem_ready = (
         theorem_refs["proved_and_paper_backed_count"] == theorem_refs["total_count"]
@@ -1856,6 +2028,10 @@ def route_backing_contract(route: dict, capability_by_id: dict[str, dict]) -> di
         and not living_book_refs["unbacked_pages"]
         and not living_book_refs["unbacked_widgets"]
     )
+    review_ready = (
+        review_packets["ready_count"] == review_packets["total_count"]
+        and not review_packets["incomplete_capability_ids"]
+    )
     route_claim_language_contract = claim_language_contract(
         route,
         ROUTE_CLAIM_LANGUAGE_FIELDS,
@@ -1868,6 +2044,7 @@ def route_backing_contract(route: dict, capability_by_id: dict[str, dict]) -> di
             and theorem_ready
             and source_ready
             and living_ready
+            and review_ready
             and route_claim_language_contract["ready_to_advertise"]
         ),
         "capability_count": len(capability_ids),
@@ -1888,7 +2065,198 @@ def route_backing_contract(route: dict, capability_by_id: dict[str, dict]) -> di
         "theorem_refs": theorem_refs,
         "source_refs": source_refs,
         "living_book_refs": living_book_refs,
+        "review_packets": review_packets,
         "claim_language_contract": route_claim_language_contract,
+    }
+
+
+def route_review_dossier_contract(route: dict, capability_by_id: dict[str, dict]) -> dict:
+    capability_ids = route.get("capability_ids", []) or []
+    route_capabilities = [
+        capability_by_id[capability_id]
+        for capability_id in capability_ids
+        if capability_id in capability_by_id
+    ]
+    route_contract = route_backing_contract(route, capability_by_id)
+    executable_refs = sorted(
+        {
+            ref
+            for capability in route_capabilities
+            for ref in (capability.get("executable_refs", []) or [])
+        }
+    )
+    route_pytest_command = shlex.join(["python", "-m", "pytest", *executable_refs])
+    role_counts: dict[str, dict[str, int]] = {}
+    for role in ("standard_math_parity", "circle_native_value", "application_guardrail"):
+        required_capabilities = [
+            capability
+            for capability in route_capabilities
+            if role in (capability.get("portfolio_roles", []) or [])
+        ]
+        ready_capabilities = [
+            capability
+            for capability in required_capabilities
+            if (
+                (
+                    capability.get("value_proposition_contract", {})
+                    or {}
+                ).get("role_checks", {})
+                or {}
+            ).get(role, {}).get("ready", False)
+        ]
+        role_counts[role] = {
+            "ready_count": len(ready_capabilities),
+            "total_count": len(required_capabilities),
+        }
+
+    theorem_refs = route_contract.get("theorem_refs", {}) or {}
+    source_refs = route_contract.get("source_refs", {}) or {}
+    living_refs = route_contract.get("living_book_refs", {}) or {}
+    review_packets = route_contract.get("review_packets", {}) or {}
+    route_language = route_contract.get("claim_language_contract", {}) or {}
+    capability_language_ready_count = sum(
+        1
+        for capability in route_capabilities
+        if (capability.get("claim_language_contract", {}) or {}).get(
+            "ready_to_advertise",
+            False,
+        )
+    )
+    proof_provenance_kinds = route_contract.get("proof_provenance_kinds", []) or []
+    theorem_ready = (
+        theorem_refs.get("total_count", 0) > 0
+        and theorem_refs.get("proved_and_paper_backed_count")
+        == theorem_refs.get("total_count")
+        and not theorem_refs.get("unproved_or_unbacked_refs", [])
+    )
+    source_ready = (
+        source_refs.get("total_count", 0) > 0
+        and source_refs.get("backed_count") == source_refs.get("total_count")
+        and not source_refs.get("unbacked_refs", [])
+    )
+    living_ready = (
+        living_refs.get("total_page_count", 0) > 0
+        and living_refs.get("backed_page_count") == living_refs.get("total_page_count")
+        and living_refs.get("backed_widget_count") == living_refs.get("total_widget_count")
+        and not living_refs.get("unbacked_pages", [])
+        and not living_refs.get("unbacked_widgets", [])
+    )
+    standard_ready = (
+        role_counts["standard_math_parity"]["total_count"] > 0
+        and role_counts["standard_math_parity"]["ready_count"]
+        == role_counts["standard_math_parity"]["total_count"]
+    )
+    circle_native_ready = (
+        role_counts["circle_native_value"]["total_count"] > 0
+        and role_counts["circle_native_value"]["ready_count"]
+        == role_counts["circle_native_value"]["total_count"]
+    )
+    guardrail_ready = (
+        route_language.get("ready_to_advertise", False)
+        and capability_language_ready_count == len(route_capabilities)
+        and all(nonempty_text(capability, "not_claimed") for capability in route_capabilities)
+    )
+    sections = [
+        {
+            "id": "route_scope_boundary",
+            "label": "route claim, audience, and boundary",
+            "ready": (
+                nonempty_text(route, "audience")
+                and nonempty_text(route, "route_claim")
+                and nonempty_text(route, "not_claimed")
+                and route_language.get("ready_to_advertise", False)
+            ),
+            "evidence": (
+                "route claim language clean"
+                if route_language.get("ready_to_advertise", False)
+                else "route claim language incomplete"
+            ),
+            "refs": [],
+        },
+        {
+            "id": "capability_review_packets",
+            "label": "capability review packets",
+            "ready": (
+                review_packets.get("total_count", 0) > 0
+                and review_packets.get("ready_count") == review_packets.get("total_count")
+                and not review_packets.get("incomplete_capability_ids", [])
+                and not route_contract.get("unknown_capability_ids", [])
+                and not route_contract.get("incomplete_capability_ids", [])
+            ),
+            "evidence": (
+                f"{review_packets.get('ready_count', 0)}/"
+                f"{review_packets.get('total_count', 0)} packets"
+            ),
+            "refs": capability_ids,
+        },
+        {
+            "id": "standard_parity_surface",
+            "label": "standard-math parity surface",
+            "ready": standard_ready,
+            "evidence": (
+                f"{role_counts['standard_math_parity']['ready_count']}/"
+                f"{role_counts['standard_math_parity']['total_count']} standard-parity lanes"
+            ),
+            "refs": [
+                capability.get("id", "")
+                for capability in route_capabilities
+                if "standard_math_parity" in (capability.get("portfolio_roles", []) or [])
+            ],
+        },
+        {
+            "id": "circle_native_surface",
+            "label": "Circle-native value surface",
+            "ready": circle_native_ready,
+            "evidence": (
+                f"{role_counts['circle_native_value']['ready_count']}/"
+                f"{role_counts['circle_native_value']['total_count']} Circle-native lanes"
+            ),
+            "refs": [
+                capability.get("id", "")
+                for capability in route_capabilities
+                if "circle_native_value" in (capability.get("portfolio_roles", []) or [])
+            ],
+        },
+        {
+            "id": "proof_provenance_surface",
+            "label": "proof provenance and backing surface",
+            "ready": bool(proof_provenance_kinds) and theorem_ready and source_ready and living_ready,
+            "evidence": (
+                f"provenance {', '.join(proof_provenance_kinds) or 'none'}; "
+                f"theorems {theorem_refs.get('proved_and_paper_backed_count', 0)}/"
+                f"{theorem_refs.get('total_count', 0)}; "
+                f"sources {source_refs.get('backed_count', 0)}/"
+                f"{source_refs.get('total_count', 0)}"
+            ),
+            "refs": proof_provenance_kinds,
+        },
+        {
+            "id": "route_reproduction_command",
+            "label": "route-wide executable reproduction command",
+            "ready": bool(executable_refs),
+            "evidence": route_pytest_command,
+            "refs": executable_refs,
+            "command": route_pytest_command,
+        },
+        {
+            "id": "advertising_guardrails",
+            "label": "route and capability advertising guardrails",
+            "ready": guardrail_ready,
+            "evidence": (
+                f"route language {'pass' if route_language.get('ready_to_advertise', False) else 'fail'}; "
+                f"capability language {capability_language_ready_count}/{len(route_capabilities)}"
+            ),
+            "refs": capability_ids,
+        },
+    ]
+    ready = all(section["ready"] for section in sections)
+    return {
+        "ready_to_review": ready,
+        "ready_to_advertise": ready,
+        "ready_section_count": sum(1 for section in sections if section["ready"]),
+        "total_section_count": len(sections),
+        "role_counts": role_counts,
+        "sections": sections,
     }
 
 
@@ -1900,6 +2268,10 @@ def export_portfolio_routes(
     for route in route_entries:
         item = dict(route)
         item["route_contract"] = route_backing_contract(item, capability_by_id)
+        item["route_review_dossier_contract"] = route_review_dossier_contract(
+            item,
+            capability_by_id,
+        )
         routes.append(item)
     return routes
 
@@ -1914,6 +2286,22 @@ def portfolio_route_summary(routes: list[dict]) -> dict:
         "route_count": len(routes),
         "ready_count": ready_count,
         "incomplete_count": len(routes) - ready_count,
+        "ready_dossier_count": sum(
+            1
+            for route in routes
+            if (route.get("route_review_dossier_contract", {}) or {}).get(
+                "ready_to_review",
+                False,
+            )
+        ),
+        "incomplete_dossier_ids": sorted(
+            route.get("id", "")
+            for route in routes
+            if not (route.get("route_review_dossier_contract", {}) or {}).get(
+                "ready_to_review",
+                False,
+            )
+        ),
         "unknown_capability_ids": sorted(
             {
                 capability_id
@@ -2013,6 +2401,15 @@ def export_capability_showcase() -> dict:
             item["claim_language_contract"],
             item["value_proposition_contract"],
         )
+        item["review_packet_contract"] = review_packet_contract(
+            item,
+            item["theorem_ref_contract"],
+            item["source_ref_contract"],
+            item["living_book_ref_contract"],
+            item["claim_language_contract"],
+            item["value_proposition_contract"],
+            item["proof_trail_contract"],
+        )
         item["claim_contract"] = capability_claim_contract(
             item,
             item["evidence_counts"],
@@ -2024,6 +2421,7 @@ def export_capability_showcase() -> dict:
             item["claim_language_contract"],
             item["value_proposition_contract"],
             item["proof_trail_contract"],
+            item["review_packet_contract"],
         )
         if item["claim_contract"]["ready_to_advertise"]:
             contract_ready_count += 1

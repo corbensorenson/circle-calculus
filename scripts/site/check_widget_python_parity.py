@@ -350,7 +350,15 @@ def js_three_path_cycle_closed_loop_record(edges: tuple[dict, ...], modulus: int
         "phases": tuple(edge["phase"] for edge in edges),
         "holonomy": js_path_holonomy(edges, modulus),
         "closed": closed,
-        "theorem_ids": ("PHYS-T0047", "PHYS-T0056", "PHYS-T0057", "PHYS-T0058", "PHYS-T0059"),
+        "theorem_ids": (
+            "PHYS-T0047",
+            "PHYS-T0056",
+            "PHYS-T0057",
+            "PHYS-T0058",
+            "PHYS-T0059",
+            "PHYS-T0060",
+            "PHYS-T0061",
+        ),
     }
 
 

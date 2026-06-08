@@ -170,6 +170,7 @@ function routeBackingText(route) {
   const theoremRefs = contract.theorem_refs || {};
   const sourceRefs = contract.source_refs || {};
   const livingRefs = contract.living_book_refs || {};
+  const reviewPackets = contract.review_packets || {};
   const language = contract.claim_language_contract || {};
   return [
     contract.ready_to_advertise ? "ready" : "incomplete",
@@ -178,8 +179,22 @@ function routeBackingText(route) {
     `sources ${sourceRefs.backed_count ?? 0}/${sourceRefs.total_count ?? 0}`,
     `Living Book pages ${livingRefs.backed_page_count ?? 0}/${livingRefs.total_page_count ?? 0}`,
     `widgets ${livingRefs.backed_widget_count ?? 0}/${livingRefs.total_widget_count ?? 0}`,
+    `review packets ${reviewPackets.ready_count ?? 0}/${reviewPackets.total_count ?? 0}`,
     `language ${language.ready_to_advertise ? "pass" : "fail"}`,
   ].join("; ");
+}
+
+function routeDossierText(route) {
+  const dossier = route.route_review_dossier_contract || {};
+  const sections = Array.isArray(dossier.sections) ? dossier.sections : [];
+  const sectionText = sections
+    .map((section) => `${section.label || section.id}: ${section.ready ? "ready" : "incomplete"}`)
+    .join("; ");
+  return [
+    dossier.ready_to_review ? "ready" : "incomplete",
+    `sections ${dossier.ready_section_count ?? 0}/${dossier.total_section_count ?? 0}`,
+    sectionText,
+  ].filter(Boolean).join("; ");
 }
 
 function renderRouteTable(routes) {
@@ -190,7 +205,7 @@ function renderRouteTable(routes) {
   table.className = "capability-route-table";
   const thead = document.createElement("thead");
   const header = document.createElement("tr");
-  for (const label of ["Route", "Audience", "Route claim", "Capabilities", "Backing", "Boundary"]) {
+  for (const label of ["Route", "Audience", "Route claim", "Capabilities", "Backing", "Reviewer dossier", "Boundary"]) {
     const th = document.createElement("th");
     th.scope = "col";
     th.textContent = label;
@@ -207,6 +222,7 @@ function renderRouteTable(routes) {
     appendCell(row, route.route_claim || "");
     appendCell(row, routeCapabilityLinks(route));
     appendCell(row, routeBackingText(route));
+    appendCell(row, routeDossierText(route));
     appendCell(row, route.not_claimed || "");
     tbody.appendChild(row);
   }
@@ -267,15 +283,18 @@ function renderManifestSummary(capabilities, summary) {
   const theoremRefs = backing.theorem_refs || {};
   const sourceRefs = backing.source_refs || {};
   const livingRefs = backing.living_book_refs || {};
+  const reviewPackets = backing.review_packets || {};
   const lines = [
     `capability lanes: ${summary.capability_count ?? capabilities.length}`,
     `portfolio routes: ready ${routeSummary.ready_count ?? 0}/${routeSummary.route_count ?? 0}`,
+    `route reviewer dossiers: ready ${routeSummary.ready_dossier_count ?? 0}/${routeSummary.route_count ?? 0}`,
     `role coverage:\n${roleCoverageLine(summary)}`,
     provenanceCoverage ? `proof provenance:\n${provenanceCoverage}` : "",
     `portfolio backing: ${backing.ready_to_advertise ? "ready" : "incomplete"}`,
     `backed theorem refs: ${theoremRefs.proved_and_paper_backed_count ?? 0}/${theoremRefs.total_count ?? 0}`,
     `backed source refs: ${sourceRefs.backed_count ?? 0}/${sourceRefs.total_count ?? 0}`,
     `backed Living Book refs: pages ${livingRefs.backed_page_count ?? 0}/${livingRefs.total_page_count ?? 0}; widgets ${livingRefs.backed_widget_count ?? 0}/${livingRefs.total_widget_count ?? 0}`,
+    `review packets: ready ${reviewPackets.ready_count ?? 0}/${reviewPackets.total_count ?? 0}`,
     `unique paper ids: ${unique.paper_count}`,
     `unique proved theorem ids advertised: ${unique.theorem_count}`,
     `unique pytest executable refs: ${unique.executable_count}`,

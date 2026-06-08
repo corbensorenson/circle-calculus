@@ -268,7 +268,15 @@ def three_path_cycle_closed_loop_record(
         phases=record.phases,
         holonomy=record.holonomy,
         closed=record.closed,
-        theorem_ids=("PHYS-T0047", "PHYS-T0056", "PHYS-T0057", "PHYS-T0058", "PHYS-T0059"),
+        theorem_ids=(
+            "PHYS-T0047",
+            "PHYS-T0056",
+            "PHYS-T0057",
+            "PHYS-T0058",
+            "PHYS-T0059",
+            "PHYS-T0060",
+            "PHYS-T0061",
+        ),
         target_ids=record.target_ids,
         note=record.note,
     )

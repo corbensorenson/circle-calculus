@@ -176,6 +176,10 @@ def test_export_site_data_writes_required_indexes() -> None:
         item["proof_trail_contract"]["ready_to_advertise"]
         for item in capabilities["capabilities"]
     )
+    assert all(
+        item["review_packet_contract"]["ready_to_review"]
+        for item in capabilities["capabilities"]
+    )
     assert capability_by_id["SHOW-001"]["value_proposition_contract"]["role_checks"][
         "standard_math_parity"
     ]["ready"]
@@ -206,6 +210,27 @@ def test_export_site_data_writes_required_indexes() -> None:
         "role_value",
         "claim_language",
     ]
+    assert capability_by_id["SHOW-001"]["review_packet_contract"]["ready_section_count"] == (
+        capability_by_id["SHOW-001"]["review_packet_contract"]["total_section_count"]
+    )
+    assert [
+        section["id"]
+        for section in capability_by_id["SHOW-001"]["review_packet_contract"]["sections"]
+    ] == [
+        "claim_scope_boundary",
+        "paper_trail",
+        "theorem_trail",
+        "source_trail",
+        "example_command",
+        "living_book_route",
+        "local_verification_gates",
+    ]
+    assert capability_by_id["SHOW-001"]["review_packet_contract"]["sections"][4][
+        "command"
+    ] == (
+        "python -m pytest "
+        "sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py"
+    )
     assert capability_by_id["SHOW-001"]["claim_contract"]["status"] == "ready"
     assert capability_by_id["SHOW-001"]["claim_contract"]["passed_gate_count"] == (
         capability_by_id["SHOW-001"]["claim_contract"]["total_gate_count"]
@@ -225,6 +250,9 @@ def test_export_site_data_writes_required_indexes() -> None:
     assert "proof_trail" in {
         gate["id"] for gate in capability_by_id["SHOW-001"]["claim_contract"]["gates"]
     }
+    assert "review_packet" in {
+        gate["id"] for gate in capability_by_id["SHOW-001"]["claim_contract"]["gates"]
+    }
     assert capability_by_id["SHOW-001"]["verification_recipe"]["pytest_command"] == (
         "python -m pytest "
         "sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py"
@@ -237,6 +265,8 @@ def test_export_site_data_writes_required_indexes() -> None:
     assert summary["route_summary"]["route_count"] == 4
     assert summary["route_summary"]["ready_count"] == 4
     assert summary["route_summary"]["incomplete_count"] == 0
+    assert summary["route_summary"]["ready_dossier_count"] == 4
+    assert summary["route_summary"]["incomplete_dossier_ids"] == []
     assert summary["route_summary"]["unknown_capability_ids"] == []
     hard_math_route = route_by_id["ROUTE-001"]
     assert hard_math_route["capability_ids"] == [
@@ -262,6 +292,42 @@ def test_export_site_data_writes_required_indexes() -> None:
     ] == hard_math_route["route_contract"]["theorem_refs"]["total_count"]
     assert hard_math_route["route_contract"]["source_refs"]["backed_count"] == (
         hard_math_route["route_contract"]["source_refs"]["total_count"]
+    )
+    assert hard_math_route["route_contract"]["review_packets"] == {
+        "ready_count": 5,
+        "total_count": 5,
+        "incomplete_capability_ids": [],
+    }
+    assert hard_math_route["route_review_dossier_contract"]["ready_section_count"] == (
+        hard_math_route["route_review_dossier_contract"]["total_section_count"]
+    )
+    assert [
+        section["id"]
+        for section in hard_math_route["route_review_dossier_contract"]["sections"]
+    ] == [
+        "route_scope_boundary",
+        "capability_review_packets",
+        "standard_parity_surface",
+        "circle_native_surface",
+        "proof_provenance_surface",
+        "route_reproduction_command",
+        "advertising_guardrails",
+    ]
+    assert hard_math_route["route_review_dossier_contract"]["role_counts"][
+        "standard_math_parity"
+    ] == {"ready_count": 5, "total_count": 5}
+    assert hard_math_route["route_review_dossier_contract"]["role_counts"][
+        "circle_native_value"
+    ] == {"ready_count": 5, "total_count": 5}
+    assert hard_math_route["route_review_dossier_contract"]["sections"][5][
+        "command"
+    ] == (
+        "python -m pytest "
+        "sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py "
+        "sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py "
+        "sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py "
+        "sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py "
+        "sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py"
     )
     systems_route = route_by_id["ROUTE-004"]
     assert systems_route["route_contract"]["ready_to_advertise"]
@@ -317,6 +383,11 @@ def test_export_site_data_writes_required_indexes() -> None:
     )
     assert backing_summary["living_book_refs"]["unbacked_pages"] == []
     assert backing_summary["living_book_refs"]["unbacked_widgets"] == []
+    assert backing_summary["review_packets"] == {
+        "ready_count": len(capabilities["capabilities"]),
+        "total_count": len(capabilities["capabilities"]),
+        "incomplete_capability_ids": [],
+    }
 
     targets = json.loads((generated / "phase4_targets.json").read_text())
     target_ids = {item["id"] for item in targets["targets"]}

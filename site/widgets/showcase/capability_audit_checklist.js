@@ -45,6 +45,7 @@ function fallbackClaimContract(capability) {
     ["claim_language_guardrail", "advertising language guardrail", true],
     ["value_proposition", "role-backed value proposition", true],
     ["proof_trail", "ordered proof trail", true],
+    ["review_packet", "skeptical-reader review packet", true],
     ["claim_boundary", "not-claimed boundary", Boolean(capability.not_claimed)],
   ].map(([id, label, passed]) => ({ id, label, passed }));
   const passed = gates.filter((gate) => gate.passed).length;
@@ -148,6 +149,15 @@ function proofTrailContract(capability) {
     passed_step_count: 0,
     total_step_count: 0,
     steps: [],
+  };
+}
+
+function reviewPacketContract(capability) {
+  return capability.review_packet_contract || {
+    ready_to_review: true,
+    ready_section_count: 0,
+    total_section_count: 0,
+    sections: [],
   };
 }
 
@@ -367,6 +377,18 @@ function proofTrailDetails(capability) {
     .join("; ");
 }
 
+function reviewPacketDetails(capability) {
+  const contract = reviewPacketContract(capability);
+  const sections = Array.isArray(contract.sections) ? contract.sections : [];
+  if (sections.length === 0) return "";
+  return sections
+    .map((section) => {
+      const command = section.command ? `; ${section.command}` : "";
+      return `${section.label || section.id}: ${section.ready ? "ready" : "incomplete"} (${section.evidence || ""}${command})`;
+    })
+    .join("; ");
+}
+
 function auditItem(label, value, details) {
   const item = document.createElement("li");
   item.append(`${label}: ${value}`);
@@ -435,6 +457,11 @@ function checklist(capability) {
       `${proofTrailContract(capability).passed_step_count || 0}/${proofTrailContract(capability).total_step_count || 0}`,
       proofTrailDetails(capability),
     ),
+    auditItem(
+      "skeptical-reader review packet",
+      `${reviewPacketContract(capability).ready_section_count || 0}/${reviewPacketContract(capability).total_section_count || 0}`,
+      reviewPacketDetails(capability),
+    ),
   ];
   for (const item of items) {
     list.appendChild(item);
@@ -485,6 +512,7 @@ function renderSummary(capabilities, summary) {
   const theoremRefs = backing.theorem_refs || {};
   const sourceRefs = backing.source_refs || {};
   const livingRefs = backing.living_book_refs || {};
+  const reviewPackets = backing.review_packets || {};
   const node = document.createElement("p");
   node.className = "widget-data";
   node.textContent = [
@@ -494,6 +522,7 @@ function renderSummary(capabilities, summary) {
     `backed theorem refs: ${theoremRefs.proved_and_paper_backed_count ?? 0}/${theoremRefs.total_count ?? 0}`,
     `backed source refs: ${sourceRefs.backed_count ?? 0}/${sourceRefs.total_count ?? 0}`,
     `backed Living Book refs: pages ${livingRefs.backed_page_count ?? 0}/${livingRefs.total_page_count ?? 0}; widgets ${livingRefs.backed_widget_count ?? 0}/${livingRefs.total_widget_count ?? 0}`,
+    `review packets: ready ${reviewPackets.ready_count ?? 0}/${reviewPackets.total_count ?? 0}`,
     `proof provenance: mathlib bridge ${provenance.mathlib_bridge || 0}; project-native ${provenance.project_native || 0}; mixed ${provenance.mixed || 0}`,
     `unique evidence: papers ${unique.paper_count || 0}; theorem ids ${unique.theorem_count || 0}; executables ${unique.executable_count || 0}; Living Book pages ${unique.living_book_page_count || 0}; widgets ${unique.living_book_widget_count || 0}`,
   ].join("\n");

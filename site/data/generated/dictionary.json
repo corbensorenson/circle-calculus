@@ -6926,6 +6926,18 @@
           "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy",
           "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy",
           "status": "proved"
+        },
+        {
+          "id": "PHYS-T0060",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_holonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_holonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0061",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_gaugeShiftedHolonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_gaugeShiftedHolonomy",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -7337,6 +7349,18 @@
           "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy",
           "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy",
           "status": "proved"
+        },
+        {
+          "id": "PHYS-T0060",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_holonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_holonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0061",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_gaugeShiftedHolonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_gaugeShiftedHolonomy",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -7497,6 +7521,18 @@
           "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy",
           "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy",
           "status": "proved"
+        },
+        {
+          "id": "PHYS-T0060",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_holonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_holonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0061",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_gaugeShiftedHolonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_gaugeShiftedHolonomy",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -7621,6 +7657,12 @@
           "id": "PHYS-T0059",
           "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy",
           "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0061",
+          "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_gaugeShiftedHolonomy",
+          "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_gaugeShiftedHolonomy",
           "status": "proved"
         }
       ],
