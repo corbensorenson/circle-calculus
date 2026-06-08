@@ -55,6 +55,10 @@ The widget below compares content-gated routing against static coil, static loca
 
 <div class="widget-panel" data-widget="content_gated_retrieval" data-dictionary-ids="COMMON-0057 COMMON-0047 COMMON-0028"></div>
 
+The learned version fits a tiny phase-to-route lookup from training examples, then compares it with static coil, static local, wrong-period, flipped-gate, union-candidate, and full-attention controls. It is a route-table fixture, not a learned-model quality claim.
+
+<div class="widget-panel" data-widget="learned_content_gate_retrieval" data-dictionary-ids="COMMON-0057 COMMON-0047 COMMON-0028"></div>
+
 ## Adapter Parameter-Budget Path
 
 CoilRA-style adapter work needs ordinary accounting before it can make any efficiency claim: how many parameters does a dense adapter use, how many does a LoRA-style count use, and how much alias pressure is introduced when channels share a block-cyclic table?
@@ -352,6 +356,7 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 <script type="module" src="../../widgets/ai/cyclic_memory_slots.js"></script>
 <script type="module" src="../../widgets/ai/coil_retrieval_reachability.js"></script>
 <script type="module" src="../../widgets/ai/content_gated_retrieval.js"></script>
+<script type="module" src="../../widgets/ai/learned_content_gate_retrieval.js"></script>
 <script type="module" src="../../widgets/ai/adapter_parameter_budget.js"></script>
 <script type="module" src="../../widgets/ai/circulant_mixer_validation.js"></script>
 <script type="module" src="../../widgets/ai/multicoil_phase_explorer.js"></script>

@@ -11,11 +11,13 @@ from circle_math.applications import (
     block_cyclic_adapter_parameter_count,
     coil_attention_path,
     circulant_mixer_output,
+    content_route_label,
     default_circulant_input,
     default_circulant_kernel,
     dense_circulant_matrix,
     dense_matrix_vector_product,
     dense_adapter_parameter_count,
+    fit_content_route_lookup,
     fit_loop_budget_lookup,
     fit_loop_block_lookup,
     fit_recurrence_resolution_lookup,
@@ -37,6 +39,7 @@ from circle_math.applications import (
     retrieval_hit_rate,
     retrieval_hit_rate_by_lag,
     retrieval_target_index,
+    predict_content_route_lookup,
     predict_loop_budget_lookup,
     predict_loop_block_lookup,
     predict_recurrence_resolution_lookup,
@@ -44,6 +47,7 @@ from circle_math.applications import (
     run_adapter_parameter_budget_benchmark,
     run_content_gated_retrieval_benchmark,
     run_circulant_mixer_benchmark,
+    run_learned_content_gate_retrieval_benchmark,
     run_learned_middle_block_recurrence_benchmark,
     run_learned_multi_resolution_recurrence_benchmark,
     run_learned_recurrence_schedule_benchmark,
@@ -849,6 +853,41 @@ def js_retrieval_hit_rate_by_lag(
 
 def js_average_candidate_count(candidate_sets: tuple[tuple[int, ...], ...]) -> float:
     return sum(len(set(candidates)) for candidates in candidate_sets) / len(candidate_sets)
+
+
+def js_content_route_label(query_index: int) -> int:
+    return 1 if query_index % 2 == 0 else 0
+
+
+def js_fit_content_route_lookup(
+    route_period: int,
+    query_indices: tuple[int, ...],
+    route_labels: tuple[int, ...],
+) -> tuple[int, ...]:
+    fallback = js_majority_int(route_labels)
+    buckets: list[list[int]] = [[] for _ in range(route_period)]
+    for query_index, route in zip(query_indices, route_labels):
+        buckets[js_mod(query_index, route_period)].append(route)
+    return tuple(fallback if not bucket else js_majority_int(tuple(bucket)) for bucket in buckets)
+
+
+def js_predict_content_route_lookup(
+    route_period: int,
+    lookup: tuple[int, ...],
+    query_indices: tuple[int, ...],
+) -> tuple[int, ...]:
+    return tuple(lookup[js_mod(query_index, route_period)] for query_index in query_indices)
+
+
+def js_candidate_sets_for_routes(
+    routes: tuple[int, ...],
+    coil_candidates: tuple[tuple[int, ...], ...],
+    local_candidates: tuple[tuple[int, ...], ...],
+) -> tuple[tuple[int, ...], ...]:
+    return tuple(
+        coil if route == 1 else local
+        for route, coil, local in zip(routes, coil_candidates, local_candidates)
+    )
 
 
 def js_loop_exit_available(loop_period: int, sample_index: int, max_loops: int) -> bool:
@@ -1967,6 +2006,144 @@ def main() -> int:
         )
         assert benchmark.average_gated_candidate_count == js_average_candidate_count(js_gated_candidates)
         assert benchmark.average_union_candidate_count == js_average_candidate_count(js_union_candidates)
+        assert benchmark.average_full_candidate_count == js_average_candidate_count(full_candidates)
+
+    learned_content_cases = [
+        (64, 64, 32, 2, 3, 21, 3, 7, 3, 8),
+        (48, 48, 24, 2, 5, 13, 2, 5, 4, 6),
+    ]
+    for (
+        sequence_length,
+        train_length,
+        test_length,
+        route_period,
+        wrong_route_period,
+        long_lag,
+        near_lag,
+        stride,
+        path_length,
+        local_window,
+    ) in learned_content_cases:
+        train_queries = tuple(range(train_length))
+        train_routes = tuple(content_route_label(query) for query in train_queries)
+        test_queries = tuple(range(train_length, train_length + test_length))
+        required_routes = tuple(content_route_label(query) for query in test_queries)
+        js_train_routes = tuple(js_content_route_label(query) for query in train_queries)
+        js_required_routes = tuple(js_content_route_label(query) for query in test_queries)
+        assert train_routes == js_train_routes
+        assert required_routes == js_required_routes
+        learned_lookup = fit_content_route_lookup(route_period, train_queries, train_routes)
+        wrong_lookup = fit_content_route_lookup(wrong_route_period, train_queries, train_routes)
+        js_learned_lookup = js_fit_content_route_lookup(route_period, train_queries, js_train_routes)
+        js_wrong_lookup = js_fit_content_route_lookup(wrong_route_period, train_queries, js_train_routes)
+        assert learned_lookup == js_learned_lookup
+        assert wrong_lookup == js_wrong_lookup
+        learned_routes = predict_content_route_lookup(route_period, learned_lookup, test_queries)
+        wrong_routes = predict_content_route_lookup(wrong_route_period, wrong_lookup, test_queries)
+        js_learned_routes = js_predict_content_route_lookup(route_period, js_learned_lookup, test_queries)
+        js_wrong_routes = js_predict_content_route_lookup(wrong_route_period, js_wrong_lookup, test_queries)
+        assert learned_routes == js_learned_routes
+        assert wrong_routes == js_wrong_routes
+
+        target_lags = mixed_retrieval_target_lags(
+            test_queries,
+            long_target_lag=long_lag,
+            near_target_lag=near_lag,
+        )
+        js_target_lags = js_mixed_retrieval_target_lags(
+            test_queries,
+            long_target_lag=long_lag,
+            near_target_lag=near_lag,
+        )
+        assert target_lags == js_target_lags
+        coil_candidates = tuple(
+            coil_attention_path(sequence_length, query, stride, path_length)
+            for query in test_queries
+        )
+        local_candidates = tuple(
+            local_window_indices(sequence_length, query, local_window)
+            for query in test_queries
+        )
+        js_coil_candidates = tuple(
+            js_coil_attention_path(sequence_length, query, stride, path_length)
+            for query in test_queries
+        )
+        js_local_candidates = tuple(
+            js_local_window_indices(sequence_length, query, local_window)
+            for query in test_queries
+        )
+        learned_candidates = js_candidate_sets_for_routes(js_learned_routes, js_coil_candidates, js_local_candidates)
+        wrong_candidates = js_candidate_sets_for_routes(js_wrong_routes, js_coil_candidates, js_local_candidates)
+        flipped_routes = tuple(1 - route for route in js_required_routes)
+        flipped_candidates = js_candidate_sets_for_routes(flipped_routes, js_coil_candidates, js_local_candidates)
+        union_candidates = tuple(
+            tuple(sorted(set(coil) | set(local)))
+            for coil, local in zip(js_coil_candidates, js_local_candidates)
+        )
+        full_candidates = tuple(tuple(range(sequence_length)) for _ in test_queries)
+
+        benchmark = run_learned_content_gate_retrieval_benchmark(
+            sequence_length=sequence_length,
+            train_length=train_length,
+            test_length=test_length,
+            route_period=route_period,
+            wrong_route_period=wrong_route_period,
+            long_target_lag=long_lag,
+            near_target_lag=near_lag,
+            stride=stride,
+            path_length=path_length,
+            local_window=local_window,
+        )
+        assert benchmark.learned_route_lookup == js_learned_lookup
+        assert benchmark.wrong_period_route_lookup == js_wrong_lookup
+        assert benchmark.learned_route_sample == js_learned_routes[:12]
+        assert benchmark.required_route_sample == js_required_routes[:12]
+        assert benchmark.learned_route_accuracy == js_accuracy(js_learned_routes, js_required_routes)
+        assert benchmark.wrong_period_route_accuracy == js_accuracy(js_wrong_routes, js_required_routes)
+        assert benchmark.learned_gate_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            test_queries,
+            js_target_lags,
+            learned_candidates,
+        )
+        assert benchmark.static_coil_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            test_queries,
+            js_target_lags,
+            js_coil_candidates,
+        )
+        assert benchmark.static_local_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            test_queries,
+            js_target_lags,
+            js_local_candidates,
+        )
+        assert benchmark.wrong_period_gate_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            test_queries,
+            js_target_lags,
+            wrong_candidates,
+        )
+        assert benchmark.flipped_gate_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            test_queries,
+            js_target_lags,
+            flipped_candidates,
+        )
+        assert benchmark.union_candidate_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            test_queries,
+            js_target_lags,
+            union_candidates,
+        )
+        assert benchmark.full_attention_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            test_queries,
+            js_target_lags,
+            full_candidates,
+        )
+        assert benchmark.average_learned_candidate_count == js_average_candidate_count(learned_candidates)
+        assert benchmark.average_union_candidate_count == js_average_candidate_count(union_candidates)
         assert benchmark.average_full_candidate_count == js_average_candidate_count(full_candidates)
 
     multicoil_cases = [

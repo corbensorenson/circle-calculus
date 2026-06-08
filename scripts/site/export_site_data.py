@@ -347,6 +347,13 @@ def export_widget_index() -> dict:
             "python_reference": "circle_math.applications.circle_ai.mixed_retrieval_target_lags; circle_math.applications.circle_ai.retrieval_hit_rate_by_lag; circle_math.applications.circle_ai.average_candidate_count; circle_math.applications.circle_ai.run_content_gated_retrieval_benchmark",
         },
         {
+            "id": "learned_content_gate_retrieval",
+            "path": "site/widgets/ai/learned_content_gate_retrieval.js",
+            "theorem_ids": ["CC-T0002", "CC-T0005"],
+            "dictionary_ids": ["COMMON-0057", "COMMON-0047", "COMMON-0028"],
+            "python_reference": "circle_math.applications.circle_ai.content_route_label; circle_math.applications.circle_ai.fit_content_route_lookup; circle_math.applications.circle_ai.predict_content_route_lookup; circle_math.applications.circle_ai.run_learned_content_gate_retrieval_benchmark",
+        },
+        {
             "id": "multicoil_phase_explorer",
             "path": "site/widgets/ai/multicoil_phase_explorer.js",
             "theorem_ids": ["AIA-T0001", "AIA-T0002", "AIA-T0004", "AIA-T0005"],

@@ -323,6 +323,20 @@
     },
     {
       "dictionary_ids": [
+        "COMMON-0057",
+        "COMMON-0047",
+        "COMMON-0028"
+      ],
+      "id": "learned_content_gate_retrieval",
+      "path": "site/widgets/ai/learned_content_gate_retrieval.js",
+      "python_reference": "circle_math.applications.circle_ai.content_route_label; circle_math.applications.circle_ai.fit_content_route_lookup; circle_math.applications.circle_ai.predict_content_route_lookup; circle_math.applications.circle_ai.run_learned_content_gate_retrieval_benchmark",
+      "theorem_ids": [
+        "CC-T0002",
+        "CC-T0005"
+      ]
+    },
+    {
+      "dictionary_ids": [
         "COMMON-0046",
         "COMMON-0026",
         "COMMON-0027"

@@ -4328,6 +4328,11 @@
           "id": "cyclic_memory_slots",
           "path": "site/widgets/ai/cyclic_memory_slots.js",
           "python_reference": "circle_math.applications.circle_ai.memory_slot; circle_math.applications.circle_ai.memory_slot_loads; circle_math.applications.circle_ai.memory_slot_collision_count"
+        },
+        {
+          "id": "learned_content_gate_retrieval",
+          "path": "site/widgets/ai/learned_content_gate_retrieval.js",
+          "python_reference": "circle_math.applications.circle_ai.content_route_label; circle_math.applications.circle_ai.fit_content_route_lookup; circle_math.applications.circle_ai.predict_content_route_lookup; circle_math.applications.circle_ai.run_learned_content_gate_retrieval_benchmark"
         }
       ]
     },
@@ -5108,6 +5113,11 @@
           "id": "content_gated_retrieval",
           "path": "site/widgets/ai/content_gated_retrieval.js",
           "python_reference": "circle_math.applications.circle_ai.mixed_retrieval_target_lags; circle_math.applications.circle_ai.retrieval_hit_rate_by_lag; circle_math.applications.circle_ai.average_candidate_count; circle_math.applications.circle_ai.run_content_gated_retrieval_benchmark"
+        },
+        {
+          "id": "learned_content_gate_retrieval",
+          "path": "site/widgets/ai/learned_content_gate_retrieval.js",
+          "python_reference": "circle_math.applications.circle_ai.content_route_label; circle_math.applications.circle_ai.fit_content_route_lookup; circle_math.applications.circle_ai.predict_content_route_lookup; circle_math.applications.circle_ai.run_learned_content_gate_retrieval_benchmark"
         }
       ]
     },
@@ -5739,6 +5749,11 @@
           "id": "content_gated_retrieval",
           "path": "site/widgets/ai/content_gated_retrieval.js",
           "python_reference": "circle_math.applications.circle_ai.mixed_retrieval_target_lags; circle_math.applications.circle_ai.retrieval_hit_rate_by_lag; circle_math.applications.circle_ai.average_candidate_count; circle_math.applications.circle_ai.run_content_gated_retrieval_benchmark"
+        },
+        {
+          "id": "learned_content_gate_retrieval",
+          "path": "site/widgets/ai/learned_content_gate_retrieval.js",
+          "python_reference": "circle_math.applications.circle_ai.content_route_label; circle_math.applications.circle_ai.fit_content_route_lookup; circle_math.applications.circle_ai.predict_content_route_lookup; circle_math.applications.circle_ai.run_learned_content_gate_retrieval_benchmark"
         }
       ]
     },

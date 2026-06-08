@@ -202,6 +202,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is deterministic route and candidate-budget bookkeeping only. It does not prove learned-gate quality, retrieval quality, context length, runtime, memory scaling, attention replacement, or model-quality improvement.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python content-gated retrieval helpers.
 
+### learned_content_gate_retrieval
+
+- Inputs: sequence length, train length, test length, route period, wrong route period, long lag, near lag, selected stride, path length, and local-window width.
+- Outputs: learned phase-to-route lookup, wrong-period lookup, required/learned route samples, route accuracy, learned/static/wrong/flipped/union/full hit rates, average candidate counts, finite primitive theorem links, and dictionary links.
+- Theorem ids: `CC-T0002` and `CC-T0005` as finite rotation/orbit primitives only.
+- Dictionary ids: `COMMON-0057`, `COMMON-0047`, and `COMMON-0028`.
+- Python references: `circle_math.applications.circle_ai.content_route_label`, `circle_math.applications.circle_ai.fit_content_route_lookup`, `circle_math.applications.circle_ai.predict_content_route_lookup`, and `circle_math.applications.circle_ai.run_learned_content_gate_retrieval_benchmark`.
+- Guardrail: the widget is a tiny deterministic route-table fixture with controls. It does not prove learned model quality, retrieval quality, context length, runtime, memory scaling, attention replacement, or model-quality improvement.
+- Validation: deterministic JavaScript-equivalent phase-to-route lookup, route prediction, hit-rate, and candidate-budget formulas are parity-checked against the Python learned content-gate benchmark.
+
 ### multicoil_phase_explorer
 
 - Inputs: two required phase periods, one optional third phase period, and a position.
