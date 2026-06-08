@@ -39,6 +39,9 @@ CAPABILITY_ATTR_RE = re.compile(
 EXECUTABLE_ATTR_RE = re.compile(
     r'data-capability-id="([^"]+)"[^>]*data-executable-ref="([^"]+)"'
 )
+DICTIONARY_ATTR_RE = re.compile(
+    r'data-capability-id="([^"]+)"[^>]*data-dictionary-id="([^"]+)"'
+)
 THEOREM_BOX_RE = re.compile(r'<div class="theorem-box"([^>]*)>')
 PAPER_REF_RE = re.compile(r'<p([^>]*data-paper-ref="[^"]+"[^>]*)>')
 
@@ -102,6 +105,12 @@ def page_executable_pairs() -> list[tuple[str, str]]:
     if not SHOWCASE_PAGE.exists():
         return []
     return EXECUTABLE_ATTR_RE.findall(SHOWCASE_PAGE.read_text())
+
+
+def page_dictionary_pairs() -> list[tuple[str, str]]:
+    if not SHOWCASE_PAGE.exists():
+        return []
+    return DICTIONARY_ATTR_RE.findall(SHOWCASE_PAGE.read_text())
 
 
 def page_theorem_pairs() -> tuple[list[tuple[str, str]], list[str]]:
@@ -194,6 +203,31 @@ def main() -> int:
         if unknown_executables:
             failures.append(
                 f"unknown page executable refs: {unknown_executables}"
+            )
+        page_dictionaries = page_dictionary_pairs()
+        dictionary_duplicates = sorted(
+            {pair for pair in page_dictionaries if page_dictionaries.count(pair) > 1}
+        )
+        if dictionary_duplicates:
+            failures.append(
+                f"duplicate page dictionary refs: {dictionary_duplicates}"
+            )
+        expected_dictionaries = {
+            (item.get("id"), dictionary_id)
+            for item in capabilities
+            if item.get("id") and isinstance(item.get("dictionary_ids", []), list)
+            for dictionary_id in item.get("dictionary_ids", [])
+        }
+        page_dictionary_set = set(page_dictionaries)
+        missing_dictionaries = sorted(expected_dictionaries - page_dictionary_set)
+        unknown_dictionaries = sorted(page_dictionary_set - expected_dictionaries)
+        if missing_dictionaries:
+            failures.append(
+                f"dictionary refs missing from page: {missing_dictionaries}"
+            )
+        if unknown_dictionaries:
+            failures.append(
+                f"unknown page dictionary refs: {unknown_dictionaries}"
             )
         page_theorems, theorem_boxes_without_capability = page_theorem_pairs()
         if theorem_boxes_without_capability:

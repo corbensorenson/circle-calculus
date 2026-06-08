@@ -7132,6 +7132,24 @@
           "lean_name": "Circle.Generative.emptyBoundedGeneratorSearch_bestExact_none",
           "name": "Circle.Generative.emptyBoundedGeneratorSearch_bestExact_none",
           "status": "proved"
+        },
+        {
+          "id": "GEN-T0025",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_mem_exactCandidates",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_mem_exactCandidates",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0026",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_mem_candidates",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_mem_candidates",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0027",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_exact",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_exact",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -7243,6 +7261,24 @@
           "id": "GEN-T0024",
           "lean_name": "Circle.Generative.emptyBoundedGeneratorSearch_bestExact_none",
           "name": "Circle.Generative.emptyBoundedGeneratorSearch_bestExact_none",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0025",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_mem_exactCandidates",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_mem_exactCandidates",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0026",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_mem_candidates",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_mem_candidates",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0027",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_exact",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_exact",
           "status": "proved"
         }
       ],
@@ -7424,6 +7460,24 @@
           "id": "GEN-T0024",
           "lean_name": "Circle.Generative.emptyBoundedGeneratorSearch_bestExact_none",
           "name": "Circle.Generative.emptyBoundedGeneratorSearch_bestExact_none",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0025",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_mem_exactCandidates",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_mem_exactCandidates",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0026",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_mem_candidates",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_mem_candidates",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0027",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_exact",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_exact",
           "status": "proved"
         }
       ],

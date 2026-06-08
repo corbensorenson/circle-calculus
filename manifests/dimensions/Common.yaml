@@ -2284,4 +2284,46 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_empty_bounded_generator_search_has_no_best_candidate
     blocker: ""
+  - id: GEN-T0025
+    status: lean_proved
+    lean_name: Circle.Generative.boundedGeneratorSearch_bestExact_mem_exactCandidates
+    informal_statement: "If a bounded generator search returns a best exact candidate, that candidate belongs to the declared exact-candidate list."
+    formal_statement: "For any bounded generator search, bestExact? = some candidate implies candidate is a member of exactCandidates."
+    dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_bounded_generator_search_reports_scope_and_exact_candidates
+    blocker: ""
+  - id: GEN-T0026
+    status: lean_proved
+    lean_name: Circle.Generative.boundedGeneratorSearch_bestExact_mem_candidates
+    informal_statement: "If a bounded generator search returns a best exact candidate, that candidate belongs to the declared finite candidate search space."
+    formal_statement: "For any bounded generator search, bestExact? = some candidate implies candidate is a member of candidates."
+    dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_bounded_generator_search_reports_scope_and_exact_candidates
+    blocker: ""
+  - id: GEN-T0027
+    status: lean_proved
+    lean_name: Circle.Generative.boundedGeneratorSearch_bestExact_exact
+    informal_statement: "If a bounded generator search returns a best exact candidate, that candidate satisfies the exact-regeneration predicate."
+    formal_statement: "For any bounded generator search, bestExact? = some candidate implies candidate.exactRegeneration."
+    dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_bounded_generator_search_reports_scope_and_exact_candidates
+    blocker: ""
 warnings: []

@@ -26,3 +26,9 @@ optimality.
 #check Circle.Generative.generatorComparison_exact_regeneration_iff_fields_eq
 #check Circle.Generative.generatorComparison_exact_regeneration_fields_eq
 #check Circle.Generative.generatorComparison_not_exact_of_ne
+#check Circle.Generative.emptyBoundedGeneratorSearch_candidateCount
+#check Circle.Generative.emptyBoundedGeneratorSearch_exactCandidateCount
+#check Circle.Generative.emptyBoundedGeneratorSearch_bestExact_none
+#check Circle.Generative.boundedGeneratorSearch_bestExact_mem_exactCandidates
+#check Circle.Generative.boundedGeneratorSearch_bestExact_mem_candidates
+#check Circle.Generative.boundedGeneratorSearch_bestExact_exact

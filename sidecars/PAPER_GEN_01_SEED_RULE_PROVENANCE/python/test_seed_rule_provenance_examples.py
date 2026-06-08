@@ -132,18 +132,38 @@ def test_bounded_generator_search_reports_scope_and_exact_candidates() -> None:
         dictionary_ids=broken.dictionary_ids,
         note=broken.note,
     )
+    records = [finite_circle_generator(1), finite_circle_generator(128), broken]
     search = bounded_generator_search(
-        [finite_circle_generator(1), finite_circle_generator(128), broken],
+        records,
         search_id="finite_circle_node_generators",
     )
+    declared_comparisons = {
+        (
+            comparison.artifact_id,
+            comparison.exact_regeneration,
+            comparison.explicit_length,
+            comparison.generator_length,
+        )
+        for comparison in (compare_generator_to_explicit(record) for record in records)
+    }
 
     assert search.search_id == "finite_circle_node_generators"
     assert search.finite_search_space
     assert search.candidate_count == 3
     assert search.exact_candidate_count == 2
     assert search.best_exact is not None
+    assert search.best_exact.exact_regeneration
+    assert (
+        search.best_exact.artifact_id,
+        search.best_exact.exact_regeneration,
+        search.best_exact.explicit_length,
+        search.best_exact.generator_length,
+    ) in declared_comparisons
     assert search.best_shorter is not None
     assert search.best_shorter.generator_shorter
+    assert "GEN-T0025" in search.theorem_ids
+    assert "GEN-T0026" in search.theorem_ids
+    assert "GEN-T0027" in search.theorem_ids
     assert search.note.endswith("not an optimality theorem.")
 
 
@@ -156,4 +176,11 @@ def test_empty_bounded_generator_search_has_no_best_candidate() -> None:
     assert search.exact_candidate_count == 0
     assert search.best_exact is None
     assert search.best_shorter is None
-    assert search.theorem_ids == ("GEN-T0022", "GEN-T0023", "GEN-T0024")
+    assert search.theorem_ids == (
+        "GEN-T0022",
+        "GEN-T0023",
+        "GEN-T0024",
+        "GEN-T0025",
+        "GEN-T0026",
+        "GEN-T0027",
+    )

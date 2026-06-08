@@ -334,7 +334,7 @@
         "circle_native_value",
         "application_guardrail"
       ],
-      "proof_scope": "Lean-proved seed-rule, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, and empty declared-search boundary gates.",
+      "proof_scope": "Lean-proved seed-rule, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, and best-candidate soundness gates.",
       "source_refs": [
         "Circle/Generative/SeedRule.lean",
         "Circle/Phase2/GlyphProof.lean",
@@ -351,6 +351,8 @@
         "GEN-T0021",
         "GEN-T0022",
         "GEN-T0024",
+        "GEN-T0026",
+        "GEN-T0027",
         "P2G-T0006"
       ],
       "title": "Proof-carrying generative provenance"

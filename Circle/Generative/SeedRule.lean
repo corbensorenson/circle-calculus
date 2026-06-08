@@ -284,4 +284,25 @@ theorem emptyBoundedGeneratorSearch_bestExact_none (α : Type) :
     (emptyBoundedGeneratorSearch α).bestExact? = none := by
   rfl
 
+theorem boundedGeneratorSearch_bestExact_mem_exactCandidates
+    (search : BoundedGeneratorSearch α) {candidate : GeneratorComparison α}
+    (hbest : search.bestExact? = some candidate) :
+    candidate ∈ search.exactCandidates := by
+  apply List.mem_of_mem_head?
+  simpa [BoundedGeneratorSearch.bestExact?, hbest]
+
+theorem boundedGeneratorSearch_bestExact_mem_candidates
+    (search : BoundedGeneratorSearch α) {candidate : GeneratorComparison α}
+    (hbest : search.bestExact? = some candidate) :
+    candidate ∈ search.candidates :=
+  search.exactSubset candidate
+    (boundedGeneratorSearch_bestExact_mem_exactCandidates search hbest)
+
+theorem boundedGeneratorSearch_bestExact_exact
+    (search : BoundedGeneratorSearch α) {candidate : GeneratorComparison α}
+    (hbest : search.bestExact? = some candidate) :
+    candidate.exactRegeneration :=
+  search.exactSound candidate
+    (boundedGeneratorSearch_bestExact_mem_exactCandidates search hbest)
+
 end Circle.Generative

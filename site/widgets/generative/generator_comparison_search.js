@@ -2,7 +2,20 @@ import { positiveInt } from "../shared/circle_math_core.js";
 import { addLabeledNumber, addOutput, addWidgetHeader, clear } from "../shared/svg_helpers.js";
 import { loadJson, mountWidgets, statusClass, statusLabel } from "../shared/widget_base.js";
 
-const THEOREM_IDS = ["GEN-T0001", "GEN-T0005", "GEN-T0017", "GEN-T0018", "GEN-T0019", "GEN-T0020", "GEN-T0022", "GEN-T0023", "GEN-T0024"];
+const THEOREM_IDS = [
+  "GEN-T0001",
+  "GEN-T0005",
+  "GEN-T0017",
+  "GEN-T0018",
+  "GEN-T0019",
+  "GEN-T0020",
+  "GEN-T0022",
+  "GEN-T0023",
+  "GEN-T0024",
+  "GEN-T0025",
+  "GEN-T0026",
+  "GEN-T0027",
+];
 const DICTIONARY_IDS = ["COMMON-0064", "COMMON-0065", "COMMON-0066"];
 
 function sortedPairs(object) {
@@ -110,7 +123,7 @@ function boundedSearch(records) {
     best_exact: exact.slice().sort(compareKey)[0] || null,
     best_shorter: shorter.slice().sort(compareKey)[0] || null,
     finite_search_space: true,
-    theorem_ids: ["GEN-T0022", "GEN-T0023", "GEN-T0024"],
+    theorem_ids: ["GEN-T0022", "GEN-T0023", "GEN-T0024", "GEN-T0025", "GEN-T0026", "GEN-T0027"],
     note: "Bounded finite search only; not an optimality theorem.",
     comparisons,
   };
