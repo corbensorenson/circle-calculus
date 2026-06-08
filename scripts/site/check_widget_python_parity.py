@@ -65,6 +65,15 @@ from circle_math.dimensions.quaternion import (
     spin_sign_related,
     unit_i_phase,
 )
+from circle_math.dimensions.hopf import (
+    hopf_map,
+    hopf_phase_record,
+    normalize_pair,
+    pair_norm_sq,
+    phase_rotate,
+    point_close,
+    sphere_norm_sq,
+)
 from circle_math.generative import (
     SeedRuleProvenance,
     bounded_generator_search,
@@ -670,6 +679,76 @@ def js_orientation_debug_record(period: int, step: int, vector: Quaternion) -> d
         "representatives_are_distinct": not js_quaternion_close(q, neg_q),
         "actions_match": js_quaternion_close(q_action, neg_q_action),
         "spin_sign_related": js_spin_sign_related(q, neg_q),
+    }
+
+
+def js_complex_mul(left: complex, right: complex) -> complex:
+    return complex(
+        left.real * right.real - left.imag * right.imag,
+        left.real * right.imag + left.imag * right.real,
+    )
+
+
+def js_pair_norm_sq(z0: complex, z1: complex) -> float:
+    return z0.real * z0.real + z0.imag * z0.imag + z1.real * z1.real + z1.imag * z1.imag
+
+
+def js_normalize_pair(z0: complex, z1: complex) -> tuple[complex, complex]:
+    norm_sq = js_pair_norm_sq(z0, z1)
+    if norm_sq == 0.0:
+        raise ValueError("cannot normalize the zero complex pair")
+    scale = norm_sq ** 0.5
+    return (z0 / scale, z1 / scale)
+
+
+def js_unit_phase(period: int, step: int) -> complex:
+    angle = tau * js_mod(step, period) / period
+    return complex(cos(angle), sin(angle))
+
+
+def js_phase_rotate(z0: complex, z1: complex, phase: complex) -> tuple[complex, complex]:
+    return (js_complex_mul(phase, z0), js_complex_mul(phase, z1))
+
+
+def js_hopf_map(z0: complex, z1: complex) -> tuple[float, float, float]:
+    product = js_complex_mul(z0, z1.conjugate())
+    return (2.0 * product.real, 2.0 * product.imag, abs(z0) ** 2 - abs(z1) ** 2)
+
+
+def js_sphere_norm_sq(point: tuple[float, float, float]) -> float:
+    x, y, z = point
+    return x * x + y * y + z * z
+
+
+def js_point_close(
+    left: tuple[float, float, float],
+    right: tuple[float, float, float],
+    *,
+    tol: float = 1e-10,
+) -> bool:
+    return all(abs(left_coord - right_coord) <= tol for left_coord, right_coord in zip(left, right))
+
+
+def js_complex_pair_coordinates(pair: tuple[complex, complex]) -> tuple[tuple[float, float], tuple[float, float]]:
+    return ((pair[0].real, pair[0].imag), (pair[1].real, pair[1].imag))
+
+
+def js_hopf_phase_record(z0: complex, z1: complex, period: int, step: int) -> dict[str, object]:
+    normalized = js_normalize_pair(z0, z1)
+    phase = js_unit_phase(period, step)
+    rotated = js_phase_rotate(*normalized, phase)
+    base = js_hopf_map(*normalized)
+    rotated_base = js_hopf_map(*rotated)
+    return {
+        "normalized_pair": js_complex_pair_coordinates(normalized),
+        "rotated_pair": js_complex_pair_coordinates(rotated),
+        "base_point": base,
+        "rotated_base_point": rotated_base,
+        "pair_norm_sq": js_pair_norm_sq(*normalized),
+        "rotated_pair_norm_sq": js_pair_norm_sq(*rotated),
+        "base_norm_sq": js_sphere_norm_sq(base),
+        "rotated_base_norm_sq": js_sphere_norm_sq(rotated_base),
+        "base_points_match": js_point_close(base, rotated_base),
     }
 
 
@@ -1988,6 +2067,26 @@ def main() -> int:
         assert benchmark.max_abs_dense_delta == 0
         assert benchmark.dense_parameters == period * period
         assert benchmark.circulant_parameters == period
+
+    hopf_cases = [
+        (12, 2, 1.0 - 1.0j, 2.0 + 1.0j),
+        (8, 3, 1.0 + 2.0j, -1.0 + 0.5j),
+        (7, 13, -2.0 + 1.0j, 0.5 - 1.5j),
+    ]
+    for period, step, z0, z1 in hopf_cases:
+        theta = tau * js_mod(step, period) / period
+        normalized = normalize_pair(z0, z1)
+        phase_rotated = phase_rotate(*normalized, theta)
+        js_record = js_hopf_phase_record(z0, z1, period, step)
+        py_record = hopf_phase_record(z0, z1, theta)
+        assert abs(pair_norm_sq(*normalized) - js_record["pair_norm_sq"]) <= 1e-10
+        assert abs(pair_norm_sq(*phase_rotated) - js_record["rotated_pair_norm_sq"]) <= 1e-10
+        assert point_close(hopf_map(*normalized), js_record["base_point"], tol=1e-10)
+        assert point_close(hopf_map(*phase_rotated), js_record["rotated_base_point"], tol=1e-10)
+        assert abs(sphere_norm_sq(hopf_map(*normalized)) - js_record["base_norm_sq"]) <= 1e-10
+        assert abs(sphere_norm_sq(hopf_map(*phase_rotated)) - js_record["rotated_base_norm_sq"]) <= 1e-10
+        assert py_record["base_points_match"] == js_record["base_points_match"]
+        assert py_record["base_points_match"]
 
     spin_cases = [
         (8, 1, Quaternion(0.0, 1.0, 2.0, -1.0)),

@@ -81,16 +81,6 @@
     },
     {
       "dictionary_ids": [
-        "S3H-0001",
-        "S3H-0002"
-      ],
-      "id": "hopf_placeholder",
-      "path": "site/widgets/S3/hopf_placeholder.js",
-      "python_reference": "",
-      "theorem_ids": []
-    },
-    {
-      "dictionary_ids": [
         "CC-0001",
         "CC-0002",
         "CC-0201",
@@ -421,6 +411,24 @@
       "theorem_ids": [
         "PHYS-T0004",
         "PHYS-T0005"
+      ]
+    },
+    {
+      "dictionary_ids": [
+        "S3H-0001",
+        "S3H-0002",
+        "S3H-W0001"
+      ],
+      "id": "hopf_hidden_phase",
+      "path": "site/widgets/physics/hopf_hidden_phase.js",
+      "python_reference": "circle_math.dimensions.hopf.normalize_pair; circle_math.dimensions.hopf.phase_rotate; circle_math.dimensions.hopf.hopf_map; circle_math.dimensions.hopf.hopf_phase_record",
+      "theorem_ids": [
+        "S3H-T0001",
+        "S3H-T0002",
+        "S3H-T0003",
+        "S3H-T0004",
+        "S3H-T0005",
+        "S3H-T0006"
       ]
     },
     {

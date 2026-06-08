@@ -186,13 +186,6 @@ def export_widget_index() -> dict:
             "python_reference": "",
         },
         {
-            "id": "hopf_placeholder",
-            "path": "site/widgets/S3/hopf_placeholder.js",
-            "theorem_ids": [],
-            "dictionary_ids": ["S3H-0001", "S3H-0002"],
-            "python_reference": "",
-        },
-        {
             "id": "seed_rule_diagram_generator",
             "path": "site/widgets/generative/seed_rule_diagram_generator.js",
             "theorem_ids": [
@@ -404,6 +397,13 @@ def export_widget_index() -> dict:
                 "COMMON-0063",
             ],
             "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy; circle_math.physics.wilson_loop_certificate",
+        },
+        {
+            "id": "hopf_hidden_phase",
+            "path": "site/widgets/physics/hopf_hidden_phase.js",
+            "theorem_ids": ["S3H-T0001", "S3H-T0002", "S3H-T0003", "S3H-T0004", "S3H-T0005", "S3H-T0006"],
+            "dictionary_ids": ["S3H-0001", "S3H-0002", "S3H-W0001"],
+            "python_reference": "circle_math.dimensions.hopf.normalize_pair; circle_math.dimensions.hopf.phase_rotate; circle_math.dimensions.hopf.hopf_map; circle_math.dimensions.hopf.hopf_phase_record",
         },
         {
             "id": "spin_sign_ambiguity",

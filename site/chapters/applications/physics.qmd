@@ -77,6 +77,10 @@ The third widget turns the closed-loop calculation into a certificate-style reco
 
 <div class="widget-panel" data-widget="wilson_loop_certificate" data-theorem-id="PHYS-T0004" data-dictionary-ids="COMMON-0060 COMMON-0061 COMMON-0062 COMMON-0063"></div>
 
+The Hopf hidden-phase widget shows the next layer of the same idea: a visible base coordinate can stay fixed while a hidden circular phase changes the lifted `S3` pair. This is a bounded coordinate fixture linked to S3 Hopf theorem cards, not a claim about Berry phase or a complete fiber-bundle formalization.
+
+<div class="widget-panel" data-widget="hopf_hidden_phase" data-theorem-id="S3H-T0002" data-dictionary-ids="S3H-0001 S3H-0002 S3H-W0001"></div>
+
 The next bounded physics-facing lesson moves from finite gauge loops to quaternion orientation debugging. Standard quaternion orientation code has a familiar sign ambiguity: `q` and `-q` are different representatives, but they should not be treated as different downstream orientations when the action being compared is quaternion conjugation. The widget below exposes exactly that finite algebraic claim and links it to the S3 spin theorem cards.
 
 <div class="widget-panel" data-widget="spin_sign_ambiguity" data-theorem-id="S3S-T0001" data-dictionary-ids="S3S-0001 S3S-0002 S3Q-0001 S3Q-0002"></div>
@@ -137,6 +141,15 @@ The theorem cards below are Lean-proved for the finite `ZMod n` phase and link-p
 <div class="theorem-box" data-theorem-id="PHYS-T0044"></div>
 <div class="theorem-box" data-theorem-id="PHYS-T0045"></div>
 
+The Hopf cards are Lean-proved coordinate facts: normalized pairs land on the unit base equation, unit phase rotation preserves the visible base, and phase actions obey identity/composition laws. They do not prove Berry phase, quantum mechanics, or the full topology of the Hopf fibration.
+
+<div class="theorem-box" data-theorem-id="S3H-T0001"></div>
+<div class="theorem-box" data-theorem-id="S3H-T0002"></div>
+<div class="theorem-box" data-theorem-id="S3H-T0003"></div>
+<div class="theorem-box" data-theorem-id="S3H-T0004"></div>
+<div class="theorem-box" data-theorem-id="S3H-T0005"></div>
+<div class="theorem-box" data-theorem-id="S3H-T0006"></div>
+
 The spin-sign cards are Lean-proved S3 algebraic facts. They support the bounded orientation-debugging widget, but they are not a full formalization of `SO(3)`, robotics, spinors, or physical rotations.
 
 <div class="theorem-box" data-theorem-id="S3S-T0001"></div>
@@ -150,6 +163,9 @@ The spin-sign cards are Lean-proved S3 algebraic facts. They support the bounded
 <div class="dictionary-box" data-dictionary-id="COMMON-0061"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0062"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0063"></div>
+<div class="dictionary-box" data-dictionary-id="S3H-0001"></div>
+<div class="dictionary-box" data-dictionary-id="S3H-0002"></div>
+<div class="dictionary-box" data-dictionary-id="S3H-W0001"></div>
 <div class="dictionary-box" data-dictionary-id="S3S-0001"></div>
 <div class="dictionary-box" data-dictionary-id="S3S-0002"></div>
 <div class="dictionary-box" data-dictionary-id="S3Q-0001"></div>
@@ -169,5 +185,6 @@ The Python fixture is an executable reference. The current Lean model proves fin
 <script type="module" src="../../widgets/physics/finite_path_algebra.js"></script>
 <script type="module" src="../../widgets/physics/finite_gauge_loop_holonomy.js"></script>
 <script type="module" src="../../widgets/physics/wilson_loop_certificate.js"></script>
+<script type="module" src="../../widgets/physics/hopf_hidden_phase.js"></script>
 <script type="module" src="../../widgets/physics/spin_sign_ambiguity.js"></script>
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

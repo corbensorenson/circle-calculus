@@ -56,7 +56,7 @@ def test_export_site_data_writes_required_indexes() -> None:
     assert "finite_circle_rotator" in widget_ids
     assert "prime_full_coil_explorer" in widget_ids
     assert "sphere_grid_placeholder" in widget_ids
-    assert "hopf_placeholder" in widget_ids
+    assert "hopf_hidden_phase" in widget_ids
 
     glyphs = json.loads((generated / "glyph_index.json").read_text())
     glyph_by_id = {item["id"]: item for item in glyphs["glyphs"]}

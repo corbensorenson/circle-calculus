@@ -26,7 +26,7 @@ targets:
   - id: P7-PHYS-002
     area: "Geometric phase and holonomy"
     priority: high
-    status: planned
+    status: active
     target_type: paper_program
     title: "Berry/Hopf holonomy primer"
     question: "Can the existing Hopf phase-fiber spine become a proof-status-safe reader path for geometric phase, hidden phase, and holonomy?"
@@ -36,12 +36,17 @@ targets:
       - "Existing Hopf theorem ids are linked without claiming a full topological fibration proof."
       - "At least one finite holonomy toy example is executable before any continuum claim is discussed."
       - "The Living Book warning explains that Python examples and diagrams are not physics proofs."
+      - "The S3 and Physics Living Book pages expose a bounded Hopf hidden-phase widget linked to Hopf theorem and dictionary ids."
     artifact_refs:
       - "docs/PHASE7_PHYSICS_AND_GENERATORS.md"
       - "papers/S3/PAPER_S3_03_HOPF_COILS.md"
       - "papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md"
+      - "sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py"
+      - "site/chapters/S3/hopf_coils.qmd"
+      - "site/chapters/applications/physics.qmd"
+      - "site/widgets/physics/hopf_hidden_phase.js"
     dictionary_dependencies: ["COMMON-0060", "COMMON-0063", "S3H-0001", "S3H-0002", "S3H-W0001"]
-    next_action: "Draft a scoped holonomy primer that starts from finite loop phase and only then points to Berry/Hopf background."
+    next_action: "The bounded Hopf hidden-phase widget and Python parity check are in place; next draft a scoped holonomy primer that starts from finite loop phase and Hopf coordinate invariance before pointing to Berry/Aharonov-Bohm background."
     guardrail: "Do not claim Circle Calculus proves Berry phase, Aharonov-Bohm physics, or the full Hopf fibration before those objects are modeled."
 
   - id: P7-PHYS-003

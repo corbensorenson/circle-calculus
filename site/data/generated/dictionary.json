@@ -8308,9 +8308,9 @@
       ],
       "used_by_widgets": [
         {
-          "id": "hopf_placeholder",
-          "path": "site/widgets/S3/hopf_placeholder.js",
-          "python_reference": ""
+          "id": "hopf_hidden_phase",
+          "path": "site/widgets/physics/hopf_hidden_phase.js",
+          "python_reference": "circle_math.dimensions.hopf.normalize_pair; circle_math.dimensions.hopf.phase_rotate; circle_math.dimensions.hopf.hopf_map; circle_math.dimensions.hopf.hopf_phase_record"
         }
       ]
     },
@@ -8384,9 +8384,9 @@
       ],
       "used_by_widgets": [
         {
-          "id": "hopf_placeholder",
-          "path": "site/widgets/S3/hopf_placeholder.js",
-          "python_reference": ""
+          "id": "hopf_hidden_phase",
+          "path": "site/widgets/physics/hopf_hidden_phase.js",
+          "python_reference": "circle_math.dimensions.hopf.normalize_pair; circle_math.dimensions.hopf.phase_rotate; circle_math.dimensions.hopf.hopf_map; circle_math.dimensions.hopf.hopf_phase_record"
         }
       ]
     },
@@ -8414,7 +8414,13 @@
         }
       ],
       "used_by_theorems": [],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "hopf_hidden_phase",
+          "path": "site/widgets/physics/hopf_hidden_phase.js",
+          "python_reference": "circle_math.dimensions.hopf.normalize_pair; circle_math.dimensions.hopf.phase_rotate; circle_math.dimensions.hopf.hopf_map; circle_math.dimensions.hopf.hopf_phase_record"
+        }
+      ]
     },
     {
       "dependencies": [],

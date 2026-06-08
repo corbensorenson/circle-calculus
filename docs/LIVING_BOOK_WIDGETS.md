@@ -264,6 +264,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is a sampled finite Wilson-loop certificate only. It does not prove continuum gauge theory, electromagnetism, QFT, Berry phase, or a physics prediction.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python Wilson-loop certificate helper.
 
+### hopf_hidden_phase
+
+- Inputs: finite phase period, phase step, and integer real/imaginary coordinates for a nonzero complex pair.
+- Outputs: normalized complex-pair coordinates, shared unit phase, phase-rotated pair, visible Hopf base point before/after phase rotation, pair/base norm checks, base-point equality flag, theorem-status badges, and dictionary links.
+- Theorem ids: `S3H-T0001`, `S3H-T0002`, `S3H-T0003`, `S3H-T0004`, `S3H-T0005`, and `S3H-T0006`.
+- Dictionary ids: `S3H-0001`, `S3H-0002`, and `S3H-W0001`.
+- Python references: `circle_math.dimensions.hopf.normalize_pair`, `circle_math.dimensions.hopf.phase_rotate`, `circle_math.dimensions.hopf.hopf_map`, and `circle_math.dimensions.hopf.hopf_phase_record`.
+- Guardrail: the widget is a bounded coordinate Hopf phase fixture. It does not prove Berry phase, a complete fiber-bundle formalization, quantum mechanics, or a physics prediction.
+- Validation: deterministic JavaScript-equivalent complex-pair normalization, phase rotation, and Hopf-map formulas are parity-checked against the Python S3 Hopf helpers.
+
 ### spin_sign_ambiguity
 
 - Inputs: finite phase period, phase step, and three integer coordinates for a pure-vector quaternion input.
@@ -277,11 +287,10 @@ Implemented shared JavaScript:
 ## Future Placeholders
 
 - `site/widgets/S2/sphere_grid_placeholder.js`
-- `site/widgets/S3/hopf_placeholder.js`
 
 These should be visibly marked placeholder/exploratory until implemented and linked to checked theorem status.
 
-The placeholder widgets are included in `site/data/generated/widget_index.json` so every mounted widget is discoverable from generated site data, even when it is scaffold-only.
+Mounted placeholder widgets are included in `site/data/generated/widget_index.json` so every active widget slot is discoverable from generated site data, even when it is scaffold-only.
 
 ## Validation Strategy
 

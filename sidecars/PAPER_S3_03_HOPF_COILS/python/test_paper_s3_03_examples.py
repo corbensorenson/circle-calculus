@@ -3,6 +3,7 @@ import math
 import pytest
 
 from circle_math.dimensions.hopf import (
+    hopf_phase_record,
     hopf_fiber_point,
     hopf_map,
     normalize_pair,
@@ -111,3 +112,13 @@ def test_hopf_fiber_phase_orbit_is_circle_like() -> None:
         hopf_fiber_point(z0, z1, 0.0),
         hopf_fiber_point(z0, z1, 2.0 * math.pi),
     )
+
+
+def test_hopf_phase_record_exposes_hidden_phase_invariance() -> None:
+    record = hopf_phase_record(1.0 - 0.75j, 0.2 + 0.9j, math.pi / 3.0)
+
+    assert_close(record["pair_norm_sq"], 1.0)
+    assert_close(record["rotated_pair_norm_sq"], 1.0)
+    assert_close(record["base_norm_sq"], 1.0)
+    assert_close(record["rotated_base_norm_sq"], 1.0)
+    assert record["base_points_match"]

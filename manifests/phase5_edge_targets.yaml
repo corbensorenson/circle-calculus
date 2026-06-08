@@ -138,11 +138,14 @@ targets:
       - "papers/S3/PAPER_S3_02_QUATERNION_COILS.md"
       - "papers/S3/PAPER_S3_03_HOPF_COILS.md"
       - "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
+      - "sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py"
       - "sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py"
+      - "site/chapters/S3/hopf_coils.qmd"
       - "site/chapters/applications/physics.qmd"
+      - "site/widgets/physics/hopf_hidden_phase.js"
       - "site/widgets/physics/spin_sign_ambiguity.js"
     dictionary_dependencies: ["S3Q-0001", "S3H-0001", "S3S-0001", "S3S-0002"]
-    next_action: "Orientation-debugging note, Python sign-ambiguity record, and Living Book spin sign widget are in place; future work needs a precise SO(3) quotient/vector-space model before stronger robotics claims."
+    next_action: "Hopf hidden-phase and spin sign widgets are in place with Python parity checks; future work needs a precise SO(3) quotient/vector-space model before stronger robotics claims and a scoped physics model before Berry/geometric-phase claims."
     guardrail: "Do not claim a complete SO(3), robotics, gauge, or physics formalization."
 
   - id: P5-EDGE-008
