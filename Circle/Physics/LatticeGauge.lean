@@ -475,6 +475,20 @@ theorem closedGaugeLoop_fromCycle_holonomy
       left.holonomy + right.holonomy := by
   exact checkedGaugePath_concat_holonomy left right hforward
 
+theorem closedGaugeLoop_identity_gaugeShiftedHolonomy
+    (n vertex : Nat) (gauge : Nat → ZMod n) :
+    (ClosedGaugeLoop.identity n vertex).gaugeShiftedHolonomy gauge = 0 := by
+  rw [closedGaugeLoop_gaugeInvariant, closedGaugeLoop_identity_holonomy]
+
+theorem closedGaugeLoop_fromCycle_gaugeShiftedHolonomy
+    (left right : CheckedGaugePath n)
+    (hforward : left.target = right.source)
+    (hback : right.target = left.source)
+    (gauge : Nat → ZMod n) :
+    (ClosedGaugeLoop.fromCycle left right hforward hback).gaugeShiftedHolonomy gauge =
+      left.holonomy + right.holonomy := by
+  rw [closedGaugeLoop_gaugeInvariant, closedGaugeLoop_fromCycle_holonomy]
+
 theorem gaugeLinkPath_reverse_phases (path : GaugeLinkPath n) :
     path.reverse.phases = reversePhases path.phases := by
   unfold GaugeLinkPath.reverse GaugeLinkPath.phases reversePhases GaugeLink.reverse

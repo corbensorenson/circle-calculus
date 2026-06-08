@@ -68,7 +68,7 @@ square_plaquette_path
 wilson_loop_certificate
 ```
 
-The sidecar tests check a composable path, a reversed path, an open-path gauge transform, a closed Wilson loop, identity/cycle closed-loop records, open-path rejection for closed-loop records, and a square plaquette.
+The sidecar tests check a composable path, a reversed path, an open-path gauge transform, a closed Wilson loop, identity/cycle closed-loop records, gauge-shifted closed-loop records, open-path rejection for closed-loop records, and a square plaquette.
 
 The first widget shows the path algebra before the closed-loop case: concatenate a composable path, reverse it, close it by following the reverse, and compare an open-path gauge transform against its endpoint prediction. It is finite bookkeeping only; the theorem cards remain the formal status source.
 
@@ -157,6 +157,8 @@ The theorem cards below are Lean-proved for the finite `ZMod n` phase and link-p
 <div class="theorem-box" data-theorem-id="PHYS-T0049"></div>
 <div class="theorem-box" data-theorem-id="PHYS-T0050"></div>
 <div class="theorem-box" data-theorem-id="PHYS-T0051"></div>
+<div class="theorem-box" data-theorem-id="PHYS-T0052"></div>
+<div class="theorem-box" data-theorem-id="PHYS-T0053"></div>
 
 The Hopf cards are Lean-proved coordinate facts: normalized pairs land on the unit base equation, unit phase rotation preserves the visible base, and phase actions obey identity/composition laws. They do not prove Berry phase, quantum mechanics, or the full topology of the Hopf fibration.
 

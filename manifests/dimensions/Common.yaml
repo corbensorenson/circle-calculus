@@ -2074,6 +2074,34 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_reverse_path_inverts_holonomy
     blocker: ""
+  - id: PHYS-T0052
+    status: lean_proved
+    lean_name: Circle.Physics.closedGaugeLoop_identity_gaugeShiftedHolonomy
+    informal_statement: "The checked finite identity loop has zero gauge-shifted holonomy under any finite vertex gauge."
+    formal_statement: "For n, vertex, and gauge : Nat -> ZMod n, (ClosedGaugeLoop.identity n vertex).gaugeShiftedHolonomy gauge = 0."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_closed_loop_records_identity_and_cycle_holonomy
+    blocker: ""
+  - id: PHYS-T0053
+    status: lean_proved
+    lean_name: Circle.Physics.closedGaugeLoop_fromCycle_gaugeShiftedHolonomy
+    informal_statement: "A closed finite two-path cycle has gauge-shifted holonomy equal to the sum of the two checked path holonomies."
+    formal_statement: "For checked finite gauge paths left and right whose endpoints cycle back and any gauge : Nat -> ZMod n, (ClosedGaugeLoop.fromCycle left right hforward hback).gaugeShiftedHolonomy gauge = left.holonomy + right.holonomy."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_closed_loop_records_identity_and_cycle_holonomy
+    blocker: ""
   - id: GEN-T0001
     status: lean_proved
     lean_name: Circle.Generative.finiteCircleGenerator_regenerates_nodes

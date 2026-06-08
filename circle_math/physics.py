@@ -228,7 +228,7 @@ def identity_closed_loop_record(modulus: int, vertex: str) -> ClosedGaugeLoopRec
         phases=(),
         holonomy=0,
         closed=True,
-        theorem_ids=("PHYS-T0048",),
+        theorem_ids=("PHYS-T0048", "PHYS-T0052"),
     )
 
 
@@ -245,7 +245,7 @@ def cycle_closed_loop_record(left: GaugePath, right: GaugePath) -> ClosedGaugeLo
         phases=record.phases,
         holonomy=record.holonomy,
         closed=record.closed,
-        theorem_ids=("PHYS-T0047", "PHYS-T0049"),
+        theorem_ids=("PHYS-T0047", "PHYS-T0049", "PHYS-T0053"),
         target_ids=record.target_ids,
         note=record.note,
     )

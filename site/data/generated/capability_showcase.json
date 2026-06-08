@@ -402,7 +402,7 @@
         "living_book_widget_count": 3,
         "paper_count": 1,
         "source_count": 2,
-        "theorem_count": 10
+        "theorem_count": 12
       },
       "executable_refs": [
         "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
@@ -427,7 +427,7 @@
         "circle_native_value",
         "application_guardrail"
       ],
-      "proof_scope": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, and two-path cycle gauge-invariance facts.",
+      "proof_scope": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, and two-path cycle gauge-invariance facts.",
       "source_refs": [
         "Circle/Physics/LatticeGauge.lean",
         "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
@@ -443,7 +443,9 @@
         "PHYS-T0047",
         "PHYS-T0049",
         "PHYS-T0050",
-        "PHYS-T0051"
+        "PHYS-T0051",
+        "PHYS-T0052",
+        "PHYS-T0053"
       ],
       "title": "Proof-carrying finite gauge paths"
     },
@@ -660,7 +662,7 @@
       "living_book_widget_count": 17,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 61
+      "theorem_count": 63
     },
     "role_counts": {
       "application_guardrail": 4,
@@ -674,7 +676,7 @@
       "living_book_widget_count": 17,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 61
+      "theorem_count": 63
     },
     "unique_living_book_pages": [
       "site/chapters/S1/03_coils_orbits_closure.qmd",
