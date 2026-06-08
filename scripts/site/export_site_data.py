@@ -384,6 +384,21 @@ def export_widget_index() -> dict:
             "python_reference": "circle_math.applications.circle_ai.harmonic_feature; circle_math.applications.circle_ai.fit_harmonic_feature_lookup; circle_math.applications.circle_ai.predict_harmonic_feature_lookup; circle_math.applications.circle_ai.run_harmonic_feature_baseline_benchmark",
         },
         {
+            "id": "backend_parity_fixture",
+            "path": "site/widgets/ai/backend_parity_fixture.js",
+            "theorem_ids": ["AIA-T0001", "AIM-T0001", "AIM-T0015", "AIRA-T0001"],
+            "dictionary_ids": [
+                "COMMON-0026",
+                "COMMON-0028",
+                "COMMON-0030",
+                "COMMON-0046",
+                "COMMON-0047",
+                "COMMON-0051",
+                "COMMON-0052",
+            ],
+            "python_reference": "circle_math.applications.circle_ai.ai_backend_parity_cases; circle_math.applications.circle_ai.run_ai_backend_parity_check",
+        },
+        {
             "id": "cyclic_memory_slots",
             "path": "site/widgets/ai/cyclic_memory_slots.js",
             "theorem_ids": ["AIM-T0001", "AIM-T0002", "AIM-T0003", "AIM-T0004", "AIM-T0005"],

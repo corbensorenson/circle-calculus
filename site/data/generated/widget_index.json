@@ -369,6 +369,26 @@
     },
     {
       "dictionary_ids": [
+        "COMMON-0026",
+        "COMMON-0028",
+        "COMMON-0030",
+        "COMMON-0046",
+        "COMMON-0047",
+        "COMMON-0051",
+        "COMMON-0052"
+      ],
+      "id": "backend_parity_fixture",
+      "path": "site/widgets/ai/backend_parity_fixture.js",
+      "python_reference": "circle_math.applications.circle_ai.ai_backend_parity_cases; circle_math.applications.circle_ai.run_ai_backend_parity_check",
+      "theorem_ids": [
+        "AIA-T0001",
+        "AIM-T0001",
+        "AIM-T0015",
+        "AIRA-T0001"
+      ]
+    },
+    {
+      "dictionary_ids": [
         "COMMON-0028",
         "COMMON-0029"
       ],

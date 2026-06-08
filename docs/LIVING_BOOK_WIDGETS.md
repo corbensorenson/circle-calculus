@@ -142,6 +142,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is a deterministic synthetic Fourier-style feature-control fixture only. It does not prove RoPE quality, language-model quality, speed, parameter efficiency, or usefulness on real workloads.
 - Validation: deterministic JavaScript-equivalent phase lookup, harmonic feature lookup, wrong-period harmonic lookup, scalar-threshold baseline, learned-position baseline, and nonperiodic control formulas are parity-checked against the Python harmonic-feature benchmark helpers.
 
+### backend_parity_fixture
+
+- Inputs: none; this is the fixed deterministic `AIA-B0003` scoring harness.
+- Outputs: fixture count, deterministic browser CPU scores for the backend parity cases, local Python/optional-MLX command boundary, theorem-status badges, and dictionary links.
+- Theorem ids: `AIA-T0001`, `AIM-T0001`, `AIM-T0015`, and `AIRA-T0001` as finite indexing/schedule boundaries.
+- Dictionary ids: `COMMON-0026`, `COMMON-0028`, `COMMON-0030`, `COMMON-0046`, `COMMON-0047`, `COMMON-0051`, and `COMMON-0052`.
+- Python references: `circle_math.applications.circle_ai.ai_backend_parity_cases` and `circle_math.applications.circle_ai.run_ai_backend_parity_check`.
+- Guardrail: the widget is not an MLX runtime, acceleration result, speed benchmark, model-quality claim, or proof. The local Python fixture reports actual MLX availability and MLX-vs-CPU deltas when MLX is installed.
+- Validation: deterministic JavaScript-equivalent fixture cases and CPU scores are parity-checked against the Python backend-parity case generator and benchmark result.
+
 ### loop_recurrence_budget
 
 - Inputs: loop period, sample/token index, maximum loops, overthinking tolerance.

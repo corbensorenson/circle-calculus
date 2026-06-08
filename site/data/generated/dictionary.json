@@ -4215,6 +4215,11 @@
       ],
       "used_by_widgets": [
         {
+          "id": "backend_parity_fixture",
+          "path": "site/widgets/ai/backend_parity_fixture.js",
+          "python_reference": "circle_math.applications.circle_ai.ai_backend_parity_cases; circle_math.applications.circle_ai.run_ai_backend_parity_check"
+        },
+        {
           "id": "harmonic_feature_baseline",
           "path": "site/widgets/ai/harmonic_feature_baseline.js",
           "python_reference": "circle_math.applications.circle_ai.harmonic_feature; circle_math.applications.circle_ai.fit_harmonic_feature_lookup; circle_math.applications.circle_ai.predict_harmonic_feature_lookup; circle_math.applications.circle_ai.run_harmonic_feature_baseline_benchmark"
@@ -4360,6 +4365,11 @@
       ],
       "used_by_widgets": [
         {
+          "id": "backend_parity_fixture",
+          "path": "site/widgets/ai/backend_parity_fixture.js",
+          "python_reference": "circle_math.applications.circle_ai.ai_backend_parity_cases; circle_math.applications.circle_ai.run_ai_backend_parity_check"
+        },
+        {
           "id": "coil_retrieval_reachability",
           "path": "site/widgets/ai/coil_retrieval_reachability.js",
           "python_reference": "circle_math.applications.circle_ai.coil_attention_path; circle_math.applications.circle_ai.local_window_indices; circle_math.applications.circle_ai.retrieval_target_index; circle_math.applications.circle_ai.retrieval_hit_rate"
@@ -4494,6 +4504,11 @@
           "id": "adapter_parameter_budget",
           "path": "site/widgets/ai/adapter_parameter_budget.js",
           "python_reference": "circle_math.applications.circle_ai.dense_adapter_parameter_count; circle_math.applications.circle_ai.lora_adapter_parameter_count; circle_math.applications.circle_ai.block_cyclic_adapter_parameter_count; circle_math.applications.circle_ai.run_adapter_parameter_budget_benchmark"
+        },
+        {
+          "id": "backend_parity_fixture",
+          "path": "site/widgets/ai/backend_parity_fixture.js",
+          "python_reference": "circle_math.applications.circle_ai.ai_backend_parity_cases; circle_math.applications.circle_ai.run_ai_backend_parity_check"
         }
       ]
     },
@@ -5121,6 +5136,11 @@
       "used_by_theorems": [],
       "used_by_widgets": [
         {
+          "id": "backend_parity_fixture",
+          "path": "site/widgets/ai/backend_parity_fixture.js",
+          "python_reference": "circle_math.applications.circle_ai.ai_backend_parity_cases; circle_math.applications.circle_ai.run_ai_backend_parity_check"
+        },
+        {
           "id": "circulant_mixer_validation",
           "path": "site/widgets/ai/circulant_mixer_validation.js",
           "python_reference": "circle_math.applications.circle_ai.circulant_mixer_output; circle_math.applications.circle_ai.dense_circulant_matrix; circle_math.applications.circle_ai.run_circulant_mixer_benchmark"
@@ -5166,6 +5186,11 @@
       ],
       "used_by_theorems": [],
       "used_by_widgets": [
+        {
+          "id": "backend_parity_fixture",
+          "path": "site/widgets/ai/backend_parity_fixture.js",
+          "python_reference": "circle_math.applications.circle_ai.ai_backend_parity_cases; circle_math.applications.circle_ai.run_ai_backend_parity_check"
+        },
         {
           "id": "coil_retrieval_reachability",
           "path": "site/widgets/ai/coil_retrieval_reachability.js",
@@ -5314,6 +5339,11 @@
       "used_by_theorems": [],
       "used_by_widgets": [
         {
+          "id": "backend_parity_fixture",
+          "path": "site/widgets/ai/backend_parity_fixture.js",
+          "python_reference": "circle_math.applications.circle_ai.ai_backend_parity_cases; circle_math.applications.circle_ai.run_ai_backend_parity_check"
+        },
+        {
           "id": "rope_relative_phase",
           "path": "site/widgets/ai/rope_relative_phase.js",
           "python_reference": "circle_math.applications.circle_ai.rope_relative_feature; circle_math.applications.circle_ai.run_rope_relative_phase_benchmark"
@@ -5446,6 +5476,11 @@
         }
       ],
       "used_by_widgets": [
+        {
+          "id": "backend_parity_fixture",
+          "path": "site/widgets/ai/backend_parity_fixture.js",
+          "python_reference": "circle_math.applications.circle_ai.ai_backend_parity_cases; circle_math.applications.circle_ai.run_ai_backend_parity_check"
+        },
         {
           "id": "learned_middle_block_recurrence",
           "path": "site/widgets/ai/learned_middle_block_recurrence.js",

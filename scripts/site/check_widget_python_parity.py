@@ -4,6 +4,7 @@ import json
 from math import cos, gcd, sin, tau
 
 from circle_math.applications import (
+    ai_backend_parity_cases,
     adapter_block_collision_count,
     adapter_block_loads,
     active_token_counts_by_budget,
@@ -65,6 +66,7 @@ from circle_math.applications import (
     run_learned_multi_resolution_recurrence_benchmark,
     run_learned_recurrence_schedule_benchmark,
     run_learned_token_level_recurrence_benchmark,
+    run_ai_backend_parity_check,
     run_phase_channel_benchmark,
     run_training_free_loop_wrapper_benchmark,
     run_token_level_recurrence_benchmark,
@@ -1106,6 +1108,221 @@ def js_loop_overthinking_boundary(loop_period: int, sample_index: int, tolerance
     return js_loop_required_steps(loop_period, sample_index) + tolerance
 
 
+def js_synthetic_phase_dataset(
+    period: int,
+    length: int,
+    start: int = 0,
+) -> tuple[tuple[int, ...], tuple[int, ...]]:
+    phases = js_default_positive_phases(period)
+    positions = tuple(range(start, start + length))
+    labels = tuple(js_periodic_phase_label(period, position, phases) for position in positions)
+    return positions, labels
+
+
+def js_synthetic_slot_dataset(
+    size: int,
+    length: int,
+    start: int = 0,
+) -> tuple[tuple[int, ...], tuple[int, ...]]:
+    values = tuple(1 if index % 3 == 1 else 0 for index in range(size))
+    positions = tuple(range(start, start + length))
+    labels = tuple(values[js_mod(position, size)] for position in positions)
+    return positions, labels
+
+
+def js_fit_map_lookup(
+    items: tuple,
+    labels: tuple[int, ...],
+    key_fn,
+) -> tuple[tuple[object, int], ...]:
+    counts: dict[object, list[int]] = {}
+    for item, label in zip(items, labels):
+        key = key_fn(item)
+        if key not in counts:
+            counts[key] = [0, 0]
+        counts[key][label] += 1
+    return tuple(
+        (key, 1 if one_count >= zero_count else 0)
+        for key, (zero_count, one_count) in sorted(counts.items())
+    )
+
+
+def js_predict_map_lookup(
+    lookup: tuple[tuple[object, int], ...],
+    items: tuple,
+    key_fn,
+) -> tuple[int, ...]:
+    lookup_map = dict(lookup)
+    fallback = js_majority_label(tuple(lookup_map.values()))
+    return tuple(lookup_map.get(key_fn(item), fallback) for item in items)
+
+
+def js_synthetic_rope_relative_dataset(
+    period: int,
+    length: int,
+    start: int = 0,
+) -> tuple[tuple[tuple[int, int], ...], tuple[int, ...]]:
+    positive_lags = js_default_positive_phases(period)
+    pairs: list[tuple[int, int]] = []
+    labels: list[int] = []
+    for sample_index in range(start, start + length):
+        query_position = sample_index // period
+        lag = sample_index % period
+        key_position = query_position - lag
+        pairs.append((query_position, key_position))
+        labels.append(1 if lag in positive_lags else 0)
+    return tuple(pairs), tuple(labels)
+
+
+def js_loop_adaptive_exit_predictions(
+    loop_period: int,
+    sample_indices: tuple[int, ...],
+    budget: int,
+) -> tuple[int, ...]:
+    return tuple(1 if js_loop_required_steps(loop_period, sample) <= budget else 0 for sample in sample_indices)
+
+
+def js_ai_backend_parity_cases() -> tuple[tuple[str, tuple[int, ...], tuple[int, ...]], ...]:
+    phase_train_positions, phase_train_labels = js_synthetic_phase_dataset(8, 64)
+    phase_test_positions, phase_test_labels = js_synthetic_phase_dataset(8, 32, 64)
+    phase_lookup = js_fit_phase_lookup(8, phase_train_positions, phase_train_labels)
+    phase_predictions = js_predict_phase_lookup(8, phase_lookup, phase_test_positions)
+    phase_constant = js_majority_label(phase_train_labels)
+
+    memory_train_tokens, memory_train_labels = js_synthetic_slot_dataset(8, 64)
+    memory_test_tokens, memory_test_labels = js_synthetic_slot_dataset(8, 32, 64)
+    memory_lookup = js_fit_phase_lookup(8, memory_train_tokens, memory_train_labels)
+    memory_predictions = js_predict_phase_lookup(8, memory_lookup, memory_test_tokens)
+
+    adapter_train_channels, adapter_train_labels = js_synthetic_slot_dataset(8, 64)
+    adapter_test_channels, adapter_test_labels = js_synthetic_slot_dataset(8, 32, 64)
+    adapter_lookup = js_fit_phase_lookup(8, adapter_train_channels, adapter_train_labels)
+    adapter_predictions = js_predict_phase_lookup(8, adapter_lookup, adapter_test_channels)
+
+    multicoil_train_positions = tuple(range(140))
+    multicoil_test_positions = tuple(range(140, 210))
+    multicoil_periods = (5, 7)
+    multicoil_train_labels = tuple(
+        js_multicoil_phase_label(multicoil_periods, position)
+        for position in multicoil_train_positions
+    )
+    multicoil_test_labels = tuple(
+        js_multicoil_phase_label(multicoil_periods, position)
+        for position in multicoil_test_positions
+    )
+    multicoil_lookup = js_fit_map_lookup(
+        multicoil_train_positions,
+        multicoil_train_labels,
+        lambda position: js_multicoil_phase(multicoil_periods, position),
+    )
+    multicoil_predictions = js_predict_map_lookup(
+        multicoil_lookup,
+        multicoil_test_positions,
+        lambda position: js_multicoil_phase(multicoil_periods, position),
+    )
+
+    retrieval_queries = tuple(range(64))
+    retrieval_candidates = tuple(
+        js_coil_attention_path(64, query_index, 7, 3)
+        for query_index in retrieval_queries
+    )
+    retrieval_predictions = tuple(
+        1 if js_retrieval_target_index(64, query_index, 21) in set(candidates) else 0
+        for query_index, candidates in zip(retrieval_queries, retrieval_candidates)
+    )
+    retrieval_labels = tuple(1 for _ in retrieval_queries)
+
+    learned_train_positions, learned_train_labels = js_synthetic_phase_dataset(8, 64)
+    learned_test_positions, learned_test_labels = js_synthetic_phase_dataset(8, 32, 64)
+    learned_lookup = js_fit_phase_lookup(8, learned_train_positions, learned_train_labels)
+    learned_predictions = js_predict_phase_lookup(8, learned_lookup, learned_test_positions)
+    learned_control_threshold = (3 * 64) // 4
+    learned_control_train_labels = tuple(
+        js_nonperiodic_threshold_label(position, learned_control_threshold)
+        for position in learned_train_positions
+    )
+    learned_control_test_labels = tuple(
+        js_nonperiodic_threshold_label(position, learned_control_threshold)
+        for position in learned_test_positions
+    )
+    learned_control_threshold_fit, learned_control_polarity = js_fit_threshold_classifier(
+        learned_train_positions,
+        learned_control_train_labels,
+    )
+    learned_control_predictions = js_predict_threshold_classifier(
+        learned_test_positions,
+        learned_control_threshold_fit,
+        learned_control_polarity,
+    )
+
+    harmonic_train_positions, harmonic_train_labels = js_synthetic_phase_dataset(8, 64)
+    harmonic_test_positions, harmonic_test_labels = js_synthetic_phase_dataset(8, 32, 64)
+    harmonic_lookup = js_fit_harmonic_feature_lookup(8, harmonic_train_positions, harmonic_train_labels)
+    harmonic_predictions = js_predict_harmonic_feature_lookup(8, harmonic_lookup, harmonic_test_positions)
+
+    rope_train_pairs, rope_train_labels = js_synthetic_rope_relative_dataset(8, 64)
+    rope_test_pairs, rope_test_labels = js_synthetic_rope_relative_dataset(8, 32, 64)
+    rope_lookup = js_fit_map_lookup(
+        rope_train_pairs,
+        rope_train_labels,
+        lambda pair: js_rope_relative_feature(8, pair[0], pair[1]),
+    )
+    rope_predictions = js_predict_map_lookup(
+        rope_lookup,
+        rope_test_pairs,
+        lambda pair: js_rope_relative_feature(8, pair[0], pair[1]),
+    )
+
+    near_local_candidates = tuple(
+        js_local_window_indices(64, query_index, 8)
+        for query_index in retrieval_queries
+    )
+    near_local_predictions = tuple(
+        1 if js_retrieval_target_index(64, query_index, 3) in set(candidates) else 0
+        for query_index, candidates in zip(retrieval_queries, near_local_candidates)
+    )
+    near_local_labels = tuple(1 for _ in retrieval_queries)
+
+    gated_target_lags = tuple(21 if query_index % 2 == 0 else 3 for query_index in retrieval_queries)
+    gated_coil_candidates = tuple(
+        js_coil_attention_path(64, query_index, 7, 3)
+        for query_index in retrieval_queries
+    )
+    gated_local_candidates = tuple(
+        js_local_window_indices(64, query_index, 8)
+        for query_index in retrieval_queries
+    )
+    gated_candidates = tuple(
+        coil if query_index % 2 == 0 else local
+        for query_index, coil, local in zip(retrieval_queries, gated_coil_candidates, gated_local_candidates)
+    )
+    gated_predictions = tuple(
+        1 if js_retrieval_target_index(64, query_index, target_lag) in set(candidates) else 0
+        for query_index, target_lag, candidates in zip(retrieval_queries, gated_target_lags, gated_candidates)
+    )
+    gated_labels = tuple(1 for _ in retrieval_queries)
+
+    looped_test_indices = tuple(range(64, 96))
+    looped_predictions = js_loop_adaptive_exit_predictions(4, looped_test_indices, 4)
+    looped_labels = tuple(1 for _ in looped_test_indices)
+
+    return (
+        ("phase_lookup", phase_predictions, phase_test_labels),
+        ("phase_constant_baseline", tuple(phase_constant for _ in phase_test_positions), phase_test_labels),
+        ("memory_lookup", memory_predictions, memory_test_labels),
+        ("adapter_lookup", adapter_predictions, adapter_test_labels),
+        ("multicoil_lookup", multicoil_predictions, multicoil_test_labels),
+        ("retrieval_coil_path", retrieval_predictions, retrieval_labels),
+        ("retrieval_near_local_window", near_local_predictions, near_local_labels),
+        ("retrieval_content_gated", gated_predictions, gated_labels),
+        ("learned_feature_cyclic", learned_predictions, learned_test_labels),
+        ("harmonic_feature_lookup", harmonic_predictions, harmonic_test_labels),
+        ("rope_relative_phase", rope_predictions, rope_test_labels),
+        ("looped_recurrence_adaptive_exit", looped_predictions, looped_labels),
+        ("learned_feature_nonperiodic_dense_scalar", learned_control_predictions, learned_control_test_labels),
+    )
+
+
 def main() -> int:
     cases = [
         (1, 0, 0),
@@ -1339,6 +1556,22 @@ def main() -> int:
             control_scalar_predictions,
             js_control_test_labels,
         )
+
+    js_backend_cases = js_ai_backend_parity_cases()
+    assert ai_backend_parity_cases() == js_backend_cases
+    backend_parity = run_ai_backend_parity_check()
+    js_cpu_scores = tuple(
+        (name, js_accuracy(predictions, labels))
+        for name, predictions, labels in js_backend_cases
+    )
+    assert backend_parity.fixture_count == len(js_backend_cases)
+    assert backend_parity.cpu_scores == js_cpu_scores
+    if backend_parity.mlx_available:
+        assert backend_parity.mlx_scores
+        assert backend_parity.max_abs_delta is not None
+    else:
+        assert backend_parity.mlx_scores == ()
+        assert backend_parity.max_abs_delta is None
 
     finite_diagram = finite_circle_diagram_generator(8)
     assert regenerate(finite_diagram) == js_finite_circle_diagram(8)
