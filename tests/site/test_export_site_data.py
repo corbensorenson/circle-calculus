@@ -99,6 +99,14 @@ def test_export_site_data_writes_required_indexes() -> None:
         "application_guardrail" in item["portfolio_roles"]
         for item in capabilities["capabilities"]
     )
+    assert summary["proof_provenance_counts"]["mathlib_bridge"] == sum(
+        item["proof_provenance_kind"] == "mathlib_bridge"
+        for item in capabilities["capabilities"]
+    )
+    assert summary["proof_provenance_counts"]["project_native"] == sum(
+        item["proof_provenance_kind"] == "project_native"
+        for item in capabilities["capabilities"]
+    )
     unique_theorems = {
         theorem_id
         for item in capabilities["capabilities"]

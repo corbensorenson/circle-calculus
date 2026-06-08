@@ -5563,6 +5563,18 @@
           "lean_name": "Circle.Applications.loopExitCertificate_budget_eq_exitStep",
           "name": "Circle.Applications.loopExitCertificate_budget_eq_exitStep",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0033",
+          "lean_name": "Circle.Applications.loopExitCertificate_exitStep_add_mul_loopPeriod",
+          "name": "Circle.Applications.loopExitCertificate_exitStep_add_mul_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0034",
+          "lean_name": "Circle.Applications.loopExitCertificate_boundary_add_mul_loopPeriod",
+          "name": "Circle.Applications.loopExitCertificate_boundary_add_mul_loopPeriod",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5802,6 +5814,18 @@
           "lean_name": "Circle.Applications.loopExitCertificate_budget_eq_exitStep",
           "name": "Circle.Applications.loopExitCertificate_budget_eq_exitStep",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0033",
+          "lean_name": "Circle.Applications.loopExitCertificate_exitStep_add_mul_loopPeriod",
+          "name": "Circle.Applications.loopExitCertificate_exitStep_add_mul_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0034",
+          "lean_name": "Circle.Applications.loopExitCertificate_boundary_add_mul_loopPeriod",
+          "name": "Circle.Applications.loopExitCertificate_boundary_add_mul_loopPeriod",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5903,6 +5927,18 @@
           "id": "AIM-T0029",
           "lean_name": "Circle.Applications.loopOverthinkingBoundary_add_mul_loopPeriod",
           "name": "Circle.Applications.loopOverthinkingBoundary_add_mul_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0033",
+          "lean_name": "Circle.Applications.loopExitCertificate_exitStep_add_mul_loopPeriod",
+          "name": "Circle.Applications.loopExitCertificate_exitStep_add_mul_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0034",
+          "lean_name": "Circle.Applications.loopExitCertificate_boundary_add_mul_loopPeriod",
+          "name": "Circle.Applications.loopExitCertificate_boundary_add_mul_loopPeriod",
           "status": "proved"
         }
       ],

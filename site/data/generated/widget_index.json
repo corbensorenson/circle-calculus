@@ -231,7 +231,9 @@
         "AIM-T0029",
         "AIM-T0030",
         "AIM-T0031",
-        "AIM-T0032"
+        "AIM-T0032",
+        "AIM-T0033",
+        "AIM-T0034"
       ]
     },
     {
@@ -652,6 +654,13 @@
       "id": "capability_portfolio_matrix",
       "path": "site/widgets/showcase/capability_portfolio_matrix.js",
       "python_reference": "manifests/capability_showcase.yaml; scripts/check_capability_showcase.py; scripts/site/export_site_data.py",
+      "theorem_ids": []
+    },
+    {
+      "dictionary_ids": [],
+      "id": "capability_audit_checklist",
+      "path": "site/widgets/showcase/capability_audit_checklist.js",
+      "python_reference": "manifests/capability_showcase.yaml; site/data/generated/capability_showcase.json; scripts/check_capability_showcase.py",
       "theorem_ids": []
     }
   ]

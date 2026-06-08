@@ -114,6 +114,8 @@ PAGE_CONTRACTS = {
         ("theorem trace", ["Trace A Theorem Id"]),
         ("dictionary trace", ["Trace A Dictionary Term"]),
         ("paper trace", ["Trace A Paper Claim"]),
+        ("capability trace", ["Trace An Advertised Capability", "capability_audit_checklist"]),
+        ("capability data source", ["capability_showcase.json", "manifests/capability_showcase.yaml"]),
         ("widget trace", ["Trace A Widget Or Glyph"]),
         ("local verification", ["make living-book-check", "make sitecheck"]),
         ("public verification", ["GitHub Pages", "site/_site"]),

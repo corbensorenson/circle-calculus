@@ -311,6 +311,8 @@ def export_widget_index() -> dict:
                 "AIM-T0030",
                 "AIM-T0031",
                 "AIM-T0032",
+                "AIM-T0033",
+                "AIM-T0034",
             ],
             "dictionary_ids": [
                 "COMMON-0052",
@@ -562,6 +564,13 @@ def export_widget_index() -> dict:
             "dictionary_ids": [],
             "python_reference": "manifests/capability_showcase.yaml; scripts/check_capability_showcase.py; scripts/site/export_site_data.py",
         },
+        {
+            "id": "capability_audit_checklist",
+            "path": "site/widgets/showcase/capability_audit_checklist.js",
+            "theorem_ids": [],
+            "dictionary_ids": [],
+            "python_reference": "manifests/capability_showcase.yaml; site/data/generated/capability_showcase.json; scripts/check_capability_showcase.py",
+        },
     ]
     return {"widgets": widgets}
 
@@ -794,6 +803,7 @@ def export_capability_showcase() -> dict:
     data = load_yaml(path)
     capabilities: list[dict] = []
     role_counts: dict[str, int] = {}
+    proof_provenance_counts: dict[str, int] = {}
     evidence_totals = {
         "paper_count": 0,
         "theorem_count": 0,
@@ -832,6 +842,11 @@ def export_capability_showcase() -> dict:
         }
         for role in item.get("portfolio_roles", []) or []:
             role_counts[role] = role_counts.get(role, 0) + 1
+        proof_provenance_kind = item.get("proof_provenance_kind", "")
+        if proof_provenance_kind:
+            proof_provenance_counts[proof_provenance_kind] = (
+                proof_provenance_counts.get(proof_provenance_kind, 0) + 1
+            )
         for key, value in item["evidence_counts"].items():
             evidence_totals[key] += value
         unique_papers.update(item.get("paper_ids", []) or [])
@@ -845,6 +860,7 @@ def export_capability_showcase() -> dict:
     portfolio_summary = {
         "capability_count": len(capabilities),
         "role_counts": dict(sorted(role_counts.items())),
+        "proof_provenance_counts": dict(sorted(proof_provenance_counts.items())),
         "evidence_totals": evidence_totals,
         "unique_evidence_counts": {
             "paper_count": len(unique_papers),

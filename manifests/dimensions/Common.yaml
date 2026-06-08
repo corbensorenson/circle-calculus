@@ -1295,6 +1295,36 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
     blocker: ""
+  - id: AIM-T0033
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitCertificate_exitStep_add_mul_loopPeriod
+    informal_statement: "For positive loopPeriod, a finite loop-exit certificate has the same certified exit step after any whole number of loop-period passes."
+    formal_statement: "For positive loopPeriod and compatible available-budget witnesses, loopExitCertificate loopPeriod (sample + passes * loopPeriod) maxLoops tolerance hshift has the same exitStep as loopExitCertificate loopPeriod sample maxLoops tolerance hbudget."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_required_steps_are_positive_bounded_and_periodic
+    blocker: ""
+  - id: AIM-T0034
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitCertificate_boundary_add_mul_loopPeriod
+    informal_statement: "For positive loopPeriod, a finite loop-exit certificate has the same overthinking guardrail boundary after any whole number of loop-period passes."
+    formal_statement: "For positive loopPeriod and compatible available-budget witnesses, the loopOverthinkingBoundary read from the shifted loopExitCertificate equals the loopOverthinkingBoundary read from the base certificate."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_required_steps_are_positive_bounded_and_periodic
+    blocker: ""
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize

@@ -35,6 +35,13 @@ function roleLabel(role) {
   return role.replaceAll("_", " ");
 }
 
+function provenanceLabel(kind) {
+  if (kind === "mathlib_bridge") return "mathlib bridge";
+  if (kind === "project_native") return "project-native";
+  if (kind === "mixed") return "mixed";
+  return String(kind || "unspecified").replaceAll("_", " ");
+}
+
 function capabilityLink(capability) {
   const link = document.createElement("a");
   link.href = `#${encodeURIComponent(capability.id)}`;
@@ -90,6 +97,7 @@ function renderTable(capabilities) {
     "Capability",
     "Area",
     "Roles",
+    "Proof provenance",
     "Papers",
     "Theorems",
     "Executables",
@@ -116,6 +124,7 @@ function renderTable(capabilities) {
     appendCell(row, title);
     appendCell(row, capability.area || "");
     appendCell(row, roleBadges(capability));
+    appendCell(row, provenanceLabel(capability.proof_provenance_kind));
     appendCountCell(row, counts.paper_count, "papers");
     appendCountCell(row, counts.theorem_count, "theorems");
     appendCountCell(row, counts.executable_count, "executable examples");
@@ -162,13 +171,24 @@ function roleCoverageLine(summary) {
   return parts.join("\n");
 }
 
+function provenanceCoverageLine(summary) {
+  const counts = summary?.proof_provenance_counts || {};
+  const parts = [];
+  for (const kind of ["mathlib_bridge", "project_native", "mixed"]) {
+    if (counts[kind]) parts.push(`${provenanceLabel(kind)} lanes: ${counts[kind]}`);
+  }
+  return parts.join("\n");
+}
+
 function renderManifestSummary(capabilities, summary) {
   if (!summary || !summary.unique_evidence_counts) return renderSummary(capabilities);
   const unique = summary.unique_evidence_counts;
   const totals = summary.evidence_totals || {};
+  const provenanceCoverage = provenanceCoverageLine(summary);
   const lines = [
     `capability lanes: ${summary.capability_count ?? capabilities.length}`,
     `role coverage:\n${roleCoverageLine(summary)}`,
+    provenanceCoverage ? `proof provenance:\n${provenanceCoverage}` : "",
     `unique paper ids: ${unique.paper_count}`,
     `unique proved theorem ids advertised: ${unique.theorem_count}`,
     `unique pytest executable refs: ${unique.executable_count}`,

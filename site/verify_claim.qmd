@@ -53,6 +53,14 @@ Given a paper id or title:
 4. Follow every theorem id listed for the paper into the theorem index.
 5. Treat prose without a proved theorem id as exposition, motivation, roadmap, or conjectural framing.
 
+## Trace An Advertised Capability
+
+Use the [Proof-Backed Showcase](showcase.qmd) when the claim is not a single theorem but a portfolio lane such as `SHOW-001` or `SHOW-010`.
+
+The checklist below is generated from `site/data/generated/capability_showcase.json`, which is exported from `manifests/capability_showcase.yaml`. A capability is ready to advertise only when its claim, proof provenance, theorem ids, paper ids, executable references, Living Book references, and not-claimed boundary all stay in sync with that manifest.
+
+<div class="widget-panel" data-widget="capability_audit_checklist"></div>
+
 ## Trace A Widget Or Glyph
 
 For a widget:
@@ -98,3 +106,4 @@ The public site is hosted at [Circle Calculus Living Book](https://corbensorenso
 The public page is a learning resource. The proof source is still the repository state that produced it.
 
 <script type="module" src="widgets/shared/widget_base.js"></script>
+<script type="module" src="widgets/showcase/capability_audit_checklist.js"></script>

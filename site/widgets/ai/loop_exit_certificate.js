@@ -14,6 +14,8 @@ const THEOREM_IDS = [
   "AIM-T0030",
   "AIM-T0031",
   "AIM-T0032",
+  "AIM-T0033",
+  "AIM-T0034",
 ];
 const DICTIONARY_IDS = ["COMMON-0052", "COMMON-0053", "COMMON-0054", "COMMON-0059", "COMMON-0067"];
 
@@ -279,6 +281,7 @@ function appendRecord(output, values, theoremById) {
     `periodic exit availability check: ${primary.exitAvailable === shifted.exitAvailable}`,
     `three-pass shifted sample: ${values.sampleIndex + 3 * values.loopPeriod}`,
     `three-pass required steps: ${multiPass.requiredSteps}`,
+    `three-pass exit-step check: ${primary.exitStep === multiPass.exitStep}`,
     `three-pass exit available: ${yesNo(multiPass.exitAvailable)}`,
     `multi-pass boundary check: ${primary.overthinkingBoundary === multiPass.overthinkingBoundary}`,
     `multi-pass exit availability check: ${primary.exitAvailable === multiPass.exitAvailable}`,

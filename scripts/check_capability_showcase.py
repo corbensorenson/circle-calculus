@@ -24,6 +24,11 @@ ALLOWED_PORTFOLIO_ROLES = {
     "circle_native_value",
     "application_guardrail",
 }
+ALLOWED_PROOF_PROVENANCE_KINDS = {
+    "mathlib_bridge",
+    "project_native",
+    "mixed",
+}
 REQUIRED_TEXT_FIELDS = [
     "title",
     "area",
@@ -33,6 +38,7 @@ REQUIRED_TEXT_FIELDS = [
     "circle_native_value",
     "advertised_claim",
     "proof_scope",
+    "proof_provenance",
     "not_claimed",
 ]
 PAGE_CLAIM_FIELDS = [
@@ -41,6 +47,7 @@ PAGE_CLAIM_FIELDS = [
     "circle_native_value",
     "advertised_claim",
     "proof_scope",
+    "proof_provenance",
     "not_claimed",
 ]
 CAPABILITY_ATTR_RE = re.compile(
@@ -537,6 +544,7 @@ def main() -> int:
         executable_refs = item.get("executable_refs", [])
         living_refs = item.get("living_book_refs", [])
         roles = item.get("portfolio_roles", [])
+        proof_provenance_kind = item.get("proof_provenance_kind")
 
         if not theorem_ids:
             failures.append(f"{capability_id}: must advertise at least one theorem id")
@@ -559,6 +567,12 @@ def main() -> int:
         if "standard_math_parity" not in roles and "circle_native_value" not in roles:
             failures.append(
                 f"{capability_id}: must advertise either standard_math_parity or circle_native_value"
+            )
+        if not isinstance(proof_provenance_kind, str) or not proof_provenance_kind:
+            failures.append(f"{capability_id}: must declare proof_provenance_kind")
+        elif proof_provenance_kind not in ALLOWED_PROOF_PROVENANCE_KINDS:
+            failures.append(
+                f"{capability_id}: unknown proof_provenance_kind {proof_provenance_kind}"
             )
 
         duplicate_theorems = sorted({tid for tid in theorem_ids if theorem_ids.count(tid) > 1})

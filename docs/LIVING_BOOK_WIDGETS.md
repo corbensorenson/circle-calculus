@@ -27,10 +27,18 @@ Implemented shared JavaScript:
 ### capability_portfolio_matrix
 
 - Inputs: none; the widget reads `site/data/generated/capability_showcase.json`.
-- Outputs: capability lane, area, portfolio roles, paper count, theorem count, executable count, Living Book page count, Living Book widget count, and the explicit claim boundary.
+- Outputs: capability lane, area, portfolio roles, proof provenance kind, paper count, theorem count, executable count, Living Book page count, Living Book widget count, and the explicit claim boundary.
 - Data source: `manifests/capability_showcase.yaml`, exported by `scripts/site/export_site_data.py`.
 - Guardrail: the matrix is a manifest-backed evidence summary only. It does not turn imported theorem bridges, executable examples, widgets, or benchmarks into new mathematical proofs.
 - Validation: `scripts/check_capability_showcase.py` requires the matrix mount and script import on the public showcase page; `scripts/site/check_site_widget_contracts.py` verifies the widget index, page mount, and JavaScript mount call.
+
+### capability_audit_checklist
+
+- Inputs: none; the widget reads `site/data/generated/capability_showcase.json`.
+- Outputs: capability lane, proof provenance text, advertised claim, paper/theorem/dictionary/executable/source/Living Book evidence counts, paper/theorem/dictionary id lists, and explicit claim boundary.
+- Data source: `manifests/capability_showcase.yaml`, exported by `scripts/site/export_site_data.py`.
+- Guardrail: the checklist verifies traceability only. It does not turn standard theorem bridges, Python examples, widgets, or paper prose into new proofs.
+- Validation: `scripts/site/check_site_widget_contracts.py` verifies the widget index, page mount, and JavaScript mount call; `scripts/site/check_site_navigation_contract.py` keeps the verification-page audit route present.
 
 ## S1 Widgets
 
@@ -176,7 +184,7 @@ Implemented shared JavaScript:
 
 - Inputs: loop period, primary sample index, primary maximum loops, fixed-budget control sample index, fixed-budget control maximum loops, and overthinking tolerance.
 - Outputs: primary and control score traces, required loop depth, first exit step, exit availability, budget status, guardrail status, one-period and multi-pass exit-availability checks, theorem-status badges, and dictionary links.
-- Theorem ids: `AIM-T0012`, `AIM-T0013`, `AIM-T0014`, `AIM-T0015`, `AIM-T0016`, `AIM-T0017`, `AIM-T0024`, `AIM-T0029`, `AIM-T0030`, `AIM-T0031`, and `AIM-T0032`.
+- Theorem ids: `AIM-T0012`, `AIM-T0013`, `AIM-T0014`, `AIM-T0015`, `AIM-T0016`, `AIM-T0017`, `AIM-T0024`, `AIM-T0029`, `AIM-T0030`, `AIM-T0031`, `AIM-T0032`, `AIM-T0033`, and `AIM-T0034`.
 - Dictionary ids: `COMMON-0052`, `COMMON-0053`, `COMMON-0054`, `COMMON-0059`, and `COMMON-0067`.
 - Python references: `circle_math.applications.circle_ai.loop_required_steps`, `circle_math.applications.circle_ai.loop_score_trace`, `circle_math.applications.circle_ai.loop_exit_step`, and `circle_math.applications.circle_ai.loop_exit_certificate`.
 - Guardrail: the widget is deterministic finite loop-schedule certificate bookkeeping only. It does not prove trained early-exit quality, recursive reasoning, speed, memory improvement, context-length improvement, or overthinking behavior in real transformers.

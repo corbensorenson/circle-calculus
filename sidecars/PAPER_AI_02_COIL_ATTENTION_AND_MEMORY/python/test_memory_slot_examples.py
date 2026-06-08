@@ -275,6 +275,9 @@ def test_loop_exit_certificate_records_budget_and_guardrail() -> None:
         certificate.sample_index,
         certificate.max_loops,
     ) == certificate.exit_step
+    shifted = loop_exit_certificate(4, sample_index=6 + 3 * 4, max_loops=4, overthink_tolerance=1)
+    assert shifted.exit_step == certificate.exit_step
+    assert shifted.overthinking_boundary == certificate.overthinking_boundary
     assert certificate.within_budget
     assert certificate.within_guardrail
     assert certificate.note.endswith("not a model-quality claim.")
@@ -318,6 +321,7 @@ def test_loop_required_steps_are_positive_bounded_and_periodic() -> None:
                     loop_period,
                 )
                 assert shifted_certificate.exit_available == base_certificate.exit_available
+                assert shifted_certificate.exit_step == base_certificate.exit_step
                 assert shifted_certificate.overthinking_boundary == base_certificate.overthinking_boundary
             if required <= loop_period:
                 assert training_free_loop_budget(loop_period, sample, loop_period) > 0

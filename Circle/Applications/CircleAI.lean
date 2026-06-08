@@ -299,6 +299,36 @@ theorem loopExitCertificate_budget_eq_exitStep
     ← loopExitCertificate_exit_eq_required certificate,
   ]
 
+theorem loopExitCertificate_exitStep_add_mul_loopPeriod
+    {loopPeriod maxLoops : Nat} (hpositive : 0 < loopPeriod)
+    (sample passes tolerance : Nat)
+    (hbudget : loopExitAvailable loopPeriod sample maxLoops)
+    (hshift :
+      loopExitAvailable loopPeriod (sample + passes * loopPeriod) maxLoops) :
+    (loopExitCertificate
+        loopPeriod (sample + passes * loopPeriod) maxLoops tolerance hshift).exitStep =
+      (loopExitCertificate loopPeriod sample maxLoops tolerance hbudget).exitStep := by
+  simp [loopExitCertificate, loopRequiredSteps_add_mul_loopPeriod hpositive]
+
+theorem loopExitCertificate_boundary_add_mul_loopPeriod
+    {loopPeriod maxLoops : Nat} (hpositive : 0 < loopPeriod)
+    (sample passes tolerance : Nat)
+    (hbudget : loopExitAvailable loopPeriod sample maxLoops)
+    (hshift :
+      loopExitAvailable loopPeriod (sample + passes * loopPeriod) maxLoops) :
+    loopOverthinkingBoundary
+        (loopExitCertificate
+          loopPeriod (sample + passes * loopPeriod) maxLoops tolerance hshift).loopPeriod
+        (loopExitCertificate
+          loopPeriod (sample + passes * loopPeriod) maxLoops tolerance hshift).sample
+        (loopExitCertificate
+          loopPeriod (sample + passes * loopPeriod) maxLoops tolerance hshift).tolerance =
+      loopOverthinkingBoundary
+        (loopExitCertificate loopPeriod sample maxLoops tolerance hbudget).loopPeriod
+        (loopExitCertificate loopPeriod sample maxLoops tolerance hbudget).sample
+        (loopExitCertificate loopPeriod sample maxLoops tolerance hbudget).tolerance := by
+  simp [loopExitCertificate, loopOverthinkingBoundary_add_mul_loopPeriod hpositive]
+
 def adapterBlock (blockSize channel : Nat) : Nat :=
   channel % blockSize
 
