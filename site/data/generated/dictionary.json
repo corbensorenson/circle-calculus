@@ -4215,6 +4215,11 @@
       ],
       "used_by_widgets": [
         {
+          "id": "harmonic_feature_baseline",
+          "path": "site/widgets/ai/harmonic_feature_baseline.js",
+          "python_reference": "circle_math.applications.circle_ai.harmonic_feature; circle_math.applications.circle_ai.fit_harmonic_feature_lookup; circle_math.applications.circle_ai.predict_harmonic_feature_lookup; circle_math.applications.circle_ai.run_harmonic_feature_baseline_benchmark"
+        },
+        {
           "id": "multicoil_phase_explorer",
           "path": "site/widgets/ai/multicoil_phase_explorer.js",
           "python_reference": "circle_math.applications.circle_ai.multicoil_phase; circle_math.applications.circle_ai.multicoil_cycle_length; circle_math.applications.circle_ai.multicoil_phase_label"
@@ -4271,6 +4276,11 @@
         }
       ],
       "used_by_widgets": [
+        {
+          "id": "harmonic_feature_baseline",
+          "path": "site/widgets/ai/harmonic_feature_baseline.js",
+          "python_reference": "circle_math.applications.circle_ai.harmonic_feature; circle_math.applications.circle_ai.fit_harmonic_feature_lookup; circle_math.applications.circle_ai.predict_harmonic_feature_lookup; circle_math.applications.circle_ai.run_harmonic_feature_baseline_benchmark"
+        },
         {
           "id": "multicoil_phase_explorer",
           "path": "site/widgets/ai/multicoil_phase_explorer.js",
@@ -5104,6 +5114,11 @@
           "id": "circulant_mixer_validation",
           "path": "site/widgets/ai/circulant_mixer_validation.js",
           "python_reference": "circle_math.applications.circle_ai.circulant_mixer_output; circle_math.applications.circle_ai.dense_circulant_matrix; circle_math.applications.circle_ai.run_circulant_mixer_benchmark"
+        },
+        {
+          "id": "harmonic_feature_baseline",
+          "path": "site/widgets/ai/harmonic_feature_baseline.js",
+          "python_reference": "circle_math.applications.circle_ai.harmonic_feature; circle_math.applications.circle_ai.fit_harmonic_feature_lookup; circle_math.applications.circle_ai.predict_harmonic_feature_lookup; circle_math.applications.circle_ai.run_harmonic_feature_baseline_benchmark"
         },
         {
           "id": "multicoil_phase_explorer",

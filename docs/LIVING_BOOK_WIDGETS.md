@@ -122,6 +122,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is a deterministic synthetic phase-feature control fixture only. It does not prove neural-network quality, model speed, real-task usefulness, or that cyclic features help nonperiodic tasks.
 - Validation: deterministic JavaScript-equivalent phase lookup, constant baseline, scalar-threshold baseline, and nonperiodic control formulas are parity-checked against the Python phase-channel benchmark helpers.
 
+### harmonic_feature_baseline
+
+- Inputs: period, wrong period, training length, and test length.
+- Outputs: positive phase set, learned phase lookup, observed harmonic feature count, sample sine/cosine feature, cyclic phase-lookup accuracy, correct harmonic feature accuracy, wrong-frequency harmonic accuracy, scalar-threshold accuracy, learned absolute-position accuracy, nonperiodic harmonic accuracy, nonperiodic scalar-threshold accuracy, theorem-status badges, and dictionary links.
+- Theorem ids: `AIA-T0001`, `AIA-T0002`, `AIA-T0004`, and `AIA-T0005` as finite phase/indexing boundaries.
+- Dictionary ids: `COMMON-0026`, `COMMON-0027`, and `COMMON-0046`.
+- Python references: `circle_math.applications.circle_ai.harmonic_feature`, `circle_math.applications.circle_ai.fit_harmonic_feature_lookup`, `circle_math.applications.circle_ai.predict_harmonic_feature_lookup`, and `circle_math.applications.circle_ai.run_harmonic_feature_baseline_benchmark`.
+- Guardrail: the widget is a deterministic synthetic Fourier-style feature-control fixture only. It does not prove RoPE quality, language-model quality, speed, parameter efficiency, or usefulness on real workloads.
+- Validation: deterministic JavaScript-equivalent phase lookup, harmonic feature lookup, wrong-period harmonic lookup, scalar-threshold baseline, learned-position baseline, and nonperiodic control formulas are parity-checked against the Python harmonic-feature benchmark helpers.
+
 ### loop_recurrence_budget
 
 - Inputs: loop period, sample/token index, maximum loops, overthinking tolerance.

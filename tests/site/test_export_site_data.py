@@ -62,6 +62,7 @@ def test_export_site_data_writes_required_indexes() -> None:
     assert "periodic_winding_dynamics" in widget_ids
     assert "orbit_family_generator" in widget_ids
     assert "phase_channel_baseline" in widget_ids
+    assert "harmonic_feature_baseline" in widget_ids
 
     glyphs = json.loads((generated / "glyph_index.json").read_text())
     glyph_by_id = {item["id"]: item for item in glyphs["glyphs"]}

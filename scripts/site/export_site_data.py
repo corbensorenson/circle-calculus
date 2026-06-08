@@ -370,6 +370,13 @@ def export_widget_index() -> dict:
             "python_reference": "circle_math.applications.circle_ai.phase_channel; circle_math.applications.circle_ai.run_phase_channel_benchmark; circle_math.applications.circle_ai.run_learned_phase_baseline_benchmark",
         },
         {
+            "id": "harmonic_feature_baseline",
+            "path": "site/widgets/ai/harmonic_feature_baseline.js",
+            "theorem_ids": ["AIA-T0001", "AIA-T0002", "AIA-T0004", "AIA-T0005"],
+            "dictionary_ids": ["COMMON-0026", "COMMON-0027", "COMMON-0046"],
+            "python_reference": "circle_math.applications.circle_ai.harmonic_feature; circle_math.applications.circle_ai.fit_harmonic_feature_lookup; circle_math.applications.circle_ai.predict_harmonic_feature_lookup; circle_math.applications.circle_ai.run_harmonic_feature_baseline_benchmark",
+        },
+        {
             "id": "cyclic_memory_slots",
             "path": "site/widgets/ai/cyclic_memory_slots.js",
             "theorem_ids": ["AIM-T0001", "AIM-T0002", "AIM-T0003", "AIM-T0004", "AIM-T0005"],

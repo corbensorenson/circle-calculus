@@ -18,10 +18,12 @@ from circle_math.applications import (
     dense_matrix_vector_product,
     dense_adapter_parameter_count,
     fit_content_route_lookup,
+    fit_harmonic_feature_lookup,
     fit_loop_budget_lookup,
     fit_loop_block_lookup,
     fit_phase_lookup,
     fit_recurrence_resolution_lookup,
+    harmonic_feature,
     local_window_indices,
     loop_block_indices,
     loop_exit_certificate,
@@ -46,6 +48,7 @@ from circle_math.applications import (
     retrieval_hit_rate_by_lag,
     retrieval_target_index,
     predict_content_route_lookup,
+    predict_harmonic_feature_lookup,
     predict_phase_lookup,
     predict_loop_budget_lookup,
     predict_loop_block_lookup,
@@ -54,6 +57,7 @@ from circle_math.applications import (
     run_adapter_parameter_budget_benchmark,
     run_content_gated_retrieval_benchmark,
     run_circulant_mixer_benchmark,
+    run_harmonic_feature_baseline_benchmark,
     run_learned_content_gate_retrieval_benchmark,
     run_learned_phase_baseline_benchmark,
     run_learned_middle_block_recurrence_benchmark,
@@ -468,6 +472,43 @@ def js_predict_phase_lookup(
     return tuple(lookup[js_phase_channel(period, position)] for position in positions)
 
 
+def js_harmonic_feature(period: int, position: int, harmonic: int = 1) -> tuple[float, float]:
+    angle = tau * harmonic * js_phase_channel(period, position) / period
+    return (round(cos(angle), 12), round(sin(angle), 12))
+
+
+def js_fit_harmonic_feature_lookup(
+    period: int,
+    positions: tuple[int, ...],
+    labels: tuple[int, ...],
+    harmonic: int = 1,
+) -> tuple[tuple[tuple[float, float], int], ...]:
+    counts: dict[tuple[float, float], list[int]] = {}
+    for position, label in zip(positions, labels):
+        feature = js_harmonic_feature(period, position, harmonic)
+        if feature not in counts:
+            counts[feature] = [0, 0]
+        counts[feature][label] += 1
+    entries = []
+    for feature, (zero_count, one_count) in counts.items():
+        entries.append((feature, 1 if one_count >= zero_count else 0))
+    return tuple(sorted(entries))
+
+
+def js_predict_harmonic_feature_lookup(
+    period: int,
+    lookup: tuple[tuple[tuple[float, float], int], ...],
+    positions: tuple[int, ...],
+    harmonic: int = 1,
+) -> tuple[int, ...]:
+    lookup_map = dict(lookup)
+    fallback = js_majority_label(tuple(lookup_map.values()))
+    return tuple(
+        lookup_map.get(js_harmonic_feature(period, position, harmonic), fallback)
+        for position in positions
+    )
+
+
 def js_nonperiodic_threshold_label(position: int, threshold: int) -> int:
     return 1 if position >= threshold else 0
 
@@ -496,6 +537,32 @@ def js_predict_threshold_classifier(
     polarity: int,
 ) -> tuple[int, ...]:
     return tuple(1 if (position >= threshold) == (polarity == 1) else 0 for position in positions)
+
+
+def js_fit_position_lookup(
+    positions: tuple[int, ...],
+    labels: tuple[int, ...],
+) -> tuple[int, tuple[tuple[int, int], ...]]:
+    fallback = js_majority_label(labels)
+    counts: dict[int, list[int]] = {}
+    for position, label in zip(positions, labels):
+        if position not in counts:
+            counts[position] = [0, 0]
+        counts[position][label] += 1
+    entries = tuple(
+        (position, 1 if one_count >= zero_count else 0)
+        for position, (zero_count, one_count) in sorted(counts.items())
+    )
+    return fallback, entries
+
+
+def js_predict_position_lookup(
+    lookup: tuple[int, tuple[tuple[int, int], ...]],
+    positions: tuple[int, ...],
+) -> tuple[int, ...]:
+    fallback, entries = lookup
+    lookup_map = dict(entries)
+    return tuple(lookup_map.get(position, fallback) for position in positions)
 
 
 def js_majority_int(values: tuple[int, ...]) -> int:
@@ -1148,6 +1215,83 @@ def main() -> int:
             js_control_test_labels,
         )
         assert learned_benchmark.nonperiodic_dense_accuracy == js_accuracy(
+            control_scalar_predictions,
+            js_control_test_labels,
+        )
+
+        wrong_period = period - 1
+        for position in range(train_length + test_length):
+            assert harmonic_feature(period, position) == js_harmonic_feature(period, position)
+        harmonic_lookup = fit_harmonic_feature_lookup(period, train_positions, train_labels)
+        js_harmonic_lookup = js_fit_harmonic_feature_lookup(period, train_positions, js_train_labels)
+        assert harmonic_lookup == js_harmonic_lookup
+        harmonic_predictions = predict_harmonic_feature_lookup(period, harmonic_lookup, test_positions)
+        js_harmonic_predictions = js_predict_harmonic_feature_lookup(
+            period,
+            js_harmonic_lookup,
+            test_positions,
+        )
+        assert harmonic_predictions == js_harmonic_predictions
+        wrong_harmonic_lookup = fit_harmonic_feature_lookup(wrong_period, train_positions, train_labels)
+        js_wrong_harmonic_lookup = js_fit_harmonic_feature_lookup(
+            wrong_period,
+            train_positions,
+            js_train_labels,
+        )
+        assert wrong_harmonic_lookup == js_wrong_harmonic_lookup
+        wrong_harmonic_predictions = predict_harmonic_feature_lookup(
+            wrong_period,
+            wrong_harmonic_lookup,
+            test_positions,
+        )
+        js_wrong_harmonic_predictions = js_predict_harmonic_feature_lookup(
+            wrong_period,
+            js_wrong_harmonic_lookup,
+            test_positions,
+        )
+        assert wrong_harmonic_predictions == js_wrong_harmonic_predictions
+        position_lookup = js_fit_position_lookup(train_positions, js_train_labels)
+        position_predictions = js_predict_position_lookup(position_lookup, test_positions)
+        control_harmonic_lookup = js_fit_harmonic_feature_lookup(
+            period,
+            train_positions,
+            js_control_train_labels,
+        )
+        control_harmonic_predictions = js_predict_harmonic_feature_lookup(
+            period,
+            control_harmonic_lookup,
+            test_positions,
+        )
+
+        harmonic_benchmark = run_harmonic_feature_baseline_benchmark(
+            period=period,
+            wrong_period=wrong_period,
+            train_length=train_length,
+            test_length=test_length,
+        )
+        assert harmonic_benchmark.observed_feature_count == len(js_harmonic_lookup)
+        assert harmonic_benchmark.cyclic_phase_accuracy == js_accuracy(js_phase_predictions, js_test_labels)
+        assert harmonic_benchmark.harmonic_feature_accuracy == js_accuracy(
+            js_harmonic_predictions,
+            js_test_labels,
+        )
+        assert harmonic_benchmark.wrong_harmonic_accuracy == js_accuracy(
+            js_wrong_harmonic_predictions,
+            js_test_labels,
+        )
+        assert harmonic_benchmark.scalar_threshold_accuracy == js_accuracy(
+            threshold_predictions,
+            js_test_labels,
+        )
+        assert harmonic_benchmark.learned_position_accuracy == js_accuracy(
+            position_predictions,
+            js_test_labels,
+        )
+        assert harmonic_benchmark.nonperiodic_harmonic_accuracy == js_accuracy(
+            control_harmonic_predictions,
+            js_control_test_labels,
+        )
+        assert harmonic_benchmark.nonperiodic_scalar_threshold_accuracy == js_accuracy(
             control_scalar_predictions,
             js_control_test_labels,
         )

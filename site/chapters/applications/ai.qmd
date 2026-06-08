@@ -37,6 +37,14 @@ The first AI fixture asks the smallest useful question: if labels are actually p
 
 <div class="widget-panel" data-widget="phase_channel_baseline" data-theorem-id="AIA-T0001" data-dictionary-ids="COMMON-0026 COMMON-0027"></div>
 
+## Harmonic/Fourier Feature Path
+
+The harmonic feature fixture asks the same known-period question with a sine/cosine encoding instead of an integer phase key. The correct period should match the phase lookup, while a wrong-frequency feature, scalar threshold, and absolute-position lookup remain visible controls.
+
+This is the safe first step toward RoPE-adjacent thinking: it shows the finite phase arithmetic behind a Fourier-style feature, not a language-model result.
+
+<div class="widget-panel" data-widget="harmonic_feature_baseline" data-theorem-id="AIA-T0001" data-dictionary-ids="COMMON-0026 COMMON-0027 COMMON-0046"></div>
+
 ## Cyclic Memory Slot Path
 
 Cyclic memory starts with a plain finite address: `memory_slot(bank_size, token) = token mod bank_size`. The useful interface question is not whether this improves a model by itself, but whether slot assignment, alias collisions, and closure after full bank passes are visible before running a benchmark.
@@ -364,6 +372,7 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 :::
 
 <script type="module" src="../../widgets/ai/phase_channel_baseline.js"></script>
+<script type="module" src="../../widgets/ai/harmonic_feature_baseline.js"></script>
 <script type="module" src="../../widgets/ai/cyclic_memory_slots.js"></script>
 <script type="module" src="../../widgets/ai/coil_retrieval_reachability.js"></script>
 <script type="module" src="../../widgets/ai/content_gated_retrieval.js"></script>
