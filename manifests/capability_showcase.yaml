@@ -243,12 +243,12 @@ capabilities:
     circle_math_expression: "Seed rules, generator comparisons, proof glyphs, and exactness gates are expressed as finite Circle records and Lean facts."
     circle_native_value: "This is a Circle-native value proposition: generated artifacts can carry exact source trails and negative-case checks instead of loose visual claims."
     advertised_claim: "Circle Calculus can pair generated structures with checked provenance and exact-comparison gates."
-    proof_scope: "Lean-proved seed-rule, finite-circle node membership/no-duplicate/nonempty, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, singleton exact-search, best-candidate soundness, exact-candidate absence/count gates, exact-candidate list soundness, and singleton membership gates."
+    proof_scope: "Lean-proved seed-rule, finite-circle node membership/no-duplicate/nonempty, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, singleton exact-search, best-candidate soundness, exact-candidate absence/count gates, exact-candidate list soundness, singleton membership gates, and finite-search count guardrails."
     proof_provenance_kind: "project_native"
     proof_provenance: "Proof provenance is project-native Lean code for seed-rule provenance, proof glyphs, exact-regeneration gates, and negative-case search boundaries."
     not_claimed: "No universal compression claim and no guarantee that generated artifacts are mathematically interesting."
     paper_ids: ["PAPER_GEN_01_SEED_RULE_PROVENANCE", "PAPER_P2_05_PROOF_CARRYING_GLYPHS"]
-    theorem_ids: ["GEN-T0001", "GEN-T0008", "GEN-T0017", "GEN-T0019", "GEN-T0020", "GEN-T0021", "GEN-T0022", "GEN-T0024", "GEN-T0026", "GEN-T0027", "GEN-T0028", "GEN-T0029", "GEN-T0030", "GEN-T0031", "GEN-T0032", "GEN-T0033", "GEN-T0034", "GEN-T0035", "GEN-T0036", "GEN-T0037", "GEN-T0038", "GEN-T0039", "GEN-T0040", "GEN-T0041", "GEN-T0042", "GEN-T0043", "P2G-T0006"]
+    theorem_ids: ["GEN-T0001", "GEN-T0008", "GEN-T0017", "GEN-T0019", "GEN-T0020", "GEN-T0021", "GEN-T0022", "GEN-T0024", "GEN-T0026", "GEN-T0027", "GEN-T0028", "GEN-T0029", "GEN-T0030", "GEN-T0031", "GEN-T0032", "GEN-T0033", "GEN-T0034", "GEN-T0035", "GEN-T0036", "GEN-T0037", "GEN-T0038", "GEN-T0039", "GEN-T0040", "GEN-T0041", "GEN-T0042", "GEN-T0043", "GEN-T0044", "GEN-T0045", "P2G-T0006"]
     dictionary_ids: ["COMMON-0033", "COMMON-0064", "COMMON-0065", "COMMON-0066"]
     executable_refs:
       - "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py"

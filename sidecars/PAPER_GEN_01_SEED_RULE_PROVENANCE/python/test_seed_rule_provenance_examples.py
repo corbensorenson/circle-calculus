@@ -184,6 +184,8 @@ def test_bounded_generator_search_reports_scope_and_exact_candidates() -> None:
     assert "GEN-T0037" in search.theorem_ids
     assert "GEN-T0038" in search.theorem_ids
     assert "GEN-T0039" in search.theorem_ids
+    assert "GEN-T0044" in search.theorem_ids
+    assert "GEN-T0045" in search.theorem_ids
     assert search.note.endswith("not an optimality theorem.")
 
 
@@ -216,6 +218,8 @@ def test_empty_bounded_generator_search_has_no_best_candidate() -> None:
         "GEN-T0037",
         "GEN-T0038",
         "GEN-T0039",
+        "GEN-T0044",
+        "GEN-T0045",
     )
 
 
@@ -241,3 +245,5 @@ def test_singleton_bounded_generator_search_has_exact_best_candidate() -> None:
     assert "GEN-T0037" in search.theorem_ids
     assert "GEN-T0038" in search.theorem_ids
     assert "GEN-T0039" in search.theorem_ids
+    assert "GEN-T0044" in search.theorem_ids
+    assert "GEN-T0045" in search.theorem_ids

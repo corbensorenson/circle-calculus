@@ -120,7 +120,7 @@ targets:
       - "site/chapters/applications/generative.qmd"
       - "site/widgets/generative/proof_glyph_certificate.js"
     dictionary_dependencies: ["COMMON-0042", "COMMON-0064", "COMMON-0065", "COMMON-0066", "COMMON-0033"]
-    next_action: "Exact representative-indexed orbit-decomposition regeneration, comparison gates, bounded finite-list generator search, generated-diagram widgets, an orbit-family widget, and a proof-glyph certificate widget are in place; the bounded search now has Lean-proved empty-search boundaries and best-exact-candidate soundness within the declared finite search space; next strengthen nontrivial ranking criteria and baseline comparisons while keeping minimality claims scoped."
+    next_action: "Exact representative-indexed orbit-decomposition regeneration, comparison gates, bounded finite-list generator search, generated-diagram widgets, an orbit-family widget, and a proof-glyph certificate widget are in place; the bounded search now has Lean-proved empty-search boundaries, best-exact-candidate soundness within the declared finite search space, and exact-candidate count bounds; next strengthen nontrivial ranking criteria and baseline comparisons while keeping minimality claims scoped."
     guardrail: "A smaller generator is not automatically optimal, meaningful, or new mathematics."
 
   - id: P7-GEN-002
@@ -144,7 +144,7 @@ targets:
       - "papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md"
       - "papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md"
     dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066", "COMMON-0041", "COMMON-0042"]
-    next_action: "Finite-circle, finite physics-loop, and orbit-family generation are now represented in Living Book widgets; exact-regeneration self/symmetry/transitivity, field-equality gates, unequal-value negative gates, the empty declared-search boundary, and best-exact-candidate soundness are Lean-proved; bounded_generator_search now ranks only declared finite candidate lists with exact and shorter-candidate counts; expand next toward stronger nontrivial ranking criteria and baseline comparisons."
+    next_action: "Finite-circle, finite physics-loop, and orbit-family generation are now represented in Living Book widgets; exact-regeneration self/symmetry/transitivity, field-equality gates, unequal-value negative gates, the empty declared-search boundary, best-exact-candidate soundness, and exact-candidate count bounds are Lean-proved; bounded_generator_search now ranks only declared finite candidate lists with exact and shorter-candidate counts; expand next toward stronger nontrivial ranking criteria and baseline comparisons."
     guardrail: "Do not call this universal compression, Kolmogorov complexity, or an optimal generator theorem."
 
   - id: P7-GEN-003

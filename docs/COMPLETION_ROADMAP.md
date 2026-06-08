@@ -918,7 +918,7 @@ Generative work order:
 - [x] Strengthen finite-circle seed generation with exact node membership, duplicate-free output, zero-size empty output, and positive-size nonempty output facts.
 - [x] Strengthen exact representative-indexed orbit regeneration toward explicit disjoint canonical representative partition facts before calling the decomposition fully canonical.
 - [x] Add exact-regeneration self/symmetry/transitivity facts plus field-equality and unequal-value negative gates for constructed generator comparisons, while keeping minimality and optimal-compression claims out of scope.
-- [x] Add bounded finite-list search gates for exact-candidate list soundness, best-exact existence, and singleton membership without promoting them to global optimality claims.
+- [x] Add bounded finite-list search gates for exact-candidate list soundness, best-exact existence, singleton membership, and finite-search count bounds without promoting them to global optimality claims.
 - [x] Add generated-diagram and orbit-family Living Book widgets/status badges, with diagrams generated from the same records used by tests.
 
 Accepted Phase VII targets:

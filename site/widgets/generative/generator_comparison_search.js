@@ -31,6 +31,8 @@ const THEOREM_IDS = [
   "GEN-T0041",
   "GEN-T0042",
   "GEN-T0043",
+  "GEN-T0044",
+  "GEN-T0045",
 ];
 const DICTIONARY_IDS = ["COMMON-0064", "COMMON-0065", "COMMON-0066"];
 
@@ -166,6 +168,8 @@ function boundedSearch(records) {
       "GEN-T0037",
       "GEN-T0038",
       "GEN-T0039",
+      "GEN-T0044",
+      "GEN-T0045",
     ],
     note: "Bounded finite search only; not an optimality theorem.",
     comparisons,
@@ -266,9 +270,11 @@ function appendRecord(output, values, theoremById) {
     `finite search space: ${search.finite_search_space}`,
     `candidate count: ${search.candidate_count}`,
     `exact candidate count: ${search.exact_candidate_count}`,
+    `exact count <= candidate count: ${search.exact_candidate_count <= search.candidate_count}`,
     `best exact generator length: ${search.best_exact ? search.best_exact.generator_length : "none"}`,
     `best shorter generator length: ${search.best_shorter ? search.best_shorter.generator_length : "none"}`,
     `best-exact presence implies positive exact count: ${search.best_exact !== null ? search.exact_candidate_count > 0 : "not applicable"}`,
+    `best-exact presence implies positive candidate count: ${search.best_exact !== null ? search.candidate_count > 0 : "not applicable"}`,
     `singleton exact boundary: candidate_count=${singletonSearch.candidate_count}, exact_candidate_count=${singletonSearch.exact_candidate_count}, best_exact=${singletonSearch.best_exact === null ? "none" : "present"}`,
     `singleton best exact is exact: ${singletonSearch.best_exact !== null && singletonSearch.best_exact.exact_regeneration}`,
     `empty search boundary: candidate_count=${emptySearch.candidate_count}, exact_candidate_count=${emptySearch.exact_candidate_count}, best_exact=${emptySearch.best_exact === null ? "none" : "present"}`,

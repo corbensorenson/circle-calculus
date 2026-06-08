@@ -1707,9 +1707,11 @@ def main() -> int:
     js_shorter = tuple(comparison for comparison in js_exact if comparison["generator_shorter"])
     assert search.candidate_count == len(js_search_comparisons)
     assert search.exact_candidate_count == len(js_exact)
+    assert search.exact_candidate_count <= search.candidate_count
     assert search.best_exact is not None
     assert search.best_shorter is not None
     assert (search.best_exact is not None) == (search.exact_candidate_count > 0)
+    assert search.best_exact is None or search.candidate_count > 0
     assert search.best_exact.generator_length == min(
         comparison["generator_length"]
         for comparison in js_exact
@@ -1737,6 +1739,8 @@ def main() -> int:
         "GEN-T0037",
         "GEN-T0038",
         "GEN-T0039",
+        "GEN-T0044",
+        "GEN-T0045",
     )
     assert search.theorem_ids == generator_search_theorem_ids
     empty_search = bounded_generator_search([], search_id="empty_declared_search")

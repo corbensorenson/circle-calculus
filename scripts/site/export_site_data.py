@@ -294,6 +294,8 @@ def export_widget_index() -> dict:
                 "GEN-T0037",
                 "GEN-T0038",
                 "GEN-T0039",
+                "GEN-T0044",
+                "GEN-T0045",
             ],
             "dictionary_ids": ["COMMON-0064", "COMMON-0065", "COMMON-0066"],
             "python_reference": "circle_math.generative.compare_generator_to_explicit; circle_math.generative.bounded_generator_search; circle_math.generative.finite_circle_generator",

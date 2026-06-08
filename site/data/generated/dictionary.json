@@ -8074,6 +8074,18 @@
           "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nonempty",
           "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nonempty",
           "status": "proved"
+        },
+        {
+          "id": "GEN-T0044",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidateCount_le_candidateCount",
+          "name": "Circle.Generative.boundedGeneratorSearch_exactCandidateCount_le_candidateCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0045",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_candidateCount_pos",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_candidateCount_pos",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -8275,6 +8287,18 @@
           "id": "GEN-T0039",
           "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_candidates",
           "name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_candidates",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0044",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidateCount_le_candidateCount",
+          "name": "Circle.Generative.boundedGeneratorSearch_exactCandidateCount_le_candidateCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0045",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_candidateCount_pos",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_candidateCount_pos",
           "status": "proved"
         }
       ],
@@ -8570,6 +8594,18 @@
           "id": "GEN-T0043",
           "lean_name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nonempty",
           "name": "Circle.Generative.finiteCircleGenerator_generatedNodes_nonempty",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0044",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidateCount_le_candidateCount",
+          "name": "Circle.Generative.boundedGeneratorSearch_exactCandidateCount_le_candidateCount",
+          "status": "proved"
+        },
+        {
+          "id": "GEN-T0045",
+          "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_candidateCount_pos",
+          "name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_candidateCount_pos",
           "status": "proved"
         }
       ],

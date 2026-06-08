@@ -268,6 +268,7 @@ structure BoundedGeneratorSearch (α : Type) where
     ∀ candidate, candidate ∈ exactCandidates → candidate ∈ candidates
   exactSound :
     ∀ candidate, candidate ∈ exactCandidates → candidate.exactRegeneration
+  exactCountBound : exactCandidates.length ≤ candidates.length
 
 def emptyBoundedGeneratorSearch (α : Type) : BoundedGeneratorSearch α :=
   { candidates := [],
@@ -277,7 +278,8 @@ def emptyBoundedGeneratorSearch (α : Type) : BoundedGeneratorSearch α :=
       cases hmember),
     exactSound := (by
       intro candidate hmember
-      cases hmember) }
+      cases hmember),
+    exactCountBound := by simp }
 
 def singletonExactGeneratorSearch (value : α) : BoundedGeneratorSearch α :=
   let exactCandidate := generatorComparison value value
@@ -291,7 +293,8 @@ def singletonExactGeneratorSearch (value : α) : BoundedGeneratorSearch α :=
       have hcandidate : candidate = generatorComparison value value := by
         simpa using hmember
       subst candidate
-      exact generatorComparison_self_exact value) }
+      exact generatorComparison_self_exact value),
+    exactCountBound := by simp }
 
 def BoundedGeneratorSearch.candidateCount
     (search : BoundedGeneratorSearch α) : Nat :=
@@ -414,6 +417,19 @@ theorem boundedGeneratorSearch_exactCandidateCount_pos_iff_exists_bestExact
             exact ⟨head, by simp [BoundedGeneratorSearch.bestExact?]⟩
           · intro _
             simp [BoundedGeneratorSearch.exactCandidateCount]
+
+theorem boundedGeneratorSearch_exactCandidateCount_le_candidateCount
+    (search : BoundedGeneratorSearch α) :
+    search.exactCandidateCount ≤ search.candidateCount := by
+  exact search.exactCountBound
+
+theorem boundedGeneratorSearch_bestExact_some_candidateCount_pos
+    (search : BoundedGeneratorSearch α) {candidate : GeneratorComparison α}
+    (hbest : search.bestExact? = some candidate) :
+    0 < search.candidateCount := by
+  exact Nat.lt_of_lt_of_le
+    (boundedGeneratorSearch_bestExact_some_exactCandidateCount_pos search hbest)
+    (boundedGeneratorSearch_exactCandidateCount_le_candidateCount search)
 
 theorem singletonExactGeneratorSearch_bestExact_mem_exactCandidates
     (value : α) :

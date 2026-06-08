@@ -4558,7 +4558,7 @@
             "passed": true
           },
           {
-            "evidence": "Lean-proved seed-rule, finite-circle node membership/no-duplicate/nonempty, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, singleton exact-search, best-candidate soundness, exact-candidate absence/count gates, exact-candidate list soundness, and singleton membership gates.",
+            "evidence": "Lean-proved seed-rule, finite-circle node membership/no-duplicate/nonempty, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, singleton exact-search, best-candidate soundness, exact-candidate absence/count gates, exact-candidate list soundness, singleton membership gates, and finite-search count guardrails.",
             "id": "proof_scope",
             "label": "proof scope",
             "passed": true
@@ -4582,7 +4582,7 @@
             "passed": true
           },
           {
-            "evidence": "27",
+            "evidence": "29",
             "id": "proved_theorem_ids",
             "label": "proved paper-carried theorem ids",
             "passed": true
@@ -4687,7 +4687,7 @@
         "living_book_widget_count": 4,
         "paper_count": 2,
         "source_count": 4,
-        "theorem_count": 27
+        "theorem_count": 29
       },
       "executable_refs": [
         "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py",
@@ -4791,6 +4791,8 @@
               "GEN-T0041",
               "GEN-T0042",
               "GEN-T0043",
+              "GEN-T0044",
+              "GEN-T0045",
               "P2G-T0006"
             ],
             "standard_parity_claimed": false
@@ -4826,7 +4828,7 @@
             ]
           },
           {
-            "evidence": "papers 2; theorem refs 27/27; sources 4/4; executables 2; Living Book pages 1/1",
+            "evidence": "papers 2; theorem refs 29/29; sources 4/4; executables 2; Living Book pages 1/1",
             "id": "proof_backing",
             "label": "paper, theorem, source, executable, and Living Book backing",
             "ready": true,
@@ -4852,7 +4854,7 @@
           "Standard reference: Formal provenance, exact regeneration checks, orbit decompositions, and proof-carrying artifact records.",
           "Circle expression: Seed rules, generator comparisons, proof glyphs, and exactness gates are expressed as finite Circle records and Lean facts.",
           "Circle-native value: This is a Circle-native value proposition: generated artifacts can carry exact source trails and negative-case checks instead of loose visual claims.",
-          "Proof backing: 2 paper ids, 27/27 theorem refs, 4/4 source refs, 2 executable refs, and 1/1 Living Book page refs.",
+          "Proof backing: 2 paper ids, 29/29 theorem refs, 4/4 source refs, 2 executable refs, and 1/1 Living Book page refs.",
           "Boundary: No universal compression claim and no guarantee that generated artifacts are mathematically interesting."
         ],
         "total_section_count": 6
@@ -4863,7 +4865,7 @@
       ],
       "proof_provenance": "Proof provenance is project-native Lean code for seed-rule provenance, proof glyphs, exact-regeneration gates, and negative-case search boundaries.",
       "proof_provenance_kind": "project_native",
-      "proof_scope": "Lean-proved seed-rule, finite-circle node membership/no-duplicate/nonempty, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, singleton exact-search, best-candidate soundness, exact-candidate absence/count gates, exact-candidate list soundness, and singleton membership gates.",
+      "proof_scope": "Lean-proved seed-rule, finite-circle node membership/no-duplicate/nonempty, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, singleton exact-search, best-candidate soundness, exact-candidate absence/count gates, exact-candidate list soundness, singleton membership gates, and finite-search count guardrails.",
       "proof_trail_contract": {
         "passed_step_count": 7,
         "ready_to_advertise": true,
@@ -4875,7 +4877,7 @@
             "ready": true
           },
           {
-            "evidence": "27/27 theorem refs",
+            "evidence": "29/29 theorem refs",
             "id": "theorem_refs",
             "label": "proved paper-carried theorem refs",
             "ready": true
@@ -4936,7 +4938,7 @@
             ]
           },
           {
-            "evidence": "27/27 theorem refs",
+            "evidence": "29/29 theorem refs",
             "id": "theorem_trail",
             "label": "proved theorem trail",
             "ready": true,
@@ -4967,6 +4969,8 @@
               "GEN-T0041",
               "GEN-T0042",
               "GEN-T0043",
+              "GEN-T0044",
+              "GEN-T0045",
               "P2G-T0006"
             ]
           },
@@ -5086,10 +5090,12 @@
         "GEN-T0041",
         "GEN-T0042",
         "GEN-T0043",
+        "GEN-T0044",
+        "GEN-T0045",
         "P2G-T0006"
       ],
       "theorem_ref_contract": {
-        "proved_and_paper_backed_count": 27,
+        "proved_and_paper_backed_count": 29,
         "refs": [
           {
             "canonical_status": "proved",
@@ -5380,6 +5386,28 @@
           {
             "canonical_status": "proved",
             "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0044",
+            "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidateCount_le_candidateCount",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_GEN_01_SEED_RULE_PROVENANCE"
+            ],
+            "id": "GEN-T0045",
+            "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_candidateCount_pos",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
               "PAPER_P2_05_PROOF_CARRYING_GLYPHS"
             ],
             "id": "P2G-T0006",
@@ -5389,7 +5417,7 @@
             "status": "lean_proved"
           }
         ],
-        "total_count": 27,
+        "total_count": 29,
         "unproved_or_unbacked_ids": []
       },
       "title": "Proof-carrying generative provenance",
@@ -5407,7 +5435,7 @@
             "required": true
           },
           "standard_math_parity": {
-            "evidence": "theorems 27/27",
+            "evidence": "theorems 29/29",
             "ready": true,
             "required": false
           }
@@ -7877,8 +7905,8 @@
           "unbacked_refs": []
         },
         "theorem_refs": {
-          "proved_and_paper_backed_count": 64,
-          "total_count": 64,
+          "proved_and_paper_backed_count": 66,
+          "total_count": 66,
           "unproved_or_unbacked_refs": []
         },
         "unique_evidence_counts": {
@@ -7888,7 +7916,7 @@
           "living_book_widget_count": 11,
           "paper_count": 7,
           "source_count": 14,
-          "theorem_count": 64
+          "theorem_count": 66
         },
         "unknown_capability_ids": []
       },
@@ -7949,7 +7977,7 @@
             ]
           },
           {
-            "evidence": "papers 7; theorem refs 64; source refs 14; executables 7; Living Book pages 3",
+            "evidence": "papers 7; theorem refs 66; source refs 14; executables 7; Living Book pages 3",
             "id": "proof_backing_counts",
             "label": "proof-backed evidence counts",
             "ready": true,
@@ -7997,7 +8025,7 @@
         "summary_lines": [
           "Audience: Builders who want generated artifacts, cyclic AI schedules, and compute layouts to carry checkable provenance before performance or quality claims.",
           "Capability surface: 3 route lanes across AI systems, Computation, Generation and compression interfaces.",
-          "Proof backing: 64 proved theorem refs, 7 paper ids, 14 source refs, 7 executable refs, and 3 Living Book page refs.",
+          "Proof backing: 66 proved theorem refs, 7 paper ids, 14 source refs, 7 executable refs, and 3 Living Book page refs.",
           "Circle-native value: 3 lanes state explicit Circle expression/value statements with role-backed checks.",
           "Boundary: This route does not claim universal compression, model-quality improvement, speedup, or context-length improvement without benchmark evidence."
         ],
@@ -8062,7 +8090,7 @@
             ]
           },
           {
-            "evidence": "provenance project_native; theorems 64/64; sources 14/14",
+            "evidence": "provenance project_native; theorems 66/66; sources 14/14",
             "id": "proof_provenance_surface",
             "label": "proof provenance and backing surface",
             "ready": true,
@@ -8130,8 +8158,8 @@
         "unbacked_refs": []
       },
       "theorem_refs": {
-        "proved_and_paper_backed_count": 110,
-        "total_count": 110,
+        "proved_and_paper_backed_count": 112,
+        "total_count": 112,
         "unproved_or_unbacked_refs": []
       }
     },
@@ -8148,7 +8176,7 @@
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 110
+      "theorem_count": 112
     },
     "proof_provenance_counts": {
       "mathlib_bridge": 4,
@@ -8176,7 +8204,7 @@
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 110
+      "theorem_count": 112
     },
     "unique_living_book_pages": [
       "site/chapters/S1/03_coils_orbits_closure.qmd",

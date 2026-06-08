@@ -6171,7 +6171,7 @@
       "informal_statement": "An empty declared finite generator search space has zero candidate records.",
       "lean_name": "Circle.Generative.emptyBoundedGeneratorSearch_candidateCount",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 308,
+      "lean_source_line": 311,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -6210,7 +6210,7 @@
       "informal_statement": "An empty declared finite generator search space has zero exact-regeneration candidates.",
       "lean_name": "Circle.Generative.emptyBoundedGeneratorSearch_exactCandidateCount",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 312,
+      "lean_source_line": 315,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -6249,7 +6249,7 @@
       "informal_statement": "An empty declared finite generator search space has no best exact-regeneration candidate.",
       "lean_name": "Circle.Generative.emptyBoundedGeneratorSearch_bestExact_none",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 316,
+      "lean_source_line": 319,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -6288,7 +6288,7 @@
       "informal_statement": "If a bounded generator search returns a best exact candidate, that candidate belongs to the declared exact-candidate list.",
       "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_mem_exactCandidates",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 340,
+      "lean_source_line": 343,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -6327,7 +6327,7 @@
       "informal_statement": "If a bounded generator search returns a best exact candidate, that candidate belongs to the declared finite candidate search space.",
       "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_mem_candidates",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 347,
+      "lean_source_line": 350,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -6366,7 +6366,7 @@
       "informal_statement": "If a bounded generator search returns a best exact candidate, that candidate satisfies the exact-regeneration predicate.",
       "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_exact",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 354,
+      "lean_source_line": 357,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -6405,7 +6405,7 @@
       "informal_statement": "A bounded generator search has no best exact candidate exactly when its declared exact-candidate list is empty.",
       "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_none_iff_exactCandidates_empty",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 373,
+      "lean_source_line": 376,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -6444,7 +6444,7 @@
       "informal_statement": "A bounded generator search has no best exact candidate exactly when its exact-candidate count is zero.",
       "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_none_iff_exactCandidateCount_zero",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 380,
+      "lean_source_line": 383,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -6483,7 +6483,7 @@
       "informal_statement": "If a bounded generator search returns a best exact candidate, its exact-candidate count is positive.",
       "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_exactCandidateCount_pos",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 389,
+      "lean_source_line": 392,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -6522,7 +6522,7 @@
       "informal_statement": "A singleton exact generator search has exactly one declared candidate.",
       "lean_name": "Circle.Generative.singletonExactGeneratorSearch_candidateCount",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 320,
+      "lean_source_line": 323,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -6561,7 +6561,7 @@
       "informal_statement": "A singleton exact generator search has exactly one exact-regeneration candidate.",
       "lean_name": "Circle.Generative.singletonExactGeneratorSearch_exactCandidateCount",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 324,
+      "lean_source_line": 327,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -6600,7 +6600,7 @@
       "informal_statement": "A singleton exact generator search returns the self-comparison as its best exact candidate.",
       "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_some",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 328,
+      "lean_source_line": 331,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -6639,7 +6639,7 @@
       "informal_statement": "The best candidate returned by a singleton exact generator search satisfies exact regeneration.",
       "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_exact",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 333,
+      "lean_source_line": 336,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -6678,7 +6678,7 @@
       "informal_statement": "Every declared exact candidate in a bounded generator search belongs to the declared finite candidate search space.",
       "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidate_mem_candidates",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 361,
+      "lean_source_line": 364,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -6717,7 +6717,7 @@
       "informal_statement": "Every declared exact candidate in a bounded generator search satisfies exact regeneration.",
       "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidate_exact",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 367,
+      "lean_source_line": 370,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -6756,7 +6756,7 @@
       "informal_statement": "A bounded generator search has a positive exact-candidate count exactly when it returns some best exact candidate.",
       "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidateCount_pos_iff_exists_bestExact",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 401,
+      "lean_source_line": 404,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -6795,7 +6795,7 @@
       "informal_statement": "The self-comparison returned by a singleton exact generator search is a member of its exact-candidate list.",
       "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_exactCandidates",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 418,
+      "lean_source_line": 434,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -6834,7 +6834,7 @@
       "informal_statement": "The self-comparison returned by a singleton exact generator search is a member of its declared finite candidate list.",
       "lean_name": "Circle.Generative.singletonExactGeneratorSearch_bestExact_mem_candidates",
       "lean_source": "Circle/Generative/SeedRule.lean",
-      "lean_source_line": 424,
+      "lean_source_line": 440,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
@@ -7014,6 +7014,84 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_finite_circle_generator_regenerates_nodes"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0064",
+        "COMMON-0065",
+        "COMMON-0066"
+      ],
+      "formal_statement": "For any BoundedGeneratorSearch, exactCandidateCount <= candidateCount.",
+      "id": "GEN-T0044",
+      "imports_allowed": [
+        "Generative"
+      ],
+      "informal_statement": "A proof-carrying bounded generator search records that exact candidates cannot outnumber declared candidates.",
+      "lean_name": "Circle.Generative.boundedGeneratorSearch_exactCandidateCount_le_candidateCount",
+      "lean_source": "Circle/Generative/SeedRule.lean",
+      "lean_source_line": 421,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_GEN_01_SEED_RULE_PROVENANCE",
+          "path": "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md",
+          "status": "draft",
+          "title": "Circle Calculus Generative 1: Seed-Rule Provenance"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_bounded_generator_search_reports_scope_and_exact_candidates"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0064",
+        "COMMON-0065",
+        "COMMON-0066"
+      ],
+      "formal_statement": "For any BoundedGeneratorSearch, bestExact? = some candidate implies 0 < candidateCount.",
+      "id": "GEN-T0045",
+      "imports_allowed": [
+        "Generative"
+      ],
+      "informal_statement": "If a bounded generator search returns a best exact candidate, its declared candidate count is positive.",
+      "lean_name": "Circle.Generative.boundedGeneratorSearch_bestExact_some_candidateCount_pos",
+      "lean_source": "Circle/Generative/SeedRule.lean",
+      "lean_source_line": 426,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_GEN_01_SEED_RULE_PROVENANCE",
+          "path": "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md",
+          "status": "draft",
+          "title": "Circle Calculus Generative 1: Seed-Rule Provenance"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_bounded_generator_search_reports_scope_and_exact_candidates"
         ]
       }
     },

@@ -71,6 +71,8 @@ class BoundedGeneratorSearch:
         "GEN-T0037",
         "GEN-T0038",
         "GEN-T0039",
+        "GEN-T0044",
+        "GEN-T0045",
     )
     note: str = "Bounded finite search only; not an optimality theorem."
 
