@@ -153,6 +153,13 @@ theorem trainingFreeLoopBudget_pos_of_available
   rw [trainingFreeLoopBudget_eq_required_of_available loopPeriod sample maxLoops hbudget]
   exact loopRequiredSteps_pos loopPeriod sample
 
+theorem trainingFreeLoopBudget_eq_max_of_unavailable
+    (loopPeriod sample maxLoops : Nat)
+    (hunavailable : ¬ loopExitAvailable loopPeriod sample maxLoops) :
+    trainingFreeLoopBudget loopPeriod sample maxLoops = maxLoops := by
+  unfold trainingFreeLoopBudget loopExitAvailable at *
+  exact Nat.min_eq_right (Nat.le_of_lt (Nat.lt_of_not_ge hunavailable))
+
 def loopOverthinkingBoundary (loopPeriod sample tolerance : Nat) : Nat :=
   loopRequiredSteps loopPeriod sample + tolerance
 

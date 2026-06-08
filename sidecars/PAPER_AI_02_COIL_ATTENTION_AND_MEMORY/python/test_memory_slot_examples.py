@@ -290,6 +290,8 @@ def test_loop_required_steps_are_positive_bounded_and_periodic() -> None:
             assert loop_required_steps(loop_period, sample + loop_period) == required
             if required <= loop_period:
                 assert training_free_loop_budget(loop_period, sample, loop_period) > 0
+            if required > 1:
+                assert training_free_loop_budget(loop_period, sample, required - 1) == required - 1
 
 
 def test_looped_recurrence_benchmark_has_baselines_and_overloop_control() -> None:
@@ -706,6 +708,7 @@ def test_training_free_loop_wrapper_budget_helpers_are_deterministic() -> None:
     capped = training_free_loop_budgets(4, samples, 2)
     assert capped == (1, 2, 2, 2, 1, 2, 2, 2)
     assert all(budget <= 2 for budget in capped)
+    assert training_free_loop_budget(4, 3, 2) == 2
 
 
 def test_training_free_loop_wrapper_benchmark_has_baselines_and_controls() -> None:

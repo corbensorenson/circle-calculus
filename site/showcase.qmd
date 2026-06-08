@@ -218,7 +218,7 @@ The AI lane proves finite schedule/index facts that can support experiments with
 - Circle expression: memory slots, loop budgets, exit certificates, and adapter blocks become finite cyclic schedule theorems.
 - Circle-native value: experimental cyclic AI components can be audited before any model-quality claim.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-010" data-executable-ref="sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py"></span><code>sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-010" data-executable-ref="sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"></span><code>sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py</code>.
-- Scope: Lean-proved memory-slot, loop-budget, recurrence-budget positivity, loop-exit, and adapter-block facts.
+- Scope: Lean-proved memory-slot, loop-budget, recurrence-budget positivity, unavailable-budget clamp, loop-exit, and adapter-block facts.
 - Boundary: no quality, speed, context-length, or reasoning improvement without benchmarks.
 
 <div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0001"></div>
@@ -227,6 +227,7 @@ The AI lane proves finite schedule/index facts that can support experiments with
 <div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0017"></div>
 <div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0022"></div>
 <div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0024"></div>
+<div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0025"></div>
 <div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIRA-T0005"></div>
 
 ### Circular Compute Layouts

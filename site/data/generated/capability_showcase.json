@@ -375,7 +375,7 @@
         "circle_native_value",
         "application_guardrail"
       ],
-      "proof_scope": "Lean-proved finite memory-slot, loop-budget, recurrence-budget positivity, loop-exit, and adapter-block normalization facts.",
+      "proof_scope": "Lean-proved finite memory-slot, loop-budget, recurrence-budget positivity, unavailable-budget clamp, loop-exit, and adapter-block normalization facts.",
       "source_refs": [
         "Circle/Applications/CircleAI.lean",
         "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/lean/PaperAI02.lean",
@@ -391,6 +391,7 @@
         "AIM-T0017",
         "AIM-T0022",
         "AIM-T0024",
+        "AIM-T0025",
         "AIRA-T0005"
       ],
       "title": "AI memory, loop, and adapter schedules"

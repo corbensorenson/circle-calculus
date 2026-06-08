@@ -267,7 +267,7 @@ def export_widget_index() -> dict:
         {
             "id": "loop_recurrence_budget",
             "path": "site/widgets/ai/loop_recurrence_budget.js",
-            "theorem_ids": ["AIM-T0018", "AIM-T0019", "AIM-T0020", "AIM-T0021", "AIM-T0022", "AIM-T0023"],
+            "theorem_ids": ["AIM-T0018", "AIM-T0019", "AIM-T0020", "AIM-T0021", "AIM-T0022", "AIM-T0023", "AIM-T0025"],
             "dictionary_ids": [
                 "COMMON-0052",
                 "COMMON-0053",
@@ -301,7 +301,7 @@ def export_widget_index() -> dict:
         {
             "id": "training_free_loop_wrapper",
             "path": "site/widgets/ai/training_free_loop_wrapper.js",
-            "theorem_ids": ["AIM-T0010", "AIM-T0011", "AIM-T0019", "AIM-T0020", "AIM-T0023"],
+            "theorem_ids": ["AIM-T0010", "AIM-T0011", "AIM-T0019", "AIM-T0020", "AIM-T0023", "AIM-T0025"],
             "dictionary_ids": [
                 "COMMON-0052",
                 "COMMON-0053",

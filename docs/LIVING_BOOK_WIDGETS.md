@@ -156,7 +156,7 @@ Implemented shared JavaScript:
 
 - Inputs: loop period, sample/token index, maximum loops, overthinking tolerance.
 - Outputs: loop phase, required loop count, token recurrence budget, capped training-free loop budget, exit availability, overthinking boundary, and one-period-shift periodicity checks.
-- Theorem ids: `AIM-T0018`, `AIM-T0019`, `AIM-T0020`, `AIM-T0021`, `AIM-T0022`, and `AIM-T0023`.
+- Theorem ids: `AIM-T0018`, `AIM-T0019`, `AIM-T0020`, `AIM-T0021`, `AIM-T0022`, `AIM-T0023`, and `AIM-T0025`.
 - Dictionary ids: `COMMON-0052`, `COMMON-0053`, `COMMON-0054`, `COMMON-0059`, and `COMMON-0067`.
 - Python references: `circle_math.applications.circle_ai.loop_required_steps`, `circle_math.applications.circle_ai.token_recurrence_budget`, and `circle_math.applications.circle_ai.training_free_loop_budget`.
 - Guardrail: the widget is finite schedule bookkeeping only. It does not prove model quality, speed, reasoning improvement, memory improvement, or context-length improvement.
@@ -186,7 +186,7 @@ Implemented shared JavaScript:
 
 - Inputs: loop period, sample count, maximum loops, fixed loop budget, wrong loop period, over-loop budget, and overthinking tolerance.
 - Outputs: required-budget strip, phase-budget strip, phase-budget sample, wrong-period budget sample, active-sample counts, budget histogram, average phase budget, single-pass accuracy, fixed-budget accuracy, phase-budget accuracy, wrong-period accuracy, over-loop accuracy, nonperiodic phase-budget accuracy, and nonperiodic scalar-threshold accuracy.
-- Theorem ids: `AIM-T0010`, `AIM-T0011`, `AIM-T0019`, `AIM-T0020`, and `AIM-T0023` as finite training-free loop-budget primitives.
+- Theorem ids: `AIM-T0010`, `AIM-T0011`, `AIM-T0019`, `AIM-T0020`, `AIM-T0023`, and `AIM-T0025` as finite training-free loop-budget primitives.
 - Dictionary ids: `COMMON-0052`, `COMMON-0053`, `COMMON-0054`, and `COMMON-0067`.
 - Python references: `circle_math.applications.circle_ai.training_free_loop_budget`, `circle_math.applications.circle_ai.training_free_loop_budgets`, and `circle_math.applications.circle_ai.run_training_free_loop_wrapper_benchmark`.
 - Guardrail: the widget is deterministic training-free loop-wrapper bookkeeping only. It does not prove learned recurrence, recursive reasoning, language-model quality, throughput, memory improvement, context-length improvement, or model-quality improvement.
