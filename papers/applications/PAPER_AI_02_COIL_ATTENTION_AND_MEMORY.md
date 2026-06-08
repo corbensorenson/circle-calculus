@@ -99,6 +99,11 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `AIM-T0046`: `Circle.Applications.middleBlockBudgetRoute_budget_pos`
 - `AIM-T0047`: `Circle.Applications.middleBlockBudgetRoute_budget_le_loopPeriod`
 - `AIM-T0048`: `Circle.Applications.middleBlockBudgetRoute_add_commonCycle`
+- `AIM-T0049`: `Circle.Applications.loopedRecurrentState_lt_period`
+- `AIM-T0050`: `Circle.Applications.loopedRecurrentState_one_zero`
+- `AIM-T0051`: `Circle.Applications.loopedRecurrentState_of_requiredSteps`
+- `AIM-T0052`: `Circle.Applications.loopedRecurrentState_of_tokenRecurrenceBudget`
+- `AIM-T0053`: `Circle.Applications.loopedRecurrentState_tokenBudget_add_mul_loopPeriod`
 
 ## Proved Core
 
@@ -111,7 +116,7 @@ memorySlot bankSize (token + bankSize) =
 
 `AIM-T0004` proves closure after any whole number of full memory-bank passes. `AIM-T0005` proves that normalizing a memory slot twice is the same as normalizing it once. `AIM-T0003` proves the zero anchor. The Python sidecar checks the same finite examples.
 
-`AIM-T0006` through `AIM-T0048` prove finite loop-schedule, token-active-set, middle-block-route, combined route/budget, and loop-exit certificate facts: required loop depth is positive, bounded by a positive loop period, periodic under one full loop-period shift, and invariant under any whole number of loop-period passes; token recurrence budgets are positive, have the same one-period and multi-pass closure behavior, and are bounded by the loop period; token active-step membership includes the first loop step, is invariant under whole loop-period token shifts, is bounded by the loop period, and excludes steps beyond that period; middle-block routes stay inside the selected block range, close after one selected-width shift, close after any whole number of selected-width shifts, and select the range start at sample zero; combined middle-block/budget routes carry both block-range and loop-budget bounds and close after the product common cycle `width * loopPeriod`; the training-free wrapper budget is capped by `maxLoops` and by the required depth, is periodic, is invariant under whole loop-period passes, selects the exact positive required depth when an exit is available, and clamps to `maxLoops` when no exit is available; overthinking boundaries are at least the required depth and share the same one-period and multi-pass closure; exit availability is guaranteed when the loop budget covers the full period and is invariant under one or many loop-period passes; and a loop-exit certificate records a positive exact required step, budget bound, guardrail bound, implied exit availability, equality between the selected wrapper budget and the certified exit step, and multi-pass invariance of the certified exit step and guardrail boundary.
+`AIM-T0006` through `AIM-T0053` prove finite loop-schedule, token-active-set, middle-block-route, combined route/budget, looped recurrent state, and loop-exit certificate facts: required loop depth is positive, bounded by a positive loop period, periodic under one full loop-period shift, and invariant under any whole number of loop-period passes; token recurrence budgets are positive, have the same one-period and multi-pass closure behavior, and are bounded by the loop period; a looped recurrent hidden-state index is bounded by the period, starts at zero for a one-step loop, recovers the sample phase when read at the required depth or certified token budget, and is invariant under whole loop-period token shifts; token active-step membership includes the first loop step, is invariant under whole loop-period token shifts, is bounded by the loop period, and excludes steps beyond that period; middle-block routes stay inside the selected block range, close after one selected-width shift, close after any whole number of selected-width shifts, and select the range start at sample zero; combined middle-block/budget routes carry both block-range and loop-budget bounds and close after the product common cycle `width * loopPeriod`; the training-free wrapper budget is capped by `maxLoops` and by the required depth, is periodic, is invariant under whole loop-period passes, selects the exact positive required depth when an exit is available, and clamps to `maxLoops` when no exit is available; overthinking boundaries are at least the required depth and share the same one-period and multi-pass closure; exit availability is guaranteed when the loop budget covers the full period and is invariant under one or many loop-period passes; and a loop-exit certificate records a positive exact required step, budget bound, guardrail bound, implied exit availability, equality between the selected wrapper budget and the certified exit step, and multi-pass invariance of the certified exit step and guardrail boundary.
 
 These theorems certify cyclic slot addresses and finite loop-budget arithmetic only. They do not prove retrieval quality, alias control, attention replacement, recursive reasoning, runtime, memory use, parameter efficiency, or long-context scaling.
 
@@ -172,6 +177,10 @@ This fixture checks whether the benchmark harness can learn a constructed finite
 `AIM-B0009` adds a deterministic learned recurrence-schedule fixture. It fits a phase-to-loop-budget lookup table from training examples, then compares that learned schedule against fixed-budget, wrong-period, and over-loop controls.
 
 This fixture checks whether the benchmark harness can learn a constructed finite schedule table. It is not evidence that learned recursive transformers improve reasoning, perplexity, throughput, memory use, context length, or parameter efficiency.
+
+`AIM-B0015` adds a tiny looped recurrent prototype fixture. It uses a finite hidden state that advances one phase per loop; reading that state at the certified token recurrence budget recovers the sample phase. The fixture fits a state-to-label lookup and compares it against direct phase lookup, one-step, scalar-threshold, wrong-period, and nonperiodic scalar controls.
+
+This fixture checks whether a tiny recurrent-state harness obeys its finite schedule contract. It is not evidence that a learned recursive transformer improves reasoning, perplexity, throughput, memory use, context length, or parameter efficiency.
 
 ## Looped And Recursive Transformer Program
 

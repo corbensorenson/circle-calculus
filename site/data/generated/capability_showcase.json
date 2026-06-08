@@ -105,16 +105,22 @@
             "passed": true
           },
           {
+            "evidence": "standard_math_parity theorems 2/2; circle_native_value sources 3/3; Living Book pages 1/1",
+            "id": "value_proposition",
+            "label": "role-backed value proposition",
+            "passed": true
+          },
+          {
             "evidence": "No new proof of EGZ, no new proof of Cauchy-Davenport, and no progress claim on an open Erdos problem.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 17,
+        "passed_gate_count": 18,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 17
+        "total_gate_count": 18
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -244,6 +250,26 @@
         "unproved_or_unbacked_ids": []
       },
       "title": "Zero-sum and sumset theorems on finite circles",
+      "value_proposition_contract": {
+        "ready_to_advertise": true,
+        "role_checks": {
+          "application_guardrail": {
+            "evidence": "language clean",
+            "ready": true,
+            "required": false
+          },
+          "circle_native_value": {
+            "evidence": "sources 3/3; Living Book pages 1/1",
+            "ready": true,
+            "required": true
+          },
+          "standard_math_parity": {
+            "evidence": "theorems 2/2",
+            "ready": true,
+            "required": true
+          }
+        }
+      },
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
         "lean_command": "lake build",
@@ -356,16 +382,22 @@
             "passed": true
           },
           {
+            "evidence": "standard_math_parity theorems 2/2; circle_native_value sources 2/2; Living Book pages 1/1",
+            "id": "value_proposition",
+            "label": "role-backed value proposition",
+            "passed": true
+          },
+          {
             "evidence": "No new EKR proof and no classification of all extremal families.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 17,
+        "passed_gate_count": 18,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 17
+        "total_gate_count": 18
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -489,6 +521,26 @@
         "unproved_or_unbacked_ids": []
       },
       "title": "Katona circle method and Erdos-Ko-Rado",
+      "value_proposition_contract": {
+        "ready_to_advertise": true,
+        "role_checks": {
+          "application_guardrail": {
+            "evidence": "language clean",
+            "ready": true,
+            "required": false
+          },
+          "circle_native_value": {
+            "evidence": "sources 2/2; Living Book pages 1/1",
+            "ready": true,
+            "required": true
+          },
+          "standard_math_parity": {
+            "evidence": "theorems 2/2",
+            "ready": true,
+            "required": true
+          }
+        }
+      },
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
         "lean_command": "lake build",
@@ -601,16 +653,22 @@
             "passed": true
           },
           {
+            "evidence": "standard_math_parity theorems 2/2; circle_native_value sources 2/2; Living Book pages 1/1",
+            "id": "value_proposition",
+            "label": "role-backed value proposition",
+            "passed": true
+          },
+          {
             "evidence": "No new Roth proof, no improved bounds, and no cyclic-to-natural transfer theorem yet.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 17,
+        "passed_gate_count": 18,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 17
+        "total_gate_count": 18
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -734,6 +792,26 @@
         "unproved_or_unbacked_ids": []
       },
       "title": "Roth and three-term arithmetic progressions",
+      "value_proposition_contract": {
+        "ready_to_advertise": true,
+        "role_checks": {
+          "application_guardrail": {
+            "evidence": "language clean",
+            "ready": true,
+            "required": false
+          },
+          "circle_native_value": {
+            "evidence": "sources 2/2; Living Book pages 1/1",
+            "ready": true,
+            "required": true
+          },
+          "standard_math_parity": {
+            "evidence": "theorems 2/2",
+            "ready": true,
+            "required": true
+          }
+        }
+      },
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
         "lean_command": "lake build",
@@ -846,16 +924,22 @@
             "passed": true
           },
           {
+            "evidence": "standard_math_parity theorems 2/2; circle_native_value sources 2/2; Living Book pages 1/1",
+            "id": "value_proposition",
+            "label": "role-backed value proposition",
+            "passed": true
+          },
+          {
             "evidence": "Finite Python searches are examples only; they are not the Hales-Jewett proof.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 17,
+        "passed_gate_count": 18,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 17
+        "total_gate_count": 18
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -979,6 +1063,26 @@
         "unproved_or_unbacked_ids": []
       },
       "title": "Ramsey lines and Hales-Jewett structure",
+      "value_proposition_contract": {
+        "ready_to_advertise": true,
+        "role_checks": {
+          "application_guardrail": {
+            "evidence": "language clean",
+            "ready": true,
+            "required": false
+          },
+          "circle_native_value": {
+            "evidence": "sources 2/2; Living Book pages 1/1",
+            "ready": true,
+            "required": true
+          },
+          "standard_math_parity": {
+            "evidence": "theorems 2/2",
+            "ready": true,
+            "required": true
+          }
+        }
+      },
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
         "lean_command": "lake build",
@@ -1091,16 +1195,22 @@
             "passed": true
           },
           {
+            "evidence": "standard_math_parity theorems 3/3; circle_native_value sources 2/2; Living Book pages 1/1",
+            "id": "value_proposition",
+            "label": "role-backed value proposition",
+            "passed": true
+          },
+          {
             "evidence": "No progress on hard unit-distance or distinct-distance problems.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 17,
+        "passed_gate_count": 18,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 17
+        "total_gate_count": 18
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -1236,6 +1346,26 @@
         "unproved_or_unbacked_ids": []
       },
       "title": "Circulant graph and unit-distance graph lab",
+      "value_proposition_contract": {
+        "ready_to_advertise": true,
+        "role_checks": {
+          "application_guardrail": {
+            "evidence": "language clean",
+            "ready": true,
+            "required": false
+          },
+          "circle_native_value": {
+            "evidence": "sources 2/2; Living Book pages 1/1",
+            "ready": true,
+            "required": true
+          },
+          "standard_math_parity": {
+            "evidence": "theorems 3/3",
+            "ready": true,
+            "required": true
+          }
+        }
+      },
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
         "lean_command": "lake build",
@@ -1348,16 +1478,22 @@
             "passed": true
           },
           {
+            "evidence": "standard_math_parity theorems 6/6; circle_native_value sources 4/4; Living Book pages 2/2",
+            "id": "value_proposition",
+            "label": "role-backed value proposition",
+            "passed": true
+          },
+          {
             "evidence": "No claim that this replaces standard modular arithmetic; it is a proof-carrying cyclic presentation.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 17,
+        "passed_gate_count": 18,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 17
+        "total_gate_count": 18
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -1584,6 +1720,26 @@
         "unproved_or_unbacked_ids": []
       },
       "title": "Factor, fiber, and period-normal modular arithmetic",
+      "value_proposition_contract": {
+        "ready_to_advertise": true,
+        "role_checks": {
+          "application_guardrail": {
+            "evidence": "language clean",
+            "ready": true,
+            "required": false
+          },
+          "circle_native_value": {
+            "evidence": "sources 4/4; Living Book pages 2/2",
+            "ready": true,
+            "required": true
+          },
+          "standard_math_parity": {
+            "evidence": "theorems 6/6",
+            "ready": true,
+            "required": true
+          }
+        }
+      },
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
         "lean_command": "lake build",
@@ -1696,16 +1852,22 @@
             "passed": true
           },
           {
+            "evidence": "standard_math_parity theorems 7/7; circle_native_value sources 4/4; Living Book pages 2/2",
+            "id": "value_proposition",
+            "label": "role-backed value proposition",
+            "passed": true
+          },
+          {
             "evidence": "No full smooth Hopf fibration formalization and no complete SO(3) robotics formalization.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 17,
+        "passed_gate_count": 18,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 17
+        "total_gate_count": 18
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -1947,6 +2109,26 @@
         "unproved_or_unbacked_ids": []
       },
       "title": "Quaternion, Hopf, and phase coordinates",
+      "value_proposition_contract": {
+        "ready_to_advertise": true,
+        "role_checks": {
+          "application_guardrail": {
+            "evidence": "language clean",
+            "ready": true,
+            "required": false
+          },
+          "circle_native_value": {
+            "evidence": "sources 4/4; Living Book pages 2/2",
+            "ready": true,
+            "required": true
+          },
+          "standard_math_parity": {
+            "evidence": "theorems 7/7",
+            "ready": true,
+            "required": true
+          }
+        }
+      },
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
         "lean_command": "lake build",
@@ -2059,16 +2241,22 @@
             "passed": true
           },
           {
+            "evidence": "standard_math_parity theorems 18/18; circle_native_value sources 2/2; Living Book pages 1/1; application_guardrail language clean",
+            "id": "value_proposition",
+            "label": "role-backed value proposition",
+            "passed": true
+          },
+          {
             "evidence": "No continuum gauge theory, no physics discovery, and no lattice-QCD correctness claim.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 17,
+        "passed_gate_count": 18,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 17
+        "total_gate_count": 18
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -2411,6 +2599,26 @@
         "unproved_or_unbacked_ids": []
       },
       "title": "Proof-carrying finite gauge paths",
+      "value_proposition_contract": {
+        "ready_to_advertise": true,
+        "role_checks": {
+          "application_guardrail": {
+            "evidence": "language clean",
+            "ready": true,
+            "required": true
+          },
+          "circle_native_value": {
+            "evidence": "sources 2/2; Living Book pages 1/1",
+            "ready": true,
+            "required": true
+          },
+          "standard_math_parity": {
+            "evidence": "theorems 18/18",
+            "ready": true,
+            "required": true
+          }
+        }
+      },
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
         "lean_command": "lake build",
@@ -2523,16 +2731,22 @@
             "passed": true
           },
           {
+            "evidence": "circle_native_value sources 4/4; Living Book pages 1/1; application_guardrail language clean",
+            "id": "value_proposition",
+            "label": "role-backed value proposition",
+            "passed": true
+          },
+          {
             "evidence": "No universal compression claim and no guarantee that generated artifacts are mathematically interesting.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 17,
+        "passed_gate_count": 18,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 17
+        "total_gate_count": 18
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -2955,6 +3169,26 @@
         "unproved_or_unbacked_ids": []
       },
       "title": "Proof-carrying generative provenance",
+      "value_proposition_contract": {
+        "ready_to_advertise": true,
+        "role_checks": {
+          "application_guardrail": {
+            "evidence": "language clean",
+            "ready": true,
+            "required": true
+          },
+          "circle_native_value": {
+            "evidence": "sources 4/4; Living Book pages 1/1",
+            "ready": true,
+            "required": true
+          },
+          "standard_math_parity": {
+            "evidence": "theorems 23/23",
+            "ready": true,
+            "required": false
+          }
+        }
+      },
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
         "lean_command": "lake build",
@@ -2965,8 +3199,8 @@
     {
       "advertised_claim": "Circle Calculus can prove finite indexing and schedule-safety facts that AI experiments can reuse.",
       "area": "AI systems",
-      "audience_interest": "Cyclic memory, recurrence budgets, loop-exit certificates, middle-block routing, phase routing, and adapter indexing.",
-      "circle_math_expression": "AI-facing memory slots, loop budgets, exit certificates, middle-block routes, combined route/budget schedules, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
+      "audience_interest": "Cyclic memory, recurrence budgets, loop-exit certificates, looped recurrent states, middle-block routing, phase routing, and adapter indexing.",
+      "circle_math_expression": "AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
       "circle_native_value": "Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made.",
       "claim_contract": {
         "gates": [
@@ -2983,7 +3217,7 @@
             "passed": true
           },
           {
-            "evidence": "AI-facing memory slots, loop budgets, exit certificates, middle-block routes, combined route/budget schedules, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
+            "evidence": "AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
             "id": "circle_expression",
             "label": "Circle Math expression",
             "passed": true
@@ -3001,7 +3235,7 @@
             "passed": true
           },
           {
-            "evidence": "Lean-proved finite memory-slot, loop-budget, active-token-step, middle-block route, combined route/budget common-cycle, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
+            "evidence": "Lean-proved finite memory-slot, loop-budget, active-token-step, looped recurrent-state, middle-block route, combined route/budget common-cycle, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
             "id": "proof_scope",
             "label": "proof scope",
             "passed": true
@@ -3013,7 +3247,7 @@
             "passed": true
           },
           {
-            "evidence": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, active-step, middle-block route, combined route/budget, certificate, and adapter-index safety facts; benchmarks remain separate.",
+            "evidence": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, looped recurrent-state, active-step, middle-block route, combined route/budget, certificate, and adapter-index safety facts; benchmarks remain separate.",
             "id": "proof_provenance",
             "label": "proof provenance text",
             "passed": true
@@ -3025,7 +3259,7 @@
             "passed": true
           },
           {
-            "evidence": "26",
+            "evidence": "31",
             "id": "proved_theorem_ids",
             "label": "proved paper-carried theorem ids",
             "passed": true
@@ -3067,16 +3301,22 @@
             "passed": true
           },
           {
+            "evidence": "standard_math_parity theorems 31/31; circle_native_value sources 5/5; Living Book pages 1/1; application_guardrail language clean",
+            "id": "value_proposition",
+            "label": "role-backed value proposition",
+            "passed": true
+          },
+          {
             "evidence": "No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 17,
+        "passed_gate_count": 18,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 17
+        "total_gate_count": 18
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -3108,7 +3348,7 @@
         "living_book_widget_count": 7,
         "paper_count": 2,
         "source_count": 5,
-        "theorem_count": 26
+        "theorem_count": 31
       },
       "executable_refs": [
         "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
@@ -3200,9 +3440,9 @@
         "circle_native_value",
         "application_guardrail"
       ],
-      "proof_provenance": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, active-step, middle-block route, combined route/budget, certificate, and adapter-index safety facts; benchmarks remain separate.",
+      "proof_provenance": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, looped recurrent-state, active-step, middle-block route, combined route/budget, certificate, and adapter-index safety facts; benchmarks remain separate.",
       "proof_provenance_kind": "project_native",
-      "proof_scope": "Lean-proved finite memory-slot, loop-budget, active-token-step, middle-block route, combined route/budget common-cycle, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
+      "proof_scope": "Lean-proved finite memory-slot, loop-budget, active-token-step, looped recurrent-state, middle-block route, combined route/budget common-cycle, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
       "source_ref_contract": {
         "backed_count": 5,
         "refs": [
@@ -3269,10 +3509,15 @@
         "AIM-T0046",
         "AIM-T0047",
         "AIM-T0048",
+        "AIM-T0049",
+        "AIM-T0050",
+        "AIM-T0051",
+        "AIM-T0052",
+        "AIM-T0053",
         "AIRA-T0005"
       ],
       "theorem_ref_contract": {
-        "proved_and_paper_backed_count": 26,
+        "proved_and_paper_backed_count": 31,
         "refs": [
           {
             "canonical_status": "proved",
@@ -3552,6 +3797,61 @@
           {
             "canonical_status": "proved",
             "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0049",
+            "lean_name": "Circle.Applications.loopedRecurrentState_lt_period",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0050",
+            "lean_name": "Circle.Applications.loopedRecurrentState_one_zero",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0051",
+            "lean_name": "Circle.Applications.loopedRecurrentState_of_requiredSteps",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0052",
+            "lean_name": "Circle.Applications.loopedRecurrentState_of_tokenRecurrenceBudget",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIM-T0053",
+            "lean_name": "Circle.Applications.loopedRecurrentState_tokenBudget_add_mul_loopPeriod",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
               "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
             ],
             "id": "AIRA-T0005",
@@ -3561,10 +3861,30 @@
             "status": "lean_proved"
           }
         ],
-        "total_count": 26,
+        "total_count": 31,
         "unproved_or_unbacked_ids": []
       },
       "title": "AI memory, loop, and adapter schedules",
+      "value_proposition_contract": {
+        "ready_to_advertise": true,
+        "role_checks": {
+          "application_guardrail": {
+            "evidence": "language clean",
+            "ready": true,
+            "required": true
+          },
+          "circle_native_value": {
+            "evidence": "sources 5/5; Living Book pages 1/1",
+            "ready": true,
+            "required": true
+          },
+          "standard_math_parity": {
+            "evidence": "theorems 31/31",
+            "ready": true,
+            "required": true
+          }
+        }
+      },
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
         "lean_command": "lake build",
@@ -3677,16 +3997,22 @@
             "passed": true
           },
           {
+            "evidence": "standard_math_parity theorems 3/3; circle_native_value sources 5/5; Living Book pages 1/1; application_guardrail language clean",
+            "id": "value_proposition",
+            "label": "role-backed value proposition",
+            "passed": true
+          },
+          {
             "evidence": "No performance claim without direct dense, FFT/NTT, and backend baselines.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 17,
+        "passed_gate_count": 18,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 17
+        "total_gate_count": 18
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -3847,6 +4173,26 @@
         "unproved_or_unbacked_ids": []
       },
       "title": "Circular compute layouts and schedules",
+      "value_proposition_contract": {
+        "ready_to_advertise": true,
+        "role_checks": {
+          "application_guardrail": {
+            "evidence": "language clean",
+            "ready": true,
+            "required": true
+          },
+          "circle_native_value": {
+            "evidence": "sources 5/5; Living Book pages 1/1",
+            "ready": true,
+            "required": true
+          },
+          "standard_math_parity": {
+            "evidence": "theorems 3/3",
+            "ready": true,
+            "required": true
+          }
+        }
+      },
       "verification_recipe": {
         "capability_contract_command": "python scripts/check_capability_showcase.py && python scripts/site/check_capability_contracts.py",
         "lean_command": "lake build",
@@ -4099,8 +4445,8 @@
           "unbacked_refs": []
         },
         "theorem_refs": {
-          "proved_and_paper_backed_count": 52,
-          "total_count": 52,
+          "proved_and_paper_backed_count": 57,
+          "total_count": 57,
           "unproved_or_unbacked_refs": []
         },
         "unique_evidence_counts": {
@@ -4110,7 +4456,7 @@
           "living_book_widget_count": 11,
           "paper_count": 7,
           "source_count": 14,
-          "theorem_count": 52
+          "theorem_count": 57
         },
         "unknown_capability_ids": []
       },
@@ -4134,8 +4480,8 @@
         "unbacked_refs": []
       },
       "theorem_refs": {
-        "proved_and_paper_backed_count": 94,
-        "total_count": 94,
+        "proved_and_paper_backed_count": 99,
+        "total_count": 99,
         "unproved_or_unbacked_refs": []
       }
     },
@@ -4152,7 +4498,7 @@
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 94
+      "theorem_count": 99
     },
     "proof_provenance_counts": {
       "mathlib_bridge": 4,
@@ -4176,7 +4522,7 @@
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 94
+      "theorem_count": 99
     },
     "unique_living_book_pages": [
       "site/chapters/S1/03_coils_orbits_closure.qmd",

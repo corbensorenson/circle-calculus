@@ -4235,6 +4235,24 @@
           "lean_name": "Circle.Applications.phaseChannel_idempotent",
           "name": "Circle.Applications.phaseChannel_idempotent",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0051",
+          "lean_name": "Circle.Applications.loopedRecurrentState_of_requiredSteps",
+          "name": "Circle.Applications.loopedRecurrentState_of_requiredSteps",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0052",
+          "lean_name": "Circle.Applications.loopedRecurrentState_of_tokenRecurrenceBudget",
+          "name": "Circle.Applications.loopedRecurrentState_of_tokenRecurrenceBudget",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0053",
+          "lean_name": "Circle.Applications.loopedRecurrentState_tokenBudget_add_mul_loopPeriod",
+          "name": "Circle.Applications.loopedRecurrentState_tokenBudget_add_mul_loopPeriod",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5659,6 +5677,36 @@
           "lean_name": "Circle.Applications.middleBlockBudgetRoute_add_commonCycle",
           "name": "Circle.Applications.middleBlockBudgetRoute_add_commonCycle",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0049",
+          "lean_name": "Circle.Applications.loopedRecurrentState_lt_period",
+          "name": "Circle.Applications.loopedRecurrentState_lt_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0050",
+          "lean_name": "Circle.Applications.loopedRecurrentState_one_zero",
+          "name": "Circle.Applications.loopedRecurrentState_one_zero",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0051",
+          "lean_name": "Circle.Applications.loopedRecurrentState_of_requiredSteps",
+          "name": "Circle.Applications.loopedRecurrentState_of_requiredSteps",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0052",
+          "lean_name": "Circle.Applications.loopedRecurrentState_of_tokenRecurrenceBudget",
+          "name": "Circle.Applications.loopedRecurrentState_of_tokenRecurrenceBudget",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0053",
+          "lean_name": "Circle.Applications.loopedRecurrentState_tokenBudget_add_mul_loopPeriod",
+          "name": "Circle.Applications.loopedRecurrentState_tokenBudget_add_mul_loopPeriod",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5963,6 +6011,36 @@
           "id": "AIM-T0048",
           "lean_name": "Circle.Applications.middleBlockBudgetRoute_add_commonCycle",
           "name": "Circle.Applications.middleBlockBudgetRoute_add_commonCycle",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0049",
+          "lean_name": "Circle.Applications.loopedRecurrentState_lt_period",
+          "name": "Circle.Applications.loopedRecurrentState_lt_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0050",
+          "lean_name": "Circle.Applications.loopedRecurrentState_one_zero",
+          "name": "Circle.Applications.loopedRecurrentState_one_zero",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0051",
+          "lean_name": "Circle.Applications.loopedRecurrentState_of_requiredSteps",
+          "name": "Circle.Applications.loopedRecurrentState_of_requiredSteps",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0052",
+          "lean_name": "Circle.Applications.loopedRecurrentState_of_tokenRecurrenceBudget",
+          "name": "Circle.Applications.loopedRecurrentState_of_tokenRecurrenceBudget",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0053",
+          "lean_name": "Circle.Applications.loopedRecurrentState_tokenBudget_add_mul_loopPeriod",
+          "name": "Circle.Applications.loopedRecurrentState_tokenBudget_add_mul_loopPeriod",
           "status": "proved"
         }
       ],
@@ -6353,6 +6431,36 @@
           "id": "AIM-T0048",
           "lean_name": "Circle.Applications.middleBlockBudgetRoute_add_commonCycle",
           "name": "Circle.Applications.middleBlockBudgetRoute_add_commonCycle",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0049",
+          "lean_name": "Circle.Applications.loopedRecurrentState_lt_period",
+          "name": "Circle.Applications.loopedRecurrentState_lt_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0050",
+          "lean_name": "Circle.Applications.loopedRecurrentState_one_zero",
+          "name": "Circle.Applications.loopedRecurrentState_one_zero",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0051",
+          "lean_name": "Circle.Applications.loopedRecurrentState_of_requiredSteps",
+          "name": "Circle.Applications.loopedRecurrentState_of_requiredSteps",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0052",
+          "lean_name": "Circle.Applications.loopedRecurrentState_of_tokenRecurrenceBudget",
+          "name": "Circle.Applications.loopedRecurrentState_of_tokenRecurrenceBudget",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0053",
+          "lean_name": "Circle.Applications.loopedRecurrentState_tokenBudget_add_mul_loopPeriod",
+          "name": "Circle.Applications.loopedRecurrentState_tokenBudget_add_mul_loopPeriod",
           "status": "proved"
         }
       ],

@@ -43,6 +43,7 @@ function fallbackClaimContract(capability) {
     ["verification_recipe", "reproducible verification recipe", counts.executable_count > 0],
     ["living_book_presentation", "Living Book presentation", counts.living_book_page_count > 0],
     ["claim_language_guardrail", "advertising language guardrail", true],
+    ["value_proposition", "role-backed value proposition", true],
     ["claim_boundary", "not-claimed boundary", Boolean(capability.not_claimed)],
   ].map(([id, label, passed]) => ({ id, label, passed }));
   const passed = gates.filter((gate) => gate.passed).length;
@@ -130,6 +131,13 @@ function claimLanguageContract(capability) {
     checked_fields: [],
     flagged_phrases: [],
     explicit_boundary: Boolean(capability.not_claimed),
+  };
+}
+
+function valuePropositionContract(capability) {
+  return capability.value_proposition_contract || {
+    ready_to_advertise: true,
+    role_checks: {},
   };
 }
 
@@ -331,6 +339,15 @@ function claimLanguageDetails(capability) {
     .join(", ");
 }
 
+function valuePropositionDetails(capability) {
+  const contract = valuePropositionContract(capability);
+  const checks = contract.role_checks || {};
+  const parts = Object.entries(checks)
+    .filter(([, check]) => check?.required)
+    .map(([role, check]) => `${role}: ${check.ready ? "ready" : "incomplete"}; ${check.evidence || ""}`);
+  return parts.length > 0 ? parts.join("; ") : "no required roles";
+}
+
 function auditItem(label, value, details) {
   const item = document.createElement("li");
   item.append(`${label}: ${value}`);
@@ -388,6 +405,11 @@ function checklist(capability) {
       "advertising language guardrail",
       claimLanguageContract(capability).ready_to_advertise ? "pass" : "fail",
       claimLanguageDetails(capability),
+    ),
+    auditItem(
+      "role-backed value proposition",
+      valuePropositionContract(capability).ready_to_advertise ? "pass" : "fail",
+      valuePropositionDetails(capability),
     ),
   ];
   for (const item of items) {

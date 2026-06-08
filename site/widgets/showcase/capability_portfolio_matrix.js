@@ -96,6 +96,14 @@ function roleBadges(capability) {
   return fragment;
 }
 
+function valuePropositionText(capability) {
+  const checks = capability.value_proposition_contract?.role_checks || {};
+  const parts = Object.entries(checks)
+    .filter(([, check]) => check?.required)
+    .map(([role, check]) => `${roleLabel(role)}: ${check.ready ? "ready" : "incomplete"}`);
+  return parts.length > 0 ? parts.join("; ") : "no required roles";
+}
+
 function renderTable(capabilities) {
   const wrap = document.createElement("div");
   wrap.className = "index-table-wrap";
@@ -108,6 +116,7 @@ function renderTable(capabilities) {
     "Capability",
     "Area",
     "Roles",
+    "Role backing",
     "Proof provenance",
     "Papers",
     "Theorems",
@@ -135,6 +144,7 @@ function renderTable(capabilities) {
     appendCell(row, title);
     appendCell(row, capability.area || "");
     appendCell(row, roleBadges(capability));
+    appendCell(row, valuePropositionText(capability));
     appendCell(row, provenanceLabel(capability.proof_provenance_kind));
     appendCountCell(row, counts.paper_count, "papers");
     appendCountCell(row, counts.theorem_count, "theorems");

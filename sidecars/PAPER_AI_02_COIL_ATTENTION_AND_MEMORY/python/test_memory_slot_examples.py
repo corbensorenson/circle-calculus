@@ -14,6 +14,8 @@ from circle_math.applications.circle_ai import (
     loop_block_indices,
     loop_required_steps,
     loop_score_trace,
+    looped_recurrent_state,
+    looped_recurrent_states,
     memory_slot,
     middle_block_required_blocks,
     middle_block_route,
@@ -36,6 +38,7 @@ from circle_math.applications.circle_ai import (
     run_learned_middle_block_recurrence_benchmark,
     run_learned_multi_resolution_recurrence_benchmark,
     run_learned_token_level_recurrence_benchmark,
+    run_tiny_looped_recurrent_prototype,
     run_looped_recurrence_benchmark,
     run_learned_recurrence_schedule_benchmark,
     run_memory_slot_benchmark,
@@ -376,6 +379,25 @@ def test_token_level_recurrence_budget_helpers_are_deterministic() -> None:
     assert recurrence_resolution_levels(4) == ("coarse", "fine", "coarse", "fine")
 
 
+def test_looped_recurrent_state_matches_certified_budget_phase() -> None:
+    samples = tuple(range(8))
+    budgets = token_recurrence_budgets(4, samples)
+    states = looped_recurrent_states(4, budgets)
+
+    assert budgets == (1, 2, 3, 4, 1, 2, 3, 4)
+    assert states == (0, 1, 2, 3, 0, 1, 2, 3)
+    assert looped_recurrent_state(4, 1) == 0
+    assert all(
+        looped_recurrent_state(4, token_recurrence_budget(4, sample)) == sample % 4
+        for sample in range(32)
+    )
+    assert all(
+        looped_recurrent_state(4, token_recurrence_budget(4, sample + 5 * 4))
+        == looped_recurrent_state(4, token_recurrence_budget(4, sample))
+        for sample in range(32)
+    )
+
+
 def test_token_level_recurrence_benchmark_has_per_token_and_wrong_loop_controls() -> None:
     result = run_token_level_recurrence_benchmark(
         loop_period=4,
@@ -407,6 +429,35 @@ def test_token_level_recurrence_benchmark_has_per_token_and_wrong_loop_controls(
     assert result.over_looped_accuracy == 0.0
     assert result.nonperiodic_scalar_threshold_accuracy == 1.0
     assert result.nonperiodic_scalar_threshold_accuracy > result.nonperiodic_token_level_accuracy
+    assert result.note.endswith("not a model-quality claim.")
+
+
+def test_tiny_looped_recurrent_prototype_has_baselines_and_controls() -> None:
+    result = run_tiny_looped_recurrent_prototype(
+        period=4,
+        wrong_period=3,
+        train_length=64,
+        test_length=32,
+    )
+
+    assert result == run_tiny_looped_recurrent_prototype(
+        period=4,
+        wrong_period=3,
+        train_length=64,
+        test_length=32,
+    )
+    assert result.learned_state_lookup == (0, 1, 0, 0)
+    assert result.wrong_period_state_lookup == (0, 0, 0)
+    assert result.required_state_sample == (0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3)
+    assert result.learned_state_sample == result.required_state_sample
+    assert result.one_step_state_sample == (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    assert result.looped_recurrent_accuracy == 1.0
+    assert result.phase_lookup_accuracy == 1.0
+    assert result.one_step_accuracy < result.looped_recurrent_accuracy
+    assert result.scalar_threshold_accuracy < result.looped_recurrent_accuracy
+    assert result.wrong_period_state_accuracy < result.looped_recurrent_accuracy
+    assert result.nonperiodic_scalar_threshold_accuracy > result.nonperiodic_looped_recurrent_accuracy
+    assert result.average_unroll_steps == 2.5
     assert result.note.endswith("not a model-quality claim.")
 
 

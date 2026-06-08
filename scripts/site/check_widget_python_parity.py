@@ -31,6 +31,8 @@ from circle_math.applications import (
     loop_exit_step,
     loop_score_trace,
     loop_required_steps,
+    looped_recurrent_state,
+    looped_recurrent_states,
     lora_adapter_parameter_count,
     memory_slot,
     memory_slot_collision_count,
@@ -69,6 +71,7 @@ from circle_math.applications import (
     run_learned_token_level_recurrence_benchmark,
     run_ai_backend_parity_check,
     run_phase_channel_benchmark,
+    run_tiny_looped_recurrent_prototype,
     run_training_free_loop_wrapper_benchmark,
     run_token_level_recurrence_benchmark,
     token_active_at_step,
@@ -428,6 +431,14 @@ def js_token_active_at_step(loop_period: int, token_index: int, step: int) -> bo
 
 def js_token_recurrence_budgets(loop_period: int, token_count: int) -> tuple[int, ...]:
     return tuple(js_token_recurrence_budget(loop_period, token) for token in range(token_count))
+
+
+def js_looped_recurrent_state(period: int, budget: int) -> int:
+    return js_phase_channel(period, budget - 1)
+
+
+def js_looped_recurrent_states(period: int, budgets: tuple[int, ...]) -> tuple[int, ...]:
+    return tuple(js_looped_recurrent_state(period, budget) for budget in budgets)
 
 
 def js_active_token_counts_by_budget(budgets: tuple[int, ...], max_budget: int) -> tuple[int, ...]:
@@ -1920,6 +1931,17 @@ def main() -> int:
             loop_period,
             sample_index,
         )
+        assert looped_recurrent_state(
+            loop_period,
+            token_recurrence_budget(loop_period, sample_index),
+        ) == js_looped_recurrent_state(
+            loop_period,
+            js_token_recurrence_budget(loop_period, sample_index),
+        )
+        assert looped_recurrent_state(
+            loop_period,
+            token_recurrence_budget(loop_period, sample_index),
+        ) == phase_channel(loop_period, sample_index)
         assert training_free_loop_budget(
             loop_period,
             sample_index,
@@ -2053,6 +2075,10 @@ def main() -> int:
         )
 
         assert token_recurrence_budgets(loop_period, tokens) == budgets
+        assert looped_recurrent_states(loop_period, budgets) == js_looped_recurrent_states(
+            loop_period,
+            budgets,
+        )
         for token in tokens:
             for step in range(1, max_budget + 2):
                 assert token_active_at_step(loop_period, token, step) == js_token_active_at_step(
@@ -2583,6 +2609,69 @@ def main() -> int:
             js_recurrence_budget_predictions(required_budgets, over_budgets, tolerance),
             labels,
         )
+
+    tiny_looped_cases = [
+        (4, 3, 64, 32),
+        (5, 4, 50, 25),
+        (6, 5, 60, 30),
+    ]
+    for period, wrong_period, train_length, test_length in tiny_looped_cases:
+        train_positions = tuple(range(train_length))
+        train_labels = tuple(js_periodic_phase_label(period, position, js_default_positive_phases(period)) for position in train_positions)
+        test_positions = tuple(range(train_length, train_length + test_length))
+        test_labels = tuple(js_periodic_phase_label(period, position, js_default_positive_phases(period)) for position in test_positions)
+        train_budgets = tuple(js_token_recurrence_budget(period, position) for position in train_positions)
+        train_states = js_looped_recurrent_states(period, train_budgets)
+        state_lookup = js_fit_phase_lookup(period, train_states, train_labels)
+        test_budgets = tuple(js_token_recurrence_budget(period, position) for position in test_positions)
+        required_states = js_looped_recurrent_states(period, test_budgets)
+        looped_predictions = js_predict_phase_lookup(period, state_lookup, required_states)
+        one_step_states = tuple(js_looped_recurrent_state(period, 1) for _ in test_positions)
+        one_step_predictions = js_predict_phase_lookup(period, state_lookup, one_step_states)
+        phase_lookup = js_fit_phase_lookup(period, train_positions, train_labels)
+        phase_predictions = js_predict_phase_lookup(period, phase_lookup, test_positions)
+        threshold, polarity = js_fit_threshold_classifier(train_positions, train_labels)
+        scalar_predictions = js_predict_threshold_classifier(test_positions, threshold, polarity)
+        wrong_train_budgets = tuple(js_token_recurrence_budget(wrong_period, position) for position in train_positions)
+        wrong_train_states = js_looped_recurrent_states(wrong_period, wrong_train_budgets)
+        wrong_lookup = js_fit_phase_lookup(wrong_period, wrong_train_states, train_labels)
+        wrong_test_budgets = tuple(js_token_recurrence_budget(wrong_period, position) for position in test_positions)
+        wrong_test_states = js_looped_recurrent_states(wrong_period, wrong_test_budgets)
+        wrong_predictions = js_predict_phase_lookup(wrong_period, wrong_lookup, wrong_test_states)
+        control_threshold = (3 * train_length) // 4
+        control_train_labels = tuple(js_nonperiodic_threshold_label(position, control_threshold) for position in train_positions)
+        control_test_labels = tuple(js_nonperiodic_threshold_label(position, control_threshold) for position in test_positions)
+        control_state_lookup = js_fit_phase_lookup(period, train_states, control_train_labels)
+        control_looped_predictions = js_predict_phase_lookup(period, control_state_lookup, required_states)
+        control_threshold_fit, control_polarity = js_fit_threshold_classifier(train_positions, control_train_labels)
+        control_threshold_predictions = js_predict_threshold_classifier(test_positions, control_threshold_fit, control_polarity)
+        prototype = run_tiny_looped_recurrent_prototype(
+            period=period,
+            wrong_period=wrong_period,
+            train_length=train_length,
+            test_length=test_length,
+        )
+
+        assert looped_recurrent_states(period, train_budgets) == train_states
+        assert prototype.learned_state_lookup == state_lookup
+        assert prototype.wrong_period_state_lookup == wrong_lookup
+        assert prototype.required_state_sample == required_states[: min(12, len(required_states))]
+        assert prototype.learned_state_sample == required_states[: min(12, len(required_states))]
+        assert prototype.one_step_state_sample == one_step_states[: min(12, len(one_step_states))]
+        assert prototype.looped_recurrent_accuracy == js_accuracy(looped_predictions, test_labels)
+        assert prototype.one_step_accuracy == js_accuracy(one_step_predictions, test_labels)
+        assert prototype.phase_lookup_accuracy == js_accuracy(phase_predictions, test_labels)
+        assert prototype.scalar_threshold_accuracy == js_accuracy(scalar_predictions, test_labels)
+        assert prototype.wrong_period_state_accuracy == js_accuracy(wrong_predictions, test_labels)
+        assert prototype.nonperiodic_looped_recurrent_accuracy == js_accuracy(
+            control_looped_predictions,
+            control_test_labels,
+        )
+        assert prototype.nonperiodic_scalar_threshold_accuracy == js_accuracy(
+            control_threshold_predictions,
+            control_test_labels,
+        )
+        assert prototype.average_unroll_steps == sum(test_budgets) / len(test_budgets)
 
     memory_cases = [
         (1, 0, 0, 1),

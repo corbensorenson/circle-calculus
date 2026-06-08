@@ -1241,6 +1241,196 @@ def claim_language_contract(item: dict, checked_fields: list[str]) -> dict:
     }
 
 
+def value_proposition_contract(
+    item: dict,
+    theorem_ref_contract: dict,
+    source_ref_contract: dict,
+    living_book_ref_contract: dict,
+    claim_language_contract: dict,
+) -> dict:
+    roles = set(item.get("portfolio_roles", []) or [])
+    executable_ready = bool(item.get("executable_refs", []) or [])
+    theorem_ready = (
+        theorem_ref_contract.get("total_count", 0) > 0
+        and theorem_ref_contract.get("proved_and_paper_backed_count")
+        == theorem_ref_contract.get("total_count")
+        and not theorem_ref_contract.get("unproved_or_unbacked_ids", [])
+    )
+    source_ready = (
+        source_ref_contract.get("total_count", 0) > 0
+        and source_ref_contract.get("backed_count") == source_ref_contract.get("total_count")
+        and not source_ref_contract.get("unbacked_refs", [])
+    )
+    living_ready = (
+        living_book_ref_contract.get("total_page_count", 0) > 0
+        and living_book_ref_contract.get("backed_page_count")
+        == living_book_ref_contract.get("total_page_count")
+        and living_book_ref_contract.get("backed_widget_count")
+        == living_book_ref_contract.get("total_widget_count")
+        and not living_book_ref_contract.get("unbacked_pages", [])
+        and not living_book_ref_contract.get("unbacked_widgets", [])
+    )
+    checks = {
+        "standard_math_parity": {
+            "required": "standard_math_parity" in roles,
+            "ready": (
+                "standard_math_parity" not in roles
+                or (
+                    nonempty_text(item, "standard_math_anchor")
+                    and nonempty_text(item, "circle_math_expression")
+                    and theorem_ready
+                )
+            ),
+            "evidence": (
+                f"theorems "
+                f"{theorem_ref_contract.get('proved_and_paper_backed_count', 0)}/"
+                f"{theorem_ref_contract.get('total_count', 0)}"
+            ),
+        },
+        "circle_native_value": {
+            "required": "circle_native_value" in roles,
+            "ready": (
+                "circle_native_value" not in roles
+                or (
+                    nonempty_text(item, "circle_native_value")
+                    and nonempty_text(item, "circle_math_expression")
+                    and source_ready
+                    and living_ready
+                    and executable_ready
+                )
+            ),
+            "evidence": (
+                f"sources {source_ref_contract.get('backed_count', 0)}/"
+                f"{source_ref_contract.get('total_count', 0)}; "
+                f"Living Book pages {living_book_ref_contract.get('backed_page_count', 0)}/"
+                f"{living_book_ref_contract.get('total_page_count', 0)}"
+            ),
+        },
+        "application_guardrail": {
+            "required": "application_guardrail" in roles,
+            "ready": (
+                "application_guardrail" not in roles
+                or (
+                    nonempty_text(item, "not_claimed")
+                    and claim_language_contract.get("ready_to_advertise", False)
+                    and source_ready
+                    and executable_ready
+                )
+            ),
+            "evidence": (
+                "language "
+                + (
+                    "clean"
+                    if claim_language_contract.get("ready_to_advertise", False)
+                    else "incomplete"
+                )
+            ),
+        },
+    }
+    return {
+        "ready_to_advertise": all(
+            check["ready"] for check in checks.values() if check["required"]
+        ),
+        "role_checks": checks,
+    }
+
+
+def proof_trail_contract(
+    item: dict,
+    theorem_ref_contract: dict,
+    source_ref_contract: dict,
+    living_book_ref_contract: dict,
+    claim_language_contract: dict,
+    value_proposition_contract: dict,
+) -> dict:
+    executable_refs = item.get("executable_refs", []) or []
+    source_refs = set(item.get("source_refs", []) or [])
+    executable_ready = (
+        bool(executable_refs)
+        and all(ref in source_refs for ref in executable_refs)
+        and all(Path(ref).name.startswith("test_") and Path(ref).suffix == ".py" for ref in executable_refs)
+    )
+    steps = [
+        {
+            "id": "paper_backing",
+            "label": "cited paper backing",
+            "ready": bool(item.get("paper_ids", []) or []),
+            "evidence": f"{len(item.get('paper_ids', []) or [])} paper ids",
+        },
+        {
+            "id": "theorem_refs",
+            "label": "proved paper-carried theorem refs",
+            "ready": (
+                theorem_ref_contract.get("total_count", 0) > 0
+                and theorem_ref_contract.get("proved_and_paper_backed_count")
+                == theorem_ref_contract.get("total_count")
+                and not theorem_ref_contract.get("unproved_or_unbacked_ids", [])
+            ),
+            "evidence": (
+                f"{theorem_ref_contract.get('proved_and_paper_backed_count', 0)}/"
+                f"{theorem_ref_contract.get('total_count', 0)} theorem refs"
+            ),
+        },
+        {
+            "id": "source_refs",
+            "label": "paper-backed source refs",
+            "ready": (
+                source_ref_contract.get("total_count", 0) > 0
+                and source_ref_contract.get("backed_count")
+                == source_ref_contract.get("total_count")
+                and not source_ref_contract.get("unbacked_refs", [])
+            ),
+            "evidence": (
+                f"{source_ref_contract.get('backed_count', 0)}/"
+                f"{source_ref_contract.get('total_count', 0)} source refs"
+            ),
+        },
+        {
+            "id": "executable_refs",
+            "label": "pytest executable refs",
+            "ready": executable_ready,
+            "evidence": f"{len(executable_refs)} executable refs",
+        },
+        {
+            "id": "living_book_refs",
+            "label": "backed Living Book presentation",
+            "ready": (
+                living_book_ref_contract.get("total_page_count", 0) > 0
+                and living_book_ref_contract.get("backed_page_count")
+                == living_book_ref_contract.get("total_page_count")
+                and living_book_ref_contract.get("backed_widget_count")
+                == living_book_ref_contract.get("total_widget_count")
+                and not living_book_ref_contract.get("unbacked_pages", [])
+                and not living_book_ref_contract.get("unbacked_widgets", [])
+            ),
+            "evidence": (
+                f"pages {living_book_ref_contract.get('backed_page_count', 0)}/"
+                f"{living_book_ref_contract.get('total_page_count', 0)}; "
+                f"widgets {living_book_ref_contract.get('backed_widget_count', 0)}/"
+                f"{living_book_ref_contract.get('total_widget_count', 0)}"
+            ),
+        },
+        {
+            "id": "role_value",
+            "label": "role-backed value proposition",
+            "ready": value_proposition_contract.get("ready_to_advertise", False),
+            "evidence": "role checks ready" if value_proposition_contract.get("ready_to_advertise", False) else "role checks incomplete",
+        },
+        {
+            "id": "claim_language",
+            "label": "advertising-language boundary",
+            "ready": claim_language_contract.get("ready_to_advertise", False),
+            "evidence": "clean" if claim_language_contract.get("ready_to_advertise", False) else "incomplete",
+        },
+    ]
+    return {
+        "ready_to_advertise": all(step["ready"] for step in steps),
+        "passed_step_count": sum(1 for step in steps if step["ready"]),
+        "total_step_count": len(steps),
+        "steps": steps,
+    }
+
+
 def capability_claim_contract(
     item: dict,
     evidence_counts: dict[str, int],
@@ -1250,6 +1440,8 @@ def capability_claim_contract(
     source_ref_contract: dict,
     living_book_ref_contract: dict,
     claim_language_contract: dict,
+    value_proposition_contract: dict,
+    proof_trail_contract: dict,
 ) -> dict:
     roles = set(item.get("portfolio_roles", []) or [])
     provenance_kind = item.get("proof_provenance_kind", "")
@@ -1425,6 +1617,24 @@ def capability_claim_contract(
                 )
                 or "missing explicit boundary"
             ),
+        ),
+        contract_gate(
+            "value_proposition",
+            "role-backed value proposition",
+            value_proposition_contract.get("ready_to_advertise", False),
+            "; ".join(
+                f"{role} {check.get('evidence', '')}"
+                for role, check in value_proposition_contract.get("role_checks", {}).items()
+                if check.get("required")
+            )
+            or "no required roles",
+        ),
+        contract_gate(
+            "proof_trail",
+            "ordered proof trail",
+            proof_trail_contract.get("ready_to_advertise", False),
+            f"{proof_trail_contract.get('passed_step_count', 0)}/"
+            f"{proof_trail_contract.get('total_step_count', 0)} steps",
         ),
         contract_gate(
             "claim_boundary",
@@ -1788,6 +1998,21 @@ def export_capability_showcase() -> dict:
             item,
             CAPABILITY_CLAIM_LANGUAGE_FIELDS,
         )
+        item["value_proposition_contract"] = value_proposition_contract(
+            item,
+            item["theorem_ref_contract"],
+            item["source_ref_contract"],
+            item["living_book_ref_contract"],
+            item["claim_language_contract"],
+        )
+        item["proof_trail_contract"] = proof_trail_contract(
+            item,
+            item["theorem_ref_contract"],
+            item["source_ref_contract"],
+            item["living_book_ref_contract"],
+            item["claim_language_contract"],
+            item["value_proposition_contract"],
+        )
         item["claim_contract"] = capability_claim_contract(
             item,
             item["evidence_counts"],
@@ -1797,6 +2022,8 @@ def export_capability_showcase() -> dict:
             item["source_ref_contract"],
             item["living_book_ref_contract"],
             item["claim_language_contract"],
+            item["value_proposition_contract"],
+            item["proof_trail_contract"],
         )
         if item["claim_contract"]["ready_to_advertise"]:
             contract_ready_count += 1

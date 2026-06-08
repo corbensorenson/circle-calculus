@@ -128,6 +128,42 @@ theorem tokenRecurrenceBudget_le_loopPeriod {loopPeriod : Nat} (h : 0 < loopPeri
   unfold tokenRecurrenceBudget
   exact loopRequiredSteps_le_loopPeriod h token
 
+def loopedRecurrentState (period budget : Nat) : Nat :=
+  phaseChannel period (budget - 1)
+
+theorem loopedRecurrentState_lt_period {period : Nat} (h : 0 < period)
+    (budget : Nat) :
+    loopedRecurrentState period budget < period := by
+  unfold loopedRecurrentState
+  exact phaseChannel_lt_period h (budget - 1)
+
+theorem loopedRecurrentState_one_zero (period : Nat) :
+    loopedRecurrentState period 1 = 0 := by
+  unfold loopedRecurrentState phaseChannel
+  simp
+
+theorem loopedRecurrentState_of_requiredSteps
+    (period sample : Nat) :
+    loopedRecurrentState period (loopRequiredSteps period sample) =
+      phaseChannel period sample := by
+  unfold loopedRecurrentState loopRequiredSteps phaseChannel
+  simp
+
+theorem loopedRecurrentState_of_tokenRecurrenceBudget
+    (period sample : Nat) :
+    loopedRecurrentState period (tokenRecurrenceBudget period sample) =
+      phaseChannel period sample := by
+  unfold tokenRecurrenceBudget
+  exact loopedRecurrentState_of_requiredSteps period sample
+
+theorem loopedRecurrentState_tokenBudget_add_mul_loopPeriod
+    {loopPeriod : Nat} (h : 0 < loopPeriod) (sample passes : Nat) :
+    loopedRecurrentState loopPeriod
+        (tokenRecurrenceBudget loopPeriod (sample + passes * loopPeriod)) =
+      loopedRecurrentState loopPeriod
+        (tokenRecurrenceBudget loopPeriod sample) := by
+  rw [tokenRecurrenceBudget_add_mul_loopPeriod h]
+
 def tokenActiveAtStep (loopPeriod token step : Nat) : Prop :=
   step ≤ tokenRecurrenceBudget loopPeriod token
 

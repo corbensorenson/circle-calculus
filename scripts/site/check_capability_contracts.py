@@ -24,6 +24,7 @@ REQUIRED_GATE_IDS = {
     "verification_recipe",
     "living_book_presentation",
     "claim_language_guardrail",
+    "value_proposition",
     "claim_boundary",
 }
 
@@ -110,6 +111,100 @@ def claim_language_contract(item: dict, checked_fields: list[str]) -> dict:
         "flagged_phrases": flagged_phrases,
         "boundary_field": "not_claimed",
         "explicit_boundary": explicit_boundary,
+    }
+
+
+def value_proposition_contract(
+    item: dict,
+    theorem_ref_contract: dict,
+    source_ref_contract: dict,
+    living_book_ref_contract: dict,
+    claim_language_contract: dict,
+) -> dict:
+    roles = set(item.get("portfolio_roles", []) or [])
+    executable_ready = bool(item.get("executable_refs", []) or [])
+    theorem_ready = (
+        theorem_ref_contract.get("total_count", 0) > 0
+        and theorem_ref_contract.get("proved_and_paper_backed_count")
+        == theorem_ref_contract.get("total_count")
+        and not theorem_ref_contract.get("unproved_or_unbacked_ids", [])
+    )
+    source_ready = (
+        source_ref_contract.get("total_count", 0) > 0
+        and source_ref_contract.get("backed_count") == source_ref_contract.get("total_count")
+        and not source_ref_contract.get("unbacked_refs", [])
+    )
+    living_ready = (
+        living_book_ref_contract.get("total_page_count", 0) > 0
+        and living_book_ref_contract.get("backed_page_count")
+        == living_book_ref_contract.get("total_page_count")
+        and living_book_ref_contract.get("backed_widget_count")
+        == living_book_ref_contract.get("total_widget_count")
+        and not living_book_ref_contract.get("unbacked_pages", [])
+        and not living_book_ref_contract.get("unbacked_widgets", [])
+    )
+    checks = {
+        "standard_math_parity": {
+            "required": "standard_math_parity" in roles,
+            "ready": (
+                "standard_math_parity" not in roles
+                or (
+                    bool(str(item.get("standard_math_anchor", "")).strip())
+                    and bool(str(item.get("circle_math_expression", "")).strip())
+                    and theorem_ready
+                )
+            ),
+            "evidence": (
+                f"theorems "
+                f"{theorem_ref_contract.get('proved_and_paper_backed_count', 0)}/"
+                f"{theorem_ref_contract.get('total_count', 0)}"
+            ),
+        },
+        "circle_native_value": {
+            "required": "circle_native_value" in roles,
+            "ready": (
+                "circle_native_value" not in roles
+                or (
+                    bool(str(item.get("circle_native_value", "")).strip())
+                    and bool(str(item.get("circle_math_expression", "")).strip())
+                    and source_ready
+                    and living_ready
+                    and executable_ready
+                )
+            ),
+            "evidence": (
+                f"sources {source_ref_contract.get('backed_count', 0)}/"
+                f"{source_ref_contract.get('total_count', 0)}; "
+                f"Living Book pages {living_book_ref_contract.get('backed_page_count', 0)}/"
+                f"{living_book_ref_contract.get('total_page_count', 0)}"
+            ),
+        },
+        "application_guardrail": {
+            "required": "application_guardrail" in roles,
+            "ready": (
+                "application_guardrail" not in roles
+                or (
+                    bool(str(item.get("not_claimed", "")).strip())
+                    and claim_language_contract.get("ready_to_advertise", False)
+                    and source_ready
+                    and executable_ready
+                )
+            ),
+            "evidence": (
+                "language "
+                + (
+                    "clean"
+                    if claim_language_contract.get("ready_to_advertise", False)
+                    else "incomplete"
+                )
+            ),
+        },
+    }
+    return {
+        "ready_to_advertise": all(
+            check["ready"] for check in checks.values() if check["required"]
+        ),
+        "role_checks": checks,
     }
 
 
@@ -747,6 +842,26 @@ def main() -> int:
                 failures.append(
                     f"{capability_id}: Living Book refs are not backed: "
                     f"{unbacked_pages + unbacked_widgets}"
+                )
+        if (
+            isinstance(theorem_ref_contract, dict)
+            and isinstance(source_ref_contract, dict)
+            and isinstance(living_book_ref_contract, dict)
+        ):
+            expected_value_contract = value_proposition_contract(
+                capability,
+                theorem_ref_contract,
+                source_ref_contract,
+                living_book_ref_contract,
+                expected_claim_language_contract,
+            )
+            if capability.get("value_proposition_contract") != expected_value_contract:
+                failures.append(
+                    f"{capability_id}: value_proposition_contract does not match evidence"
+                )
+            if not expected_value_contract["ready_to_advertise"]:
+                failures.append(
+                    f"{capability_id}: role-backed value proposition is incomplete"
                 )
         contract = capability.get("claim_contract")
         if not isinstance(contract, dict):

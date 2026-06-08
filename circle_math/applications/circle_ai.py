@@ -559,6 +559,28 @@ class LearnedRecurrenceScheduleBenchmarkResult:
 
 
 @dataclass(frozen=True)
+class TinyLoopedRecurrentPrototypeResult:
+    period: int
+    wrong_period: int
+    train_length: int
+    test_length: int
+    learned_state_lookup: tuple[int, ...]
+    wrong_period_state_lookup: tuple[int, ...]
+    required_state_sample: tuple[int, ...]
+    learned_state_sample: tuple[int, ...]
+    one_step_state_sample: tuple[int, ...]
+    looped_recurrent_accuracy: float
+    one_step_accuracy: float
+    phase_lookup_accuracy: float
+    scalar_threshold_accuracy: float
+    wrong_period_state_accuracy: float
+    nonperiodic_looped_recurrent_accuracy: float
+    nonperiodic_scalar_threshold_accuracy: float
+    average_unroll_steps: float
+    note: str = "Tiny looped-recurrent prototype fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
 class TrainingFreeLoopWrapperBenchmarkResult:
     loop_period: int
     sample_count: int
@@ -1952,6 +1974,21 @@ def token_recurrence_budgets(loop_period: int, token_indices: Sequence[int]) -> 
     return tuple(token_recurrence_budget(loop_period, token_index) for token_index in token_indices)
 
 
+def looped_recurrent_state(period: int, budget: int) -> int:
+    """Return the finite hidden-state phase after a one-indexed loop budget."""
+    _require_positive(period, "period")
+    _require_positive(budget, "budget")
+    return phase_channel(period, budget - 1)
+
+
+def looped_recurrent_states(period: int, budgets: Sequence[int]) -> tuple[int, ...]:
+    """Return looped recurrent states for a batch of one-indexed budgets."""
+    normalized = tuple(budgets)
+    if not normalized:
+        raise ValueError("budgets must be nonempty")
+    return tuple(looped_recurrent_state(period, budget) for budget in normalized)
+
+
 def middle_block_route(start: int, width: int, sample_index: int) -> int:
     """Return the selected middle-block route ``start + sample_index mod width``."""
     if start < 0:
@@ -3173,6 +3210,109 @@ def run_learned_recurrence_schedule_benchmark(
         fixed_loop_budget_accuracy=accuracy(fixed_predictions, labels),
         wrong_period_router_accuracy=accuracy(wrong_predictions, labels),
         over_looped_accuracy=accuracy(over_predictions, labels),
+    )
+
+
+def run_tiny_looped_recurrent_prototype(
+    *,
+    period: int = 4,
+    wrong_period: int = 3,
+    train_length: int = 64,
+    test_length: int = 32,
+) -> TinyLoopedRecurrentPrototypeResult:
+    """Run a tiny looped recurrent classifier prototype.
+
+    The hidden state advances one finite phase per loop. The positive fixture
+    learns a state-to-label table and uses the recurrence budget to choose the
+    state to read. Direct phase lookup, one-step, wrong-period, scalar, and
+    nonperiodic controls keep this as a benchmark harness, not a model-quality
+    or recursive-reasoning claim.
+    """
+    _require_positive(period, "period")
+    _require_positive(wrong_period, "wrong_period")
+    _require_positive(train_length, "train_length")
+    _require_positive(test_length, "test_length")
+    if wrong_period == period:
+        raise ValueError("wrong_period must differ from period")
+
+    train_positions, train_labels = synthetic_phase_dataset(period, train_length)
+    test_positions, test_labels = synthetic_phase_dataset(
+        period,
+        test_length,
+        start=train_length,
+    )
+
+    train_budgets = token_recurrence_budgets(period, train_positions)
+    train_states = looped_recurrent_states(period, train_budgets)
+    state_lookup = fit_phase_lookup(period, train_states, train_labels)
+
+    test_budgets = token_recurrence_budgets(period, test_positions)
+    required_states = looped_recurrent_states(period, test_budgets)
+    looped_predictions = predict_phase_lookup(period, state_lookup, required_states)
+    one_step_states = tuple(looped_recurrent_state(period, 1) for _ in test_positions)
+    one_step_predictions = predict_phase_lookup(period, state_lookup, one_step_states)
+
+    phase_lookup = fit_phase_lookup(period, train_positions, train_labels)
+    phase_predictions = predict_phase_lookup(period, phase_lookup, test_positions)
+    threshold, polarity = fit_threshold_classifier(train_positions, train_labels)
+    threshold_predictions = predict_threshold_classifier(test_positions, threshold, polarity)
+
+    wrong_train_budgets = token_recurrence_budgets(wrong_period, train_positions)
+    wrong_train_states = looped_recurrent_states(wrong_period, wrong_train_budgets)
+    wrong_lookup = fit_phase_lookup(wrong_period, wrong_train_states, train_labels)
+    wrong_test_budgets = token_recurrence_budgets(wrong_period, test_positions)
+    wrong_test_states = looped_recurrent_states(wrong_period, wrong_test_budgets)
+    wrong_predictions = predict_phase_lookup(wrong_period, wrong_lookup, wrong_test_states)
+
+    control_threshold = (3 * train_length) // 4
+    control_train_labels = tuple(
+        nonperiodic_threshold_label(position, control_threshold)
+        for position in train_positions
+    )
+    control_test_labels = tuple(
+        nonperiodic_threshold_label(position, control_threshold)
+        for position in test_positions
+    )
+    control_state_lookup = fit_phase_lookup(period, train_states, control_train_labels)
+    control_looped_predictions = predict_phase_lookup(
+        period,
+        control_state_lookup,
+        required_states,
+    )
+    control_threshold_fit, control_polarity = fit_threshold_classifier(
+        train_positions,
+        control_train_labels,
+    )
+    control_threshold_predictions = predict_threshold_classifier(
+        test_positions,
+        control_threshold_fit,
+        control_polarity,
+    )
+
+    return TinyLoopedRecurrentPrototypeResult(
+        period=period,
+        wrong_period=wrong_period,
+        train_length=train_length,
+        test_length=test_length,
+        learned_state_lookup=state_lookup,
+        wrong_period_state_lookup=wrong_lookup,
+        required_state_sample=required_states[: min(12, len(required_states))],
+        learned_state_sample=required_states[: min(12, len(required_states))],
+        one_step_state_sample=one_step_states[: min(12, len(one_step_states))],
+        looped_recurrent_accuracy=accuracy(looped_predictions, test_labels),
+        one_step_accuracy=accuracy(one_step_predictions, test_labels),
+        phase_lookup_accuracy=accuracy(phase_predictions, test_labels),
+        scalar_threshold_accuracy=accuracy(threshold_predictions, test_labels),
+        wrong_period_state_accuracy=accuracy(wrong_predictions, test_labels),
+        nonperiodic_looped_recurrent_accuracy=accuracy(
+            control_looped_predictions,
+            control_test_labels,
+        ),
+        nonperiodic_scalar_threshold_accuracy=accuracy(
+            control_threshold_predictions,
+            control_test_labels,
+        ),
+        average_unroll_steps=sum(test_budgets) / len(test_budgets),
     )
 
 

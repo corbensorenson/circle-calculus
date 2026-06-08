@@ -249,6 +249,26 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.middleBlockBudgetRoute_add_commonCycle
     dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+  - id: AIM-T0049
+    status: lean_proved
+    lean_name: Circle.Applications.loopedRecurrentState_lt_period
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0050
+    status: lean_proved
+    lean_name: Circle.Applications.loopedRecurrentState_one_zero
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0051
+    status: lean_proved
+    lean_name: Circle.Applications.loopedRecurrentState_of_requiredSteps
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0052
+    status: lean_proved
+    lean_name: Circle.Applications.loopedRecurrentState_of_tokenRecurrenceBudget
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0053
+    status: lean_proved
+    lean_name: Circle.Applications.loopedRecurrentState_tokenBudget_add_mul_loopPeriod
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0052", "COMMON-0053", "COMMON-0059"]
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize

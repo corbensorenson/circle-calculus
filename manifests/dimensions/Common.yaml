@@ -1521,6 +1521,76 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_middle_block_recurrence_helpers_are_deterministic
     blocker: ""
+  - id: AIM-T0049
+    status: lean_proved
+    lean_name: Circle.Applications.loopedRecurrentState_lt_period
+    informal_statement: "For a positive finite recurrent period, a looped recurrent hidden-state index is bounded by that period."
+    formal_statement: "For positive period and budget, loopedRecurrentState period budget < period."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_looped_recurrent_state_matches_certified_budget_phase
+    blocker: ""
+  - id: AIM-T0050
+    status: lean_proved
+    lean_name: Circle.Applications.loopedRecurrentState_one_zero
+    informal_statement: "A one-step looped recurrent hidden state starts at phase zero."
+    formal_statement: "For period, loopedRecurrentState period 1 = 0."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_looped_recurrent_state_matches_certified_budget_phase
+    blocker: ""
+  - id: AIM-T0051
+    status: lean_proved
+    lean_name: Circle.Applications.loopedRecurrentState_of_requiredSteps
+    informal_statement: "Reading a looped recurrent state at the required loop depth recovers the sample phase."
+    formal_statement: "For period and sample, loopedRecurrentState period (loopRequiredSteps period sample) = phaseChannel period sample."
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_looped_recurrent_state_matches_certified_budget_phase
+    blocker: ""
+  - id: AIM-T0052
+    status: lean_proved
+    lean_name: Circle.Applications.loopedRecurrentState_of_tokenRecurrenceBudget
+    informal_statement: "Reading a looped recurrent state at the certified token recurrence budget recovers the token phase."
+    formal_statement: "For period and sample, loopedRecurrentState period (tokenRecurrenceBudget period sample) = phaseChannel period sample."
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_looped_recurrent_state_matches_certified_budget_phase
+    blocker: ""
+  - id: AIM-T0053
+    status: lean_proved
+    lean_name: Circle.Applications.loopedRecurrentState_tokenBudget_add_mul_loopPeriod
+    informal_statement: "Looped recurrent state reads through token recurrence budgets are invariant under whole loop-period token shifts."
+    formal_statement: "For positive loopPeriod, loopedRecurrentState loopPeriod (tokenRecurrenceBudget loopPeriod (sample + passes * loopPeriod)) = loopedRecurrentState loopPeriod (tokenRecurrenceBudget loopPeriod sample)."
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_looped_recurrent_state_matches_certified_budget_phase
+    blocker: ""
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize
