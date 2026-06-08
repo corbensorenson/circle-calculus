@@ -5521,6 +5521,36 @@
           "lean_name": "Circle.Applications.trainingFreeLoopBudget_eq_max_of_unavailable",
           "name": "Circle.Applications.trainingFreeLoopBudget_eq_max_of_unavailable",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0026",
+          "lean_name": "Circle.Applications.loopRequiredSteps_add_mul_loopPeriod",
+          "name": "Circle.Applications.loopRequiredSteps_add_mul_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0027",
+          "lean_name": "Circle.Applications.tokenRecurrenceBudget_add_mul_loopPeriod",
+          "name": "Circle.Applications.tokenRecurrenceBudget_add_mul_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0028",
+          "lean_name": "Circle.Applications.trainingFreeLoopBudget_add_mul_loopPeriod",
+          "name": "Circle.Applications.trainingFreeLoopBudget_add_mul_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0029",
+          "lean_name": "Circle.Applications.loopOverthinkingBoundary_add_mul_loopPeriod",
+          "name": "Circle.Applications.loopOverthinkingBoundary_add_mul_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0030",
+          "lean_name": "Circle.Applications.loopExitAvailable_add_mul_loopPeriod",
+          "name": "Circle.Applications.loopExitAvailable_add_mul_loopPeriod",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5718,6 +5748,36 @@
           "lean_name": "Circle.Applications.trainingFreeLoopBudget_eq_max_of_unavailable",
           "name": "Circle.Applications.trainingFreeLoopBudget_eq_max_of_unavailable",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0026",
+          "lean_name": "Circle.Applications.loopRequiredSteps_add_mul_loopPeriod",
+          "name": "Circle.Applications.loopRequiredSteps_add_mul_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0027",
+          "lean_name": "Circle.Applications.tokenRecurrenceBudget_add_mul_loopPeriod",
+          "name": "Circle.Applications.tokenRecurrenceBudget_add_mul_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0028",
+          "lean_name": "Circle.Applications.trainingFreeLoopBudget_add_mul_loopPeriod",
+          "name": "Circle.Applications.trainingFreeLoopBudget_add_mul_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0029",
+          "lean_name": "Circle.Applications.loopOverthinkingBoundary_add_mul_loopPeriod",
+          "name": "Circle.Applications.loopOverthinkingBoundary_add_mul_loopPeriod",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0030",
+          "lean_name": "Circle.Applications.loopExitAvailable_add_mul_loopPeriod",
+          "name": "Circle.Applications.loopExitAvailable_add_mul_loopPeriod",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5813,6 +5873,12 @@
           "id": "AIM-T0024",
           "lean_name": "Circle.Applications.loopExitCertificate_exit_pos",
           "name": "Circle.Applications.loopExitCertificate_exit_pos",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0029",
+          "lean_name": "Circle.Applications.loopOverthinkingBoundary_add_mul_loopPeriod",
+          "name": "Circle.Applications.loopOverthinkingBoundary_add_mul_loopPeriod",
           "status": "proved"
         }
       ],
@@ -6029,6 +6095,12 @@
           "id": "AIM-T0022",
           "lean_name": "Circle.Applications.tokenRecurrenceBudget_pos",
           "name": "Circle.Applications.tokenRecurrenceBudget_pos",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0027",
+          "lean_name": "Circle.Applications.tokenRecurrenceBudget_add_mul_loopPeriod",
+          "name": "Circle.Applications.tokenRecurrenceBudget_add_mul_loopPeriod",
           "status": "proved"
         }
       ],
@@ -7569,6 +7641,12 @@
           "id": "AIM-T0025",
           "lean_name": "Circle.Applications.trainingFreeLoopBudget_eq_max_of_unavailable",
           "name": "Circle.Applications.trainingFreeLoopBudget_eq_max_of_unavailable",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0028",
+          "lean_name": "Circle.Applications.trainingFreeLoopBudget_add_mul_loopPeriod",
+          "name": "Circle.Applications.trainingFreeLoopBudget_add_mul_loopPeriod",
           "status": "proved"
         }
       ],

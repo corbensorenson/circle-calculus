@@ -137,7 +137,7 @@ shared block
 
 The proof boundary stays strict: Lean can certify finite schedule and indexing facts; Python or MLX benchmarks must carry model-quality, runtime, memory, and parameter claims.
 
-The widget below is the smallest interactive version of that boundary. It computes the same finite schedule quantities used by the current Lean/Python layer: phase, required loop depth, token recurrence budget, capped training-free budget, exit availability, and overthinking boundary. It is not a proof and it is not evidence of model quality.
+The widget below is the smallest interactive version of that boundary. It computes the same finite schedule quantities used by the current Lean/Python layer: phase, required loop depth, token recurrence budget, capped training-free budget, exit availability, overthinking boundary, one-period closure, and whole-loop-pass closure. It is not a proof and it is not evidence of model quality.
 
 <div class="widget-panel" data-widget="loop_recurrence_budget" data-theorem-id="AIM-T0018" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0054 COMMON-0059 COMMON-0067"></div>
 
@@ -354,6 +354,11 @@ Why is the nonperiodic control in `AIA-B0002` important before making any AI-imp
 <div class="theorem-box" data-theorem-id="AIM-T0023"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0024"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0025"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0026"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0027"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0028"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0029"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0030"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0001"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0004"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0005"></div>

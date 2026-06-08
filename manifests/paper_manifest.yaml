@@ -673,6 +673,11 @@ papers:
       - AIM-T0023
       - AIM-T0024
       - AIM-T0025
+      - AIM-T0026
+      - AIM-T0027
+      - AIM-T0028
+      - AIM-T0029
+      - AIM-T0030
     dictionary_ids:
       - COMMON-0028
       - COMMON-0029

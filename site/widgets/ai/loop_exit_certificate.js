@@ -2,7 +2,17 @@ import { mod, positiveInt } from "../shared/circle_math_core.js";
 import { addLabeledNumber, addOutput, addWidgetHeader, clear } from "../shared/svg_helpers.js";
 import { loadJson, mountWidgets, statusClass, statusLabel } from "../shared/widget_base.js";
 
-const THEOREM_IDS = ["AIM-T0012", "AIM-T0013", "AIM-T0014", "AIM-T0015", "AIM-T0016", "AIM-T0017", "AIM-T0024"];
+const THEOREM_IDS = [
+  "AIM-T0012",
+  "AIM-T0013",
+  "AIM-T0014",
+  "AIM-T0015",
+  "AIM-T0016",
+  "AIM-T0017",
+  "AIM-T0024",
+  "AIM-T0029",
+  "AIM-T0030",
+];
 const DICTIONARY_IDS = ["COMMON-0052", "COMMON-0053", "COMMON-0054", "COMMON-0059", "COMMON-0067"];
 
 let traceIdCounter = 0;
@@ -230,6 +240,12 @@ function appendRecord(output, values, theoremById) {
     values.maxLoops,
     values.tolerance,
   );
+  const multiPass = loopExitCertificate(
+    values.loopPeriod,
+    values.sampleIndex + 3 * values.loopPeriod,
+    values.maxLoops,
+    values.tolerance,
+  );
 
   const section = document.createElement("section");
   section.className = "seed-rule-record";
@@ -252,6 +268,11 @@ function appendRecord(output, values, theoremById) {
     `shifted required steps: ${shifted.requiredSteps}`,
     `shifted exit available: ${yesNo(shifted.exitAvailable)}`,
     `periodic exit availability check: ${primary.exitAvailable === shifted.exitAvailable}`,
+    `three-pass shifted sample: ${values.sampleIndex + 3 * values.loopPeriod}`,
+    `three-pass required steps: ${multiPass.requiredSteps}`,
+    `three-pass exit available: ${yesNo(multiPass.exitAvailable)}`,
+    `multi-pass boundary check: ${primary.overthinkingBoundary === multiPass.overthinkingBoundary}`,
+    `multi-pass exit availability check: ${primary.exitAvailable === multiPass.exitAvailable}`,
   ].join("\n");
   section.appendChild(data);
   section.appendChild(renderTrace(primary, "Primary"));

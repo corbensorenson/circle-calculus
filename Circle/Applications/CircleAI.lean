@@ -93,6 +93,13 @@ theorem loopRequiredSteps_add_loopPeriod {loopPeriod : Nat} (h : 0 < loopPeriod)
   unfold loopRequiredSteps
   rw [phaseChannel_add_period h]
 
+theorem loopRequiredSteps_add_mul_loopPeriod {loopPeriod : Nat} (h : 0 < loopPeriod)
+    (sample passes : Nat) :
+    loopRequiredSteps loopPeriod (sample + passes * loopPeriod) =
+      loopRequiredSteps loopPeriod sample := by
+  unfold loopRequiredSteps
+  rw [phaseChannel_add_mul_period h]
+
 def tokenRecurrenceBudget (loopPeriod token : Nat) : Nat :=
   loopRequiredSteps loopPeriod token
 
@@ -107,6 +114,13 @@ theorem tokenRecurrenceBudget_add_loopPeriod {loopPeriod : Nat} (h : 0 < loopPer
       tokenRecurrenceBudget loopPeriod token := by
   unfold tokenRecurrenceBudget
   exact loopRequiredSteps_add_loopPeriod h token
+
+theorem tokenRecurrenceBudget_add_mul_loopPeriod {loopPeriod : Nat}
+    (h : 0 < loopPeriod) (token passes : Nat) :
+    tokenRecurrenceBudget loopPeriod (token + passes * loopPeriod) =
+      tokenRecurrenceBudget loopPeriod token := by
+  unfold tokenRecurrenceBudget
+  exact loopRequiredSteps_add_mul_loopPeriod h token passes
 
 theorem tokenRecurrenceBudget_le_loopPeriod {loopPeriod : Nat} (h : 0 < loopPeriod)
     (token : Nat) :
@@ -134,6 +148,13 @@ theorem trainingFreeLoopBudget_add_loopPeriod {loopPeriod : Nat} (h : 0 < loopPe
       trainingFreeLoopBudget loopPeriod sample maxLoops := by
   unfold trainingFreeLoopBudget
   rw [loopRequiredSteps_add_loopPeriod h]
+
+theorem trainingFreeLoopBudget_add_mul_loopPeriod {loopPeriod : Nat}
+    (h : 0 < loopPeriod) (sample maxLoops passes : Nat) :
+    trainingFreeLoopBudget loopPeriod (sample + passes * loopPeriod) maxLoops =
+      trainingFreeLoopBudget loopPeriod sample maxLoops := by
+  unfold trainingFreeLoopBudget
+  rw [loopRequiredSteps_add_mul_loopPeriod h]
 
 def loopExitAvailable (loopPeriod sample maxLoops : Nat) : Prop :=
   loopRequiredSteps loopPeriod sample ≤ maxLoops
@@ -203,6 +224,14 @@ theorem loopOverthinkingBoundary_add_loopPeriod
   unfold loopOverthinkingBoundary
   rw [loopRequiredSteps_add_loopPeriod hpositive]
 
+theorem loopOverthinkingBoundary_add_mul_loopPeriod
+    {loopPeriod : Nat} (hpositive : 0 < loopPeriod)
+    (sample tolerance passes : Nat) :
+    loopOverthinkingBoundary loopPeriod (sample + passes * loopPeriod) tolerance =
+      loopOverthinkingBoundary loopPeriod sample tolerance := by
+  unfold loopOverthinkingBoundary
+  rw [loopRequiredSteps_add_mul_loopPeriod hpositive]
+
 theorem loopExitAvailable_of_loopPeriod_le_budget
     {loopPeriod maxLoops : Nat} (hpositive : 0 < loopPeriod)
     (hbudget : loopPeriod ≤ maxLoops) (sample : Nat) :
@@ -217,6 +246,14 @@ theorem loopExitAvailable_add_loopPeriod
       loopExitAvailable loopPeriod sample maxLoops := by
   unfold loopExitAvailable
   rw [loopRequiredSteps_add_loopPeriod hpositive]
+
+theorem loopExitAvailable_add_mul_loopPeriod
+    {loopPeriod maxLoops : Nat} (hpositive : 0 < loopPeriod)
+    (sample passes : Nat) :
+    loopExitAvailable loopPeriod (sample + passes * loopPeriod) maxLoops ↔
+      loopExitAvailable loopPeriod sample maxLoops := by
+  unfold loopExitAvailable
+  rw [loopRequiredSteps_add_mul_loopPeriod hpositive]
 
 theorem loopExitCertificate_exit_eq_required
     (certificate : LoopExitCertificate) :

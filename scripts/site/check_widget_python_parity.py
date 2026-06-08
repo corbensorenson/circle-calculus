@@ -1844,7 +1844,6 @@ def main() -> int:
     ]
     for loop_period, sample_index, max_loops, tolerance in ai_cases:
         required = loop_required_steps(loop_period, sample_index)
-        shifted_sample = sample_index + loop_period
         certificate = loop_exit_certificate(
             loop_period,
             sample_index,
@@ -1885,18 +1884,27 @@ def main() -> int:
             sample_index,
             tolerance,
         )
-        assert loop_required_steps(loop_period, shifted_sample) == required
-        assert training_free_loop_budget(
-            loop_period,
-            shifted_sample,
-            max_loops,
-        ) == js_training_free_loop_budget(loop_period, sample_index, max_loops)
-        assert loop_exit_certificate(
-            loop_period,
-            shifted_sample,
-            max_loops,
-            overthink_tolerance=tolerance,
-        ).overthinking_boundary == certificate.overthinking_boundary
+        for passes in (1, 2, 3, 5):
+            shifted_sample = sample_index + passes * loop_period
+            shifted_certificate = loop_exit_certificate(
+                loop_period,
+                shifted_sample,
+                max_loops,
+                overthink_tolerance=tolerance,
+            )
+            assert loop_required_steps(loop_period, shifted_sample) == required
+            assert token_recurrence_budget(loop_period, shifted_sample) == token_recurrence_budget(
+                loop_period,
+                sample_index,
+            )
+            assert training_free_loop_budget(
+                loop_period,
+                shifted_sample,
+                max_loops,
+            ) == js_training_free_loop_budget(loop_period, sample_index, max_loops)
+            assert shifted_certificate.required_steps == certificate.required_steps
+            assert shifted_certificate.exit_available == certificate.exit_available
+            assert shifted_certificate.overthinking_boundary == certificate.overthinking_boundary
 
     training_free_cases = [
         (4, 32, 4, 2, 3, 8, 0),

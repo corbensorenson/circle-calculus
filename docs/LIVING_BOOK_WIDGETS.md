@@ -155,8 +155,8 @@ Implemented shared JavaScript:
 ### loop_recurrence_budget
 
 - Inputs: loop period, sample/token index, maximum loops, overthinking tolerance.
-- Outputs: loop phase, required loop count, token recurrence budget, capped training-free loop budget, exit availability, overthinking boundary, and one-period-shift periodicity checks.
-- Theorem ids: `AIM-T0018`, `AIM-T0019`, `AIM-T0020`, `AIM-T0021`, `AIM-T0022`, `AIM-T0023`, and `AIM-T0025`.
+- Outputs: loop phase, required loop count, token recurrence budget, capped training-free loop budget, exit availability, overthinking boundary, one-period-shift periodicity checks, and whole-loop-pass closure checks.
+- Theorem ids: `AIM-T0018`, `AIM-T0019`, `AIM-T0020`, `AIM-T0021`, `AIM-T0022`, `AIM-T0023`, `AIM-T0025`, `AIM-T0026`, `AIM-T0027`, `AIM-T0028`, `AIM-T0029`, and `AIM-T0030`.
 - Dictionary ids: `COMMON-0052`, `COMMON-0053`, `COMMON-0054`, `COMMON-0059`, and `COMMON-0067`.
 - Python references: `circle_math.applications.circle_ai.loop_required_steps`, `circle_math.applications.circle_ai.token_recurrence_budget`, and `circle_math.applications.circle_ai.training_free_loop_budget`.
 - Guardrail: the widget is finite schedule bookkeeping only. It does not prove model quality, speed, reasoning improvement, memory improvement, or context-length improvement.
@@ -165,8 +165,8 @@ Implemented shared JavaScript:
 ### loop_exit_certificate
 
 - Inputs: loop period, primary sample index, primary maximum loops, fixed-budget control sample index, fixed-budget control maximum loops, and overthinking tolerance.
-- Outputs: primary and control score traces, required loop depth, first exit step, exit availability, budget status, guardrail status, one-period-shift exit-availability check, theorem-status badges, and dictionary links.
-- Theorem ids: `AIM-T0012`, `AIM-T0013`, `AIM-T0014`, `AIM-T0015`, `AIM-T0016`, `AIM-T0017`, and `AIM-T0024`.
+- Outputs: primary and control score traces, required loop depth, first exit step, exit availability, budget status, guardrail status, one-period and multi-pass exit-availability checks, theorem-status badges, and dictionary links.
+- Theorem ids: `AIM-T0012`, `AIM-T0013`, `AIM-T0014`, `AIM-T0015`, `AIM-T0016`, `AIM-T0017`, `AIM-T0024`, `AIM-T0029`, and `AIM-T0030`.
 - Dictionary ids: `COMMON-0052`, `COMMON-0053`, `COMMON-0054`, `COMMON-0059`, and `COMMON-0067`.
 - Python references: `circle_math.applications.circle_ai.loop_required_steps`, `circle_math.applications.circle_ai.loop_score_trace`, `circle_math.applications.circle_ai.loop_exit_step`, and `circle_math.applications.circle_ai.loop_exit_certificate`.
 - Guardrail: the widget is deterministic finite loop-schedule certificate bookkeeping only. It does not prove trained early-exit quality, recursive reasoning, speed, memory improvement, context-length improvement, or overthinking behavior in real transformers.
@@ -176,7 +176,7 @@ Implemented shared JavaScript:
 
 - Inputs: loop period, token count, maximum budget, fixed global budget, wrong-budget shift, over-loop budget, and overthinking tolerance.
 - Outputs: per-token recurrence-budget strip, selected middle-block record, coarse/fine resolution labels, active-token counts by loop step, fixed-budget control, wrong-budget control, over-loop control, nonperiodic phase-lookup control, and scalar-threshold control.
-- Theorem ids: `AIM-T0006`, `AIM-T0007`, `AIM-T0008`, `AIM-T0009`, `AIM-T0018`, and `AIM-T0022` as finite loop-budget primitives.
+- Theorem ids: `AIM-T0006`, `AIM-T0007`, `AIM-T0008`, `AIM-T0009`, `AIM-T0018`, `AIM-T0022`, `AIM-T0026`, and `AIM-T0027` as finite loop-budget primitives.
 - Dictionary ids: `COMMON-0052`, `COMMON-0053`, `COMMON-0059`, `COMMON-0068`, and `COMMON-0069`.
 - Python references: `circle_math.applications.circle_ai.token_recurrence_budgets`, `circle_math.applications.circle_ai.active_token_counts_by_budget`, `circle_math.applications.circle_ai.recurrence_resolution_levels`, and `circle_math.applications.circle_ai.run_token_level_recurrence_benchmark`.
 - Guardrail: the widget is deterministic token-level schedule bookkeeping only. It does not prove learned-router quality, recursive reasoning, perplexity improvement, throughput, memory improvement, context-length improvement, or model-quality improvement.
@@ -186,7 +186,7 @@ Implemented shared JavaScript:
 
 - Inputs: loop period, sample count, maximum loops, fixed loop budget, wrong loop period, over-loop budget, and overthinking tolerance.
 - Outputs: required-budget strip, phase-budget strip, phase-budget sample, wrong-period budget sample, active-sample counts, budget histogram, average phase budget, single-pass accuracy, fixed-budget accuracy, phase-budget accuracy, wrong-period accuracy, over-loop accuracy, nonperiodic phase-budget accuracy, and nonperiodic scalar-threshold accuracy.
-- Theorem ids: `AIM-T0010`, `AIM-T0011`, `AIM-T0019`, `AIM-T0020`, `AIM-T0023`, and `AIM-T0025` as finite training-free loop-budget primitives.
+- Theorem ids: `AIM-T0010`, `AIM-T0011`, `AIM-T0019`, `AIM-T0020`, `AIM-T0023`, `AIM-T0025`, and `AIM-T0028` as finite training-free loop-budget primitives.
 - Dictionary ids: `COMMON-0052`, `COMMON-0053`, `COMMON-0054`, and `COMMON-0067`.
 - Python references: `circle_math.applications.circle_ai.training_free_loop_budget`, `circle_math.applications.circle_ai.training_free_loop_budgets`, and `circle_math.applications.circle_ai.run_training_free_loop_wrapper_benchmark`.
 - Guardrail: the widget is deterministic training-free loop-wrapper bookkeeping only. It does not prove learned recurrence, recursive reasoning, language-model quality, throughput, memory improvement, context-length improvement, or model-quality improvement.

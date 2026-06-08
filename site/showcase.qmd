@@ -32,13 +32,15 @@ Circle Calculus should be judged by whether it can express serious structures in
 Circle Calculus states EGZ and Cauchy-Davenport directly over `C_n` and `C_p`.
 
 <p data-capability-id="SHOW-001" data-paper-id="PAPER_ERDOS_01_ZERO_SUM_CIRCLES" data-paper-ref="papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_01_ZERO_SUM_CIRCLES.md">Zero-Sum Circles</a></p>
-- Standard anchor: EGZ and Cauchy-Davenport over cyclic groups.
-- Circle expression: finite circle types `C_n` and `C_p` carry the cyclic statements directly.
-- Circle-native value: zero-sum witnesses, sharpness families, and sumsets become inspectable finite address-space examples.
+- Portfolio roles: <span class="role-evidence" data-capability-id="SHOW-001" data-portfolio-role="standard_math_parity"></span><code>standard_math_parity</code>; <span class="role-evidence" data-capability-id="SHOW-001" data-portfolio-role="circle_native_value"></span><code>circle_native_value</code>.
+- Standard anchor: <span class="claim-field-evidence" data-capability-id="SHOW-001" data-claim-field="standard_math_anchor"></span>Classical zero-sum and additive-combinatorics theorems over cyclic groups, especially EGZ and Cauchy-Davenport.
+- Circle expression: <span class="claim-field-evidence" data-capability-id="SHOW-001" data-claim-field="circle_math_expression"></span>Finite circle types `C_n` and `C_p` present the cyclic groups directly, with theorem ids for zero-sum subsequences and prime-circle sumset growth.
+- Circle-native value: <span class="claim-field-evidence" data-capability-id="SHOW-001" data-claim-field="circle_native_value"></span>The Circle framing makes zero-sum witnesses, sharpness families, and sumsets inspectable as finite address-space examples linked to Lean and Python sidecars.
+- Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-001" data-claim-field="advertised_claim"></span>Circle Calculus can state established zero-sum and prime-circle sumset theorems directly in the native `C_n` vocabulary.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-001" data-executable-ref="sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py"></span><code>sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-001" data-dictionary-id="CC-0001"></span><code>CC-0001</code>; <span class="dictionary-evidence" data-capability-id="SHOW-001" data-dictionary-id="CC-0201"></span><code>CC-0201</code>.
-- Scope: imported theorem bridges, not new proofs.
-- Boundary: no open Erdos problem progress claim.
+- Scope: <span class="claim-field-evidence" data-capability-id="SHOW-001" data-claim-field="proof_scope"></span>Lean-proved Circle wrappers around mathlib's EGZ and Cauchy-Davenport theorems.
+- Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-001" data-claim-field="not_claimed"></span>No new proof of EGZ, no new proof of Cauchy-Davenport, and no progress claim on an open Erdos problem.
 
 <div class="theorem-box" data-capability-id="SHOW-001" data-theorem-id="CC-T0062"></div>
 <div class="theorem-box" data-capability-id="SHOW-001" data-theorem-id="CC-T0063"></div>
@@ -50,13 +52,15 @@ Circle Calculus states EGZ and Cauchy-Davenport directly over `C_n` and `C_p`.
 The Katona lane makes cyclic-order double counting and intersecting-family bounds visible while keeping the theorem source formal.
 
 <p data-capability-id="SHOW-002" data-paper-id="PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD" data-paper-ref="papers/erdos/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD.md">Katona and Erdos-Ko-Rado</a></p>
-- Standard anchor: Katona circle-method counting and Erdos-Ko-Rado intersecting-family bounds.
-- Circle expression: numberings, prefix density, and intersecting families are surfaced as theorem cards.
-- Circle-native value: the circle-method proof atom can be shown as an exact finite count before the formal EKR bridge.
+- Portfolio roles: <span class="role-evidence" data-capability-id="SHOW-002" data-portfolio-role="standard_math_parity"></span><code>standard_math_parity</code>; <span class="role-evidence" data-capability-id="SHOW-002" data-portfolio-role="circle_native_value"></span><code>circle_native_value</code>.
+- Standard anchor: <span class="claim-field-evidence" data-capability-id="SHOW-002" data-claim-field="standard_math_anchor"></span>The Katona circle method and the Erdos-Ko-Rado theorem for intersecting uniform set families.
+- Circle expression: <span class="claim-field-evidence" data-capability-id="SHOW-002" data-claim-field="circle_math_expression"></span>Numberings, prefix-density counts, and intersecting families are exposed as theorem-backed finite-circle-method artifacts.
+- Circle-native value: <span class="claim-field-evidence" data-capability-id="SHOW-002" data-claim-field="circle_native_value"></span>The project can show the circle-method proof atom as an executable finite count, then connect it to a formal EKR theorem card.
+- Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-002" data-claim-field="advertised_claim"></span>Circle Calculus can expose a classical circle-method counting atom and the Erdos-Ko-Rado bound as proof-linked artifacts.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-002" data-executable-ref="sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py"></span><code>sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-002" data-dictionary-id="CC-0001"></span><code>CC-0001</code>; <span class="dictionary-evidence" data-capability-id="SHOW-002" data-dictionary-id="CC-0201"></span><code>CC-0201</code>.
-- Scope: prefix-density and EKR theorem bridges.
-- Boundary: no new EKR proof or extremal-family classification.
+- Scope: <span class="claim-field-evidence" data-capability-id="SHOW-002" data-claim-field="proof_scope"></span>Lean-proved wrappers around mathlib's Katona prefix-density and Erdos-Ko-Rado declarations.
+- Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-002" data-claim-field="not_claimed"></span>No new EKR proof and no classification of all extremal families.
 
 <div class="theorem-box" data-capability-id="SHOW-002" data-theorem-id="CC-T0064"></div>
 <div class="theorem-box" data-capability-id="SHOW-002" data-theorem-id="CC-T0065"></div>
@@ -68,13 +72,15 @@ The Katona lane makes cyclic-order double counting and intersecting-family bound
 The Roth lane gives Circle Calculus a serious density-additive-combinatorics target with finite witness searches as examples.
 
 <p data-capability-id="SHOW-003" data-paper-id="PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES" data-paper-ref="papers/erdos/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES.md">Roth and Three-Term Progressions</a></p>
-- Standard anchor: Roth's theorem and Roth-number sublinearity.
-- Circle expression: dense interval examples and AP witness searches point to formal Roth handles.
-- Circle-native value: cyclic AP models can grow from a disciplined separation of density, witnesses, and proof status.
+- Portfolio roles: <span class="role-evidence" data-capability-id="SHOW-003" data-portfolio-role="standard_math_parity"></span><code>standard_math_parity</code>; <span class="role-evidence" data-capability-id="SHOW-003" data-portfolio-role="circle_native_value"></span><code>circle_native_value</code>.
+- Standard anchor: <span class="claim-field-evidence" data-capability-id="SHOW-003" data-claim-field="standard_math_anchor"></span>Roth's theorem and the asymptotic sublinearity of maximal three-term-AP-free subsets of natural intervals.
+- Circle expression: <span class="claim-field-evidence" data-capability-id="SHOW-003" data-claim-field="circle_math_expression"></span>Dense finite interval examples and AP witness searches are connected to formal Roth theorem handles.
+- Circle-native value: <span class="claim-field-evidence" data-capability-id="SHOW-003" data-claim-field="circle_native_value"></span>Circle Math supplies a bridge toward cyclic AP models while keeping finite witness search, density claims, and Lean theorem status separated.
+- Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-003" data-claim-field="advertised_claim"></span>Circle Calculus can connect finite witness searches to formal Roth-theorem handles.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-003" data-executable-ref="sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py"></span><code>sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-003" data-dictionary-id="CC-0001"></span><code>CC-0001</code>; <span class="dictionary-evidence" data-capability-id="SHOW-003" data-dictionary-id="CC-0201"></span><code>CC-0201</code>.
-- Scope: Roth theorem and Roth-number sublinearity bridges.
-- Boundary: no improved bounds and no cyclic-to-natural transfer theorem yet.
+- Scope: <span class="claim-field-evidence" data-capability-id="SHOW-003" data-claim-field="proof_scope"></span>Lean-proved wrappers around mathlib's Roth theorem and Roth-number sublinearity statement.
+- Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-003" data-claim-field="not_claimed"></span>No new Roth proof, no improved bounds, and no cyclic-to-natural transfer theorem yet.
 
 <div class="theorem-box" data-capability-id="SHOW-003" data-theorem-id="CC-T0066"></div>
 <div class="theorem-box" data-capability-id="SHOW-003" data-theorem-id="CC-T0067"></div>
@@ -86,13 +92,15 @@ The Roth lane gives Circle Calculus a serious density-additive-combinatorics tar
 The Ramsey lane shows unavoidable structure through formal Hales-Jewett and homothetic-copy handles.
 
 <p data-capability-id="SHOW-004" data-paper-id="PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES" data-paper-ref="papers/erdos/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES.md">Hales-Jewett and Ramsey Lines</a></p>
-- Standard anchor: Hales-Jewett and Van der Waerden style unavoidable monochromatic structure.
-- Circle expression: finite coloring examples and combinatorial-line searches are linked to theorem ids.
-- Circle-native value: unavoidable structure can be explored in finite widgets while the general proof remains in Lean/mathlib.
+- Portfolio roles: <span class="role-evidence" data-capability-id="SHOW-004" data-portfolio-role="standard_math_parity"></span><code>standard_math_parity</code>; <span class="role-evidence" data-capability-id="SHOW-004" data-portfolio-role="circle_native_value"></span><code>circle_native_value</code>.
+- Standard anchor: <span class="claim-field-evidence" data-capability-id="SHOW-004" data-claim-field="standard_math_anchor"></span>Hales-Jewett and Van der Waerden style unavoidable monochromatic-line or homothetic-copy theorems.
+- Circle expression: <span class="claim-field-evidence" data-capability-id="SHOW-004" data-claim-field="circle_math_expression"></span>Finite coloring examples and combinatorial-line widgets can be attached to Lean theorem ids for the general Ramsey statements.
+- Circle-native value: <span class="claim-field-evidence" data-capability-id="SHOW-004" data-claim-field="circle_native_value"></span>The Circle presentation can turn unavoidable structure into inspectable finite search artifacts without confusing examples for proofs.
+- Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-004" data-claim-field="advertised_claim"></span>Circle Calculus can present Ramsey-style unavoidable structure with theorem ids and executable finite searches.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-004" data-executable-ref="sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py"></span><code>sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-004" data-dictionary-id="CC-0001"></span><code>CC-0001</code>; <span class="dictionary-evidence" data-capability-id="SHOW-004" data-dictionary-id="CC-0201"></span><code>CC-0201</code>.
-- Scope: theorem bridges plus finite search examples.
-- Boundary: tiny searches are demonstrations, not the proof.
+- Scope: <span class="claim-field-evidence" data-capability-id="SHOW-004" data-claim-field="proof_scope"></span>Lean-proved wrappers around mathlib's Hales-Jewett and homothetic-copy theorems.
+- Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-004" data-claim-field="not_claimed"></span>Finite Python searches are examples only; they are not the Hales-Jewett proof.
 
 <div class="theorem-box" data-capability-id="SHOW-004" data-theorem-id="CC-T0068"></div>
 <div class="theorem-box" data-capability-id="SHOW-004" data-theorem-id="CC-T0069"></div>
@@ -104,13 +112,15 @@ The Ramsey lane shows unavoidable structure through formal Hales-Jewett and homo
 The graph lane starts conservatively with cycle graphs, circulant graphs, connectedness, and unit-distance vocabulary.
 
 <p data-capability-id="SHOW-005" data-paper-id="PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS" data-paper-ref="papers/erdos/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/erdos/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS.md">Unit-Distance Circulant Graphs</a></p>
-- Standard anchor: cycle graphs, circulant graphs, connectedness, and unit-distance embedding vocabulary.
-- Circle expression: the one-step finite circle graph is a circulant graph with checked connectedness.
-- Circle-native value: graph geometry starts from explicit cyclic structure before harder incidence claims.
+- Portfolio roles: <span class="role-evidence" data-capability-id="SHOW-005" data-portfolio-role="standard_math_parity"></span><code>standard_math_parity</code>; <span class="role-evidence" data-capability-id="SHOW-005" data-portfolio-role="circle_native_value"></span><code>circle_native_value</code>.
+- Standard anchor: <span class="claim-field-evidence" data-capability-id="SHOW-005" data-claim-field="standard_math_anchor"></span>Standard cycle graphs, circulant graphs, graph connectedness, and unit-distance embedding vocabulary.
+- Circle expression: <span class="claim-field-evidence" data-capability-id="SHOW-005" data-claim-field="circle_math_expression"></span>The one-step finite circle graph is presented as a circulant graph, with connectedness and a minimal unit-distance embedding constructor.
+- Circle-native value: <span class="claim-field-evidence" data-capability-id="SHOW-005" data-claim-field="circle_native_value"></span>The graph lab makes cyclic graph structure explicit before moving to harder Euclidean incidence questions.
+- Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-005" data-claim-field="advertised_claim"></span>Circle Calculus can use cyclic graph models as a proof-backed bridge toward graph-geometry language.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-005" data-executable-ref="sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py"></span><code>sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-005" data-dictionary-id="CC-0001"></span><code>CC-0001</code>; <span class="dictionary-evidence" data-capability-id="SHOW-005" data-dictionary-id="CC-0201"></span><code>CC-0201</code>.
-- Scope: cycle/circulant and connectedness bridges.
-- Boundary: no hard unit-distance or distinct-distance progress claim.
+- Scope: <span class="claim-field-evidence" data-capability-id="SHOW-005" data-claim-field="proof_scope"></span>Lean-proved cycle/circulant and connectedness bridges plus a unit-distance embedding constructor for empty graphs.
+- Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-005" data-claim-field="not_claimed"></span>No progress on hard unit-distance or distinct-distance problems.
 
 <div class="theorem-box" data-capability-id="SHOW-005" data-theorem-id="CC-T0070"></div>
 <div class="theorem-box" data-capability-id="SHOW-005" data-theorem-id="CC-T0071"></div>
@@ -126,13 +136,15 @@ The S1 spine is the internal proof engine: period, gcd orbit count, scaling imag
 
 <p data-capability-id="SHOW-006" data-paper-id="PAPER_01_FINITE_CIRCLES" data-paper-ref="papers/PAPER_01_FINITE_CIRCLES.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/PAPER_01_FINITE_CIRCLES.md">Finite Circles</a></p>
 <p data-capability-id="SHOW-006" data-paper-id="PAPER_S1_04_FACTORS_SCALING_PRIME_COILS" data-paper-ref="papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S1/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS.md">Factors, Scaling, Prime Coils</a></p>
-- Standard anchor: modular arithmetic, cyclic group orbits, gcd periods, kernels, images, and fibers.
-- Circle expression: these are expressed as finite-circle period, orbit, scaling, image, kernel, and fiber theorems.
-- Circle-native value: modular facts become navigable as movement, closure, fibers, and representatives.
+- Portfolio roles: <span class="role-evidence" data-capability-id="SHOW-006" data-portfolio-role="standard_math_parity"></span><code>standard_math_parity</code>; <span class="role-evidence" data-capability-id="SHOW-006" data-portfolio-role="circle_native_value"></span><code>circle_native_value</code>.
+- Standard anchor: <span class="claim-field-evidence" data-capability-id="SHOW-006" data-claim-field="standard_math_anchor"></span>Standard modular arithmetic, cyclic group orbits, gcd periods, kernels, images, and fibers of multiplication maps.
+- Circle expression: <span class="claim-field-evidence" data-capability-id="SHOW-006" data-claim-field="circle_math_expression"></span>The S1 theorem spine expresses these facts as finite-circle period, orbit, scaling, image, kernel, and fiber theorems.
+- Circle-native value: <span class="claim-field-evidence" data-capability-id="SHOW-006" data-claim-field="circle_native_value"></span>Circle Math organizes modular facts around movement, closure, fibers, and representatives, making them easier to browse and test.
+- Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-006" data-claim-field="advertised_claim"></span>Circle Calculus can express detailed modular-arithmetic structure as period, orbit, kernel, and fiber theorems.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-006" data-executable-ref="sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py"></span><code>sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-006" data-dictionary-id="S1-0001"></span><code>S1-0001</code>; <span class="dictionary-evidence" data-capability-id="SHOW-006" data-dictionary-id="CC-0105"></span><code>CC-0105</code>; <span class="dictionary-evidence" data-capability-id="SHOW-006" data-dictionary-id="CC-0205"></span><code>CC-0205</code>; <span class="dictionary-evidence" data-capability-id="SHOW-006" data-dictionary-id="CC-0207"></span><code>CC-0207</code>; <span class="dictionary-evidence" data-capability-id="SHOW-006" data-dictionary-id="COMMON-0041"></span><code>COMMON-0041</code>.
-- Scope: Lean-proved cyclic arithmetic and representative-set facts.
-- Boundary: this is a proof-carrying presentation of standard modular structure, not a replacement for standard modular arithmetic.
+- Scope: <span class="claim-field-evidence" data-capability-id="SHOW-006" data-claim-field="proof_scope"></span>Lean-proved S1 scaling and orbit spine, including full-coil iff coprime and image-times-fiber factorizations.
+- Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-006" data-claim-field="not_claimed"></span>No claim that this replaces standard modular arithmetic; it is a proof-carrying cyclic presentation.
 
 <div class="theorem-box" data-capability-id="SHOW-006" data-theorem-id="CC-T0005"></div>
 <div class="theorem-box" data-capability-id="SHOW-006" data-theorem-id="CC-T0006"></div>
@@ -150,13 +162,15 @@ The S3 lane gives bounded phase-coordinate, quaternion, pure-vector, and spin-si
 <p data-capability-id="SHOW-007" data-paper-id="PAPER_S3_02_QUATERNION_COILS" data-paper-ref="papers/S3/PAPER_S3_02_QUATERNION_COILS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S3/PAPER_S3_02_QUATERNION_COILS.md">Quaternion Coils</a></p>
 <p data-capability-id="SHOW-007" data-paper-id="PAPER_S3_03_HOPF_COILS" data-paper-ref="papers/S3/PAPER_S3_03_HOPF_COILS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S3/PAPER_S3_03_HOPF_COILS.md">Hopf Coils</a></p>
 <p data-capability-id="SHOW-007" data-paper-id="PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP" data-paper-ref="papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md">Spin Double Cover Roadmap</a></p>
-- Standard anchor: quaternion unit algebra, Hopf-style phase coordinates, conjugation, pure-imaginary vector representatives, and hidden phase.
-- Circle expression: bounded quaternion, spin-sign, pure-vector, and Hopf facts are exposed through theorem spines with topology warnings.
-- Circle-native value: visible base coordinates and hidden phase are separated in a way that supports teaching and proof audits.
+- Portfolio roles: <span class="role-evidence" data-capability-id="SHOW-007" data-portfolio-role="standard_math_parity"></span><code>standard_math_parity</code>; <span class="role-evidence" data-capability-id="SHOW-007" data-portfolio-role="circle_native_value"></span><code>circle_native_value</code>.
+- Standard anchor: <span class="claim-field-evidence" data-capability-id="SHOW-007" data-claim-field="standard_math_anchor"></span>Quaternion unit algebra, Hopf-style phase coordinates, conjugation, and hidden phase symmetries.
+- Circle expression: <span class="claim-field-evidence" data-capability-id="SHOW-007" data-claim-field="circle_math_expression"></span>Bounded quaternion, spin-sign, pure-vector, and Hopf coordinate facts are exposed through finite theorem spines with explicit topology warnings.
+- Circle-native value: <span class="claim-field-evidence" data-capability-id="SHOW-007" data-claim-field="circle_native_value"></span>The Circle framing separates visible base coordinates from hidden phase in a way that is useful for teaching, widgets, and proof audits.
+- Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-007" data-claim-field="advertised_claim"></span>Circle Calculus can express bounded quaternion, spin-sign, pure-vector, and Hopf phase facts with explicit warnings about topology boundaries.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-007" data-executable-ref="sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py"></span><code>sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-007" data-executable-ref="sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py"></span><code>sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-007" data-executable-ref="sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py"></span><code>sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-007" data-dictionary-id="S3Q-0001"></span><code>S3Q-0001</code>; <span class="dictionary-evidence" data-capability-id="SHOW-007" data-dictionary-id="S3H-0001"></span><code>S3H-0001</code>; <span class="dictionary-evidence" data-capability-id="SHOW-007" data-dictionary-id="S3H-0002"></span><code>S3H-0002</code>; <span class="dictionary-evidence" data-capability-id="SHOW-007" data-dictionary-id="S3S-0001"></span><code>S3S-0001</code>; <span class="dictionary-evidence" data-capability-id="SHOW-007" data-dictionary-id="S3S-0002"></span><code>S3S-0002</code>; <span class="dictionary-evidence" data-capability-id="SHOW-007" data-dictionary-id="S3S-0003"></span><code>S3S-0003</code>.
-- Scope: Lean-proved unit-quaternion, pure-vector conjugation, sign-cancellation, and bounded Hopf phase facts.
-- Boundary: no full smooth Hopf fibration or SO(3) robotics formalization yet.
+- Scope: <span class="claim-field-evidence" data-capability-id="SHOW-007" data-claim-field="proof_scope"></span>Lean-proved quaternion unit laws, pure-vector conjugation boundary, sign-cancellation facts, and bounded Hopf phase-action facts.
+- Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-007" data-claim-field="not_claimed"></span>No full smooth Hopf fibration formalization and no complete SO(3) robotics formalization.
 
 <div class="theorem-box" data-capability-id="SHOW-007" data-theorem-id="S3Q-T0005"></div>
 <div class="theorem-box" data-capability-id="SHOW-007" data-theorem-id="S3Q-T0008"></div>
@@ -175,13 +189,15 @@ The S3 lane gives bounded phase-coordinate, quaternion, pure-vector, and spin-si
 The physics lane builds proof-carrying finite gauge paths with checked path composition and holonomy interfaces.
 
 <p data-capability-id="SHOW-008" data-paper-id="PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE" data-paper-ref="papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md">Proof-Carrying Lattice Gauge</a></p>
-- Standard anchor: finite gauge-link paths, holonomy products, Wilson-loop invariants, and checked concatenation.
-- Circle expression: source-target and holonomy laws are finite Lean records.
-- Circle-native value: path widgets and experiments can reject invalid compositions before making physics claims.
+- Portfolio roles: <span class="role-evidence" data-capability-id="SHOW-008" data-portfolio-role="standard_math_parity"></span><code>standard_math_parity</code>; <span class="role-evidence" data-capability-id="SHOW-008" data-portfolio-role="circle_native_value"></span><code>circle_native_value</code>; <span class="role-evidence" data-capability-id="SHOW-008" data-portfolio-role="application_guardrail"></span><code>application_guardrail</code>.
+- Standard anchor: <span class="claim-field-evidence" data-capability-id="SHOW-008" data-claim-field="standard_math_anchor"></span>Discrete gauge-link paths, holonomy products, Wilson-loop style invariants, and checked path concatenation.
+- Circle expression: <span class="claim-field-evidence" data-capability-id="SHOW-008" data-claim-field="circle_math_expression"></span>Finite gauge links and paths are represented with Lean-checked source-target and holonomy laws.
+- Circle-native value: <span class="claim-field-evidence" data-capability-id="SHOW-008" data-claim-field="circle_native_value"></span>Circle Math contributes proof-carrying finite records that can guard simulations and widgets against invalid path composition.
+- Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-008" data-claim-field="advertised_claim"></span>Circle Calculus can build a finite proof-carrying gauge-path model with endpoint and holonomy laws.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-008" data-executable-ref="sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"></span><code>sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-008" data-dictionary-id="COMMON-0060"></span><code>COMMON-0060</code>; <span class="dictionary-evidence" data-capability-id="SHOW-008" data-dictionary-id="COMMON-0061"></span><code>COMMON-0061</code>; <span class="dictionary-evidence" data-capability-id="SHOW-008" data-dictionary-id="COMMON-0062"></span><code>COMMON-0062</code>; <span class="dictionary-evidence" data-capability-id="SHOW-008" data-dictionary-id="COMMON-0063"></span><code>COMMON-0063</code>.
-- Scope: Lean-proved finite path, gauge, Wilson-loop, plaquette, closed-loop record, and two-path cycle gauge-invariance facts.
-- Boundary: no continuum physics or lattice-QCD correctness claim.
+- Scope: <span class="claim-field-evidence" data-capability-id="SHOW-008" data-claim-field="proof_scope"></span>Lean-proved finite link-path, checked-path, gauge-transform, Wilson-loop, plaquette, closed-loop record, and two-path cycle gauge-invariance facts.
+- Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-008" data-claim-field="not_claimed"></span>No continuum gauge theory, no physics discovery, and no lattice-QCD correctness claim.
 
 <div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0001"></div>
 <div class="theorem-box" data-capability-id="SHOW-008" data-theorem-id="PHYS-T0012"></div>
@@ -200,13 +216,15 @@ The generative lane pairs seed-rule construction with exact-regeneration checks 
 
 <p data-capability-id="SHOW-009" data-paper-id="PAPER_GEN_01_SEED_RULE_PROVENANCE" data-paper-ref="papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md">Seed-Rule Provenance</a></p>
 <p data-capability-id="SHOW-009" data-paper-id="PAPER_P2_05_PROOF_CARRYING_GLYPHS" data-paper-ref="papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/phase2/PAPER_P2_05_PROOF_CARRYING_GLYPHS.md">Proof-Carrying Glyphs</a></p>
-- Standard anchor: formal provenance, exact regeneration checks, and proof-carrying artifact records.
-- Circle expression: seed rules, generator comparisons, proof glyphs, and exactness gates are finite Circle records.
-- Circle-native value: generated artifacts can carry exact source trails and negative-case checks.
+- Portfolio roles: <span class="role-evidence" data-capability-id="SHOW-009" data-portfolio-role="circle_native_value"></span><code>circle_native_value</code>; <span class="role-evidence" data-capability-id="SHOW-009" data-portfolio-role="application_guardrail"></span><code>application_guardrail</code>.
+- Standard anchor: <span class="claim-field-evidence" data-capability-id="SHOW-009" data-claim-field="standard_math_anchor"></span>Formal provenance, exact regeneration checks, orbit decompositions, and proof-carrying artifact records.
+- Circle expression: <span class="claim-field-evidence" data-capability-id="SHOW-009" data-claim-field="circle_math_expression"></span>Seed rules, generator comparisons, proof glyphs, and exactness gates are expressed as finite Circle records and Lean facts.
+- Circle-native value: <span class="claim-field-evidence" data-capability-id="SHOW-009" data-claim-field="circle_native_value"></span>This is a Circle-native value proposition: generated artifacts can carry exact source trails and negative-case checks instead of loose visual claims.
+- Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-009" data-claim-field="advertised_claim"></span>Circle Calculus can pair generated structures with checked provenance and exact-comparison gates.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-009" data-executable-ref="sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py"></span><code>sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-009" data-executable-ref="sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py"></span><code>sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-009" data-dictionary-id="COMMON-0033"></span><code>COMMON-0033</code>; <span class="dictionary-evidence" data-capability-id="SHOW-009" data-dictionary-id="COMMON-0064"></span><code>COMMON-0064</code>; <span class="dictionary-evidence" data-capability-id="SHOW-009" data-dictionary-id="COMMON-0065"></span><code>COMMON-0065</code>; <span class="dictionary-evidence" data-capability-id="SHOW-009" data-dictionary-id="COMMON-0066"></span><code>COMMON-0066</code>.
-- Scope: Lean-proved provenance, generated-list length, exact-comparison gates, empty declared-search boundary facts, and best-candidate soundness facts.
-- Boundary: no universal compression or automatic-interest claim.
+- Scope: <span class="claim-field-evidence" data-capability-id="SHOW-009" data-claim-field="proof_scope"></span>Lean-proved seed-rule, orbit-decomposition, proof-glyph, generated-list length, exact-regeneration, negative-case, empty declared-search boundary, and best-candidate soundness gates.
+- Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-009" data-claim-field="not_claimed"></span>No universal compression claim and no guarantee that generated artifacts are mathematically interesting.
 
 <div class="theorem-box" data-capability-id="SHOW-009" data-theorem-id="GEN-T0001"></div>
 <div class="theorem-box" data-capability-id="SHOW-009" data-theorem-id="GEN-T0008"></div>
@@ -228,13 +246,15 @@ The AI lane proves finite schedule/index facts that can support experiments with
 
 <p data-capability-id="SHOW-010" data-paper-id="PAPER_AI_02_COIL_ATTENTION_AND_MEMORY" data-paper-ref="papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Coil Attention And Memory</a></p>
 <p data-capability-id="SHOW-010" data-paper-id="PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE" data-paper-ref="papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md">CoilRA And MultiCoil RoPE</a></p>
-- Standard anchor: cyclic buffers, recurrence schedules, loop-exit certificates, and modular adapter indexing.
-- Circle expression: memory slots, loop budgets, exit certificates, and adapter blocks become finite cyclic schedule theorems.
-- Circle-native value: experimental cyclic AI components can be audited before any model-quality claim.
+- Portfolio roles: <span class="role-evidence" data-capability-id="SHOW-010" data-portfolio-role="standard_math_parity"></span><code>standard_math_parity</code>; <span class="role-evidence" data-capability-id="SHOW-010" data-portfolio-role="circle_native_value"></span><code>circle_native_value</code>; <span class="role-evidence" data-capability-id="SHOW-010" data-portfolio-role="application_guardrail"></span><code>application_guardrail</code>.
+- Standard anchor: <span class="claim-field-evidence" data-capability-id="SHOW-010" data-claim-field="standard_math_anchor"></span>Finite cyclic buffers, schedule normalization, recurrence budgets, and modular adapter indexing.
+- Circle expression: <span class="claim-field-evidence" data-capability-id="SHOW-010" data-claim-field="circle_math_expression"></span>AI-facing memory slots, loop budgets, exit certificates, and adapter blocks are encoded as finite cyclic address/schedule theorems.
+- Circle-native value: <span class="claim-field-evidence" data-capability-id="SHOW-010" data-claim-field="circle_native_value"></span>Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made.
+- Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-010" data-claim-field="advertised_claim"></span>Circle Calculus can prove finite indexing and schedule-safety facts that AI experiments can reuse.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-010" data-executable-ref="sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py"></span><code>sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-010" data-executable-ref="sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"></span><code>sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-010" data-dictionary-id="COMMON-0028"></span><code>COMMON-0028</code>; <span class="dictionary-evidence" data-capability-id="SHOW-010" data-dictionary-id="COMMON-0047"></span><code>COMMON-0047</code>; <span class="dictionary-evidence" data-capability-id="SHOW-010" data-dictionary-id="COMMON-0052"></span><code>COMMON-0052</code>; <span class="dictionary-evidence" data-capability-id="SHOW-010" data-dictionary-id="COMMON-0067"></span><code>COMMON-0067</code>; <span class="dictionary-evidence" data-capability-id="SHOW-010" data-dictionary-id="COMMON-0071"></span><code>COMMON-0071</code>.
-- Scope: Lean-proved memory-slot, loop-budget, recurrence-budget positivity, unavailable-budget clamp, loop-exit, and adapter-block facts.
-- Boundary: no quality, speed, context-length, or reasoning improvement without benchmarks.
+- Scope: <span class="claim-field-evidence" data-capability-id="SHOW-010" data-claim-field="proof_scope"></span>Lean-proved finite memory-slot, loop-budget, recurrence-budget positivity, unavailable-budget clamp, loop-exit, and adapter-block normalization facts.
+- Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-010" data-claim-field="not_claimed"></span>No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence.
 
 <div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0001"></div>
 <div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0005"></div>
@@ -254,13 +274,15 @@ The compute lane proves address-safety and schedule-normalization facts before a
 <p data-capability-id="SHOW-011" data-paper-id="PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION" data-paper-ref="papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION.md">Circular Computation</a></p>
 <p data-capability-id="SHOW-011" data-paper-id="PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT" data-paper-ref="papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT.md">Coil Layout Stencil NTT</a></p>
 <p data-capability-id="SHOW-011" data-paper-id="PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS" data-paper-ref="papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md">Paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS.md">Coil Systems Applications</a></p>
-- Standard anchor: circular buffers, periodic stencils, stride-address formulas, and round-robin schedules.
-- Circle expression: compute layouts are finite address-normalization and schedule-preservation theorems.
-- Circle-native value: backend experiments can be gated on proved cyclic structure before performance testing.
+- Portfolio roles: <span class="role-evidence" data-capability-id="SHOW-011" data-portfolio-role="standard_math_parity"></span><code>standard_math_parity</code>; <span class="role-evidence" data-capability-id="SHOW-011" data-portfolio-role="circle_native_value"></span><code>circle_native_value</code>; <span class="role-evidence" data-capability-id="SHOW-011" data-portfolio-role="application_guardrail"></span><code>application_guardrail</code>.
+- Standard anchor: <span class="claim-field-evidence" data-capability-id="SHOW-011" data-claim-field="standard_math_anchor"></span>Circular buffers, periodic stencils, stride-address formulas, and round-robin scheduling laws.
+- Circle expression: <span class="claim-field-evidence" data-capability-id="SHOW-011" data-claim-field="circle_math_expression"></span>Compute layouts are expressed as finite address normalization, stride-address, and schedule-preservation theorems.
+- Circle-native value: <span class="claim-field-evidence" data-capability-id="SHOW-011" data-claim-field="circle_native_value"></span>The Circle form can certify when cyclic structure is real enough to justify backend experiments, while requiring benchmarks for performance claims.
+- Advertised claim: <span class="claim-field-evidence" data-capability-id="SHOW-011" data-claim-field="advertised_claim"></span>Circle Calculus can prove finite address-safety and schedule-normalization facts for cyclic computation.
 - Executable evidence: <span class="executable-evidence" data-capability-id="SHOW-011" data-executable-ref="sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py"></span><code>sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-011" data-executable-ref="sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py"></span><code>sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py</code>; <span class="executable-evidence" data-capability-id="SHOW-011" data-executable-ref="sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py"></span><code>sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py</code>.
 - Vocabulary evidence: <span class="dictionary-evidence" data-capability-id="SHOW-011" data-dictionary-id="COMMON-0018"></span><code>COMMON-0018</code>; <span class="dictionary-evidence" data-capability-id="SHOW-011" data-dictionary-id="COMMON-0022"></span><code>COMMON-0022</code>; <span class="dictionary-evidence" data-capability-id="SHOW-011" data-dictionary-id="COMMON-0040"></span><code>COMMON-0040</code>; <span class="dictionary-evidence" data-capability-id="SHOW-011" data-dictionary-id="COMMON-0045"></span><code>COMMON-0045</code>.
-- Scope: Lean-proved cyclic-address, stride-address, and round-robin laws.
-- Boundary: no speedup claim without direct baseline measurements.
+- Scope: <span class="claim-field-evidence" data-capability-id="SHOW-011" data-claim-field="proof_scope"></span>Lean-proved cyclic-address, stride-address, and round-robin schedule laws with Python layout fixtures.
+- Boundary: <span class="claim-field-evidence" data-capability-id="SHOW-011" data-claim-field="not_claimed"></span>No performance claim without direct dense, FFT/NTT, and backend baselines.
 
 <div class="theorem-box" data-capability-id="SHOW-011" data-theorem-id="COMPC-T0005"></div>
 <div class="theorem-box" data-capability-id="SHOW-011" data-theorem-id="COMPL-T0005"></div>

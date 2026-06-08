@@ -33,8 +33,22 @@ REQUIRED_TEXT_FIELDS = [
     "proof_scope",
     "not_claimed",
 ]
+PAGE_CLAIM_FIELDS = [
+    "standard_math_anchor",
+    "circle_math_expression",
+    "circle_native_value",
+    "advertised_claim",
+    "proof_scope",
+    "not_claimed",
+]
 CAPABILITY_ATTR_RE = re.compile(
     r'<div class="capability-anchor"[^>]*data-capability-id="([^"]+)"'
+)
+ROLE_ATTR_RE = re.compile(
+    r'data-capability-id="([^"]+)"[^>]*data-portfolio-role="([^"]+)"'
+)
+CLAIM_FIELD_RE = re.compile(
+    r'<span class="claim-field-evidence"([^>]*)></span>(.*)$'
 )
 EXECUTABLE_ATTR_RE = re.compile(
     r'data-capability-id="([^"]+)"[^>]*data-executable-ref="([^"]+)"'
@@ -105,6 +119,37 @@ def page_executable_pairs() -> list[tuple[str, str]]:
     if not SHOWCASE_PAGE.exists():
         return []
     return EXECUTABLE_ATTR_RE.findall(SHOWCASE_PAGE.read_text())
+
+
+def page_role_pairs() -> list[tuple[str, str]]:
+    if not SHOWCASE_PAGE.exists():
+        return []
+    return ROLE_ATTR_RE.findall(SHOWCASE_PAGE.read_text())
+
+
+def page_claim_field_entries() -> tuple[list[tuple[str, str]], list[str], list[tuple[str, str, str]]]:
+    if not SHOWCASE_PAGE.exists():
+        return [], [], []
+    pairs: list[tuple[str, str]] = []
+    missing_attrs: list[str] = []
+    values: list[tuple[str, str, str]] = []
+    for line in SHOWCASE_PAGE.read_text().splitlines():
+        if "claim-field-evidence" not in line:
+            continue
+        match = CLAIM_FIELD_RE.search(line)
+        if match is None:
+            failures_token = line.strip()[:120]
+            missing_attrs.append(failures_token)
+            continue
+        attrs, value = match.groups()
+        capability_id = html_attr(attrs, "data-capability-id")
+        claim_field = html_attr(attrs, "data-claim-field")
+        if capability_id and claim_field:
+            pairs.append((capability_id, claim_field))
+            values.append((capability_id, claim_field, value.strip()))
+        else:
+            missing_attrs.append(line.strip()[:120])
+    return pairs, missing_attrs, values
 
 
 def page_dictionary_pairs() -> list[tuple[str, str]]:
@@ -179,6 +224,63 @@ def main() -> int:
             failures.append(f"capability ids missing from page: {missing_on_page}")
         if unknown_on_page:
             failures.append(f"unknown page capability ids: {unknown_on_page}")
+        page_roles = page_role_pairs()
+        role_duplicates = sorted(
+            {pair for pair in page_roles if page_roles.count(pair) > 1}
+        )
+        if role_duplicates:
+            failures.append(f"duplicate page portfolio roles: {role_duplicates}")
+        expected_roles = {
+            (item.get("id"), role)
+            for item in capabilities
+            if item.get("id") and isinstance(item.get("portfolio_roles", []), list)
+            for role in item.get("portfolio_roles", [])
+        }
+        page_role_set = set(page_roles)
+        missing_roles = sorted(expected_roles - page_role_set)
+        unknown_roles_on_page = sorted(page_role_set - expected_roles)
+        if missing_roles:
+            failures.append(f"portfolio roles missing from page: {missing_roles}")
+        if unknown_roles_on_page:
+            failures.append(
+                f"unknown page portfolio roles: {unknown_roles_on_page}"
+            )
+        page_claims, claim_refs_without_attrs, page_claim_values = page_claim_field_entries()
+        if claim_refs_without_attrs:
+            failures.append(
+                "page claim refs missing data-capability-id or data-claim-field: "
+                f"{sorted(claim_refs_without_attrs)}"
+            )
+        claim_duplicates = sorted(
+            {pair for pair in page_claims if page_claims.count(pair) > 1}
+        )
+        if claim_duplicates:
+            failures.append(f"duplicate page claim refs: {claim_duplicates}")
+        expected_claims = {
+            (item.get("id"), field)
+            for item in capabilities
+            if item.get("id")
+            for field in PAGE_CLAIM_FIELDS
+        }
+        page_claim_set = set(page_claims)
+        missing_claims = sorted(expected_claims - page_claim_set)
+        unknown_claims = sorted(page_claim_set - expected_claims)
+        if missing_claims:
+            failures.append(f"claim fields missing from page: {missing_claims}")
+        if unknown_claims:
+            failures.append(f"unknown page claim fields: {unknown_claims}")
+        manifest_by_id = {
+            item.get("id"): item
+            for item in capabilities
+            if item.get("id")
+        }
+        for capability_id, field, page_value in page_claim_values:
+            expected_value = str(manifest_by_id.get(capability_id, {}).get(field, ""))
+            if page_value != expected_value:
+                failures.append(
+                    f"{capability_id}: page {field} text {page_value!r} "
+                    f"does not match manifest {expected_value!r}"
+                )
         page_executables = page_executable_pairs()
         executable_duplicates = sorted(
             {pair for pair in page_executables if page_executables.count(pair) > 1}

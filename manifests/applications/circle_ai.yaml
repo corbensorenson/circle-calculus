@@ -157,6 +157,26 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.trainingFreeLoopBudget_eq_max_of_unavailable
     dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0067"]
+  - id: AIM-T0026
+    status: lean_proved
+    lean_name: Circle.Applications.loopRequiredSteps_add_mul_loopPeriod
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
+  - id: AIM-T0027
+    status: lean_proved
+    lean_name: Circle.Applications.tokenRecurrenceBudget_add_mul_loopPeriod
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0028
+    status: lean_proved
+    lean_name: Circle.Applications.trainingFreeLoopBudget_add_mul_loopPeriod
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0067"]
+  - id: AIM-T0029
+    status: lean_proved
+    lean_name: Circle.Applications.loopOverthinkingBoundary_add_mul_loopPeriod
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054"]
+  - id: AIM-T0030
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitAvailable_add_mul_loopPeriod
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053"]
   - id: AIRA-T0001
     status: lean_proved
     lean_name: Circle.Applications.adapterBlock_lt_blockSize

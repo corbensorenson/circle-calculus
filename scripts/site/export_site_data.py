@@ -270,7 +270,20 @@ def export_widget_index() -> dict:
         {
             "id": "loop_recurrence_budget",
             "path": "site/widgets/ai/loop_recurrence_budget.js",
-            "theorem_ids": ["AIM-T0018", "AIM-T0019", "AIM-T0020", "AIM-T0021", "AIM-T0022", "AIM-T0023", "AIM-T0025"],
+            "theorem_ids": [
+                "AIM-T0018",
+                "AIM-T0019",
+                "AIM-T0020",
+                "AIM-T0021",
+                "AIM-T0022",
+                "AIM-T0023",
+                "AIM-T0025",
+                "AIM-T0026",
+                "AIM-T0027",
+                "AIM-T0028",
+                "AIM-T0029",
+                "AIM-T0030",
+            ],
             "dictionary_ids": [
                 "COMMON-0052",
                 "COMMON-0053",
@@ -291,6 +304,8 @@ def export_widget_index() -> dict:
                 "AIM-T0016",
                 "AIM-T0017",
                 "AIM-T0024",
+                "AIM-T0029",
+                "AIM-T0030",
             ],
             "dictionary_ids": [
                 "COMMON-0052",
@@ -304,7 +319,7 @@ def export_widget_index() -> dict:
         {
             "id": "training_free_loop_wrapper",
             "path": "site/widgets/ai/training_free_loop_wrapper.js",
-            "theorem_ids": ["AIM-T0010", "AIM-T0011", "AIM-T0019", "AIM-T0020", "AIM-T0023", "AIM-T0025"],
+            "theorem_ids": ["AIM-T0010", "AIM-T0011", "AIM-T0019", "AIM-T0020", "AIM-T0023", "AIM-T0025", "AIM-T0028"],
             "dictionary_ids": [
                 "COMMON-0052",
                 "COMMON-0053",
@@ -316,7 +331,7 @@ def export_widget_index() -> dict:
         {
             "id": "token_level_recurrence",
             "path": "site/widgets/ai/token_level_recurrence.js",
-            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0022"],
+            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0022", "AIM-T0026", "AIM-T0027"],
             "dictionary_ids": [
                 "COMMON-0052",
                 "COMMON-0053",

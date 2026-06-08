@@ -76,6 +76,11 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `AIM-T0023`: `Circle.Applications.trainingFreeLoopBudget_pos_of_available`
 - `AIM-T0024`: `Circle.Applications.loopExitCertificate_exit_pos`
 - `AIM-T0025`: `Circle.Applications.trainingFreeLoopBudget_eq_max_of_unavailable`
+- `AIM-T0026`: `Circle.Applications.loopRequiredSteps_add_mul_loopPeriod`
+- `AIM-T0027`: `Circle.Applications.tokenRecurrenceBudget_add_mul_loopPeriod`
+- `AIM-T0028`: `Circle.Applications.trainingFreeLoopBudget_add_mul_loopPeriod`
+- `AIM-T0029`: `Circle.Applications.loopOverthinkingBoundary_add_mul_loopPeriod`
+- `AIM-T0030`: `Circle.Applications.loopExitAvailable_add_mul_loopPeriod`
 
 ## Proved Core
 
@@ -88,7 +93,7 @@ memorySlot bankSize (token + bankSize) =
 
 `AIM-T0004` proves closure after any whole number of full memory-bank passes. `AIM-T0005` proves that normalizing a memory slot twice is the same as normalizing it once. `AIM-T0003` proves the zero anchor. The Python sidecar checks the same finite examples.
 
-`AIM-T0006` through `AIM-T0025` prove finite loop-schedule and loop-exit certificate facts: required loop depth is positive, bounded by a positive loop period, periodic under one full loop-period shift, token recurrence budgets are positive, have the same closure behavior, and are bounded by the loop period, the training-free wrapper budget is capped by `maxLoops` and by the required depth, training-free wrapper budgets are periodic, an available exit budget makes the wrapper select the exact required positive depth, an unavailable exit budget clamps the wrapper to `maxLoops`, overthinking boundaries are at least the required depth and periodic, exit availability is guaranteed when the loop budget covers the full period, exit availability is periodic, and a loop-exit certificate records a positive exact required step, budget bound, and guardrail bound.
+`AIM-T0006` through `AIM-T0030` prove finite loop-schedule and loop-exit certificate facts: required loop depth is positive, bounded by a positive loop period, periodic under one full loop-period shift, and invariant under any whole number of loop-period passes; token recurrence budgets are positive, have the same one-period and multi-pass closure behavior, and are bounded by the loop period; the training-free wrapper budget is capped by `maxLoops` and by the required depth, is periodic, is invariant under whole loop-period passes, selects the exact positive required depth when an exit is available, and clamps to `maxLoops` when no exit is available; overthinking boundaries are at least the required depth and share the same one-period and multi-pass closure; exit availability is guaranteed when the loop budget covers the full period and is invariant under one or many loop-period passes; and a loop-exit certificate records a positive exact required step, budget bound, and guardrail bound.
 
 These theorems certify cyclic slot addresses and finite loop-budget arithmetic only. They do not prove retrieval quality, alias control, attention replacement, recursive reasoning, runtime, memory use, parameter efficiency, or long-context scaling.
 

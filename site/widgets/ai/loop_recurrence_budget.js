@@ -2,7 +2,20 @@ import { mod, positiveInt } from "../shared/circle_math_core.js";
 import { addLabeledNumber, addOutput, addWidgetHeader, clear } from "../shared/svg_helpers.js";
 import { loadJson, mountWidgets, statusClass, statusLabel } from "../shared/widget_base.js";
 
-const THEOREM_IDS = ["AIM-T0018", "AIM-T0019", "AIM-T0020", "AIM-T0021", "AIM-T0022", "AIM-T0023", "AIM-T0025"];
+const THEOREM_IDS = [
+  "AIM-T0018",
+  "AIM-T0019",
+  "AIM-T0020",
+  "AIM-T0021",
+  "AIM-T0022",
+  "AIM-T0023",
+  "AIM-T0025",
+  "AIM-T0026",
+  "AIM-T0027",
+  "AIM-T0028",
+  "AIM-T0029",
+  "AIM-T0030",
+];
 const DICTIONARY_IDS = ["COMMON-0052", "COMMON-0053", "COMMON-0054", "COMMON-0059", "COMMON-0067"];
 
 let timelineIdCounter = 0;
@@ -152,14 +165,20 @@ function appendDictionaryRow(section) {
 
 function appendRecord(output, values, theoremById) {
   const shiftedSample = values.sample + values.loopPeriod;
+  const multiPassSample = values.sample + 3 * values.loopPeriod;
   const required = loopRequiredSteps(values.loopPeriod, values.sample);
   const shiftedRequired = loopRequiredSteps(values.loopPeriod, shiftedSample);
+  const multiPassRequired = loopRequiredSteps(values.loopPeriod, multiPassSample);
   const tokenBudget = tokenRecurrenceBudget(values.loopPeriod, values.sample);
+  const multiPassTokenBudget = tokenRecurrenceBudget(values.loopPeriod, multiPassSample);
   const trainingBudget = trainingFreeLoopBudget(values.loopPeriod, values.sample, values.maxLoops);
   const shiftedTrainingBudget = trainingFreeLoopBudget(values.loopPeriod, shiftedSample, values.maxLoops);
+  const multiPassTrainingBudget = trainingFreeLoopBudget(values.loopPeriod, multiPassSample, values.maxLoops);
   const exitAvailable = loopExitAvailable(values.loopPeriod, values.sample, values.maxLoops);
+  const multiPassExitAvailable = loopExitAvailable(values.loopPeriod, multiPassSample, values.maxLoops);
   const boundary = loopOverthinkingBoundary(values.loopPeriod, values.sample, values.tolerance);
   const shiftedBoundary = loopOverthinkingBoundary(values.loopPeriod, shiftedSample, values.tolerance);
+  const multiPassBoundary = loopOverthinkingBoundary(values.loopPeriod, multiPassSample, values.tolerance);
 
   const record = document.createElement("section");
   record.className = "seed-rule-record";
@@ -183,6 +202,13 @@ function appendRecord(output, values, theoremById) {
     `shifted training-free budget: ${shiftedTrainingBudget}`,
     `shifted boundary: ${shiftedBoundary}`,
     `periodic checks: required=${required === shiftedRequired}, training=${trainingBudget === shiftedTrainingBudget}, boundary=${boundary === shiftedBoundary}`,
+    `three-pass shift sample + 3*loopPeriod: ${multiPassSample}`,
+    `three-pass required loops: ${multiPassRequired}`,
+    `three-pass token recurrence budget: ${multiPassTokenBudget}`,
+    `three-pass training-free budget: ${multiPassTrainingBudget}`,
+    `three-pass exit available: ${multiPassExitAvailable ? "yes" : "no"}`,
+    `three-pass boundary: ${multiPassBoundary}`,
+    `multi-pass checks: required=${required === multiPassRequired}, token=${tokenBudget === multiPassTokenBudget}, training=${trainingBudget === multiPassTrainingBudget}, exit=${exitAvailable === multiPassExitAvailable}, boundary=${boundary === multiPassBoundary}`,
     "boundary: widget output is executable schedule intuition, not a proof or model-quality claim.",
   ].join("\n");
   record.appendChild(data);

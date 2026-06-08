@@ -288,6 +288,32 @@ def test_loop_required_steps_are_positive_bounded_and_periodic() -> None:
             assert 0 < required <= loop_period
             assert token_recurrence_budget(loop_period, sample) > 0
             assert loop_required_steps(loop_period, sample + loop_period) == required
+            for passes in range(0, 8):
+                shifted = sample + passes * loop_period
+                shifted_certificate = loop_exit_certificate(
+                    loop_period,
+                    shifted,
+                    loop_period,
+                    overthink_tolerance=2,
+                )
+                base_certificate = loop_exit_certificate(
+                    loop_period,
+                    sample,
+                    loop_period,
+                    overthink_tolerance=2,
+                )
+                assert loop_required_steps(loop_period, shifted) == required
+                assert token_recurrence_budget(loop_period, shifted) == token_recurrence_budget(
+                    loop_period,
+                    sample,
+                )
+                assert training_free_loop_budget(loop_period, shifted, loop_period) == training_free_loop_budget(
+                    loop_period,
+                    sample,
+                    loop_period,
+                )
+                assert shifted_certificate.exit_available == base_certificate.exit_available
+                assert shifted_certificate.overthinking_boundary == base_certificate.overthinking_boundary
             if required <= loop_period:
                 assert training_free_loop_budget(loop_period, sample, loop_period) > 0
             if required > 1:
