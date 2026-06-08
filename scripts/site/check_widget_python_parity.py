@@ -999,6 +999,22 @@ def main() -> int:
     orbit_record = orbit_decomposition_generator(12, 8)
     assert regenerate(orbit_record) == js_orbit_decomposition(12, 8)
 
+    orbit_family_cases = [
+        (12, 8),
+        (13, 5),
+        (18, 6),
+        (20, 0),
+    ]
+    for n, stride in orbit_family_cases:
+        generated = regenerate(orbit_decomposition_generator(n, stride))
+        js_generated = js_orbit_decomposition(n, stride)
+        flattened = tuple(node for orbit in generated for node in orbit)
+        assert generated == js_generated
+        assert len(generated) == gcd(n, stride)
+        assert len(set(flattened)) == n
+        assert set(flattened) == set(range(n))
+        assert len(flattened) == n
+
     glyph_record = proof_glyph_generator(
         "glyph:c13_stride5_period",
         "CC-T0005",

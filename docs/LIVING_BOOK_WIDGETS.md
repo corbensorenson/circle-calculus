@@ -80,6 +80,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is generated explanation only. It displays linked proof statuses from the theorem manifest, but the generated diagram or metadata is not a proof and does not prove compression minimality, search optimality, or physics claims.
 - Validation: generated records are exported from the Python fixtures; deterministic JavaScript display paths are parity-checked against the same seed-rule behavior.
 
+### orbit_family_generator
+
+- Inputs: finite-circle size `n` and stride.
+- Outputs: representative-indexed orbit family, period `n/gcd(n,k)`, orbit count, gcd count, count-vs-gcd flag, exact coverage flag, disjointness flag, theorem-status badges, and dictionary links.
+- Theorem ids: `GEN-T0003`, `GEN-T0006`, `GEN-T0007`, `GEN-T0008`, `GEN-T0009`, `GEN-T0010`, `GEN-T0011`, `GEN-T0012`, and `GEN-T0013`.
+- Dictionary ids: `CC-0205`, `CC-0208`, `COMMON-0064`, and `COMMON-0066`.
+- Python references: `circle_math.generative.orbit_decomposition_generator` and `circle_math.generative.regenerate`.
+- Guardrail: the widget is finite orbit-family regeneration and coverage bookkeeping only. It does not prove minimality, global compression optimality, or theorem-discovery power.
+- Validation: deterministic JavaScript-equivalent orbit decomposition, period, orbit count, coverage, and disjointness formulas are parity-checked against the Python orbit-decomposition generator.
+
 ### generator_comparison_search
 
 - Inputs: finite-circle size `n`.

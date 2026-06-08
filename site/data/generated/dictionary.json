@@ -1826,6 +1826,11 @@
           "python_reference": "circle_math.finite.Circle.orbit"
         },
         {
+          "id": "orbit_family_generator",
+          "path": "site/widgets/generative/orbit_family_generator.js",
+          "python_reference": "circle_math.generative.orbit_decomposition_generator; circle_math.generative.regenerate"
+        },
+        {
           "id": "period_gcd_visualizer",
           "path": "site/widgets/S1/period_gcd_visualizer.js",
           "python_reference": "circle_math.finite.Circle.orbit_decomposition"
@@ -2137,6 +2142,11 @@
         }
       ],
       "used_by_widgets": [
+        {
+          "id": "orbit_family_generator",
+          "path": "site/widgets/generative/orbit_family_generator.js",
+          "python_reference": "circle_math.generative.orbit_decomposition_generator; circle_math.generative.regenerate"
+        },
         {
           "id": "period_gcd_visualizer",
           "path": "site/widgets/S1/period_gcd_visualizer.js",
@@ -6863,6 +6873,11 @@
           "python_reference": "circle_math.generative.compare_generator_to_explicit; circle_math.generative.bounded_generator_search; circle_math.generative.finite_circle_generator"
         },
         {
+          "id": "orbit_family_generator",
+          "path": "site/widgets/generative/orbit_family_generator.js",
+          "python_reference": "circle_math.generative.orbit_decomposition_generator; circle_math.generative.regenerate"
+        },
+        {
           "id": "proof_glyph_certificate",
           "path": "site/widgets/generative/proof_glyph_certificate.js",
           "python_reference": "circle_math.generative.proof_glyph_generator; circle_math.generative.regenerate"
@@ -7101,6 +7116,11 @@
           "id": "generator_comparison_search",
           "path": "site/widgets/generative/generator_comparison_search.js",
           "python_reference": "circle_math.generative.compare_generator_to_explicit; circle_math.generative.bounded_generator_search; circle_math.generative.finite_circle_generator"
+        },
+        {
+          "id": "orbit_family_generator",
+          "path": "site/widgets/generative/orbit_family_generator.js",
+          "python_reference": "circle_math.generative.orbit_decomposition_generator; circle_math.generative.regenerate"
         },
         {
           "id": "proof_glyph_certificate",

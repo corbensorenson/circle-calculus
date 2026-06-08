@@ -135,6 +135,28 @@
     },
     {
       "dictionary_ids": [
+        "CC-0205",
+        "CC-0208",
+        "COMMON-0064",
+        "COMMON-0066"
+      ],
+      "id": "orbit_family_generator",
+      "path": "site/widgets/generative/orbit_family_generator.js",
+      "python_reference": "circle_math.generative.orbit_decomposition_generator; circle_math.generative.regenerate",
+      "theorem_ids": [
+        "GEN-T0003",
+        "GEN-T0006",
+        "GEN-T0007",
+        "GEN-T0008",
+        "GEN-T0009",
+        "GEN-T0010",
+        "GEN-T0011",
+        "GEN-T0012",
+        "GEN-T0013"
+      ]
+    },
+    {
+      "dictionary_ids": [
         "COMMON-0033",
         "COMMON-0064",
         "COMMON-0066"

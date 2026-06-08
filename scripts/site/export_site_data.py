@@ -231,6 +231,23 @@ def export_widget_index() -> dict:
             "python_reference": "circle_math.generative.compare_generator_to_explicit; circle_math.generative.bounded_generator_search; circle_math.generative.finite_circle_generator",
         },
         {
+            "id": "orbit_family_generator",
+            "path": "site/widgets/generative/orbit_family_generator.js",
+            "theorem_ids": [
+                "GEN-T0003",
+                "GEN-T0006",
+                "GEN-T0007",
+                "GEN-T0008",
+                "GEN-T0009",
+                "GEN-T0010",
+                "GEN-T0011",
+                "GEN-T0012",
+                "GEN-T0013",
+            ],
+            "dictionary_ids": ["CC-0205", "CC-0208", "COMMON-0064", "COMMON-0066"],
+            "python_reference": "circle_math.generative.orbit_decomposition_generator; circle_math.generative.regenerate",
+        },
+        {
             "id": "proof_glyph_certificate",
             "path": "site/widgets/generative/proof_glyph_certificate.js",
             "theorem_ids": ["P2G-T0001", "P2G-T0002", "P2G-T0003", "P2G-T0004", "CC-T0005"],
