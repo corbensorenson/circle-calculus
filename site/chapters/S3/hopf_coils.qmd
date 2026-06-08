@@ -6,6 +6,8 @@ Hopf-coil pages introduce one of the project’s most important higher-dimension
 
 Read this page as a bridge from S1 phase to S3 fiber-like structure. The hidden-phase idea is useful, but it must not be mistaken for a completed proof of full Hopf fibration topology.
 
+<span class="showcase-backlink" data-showcase-ref="SHOW-007"></span>
+
 ::: {.warning-box}
 Full fibration topology remains future work unless future manifests and Lean declarations say otherwise. The widget is a bounded coordinate explorer and generated explanation, not a proof.
 :::
@@ -25,6 +27,8 @@ What is the difference between a hidden phase intuition and a Lean-proved bounde
 :::
 
 ## Source Trail
+
+<p data-showcase-ref="SHOW-007">Showcase evidence: <a href="../../showcase.qmd#SHOW-007">SHOW-007 quaternion, Hopf, and phase coordinates</a>.</p>
 
 <div class="theorem-box" data-theorem-id="S3H-T0001"></div>
 <div class="theorem-box" data-theorem-id="S3H-T0002"></div>

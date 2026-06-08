@@ -66,6 +66,7 @@ LIVING_BOOK_WIDGET_REF_RE = re.compile(
 )
 WIDGET_PANEL_RE = re.compile(r'data-widget="([^"]+)"')
 THEOREM_ATTR_RE = re.compile(r'data-theorem-id="([^"]+)"')
+SHOWCASE_REF_RE = re.compile(r'data-showcase-ref="([^"]+)"')
 THEOREM_BOX_RE = re.compile(r'<div class="theorem-box"([^>]*)>')
 PAPER_REF_RE = re.compile(r'<p([^>]*data-paper-ref="[^"]+"[^>]*)>')
 
@@ -231,6 +232,12 @@ def theorem_ids_on_page(path: Path) -> set[str]:
     if not path.exists():
         return set()
     return set(THEOREM_ATTR_RE.findall(path.read_text()))
+
+
+def showcase_refs_on_page(path: Path) -> set[str]:
+    if not path.exists():
+        return set()
+    return set(SHOWCASE_REF_RE.findall(path.read_text()))
 
 
 def page_theorem_pairs() -> tuple[list[tuple[str, str]], list[str]]:
@@ -596,6 +603,10 @@ def main() -> int:
             if not page_path.exists():
                 failures.append(f"{capability_id}: missing Living Book ref {page_ref}")
                 continue
+            if capability_id not in showcase_refs_on_page(page_path):
+                failures.append(
+                    f"{capability_id}: Living Book page {page_ref} must carry data-showcase-ref=\"{capability_id}\""
+                )
             widget_ids = living_ref.get("widget_ids", []) or []
             if not isinstance(widget_ids, list):
                 failures.append(f"{capability_id}: widget_ids for {page_ref} must be a list")

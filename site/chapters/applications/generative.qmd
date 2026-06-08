@@ -4,6 +4,8 @@ title: "Generative Structures"
 
 This lesson treats an object as something that can be regenerated from a seed, rules, a schedule, and a closure condition.
 
+<span class="showcase-backlink" data-showcase-ref="SHOW-009"></span>
+
 The ordinary baseline is value-only storage:
 
 ```text
@@ -26,6 +28,8 @@ seed + rule set + schedule + closure condition
 ::: {.warning-box}
 A generator record is not automatically smaller, optimal, or more meaningful. Its Python fixtures are executable references, not proof artifacts. It is useful only when exact regeneration, reader clarity, or proof linkage improves.
 :::
+
+<p data-showcase-ref="SHOW-009">Showcase evidence: <a href="../../showcase.qmd#SHOW-009">SHOW-009 proof-carrying generative provenance</a>.</p>
 
 ::: {.learning-unit}
 

@@ -4,6 +4,8 @@ title: "Lesson 3: Coils, Orbits, And Closure"
 
 A coil is the path traced by repeatedly applying the same rotation. Closure means the repeated motion returns to its starting address.
 
+<span class="showcase-backlink" data-showcase-ref="SHOW-006"></span>
+
 ::: {.lesson-goal}
 
 ## Lesson Goal
@@ -85,6 +87,8 @@ What is the difference between a node being visited by an orbit and the orbit be
 ## Source Trail
 
 <div class="source-trail">
+
+<p data-showcase-ref="SHOW-006">Showcase evidence: <a href="../../showcase.qmd#SHOW-006">SHOW-006 factor, fiber, and period-normal modular arithmetic</a>.</p>
 
 The dictionary cards name the moving pieces. The theorem cards state the checked closure and period facts used by later lessons.
 

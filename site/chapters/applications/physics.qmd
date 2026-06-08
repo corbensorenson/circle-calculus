@@ -4,6 +4,9 @@ title: "Physics"
 
 This lesson starts with a finite model: phases on directed graph edges, paths that add those phases, and closed loops whose endpoint gauge shifts cancel.
 
+<span class="showcase-backlink" data-showcase-ref="SHOW-007"></span>
+<span class="showcase-backlink" data-showcase-ref="SHOW-008"></span>
+
 The ordinary baseline is lattice gauge notation. A link variable sits on an oriented edge, a path accumulates link values, and a Wilson loop records a closed-path quantity. Circle Calculus does not replace that notation. It adds a proof-status-safe interface:
 
 ```text
@@ -18,6 +21,8 @@ finite edge diagram
 ::: {.warning-box}
 This page is a finite bookkeeping lesson. Its diagrams and Python fixtures are executable references, not proof artifacts. It is not continuum electromagnetism, quantum field theory, Yang-Mills theory, Berry phase, or a physics prediction.
 :::
+
+<p>Showcase evidence: <a data-showcase-ref="SHOW-007" href="../../showcase.qmd#SHOW-007">SHOW-007 quaternion, Hopf, and phase coordinates</a>; <a data-showcase-ref="SHOW-008" href="../../showcase.qmd#SHOW-008">SHOW-008 proof-carrying finite gauge paths</a>.</p>
 
 ::: {.learning-unit}
 

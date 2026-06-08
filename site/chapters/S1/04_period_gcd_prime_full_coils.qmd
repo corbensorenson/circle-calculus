@@ -4,6 +4,8 @@ title: "Lesson 4: Period, GCD, And Prime Full Coils"
 
 For positive `n`, the period of stride `k` on `C_n` is controlled by `gcd(n,k)`.
 
+<span class="showcase-backlink" data-showcase-ref="SHOW-006"></span>
+
 ::: {.lesson-goal}
 
 ## Lesson Goal
@@ -88,6 +90,8 @@ For `C_18` with stride `6`, compute `gcd(18,6)`, the number of disjoint cycles, 
 ## Source Trail
 
 <div class="source-trail">
+
+<p data-showcase-ref="SHOW-006">Showcase evidence: <a href="../../showcase.qmd#SHOW-006">SHOW-006 factor, fiber, and period-normal modular arithmetic</a>.</p>
 
 Use these cards to audit the period theorem, orbit decomposition theorem, and prime full-coil theorem.
 

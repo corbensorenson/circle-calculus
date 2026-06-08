@@ -24,11 +24,11 @@ Read these as standard-math parity demonstrations first. The Circle-native value
 
 | Showcase | Standard Anchor | Circle Presentation | Boundary |
 | --- | --- | --- | --- |
-| [SHOW-001](../../showcase.qmd#SHOW-001) | EGZ and Cauchy-Davenport | zero-sum witnesses and prime-circle sumsets over `C_n` and `C_p` | no new EGZ or Cauchy-Davenport proof |
-| [SHOW-002](../../showcase.qmd#SHOW-002) | Katona and Erdos-Ko-Rado | cyclic-order counting atoms and intersecting-family handles | no new EKR proof or extremal classification |
-| [SHOW-003](../../showcase.qmd#SHOW-003) | Roth and three-term progressions | finite witness search tied to formal Roth handles | no improved bounds or cyclic transfer theorem |
-| [SHOW-004](../../showcase.qmd#SHOW-004) | Hales-Jewett and Ramsey structure | finite coloring examples tied to formal unavoidable-line theorems | finite searches are examples only |
-| [SHOW-005](../../showcase.qmd#SHOW-005) | cycle, circulant, connected, and unit-distance graph vocabulary | cyclic graph models with checked graph handles | no unit-distance or distinct-distance progress claim |
+| <a data-showcase-ref="SHOW-001" href="../../showcase.qmd#SHOW-001">SHOW-001</a> | EGZ and Cauchy-Davenport | zero-sum witnesses and prime-circle sumsets over `C_n` and `C_p` | no new EGZ or Cauchy-Davenport proof |
+| <a data-showcase-ref="SHOW-002" href="../../showcase.qmd#SHOW-002">SHOW-002</a> | Katona and Erdos-Ko-Rado | cyclic-order counting atoms and intersecting-family handles | no new EKR proof or extremal classification |
+| <a data-showcase-ref="SHOW-003" href="../../showcase.qmd#SHOW-003">SHOW-003</a> | Roth and three-term progressions | finite witness search tied to formal Roth handles | no improved bounds or cyclic transfer theorem |
+| <a data-showcase-ref="SHOW-004" href="../../showcase.qmd#SHOW-004">SHOW-004</a> | Hales-Jewett and Ramsey structure | finite coloring examples tied to formal unavoidable-line theorems | finite searches are examples only |
+| <a data-showcase-ref="SHOW-005" href="../../showcase.qmd#SHOW-005">SHOW-005</a> | cycle, circulant, connected, and unit-distance graph vocabulary | cyclic graph models with checked graph handles | no unit-distance or distinct-distance progress claim |
 
 ## What To Check
 

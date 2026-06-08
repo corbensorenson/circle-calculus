@@ -4,7 +4,11 @@ title: "Compute"
 
 The compute page tracks proof-carrying circular computation, CoilRay, sampling, layout, stencil, NTT, and systems applications.
 
+<span class="showcase-backlink" data-showcase-ref="SHOW-011"></span>
+
 The current CoilLayout fixtures validate deterministic layout and periodic-stencil outputs before timing or backend claims. `COMPL-B0001` and `COMPL-B0002` are executable expected-output coverage, not performance claims.
+
+<p data-showcase-ref="SHOW-011">Showcase evidence: <a href="../../showcase.qmd#SHOW-011">SHOW-011 circular compute layouts and schedules</a>.</p>
 
 ::: {.learning-unit}
 
