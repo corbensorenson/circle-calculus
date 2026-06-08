@@ -1836,6 +1836,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_square_plaquette_fixture_is_closed_and_gauge_invariant
     blocker: ""
+  - id: PHYS-T0046
+    status: lean_proved
+    lean_name: Circle.Physics.checkedGaugePath_concat_cycle_gaugeInvariant
+    informal_statement: "Two checked finite gauge paths whose endpoints cycle back have gauge-invariant concatenated holonomy."
+    formal_statement: "For checked finite gauge paths left and right, if left.target = right.source and right.target = left.source, then the gauge-shifted holonomy of left.concat right equals its holonomy."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_closed_wilson_loop_is_invariant_under_sampled_gauges
+    blocker: ""
   - id: GEN-T0001
     status: lean_proved
     lean_name: Circle.Generative.finiteCircleGenerator_regenerates_nodes

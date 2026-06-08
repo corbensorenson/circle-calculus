@@ -2,7 +2,7 @@ import { mod, positiveInt } from "../shared/circle_math_core.js";
 import { addLabeledNumber, addOutput, addWidgetHeader, clear } from "../shared/svg_helpers.js";
 import { loadJson, mountWidgets, statusClass, statusLabel } from "../shared/widget_base.js";
 
-const THEOREM_IDS = ["PHYS-T0004", "PHYS-T0005"];
+const THEOREM_IDS = ["PHYS-T0004", "PHYS-T0005", "PHYS-T0046"];
 const DICTIONARY_IDS = ["COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063"];
 
 function signedInt(value, fallback, min = -99, max = 99) {

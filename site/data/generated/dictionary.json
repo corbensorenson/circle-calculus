@@ -6278,6 +6278,12 @@
           "lean_name": "Circle.Physics.checkedGaugePath_closed_gaugeInvariant",
           "name": "Circle.Physics.checkedGaugePath_closed_gaugeInvariant",
           "status": "proved"
+        },
+        {
+          "id": "PHYS-T0046",
+          "lean_name": "Circle.Physics.checkedGaugePath_concat_cycle_gaugeInvariant",
+          "name": "Circle.Physics.checkedGaugePath_concat_cycle_gaugeInvariant",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -6605,6 +6611,12 @@
           "lean_name": "Circle.Physics.checkedGaugePath_closed_gaugeInvariant",
           "name": "Circle.Physics.checkedGaugePath_closed_gaugeInvariant",
           "status": "proved"
+        },
+        {
+          "id": "PHYS-T0046",
+          "lean_name": "Circle.Physics.checkedGaugePath_concat_cycle_gaugeInvariant",
+          "name": "Circle.Physics.checkedGaugePath_concat_cycle_gaugeInvariant",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -6693,6 +6705,12 @@
           "lean_name": "Circle.Physics.checkedGaugePath_closed_gaugeInvariant",
           "name": "Circle.Physics.checkedGaugePath_closed_gaugeInvariant",
           "status": "proved"
+        },
+        {
+          "id": "PHYS-T0046",
+          "lean_name": "Circle.Physics.checkedGaugePath_concat_cycle_gaugeInvariant",
+          "name": "Circle.Physics.checkedGaugePath_concat_cycle_gaugeInvariant",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -6763,6 +6781,12 @@
           "id": "PHYS-T0045",
           "lean_name": "Circle.Physics.checkedGaugePath_closed_gaugeInvariant",
           "name": "Circle.Physics.checkedGaugePath_closed_gaugeInvariant",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0046",
+          "lean_name": "Circle.Physics.checkedGaugePath_concat_cycle_gaugeInvariant",
+          "name": "Circle.Physics.checkedGaugePath_concat_cycle_gaugeInvariant",
           "status": "proved"
         }
       ],

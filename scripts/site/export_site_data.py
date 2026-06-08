@@ -476,7 +476,7 @@ def export_widget_index() -> dict:
         {
             "id": "wilson_loop_certificate",
             "path": "site/widgets/physics/wilson_loop_certificate.js",
-            "theorem_ids": ["PHYS-T0004", "PHYS-T0005"],
+            "theorem_ids": ["PHYS-T0004", "PHYS-T0005", "PHYS-T0046"],
             "dictionary_ids": [
                 "COMMON-0060",
                 "COMMON-0061",

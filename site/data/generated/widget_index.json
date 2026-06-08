@@ -551,7 +551,8 @@
       "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.gauge_transform_path; circle_math.physics.path_holonomy; circle_math.physics.wilson_loop_certificate",
       "theorem_ids": [
         "PHYS-T0004",
-        "PHYS-T0005"
+        "PHYS-T0005",
+        "PHYS-T0046"
       ]
     },
     {

@@ -6482,7 +6482,7 @@
       "informal_statement": "A finite vertex gauge transform changes open-path holonomy only by the endpoint gauge values.",
       "lean_name": "Circle.Physics.gaugeTransform_pathHolonomy_endpoints",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 495,
+      "lean_source_line": 505,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -6522,7 +6522,7 @@
       "informal_statement": "Closed finite Wilson-loop holonomy is invariant under sampled finite vertex gauge transforms.",
       "lean_name": "Circle.Physics.closedWilsonLoop_gaugeInvariant",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 500,
+      "lean_source_line": 510,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -6562,7 +6562,7 @@
       "informal_statement": "A finite square plaquette loop has gauge-invariant holonomy in the finite link model.",
       "lean_name": "Circle.Physics.plaquetteHolonomy_gaugeInvariant",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 507,
+      "lean_source_line": 517,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -6638,7 +6638,7 @@
       "informal_statement": "Reversing a finite gauge-link path record negates its link-path holonomy.",
       "lean_name": "Circle.Physics.gaugeLinkPathHolonomy_reverse",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 432,
+      "lean_source_line": 442,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -6676,7 +6676,7 @@
       "informal_statement": "A one-link finite gauge-link path record is compositionally valid.",
       "lean_name": "Circle.Physics.gaugeLinkPath_singleton_composable",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 452,
+      "lean_source_line": 462,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -6714,7 +6714,7 @@
       "informal_statement": "A two-link finite gauge-link path record is composable exactly when the first target is the second source.",
       "lean_name": "Circle.Physics.gaugeLinkPath_pair_composable_iff",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 472,
+      "lean_source_line": 482,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -6752,7 +6752,7 @@
       "informal_statement": "Concatenating two one-link finite gauge-link path records is composable exactly when the left target is the right source.",
       "lean_name": "Circle.Physics.gaugeLinkPath_concat_singletons_composable_iff",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 476,
+      "lean_source_line": 486,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -6790,7 +6790,7 @@
       "informal_statement": "A three-link finite gauge-link path record is composable exactly when both adjacent source-target boundaries match.",
       "lean_name": "Circle.Physics.gaugeLinkPath_triple_composable_iff",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 481,
+      "lean_source_line": 491,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -6829,7 +6829,7 @@
       "informal_statement": "A four-link finite gauge-link path record is composable exactly when all three adjacent source-target boundaries match.",
       "lean_name": "Circle.Physics.gaugeLinkPath_quad_composable_iff",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 487,
+      "lean_source_line": 497,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -6867,7 +6867,7 @@
       "informal_statement": "The empty finite gauge-link path record is compositionally valid.",
       "lean_name": "Circle.Physics.gaugeLinkPath_empty_composable",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 456,
+      "lean_source_line": 466,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -6905,7 +6905,7 @@
       "informal_statement": "Left-concatenating the empty finite gauge-link path record preserves composability.",
       "lean_name": "Circle.Physics.gaugeLinkPath_concat_empty_left_composable",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 460,
+      "lean_source_line": 470,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -6943,7 +6943,7 @@
       "informal_statement": "Right-concatenating the empty finite gauge-link path record preserves composability.",
       "lean_name": "Circle.Physics.gaugeLinkPath_concat_empty_right_composable",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 466,
+      "lean_source_line": 476,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -7133,7 +7133,7 @@
       "informal_statement": "Reversing a finite gauge-link path record twice returns the original path record.",
       "lean_name": "Circle.Physics.gaugeLinkPath_reverse_reverse",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 438,
+      "lean_source_line": 448,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -7171,7 +7171,7 @@
       "informal_statement": "Reversing a concatenated finite gauge-link path record equals concatenating the reversed right path before the reversed left path.",
       "lean_name": "Circle.Physics.gaugeLinkPath_reverse_concat",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 444,
+      "lean_source_line": 454,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -8107,6 +8107,46 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_square_plaquette_fixture_is_closed_and_gauge_invariant"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0060",
+        "COMMON-0061",
+        "COMMON-0062",
+        "COMMON-0063"
+      ],
+      "formal_statement": "For checked finite gauge paths left and right, if left.target = right.source and right.target = left.source, then the gauge-shifted holonomy of left.concat right equals its holonomy.",
+      "id": "PHYS-T0046",
+      "imports_allowed": [
+        "Physics"
+      ],
+      "informal_statement": "Two checked finite gauge paths whose endpoints cycle back have gauge-invariant concatenated holonomy.",
+      "lean_name": "Circle.Physics.checkedGaugePath_concat_cycle_gaugeInvariant",
+      "lean_source": "Circle/Physics/LatticeGauge.lean",
+      "lean_source_line": 427,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE",
+          "path": "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md",
+          "status": "draft",
+          "title": "Circle Calculus Physics 1: Proof-Carrying Finite Lattice Gauge Links"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_closed_wilson_loop_is_invariant_under_sampled_gauges"
         ]
       }
     },

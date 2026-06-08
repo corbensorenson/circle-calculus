@@ -424,6 +424,16 @@ theorem checkedGaugePath_closed_gaugeInvariant
   rw [hclosed]
   simp
 
+theorem checkedGaugePath_concat_cycle_gaugeInvariant
+    (left right : CheckedGaugePath n)
+    (hforward : left.target = right.source)
+    (hback : right.target = left.source)
+    (gauge : Nat → ZMod n) :
+    (left.concat right hforward).gaugeShiftedHolonomy gauge =
+      (left.concat right hforward).holonomy := by
+  apply checkedGaugePath_closed_gaugeInvariant
+  exact checkedGaugePath_concat_closed_of_cycle left right hforward hback
+
 theorem gaugeLinkPath_reverse_phases (path : GaugeLinkPath n) :
     path.reverse.phases = reversePhases path.phases := by
   unfold GaugeLinkPath.reverse GaugeLinkPath.phases reversePhases GaugeLink.reverse
