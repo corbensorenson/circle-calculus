@@ -96,6 +96,8 @@ from circle_math.physics import (
     GaugeEdge,
     GaugePath,
     concat_paths,
+    finite_defect_winding,
+    finite_periodic_dynamics,
     gauge_transform_path,
     path_holonomy,
     reverse_path,
@@ -305,6 +307,32 @@ def js_wilson_loop_certificate(
         "closed": closed,
         "gauge_invariant_under": tuple(invariant_under),
         "theorem_ids": ("PHYS-T0004", "PHYS-T0005"),
+    }
+
+
+def js_finite_periodic_dynamics(modulus: int, stride: int, steps: int) -> dict[str, object]:
+    normalized_stride = js_mod(stride, modulus)
+    closure_period = modulus // gcd(modulus, normalized_stride)
+    total_motion = stride * steps
+    return {
+        "phase": js_mod(total_motion, modulus),
+        "winding": total_motion // modulus,
+        "residue": js_mod(total_motion, modulus),
+        "closure_period": closure_period,
+        "closed": steps % closure_period == 0,
+        "phase_sequence": tuple(js_mod(stride * step, modulus) for step in range(steps + 1)),
+    }
+
+
+def js_finite_defect_winding(sectors: int, turns: int, orientation: int) -> dict[str, object]:
+    total_steps = turns * sectors
+    phase_path = tuple(js_mod(orientation * step, sectors) for step in range(total_steps + 1))
+    net_steps = orientation * total_steps
+    return {
+        "phase_path": phase_path,
+        "net_steps": net_steps,
+        "winding": net_steps // sectors,
+        "closed": phase_path[0] == phase_path[-1],
     }
 
 
@@ -1158,6 +1186,29 @@ def main() -> int:
             assert gauge_path_edges(transformed) == js_transformed
             assert path_holonomy(transformed) == js_path_holonomy(js_transformed, modulus)
             assert path_holonomy(transformed) == certificate.holonomy
+
+    periodic_cases = [
+        (12, 5, 7, 4, 2, 1),
+        (12, 5, 12, 4, 2, -1),
+        (9, 0, 6, 6, 1, 1),
+        (14, 4, 21, 7, 3, -1),
+    ]
+    for modulus, stride, steps, sectors, turns, orientation in periodic_cases:
+        record = finite_periodic_dynamics(modulus, stride, steps)
+        js_record = js_finite_periodic_dynamics(modulus, stride, steps)
+        assert record.phase == js_record["phase"]
+        assert record.winding == js_record["winding"]
+        assert record.residue == js_record["residue"]
+        assert record.closure_period == js_record["closure_period"]
+        assert record.closed == js_record["closed"]
+        assert record.phase_sequence == js_record["phase_sequence"]
+
+        defect = finite_defect_winding(sectors, turns, orientation=orientation)
+        js_defect = js_finite_defect_winding(sectors, turns, orientation)
+        assert defect.phase_path == js_defect["phase_path"]
+        assert defect.net_steps == js_defect["net_steps"]
+        assert defect.winding == js_defect["winding"]
+        assert defect.closed == js_defect["closed"]
 
     ai_cases = [
         (1, 0, 1, 0),

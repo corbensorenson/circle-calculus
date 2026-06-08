@@ -98,8 +98,8 @@ The finite-gauge seed now includes singleton/two-link/singleton-concat/three-lin
 - Berry/geometric phase and Aharonov-Bohm-style holonomy primers beyond the current bounded Hopf coordinate widget;
 - Hopf/Bloch-sphere hidden phase lessons that go beyond the current S3 coordinate invariance widget;
 - deeper quaternion quotient lessons beyond the current bounded `q/-q` sign widget;
-- Floquet and action-angle periodic dynamics using winding, residue, and lift vocabulary;
-- vortex and topological-defect winding examples with clear continuum guardrails;
+- Floquet and action-angle periodic dynamics using winding, residue, and lift vocabulary; the first finite stroboscopic phase and closure fixture is now implemented.
+- vortex and topological-defect winding examples with clear continuum guardrails; the first marked-defect winding toy is now implemented as finite phase bookkeeping.
 - topological phase/Bott/Clifford connections as later background and target discovery, not first-pass claims.
 
 ## Generative Structure Program
@@ -157,7 +157,7 @@ Can the object be rebuilt, audited, explained, and linked to proofs from the gen
 The Living Book should teach Phase VII as guided lessons:
 
 ```text
-finite gauge loops -> holonomy -> Hopf hidden phase -> spin sign ambiguity -> periodic dynamics -> winding defects -> minimal generators -> generator provenance -> proof-carrying generative diagrams
+finite gauge loops -> holonomy -> Hopf hidden phase -> spin sign ambiguity -> periodic winding dynamics -> winding-defect toys -> minimal generators -> generator provenance -> proof-carrying generative diagrams
 ```
 
 Each mature lesson should show the ordinary baseline, the Circle Calculus representation, the proof boundary, the executable fixture, and the limitation before source links.

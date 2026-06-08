@@ -7,7 +7,10 @@ physics, QFT, electromagnetism, or formal proofs.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from math import gcd
 from typing import Mapping, Sequence
+
+from .winding import lift
 
 
 def _require_positive(value: int, name: str) -> None:
@@ -67,6 +70,34 @@ class WilsonLoopCertificate:
     theorem_ids: tuple[str, ...]
     target_ids: tuple[str, ...] = ()
     note: str = "Finite Wilson-loop fixture only; not a continuum physics claim."
+
+
+@dataclass(frozen=True)
+class PeriodicDynamicsRecord:
+    modulus: int
+    stride: int
+    steps: int
+    phase: int
+    winding: int
+    residue: int
+    closure_period: int
+    closed: bool
+    phase_sequence: tuple[int, ...]
+    target_ids: tuple[str, ...] = ("P7-PHYS-004",)
+    note: str = "Finite periodic-dynamics fixture only; not a continuum physics claim."
+
+
+@dataclass(frozen=True)
+class DefectWindingRecord:
+    sectors: int
+    turns: int
+    orientation: int
+    phase_path: tuple[int, ...]
+    net_steps: int
+    winding: int
+    closed: bool
+    target_ids: tuple[str, ...] = ("P7-PHYS-004",)
+    note: str = "Finite winding-defect toy fixture only; not a continuum defect claim."
 
 
 def path_holonomy(path: GaugePath) -> int:
@@ -156,4 +187,61 @@ def wilson_loop_certificate(path: GaugePath, gauges: Sequence[Mapping[str, int]]
         gauge_invariant_under=tuple(invariant_under),
         theorem_ids=("PHYS-T0004", "PHYS-T0005"),
         target_ids=("P7-PHYS-001",),
+    )
+
+
+def finite_periodic_dynamics(modulus: int, stride: int, steps: int) -> PeriodicDynamicsRecord:
+    """Return a bounded stroboscopic phase/winding record.
+
+    The record follows ``steps`` applications of a nonnegative finite stride on
+    ``C_modulus``. The lift is ordinary quotient/remainder bookkeeping of the
+    total natural stride count. This is a finite audit fixture, not Floquet
+    theory or an action-angle theorem.
+    """
+    _require_positive(modulus, "modulus")
+    if stride < 0:
+        raise ValueError("stride must be nonnegative")
+    if steps < 0:
+        raise ValueError("steps must be nonnegative")
+    normalized_stride = stride % modulus
+    closure_period = modulus // gcd(modulus, normalized_stride)
+    total_motion = stride * steps
+    lifted = lift(modulus, total_motion)
+    phase_sequence = tuple((stride * step) % modulus for step in range(steps + 1))
+    return PeriodicDynamicsRecord(
+        modulus=modulus,
+        stride=stride,
+        steps=steps,
+        phase=total_motion % modulus,
+        winding=lifted.winding,
+        residue=lifted.residue,
+        closure_period=closure_period,
+        closed=steps % closure_period == 0,
+        phase_sequence=phase_sequence,
+    )
+
+
+def finite_defect_winding(sectors: int, turns: int, *, orientation: int = 1) -> DefectWindingRecord:
+    """Return a finite winding toy around a marked defect.
+
+    The loop samples a phase clock with ``sectors`` addresses for a chosen
+    number of complete turns. The signed orientation is recorded as exact
+    finite phase bookkeeping. This is not a continuum vortex or material model.
+    """
+    _require_positive(sectors, "sectors")
+    if turns < 0:
+        raise ValueError("turns must be nonnegative")
+    if orientation not in (-1, 1):
+        raise ValueError("orientation must be -1 or 1")
+    total_steps = turns * sectors
+    phase_path = tuple((orientation * step) % sectors for step in range(total_steps + 1))
+    net_steps = orientation * total_steps
+    return DefectWindingRecord(
+        sectors=sectors,
+        turns=turns,
+        orientation=orientation,
+        phase_path=phase_path,
+        net_steps=net_steps,
+        winding=net_steps // sectors,
+        closed=phase_path[0] == phase_path[-1],
     )

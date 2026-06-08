@@ -2252,6 +2252,11 @@
       ],
       "used_by_widgets": [
         {
+          "id": "periodic_winding_dynamics",
+          "path": "site/widgets/physics/periodic_winding_dynamics.js",
+          "python_reference": "circle_math.physics.finite_periodic_dynamics; circle_math.physics.finite_defect_winding"
+        },
+        {
           "id": "winding_lift_explorer",
           "path": "site/widgets/S1/winding_lift_explorer.js",
           "python_reference": "circle_math.winding.lift"
@@ -4754,7 +4759,13 @@
         }
       ],
       "used_by_theorems": [],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "periodic_winding_dynamics",
+          "path": "site/widgets/physics/periodic_winding_dynamics.js",
+          "python_reference": "circle_math.physics.finite_periodic_dynamics; circle_math.physics.finite_defect_winding"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -4810,7 +4821,13 @@
         }
       ],
       "used_by_theorems": [],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "periodic_winding_dynamics",
+          "path": "site/widgets/physics/periodic_winding_dynamics.js",
+          "python_reference": "circle_math.physics.finite_periodic_dynamics; circle_math.physics.finite_defect_winding"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -6195,6 +6212,11 @@
           "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.path_holonomy; circle_math.physics.concat_paths; circle_math.physics.reverse_path; circle_math.physics.gauge_transform_path; circle_math.physics.transformed_holonomy_endpoint_prediction"
         },
         {
+          "id": "periodic_winding_dynamics",
+          "path": "site/widgets/physics/periodic_winding_dynamics.js",
+          "python_reference": "circle_math.physics.finite_periodic_dynamics; circle_math.physics.finite_defect_winding"
+        },
+        {
           "id": "seed_rule_diagram_generator",
           "path": "site/widgets/generative/seed_rule_diagram_generator.js",
           "python_reference": "circle_math.generative.finite_circle_diagram_generator; circle_math.generative.physics_loop_diagram_generator; circle_math.generative.coil_orbit_generator; circle_math.generative.orbit_decomposition_generator; circle_math.generative.proof_glyph_generator"
@@ -6674,6 +6696,11 @@
           "id": "finite_path_algebra",
           "path": "site/widgets/physics/finite_path_algebra.js",
           "python_reference": "circle_math.physics.GaugePath; circle_math.physics.GaugeEdge; circle_math.physics.path_holonomy; circle_math.physics.concat_paths; circle_math.physics.reverse_path; circle_math.physics.gauge_transform_path; circle_math.physics.transformed_holonomy_endpoint_prediction"
+        },
+        {
+          "id": "periodic_winding_dynamics",
+          "path": "site/widgets/physics/periodic_winding_dynamics.js",
+          "python_reference": "circle_math.physics.finite_periodic_dynamics; circle_math.physics.finite_defect_winding"
         },
         {
           "id": "seed_rule_diagram_generator",

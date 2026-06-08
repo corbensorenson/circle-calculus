@@ -59,6 +59,7 @@ def test_export_site_data_writes_required_indexes() -> None:
     assert "hopf_hidden_phase" in widget_ids
     assert "learned_content_gate_retrieval" in widget_ids
     assert "loop_exit_certificate" in widget_ids
+    assert "periodic_winding_dynamics" in widget_ids
 
     glyphs = json.loads((generated / "glyph_index.json").read_text())
     glyph_by_id = {item["id"]: item for item in glyphs["glyphs"]}

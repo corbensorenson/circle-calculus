@@ -314,6 +314,16 @@ Implemented shared JavaScript:
 - Guardrail: the widget is a bounded quaternion conjugation-action fixture. It does not prove a complete `SO(3)` quotient, robotics verification, spinor theory, or a physical rotation model.
 - Validation: deterministic JavaScript-equivalent quaternion multiplication, conjugation, and sign-comparison formulas are parity-checked against the Python S3 spin helpers.
 
+### periodic_winding_dynamics
+
+- Inputs: phase modulus, stride, step count, defect sectors, defect turns, and signed orientation.
+- Outputs: stroboscopic phase, total motion, lifted winding/residue, closure period, closure flag, phase sequence, finite marked-defect phase path, net signed steps, defect winding, closed-loop flag, theorem-status badges, and dictionary links.
+- Theorem ids: `CC-T0005`, `CC-T0009`, and `CC-T0011` as finite period and winding primitives only.
+- Dictionary ids: `COMMON-0060`, `COMMON-0063`, `COMMON-0036`, `COMMON-0038`, and `CC-0301`.
+- Python references: `circle_math.physics.finite_periodic_dynamics` and `circle_math.physics.finite_defect_winding`.
+- Guardrail: the widget is finite phase, winding, residue, and closure bookkeeping only. It does not prove Floquet theory, action-angle mechanics, continuum vortices, Kosterlitz-Thouless physics, or physical material behavior.
+- Validation: deterministic JavaScript-equivalent closure-period, lifted winding/residue, phase-sequence, signed defect-path, net-step, winding, and closure formulas are parity-checked against the Python physics helpers.
+
 ## Future Placeholders
 
 - `site/widgets/S2/sphere_grid_placeholder.js`

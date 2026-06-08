@@ -446,6 +446,19 @@ def export_widget_index() -> dict:
             "dictionary_ids": ["S3S-0001", "S3S-0002", "S3Q-0001", "S3Q-0002"],
             "python_reference": "circle_math.dimensions.quaternion.unit_i_phase; circle_math.dimensions.quaternion.conjugation_action; circle_math.dimensions.quaternion.orientation_debug_record",
         },
+        {
+            "id": "periodic_winding_dynamics",
+            "path": "site/widgets/physics/periodic_winding_dynamics.js",
+            "theorem_ids": ["CC-T0005", "CC-T0009", "CC-T0011"],
+            "dictionary_ids": [
+                "COMMON-0060",
+                "COMMON-0063",
+                "COMMON-0036",
+                "COMMON-0038",
+                "CC-0301",
+            ],
+            "python_reference": "circle_math.physics.finite_periodic_dynamics; circle_math.physics.finite_defect_winding",
+        },
     ]
     return {"widgets": widgets}
 

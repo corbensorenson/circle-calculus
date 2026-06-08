@@ -86,7 +86,7 @@ Each chapter must distinguish intuition, example, Python model, and formal theor
 - Treat application pages as active proof/benchmark target tracks, not as indefinitely deferred notes.
 - Keep benchmark claims separate from Lean proofs.
 - Use MLX/Mac-first language for local compute work.
-- Add Phase VII physics/generative-structure lessons from the first bounded fixtures: finite gauge loops, holonomy, Hopf hidden phase, spin sign ambiguity, periodic dynamics, winding defects, seed-rule provenance, generator comparison, and proof-carrying generated diagrams.
+- Add Phase VII physics/generative-structure lessons from the first bounded fixtures: finite gauge loops, holonomy, Hopf hidden phase, spin sign ambiguity, periodic winding dynamics, winding-defect toys, seed-rule provenance, generator comparison, and proof-carrying generated diagrams.
 - Current physics/generative interactives cover finite path algebra, plaquette holonomy, Wilson-loop certificates, Hopf hidden phase, quaternion spin sign ambiguity, generated seed-rule records, proof-glyph certificates, and bounded generator comparisons.
 
 ## Dedicated Circle AI Deep Program
@@ -123,7 +123,7 @@ Each chapter must distinguish intuition, example, Python model, and formal theor
 The Living Book should teach the Phase VII roadmap as a guided path, not as a target table alone:
 
 ```text
-finite gauge loops -> holonomy -> Hopf hidden phase -> spin sign ambiguity -> periodic dynamics -> winding defects -> minimal generators -> generator provenance -> proof-carrying generative diagrams
+finite gauge loops -> holonomy -> Hopf hidden phase -> spin sign ambiguity -> periodic winding dynamics -> winding-defect toys -> minimal generators -> generator provenance -> proof-carrying generative diagrams
 ```
 
 Each mature lesson must show the ordinary baseline, the Circle Calculus representation, the proof boundary, the executable fixture, the limitation, and then the source links. Physics pages must not imply a proved continuum model, and generator pages must not call a generator minimal without an explicit criterion and search space.

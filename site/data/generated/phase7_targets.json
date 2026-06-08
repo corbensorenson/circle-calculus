@@ -110,7 +110,11 @@
       "artifact_refs": [
         "docs/PHASE7_PHYSICS_AND_GENERATORS.md",
         "papers/PAPER_02_WINDING_NATURALS.md",
-        "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md"
+        "papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md",
+        "circle_math/physics.py",
+        "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py",
+        "site/chapters/applications/physics.qmd",
+        "site/widgets/physics/periodic_winding_dynamics.js"
       ],
       "dictionary_dependencies": [
         "COMMON-0060",
@@ -121,11 +125,11 @@
       ],
       "guardrail": "Do not treat finite winding examples as proofs of continuum vortices, Kosterlitz-Thouless physics, or real material behavior.",
       "id": "P7-PHYS-004",
-      "next_action": "Add finite examples for stroboscopic phase, lifted winding count, and closed-loop winding around a marked defect.",
+      "next_action": "First finite examples now record stroboscopic phase, lifted winding count, closure period, and closed-loop winding around a marked defect; next add direct-simulation/periodogram baselines and a scoped reader note comparing the finite fixture with Floquet/action-angle vocabulary.",
       "ordinary_baseline": "Standard Floquet, action-angle, and topological-defect notation with separate diagrams and numerical examples.",
       "priority": "medium",
       "question": "Can winding, residue, period, and closure make periodic dynamics and vortex-style winding examples easier to audit?",
-      "status": "planned",
+      "status": "exploratory_python",
       "target_type": "benchmark",
       "title": "Floquet, action-angle, and winding-defect finite fixtures"
     },

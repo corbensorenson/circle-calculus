@@ -2,6 +2,8 @@ from circle_math.physics import (
     GaugeEdge,
     GaugePath,
     concat_paths,
+    finite_defect_winding,
+    finite_periodic_dynamics,
     gauge_transform_path,
     path_holonomy,
     reverse_path,
@@ -81,3 +83,36 @@ def test_square_plaquette_fixture_is_closed_and_gauge_invariant() -> None:
     assert plaquette.closed
     assert path_holonomy(plaquette) == (2 + 5 - 7 + 4) % 23
     assert path_holonomy(transformed) == path_holonomy(plaquette)
+
+
+def test_finite_periodic_dynamics_records_phase_winding_and_closure() -> None:
+    record = finite_periodic_dynamics(12, stride=5, steps=7)
+    closed = finite_periodic_dynamics(12, stride=5, steps=12)
+    parked = finite_periodic_dynamics(12, stride=0, steps=9)
+
+    assert record.phase == 35 % 12
+    assert record.winding == 35 // 12
+    assert record.residue == 35 % 12
+    assert record.closure_period == 12
+    assert not record.closed
+    assert record.phase_sequence == (0, 5, 10, 3, 8, 1, 6, 11)
+    assert closed.closed
+    assert closed.phase == 0
+    assert parked.closure_period == 1
+    assert parked.closed
+    assert record.note.endswith("not a continuum physics claim.")
+
+
+def test_finite_defect_winding_records_signed_closed_loop() -> None:
+    positive = finite_defect_winding(4, turns=2, orientation=1)
+    negative = finite_defect_winding(4, turns=2, orientation=-1)
+
+    assert positive.phase_path == (0, 1, 2, 3, 0, 1, 2, 3, 0)
+    assert positive.net_steps == 8
+    assert positive.winding == 2
+    assert positive.closed
+    assert negative.phase_path == (0, 3, 2, 1, 0, 3, 2, 1, 0)
+    assert negative.net_steps == -8
+    assert negative.winding == -2
+    assert negative.closed
+    assert negative.note.endswith("not a continuum defect claim.")
