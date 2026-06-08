@@ -104,6 +104,21 @@ function valuePropositionText(capability) {
   return parts.length > 0 ? parts.join("; ") : "no required roles";
 }
 
+function parityValueComparisonText(capability) {
+  const comparison = capability.parity_value_comparison_contract || {};
+  const lines = Array.isArray(comparison.summary_lines) ? comparison.summary_lines : [];
+  const sections = Array.isArray(comparison.sections) ? comparison.sections : [];
+  const sectionText = sections
+    .map((section) => `${section.label || section.id}: ${section.ready ? "ready" : "incomplete"}`)
+    .join("; ");
+  return [
+    comparison.ready_to_review ? "ready" : "incomplete",
+    `sections ${comparison.ready_section_count ?? 0}/${comparison.total_section_count ?? 0}`,
+    ...lines,
+    sectionText,
+  ].filter(Boolean).join("\n");
+}
+
 function renderTable(capabilities) {
   const wrap = document.createElement("div");
   wrap.className = "index-table-wrap";
@@ -117,6 +132,7 @@ function renderTable(capabilities) {
     "Area",
     "Roles",
     "Role backing",
+    "Parity/value comparison",
     "Proof provenance",
     "Papers",
     "Theorems",
@@ -145,6 +161,7 @@ function renderTable(capabilities) {
     appendCell(row, capability.area || "");
     appendCell(row, roleBadges(capability));
     appendCell(row, valuePropositionText(capability));
+    appendCell(row, parityValueComparisonText(capability));
     appendCell(row, provenanceLabel(capability.proof_provenance_kind));
     appendCountCell(row, counts.paper_count, "papers");
     appendCountCell(row, counts.theorem_count, "theorems");
@@ -300,6 +317,7 @@ function renderManifestSummary(capabilities, summary) {
   const sourceRefs = backing.source_refs || {};
   const livingRefs = backing.living_book_refs || {};
   const reviewPackets = backing.review_packets || {};
+  const comparisons = backing.parity_value_comparisons || {};
   const lines = [
     `capability lanes: ${summary.capability_count ?? capabilities.length}`,
     `portfolio routes: ready ${routeSummary.ready_count ?? 0}/${routeSummary.route_count ?? 0}`,
@@ -312,6 +330,7 @@ function renderManifestSummary(capabilities, summary) {
     `backed source refs: ${sourceRefs.backed_count ?? 0}/${sourceRefs.total_count ?? 0}`,
     `backed Living Book refs: pages ${livingRefs.backed_page_count ?? 0}/${livingRefs.total_page_count ?? 0}; widgets ${livingRefs.backed_widget_count ?? 0}/${livingRefs.total_widget_count ?? 0}`,
     `review packets: ready ${reviewPackets.ready_count ?? 0}/${reviewPackets.total_count ?? 0}`,
+    `parity/value comparisons: ready ${comparisons.ready_count ?? 0}/${comparisons.total_count ?? 0}`,
     `unique paper ids: ${unique.paper_count}`,
     `unique proved theorem ids advertised: ${unique.theorem_count}`,
     `unique pytest executable refs: ${unique.executable_count}`,

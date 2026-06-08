@@ -1568,6 +1568,157 @@ def review_packet_contract(
     }
 
 
+def parity_value_comparison_contract(
+    item: dict,
+    theorem_ref_contract: dict,
+    source_ref_contract: dict,
+    living_book_ref_contract: dict,
+    claim_language_contract: dict,
+    value_proposition_contract: dict,
+    proof_trail_contract: dict,
+    review_packet_contract: dict,
+) -> dict:
+    roles = set(item.get("portfolio_roles", []) or [])
+    evidence_counts = item.get("evidence_counts", {}) or {}
+    executable_refs = item.get("executable_refs", []) or []
+    standard_parity_claimed = "standard_math_parity" in roles
+    circle_native_claimed = "circle_native_value" in roles
+    theorem_ready = (
+        theorem_ref_contract.get("total_count", 0) > 0
+        and theorem_ref_contract.get("proved_and_paper_backed_count")
+        == theorem_ref_contract.get("total_count")
+        and not theorem_ref_contract.get("unproved_or_unbacked_ids", [])
+    )
+    source_ready = (
+        source_ref_contract.get("total_count", 0) > 0
+        and source_ref_contract.get("backed_count") == source_ref_contract.get("total_count")
+        and not source_ref_contract.get("unbacked_refs", [])
+    )
+    living_ready = (
+        living_book_ref_contract.get("total_page_count", 0) > 0
+        and living_book_ref_contract.get("backed_page_count")
+        == living_book_ref_contract.get("total_page_count")
+        and living_book_ref_contract.get("backed_widget_count")
+        == living_book_ref_contract.get("total_widget_count")
+        and not living_book_ref_contract.get("unbacked_pages", [])
+        and not living_book_ref_contract.get("unbacked_widgets", [])
+    )
+    executable_ready = bool(executable_refs)
+    standard_ready = (
+        nonempty_text(item, "audience_interest")
+        and nonempty_text(item, "standard_math_anchor")
+        and theorem_ready
+    )
+    circle_form_ready = (
+        nonempty_text(item, "circle_math_expression")
+        and nonempty_text(item, "advertised_claim")
+    )
+    circle_value_ready = (
+        circle_native_claimed
+        and nonempty_text(item, "circle_native_value")
+        and value_proposition_contract.get("ready_to_advertise", False)
+    )
+    proof_backing_ready = (
+        evidence_counts.get("paper_count", 0) > 0
+        and theorem_ready
+        and source_ready
+        and living_ready
+        and executable_ready
+        and proof_trail_contract.get("ready_to_advertise", False)
+    )
+    review_ready = review_packet_contract.get("ready_to_review", False)
+    boundary_ready = (
+        nonempty_text(item, "not_claimed")
+        and claim_language_contract.get("ready_to_advertise", False)
+    )
+    sections = [
+        {
+            "id": "standard_reference",
+            "label": "standard-math reference point",
+            "ready": standard_ready,
+            "evidence": item.get("standard_math_anchor", ""),
+            "refs": item.get("theorem_ids", []) or [],
+            "standard_parity_claimed": standard_parity_claimed,
+        },
+        {
+            "id": "circle_expression",
+            "label": "Circle expression of the same surface",
+            "ready": circle_form_ready,
+            "evidence": item.get("circle_math_expression", ""),
+            "refs": item.get("source_refs", []) or [],
+        },
+        {
+            "id": "circle_native_value",
+            "label": "Circle-native value claim",
+            "ready": circle_value_ready,
+            "evidence": item.get("circle_native_value", ""),
+            "refs": item.get("living_book_refs", []) or [],
+            "circle_native_claimed": circle_native_claimed,
+        },
+        {
+            "id": "proof_backing",
+            "label": "paper, theorem, source, executable, and Living Book backing",
+            "ready": proof_backing_ready,
+            "evidence": (
+                f"papers {evidence_counts.get('paper_count', 0)}; "
+                f"theorem refs "
+                f"{theorem_ref_contract.get('proved_and_paper_backed_count', 0)}/"
+                f"{theorem_ref_contract.get('total_count', 0)}; "
+                f"sources {source_ref_contract.get('backed_count', 0)}/"
+                f"{source_ref_contract.get('total_count', 0)}; "
+                f"executables {evidence_counts.get('executable_count', 0)}; "
+                f"Living Book pages {living_book_ref_contract.get('backed_page_count', 0)}/"
+                f"{living_book_ref_contract.get('total_page_count', 0)}"
+            ),
+            "refs": [],
+        },
+        {
+            "id": "review_entry",
+            "label": "skeptical-reader review entry",
+            "ready": review_ready,
+            "evidence": (
+                f"review packet {review_packet_contract.get('ready_section_count', 0)}/"
+                f"{review_packet_contract.get('total_section_count', 0)} sections"
+            ),
+            "refs": [],
+        },
+        {
+            "id": "advertising_boundary",
+            "label": "advertising boundary",
+            "ready": boundary_ready,
+            "evidence": item.get("not_claimed", ""),
+            "refs": [],
+        },
+    ]
+    ready = all(section["ready"] for section in sections)
+    summary_lines = [
+        f"Standard reference: {item.get('standard_math_anchor', '')}",
+        f"Circle expression: {item.get('circle_math_expression', '')}",
+        f"Circle-native value: {item.get('circle_native_value', '')}",
+        (
+            f"Proof backing: {evidence_counts.get('paper_count', 0)} paper ids, "
+            f"{theorem_ref_contract.get('proved_and_paper_backed_count', 0)}/"
+            f"{theorem_ref_contract.get('total_count', 0)} theorem refs, "
+            f"{source_ref_contract.get('backed_count', 0)}/"
+            f"{source_ref_contract.get('total_count', 0)} source refs, "
+            f"{evidence_counts.get('executable_count', 0)} executable refs, and "
+            f"{living_book_ref_contract.get('backed_page_count', 0)}/"
+            f"{living_book_ref_contract.get('total_page_count', 0)} Living Book page refs."
+        ),
+        f"Boundary: {item.get('not_claimed', '')}",
+    ]
+    return {
+        "ready_to_review": ready,
+        "ready_to_advertise": ready,
+        "ready_section_count": sum(1 for section in sections if section["ready"]),
+        "total_section_count": len(sections),
+        "standard_parity_claimed": standard_parity_claimed,
+        "circle_native_claimed": circle_native_claimed,
+        "summary_lines": summary_lines,
+        "sections": sections,
+    }
+
+
 def capability_claim_contract(
     item: dict,
     evidence_counts: dict[str, int],
@@ -1580,6 +1731,7 @@ def capability_claim_contract(
     value_proposition_contract: dict,
     proof_trail_contract: dict,
     review_packet_contract: dict,
+    parity_value_comparison_contract: dict,
 ) -> dict:
     roles = set(item.get("portfolio_roles", []) or [])
     provenance_kind = item.get("proof_provenance_kind", "")
@@ -1782,6 +1934,13 @@ def capability_claim_contract(
             f"{review_packet_contract.get('total_section_count', 0)} sections",
         ),
         contract_gate(
+            "parity_value_comparison",
+            "standard-parity versus Circle-native comparison",
+            parity_value_comparison_contract.get("ready_to_review", False),
+            f"{parity_value_comparison_contract.get('ready_section_count', 0)}/"
+            f"{parity_value_comparison_contract.get('total_section_count', 0)} sections",
+        ),
+        contract_gate(
             "claim_boundary",
             "not-claimed boundary",
             nonempty_text(item, "not_claimed")
@@ -1819,6 +1978,11 @@ def portfolio_backing_contract_summary(capabilities: list[dict]) -> dict:
         "unbacked_widgets": [],
     }
     review_packets = {
+        "ready_count": 0,
+        "total_count": 0,
+        "incomplete_capability_ids": [],
+    }
+    parity_value_comparisons = {
         "ready_count": 0,
         "total_count": 0,
         "incomplete_capability_ids": [],
@@ -1871,6 +2035,12 @@ def portfolio_backing_contract_summary(capabilities: list[dict]) -> dict:
             review_packets["ready_count"] += 1
         else:
             review_packets["incomplete_capability_ids"].append(capability_id)
+        comparison_contract = capability.get("parity_value_comparison_contract", {}) or {}
+        parity_value_comparisons["total_count"] += 1
+        if comparison_contract.get("ready_to_review", False):
+            parity_value_comparisons["ready_count"] += 1
+        else:
+            parity_value_comparisons["incomplete_capability_ids"].append(capability_id)
 
     theorem_ready = (
         theorem_refs["proved_and_paper_backed_count"] == theorem_refs["total_count"]
@@ -1890,12 +2060,19 @@ def portfolio_backing_contract_summary(capabilities: list[dict]) -> dict:
         review_packets["ready_count"] == review_packets["total_count"]
         and not review_packets["incomplete_capability_ids"]
     )
+    comparison_ready = (
+        parity_value_comparisons["ready_count"] == parity_value_comparisons["total_count"]
+        and not parity_value_comparisons["incomplete_capability_ids"]
+    )
     return {
-        "ready_to_advertise": theorem_ready and source_ready and living_ready and review_ready,
+        "ready_to_advertise": (
+            theorem_ready and source_ready and living_ready and review_ready and comparison_ready
+        ),
         "theorem_refs": theorem_refs,
         "source_refs": source_refs,
         "living_book_refs": living_book_refs,
         "review_packets": review_packets,
+        "parity_value_comparisons": parity_value_comparisons,
     }
 
 
@@ -2588,6 +2765,16 @@ def export_capability_showcase() -> dict:
             item["value_proposition_contract"],
             item["proof_trail_contract"],
         )
+        item["parity_value_comparison_contract"] = parity_value_comparison_contract(
+            item,
+            item["theorem_ref_contract"],
+            item["source_ref_contract"],
+            item["living_book_ref_contract"],
+            item["claim_language_contract"],
+            item["value_proposition_contract"],
+            item["proof_trail_contract"],
+            item["review_packet_contract"],
+        )
         item["claim_contract"] = capability_claim_contract(
             item,
             item["evidence_counts"],
@@ -2600,6 +2787,7 @@ def export_capability_showcase() -> dict:
             item["value_proposition_contract"],
             item["proof_trail_contract"],
             item["review_packet_contract"],
+            item["parity_value_comparison_contract"],
         )
         if item["claim_contract"]["ready_to_advertise"]:
             contract_ready_count += 1

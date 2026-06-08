@@ -496,6 +496,10 @@ def test_middle_block_recurrence_helpers_are_deterministic() -> None:
         assert middle_block_route(2, 3, sample + 3) == routed
         assert middle_block_route(2, 3, sample + 4 * 3) == routed
         assert middle_block_budget_route(2, 3, 4, sample + 3 * 4) == routed_with_budget
+        assert all(
+            middle_block_budget_route(2, 3, 4, sample + passes * (3 * 4)) == routed_with_budget
+            for passes in range(6)
+        )
     assert middle_block_route(2, 3, 0) == 2
     assert loop_block_indices(8, (2, 5)) == (2, 3, 4)
     assert middle_block_required_blocks(8, (2, 5), samples) == (2, 3, 4, 2, 3, 4, 2, 3)

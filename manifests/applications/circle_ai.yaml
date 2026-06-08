@@ -249,6 +249,10 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.middleBlockBudgetRoute_add_commonCycle
     dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+  - id: AIM-T0056
+    status: lean_proved
+    lean_name: Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
   - id: AIM-T0049
     status: lean_proved
     lean_name: Circle.Applications.loopedRecurrentState_lt_period

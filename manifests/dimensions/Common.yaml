@@ -1521,6 +1521,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_middle_block_recurrence_helpers_are_deterministic
     blocker: ""
+  - id: AIM-T0056
+    status: lean_proved
+    lean_name: Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle
+    informal_statement: "A combined middle-block/budget route closes after any whole number of product common cycles."
+    formal_statement: "For positive width and loopPeriod, middleBlockBudgetRoute start width loopPeriod (sample + passes * (width * loopPeriod)) = middleBlockBudgetRoute start width loopPeriod sample."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_middle_block_recurrence_helpers_are_deterministic
+    blocker: ""
   - id: AIM-T0049
     status: lean_proved
     lean_name: Circle.Applications.loopedRecurrentState_lt_period

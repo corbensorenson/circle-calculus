@@ -123,16 +123,22 @@
             "passed": true
           },
           {
+            "evidence": "6/6 sections",
+            "id": "parity_value_comparison",
+            "label": "standard-parity versus Circle-native comparison",
+            "passed": true
+          },
+          {
             "evidence": "No new proof of EGZ, no new proof of Cauchy-Davenport, and no progress claim on an open Erdos problem.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 20,
+        "passed_gate_count": 21,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 20
+        "total_gate_count": 21
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -193,6 +199,78 @@
       "paper_ids": [
         "PAPER_ERDOS_01_ZERO_SUM_CIRCLES"
       ],
+      "parity_value_comparison_contract": {
+        "circle_native_claimed": true,
+        "ready_section_count": 6,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "Classical zero-sum and additive-combinatorics theorems over cyclic groups, especially EGZ and Cauchy-Davenport.",
+            "id": "standard_reference",
+            "label": "standard-math reference point",
+            "ready": true,
+            "refs": [
+              "CC-T0062",
+              "CC-T0063"
+            ],
+            "standard_parity_claimed": true
+          },
+          {
+            "evidence": "Finite circle types `C_n` and `C_p` present the cyclic groups directly, with theorem ids for zero-sum subsequences and prime-circle sumset growth.",
+            "id": "circle_expression",
+            "label": "Circle expression of the same surface",
+            "ready": true,
+            "refs": [
+              "Circle/Erdos/EGZ.lean",
+              "Circle/Erdos/CauchyDavenport.lean",
+              "sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py"
+            ]
+          },
+          {
+            "circle_native_claimed": true,
+            "evidence": "The Circle framing makes zero-sum witnesses, sharpness families, and sumsets inspectable as finite address-space examples linked to Lean and Python sidecars.",
+            "id": "circle_native_value",
+            "label": "Circle-native value claim",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/applications/erdos_bridges.qmd"
+              }
+            ]
+          },
+          {
+            "evidence": "papers 1; theorem refs 2/2; sources 3/3; executables 1; Living Book pages 1/1",
+            "id": "proof_backing",
+            "label": "paper, theorem, source, executable, and Living Book backing",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "review packet 7/7 sections",
+            "id": "review_entry",
+            "label": "skeptical-reader review entry",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "No new proof of EGZ, no new proof of Cauchy-Davenport, and no progress claim on an open Erdos problem.",
+            "id": "advertising_boundary",
+            "label": "advertising boundary",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "standard_parity_claimed": true,
+        "summary_lines": [
+          "Standard reference: Classical zero-sum and additive-combinatorics theorems over cyclic groups, especially EGZ and Cauchy-Davenport.",
+          "Circle expression: Finite circle types `C_n` and `C_p` present the cyclic groups directly, with theorem ids for zero-sum subsequences and prime-circle sumset growth.",
+          "Circle-native value: The Circle framing makes zero-sum witnesses, sharpness families, and sumsets inspectable as finite address-space examples linked to Lean and Python sidecars.",
+          "Proof backing: 1 paper ids, 2/2 theorem refs, 3/3 source refs, 1 executable refs, and 1/1 Living Book page refs.",
+          "Boundary: No new proof of EGZ, no new proof of Cauchy-Davenport, and no progress claim on an open Erdos problem."
+        ],
+        "total_section_count": 6
+      },
       "portfolio_roles": [
         "standard_math_parity",
         "circle_native_value"
@@ -539,16 +617,22 @@
             "passed": true
           },
           {
+            "evidence": "6/6 sections",
+            "id": "parity_value_comparison",
+            "label": "standard-parity versus Circle-native comparison",
+            "passed": true
+          },
+          {
             "evidence": "No new EKR proof and no classification of all extremal families.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 20,
+        "passed_gate_count": 21,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 20
+        "total_gate_count": 21
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -609,6 +693,77 @@
       "paper_ids": [
         "PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD"
       ],
+      "parity_value_comparison_contract": {
+        "circle_native_claimed": true,
+        "ready_section_count": 6,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "The Katona circle method and the Erdos-Ko-Rado theorem for intersecting uniform set families.",
+            "id": "standard_reference",
+            "label": "standard-math reference point",
+            "ready": true,
+            "refs": [
+              "CC-T0064",
+              "CC-T0065"
+            ],
+            "standard_parity_claimed": true
+          },
+          {
+            "evidence": "Numberings, prefix-density counts, and intersecting families are exposed as theorem-backed finite-circle-method artifacts.",
+            "id": "circle_expression",
+            "label": "Circle expression of the same surface",
+            "ready": true,
+            "refs": [
+              "Circle/Erdos/KatonaEKR.lean",
+              "sidecars/PAPER_ERDOS_02_KATONA_EKR_CIRCLE_METHOD/python/test_katona_ekr_examples.py"
+            ]
+          },
+          {
+            "circle_native_claimed": true,
+            "evidence": "The project can show the circle-method proof atom as an executable finite count, then connect it to a formal EKR theorem card.",
+            "id": "circle_native_value",
+            "label": "Circle-native value claim",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/applications/erdos_bridges.qmd"
+              }
+            ]
+          },
+          {
+            "evidence": "papers 1; theorem refs 2/2; sources 2/2; executables 1; Living Book pages 1/1",
+            "id": "proof_backing",
+            "label": "paper, theorem, source, executable, and Living Book backing",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "review packet 7/7 sections",
+            "id": "review_entry",
+            "label": "skeptical-reader review entry",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "No new EKR proof and no classification of all extremal families.",
+            "id": "advertising_boundary",
+            "label": "advertising boundary",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "standard_parity_claimed": true,
+        "summary_lines": [
+          "Standard reference: The Katona circle method and the Erdos-Ko-Rado theorem for intersecting uniform set families.",
+          "Circle expression: Numberings, prefix-density counts, and intersecting families are exposed as theorem-backed finite-circle-method artifacts.",
+          "Circle-native value: The project can show the circle-method proof atom as an executable finite count, then connect it to a formal EKR theorem card.",
+          "Proof backing: 1 paper ids, 2/2 theorem refs, 2/2 source refs, 1 executable refs, and 1/1 Living Book page refs.",
+          "Boundary: No new EKR proof and no classification of all extremal families."
+        ],
+        "total_section_count": 6
+      },
       "portfolio_roles": [
         "standard_math_parity",
         "circle_native_value"
@@ -948,16 +1103,22 @@
             "passed": true
           },
           {
+            "evidence": "6/6 sections",
+            "id": "parity_value_comparison",
+            "label": "standard-parity versus Circle-native comparison",
+            "passed": true
+          },
+          {
             "evidence": "No new Roth proof, no improved bounds, and no cyclic-to-natural transfer theorem yet.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 20,
+        "passed_gate_count": 21,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 20
+        "total_gate_count": 21
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -1018,6 +1179,77 @@
       "paper_ids": [
         "PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES"
       ],
+      "parity_value_comparison_contract": {
+        "circle_native_claimed": true,
+        "ready_section_count": 6,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "Roth's theorem and the asymptotic sublinearity of maximal three-term-AP-free subsets of natural intervals.",
+            "id": "standard_reference",
+            "label": "standard-math reference point",
+            "ready": true,
+            "refs": [
+              "CC-T0066",
+              "CC-T0067"
+            ],
+            "standard_parity_claimed": true
+          },
+          {
+            "evidence": "Dense finite interval examples and AP witness searches are connected to formal Roth theorem handles.",
+            "id": "circle_expression",
+            "label": "Circle expression of the same surface",
+            "ready": true,
+            "refs": [
+              "Circle/Erdos/RothAP.lean",
+              "sidecars/PAPER_ERDOS_03_ROTH_THREE_AP_CIRCLES/python/test_roth_three_ap_examples.py"
+            ]
+          },
+          {
+            "circle_native_claimed": true,
+            "evidence": "Circle Math supplies a bridge toward cyclic AP models while keeping finite witness search, density claims, and Lean theorem status separated.",
+            "id": "circle_native_value",
+            "label": "Circle-native value claim",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/applications/erdos_bridges.qmd"
+              }
+            ]
+          },
+          {
+            "evidence": "papers 1; theorem refs 2/2; sources 2/2; executables 1; Living Book pages 1/1",
+            "id": "proof_backing",
+            "label": "paper, theorem, source, executable, and Living Book backing",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "review packet 7/7 sections",
+            "id": "review_entry",
+            "label": "skeptical-reader review entry",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "No new Roth proof, no improved bounds, and no cyclic-to-natural transfer theorem yet.",
+            "id": "advertising_boundary",
+            "label": "advertising boundary",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "standard_parity_claimed": true,
+        "summary_lines": [
+          "Standard reference: Roth's theorem and the asymptotic sublinearity of maximal three-term-AP-free subsets of natural intervals.",
+          "Circle expression: Dense finite interval examples and AP witness searches are connected to formal Roth theorem handles.",
+          "Circle-native value: Circle Math supplies a bridge toward cyclic AP models while keeping finite witness search, density claims, and Lean theorem status separated.",
+          "Proof backing: 1 paper ids, 2/2 theorem refs, 2/2 source refs, 1 executable refs, and 1/1 Living Book page refs.",
+          "Boundary: No new Roth proof, no improved bounds, and no cyclic-to-natural transfer theorem yet."
+        ],
+        "total_section_count": 6
+      },
       "portfolio_roles": [
         "standard_math_parity",
         "circle_native_value"
@@ -1357,16 +1589,22 @@
             "passed": true
           },
           {
+            "evidence": "6/6 sections",
+            "id": "parity_value_comparison",
+            "label": "standard-parity versus Circle-native comparison",
+            "passed": true
+          },
+          {
             "evidence": "Finite Python searches are examples only; they are not the Hales-Jewett proof.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 20,
+        "passed_gate_count": 21,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 20
+        "total_gate_count": 21
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -1427,6 +1665,77 @@
       "paper_ids": [
         "PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES"
       ],
+      "parity_value_comparison_contract": {
+        "circle_native_claimed": true,
+        "ready_section_count": 6,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "Hales-Jewett and Van der Waerden style unavoidable monochromatic-line or homothetic-copy theorems.",
+            "id": "standard_reference",
+            "label": "standard-math reference point",
+            "ready": true,
+            "refs": [
+              "CC-T0068",
+              "CC-T0069"
+            ],
+            "standard_parity_claimed": true
+          },
+          {
+            "evidence": "Finite coloring examples and combinatorial-line widgets can be attached to Lean theorem ids for the general Ramsey statements.",
+            "id": "circle_expression",
+            "label": "Circle expression of the same surface",
+            "ready": true,
+            "refs": [
+              "Circle/Erdos/RamseyHJ.lean",
+              "sidecars/PAPER_ERDOS_04_HALES_JEWETT_RAMSEY_CIRCLES/python/test_ramsey_hj_examples.py"
+            ]
+          },
+          {
+            "circle_native_claimed": true,
+            "evidence": "The Circle presentation can turn unavoidable structure into inspectable finite search artifacts without confusing examples for proofs.",
+            "id": "circle_native_value",
+            "label": "Circle-native value claim",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/applications/erdos_bridges.qmd"
+              }
+            ]
+          },
+          {
+            "evidence": "papers 1; theorem refs 2/2; sources 2/2; executables 1; Living Book pages 1/1",
+            "id": "proof_backing",
+            "label": "paper, theorem, source, executable, and Living Book backing",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "review packet 7/7 sections",
+            "id": "review_entry",
+            "label": "skeptical-reader review entry",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "Finite Python searches are examples only; they are not the Hales-Jewett proof.",
+            "id": "advertising_boundary",
+            "label": "advertising boundary",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "standard_parity_claimed": true,
+        "summary_lines": [
+          "Standard reference: Hales-Jewett and Van der Waerden style unavoidable monochromatic-line or homothetic-copy theorems.",
+          "Circle expression: Finite coloring examples and combinatorial-line widgets can be attached to Lean theorem ids for the general Ramsey statements.",
+          "Circle-native value: The Circle presentation can turn unavoidable structure into inspectable finite search artifacts without confusing examples for proofs.",
+          "Proof backing: 1 paper ids, 2/2 theorem refs, 2/2 source refs, 1 executable refs, and 1/1 Living Book page refs.",
+          "Boundary: Finite Python searches are examples only; they are not the Hales-Jewett proof."
+        ],
+        "total_section_count": 6
+      },
       "portfolio_roles": [
         "standard_math_parity",
         "circle_native_value"
@@ -1766,16 +2075,22 @@
             "passed": true
           },
           {
+            "evidence": "6/6 sections",
+            "id": "parity_value_comparison",
+            "label": "standard-parity versus Circle-native comparison",
+            "passed": true
+          },
+          {
             "evidence": "No progress on hard unit-distance or distinct-distance problems.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 20,
+        "passed_gate_count": 21,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 20
+        "total_gate_count": 21
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -1836,6 +2151,78 @@
       "paper_ids": [
         "PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS"
       ],
+      "parity_value_comparison_contract": {
+        "circle_native_claimed": true,
+        "ready_section_count": 6,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "Standard cycle graphs, circulant graphs, graph connectedness, and unit-distance embedding vocabulary.",
+            "id": "standard_reference",
+            "label": "standard-math reference point",
+            "ready": true,
+            "refs": [
+              "CC-T0070",
+              "CC-T0071",
+              "CC-T0072"
+            ],
+            "standard_parity_claimed": true
+          },
+          {
+            "evidence": "The one-step finite circle graph is presented as a circulant graph, with connectedness and a minimal unit-distance embedding constructor.",
+            "id": "circle_expression",
+            "label": "Circle expression of the same surface",
+            "ready": true,
+            "refs": [
+              "Circle/Erdos/GraphLab.lean",
+              "sidecars/PAPER_ERDOS_05_UNIT_DISTANCE_CIRCULANT_GRAPHS/python/test_circulant_graph_examples.py"
+            ]
+          },
+          {
+            "circle_native_claimed": true,
+            "evidence": "The graph lab makes cyclic graph structure explicit before moving to harder Euclidean incidence questions.",
+            "id": "circle_native_value",
+            "label": "Circle-native value claim",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/applications/erdos_bridges.qmd"
+              }
+            ]
+          },
+          {
+            "evidence": "papers 1; theorem refs 3/3; sources 2/2; executables 1; Living Book pages 1/1",
+            "id": "proof_backing",
+            "label": "paper, theorem, source, executable, and Living Book backing",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "review packet 7/7 sections",
+            "id": "review_entry",
+            "label": "skeptical-reader review entry",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "No progress on hard unit-distance or distinct-distance problems.",
+            "id": "advertising_boundary",
+            "label": "advertising boundary",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "standard_parity_claimed": true,
+        "summary_lines": [
+          "Standard reference: Standard cycle graphs, circulant graphs, graph connectedness, and unit-distance embedding vocabulary.",
+          "Circle expression: The one-step finite circle graph is presented as a circulant graph, with connectedness and a minimal unit-distance embedding constructor.",
+          "Circle-native value: The graph lab makes cyclic graph structure explicit before moving to harder Euclidean incidence questions.",
+          "Proof backing: 1 paper ids, 3/3 theorem refs, 2/2 source refs, 1 executable refs, and 1/1 Living Book page refs.",
+          "Boundary: No progress on hard unit-distance or distinct-distance problems."
+        ],
+        "total_section_count": 6
+      },
       "portfolio_roles": [
         "standard_math_parity",
         "circle_native_value"
@@ -2188,16 +2575,22 @@
             "passed": true
           },
           {
+            "evidence": "6/6 sections",
+            "id": "parity_value_comparison",
+            "label": "standard-parity versus Circle-native comparison",
+            "passed": true
+          },
+          {
             "evidence": "No claim that this replaces standard modular arithmetic; it is a proof-carrying cyclic presentation.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 20,
+        "passed_gate_count": 21,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 20
+        "total_gate_count": 21
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -2300,6 +2693,93 @@
         "PAPER_S1_04_FACTORS_SCALING_PRIME_COILS",
         "PAPER_01_FINITE_CIRCLES"
       ],
+      "parity_value_comparison_contract": {
+        "circle_native_claimed": true,
+        "ready_section_count": 6,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "Standard modular arithmetic, cyclic group orbits, gcd periods, kernels, images, and fibers of multiplication maps.",
+            "id": "standard_reference",
+            "label": "standard-math reference point",
+            "ready": true,
+            "refs": [
+              "CC-T0005",
+              "CC-T0006",
+              "CC-T0048",
+              "CC-T0049",
+              "CC-T0054",
+              "CC-T0061"
+            ],
+            "standard_parity_claimed": true
+          },
+          {
+            "evidence": "The S1 theorem spine expresses these facts as finite-circle period, orbit, scaling, image, kernel, and fiber theorems.",
+            "id": "circle_expression",
+            "label": "Circle expression of the same surface",
+            "ready": true,
+            "refs": [
+              "Circle/Core/Period.lean",
+              "Circle/Core/Orbit.lean",
+              "Circle/Core/Scaling.lean",
+              "sidecars/PAPER_S1_04_FACTORS_SCALING_PRIME_COILS/python/test_paper_s1_04_examples.py"
+            ]
+          },
+          {
+            "circle_native_claimed": true,
+            "evidence": "Circle Math organizes modular facts around movement, closure, fibers, and representatives, making them easier to browse and test.",
+            "id": "circle_native_value",
+            "label": "Circle-native value claim",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/S1/03_coils_orbits_closure.qmd",
+                "widget_ids": [
+                  "coil_orbit_explorer"
+                ]
+              },
+              {
+                "page": "site/chapters/S1/04_period_gcd_prime_full_coils.qmd",
+                "widget_ids": [
+                  "period_gcd_visualizer",
+                  "prime_full_coil_explorer"
+                ]
+              }
+            ]
+          },
+          {
+            "evidence": "papers 2; theorem refs 6/6; sources 4/4; executables 1; Living Book pages 2/2",
+            "id": "proof_backing",
+            "label": "paper, theorem, source, executable, and Living Book backing",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "review packet 7/7 sections",
+            "id": "review_entry",
+            "label": "skeptical-reader review entry",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "No claim that this replaces standard modular arithmetic; it is a proof-carrying cyclic presentation.",
+            "id": "advertising_boundary",
+            "label": "advertising boundary",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "standard_parity_claimed": true,
+        "summary_lines": [
+          "Standard reference: Standard modular arithmetic, cyclic group orbits, gcd periods, kernels, images, and fibers of multiplication maps.",
+          "Circle expression: The S1 theorem spine expresses these facts as finite-circle period, orbit, scaling, image, kernel, and fiber theorems.",
+          "Circle-native value: Circle Math organizes modular facts around movement, closure, fibers, and representatives, making them easier to browse and test.",
+          "Proof backing: 2 paper ids, 6/6 theorem refs, 4/4 source refs, 1 executable refs, and 2/2 Living Book page refs.",
+          "Boundary: No claim that this replaces standard modular arithmetic; it is a proof-carrying cyclic presentation."
+        ],
+        "total_section_count": 6
+      },
       "portfolio_roles": [
         "standard_math_parity",
         "circle_native_value"
@@ -2717,16 +3197,22 @@
             "passed": true
           },
           {
+            "evidence": "6/6 sections",
+            "id": "parity_value_comparison",
+            "label": "standard-parity versus Circle-native comparison",
+            "passed": true
+          },
+          {
             "evidence": "No full smooth Hopf fibration formalization and no complete SO(3) robotics formalization.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 20,
+        "passed_gate_count": 21,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 20
+        "total_gate_count": 21
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -2833,6 +3319,94 @@
         "PAPER_S3_03_HOPF_COILS",
         "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP"
       ],
+      "parity_value_comparison_contract": {
+        "circle_native_claimed": true,
+        "ready_section_count": 6,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "Quaternion unit algebra, Hopf-style phase coordinates, conjugation, and hidden phase symmetries.",
+            "id": "standard_reference",
+            "label": "standard-math reference point",
+            "ready": true,
+            "refs": [
+              "S3Q-T0005",
+              "S3Q-T0008",
+              "S3H-T0001",
+              "S3H-T0005",
+              "S3H-T0008",
+              "S3S-T0001",
+              "S3S-T0005"
+            ],
+            "standard_parity_claimed": true
+          },
+          {
+            "evidence": "Bounded quaternion, spin-sign, pure-vector, and Hopf coordinate facts are exposed through finite theorem spines with explicit topology warnings.",
+            "id": "circle_expression",
+            "label": "Circle expression of the same surface",
+            "ready": true,
+            "refs": [
+              "Circle/S3/Scaffold.lean",
+              "sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py",
+              "sidecars/PAPER_S3_03_HOPF_COILS/python/test_paper_s3_03_examples.py",
+              "sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py"
+            ]
+          },
+          {
+            "circle_native_claimed": true,
+            "evidence": "The Circle framing separates visible base coordinates from hidden phase in a way that is useful for teaching, widgets, and proof audits.",
+            "id": "circle_native_value",
+            "label": "Circle-native value claim",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/S3/hopf_coils.qmd",
+                "widget_ids": [
+                  "hopf_hidden_phase"
+                ]
+              },
+              {
+                "page": "site/chapters/applications/physics.qmd",
+                "widget_ids": [
+                  "hopf_hidden_phase",
+                  "spin_sign_ambiguity"
+                ]
+              }
+            ]
+          },
+          {
+            "evidence": "papers 3; theorem refs 7/7; sources 4/4; executables 3; Living Book pages 2/2",
+            "id": "proof_backing",
+            "label": "paper, theorem, source, executable, and Living Book backing",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "review packet 7/7 sections",
+            "id": "review_entry",
+            "label": "skeptical-reader review entry",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "No full smooth Hopf fibration formalization and no complete SO(3) robotics formalization.",
+            "id": "advertising_boundary",
+            "label": "advertising boundary",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "standard_parity_claimed": true,
+        "summary_lines": [
+          "Standard reference: Quaternion unit algebra, Hopf-style phase coordinates, conjugation, and hidden phase symmetries.",
+          "Circle expression: Bounded quaternion, spin-sign, pure-vector, and Hopf coordinate facts are exposed through finite theorem spines with explicit topology warnings.",
+          "Circle-native value: The Circle framing separates visible base coordinates from hidden phase in a way that is useful for teaching, widgets, and proof audits.",
+          "Proof backing: 3 paper ids, 7/7 theorem refs, 4/4 source refs, 3 executable refs, and 2/2 Living Book page refs.",
+          "Boundary: No full smooth Hopf fibration formalization and no complete SO(3) robotics formalization."
+        ],
+        "total_section_count": 6
+      },
       "portfolio_roles": [
         "standard_math_parity",
         "circle_native_value"
@@ -3265,16 +3839,22 @@
             "passed": true
           },
           {
+            "evidence": "6/6 sections",
+            "id": "parity_value_comparison",
+            "label": "standard-parity versus Circle-native comparison",
+            "passed": true
+          },
+          {
             "evidence": "No continuum gauge theory, no physics discovery, and no lattice-QCD correctness claim.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 20,
+        "passed_gate_count": 21,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 20
+        "total_gate_count": 21
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -3361,6 +3941,100 @@
       "paper_ids": [
         "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
       ],
+      "parity_value_comparison_contract": {
+        "circle_native_claimed": true,
+        "ready_section_count": 6,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "Discrete gauge-link paths, holonomy products, Wilson-loop style invariants, and checked path concatenation.",
+            "id": "standard_reference",
+            "label": "standard-math reference point",
+            "ready": true,
+            "refs": [
+              "PHYS-T0001",
+              "PHYS-T0012",
+              "PHYS-T0026",
+              "PHYS-T0038",
+              "PHYS-T0042",
+              "PHYS-T0046",
+              "PHYS-T0047",
+              "PHYS-T0049",
+              "PHYS-T0050",
+              "PHYS-T0051",
+              "PHYS-T0052",
+              "PHYS-T0053",
+              "PHYS-T0054",
+              "PHYS-T0055",
+              "PHYS-T0056",
+              "PHYS-T0057",
+              "PHYS-T0058",
+              "PHYS-T0059",
+              "PHYS-T0060",
+              "PHYS-T0061"
+            ],
+            "standard_parity_claimed": true
+          },
+          {
+            "evidence": "Finite gauge links and paths are represented with Lean-checked source-target and holonomy laws.",
+            "id": "circle_expression",
+            "label": "Circle expression of the same surface",
+            "ready": true,
+            "refs": [
+              "Circle/Physics/LatticeGauge.lean",
+              "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
+            ]
+          },
+          {
+            "circle_native_claimed": true,
+            "evidence": "Circle Math contributes proof-carrying finite records that can guard simulations and widgets against invalid path composition.",
+            "id": "circle_native_value",
+            "label": "Circle-native value claim",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/applications/physics.qmd",
+                "widget_ids": [
+                  "finite_path_algebra",
+                  "finite_gauge_loop_holonomy",
+                  "wilson_loop_certificate"
+                ]
+              }
+            ]
+          },
+          {
+            "evidence": "papers 1; theorem refs 20/20; sources 2/2; executables 1; Living Book pages 1/1",
+            "id": "proof_backing",
+            "label": "paper, theorem, source, executable, and Living Book backing",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "review packet 7/7 sections",
+            "id": "review_entry",
+            "label": "skeptical-reader review entry",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "No continuum gauge theory, no physics discovery, and no lattice-QCD correctness claim.",
+            "id": "advertising_boundary",
+            "label": "advertising boundary",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "standard_parity_claimed": true,
+        "summary_lines": [
+          "Standard reference: Discrete gauge-link paths, holonomy products, Wilson-loop style invariants, and checked path concatenation.",
+          "Circle expression: Finite gauge links and paths are represented with Lean-checked source-target and holonomy laws.",
+          "Circle-native value: Circle Math contributes proof-carrying finite records that can guard simulations and widgets against invalid path composition.",
+          "Proof backing: 1 paper ids, 20/20 theorem refs, 2/2 source refs, 1 executable refs, and 1/1 Living Book page refs.",
+          "Boundary: No continuum gauge theory, no physics discovery, and no lattice-QCD correctness claim."
+        ],
+        "total_section_count": 6
+      },
       "portfolio_roles": [
         "standard_math_parity",
         "circle_native_value",
@@ -3940,16 +4614,22 @@
             "passed": true
           },
           {
+            "evidence": "6/6 sections",
+            "id": "parity_value_comparison",
+            "label": "standard-parity versus Circle-native comparison",
+            "passed": true
+          },
+          {
             "evidence": "No universal compression claim and no guarantee that generated artifacts are mathematically interesting.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 20,
+        "passed_gate_count": 21,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 20
+        "total_gate_count": 21
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -4045,6 +4725,110 @@
         "PAPER_GEN_01_SEED_RULE_PROVENANCE",
         "PAPER_P2_05_PROOF_CARRYING_GLYPHS"
       ],
+      "parity_value_comparison_contract": {
+        "circle_native_claimed": true,
+        "ready_section_count": 6,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "Formal provenance, exact regeneration checks, orbit decompositions, and proof-carrying artifact records.",
+            "id": "standard_reference",
+            "label": "standard-math reference point",
+            "ready": true,
+            "refs": [
+              "GEN-T0001",
+              "GEN-T0008",
+              "GEN-T0017",
+              "GEN-T0019",
+              "GEN-T0020",
+              "GEN-T0021",
+              "GEN-T0022",
+              "GEN-T0024",
+              "GEN-T0026",
+              "GEN-T0027",
+              "GEN-T0028",
+              "GEN-T0029",
+              "GEN-T0030",
+              "GEN-T0031",
+              "GEN-T0032",
+              "GEN-T0033",
+              "GEN-T0034",
+              "GEN-T0035",
+              "GEN-T0036",
+              "GEN-T0037",
+              "GEN-T0038",
+              "GEN-T0039",
+              "GEN-T0040",
+              "GEN-T0041",
+              "GEN-T0042",
+              "GEN-T0043",
+              "P2G-T0006"
+            ],
+            "standard_parity_claimed": false
+          },
+          {
+            "evidence": "Seed rules, generator comparisons, proof glyphs, and exactness gates are expressed as finite Circle records and Lean facts.",
+            "id": "circle_expression",
+            "label": "Circle expression of the same surface",
+            "ready": true,
+            "refs": [
+              "Circle/Generative/SeedRule.lean",
+              "Circle/Phase2/GlyphProof.lean",
+              "sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py",
+              "sidecars/PAPER_P2_05_PROOF_CARRYING_GLYPHS/python/test_proof_glyph_examples.py"
+            ]
+          },
+          {
+            "circle_native_claimed": true,
+            "evidence": "This is a Circle-native value proposition: generated artifacts can carry exact source trails and negative-case checks instead of loose visual claims.",
+            "id": "circle_native_value",
+            "label": "Circle-native value claim",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/applications/generative.qmd",
+                "widget_ids": [
+                  "seed_rule_diagram_generator",
+                  "orbit_family_generator",
+                  "proof_glyph_certificate",
+                  "generator_comparison_search"
+                ]
+              }
+            ]
+          },
+          {
+            "evidence": "papers 2; theorem refs 27/27; sources 4/4; executables 2; Living Book pages 1/1",
+            "id": "proof_backing",
+            "label": "paper, theorem, source, executable, and Living Book backing",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "review packet 7/7 sections",
+            "id": "review_entry",
+            "label": "skeptical-reader review entry",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "No universal compression claim and no guarantee that generated artifacts are mathematically interesting.",
+            "id": "advertising_boundary",
+            "label": "advertising boundary",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "standard_parity_claimed": false,
+        "summary_lines": [
+          "Standard reference: Formal provenance, exact regeneration checks, orbit decompositions, and proof-carrying artifact records.",
+          "Circle expression: Seed rules, generator comparisons, proof glyphs, and exactness gates are expressed as finite Circle records and Lean facts.",
+          "Circle-native value: This is a Circle-native value proposition: generated artifacts can carry exact source trails and negative-case checks instead of loose visual claims.",
+          "Proof backing: 2 paper ids, 27/27 theorem refs, 4/4 source refs, 2 executable refs, and 1/1 Living Book page refs.",
+          "Boundary: No universal compression claim and no guarantee that generated artifacts are mathematically interesting."
+        ],
+        "total_section_count": 6
+      },
       "portfolio_roles": [
         "circle_native_value",
         "application_guardrail"
@@ -4647,7 +5431,7 @@
             "passed": true
           },
           {
-            "evidence": "Lean-proved finite memory-slot, loop-budget, active-token-step, looped recurrent-state, positive raw-budget closure, middle-block route, combined route/budget common-cycle, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
+            "evidence": "Lean-proved finite memory-slot, loop-budget, active-token-step, looped recurrent-state, positive raw-budget closure, middle-block route, combined route/budget one-cycle and multi-cycle common-cycle closure, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
             "id": "proof_scope",
             "label": "proof scope",
             "passed": true
@@ -4659,7 +5443,7 @@
             "passed": true
           },
           {
-            "evidence": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, looped recurrent-state, positive raw-budget closure, active-step, middle-block route, combined route/budget, certificate, and adapter-index safety facts; benchmarks remain separate.",
+            "evidence": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, looped recurrent-state, positive raw-budget closure, active-step, middle-block route, combined route/budget common-cycle closure, certificate, and adapter-index safety facts; benchmarks remain separate.",
             "id": "proof_provenance",
             "label": "proof provenance text",
             "passed": true
@@ -4671,7 +5455,7 @@
             "passed": true
           },
           {
-            "evidence": "33",
+            "evidence": "34",
             "id": "proved_theorem_ids",
             "label": "proved paper-carried theorem ids",
             "passed": true
@@ -4713,7 +5497,7 @@
             "passed": true
           },
           {
-            "evidence": "standard_math_parity theorems 33/33; circle_native_value sources 5/5; Living Book pages 1/1; application_guardrail language clean",
+            "evidence": "standard_math_parity theorems 34/34; circle_native_value sources 5/5; Living Book pages 1/1; application_guardrail language clean",
             "id": "value_proposition",
             "label": "role-backed value proposition",
             "passed": true
@@ -4731,16 +5515,22 @@
             "passed": true
           },
           {
+            "evidence": "6/6 sections",
+            "id": "parity_value_comparison",
+            "label": "standard-parity versus Circle-native comparison",
+            "passed": true
+          },
+          {
             "evidence": "No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 20,
+        "passed_gate_count": 21,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 20
+        "total_gate_count": 21
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -4772,7 +5562,7 @@
         "living_book_widget_count": 7,
         "paper_count": 2,
         "source_count": 5,
-        "theorem_count": 33
+        "theorem_count": 34
       },
       "executable_refs": [
         "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
@@ -4859,14 +5649,129 @@
         "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
         "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
       ],
+      "parity_value_comparison_contract": {
+        "circle_native_claimed": true,
+        "ready_section_count": 6,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "Finite cyclic buffers, schedule normalization, recurrence budgets, and modular adapter indexing.",
+            "id": "standard_reference",
+            "label": "standard-math reference point",
+            "ready": true,
+            "refs": [
+              "AIM-T0001",
+              "AIM-T0005",
+              "AIM-T0011",
+              "AIM-T0017",
+              "AIM-T0022",
+              "AIM-T0024",
+              "AIM-T0025",
+              "AIM-T0031",
+              "AIM-T0032",
+              "AIM-T0033",
+              "AIM-T0034",
+              "AIM-T0035",
+              "AIM-T0036",
+              "AIM-T0037",
+              "AIM-T0038",
+              "AIM-T0039",
+              "AIM-T0040",
+              "AIM-T0041",
+              "AIM-T0042",
+              "AIM-T0043",
+              "AIM-T0044",
+              "AIM-T0045",
+              "AIM-T0046",
+              "AIM-T0047",
+              "AIM-T0048",
+              "AIM-T0056",
+              "AIM-T0049",
+              "AIM-T0050",
+              "AIM-T0051",
+              "AIM-T0052",
+              "AIM-T0053",
+              "AIM-T0054",
+              "AIM-T0055",
+              "AIRA-T0005"
+            ],
+            "standard_parity_claimed": true
+          },
+          {
+            "evidence": "AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
+            "id": "circle_expression",
+            "label": "Circle expression of the same surface",
+            "ready": true,
+            "refs": [
+              "Circle/Applications/CircleAI.lean",
+              "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/lean/PaperAI02.lean",
+              "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/lean/PaperAI03.lean",
+              "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
+              "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"
+            ]
+          },
+          {
+            "circle_native_claimed": true,
+            "evidence": "Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made.",
+            "id": "circle_native_value",
+            "label": "Circle-native value claim",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/applications/ai.qmd",
+                "widget_ids": [
+                  "cyclic_memory_slots",
+                  "loop_recurrence_budget",
+                  "loop_exit_certificate",
+                  "token_level_recurrence",
+                  "learned_middle_block_recurrence",
+                  "training_free_loop_wrapper",
+                  "adapter_parameter_budget"
+                ]
+              }
+            ]
+          },
+          {
+            "evidence": "papers 2; theorem refs 34/34; sources 5/5; executables 2; Living Book pages 1/1",
+            "id": "proof_backing",
+            "label": "paper, theorem, source, executable, and Living Book backing",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "review packet 7/7 sections",
+            "id": "review_entry",
+            "label": "skeptical-reader review entry",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence.",
+            "id": "advertising_boundary",
+            "label": "advertising boundary",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "standard_parity_claimed": true,
+        "summary_lines": [
+          "Standard reference: Finite cyclic buffers, schedule normalization, recurrence budgets, and modular adapter indexing.",
+          "Circle expression: AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
+          "Circle-native value: Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made.",
+          "Proof backing: 2 paper ids, 34/34 theorem refs, 5/5 source refs, 2 executable refs, and 1/1 Living Book page refs.",
+          "Boundary: No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence."
+        ],
+        "total_section_count": 6
+      },
       "portfolio_roles": [
         "standard_math_parity",
         "circle_native_value",
         "application_guardrail"
       ],
-      "proof_provenance": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, looped recurrent-state, positive raw-budget closure, active-step, middle-block route, combined route/budget, certificate, and adapter-index safety facts; benchmarks remain separate.",
+      "proof_provenance": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, looped recurrent-state, positive raw-budget closure, active-step, middle-block route, combined route/budget common-cycle closure, certificate, and adapter-index safety facts; benchmarks remain separate.",
       "proof_provenance_kind": "project_native",
-      "proof_scope": "Lean-proved finite memory-slot, loop-budget, active-token-step, looped recurrent-state, positive raw-budget closure, middle-block route, combined route/budget common-cycle, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
+      "proof_scope": "Lean-proved finite memory-slot, loop-budget, active-token-step, looped recurrent-state, positive raw-budget closure, middle-block route, combined route/budget one-cycle and multi-cycle common-cycle closure, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
       "proof_trail_contract": {
         "passed_step_count": 7,
         "ready_to_advertise": true,
@@ -4878,7 +5783,7 @@
             "ready": true
           },
           {
-            "evidence": "33/33 theorem refs",
+            "evidence": "34/34 theorem refs",
             "id": "theorem_refs",
             "label": "proved paper-carried theorem refs",
             "ready": true
@@ -4939,7 +5844,7 @@
             ]
           },
           {
-            "evidence": "33/33 theorem refs",
+            "evidence": "34/34 theorem refs",
             "id": "theorem_trail",
             "label": "proved theorem trail",
             "ready": true,
@@ -4969,6 +5874,7 @@
               "AIM-T0046",
               "AIM-T0047",
               "AIM-T0048",
+              "AIM-T0056",
               "AIM-T0049",
               "AIM-T0050",
               "AIM-T0051",
@@ -5104,6 +6010,7 @@
         "AIM-T0046",
         "AIM-T0047",
         "AIM-T0048",
+        "AIM-T0056",
         "AIM-T0049",
         "AIM-T0050",
         "AIM-T0051",
@@ -5114,7 +6021,7 @@
         "AIRA-T0005"
       ],
       "theorem_ref_contract": {
-        "proved_and_paper_backed_count": 33,
+        "proved_and_paper_backed_count": 34,
         "refs": [
           {
             "canonical_status": "proved",
@@ -5396,6 +6303,17 @@
             "carried_by_papers": [
               "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
             ],
+            "id": "AIM-T0056",
+            "lean_name": "Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
             "id": "AIM-T0049",
             "lean_name": "Circle.Applications.loopedRecurrentState_lt_period",
             "paper_backed": true,
@@ -5480,7 +6398,7 @@
             "status": "lean_proved"
           }
         ],
-        "total_count": 33,
+        "total_count": 34,
         "unproved_or_unbacked_ids": []
       },
       "title": "AI memory, loop, and adapter schedules",
@@ -5498,7 +6416,7 @@
             "required": true
           },
           "standard_math_parity": {
-            "evidence": "theorems 33/33",
+            "evidence": "theorems 34/34",
             "ready": true,
             "required": true
           }
@@ -5634,16 +6552,22 @@
             "passed": true
           },
           {
+            "evidence": "6/6 sections",
+            "id": "parity_value_comparison",
+            "label": "standard-parity versus Circle-native comparison",
+            "passed": true
+          },
+          {
             "evidence": "No performance claim without direct dense, FFT/NTT, and backend baselines.",
             "id": "claim_boundary",
             "label": "not-claimed boundary",
             "passed": true
           }
         ],
-        "passed_gate_count": 20,
+        "passed_gate_count": 21,
         "ready_to_advertise": true,
         "status": "ready",
-        "total_gate_count": 20
+        "total_gate_count": 21
       },
       "claim_language_contract": {
         "boundary_field": "not_claimed",
@@ -5710,6 +6634,81 @@
         "PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT",
         "PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS"
       ],
+      "parity_value_comparison_contract": {
+        "circle_native_claimed": true,
+        "ready_section_count": 6,
+        "ready_to_advertise": true,
+        "ready_to_review": true,
+        "sections": [
+          {
+            "evidence": "Circular buffers, periodic stencils, stride-address formulas, and round-robin scheduling laws.",
+            "id": "standard_reference",
+            "label": "standard-math reference point",
+            "ready": true,
+            "refs": [
+              "COMPC-T0005",
+              "COMPL-T0005",
+              "COMPS-T0004"
+            ],
+            "standard_parity_claimed": true
+          },
+          {
+            "evidence": "Compute layouts are expressed as finite address normalization, stride-address, and schedule-preservation theorems.",
+            "id": "circle_expression",
+            "label": "Circle expression of the same surface",
+            "ready": true,
+            "refs": [
+              "Circle/Applications/CoilCompute.lean",
+              "Circle/Applications/CoilSystems.lean",
+              "sidecars/PAPER_COMP_01_PROOF_CARRYING_CIRCULAR_COMPUTATION/python/test_cyclic_address_examples.py",
+              "sidecars/PAPER_COMP_03_COIL_LAYOUT_STENCIL_NTT/python/test_stride_address_examples.py",
+              "sidecars/PAPER_COMP_04_COIL_SYSTEMS_APPLICATIONS/python/test_round_robin_slot_examples.py"
+            ]
+          },
+          {
+            "circle_native_claimed": true,
+            "evidence": "The Circle form can certify when cyclic structure is real enough to justify backend experiments, while requiring benchmarks for performance claims.",
+            "id": "circle_native_value",
+            "label": "Circle-native value claim",
+            "ready": true,
+            "refs": [
+              {
+                "page": "site/chapters/applications/compute.qmd"
+              }
+            ]
+          },
+          {
+            "evidence": "papers 3; theorem refs 3/3; sources 5/5; executables 3; Living Book pages 1/1",
+            "id": "proof_backing",
+            "label": "paper, theorem, source, executable, and Living Book backing",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "review packet 7/7 sections",
+            "id": "review_entry",
+            "label": "skeptical-reader review entry",
+            "ready": true,
+            "refs": []
+          },
+          {
+            "evidence": "No performance claim without direct dense, FFT/NTT, and backend baselines.",
+            "id": "advertising_boundary",
+            "label": "advertising boundary",
+            "ready": true,
+            "refs": []
+          }
+        ],
+        "standard_parity_claimed": true,
+        "summary_lines": [
+          "Standard reference: Circular buffers, periodic stencils, stride-address formulas, and round-robin scheduling laws.",
+          "Circle expression: Compute layouts are expressed as finite address normalization, stride-address, and schedule-preservation theorems.",
+          "Circle-native value: The Circle form can certify when cyclic structure is real enough to justify backend experiments, while requiring benchmarks for performance claims.",
+          "Proof backing: 3 paper ids, 3/3 theorem refs, 5/5 source refs, 3 executable refs, and 1/1 Living Book page refs.",
+          "Boundary: No performance claim without direct dense, FFT/NTT, and backend baselines."
+        ],
+        "total_section_count": 6
+      },
       "portfolio_roles": [
         "standard_math_parity",
         "circle_native_value",
@@ -6850,8 +7849,8 @@
           "unbacked_refs": []
         },
         "theorem_refs": {
-          "proved_and_paper_backed_count": 63,
-          "total_count": 63,
+          "proved_and_paper_backed_count": 64,
+          "total_count": 64,
           "unproved_or_unbacked_refs": []
         },
         "unique_evidence_counts": {
@@ -6861,7 +7860,7 @@
           "living_book_widget_count": 11,
           "paper_count": 7,
           "source_count": 14,
-          "theorem_count": 63
+          "theorem_count": 64
         },
         "unknown_capability_ids": []
       },
@@ -6922,7 +7921,7 @@
             ]
           },
           {
-            "evidence": "papers 7; theorem refs 63; source refs 14; executables 7; Living Book pages 3",
+            "evidence": "papers 7; theorem refs 64; source refs 14; executables 7; Living Book pages 3",
             "id": "proof_backing_counts",
             "label": "proof-backed evidence counts",
             "ready": true,
@@ -6970,7 +7969,7 @@
         "summary_lines": [
           "Audience: Builders who want generated artifacts, cyclic AI schedules, and compute layouts to carry checkable provenance before performance or quality claims.",
           "Capability surface: 3 route lanes across AI systems, Computation, Generation and compression interfaces.",
-          "Proof backing: 63 proved theorem refs, 7 paper ids, 14 source refs, 7 executable refs, and 3 Living Book page refs.",
+          "Proof backing: 64 proved theorem refs, 7 paper ids, 14 source refs, 7 executable refs, and 3 Living Book page refs.",
           "Circle-native value: 3 lanes state explicit Circle expression/value statements with role-backed checks.",
           "Boundary: This route does not claim universal compression, model-quality improvement, speedup, or context-length improvement without benchmark evidence."
         ],
@@ -7035,7 +8034,7 @@
             ]
           },
           {
-            "evidence": "provenance project_native; theorems 63/63; sources 14/14",
+            "evidence": "provenance project_native; theorems 64/64; sources 14/14",
             "id": "proof_provenance_surface",
             "label": "proof provenance and backing surface",
             "ready": true,
@@ -7086,6 +8085,11 @@
         "unbacked_pages": [],
         "unbacked_widgets": []
       },
+      "parity_value_comparisons": {
+        "incomplete_capability_ids": [],
+        "ready_count": 11,
+        "total_count": 11
+      },
       "ready_to_advertise": true,
       "review_packets": {
         "incomplete_capability_ids": [],
@@ -7098,8 +8102,8 @@
         "unbacked_refs": []
       },
       "theorem_refs": {
-        "proved_and_paper_backed_count": 107,
-        "total_count": 107,
+        "proved_and_paper_backed_count": 108,
+        "total_count": 108,
         "unproved_or_unbacked_refs": []
       }
     },
@@ -7116,7 +8120,7 @@
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 107
+      "theorem_count": 108
     },
     "proof_provenance_counts": {
       "mathlib_bridge": 4,
@@ -7144,7 +8148,7 @@
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 107
+      "theorem_count": 108
     },
     "unique_living_book_pages": [
       "site/chapters/S1/03_coils_orbits_closure.qmd",

@@ -5767,6 +5767,12 @@
           "lean_name": "Circle.Applications.loopedRecurrentState_budget_add_mul_period",
           "name": "Circle.Applications.loopedRecurrentState_budget_add_mul_period",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0056",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle",
+          "name": "Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -6113,6 +6119,12 @@
           "id": "AIM-T0055",
           "lean_name": "Circle.Applications.loopedRecurrentState_budget_add_mul_period",
           "name": "Circle.Applications.loopedRecurrentState_budget_add_mul_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0056",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle",
+          "name": "Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle",
           "status": "proved"
         }
       ],
@@ -6545,6 +6557,12 @@
           "id": "AIM-T0055",
           "lean_name": "Circle.Applications.loopedRecurrentState_budget_add_mul_period",
           "name": "Circle.Applications.loopedRecurrentState_budget_add_mul_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0056",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle",
+          "name": "Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle",
           "status": "proved"
         }
       ],
@@ -8723,6 +8741,12 @@
           "id": "AIM-T0048",
           "lean_name": "Circle.Applications.middleBlockBudgetRoute_add_commonCycle",
           "name": "Circle.Applications.middleBlockBudgetRoute_add_commonCycle",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0056",
+          "lean_name": "Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle",
+          "name": "Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle",
           "status": "proved"
         }
       ],

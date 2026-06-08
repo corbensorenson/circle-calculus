@@ -284,6 +284,25 @@ theorem middleBlockBudgetRoute_add_commonCycle
     exact middleBlockRoute_add_mul_width hwidth start sample loopPeriod
   · exact tokenRecurrenceBudget_add_mul_loopPeriod hloop sample width
 
+theorem middleBlockBudgetRoute_add_mul_commonCycle
+    {width loopPeriod : Nat} (hwidth : 0 < width) (hloop : 0 < loopPeriod)
+    (start sample passes : Nat) :
+    middleBlockBudgetRoute start width loopPeriod
+        (sample + passes * (width * loopPeriod)) =
+      middleBlockBudgetRoute start width loopPeriod sample := by
+  unfold middleBlockBudgetRoute
+  apply Prod.ext
+  · rw [
+      show passes * (width * loopPeriod) =
+        (passes * loopPeriod) * width by ac_rfl,
+    ]
+    exact middleBlockRoute_add_mul_width hwidth start sample (passes * loopPeriod)
+  · rw [
+      show passes * (width * loopPeriod) =
+        (passes * width) * loopPeriod by ac_rfl,
+    ]
+    exact tokenRecurrenceBudget_add_mul_loopPeriod hloop sample (passes * width)
+
 def trainingFreeLoopBudget (loopPeriod sample maxLoops : Nat) : Nat :=
   min (loopRequiredSteps loopPeriod sample) maxLoops
 

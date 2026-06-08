@@ -180,6 +180,10 @@ def test_export_site_data_writes_required_indexes() -> None:
         item["review_packet_contract"]["ready_to_review"]
         for item in capabilities["capabilities"]
     )
+    assert all(
+        item["parity_value_comparison_contract"]["ready_to_review"]
+        for item in capabilities["capabilities"]
+    )
     assert capability_by_id["SHOW-001"]["value_proposition_contract"]["role_checks"][
         "standard_math_parity"
     ]["ready"]
@@ -231,6 +235,51 @@ def test_export_site_data_writes_required_indexes() -> None:
         "python -m pytest "
         "sidecars/PAPER_ERDOS_01_ZERO_SUM_CIRCLES/python/test_zero_sum_circle_examples.py"
     )
+    assert capability_by_id["SHOW-001"]["parity_value_comparison_contract"][
+        "ready_section_count"
+    ] == (
+        capability_by_id["SHOW-001"]["parity_value_comparison_contract"][
+            "total_section_count"
+        ]
+    )
+    assert [
+        section["id"]
+        for section in capability_by_id["SHOW-001"][
+            "parity_value_comparison_contract"
+        ]["sections"]
+    ] == [
+        "standard_reference",
+        "circle_expression",
+        "circle_native_value",
+        "proof_backing",
+        "review_entry",
+        "advertising_boundary",
+    ]
+    assert capability_by_id["SHOW-001"]["parity_value_comparison_contract"][
+        "standard_parity_claimed"
+    ]
+    assert capability_by_id["SHOW-001"]["parity_value_comparison_contract"][
+        "circle_native_claimed"
+    ]
+    show_001_theorem_contract = capability_by_id["SHOW-001"]["theorem_ref_contract"]
+    show_001_source_contract = capability_by_id["SHOW-001"]["source_ref_contract"]
+    show_001_living_contract = capability_by_id["SHOW-001"][
+        "living_book_ref_contract"
+    ]
+    show_001_counts = capability_by_id["SHOW-001"]["evidence_counts"]
+    assert capability_by_id["SHOW-001"]["parity_value_comparison_contract"][
+        "sections"
+    ][3]["evidence"] == (
+        f"papers {show_001_counts['paper_count']}; "
+        f"theorem refs "
+        f"{show_001_theorem_contract['proved_and_paper_backed_count']}/"
+        f"{show_001_theorem_contract['total_count']}; "
+        f"sources {show_001_source_contract['backed_count']}/"
+        f"{show_001_source_contract['total_count']}; "
+        f"executables {show_001_counts['executable_count']}; "
+        f"Living Book pages {show_001_living_contract['backed_page_count']}/"
+        f"{show_001_living_contract['total_page_count']}"
+    )
     assert capability_by_id["SHOW-001"]["claim_contract"]["status"] == "ready"
     assert capability_by_id["SHOW-001"]["claim_contract"]["passed_gate_count"] == (
         capability_by_id["SHOW-001"]["claim_contract"]["total_gate_count"]
@@ -251,6 +300,9 @@ def test_export_site_data_writes_required_indexes() -> None:
         gate["id"] for gate in capability_by_id["SHOW-001"]["claim_contract"]["gates"]
     }
     assert "review_packet" in {
+        gate["id"] for gate in capability_by_id["SHOW-001"]["claim_contract"]["gates"]
+    }
+    assert "parity_value_comparison" in {
         gate["id"] for gate in capability_by_id["SHOW-001"]["claim_contract"]["gates"]
     }
     assert capability_by_id["SHOW-001"]["verification_recipe"]["pytest_command"] == (
@@ -419,6 +471,11 @@ def test_export_site_data_writes_required_indexes() -> None:
     assert backing_summary["living_book_refs"]["unbacked_pages"] == []
     assert backing_summary["living_book_refs"]["unbacked_widgets"] == []
     assert backing_summary["review_packets"] == {
+        "ready_count": len(capabilities["capabilities"]),
+        "total_count": len(capabilities["capabilities"]),
+        "incomplete_capability_ids": [],
+    }
+    assert backing_summary["parity_value_comparisons"] == {
         "ready_count": len(capabilities["capabilities"]),
         "total_count": len(capabilities["capabilities"]),
         "incomplete_capability_ids": [],

@@ -43,6 +43,7 @@ namespace Circle.PaperAI02
 #check Circle.Applications.middleBlockBudgetRoute_budget_pos
 #check Circle.Applications.middleBlockBudgetRoute_budget_le_loopPeriod
 #check Circle.Applications.middleBlockBudgetRoute_add_commonCycle
+#check Circle.Applications.middleBlockBudgetRoute_add_mul_commonCycle
 #check Circle.Applications.trainingFreeLoopBudget_le_maxLoops
 #check Circle.Applications.trainingFreeLoopBudget_le_requiredSteps
 #check Circle.Applications.trainingFreeLoopBudget_add_loopPeriod
