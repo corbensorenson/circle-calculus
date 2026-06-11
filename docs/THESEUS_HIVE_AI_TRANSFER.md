@@ -259,22 +259,25 @@ python scripts/circle_ai_scored_private_benchmarks.py \
   --contracts "../circle math/site/data/generated/theseus_hive_ai_contracts.json"
 ```
 
-The scored benchmark layer currently implements four ids:
+The scored benchmark layer currently implements five ids:
 
 ```text
 circle_candidate_fanout_scored_manifest_v1
 circle_candidate_fanout_semantic_frontier_v1
 circle_candidate_fanout_equal_budget_semantic_v1
 circle_recurrence_work_budget_semantic_v1
+circle_memory_context_packet_retrieval_v1
 ```
 
-The first compares Circle striding against sequential fanout, round-robin fanout, local-window selection, deterministic-random-like selection, and mode-stratified existing selection on private candidate-manifest score and gate fields. The second joins existing private frontier score reports to candidate manifests and reports semantic pass-rate context. The third freshly executes equal-budget candidate selections against local private heldout tests and exports aggregate-only pass-rate/runtime counters. The fourth treats the exported recurrence contract as a deterministic work-budget schedule and compares it with ordinary fixed-depth baselines under those same local private heldout tests. Its current state is still `YELLOW`: `scored_private_candidate_benchmark_results_present = true`, `semantic_pass_rate_present = true`, `fresh_equal_budget_semantic_results_present = true`, `scored_recurrence_budget_results_present = true`, `learned_model_quality_metrics_present = false`, `external_inference_calls = 0`, `training_mutation = false`, `promotion_evidence = false`, and `private_data_exported = false`.
+The first compares Circle striding against sequential fanout, round-robin fanout, local-window selection, deterministic-random-like selection, and mode-stratified existing selection on private candidate-manifest score and gate fields. The second joins existing private frontier score reports to candidate manifests and reports semantic pass-rate context. The third freshly executes equal-budget candidate selections against local private heldout tests and exports aggregate-only pass-rate/runtime counters. The fourth treats the exported recurrence contract as a deterministic work-budget schedule and compares it with ordinary fixed-depth baselines under those same local private heldout tests. The fifth reads the local context-packet ledger and compares residue-plus-winding memory against ordinary context-packet retention baselines without exporting packet text. Its current state is still `YELLOW`: `scored_private_candidate_benchmark_results_present = true`, `semantic_pass_rate_present = true`, `fresh_equal_budget_semantic_results_present = true`, `scored_recurrence_budget_results_present = true`, `scored_memory_context_results_present = true`, `learned_model_quality_metrics_present = false`, `external_inference_calls = 0`, `training_mutation = false`, `promotion_evidence = false`, and `private_data_exported = false`.
 
 The semantic context is useful but not a win claim. The attached score report has full-inventory pass rate `1.0`, frontier-only pass rate `0.961538`, same-seed control pass rate `0.057692`, Circle stride budget-one pass rate `1.0`, sequential rank-one pass rate `1.0`, and direct global-contract-path projection budget-two pass rate `0.038462`. That last number is evidence that the exported global fanout path should not be naively projected onto per-task candidate ranks.
 
 The fresh equal-budget run is also useful but not a win claim. On the full private frontier, it scores `1040` tasks across `26` categories with `unscored_task_count = 0` and `policy_count = 8`. Circle stride budget-one pass rate is `1.0`, sequential rank-one pass rate is `1.0`, Circle stride budget-two pass rate is `1.0`, sequential rank-two pass rate is `1.0`, Circle best minus ordinary best is `0.0`, and both Circle stride budget-one and sequential rank-one have zero failing categories. This validates the full private execution loop while showing no advantage over the rank baseline.
 
 The recurrence work-budget run is the first scored recurrence attachment. On the full private frontier, it scores `1040` tasks across `26` categories with `unscored_task_count = 0`, `policy_count = 7`, recurrence budget pattern `[1, 2, 3, 4, 5, 1, 2, 3]`, Circle repeating-budget pass rate `1.0`, ordinary rank-one pass rate `1.0`, Circle repeating minus ordinary rank-one `0.0`, Circle best minus ordinary best `0.0`, Circle requested budget total `2730`, ordinary rank-one requested budget total `1040`, and zero failing categories for both Circle repeating-budget and ordinary rank-one. This promotes recurrence from metadata attachment to scored private workload, but the current workload is saturated by ordinary rank-one and therefore is not a Circle advantage claim.
+
+The context-packet memory run is the first scored memory attachment. On the local context ledger, it scores `37` packet targets with `bank_size = 8` and `retention_budget = 8`. Full residue-plus-winding identity has hit rate `1.0` with retention cost units `74`. The equal-budget Circle slot-balanced policy has hit rate `0.216216`; ordinary score-top, FIFO-recent, and slot-only-latest baselines also have hit rate `0.216216`, so Circle slot-balanced minus best ordinary is `0.0`. This promotes memory from alias metadata to scored retrieval/retention accounting, but it is not downstream memory-usefulness evidence.
 
 The companion smoke workload layer gives each family a stable named workload slot:
 
@@ -315,14 +318,14 @@ circle_seed_rule_real_provenance_summary_v1
 
 That report is still intentionally `YELLOW`: all six families attach to real local private/synthetic/report-summary artifacts, `real_local_workload_aggregates_present = true`, `learned_model_quality_metrics_present = false`, `real_private_model_benchmark_results_present = false`, `external_inference_calls = 0`, `training_mutation = false`, `promotion_evidence = false`, and `private_data_exported = false`. It does not copy private row bodies, prompts, tests, solution code, candidate code, or learned-model scores into this public repository.
 
-The scored layer is stronger but still limited benchmark evidence: it has named private workloads, baselines, metrics, scripts, reports, imported semantic score context, fresh equal-budget private semantic execution, and fresh recurrence work-budget execution. It still does not show a Circle advantage over the relevant ordinary baselines.
+The scored layer is stronger but still limited benchmark evidence: it has named private workloads, baselines, metrics, scripts, reports, imported semantic score context, fresh equal-budget private semantic execution, fresh recurrence work-budget execution, and context-packet memory retrieval scoring. It still does not show a Circle advantage over the relevant ordinary baselines.
 
 The next concrete private Theseus-Hive milestone is to use the full-frontier failure/runtime tables to design workloads and Circle policies that differ from ordinary rank-one or fixed-depth baselines when evidence supports them:
 
 1. Consume `site/data/generated/theseus_hive_ai_contracts.json` only as private experiment configuration, not as public-calibration data.
 2. Use `circle_candidate_fanout_equal_budget_semantic_v1` to design a Circle selection rule that differs from ordinary rank-one when evidence supports it.
 3. Use `circle_recurrence_work_budget_semantic_v1` to design a recurrence workload where loop depth matters and ordinary rank-one no longer saturates the task.
-4. Promote `circle_memory_alias_real_trace_v1` to context-packet retrieval with target hit rate, retention cost, and latency.
+4. Attach task-level retrieval targets, answer quality, and latency measurements to `circle_memory_context_packet_retrieval_v1`.
 5. Promote `circle_phase_feature_real_sequence_v1` to no-phase, wrong-period, and Circle-phase heldout ablations.
 6. Promote `circle_mixer_real_report_summary_v1` to dense/low-rank/no-mixer/circulant/block-cyclic route-ranker benchmarks.
 7. Promote `circle_seed_rule_real_provenance_summary_v1` to exact regeneration cost and verifier residual benchmarks.

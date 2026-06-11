@@ -149,7 +149,7 @@ The companion Theseus-Hive workspace now has five report-only local layers:
 - `scripts/circle_ai_private_workload_smoke.py` gives each family a named structural workload slot;
 - `scripts/circle_ai_private_proxy_benchmark.py` measures deterministic baseline metrics for those six proxy workloads without training or scoring a learned model;
 - `scripts/circle_ai_real_workload_attachments.py` reads local Theseus-Hive artifacts and emits aggregate-only workload attachments without exporting private row content;
-- `scripts/circle_ai_scored_private_benchmarks.py` compares candidate-fanout and recurrence work-budget contracts against ordinary baselines using private candidate-manifest score/gate fields and local private heldout tests.
+- `scripts/circle_ai_scored_private_benchmarks.py` compares candidate-fanout, recurrence work-budget, and cyclic-memory contracts against ordinary baselines using private candidate-manifest score/gate fields, local private heldout tests, and the local context-packet ledger.
 
 The smoke workload ids are:
 
@@ -191,15 +191,18 @@ circle_candidate_fanout_scored_manifest_v1
 circle_candidate_fanout_semantic_frontier_v1
 circle_candidate_fanout_equal_budget_semantic_v1
 circle_recurrence_work_budget_semantic_v1
+circle_memory_context_packet_retrieval_v1
 ```
 
-The first compares Circle striding with sequential, round-robin, local-window, deterministic-random-like, and mode-stratified existing selection on private candidate-manifest scores and gates. The second joins existing private frontier score reports to candidate manifests and reports semantic pass-rate context. The third freshly executes equal-budget candidate selections against local private heldout tests and exports aggregate-only pass-rate/runtime counters. The fourth treats the exported recurrence contract as a deterministic work-budget schedule and compares it with ordinary fixed-depth baselines under the same local private tests.
+The first compares Circle striding with sequential, round-robin, local-window, deterministic-random-like, and mode-stratified existing selection on private candidate-manifest scores and gates. The second joins existing private frontier score reports to candidate manifests and reports semantic pass-rate context. The third freshly executes equal-budget candidate selections against local private heldout tests and exports aggregate-only pass-rate/runtime counters. The fourth treats the exported recurrence contract as a deterministic work-budget schedule and compares it with ordinary fixed-depth baselines under the same local private tests. The fifth scores context-packet identity and retention policies without exporting packet text.
 
 The semantic execution run is useful but not a win claim: on the full 1040-task private frontier across 26 categories, Circle stride budget-one, sequential rank-one, Circle stride budget-two, and sequential rank-two all report pass rate `1.0`; Circle best minus ordinary best is `0.0`. Direct projection of the exported global path onto per-task candidate ranks still performs badly in the score-context layer. The next benchmark needs a Circle selection rule that differs from ordinary rank-one when evidence supports it.
 
 The recurrence work-budget run is also useful but not a win claim: on the same full frontier, Circle repeating-budget and ordinary rank-one both report pass rate `1.0`; Circle best minus ordinary best is `0.0`; Circle requested budget total is `2730` versus `1040` for ordinary rank-one. It proves the scored recurrence bridge exists, but the current task is saturated by the simplest ordinary baseline.
 
-All current reports are `YELLOW`: the bridge loads all six contract families, the smoke workloads pass, deterministic proxy metrics exist, six local aggregate workload attachments exist, the scored candidate-manifest benchmark exists, the semantic score-context layer exists, the full-frontier semantic execution layer exists, and the recurrence work-budget execution layer exists, but there are no learned-model quality metrics or Circle advantage results yet.
+The memory run is useful but also not a win claim: on the local context-packet ledger, full residue-plus-winding identity hits all `37` packet targets at retention cost `74`, while the equal-budget Circle slot-balanced policy and ordinary score-top/FIFO/slot-only baselines all hit `0.216216` of targets under budget `8`. It proves the scored memory bridge exists, but it does not show downstream retrieval quality or latency advantage.
+
+All current reports are `YELLOW`: the bridge loads all six contract families, the smoke workloads pass, deterministic proxy metrics exist, six local aggregate workload attachments exist, the scored candidate-manifest benchmark exists, the semantic score-context layer exists, the full-frontier semantic execution layer exists, the recurrence work-budget execution layer exists, and the memory context-packet retrieval layer exists, but there are no learned-model quality metrics or Circle advantage results yet.
 
 ::: {.warning-box}
 This lane is not evidence that Circle Calculus has already improved Theseus-Hive. It is an experiment plan. Lean can certify finite schedule, index, coverage, relative-phase, and equivariance facts; Theseus-Hive benchmarks must carry any quality, transfer, speed, memory, or reasoning claim.
