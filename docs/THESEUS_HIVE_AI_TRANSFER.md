@@ -271,7 +271,7 @@ The first compares Circle striding against sequential fanout, round-robin fanout
 
 The semantic context is useful but not a win claim. The attached score report has full-inventory pass rate `1.0`, frontier-only pass rate `0.961538`, same-seed control pass rate `0.057692`, Circle stride budget-one pass rate `1.0`, sequential rank-one pass rate `1.0`, and direct global-contract-path projection budget-two pass rate `0.038462`. That last number is evidence that the exported global fanout path should not be naively projected onto per-task candidate ranks.
 
-The fresh equal-budget sample is also useful but not a win claim. On a deterministic 260-task private frontier sample across 26 categories, Circle stride budget-one pass rate is `1.0`, sequential rank-one pass rate is `1.0`, Circle stride budget-two pass rate is `1.0`, and sequential rank-two pass rate is `1.0`. This validates the private execution loop while showing no advantage over the rank baseline on that sample.
+The fresh equal-budget run is also useful but not a win claim. On the full private frontier, it scores `1040` tasks across `26` categories with `unscored_task_count = 0` and `policy_count = 8`. Circle stride budget-one pass rate is `1.0`, sequential rank-one pass rate is `1.0`, Circle stride budget-two pass rate is `1.0`, sequential rank-two pass rate is `1.0`, Circle best minus ordinary best is `0.0`, and both Circle stride budget-one and sequential rank-one have zero failing categories. This validates the full private execution loop while showing no advantage over the rank baseline.
 
 The companion smoke workload layer gives each family a stable named workload slot:
 
@@ -314,11 +314,11 @@ That report is still intentionally `YELLOW`: all six families attach to real loc
 
 The scored candidate layer is a stronger but still limited benchmark result: it has named private workloads, baselines, metrics, scripts, reports, imported semantic score context, and a fresh equal-budget private semantic execution sample. It still does not show a Circle advantage over the relevant rank baseline.
 
-The next concrete private Theseus-Hive milestone is to expand the fresh scorer to full-frontier semantic/failure/runtime analysis and promote the remaining aggregate attachments into scored private benchmarks:
+The next concrete private Theseus-Hive milestone is to use the full-frontier failure/runtime table to design a genuinely different Circle selection rule, or to promote the remaining aggregate attachments into scored private benchmarks:
 
 1. Consume `site/data/generated/theseus_hive_ai_contracts.json` only as private experiment configuration, not as public-calibration data.
 2. Promote `circle_recurrence_budget_real_rows_v1` from metadata proxy to actual looped-workload score/runtime benchmark.
-3. Expand `circle_candidate_fanout_equal_budget_semantic_v1` from a 260-task stratified sample to the full private frontier with failure-family and runtime analysis.
+3. Use `circle_candidate_fanout_equal_budget_semantic_v1` to design a Circle selection rule that differs from ordinary rank-one when evidence supports it.
 4. Promote `circle_memory_alias_real_trace_v1` to context-packet retrieval with target hit rate, retention cost, and latency.
 5. Promote `circle_phase_feature_real_sequence_v1` to no-phase, wrong-period, and Circle-phase heldout ablations.
 6. Promote `circle_mixer_real_report_summary_v1` to dense/low-rank/no-mixer/circulant/block-cyclic route-ranker benchmarks.
