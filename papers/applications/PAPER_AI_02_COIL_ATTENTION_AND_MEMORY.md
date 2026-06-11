@@ -109,6 +109,26 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `AIM-T0053`: `Circle.Applications.loopedRecurrentState_tokenBudget_add_mul_loopPeriod`
 - `AIM-T0054`: `Circle.Applications.loopedRecurrentState_budget_add_period`
 - `AIM-T0055`: `Circle.Applications.loopedRecurrentState_budget_add_mul_period`
+- `AIT-T0001`: `Circle.Applications.attentionReach_eq_div_gcd`
+- `AIT-T0002`: `Circle.Applications.stridedHead_fullCoverage_iff_coprime`
+- `AIT-T0003`: `Circle.Applications.stridedHead_fullCoverage_of_coprime`
+
+## Strided Attention Coverage (Proved Structural Guarantee)
+
+A strided ("coil") attention head with stride `k` lets each token attend to positions
+`i, i±k, i±2k, …` — exactly a coil orbit on `C n`. Its reachability is therefore governed
+by the finite-circle orbit/period theory, which gives a **proved design rule** for sparse
+attention:
+
+- `AIT-T0001` (`Circle.Applications.attentionReach_eq_div_gcd`): one stride-`k` head reaches exactly `n / gcd(n,k)` distinct positions.
+- `AIT-T0002` (`Circle.Applications.stridedHead_fullCoverage_iff_coprime`): it reaches **every** position of a length-`n` context **iff** `gcd(n,k) = 1`.
+- `AIT-T0003` (`Circle.Applications.stridedHead_fullCoverage_of_coprime`): a coprime stride therefore guarantees full coverage.
+
+This is the kind of structural guarantee practitioners reason about informally for
+dilated/strided attention, here made exact and Lean-checked on top of the orbit spine
+(`Circle.period_eq_n_div_gcd`). It is a guarantee about *which positions are reachable*,
+not a claim about accuracy or speed — those remain empirical and are out of scope for the
+theorem layer.
 
 ## Proved Core
 

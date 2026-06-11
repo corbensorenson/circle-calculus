@@ -2,23 +2,57 @@
 title: "Octonionic Layer"
 ---
 
-The octonionic layer is warning-sensitive: unit octonions do not form a group. The Living Book must keep nonassociative facts explicit.
+`S^7` is where the number systems run out of room. Real numbers, complex numbers, and quaternions each kept enough good behavior to build the lower spheres. The **octonions** — eight-dimensional numbers — are the last step, and they pay for it by giving up a rule we have used without thinking the whole way up: associativity.
 
-::: {.warning-box}
-Octonionic intuition can be misleading if ordinary associativity or group reasoning is silently imported. Treat only the theorem-card claims as checked.
+::: {.lesson-goal}
+
+## Lesson Goal
+
+Understand what the octonions keep and what they lose, and why losing associativity means quaternion proofs cannot simply be copied up to `S^7`.
+
 :::
 
-## What To Notice
+## The Idea
 
-- The bounded Cayley-Dickson coordinate model gives a finite proof spine.
-- Nonassociativity is not a decorative warning; it changes which algebraic moves are valid.
-- Future S7/Hopf claims must say exactly which multiplication order and coordinate model they use.
+Each step doubles the dimension and drops a privilege (this doubling is the **Cayley–Dickson** construction):
+
+```text
+ℝ  (1D):  ordered
+ℂ  (2D):  loses ordering
+ℍ  (4D):  loses commutativity   (a·b ≠ b·a)
+𝕆  (8D):  loses associativity   ((a·b)·c ≠ a·(b·c))
+```
+
+For quaternions, you could still regroup a product freely: `(a·b)·c` always equalled `a·(b·c)`. For octonions that fails — the parentheses genuinely matter. The unit octonions still sit on `S^7`, and they are still closed under multiplication and have inverses, but they are **not a group**, precisely because associativity is gone.
+
+The Euler side stays calm, though: `S^7` is odd-dimensional, so by the same parity rule as before, `χ(S^7) = 0`.
+
+## Worked Example
+
+Two checks, one safe and one cautionary.
+
+The safe, numeric one — Euler characteristic by parity:
+
+```text
+S^6 :  2
+S^7 :  2 − 2 = 0     (odd sphere)
+```
+
+The cautionary one — *do not* assume regrouping is legal. In quaternions you may write `(i·j)·k = i·(j·k)`. In octonions there exist basis triples where the two sides differ by a sign, so a step that silently drops parentheses can flip an answer. The bounded Cayley–Dickson model in the cards below is exactly where that non-associativity is pinned down and checked.
+
+## Common Mistake
+
+::: {.common-mistake}
+
+The biggest trap on this page is importing a quaternion or group argument by habit. Only the theorem-card claims — the bounded Cayley–Dickson coordinate facts, including the explicit non-associativity — are checked; the fuller octonionic topology is future work. See [What "Proved" Means Here](../../what_proved_means.qmd).
+
+:::
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-Why is it unsafe to reuse a quaternion proof argument unchanged in an octonionic setting?
+A proof for `S^3` rewrites `(a·b)·c` as `a·(b·c)` in a key step. Can you reuse it unchanged on `S^7`? Why or why not? (Answer: no — octonion multiplication is non-associative, so that rewrite is not valid.)
 
 :::
 
@@ -34,5 +68,10 @@ Why is it unsafe to reuse a quaternion proof argument unchanged in an octonionic
 <div class="theorem-box" data-theorem-id="S7O-T0008"></div>
 
 <p data-paper-ref="papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S7/PAPER_S7_03_OCTONIONIC_UNITS_AND_NONASSOCIATIVE_COILS.md">Octonionic Units And Nonassociative Coils</a></p>
+
+<div class="book-navigation">
+<a href="index.qmd">Previous: S7 Overview</a>
+<a href="../S15/index.qmd">Next: S15 Overview</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

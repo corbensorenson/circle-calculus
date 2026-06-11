@@ -2,8 +2,11 @@ import Circle.Basic
 import Circle.Common.Scaffold
 import Circle.S0.Scaffold
 import Circle.S1.Scaffold
+import Circle.S1.Continuum
 import Circle.S2.Scaffold
 import Circle.S3.Scaffold
+import Circle.S3.DoubleCover
+import Circle.S3.HopfReal
 import Circle.S4.Scaffold
 import Circle.S5.Scaffold
 import Circle.S6.Scaffold
@@ -19,6 +22,8 @@ import Circle.Applications.CoilCompute
 import Circle.Applications.CoilRendering
 import Circle.Applications.CoilSystems
 import Circle.Applications.CircleAI
+import Circle.Applications.CircleTransformer
+import Circle.Applications.Circulant
 import Circle.Physics.LatticeGauge
 import Circle.Generative.SeedRule
 import Circle.Erdos.EGZ

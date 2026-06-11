@@ -1726,6 +1726,114 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["adapter_block(block_size, adapter_block(block_size, channel)) == adapter_block(block_size, channel)"]
     blocker: ""
+  - id: AIT-T0001
+    status: lean_proved
+    lean_name: Circle.Applications.attentionReach_eq_div_gcd
+    informal_statement: "A strided ('coil') attention head with stride k on a length-n context reaches exactly n / gcd(n,k) distinct positions (the coil-orbit size)."
+    formal_statement: "forall {n k : Nat}, n != 0 -> Circle.Applications.attentionReach n k = n / Nat.gcd n k"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: AIT-T0002
+    status: lean_proved
+    lean_name: Circle.Applications.stridedHead_fullCoverage_iff_coprime
+    informal_statement: "A single strided attention head reaches every position of a length-n context if and only if its stride is coprime to n; the proved coverage rule for coil/strided sparse attention."
+    formal_statement: "forall {n k : Nat}, n != 0 -> (Circle.Applications.stridedHeadFullCoverage n k <-> Nat.gcd n k = 1)"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: AIT-T0003
+    status: lean_proved
+    lean_name: Circle.Applications.stridedHead_fullCoverage_of_coprime
+    informal_statement: "A stride coprime to the context length guarantees full coverage: a strided attention head with such a stride reaches every position."
+    formal_statement: "forall {n k : Nat}, n != 0 -> Nat.gcd n k = 1 -> Circle.Applications.stridedHeadFullCoverage n k"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: AIT-T0004
+    status: lean_proved
+    lean_name: Circle.Applications.rope_relative_shift_invariant
+    informal_statement: "RoPE relative-position property: shifting both the query and key positions by the same amount leaves the relative rotary phase unchanged, so the interaction depends only on the relative position query - key."
+    formal_statement: "forall (n query key d : Nat), Circle.Applications.ropeRelative n (query + d) (key + d) = Circle.Applications.ropeRelative n query key"
+    dictionary_dependencies: ["COMMON-0030", "COMMON-0031"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: AIT-T0005
+    status: lean_proved
+    lean_name: Circle.Applications.rope_compose
+    informal_statement: "RoPE phase additivity: rotary position rotations compose by adding strides, the algebraic basis of RoPE's relative-position behaviour."
+    formal_statement: "forall (n a b : Nat) (x : Circle.C n), Circle.rot n a (Circle.rot n b x) = Circle.rot n (a + b) x"
+    dictionary_dependencies: ["COMMON-0030", "COMMON-0031"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: AIT-T0006
+    status: lean_proved
+    lean_name: Circle.Applications.circConv_shift_equivariant
+    informal_statement: "A circulant token-mixing layer commutes with cyclic shift (translation equivariance): shifting the input signal by any amount shifts the output by the same amount."
+    formal_statement: "forall {n : Nat} [NeZero n] {R : Type} [CommRing R] (s : ZMod n) (c x : ZMod n -> R), Circle.Applications.circConv c (Circle.Applications.shiftBy s x) = Circle.Applications.shiftBy s (Circle.Applications.circConv c x)"
+    dictionary_dependencies: ["COMMON-0030", "COMMON-0031"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: AIT-T0007
+    status: lean_proved
+    lean_name: Circle.Applications.circConv_comm
+    informal_statement: "Circular convolution is commutative: circulant token mixers commute, as they are simultaneously diagonalized by the discrete Fourier transform."
+    formal_statement: "forall {n : Nat} [NeZero n] {R : Type} [CommRing R] (c x : ZMod n -> R), Circle.Applications.circConv c x = Circle.Applications.circConv x c"
+    dictionary_dependencies: ["COMMON-0030", "COMMON-0031"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: AIT-T0008
+    status: lean_proved
+    lean_name: Circle.Applications.circConv_add
+    informal_statement: "A circulant token-mixing layer is additive (linear) in its input signal."
+    formal_statement: "forall {n : Nat} [NeZero n] {R : Type} [CommRing R] (c x y : ZMod n -> R), Circle.Applications.circConv c (x + y) = Circle.Applications.circConv c x + Circle.Applications.circConv c y"
+    dictionary_dependencies: ["COMMON-0030", "COMMON-0031"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: AIT-T0009
+    status: lean_proved
+    lean_name: Circle.Applications.shiftBy_add
+    informal_statement: "The cyclic shift is a genuine group action of the circle on signals: shifting by s + t equals shifting by t then by s."
+    formal_statement: "forall {n : Nat} {R : Type} (s t : ZMod n) (x : ZMod n -> R), Circle.Applications.shiftBy (s + t) x = Circle.Applications.shiftBy s (Circle.Applications.shiftBy t x)"
+    dictionary_dependencies: ["COMMON-0030", "COMMON-0031"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
   - id: PHYS-T0001
     status: lean_proved
     lean_name: Circle.Physics.pathHolonomy_concat
@@ -2607,6 +2715,20 @@ theorems:
       no_sorry_required: true
       python_property_tests:
         - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_three_path_cycle_record_preserves_rotated_basepoint_holonomy
+    blocker: ""
+  - id: PHYS-T0064
+    status: lean_proved
+    lean_name: Circle.Physics.closedGaugeLoop_gaugeShiftedHolonomy_gauge_independent
+    informal_statement: "A finite closed-loop record has the same sampled gauge-shifted holonomy for any two vertex gauge assignments."
+    formal_statement: "For a ClosedGaugeLoop loop and gauges gaugeA gaugeB : Nat -> ZMod n, loop.gaugeShiftedHolonomy gaugeA = loop.gaugeShiftedHolonomy gaugeB."
+    dictionary_dependencies: ["COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063"]
+    paper_refs: ["papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"]
+    imports_allowed: ["Physics"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_closed_wilson_loop_is_invariant_under_sampled_gauges
     blocker: ""
   - id: GEN-T0001
     status: lean_proved

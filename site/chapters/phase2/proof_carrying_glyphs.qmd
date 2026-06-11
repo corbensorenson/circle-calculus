@@ -2,31 +2,52 @@
 title: "Proof-Carrying Glyphs"
 ---
 
-Proof-carrying glyphs are treated here as proof interfaces. A glyph may point to a theorem id and Lean declaration name, but the theorem manifest and compiled Lean declaration remain the proof source of truth.
+A **proof-carrying glyph** is a small badge that says "there is a real proof behind this." It carries the identifiers — a theorem id, a Lean declaration name, dictionary terms — needed to walk straight to the source of truth. The glyph is a handle, never a substitute for the proof it points at.
 
-::: {.learning-unit}
+::: {.lesson-goal}
 
-## What To Learn Here
+## Lesson Goal
 
-A glyph is useful only if it is connected to source truth. The reader should treat it as a visual handle for a theorem, dictionary terms, and metadata, not as an independent proof.
+Learn what a glyph stores, what makes a glyph *valid*, and why the manifest and compiled Lean declaration always outrank the badge.
 
 :::
 
-<div class="warning-box">
-Diagrams and glyphs are not proofs. The current proved layer covers certificate projections and finite metadata validity only.
-</div>
+## The Idea
 
-## What To Notice
+A glyph is a little record:
 
-- A proof-carrying glyph records theorem and dictionary identifiers.
-- Certificate projection facts make metadata inspectable.
-- The Lean declaration and theorem manifest remain the proof authority.
+```text
+glyph = { theorem_id, lean_name, dictionary_ids }
+```
+
+Projection facts let you read each field back out. A glyph is **valid** only when its `theorem_id` and `lean_name` match an actual entry in the theorem manifest — and that entry's status is what decides whether the underlying claim is proved. A pretty diagram with no matching manifest entry is, by this rule, simply not certified.
+
+This is the same discipline the whole book runs on, made into an object: the badge is convenient, but [What "Proved" Means Here](../../what_proved_means.qmd) is the authority.
+
+## Worked Example
+
+Suppose a glyph claims:
+
+```text
+theorem_id = "P2G-T0001"
+lean_name  = (the declaration recorded for P2G-T0001)
+```
+
+To trust it, you check the manifest: does `P2G-T0001` exist, does its Lean name match the glyph, and is its status `proved`? If all three line up, the glyph is valid and you can follow it to the Lean source. If the manifest has no such id — or the names disagree — the glyph fails validation no matter how official it looks. The validity fact and the projection facts are exactly what the cards below certify.
+
+## Common Mistake
+
+::: {.common-mistake}
+
+Glyphs and diagrams are not proofs. The proved layer covers certificate projections and finite metadata validity only; the Lean declaration and manifest remain the proof authority. See [What "Proved" Means Here](../../what_proved_means.qmd).
+
+:::
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-If a glyph shows a theorem-like diagram but its theorem id is missing from the manifest, how should the Living Book treat it?
+A glyph shows a theorem-like diagram, but its theorem id is absent from the manifest. How should the Living Book treat it? (Answer: as not certified — an uncarried badge, not a proof.)
 
 :::
 
@@ -46,5 +67,10 @@ If a glyph shows a theorem-like diagram but its theorem id is missing from the m
 This fixture is generated from `manifests/glyphs/proof_glyph_fixtures.yaml` and resolved against theorem and dictionary data during site export.
 
 <div class="glyph-index"></div>
+
+<div class="book-navigation">
+<a href="boundary_cobordism.qmd">Previous: Boundary Cobordism</a>
+<a href="../applications/index.qmd">Next Unit: Applications</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

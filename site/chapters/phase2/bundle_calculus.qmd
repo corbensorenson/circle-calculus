@@ -2,31 +2,57 @@
 title: "Bundle Calculus"
 ---
 
-Bundle calculus starts with product-bundle projection and fiber vocabulary, then adds base-preserving transition sanity laws. Nontrivial atlases, overlaps, cocycles, connections, curvature, and holonomy remain future work.
+A **bundle** is a space that, up close, looks like a base with a little fiber attached at every point — think of a comb (a line of teeth) or a cylinder (a circle of vertical segments). This first lesson takes the very simplest case, where the fiber is the same everywhere, and nails down the bookkeeping before any twisting is allowed.
 
-::: {.learning-unit}
+::: {.lesson-goal}
 
-## What To Learn Here
+## Lesson Goal
 
-The first bundle lesson is intentionally trivial: a base point and a fiber value are stored together, and projections recover each part. This gives the Living Book a safe vocabulary for base, fiber, and transition before any nontrivial bundle geometry is attempted.
+Learn the trivial (product) bundle: a point stores a base coordinate and a fiber coordinate, projection recovers each part, and changing one part never disturbs the other.
 
 :::
 
-::: {.warning-box}
-The current layer is product-bundle arithmetic and base-preserving transition sanity. Nontrivial atlas, overlap, cocycle, connection, curvature, and holonomy claims remain future work.
+## The Idea
+
+A point of a **trivial bundle** is just an ordered pair `(base, fiber)`. Two projections read it back:
+
+```text
+projectBase (b, f) = b
+projectFiber(b, f) = f
+```
+
+The two facts that make this a *bundle* and not just a pair: the base projection ignores the fiber entirely, and the fiber projection ignores the base entirely. A **transition** that only relabels fibers (a base-preserving map) leaves every base coordinate exactly where it was. That is the safe vocabulary — base, fiber, projection, transition — that harder bundle geometry will later build on.
+
+## Worked Example
+
+Take the point `(b, f) = (3, 7)`:
+
+```text
+projectBase (3, 7) = 3
+projectFiber(3, 7) = 7
+```
+
+Now change only the fiber, `(3, 7) → (3, 9)`:
+
+```text
+projectBase (3, 9) = 3     ← base is unchanged
+```
+
+The base stayed `3` even though the fiber moved. Apply a base-preserving transition that, say, adds `2` to the fiber: the point becomes `(3, 11)`, and the base is *still* `3`. Nothing the fiber does can leak into the base.
+
+## Common Mistake
+
+::: {.common-mistake}
+
+This is deliberately the trivial case. Nontrivial atlases, overlaps, cocycles, connections, curvature, and holonomy are *not* claimed here — they are future work; only product-bundle projection and base-preserving transition facts are proved. See [What "Proved" Means Here](../../what_proved_means.qmd).
+
 :::
-
-## What To Notice
-
-- A trivial bundle point has a base coordinate and a fiber coordinate.
-- Projection theorems check that the two parts are recovered correctly.
-- Transition theorems currently express base preservation and identity behavior only.
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-Why should the project prove trivial bundle projection facts before adding nontrivial atlas or holonomy language?
+For the point `(5, 2)`, what does each projection return, and what is the base after a transition that doubles the fiber? (Answer: base `5`, fiber `2`; base stays `5`.)
 
 :::
 
@@ -43,5 +69,10 @@ Why should the project prove trivial bundle projection facts before adding nontr
 <div class="theorem-box" data-theorem-id="P2BU-T0009"></div>
 
 <p data-paper-ref="papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/phase2/PAPER_P2_03_BUNDLE_CALCULUS.md">Bundle Calculus</a></p>
+
+<div class="book-navigation">
+<a href="stable_sphere_calculus.qmd">Previous: Stable Spheres</a>
+<a href="bott_clifford_periodicity.qmd">Next: Bott And Clifford</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

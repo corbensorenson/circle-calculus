@@ -2,23 +2,53 @@
 title: "Bott And Clifford Periodicity"
 ---
 
-The Bott/Clifford page starts with a small period-eight clock. The clock is not Bott periodicity by itself; it is the finite indexing seed that future Bott and Clifford work can reference without ambiguity.
+One of the deepest patterns in topology is that certain structures repeat with **period 8** as the dimension climbs — Bott periodicity, and the closely related Clifford-algebra pattern. The full theorems are hard. This page builds the one piece of infrastructure they all need first: a clean finite clock that counts dimensions modulo `8`.
 
-::: {.warning-box}
-The current theorem cards certify period-eight clock facts only. Full Bott periodicity, Clifford algebra classification, and K-theory claims remain future work.
+::: {.lesson-goal}
+
+## Lesson Goal
+
+Reuse the S1 "wrap around" idea at modulus `8`, and see why a period-8 clock is the right finite handle for any future Bott or Clifford work.
+
 :::
 
-## What To Notice
+## The Idea
 
-- The finite clock records indices modulo `8`.
-- Period-eight wraparound is a clean S1-style idea reused in a harder theory track.
-- Future Bott/Clifford claims need their own theorem ids and proofs.
+It is just a clock with `8` labels, `0` through `7`. A dimension index `d` lands on `d mod 8`, and adding a full lap of `8` brings you back to where you started:
+
+```text
+clock(d)     = d mod 8
+clock(d + 8) = clock(d)
+clock(0)     = 0
+```
+
+That is the same closure fact you proved for `C_n` in S1, specialized to `n = 8`. The clock is *not* Bott periodicity by itself — it is the unambiguous index that future Bott and Clifford theorems can point at without arguing about what "period 8" means.
+
+## Worked Example
+
+Where do dimensions `2`, `10`, and `18` land on the period-8 clock?
+
+```text
+clock(2)  = 2 mod 8 = 2
+clock(10) = 10 mod 8 = 2
+clock(18) = 18 mod 8 = 2
+```
+
+All three share label `2`, because they differ by whole laps of `8` (`10 = 2 + 8`, `18 = 2 + 16`). The Bott/Clifford pattern says structure at those dimensions matches — and the clock is what makes "those dimensions" precise.
+
+## Common Mistake
+
+::: {.common-mistake}
+
+The cards below certify period-8 clock facts only. Full Bott periodicity, Clifford-algebra classification, and K-theory are *not* claimed — they are future work. See [What "Proved" Means Here](../../what_proved_means.qmd).
+
+:::
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-Why is a period-eight clock useful as infrastructure, even though it is not the full Bott periodicity theorem?
+Which dimensions between `0` and `20` land on clock label `3`? (Answer: `3`, `11`, `19`.)
 
 :::
 
@@ -30,5 +60,10 @@ Why is a period-eight clock useful as infrastructure, even though it is not the 
 <div class="theorem-box" data-theorem-id="P2B-T0004"></div>
 
 <p data-paper-ref="papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/phase2/PAPER_P2_02_BOTT_CLIFFORD_PERIODICITY.md">Bott And Clifford Periodicity</a></p>
+
+<div class="book-navigation">
+<a href="bundle_calculus.qmd">Previous: Bundles</a>
+<a href="boundary_cobordism.qmd">Next: Boundary Cobordism</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

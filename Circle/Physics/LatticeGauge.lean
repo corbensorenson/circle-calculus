@@ -474,6 +474,11 @@ theorem closedGaugeLoop_gaugeInvariant
   | mk path closed =>
       exact checkedGaugePath_closed_gaugeInvariant path gauge closed
 
+theorem closedGaugeLoop_gaugeShiftedHolonomy_gauge_independent
+    (loop : ClosedGaugeLoop n) (gaugeA gaugeB : Nat → ZMod n) :
+    loop.gaugeShiftedHolonomy gaugeA = loop.gaugeShiftedHolonomy gaugeB := by
+  rw [closedGaugeLoop_gaugeInvariant loop gaugeA, closedGaugeLoop_gaugeInvariant loop gaugeB]
+
 theorem closedGaugeLoop_identity_holonomy (n vertex : Nat) :
     (ClosedGaugeLoop.identity n vertex).holonomy = 0 := by
   exact checkedGaugePath_identity_holonomy n vertex

@@ -2,26 +2,73 @@
 title: "Quaternion Coils"
 ---
 
-Quaternions give S3 a concrete algebraic model for higher-dimensional phase and rotation-like structure. In this project, the first goal is modest: keep the checked algebra and sign-ambiguity facts visible before any larger geometric or robotics story is told.
+A point on a circle carries one number: an angle. A point on `S^3` can carry a **quaternion** — four numbers `w + xi + yj + zk` — which is enough structure to describe rotations in three dimensions. This chapter introduces just the checked algebra and the one sign surprise that the spin lessons later depend on.
 
-The important beginner lesson is that a quaternion state can carry more structure than a point on an ordinary circle. The later spin pages use this to explain why two representatives, `q` and `-q`, can describe the same bounded conjugation action, and why pure-vector quaternion inputs stay inside the pure-vector boundary under that action.
+::: {.lesson-goal}
 
-::: {.warning-box}
-The orientation-debugging note is bounded to `q`/`-q` sign ambiguity under conjugation action. It does not claim a full `SO(3)`, robotics, or quotient-topology formalization.
+## Lesson Goal
+
+Learn the two rules that make quaternions more than points on a circle — non-commutative multiplication and the `q` / `−q` sign ambiguity — and see each one as a concrete, checked fact.
+
 :::
 
-## What To Notice
+## The Idea
 
-- Quaternion coordinates form the checked algebra seed for S3.
-- Sign ambiguity is a concrete example of hidden representative choice.
-- Pure-imaginary quaternion inputs are now a Lean-checked boundary for the orientation-debugging widget.
-- Broader rotation-space claims remain future work unless theorem cards say otherwise.
+Quaternions multiply with three imaginary units `i, j, k` obeying:
+
+```text
+i² = j² = k² = −1
+i·j = k        j·i = −k
+```
+
+The second line is the headline: **order matters.** Swapping the factors flips the sign. On an ordinary circle, adding angles never cared about order; here it does. That non-commutativity is exactly what lets quaternions encode 3D rotation, where "turn then tilt" differs from "tilt then turn."
+
+A **unit quaternion** has `w² + x² + y² + z² = 1` — a point on `S^3`. The unit quaternions are closed under multiplication, and for a unit `q` the conjugate `q* = w − xi − yj − zk` is its inverse. Those are the checked algebra seeds below.
+
+## Worked Example
+
+Multiply `i` and `j` both ways:
+
+```text
+i · j = k
+j · i = −k
+```
+
+Same two inputs, opposite results. Now check a unit quaternion: `q = (0, 1, 0, 0) = i`. Its norm is `0² + 1² + 0² + 0² = 1`, so it sits on `S^3`, and `q* = −i`, with `q · q* = i · (−i) = −i² = 1`. The conjugate really is the inverse.
+
+The sign surprise: `q` and `−q` are *different* quaternions, but they produce the **same** 3D rotation when you use them to rotate a vector (rotation uses `q` twice, as `q v q*`, so the two minus signs cancel). That is why later spin lessons say `S^3` is a *double cover* of rotation space — two quaternion records, one physical turn.
+
+## The Double Cover Is Real Now
+
+The reason `q` and `−q` give the same rotation has a name: the **double cover**
+`S³ → SO(3)`. On the actual real quaternions, its algebraic core is now Lean-proved:
+
+- conjugation `v ↦ q v q⋆` by a unit quaternion **preserves the norm** — it is a genuine isometry, the property that makes it a rotation;
+- it **preserves the real part**, so it acts on the pure-imaginary copy of `ℝ³`;
+- it is a **monoid homomorphism**: rotating by `a·b` is rotating by `a` then `b`;
+- the **real** unit quaternions are exactly `+1` and `−1`, and they act trivially.
+
+Put together: conjugation is a norm- and vector-preserving homomorphism that glues `q`
+to `−q` — the heart of the two-to-one cover. And the **kernel is now exactly computed**: a
+unit quaternion fixes every vector if and only if it is `+1` or `−1` (the hard direction:
+acting trivially forces it to commute with everything, hence to be real, hence `±1`). So the
+two representatives glued together are precisely `q` and `−q`, and no others. (What is *not*
+yet claimed, tracked as roadmap: that the action hits *every* rotation — surjectivity onto
+`SO(3)`.)
+
+## Common Mistake
+
+::: {.common-mistake}
+
+The proved core above is the *algebraic* heart of the double cover, not the whole theorem: surjectivity onto `SO(3)` and quotient-topology formalization are still roadmap, not claimed. And a checked algebra fact is never a claim about physical robotics. See [What "Proved" Means Here](../../what_proved_means.qmd).
+
+:::
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-Why should a reader distinguish a checked quaternion algebra fact from a full theorem about physical 3D rotations?
+Compute `j · k` and `k · j`. Do they agree? What does that tell you about the order of quaternion multiplication? (Hint: `j·k = i`, `k·j = −i`.)
 
 :::
 
@@ -30,10 +77,21 @@ Why should a reader distinguish a checked quaternion algebra fact from a full th
 <div class="theorem-box" data-theorem-id="S3Q-T0002"></div>
 <div class="theorem-box" data-theorem-id="S3S-T0001"></div>
 <div class="theorem-box" data-theorem-id="S3S-T0005"></div>
+<div class="theorem-box" data-theorem-id="S3S-T0006"></div>
+<div class="theorem-box" data-theorem-id="S3S-T0007"></div>
+<div class="theorem-box" data-theorem-id="S3S-T0008"></div>
+<div class="theorem-box" data-theorem-id="S3S-T0009"></div>
+<div class="theorem-box" data-theorem-id="S3S-T0010"></div>
+<div class="theorem-box" data-theorem-id="S3S-T0011"></div>
 <div class="dictionary-box" data-dictionary-id="S3S-0002"></div>
 <div class="dictionary-box" data-dictionary-id="S3S-0003"></div>
 
 <p data-paper-ref="papers/S3/PAPER_S3_02_QUATERNION_COILS.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S3/PAPER_S3_02_QUATERNION_COILS.md">S3 Quaternion Coils</a></p>
 <p data-paper-ref="papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md">Spin source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md">S3 Spin Double Cover Roadmap</a></p>
+
+<div class="book-navigation">
+<a href="hyperspheres.qmd">Previous: Finite Hyperspheres</a>
+<a href="hopf_coils.qmd">Next: Hopf Coils</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

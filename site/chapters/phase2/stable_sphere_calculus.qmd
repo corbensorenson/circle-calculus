@@ -2,23 +2,53 @@
 title: "Stable Sphere Calculus"
 ---
 
-Stable sphere calculus studies what remains orderly when suspension is repeated. In this repository, the current layer is finite: it records repeatable suspension-count facts before attempting any full stable homotopy theory.
+When you suspend over and over, some things keep changing and some things settle down. *Stable* sphere calculus is about the parts that settle. This finite seed records the simplest stable fact of all: suspend **twice**, and the Euler characteristic comes right back to where it started.
 
-::: {.warning-box}
-This page teaches the finite seed only. It does not claim a completed stable homotopy or spectral sequence theory.
+::: {.lesson-goal}
+
+## Lesson Goal
+
+See why a double suspension leaves the Euler characteristic unchanged, and why that makes "suspend twice" a safe, repeatable building block.
+
 :::
 
-## What To Notice
+## The Idea
 
-- Repeated suspension is treated as a computable finite operation.
-- The checked seed gives a safe pattern for double and fourfold suspension facts.
-- The long-term stable-sphere language must stay downstream of theorem manifests.
+One suspension does `χ → 2 − χ`. Do it again:
+
+```text
+χ
+  -> 2 − χ           (one suspension)
+  -> 2 − (2 − χ) = χ (a second suspension)
+```
+
+The two `2`s cancel and you are back to `χ`. So a **double** suspension is Euler-neutral. Fourfold and eightfold suspensions are just double suspensions repeated, so they are Euler-neutral too. That stability is what lets you climb many dimensions at once without losing track of the count.
+
+## Worked Example
+
+Start at the circle, `χ(S^1) = 0`, and suspend twice up to `S^3`:
+
+```text
+S^1 :  0
+S^2 :  2 − 0 = 2
+S^3 :  2 − 2 = 0     ← back to 0, two steps later
+```
+
+The intermediate value jumped to `2`, but the double step returned to `0`. Do it twice more (a fourfold suspension) and you reach `S^5`, still `0`. The "every two steps" rhythm is exactly the stable fact the cards below certify.
+
+## Common Mistake
+
+::: {.common-mistake}
+
+This is a finite repeated-suspension seed, not stable homotopy theory or a spectral sequence — those remain future work. What is proved is the double/fourfold/eightfold Euler-invariance recorded below. See [What "Proved" Means Here](../../what_proved_means.qmd).
+
+:::
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-Why is it useful to prove finite repeated-suspension facts before trying to talk about stable spheres in general?
+If a space has Euler characteristic `7`, what is the Euler characteristic of its double suspension? (Answer: `7` — double suspension changes nothing.)
 
 :::
 
@@ -31,5 +61,10 @@ Why is it useful to prove finite repeated-suspension facts before trying to talk
 <div class="theorem-box" data-theorem-id="P2S-T0005"></div>
 
 <p data-paper-ref="papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/phase2/PAPER_P2_01_STABLE_SPHERE_CALCULUS.md">Stable Sphere Calculus</a></p>
+
+<div class="book-navigation">
+<a href="index.qmd">Previous: Phase II Overview</a>
+<a href="bundle_calculus.qmd">Next: Bundles</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

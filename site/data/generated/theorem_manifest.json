@@ -1536,6 +1536,330 @@
       ]
     },
     {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0028",
+        "COMMON-0029"
+      ],
+      "formal_statement": "forall {n k : Nat}, n != 0 -> Circle.Applications.attentionReach n k = n / Nat.gcd n k",
+      "id": "AIT-T0001",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "A strided ('coil') attention head with stride k on a length-n context reaches exactly n / gcd(n,k) distinct positions (the coil-orbit size).",
+      "lean_name": "Circle.Applications.attentionReach_eq_div_gcd",
+      "lean_source": "Circle/Applications/CircleTransformer.lean",
+      "lean_source_line": 55,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0028",
+        "COMMON-0029"
+      ],
+      "formal_statement": "forall {n k : Nat}, n != 0 -> (Circle.Applications.stridedHeadFullCoverage n k <-> Nat.gcd n k = 1)",
+      "id": "AIT-T0002",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "A single strided attention head reaches every position of a length-n context if and only if its stride is coprime to n; the proved coverage rule for coil/strided sparse attention.",
+      "lean_name": "Circle.Applications.stridedHead_fullCoverage_iff_coprime",
+      "lean_source": "Circle/Applications/CircleTransformer.lean",
+      "lean_source_line": 64,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0028",
+        "COMMON-0029"
+      ],
+      "formal_statement": "forall {n k : Nat}, n != 0 -> Nat.gcd n k = 1 -> Circle.Applications.stridedHeadFullCoverage n k",
+      "id": "AIT-T0003",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "A stride coprime to the context length guarantees full coverage: a strided attention head with such a stride reaches every position.",
+      "lean_name": "Circle.Applications.stridedHead_fullCoverage_of_coprime",
+      "lean_source": "Circle/Applications/CircleTransformer.lean",
+      "lean_source_line": 71,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0030",
+        "COMMON-0031"
+      ],
+      "formal_statement": "forall (n query key d : Nat), Circle.Applications.ropeRelative n (query + d) (key + d) = Circle.Applications.ropeRelative n query key",
+      "id": "AIT-T0004",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "RoPE relative-position property: shifting both the query and key positions by the same amount leaves the relative rotary phase unchanged, so the interaction depends only on the relative position query - key.",
+      "lean_name": "Circle.Applications.rope_relative_shift_invariant",
+      "lean_source": "Circle/Applications/CircleTransformer.lean",
+      "lean_source_line": 90,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0030",
+        "COMMON-0031"
+      ],
+      "formal_statement": "forall (n a b : Nat) (x : Circle.C n), Circle.rot n a (Circle.rot n b x) = Circle.rot n (a + b) x",
+      "id": "AIT-T0005",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "RoPE phase additivity: rotary position rotations compose by adding strides, the algebraic basis of RoPE's relative-position behaviour.",
+      "lean_name": "Circle.Applications.rope_compose",
+      "lean_source": "Circle/Applications/CircleTransformer.lean",
+      "lean_source_line": 99,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0030",
+        "COMMON-0031"
+      ],
+      "formal_statement": "forall {n : Nat} [NeZero n] {R : Type} [CommRing R] (s : ZMod n) (c x : ZMod n -> R), Circle.Applications.circConv c (Circle.Applications.shiftBy s x) = Circle.Applications.shiftBy s (Circle.Applications.circConv c x)",
+      "id": "AIT-T0006",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "A circulant token-mixing layer commutes with cyclic shift (translation equivariance): shifting the input signal by any amount shifts the output by the same amount.",
+      "lean_name": "Circle.Applications.circConv_shift_equivariant",
+      "lean_source": "Circle/Applications/Circulant.lean",
+      "lean_source_line": 54,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0030",
+        "COMMON-0031"
+      ],
+      "formal_statement": "forall {n : Nat} [NeZero n] {R : Type} [CommRing R] (c x : ZMod n -> R), Circle.Applications.circConv c x = Circle.Applications.circConv x c",
+      "id": "AIT-T0007",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "Circular convolution is commutative: circulant token mixers commute, as they are simultaneously diagonalized by the discrete Fourier transform.",
+      "lean_name": "Circle.Applications.circConv_comm",
+      "lean_source": "Circle/Applications/Circulant.lean",
+      "lean_source_line": 63,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0030",
+        "COMMON-0031"
+      ],
+      "formal_statement": "forall {n : Nat} [NeZero n] {R : Type} [CommRing R] (c x y : ZMod n -> R), Circle.Applications.circConv c (x + y) = Circle.Applications.circConv c x + Circle.Applications.circConv c y",
+      "id": "AIT-T0008",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "A circulant token-mixing layer is additive (linear) in its input signal.",
+      "lean_name": "Circle.Applications.circConv_add",
+      "lean_source": "Circle/Applications/Circulant.lean",
+      "lean_source_line": 72,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0030",
+        "COMMON-0031"
+      ],
+      "formal_statement": "forall {n : Nat} {R : Type} (s t : ZMod n) (x : ZMod n -> R), Circle.Applications.shiftBy (s + t) x = Circle.Applications.shiftBy s (Circle.Applications.shiftBy t x)",
+      "id": "AIT-T0009",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "The cyclic shift is a genuine group action of the circle on signals: shifting by s + t equals shifting by t then by s.",
+      "lean_name": "Circle.Applications.shiftBy_add",
+      "lean_source": "Circle/Applications/Circulant.lean",
+      "lean_source_line": 39,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
       "canonical_status": "proved",
       "dictionary_dependencies": [
         "COMMON-0016"
@@ -8355,7 +8679,7 @@
       "informal_statement": "A finite vertex gauge transform changes open-path holonomy only by the endpoint gauge values.",
       "lean_name": "Circle.Physics.gaugeTransform_pathHolonomy_endpoints",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 712,
+      "lean_source_line": 717,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -8395,7 +8719,7 @@
       "informal_statement": "Closed finite Wilson-loop holonomy is invariant under sampled finite vertex gauge transforms.",
       "lean_name": "Circle.Physics.closedWilsonLoop_gaugeInvariant",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 717,
+      "lean_source_line": 722,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -8435,7 +8759,7 @@
       "informal_statement": "A finite square plaquette loop has gauge-invariant holonomy in the finite link model.",
       "lean_name": "Circle.Physics.plaquetteHolonomy_gaugeInvariant",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 724,
+      "lean_source_line": 729,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -8511,7 +8835,7 @@
       "informal_statement": "Reversing a finite gauge-link path record negates its link-path holonomy.",
       "lean_name": "Circle.Physics.gaugeLinkPathHolonomy_reverse",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 639,
+      "lean_source_line": 644,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -8549,7 +8873,7 @@
       "informal_statement": "A one-link finite gauge-link path record is compositionally valid.",
       "lean_name": "Circle.Physics.gaugeLinkPath_singleton_composable",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 669,
+      "lean_source_line": 674,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -8587,7 +8911,7 @@
       "informal_statement": "A two-link finite gauge-link path record is composable exactly when the first target is the second source.",
       "lean_name": "Circle.Physics.gaugeLinkPath_pair_composable_iff",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 689,
+      "lean_source_line": 694,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -8625,7 +8949,7 @@
       "informal_statement": "Concatenating two one-link finite gauge-link path records is composable exactly when the left target is the right source.",
       "lean_name": "Circle.Physics.gaugeLinkPath_concat_singletons_composable_iff",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 693,
+      "lean_source_line": 698,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -8663,7 +8987,7 @@
       "informal_statement": "A three-link finite gauge-link path record is composable exactly when both adjacent source-target boundaries match.",
       "lean_name": "Circle.Physics.gaugeLinkPath_triple_composable_iff",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 698,
+      "lean_source_line": 703,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -8702,7 +9026,7 @@
       "informal_statement": "A four-link finite gauge-link path record is composable exactly when all three adjacent source-target boundaries match.",
       "lean_name": "Circle.Physics.gaugeLinkPath_quad_composable_iff",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 704,
+      "lean_source_line": 709,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -8740,7 +9064,7 @@
       "informal_statement": "The empty finite gauge-link path record is compositionally valid.",
       "lean_name": "Circle.Physics.gaugeLinkPath_empty_composable",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 673,
+      "lean_source_line": 678,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -8778,7 +9102,7 @@
       "informal_statement": "Left-concatenating the empty finite gauge-link path record preserves composability.",
       "lean_name": "Circle.Physics.gaugeLinkPath_concat_empty_left_composable",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 677,
+      "lean_source_line": 682,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -8816,7 +9140,7 @@
       "informal_statement": "Right-concatenating the empty finite gauge-link path record preserves composability.",
       "lean_name": "Circle.Physics.gaugeLinkPath_concat_empty_right_composable",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 683,
+      "lean_source_line": 688,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -9006,7 +9330,7 @@
       "informal_statement": "Reversing a finite gauge-link path record twice returns the original path record.",
       "lean_name": "Circle.Physics.gaugeLinkPath_reverse_reverse",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 655,
+      "lean_source_line": 660,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -9044,7 +9368,7 @@
       "informal_statement": "Reversing a concatenated finite gauge-link path record equals concatenating the reversed right path before the reversed left path.",
       "lean_name": "Circle.Physics.gaugeLinkPath_reverse_concat",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 661,
+      "lean_source_line": 666,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -10079,7 +10403,7 @@
       "informal_statement": "The checked finite identity loop has zero holonomy.",
       "lean_name": "Circle.Physics.closedGaugeLoop_identity_holonomy",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 477,
+      "lean_source_line": 482,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -10118,7 +10442,7 @@
       "informal_statement": "A closed finite two-path cycle has holonomy equal to the sum of the two checked path holonomies.",
       "lean_name": "Circle.Physics.closedGaugeLoop_fromCycle_holonomy",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 481,
+      "lean_source_line": 486,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -10157,7 +10481,7 @@
       "informal_statement": "A finite gauge-link path followed by its reversed path has zero holonomy.",
       "lean_name": "Circle.Physics.gaugeLinkPath_concat_reverse_holonomy",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 645,
+      "lean_source_line": 650,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -10196,7 +10520,7 @@
       "informal_statement": "A reversed finite gauge-link path followed by the original path has zero holonomy.",
       "lean_name": "Circle.Physics.gaugeLinkPath_reverse_concat_holonomy",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 650,
+      "lean_source_line": 655,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -10236,7 +10560,7 @@
       "informal_statement": "The checked finite identity loop has zero gauge-shifted holonomy under any finite vertex gauge.",
       "lean_name": "Circle.Physics.closedGaugeLoop_identity_gaugeShiftedHolonomy",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 489,
+      "lean_source_line": 494,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -10276,7 +10600,7 @@
       "informal_statement": "A closed finite two-path cycle has gauge-shifted holonomy equal to the sum of the two checked path holonomies.",
       "lean_name": "Circle.Physics.closedGaugeLoop_fromCycle_gaugeShiftedHolonomy",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 494,
+      "lean_source_line": 499,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -10315,7 +10639,7 @@
       "informal_statement": "Swapping the basepoint order of a finite two-path closed cycle preserves packaged loop holonomy.",
       "lean_name": "Circle.Physics.closedGaugeLoop_fromCycle_swap_holonomy",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 503,
+      "lean_source_line": 508,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -10355,7 +10679,7 @@
       "informal_statement": "Swapping the basepoint order of a finite two-path closed cycle preserves sampled gauge-shifted holonomy.",
       "lean_name": "Circle.Physics.closedGaugeLoop_fromCycle_swap_gaugeShiftedHolonomy",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 515,
+      "lean_source_line": 520,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -10394,7 +10718,7 @@
       "informal_statement": "A closed finite three-path cycle has holonomy equal to the sum of the three checked path holonomies.",
       "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_holonomy",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 528,
+      "lean_source_line": 533,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -10434,7 +10758,7 @@
       "informal_statement": "A closed finite three-path cycle has gauge-shifted holonomy equal to the sum of the three checked path holonomies.",
       "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_gaugeShiftedHolonomy",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 541,
+      "lean_source_line": 546,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -10473,7 +10797,7 @@
       "informal_statement": "Rotating the basepoint order of a finite three-path closed cycle preserves packaged loop holonomy.",
       "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_holonomy",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 551,
+      "lean_source_line": 556,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -10513,7 +10837,7 @@
       "informal_statement": "Rotating the basepoint order of a finite three-path closed cycle preserves sampled gauge-shifted holonomy.",
       "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_gaugeShiftedHolonomy",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 564,
+      "lean_source_line": 569,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -10552,7 +10876,7 @@
       "informal_statement": "Rotating the basepoint order twice for a finite three-path closed cycle preserves packaged loop holonomy.",
       "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_holonomy",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 578,
+      "lean_source_line": 583,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -10592,7 +10916,7 @@
       "informal_statement": "Rotating the basepoint order twice for a finite three-path closed cycle preserves sampled gauge-shifted holonomy.",
       "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_rotate_twice_gaugeShiftedHolonomy",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 591,
+      "lean_source_line": 596,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -10631,7 +10955,7 @@
       "informal_statement": "All cyclic basepoint rotations of a finite three-path closed cycle preserve packaged loop holonomy.",
       "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_all_rotations_holonomy",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 605,
+      "lean_source_line": 610,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -10671,7 +10995,7 @@
       "informal_statement": "All cyclic basepoint rotations of a finite three-path closed cycle preserve sampled gauge-shifted holonomy.",
       "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_all_rotations_gaugeShiftedHolonomy",
       "lean_source": "Circle/Physics/LatticeGauge.lean",
-      "lean_source_line": 618,
+      "lean_source_line": 623,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
@@ -10691,6 +11015,46 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_three_path_cycle_record_preserves_rotated_basepoint_holonomy"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0060",
+        "COMMON-0061",
+        "COMMON-0062",
+        "COMMON-0063"
+      ],
+      "formal_statement": "For a ClosedGaugeLoop loop and gauges gaugeA gaugeB : Nat -> ZMod n, loop.gaugeShiftedHolonomy gaugeA = loop.gaugeShiftedHolonomy gaugeB.",
+      "id": "PHYS-T0064",
+      "imports_allowed": [
+        "Physics"
+      ],
+      "informal_statement": "A finite closed-loop record has the same sampled gauge-shifted holonomy for any two vertex gauge assignments.",
+      "lean_name": "Circle.Physics.closedGaugeLoop_gaugeShiftedHolonomy_gauge_independent",
+      "lean_source": "Circle/Physics/LatticeGauge.lean",
+      "lean_source_line": 477,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE",
+          "path": "papers/physics/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE.md",
+          "status": "draft",
+          "title": "Circle Calculus Physics 1: Proof-Carrying Finite Lattice Gauge Links"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py::test_closed_wilson_loop_is_invariant_under_sampled_gauges"
         ]
       }
     },
@@ -11296,6 +11660,221 @@
         "python_property_tests": [
           "sidecars/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP/python/test_s15_roadmap_examples.py::test_eight_suspensions_preserve_euler_characteristic"
         ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S1-0001",
+        "S1-0002"
+      ],
+      "formal_statement": "forall (n : Nat) [NeZero n] (a b : ZMod n), ZMod.toAddCircle (a + b) = ZMod.toAddCircle a + ZMod.toAddCircle b",
+      "id": "S1C-T0001",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "The embedding of the finite circle C n into the real circle R/Z turns rotation (addition) in C n into addition on the real circle; it is a group homomorphism.",
+      "lean_name": "Circle.S1.finiteCircle_toRealCircle_add",
+      "lean_source": "Circle/S1/Continuum.lean",
+      "lean_source_line": 34,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md"
+      ],
+      "source_manifest": "manifests/dimensions/S1_circle.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S1-0001"
+      ],
+      "formal_statement": "forall (n : Nat) [NeZero n], ZMod.toAddCircle (0 : ZMod n) = (0 : UnitAddCircle)",
+      "id": "S1C-T0002",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "The base node of the finite circle C n lands on the base point of the real circle R/Z.",
+      "lean_name": "Circle.S1.finiteCircle_toRealCircle_zero",
+      "lean_source": "Circle/S1/Continuum.lean",
+      "lean_source_line": 39,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md"
+      ],
+      "source_manifest": "manifests/dimensions/S1_circle.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S1-0001",
+        "S1-0002"
+      ],
+      "formal_statement": "forall (n : Nat) [NeZero n], Function.Injective (ZMod.toAddCircle : ZMod n -> UnitAddCircle)",
+      "id": "S1C-T0003",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "The finite circle C n embeds faithfully into the real circle R/Z: distinct finite nodes land on distinct real-circle points.",
+      "lean_name": "Circle.S1.finiteCircle_toRealCircle_injective",
+      "lean_source": "Circle/S1/Continuum.lean",
+      "lean_source_line": 45,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md"
+      ],
+      "source_manifest": "manifests/dimensions/S1_circle.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S1-0001",
+        "S1-0002"
+      ],
+      "formal_statement": "forall (n : Nat) [NeZero n] (a b : ZMod n), ZMod.toAddCircle a = ZMod.toAddCircle b <-> a = b",
+      "id": "S1C-T0004",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "Two finite nodes coincide on the real circle if and only if they are equal in C n.",
+      "lean_name": "Circle.S1.finiteCircle_toRealCircle_inj",
+      "lean_source": "Circle/S1/Continuum.lean",
+      "lean_source_line": 50,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md"
+      ],
+      "source_manifest": "manifests/dimensions/S1_circle.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S1-0001",
+        "S1-0002"
+      ],
+      "formal_statement": "forall (n : Nat) [NeZero n] (a : ZMod n), n \u2022 ZMod.toAddCircle a = (0 : UnitAddCircle)",
+      "id": "S1C-T0005",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "The image of the finite circle C n lies in the n-torsion of the real circle (the n-th roots of unity): every embedded node added to itself n times returns to the base point.",
+      "lean_name": "Circle.S1.finiteCircle_lands_in_torsion",
+      "lean_source": "Circle/S1/Continuum.lean",
+      "lean_source_line": 57,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md"
+      ],
+      "source_manifest": "manifests/dimensions/S1_circle.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S1-0001",
+        "S1-0002"
+      ],
+      "formal_statement": "forall (n d k : Nat) [NeZero n] [NeZero (n * d)], d != 0 -> ZMod.toAddCircle ((k : ZMod n)) = ZMod.toAddCircle (((k * d : Nat) : ZMod (n * d)))",
+      "id": "S1C-T0006",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "Continuum-limit refinement: for any factor d != 0, node k of C n is the same real-circle point as node k*d of C (n*d), so the finite circles nest into a directed family filling the rational points of R/Z.",
+      "lean_name": "Circle.S1.finiteCircle_refines",
+      "lean_source": "Circle/S1/Continuum.lean",
+      "lean_source_line": 67,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md"
+      ],
+      "source_manifest": "manifests/dimensions/S1_circle.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S1_01_FINITE_CIRCLES",
+          "path": "papers/S1/PAPER_S1_01_FINITE_CIRCLES.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
       }
     },
     {
@@ -12716,6 +13295,117 @@
       "blocker": "",
       "canonical_status": "proved",
       "dictionary_dependencies": [
+        "S3H-0001",
+        "S3H-0002"
+      ],
+      "formal_statement": "forall (a b c d : Real), Circle.S3.hopfX a b c d ^ 2 + Circle.S3.hopfY a b c d ^ 2 + Circle.S3.hopfZ a b c d ^ 2 = (a^2 + b^2 + c^2 + d^2)^2",
+      "id": "S3H-T0009",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2"
+      ],
+      "informal_statement": "The squared length of the real Hopf image equals the squared length of the source point: |h(a,b,c,d)|^2 = (a^2+b^2+c^2+d^2)^2.",
+      "lean_name": "Circle.S3.hopf_norm",
+      "lean_source": "Circle/S3/HopfReal.lean",
+      "lean_source_line": 36,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_03_HOPF_COILS.md"
+      ],
+      "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_03_HOPF_COILS",
+          "path": "papers/S3/PAPER_S3_03_HOPF_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.3: Hopf Coils"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S3H-0001",
+        "S3H-0002"
+      ],
+      "formal_statement": "forall (a b c d : Real), a^2 + b^2 + c^2 + d^2 = 1 -> Circle.S3.hopfX a b c d ^ 2 + Circle.S3.hopfY a b c d ^ 2 + Circle.S3.hopfZ a b c d ^ 2 = 1",
+      "id": "S3H-T0010",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2"
+      ],
+      "informal_statement": "A point of S^3 (where a^2+b^2+c^2+d^2 = 1) maps under the real Hopf map to a point of the actual unit 2-sphere S^2.",
+      "lean_name": "Circle.S3.hopf_lands",
+      "lean_source": "Circle/S3/HopfReal.lean",
+      "lean_source_line": 43,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_03_HOPF_COILS.md"
+      ],
+      "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_03_HOPF_COILS",
+          "path": "papers/S3/PAPER_S3_03_HOPF_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.3: Hopf Coils"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S3H-0001",
+        "S3H-0002"
+      ],
+      "formal_statement": "forall (a b c d co si : Real), co^2 + si^2 = 1 -> the Hopf image (hopfX, hopfY, hopfZ) of the phase-rotated point equals the Hopf image of the original point",
+      "id": "S3H-T0011",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2"
+      ],
+      "informal_statement": "Multiplying the source point by a common unit phase (the circle action) leaves the entire Hopf image unchanged, so the common-phase circle orbit stays inside a single Hopf fiber.",
+      "lean_name": "Circle.S3.hopf_phase_invariant",
+      "lean_source": "Circle/S3/HopfReal.lean",
+      "lean_source_line": 75,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_03_HOPF_COILS.md"
+      ],
+      "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_03_HOPF_COILS",
+          "path": "papers/S3/PAPER_S3_03_HOPF_COILS.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.3: Hopf Coils"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
         "S3Q-0001"
       ],
       "formal_statement": "def quaternionNorm (q : Circle.S3.RealQuaternion) : Real := Quaternion.normSq q",
@@ -13231,6 +13921,232 @@
         "python_property_tests": [
           "sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py::test_quaternion_conjugation_preserves_pure_vector_inputs"
         ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S3S-0001",
+        "S3S-0003",
+        "S3Q-0001"
+      ],
+      "formal_statement": "forall (q v : Circle.S3.RealQuaternion), Quaternion.normSq q = 1 -> Quaternion.normSq (Circle.S3.quaternionConjugationAction q v) = Quaternion.normSq v",
+      "id": "S3S-T0006",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2"
+      ],
+      "informal_statement": "Conjugation by a unit quaternion preserves the quaternion norm; the conjugation action is an isometry, the property that lands it in the rotation group SO(3).",
+      "lean_name": "Circle.S3.quaternionConjugation_normSq",
+      "lean_source": "Circle/S3/DoubleCover.lean",
+      "lean_source_line": 37,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
+      ],
+      "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP",
+          "path": "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.4: Spin, Double Covers, and Rotation Quotients"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S3S-0001",
+        "S3S-0003",
+        "S3Q-0001"
+      ],
+      "formal_statement": "forall (q v : Circle.S3.RealQuaternion), Quaternion.normSq q = 1 -> (Circle.S3.quaternionConjugationAction q v).re = v.re",
+      "id": "S3S-T0007",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2"
+      ],
+      "informal_statement": "Conjugation by a unit quaternion preserves the real part, hence it preserves the pure-imaginary copy of R^3 and acts on vectors.",
+      "lean_name": "Circle.S3.quaternionConjugation_re",
+      "lean_source": "Circle/S3/DoubleCover.lean",
+      "lean_source_line": 45,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
+      ],
+      "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP",
+          "path": "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.4: Spin, Double Covers, and Rotation Quotients"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S3S-0001",
+        "S3Q-0001"
+      ],
+      "formal_statement": "forall (a b v : Circle.S3.RealQuaternion), Circle.S3.quaternionConjugationAction (a * b) v = Circle.S3.quaternionConjugationAction a (Circle.S3.quaternionConjugationAction b v)",
+      "id": "S3S-T0008",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2"
+      ],
+      "informal_statement": "Quaternion conjugation is a monoid homomorphism: conjugation by a product a*b equals conjugation by a after conjugation by b.",
+      "lean_name": "Circle.S3.quaternionConjugation_mul",
+      "lean_source": "Circle/S3/DoubleCover.lean",
+      "lean_source_line": 57,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
+      ],
+      "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP",
+          "path": "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.4: Spin, Double Covers, and Rotation Quotients"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S3S-0001",
+        "S3S-0002",
+        "S3Q-0001"
+      ],
+      "formal_statement": "forall (q v : Circle.S3.RealQuaternion), Quaternion.normSq q = 1 -> q = (q.re : Circle.S3.RealQuaternion) -> Circle.S3.quaternionConjugationAction q v = v",
+      "id": "S3S-T0009",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2"
+      ],
+      "informal_statement": "A real unit quaternion acts trivially under conjugation; this is the easy direction of the kernel computation for the double cover.",
+      "lean_name": "Circle.S3.quaternionConjugation_real_trivial",
+      "lean_source": "Circle/S3/DoubleCover.lean",
+      "lean_source_line": 65,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
+      ],
+      "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP",
+          "path": "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.4: Spin, Double Covers, and Rotation Quotients"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S3S-0001",
+        "S3S-0002"
+      ],
+      "formal_statement": "forall (q : Circle.S3.RealQuaternion), Quaternion.normSq q = 1 -> q = (q.re : Circle.S3.RealQuaternion) -> q = 1 or q = -1",
+      "id": "S3S-T0010",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2"
+      ],
+      "informal_statement": "The real unit quaternions are exactly +1 and -1; together with the two-to-one fact that q and -q agree (S3S-T0001), this is the plus/minus one content of the double cover kernel.",
+      "lean_name": "Circle.S3.realUnitQuaternion_eq_pm_one",
+      "lean_source": "Circle/S3/DoubleCover.lean",
+      "lean_source_line": 78,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
+      ],
+      "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP",
+          "path": "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.4: Spin, Double Covers, and Rotation Quotients"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "S3S-0001",
+        "S3S-0002",
+        "S3Q-0001"
+      ],
+      "formal_statement": "forall (q : Circle.S3.RealQuaternion), Quaternion.normSq q = 1 -> ((forall v : Circle.S3.RealQuaternion, Circle.S3.quaternionConjugationAction q v = v) <-> (q = 1 or q = -1))",
+      "id": "S3S-T0011",
+      "imports_allowed": [
+        "Common",
+        "S1",
+        "S2"
+      ],
+      "informal_statement": "Exact kernel of the double cover: a unit quaternion fixes every vector under conjugation if and only if it is +1 or -1. Together with the isometry and homomorphism facts this completes the kernel computation; the kernel of the conjugation action on unit quaternions is exactly the two-element group {+1, -1}.",
+      "lean_name": "Circle.S3.quaternionConjugation_trivial_iff_pm_one",
+      "lean_source": "Circle/S3/DoubleCover.lean",
+      "lean_source_line": 92,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"
+      ],
+      "source_manifest": "manifests/dimensions/S3_hypersphere.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP",
+          "path": "papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus S3.4: Spin, Double Covers, and Rotation Quotients"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true
       }
     },
     {

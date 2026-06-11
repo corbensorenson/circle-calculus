@@ -2,25 +2,64 @@
 title: "Suspended Circles"
 ---
 
-Suspension is the first move from a circular layer toward a sphere-like layer. In this finite model, a circle is given two special pole-like endpoints, and the old circle becomes the equator-like middle layer.
+Suspension is the first move from a circle up toward a sphere. You take a finite circle, add two new points that act like a north and south pole, and connect every old point to both poles.
 
-The goal is not to pretend this page has completed smooth sphere geometry. The goal is to show how a finite S1 address system can become part of a higher-dimensional scaffold while keeping the combinatorial facts checkable.
+::: {.lesson-goal}
 
-::: {.warning-box}
-The widget here is still a placeholder. Treat it as a diagram slot for the finite suspended-circle idea, not as a proof or a complete S2 visualization.
+## Lesson Goal
+
+Learn how *suspending* a finite circle builds a sphere-like layer, and be able to count its cells and check that its Euler characteristic is `2`. After this lesson you should be able to suspend a small circle by hand.
+
 :::
 
-## What To Notice
+## The Idea
 
-- The equator-like layer comes from the original finite circle.
-- The two added endpoints behave like north/south poles in the finite scaffold.
-- Cell counts and endpoint/equator distinctions are the checked claims; continuous metric geometry is future work.
+A circle `C_n` drawn as a graph has `n` corner points (vertices) and `n` arcs (edges). To **suspend** it:
+
+- keep all `n` original points — they become the **equator**,
+- add `2` new points — the **north and south poles**,
+- connect every equator point up to the north pole and down to the south pole,
+- fill in the triangular faces those new edges create.
+
+The original circle never disappears. It just becomes the middle layer of a taller object.
+
+We measure the result with the **Euler characteristic**: take the alternating sum of the cell counts, `vertices − edges + faces`. A flat circle has `n − n = 0`. A sphere should give `2`, and suspension is exactly the move that turns `0` into `2`.
+
+## Worked Example
+
+Suspend the 4-node circle `C_4`. It starts with `4` vertices and `4` edges:
+
+```text
+circle C_4:   vertices 4,  edges 4        ->  χ = 4 − 4 = 0
+```
+
+After suspension:
+
+```text
+vertices:  4 equator + 2 poles            = 6
+edges:     4 original + (4×2 to poles)    = 12
+faces:     4 edges × 2 poles              = 8
+
+χ = vertices − edges + faces = 6 − 12 + 8 = 2
+```
+
+That `2` is the Euler characteristic of a sphere — the same number you get from a cube (8 − 12 + 6) or an octahedron (6 − 12 + 8). The finite model lands on the right answer.
+
+In general, suspension sends the cell list `L` to a new list whose Euler characteristic is `2 − χ(L)`. Since the circle had `χ = 0`, the suspended circle has `χ = 2 − 0 = 2`. This is the theorem recorded in the card below.
+
+## Common Mistake
+
+::: {.common-mistake}
+
+Do not read this page as a finished, smooth two-sphere. It is a finite cell model: the *counting* facts (cells, poles, equator, Euler characteristic) are what the theorem certifies. Continuous metric geometry is later work, and the widget below is a diagram of the idea, not a proof. For exactly what "proved" covers, see [What "Proved" Means Here](../../what_proved_means.qmd).
+
+:::
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-In a finite suspended-circle model, which part comes from the original `C_n`, and which parts are newly added?
+Suspend the circle `C_3` (3 vertices, 3 edges) by hand. How many vertices, edges, and faces does it have, and what is its Euler characteristic? (Answer: 5 − 9 + 6 = 2.)
 
 :::
 
@@ -30,6 +69,11 @@ In a finite suspended-circle model, which part comes from the original `C_n`, an
 <div class="widget-panel" data-widget="sphere_grid_placeholder"></div>
 
 <p data-paper-ref="papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S2/PAPER_S2_01_SUSPENDED_CIRCLES.md">S2 Suspended Circles</a></p>
+
+<div class="book-navigation">
+<a href="index.qmd">Previous: S2 Overview</a>
+<a href="sphere_grids.qmd">Next: Sphere Grids</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>
 <script type="module" src="../../widgets/S2/sphere_grid_placeholder.js"></script>

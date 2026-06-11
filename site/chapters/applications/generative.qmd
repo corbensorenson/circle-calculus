@@ -108,6 +108,17 @@ Both results are useful. The positive case shows constructive compression. The n
 
 ## Proof Boundary
 
+Read these in two honest tiers. The **substantive** facts are the orbit and regeneration
+theory: `GEN-T0003` and `GEN-T0006`–`GEN-T0013` (orbit count, period, coverage, formal
+orbit-class agreement, canonical-representative coverage and disjointness — the same
+non-trivial gcd/orbit spine as S1) and `GEN-T0014`–`GEN-T0019` (exact regeneration as a
+reflexive/symmetric/transitive relation). The remaining `GEN-T0020`–`GEN-T0045` are
+**elementary bookkeeping** — generated-list lengths and finite-search bounds (empty search
+returns nothing, a returned candidate lies in the declared list, counts are bounded). Those
+are honest and keep the search code sound, but they are the trivial finite-closure family,
+not evidence that seed-rule records are smaller or better. And the fixtures are exploratory:
+a generator record is not automatically a compression win.
+
 The theorem cards below are checked by Lean for finite regeneration statements. `GEN-T0003` proves exact regeneration of the representative-indexed orbit-schedule list. `GEN-T0006` through `GEN-T0013` add count, period, coverage, formal orbit-class agreement, canonical representative coverage, and disjointness facts. `GEN-T0014` through `GEN-T0019` make exact regeneration reusable as a reflexive, symmetric, transitive, and field-equality-gated relation for constructed generator comparisons. `GEN-T0020` and `GEN-T0021` certify generated-list lengths for finite-circle nodes and single coil-orbit schedules. `GEN-T0022` through `GEN-T0024` prove the empty declared-search boundary for the bounded generator search. `GEN-T0031` through `GEN-T0034` prove the positive singleton exact-search boundary. `GEN-T0025` through `GEN-T0027` prove that any returned best exact candidate belongs to the declared exact list, belongs to the declared finite search space, and satisfies exact regeneration. `GEN-T0028` through `GEN-T0030` connect no-best-exact and best-exact cases to exact-candidate emptiness/count facts. `GEN-T0035` through `GEN-T0039` add exact-candidate list soundness, best-exact existence, and singleton membership gates. `GEN-T0040` through `GEN-T0043` tighten finite-circle generation: membership is exactly the `< n` node range, generated nodes are duplicate-free, the zero-size case is empty, and positive sizes are nonempty. `GEN-T0044` and `GEN-T0045` add finite-search count guardrails: exact candidates are bounded by declared candidates, and a returned best exact candidate implies a nonempty declared search. Ranking nonempty candidates remains Python-scoped and finite-list scoped. These artifacts still do not prove optimality or minimality.
 
 <div class="theorem-box" data-theorem-id="GEN-T0001"></div>
@@ -173,5 +184,10 @@ The theorem cards below are checked by Lean for finite regeneration statements. 
 ::: {.warning-box}
 The Python fixture is an executable reference. The formal path is to encode exact finite regeneration facts in Lean and keep description-length comparisons separate from optimal-compression claims.
 :::
+
+<div class="book-navigation">
+<a href="physics.qmd">Previous: Physics</a>
+<a href="compute.qmd">Next: Compute</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

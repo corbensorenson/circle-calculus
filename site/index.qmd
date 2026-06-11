@@ -2,92 +2,63 @@
 title: "Circle Calculus Living Book"
 ---
 
-Circle Calculus is a guided, proof-linked textbook for learning circular structure from the smallest finite address spaces up through coils, winding, dimensional scaffolds, and applications.
+Most of mathematics quietly runs on one move: count, and when you run out of room, wrap around. A clock does it. So does a week, a music scale, the hours on a parking meter, and the remainder you learned in grade school. **Circle Calculus** takes that single move seriously and rebuilds familiar mathematics on top of it, one careful step at a time — and every step is backed by a machine-checked proof.
 
-This site should be read like a book first. The indexes are still here, but they are reference shelves, not the main experience. Start at the beginning, do the small checks, use the diagrams, and only then open the theorem cards and source links when you want to audit the claim.
+## Start With One Idea: The Finite Circle
 
-::: {.book-preface}
+A **finite circle** `C_n` is just a loop of `n` reusable addresses, numbered `0, 1, 2, ... , n-1`.
 
-## The Promise Of This Book
-
-The book teaches a single escalating story:
+Picture a clock with `n` labels. To find where an address lands, you keep the remainder after dividing by `n`:
 
 ```text
-addresses -> finite circles -> rotation -> repeated rotation -> closure -> period -> winding -> dimensions -> applications
+address i  ->  node (i mod n)
 ```
 
-Every mature lesson tries to give the same learning experience:
+On a 12-hour clock (`C_12`), address `14` lands on node `2`: one full turn of 12 is discarded, and `2` is what remains. Address `26` lands on `2` as well. That is the whole starting idea — naming positions by wrapping around.
 
-- a goal stated before the math,
-- a plain-language explanation,
-- a diagram or widget when a picture helps,
-- one worked example,
-- one checkpoint the reader can do by hand, and
-- a source trail back to dictionary entries, theorem status, Lean, Python, and papers.
+Everything else in this book grows out of that move:
 
-:::
+```text
+count -> wrap -> move -> repeat -> close -> lift -> build up -> apply
+```
 
-## How To Read This Like A Textbook
+Rotation is *adding* a step. A coil is *repeating* a rotation. The period is *when a coil closes back to its start*. Winding *remembers how many turns you took*. Higher dimensions *stack circles into spheres*. None of it leaves the finite circle behind.
 
-Do not begin by opening the theorem index or dictionary index. Begin with the guided lessons. Each lesson is meant to stand on its own as a learning page: read the idea, work the example, try the checkpoint, then use the source trail only when you want to audit the claim.
+## Who This Book Is For
 
-::: {.teacher-note}
+This book is written for **one reader: a curious person who knows a little modular arithmetic and wants to watch familiar math get rebuilt from circles, with the proofs kept honest the whole way.** You do not need a research background. If "remainder after dividing by `n`" makes sense to you, you can start at the beginning and keep going.
 
-The reference pages are intentionally still available because the project is proof-linked. They are not the lesson. The lesson teaches the concept; the references show where that concept lives in the repository.
-
-:::
-
-## Concept Map
-
-::: {.concept-map}
-
-<div class="concept-flow">
-<span><strong>Count</strong> name positions</span>
-<span><strong>Wrap</strong> reduce addresses</span>
-<span><strong>Move</strong> add a stride</span>
-<span><strong>Repeat</strong> trace a coil</span>
-<span><strong>Close</strong> find period</span>
-<span><strong>Lift</strong> remember turns</span>
-<span><strong>Build</strong> suspend and fiber</span>
-<span><strong>Apply</strong> model cyclic systems</span>
-</div>
-
-This is not a claim that all mathematics is literally a circle. It is a disciplined way to relearn many familiar ideas through recurrence, phase, closure, structure, and proof-carrying records.
-
-:::
-
-## Reading Modes
-
-**Intuition Mode**
-
-Use the widgets and diagrams to build a picture. These are explanations, not proofs.
-
-**Formal Mode**
-
-Open theorem cards, Lean declaration names, manifests, and paper links. A theorem is treated as proved only when the generated manifest status and local Lean build support that status.
-
-**Code Mode**
-
-Compare widget behavior against Python reference models and tests. Python examples are executable support, not formal proof.
-
-## Proof-Backed Portfolio
-
-<div class="portfolio-entrypoint" data-entrypoint-ref="showcase.qmd" data-verify-ref="verify_claim.qmd" data-manifest-ref="manifests/capability_showcase.yaml" data-validator-ref="scripts/check_capability_showcase.py"></div>
-
-If you are asking why someone should use Circle Calculus, start with the [Proof-Backed Showcase](showcase.qmd). It is the serious public advertisement for the project: every advertised capability is required to name a standard anchor, a Circle expression, a Circle-native value claim, a proof scope, a not-claimed boundary, paper ids, proved theorem ids, dictionary ids, executable examples, and Living Book pages or widgets.
-
-Use [How To Verify A Claim](verify_claim.qmd) beside it. The portfolio does not prove universal expressiveness by assertion; it shows the current checked surfaces and the source trail needed to audit each one.
+You do not have to trust anything on faith. Each lesson teaches an idea in plain language, gives you a picture and a worked example, asks you one question you can answer by hand, and then — only if you want to audit it — links to the exact Lean proof, Python model, and paper behind the claim.
 
 ## Start Here
 
-1. Read the [Guided Learning Path](reader_path.qmd).
-2. Read [Lesson 0: Mathematical Building Blocks](chapters/foundations/00_mathematical_building_blocks.qmd).
-3. Begin [Lesson 1: Finite Circles](chapters/S1/01_finite_circles.qmd).
-4. Finish the S1 review before moving to higher dimensions.
-5. Open the [Proof-Backed Showcase](showcase.qmd) when you want to see why the project matters.
-6. Use [How To Verify A Claim](verify_claim.qmd) whenever a theorem, widget, paper paragraph, or diagram matters.
+1. Read [Lesson 0: Mathematical Building Blocks](chapters/foundations/00_mathematical_building_blocks.qmd) — the small toolkit every later lesson reuses.
+2. Begin [Lesson 1: Finite Circles](chapters/S1/01_finite_circles.qmd) and work straight through the S1 lessons in order.
+3. Finish the [S1 review](chapters/S1/06_review.qmd) before climbing into higher dimensions.
 
-## Source Pipeline
+That is the entire on-ramp. The rest of this page is for when you want to know how the book keeps itself honest, or you arrived as a reviewer rather than a learner — feel free to skip it and just start reading.
+
+---
+
+## Under The Hood
+
+::: {.teacher-note}
+
+Everything below is *how this book stays trustworthy*, not part of the lessons. A first-time reader can ignore it entirely and come back later.
+
+:::
+
+### How A Lesson Is Built
+
+Every mature lesson gives the same shape: a goal stated before the math, a plain-language explanation, a diagram or widget when a picture helps, one worked example, one checkpoint you can do by hand, and a source trail back to the formal record. You can read at three depths:
+
+**Intuition Mode** — use the widgets and diagrams to build a picture. These are explanations, not proofs.
+
+**Formal Mode** — open theorem cards, Lean declaration names, and manifests. A theorem is treated as proved only when the generated manifest status and the local Lean build agree. See [What "Proved" Means Here](what_proved_means.qmd).
+
+**Code Mode** — compare a widget's behavior against the Python reference models and tests. Python examples are executable support, not formal proof.
+
+### Where The Words Come From
 
 The public site is downstream of the formal repository:
 
@@ -95,18 +66,25 @@ The public site is downstream of the formal repository:
 Lean proofs -> theorem manifests -> dictionary -> Python models -> papers -> interactive site
 ```
 
-That pipeline is why the book can be readable without becoming loose. The prose teaches; the widgets illustrate; the dictionary stabilizes vocabulary; the manifests carry theorem status; Lean is the formal proof source.
+The prose teaches; the widgets illustrate; the dictionary fixes vocabulary; the manifests carry theorem status; Lean is the formal proof source. That pipeline is why the book can read like a story without drifting away from what is actually proved.
 
-## Reference Shelves
+### For Reviewers And Skeptics
 
-- [Dictionary Index](dictionary.qmd): project terms and forbidden meanings.
-- [Proof-Backed Showcase](showcase.qmd): advertised capabilities with paper and theorem backing.
-- [Theorem Index](theorems.qmd): theorem ids, status, Lean names, and source links.
-- [Paper Index](papers.qmd): long-form exposition.
-- [Target Index](targets.qmd): planned, exploratory, blocked, and future work.
-- [Project Roadmap](roadmap.qmd): dimension and application coverage.
+If you came to audit rather than to learn, three pages are built for you:
 
-The proof-status policy is in [Living Book Policy](https://github.com/corbensorenson/circle-calculus/blob/main/docs/LIVING_BOOK_POLICY.md).
+- [What "Proved" Means Here](what_proved_means.qmd) — the one-paragraph rule the whole project lives by.
+- [How To Verify A Claim](verify_claim.qmd) — trace any theorem, term, paper line, or widget to its source.
+- The [Guided Learning Path](reader_path.qmd), [Theorem Index](theorems.qmd), [Dictionary](dictionary.qmd), [Paper Index](papers.qmd), [Targets](targets.qmd), and [Roadmap](roadmap.qmd) reference shelves.
+
+#### Proof-Backed Portfolio
+
+<div class="portfolio-entrypoint" data-entrypoint-ref="showcase.qmd" data-verify-ref="verify_claim.qmd" data-manifest-ref="manifests/capability_showcase.yaml" data-validator-ref="scripts/check_capability_showcase.py"></div>
+
+If you are asking why anyone should use Circle Calculus, start with the [Proof-Backed Showcase](showcase.qmd). It is the serious public advertisement for the project: every advertised capability is required to name a standard anchor, a Circle expression, a Circle-native value claim, a proof scope, a not-claimed boundary, paper ids, proved theorem ids, dictionary ids, executable examples, and Living Book pages or widgets. The advertised surfaces are generated from `manifests/capability_showcase.yaml` and validated by `scripts/check_capability_showcase.py`.
+
+Read [How To Verify A Claim](verify_claim.qmd) beside it. The portfolio does not prove universal expressiveness by assertion; it shows the current checked surfaces and the source trail needed to audit each one. The widgets, diagrams, and Python examples on this site are illustrations and executable support — they are not proofs and not formal proof of the theorems they accompany.
+
+This is a disciplined way to relearn many familiar ideas through recurrence, phase, closure, and proof-carrying records. It is not a claim that all of mathematics is literally a circle.
 
 <div class="next-lesson">
 <span>Next lesson</span>

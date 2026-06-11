@@ -2,23 +2,56 @@
 title: "Suspension Euler Parity"
 ---
 
-The finite S4-S6 ladder currently tracks suspension-count and Euler-parity facts. This page is a placeholder for interactive expansion.
+Once you have the suspension move, you do not have to stop at `S^3`. Keep suspending and the Euler characteristic settles into a simple, eternal rhythm: `2, 0, 2, 0, …`. This page reads that rhythm off the finite cell counts for `S^4`, `S^5`, and `S^6`.
 
-::: {.warning-box}
-The current layer is finite suspension and Euler-parity bookkeeping. It does not claim complete continuous geometry for `S^4`, `S^5`, or `S^6`.
+::: {.lesson-goal}
+
+## Lesson Goal
+
+Use the single suspension rule `χ → 2 − χ` to predict the Euler characteristic of every sphere on the `S^4`–`S^6` stretch, and understand why one lemma covers all of them.
+
 :::
 
-## What To Notice
+## The Idea
 
-- Suspension changes finite cell counts in a controlled way.
-- Euler-parity facts give a checked bridge across several dimensions.
-- S4, S5, and S6 pages must keep their different future roles separate.
+Each suspension replaces the old Euler characteristic `χ` with `2 − χ`. Starting from the circle and turning the crank:
+
+```text
+S^1 :  0
+S^2 :  2 − 0 = 2
+S^3 :  2 − 2 = 0
+S^4 :  2 − 0 = 2
+S^5 :  2 − 2 = 0
+S^6 :  2 − 0 = 2
+```
+
+The values just alternate. **Even-dimensional spheres are `2`; odd-dimensional spheres are `0`.** This is *parity* — whether the dimension is even or odd is the only thing that matters. And because it is one rule applied over and over, a single finite suspension lemma certifies the whole stretch at once; each dimension page is one application of the same fact.
+
+## Worked Example
+
+Suppose you already know `S^3` has `χ = 0` (from the previous unit). Predict the next three without counting a single cell:
+
+```text
+S^4 = 2 − χ(S^3) = 2 − 0 = 2
+S^5 = 2 − χ(S^4) = 2 − 2 = 0
+S^6 = 2 − χ(S^5) = 2 − 0 = 2
+```
+
+Done — `2, 0, 2`. The finite cell counts grow large and ugly as the dimension climbs, but the alternating sum keeps collapsing them back to just `2` or `0`.
+
+## Common Mistake
+
+::: {.common-mistake}
+
+Sharing one lemma across `S^4`, `S^5`, and `S^6` certifies their *Euler-parity bookkeeping*, not their full continuous geometry, which is future work. Each dimension still has its own future role (the next chapters note where the algebra stops being safe). See [What "Proved" Means Here](../../what_proved_means.qmd).
+
+:::
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-Why can one finite suspension/Euler lemma support several dimension pages without proving all future geometry on those pages?
+`S^10` and `S^11` are far off the ladder. Using parity alone, what are their Euler characteristics? (Answer: `S^10 = 2` even, `S^11 = 0` odd.)
 
 :::
 
@@ -33,5 +66,10 @@ Why can one finite suspension/Euler lemma support several dimension pages withou
 <div class="theorem-box" data-theorem-id="S6-T0003"></div>
 
 <p data-paper-ref="papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md">Common paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S4_S6/PAPER_S456_01_GENERAL_SUSPENSION_EULER_PARITY.md">General Suspension Euler Parity</a></p>
+
+<div class="book-navigation">
+<a href="index.qmd">Previous: S4–S6 Overview</a>
+<a href="../S7/index.qmd">Next: S7 Overview</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

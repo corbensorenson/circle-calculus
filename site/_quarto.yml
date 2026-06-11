@@ -16,18 +16,21 @@ website:
     left:
       - href: index.qmd
         text: Read
-      - href: reader_path.qmd
-        text: Guided Path
       - href: chapters/foundations/00_mathematical_building_blocks.qmd
         text: Lesson 0
       - href: chapters/S1/01_finite_circles.qmd
         text: Lesson 1
-      - href: verify_claim.qmd
-        text: Verify
-      - href: showcase.qmd
-        text: Showcase
+      - href: reader_path.qmd
+        text: Guided Path
       - text: Reference
         menu:
+          - href: what_proved_means.qmd
+            text: What "Proved" Means
+          - href: verify_claim.qmd
+            text: How To Verify A Claim
+          - href: showcase.qmd
+            text: Proof-Backed Showcase
+          - text: "---"
           - href: dictionary.qmd
             text: Dictionary
           - href: theorems.qmd
@@ -51,10 +54,8 @@ website:
             text: Preface
           - href: reader_path.qmd
             text: Guided Learning Path
-          - href: verify_claim.qmd
-            text: How To Verify A Claim
-          - href: showcase.qmd
-            text: Proof-Backed Showcase
+          - href: what_proved_means.qmd
+            text: What "Proved" Means Here
       - section: "Part I: Learning Toolkit"
         contents:
           - href: chapters/foundations/index.qmd
@@ -143,6 +144,14 @@ website:
             text: Rendering
           - href: chapters/applications/data_analysis.qmd
             text: Data Analysis
+      - section: "For Reviewers And Skeptics"
+        contents:
+          - href: what_proved_means.qmd
+            text: What "Proved" Means Here
+          - href: verify_claim.qmd
+            text: How To Verify A Claim
+          - href: showcase.qmd
+            text: Proof-Backed Showcase
       - section: "Appendix: Source Reference"
         contents:
           - href: status.qmd

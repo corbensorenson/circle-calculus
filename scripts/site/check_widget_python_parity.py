@@ -335,7 +335,7 @@ def js_wilson_loop_certificate(
         "holonomy": holonomy,
         "closed": closed,
         "gauge_invariant_under": tuple(invariant_under),
-        "theorem_ids": ("PHYS-T0004", "PHYS-T0005", "PHYS-T0047"),
+        "theorem_ids": ("PHYS-T0004", "PHYS-T0005", "PHYS-T0047", "PHYS-T0064"),
     }
 
 
@@ -1883,6 +1883,7 @@ def main() -> int:
         assert record.theorem_ids == js_record["theorem_ids"]
         assert gauge_path_edges(rotated) == js_rotated_edges
         assert rotated_record.holonomy == record.holonomy
+        transformed_holonomies = []
         for gauge in gauges:
             transformed = gauge_transform_path(loop, gauge)
             js_transformed = js_gauge_transformed_edges(js_edges, gauge, modulus)
@@ -1892,7 +1893,9 @@ def main() -> int:
             assert gauge_path_edges(transformed_rotated) == js_transformed_rotated
             assert path_holonomy(transformed) == js_path_holonomy(js_transformed, modulus)
             assert path_holonomy(transformed) == certificate.holonomy
+            transformed_holonomies.append(path_holonomy(transformed))
             assert path_holonomy(transformed_rotated) == record.holonomy
+        assert len(set(transformed_holonomies)) == 1
 
     periodic_cases = [
         (12, 5, 7, 4, 2, 1),

@@ -2,25 +2,29 @@
 title: "S4-S6: Suspension And Warning Layer"
 ---
 
-These pages are scaffolded for finite suspension/Euler parity and warning-aware higher-dimensional material.
+Past `S^3`, the spheres get impossible to picture — but the bookkeeping does not get harder. One rule, `χ → 2 − χ`, carries all the way up. This short unit shows how a single finite lemma covers `S^4`, `S^5`, and `S^6` at once.
 
-::: {.learning-unit}
+::: {.lesson-goal}
 
-## What To Learn Here
+## Unit Goal
 
-S4 through S6 are not presented as finished geometric worlds yet. The current learning goal is narrower: understand how finite suspension counts and Euler-parity facts can be reused across several higher-dimensional scaffolds.
+Understand how finite suspension counts and the Euler-parity rhythm (`2, 0, 2, …`) get reused across several higher-dimensional scaffolds without re-proving anything.
 
 :::
 
-<div class="warning-box">
-This section is a scaffold around finite suspension-count and Euler-parity facts. It does not claim a complete continuous S4-S6 geometry layer. The theorem card is the status source.
-</div>
+## The Idea
+
+Each suspension flips the Euler characteristic between `2` and `0`, so even spheres read `2` and odd spheres read `0`. Because it is one rule applied repeatedly, a single finite suspension fact certifies the whole `S^4`–`S^6` stretch. Richer quaternionic, projective, and octonionic-shadow language for these dimensions stays roadmap material unless a theorem card says otherwise.
 
 ## Lesson Path
 
-1. Read [Suspension Euler Parity](suspension_euler_parity.qmd).
-2. Identify which facts are common finite suspension facts.
-3. Treat quaternionic, projective, and octonionic-shadow language as roadmap material unless theorem cards say otherwise.
+1. [Suspension Euler Parity](suspension_euler_parity.qmd) — read the `2, 0, 2` rhythm off the finite cell counts.
+
+The theorem card is the status source: a finite suspension-count fact is not a complete continuous theory of `S^4`, `S^5`, or `S^6`, which is future work.
+
+::: {.warning-box}
+This is a scaffold unit: the theorem cards are the status source, and the widgets and diagrams are explanations, not proofs. See [What "Proved" Means Here](../../what_proved_means.qmd).
+:::
 
 ::: {.checkpoint-box}
 
@@ -33,5 +37,10 @@ What is the difference between proving a finite suspension-count fact and provin
 ## Source Trail
 
 <div class="theorem-box" data-theorem-id="S456-T0001"></div>
+
+<div class="book-navigation">
+<a href="../S3/hopf_coils.qmd">Previous: Hopf Coils</a>
+<a href="suspension_euler_parity.qmd">Next: Suspension Euler Parity</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

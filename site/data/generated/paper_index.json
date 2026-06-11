@@ -232,7 +232,13 @@
         "CC-T0055",
         "CC-T0059",
         "CC-T0060",
-        "CC-T0061"
+        "CC-T0061",
+        "S1C-T0001",
+        "S1C-T0002",
+        "S1C-T0003",
+        "S1C-T0004",
+        "S1C-T0005",
+        "S1C-T0006"
       ],
       "title": "Circle Calculus S1.1: Finite Circles, Rotations, and Coils"
     },
@@ -401,7 +407,10 @@
         "S3H-T0005",
         "S3H-T0006",
         "S3H-T0007",
-        "S3H-T0008"
+        "S3H-T0008",
+        "S3H-T0009",
+        "S3H-T0010",
+        "S3H-T0011"
       ],
       "title": "Circle Calculus S3.3: Hopf Coils"
     },
@@ -420,7 +429,13 @@
         "S3S-T0002",
         "S3S-T0003",
         "S3S-T0004",
-        "S3S-T0005"
+        "S3S-T0005",
+        "S3S-T0006",
+        "S3S-T0007",
+        "S3S-T0008",
+        "S3S-T0009",
+        "S3S-T0010",
+        "S3S-T0011"
       ],
       "title": "Circle Calculus S3.4: Spin, Double Covers, and Rotation Quotients"
     },
@@ -875,7 +890,10 @@
         "AIM-T0052",
         "AIM-T0053",
         "AIM-T0054",
-        "AIM-T0055"
+        "AIM-T0055",
+        "AIT-T0001",
+        "AIT-T0002",
+        "AIT-T0003"
       ],
       "title": "Circle Calculus AI 2: Coil Attention and Memory"
     },
@@ -897,7 +915,13 @@
         "AIRA-T0002",
         "AIRA-T0003",
         "AIRA-T0004",
-        "AIRA-T0005"
+        "AIRA-T0005",
+        "AIT-T0004",
+        "AIT-T0005",
+        "AIT-T0006",
+        "AIT-T0007",
+        "AIT-T0008",
+        "AIT-T0009"
       ],
       "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
     },
@@ -975,7 +999,8 @@
         "PHYS-T0060",
         "PHYS-T0061",
         "PHYS-T0062",
-        "PHYS-T0063"
+        "PHYS-T0063",
+        "PHYS-T0064"
       ],
       "title": "Circle Calculus Physics 1: Proof-Carrying Finite Lattice Gauge Links"
     },

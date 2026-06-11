@@ -2,33 +2,47 @@
 title: "Data Analysis"
 ---
 
-The data-analysis page tracks finite phase-coordinate proofs and exploratory benchmark fixtures for periodic synthetic data. `APPD-B0001` compares coil closure ranking with an autocorrelation baseline on a deterministic known-period signal. `APPD-B0002` extends this to clean, noisy, aliased, and multi-period cases with coil closure, autocorrelation, and periodogram-style baselines.
+If a signal repeats every `p` steps, then folding it onto a circle of size `p` should make the repeats line up. That is the idea behind **coil closure** as a periodicity descriptor — and this page is careful to treat it as a hypothesis to test against ordinary baselines, not a proven method.
 
-The multi-period fixture is intentionally ambiguous; it is a warning against overclaiming, not a real-data usefulness claim.
+::: {.lesson-goal}
 
-::: {.learning-unit}
+## Lesson Goal
 
-## Case-Study Frame
-
-The circular address space is a phase coordinate. The repeated action is advancing through a period. The useful question is whether coil closure gives an interpretable descriptor for periodic data, and that question still requires benchmarks against ordinary baselines.
+Model a periodic signal as a phase coordinate on a finite circle, see how "closure" hints at the period, and understand why a clean synthetic win is not evidence about real data.
 
 :::
 
-<div class="warning-box">
-Benchmark fixtures are executable references only. They are not proofs of real-data usefulness, statistical optimality, or superiority over ordinary baselines.
-</div>
+## The Idea
 
-## What To Notice
+Give each sample a **phase coordinate**: sample `t` sits at `t mod p` on a circle of size `p`. If `p` is the true period, every full lap returns to the same phase, and samples that are one period apart pile onto the same node. Folding the signal at the *right* `p` makes it look stationary; folding at the wrong `p` smears it.
 
-- The Lean-proved seed covers finite phase-coordinate indexing.
-- Python fixtures test deterministic periodic cases.
-- Baseline comparisons are required before any usefulness claim.
+The Lean-proved seed is just the finite phase-coordinate indexing (bounded, closes after a period, idempotent normalization). Whether coil closure is a *good* periodicity descriptor is an empirical question — which is why the fixtures compare it against autocorrelation and periodogram-style baselines.
+
+## Worked Example
+
+A signal with true period `5`, sampled and folded at `p = 5`:
+
+```text
+phase(t) = t mod 5
+t:      0 1 2 3 4 5 6 7 8 9 10
+phase:  0 1 2 3 4 0 1 2 3 4 0    <- t and t+5 share a phase
+```
+
+Samples `0, 5, 10` all land on phase `0`; the fold lines up. Now fold the *same* data at `p = 4` and the phases drift instead of stacking — the wrong period does not close cleanly. The closure ranking uses exactly that contrast to score candidate periods.
+
+## Common Mistake
+
+::: {.common-mistake}
+
+A clean synthetic periodic fixture does not prove a method works on real, noisy data. The multi-period fixture (`APPD-B0002`) is intentionally *ambiguous* — a warning against overclaiming. These fixtures are executable references, not proofs of real-data usefulness, statistical optimality, or superiority over ordinary baselines. See [What "Proved" Means Here](../../what_proved_means.qmd).
+
+:::
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-Why does a clean synthetic periodic fixture not prove that a method will work on real noisy data?
+A signal repeats every `6` steps. At phase coordinate modulus `6`, which sample indices share a phase with sample `2`? (Answer: `2, 8, 14, 20, …` — every `6` steps.)
 
 :::
 
@@ -41,5 +55,10 @@ Why does a clean synthetic periodic fixture not prove that a method will work on
 <div class="theorem-box" data-theorem-id="APPD-T0005"></div>
 
 <p data-paper-ref="papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_APP_01_COIL_DATA_ANALYSIS.md">Coil Data Analysis</a></p>
+
+<div class="book-navigation">
+<a href="rendering.qmd">Previous: Rendering</a>
+<a href="../../roadmap.qmd">Next: Project Roadmap</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

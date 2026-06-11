@@ -3075,10 +3075,10 @@
       }
     },
     {
-      "advertised_claim": "Circle Calculus can express bounded quaternion, spin-sign, pure-vector, and Hopf phase facts with explicit warnings about topology boundaries.",
+      "advertised_claim": "Circle Calculus can express quaternion, spin-sign, pure-vector, real Hopf-coordinate, and common-phase invariance facts with explicit warnings about topology boundaries.",
       "area": "Geometry and rotation algebra",
-      "audience_interest": "Unit quaternions, Hopf coordinates, hidden phase, pure-vector boundaries, and sign ambiguity.",
-      "circle_math_expression": "Bounded quaternion, spin-sign, pure-vector, and Hopf coordinate facts are exposed through finite theorem spines with explicit topology warnings.",
+      "audience_interest": "Unit quaternions, Hopf coordinates, hidden phase, pure-vector boundaries, exact kernel, and sign ambiguity.",
+      "circle_math_expression": "Quaternion, spin-sign, pure-vector, real Hopf-coordinate, and common-phase invariance facts are exposed through theorem spines with explicit topology warnings.",
       "circle_native_value": "The Circle framing separates visible base coordinates from hidden phase in a way that is useful for teaching, widgets, and proof audits.",
       "claim_contract": {
         "gates": [
@@ -3095,7 +3095,7 @@
             "passed": true
           },
           {
-            "evidence": "Bounded quaternion, spin-sign, pure-vector, and Hopf coordinate facts are exposed through finite theorem spines with explicit topology warnings.",
+            "evidence": "Quaternion, spin-sign, pure-vector, real Hopf-coordinate, and common-phase invariance facts are exposed through theorem spines with explicit topology warnings.",
             "id": "circle_expression",
             "label": "Circle Math expression",
             "passed": true
@@ -3107,13 +3107,13 @@
             "passed": true
           },
           {
-            "evidence": "Circle Calculus can express bounded quaternion, spin-sign, pure-vector, and Hopf phase facts with explicit warnings about topology boundaries.",
+            "evidence": "Circle Calculus can express quaternion, spin-sign, pure-vector, real Hopf-coordinate, and common-phase invariance facts with explicit warnings about topology boundaries.",
             "id": "advertised_claim",
             "label": "advertised claim",
             "passed": true
           },
           {
-            "evidence": "Lean-proved quaternion unit laws, pure-vector conjugation boundary, sign-cancellation facts, and bounded Hopf phase-action facts.",
+            "evidence": "Lean-proved quaternion unit laws, pure-vector conjugation boundary, sign-cancellation facts, exact real-unit kernel facts for conjugation, real Hopf landing, and common-phase invariance facts.",
             "id": "proof_scope",
             "label": "proof scope",
             "passed": true
@@ -3125,7 +3125,7 @@
             "passed": true
           },
           {
-            "evidence": "Proof provenance is project-native Lean code for bounded quaternion, spin-sign, pure-vector, and Hopf-coordinate facts, with topology limits stated explicitly.",
+            "evidence": "Proof provenance is project-native Lean code for quaternion, spin-sign, pure-vector, real Hopf-coordinate, and common-phase invariance facts, with topology limits stated explicitly.",
             "id": "proof_provenance",
             "label": "proof provenance text",
             "passed": true
@@ -3137,7 +3137,7 @@
             "passed": true
           },
           {
-            "evidence": "7",
+            "evidence": "16",
             "id": "proved_theorem_ids",
             "label": "proved paper-carried theorem ids",
             "passed": true
@@ -3179,7 +3179,7 @@
             "passed": true
           },
           {
-            "evidence": "standard_math_parity theorems 7/7; circle_native_value sources 4/4; Living Book pages 2/2",
+            "evidence": "standard_math_parity theorems 16/16; circle_native_value sources 4/4; Living Book pages 2/2",
             "id": "value_proposition",
             "label": "role-backed value proposition",
             "passed": true
@@ -3244,7 +3244,7 @@
         "living_book_widget_count": 2,
         "paper_count": 3,
         "source_count": 4,
-        "theorem_count": 7
+        "theorem_count": 16
       },
       "executable_refs": [
         "sidecars/PAPER_S3_02_QUATERNION_COILS/python/test_quaternion_coil_examples.py",
@@ -3336,13 +3336,22 @@
               "S3H-T0001",
               "S3H-T0005",
               "S3H-T0008",
+              "S3H-T0009",
+              "S3H-T0010",
+              "S3H-T0011",
               "S3S-T0001",
-              "S3S-T0005"
+              "S3S-T0005",
+              "S3S-T0006",
+              "S3S-T0007",
+              "S3S-T0008",
+              "S3S-T0009",
+              "S3S-T0010",
+              "S3S-T0011"
             ],
             "standard_parity_claimed": true
           },
           {
-            "evidence": "Bounded quaternion, spin-sign, pure-vector, and Hopf coordinate facts are exposed through finite theorem spines with explicit topology warnings.",
+            "evidence": "Quaternion, spin-sign, pure-vector, real Hopf-coordinate, and common-phase invariance facts are exposed through theorem spines with explicit topology warnings.",
             "id": "circle_expression",
             "label": "Circle expression of the same surface",
             "ready": true,
@@ -3376,7 +3385,7 @@
             ]
           },
           {
-            "evidence": "papers 3; theorem refs 7/7; sources 4/4; executables 3; Living Book pages 2/2",
+            "evidence": "papers 3; theorem refs 16/16; sources 4/4; executables 3; Living Book pages 2/2",
             "id": "proof_backing",
             "label": "paper, theorem, source, executable, and Living Book backing",
             "ready": true,
@@ -3400,9 +3409,9 @@
         "standard_parity_claimed": true,
         "summary_lines": [
           "Standard reference: Quaternion unit algebra, Hopf-style phase coordinates, conjugation, and hidden phase symmetries.",
-          "Circle expression: Bounded quaternion, spin-sign, pure-vector, and Hopf coordinate facts are exposed through finite theorem spines with explicit topology warnings.",
+          "Circle expression: Quaternion, spin-sign, pure-vector, real Hopf-coordinate, and common-phase invariance facts are exposed through theorem spines with explicit topology warnings.",
           "Circle-native value: The Circle framing separates visible base coordinates from hidden phase in a way that is useful for teaching, widgets, and proof audits.",
-          "Proof backing: 3 paper ids, 7/7 theorem refs, 4/4 source refs, 3 executable refs, and 2/2 Living Book page refs.",
+          "Proof backing: 3 paper ids, 16/16 theorem refs, 4/4 source refs, 3 executable refs, and 2/2 Living Book page refs.",
           "Boundary: No full smooth Hopf fibration formalization and no complete SO(3) robotics formalization."
         ],
         "total_section_count": 6
@@ -3411,9 +3420,9 @@
         "standard_math_parity",
         "circle_native_value"
       ],
-      "proof_provenance": "Proof provenance is project-native Lean code for bounded quaternion, spin-sign, pure-vector, and Hopf-coordinate facts, with topology limits stated explicitly.",
+      "proof_provenance": "Proof provenance is project-native Lean code for quaternion, spin-sign, pure-vector, real Hopf-coordinate, and common-phase invariance facts, with topology limits stated explicitly.",
       "proof_provenance_kind": "project_native",
-      "proof_scope": "Lean-proved quaternion unit laws, pure-vector conjugation boundary, sign-cancellation facts, and bounded Hopf phase-action facts.",
+      "proof_scope": "Lean-proved quaternion unit laws, pure-vector conjugation boundary, sign-cancellation facts, exact real-unit kernel facts for conjugation, real Hopf landing, and common-phase invariance facts.",
       "proof_trail_contract": {
         "passed_step_count": 7,
         "ready_to_advertise": true,
@@ -3425,7 +3434,7 @@
             "ready": true
           },
           {
-            "evidence": "7/7 theorem refs",
+            "evidence": "16/16 theorem refs",
             "id": "theorem_refs",
             "label": "proved paper-carried theorem refs",
             "ready": true
@@ -3487,7 +3496,7 @@
             ]
           },
           {
-            "evidence": "7/7 theorem refs",
+            "evidence": "16/16 theorem refs",
             "id": "theorem_trail",
             "label": "proved theorem trail",
             "ready": true,
@@ -3497,8 +3506,17 @@
               "S3H-T0001",
               "S3H-T0005",
               "S3H-T0008",
+              "S3H-T0009",
+              "S3H-T0010",
+              "S3H-T0011",
               "S3S-T0001",
-              "S3S-T0005"
+              "S3S-T0005",
+              "S3S-T0006",
+              "S3S-T0007",
+              "S3S-T0008",
+              "S3S-T0009",
+              "S3S-T0010",
+              "S3S-T0011"
             ]
           },
           {
@@ -3601,11 +3619,20 @@
         "S3H-T0001",
         "S3H-T0005",
         "S3H-T0008",
+        "S3H-T0009",
+        "S3H-T0010",
+        "S3H-T0011",
         "S3S-T0001",
-        "S3S-T0005"
+        "S3S-T0005",
+        "S3S-T0006",
+        "S3S-T0007",
+        "S3S-T0008",
+        "S3S-T0009",
+        "S3S-T0010",
+        "S3S-T0011"
       ],
       "theorem_ref_contract": {
-        "proved_and_paper_backed_count": 7,
+        "proved_and_paper_backed_count": 16,
         "refs": [
           {
             "canonical_status": "proved",
@@ -3665,6 +3692,39 @@
           {
             "canonical_status": "proved",
             "carried_by_papers": [
+              "PAPER_S3_03_HOPF_COILS"
+            ],
+            "id": "S3H-T0009",
+            "lean_name": "Circle.S3.hopf_norm",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_S3_03_HOPF_COILS"
+            ],
+            "id": "S3H-T0010",
+            "lean_name": "Circle.S3.hopf_lands",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_S3_03_HOPF_COILS"
+            ],
+            "id": "S3H-T0011",
+            "lean_name": "Circle.S3.hopf_phase_invariant",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
               "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP"
             ],
             "id": "S3S-T0001",
@@ -3683,9 +3743,75 @@
             "paper_backed": true,
             "proved": true,
             "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP"
+            ],
+            "id": "S3S-T0006",
+            "lean_name": "Circle.S3.quaternionConjugation_normSq",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP"
+            ],
+            "id": "S3S-T0007",
+            "lean_name": "Circle.S3.quaternionConjugation_re",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP"
+            ],
+            "id": "S3S-T0008",
+            "lean_name": "Circle.S3.quaternionConjugation_mul",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP"
+            ],
+            "id": "S3S-T0009",
+            "lean_name": "Circle.S3.quaternionConjugation_real_trivial",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP"
+            ],
+            "id": "S3S-T0010",
+            "lean_name": "Circle.S3.realUnitQuaternion_eq_pm_one",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP"
+            ],
+            "id": "S3S-T0011",
+            "lean_name": "Circle.S3.quaternionConjugation_trivial_iff_pm_one",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
           }
         ],
-        "total_count": 7,
+        "total_count": 16,
         "unproved_or_unbacked_ids": []
       },
       "title": "Quaternion, Hopf, and phase coordinates",
@@ -3703,7 +3829,7 @@
             "required": true
           },
           "standard_math_parity": {
-            "evidence": "theorems 7/7",
+            "evidence": "theorems 16/16",
             "ready": true,
             "required": true
           }
@@ -3755,7 +3881,7 @@
             "passed": true
           },
           {
-            "evidence": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, two-path basepoint-swap facts, and complete cyclic three-path cycle basepoint-rotation packages.",
+            "evidence": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, closed-loop gauge-sample independence, two-path cycle gauge-invariance, two-path basepoint-swap facts, and complete cyclic three-path cycle basepoint-rotation packages.",
             "id": "proof_scope",
             "label": "proof scope",
             "passed": true
@@ -3779,7 +3905,7 @@
             "passed": true
           },
           {
-            "evidence": "22",
+            "evidence": "23",
             "id": "proved_theorem_ids",
             "label": "proved paper-carried theorem ids",
             "passed": true
@@ -3821,7 +3947,7 @@
             "passed": true
           },
           {
-            "evidence": "standard_math_parity theorems 22/22; circle_native_value sources 2/2; Living Book pages 1/1; application_guardrail language clean",
+            "evidence": "standard_math_parity theorems 23/23; circle_native_value sources 2/2; Living Book pages 1/1; application_guardrail language clean",
             "id": "value_proposition",
             "label": "role-backed value proposition",
             "passed": true
@@ -3884,7 +4010,7 @@
         "living_book_widget_count": 3,
         "paper_count": 1,
         "source_count": 2,
-        "theorem_count": 22
+        "theorem_count": 23
       },
       "executable_refs": [
         "sidecars/PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE/python/test_lattice_gauge_examples.py"
@@ -3974,7 +4100,8 @@
               "PHYS-T0060",
               "PHYS-T0061",
               "PHYS-T0062",
-              "PHYS-T0063"
+              "PHYS-T0063",
+              "PHYS-T0064"
             ],
             "standard_parity_claimed": true
           },
@@ -4006,7 +4133,7 @@
             ]
           },
           {
-            "evidence": "papers 1; theorem refs 22/22; sources 2/2; executables 1; Living Book pages 1/1",
+            "evidence": "papers 1; theorem refs 23/23; sources 2/2; executables 1; Living Book pages 1/1",
             "id": "proof_backing",
             "label": "paper, theorem, source, executable, and Living Book backing",
             "ready": true,
@@ -4032,7 +4159,7 @@
           "Standard reference: Discrete gauge-link paths, holonomy products, Wilson-loop style invariants, and checked path concatenation.",
           "Circle expression: Finite gauge links and paths are represented with Lean-checked source-target and holonomy laws.",
           "Circle-native value: Circle Math contributes proof-carrying finite records that can guard simulations and widgets against invalid path composition.",
-          "Proof backing: 1 paper ids, 22/22 theorem refs, 2/2 source refs, 1 executable refs, and 1/1 Living Book page refs.",
+          "Proof backing: 1 paper ids, 23/23 theorem refs, 2/2 source refs, 1 executable refs, and 1/1 Living Book page refs.",
           "Boundary: No continuum gauge theory, no physics discovery, and no lattice-QCD correctness claim."
         ],
         "total_section_count": 6
@@ -4044,7 +4171,7 @@
       ],
       "proof_provenance": "Proof provenance is project-native Lean code for finite gauge-link/path records and holonomy laws, with Python fixtures serving as executable references.",
       "proof_provenance_kind": "project_native",
-      "proof_scope": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, two-path cycle gauge-invariance, two-path basepoint-swap facts, and complete cyclic three-path cycle basepoint-rotation packages.",
+      "proof_scope": "Lean-proved finite link-path, checked-path, path-plus-reverse zero-holonomy, gauge-transform, Wilson-loop, plaquette, closed-loop record, gauge-shifted closed-loop, closed-loop gauge-sample independence, two-path cycle gauge-invariance, two-path basepoint-swap facts, and complete cyclic three-path cycle basepoint-rotation packages.",
       "proof_trail_contract": {
         "passed_step_count": 7,
         "ready_to_advertise": true,
@@ -4056,7 +4183,7 @@
             "ready": true
           },
           {
-            "evidence": "22/22 theorem refs",
+            "evidence": "23/23 theorem refs",
             "id": "theorem_refs",
             "label": "proved paper-carried theorem refs",
             "ready": true
@@ -4116,7 +4243,7 @@
             ]
           },
           {
-            "evidence": "22/22 theorem refs",
+            "evidence": "23/23 theorem refs",
             "id": "theorem_trail",
             "label": "proved theorem trail",
             "ready": true,
@@ -4142,7 +4269,8 @@
               "PHYS-T0060",
               "PHYS-T0061",
               "PHYS-T0062",
-              "PHYS-T0063"
+              "PHYS-T0063",
+              "PHYS-T0064"
             ]
           },
           {
@@ -4240,10 +4368,11 @@
         "PHYS-T0060",
         "PHYS-T0061",
         "PHYS-T0062",
-        "PHYS-T0063"
+        "PHYS-T0063",
+        "PHYS-T0064"
       ],
       "theorem_ref_contract": {
-        "proved_and_paper_backed_count": 22,
+        "proved_and_paper_backed_count": 23,
         "refs": [
           {
             "canonical_status": "proved",
@@ -4486,9 +4615,20 @@
             "paper_backed": true,
             "proved": true,
             "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE"
+            ],
+            "id": "PHYS-T0064",
+            "lean_name": "Circle.Physics.closedGaugeLoop_gaugeShiftedHolonomy_gauge_independent",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
           }
         ],
-        "total_count": 22,
+        "total_count": 23,
         "unproved_or_unbacked_ids": []
       },
       "title": "Proof-carrying finite gauge paths",
@@ -4506,7 +4646,7 @@
             "required": true
           },
           "standard_math_parity": {
-            "evidence": "theorems 22/22",
+            "evidence": "theorems 23/23",
             "ready": true,
             "required": true
           }
@@ -5449,10 +5589,10 @@
       }
     },
     {
-      "advertised_claim": "Circle Calculus can prove finite indexing and schedule-safety facts that AI experiments can reuse.",
+      "advertised_claim": "Circle Calculus can prove finite indexing, schedule-safety, sparse-coverage, relative-phase, and circulant-mixer structure facts that AI experiments can reuse.",
       "area": "AI systems",
-      "audience_interest": "Cyclic memory, recurrence budgets, loop-exit certificates, looped recurrent states, middle-block routing, phase routing, and adapter indexing.",
-      "circle_math_expression": "AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
+      "audience_interest": "Cyclic memory, recurrence budgets, loop-exit certificates, looped recurrent states, middle-block routing, phase routing, strided attention, RoPE, circulant mixers, and adapter indexing.",
+      "circle_math_expression": "AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, strided-attention reachability, RoPE relative phase, circulant mixer laws, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
       "circle_native_value": "Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made.",
       "claim_contract": {
         "gates": [
@@ -5463,13 +5603,13 @@
             "passed": true
           },
           {
-            "evidence": "Finite cyclic buffers, schedule normalization, recurrence budgets, and modular adapter indexing.",
+            "evidence": "Finite cyclic buffers, schedule normalization, recurrence budgets, sparse strided attention, RoPE relative phase, circular convolution, and modular adapter indexing.",
             "id": "standard_anchor",
             "label": "standard math anchor",
             "passed": true
           },
           {
-            "evidence": "AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
+            "evidence": "AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, strided-attention reachability, RoPE relative phase, circulant mixer laws, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
             "id": "circle_expression",
             "label": "Circle Math expression",
             "passed": true
@@ -5481,13 +5621,13 @@
             "passed": true
           },
           {
-            "evidence": "Circle Calculus can prove finite indexing and schedule-safety facts that AI experiments can reuse.",
+            "evidence": "Circle Calculus can prove finite indexing, schedule-safety, sparse-coverage, relative-phase, and circulant-mixer structure facts that AI experiments can reuse.",
             "id": "advertised_claim",
             "label": "advertised claim",
             "passed": true
           },
           {
-            "evidence": "Lean-proved finite memory-slot, loop-budget, active-token-step, looped recurrent-state, positive raw-budget closure, middle-block route, combined route/budget one-cycle and multi-cycle common-cycle closure, sample-zero route/budget initialization, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
+            "evidence": "Lean-proved finite memory-slot, loop-budget, active-token-step, looped recurrent-state, positive raw-budget closure, middle-block route, combined route/budget one-cycle and multi-cycle common-cycle closure, sample-zero route/budget initialization, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, strided-attention coverage, RoPE relative-phase invariance, circulant shift-equivariance/commutativity/additivity, shift-action, and adapter-block normalization facts.",
             "id": "proof_scope",
             "label": "proof scope",
             "passed": true
@@ -5499,7 +5639,7 @@
             "passed": true
           },
           {
-            "evidence": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, looped recurrent-state, positive raw-budget closure, active-step, middle-block route, combined route/budget common-cycle and sample-zero initialization, certificate, and adapter-index safety facts; benchmarks remain separate.",
+            "evidence": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, looped recurrent-state, positive raw-budget closure, active-step, middle-block route, combined route/budget common-cycle and sample-zero initialization, certificate, strided attention coverage, RoPE relative phase, circulant mixer laws, and adapter-index safety facts; benchmarks remain separate.",
             "id": "proof_provenance",
             "label": "proof provenance text",
             "passed": true
@@ -5511,13 +5651,13 @@
             "passed": true
           },
           {
-            "evidence": "36",
+            "evidence": "45",
             "id": "proved_theorem_ids",
             "label": "proved paper-carried theorem ids",
             "passed": true
           },
           {
-            "evidence": "6",
+            "evidence": "9",
             "id": "dictionary_backing",
             "label": "dictionary backing",
             "passed": true
@@ -5553,7 +5693,7 @@
             "passed": true
           },
           {
-            "evidence": "standard_math_parity theorems 36/36; circle_native_value sources 5/5; Living Book pages 1/1; application_guardrail language clean",
+            "evidence": "standard_math_parity theorems 45/45; circle_native_value sources 5/5; Living Book pages 1/1; application_guardrail language clean",
             "id": "value_proposition",
             "label": "role-backed value proposition",
             "passed": true
@@ -5605,6 +5745,9 @@
       },
       "dictionary_ids": [
         "COMMON-0028",
+        "COMMON-0029",
+        "COMMON-0030",
+        "COMMON-0031",
         "COMMON-0047",
         "COMMON-0052",
         "COMMON-0067",
@@ -5612,13 +5755,13 @@
         "COMMON-0071"
       ],
       "evidence_counts": {
-        "dictionary_count": 6,
+        "dictionary_count": 9,
         "executable_count": 2,
         "living_book_page_count": 1,
         "living_book_widget_count": 7,
         "paper_count": 2,
         "source_count": 5,
-        "theorem_count": 36
+        "theorem_count": 45
       },
       "executable_refs": [
         "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
@@ -5712,7 +5855,7 @@
         "ready_to_review": true,
         "sections": [
           {
-            "evidence": "Finite cyclic buffers, schedule normalization, recurrence budgets, and modular adapter indexing.",
+            "evidence": "Finite cyclic buffers, schedule normalization, recurrence budgets, sparse strided attention, RoPE relative phase, circular convolution, and modular adapter indexing.",
             "id": "standard_reference",
             "label": "standard-math reference point",
             "ready": true,
@@ -5752,12 +5895,21 @@
               "AIM-T0053",
               "AIM-T0054",
               "AIM-T0055",
-              "AIRA-T0005"
+              "AIRA-T0005",
+              "AIT-T0001",
+              "AIT-T0002",
+              "AIT-T0003",
+              "AIT-T0004",
+              "AIT-T0005",
+              "AIT-T0006",
+              "AIT-T0007",
+              "AIT-T0008",
+              "AIT-T0009"
             ],
             "standard_parity_claimed": true
           },
           {
-            "evidence": "AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
+            "evidence": "AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, strided-attention reachability, RoPE relative phase, circulant mixer laws, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
             "id": "circle_expression",
             "label": "Circle expression of the same surface",
             "ready": true,
@@ -5791,7 +5943,7 @@
             ]
           },
           {
-            "evidence": "papers 2; theorem refs 36/36; sources 5/5; executables 2; Living Book pages 1/1",
+            "evidence": "papers 2; theorem refs 45/45; sources 5/5; executables 2; Living Book pages 1/1",
             "id": "proof_backing",
             "label": "paper, theorem, source, executable, and Living Book backing",
             "ready": true,
@@ -5814,10 +5966,10 @@
         ],
         "standard_parity_claimed": true,
         "summary_lines": [
-          "Standard reference: Finite cyclic buffers, schedule normalization, recurrence budgets, and modular adapter indexing.",
-          "Circle expression: AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
+          "Standard reference: Finite cyclic buffers, schedule normalization, recurrence budgets, sparse strided attention, RoPE relative phase, circular convolution, and modular adapter indexing.",
+          "Circle expression: AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, strided-attention reachability, RoPE relative phase, circulant mixer laws, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
           "Circle-native value: Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made.",
-          "Proof backing: 2 paper ids, 36/36 theorem refs, 5/5 source refs, 2 executable refs, and 1/1 Living Book page refs.",
+          "Proof backing: 2 paper ids, 45/45 theorem refs, 5/5 source refs, 2 executable refs, and 1/1 Living Book page refs.",
           "Boundary: No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence."
         ],
         "total_section_count": 6
@@ -5827,9 +5979,9 @@
         "circle_native_value",
         "application_guardrail"
       ],
-      "proof_provenance": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, looped recurrent-state, positive raw-budget closure, active-step, middle-block route, combined route/budget common-cycle and sample-zero initialization, certificate, and adapter-index safety facts; benchmarks remain separate.",
+      "proof_provenance": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, looped recurrent-state, positive raw-budget closure, active-step, middle-block route, combined route/budget common-cycle and sample-zero initialization, certificate, strided attention coverage, RoPE relative phase, circulant mixer laws, and adapter-index safety facts; benchmarks remain separate.",
       "proof_provenance_kind": "project_native",
-      "proof_scope": "Lean-proved finite memory-slot, loop-budget, active-token-step, looped recurrent-state, positive raw-budget closure, middle-block route, combined route/budget one-cycle and multi-cycle common-cycle closure, sample-zero route/budget initialization, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, and adapter-block normalization facts.",
+      "proof_scope": "Lean-proved finite memory-slot, loop-budget, active-token-step, looped recurrent-state, positive raw-budget closure, middle-block route, combined route/budget one-cycle and multi-cycle common-cycle closure, sample-zero route/budget initialization, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, strided-attention coverage, RoPE relative-phase invariance, circulant shift-equivariance/commutativity/additivity, shift-action, and adapter-block normalization facts.",
       "proof_trail_contract": {
         "passed_step_count": 7,
         "ready_to_advertise": true,
@@ -5841,7 +5993,7 @@
             "ready": true
           },
           {
-            "evidence": "36/36 theorem refs",
+            "evidence": "45/45 theorem refs",
             "id": "theorem_refs",
             "label": "proved paper-carried theorem refs",
             "ready": true
@@ -5902,7 +6054,7 @@
             ]
           },
           {
-            "evidence": "36/36 theorem refs",
+            "evidence": "45/45 theorem refs",
             "id": "theorem_trail",
             "label": "proved theorem trail",
             "ready": true,
@@ -5942,7 +6094,16 @@
               "AIM-T0053",
               "AIM-T0054",
               "AIM-T0055",
-              "AIRA-T0005"
+              "AIRA-T0005",
+              "AIT-T0001",
+              "AIT-T0002",
+              "AIT-T0003",
+              "AIT-T0004",
+              "AIT-T0005",
+              "AIT-T0006",
+              "AIT-T0007",
+              "AIT-T0008",
+              "AIT-T0009"
             ]
           },
           {
@@ -6043,7 +6204,7 @@
         "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
         "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"
       ],
-      "standard_math_anchor": "Finite cyclic buffers, schedule normalization, recurrence budgets, and modular adapter indexing.",
+      "standard_math_anchor": "Finite cyclic buffers, schedule normalization, recurrence budgets, sparse strided attention, RoPE relative phase, circular convolution, and modular adapter indexing.",
       "theorem_ids": [
         "AIM-T0001",
         "AIM-T0005",
@@ -6080,10 +6241,19 @@
         "AIM-T0053",
         "AIM-T0054",
         "AIM-T0055",
-        "AIRA-T0005"
+        "AIRA-T0005",
+        "AIT-T0001",
+        "AIT-T0002",
+        "AIT-T0003",
+        "AIT-T0004",
+        "AIT-T0005",
+        "AIT-T0006",
+        "AIT-T0007",
+        "AIT-T0008",
+        "AIT-T0009"
       ],
       "theorem_ref_contract": {
-        "proved_and_paper_backed_count": 36,
+        "proved_and_paper_backed_count": 45,
         "refs": [
           {
             "canonical_status": "proved",
@@ -6480,9 +6650,108 @@
             "paper_backed": true,
             "proved": true,
             "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIT-T0001",
+            "lean_name": "Circle.Applications.attentionReach_eq_div_gcd",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIT-T0002",
+            "lean_name": "Circle.Applications.stridedHead_fullCoverage_iff_coprime",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIT-T0003",
+            "lean_name": "Circle.Applications.stridedHead_fullCoverage_of_coprime",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
+            ],
+            "id": "AIT-T0004",
+            "lean_name": "Circle.Applications.rope_relative_shift_invariant",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
+            ],
+            "id": "AIT-T0005",
+            "lean_name": "Circle.Applications.rope_compose",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
+            ],
+            "id": "AIT-T0006",
+            "lean_name": "Circle.Applications.circConv_shift_equivariant",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
+            ],
+            "id": "AIT-T0007",
+            "lean_name": "Circle.Applications.circConv_comm",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
+            ],
+            "id": "AIT-T0008",
+            "lean_name": "Circle.Applications.circConv_add",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
+            ],
+            "id": "AIT-T0009",
+            "lean_name": "Circle.Applications.shiftBy_add",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
           }
         ],
-        "total_count": 36,
+        "total_count": 45,
         "unproved_or_unbacked_ids": []
       },
       "title": "AI memory, loop, and adapter schedules",
@@ -6500,7 +6769,7 @@
             "required": true
           },
           "standard_math_parity": {
-            "evidence": "theorems 36/36",
+            "evidence": "theorems 45/45",
             "ready": true,
             "required": true
           }
@@ -7676,8 +7945,8 @@
           "unbacked_refs": []
         },
         "theorem_refs": {
-          "proved_and_paper_backed_count": 29,
-          "total_count": 29,
+          "proved_and_paper_backed_count": 39,
+          "total_count": 39,
           "unproved_or_unbacked_refs": []
         },
         "unique_evidence_counts": {
@@ -7687,7 +7956,7 @@
           "living_book_widget_count": 5,
           "paper_count": 4,
           "source_count": 6,
-          "theorem_count": 29
+          "theorem_count": 39
         },
         "unknown_capability_ids": []
       },
@@ -7699,7 +7968,7 @@
         "circle_native_value_refs": [
           {
             "capability_id": "SHOW-007",
-            "circle_math_expression": "Bounded quaternion, spin-sign, pure-vector, and Hopf coordinate facts are exposed through finite theorem spines with explicit topology warnings.",
+            "circle_math_expression": "Quaternion, spin-sign, pure-vector, real Hopf-coordinate, and common-phase invariance facts are exposed through theorem spines with explicit topology warnings.",
             "circle_native_value": "The Circle framing separates visible base coordinates from hidden phase in a way that is useful for teaching, widgets, and proof audits."
           },
           {
@@ -7740,7 +8009,7 @@
             ]
           },
           {
-            "evidence": "papers 4; theorem refs 29; source refs 6; executables 4; Living Book pages 2",
+            "evidence": "papers 4; theorem refs 39; source refs 6; executables 4; Living Book pages 2",
             "id": "proof_backing_counts",
             "label": "proof-backed evidence counts",
             "ready": true,
@@ -7767,7 +8036,7 @@
         "standard_interest_refs": [
           {
             "area": "Geometry and rotation algebra",
-            "audience_interest": "Unit quaternions, Hopf coordinates, hidden phase, pure-vector boundaries, and sign ambiguity.",
+            "audience_interest": "Unit quaternions, Hopf coordinates, hidden phase, pure-vector boundaries, exact kernel, and sign ambiguity.",
             "capability_id": "SHOW-007",
             "standard_math_anchor": "Quaternion unit algebra, Hopf-style phase coordinates, conjugation, and hidden phase symmetries."
           },
@@ -7781,7 +8050,7 @@
         "summary_lines": [
           "Audience: Geometry, robotics, and physics-facing readers interested in hidden phase, spin sign, holonomy, and path certificates.",
           "Capability surface: 2 route lanes across Geometry and rotation algebra, Physics-facing finite models.",
-          "Proof backing: 29 proved theorem refs, 4 paper ids, 6 source refs, 4 executable refs, and 2 Living Book page refs.",
+          "Proof backing: 39 proved theorem refs, 4 paper ids, 6 source refs, 4 executable refs, and 2 Living Book page refs.",
           "Circle-native value: 2 lanes state explicit Circle expression/value statements with role-backed checks.",
           "Boundary: This route does not claim continuum physics, full smooth Hopf formalization, or model discovery."
         ],
@@ -7844,7 +8113,7 @@
             ]
           },
           {
-            "evidence": "provenance project_native; theorems 29/29; sources 6/6",
+            "evidence": "provenance project_native; theorems 39/39; sources 6/6",
             "id": "proof_provenance_surface",
             "label": "proof provenance and backing surface",
             "ready": true,
@@ -7933,18 +8202,18 @@
           "unbacked_refs": []
         },
         "theorem_refs": {
-          "proved_and_paper_backed_count": 68,
-          "total_count": 68,
+          "proved_and_paper_backed_count": 77,
+          "total_count": 77,
           "unproved_or_unbacked_refs": []
         },
         "unique_evidence_counts": {
-          "dictionary_count": 14,
+          "dictionary_count": 17,
           "executable_count": 7,
           "living_book_page_count": 3,
           "living_book_widget_count": 11,
           "paper_count": 7,
           "source_count": 14,
-          "theorem_count": 68
+          "theorem_count": 77
         },
         "unknown_capability_ids": []
       },
@@ -7962,7 +8231,7 @@
           },
           {
             "capability_id": "SHOW-010",
-            "circle_math_expression": "AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
+            "circle_math_expression": "AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, strided-attention reachability, RoPE relative phase, circulant mixer laws, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
             "circle_native_value": "Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made."
           },
           {
@@ -8005,7 +8274,7 @@
             ]
           },
           {
-            "evidence": "papers 7; theorem refs 68; source refs 14; executables 7; Living Book pages 3",
+            "evidence": "papers 7; theorem refs 77; source refs 14; executables 7; Living Book pages 3",
             "id": "proof_backing_counts",
             "label": "proof-backed evidence counts",
             "ready": true,
@@ -8039,9 +8308,9 @@
           },
           {
             "area": "AI systems",
-            "audience_interest": "Cyclic memory, recurrence budgets, loop-exit certificates, looped recurrent states, middle-block routing, phase routing, and adapter indexing.",
+            "audience_interest": "Cyclic memory, recurrence budgets, loop-exit certificates, looped recurrent states, middle-block routing, phase routing, strided attention, RoPE, circulant mixers, and adapter indexing.",
             "capability_id": "SHOW-010",
-            "standard_math_anchor": "Finite cyclic buffers, schedule normalization, recurrence budgets, and modular adapter indexing."
+            "standard_math_anchor": "Finite cyclic buffers, schedule normalization, recurrence budgets, sparse strided attention, RoPE relative phase, circular convolution, and modular adapter indexing."
           },
           {
             "area": "Computation",
@@ -8053,7 +8322,7 @@
         "summary_lines": [
           "Audience: Builders who want generated artifacts, cyclic AI schedules, and compute layouts to carry checkable provenance before performance or quality claims.",
           "Capability surface: 3 route lanes across AI systems, Computation, Generation and compression interfaces.",
-          "Proof backing: 68 proved theorem refs, 7 paper ids, 14 source refs, 7 executable refs, and 3 Living Book page refs.",
+          "Proof backing: 77 proved theorem refs, 7 paper ids, 14 source refs, 7 executable refs, and 3 Living Book page refs.",
           "Circle-native value: 3 lanes state explicit Circle expression/value statements with role-backed checks.",
           "Boundary: This route does not claim universal compression, model-quality improvement, speedup, or context-length improvement without benchmark evidence."
         ],
@@ -8118,7 +8387,7 @@
             ]
           },
           {
-            "evidence": "provenance project_native; theorems 68/68; sources 14/14",
+            "evidence": "provenance project_native; theorems 77/77; sources 14/14",
             "id": "proof_provenance_surface",
             "label": "proof provenance and backing surface",
             "ready": true,
@@ -8186,8 +8455,8 @@
         "unbacked_refs": []
       },
       "theorem_refs": {
-        "proved_and_paper_backed_count": 114,
-        "total_count": 114,
+        "proved_and_paper_backed_count": 133,
+        "total_count": 133,
         "unproved_or_unbacked_refs": []
       }
     },
@@ -8198,13 +8467,13 @@
       "ready_count": 11
     },
     "evidence_totals": {
-      "dictionary_count": 39,
+      "dictionary_count": 42,
       "executable_count": 17,
       "living_book_page_count": 13,
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 114
+      "theorem_count": 133
     },
     "proof_provenance_counts": {
       "mathlib_bridge": 4,
@@ -8226,13 +8495,13 @@
       "unknown_capability_ids": []
     },
     "unique_evidence_counts": {
-      "dictionary_count": 31,
+      "dictionary_count": 34,
       "executable_count": 17,
       "living_book_page_count": 8,
       "living_book_widget_count": 19,
       "paper_count": 18,
       "source_count": 35,
-      "theorem_count": 114
+      "theorem_count": 133
     },
     "unique_living_book_pages": [
       "site/chapters/S1/03_coils_orbits_closure.qmd",

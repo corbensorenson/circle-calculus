@@ -2,23 +2,63 @@
 title: "Boundary And Cobordism"
 ---
 
-Boundary/cobordism language starts here with directed finite intervals. The current lesson is about orientation and endpoints: before the project can discuss cobordism-style structure, it needs checked finite boundary facts.
+A directed segment has a start and an end — an arrow. Its **boundary** is "where it finishes minus where it starts." That tiny, signed idea is the seed that grows into cobordism, the study of when one shape is the boundary of another. This page proves the seed.
 
-::: {.warning-box}
-The current theorem cards certify directed-boundary seeds only. A full cobordism category, manifold theory, and field-theory-style boundary calculus remain future work.
+::: {.lesson-goal}
+
+## Lesson Goal
+
+Learn the boundary of a directed interval as a signed difference, and check the three facts that make it well-behaved: reversing flips the sign, a stationary interval has zero boundary, and boundaries split through a midpoint.
+
 :::
 
-## What To Notice
+## The Idea
 
-- A directed interval has an input side and an output side.
-- Boundary facts are finite and explicit in the current model.
-- Future cobordism language must preserve these orientation guardrails.
+Write a directed interval from `a` to `b` as `a → b`. Its boundary is the signed endpoint difference:
+
+```text
+∂(a → b) = b − a
+```
+
+From that one definition:
+
+- **Reverse flips sign:** `∂(b → a) = a − b = −∂(a → b)`.
+- **No motion, no boundary:** `∂(a → a) = a − a = 0`.
+- **Split through a midpoint** `m`: `∂(a → m) + ∂(m → b) = (m − a) + (b − m) = b − a = ∂(a → b)`.
+
+The orientation (the direction of the arrow) is the whole point — drop it and the signs stop bookkeeping correctly.
+
+## Worked Example
+
+Take the interval `2 → 5`:
+
+```text
+∂(2 → 5) = 5 − 2 = 3
+∂(5 → 2) = 2 − 5 = −3      (reverse flips the sign)
+∂(3 → 3) = 0               (stationary)
+```
+
+Now split `2 → 5` at the midpoint `4`:
+
+```text
+∂(2 → 4) + ∂(4 → 5) = (4 − 2) + (5 − 4) = 2 + 1 = 3 = ∂(2 → 5)
+```
+
+The pieces add up to the whole, exactly as the boundary-splitting theorem says.
+
+## Common Mistake
+
+::: {.common-mistake}
+
+These cards certify directed-boundary seeds only. A full cobordism category, manifold theory, or field-theory boundary calculus is *not* claimed — that is future work. See [What "Proved" Means Here](../../what_proved_means.qmd).
+
+:::
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-Why is endpoint orientation a useful first proof target for later boundary and cobordism language?
+What is `∂(7 → 1)`, and what is `∂(1 → 7)`? How are they related? (Answer: `−6` and `6`; reversing the arrow negates the boundary.)
 
 :::
 
@@ -31,5 +71,10 @@ Why is endpoint orientation a useful first proof target for later boundary and c
 <div class="theorem-box" data-theorem-id="P2BC-T0005"></div>
 
 <p data-paper-ref="papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/phase2/PAPER_P2_04_BOUNDARY_COBORDISM_CALCULUS.md">Boundary Cobordism Calculus</a></p>
+
+<div class="book-navigation">
+<a href="bott_clifford_periodicity.qmd">Previous: Bott And Clifford</a>
+<a href="proof_carrying_glyphs.qmd">Next: Proof-Carrying Glyphs</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

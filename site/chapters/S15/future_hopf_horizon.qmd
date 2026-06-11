@@ -2,24 +2,51 @@
 title: "Future Hopf Horizon"
 ---
 
-This page tracks the octonionic Hopf horizon. It is active because the project has finite and bounded coordinate seeds here, but it remains horizon-facing because the full theory is not complete.
+This is the project's working edge: the octonionic Hopf step. There are real finite footholds here, but the full theory is unfinished, so the page is deliberately scoped as future work and reads its status straight off the theorem cards.
 
-::: {.warning-box}
-This page should remain scoped as future work wherever the theorem manifest says future, deferred, or roadmap. The checked cards below do not imply a completed octonionic Hopf fibration theory.
+::: {.lesson-goal}
+
+## Lesson Goal
+
+Learn the three kinds of fact this horizon currently carries — a finite Euler fact, *safe* right-phase facts under explicit hypotheses, and a guardrail counterexample — and why the counterexample is what keeps the page honest.
+
 :::
 
-## What To Notice
+## The Idea
 
-- `S15-T0003` records a bounded coordinate landing fact.
-- `S15-T0005` through `S15-T0007` record safe right-phase facts under explicit hypotheses.
-- `S15-T0008` is a guardrail counterexample against a naive full-coordinate invariance claim.
-- `S15-T0009` records the finite eight-suspension Euler-parity fact.
+Three things are pinned down:
+
+- **A finite Euler fact.** Eight suspensions take `S^7` (χ = 0) up to `S^15`, and the parity rhythm keeps `χ(S^15) = 0` (`S15-T0009`).
+- **Safe right-phase facts.** Under explicit hypotheses, a shared right unit-octonion phase preserves the bounded Hopf coordinate landing (`S15-T0003`, `S15-T0005`–`S15-T0007`).
+- **A guardrail counterexample.** *Without* those hypotheses, naive shared right-multiplication does **not** preserve the full bounded coordinate (`S15-T0008`).
+
+That last one matters most. A counterexample is a proof of a limit: it tells you exactly which tempting generalization is false, so the horizon cannot quietly inflate into a finished octonionic Hopf fibration.
+
+## Worked Example
+
+The Euler side is the concrete, checkable part:
+
+```text
+S^7  : 0
+suspend ×8, each step  χ → 2 − χ, flipping 0 → 2 → 0 → …
+after 8 (even) flips   χ(S^15) = 0
+```
+
+Eight is even, so the value returns to `0` — an odd sphere, as expected. The octonionic right-phase facts, by contrast, only hold inside their stated hypotheses; step outside them and `S15-T0008` shows the invariance breaks. The horizon keeps the safe facts and the warning side by side on purpose.
+
+## Common Mistake
+
+::: {.common-mistake}
+
+Do not promote this page into a completed octonionic Hopf fibration theory. It stays scoped as future/roadmap work wherever the manifest says future, deferred, or roadmap; the checked cards below are bounded coordinate and parity facts plus one counterexample. See [What "Proved" Means Here](../../what_proved_means.qmd).
+
+:::
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-How does a counterexample theorem help the Living Book stay honest about the S15 horizon?
+How does a counterexample theorem (like `S15-T0008`) help the Living Book stay honest about an unfinished horizon? (Answer: it proves a specific generalization is false, blocking an over-claim.)
 
 :::
 
@@ -33,5 +60,10 @@ How does a counterexample theorem help the Living Book stay honest about the S15
 <div class="theorem-box" data-theorem-id="S15-T0009"></div>
 
 <p data-paper-ref="papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/future/S15/PAPER_S15_01_OCTONIONIC_HOPF_ROADMAP.md">S15 Octonionic Hopf Roadmap</a></p>
+
+<div class="book-navigation">
+<a href="index.qmd">Previous: S15 Overview</a>
+<a href="../phase2/index.qmd">Next Unit: Phase II</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

@@ -6,6 +6,16 @@ Status: draft with a Lean-proved finite regeneration spine plus exploratory Pyth
 
 This paper starts the generative-structure lane. The idea is simple: sometimes the most useful representation of an object is not the finished object but a small seed, a rule set, an iteration schedule, a closure condition, and a certificate that the object can be regenerated.
 
+**Two tiers of result (read this first).** Keep two kinds of fact apart on this track. The
+**substantive** proved content is the orbit-decomposition and exact-regeneration theory —
+orbit count, period, coverage, canonical-representative disjointness, and exact regeneration
+as a reflexive/symmetric/transitive relation — the same non-trivial gcd/orbit spine as
+`S^1`. The rest — generated-list lengths and finite-search bounds — is **elementary
+bookkeeping**: honest, and it keeps the search code sound, but it is the trivial
+finite-closure family, not evidence that a seed-rule record is smaller or better. The Python
+comparison fixtures are exploratory; a generator record is not automatically a compression
+win.
+
 The ordinary baseline is value-only storage:
 
 ```text

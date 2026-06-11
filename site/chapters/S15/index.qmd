@@ -2,32 +2,33 @@
 title: "S15: Active Hopf Horizon"
 ---
 
-S15 is an active horizon track. Current pages should treat it as finite-seed, warning-boundary, and roadmap material unless a generated theorem card reports a certified theorem.
+`S^15` is the **horizon** of the project — the next octonionic Hopf step, where the book has planted finite seeds and guardrails but not a finished theory. This unit is honest about being a frontier: it shows you the checked footholds and, just as importantly, a counterexample that stops a tempting wrong claim.
 
-::: {.learning-unit}
+::: {.lesson-goal}
 
-## What To Learn Here
+## Unit Goal
 
-S15 is a horizon chapter, not a completed destination. It records finite suspension facts, bounded coordinate landing facts, safe right-phase facts, and a counterexample that prevents a naive invariance claim from being promoted.
+See what is actually nailed down at the horizon — finite suspension/Euler facts, bounded coordinate landings, and *safe* right-phase facts — and understand why one counterexample keeps a naive invariance claim from being promoted.
 
 :::
 
-<div class="warning-box">
-This section is actively being expanded, but it remains horizon-facing. A theorem card may expose a checked finite theorem or roadmap marker; the Living Book does not claim a complete implemented S15 theory.
-</div>
+## The Idea
+
+A horizon chapter records progress without overstating it. The finite eight-suspension fact gives `χ(S^15) = 0` by the usual parity rhythm. The bounded octonionic Hopf landing facts hold under explicit hypotheses. And the counterexample is the hero of the unit: it proves that *naive* shared right-multiplication does **not** preserve the full bounded Hopf coordinate, so the honest claim has to stay narrow. This is roadmap material; the Living Book does not claim a complete implemented `S^15` theory.
 
 ## Lesson Path
 
-1. Read the finite eight-suspension and Euler-parity facts first.
-2. Then read the bounded octonionic Hopf coordinate landing facts.
-3. Treat the right-phase facts and counterexample as guardrails for future work.
-4. Do not upgrade the horizon page into a full octonionic Hopf fibration claim.
+1. [Future Hopf Horizon](future_hopf_horizon.qmd) — the finite seeds, the safe right-phase facts, and the guardrail counterexample.
+
+::: {.warning-box}
+This is a horizon scaffold: it stays future/roadmap-facing, the theorem cards are the status source, and the widgets and diagrams are explanations, not proofs. See [What "Proved" Means Here](../../what_proved_means.qmd).
+:::
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-Which theorem card records the counterexample showing that naive shared right unit-octonion multiplication does not preserve the full bounded Hopf coordinate?
+Which theorem card records the counterexample showing that naive shared right unit-octonion multiplication does not preserve the full bounded Hopf coordinate? (Look for `S15-T0008`.)
 
 :::
 
@@ -42,5 +43,10 @@ Which theorem card records the counterexample showing that naive shared right un
 <div class="theorem-box" data-theorem-id="S15-T0007"></div>
 <div class="theorem-box" data-theorem-id="S15-T0008"></div>
 <div class="theorem-box" data-theorem-id="S15-T0009"></div>
+
+<div class="book-navigation">
+<a href="../S7/octonionic_layer.qmd">Previous: Octonionic Layer</a>
+<a href="future_hopf_horizon.qmd">Next: Future Hopf Horizon</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

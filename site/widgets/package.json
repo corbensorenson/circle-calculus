@@ -1,0 +1,5 @@
+{
+  "type": "module",
+  "private": true,
+  "description": "Marks Circle Calculus Living Book widget sources as ES modules so Node-based checks resolve the same named exports the browser loads."
+}

@@ -8,15 +8,35 @@ This paper states the disciplined Circle AI thesis: circle/coil structure may he
 
 Many existing AI components already contain circle-shaped ingredients: RoPE and rotary embeddings, Fourier neural operators, FFT-style sequence mixers, SIREN-like periodic activations, circulant or block-circulant layers, long convolution systems, structured state-space models, looped/recursive transformers, spherical CNNs, and quaternion neural networks. The possible contribution here is not inventing those ingredients. It is making the phase/coil/proof interface systematic.
 
+## Two Tiers Of Result (Read This First)
+
+To keep the program honest, separate two very different kinds of "AI theorem" in this track:
+
+1. **Finite-indexing bookkeeping** — the `AIA`, `AIM`, and `AIRA` families. These are
+   elementary facts that an index stays in range and is unchanged by a full period (for
+   example `phase_channel(period, position) = position mod period < period`). They are
+   honest but **trivial** — instances of the `S^1` closure spine wearing AI vocabulary. They
+   are useful infrastructure for keeping the prose tied to Lean, and nothing more; they are
+   not evidence that circular structure helps a model.
+2. **Proved structural guarantees** — the `AIT` family (in `PAPER_AI_02` and `PAPER_AI_03`).
+   These are the genuinely non-trivial, ML-relevant facts: strided-attention coverage from
+   the orbit/gcd theory, RoPE relative position from rotation composition, and circulant
+   shift-equivariance. This is where circle math earns its place.
+
+Everything else on this track is exploratory benchmark scaffolding, not a model-quality
+claim. Whether circular structure improves accuracy, efficiency, or extrapolation is an
+empirical question that Lean cannot settle and that requires experiments with ordinary
+baselines and negative controls.
+
 ## Current Model
 
-The current formal seed is `COMMON-0026`, the AI phase channel
+The first finite-indexing seed is `COMMON-0026`, the AI phase channel
 
 ```text
 phase_channel(period,position) = position mod period
 ```
 
-for positive periods. This is a feature-index primitive, not evidence of model quality.
+for positive periods. This is a feature-index primitive (tier 1 above), not evidence of model quality.
 
 The current executable benchmark seed is `COMMON-0039`, a deterministic known-period binary-label fixture:
 

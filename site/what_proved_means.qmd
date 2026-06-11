@@ -1,0 +1,37 @@
+---
+title: "What \"Proved\" Means Here"
+---
+
+This is the one page that explains how Circle Calculus uses the word **proved**. Every lesson links here instead of repeating a disclaimer, so you can read the lessons calmly: when a page says something is proved, it means exactly what is written below, no more and no less.
+
+## The Rule
+
+A mathematical claim is treated as **proved** only when all of these hold:
+
+1. It has a theorem id in a manifest under `manifests/`.
+2. That id names an exact Lean 4 declaration.
+3. The manifest status is `proved` or `lean_proved`.
+4. `lake build` compiles that declaration with no errors.
+5. No forbidden placeholder (`sorry`, `admit`, `axiom`, and similar) appears anywhere in the Lean sources.
+
+If any one of those is missing, the claim is **planned**, **exploratory**, or **stated** — never "proved." You can check the live status of any id on the [Theorem Index](theorems.qmd) and [Status](status.qmd) pages, which are generated straight from the manifests.
+
+## What Is *Not* A Proof Here
+
+These help you learn and help keep the papers honest, but they are **not** proofs and are never presented as proofs:
+
+- **Widgets and diagrams** are illustrations. They show you what a theorem feels like; they do not establish it.
+- **Python models and tests** are executable references. They catch mistakes and let you experiment, but a passing test is not a formal proof.
+- **Worked examples** demonstrate a single case. The proof is the Lean theorem that covers all cases.
+
+## What The Project Does *Not* Claim
+
+Circle Calculus rebuilds a growing spine of finite and cyclic mathematics, formalized cleanly. It does **not** claim to have rebuilt all of mathematics from circles, that examples or diagrams are proofs, or that its physics-flavored and AI-flavored lessons are claims about physics or about model quality. Those lessons are finite bookkeeping models with honest names — see the [Roadmap](roadmap.qmd) for what is finished, in progress, and merely planned.
+
+When a higher chapter borrows a result from `mathlib` (for example, the classical Erdős-style bridges), it says so plainly: a Lean-checked wrapper around an established theorem is exactly that, not a new claim.
+
+## How To Audit Any Claim Yourself
+
+[How To Verify A Claim](verify_claim.qmd) walks through tracing any theorem id, dictionary term, paper line, or widget back to its Lean source — and how to reproduce the whole check locally with `make check`.
+
+That is the entire contract. Now you can read the rest of the book and trust that "proved" always means the same thing.

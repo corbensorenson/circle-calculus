@@ -1,34 +1,38 @@
 ---
-title: "Phase II"
+title: "Phase II: Infrastructure Seeds"
 ---
 
-Phase II pages collect stable spheres, periodicity, bundles, boundary/cobordism seeds, and proof-carrying glyphs.
+Phase II is the toolbox unit. Once you have circles and spheres, you start needing *machinery* — ways to repeat, to attach data to points, to track orientation, and to badge a diagram with the proof behind it. Each tool here starts at its simplest, honest form.
 
-::: {.learning-unit}
+::: {.lesson-goal}
 
-## What To Learn Here
+## Unit Goal
 
-Phase II is the infrastructure layer. It asks how the circle-first system can support stable patterns, bundle-like data, boundary orientation, and proof-carrying glyphs without letting diagrams outrun formal status.
+Meet five pieces of infrastructure — stable suspension, a period-8 clock, trivial bundles, directed boundaries, and proof-carrying glyphs — as small, checked seeds that later theory can build on.
 
 :::
 
-<div class="warning-box">
-Phase II pages mix proved finite seeds with planned theory-building infrastructure. The theorem cards and generated target indexes determine what is proved, planned, exploratory, or future work.
-</div>
+## The Idea
+
+Every page in this unit is deliberately the trivial case, taught confidently as exactly that. A double suspension is Euler-neutral. A period-8 clock is `C_8` reused for dimension counting. A trivial bundle is an ordered pair `(base, fiber)`. A directed boundary is a signed endpoint difference. A glyph is a metadata record that points at a real theorem. None of these are the full theory they seed — and the theorem cards and target indexes are what say which parts are proved, planned, exploratory, or future work.
 
 ## Lesson Path
 
-1. [Stable Spheres](stable_sphere_calculus.qmd): repeated suspension as a finite checked pattern.
-2. [Bott And Clifford](bott_clifford_periodicity.qmd): period-eight clock facts as a seed, not full periodicity.
-3. [Bundles](bundle_calculus.qmd): trivial-bundle projections and base-preserving transition seeds.
-4. [Boundary Cobordism](boundary_cobordism.qmd): directed boundary facts.
-5. [Proof-Carrying Glyphs](proof_carrying_glyphs.qmd): metadata and certificate structure for proof-linked diagrams.
+1. [Stable Spheres](stable_sphere_calculus.qmd) — suspend twice, return to the same Euler characteristic.
+2. [Bundles](bundle_calculus.qmd) — a base coordinate and a fiber coordinate, kept separate.
+3. [Bott And Clifford](bott_clifford_periodicity.qmd) — the period-8 clock that anchors the deeper periodicity.
+4. [Boundary Cobordism](boundary_cobordism.qmd) — directed intervals and signed boundaries.
+5. [Proof-Carrying Glyphs](proof_carrying_glyphs.qmd) — badges that carry their proof's identifiers.
+
+::: {.warning-box}
+This is a scaffold unit: theorem cards and generated target indexes determine what is proved, planned, exploratory, or future work; the widgets and diagrams are explanations, not proofs. See [What "Proved" Means Here](../../what_proved_means.qmd).
+:::
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-Why should proof-carrying glyphs point to theorem manifests instead of carrying their own unverified proof-status claims?
+Why should a proof-carrying glyph point to a theorem manifest instead of carrying its own unverified proof-status claim?
 
 :::
 
@@ -37,5 +41,10 @@ Why should proof-carrying glyphs point to theorem manifests instead of carrying 
 <div class="theorem-box" data-theorem-id="P2S-T0001"></div>
 <div class="theorem-box" data-theorem-id="P2BU-T0007"></div>
 <div class="theorem-box" data-theorem-id="P2G-T0004"></div>
+
+<div class="book-navigation">
+<a href="../S15/future_hopf_horizon.qmd">Previous: Future Hopf Horizon</a>
+<a href="stable_sphere_calculus.qmd">Next: Stable Spheres</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

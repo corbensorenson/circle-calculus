@@ -2,25 +2,51 @@
 title: "Sphere Grids"
 ---
 
-Sphere grids organize finite circular rows into latitude-like and longitude-like coordinates. The finite grid gives the reader a way to talk about poles, equators, rows, columns, and antipodal pairing without claiming the full continuous sphere has been formalized.
+A globe is covered in a grid: horizontal lines of latitude and vertical lines of longitude. A finite sphere grid does the same thing with finite circles, giving us a way to talk about poles, equators, rows, and columns using the S1 vocabulary we already know.
 
-Use this page as a vocabulary bridge from S1 loops to S2 grid structure. The grid language is useful only when the finite model and proof status stay visible.
+::: {.lesson-goal}
 
-::: {.warning-box}
-This page does not claim continuous sphere geometry beyond the finite models represented by theorem ids.
+## Lesson Goal
+
+Learn to read a finite sphere as a stack of latitude circles indexed by a longitude position, and see why each latitude row is itself just a finite circle from S1.
+
 :::
 
-## What To Notice
+## The Idea
 
-- Latitude-like rows organize circular address layers.
-- Longitude-like addresses reuse S1 circular indexing.
-- Antipodal and pole/equator claims need explicit theorem status.
+Slice a globe into horizontal rings. Each ring is a circle. Stack the rings from the south pole up to the north pole:
+
+- A **latitude** picks which ring you are on (which row).
+- A **longitude** picks where you are around that ring — and going around a ring is exactly rotation in a finite circle `C_n`.
+- The **poles** are the two rings that have shrunk to a single point.
+
+So a sphere grid is not a brand-new object. It is finitely many copies of S1 (the latitude rings) threaded onto a vertical axis. Everything you learned about rotation, coils, and period in S1 still works *along each row*.
+
+## Worked Example
+
+Build a small grid with `m = 3` latitude rings, each a circle `C_4` (4 longitude steps):
+
+```text
+row 0 (south):  • • • •      ← a copy of C_4
+row 1 (middle): • • • •      ← a copy of C_4
+row 2 (north):  • • • •      ← a copy of C_4
+```
+
+Rotate longitude by one step on the middle row: `0 → 1 → 2 → 3 → 0`. That is ordinary `C_4` rotation; the latitude index never changes. To move between rows you change latitude, not longitude. Reusing S1 here is the whole point: the grid inherits the period and orbit facts of the circle on every row.
+
+## Common Mistake
+
+::: {.common-mistake}
+
+A finite sphere grid is a learning scaffold, not a claim that continuous sphere geometry has been formalized. The certified facts are the finite cell counts and the row-is-a-circle structure recorded in the cards below. See [What "Proved" Means Here](../../what_proved_means.qmd) for the boundary.
+
+:::
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-Why is a finite sphere grid useful for learning, even though it is not the same as a continuous sphere?
+On a sphere grid, which coordinate behaves exactly like an S1 rotation, and which coordinate do you change to climb from the equator toward a pole?
 
 :::
 
@@ -30,5 +56,10 @@ Why is a finite sphere grid useful for learning, even though it is not the same 
 <div class="dictionary-box" data-dictionary-id="S2-0002"></div>
 
 <p data-paper-ref="papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S2/PAPER_S2_02_SPHERE_GRIDS_LATITUDE_COILS.md">S2 Sphere Grids And Latitude Coils</a></p>
+
+<div class="book-navigation">
+<a href="suspended_circles.qmd">Previous: Suspended Circles</a>
+<a href="../S3/index.qmd">Next: S3 Overview</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

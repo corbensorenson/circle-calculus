@@ -42,6 +42,39 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `AIRA-T0003`: `Circle.Applications.adapterBlock_zero`
 - `AIRA-T0004`: `Circle.Applications.adapterBlock_add_mul_blockSize`
 - `AIRA-T0005`: `Circle.Applications.adapterBlock_idempotent`
+- `AIT-T0004`: `Circle.Applications.rope_relative_shift_invariant`
+- `AIT-T0005`: `Circle.Applications.rope_compose`
+- `AIT-T0006`: `Circle.Applications.circConv_shift_equivariant`
+- `AIT-T0007`: `Circle.Applications.circConv_comm`
+- `AIT-T0008`: `Circle.Applications.circConv_add`
+- `AIT-T0009`: `Circle.Applications.shiftBy_add`
+
+## Circulant Token Mixing (Proved Structural Guarantee)
+
+A circulant (CoilLinear) mixer is `(c ⋆ x) i = ∑ j, c j · x (i − j)` — one learned kernel,
+the `C n` group algebra, the math behind FNet / long-convolution / state-space mixing. Its
+structural guarantees are Lean-proved:
+
+- `AIT-T0006` (`Circle.Applications.circConv_shift_equivariant`): the mixer **commutes with cyclic shift** — translation equivariance, the structural property behind a principled position-respecting token mixer. The usual `n`-kernel versus dense `n²` parameter comparison is an implementation/design observation, not the theorem.
+- `AIT-T0007` (`Circle.Applications.circConv_comm`): circular convolution is commutative (circulant operators commute — they share the DFT eigenbasis).
+- `AIT-T0008` (`Circle.Applications.circConv_add`): the mixer is additive (linear) in its input.
+- `AIT-T0009` (`Circle.Applications.shiftBy_add`): the cyclic shift is a genuine group action.
+
+As elsewhere, these are *structural* guarantees; whether a circulant mixer improves model
+quality or speed is empirical and out of scope for the theorem layer.
+
+## RoPE Relative Position (Proved Structural Guarantee)
+
+Rotary position embeddings (RoPE) encode position `p` as a rotation by `p`. Their defining
+property — that the query/key interaction depends only on the *relative* position
+`m − k` — is exactly the finite-circle rotation/translation law:
+
+- `AIT-T0004` (`Circle.Applications.rope_relative_shift_invariant`): shifting both the query and key positions by the same `d` leaves the relative rotary phase unchanged, so the interaction depends only on `query − key`.
+- `AIT-T0005` (`Circle.Applications.rope_compose`): rotary rotations compose by adding strides (RoPE phase additivity), reusing `Circle.rot_comp`.
+
+These make RoPE's central invariance a Lean-checked consequence of the `S^1` rotation
+spine. Whether RoPE-style encodings improve accuracy or length extrapolation is empirical
+and out of scope for the theorem layer.
 
 ## Proved Core
 

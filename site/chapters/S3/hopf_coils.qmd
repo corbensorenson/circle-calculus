@@ -2,27 +2,75 @@
 title: "Hopf Coils"
 ---
 
-Hopf-coil pages introduce one of the project’s most important higher-dimensional pictures: a visible base coordinate can be paired with a hidden circular phase. That is the intuition. The current formal layer is narrower and bounded to the coordinate facts represented by theorem cards.
-
-Read this page as a bridge from S1 phase to S3 fiber-like structure. The hidden-phase idea is useful, but it must not be mistaken for a completed proof of full Hopf fibration topology.
+Here is the most beautiful idea on the `S^3` ladder: a point can have a **visible position** and a **hidden circular phase** at the same time. Move by the common phase, and the visible position does not budge. That hidden circle orbit sits inside a Hopf fiber.
 
 <span class="showcase-backlink" data-showcase-ref="SHOW-007"></span>
 
-::: {.warning-box}
-Full fibration topology remains future work unless future manifests and Lean declarations say otherwise. The widget is a bounded coordinate explorer and generated explanation, not a proof.
+::: {.lesson-goal}
+
+## Lesson Goal
+
+See how the Hopf map pairs a visible base coordinate with a hidden phase, and check the key fact by hand: multiplying by a common unit phase leaves the visible base point unchanged.
+
 :::
 
-## What To Notice
+## The Idea
 
-- S1 taught one visible circular coordinate.
-- Hopf-style language introduces a visible base plus hidden circular phase.
-- The current theorem cards certify bounded coordinate facts, not the whole topological fibration.
+Take a unit pair of complex numbers `(z₁, z₂)` with `|z₁|² + |z₂|² = 1` — a point of `S^3`. The **Hopf map** sends it to a visible point on an ordinary sphere `S^2`:
+
+```text
+base = ( 2·Re(z₁ z̄₂),  2·Im(z₁ z̄₂),  |z₁|² − |z₂|² )
+```
+
+Now multiply *both* coordinates by the same unit phase `λ = e^{iθ}` (with `|λ| = 1`). The visible base point does not change at all. As `λ` turns, the source point traces a circle orbit in `S^3` that lands on the *same* spot of `S^2`. That circle of choices is the **hidden phase** direction certified here.
+
+This is the S1 idea returning in disguise: S1 gave you one visible circular coordinate; Hopf gives you a visible base *plus* an invisible circular coordinate riding along underneath.
+
+## Worked Example
+
+Start at `(z₁, z₂) = (1, 0)`. Then:
+
+```text
+z₁ z̄₂ = 1·0 = 0
+base = ( 0, 0, |1|² − |0|² ) = (0, 0, 1)   ← the north pole
+```
+
+Multiply both by `λ = e^{iθ}`:  `(z₁, z₂) → (e^{iθ}, 0)`.
+
+```text
+z₁ z̄₂ = e^{iθ}·0 = 0   (still 0)
+base = ( 0, 0, |e^{iθ}|² − 0 ) = (0, 0, 1)   ← still the north pole
+```
+
+The point on `S^3` rotated all the way around as `θ` ran from `0` to `2π`, yet its visible image stayed pinned at the north pole. That whole circle of `S^3` points is a common-phase orbit inside one Hopf fiber.
+
+## What Is Proved On The Real Sphere
+
+This is not only a picture. On explicit real coordinates (`z₁ = a + bi`, `z₂ = c + di`),
+the Hopf map is now Lean-proved to:
+
+- satisfy the **unconditional norm identity** `|h(a,b,c,d)|² = (a²+b²+c²+d²)²`;
+- therefore send any point of `S³` to a point of the **actual** unit 2-sphere `S²`;
+- be **fixed by the common-phase circle action** in all three output coordinates, so that
+  common-phase circle orbit stays inside one Hopf fiber.
+
+That is the genuine coordinate-and-fiber spine of the fibration `S³ → S²`. (What is *not*
+yet claimed, and is tracked as roadmap: classifying every point in each fiber, local
+triviality, and the full fiber-*bundle* structure.)
+
+## Common Mistake
+
+::: {.common-mistake}
+
+The norm identity, the landing on `S²`, and common-phase invariance are proved; the full fiber classification and *bundle* topology (local triviality) of `S³ → S²` are still future work, not claimed. The widget is a coordinate explorer, not a proof. See [What "Proved" Means Here](../../what_proved_means.qmd).
+
+:::
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-What is the difference between a hidden phase intuition and a Lean-proved bounded coordinate theorem?
+What does the current theorem prove when you multiply both complex coordinates by the same unit phase? (Answer: the visible Hopf image stays fixed; the converse fiber classification is later work.)
 
 :::
 
@@ -36,10 +84,18 @@ What is the difference between a hidden phase intuition and a Lean-proved bounde
 <div class="theorem-box" data-theorem-id="S3H-T0004"></div>
 <div class="theorem-box" data-theorem-id="S3H-T0005"></div>
 <div class="theorem-box" data-theorem-id="S3H-T0006"></div>
+<div class="theorem-box" data-theorem-id="S3H-T0009"></div>
+<div class="theorem-box" data-theorem-id="S3H-T0010"></div>
+<div class="theorem-box" data-theorem-id="S3H-T0011"></div>
 
 <div class="widget-panel" data-widget="hopf_hidden_phase" data-theorem-id="S3H-T0002" data-dictionary-ids="S3H-0001 S3H-0002 S3H-W0001"></div>
 
 <p data-paper-ref="papers/S3/PAPER_S3_03_HOPF_COILS.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/S3/PAPER_S3_03_HOPF_COILS.md">S3 Hopf Coils</a></p>
+
+<div class="book-navigation">
+<a href="quaternions.qmd">Previous: Quaternion Coils</a>
+<a href="../S4_S6/index.qmd">Next: S4–S6 Overview</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>
 <script type="module" src="../../widgets/physics/hopf_hidden_phase.js"></script>

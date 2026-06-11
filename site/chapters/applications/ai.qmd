@@ -2,11 +2,17 @@
 title: "AI"
 ---
 
-The AI application page tracks phase channels, coil attention, cyclic memory, looped/recursive transformer schedules, and adapter/block indexing. Local compute language is MLX/Mac-first.
+This page covers the Circle AI program, and it is important not to confuse its three tiers:
+
+- **Proved structural guarantees** (the `AIT` family, below) — real, non-trivial facts about transformer components: strided-attention coverage, RoPE relative position, circulant equivariance. This is the substantive proved content, and it is what makes circle math earn a place here.
+- **Finite-indexing bookkeeping** (the `AIA` / `AIM` / `AIRA` families) — elementary facts that an index stays in range and is unchanged by a full period, e.g. `memory_slot(bank, token) = token mod bank`. These are honest but **trivial**: they are instances of the S1 closure spine, infrastructure rather than evidence that circles help a model.
+- **Exploratory fixtures** (the `-B` ids) — tiny synthetic benchmarks with ordinary baselines and controls; **not** model-quality claims, and several are illustrative-only (see below).
+
+Local compute language is MLX/Mac-first.
 
 <span class="showcase-backlink" data-showcase-ref="SHOW-010"></span>
 
-The current proved layer is finite indexing, loop-schedule bookkeeping, training-free loop-budget arithmetic, unavailable-budget clamp arithmetic, overthinking-boundary arithmetic, recurrence-budget positivity, loop-exit certificate bookkeeping, and tiny looped recurrent-state arithmetic only. `AIA-B0001` adds an exploratory deterministic phase-channel benchmark fixture for a known-period synthetic task. `AIA-B0002` adds a tiny learned-baseline control: phase lookup wins on a periodic task, while an ordinary scalar threshold wins on a nonperiodic control. `AIA-B0003` adds CPU/optional-MLX backend parity scoring across the current deterministic AI fixtures; if MLX is unavailable, it reports that directly. `AIA-B0004` adds learned-feature baseline controls: cyclic phase features are compared with dense-scalar, learned-position, and wrong-period baselines, plus a nonperiodic scalar-control task. `AIA-B0005` adds harmonic/Fourier feature controls: cyclic phase lookup and correct sine/cosine lookup solve the constructed periodic task, while wrong-frequency, scalar, and learned-position baselines remain controls. `AIM-B0001` adds the same discipline to cyclic memory: a positive slot-lookup fixture, constant/scalar-threshold baselines, collision diagnostics, and a nonperiodic control. `AIM-B0002` adds a coil-retrieval reachability fixture: a selected coil path reaches a constructed long-lag dependency, local and wrong-stride baselines miss it, full attention is the oracle upper bound, and local attention wins the near-lag control. `AIM-B0004` adds content-gated retrieval routing: the gate chooses coil or local candidates for mixed long/near dependencies while static, wrong-gate, union, and full-attention controls report reachability and budget. `AIM-B0010` adds learned content-gate routing: a tiny phase-to-route lookup is fit from examples and compared with static, wrong-period, flipped-gate, union, and full-attention controls. `AIM-B0003` adds a looped-recurrence schedule fixture: adaptive-exit and recurrent-memory controls retain useful intermediate steps, while single-pass, fixed-loop, sparse phase-router, over-looped, and nonperiodic dense-threshold controls keep the claim bounded. `AIM-B0011` adds loop-exit certificate bookkeeping: score trace, exit availability, budget status, and overthinking guardrail status are recorded for a constructed sample. `AIM-B0005` adds token-level recurrence routing: per-token budgets, active-token counts, selected middle block, resolution labels, and wrong/over-loop controls are recorded before any learned router claim. `AIM-B0012` adds learned token-level recurrence routing: a phase-to-budget lookup is fit from training tokens and compared with fixed-budget, wrong-period, shifted-budget, over-loop, and nonperiodic scalar-threshold controls. `AIM-B0006` adds a training-free loop-wrapper fixture: a circular phase-budget wrapper is compared with single-pass, fixed-loop, wrong-period, over-loop, and nonperiodic scalar-threshold baselines with CPU/optional-MLX scoring. `AIM-B0007` adds middle-block recurrence routing: selected-block scheduling is compared with full-block, fixed-budget, wrong-block, and over-loop controls while recording block-pass accounting. `AIM-B0013` adds learned middle-block recurrence routing: separate phase-to-block and phase-to-budget lookups are fit from training samples and compared with selected-band, full-block, fixed-budget, wrong-period, wrong-block, and over-loop controls. `AIM-B0008` adds multi-resolution recurrence routing: phase-routed coarse/fine scheduling is compared with single-resolution, fixed-budget, wrong-resolution, and over-loop controls while recording active-sample accounting. `AIM-B0014` adds learned multi-resolution recurrence routing: separate phase-to-budget and phase-to-resolution lookups are fit from training samples and compared with single-resolution, fixed-budget, wrong-period, and over-loop controls. `AIM-B0009` adds learned recurrence-schedule controls: a tiny phase-to-budget lookup is fit from examples and compared with fixed-budget, wrong-period, and over-loop controls. `AIM-B0015` adds a tiny looped recurrent-state prototype: a state-to-label lookup is read at the certified token recurrence budget and compared with direct phase, one-step, scalar-threshold, wrong-period, and nonperiodic controls. `AIRA-B0001` adds the adapter-block version: a positive block-index fixture, ordinary baselines, collision diagnostics, and a nonperiodic control. `AIRA-B0002` adds a MultiCoil/RoPE-style positional fixture: combined-period phase lookup beats single-period, constant, and scalar-threshold baselines on a constructed multi-period task, while the scalar threshold wins the nonperiodic control. `AIRA-B0003` adds a RoPE-style relative phase fixture: correct-period relative lookup recovers constructed query/key lag labels, while wrong-period, query-position, scalar-threshold, and nonperiodic controls remain separated. `AIRA-B0004` adds adapter parameter-budget accounting across dense adapter, LoRA-style low-rank, and block-cyclic shared-table baselines with alias/load diagnostics. `AIRA-B0005` adds circulant mixer validation: circular convolution matches the equivalent dense circulant-matrix baseline while a wrong-shift control and parameter counts keep the claim bounded. These are not model-quality claims.
+The exploratory fixtures (`AIA-B*`, `AIM-B*`, `AIRA-B*`, twenty-odd in all) follow one recipe: pit a circular feature against ordinary baselines — a scalar threshold, a learned-position lookup, a wrong-period table — plus a nonperiodic control where the circular feature *should not* win, with optional MLX scoring. That discipline (baselines and negative controls) is the good part. The honest caveat: many of these tasks are **tautological by construction** — the synthetic label is defined as a function of the phase, so a phase lookup wins by definition, demonstrating plumbing rather than usefulness. The one genuinely informative comparison on this page is the bias–variance experiment below, which reports a real result including where circle structure loses. These fixtures are not model-quality claims and not performance claims.
 
 <p data-showcase-ref="SHOW-010">Showcase evidence: <a href="../../showcase.qmd#SHOW-010">SHOW-010 AI memory, loop, and adapter schedules</a>.</p>
 
@@ -14,9 +20,89 @@ The current proved layer is finite indexing, loop-schedule bookkeeping, training
 
 ## Case-Study Frame
 
-The circular address spaces are phase channels, memory slots, and adapter blocks. The serious AI question is whether explicit cyclic structure helps when the task actually has periodic structure. The current proved layer only certifies finite indexing behavior.
+The circular address spaces are phase channels, memory slots, and adapter blocks. The serious AI question is whether explicit cyclic structure helps when the task actually has periodic structure — an empirical question. The proved layer certifies *structure* (the `AIT` guarantees below) and elementary finite-indexing behaviour; performance stays a benchmark question.
 
 :::
+
+## What Circle Math Actually Proves Here
+
+Most of this page is exploratory benchmark scaffolding. But two real transformer components
+are finite-circle structures whose **structural** guarantees are now Lean-proved — not
+relabeled modular arithmetic, and not model-quality claims, but exact facts about
+*architecture* that practitioners actually reason about:
+
+**Strided ("coil") attention coverage.** A strided head lets each token attend to
+`i, i±k, i±2k, …` — a coil orbit on `C_n`. So the orbit/period theory *is* the
+reachability theory:
+
+- a stride-`k` head reaches exactly `n / gcd(n,k)` distinct positions (`AIT-T0001`);
+- it reaches **every** position iff `gcd(n,k) = 1` (`AIT-T0002`, `AIT-T0003`).
+
+That is a proved design rule for sparse/dilated attention: *pick strides coprime to the
+context length and every token provably reaches every other.*
+
+**RoPE relative position.** Rotary embeddings encode position as rotation; their defining
+property — interaction depends only on relative position — is the rotation law:
+
+- shifting query and key by the same amount leaves the relative phase fixed (`AIT-T0004`);
+- rotary rotations compose by adding strides (`AIT-T0005`).
+
+**Circulant ("CoilLinear") token mixing.** A circulant mixer `(c ⋆ x)ᵢ = ∑ⱼ cⱼ·x(i−j)` is
+the `C_n` group algebra — the math behind FNet / long-convolution mixing. Its structure is
+proved:
+
+- it **commutes with cyclic shift** — translation equivariance for the circulant mixer structure (`AIT-T0006`);
+- circular convolution is commutative (`AIT-T0007`) and linear (`AIT-T0008`);
+- the cyclic shift is a genuine group action (`AIT-T0009`).
+
+<div class="theorem-box" data-theorem-id="AIT-T0001"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0002"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0003"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0004"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0005"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0006"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0007"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0008"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0009"></div>
+
+::: {.warning-box}
+The honest split for AI: **Lean proves structure** (coverage, relative position,
+equivariance, and algebraic mixer laws) — facts it genuinely can certify; **experiments prove
+performance** (accuracy, efficiency, extrapolation) — which Lean cannot, and which remain
+benchmark work, not proof claims. See [What "Proved" Means Here](../../what_proved_means.qmd).
+:::
+
+## A Runnable Block And An Honest Experiment
+
+The proved components above are assembled into a small, runnable `CircleFormerBlock`
+(RoPE encoding + coil sparse-attention + circulant mixing) in
+`circle_math/applications/circle_transformer.py`. Its tests don't measure accuracy — they
+verify the *proved properties hold in code*: circulant shift-equivariance to machine
+precision, RoPE scores depending only on relative position, and strided-head coverage
+matching `gcd(n,k)` exactly.
+
+For the performance question — which only an experiment can answer — there is a controlled,
+**honestly-reported** bias–variance study
+(`circle_math/applications/circle_transformer_experiment.py`): a circulant mixer (`n`
+parameters by construction, shift-structured bias) versus a dense mixer (`n²` parameters, no bias), both
+fit by exact least squares, on a shift-structured target and on an unstructured control.
+The measured held-out error:
+
+```text
+target          n_train   circulant      dense     winner
+shift-struct         12     0.0003       3.2636   circulant
+shift-struct         24     0.0001       0.0064   circulant
+unstructured         24     1.0156       0.0041   dense
+unstructured        200     0.9784       0.0002   dense
+```
+
+The honest reading — including where circle structure **loses**: when the dependency is
+shift-structured, the circulant model generalizes far better from few samples (right bias,
+fewer parameters); when it is not, the circulant model hits an *irreducible error floor* —
+it structurally cannot represent a non-circulant map — and the dense model wins. The
+inductive bias helps **iff** the assumption holds. This is a controlled linear study, not a
+claim about deep transformers; it is exactly the kind of result the AI track should report
+straight, wins and losses alike.
 
 ## AI Program Map
 
@@ -460,4 +546,9 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 <script type="module" src="../../widgets/ai/learned_middle_block_recurrence.js"></script>
 <script type="module" src="../../widgets/ai/learned_multi_resolution_recurrence.js"></script>
 <script type="module" src="../../widgets/ai/learned_recurrence_schedule.js"></script>
+<div class="book-navigation">
+<a href="erdos_bridges.qmd">Previous: Classical Bridges</a>
+<a href="physics.qmd">Next: Physics</a>
+</div>
+
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

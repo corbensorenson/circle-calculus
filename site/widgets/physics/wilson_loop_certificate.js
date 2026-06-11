@@ -2,7 +2,7 @@ import { mod, positiveInt } from "../shared/circle_math_core.js";
 import { addLabeledNumber, addOutput, addWidgetHeader, clear } from "../shared/svg_helpers.js";
 import { loadJson, mountWidgets, statusClass, statusLabel } from "../shared/widget_base.js";
 
-const THEOREM_IDS = ["PHYS-T0004", "PHYS-T0005", "PHYS-T0046", "PHYS-T0047", "PHYS-T0049", "PHYS-T0052", "PHYS-T0053", "PHYS-T0054", "PHYS-T0055", "PHYS-T0056", "PHYS-T0057", "PHYS-T0058", "PHYS-T0059", "PHYS-T0060", "PHYS-T0061", "PHYS-T0062", "PHYS-T0063"];
+const THEOREM_IDS = ["PHYS-T0004", "PHYS-T0005", "PHYS-T0046", "PHYS-T0047", "PHYS-T0049", "PHYS-T0052", "PHYS-T0053", "PHYS-T0054", "PHYS-T0055", "PHYS-T0056", "PHYS-T0057", "PHYS-T0058", "PHYS-T0059", "PHYS-T0060", "PHYS-T0061", "PHYS-T0062", "PHYS-T0063", "PHYS-T0064"];
 const DICTIONARY_IDS = ["COMMON-0060", "COMMON-0061", "COMMON-0062", "COMMON-0063"];
 
 function signedInt(value, fallback, min = -99, max = 99) {
@@ -168,6 +168,8 @@ function appendRecord(output, seed, theoremById) {
       invariant: shiftedHolonomy === holonomy,
     };
   });
+  const cycleGaugeIndependent = cycleRows.every((row) => row.holonomy === holonomy)
+    && new Set(cycleRows.map((row) => row.holonomy)).size === 1;
 
   const record = document.createElement("section");
   record.className = "seed-rule-record";
@@ -186,6 +188,7 @@ function appendRecord(output, seed, theoremById) {
     `original holonomy: ${holonomy}`,
     `identity gauge-shifted holonomy: 0`,
     `cycle gauge-invariant under all sampled gauges: ${cycleRows.every((row) => row.invariant)}`,
+    `cycle shifted holonomies gauge-independent: ${cycleGaugeIndependent}`,
     `rotated basepoint gauge-invariant under all sampled gauges: ${rotatedRows.every((row) => row.invariant)}`,
     `rotated twice basepoint gauge-invariant under all sampled gauges: ${rotatedTwiceRows.every((row) => row.invariant)}`,
     `complete cyclic basepoint package ids: PHYS-T0062, PHYS-T0063`,

@@ -343,6 +343,114 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP/python/test_spin_conjugation_examples.py::test_quaternion_conjugation_preserves_pure_vector_inputs
     blocker: ""
+  - id: S3S-T0006
+    status: lean_proved
+    lean_name: Circle.S3.quaternionConjugation_normSq
+    informal_statement: "Conjugation by a unit quaternion preserves the quaternion norm; the conjugation action is an isometry, the property that lands it in the rotation group SO(3)."
+    formal_statement: "forall (q v : Circle.S3.RealQuaternion), Quaternion.normSq q = 1 -> Quaternion.normSq (Circle.S3.quaternionConjugationAction q v) = Quaternion.normSq v"
+    dictionary_dependencies: ["S3S-0001", "S3S-0003", "S3Q-0001"]
+    paper_refs: ["papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"]
+    imports_allowed: ["Common", "S1", "S2"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: S3S-T0007
+    status: lean_proved
+    lean_name: Circle.S3.quaternionConjugation_re
+    informal_statement: "Conjugation by a unit quaternion preserves the real part, hence it preserves the pure-imaginary copy of R^3 and acts on vectors."
+    formal_statement: "forall (q v : Circle.S3.RealQuaternion), Quaternion.normSq q = 1 -> (Circle.S3.quaternionConjugationAction q v).re = v.re"
+    dictionary_dependencies: ["S3S-0001", "S3S-0003", "S3Q-0001"]
+    paper_refs: ["papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"]
+    imports_allowed: ["Common", "S1", "S2"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: S3S-T0008
+    status: lean_proved
+    lean_name: Circle.S3.quaternionConjugation_mul
+    informal_statement: "Quaternion conjugation is a monoid homomorphism: conjugation by a product a*b equals conjugation by a after conjugation by b."
+    formal_statement: "forall (a b v : Circle.S3.RealQuaternion), Circle.S3.quaternionConjugationAction (a * b) v = Circle.S3.quaternionConjugationAction a (Circle.S3.quaternionConjugationAction b v)"
+    dictionary_dependencies: ["S3S-0001", "S3Q-0001"]
+    paper_refs: ["papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"]
+    imports_allowed: ["Common", "S1", "S2"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: S3S-T0009
+    status: lean_proved
+    lean_name: Circle.S3.quaternionConjugation_real_trivial
+    informal_statement: "A real unit quaternion acts trivially under conjugation; this is the easy direction of the kernel computation for the double cover."
+    formal_statement: "forall (q v : Circle.S3.RealQuaternion), Quaternion.normSq q = 1 -> q = (q.re : Circle.S3.RealQuaternion) -> Circle.S3.quaternionConjugationAction q v = v"
+    dictionary_dependencies: ["S3S-0001", "S3S-0002", "S3Q-0001"]
+    paper_refs: ["papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"]
+    imports_allowed: ["Common", "S1", "S2"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: S3S-T0010
+    status: lean_proved
+    lean_name: Circle.S3.realUnitQuaternion_eq_pm_one
+    informal_statement: "The real unit quaternions are exactly +1 and -1; together with the two-to-one fact that q and -q agree (S3S-T0001), this is the plus/minus one content of the double cover kernel."
+    formal_statement: "forall (q : Circle.S3.RealQuaternion), Quaternion.normSq q = 1 -> q = (q.re : Circle.S3.RealQuaternion) -> q = 1 or q = -1"
+    dictionary_dependencies: ["S3S-0001", "S3S-0002"]
+    paper_refs: ["papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"]
+    imports_allowed: ["Common", "S1", "S2"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: S3S-T0011
+    status: lean_proved
+    lean_name: Circle.S3.quaternionConjugation_trivial_iff_pm_one
+    informal_statement: "Exact kernel of the double cover: a unit quaternion fixes every vector under conjugation if and only if it is +1 or -1. Together with the isometry and homomorphism facts this completes the kernel computation; the kernel of the conjugation action on unit quaternions is exactly the two-element group {+1, -1}."
+    formal_statement: "forall (q : Circle.S3.RealQuaternion), Quaternion.normSq q = 1 -> ((forall v : Circle.S3.RealQuaternion, Circle.S3.quaternionConjugationAction q v = v) <-> (q = 1 or q = -1))"
+    dictionary_dependencies: ["S3S-0001", "S3S-0002", "S3Q-0001"]
+    paper_refs: ["papers/S3/PAPER_S3_04_SPIN_DOUBLE_COVER_ROADMAP.md"]
+    imports_allowed: ["Common", "S1", "S2"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: S3H-T0009
+    status: lean_proved
+    lean_name: Circle.S3.hopf_norm
+    informal_statement: "The squared length of the real Hopf image equals the squared length of the source point: |h(a,b,c,d)|^2 = (a^2+b^2+c^2+d^2)^2."
+    formal_statement: "forall (a b c d : Real), Circle.S3.hopfX a b c d ^ 2 + Circle.S3.hopfY a b c d ^ 2 + Circle.S3.hopfZ a b c d ^ 2 = (a^2 + b^2 + c^2 + d^2)^2"
+    dictionary_dependencies: ["S3H-0001", "S3H-0002"]
+    paper_refs: ["papers/S3/PAPER_S3_03_HOPF_COILS.md"]
+    imports_allowed: ["Common", "S1", "S2"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: S3H-T0010
+    status: lean_proved
+    lean_name: Circle.S3.hopf_lands
+    informal_statement: "A point of S^3 (where a^2+b^2+c^2+d^2 = 1) maps under the real Hopf map to a point of the actual unit 2-sphere S^2."
+    formal_statement: "forall (a b c d : Real), a^2 + b^2 + c^2 + d^2 = 1 -> Circle.S3.hopfX a b c d ^ 2 + Circle.S3.hopfY a b c d ^ 2 + Circle.S3.hopfZ a b c d ^ 2 = 1"
+    dictionary_dependencies: ["S3H-0001", "S3H-0002"]
+    paper_refs: ["papers/S3/PAPER_S3_03_HOPF_COILS.md"]
+    imports_allowed: ["Common", "S1", "S2"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: S3H-T0011
+    status: lean_proved
+    lean_name: Circle.S3.hopf_phase_invariant
+    informal_statement: "Multiplying the source point by a common unit phase (the circle action) leaves the entire Hopf image unchanged, so the common-phase circle orbit stays inside a single Hopf fiber."
+    formal_statement: "forall (a b c d co si : Real), co^2 + si^2 = 1 -> the Hopf image (hopfX, hopfY, hopfZ) of the phase-rotated point equals the Hopf image of the original point"
+    dictionary_dependencies: ["S3H-0001", "S3H-0002"]
+    paper_refs: ["papers/S3/PAPER_S3_03_HOPF_COILS.md"]
+    imports_allowed: ["Common", "S1", "S2"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
 warnings:
   - id: S3H-W0001
     status: active

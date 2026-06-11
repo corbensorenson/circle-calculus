@@ -59,4 +59,76 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_S1_03_INTEGERS_ORIENTATION/python/test_signed_rotation_examples.py::test_signed_rotation_is_bijective
     blocker: ""
+  - id: S1C-T0001
+    status: lean_proved
+    lean_name: Circle.S1.finiteCircle_toRealCircle_add
+    informal_statement: "The embedding of the finite circle C n into the real circle R/Z turns rotation (addition) in C n into addition on the real circle; it is a group homomorphism."
+    formal_statement: "forall (n : Nat) [NeZero n] (a b : ZMod n), ZMod.toAddCircle (a + b) = ZMod.toAddCircle a + ZMod.toAddCircle b"
+    dictionary_dependencies: ["S1-0001", "S1-0002"]
+    paper_refs: ["papers/S1/PAPER_S1_01_FINITE_CIRCLES.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: S1C-T0002
+    status: lean_proved
+    lean_name: Circle.S1.finiteCircle_toRealCircle_zero
+    informal_statement: "The base node of the finite circle C n lands on the base point of the real circle R/Z."
+    formal_statement: "forall (n : Nat) [NeZero n], ZMod.toAddCircle (0 : ZMod n) = (0 : UnitAddCircle)"
+    dictionary_dependencies: ["S1-0001"]
+    paper_refs: ["papers/S1/PAPER_S1_01_FINITE_CIRCLES.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: S1C-T0003
+    status: lean_proved
+    lean_name: Circle.S1.finiteCircle_toRealCircle_injective
+    informal_statement: "The finite circle C n embeds faithfully into the real circle R/Z: distinct finite nodes land on distinct real-circle points."
+    formal_statement: "forall (n : Nat) [NeZero n], Function.Injective (ZMod.toAddCircle : ZMod n -> UnitAddCircle)"
+    dictionary_dependencies: ["S1-0001", "S1-0002"]
+    paper_refs: ["papers/S1/PAPER_S1_01_FINITE_CIRCLES.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: S1C-T0004
+    status: lean_proved
+    lean_name: Circle.S1.finiteCircle_toRealCircle_inj
+    informal_statement: "Two finite nodes coincide on the real circle if and only if they are equal in C n."
+    formal_statement: "forall (n : Nat) [NeZero n] (a b : ZMod n), ZMod.toAddCircle a = ZMod.toAddCircle b <-> a = b"
+    dictionary_dependencies: ["S1-0001", "S1-0002"]
+    paper_refs: ["papers/S1/PAPER_S1_01_FINITE_CIRCLES.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: S1C-T0005
+    status: lean_proved
+    lean_name: Circle.S1.finiteCircle_lands_in_torsion
+    informal_statement: "The image of the finite circle C n lies in the n-torsion of the real circle (the n-th roots of unity): every embedded node added to itself n times returns to the base point."
+    formal_statement: "forall (n : Nat) [NeZero n] (a : ZMod n), n • ZMod.toAddCircle a = (0 : UnitAddCircle)"
+    dictionary_dependencies: ["S1-0001", "S1-0002"]
+    paper_refs: ["papers/S1/PAPER_S1_01_FINITE_CIRCLES.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: S1C-T0006
+    status: lean_proved
+    lean_name: Circle.S1.finiteCircle_refines
+    informal_statement: "Continuum-limit refinement: for any factor d != 0, node k of C n is the same real-circle point as node k*d of C (n*d), so the finite circles nest into a directed family filling the rational points of R/Z."
+    formal_statement: "forall (n d k : Nat) [NeZero n] [NeZero (n * d)], d != 0 -> ZMod.toAddCircle ((k : ZMod n)) = ZMod.toAddCircle (((k * d : Nat) : ZMod (n * d)))"
+    dictionary_dependencies: ["S1-0001", "S1-0002"]
+    paper_refs: ["papers/S1/PAPER_S1_01_FINITE_CIRCLES.md"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
 warnings: []

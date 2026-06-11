@@ -72,11 +72,14 @@ def test_closed_wilson_loop_is_invariant_under_sampled_gauges() -> None:
     )
 
     certificate = wilson_loop_certificate(loop, gauges)
+    transformed_holonomies = tuple(path_holonomy(gauge_transform_path(loop, gauge)) for gauge in gauges)
 
     assert loop.closed
     assert certificate.holonomy == path_holonomy(loop)
+    assert transformed_holonomies == (certificate.holonomy, certificate.holonomy, certificate.holonomy)
     assert certificate.gauge_invariant_under == ("gauge:0", "gauge:1", "gauge:2")
     assert "PHYS-T0047" in certificate.theorem_ids
+    assert "PHYS-T0064" in certificate.theorem_ids
 
 
 def test_closed_loop_records_identity_and_cycle_holonomy() -> None:

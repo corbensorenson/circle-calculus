@@ -2,47 +2,49 @@
 title: "Applications"
 ---
 
-Application pages are active proof/benchmark target tracks for AI, compute, rendering, systems, and data analysis. Benchmark claims must stay separate from Lean proof status.
+Where does circular structure already live in the real world? Schedules repeat. Signals oscillate. Buffers wrap. Positions in a transformer rotate. The applications unit is a tour of domains where periodic, rotational, or phase-like structure is *already present* — and where making it explicit lets you test and verify it.
 
-Read the application section after the S1 core. Each application is a case study in reusing the same small vocabulary:
+::: {.lesson-goal}
+
+## Unit Goal
+
+For each domain, identify its circular address space and its repeated action, and learn to separate the Lean-proved finite seeds from the claims that still need benchmarks.
+
+:::
+
+## The Idea
+
+Every application reuses the same small vocabulary from S1:
 
 ```text
 address -> stride -> orbit -> period -> phase -> checked status
 ```
 
-The point is not to say that circular language automatically improves every domain. The point is to identify domains where periodic, rotational, scheduled, or phase-like structure is already present, then make the representation explicit enough to test and verify.
-
-<div class="warning-box">
-Application pages are active but exploratory unless a theorem card says otherwise. Benchmarks and fixtures are executable references, not proof of real-world performance or usefulness.
-</div>
-
-::: {.learning-unit}
-
-## How To Read Applications
-
-For each application page, ask three questions:
+The claim is *not* that circular language automatically improves every domain. It is narrower and more honest: where the structure is genuinely periodic, an explicit finite representation can be checked, and a handful of finite facts can be Lean-proved. Benchmarks and fixtures are executable references, not proof of real-world performance or usefulness — so for each page, ask:
 
 1. What is the circular address space?
 2. What is the stride, phase, schedule, or repeated action?
-3. Which claims are Lean-proved finite seeds, and which claims still require benchmarks?
-
-:::
+3. Which claims are Lean-proved finite seeds, and which still require benchmarks?
 
 ## Case-Study Tracks
 
-- [Data analysis](data_analysis.qmd): finite phase coordinates plus synthetic periodic-data fixtures.
-- [Classical bridges](erdos_bridges.qmd): Erdos-style combinatorics bridges with theorem cards, papers, executable sidecars, and explicit non-claim boundaries.
-- [Compute](compute.qmd): cyclic addresses, direction bins, stride layouts, and round-robin schedule seeds.
-- [AI](ai.qmd): finite phase channels, cyclic memory slots, coil-retrieval reachability, content-gated routing, looped recurrence schedules, and adapter-block indexing seeds.
-- [Physics](physics.qmd): finite gauge links, path holonomy, Wilson-loop certificates, and plaquette-loop targets.
-- [Generative structures](generative.qmd): seed-rule provenance, exact regeneration fixtures, and generator-vs-explicit comparison.
-- [Rendering](rendering.qmd): CoilRay and sampling vocabulary, currently limited to finite direction-bin scheduling facts.
+- [Classical bridges](erdos_bridges.qmd) — Erdős-style combinatorics restated through Circle vocabulary (Lean-checked wrappers, not new results).
+- [AI](ai.qmd) — phase channels, cyclic memory, coil retrieval, routing, and adapter-block indexing seeds.
+- [Physics](physics.qmd) — finite gauge links, path holonomy, Wilson-loop certificates, plaquettes.
+- [Generative structures](generative.qmd) — seed-rule provenance and exact-regeneration fixtures.
+- [Compute](compute.qmd) — cyclic addresses, direction bins, stride layouts, round-robin schedules.
+- [Rendering](rendering.qmd) — direction-bin sampling vocabulary.
+- [Data analysis](data_analysis.qmd) — finite phase coordinates and synthetic periodic-signal fixtures.
+
+::: {.warning-box}
+These are active but exploratory tracks: theorem cards are the status source, and benchmarks and fixtures are executable references, not proof of real-world performance or usefulness. See [What "Proved" Means Here](../../what_proved_means.qmd).
+:::
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-Choose one application page and name its finite circular address space before reading the theorem cards.
+Pick one application page and name its finite circular address space before reading any theorem card.
 
 :::
 
@@ -57,5 +59,10 @@ Choose one application page and name its finite circular address space before re
 <div class="theorem-box" data-theorem-id="AIM-T0005"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0010"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0005"></div>
+
+<div class="book-navigation">
+<a href="../phase2/proof_carrying_glyphs.qmd">Previous: Proof-Carrying Glyphs</a>
+<a href="erdos_bridges.qmd">Next: Classical Bridges</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

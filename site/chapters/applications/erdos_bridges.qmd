@@ -86,4 +86,9 @@ This page is useful only because that chain stays intact.
 Before citing this page, name one standard theorem, one Circle expression, and one boundary that prevents overclaiming.
 :::
 
+<div class="book-navigation">
+<a href="index.qmd">Previous: Application Overview</a>
+<a href="ai.qmd">Next: AI</a>
+</div>
+
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

@@ -14,6 +14,15 @@ circle/coil expression
   -> benchmark validation
 ```
 
+**Two tiers of result (read this first).** The `COMP*` theorems are **elementary
+modular-index bookkeeping** — an address stays in range, closes after a full pass, and
+normalizes idempotently. They are honest and useful for ruling out off-by-one and overflow
+bugs, but trivial. The one genuinely non-trivial structural guarantee for cyclic computation
+is *coverage*: a stride layout visits every cell iff the stride is coprime to the size — the
+same proved orbit/gcd rule (`AIT-T0002`, `Circle.Applications.stridedHead_fullCoverage_iff_coprime`)
+used for strided attention. Whether any of this lowers to a faster kernel is an empirical
+benchmark question, not a theorem.
+
 The current formal seed is `COMMON-0018`, the cyclic address
 
 ```text

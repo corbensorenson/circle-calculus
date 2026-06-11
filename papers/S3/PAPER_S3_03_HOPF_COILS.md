@@ -34,7 +34,30 @@ The theorem, warning, and dictionary links are registered in `manifests/paper_ma
 - `S3H-T0006`: `Circle.S3.hopfPhaseAction_laws`
 - `S3H-T0007`: `Circle.S3.hopfPhaseMul_identity`
 - `S3H-T0008`: `Circle.S3.hopfPhaseMul_assoc`
+- `S3H-T0009`: `Circle.S3.hopf_norm`
+- `S3H-T0010`: `Circle.S3.hopf_lands`
+- `S3H-T0011`: `Circle.S3.hopf_phase_invariant`
 - `S3H-W0001`: not globally `S^2 x S^1`
+
+## Explicit Real-Coordinate Hopf Map
+
+The facts `S3H-T0009` through `S3H-T0011` give the Hopf map in explicit real
+`R^4 -> R^3` coordinates (`z_1 = a + bi`, `z_2 = c + di`), complementing the
+structure-based `HopfPair` development above with a self-contained algebraic spine:
+
+- `S3H-T0009` (`Circle.S3.hopf_norm`) is the **unconditional** norm identity
+  `|h(a,b,c,d)|^2 = (a^2 + b^2 + c^2 + d^2)^2` — a polynomial identity true for all
+  real inputs.
+- `S3H-T0010` (`Circle.S3.hopf_lands`) specializes it: a point of `S^3`
+  (`a^2 + b^2 + c^2 + d^2 = 1`) maps to a point of the **actual** unit 2-sphere `S^2`.
+- `S3H-T0011` (`Circle.S3.hopf_phase_invariant`) shows the common unit-phase circle
+  action leaves the entire image fixed in all three coordinates: the common-phase circle
+  orbit stays inside one Hopf fiber.
+
+**Roadmap (not yet claimed).** Classifying the full fiber over each base point, local
+triviality, and the full fiber-*bundle* structure of `S^3 -> S^2` remain tracked rather
+than asserted; these theorems are the coordinate and fiber-invariance spine such a
+development sits on.
 
 ## Model
 

@@ -97,9 +97,31 @@ The `S^1` finite circle layer feeds the whole project:
 - Proof-carrying glyphs for modular diagrams start from finite circle theorems.
 - Compute and AI applications reuse cyclic addresses, periods, and closure laws as safe finite primitives.
 
+## Continuum Bridge
+
+A finite circle is not only an analogy for the real circle — it embeds into it. Using
+mathlib's homomorphism `ZMod.toAddCircle` (`j mod n ↦ j / n mod 1`) into the real circle
+`UnitAddCircle = ℝ / ℤ`, the following are Lean-proved:
+
+- `S1C-T0001`: `Circle.S1.finiteCircle_toRealCircle_add` — the embedding turns rotation in `C n` into rotation of the real circle (it is a group homomorphism).
+- `S1C-T0002`: `Circle.S1.finiteCircle_toRealCircle_zero` — the base node maps to the base point.
+- `S1C-T0003`: `Circle.S1.finiteCircle_toRealCircle_injective` — `C n` embeds faithfully: distinct nodes hit distinct real-circle points.
+- `S1C-T0004`: `Circle.S1.finiteCircle_toRealCircle_inj` — nodes coincide on the real circle iff equal in `C n`.
+- `S1C-T0005`: `Circle.S1.finiteCircle_lands_in_torsion` — the image lies in the `n`-torsion (the `n`-th roots of unity).
+- `S1C-T0006`: `Circle.S1.finiteCircle_refines` — **the continuum-limit spine**: node `k` of `C n` is the same real-circle point as node `k*d` of `C (n*d)`, so the finite circles nest into a directed family `C₁ ⊆ C₂ ⊆ C₆ ⊆ …` filling the rational points `ℚ/ℤ ⊆ ℝ/ℤ`.
+
+This makes precise the sense in which the finite circles *approximate* the real circle: each `C n` is a genuine finite subgroup, and refinement nests them toward `ℝ / ℤ`.
+
+**Roadmap (not yet claimed).** That the union of all finite circles is *dense* in the real
+circle, and that the real circle is its metric completion, are tracked rather than
+asserted; they use the topology of `AddCircle` and are the next step.
+
 ## Guardrails
 
-This paper does not prove facts about smooth circles, real angles, Fourier analysis, Lie groups, or topology. It proves finite modular recurrence. Diagrams can explain a theorem, but they are not the theorem.
+Beyond the continuum bridge above (which lands in the actual real circle `ℝ / ℤ` and is
+explicit about what remains roadmap), this paper proves finite modular recurrence, not
+smooth-circle analysis, Fourier theory, Lie-group, or full topology results. Diagrams can
+explain a theorem, but they are not the theorem.
 
 ## Next Step
 

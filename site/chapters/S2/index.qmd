@@ -2,33 +2,36 @@
 title: "S2: Sphere Scaffolding"
 ---
 
-S2 pages are scaffolded as the Living Book grows beyond the S1 interactive core.
+You have a circle. How do you build a sphere from it? S2 answers with one move — **suspension** — and then organizes the result into the latitude/longitude grid you already know from a globe.
 
-S2 is the first step where the book asks how circles can be organized into a sphere-like layer. The safest current version is finite and combinatorial: poles, equators, latitude-like rows, longitude-like addresses, and antipodal pairings are tracked as explicit data rather than assumed from continuous geometry.
+::: {.lesson-goal}
 
-::: {.learning-unit}
+## Unit Goal
 
-## What To Learn Here
-
-Read S2 as a bridge, not as a finished theory of smooth spheres. The goal is to see how S1 circular addresses can be suspended into a finite sphere scaffold while keeping every claim tied to checked finite definitions.
+See how finite S1 circles get stacked and capped into a sphere-like scaffold, and be able to count its cells and check that its Euler characteristic is `2`.
 
 :::
 
-<div class="warning-box">
-This section distinguishes Lean-proved finite suspended-circle facts from future continuous sphere geometry and future interactives. The theorem cards are the status source.
-</div>
+## The Idea
+
+S2 is the first place the book leaves a single loop behind. The safe, current version stays finite and combinatorial: poles, equators, latitude rows, longitude addresses, and antipodal pairs are tracked as explicit data rather than borrowed from continuous geometry. Each latitude row is, underneath, just an S1 circle — so everything you learned about rotation and period keeps working along every row.
 
 ## Lesson Path
 
-1. Start with [Suspended Circles](suspended_circles.qmd) to see how a finite circle gets two pole-like endpoints.
-2. Continue to [Sphere Grids](sphere_grids.qmd) for latitude/longitude vocabulary and finite grid cautions.
-3. Return to the theorem cards when you need to know which finite claims are Lean-proved.
+1. [Suspended Circles](suspended_circles.qmd) — add two poles to a finite circle and watch `χ` go from `0` to `2`.
+2. [Sphere Grids](sphere_grids.qmd) — read the sphere as latitude rings (each an S1 circle) indexed by longitude.
+
+When you want to know which of these claims are Lean-proved, the theorem cards on each page are the status source; continuous sphere geometry is future work.
+
+::: {.warning-box}
+This is a scaffold unit: the theorem cards are the status source, and the widgets and diagrams are explanations, not proofs. See [What "Proved" Means Here](../../what_proved_means.qmd).
+:::
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-Explain the difference between a finite suspended-circle model and a claim about the continuous sphere `S^2`.
+In one sentence, what is the difference between a finite suspended-circle model and a claim about the continuous sphere `S^2`?
 
 :::
 
@@ -36,5 +39,10 @@ Explain the difference between a finite suspended-circle model and a claim about
 
 <div class="theorem-box" data-theorem-id="S2-T0001"></div>
 <div class="dictionary-box" data-dictionary-id="S2-0001"></div>
+
+<div class="book-navigation">
+<a href="../S1/06_review.qmd">Previous: S1 Review</a>
+<a href="suspended_circles.qmd">Next: Suspended Circles</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

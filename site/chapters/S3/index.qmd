@@ -2,33 +2,37 @@
 title: "S3: Hyperspheres, Quaternions, And Hopf Coils"
 ---
 
-S3 pages are scaffolded for finite hypersphere, quaternion, Hopf, and spin chapters.
+`S^3` is the richest sphere in the book. It is where a point stops being just an angle and starts carrying *algebra* (quaternions) and a *hidden phase* (the Hopf fiber). This unit builds up to those two ideas carefully.
 
-S3 is where the book moves from circular repetition to higher-dimensional phase and rotation structure. The practical reading order is: first learn the finite hypersphere scaffold, then the quaternion algebra seed, then the bounded Hopf coordinate pages, and only then the spin/sign ambiguity material.
+::: {.lesson-goal}
 
-::: {.learning-unit}
+## Unit Goal
 
-## What To Learn Here
-
-The S3 unit should teach why a hidden phase can matter. In the bounded Hopf pages, a visible coordinate can share a state with an extra circular phase. In the quaternion pages, rotation-like algebra is checked in a finite proof spine before any broad geometric claim is made.
+Move from circular repetition to higher-dimensional phase and rotation structure: the finite hypersphere scaffold, then the quaternion algebra seed, then the bounded Hopf-coordinate facts.
 
 :::
 
-<div class="warning-box">
-This section separates checked coordinate and algebra seeds from full topology, SO(3), robotics, and fibration claims. Treat a claim as proved only through the generated theorem cards.
-</div>
+## The Idea
+
+Read S3 in order. First the finite hypersphere scaffold organizes the cell counts (and shows `χ(S^3) = 0`). Then quaternions add non-commutative multiplication — the first number system where order matters — which is exactly what encodes 3D rotation. Finally, Hopf coils reveal that a point of `S^3` can have a visible base position *and* an invisible circular phase riding underneath: the S1 idea returning in disguise.
 
 ## Lesson Path
 
-1. [Hyperspheres](hyperspheres.qmd): finite suspension counts and S3 scaffold vocabulary.
-2. [Quaternions](quaternions.qmd): the checked algebra seed for real-quaternion coordinates.
-3. [Hopf Coils](hopf_coils.qmd): bounded coordinate and phase-action facts.
+1. [Hyperspheres](hyperspheres.qmd) — one more suspension, and why `S^3` has `χ = 0`.
+2. [Quaternions](quaternions.qmd) — the checked algebra seed, and the `q` / `−q` sign surprise.
+3. [Hopf Coils](hopf_coils.qmd) — a visible base point plus a hidden phase circle.
+
+Treat a claim as proved only through the generated theorem cards. Full topology, `SO(3)`, robotics, and fibration claims are future work.
+
+::: {.warning-box}
+This is a scaffold unit: the theorem cards are the status source, and the widgets and diagrams are explanations, not proofs. See [What "Proved" Means Here](../../what_proved_means.qmd).
+:::
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-When reading an S3 page, identify whether the claim is about a checked coordinate/algebra seed or about future full topology.
+When reading an S3 page, decide whether its claim is about a checked coordinate/algebra seed or about the (unproved) full topology.
 
 :::
 
@@ -36,5 +40,10 @@ When reading an S3 page, identify whether the claim is about a checked coordinat
 
 <div class="theorem-box" data-theorem-id="S3Q-T0001"></div>
 <div class="dictionary-box" data-dictionary-id="S3Q-0001"></div>
+
+<div class="book-navigation">
+<a href="../S2/sphere_grids.qmd">Previous: Sphere Grids</a>
+<a href="hyperspheres.qmd">Next: Finite Hyperspheres</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

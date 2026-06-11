@@ -80,4 +80,9 @@ Before the first lesson, make sure this sentence feels plausible: a clock face w
 <a href="01_finite_circles.qmd">Lesson 1: Finite Circles</a>
 </div>
 
+<div class="book-navigation">
+<a href="../S0/opposition.qmd">Previous: Two-Point Flip</a>
+<a href="01_finite_circles.qmd">Next: Finite Circles</a>
+</div>
+
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

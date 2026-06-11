@@ -4451,6 +4451,24 @@
           "lean_name": "Circle.Applications.memorySlot_idempotent",
           "name": "Circle.Applications.memorySlot_idempotent",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0001",
+          "lean_name": "Circle.Applications.attentionReach_eq_div_gcd",
+          "name": "Circle.Applications.attentionReach_eq_div_gcd",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0002",
+          "lean_name": "Circle.Applications.stridedHead_fullCoverage_iff_coprime",
+          "name": "Circle.Applications.stridedHead_fullCoverage_iff_coprime",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0003",
+          "lean_name": "Circle.Applications.stridedHead_fullCoverage_of_coprime",
+          "name": "Circle.Applications.stridedHead_fullCoverage_of_coprime",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -4517,6 +4535,24 @@
           "id": "AIM-T0004",
           "lean_name": "Circle.Applications.memorySlot_add_mul_bankSize",
           "name": "Circle.Applications.memorySlot_add_mul_bankSize",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0001",
+          "lean_name": "Circle.Applications.attentionReach_eq_div_gcd",
+          "name": "Circle.Applications.attentionReach_eq_div_gcd",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0002",
+          "lean_name": "Circle.Applications.stridedHead_fullCoverage_iff_coprime",
+          "name": "Circle.Applications.stridedHead_fullCoverage_iff_coprime",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0003",
+          "lean_name": "Circle.Applications.stridedHead_fullCoverage_of_coprime",
+          "name": "Circle.Applications.stridedHead_fullCoverage_of_coprime",
           "status": "proved"
         }
       ],
@@ -4587,6 +4623,42 @@
           "lean_name": "Circle.Applications.adapterBlock_idempotent",
           "name": "Circle.Applications.adapterBlock_idempotent",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0004",
+          "lean_name": "Circle.Applications.rope_relative_shift_invariant",
+          "name": "Circle.Applications.rope_relative_shift_invariant",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0005",
+          "lean_name": "Circle.Applications.rope_compose",
+          "name": "Circle.Applications.rope_compose",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0006",
+          "lean_name": "Circle.Applications.circConv_shift_equivariant",
+          "name": "Circle.Applications.circConv_shift_equivariant",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0007",
+          "lean_name": "Circle.Applications.circConv_comm",
+          "name": "Circle.Applications.circConv_comm",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0008",
+          "lean_name": "Circle.Applications.circConv_add",
+          "name": "Circle.Applications.circConv_add",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0009",
+          "lean_name": "Circle.Applications.shiftBy_add",
+          "name": "Circle.Applications.shiftBy_add",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -4638,6 +4710,42 @@
           "id": "AIRA-T0004",
           "lean_name": "Circle.Applications.adapterBlock_add_mul_blockSize",
           "name": "Circle.Applications.adapterBlock_add_mul_blockSize",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0004",
+          "lean_name": "Circle.Applications.rope_relative_shift_invariant",
+          "name": "Circle.Applications.rope_relative_shift_invariant",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0005",
+          "lean_name": "Circle.Applications.rope_compose",
+          "name": "Circle.Applications.rope_compose",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0006",
+          "lean_name": "Circle.Applications.circConv_shift_equivariant",
+          "name": "Circle.Applications.circConv_shift_equivariant",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0007",
+          "lean_name": "Circle.Applications.circConv_comm",
+          "name": "Circle.Applications.circConv_comm",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0008",
+          "lean_name": "Circle.Applications.circConv_add",
+          "name": "Circle.Applications.circConv_add",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0009",
+          "lean_name": "Circle.Applications.shiftBy_add",
+          "name": "Circle.Applications.shiftBy_add",
           "status": "proved"
         }
       ],
@@ -7040,6 +7148,12 @@
           "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_all_rotations_gaugeShiftedHolonomy",
           "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_all_rotations_gaugeShiftedHolonomy",
           "status": "proved"
+        },
+        {
+          "id": "PHYS-T0064",
+          "lean_name": "Circle.Physics.closedGaugeLoop_gaugeShiftedHolonomy_gauge_independent",
+          "name": "Circle.Physics.closedGaugeLoop_gaugeShiftedHolonomy_gauge_independent",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -7475,6 +7589,12 @@
           "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_all_rotations_gaugeShiftedHolonomy",
           "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_all_rotations_gaugeShiftedHolonomy",
           "status": "proved"
+        },
+        {
+          "id": "PHYS-T0064",
+          "lean_name": "Circle.Physics.closedGaugeLoop_gaugeShiftedHolonomy_gauge_independent",
+          "name": "Circle.Physics.closedGaugeLoop_gaugeShiftedHolonomy_gauge_independent",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -7659,6 +7779,12 @@
           "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_all_rotations_gaugeShiftedHolonomy",
           "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_all_rotations_gaugeShiftedHolonomy",
           "status": "proved"
+        },
+        {
+          "id": "PHYS-T0064",
+          "lean_name": "Circle.Physics.closedGaugeLoop_gaugeShiftedHolonomy_gauge_independent",
+          "name": "Circle.Physics.closedGaugeLoop_gaugeShiftedHolonomy_gauge_independent",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -7795,6 +7921,12 @@
           "id": "PHYS-T0063",
           "lean_name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_all_rotations_gaugeShiftedHolonomy",
           "name": "Circle.Physics.closedGaugeLoop_fromThreeCycle_all_rotations_gaugeShiftedHolonomy",
+          "status": "proved"
+        },
+        {
+          "id": "PHYS-T0064",
+          "lean_name": "Circle.Physics.closedGaugeLoop_gaugeShiftedHolonomy_gauge_independent",
+          "name": "Circle.Physics.closedGaugeLoop_gaugeShiftedHolonomy_gauge_independent",
           "status": "proved"
         }
       ],
@@ -9192,7 +9324,44 @@
           "title": "Circle Calculus S1.4: Factors, Scaling, and Prime Coils"
         }
       ],
-      "used_by_theorems": [],
+      "used_by_theorems": [
+        {
+          "id": "S1C-T0001",
+          "lean_name": "Circle.S1.finiteCircle_toRealCircle_add",
+          "name": "Circle.S1.finiteCircle_toRealCircle_add",
+          "status": "proved"
+        },
+        {
+          "id": "S1C-T0002",
+          "lean_name": "Circle.S1.finiteCircle_toRealCircle_zero",
+          "name": "Circle.S1.finiteCircle_toRealCircle_zero",
+          "status": "proved"
+        },
+        {
+          "id": "S1C-T0003",
+          "lean_name": "Circle.S1.finiteCircle_toRealCircle_injective",
+          "name": "Circle.S1.finiteCircle_toRealCircle_injective",
+          "status": "proved"
+        },
+        {
+          "id": "S1C-T0004",
+          "lean_name": "Circle.S1.finiteCircle_toRealCircle_inj",
+          "name": "Circle.S1.finiteCircle_toRealCircle_inj",
+          "status": "proved"
+        },
+        {
+          "id": "S1C-T0005",
+          "lean_name": "Circle.S1.finiteCircle_lands_in_torsion",
+          "name": "Circle.S1.finiteCircle_lands_in_torsion",
+          "status": "proved"
+        },
+        {
+          "id": "S1C-T0006",
+          "lean_name": "Circle.S1.finiteCircle_refines",
+          "name": "Circle.S1.finiteCircle_refines",
+          "status": "proved"
+        }
+      ],
       "used_by_widgets": []
     },
     {
@@ -9220,6 +9389,36 @@
         }
       ],
       "used_by_theorems": [
+        {
+          "id": "S1C-T0001",
+          "lean_name": "Circle.S1.finiteCircle_toRealCircle_add",
+          "name": "Circle.S1.finiteCircle_toRealCircle_add",
+          "status": "proved"
+        },
+        {
+          "id": "S1C-T0003",
+          "lean_name": "Circle.S1.finiteCircle_toRealCircle_injective",
+          "name": "Circle.S1.finiteCircle_toRealCircle_injective",
+          "status": "proved"
+        },
+        {
+          "id": "S1C-T0004",
+          "lean_name": "Circle.S1.finiteCircle_toRealCircle_inj",
+          "name": "Circle.S1.finiteCircle_toRealCircle_inj",
+          "status": "proved"
+        },
+        {
+          "id": "S1C-T0005",
+          "lean_name": "Circle.S1.finiteCircle_lands_in_torsion",
+          "name": "Circle.S1.finiteCircle_lands_in_torsion",
+          "status": "proved"
+        },
+        {
+          "id": "S1C-T0006",
+          "lean_name": "Circle.S1.finiteCircle_refines",
+          "name": "Circle.S1.finiteCircle_refines",
+          "status": "proved"
+        },
         {
           "id": "S1O-T0001",
           "lean_name": "Circle.S1.signedRot_zero",
@@ -10037,6 +10236,24 @@
           "lean_name": "Circle.S3.hopfPhaseMul_assoc",
           "name": "Circle.S3.hopfPhaseMul_assoc",
           "status": "proved"
+        },
+        {
+          "id": "S3H-T0009",
+          "lean_name": "Circle.S3.hopf_norm",
+          "name": "Circle.S3.hopf_norm",
+          "status": "proved"
+        },
+        {
+          "id": "S3H-T0010",
+          "lean_name": "Circle.S3.hopf_lands",
+          "name": "Circle.S3.hopf_lands",
+          "status": "proved"
+        },
+        {
+          "id": "S3H-T0011",
+          "lean_name": "Circle.S3.hopf_phase_invariant",
+          "name": "Circle.S3.hopf_phase_invariant",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -10112,6 +10329,24 @@
           "id": "S3H-T0008",
           "lean_name": "Circle.S3.hopfPhaseMul_assoc",
           "name": "Circle.S3.hopfPhaseMul_assoc",
+          "status": "proved"
+        },
+        {
+          "id": "S3H-T0009",
+          "lean_name": "Circle.S3.hopf_norm",
+          "name": "Circle.S3.hopf_norm",
+          "status": "proved"
+        },
+        {
+          "id": "S3H-T0010",
+          "lean_name": "Circle.S3.hopf_lands",
+          "name": "Circle.S3.hopf_lands",
+          "status": "proved"
+        },
+        {
+          "id": "S3H-T0011",
+          "lean_name": "Circle.S3.hopf_phase_invariant",
+          "name": "Circle.S3.hopf_phase_invariant",
           "status": "proved"
         }
       ],
@@ -10254,6 +10489,36 @@
           "id": "S3S-T0005",
           "lean_name": "Circle.S3.quaternionConjugation_pure_of_pure",
           "name": "Circle.S3.quaternionConjugation_pure_of_pure",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0006",
+          "lean_name": "Circle.S3.quaternionConjugation_normSq",
+          "name": "Circle.S3.quaternionConjugation_normSq",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0007",
+          "lean_name": "Circle.S3.quaternionConjugation_re",
+          "name": "Circle.S3.quaternionConjugation_re",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0008",
+          "lean_name": "Circle.S3.quaternionConjugation_mul",
+          "name": "Circle.S3.quaternionConjugation_mul",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0009",
+          "lean_name": "Circle.S3.quaternionConjugation_real_trivial",
+          "name": "Circle.S3.quaternionConjugation_real_trivial",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0011",
+          "lean_name": "Circle.S3.quaternionConjugation_trivial_iff_pm_one",
+          "name": "Circle.S3.quaternionConjugation_trivial_iff_pm_one",
           "status": "proved"
         },
         {
@@ -10463,6 +10728,42 @@
           "lean_name": "Circle.S3.quaternionConjugation_pure_of_pure",
           "name": "Circle.S3.quaternionConjugation_pure_of_pure",
           "status": "proved"
+        },
+        {
+          "id": "S3S-T0006",
+          "lean_name": "Circle.S3.quaternionConjugation_normSq",
+          "name": "Circle.S3.quaternionConjugation_normSq",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0007",
+          "lean_name": "Circle.S3.quaternionConjugation_re",
+          "name": "Circle.S3.quaternionConjugation_re",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0008",
+          "lean_name": "Circle.S3.quaternionConjugation_mul",
+          "name": "Circle.S3.quaternionConjugation_mul",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0009",
+          "lean_name": "Circle.S3.quaternionConjugation_real_trivial",
+          "name": "Circle.S3.quaternionConjugation_real_trivial",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0010",
+          "lean_name": "Circle.S3.realUnitQuaternion_eq_pm_one",
+          "name": "Circle.S3.realUnitQuaternion_eq_pm_one",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0011",
+          "lean_name": "Circle.S3.quaternionConjugation_trivial_iff_pm_one",
+          "name": "Circle.S3.quaternionConjugation_trivial_iff_pm_one",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -10508,6 +10809,24 @@
           "lean_name": "Circle.S3.spinSignRelated_equivalence",
           "name": "Circle.S3.spinSignRelated_equivalence",
           "status": "proved"
+        },
+        {
+          "id": "S3S-T0009",
+          "lean_name": "Circle.S3.quaternionConjugation_real_trivial",
+          "name": "Circle.S3.quaternionConjugation_real_trivial",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0010",
+          "lean_name": "Circle.S3.realUnitQuaternion_eq_pm_one",
+          "name": "Circle.S3.realUnitQuaternion_eq_pm_one",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0011",
+          "lean_name": "Circle.S3.quaternionConjugation_trivial_iff_pm_one",
+          "name": "Circle.S3.quaternionConjugation_trivial_iff_pm_one",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -10547,6 +10866,18 @@
           "id": "S3S-T0005",
           "lean_name": "Circle.S3.quaternionConjugation_pure_of_pure",
           "name": "Circle.S3.quaternionConjugation_pure_of_pure",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0006",
+          "lean_name": "Circle.S3.quaternionConjugation_normSq",
+          "name": "Circle.S3.quaternionConjugation_normSq",
+          "status": "proved"
+        },
+        {
+          "id": "S3S-T0007",
+          "lean_name": "Circle.S3.quaternionConjugation_re",
+          "name": "Circle.S3.quaternionConjugation_re",
           "status": "proved"
         }
       ],

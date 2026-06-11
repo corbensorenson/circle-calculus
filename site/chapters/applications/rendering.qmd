@@ -2,31 +2,51 @@
 title: "Rendering"
 ---
 
-Rendering applications are scaffolded. They should remain exploratory until benchmarks, papers, and manifests specify stronger claims.
+When you shoot rays into a scene or sample directions on a hemisphere, you are choosing among a finite set of **direction bins**. That is a circle. This page takes the one rendering-adjacent fact the project actually proves — that the bin schedule is safe and closes — and is careful to claim nothing about image quality.
 
-<div class="warning-box">Rendering demos are not proof artifacts.</div>
+::: {.lesson-goal}
 
-The current proved seed for rendering-adjacent work is the finite direction-bin schedule used by the CoilRay and sampling roadmap. It proves address-safety and repeated-bin closure only; it does not prove ray coherence, lower noise, or better frame time.
+## Lesson Goal
 
-::: {.learning-unit}
-
-## Case-Study Frame
-
-The circular address space is a finite set of direction bins. The repeated action is stepping through bins by a stride. This can explain safe schedules, but visual quality and performance remain benchmark questions.
+Model a direction sampler as a finite circle of bins, and separate the proved part (safe, closing indexing) from the parts that need pictures and metrics (coherence, noise, frame time).
 
 :::
 
-## What To Notice
+## The Idea
 
-- The proved seed covers bin indexing and closure.
-- Rendering quality claims need images, metrics, and baselines.
-- A demo can be useful for intuition without being a proof artifact.
+Partition directions into `n` bins, `0` through `n-1`. A sampler steps through them by a stride, exactly like a coil on `C_n`:
+
+```text
+bin(ray) = ray_index mod n
+```
+
+The proved seed is the **direction-bin schedule**: indices stay in range and the schedule closes after one full pass. That rules out a sampler walking off the end of its bin table. It says nothing about whether the resulting image is less noisy or renders faster — those are empirical questions that need rendered frames and baselines, not theorems.
+
+## Worked Example
+
+A sampler with `8` direction bins:
+
+```text
+ray 3  -> bin 3 mod 8 = 3
+ray 11 -> bin 11 mod 8 = 3   (same bin, one lap later)
+ray 8  -> bin 8 mod 8 = 0    (the schedule closes and repeats)
+```
+
+The indexing is just `C_8` rotation. The closure fact (`a full pass returns to the start`) is the certified part.
+
+## Common Mistake
+
+::: {.common-mistake}
+
+A safe, closing bin schedule is not a rendering-quality result. The proved seed covers bin indexing and closure only; ray coherence, lower noise, and better frame time would need images, metrics, and baselines. Rendering demos are executable references, not proof artifacts and not performance claims. See [What "Proved" Means Here](../../what_proved_means.qmd).
+
+:::
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-What extra evidence would be needed before claiming a direction-bin schedule improves rendering output?
+What extra evidence — beyond the closure theorem — would you need before claiming a direction-bin schedule actually improves a rendered image? (Answer: rendered frames, a noise/quality metric, and a fair baseline.)
 
 :::
 
@@ -37,5 +57,10 @@ What extra evidence would be needed before claiming a direction-bin schedule imp
 <div class="theorem-box" data-theorem-id="COMPR-T0005"></div>
 
 <p data-paper-ref="papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_COMP_02_COIL_RAY_AND_SAMPLING.md">Coil Ray And Sampling</a></p>
+
+<div class="book-navigation">
+<a href="compute.qmd">Previous: Compute</a>
+<a href="data_analysis.qmd">Next: Data Analysis</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

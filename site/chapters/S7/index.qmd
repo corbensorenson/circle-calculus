@@ -2,36 +2,45 @@
 title: "S7: Topological And Octonionic Layer"
 ---
 
-S7 is scaffolded for finite topological S7 facts, quaternionic Hopf coordinate facts, and octonionic warnings.
+`S^7` is the end of the line for the classical number systems. To reach it, you build the octonions — and they make you give up associativity, the rule that lets you move parentheses freely. This unit is where warnings stop being decoration and start changing which moves are legal.
 
-::: {.learning-unit}
+::: {.lesson-goal}
 
-## What To Learn Here
+## Unit Goal
 
-S7 is the first place where nonassociative warnings become central. The unit should teach the difference between bounded checked coordinate facts and broad claims about octonions, Hopf fibrations, or group-like behavior.
+Learn the difference between a bounded, checked coordinate fact on `S^7` and a broad claim about octonions, Hopf fibrations, or group structure — and why the difference matters here more than anywhere else.
 
 :::
 
-<div class="warning-box">
-This section is warning-sensitive. Octonionic and Hopf material must remain bounded to the theorem-card status and must not imply associativity, group structure, or full fibration topology unless proved. The theorem card is the status source.
-</div>
+## The Idea
+
+`S^7` is odd, so by the same parity rule, `χ(S^7) = 0`. The new thing is the algebra: octonion multiplication is **non-associative**, so `(a·b)·c` and `a·(b·c)` can differ. A proof step that silently regroups a product — perfectly fine for quaternions — can flip a sign here. The unit keeps every octonionic and Hopf claim bounded to its theorem-card status.
 
 ## Lesson Path
 
-1. Start with finite topological S7 facts.
-2. Read quaternionic Hopf material through its bounded coordinate claims.
-3. Read octonionic material with the nonassociativity warnings in view.
+1. [Octonionic Layer](octonionic_layer.qmd) — what the octonions keep, what they lose, and why quaternion proofs do not transfer.
+
+This section is warning-sensitive: the theorem card is the status source, and nothing here implies associativity, group structure, or full fibration topology unless proved.
+
+::: {.warning-box}
+This is a scaffold unit, and a warning-sensitive one: the theorem cards are the status source, and the widgets and diagrams are explanations, not proofs. See [What "Proved" Means Here](../../what_proved_means.qmd).
+:::
 
 ::: {.checkpoint-box}
 
 ## Checkpoint
 
-When a page mentions octonions, what warning should you check before treating a familiar group-style argument as valid?
+When a page mentions octonions, what property should you check before reusing a familiar group-style argument?
 
 :::
 
 ## Source Trail
 
 <div class="theorem-box" data-theorem-id="S7C-T0001"></div>
+
+<div class="book-navigation">
+<a href="../S4_S6/suspension_euler_parity.qmd">Previous: Suspension Euler Parity</a>
+<a href="octonionic_layer.qmd">Next: Octonionic Layer</a>
+</div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

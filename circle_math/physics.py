@@ -198,7 +198,7 @@ def wilson_loop_certificate(path: GaugePath, gauges: Sequence[Mapping[str, int]]
         holonomy=holonomy,
         closed=path.closed,
         gauge_invariant_under=tuple(invariant_under),
-        theorem_ids=("PHYS-T0004", "PHYS-T0005", "PHYS-T0047"),
+        theorem_ids=("PHYS-T0004", "PHYS-T0005", "PHYS-T0047", "PHYS-T0064"),
         target_ids=("P7-PHYS-001",),
     )
 

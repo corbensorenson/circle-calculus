@@ -37,6 +37,46 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `S3S-T0003`: `Circle.S3.quaternionConjugation_zero_vector`
 - `S3S-T0004`: `Circle.S3.spinSignRelated_equivalence`
 - `S3S-T0005`: `Circle.S3.quaternionConjugation_pure_of_pure`
+- `S3S-T0006`: `Circle.S3.quaternionConjugation_normSq`
+- `S3S-T0007`: `Circle.S3.quaternionConjugation_re`
+- `S3S-T0008`: `Circle.S3.quaternionConjugation_mul`
+- `S3S-T0009`: `Circle.S3.quaternionConjugation_real_trivial`
+- `S3S-T0010`: `Circle.S3.realUnitQuaternion_eq_pm_one`
+- `S3S-T0011`: `Circle.S3.quaternionConjugation_trivial_iff_pm_one`
+
+## Double Cover Core
+
+The five facts `S3S-T0006` through `S3S-T0010` upgrade the conjugation action from a
+collection of sign and preservation lemmas into the recognizable algebraic core of the
+double cover `Sp(1) = S^3 -> SO(3)`, all on the *actual* real quaternions `Quaternion R`:
+
+- `S3S-T0006` (`Circle.S3.quaternionConjugation_normSq`) shows conjugation by a unit
+  quaternion preserves the quaternion norm. This is the **isometry / orthogonality**
+  property: the action lands in the rotation group.
+- `S3S-T0007` (`Circle.S3.quaternionConjugation_re`) shows it preserves the real part,
+  so it preserves the pure-imaginary copy of `R^3` and acts on vectors.
+- `S3S-T0008` (`Circle.S3.quaternionConjugation_mul`) shows the action is a **monoid
+  homomorphism**: conjugating by `a * b` equals conjugating by `a` then by `b`.
+- `S3S-T0009` (`Circle.S3.quaternionConjugation_real_trivial`) and `S3S-T0010`
+  (`Circle.S3.realUnitQuaternion_eq_pm_one`) compute the easy direction of the kernel:
+  the real unit quaternions are exactly `+1` and `-1`, and they act trivially. With the
+  two-to-one fact `S3S-T0001` (`q` and `-q` agree), this is the `±1` content.
+
+Taken together: the conjugation action is a norm- and real-part-preserving monoid
+homomorphism that identifies `q` with `-q`. That is the algebraic heart of the double
+cover.
+
+`S3S-T0011` (`Circle.S3.quaternionConjugation_trivial_iff_pm_one`) now **completes the
+kernel computation**: a unit quaternion acts trivially (fixes every vector) *if and only if*
+it is `±1`. The proof of the hard direction is the genuine content — a trivially-acting unit
+quaternion commutes with every quaternion, and commuting with the imaginary units `i` and
+`j` forces its imaginary parts to vanish, so it is real, hence `±1`. The kernel of the
+conjugation action on the unit quaternions is therefore *exactly* the two-element group
+`{±1}`.
+
+**Roadmap (not yet claimed).** With the exact kernel in hand, one step remains to the full
+double-cover isomorphism `Sp(1) / {±1} ≅ SO(3)`: surjectivity of the action onto `SO(3)`,
+the representation-theoretic / analytic step beyond this algebraic spine.
 
 ## Proved Core
 
