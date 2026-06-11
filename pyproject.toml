@@ -9,6 +9,7 @@ description = "Circle Calculus paper-and-proof corpus with Lean sidecars and Pyt
 requires-python = ">=3.9"
 dependencies = [
   "jsonschema",
+  "numpy",
   "PyYAML",
   "pytest",
 ]

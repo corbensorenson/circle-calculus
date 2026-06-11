@@ -184,15 +184,18 @@ circle_mixer_real_report_summary_v1
 circle_seed_rule_real_provenance_summary_v1
 ```
 
-The first scored private benchmark id is:
+The scored private benchmark ids are:
 
 ```text
 circle_candidate_fanout_scored_manifest_v1
+circle_candidate_fanout_semantic_frontier_v1
 ```
 
-It compares Circle striding with sequential, round-robin, local-window, deterministic-random-like, and mode-stratified existing selection on private candidate-manifest scores and gates. It does not execute candidates and does not report semantic pass rate.
+The first compares Circle striding with sequential, round-robin, local-window, deterministic-random-like, and mode-stratified existing selection on private candidate-manifest scores and gates. The second joins existing private frontier score reports to candidate manifests and reports semantic pass-rate context.
 
-All current reports are `YELLOW`: the bridge loads all six contract families, the smoke workloads pass, deterministic proxy metrics exist, six local aggregate workload attachments exist, and one scored candidate-manifest benchmark exists, but there are no learned-model quality metrics or semantic private heldout pass-rate results yet.
+The semantic context is useful but not a win claim: full inventory and simple Circle stride/rank-one both match the existing pass context, sequential rank-one also matches it, and direct projection of the exported global path onto per-task candidate ranks performs badly. The next benchmark needs a fresh equal-budget semantic scorer.
+
+All current reports are `YELLOW`: the bridge loads all six contract families, the smoke workloads pass, deterministic proxy metrics exist, six local aggregate workload attachments exist, the scored candidate-manifest benchmark exists, and the semantic score-context layer exists, but there are no learned-model quality metrics or fresh equal-budget semantic pass-rate results yet.
 
 ::: {.warning-box}
 This lane is not evidence that Circle Calculus has already improved Theseus-Hive. It is an experiment plan. Lean can certify finite schedule, index, coverage, relative-phase, and equivariance facts; Theseus-Hive benchmarks must carry any quality, transfer, speed, memory, or reasoning claim.
