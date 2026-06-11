@@ -143,12 +143,13 @@ make theseus-ai-contracts
 
 It writes [`site/data/generated/theseus_hive_ai_contracts.json`](https://github.com/corbensorenson/circle-calculus/blob/main/site/data/generated/theseus_hive_ai_contracts.json), with deterministic recurrence, fanout, memory, phase-feature, mixer, and seed-rule contract fixtures.
 
-The companion Theseus-Hive workspace now has four report-only local layers:
+The companion Theseus-Hive workspace now has five report-only local layers:
 
 - `scripts/circle_ai_contract_consumer.py` reads this pack and emits `reports/circle_ai_contract_consumer.json` and `.md`;
 - `scripts/circle_ai_private_workload_smoke.py` gives each family a named structural workload slot;
 - `scripts/circle_ai_private_proxy_benchmark.py` measures deterministic baseline metrics for those six proxy workloads without training or scoring a learned model;
-- `scripts/circle_ai_real_workload_attachments.py` reads local Theseus-Hive artifacts and emits aggregate-only workload attachments without exporting private row content.
+- `scripts/circle_ai_real_workload_attachments.py` reads local Theseus-Hive artifacts and emits aggregate-only workload attachments without exporting private row content;
+- `scripts/circle_ai_scored_private_benchmarks.py` compares the candidate-fanout contract against ordinary selection baselines using private candidate-manifest score and gate fields.
 
 The smoke workload ids are:
 
@@ -183,7 +184,15 @@ circle_mixer_real_report_summary_v1
 circle_seed_rule_real_provenance_summary_v1
 ```
 
-All current reports are `YELLOW`: the bridge loads all six contract families, the smoke workloads pass, deterministic proxy metrics exist, and six local aggregate workload attachments exist, but there are no learned-model quality metrics or real private model benchmark results yet.
+The first scored private benchmark id is:
+
+```text
+circle_candidate_fanout_scored_manifest_v1
+```
+
+It compares Circle striding with sequential, round-robin, local-window, deterministic-random-like, and mode-stratified existing selection on private candidate-manifest scores and gates. It does not execute candidates and does not report semantic pass rate.
+
+All current reports are `YELLOW`: the bridge loads all six contract families, the smoke workloads pass, deterministic proxy metrics exist, six local aggregate workload attachments exist, and one scored candidate-manifest benchmark exists, but there are no learned-model quality metrics or semantic private heldout pass-rate results yet.
 
 ::: {.warning-box}
 This lane is not evidence that Circle Calculus has already improved Theseus-Hive. It is an experiment plan. Lean can certify finite schedule, index, coverage, relative-phase, and equivariance facts; Theseus-Hive benchmarks must carry any quality, transfer, speed, memory, or reasoning claim.
