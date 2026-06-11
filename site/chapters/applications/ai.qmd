@@ -143,11 +143,12 @@ make theseus-ai-contracts
 
 It writes [`site/data/generated/theseus_hive_ai_contracts.json`](https://github.com/corbensorenson/circle-calculus/blob/main/site/data/generated/theseus_hive_ai_contracts.json), with deterministic recurrence, fanout, memory, phase-feature, mixer, and seed-rule contract fixtures.
 
-The companion Theseus-Hive workspace now has three report-only local layers:
+The companion Theseus-Hive workspace now has four report-only local layers:
 
 - `scripts/circle_ai_contract_consumer.py` reads this pack and emits `reports/circle_ai_contract_consumer.json` and `.md`;
 - `scripts/circle_ai_private_workload_smoke.py` gives each family a named structural workload slot;
-- `scripts/circle_ai_private_proxy_benchmark.py` measures deterministic baseline metrics for those six proxy workloads without training or scoring a learned model.
+- `scripts/circle_ai_private_proxy_benchmark.py` measures deterministic baseline metrics for those six proxy workloads without training or scoring a learned model;
+- `scripts/circle_ai_real_workload_attachments.py` reads local Theseus-Hive artifacts and emits aggregate-only workload attachments without exporting private row content.
 
 The smoke workload ids are:
 
@@ -171,7 +172,18 @@ circle_mixer_parameter_proxy_v1
 circle_seed_rule_regeneration_proxy_v1
 ```
 
-All current reports are `YELLOW`: the bridge loads all six contract families, the smoke workloads pass, and deterministic proxy metrics exist, but there are no learned-model quality metrics or real private workload results yet.
+The real aggregate attachment ids are:
+
+```text
+circle_recurrence_budget_real_rows_v1
+circle_candidate_fanout_real_manifest_v1
+circle_memory_alias_real_trace_v1
+circle_phase_feature_real_sequence_v1
+circle_mixer_real_report_summary_v1
+circle_seed_rule_real_provenance_summary_v1
+```
+
+All current reports are `YELLOW`: the bridge loads all six contract families, the smoke workloads pass, deterministic proxy metrics exist, and six local aggregate workload attachments exist, but there are no learned-model quality metrics or real private model benchmark results yet.
 
 ::: {.warning-box}
 This lane is not evidence that Circle Calculus has already improved Theseus-Hive. It is an experiment plan. Lean can certify finite schedule, index, coverage, relative-phase, and equivariance facts; Theseus-Hive benchmarks must carry any quality, transfer, speed, memory, or reasoning claim.

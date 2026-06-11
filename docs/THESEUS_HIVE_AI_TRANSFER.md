@@ -219,6 +219,7 @@ The companion Theseus-Hive workspace now has a report-only consumer:
 ../Theseus-Hive/scripts/circle_ai_contract_consumer.py
 ../Theseus-Hive/scripts/circle_ai_private_workload_smoke.py
 ../Theseus-Hive/scripts/circle_ai_private_proxy_benchmark.py
+../Theseus-Hive/scripts/circle_ai_real_workload_attachments.py
 ../Theseus-Hive/docs/CIRCLE_CALCULUS_TRANSFER.md
 ../Theseus-Hive/reports/circle_ai_contract_consumer.json
 ../Theseus-Hive/reports/circle_ai_contract_consumer.md
@@ -226,6 +227,8 @@ The companion Theseus-Hive workspace now has a report-only consumer:
 ../Theseus-Hive/reports/circle_ai_private_workload_smoke.md
 ../Theseus-Hive/reports/circle_ai_private_proxy_benchmark.json
 ../Theseus-Hive/reports/circle_ai_private_proxy_benchmark.md
+../Theseus-Hive/reports/circle_ai_real_workload_attachments.json
+../Theseus-Hive/reports/circle_ai_real_workload_attachments.md
 ```
 
 Run it from Theseus-Hive with:
@@ -236,6 +239,15 @@ python scripts/circle_ai_contract_consumer.py \
 ```
 
 Its current state is intentionally `YELLOW`: all six contract families load, all required axes are reported, and every governance gate is report-clean, but there are not yet named private benchmark results. The generated report has `external_inference_calls = 0`, `training_mutation = false`, `promotion_evidence = false`, and `public_calibration_used = false`.
+
+Run the aggregate local artifact attachment layer from Theseus-Hive with:
+
+```bash
+python scripts/circle_ai_real_workload_attachments.py \
+  --contracts "../circle math/site/data/generated/theseus_hive_ai_contracts.json"
+```
+
+When the script is executed from a clean companion worktree but should read the active private workspace, pass `--data-root` to that local Theseus-Hive checkout.
 
 The companion smoke workload layer gives each family a stable named workload slot:
 
@@ -263,15 +275,28 @@ circle_seed_rule_regeneration_proxy_v1
 
 That proxy report is also intentionally `YELLOW`: all six proxy benchmarks pass and deterministic proxy metrics exist, but `learned_model_quality_metrics_present = false` and `real_private_workload_results_present = false`.
 
-The next concrete private Theseus-Hive milestone is to replace the proxy benchmarks with real private workloads:
+The companion real workload attachment layer now reads local Theseus-Hive artifacts and exports only aggregate counts, rates, ids, and path names under:
+
+```text
+circle_recurrence_budget_real_rows_v1
+circle_candidate_fanout_real_manifest_v1
+circle_memory_alias_real_trace_v1
+circle_phase_feature_real_sequence_v1
+circle_mixer_real_report_summary_v1
+circle_seed_rule_real_provenance_summary_v1
+```
+
+That report is still intentionally `YELLOW`: all six families attach to real local private/synthetic/report-summary artifacts, `real_local_workload_aggregates_present = true`, `learned_model_quality_metrics_present = false`, `real_private_model_benchmark_results_present = false`, `external_inference_calls = 0`, `training_mutation = false`, `promotion_evidence = false`, and `private_data_exported = false`. It does not copy private row bodies, prompts, tests, solution code, candidate code, or learned-model scores into this public repository.
+
+The next concrete private Theseus-Hive milestone is to promote those aggregate attachments into scored private benchmarks:
 
 1. Consume `site/data/generated/theseus_hive_ai_contracts.json` only as private experiment configuration, not as public-calibration data.
-2. Compare recurrence contracts against fixed-depth, dense-depth, no-recurrence, and existing work-budget baselines.
-3. Compare fanout contracts against sequential, random, round-robin, local-window, and existing stratified admission baselines.
-4. Compare memory contracts against FIFO, LRU, score-based retention, and slot-only retention baselines.
-5. Compare phase-feature contracts against existing position buckets, learned-position controls, wrong-period controls, and no-phase controls.
-6. Compare mixer contracts against dense, low-rank, LoRA-style, and no-mixer baselines.
-7. Compare seed-rule contracts against object-only storage and unverified tool-memory baselines.
+2. Promote `circle_recurrence_budget_real_rows_v1` from metadata proxy to actual looped-workload score/runtime benchmark.
+3. Promote `circle_candidate_fanout_real_manifest_v1` from coverage/diversity to candidate pass-rate, rejection, and runtime comparison.
+4. Promote `circle_memory_alias_real_trace_v1` to context-packet retrieval with target hit rate, retention cost, and latency.
+5. Promote `circle_phase_feature_real_sequence_v1` to no-phase, wrong-period, and Circle-phase heldout ablations.
+6. Promote `circle_mixer_real_report_summary_v1` to dense/low-rank/no-mixer/circulant/block-cyclic route-ranker benchmarks.
+7. Promote `circle_seed_rule_real_provenance_summary_v1` to exact regeneration cost and verifier residual benchmarks.
 8. Record every result as private experimental evidence until a named workload, baseline, metric, and reproducible script exist.
 
 ## ASI-Relevant Tooling Boundary
