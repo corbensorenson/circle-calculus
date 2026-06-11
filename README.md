@@ -97,7 +97,7 @@ make theseus-ai-contracts
 
 This writes `site/data/generated/theseus_hive_ai_contracts.json`, a public-safe fixture pack for recurrence, fanout, memory, phase-feature, mixer, and seed-rule experiments.
 
-If the companion Theseus-Hive workspace is present, its report-only consumers are `scripts/circle_ai_contract_consumer.py`, `scripts/circle_ai_private_workload_smoke.py`, `scripts/circle_ai_private_proxy_benchmark.py`, `scripts/circle_ai_real_workload_attachments.py`, and `scripts/circle_ai_scored_private_benchmarks.py`. They treat the Circle pack as private experiment configuration and write YELLOW planning/smoke/proxy/aggregate-attachment/scored-candidate/semantic-context reports until fresh equal-budget semantic scoring, runtime, and transfer results support stronger claims.
+If the companion Theseus-Hive workspace is present, its report-only consumers are `scripts/circle_ai_contract_consumer.py`, `scripts/circle_ai_private_workload_smoke.py`, `scripts/circle_ai_private_proxy_benchmark.py`, `scripts/circle_ai_real_workload_attachments.py`, and `scripts/circle_ai_scored_private_benchmarks.py`. They treat the Circle pack as private experiment configuration and write YELLOW planning/smoke/proxy/aggregate-attachment/scored-candidate/semantic-context/fresh-semantic-sample reports until full-frontier semantic scoring, runtime, and transfer results support stronger claims.
 
 ## License And Citation
 
