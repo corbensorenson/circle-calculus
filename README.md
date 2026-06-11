@@ -97,7 +97,7 @@ make theseus-ai-contracts
 
 This writes `site/data/generated/theseus_hive_ai_contracts.json`, a public-safe fixture pack for recurrence, fanout, memory, phase-feature, mixer, and seed-rule experiments.
 
-If the companion Theseus-Hive workspace is present, its report-only consumers are `scripts/circle_ai_contract_consumer.py`, `scripts/circle_ai_private_workload_smoke.py`, `scripts/circle_ai_private_proxy_benchmark.py`, `scripts/circle_ai_real_workload_attachments.py`, and `scripts/circle_ai_scored_private_benchmarks.py`. They treat the Circle pack as private experiment configuration and write YELLOW planning/smoke/proxy/aggregate-attachment/scored-candidate/semantic-context/full-frontier-semantic/recurrence-work-budget/context-memory/phase-feature/route-mixer/seed-rule/seed-rule-stress/workflow-rebuild reports until runtime, transfer, or quality results beat ordinary baselines.
+If the companion Theseus-Hive workspace is present, its report-only consumers are `scripts/circle_ai_contract_consumer.py`, `scripts/circle_ai_private_workload_smoke.py`, `scripts/circle_ai_private_proxy_benchmark.py`, `scripts/circle_ai_real_workload_attachments.py`, and `scripts/circle_ai_scored_private_benchmarks.py`. They treat the Circle pack as private experiment configuration and write YELLOW planning/smoke/proxy/aggregate-attachment/scored-candidate/semantic-context/full-frontier-semantic/recurrence-work-budget/context-memory/phase-feature/route-mixer/seed-rule/seed-rule-stress/workflow-rebuild/update-cycle-effort reports until runtime, transfer, or quality results beat ordinary baselines.
 
 ## License And Citation
 
