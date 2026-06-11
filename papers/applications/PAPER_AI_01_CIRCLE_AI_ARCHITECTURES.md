@@ -115,6 +115,37 @@ The first architecture track should build MLX/Mac-compatible prototypes around s
 
 Every experiment should compare against strong ordinary baselines and report negative results if the circle structure does not help.
 
+## Theseus-Hive Transfer Program
+
+Circle Calculus also has a direct application target in the local Theseus-Hive AI project. The transfer plan is recorded in:
+
+```text
+docs/THESEUS_HIVE_AI_TRANSFER.md
+```
+
+The purpose is not to claim that Circle Calculus has already improved Theseus-Hive. The purpose is to turn the AI theorem spine and sidecar fixtures into contracts Theseus-Hive can test under its existing private-transfer and governance machinery:
+
+- recurrence contracts for looped/recursive schedules, exit certificates, active-token sets, and overthinking boundaries;
+- strided/fanout contracts that report gcd, coverage, duplicate pressure, candidate budget, and rejection reasons;
+- cyclic memory analyzers that separate residue from winding so alias pressure is visible;
+- phase-feature tags for state-sequence decoders, compared against ordinary position buckets and learned-position controls;
+- circulant and block-cyclic mixer baselines for small route heads, rankers, or adapter-like layers;
+- seed-rule provenance objects for workflows where exact regeneration is the real compression target.
+
+This is the most important near-term AI path because Theseus-Hive already has ratchets, private held-out pressure, STS-conditioned candidate generation, context packet memory, work-budget admission, and CPU/MLX local execution boundaries, with CUDA treated as external portability or baseline context. Circle Calculus should plug into that system as proof-linked structure and benchmark scaffolding, not as a replacement for its training and evaluation gates.
+
+The first public-side tool is now:
+
+```bash
+make theseus-ai-contracts
+```
+
+It writes `site/data/generated/theseus_hive_ai_contracts.json`, a deterministic fixture pack with recurrence, fanout, memory, phase-feature, mixer, and seed-rule contracts. These contracts are experiment inputs, not results.
+
+The local companion Theseus-Hive workspace now has a report-only consumer, `scripts/circle_ai_contract_consumer.py`, a structural smoke workload layer, `scripts/circle_ai_private_workload_smoke.py`, and a deterministic proxy benchmark layer, `scripts/circle_ai_private_proxy_benchmark.py`, with a matching note at `docs/CIRCLE_CALCULUS_TRANSFER.md`. The consumer loads the Circle pack, writes `reports/circle_ai_contract_consumer.json` and `.md`, separates quality/runtime/memory/parameter/interpretability/transfer/failure-case axes, and keeps its state `YELLOW` until named private benchmark results exist. The smoke layer adds six stable workload slots: `circle_recurrence_budget_trace_smoke`, `circle_strided_candidate_coverage_smoke`, `circle_memory_alias_visibility_smoke`, `circle_phase_feature_invariance_smoke`, `circle_mixer_parameter_accounting_smoke`, and `circle_seed_rule_regeneration_smoke`. The proxy layer adds measured deterministic baseline metrics under `circle_recurrence_budget_proxy_v1`, `circle_candidate_fanout_proxy_v1`, `circle_memory_alias_proxy_v1`, `circle_phase_feature_proxy_v1`, `circle_mixer_parameter_proxy_v1`, and `circle_seed_rule_regeneration_proxy_v1`, but still marks learned-model quality metrics and real private workload results absent.
+
+The acceptance rule is strict: a Circle-side contract can be Lean-proved for finite schedule/index/coverage/equivariance facts, but any claim that it improves Theseus-Hive must name the workload, baseline, metric, reproducible script, and report.
+
 ## Next Program
 
 - Use `AIA-B0004` as the current learned-feature baseline scaffold.
@@ -122,6 +153,7 @@ Every experiment should compare against strong ordinary baselines and report neg
 - Compare next against dense MLP/attention, standard RoPE, learned positional encodings, convolution, Hyena-like mixers, and S4/Mamba-like baselines as appropriate.
 - Use `AIM-B0003` as the first looped/recursive transformer schedule scaffold and `AIM-B0005` as the first token-level routing scaffold, then compare learned recurrence ideas against dense transformer depth, Universal Transformer recurrence, fixed looped transformers, adaptive early-exit models, recurrent-memory transformers, token-level Mixture-of-Recursions, middle-block recurrence, multi-resolution recurrence, training-free loop wrappers, sparse/MoE looped models, RWKV/Mamba-style recurrent/state-space models, and ordinary nonrecursive transformer baselines before reasoning or quality claims.
 - Add separate memory-slot and adapter-block benchmarks before making CoilKV, Coil Attention, CoilRA, or MultiCoil RoPE claims.
+- Use the private Theseus-Hive consumers for `site/data/generated/theseus_hive_ai_contracts.json` as the report boundary, keeping private reports out of the public Circle repository unless they are intentionally scrubbed and public-safe; next replace the six deterministic proxy benchmarks with real private recurrence, fanout, memory, phase-feature, mixer, and seed-rule benchmarks.
 - Use `AIA-B0003` as backend parity scaffolding only; real MLX model prototypes and timing remain separate work.
 - Keep MLX/Mac-compatible prototypes first.
 - Separate Lean-proved indexing facts from model-quality claims.

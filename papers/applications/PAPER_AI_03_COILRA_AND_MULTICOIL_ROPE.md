@@ -116,6 +116,16 @@ This fixture is not evidence that standard RoPE improves a model, that relative 
 
 Periodic activations should be evaluated on signal, coordinate, and neural-field tasks where periodicity is real.
 
+## Theseus-Hive Feature And Mixer Transfer
+
+For Theseus-Hive, the practical transfer from this paper is small and testable:
+
+- add optional phase and phase-tuple feature tags beside ordinary position buckets, then compare against existing dynamic decoder features, learned-position controls, wrong-period controls, and nonperiodic controls;
+- test circulant or block-cyclic lightweight mixers only in route-head, ranker, adapter, or feature-mixer positions where shift or periodic structure is plausible;
+- compare dense, LoRA-style low-rank, block-cyclic, block-circulant, and circulant baselines with quality, parameter count, runtime, memory, and failure cases reported separately.
+
+The Circle theorem layer can certify relative-phase invariance, circular-convolution equivariance, and adapter-block index safety. It cannot certify that a Theseus-Hive route head, Code LM decoder feature set, or adapter-like layer is better. That remains a private experiment until a named workload and baseline report exist.
+
 ## Next Program
 
 - Treat `AIRA-B0001` as adapter-block benchmark scaffolding, `AIRA-B0004` as parameter-budget scaffolding, and `AIRA-B0005` as CoilLinear/circulant-mixer scaffolding only; CoilRA, model quality, parameter efficiency, memory, training stability, and runtime claims remain separate work.

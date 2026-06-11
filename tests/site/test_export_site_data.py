@@ -30,6 +30,7 @@ def test_export_site_data_writes_required_indexes() -> None:
         "widget_index.json",
         "glyph_index.json",
         "generator_index.json",
+        "theseus_hive_ai_contracts.json",
         "capability_showcase.json",
         "phase4_targets.json",
         "phase5_targets.json",
@@ -82,6 +83,12 @@ def test_export_site_data_writes_required_indexes() -> None:
     assert "GEN-T0021" in generator_by_id["coil_orbit"]["theoremIds"]
     assert generator_by_id["proof_glyph"]["generatedObject"]["theorem_id"] == "CC-T0005"
     assert "GEN-T0004" in generator_by_id["proof_glyph"]["theoremIds"]
+
+    theseus_contracts = json.loads((generated / "theseus_hive_ai_contracts.json").read_text())
+    assert theseus_contracts["schema_id"] == "circle_calculus.theseus_hive_ai_contracts.v0"
+    contract_kinds = {item["kind"] for item in theseus_contracts["contracts"]}
+    assert "recurrence_schedule" in contract_kinds
+    assert "seed_rule_exact_regeneration" in contract_kinds
 
     capabilities = json.loads((generated / "capability_showcase.json").read_text())
     capability_by_id = {item["id"]: item for item in capabilities["capabilities"]}

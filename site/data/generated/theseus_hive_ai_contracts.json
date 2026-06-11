@@ -1,0 +1,481 @@
+{
+  "claim_boundary": "These contracts expose finite structure for private experiments. They do not prove model quality, reasoning, transfer, context length, speed, memory scaling, or ASI.",
+  "contracts": [
+    {
+      "contract_passed": true,
+      "dictionary_ids": [
+        "COMMON-0052",
+        "COMMON-0053",
+        "COMMON-0054",
+        "COMMON-0059",
+        "COMMON-0068"
+      ],
+      "fields": {
+        "exit_step": 4,
+        "loop_period": 5,
+        "loop_phase": 3,
+        "max_loops": 7,
+        "middle_block": 4,
+        "middle_block_budget": 4,
+        "overthinking_boundary": 5,
+        "required_steps": 4,
+        "sample_index": 8,
+        "score_trace": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0
+        ],
+        "tokens": [
+          {
+            "active_steps": [
+              1
+            ],
+            "budget": 1,
+            "state_at_budget": 0,
+            "token_index": 0
+          },
+          {
+            "active_steps": [
+              1,
+              2
+            ],
+            "budget": 2,
+            "state_at_budget": 1,
+            "token_index": 1
+          },
+          {
+            "active_steps": [
+              1,
+              2,
+              3
+            ],
+            "budget": 3,
+            "state_at_budget": 2,
+            "token_index": 2
+          },
+          {
+            "active_steps": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "budget": 4,
+            "state_at_budget": 3,
+            "token_index": 3
+          },
+          {
+            "active_steps": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "budget": 5,
+            "state_at_budget": 4,
+            "token_index": 4
+          },
+          {
+            "active_steps": [
+              1
+            ],
+            "budget": 1,
+            "state_at_budget": 0,
+            "token_index": 5
+          },
+          {
+            "active_steps": [
+              1,
+              2
+            ],
+            "budget": 2,
+            "state_at_budget": 1,
+            "token_index": 6
+          },
+          {
+            "active_steps": [
+              1,
+              2,
+              3
+            ],
+            "budget": 3,
+            "state_at_budget": 2,
+            "token_index": 7
+          }
+        ]
+      },
+      "id": "TH-AI-CONTRACT-RECURRENCE-001",
+      "kind": "recurrence_schedule",
+      "not_claimed": "These contracts expose finite structure for private experiments. They do not prove model quality, reasoning, transfer, context length, speed, memory scaling, or ASI.",
+      "ordinary_baselines": [
+        "fixed_depth",
+        "dense_depth",
+        "existing_work_budget",
+        "no_recurrence"
+      ],
+      "source_paper": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+      "status": "fixture",
+      "theorem_ids": [
+        "AIM-T0006",
+        "AIM-T0007",
+        "AIM-T0008",
+        "AIM-T0015",
+        "AIM-T0035",
+        "AIM-T0036",
+        "AIM-T0037",
+        "AIM-T0044",
+        "AIM-T0045",
+        "AIM-T0046",
+        "AIM-T0047",
+        "AIM-T0048",
+        "AIM-T0049",
+        "AIM-T0051",
+        "AIM-T0052"
+      ],
+      "theseus_hive_use": "Private looped/recursive schedule, active-token, exit, and overthinking diagnostics."
+    },
+    {
+      "contract_passed": true,
+      "dictionary_ids": [
+        "COMMON-0047",
+        "COMMON-0028"
+      ],
+      "fields": {
+        "candidate_budget": 12,
+        "candidate_path": [
+          7,
+          2,
+          9,
+          4,
+          11,
+          6,
+          1,
+          8,
+          3,
+          10,
+          5,
+          0
+        ],
+        "context_length": 12,
+        "duplicate_count": 0,
+        "full_coverage": true,
+        "gcd": 1,
+        "orbit": [
+          0,
+          5,
+          10,
+          3,
+          8,
+          1,
+          6,
+          11,
+          4,
+          9,
+          2,
+          7
+        ],
+        "predicted_reach": 12,
+        "start_index": 0,
+        "stride": 5
+      },
+      "id": "TH-AI-CONTRACT-FANOUT-001",
+      "kind": "strided_candidate_fanout",
+      "not_claimed": "These contracts expose finite structure for private experiments. They do not prove model quality, reasoning, transfer, context length, speed, memory scaling, or ASI.",
+      "ordinary_baselines": [
+        "sequential_fanout",
+        "random_fanout",
+        "round_robin_fanout",
+        "local_window"
+      ],
+      "source_paper": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+      "status": "fixture",
+      "theorem_ids": [
+        "AIT-T0001",
+        "AIT-T0002",
+        "AIT-T0003"
+      ],
+      "theseus_hive_use": "Private candidate fanout and STS branch-coverage diagnostics."
+    },
+    {
+      "contract_passed": true,
+      "dictionary_ids": [
+        "COMMON-0028",
+        "COMMON-0029"
+      ],
+      "fields": {
+        "bank_size": 8,
+        "event_count": 32,
+        "event_index": 23,
+        "max_alias_load": 4,
+        "residue_slot": 7,
+        "same_residue_events": [
+          7,
+          15,
+          23,
+          31
+        ],
+        "same_residue_windings": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "slot_loads": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "winding": 2
+      },
+      "id": "TH-AI-CONTRACT-MEMORY-001",
+      "kind": "cyclic_memory_residue_winding",
+      "not_claimed": "These contracts expose finite structure for private experiments. They do not prove model quality, reasoning, transfer, context length, speed, memory scaling, or ASI.",
+      "ordinary_baselines": [
+        "fifo",
+        "lru",
+        "score_based_retention",
+        "slot_only_memory"
+      ],
+      "source_paper": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+      "status": "fixture",
+      "theorem_ids": [
+        "AIM-T0001",
+        "AIM-T0002",
+        "AIM-T0004",
+        "AIM-T0005"
+      ],
+      "theseus_hive_use": "Context packet, routing-memory, and worker-state alias diagnostics."
+    },
+    {
+      "contract_passed": true,
+      "dictionary_ids": [
+        "COMMON-0026",
+        "COMMON-0027",
+        "COMMON-0046",
+        "COMMON-0051"
+      ],
+      "fields": {
+        "joint_repeat_horizon": 35,
+        "key_position": 18,
+        "periods": [
+          5,
+          7
+        ],
+        "phase_tuple": [
+          2,
+          2
+        ],
+        "position": 37,
+        "query_position": 41,
+        "relative_period": 5,
+        "relative_phase": 3,
+        "shifted_phase_tuple": [
+          2,
+          2
+        ],
+        "shifted_position": 72,
+        "shifted_relative_phase": 3
+      },
+      "id": "TH-AI-CONTRACT-PHASE-FEATURE-001",
+      "kind": "multicoil_phase_feature",
+      "not_claimed": "These contracts expose finite structure for private experiments. They do not prove model quality, reasoning, transfer, context length, speed, memory scaling, or ASI.",
+      "ordinary_baselines": [
+        "existing_position_bucket",
+        "learned_position",
+        "wrong_period",
+        "no_phase_feature"
+      ],
+      "source_paper": "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md",
+      "status": "fixture",
+      "theorem_ids": [
+        "AIA-T0001",
+        "AIA-T0002",
+        "AIA-T0004",
+        "AIT-T0004",
+        "AIT-T0005"
+      ],
+      "theseus_hive_use": "Optional private Code LM state-sequence phase tags beside existing position buckets."
+    },
+    {
+      "contract_passed": true,
+      "dictionary_ids": [
+        "COMMON-0056",
+        "COMMON-0058",
+        "COMMON-0030",
+        "COMMON-0031"
+      ],
+      "fields": {
+        "block_cyclic_parameters": 128,
+        "block_loads": [
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16
+        ],
+        "block_size": 8,
+        "block_to_dense_ratio": 0.0625,
+        "channel_count": 128,
+        "circulant_output": [
+          5,
+          -2,
+          -8,
+          9,
+          -1,
+          6,
+          -1,
+          -8
+        ],
+        "circulant_parameter_ratio": 0.125,
+        "circulant_parameters": 8,
+        "dense_adapter_parameters": 2048,
+        "dense_output": [
+          5,
+          -2,
+          -8,
+          9,
+          -1,
+          6,
+          -1,
+          -8
+        ],
+        "dense_parameters": 64,
+        "input_values": [
+          -2,
+          2,
+          1,
+          2,
+          -2,
+          3,
+          3,
+          -2
+        ],
+        "kernel_values": [
+          2,
+          -1,
+          1,
+          0,
+          -2,
+          0,
+          0,
+          0
+        ],
+        "lora_parameters": 576,
+        "max_abs_dense_delta": 0,
+        "period": 8
+      },
+      "id": "TH-AI-CONTRACT-MIXER-001",
+      "kind": "circulant_block_cyclic_mixer",
+      "not_claimed": "These contracts expose finite structure for private experiments. They do not prove model quality, reasoning, transfer, context length, speed, memory scaling, or ASI.",
+      "ordinary_baselines": [
+        "dense_mixer",
+        "low_rank_mixer",
+        "lora_adapter",
+        "no_mixer"
+      ],
+      "source_paper": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+      "status": "fixture",
+      "theorem_ids": [
+        "AIT-T0006",
+        "AIT-T0007",
+        "AIT-T0008",
+        "AIT-T0009",
+        "AIRA-T0001",
+        "AIRA-T0002",
+        "AIRA-T0004"
+      ],
+      "theseus_hive_use": "Private route-head, ranker, adapter, or feature-mixer baseline experiments."
+    },
+    {
+      "contract_passed": true,
+      "dictionary_ids": [
+        "CC-0201",
+        "CC-0205",
+        "COMMON-0064",
+        "COMMON-0066"
+      ],
+      "fields": {
+        "artifact_id": "coil_orbit",
+        "closure_condition": "stop when the next node has already appeared",
+        "exact_regeneration": true,
+        "explicit_length": 55,
+        "generated_object": [
+          0,
+          8,
+          4
+        ],
+        "generator_length": 371,
+        "generator_shorter": false,
+        "iteration_schedule": "x_0=start; x_{t+1}=x_t+stride mod n",
+        "regenerated_object": [
+          0,
+          8,
+          4
+        ],
+        "rules": [
+          {
+            "parameters": [
+              [
+                "stride",
+                8
+              ]
+            ],
+            "rule_id": "repeat_rotation"
+          }
+        ],
+        "seed": [
+          [
+            "n",
+            12
+          ],
+          [
+            "start",
+            0
+          ],
+          [
+            "stride",
+            8
+          ]
+        ]
+      },
+      "id": "TH-AI-CONTRACT-SEED-RULE-001",
+      "kind": "seed_rule_exact_regeneration",
+      "not_claimed": "These contracts expose finite structure for private experiments. They do not prove model quality, reasoning, transfer, context length, speed, memory scaling, or ASI.",
+      "ordinary_baselines": [
+        "object_only_storage",
+        "unverified_template",
+        "freeform_tool_memory"
+      ],
+      "source_paper": "papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md",
+      "status": "fixture",
+      "theorem_ids": [
+        "GEN-T0002",
+        "GEN-T0021",
+        "CC-T0005",
+        "CC-T0006"
+      ],
+      "theseus_hive_use": "CGS accounting, loop-closure tool cards, and exact artifact regeneration checks."
+    }
+  ],
+  "schema_id": "circle_calculus.theseus_hive_ai_contracts.v0",
+  "source_docs": [
+    "docs/THESEUS_HIVE_AI_TRANSFER.md",
+    "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md",
+    "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+    "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md"
+  ],
+  "status": "public_safe_fixture"
+}

@@ -25,6 +25,7 @@ In plain terms — and stated at its true altitude — the proved core is **clea
 - **A finite sphere ladder (S0–S7):** suspension cell-counts and the Euler-characteristic rule `χ → 2 − χ`, the real-quaternion algebra spine, bounded Hopf-coordinate facts, and a bounded Cayley–Dickson (octonion) model including explicit non-associativity.
 - **Classical bridges:** Lean-checked *wrappers* around established mathlib results (Erdős–Ginzburg–Ziv, Cauchy–Davenport, Roth, and others), restated in Circle-facing language. These are not new theorems and not progress on open problems — they are labeled as wrappers.
 - **Finite "application" lanes (physics / AI / generative / compute):** these are deliberately modest, honestly named finite models. A "Wilson-loop invariance" theorem here is the fact that a sum of `ZMod n` phases around a closed loop is gauge-independent; an "AI memory-slot" theorem is the fact that an index stays below its bank size and is unchanged by adding a full period. They are correct, useful for keeping the prose honest, and **not** claims about physics or about model quality.
+- **Circle AI transfer:** the active AI lane now targets proof-linked recurrence, routing, memory, phase-feature, and circulant-mixer contracts that can be tested in Theseus-Hive under ordinary baselines. This is a benchmark program, not a claim that Circle Calculus has already improved AI systems.
 
 The exhaustive, per-theorem list lives where it belongs — in the manifests (`manifests/theorem_manifest.yaml` and `manifests/dimensions/`, `manifests/applications/`) — and is rendered, with live status, on the Living Book [Theorem Index](https://corbensorenson.github.io/circle-calculus/theorems.html). It is intentionally **not** duplicated here.
 
@@ -39,6 +40,7 @@ This repository does not claim to have rebuilt all of mathematics from circles. 
 3. `dictionary/circle_dictionary.yaml` for fixed vocabulary.
 4. `manifests/theorem_manifest.yaml` for theorem status.
 5. `docs/COMPLETION_ROADMAP.md` and `docs/DIMENSIONAL_LADDER.md` for where it is going.
+6. `docs/THESEUS_HIVE_AI_TRANSFER.md` for the AI transfer plan into the user's active Theseus-Hive project.
 
 The Living Book's [What "Proved" Means Here](https://corbensorenson.github.io/circle-calculus/what_proved_means.html) page is the one-paragraph contract the whole project lives by.
 
@@ -86,6 +88,16 @@ make check
 ```
 
 Useful targets: `make lean` (build the Lean library), `make test` (Python tests), `make sitecheck` (validate the Living Book), `make site-render` (render the book), and `make living-book-check` (everything, including the rendered artifact). See the `Makefile` for the full list.
+
+For the Theseus-Hive AI transfer lane, run:
+
+```bash
+make theseus-ai-contracts
+```
+
+This writes `site/data/generated/theseus_hive_ai_contracts.json`, a public-safe fixture pack for recurrence, fanout, memory, phase-feature, mixer, and seed-rule experiments.
+
+If the companion Theseus-Hive workspace is present, its report-only consumers are `scripts/circle_ai_contract_consumer.py`, `scripts/circle_ai_private_workload_smoke.py`, and `scripts/circle_ai_private_proxy_benchmark.py`. They treat the Circle pack as private experiment configuration and write YELLOW planning/smoke/proxy reports until named real workloads, baselines, metrics, scripts, and reports support stronger claims.
 
 ## License And Citation
 

@@ -217,3 +217,35 @@ targets:
     dictionary_dependencies: ["COMMON-0026", "COMMON-0028", "COMMON-0047", "COMMON-0048", "COMMON-0052", "COMMON-0053", "COMMON-0054", "COMMON-0055", "COMMON-0059", "COMMON-0067", "COMMON-0068", "COMMON-0069", "COMMON-0070"]
     next_action: "AIM-B0003 now adds an exploratory Python recurrence-schedule benchmark fixture with single-pass, fixed-loop, adaptive-exit, recurrent-memory, sparse phase-router, over-looped, and dense-threshold controls; AIM-B0011 adds a loop-exit certificate fixture with score trace, exit availability, budget status, and overthinking guardrail status; AIM-B0005 adds token-level recurrence routing with per-token budgets, active-token counts, selected middle block, resolution labels, fixed/wrong/over-loop controls, and a nonperiodic scalar-threshold control; AIM-B0012 adds learned token-level recurrence routing with a phase-to-budget lookup, fixed-budget baseline, wrong-period control, shifted-budget control, over-loop control, and nonperiodic scalar-threshold control; AIM-B0006 adds training-free loop-wrapper controls; AIM-B0007 adds middle-block recurrence controls with selected-block, full-block, fixed-budget, wrong-block, and over-loop baselines; AIM-B0013 adds learned middle-block recurrence controls with phase-to-block and phase-to-budget lookup tables, selected-band/full-block baselines, fixed-budget, wrong-period, wrong-block, and over-loop controls; AIM-B0008 adds multi-resolution recurrence controls with single-resolution, fixed-budget, wrong-resolution, and over-loop baselines; AIM-B0014 adds learned multi-resolution recurrence controls with phase-to-budget and phase-to-resolution lookup tables plus single-resolution, fixed-budget, wrong-period, and over-loop controls; AIM-B0009 adds a learned recurrence-schedule fixture with fixed-budget, wrong-period, and over-loop controls; expand next toward learned recurrence fixtures with Universal Transformer, fixed looped-transformer, recurrent-memory, token-level Mixture-of-Recursions, sparse/MoE, RWKV/Mamba-style, and state-space baseline implementations, then add finite Lean schedule facts only if they extend beyond existing phase-channel closure theorems."
     guardrail: "Do not claim looped Circle AI improves reasoning, quality, context length, memory, speed, or parameter efficiency until a reproducible benchmark beats ordinary baselines on a named workload."
+
+  - id: P5-EDGE-011
+    area: "Theseus-Hive AI transfer"
+    priority: high
+    status: active
+    claim_type: benchmark
+    title: "Proof-carrying Circle contracts for Theseus-Hive"
+    edge_question: "Can Circle Calculus make Theseus-Hive recurrence schedules, candidate fanout, context memory, phase features, circulant mixers, and seed-rule generators more auditable and experimentally useful?"
+    ordinary_baseline: "Theseus-Hive's existing position buckets, sequential or stratified work-budget admission, ordinary candidate fanout, score-based context retention, dense or low-rank mixers, and object-only artifact storage."
+    acceptance_criteria:
+      - "A Circle-side transfer note states the exact recurrence, routing, memory, phase-feature, mixer, and seed-rule contracts without copying private Theseus-Hive report data into the public Circle repo."
+      - "A local report-only Theseus-Hive consumer loads the Circle contract pack, compares every contract family against ordinary baseline categories, and emits separate quality, runtime, memory, parameter, interpretability, transfer, and failure-case axes without treating the result as promotion evidence."
+      - "A local smoke workload layer gives all six contract families stable named structural workload slots while keeping model-quality metrics absent until real private benchmarks exist."
+      - "A local deterministic proxy benchmark layer measures baseline metrics for all six contract families while explicitly marking learned-model quality metrics and real private workload results absent."
+      - "Each proposed Theseus-Hive experiment has ordinary baselines, negative controls where applicable, and separate quality, runtime, memory, parameter, and interpretability metrics."
+      - "Lean-backed claims are restricted to finite schedule/index/coverage/equivariance facts such as AIM/AIT/AIRA theorem ids; model-quality claims remain benchmark-only."
+      - "The Living Book AI chapter and application paper explain how Theseus-Hive can consume Circle contracts without treating fixtures as proofs or public-promotion evidence."
+    artifact_refs:
+      - "docs/THESEUS_HIVE_AI_TRANSFER.md"
+      - "docs/COMPLETION_ROADMAP.md"
+      - "circle_math/applications/theseus_hive_contracts.py"
+      - "scripts/export_theseus_hive_ai_contracts.py"
+      - "tests/test_theseus_hive_ai_contracts.py"
+      - "site/data/generated/theseus_hive_ai_contracts.json"
+      - "papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md"
+      - "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md"
+      - "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md"
+      - "site/chapters/applications/ai.qmd"
+      - "manifests/applications/circle_ai.yaml"
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0028", "COMMON-0046", "COMMON-0047", "COMMON-0052", "COMMON-0053", "COMMON-0054", "COMMON-0056", "COMMON-0058", "COMMON-0067", "COMMON-0068", "COMMON-0069", "COMMON-0070", "COMMON-0071"]
+    next_action: "Public Circle-side JSON contract exporter added, and local report-only Theseus-Hive consumers now load all six contract families, emit YELLOW private-planning, structural-smoke, and deterministic-proxy reports with zero external inference, no training mutation, no promotion evidence, 23 ordinary-baseline comparison rows, six named smoke workloads, and six proxy benchmark ids: circle_recurrence_budget_proxy_v1, circle_candidate_fanout_proxy_v1, circle_memory_alias_proxy_v1, circle_phase_feature_proxy_v1, circle_mixer_parameter_proxy_v1, and circle_seed_rule_regeneration_proxy_v1. Next replace proxy benchmarks with real private workloads before making usefulness claims."
+    guardrail: "Do not claim Circle Calculus has improved Theseus-Hive, LLM reasoning, context length, throughput, or public transfer until a named private or public-safe workload beats ordinary baselines with reproducible evidence."

@@ -40,6 +40,7 @@ REQUIRED = [
     "site/data/generated/widget_index.json",
     "site/data/generated/glyph_index.json",
     "site/data/generated/generator_index.json",
+    "site/data/generated/theseus_hive_ai_contracts.json",
     "site/data/generated/phase4_targets.json",
     "site/data/generated/phase5_targets.json",
     "site/data/generated/phase6_targets.json",

@@ -327,12 +327,16 @@ First Circle AI prototypes:
 5. Activation coil analysis on trained transformer checkpoints.
    Look for closure patterns, induction-like circuits, attention-head coil motifs, repeated reasoning loops, and whether alias/closure diagnostics predict failures.
 
+6. Theseus-Hive transfer.
+   Use `docs/THESEUS_HIVE_AI_TRANSFER.md`, `P5-EDGE-011`, and `site/data/generated/theseus_hive_ai_contracts.json` as the bridge from Circle AI to the user's active AI system. The public Circle-side contract fixtures now cover recurrence schedules, strided fanout coverage, cyclic memory, phase tags, circulant/block-cyclic mixers, and seed-rule provenance. The companion Theseus-Hive workspace now has report-only consumers that load those fixtures and emit YELLOW private-planning, structural-smoke, and deterministic-proxy reports with zero external inference, no training mutation, no promotion evidence, six named smoke workload slots, and six proxy benchmark ids. Next replace those proxy benchmarks with real private workloads inside Theseus-Hive against existing position-bucket, fanout, work-budget, context-retention, dense/low-rank mixer, and object-storage baselines before claiming usefulness.
+
 Circle AI guardrails:
 
 - Do not replace all attention with fixed circles. Start with hybrid local, global, coil, and content-gated components.
 - Do not use prime sizes everywhere. Mix prime/coprime reasoning with hardware-friendly smooth sizes.
 - Do not start with octonion AI. Stage `S^1` phase, then `S^3` quaternion/orientation models; keep `S^7` exploratory until the math and benchmarks justify it.
 - Do not claim general AI improvement. The target is cheaper, more interpretable, or more geometry-aware components in domains where cyclic or harmonic structure is real.
+- Do not claim Circle Calculus has improved Theseus-Hive until a named Theseus-Hive workload, baseline, metric, script, and report support that claim.
 - Use MLX/Mac-compatible prototypes first in this local project. CUDA references remain external baselines or future portability notes.
 
 ## Planned And Active Scaffolds Created

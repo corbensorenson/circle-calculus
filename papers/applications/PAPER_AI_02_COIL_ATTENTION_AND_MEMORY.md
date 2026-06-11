@@ -245,6 +245,56 @@ Coil Attention plus CoilKV
 
 Measurements should include accuracy, sequence length scaling, memory use, runtime, collision rate, alias behavior, and failure cases where coil slots overwrite useful information.
 
+## Theseus-Hive Recurrence, Fanout, And Memory Transfer
+
+The local Theseus-Hive project is the practical testbed for this paper's ideas. A read-only architecture pass identified three immediate integration surfaces:
+
+1. state-sequence and candidate-generation features, where position buckets and dynamic token features can be compared with phase and MultiCoil features;
+2. candidate fanout and STS-conditioned branch ranking, where stride-family coverage can be compared with sequential, random, round-robin, and ordinary stratified policies;
+3. context packet and routing memory, where cyclic slots must be paired with winding/provenance to avoid hiding alias collisions.
+
+The Circle-side transfer artifact should be a small contract schema rather than a model fork:
+
+```text
+circle_recurrence_contract:
+  period
+  sample_id
+  token_id
+  required_depth
+  selected_budget
+  loop_phase
+  active_steps
+  exit_step
+  overthinking_boundary
+
+circle_fanout_contract:
+  context_length
+  stride
+  gcd
+  predicted_reach
+  candidate_budget
+  duplicate_count
+  rejection_reason_counts
+
+circle_memory_contract:
+  bank_size
+  event_index
+  residue_slot
+  winding
+  alias_load
+  retained
+```
+
+The Lean side can prove only finite facts about these fields: bounds, closure after full periods, gcd coverage, and schedule invariance. Theseus-Hive experiments must decide whether those contracts improve private transfer, runtime, memory use, or interpretability. The ordinary baselines should be Theseus-Hive's current feature buckets, existing work-budget admission, score-based packet retention, fixed-loop or dense-depth recurrence, and existing candidate fanout policies.
+
+The recurrence, fanout, and memory contracts are now exported by:
+
+```text
+circle_math/applications/theseus_hive_contracts.py
+scripts/export_theseus_hive_ai_contracts.py
+site/data/generated/theseus_hive_ai_contracts.json
+```
+
 ## Next Program
 
 - Treat `AIM-B0001` as cyclic-memory benchmark scaffolding only.
@@ -261,6 +311,7 @@ Measurements should include accuracy, sequence length scaling, memory use, runti
 - Treat `AIM-B0008` as multi-resolution recurrence scaffolding only; learned multi-resolution recurrence, compressed/full-resolution routing, throughput, memory, context length, perplexity, and reasoning claims remain separate work.
 - Treat `AIM-B0014` as learned multi-resolution recurrence scaffolding only; neural compressed/full-resolution routing, throughput, memory, context length, perplexity, and reasoning claims remain separate work.
 - Treat `AIM-B0009` as learned recurrence-schedule scaffolding only; learned recursive transformer quality, throughput, memory, context length, perplexity, and reasoning claims remain separate work.
+- Use `docs/THESEUS_HIVE_AI_TRANSFER.md` and `site/data/generated/theseus_hive_ai_contracts.json` as the Theseus-Hive integration boundary: run private Theseus-Hive comparisons against existing fanout, memory, work-budget, and recurrence baselines before making any usefulness claim.
 - Test fixed, learned, and content-gated coil paths separately.
 - Expand recurrence schedule, loop-exit certificate, and overthinking-boundary fixtures toward dense, Universal Transformer, fixed-loop, adaptive-exit, recurrent-memory, token-level Mixture-of-Recursions, sparse/MoE, RWKV/Mamba-style, and state-space baseline implementations.
 - Track gcd/orbit coverage and aliasing explicitly.

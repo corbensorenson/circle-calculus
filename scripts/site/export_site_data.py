@@ -2905,6 +2905,8 @@ def export_glyph_index(theorem_manifest: dict, dictionary: dict) -> dict:
 
 
 def export_all() -> None:
+    from circle_math.applications.theseus_hive_contracts import build_contract_pack
+
     theorem_manifest = export_theorems()
     base_dictionary = export_dictionary()
     paper_index = export_papers()
@@ -2930,6 +2932,7 @@ def export_all() -> None:
     write_json(GENERATED / "capability_showcase.json", export_capability_showcase())
     write_json(GENERATED / "glyph_index.json", glyph_index)
     write_json(GENERATED / "generator_index.json", export_generator_index())
+    write_json(GENERATED / "theseus_hive_ai_contracts.json", build_contract_pack())
 
 
 def main() -> int:
