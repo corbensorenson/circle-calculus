@@ -295,7 +295,7 @@ The seed-rule source-change stress run is the first scored edit-cost and downstr
 
 The workflow/tool-card rebuild run is the first scored rebuild attachment. It reads `72` safe sources, including `64` benchmark-card sources, and rebuilds `188` safe envelope records across `13` record kinds. Object-only storage and Circle seed-rule-with-verifier both report exact rebuild `1.0` and downstream reuse hit rate `1.0`; Circle verifier residual count is `0`; inventory and registry-only baselines both report exact rebuild `0.0`. Circle automated rebuild work units are `9334` versus object-only `59730`, a ratio of `0.15627`. Human edit time is not measured in this fixture. This is workflow provenance tooling evidence only, not universal compression, model-quality, runtime, human-time, transfer, or promotion evidence.
 
-The update-cycle effort run is instrumentation, not a scored improvement claim. It reads `13` safe sources and `286` aggregate event records. It finds `209` runtime fields with total runtime `92245.0` ms, average runtime `441.364` ms, and p95 runtime `864.0` ms, but it finds `0` `human_edit_minutes` fields and `0` `review_step_count` fields. `human_edit_time_measured = false`, `review_steps_measured = false`, and `maintenance_savings_claim_ready = false`. This proves the runtime field path exists and the human-effort fields are still absent.
+The update-cycle effort run is instrumentation, not a scored improvement claim. It reads `13` safe sources and `287` aggregate event records. It finds `210` runtime fields with total runtime `92249.0` ms, average runtime `439.281` ms, and p95 runtime `864.0` ms. It now finds `1` `review_step_count` field with total review steps `5.0`, while still finding `0` `human_edit_minutes` fields. `human_edit_time_measured = false`, `review_steps_measured = true`, and `maintenance_savings_claim_ready = false`. This proves review-step fields can flow through real update-cycle ledgers, but it is not yet a paired object-only versus Circle maintenance comparison.
 
 The companion smoke workload layer gives each family a stable named workload slot:
 
@@ -346,7 +346,7 @@ The next concrete private Theseus-Hive milestone is to use the full-frontier fai
 4. Attach task-level retrieval targets, answer quality, and latency measurements to `circle_memory_context_packet_retrieval_v1`.
 5. Attach `circle_phase_feature_sequence_ablation_v1` features to actual route/ranker/model decisions and compare heldout task quality, runtime, and failure cases against ordinary position features.
 6. Attach `circle_mixer_route_ranker_ablation_v1` mixer candidates to the actual Octopus route/ranker training path and measure heldout quality, runtime, memory, and failure cases against the current router head.
-7. Add explicit `human_edit_minutes` or `review_step_count` fields to real Theseus-Hive update-cycle ledgers, then rerun `circle_seed_rule_update_cycle_effort_v1` to compare object-only maintenance with Circle seed-rule rebuilds.
+7. Add a paired maintenance-policy label such as `maintenance_mode = object_only` or `circle_seed_rule_rebuild` to real update-cycle ledgers, keep `review_step_count` populated, add `human_edit_minutes` only when actually measured, and rerun `circle_seed_rule_update_cycle_effort_v1` to compare object-only maintenance with Circle seed-rule rebuilds.
 8. Record every result as private experimental evidence until a named workload, baseline, metric, and reproducible script exist.
 
 ## ASI-Relevant Tooling Boundary
