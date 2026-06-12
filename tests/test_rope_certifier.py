@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+from pathlib import Path
 
 from circle_math.applications import (
     ROPE_CERTIFIER_THEOREMS,
@@ -443,3 +444,29 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert "First pass prefix" in markdown_result.stdout
     assert "Smallest pass subfamily" in markdown_result.stdout
     assert "Reproduce with:" in markdown_result.stdout
+
+
+def test_committed_rope_preset_results_match_generator(tmp_path: Path) -> None:
+    generated_json = tmp_path / "rope_certifier_presets.json"
+    generated_markdown = tmp_path / "rope_certifier_presets.md"
+    subprocess.run(
+        [
+            sys.executable,
+            "sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/python/benchmark_rope_certifier.py",
+            "--json-out",
+            str(generated_json),
+            "--markdown-out",
+            str(generated_markdown),
+        ],
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    committed_json = Path(
+        "sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/results/rope_certifier_presets.json"
+    )
+    committed_markdown = Path(
+        "sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/results/rope_certifier_presets.md"
+    )
+    assert json.loads(committed_json.read_text()) == json.loads(generated_json.read_text())
+    assert committed_markdown.read_text() == generated_markdown.read_text()
