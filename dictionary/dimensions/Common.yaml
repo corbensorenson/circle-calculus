@@ -940,8 +940,8 @@ entries:
     name: "RoPE finite-context turn-ratio margin"
     kind: relation
     symbol: "forall 0 < gap < context, margin <= |gap * alpha - turns|"
-    formal_definition: "In Lean, `Circle.Applications.ropeTurnRatioFiniteMargin alpha margin context` means every positive natural gap below `context` is at least `margin` away from every integer turn under `Circle.Applications.ropeTurnRatioError alpha gap turns`. Theorem `Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin` proves that such a margin rules out one-channel real near-turn collision below the scaled tolerance `fullTurn * margin`."
-    intuition: "This is the shape a real RoPE certifier ultimately needs: a finite-context lower bound on nearest-integer returns for a channel's turn ratio."
+    formal_definition: "In Lean, `Circle.Applications.ropeTurnRatioFiniteMargin alpha margin context` means every positive natural gap below `context` is at least `margin` away from every integer turn under `Circle.Applications.ropeTurnRatioError alpha gap turns`. Theorem `Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin` proves that such a margin rules out one-channel real near-turn collision below the scaled tolerance `fullTurn * margin`; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_context` proves the same margin transfers from a larger certified context to any smaller requested context."
+    intuition: "This is the shape a real RoPE certifier ultimately needs: a finite-context lower bound on nearest-integer returns for a channel's turn ratio, with an explicit monotonic rule for reusing a larger scan/proof horizon on smaller contexts."
     dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087"]
     introduced_in: "PAPER_AI_04_ROPE_POSITION_CERTIFIER"
     forbidden_meanings:
@@ -953,8 +953,8 @@ entries:
     name: "RoPE bank finite-context margin certificate"
     kind: relation
     symbol: "one channel margin => not BankNearTurn"
-    formal_definition: "In Lean, theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin` proves that if a frequency belongs to a finite real-phase bank and has a `ropeTurnRatioFiniteMargin` for the inspected context, then the whole bank cannot satisfy `ropeRealPhaseBankNearTurn` below the scaled tolerance."
-    intuition: "A bank-wide real RoPE certificate does not need every channel to be separated for a given gap; one proved separating channel is enough to rule out an all-channel near-turn collision."
+    formal_definition: "In Lean, theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin` proves that if a frequency belongs to a finite real-phase bank and has a `ropeTurnRatioFiniteMargin` for the inspected context, then the whole bank cannot satisfy `ropeRealPhaseBankNearTurn` below the scaled tolerance. Theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context` transfers that bank-level consequence from a larger certified context to any smaller requested context."
+    intuition: "A bank-wide real RoPE certificate does not need every channel to be separated for a given gap; one proved separating channel is enough to rule out an all-channel near-turn collision, and a larger certified horizon can safely cover smaller requested horizons."
     dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0086", "COMMON-0087", "COMMON-0088"]
     introduced_in: "PAPER_AI_04_ROPE_POSITION_CERTIFIER"
     forbidden_meanings:

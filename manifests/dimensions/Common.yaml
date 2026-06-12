@@ -2364,6 +2364,34 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_real_phase_bank_separation_rules_out_all_channel_near_turn
     blocker: ""
+  - id: AIRA-T0044
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioFiniteMargin_mono_context
+    informal_statement: "A finite-context turn-ratio margin certified for a larger context automatically applies to any smaller requested context."
+    formal_statement: "forall {turnRatio margin : Real} {requestedContext certifiedContext : Nat}, requestedContext <= certifiedContext -> Circle.Applications.ropeTurnRatioFiniteMargin turnRatio margin certifiedContext -> Circle.Applications.ropeTurnRatioFiniteMargin turnRatio margin requestedContext"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_turn_ratio_margin_context_transfer_helper_is_monotone
+    blocker: ""
+  - id: AIRA-T0045
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context
+    informal_statement: "If one channel has a finite-context turn-ratio margin certified for a larger context, then every smaller requested context inherits the bank-level no-near-turn consequence."
+    formal_statement: "forall {frequencies : List Real} {frequency fullTurn margin tolerance : Real} {requestedContext certifiedContext left right : Nat}, requestedContext <= certifiedContext -> frequency in frequencies -> left < right -> right < requestedContext -> 0 <= frequency -> 0 < fullTurn -> Circle.Applications.ropeTurnRatioFiniteMargin (frequency / fullTurn) margin certifiedContext -> tolerance < fullTurn * margin -> not Circle.Applications.ropeRealPhaseBankNearTurn frequencies fullTurn tolerance left right"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0086", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_turn_ratio_margin_context_transfer_helper_is_monotone
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

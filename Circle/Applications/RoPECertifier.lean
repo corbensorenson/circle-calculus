@@ -531,6 +531,19 @@ def ropeTurnRatioFiniteMargin (turnRatio margin : ℝ) (context : Nat) : Prop :=
   ∀ gap : Nat, 0 < gap → gap < context → ∀ turns : Int,
     margin ≤ ropeTurnRatioError turnRatio gap turns
 
+/-- Finite-context turn-ratio margins are monotone in the inspected context.
+
+A margin certificate proved for a larger context automatically applies to any
+smaller requested context, because the set of positive gaps to check only
+shrinks. -/
+theorem ropeTurnRatioFiniteMargin_mono_context
+    {turnRatio margin : ℝ} {requestedContext certifiedContext : Nat}
+    (hcontext : requestedContext ≤ certifiedContext)
+    (hmargin : ropeTurnRatioFiniteMargin turnRatio margin certifiedContext) :
+    ropeTurnRatioFiniteMargin turnRatio margin requestedContext := by
+  intro gap hgap_pos hgap_context turns
+  exact hmargin gap hgap_pos (lt_of_lt_of_le hgap_context hcontext) turns
+
 /-- A finite-context turn-ratio margin rules out one-channel real near-turn
 collisions at any smaller scaled tolerance.
 
@@ -585,6 +598,29 @@ theorem not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin
       (tolerance := tolerance) (context := context) (left := left) (right := right)
       hleft hright hfrequency_nonneg hfull_pos hmargin htolerance)
       (hnear frequency hmem)
+
+/-- A finite-context turn-ratio margin certified for a larger context rules out
+all-channel real near-turn collision in any smaller requested context.
+
+This is the reusable certifier transfer law: once a channel margin has been
+proved or independently certified up to `certifiedContext`, the same proof
+covers every `requestedContext ≤ certifiedContext` without rerunning the
+formal argument. -/
+theorem not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context
+    {frequencies : List ℝ} {frequency fullTurn margin tolerance : ℝ}
+    {requestedContext certifiedContext left right : Nat}
+    (hcontext : requestedContext ≤ certifiedContext)
+    (hmem : frequency ∈ frequencies)
+    (hleft : left < right) (hright : right < requestedContext)
+    (hfrequency_nonneg : 0 ≤ frequency) (hfull_pos : 0 < fullTurn)
+    (hmargin : ropeTurnRatioFiniteMargin (frequency / fullTurn) margin certifiedContext)
+    (htolerance : tolerance < fullTurn * margin) :
+    ¬ ropeRealPhaseBankNearTurn frequencies fullTurn tolerance left right :=
+  not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin
+    (frequencies := frequencies) (frequency := frequency) (fullTurn := fullTurn)
+    (margin := margin) (tolerance := tolerance) (context := requestedContext)
+    (left := left) (right := right) hmem hleft hright hfrequency_nonneg hfull_pos
+    (ropeTurnRatioFiniteMargin_mono_context hcontext hmargin) htolerance
 
 /-- A single separating channel rules out an all-channel real-phase near-turn
 collision at any smaller tolerance.

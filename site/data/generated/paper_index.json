@@ -1014,7 +1014,9 @@
         "AIRA-T0040",
         "AIRA-T0041",
         "AIRA-T0042",
-        "AIRA-T0043"
+        "AIRA-T0043",
+        "AIRA-T0044",
+        "AIRA-T0045"
       ],
       "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
     },

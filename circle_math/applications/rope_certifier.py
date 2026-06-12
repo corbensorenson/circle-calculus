@@ -60,6 +60,8 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0041",
     "AIRA-T0042",
     "AIRA-T0043",
+    "AIRA-T0044",
+    "AIRA-T0045",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -75,6 +77,8 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
     "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
+    "Circle.Applications.ropeTurnRatioFiniteMargin_mono_context",
+    "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -383,6 +387,24 @@ def scan_turn_ratio_finite_margin(
                 best_gap = gap
                 best_turns = turns
     return best_margin, best_gap, best_turns
+
+
+def turn_ratio_margin_covers_context(
+    *,
+    certified_context: int,
+    requested_context: int,
+) -> bool:
+    """Return whether a finite-margin scan horizon covers a requested context.
+
+    This mirrors the Lean monotonicity theorem: a margin certified over a
+    larger context applies to any smaller requested context. It does not prove
+    that the margin itself is formal for a real RoPE ratio.
+    """
+    if certified_context <= 0:
+        raise ValueError("certified_context must be positive")
+    if requested_context <= 0:
+        raise ValueError("requested_context must be positive")
+    return requested_context <= certified_context
 
 
 def real_phase_turn_separated(
