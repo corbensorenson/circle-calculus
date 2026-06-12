@@ -3288,6 +3288,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_single_stride_no_wrap_condition_certifies_no_collision
     blocker: ""
+  - id: AIT-T0063
+    status: lean_proved
+    lean_name: Circle.Applications.coilStrideFamilyLagResiduesNoCollision_cons_of_head_tail_disjoint
+    informal_statement: "Adding one stride preserves stride-family residue no-collision when the new stride block is duplicate-free, the tail family is duplicate-free, and the head block is disjoint from the tail block."
+    formal_statement: "forall {n stride pathLength : Nat} {strides : List Nat}, (Circle.Applications.coilLagResidueList n stride pathLength).Nodup -> Circle.Applications.coilStrideFamilyLagResiduesNoCollision n pathLength strides -> Circle.Applications.coilLagResiduesDisjointFromFamily n stride pathLength strides -> Circle.Applications.coilStrideFamilyLagResiduesNoCollision n pathLength (stride :: strides)"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_head_tail_disjointness_detects_coil_block_overlap
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

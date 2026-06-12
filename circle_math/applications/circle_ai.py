@@ -599,6 +599,7 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0060",
         "AIT-T0061",
         "AIT-T0062",
+        "AIT-T0063",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -1862,6 +1863,26 @@ def stride_family_coil_residues_no_collision(
     """Return whether the stride-family residue block has no duplicates."""
     residues = stride_family_coil_residue_list(sequence_length, strides, path_length)
     return len(set(residues)) == len(residues)
+
+
+def stride_family_head_coil_residues_disjoint_from_tail(
+    sequence_length: int,
+    strides: Sequence[int],
+    path_length: int,
+) -> bool:
+    """Return whether the first stride residue block is disjoint from the tail."""
+    normalized_strides = normalize_stride_family(strides)
+    head_residues = set(stride_family_coil_residue_list(
+        sequence_length,
+        (normalized_strides[0],),
+        path_length,
+    ))
+    tail_residues = set(stride_family_coil_residue_list(
+        sequence_length,
+        normalized_strides[1:],
+        path_length,
+    )) if len(normalized_strides) > 1 else set()
+    return head_residues.isdisjoint(tail_residues)
 
 
 def stride_family_local_coil_candidates_disjoint(

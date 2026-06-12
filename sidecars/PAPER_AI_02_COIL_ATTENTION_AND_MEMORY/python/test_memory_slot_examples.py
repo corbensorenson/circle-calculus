@@ -66,6 +66,7 @@ from circle_math.applications.circle_ai import (
     stride_family_coil_residue_list,
     stride_family_coil_residues_no_collision,
     stride_family_deduplicated_candidate_budget_bound,
+    stride_family_head_coil_residues_disjoint_from_tail,
     stride_family_lag_candidates_no_collision,
     stride_family_lag_candidate_list,
     stride_family_local_coil_candidates_disjoint,
@@ -556,6 +557,7 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0060",
         "AIT-T0061",
         "AIT-T0062",
+        "AIT-T0063",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -668,6 +670,7 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert "AIT-T0060" in certificate.theorem_ids
     assert "AIT-T0061" in certificate.theorem_ids
     assert "AIT-T0062" in certificate.theorem_ids
+    assert "AIT-T0063" in certificate.theorem_ids
     assert "AIT-T0025" in certificate.theorem_ids
 
 
@@ -690,6 +693,12 @@ def test_stride_family_single_stride_no_wrap_condition_certifies_no_collision() 
     assert not stride_family_single_stride_no_wrap_sufficient_condition(64, (7, 11), 3, 4)
     assert not stride_family_single_stride_no_wrap_sufficient_condition(20, (7,), 3, 4)
     assert not stride_family_single_stride_no_wrap_sufficient_condition(64, (7,), 3, 8)
+
+
+def test_stride_family_head_tail_disjointness_detects_coil_block_overlap() -> None:
+    assert stride_family_head_coil_residues_disjoint_from_tail(120, (7, 13), 3)
+    assert not stride_family_head_coil_residues_disjoint_from_tail(120, (7, 14), 3)
+    assert stride_family_head_coil_residues_disjoint_from_tail(120, (7,), 3)
 
 
 def test_learned_content_gate_route_lookup_helpers_are_deterministic() -> None:

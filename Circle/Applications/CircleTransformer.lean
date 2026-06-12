@@ -201,6 +201,12 @@ def localCoilLagCandidatesDisjoint
   (localLagCandidateList window).Disjoint
     (coilStrideFamilyLagResidueList n pathLength strides)
 
+/-- Disjointness between one stride's residue block and the rest of a stride family. -/
+def coilLagResiduesDisjointFromFamily
+    (n stride pathLength : Nat) (strides : List Nat) : Prop :=
+  (coilLagResidueList n stride pathLength).Disjoint
+    (coilStrideFamilyLagResidueList n pathLength strides)
+
 /-- The query-predecessor map is injective on the generated lag candidates. -/
 def hybridFamilyPredecessorInjectiveOnLagCandidates
     (n query window pathLength : Nat) (strides : List Nat) : Prop :=
@@ -723,6 +729,19 @@ theorem coilStrideFamilyLagResiduesNoCollision_singleton_of_path_mul_stride_lt_c
         rw [List.disjoint_left]
         intro _ _ hmem
         cases hmem)
+
+/-- Appending one stride preserves residue no-collision when the head stride
+block, the tail family, and the boundary between them are all duplicate-free. -/
+theorem coilStrideFamilyLagResiduesNoCollision_cons_of_head_tail_disjoint
+    {n stride pathLength : Nat} {strides : List Nat}
+    (hhead : (coilLagResidueList n stride pathLength).Nodup)
+    (htail : coilStrideFamilyLagResiduesNoCollision n pathLength strides)
+    (hdisjoint : coilLagResiduesDisjointFromFamily n stride pathLength strides) :
+    coilStrideFamilyLagResiduesNoCollision n pathLength (stride :: strides) := by
+  unfold coilStrideFamilyLagResiduesNoCollision coilStrideFamilyLagResidueList
+  unfold coilStrideFamilyLagResiduesNoCollision at htail
+  unfold coilLagResiduesDisjointFromFamily at hdisjoint
+  exact hhead.append htail hdisjoint
 
 /-- A no-wrap single stride above the local window is disjoint from local lags. -/
 theorem localCoilLagCandidatesDisjoint_singleton_of_window_lt_stride_of_path_mul_stride_lt_context
