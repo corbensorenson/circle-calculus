@@ -19,6 +19,7 @@ python -m pip install -e .
 python scripts/rope_certify.py --preset llama_style_10000_4k
 python scripts/rope_certify.py --preset diagnostic_single_channel_10000_20
 python scripts/rope_certify.py --preset diagnostic_two_channel_36_128 --format json
+python scripts/phase_bank_certify.py --periods 6,9,13,18 --context 128
 python sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/python/benchmark_rope_certifier.py --format markdown
 lake build Circle.Applications.RoPECertifier
 python -m pytest tests/test_rope_certifier.py -q
@@ -30,6 +31,7 @@ python -m pytest tests/test_rope_certifier.py -q
 - Paper: `papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md`
 - Lean: `Circle/Applications/RoPECertifier.lean`
 - Python: `circle_math/applications/rope_certifier.py`
+- Exact phase-bank CLI: `scripts/phase_bank_certify.py`
 - Preset fixtures: `sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/results/rope_certifier_presets.md`
 - Living Book page: `site/chapters/applications/rope_certifier.qmd`
 

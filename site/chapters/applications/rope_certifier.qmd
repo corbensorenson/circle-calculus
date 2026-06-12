@@ -78,6 +78,14 @@ python scripts/rope_certify.py --preset llama_style_10000_4k --format json
 
 The JSON report includes theorem ids, Lean declarations, assumptions, exact discrete pass/fail, bounded prefix collision reports, sample exact collisions when present, and numerical real-phase margin diagnostics.
 
+For an explicit integer phase bank that is not derived from a RoPE base/head-dimension pair:
+
+```bash
+python scripts/phase_bank_certify.py --periods 6,9,13,18 --context 128
+```
+
+That exact-only path emits theorem-linked discrete certificate fields without a real-phase margin section.
+
 ## ML-Engineer Quickstart
 
 The short non-Lean entrypoint is [RoPE Certifier Quickstart](https://github.com/corbensorenson/circle-calculus/blob/main/docs/ROPE_CERTIFIER_QUICKSTART.md). It covers installation, presets, custom configs, text and JSON output, theorem ids, and limitations.
@@ -167,6 +175,8 @@ The model-like presets pass the exact discrete contract under the rounded intege
 <p>Python source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/circle_math/applications/rope_certifier.py">circle_math/applications/rope_certifier.py</a></p>
 
 <p>CLI source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/scripts/rope_certify.py">scripts/rope_certify.py</a></p>
+
+<p>Exact phase-bank CLI source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/scripts/phase_bank_certify.py">scripts/phase_bank_certify.py</a></p>
 
 <div class="book-navigation">
 <a href="ai.qmd">Previous: AI</a>

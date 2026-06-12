@@ -99,6 +99,12 @@ ROPE_CERTIFIER_CLAIM_BOUNDARY = (
     "context-length, perplexity, training-stability, speed, memory, or deployment claim."
 )
 
+PHASE_BANK_CERTIFIER_CLAIM_BOUNDARY = (
+    "Exact pass/fail is for a declared positive integer-period phase bank. "
+    "No real-valued RoPE, model-quality, context-length, perplexity, speed, memory, "
+    "training-stability, or deployment claim is made."
+)
+
 
 @dataclass(frozen=True)
 class RoPEConfig:
@@ -107,6 +113,12 @@ class RoPEConfig:
     context_length: int
     tolerance: float = 1e-6
     discretization: DiscretizationPolicy = "round"
+
+
+@dataclass(frozen=True)
+class PhaseBankConfig:
+    periods: tuple[int, ...]
+    context_length: int
 
 
 @dataclass(frozen=True)
@@ -172,6 +184,19 @@ class RoPEPositionCertificate:
     theorem_ids: tuple[str, ...]
     lean_declarations: tuple[str, ...]
     claim_boundary: str = ROPE_CERTIFIER_CLAIM_BOUNDARY
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class PhaseBankPositionCertificate:
+    schema_id: str
+    config: PhaseBankConfig
+    exact_discrete: ExactDiscreteRoPECertificate
+    theorem_ids: tuple[str, ...]
+    lean_declarations: tuple[str, ...]
+    claim_boundary: str = PHASE_BANK_CERTIFIER_CLAIM_BOUNDARY
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -243,6 +268,16 @@ def validate_rope_config(config: RoPEConfig) -> None:
         raise ValueError("tolerance must be nonnegative")
     if config.discretization not in ("round", "floor", "ceil"):
         raise ValueError("discretization must be one of: round, floor, ceil")
+
+
+def validate_phase_bank_config(config: PhaseBankConfig) -> None:
+    if config.context_length <= 0:
+        raise ValueError("context_length must be positive")
+    if not config.periods:
+        raise ValueError("periods must be nonempty")
+    for period in config.periods:
+        if period <= 0:
+            raise ValueError("periods must be positive")
 
 
 def rope_angular_frequencies(head_dim: int, base: float) -> tuple[float, ...]:
@@ -705,13 +740,44 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
     validate_rope_config(config)
     real_periods = rope_period_estimates(config.head_dim, config.base)
     discrete_periods = discretize_rope_periods(real_periods, config.discretization)
-    collision_gap, reaches_context = capped_lcm(discrete_periods, config.context_length)
+    exact = certify_exact_discrete_phase_bank(
+        discrete_periods,
+        config.context_length,
+        period_source="produced by the declared discretization policy",
+    )
+    margin = scan_real_phase_margin(
+        head_dim=config.head_dim,
+        base=config.base,
+        context_length=config.context_length,
+        tolerance=config.tolerance,
+    )
+    return RoPEPositionCertificate(
+        schema_id="circle_calculus.rope_position_distinguishability.v0",
+        config=config,
+        exact_discrete=exact,
+        real_phase_margin=margin,
+        real_period_estimates=real_periods,
+        theorem_ids=ROPE_CERTIFIER_THEOREMS,
+        lean_declarations=ROPE_CERTIFIER_LEAN_DECLARATIONS,
+    )
+
+
+def certify_exact_discrete_phase_bank(
+    periods: Sequence[int],
+    context_length: int,
+    *,
+    period_source: str = "declared explicitly by the phase-bank config",
+) -> ExactDiscreteRoPECertificate:
+    config = PhaseBankConfig(periods=tuple(periods), context_length=context_length)
+    validate_phase_bank_config(config)
+    discrete_periods = config.periods
+    collision_gap, reaches_context = capped_lcm(discrete_periods, context_length)
     single_period_counts = tuple(
-        single_period_collision_pair_count(config.context_length, period)
+        single_period_collision_pair_count(context_length, period)
         for period in discrete_periods
     )
     prefix_reports = phase_bank_prefix_collision_reports(
-        config.context_length,
+        context_length,
         discrete_periods,
     )
     first_pass_prefix = next(
@@ -720,14 +786,14 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
     )
     exact_pass = reaches_context
     guaranteed_pair_count = 0 if reaches_context else collision_pair_count_at_gap(
-        config.context_length,
+        context_length,
         collision_gap,
     )
     guaranteed_multiple_pair_count = 0 if reaches_context else collision_pair_count_at_gap_multiples(
-        config.context_length,
+        context_length,
         collision_gap,
     )
-    exact = ExactDiscreteRoPECertificate(
+    return ExactDiscreteRoPECertificate(
         pass_exact=exact_pass,
         theorem_ids=ROPE_CERTIFIER_THEOREMS,
         lean_declarations=ROPE_CERTIFIER_LEAN_DECLARATIONS,
@@ -736,16 +802,16 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
         single_period_collision_pair_counts=single_period_counts,
         prefix_collision_reports=prefix_reports,
         first_exact_pass_prefix_length=first_pass_prefix,
-        context_length=config.context_length,
+        context_length=context_length,
         common_collision_gap=None if reaches_context else collision_gap,
         common_collision_gap_reaches_context=reaches_context,
         guaranteed_common_gap_collision_pair_count=guaranteed_pair_count,
         guaranteed_common_gap_multiple_pair_count=guaranteed_multiple_pair_count,
         total_bank_collision_pair_count=guaranteed_multiple_pair_count,
-        sample_collision_pairs=sample_collision_pairs(config.context_length, collision_gap),
+        sample_collision_pairs=sample_collision_pairs(context_length, collision_gap),
         assumptions=(
             "Positions are natural numbers in [0, context_length).",
-            "Each channel period is a positive integer produced by the declared discretization policy.",
+            f"Each channel period is a positive integer {period_source}.",
             "Exact discrete collision means equal residues in every declared period channel.",
             "Lean theorem AIRA-T0024 characterizes all-channel collision by divisibility of the position gap.",
             "Lean theorem AIRA-T0025 characterizes bank distinguishability by at least one non-dividing period.",
@@ -763,18 +829,18 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
             "pairs collide in every discrete channel under the declared integer-period model."
         ),
     )
-    margin = scan_real_phase_margin(
-        head_dim=config.head_dim,
-        base=config.base,
-        context_length=config.context_length,
-        tolerance=config.tolerance,
+
+
+def certify_phase_bank_positions(config: PhaseBankConfig) -> PhaseBankPositionCertificate:
+    validate_phase_bank_config(config)
+    exact = certify_exact_discrete_phase_bank(
+        config.periods,
+        config.context_length,
     )
-    return RoPEPositionCertificate(
-        schema_id="circle_calculus.rope_position_distinguishability.v0",
+    return PhaseBankPositionCertificate(
+        schema_id="circle_calculus.integer_phase_bank_distinguishability.v0",
         config=config,
         exact_discrete=exact,
-        real_phase_margin=margin,
-        real_period_estimates=real_periods,
         theorem_ids=ROPE_CERTIFIER_THEOREMS,
         lean_declarations=ROPE_CERTIFIER_LEAN_DECLARATIONS,
     )
@@ -815,6 +881,34 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         "(unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, "
         "turn-ratio scaling, finite-context margin consequence, and context-plus-margin transfer "
         "precursors only; not a Diophantine proof)",
+        f"theorem_ids={','.join(certificate.theorem_ids)}",
+        certificate.claim_boundary,
+    )
+
+
+def phase_bank_certificate_summary_lines(
+    certificate: PhaseBankPositionCertificate,
+) -> tuple[str, ...]:
+    config = certificate.config
+    exact = certificate.exact_discrete
+    exact_status = "PASS" if exact.pass_exact else "FAIL"
+    gap = ">= context" if exact.common_collision_gap is None else str(exact.common_collision_gap)
+    first_prefix = (
+        "none"
+        if exact.first_exact_pass_prefix_length is None
+        else str(exact.first_exact_pass_prefix_length)
+    )
+    return (
+        "Integer phase-bank position distinguishability certificate",
+        f"config: periods={','.join(str(period) for period in config.periods)} "
+        f"context={config.context_length}",
+        f"exact_discrete_contract={exact_status} common_collision_gap={gap} "
+        f"period_count={exact.period_count} "
+        f"guaranteed_common_gap_collision_pair_count={exact.guaranteed_common_gap_collision_pair_count} "
+        f"guaranteed_common_gap_multiple_pair_count={exact.guaranteed_common_gap_multiple_pair_count} "
+        f"total_bank_collision_pair_count={exact.total_bank_collision_pair_count}",
+        f"prefix_collision_reports={len(exact.prefix_collision_reports)} "
+        f"first_exact_pass_prefix_length={first_prefix}",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,
     )

@@ -7,14 +7,17 @@ import sys
 from circle_math.applications import (
     ROPE_CERTIFIER_THEOREMS,
     ROPE_REAL_PHASE_PRECURSOR_THEOREMS,
+    PhaseBankConfig,
     RoPEConfig,
     brute_force_single_period_collision_pair_count,
     capped_lcm,
     certify_rope_positions,
+    certify_phase_bank_positions,
     collision_pair_count_at_gap,
     collision_pair_count_at_gap_multiples,
     discretize_rope_periods,
     phase_bank_prefix_collision_reports,
+    phase_bank_certificate_summary_lines,
     real_phase_bank_near_turn,
     real_phase_bank_turn_separated,
     real_phase_int_turn_error,
@@ -324,6 +327,45 @@ def test_rope_diagnostic_prefix_and_shared_factor_presets_are_stable() -> None:
     assert shared_payload["exact_discrete"]["common_collision_gap"] == 54
     assert shared_payload["exact_discrete"]["total_bank_collision_pair_count"] == 10
     assert shared_payload["exact_discrete"]["prefix_collision_reports"][2]["total_bank_collision_pair_count"] == 10
+
+
+def test_explicit_phase_bank_certifier_reports_exact_only_contract() -> None:
+    certificate = certify_phase_bank_positions(
+        PhaseBankConfig(periods=(6, 9, 13, 18), context_length=128),
+    )
+    assert certificate.schema_id == "circle_calculus.integer_phase_bank_distinguishability.v0"
+    assert certificate.exact_discrete.pass_exact
+    assert certificate.exact_discrete.first_exact_pass_prefix_length == 3
+    assert certificate.exact_discrete.prefix_collision_reports[1].lcm_collision_gap == 18
+    assert "No real-valued RoPE" in certificate.claim_boundary
+    summary = "\n".join(phase_bank_certificate_summary_lines(certificate))
+    assert "Integer phase-bank position distinguishability certificate" in summary
+    assert "first_exact_pass_prefix_length=3" in summary
+
+
+def test_phase_bank_certify_cli_emits_json_certificate() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/phase_bank_certify.py",
+            "--periods",
+            "6,18,54",
+            "--context",
+            "64",
+            "--format",
+            "json",
+        ],
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    payload = json.loads(result.stdout)
+    assert payload["schema_id"] == "circle_calculus.integer_phase_bank_distinguishability.v0"
+    assert payload["config"]["periods"] == [6, 18, 54]
+    assert payload["exact_discrete"]["pass_exact"] is False
+    assert payload["exact_discrete"]["common_collision_gap"] == 54
+    assert payload["exact_discrete"]["total_bank_collision_pair_count"] == 10
+    assert "real_phase_margin" not in payload
 
 
 def test_rope_preset_sidecar_emits_json_and_markdown() -> None:

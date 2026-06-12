@@ -56,6 +56,16 @@ Key flags:
 - `--tolerance`: numerical real-phase margin threshold in radians.
 - `--discretization`: one of `round`, `floor`, or `ceil`, controlling how real period estimates become integer periods for the exact Lean-backed contract.
 
+## Run An Explicit Integer Phase Bank
+
+When you already have declared integer periods from a quantized, rationalized, or diagnostic phase bank, use the exact-only CLI:
+
+```bash
+python scripts/phase_bank_certify.py --periods 6,9,13,18 --context 128
+```
+
+This command emits the theorem-linked exact discrete certificate only. It does not compute or claim any real-valued RoPE margin.
+
 ## Read The Output
 
 The text output has two different evidence layers:

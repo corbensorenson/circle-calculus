@@ -28,6 +28,7 @@ Python certifier source:
 ```text
 circle_math/applications/rope_certifier.py
 scripts/rope_certify.py
+scripts/phase_bank_certify.py
 tests/test_rope_certifier.py
 sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/python/benchmark_rope_certifier.py
 sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/results/rope_certifier_presets.json
@@ -147,6 +148,14 @@ It emits:
 - numerical real-phase margin and worst gap;
 - theorem ids for the unwrapped real-phase and turn-ratio precursors;
 - a machine-readable JSON certificate when `--format json` or `--json-out` is used.
+
+For explicit positive integer-period banks that are not derived from a RoPE base/head-dimension pair, the exact-only command is:
+
+```bash
+python scripts/phase_bank_certify.py --periods 6,9,13,18 --context 128
+```
+
+This path emits the same theorem-linked exact discrete certificate fields but deliberately omits numerical real-phase margin output.
 
 Named presets are available:
 
