@@ -95,8 +95,12 @@ from circle_math.applications import (
     synthetic_winding_position_dataset,
     certify_stride_family_coverage,
     stride_family_attention_candidates,
+    stride_family_coil_residue_list,
+    stride_family_coil_residues_no_collision,
     stride_family_covered_lags,
     stride_family_lag_candidate_list,
+    stride_family_local_coil_candidates_disjoint,
+    stride_family_predecessor_injective_on_lag_candidates,
     stride_family_query_candidate_list,
     structured_stride_family_target_lags,
     token_active_at_step,
@@ -1312,6 +1316,18 @@ def js_stride_family_lag_candidate_list(
     return tuple(candidates)
 
 
+def js_stride_family_coil_residue_list(
+    sequence_length: int,
+    strides: tuple[int, ...],
+    path_length: int,
+) -> tuple[int, ...]:
+    residues: list[int] = []
+    for stride in strides:
+        for step in range(1, path_length + 1):
+            residues.append(js_mod(step * stride, sequence_length))
+    return tuple(residues)
+
+
 def js_stride_family_query_candidate_list(
     sequence_length: int,
     query_index: int,
@@ -1327,6 +1343,22 @@ def js_stride_family_query_candidate_list(
             path_length,
             local_window,
         )
+    )
+
+
+def js_predecessor_injective_on_lag_candidates(
+    sequence_length: int,
+    query_index: int,
+    lag_candidates: tuple[int, ...],
+) -> bool:
+    predecessor = {
+        lag: js_mod(query_index - js_mod(lag, sequence_length), sequence_length)
+        for lag in lag_candidates
+    }
+    return all(
+        predecessor[left] != predecessor[right] or left == right
+        for left in lag_candidates
+        for right in lag_candidates
     )
 
 
@@ -3301,6 +3333,9 @@ def main() -> int:
             local_window,
         )
         assert lag_candidates == js_lag_candidates
+        coil_residues = stride_family_coil_residue_list(sequence_length, strides, path_length)
+        js_coil_residues = js_stride_family_coil_residue_list(sequence_length, strides, path_length)
+        assert coil_residues == js_coil_residues
         query_candidates = stride_family_query_candidate_list(
             sequence_length,
             0,
@@ -3320,6 +3355,23 @@ def main() -> int:
         assert coverage_certificate.covered_lags == js_covered_lags
         assert coverage_certificate.theorem_side_lag_candidates == js_lag_candidates
         assert coverage_certificate.theorem_side_unique_lag_candidate_count == len(set(js_lag_candidates))
+        assert coverage_certificate.theorem_side_coil_residues_no_collision == (
+            len(set(js_coil_residues)) == len(js_coil_residues)
+        )
+        assert coverage_certificate.theorem_side_coil_residues_no_collision == (
+            stride_family_coil_residues_no_collision(sequence_length, strides, path_length)
+        )
+        assert coverage_certificate.theorem_side_local_coil_disjoint == (
+            set(range(1, local_window + 1)).isdisjoint(set(js_coil_residues))
+        )
+        assert coverage_certificate.theorem_side_local_coil_disjoint == (
+            stride_family_local_coil_candidates_disjoint(
+                sequence_length,
+                strides,
+                path_length,
+                local_window,
+            )
+        )
         assert coverage_certificate.theorem_side_lag_candidates_no_collision == (
             len(set(js_lag_candidates)) == len(js_lag_candidates)
         )
@@ -3328,6 +3380,18 @@ def main() -> int:
         )
         assert coverage_certificate.theorem_side_query_candidates == js_query_candidates
         assert coverage_certificate.theorem_side_unique_query_candidate_count == len(set(js_query_candidates))
+        assert coverage_certificate.theorem_side_predecessor_injective_on_lag_candidates == (
+            js_predecessor_injective_on_lag_candidates(sequence_length, 0, js_lag_candidates)
+        )
+        assert coverage_certificate.theorem_side_predecessor_injective_on_lag_candidates == (
+            stride_family_predecessor_injective_on_lag_candidates(
+                sequence_length,
+                0,
+                strides,
+                path_length,
+                local_window,
+            )
+        )
         assert coverage_certificate.theorem_side_query_candidates_no_collision == (
             len(set(js_query_candidates)) == len(js_query_candidates)
         )

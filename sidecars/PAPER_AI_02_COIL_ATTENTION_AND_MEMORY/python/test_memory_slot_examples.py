@@ -63,9 +63,13 @@ from circle_math.applications.circle_ai import (
     shifted_recurrence_resolutions,
     stride_family_attention_candidates,
     stride_family_covered_lags,
+    stride_family_coil_residue_list,
+    stride_family_coil_residues_no_collision,
     stride_family_deduplicated_candidate_budget_bound,
     stride_family_lag_candidates_no_collision,
     stride_family_lag_candidate_list,
+    stride_family_local_coil_candidates_disjoint,
+    stride_family_predecessor_injective_on_lag_candidates,
     stride_family_query_candidates_no_collision,
     stride_family_query_candidate_list,
     stride_family_raw_candidate_budget,
@@ -430,6 +434,15 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     assert result.coverage_certificate.theorem_side_lag_candidates == (
         stride_family_lag_candidate_list(120, (7, 13), 3, 4)
     )
+    assert stride_family_coil_residue_list(120, (7, 13), 3) == (7, 14, 21, 13, 26, 39)
+    assert result.coverage_certificate.theorem_side_coil_residues_no_collision
+    assert result.coverage_certificate.theorem_side_coil_residues_no_collision == (
+        stride_family_coil_residues_no_collision(120, (7, 13), 3)
+    )
+    assert result.coverage_certificate.theorem_side_local_coil_disjoint
+    assert result.coverage_certificate.theorem_side_local_coil_disjoint == (
+        stride_family_local_coil_candidates_disjoint(120, (7, 13), 3, 4)
+    )
     assert result.coverage_certificate.theorem_side_unique_lag_candidate_count == 10
     assert result.coverage_certificate.theorem_side_unique_lag_candidate_count == (
         stride_family_unique_lag_candidate_count(120, (7, 13), 3, 4)
@@ -458,6 +471,10 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     )
     assert result.coverage_certificate.theorem_side_query_candidates == (
         stride_family_query_candidate_list(120, 0, (7, 13), 3, 4)
+    )
+    assert result.coverage_certificate.theorem_side_predecessor_injective_on_lag_candidates
+    assert result.coverage_certificate.theorem_side_predecessor_injective_on_lag_candidates == (
+        stride_family_predecessor_injective_on_lag_candidates(120, 0, (7, 13), 3, 4)
     )
     assert result.coverage_certificate.theorem_side_unique_query_candidate_count == 10
     assert result.coverage_certificate.theorem_side_unique_query_candidate_count == (
@@ -532,6 +549,8 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0054",
         "AIT-T0055",
         "AIT-T0056",
+        "AIT-T0057",
+        "AIT-T0058",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -568,6 +587,15 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
         stride_family_lag_candidate_list(10, (3,), 2, 9)
     )
     assert certificate.theorem_side_lag_candidates == (1, 2, 3, 4, 5, 6, 7, 8, 9, 3, 6)
+    assert stride_family_coil_residue_list(10, (3,), 2) == (3, 6)
+    assert certificate.theorem_side_coil_residues_no_collision
+    assert certificate.theorem_side_coil_residues_no_collision == (
+        stride_family_coil_residues_no_collision(10, (3,), 2)
+    )
+    assert not certificate.theorem_side_local_coil_disjoint
+    assert certificate.theorem_side_local_coil_disjoint == (
+        stride_family_local_coil_candidates_disjoint(10, (3,), 2, 9)
+    )
     assert certificate.theorem_side_unique_lag_candidate_count == 9
     assert certificate.theorem_side_unique_lag_candidate_count == (
         stride_family_unique_lag_candidate_count(10, (3,), 2, 9)
@@ -583,6 +611,10 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
         stride_family_query_candidate_list(10, 0, (3,), 2, 9)
     )
     assert certificate.theorem_side_query_candidates == (9, 8, 7, 6, 5, 4, 3, 2, 1, 7, 4)
+    assert certificate.theorem_side_predecessor_injective_on_lag_candidates
+    assert certificate.theorem_side_predecessor_injective_on_lag_candidates == (
+        stride_family_predecessor_injective_on_lag_candidates(10, 0, (3,), 2, 9)
+    )
     assert certificate.theorem_side_unique_query_candidate_count == 9
     assert certificate.theorem_side_unique_query_candidate_count == (
         stride_family_unique_query_candidate_count(10, 0, (3,), 2, 9)
@@ -625,6 +657,8 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert "AIT-T0054" in certificate.theorem_ids
     assert "AIT-T0055" in certificate.theorem_ids
     assert "AIT-T0056" in certificate.theorem_ids
+    assert "AIT-T0057" in certificate.theorem_ids
+    assert "AIT-T0058" in certificate.theorem_ids
     assert "AIT-T0025" in certificate.theorem_ids
 
 

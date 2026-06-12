@@ -190,6 +190,24 @@ def hybridFamilyQueryCandidatesNoCollision
     (n query window pathLength : Nat) (strides : List Nat) : Prop :=
   (hybridFamilyQueryCandidateList n query window pathLength strides).Nodup
 
+/-- No-collision predicate for the stride-family residue block alone. -/
+def coilStrideFamilyLagResiduesNoCollision
+    (n pathLength : Nat) (strides : List Nat) : Prop :=
+  (coilStrideFamilyLagResidueList n pathLength strides).Nodup
+
+/-- Disjointness between raw local-window lags and stride-family residue lags. -/
+def localCoilLagCandidatesDisjoint
+    (n window pathLength : Nat) (strides : List Nat) : Prop :=
+  (localLagCandidateList window).Disjoint
+    (coilStrideFamilyLagResidueList n pathLength strides)
+
+/-- The query-predecessor map is injective on the generated lag candidates. -/
+def hybridFamilyPredecessorInjectiveOnLagCandidates
+    (n query window pathLength : Nat) (strides : List Nat) : Prop :=
+  ∀ left, left ∈ hybridFamilyLagCandidateList n window pathLength strides →
+    ∀ right, right ∈ hybridFamilyLagCandidateList n window pathLength strides →
+      predecessorIndex n query left = predecessorIndex n query right → left = right
+
 /-- The local reachability predicate is exactly the positive in-window lag condition. -/
 theorem localLagReach_of_le {window lag : Nat} (hpos : 1 ≤ lag) (hwindow : lag ≤ window) :
     localLagReach window lag :=
@@ -658,6 +676,40 @@ theorem hybridFamilyUniqueQueryCandidateCount_le_raw
   unfold hybridFamilyUniqueQueryCandidateCount
   rw [← hybridFamilyQueryCandidateList_length n query window pathLength strides]
   exact List.Sublist.length_le (List.dedup_sublist _)
+
+/-- A constructive lag no-collision certificate.
+
+If the stride-family residue block has no duplicates and the local-window lags
+are disjoint from those residues, then the full theorem-side lag-candidate list
+has no duplicates. -/
+theorem hybridFamilyLagCandidatesNoCollision_of_coil_noCollision_of_local_coil_disjoint
+    {n window pathLength : Nat} {strides : List Nat}
+    (hcoil :
+      coilStrideFamilyLagResiduesNoCollision n pathLength strides)
+    (hdisjoint :
+      localCoilLagCandidatesDisjoint n window pathLength strides) :
+    hybridFamilyLagCandidatesNoCollision n window pathLength strides := by
+  unfold hybridFamilyLagCandidatesNoCollision hybridFamilyLagCandidateList
+  unfold coilStrideFamilyLagResiduesNoCollision at hcoil
+  unfold localCoilLagCandidatesDisjoint at hdisjoint
+  exact (List.nodup_range' (s := 1) (n := window)).append hcoil hdisjoint
+
+/-- A constructive query no-collision certificate.
+
+If lag candidates are duplicate-free and query predecessor indexing is
+injective on those generated lags, then the query-indexed candidate list is
+also duplicate-free. -/
+theorem hybridFamilyQueryCandidatesNoCollision_of_lag_noCollision_of_predecessor_injective
+    {n query window pathLength : Nat} {strides : List Nat}
+    (hnoCollision :
+      hybridFamilyLagCandidatesNoCollision n window pathLength strides)
+    (hinjective :
+      hybridFamilyPredecessorInjectiveOnLagCandidates n query window pathLength strides) :
+    hybridFamilyQueryCandidatesNoCollision n query window pathLength strides := by
+  unfold hybridFamilyQueryCandidatesNoCollision hybridFamilyQueryCandidateList
+  unfold hybridFamilyLagCandidatesNoCollision at hnoCollision
+  unfold hybridFamilyPredecessorInjectiveOnLagCandidates at hinjective
+  exact hnoCollision.map_on hinjective
 
 /-- If the theorem-side lag-candidate list has no duplicate lag candidates, its
 exact deduplicated count equals the raw candidate budget. -/

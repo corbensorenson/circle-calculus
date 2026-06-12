@@ -35,6 +35,8 @@ const THEOREM_IDS = [
   "AIT-T0054",
   "AIT-T0055",
   "AIT-T0056",
+  "AIT-T0057",
+  "AIT-T0058",
 ];
 const DICTIONARY_IDS = ["COMMON-0075", "COMMON-0079", "COMMON-0047", "COMMON-0029"];
 
@@ -96,9 +98,29 @@ function strideFamilyLagCandidateList(sequenceLength, strides, pathLength, local
   return candidates;
 }
 
+function strideFamilyCoilResidueList(sequenceLength, strides, pathLength) {
+  const residues = [];
+  for (const stride of strides) {
+    for (let step = 1; step <= pathLength; step += 1) {
+      residues.push(mod(step * stride, sequenceLength));
+    }
+  }
+  return residues;
+}
+
 function strideFamilyQueryCandidateList(sequenceLength, queryIndex, strides, pathLength, localWindow) {
   return strideFamilyLagCandidateList(sequenceLength, strides, pathLength, localWindow)
     .map((lag) => mod(queryIndex - mod(lag, sequenceLength), sequenceLength));
+}
+
+function predecessorInjectiveOnLagCandidates(sequenceLength, queryIndex, lagCandidates) {
+  const predecessor = (lag) => mod(queryIndex - mod(lag, sequenceLength), sequenceLength);
+  for (const left of lagCandidates) {
+    for (const right of lagCandidates) {
+      if (predecessor(left) === predecessor(right) && left !== right) return false;
+    }
+  }
+  return true;
 }
 
 function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, localWindow) {
@@ -117,6 +139,8 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
     pathLength,
     localWindow,
   );
+  const theoremSideCoilResidues = strideFamilyCoilResidueList(sequenceLength, strides, pathLength);
+  const localCandidateSet = new Set(Array.from({ length: localWindow }, (_, index) => index + 1));
   const theoremSideQueryCandidates = strideFamilyQueryCandidateList(
     sequenceLength,
     0,
@@ -134,9 +158,16 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
     deduplicatedCandidateBudgetUpperBound,
     theoremSideLagCandidates,
     theoremSideUniqueLagCandidateCount: new Set(theoremSideLagCandidates).size,
+    theoremSideCoilResiduesNoCollision: new Set(theoremSideCoilResidues).size === theoremSideCoilResidues.length,
+    theoremSideLocalCoilDisjoint: theoremSideCoilResidues.every((residue) => !localCandidateSet.has(residue)),
     theoremSideLagCandidatesNoCollision: new Set(theoremSideLagCandidates).size === theoremSideLagCandidates.length,
     theoremSideQueryCandidates,
     theoremSideUniqueQueryCandidateCount: new Set(theoremSideQueryCandidates).size,
+    theoremSidePredecessorInjectiveOnLagCandidates: predecessorInjectiveOnLagCandidates(
+      sequenceLength,
+      0,
+      theoremSideLagCandidates,
+    ),
     theoremSideQueryCandidatesNoCollision: (
       new Set(theoremSideQueryCandidates).size === theoremSideQueryCandidates.length
     ),
@@ -347,9 +378,12 @@ function appendRecord(output, values, theoremById) {
     `coverage ratio: ${formatNumber(coverage.coverageRatio)}`,
     `deduplicated candidate budget per query: ${coverage.candidateBudgetPerQuery}`,
     `theorem-side unique lag-candidate count: ${coverage.theoremSideUniqueLagCandidateCount}`,
+    `coil residues no collision: ${coverage.theoremSideCoilResiduesNoCollision}`,
+    `local/coil disjoint: ${coverage.theoremSideLocalCoilDisjoint}`,
     `lag candidates no collision: ${coverage.theoremSideLagCandidatesNoCollision}`,
     `theorem-side raw lag candidates: ${formatCandidates(coverage.theoremSideLagCandidates, 18)}`,
     `theorem-side unique query-candidate count: ${coverage.theoremSideUniqueQueryCandidateCount}`,
+    `predecessor injective on lag candidates: ${coverage.theoremSidePredecessorInjectiveOnLagCandidates}`,
     `query candidates no collision: ${coverage.theoremSideQueryCandidatesNoCollision}`,
     `theorem-side raw query-0 candidates: ${formatCandidates(coverage.theoremSideQueryCandidates, 18)}`,
     `deduplicated candidate-budget upper bound: ${coverage.deduplicatedCandidateBudgetUpperBound}`,

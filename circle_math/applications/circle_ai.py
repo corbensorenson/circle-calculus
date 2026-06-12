@@ -545,9 +545,12 @@ class StrideFamilyCoverageCertificate:
     deduplicated_candidate_budget_upper_bound: int
     theorem_side_lag_candidates: tuple[int, ...]
     theorem_side_unique_lag_candidate_count: int
+    theorem_side_coil_residues_no_collision: bool
+    theorem_side_local_coil_disjoint: bool
     theorem_side_lag_candidates_no_collision: bool
     theorem_side_query_candidates: tuple[int, ...]
     theorem_side_unique_query_candidate_count: int
+    theorem_side_predecessor_injective_on_lag_candidates: bool
     theorem_side_query_candidates_no_collision: bool
     full_attention_budget: int
     coverage_complete: bool
@@ -590,6 +593,8 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0054",
         "AIT-T0055",
         "AIT-T0056",
+        "AIT-T0057",
+        "AIT-T0058",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -1798,6 +1803,22 @@ def stride_family_lag_candidate_list(
     return tuple(candidates)
 
 
+def stride_family_coil_residue_list(
+    sequence_length: int,
+    strides: Sequence[int],
+    path_length: int,
+) -> tuple[int, ...]:
+    """Return the theorem-side stride-family residue block only."""
+    _require_positive(sequence_length, "sequence_length")
+    normalized_strides = normalize_stride_family(strides)
+    _require_positive(path_length, "path_length")
+    residues: list[int] = []
+    for stride in normalized_strides:
+        for step in range(1, path_length + 1):
+            residues.append((step * stride) % sequence_length)
+    return tuple(residues)
+
+
 def stride_family_unique_lag_candidate_count(
     sequence_length: int,
     strides: Sequence[int],
@@ -1827,6 +1848,33 @@ def stride_family_lag_candidates_no_collision(
         local_window,
     )
     return len(set(candidates)) == len(candidates)
+
+
+def stride_family_coil_residues_no_collision(
+    sequence_length: int,
+    strides: Sequence[int],
+    path_length: int,
+) -> bool:
+    """Return whether the stride-family residue block has no duplicates."""
+    residues = stride_family_coil_residue_list(sequence_length, strides, path_length)
+    return len(set(residues)) == len(residues)
+
+
+def stride_family_local_coil_candidates_disjoint(
+    sequence_length: int,
+    strides: Sequence[int],
+    path_length: int,
+    local_window: int,
+) -> bool:
+    """Return whether local-window lags and coil residues are disjoint."""
+    _require_positive(local_window, "local_window")
+    local_lags = set(range(1, local_window + 1))
+    coil_residues = set(stride_family_coil_residue_list(
+        sequence_length,
+        strides,
+        path_length,
+    ))
+    return local_lags.isdisjoint(coil_residues)
 
 
 def stride_family_query_candidate_list(
@@ -1887,6 +1935,32 @@ def stride_family_query_candidates_no_collision(
         local_window,
     )
     return len(set(candidates)) == len(candidates)
+
+
+def stride_family_predecessor_injective_on_lag_candidates(
+    sequence_length: int,
+    query_index: int,
+    strides: Sequence[int],
+    path_length: int,
+    local_window: int,
+) -> bool:
+    """Return whether predecessor indexing is injective on generated lag values."""
+    _require_positive(sequence_length, "sequence_length")
+    candidates = stride_family_lag_candidate_list(
+        sequence_length,
+        strides,
+        path_length,
+        local_window,
+    )
+    predecessor_by_lag = {
+        lag: (query_index - (lag % sequence_length)) % sequence_length
+        for lag in candidates
+    }
+    for left in candidates:
+        for right in candidates:
+            if predecessor_by_lag[left] == predecessor_by_lag[right] and left != right:
+                return False
+    return True
 
 
 def stride_family_raw_candidate_budget(
@@ -1975,11 +2049,31 @@ def certify_stride_family_coverage(
         ),
         theorem_side_lag_candidates=theorem_side_lag_candidates,
         theorem_side_unique_lag_candidate_count=len(set(theorem_side_lag_candidates)),
+        theorem_side_coil_residues_no_collision=stride_family_coil_residues_no_collision(
+            sequence_length,
+            strides,
+            path_length,
+        ),
+        theorem_side_local_coil_disjoint=stride_family_local_coil_candidates_disjoint(
+            sequence_length,
+            strides,
+            path_length,
+            local_window,
+        ),
         theorem_side_lag_candidates_no_collision=(
             len(set(theorem_side_lag_candidates)) == len(theorem_side_lag_candidates)
         ),
         theorem_side_query_candidates=theorem_side_query_candidates,
         theorem_side_unique_query_candidate_count=len(set(theorem_side_query_candidates)),
+        theorem_side_predecessor_injective_on_lag_candidates=(
+            stride_family_predecessor_injective_on_lag_candidates(
+                sequence_length,
+                0,
+                strides,
+                path_length,
+                local_window,
+            )
+        ),
         theorem_side_query_candidates_no_collision=(
             len(set(theorem_side_query_candidates)) == len(theorem_side_query_candidates)
         ),
