@@ -73,6 +73,7 @@ from circle_math.applications.circle_ai import (
     stride_family_query_candidates_no_collision,
     stride_family_query_candidate_list,
     stride_family_raw_candidate_budget,
+    stride_family_single_stride_no_wrap_sufficient_condition,
     stride_family_unique_lag_candidate_count,
     stride_family_unique_query_candidate_count,
     structured_stride_family_target_lags,
@@ -551,6 +552,10 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0056",
         "AIT-T0057",
         "AIT-T0058",
+        "AIT-T0059",
+        "AIT-T0060",
+        "AIT-T0061",
+        "AIT-T0062",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -659,7 +664,32 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert "AIT-T0056" in certificate.theorem_ids
     assert "AIT-T0057" in certificate.theorem_ids
     assert "AIT-T0058" in certificate.theorem_ids
+    assert "AIT-T0059" in certificate.theorem_ids
+    assert "AIT-T0060" in certificate.theorem_ids
+    assert "AIT-T0061" in certificate.theorem_ids
+    assert "AIT-T0062" in certificate.theorem_ids
     assert "AIT-T0025" in certificate.theorem_ids
+
+
+def test_stride_family_single_stride_no_wrap_condition_certifies_no_collision() -> None:
+    certificate = certify_stride_family_coverage(
+        sequence_length=64,
+        strides=(7,),
+        path_length=3,
+        local_window=4,
+    )
+
+    assert stride_family_single_stride_no_wrap_sufficient_condition(64, (7,), 3, 4)
+    assert certificate.theorem_side_lag_candidates == (1, 2, 3, 4, 7, 14, 21)
+    assert certificate.theorem_side_coil_residues_no_collision
+    assert certificate.theorem_side_local_coil_disjoint
+    assert certificate.theorem_side_lag_candidates_no_collision
+    assert certificate.theorem_side_unique_lag_candidate_count == (
+        certificate.raw_candidate_budget_upper_bound
+    )
+    assert not stride_family_single_stride_no_wrap_sufficient_condition(64, (7, 11), 3, 4)
+    assert not stride_family_single_stride_no_wrap_sufficient_condition(20, (7,), 3, 4)
+    assert not stride_family_single_stride_no_wrap_sufficient_condition(64, (7,), 3, 8)
 
 
 def test_learned_content_gate_route_lookup_helpers_are_deterministic() -> None:

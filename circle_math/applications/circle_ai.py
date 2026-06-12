@@ -595,6 +595,10 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0056",
         "AIT-T0057",
         "AIT-T0058",
+        "AIT-T0059",
+        "AIT-T0060",
+        "AIT-T0061",
+        "AIT-T0062",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -1875,6 +1879,23 @@ def stride_family_local_coil_candidates_disjoint(
         path_length,
     ))
     return local_lags.isdisjoint(coil_residues)
+
+
+def stride_family_single_stride_no_wrap_sufficient_condition(
+    sequence_length: int,
+    strides: Sequence[int],
+    path_length: int,
+    local_window: int,
+) -> bool:
+    """Return whether the single-stride no-wrap no-collision theorem applies."""
+    _require_positive(sequence_length, "sequence_length")
+    normalized_strides = normalize_stride_family(strides)
+    _require_positive(path_length, "path_length")
+    _require_positive(local_window, "local_window")
+    if len(normalized_strides) != 1:
+        return False
+    stride = normalized_strides[0]
+    return local_window < stride and path_length * stride < sequence_length
 
 
 def stride_family_query_candidate_list(

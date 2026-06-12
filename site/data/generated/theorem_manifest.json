@@ -3120,7 +3120,7 @@
       "informal_statement": "RoPE relative-position property: shifting both the query and key positions by the same amount leaves the relative rotary phase unchanged, so the interaction depends only on the relative position query - key.",
       "lean_name": "Circle.Applications.rope_relative_shift_invariant",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 796,
+      "lean_source_line": 895,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"
@@ -3156,7 +3156,7 @@
       "informal_statement": "RoPE phase additivity: rotary position rotations compose by adding strides, the algebraic basis of RoPE's relative-position behaviour.",
       "lean_name": "Circle.Applications.rope_compose",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 805,
+      "lean_source_line": 904,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"
@@ -3854,7 +3854,7 @@
       "informal_statement": "The local window covers every positive lag inside a length-n context if and only if the window reaches the largest possible positive lag, n - 1.",
       "lean_name": "Circle.Applications.localWindowCoversContext_iff_context_sub_one_le",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 765,
+      "lean_source_line": 864,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -5100,7 +5100,7 @@
       "informal_statement": "Membership in the theorem-side query-indexed candidate list is exactly membership after mapping some generated lag through the predecessor-index map.",
       "lean_name": "Circle.Applications.mem_hybridFamilyQueryCandidateList_iff_exists_lag",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 741,
+      "lean_source_line": 840,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -5142,7 +5142,7 @@
       "informal_statement": "Any in-context lag reached by the local plus stride-family plan maps to a query-indexed predecessor candidate.",
       "lean_name": "Circle.Applications.predecessorIndex_mem_hybridFamilyQueryCandidateList_of_reach",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 751,
+      "lean_source_line": 850,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -5185,7 +5185,7 @@
       "informal_statement": "If the theorem-side lag-candidate list has no duplicate lag candidates, then its exact deduplicated count equals the raw candidate budget.",
       "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 716,
+      "lean_source_line": 815,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -5228,7 +5228,7 @@
       "informal_statement": "If the theorem-side query-indexed candidate list has no duplicate predecessor candidates, then its exact deduplicated count equals the raw candidate budget.",
       "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 729,
+      "lean_source_line": 828,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -5271,7 +5271,7 @@
       "informal_statement": "If the stride-family residue block has no duplicates and the local-window lag block is disjoint from it, then the theorem-side lag-candidate list has no duplicates.",
       "lean_name": "Circle.Applications.hybridFamilyLagCandidatesNoCollision_of_coil_noCollision_of_local_coil_disjoint",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 685,
+      "lean_source_line": 770,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -5314,7 +5314,7 @@
       "informal_statement": "If generated lag candidates have no duplicates and predecessor indexing is injective on those generated lag values, then the theorem-side query-indexed candidate list has no duplicates.",
       "lean_name": "Circle.Applications.hybridFamilyQueryCandidatesNoCollision_of_lag_noCollision_of_predecessor_injective",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 702,
+      "lean_source_line": 801,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -5335,6 +5335,174 @@
         "python_property_tests": [
           "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control",
           "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_coverage_complete_when_local_window_covers_context"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0028",
+        "COMMON-0029",
+        "COMMON-0047",
+        "COMMON-0075",
+        "COMMON-0079"
+      ],
+      "formal_statement": "forall {n stride pathLength : Nat}, 0 < stride -> pathLength * stride < n -> (Circle.Applications.coilLagResidueList n stride pathLength).Nodup",
+      "id": "AIT-T0059",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "A single stride produces duplicate-free residue candidates when every admitted step multiple stays strictly below the context length.",
+      "lean_name": "Circle.Applications.coilLagResidueList_nodup_of_path_mul_stride_lt_context",
+      "lean_source": "Circle/Applications/CircleTransformer.lean",
+      "lean_source_line": 685,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_single_stride_no_wrap_condition_certifies_no_collision"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0028",
+        "COMMON-0029",
+        "COMMON-0047",
+        "COMMON-0075",
+        "COMMON-0079"
+      ],
+      "formal_statement": "forall {n stride pathLength : Nat}, 0 < stride -> pathLength * stride < n -> Circle.Applications.coilStrideFamilyLagResiduesNoCollision n pathLength [stride]",
+      "id": "AIT-T0060",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "A singleton stride family inherits the no-wrap duplicate-free residue condition.",
+      "lean_name": "Circle.Applications.coilStrideFamilyLagResiduesNoCollision_singleton_of_path_mul_stride_lt_context",
+      "lean_source": "Circle/Applications/CircleTransformer.lean",
+      "lean_source_line": 711,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_single_stride_no_wrap_condition_certifies_no_collision"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0028",
+        "COMMON-0029",
+        "COMMON-0047",
+        "COMMON-0075",
+        "COMMON-0079"
+      ],
+      "formal_statement": "forall {n window stride pathLength : Nat}, window < stride -> pathLength * stride < n -> Circle.Applications.localCoilLagCandidatesDisjoint n window pathLength [stride]",
+      "id": "AIT-T0061",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "A no-wrap singleton stride above the local-window width is disjoint from the local-window lag block.",
+      "lean_name": "Circle.Applications.localCoilLagCandidatesDisjoint_singleton_of_window_lt_stride_of_path_mul_stride_lt_context",
+      "lean_source": "Circle/Applications/CircleTransformer.lean",
+      "lean_source_line": 728,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_single_stride_no_wrap_condition_certifies_no_collision"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0028",
+        "COMMON-0029",
+        "COMMON-0047",
+        "COMMON-0075",
+        "COMMON-0079"
+      ],
+      "formal_statement": "forall {n window stride pathLength : Nat}, window < stride -> pathLength * stride < n -> Circle.Applications.hybridFamilyLagCandidatesNoCollision n window pathLength [stride]",
+      "id": "AIT-T0062",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "A singleton stride family has duplicate-free lag candidates when the local window is below the stride and all admitted stride multiples fit before context wraparound.",
+      "lean_name": "Circle.Applications.hybridFamilyLagCandidatesNoCollision_singleton_of_window_lt_stride_of_path_mul_stride_lt_context",
+      "lean_source": "Circle/Applications/CircleTransformer.lean",
+      "lean_source_line": 783,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_single_stride_no_wrap_condition_certifies_no_collision"
         ]
       }
     },

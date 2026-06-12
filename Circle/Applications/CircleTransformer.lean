@@ -677,6 +677,91 @@ theorem hybridFamilyUniqueQueryCandidateCount_le_raw
   rw [← hybridFamilyQueryCandidateList_length n query window pathLength strides]
   exact List.Sublist.length_le (List.dedup_sublist _)
 
+/-- A no-wrap single stride generates duplicate-free residues.
+
+If all admitted multiples `step * stride`, `1 ≤ step ≤ pathLength`, remain
+strictly below the context length, then reducing them modulo the context does
+not identify two different steps. -/
+theorem coilLagResidueList_nodup_of_path_mul_stride_lt_context
+    {n stride pathLength : Nat}
+    (hstride : 0 < stride)
+    (hbound : pathLength * stride < n) :
+    (coilLagResidueList n stride pathLength).Nodup := by
+  unfold coilLagResidueList
+  refine (List.nodup_range' (s := 1) (n := pathLength)).map_on ?_
+  intro left hleft right hright heq
+  have hleft_le : left ≤ pathLength := by
+    rw [List.mem_range'] at hleft
+    rcases hleft with ⟨i, hi, hleft⟩
+    subst left
+    omega
+  have hright_le : right ≤ pathLength := by
+    rw [List.mem_range'] at hright
+    rcases hright with ⟨i, hi, hright⟩
+    subst right
+    omega
+  have hleft_bound : left * stride < n :=
+    lt_of_le_of_lt (Nat.mul_le_mul_right stride hleft_le) hbound
+  have hright_bound : right * stride < n :=
+    lt_of_le_of_lt (Nat.mul_le_mul_right stride hright_le) hbound
+  rw [Nat.mod_eq_of_lt hleft_bound, Nat.mod_eq_of_lt hright_bound] at heq
+  exact Nat.mul_right_cancel hstride heq
+
+/-- A one-stride family inherits the no-wrap duplicate-free residue condition. -/
+theorem coilStrideFamilyLagResiduesNoCollision_singleton_of_path_mul_stride_lt_context
+    {n stride pathLength : Nat}
+    (hstride : 0 < stride)
+    (hbound : pathLength * stride < n) :
+    coilStrideFamilyLagResiduesNoCollision n pathLength [stride] := by
+  unfold coilStrideFamilyLagResiduesNoCollision coilStrideFamilyLagResidueList
+  exact (coilLagResidueList_nodup_of_path_mul_stride_lt_context
+    (n := n) (stride := stride) (pathLength := pathLength) hstride hbound).append
+      (by
+        change ([].Nodup)
+        exact List.nodup_nil)
+      (by
+        rw [List.disjoint_left]
+        intro _ _ hmem
+        cases hmem)
+
+/-- A no-wrap single stride above the local window is disjoint from local lags. -/
+theorem localCoilLagCandidatesDisjoint_singleton_of_window_lt_stride_of_path_mul_stride_lt_context
+    {n window stride pathLength : Nat}
+    (hwindow : window < stride)
+    (hbound : pathLength * stride < n) :
+    localCoilLagCandidatesDisjoint n window pathLength [stride] := by
+  unfold localCoilLagCandidatesDisjoint coilStrideFamilyLagResidueList
+  rw [List.disjoint_left]
+  intro lag hlocal hcoil
+  rw [mem_localLagCandidateList_iff] at hlocal
+  simp [coilStrideFamilyLagResidueList] at hcoil
+  unfold coilLagResidueList at hcoil
+  rw [List.mem_map] at hcoil
+  rcases hcoil with ⟨step, hstepmem, hlag⟩
+  have hstep_pos : 1 ≤ step := by
+    rw [List.mem_range'] at hstepmem
+    rcases hstepmem with ⟨i, _hi, hstep⟩
+    subst step
+    omega
+  have hstep_le : step ≤ pathLength := by
+    rw [List.mem_range'] at hstepmem
+    rcases hstepmem with ⟨i, hi, hstep⟩
+    subst step
+    omega
+  have hstep_bound : step * stride < n :=
+    lt_of_le_of_lt (Nat.mul_le_mul_right stride hstep_le) hbound
+  have hlag_eq : lag = step * stride := by
+    symm
+    simpa [Nat.mod_eq_of_lt hstep_bound] using hlag
+  have hstride_le : stride ≤ step * stride := by
+    calc
+      stride = 1 * stride := by rw [Nat.one_mul]
+      _ ≤ step * stride := Nat.mul_le_mul_right stride hstep_pos
+  have hlag_gt : window < lag := by
+    rw [hlag_eq]
+    exact lt_of_lt_of_le hwindow hstride_le
+  exact (not_le_of_gt hlag_gt) hlocal.2
+
 /-- A constructive lag no-collision certificate.
 
 If the stride-family residue block has no duplicates and the local-window lags
@@ -693,6 +778,20 @@ theorem hybridFamilyLagCandidatesNoCollision_of_coil_noCollision_of_local_coil_d
   unfold coilStrideFamilyLagResiduesNoCollision at hcoil
   unfold localCoilLagCandidatesDisjoint at hdisjoint
   exact (List.nodup_range' (s := 1) (n := window)).append hcoil hdisjoint
+
+/-- Concrete no-wrap single-stride sufficient condition for lag no-collision. -/
+theorem hybridFamilyLagCandidatesNoCollision_singleton_of_window_lt_stride_of_path_mul_stride_lt_context
+    {n window stride pathLength : Nat}
+    (hwindow : window < stride)
+    (hbound : pathLength * stride < n) :
+    hybridFamilyLagCandidatesNoCollision n window pathLength [stride] := by
+  exact hybridFamilyLagCandidatesNoCollision_of_coil_noCollision_of_local_coil_disjoint
+    (coilStrideFamilyLagResiduesNoCollision_singleton_of_path_mul_stride_lt_context
+      (n := n) (stride := stride) (pathLength := pathLength)
+      (Nat.lt_of_le_of_lt (Nat.zero_le window) hwindow) hbound)
+    (localCoilLagCandidatesDisjoint_singleton_of_window_lt_stride_of_path_mul_stride_lt_context
+      (n := n) (window := window) (stride := stride) (pathLength := pathLength)
+      hwindow hbound)
 
 /-- A constructive query no-collision certificate.
 
