@@ -601,6 +601,7 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0062",
         "AIT-T0063",
         "AIT-T0064",
+        "AIT-T0065",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -1903,6 +1904,27 @@ def stride_family_head_tail_no_wrap_separation_sufficient_condition(
         path_length * tail_stride < sequence_length and head_bound < tail_stride
         for tail_stride in normalized_strides[1:]
     )
+
+
+def stride_family_no_wrap_separated_sufficient_condition(
+    sequence_length: int,
+    strides: Sequence[int],
+    path_length: int,
+) -> bool:
+    """Return whether the ordered no-wrap separated-family theorem applies."""
+    _require_positive(sequence_length, "sequence_length")
+    normalized_strides = normalize_stride_family(strides)
+    _require_positive(path_length, "path_length")
+    for index, head_stride in enumerate(normalized_strides):
+        head_bound = path_length * head_stride
+        if head_bound >= sequence_length:
+            return False
+        for tail_stride in normalized_strides[index + 1:]:
+            if path_length * tail_stride >= sequence_length:
+                return False
+            if head_bound >= tail_stride:
+                return False
+    return True
 
 
 def stride_family_local_coil_candidates_disjoint(

@@ -3316,6 +3316,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_head_tail_no_wrap_separation_is_sufficient_not_exact
     blocker: ""
+  - id: AIT-T0065
+    status: lean_proved
+    lean_name: Circle.Applications.coilStrideFamilyLagResiduesNoCollision_of_noWrapSeparated
+    informal_statement: "An ordered no-wrap separated stride family has duplicate-free stride-family residue blocks."
+    formal_statement: "forall {n pathLength : Nat} {strides : List Nat}, Circle.Applications.coilStrideFamilyNoWrapSeparated n pathLength strides -> Circle.Applications.coilStrideFamilyLagResiduesNoCollision n pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_no_wrap_separated_condition_certifies_ordered_family
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

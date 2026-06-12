@@ -207,6 +207,22 @@ def coilLagResiduesDisjointFromFamily
   (coilLagResidueList n stride pathLength).Disjoint
     (coilStrideFamilyLagResidueList n pathLength strides)
 
+/-- A finite stride family is no-wrap separated when each head block stays
+below the context length, every tail block does the same, and the head block's
+largest possible value is below every tail stride. This is an ordered sufficient
+condition for duplicate-free stride-family residue blocks. -/
+def coilStrideFamilyNoWrapSeparated
+    (n pathLength : Nat) : List Nat → Prop
+  | [] => True
+  | stride :: strides =>
+      0 < stride ∧
+        pathLength * stride < n ∧
+        (∀ tailStride ∈ strides,
+          0 < tailStride ∧
+            pathLength * tailStride < n ∧
+            pathLength * stride < tailStride) ∧
+        coilStrideFamilyNoWrapSeparated n pathLength strides
+
 /-- The query-predecessor map is injective on the generated lag candidates. -/
 def hybridFamilyPredecessorInjectiveOnLagCandidates
     (n query window pathLength : Nat) (strides : List Nat) : Prop :=
@@ -794,6 +810,31 @@ theorem coilLagResiduesDisjointFromFamily_of_path_mul_head_lt_tail_strides
       (lt_of_lt_of_le (hseparated tailStride htailStrideMem) htail_stride_le)
   rw [htail_eq_lag] at hlt
   exact (Nat.lt_irrefl lag) hlt
+
+/-- Ordered no-wrap separation is a finite-family sufficient condition for
+duplicate-free stride-family residues. -/
+theorem coilStrideFamilyLagResiduesNoCollision_of_noWrapSeparated
+    {n pathLength : Nat} {strides : List Nat}
+    (hseparated : coilStrideFamilyNoWrapSeparated n pathLength strides) :
+    coilStrideFamilyLagResiduesNoCollision n pathLength strides := by
+  induction strides with
+  | nil =>
+      unfold coilStrideFamilyLagResiduesNoCollision coilStrideFamilyLagResidueList
+      exact List.nodup_nil
+  | cons stride strides ih =>
+      simp [coilStrideFamilyNoWrapSeparated] at hseparated
+      rcases hseparated with ⟨hstride, hheadBound, htailInfo, htailSeparated⟩
+      exact coilStrideFamilyLagResiduesNoCollision_cons_of_head_tail_disjoint
+        (coilLagResidueList_nodup_of_path_mul_stride_lt_context hstride hheadBound)
+        (ih htailSeparated)
+        (coilLagResiduesDisjointFromFamily_of_path_mul_head_lt_tail_strides
+          hheadBound
+          (by
+            intro tailStride hmem
+            exact (htailInfo tailStride hmem).2.1)
+          (by
+            intro tailStride hmem
+            exact (htailInfo tailStride hmem).2.2))
 
 /-- A no-wrap single stride above the local window is disjoint from local lags. -/
 theorem localCoilLagCandidatesDisjoint_singleton_of_window_lt_stride_of_path_mul_stride_lt_context
