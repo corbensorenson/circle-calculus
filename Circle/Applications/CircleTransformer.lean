@@ -167,6 +167,47 @@ def hybridFamilyUniqueLagCandidateCount
 def predecessorIndex (n query lag : Nat) : Nat :=
   (query + n - (lag % n)) % n
 
+/-- The query predecessor map is injective on in-context lag values.
+
+If two lags are both strict representatives below the context length, then
+equal query-indexed predecessor positions force the lags themselves to be
+equal. -/
+theorem predecessorIndex_injective_of_lag_lt_context
+    {n query left right : Nat}
+    (hleft : left < n)
+    (hright : right < n)
+    (heq : predecessorIndex n query left = predecessorIndex n query right) :
+    left = right := by
+  unfold predecessorIndex at heq
+  have hmod :
+      query + n - (left % n) ≡ query + n - (right % n) [MOD n] := by
+    have hleftMod :
+        query + n - (left % n) ≡
+          (query + n - (left % n)) % n [MOD n] :=
+      (Nat.mod_modEq (query + n - (left % n)) n).symm
+    have hmiddle :
+        (query + n - (left % n)) % n ≡
+          (query + n - (right % n)) % n [MOD n] := by
+      rw [heq]
+    have hrightMod :
+        (query + n - (right % n)) % n ≡
+          query + n - (right % n) [MOD n] :=
+      Nat.mod_modEq (query + n - (right % n)) n
+    exact hleftMod.trans (hmiddle.trans hrightMod)
+  have hmod' : query + n - left ≡ query + n - right [MOD n] := by
+    simpa [Nat.mod_eq_of_lt hleft, Nat.mod_eq_of_lt hright] using hmod
+  have hleftle : left ≤ query + n :=
+    le_trans (Nat.le_of_lt hleft) (Nat.le_add_left n query)
+  have hrightle : right ≤ query + n :=
+    le_trans (Nat.le_of_lt hright) (Nat.le_add_left n query)
+  have hsub := Nat.ModEq.sub_left
+    (Nat.sub_le (query + n) left)
+    (Nat.sub_le (query + n) right)
+    hmod'
+  have hlagMod : left ≡ right [MOD n] := by
+    simpa [Nat.sub_sub_self hleftle, Nat.sub_sub_self hrightle] using hsub
+  exact Nat.ModEq.eq_of_lt_of_lt hlagMod hleft hright
+
 /-- Query-indexed raw predecessor candidates generated from the theorem-side
 lag-candidate list. -/
 def hybridFamilyQueryCandidateList
@@ -655,6 +696,19 @@ theorem mem_coilLagResidueList_iff
     · rw [Nat.mod_eq_of_lt hcontext] at hmod
       exact hmod
 
+/-- Every one-stride residue candidate is an in-context lag representative when
+the context length is positive. -/
+theorem mem_coilLagResidueList_lt_context
+    {n stride pathLength lag : Nat}
+    (hn : 0 < n)
+    (hmem : lag ∈ coilLagResidueList n stride pathLength) :
+    lag < n := by
+  unfold coilLagResidueList at hmem
+  rw [List.mem_map] at hmem
+  rcases hmem with ⟨step, _hstep, hlag⟩
+  rw [← hlag]
+  exact Nat.mod_lt _ hn
+
 /-- For an in-context lag, membership in the finite stride-family residue list
 is exactly stride-family reachability. -/
 theorem mem_coilStrideFamilyLagResidueList_iff
@@ -668,6 +722,24 @@ theorem mem_coilStrideFamilyLagResidueList_iff
       simp [coilStrideFamilyLagResidueList, List.mem_append,
         mem_coilLagResidueList_iff hcontext, ih, coilStrideFamilyLagReach_cons_iff]
 
+/-- Every finite stride-family residue candidate is an in-context lag
+representative when the context length is positive. -/
+theorem mem_coilStrideFamilyLagResidueList_lt_context
+    {n pathLength lag : Nat} {strides : List Nat}
+    (hn : 0 < n)
+    (hmem : lag ∈ coilStrideFamilyLagResidueList n pathLength strides) :
+    lag < n := by
+  induction strides with
+  | nil =>
+      unfold coilStrideFamilyLagResidueList at hmem
+      cases hmem
+  | cons stride strides ih =>
+      unfold coilStrideFamilyLagResidueList at hmem
+      rw [List.mem_append] at hmem
+      rcases hmem with hhead | htail
+      · exact mem_coilLagResidueList_lt_context hn hhead
+      · exact ih htail
+
 /-- For an in-context lag, membership in the theorem-side hybrid candidate list
 is exactly local+stride-family reachability. -/
 theorem mem_hybridFamilyLagCandidateList_iff
@@ -679,6 +751,22 @@ theorem mem_hybridFamilyLagCandidateList_iff
   rw [List.mem_append]
   rw [mem_localLagCandidateList_iff]
   rw [mem_coilStrideFamilyLagResidueList_iff hcontext]
+
+/-- If the local window is below the context length, then every theorem-side
+lag candidate is a strict in-context representative. -/
+theorem mem_hybridFamilyLagCandidateList_lt_context_of_window_lt_context
+    {n window pathLength lag : Nat} {strides : List Nat}
+    (hwindow : window < n)
+    (hmem : lag ∈ hybridFamilyLagCandidateList n window pathLength strides) :
+    lag < n := by
+  have hn : 0 < n := lt_of_le_of_lt (Nat.zero_le window) hwindow
+  unfold hybridFamilyLagCandidateList at hmem
+  rw [List.mem_append] at hmem
+  rcases hmem with hlocal | hcoil
+  · have hreach : localLagReach window lag := by
+      exact (mem_localLagCandidateList_iff).1 hlocal
+    exact lt_of_le_of_lt hreach.2 hwindow
+  · exact mem_coilStrideFamilyLagResidueList_lt_context hn hcoil
 
 /-- The query-indexed candidate list has the same raw length as the theorem-side
 lag candidate list, hence the same raw candidate budget. -/
@@ -1008,6 +1096,32 @@ theorem hybridFamilyQueryCandidatesNoCollision_of_noWrapSeparated_of_window_lt_a
       hseparated hwindow)
     hinjective
 
+/-- A local window below the context length is enough to make predecessor
+indexing injective on all theorem-side lag candidates. -/
+theorem hybridFamilyPredecessorInjectiveOnLagCandidates_of_window_lt_context
+    {n query window pathLength : Nat} {strides : List Nat}
+    (hcontext : window < n) :
+    hybridFamilyPredecessorInjectiveOnLagCandidates n query window pathLength strides := by
+  unfold hybridFamilyPredecessorInjectiveOnLagCandidates
+  intro left hleft right hright heq
+  exact predecessorIndex_injective_of_lag_lt_context
+    (mem_hybridFamilyLagCandidateList_lt_context_of_window_lt_context hcontext hleft)
+    (mem_hybridFamilyLagCandidateList_lt_context_of_window_lt_context hcontext hright)
+    heq
+
+/-- Ordered no-wrap separation plus an in-context local window gives
+duplicate-free query-indexed candidates without an abstract injectivity
+assumption. -/
+theorem hybridFamilyQueryCandidatesNoCollision_of_noWrapSeparated_of_window_lt_all_strides_of_window_lt_context
+    {n query window pathLength : Nat} {strides : List Nat}
+    (hseparated : coilStrideFamilyNoWrapSeparated n pathLength strides)
+    (hwindow : ∀ stride ∈ strides, window < stride)
+    (hcontext : window < n) :
+    hybridFamilyQueryCandidatesNoCollision n query window pathLength strides :=
+  hybridFamilyQueryCandidatesNoCollision_of_noWrapSeparated_of_window_lt_all_strides_of_predecessor_injective
+    hseparated hwindow
+    (hybridFamilyPredecessorInjectiveOnLagCandidates_of_window_lt_context hcontext)
+
 /-- If the theorem-side lag-candidate list has no duplicate lag candidates, its
 exact deduplicated count equals the raw candidate budget. -/
 theorem hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision
@@ -1058,6 +1172,19 @@ theorem hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noWrapSeparated_of_windo
   hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision
     (hybridFamilyQueryCandidatesNoCollision_of_noWrapSeparated_of_window_lt_all_strides_of_predecessor_injective
       hseparated hwindow hinjective)
+
+/-- Ordered no-wrap separation plus an in-context local window makes the exact
+query-candidate count equal the raw sparse-attention budget. -/
+theorem hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noWrapSeparated_of_window_lt_all_strides_of_window_lt_context
+    {n query window pathLength : Nat} {strides : List Nat}
+    (hseparated : coilStrideFamilyNoWrapSeparated n pathLength strides)
+    (hwindow : ∀ stride ∈ strides, window < stride)
+    (hcontext : window < n) :
+    hybridFamilyUniqueQueryCandidateCount n query window pathLength strides =
+      hybridFamilyRawCandidateBudget window pathLength strides :=
+  hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision
+    (hybridFamilyQueryCandidatesNoCollision_of_noWrapSeparated_of_window_lt_all_strides_of_window_lt_context
+      hseparated hwindow hcontext)
 
 /-- Query-candidate membership is exactly membership after mapping some
 generated lag through the predecessor-index map. -/

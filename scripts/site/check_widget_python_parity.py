@@ -100,6 +100,7 @@ from circle_math.applications import (
     stride_family_covered_lags,
     stride_family_lag_candidate_list,
     stride_family_local_coil_candidates_disjoint,
+    stride_family_predecessor_injective_window_context_sufficient_condition,
     stride_family_predecessor_injective_on_lag_candidates,
     stride_family_query_candidate_list,
     structured_stride_family_target_lags,
@@ -3389,6 +3390,15 @@ def main() -> int:
                 0,
                 strides,
                 path_length,
+                local_window,
+            )
+        )
+        assert coverage_certificate.theorem_side_predecessor_injective_window_context_condition == (
+            local_window < sequence_length
+        )
+        assert coverage_certificate.theorem_side_predecessor_injective_window_context_condition == (
+            stride_family_predecessor_injective_window_context_sufficient_condition(
+                sequence_length,
                 local_window,
             )
         )

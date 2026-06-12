@@ -3400,6 +3400,76 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_no_wrap_separated_query_raw_budget_endpoint
     blocker: ""
+  - id: AIT-T0071
+    status: lean_proved
+    lean_name: Circle.Applications.predecessorIndex_injective_of_lag_lt_context
+    informal_statement: "The query predecessor map is injective on lag values that are strict representatives below the context length."
+    formal_statement: "forall {n query left right : Nat}, left < n -> right < n -> Circle.Applications.predecessorIndex n query left = Circle.Applications.predecessorIndex n query right -> left = right"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_no_wrap_separated_query_raw_budget_endpoint
+    blocker: ""
+  - id: AIT-T0072
+    status: lean_proved
+    lean_name: Circle.Applications.mem_hybridFamilyLagCandidateList_lt_context_of_window_lt_context
+    informal_statement: "If the local window is below the context length, every theorem-side local or stride-family lag candidate is a strict in-context representative."
+    formal_statement: "forall {n window pathLength lag : Nat} {strides : List Nat}, window < n -> lag in Circle.Applications.hybridFamilyLagCandidateList n window pathLength strides -> lag < n"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_no_wrap_separated_query_raw_budget_endpoint
+    blocker: ""
+  - id: AIT-T0073
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyPredecessorInjectiveOnLagCandidates_of_window_lt_context
+    informal_statement: "A local window below the context length is a numeric sufficient condition for predecessor indexing to be injective on all theorem-side lag candidates."
+    formal_statement: "forall {n query window pathLength : Nat} {strides : List Nat}, window < n -> Circle.Applications.hybridFamilyPredecessorInjectiveOnLagCandidates n query window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_no_wrap_separated_query_raw_budget_endpoint
+    blocker: ""
+  - id: AIT-T0074
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyQueryCandidatesNoCollision_of_noWrapSeparated_of_window_lt_all_strides_of_window_lt_context
+    informal_statement: "Ordered no-wrap separation, strides beyond the local window, and a local window below the context length imply duplicate-free query-indexed candidates without an abstract injectivity assumption."
+    formal_statement: "forall {n query window pathLength : Nat} {strides : List Nat}, Circle.Applications.coilStrideFamilyNoWrapSeparated n pathLength strides -> (forall stride, stride in strides -> window < stride) -> window < n -> Circle.Applications.hybridFamilyQueryCandidatesNoCollision n query window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_no_wrap_separated_query_raw_budget_endpoint
+    blocker: ""
+  - id: AIT-T0075
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noWrapSeparated_of_window_lt_all_strides_of_window_lt_context
+    informal_statement: "Under ordered no-wrap separation, strides beyond the local window, and a local window below the context length, the exact deduplicated query-candidate count equals the raw candidate budget."
+    formal_statement: "forall {n query window pathLength : Nat} {strides : List Nat}, Circle.Applications.coilStrideFamilyNoWrapSeparated n pathLength strides -> (forall stride, stride in strides -> window < stride) -> window < n -> Circle.Applications.hybridFamilyUniqueQueryCandidateCount n query window pathLength strides = Circle.Applications.hybridFamilyRawCandidateBudget window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_no_wrap_separated_query_raw_budget_endpoint
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

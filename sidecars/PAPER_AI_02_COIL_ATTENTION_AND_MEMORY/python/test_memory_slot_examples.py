@@ -76,6 +76,7 @@ from circle_math.applications.circle_ai import (
     stride_family_no_wrap_separated_query_no_collision_sufficient_condition,
     stride_family_no_wrap_separated_query_raw_budget_exact_sufficient_condition,
     stride_family_no_wrap_separated_sufficient_condition,
+    stride_family_predecessor_injective_window_context_sufficient_condition,
     stride_family_predecessor_injective_on_lag_candidates,
     stride_family_query_candidates_no_collision,
     stride_family_query_candidate_list,
@@ -571,6 +572,11 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0068",
         "AIT-T0069",
         "AIT-T0070",
+        "AIT-T0071",
+        "AIT-T0072",
+        "AIT-T0073",
+        "AIT-T0074",
+        "AIT-T0075",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -635,6 +641,10 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert certificate.theorem_side_predecessor_injective_on_lag_candidates == (
         stride_family_predecessor_injective_on_lag_candidates(10, 0, (3,), 2, 9)
     )
+    assert certificate.theorem_side_predecessor_injective_window_context_condition
+    assert certificate.theorem_side_predecessor_injective_window_context_condition == (
+        stride_family_predecessor_injective_window_context_sufficient_condition(10, 9)
+    )
     assert certificate.theorem_side_unique_query_candidate_count == 9
     assert certificate.theorem_side_unique_query_candidate_count == (
         stride_family_unique_query_candidate_count(10, 0, (3,), 2, 9)
@@ -691,6 +701,11 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert "AIT-T0068" in certificate.theorem_ids
     assert "AIT-T0069" in certificate.theorem_ids
     assert "AIT-T0070" in certificate.theorem_ids
+    assert "AIT-T0071" in certificate.theorem_ids
+    assert "AIT-T0072" in certificate.theorem_ids
+    assert "AIT-T0073" in certificate.theorem_ids
+    assert "AIT-T0074" in certificate.theorem_ids
+    assert "AIT-T0075" in certificate.theorem_ids
     assert "AIT-T0025" in certificate.theorem_ids
 
 
@@ -769,6 +784,12 @@ def test_stride_family_no_wrap_separated_local_and_lag_no_collision_conditions()
 
 
 def test_stride_family_no_wrap_separated_query_raw_budget_endpoint() -> None:
+    assert stride_family_predecessor_injective_window_context_sufficient_condition(
+        200, 4
+    )
+    assert not stride_family_predecessor_injective_window_context_sufficient_condition(
+        200, 200
+    )
     assert stride_family_no_wrap_separated_query_no_collision_sufficient_condition(
         200, 37, (5, 17, 61), 3, 4
     )

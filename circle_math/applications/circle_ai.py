@@ -551,6 +551,7 @@ class StrideFamilyCoverageCertificate:
     theorem_side_query_candidates: tuple[int, ...]
     theorem_side_unique_query_candidate_count: int
     theorem_side_predecessor_injective_on_lag_candidates: bool
+    theorem_side_predecessor_injective_window_context_condition: bool
     theorem_side_query_candidates_no_collision: bool
     full_attention_budget: int
     coverage_complete: bool
@@ -607,6 +608,11 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0068",
         "AIT-T0069",
         "AIT-T0070",
+        "AIT-T0071",
+        "AIT-T0072",
+        "AIT-T0073",
+        "AIT-T0074",
+        "AIT-T0075",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -1963,6 +1969,16 @@ def stride_family_no_wrap_separated_lag_no_collision_sufficient_condition(
     )
 
 
+def stride_family_predecessor_injective_window_context_sufficient_condition(
+    sequence_length: int,
+    local_window: int,
+) -> bool:
+    """Return whether the numeric predecessor-injectivity theorem applies."""
+    _require_positive(sequence_length, "sequence_length")
+    _require_positive(local_window, "local_window")
+    return local_window < sequence_length
+
+
 def stride_family_no_wrap_separated_query_no_collision_sufficient_condition(
     sequence_length: int,
     query_index: int,
@@ -1976,11 +1992,8 @@ def stride_family_no_wrap_separated_query_no_collision_sufficient_condition(
         strides,
         path_length,
         local_window,
-    ) and stride_family_predecessor_injective_on_lag_candidates(
+    ) and stride_family_predecessor_injective_window_context_sufficient_condition(
         sequence_length,
-        query_index,
-        strides,
-        path_length,
         local_window,
     )
 
@@ -2230,6 +2243,12 @@ def certify_stride_family_coverage(
                 0,
                 strides,
                 path_length,
+                local_window,
+            )
+        ),
+        theorem_side_predecessor_injective_window_context_condition=(
+            stride_family_predecessor_injective_window_context_sufficient_condition(
+                sequence_length,
                 local_window,
             )
         ),

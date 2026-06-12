@@ -49,6 +49,11 @@ const THEOREM_IDS = [
   "AIT-T0068",
   "AIT-T0069",
   "AIT-T0070",
+  "AIT-T0071",
+  "AIT-T0072",
+  "AIT-T0073",
+  "AIT-T0074",
+  "AIT-T0075",
 ];
 const DICTIONARY_IDS = ["COMMON-0075", "COMMON-0079", "COMMON-0047", "COMMON-0029"];
 
@@ -180,6 +185,7 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
       0,
       theoremSideLagCandidates,
     ),
+    theoremSidePredecessorInjectiveWindowContextCondition: localWindow < sequenceLength,
     theoremSideQueryCandidatesNoCollision: (
       new Set(theoremSideQueryCandidates).size === theoremSideQueryCandidates.length
     ),
@@ -396,6 +402,7 @@ function appendRecord(output, values, theoremById) {
     `theorem-side raw lag candidates: ${formatCandidates(coverage.theoremSideLagCandidates, 18)}`,
     `theorem-side unique query-candidate count: ${coverage.theoremSideUniqueQueryCandidateCount}`,
     `predecessor injective on lag candidates: ${coverage.theoremSidePredecessorInjectiveOnLagCandidates}`,
+    `predecessor injective by window<context theorem: ${coverage.theoremSidePredecessorInjectiveWindowContextCondition}`,
     `query candidates no collision: ${coverage.theoremSideQueryCandidatesNoCollision}`,
     `theorem-side raw query-0 candidates: ${formatCandidates(coverage.theoremSideQueryCandidates, 18)}`,
     `deduplicated candidate-budget upper bound: ${coverage.deduplicatedCandidateBudgetUpperBound}`,
