@@ -9828,6 +9828,12 @@
           "lean_name": "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
           "name": "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0031",
+          "lean_name": "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
+          "name": "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -9923,6 +9929,12 @@
           "id": "AIRA-T0030",
           "lean_name": "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
           "name": "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0031",
+          "lean_name": "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
+          "name": "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
           "status": "proved"
         }
       ],
@@ -10055,6 +10067,12 @@
           "lean_name": "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
           "name": "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0031",
+          "lean_name": "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
+          "name": "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -10115,6 +10133,44 @@
           "id": "AIM-T0063",
           "lean_name": "Circle.Applications.kvCacheWindow_nextOverwrite_after_current",
           "name": "Circle.Applications.kvCacheWindow_nextOverwrite_after_current",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
+    },
+    {
+      "dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0080"
+      ],
+      "forbidden_meanings": [
+        "A completed circular distance theorem over all integer full-turn multiples.",
+        "A continued-fraction, three-distance, or Diophantine RoPE margin theorem.",
+        "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
+      ],
+      "formal_definition": "In Lean, `Circle.Applications.ropeRealPhaseNatTurnError frequency fullTurn left right turns` is the absolute distance between the nonnegative unwrapped one-channel phase magnitude and a chosen nonnegative full-turn multiple. The theorem `ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window` proves that if the phase lies inside one declared turn and is at least `margin` away from both endpoints, then the zero-turn and one-turn endpoint errors are each at least `margin`.",
+      "id": "COMMON-0082",
+      "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+      "intuition": "This is the first bridge from unwrapped real phase arithmetic toward circular margin reasoning: it proves the endpoint part of a one-turn no-near-collision certificate without claiming the full nearest-integer or Diophantine theorem.",
+      "kind": "model",
+      "name": "Real RoPE full-turn endpoint error",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "|phase - turns * fullTurn|",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIRA-T0031",
+          "lean_name": "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
+          "name": "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
           "status": "proved"
         }
       ],

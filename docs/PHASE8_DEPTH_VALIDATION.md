@@ -25,7 +25,7 @@ The next step is not another broad list of AI ideas. The next step is depth: tur
 
 ### 1. Mathematical Depth
 
-- Prove a real-phase margin theorem or a bounded precursor for RoPE-style rotations. The long-horizon version should connect phase distance, context length, and Diophantine approximation through continued-fraction or three-distance-style bounds. The first landed precursor is the unwrapped one-channel phase-gap formula and lower-bound pair (`AIRA-T0029`, `AIRA-T0030`); it deliberately does not claim a circular modulo-full-turn margin proof.
+- Prove a real-phase margin theorem or a bounded precursor for RoPE-style rotations. The long-horizon version should connect phase distance, context length, and Diophantine approximation through continued-fraction or three-distance-style bounds. The landed precursors are the unwrapped one-channel phase-gap formula, lower-bound pair, and one-turn endpoint-error bridge (`AIRA-T0029`, `AIRA-T0030`, `AIRA-T0031`); they deliberately do not claim a full circular modulo-full-turn margin proof.
 - Upgrade sparse-attention reachability lemmas into coverage iff statements. A useful contract should characterize which lags are covered and which are not, with candidate-budget accounting.
 - Add collision counting for finite phase banks. The certifier should eventually report not only whether a collision exists, but how many colliding pairs exist in a context and how the count follows from the period bank.
 

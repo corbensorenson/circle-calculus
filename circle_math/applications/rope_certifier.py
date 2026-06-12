@@ -44,11 +44,13 @@ ROPE_CERTIFIER_LEAN_DECLARATIONS: tuple[str, ...] = (
 ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0029",
     "AIRA-T0030",
+    "AIRA-T0031",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs",
     "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
+    "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -218,6 +220,23 @@ def circular_phase_distance(angle: float) -> float:
     return abs((angle + pi) % tau - pi)
 
 
+def real_phase_nat_turn_error(
+    *,
+    frequency: float,
+    full_turn: float,
+    left: int,
+    right: int,
+    turns: int,
+) -> float:
+    """Mirror Lean's ``ropeRealPhaseNatTurnError`` for examples and tests."""
+    if left < 0 or right < 0:
+        raise ValueError("left and right must be nonnegative")
+    if turns < 0:
+        raise ValueError("turns must be nonnegative")
+    phase = abs((right - left) * frequency)
+    return abs(phase - turns * full_turn)
+
+
 def real_phase_best_margin_for_gap(frequencies: Sequence[float], gap: int) -> tuple[float, int]:
     """Return the strongest channel margin for a gap and the channel that attains it."""
     best_margin = -1.0
@@ -361,7 +380,7 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         f"real_phase_margin={margin_status} worst_margin_radians={worst_margin} "
         f"worst_gap={worst_gap} scanned_gaps={margin.scanned_gap_count}",
         f"real_phase_formal_precursors={','.join(margin.formal_precursor_theorem_ids)} "
-        "(unwrapped only; not a circular-margin proof)",
+        "(unwrapped and one-turn endpoint precursors only; not a circular-margin proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,
     )

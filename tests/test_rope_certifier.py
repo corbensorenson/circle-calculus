@@ -12,6 +12,7 @@ from circle_math.applications import (
     certify_rope_positions,
     collision_pair_count_at_gap,
     discretize_rope_periods,
+    real_phase_nat_turn_error,
     sample_collision_pairs,
 )
 
@@ -25,6 +26,24 @@ def test_discretized_period_helpers_are_deterministic() -> None:
     assert collision_pair_count_at_gap(10, 4) == 6
     assert collision_pair_count_at_gap(10, 10) == 0
     assert sample_collision_pairs(10, 4, limit=3) == ((0, 4), (1, 5), (2, 6))
+
+
+def test_real_phase_nat_turn_error_matches_endpoint_precursor_shape() -> None:
+    assert real_phase_nat_turn_error(
+        frequency=0.25,
+        full_turn=4.0,
+        left=0,
+        right=4,
+        turns=0,
+    ) == 1.0
+    assert real_phase_nat_turn_error(
+        frequency=0.25,
+        full_turn=4.0,
+        left=0,
+        right=4,
+        turns=1,
+    ) == 3.0
+    assert "AIRA-T0031" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
 def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:

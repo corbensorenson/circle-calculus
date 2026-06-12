@@ -19,8 +19,8 @@ targets:
       - "circle_math/applications/rope_certifier.py"
       - "site/chapters/applications/rope_certifier.qmd"
       - "docs/ROPE_CERTIFIER_QUICKSTART.md"
-    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080"]
-    next_action: "The unwrapped real phase-gap formula and lower-bound precursor are now landed through AIRA-T0029 and AIRA-T0030; next connect circular distance to integer-nearest multiples and then to continued-fraction/Diophantine bounds."
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082"]
+    next_action: "The unwrapped real phase-gap formula, lower-bound precursor, and one-turn endpoint-error bridge are now landed through AIRA-T0029 through AIRA-T0031; next extend from endpoints to all nearest integer full-turn multiples, then to continued-fraction/Diophantine bounds."
     guardrail: "Do not present numerical margin scans as Lean-proved real RoPE theorems."
 
   - id: P8-DEPTH-002

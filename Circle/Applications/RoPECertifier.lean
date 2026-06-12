@@ -162,6 +162,16 @@ def ropeRealPhaseGap (frequency : ℝ) (left right : Nat) : ℝ :=
 def ropeRealPhaseGapAbs (frequency : ℝ) (left right : Nat) : ℝ :=
   |ropeRealPhaseGap frequency left right|
 
+/-- Error between the nonnegative unwrapped phase magnitude and a chosen
+nonnegative full-turn multiple.
+
+This is still not a completed circular-distance theorem. It is a reusable
+object for reducing one-turn phase-window claims to ordinary real inequalities.
+-/
+def ropeRealPhaseNatTurnError
+    (frequency fullTurn : ℝ) (left right turns : Nat) : ℝ :=
+  |ropeRealPhaseGapAbs frequency left right - (turns : ℝ) * fullTurn|
+
 /-- For ordered positions, the absolute unwrapped real phase gap is exactly
 the natural position gap times the absolute frequency. -/
 theorem ropeRealPhaseGapAbs_eq_natGap_mul_abs
@@ -186,5 +196,28 @@ theorem ropeRealPhaseGapAbs_ge_minGap_mul_lower
   have hgap_real : (minGap : ℝ) ≤ ((right - left : Nat) : ℝ) := by
     exact Nat.cast_le.mpr hgap
   exact mul_le_mul hgap_real hlower hlower_nonneg (Nat.cast_nonneg _)
+
+/-- One-turn-window endpoint lower-bound transfer.
+
+If the unwrapped phase magnitude lies inside one declared turn and stays at
+least `margin` away from both endpoints of that turn, then it is at least
+`margin` away from the zero-turn and one-turn endpoints. This is still a
+generic real-inequality precursor, not a Diophantine theorem and not a
+formal certification of the numerical RoPE scan. -/
+theorem ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window
+    {frequency fullTurn margin : ℝ} {left right : Nat}
+    (hphase_le_full : ropeRealPhaseGapAbs frequency left right ≤ fullTurn)
+    (hleft_margin : margin ≤ ropeRealPhaseGapAbs frequency left right)
+    (hright_margin : margin ≤ fullTurn - ropeRealPhaseGapAbs frequency left right) :
+    margin ≤ ropeRealPhaseNatTurnError frequency fullTurn left right 0 ∧
+      margin ≤ ropeRealPhaseNatTurnError frequency fullTurn left right 1 := by
+  unfold ropeRealPhaseNatTurnError
+  constructor
+  · rw [Nat.cast_zero, zero_mul, sub_zero, abs_of_nonneg]
+    exact hleft_margin
+    unfold ropeRealPhaseGapAbs
+    exact abs_nonneg _
+  · rw [Nat.cast_one, one_mul, abs_of_nonpos (sub_nonpos.mpr hphase_le_full), neg_sub]
+    exact hright_margin
 
 end Circle.Applications

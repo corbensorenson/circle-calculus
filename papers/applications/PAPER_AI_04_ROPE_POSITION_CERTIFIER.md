@@ -49,6 +49,7 @@ Lean declarations determine proof status. The theorem manifest is the proof-stat
 - `AIRA-T0028`: `Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd`
 - `AIRA-T0029`: `Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs`
 - `AIRA-T0030`: `Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower`
+- `AIRA-T0031`: `Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window`
 
 The main theorem is `AIRA-T0024`:
 
@@ -63,7 +64,7 @@ That is the usable contract. It turns position indistinguishability into a finit
 
 ## Real-Phase Precursor
 
-`AIRA-T0029` and `AIRA-T0030` start the real-valued RoPE theorem program without upgrading the numerical scan into a proof. They define the unwrapped real phase gap for one channel and prove:
+`AIRA-T0029`, `AIRA-T0030`, and `AIRA-T0031` start the real-valued RoPE theorem program without upgrading the numerical scan into a proof. They define the unwrapped real phase gap for one channel and prove:
 
 ```text
 |((right : R) - left) * frequency| =
@@ -79,6 +80,14 @@ minGap * lower <= unwrapped_gap
 whenever `minGap <= right-left`, `0 <= lower`, and `lower <= |frequency|`.
 
 This is a quantitative precursor only. It is not a circular distance modulo a full turn, not a continued-fraction/Diophantine lower bound, and not a proof that the numerical real-phase margin report is formally certified.
+
+`AIRA-T0031` adds the next bridge object:
+
+```text
+turn_error(turns) = |phase - turns * fullTurn|
+```
+
+If a phase lies inside one declared turn and is at least `margin` away from the left endpoint and the right endpoint, Lean proves the zero-turn and one-turn endpoint errors are both at least `margin`. This is still not the full nearest-integer/full-turn theorem. It only proves the endpoint part of the one-turn window that later circular-margin work can build on.
 
 ## Certifier Interface
 
