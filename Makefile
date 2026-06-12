@@ -4,11 +4,11 @@ QUARTO_HOME ?= $(CURDIR)/.tools/quarto-home
 QUARTO_DENO_DIR ?= $(CURDIR)/.tools/quarto-deno
 QUARTO_ENV := HOME="$(QUARTO_HOME)" DENO_DIR="$(QUARTO_DENO_DIR)"
 
-.PHONY: check sourcecheck lean sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests capabilityshowcase claimlanguage phase4targets phase5targets phase6targets phase7targets phase8targets applicationguardrails glyphfixtures dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake examples theseus-ai-contracts theseus-ai-feedback site-data sitenavcontract capabilitycontracts sitecheck quarto-dirs site-render site-render-check site-preview living-book-check
+.PHONY: check sourcecheck lean sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests capabilityshowcase claimlanguage phase4targets phase5targets phase6targets phase7targets phase8targets applicationguardrails glyphfixtures dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake proofdepthaudit examples theseus-ai-contracts theseus-ai-feedback site-data sitenavcontract capabilitycontracts sitecheck quarto-dirs site-render site-render-check site-preview living-book-check
 
 check: lean sourcecheck
 
-sourcecheck: sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests capabilityshowcase claimlanguage phase4targets phase5targets phase6targets phase7targets phase8targets applicationguardrails glyphfixtures dimensioncheck nofake sitecheck
+sourcecheck: sidecarlean test manifest dictionary papermanifest paperlinks papersources researchmanifests capabilityshowcase claimlanguage phase4targets phase5targets phase6targets phase7targets phase8targets applicationguardrails glyphfixtures dimensioncheck nofake proofdepthaudit sitecheck
 
 lean:
 	$(LAKE) build
@@ -80,6 +80,9 @@ dimensionpaperlinks:
 
 nofake:
 	python scripts/check_no_fake_proofs.py
+
+proofdepthaudit:
+	python scripts/check_proof_depth_audit.py
 
 examples:
 	python scripts/render_examples.py

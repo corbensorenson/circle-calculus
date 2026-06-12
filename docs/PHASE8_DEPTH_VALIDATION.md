@@ -39,7 +39,7 @@ The next step is not another broad list of AI ideas. The next step is depth: tur
 
 - Clean root clutter intentionally. Move archival handoff directories only after their references are updated or replaced by curated docs.
 - Keep CI visible to readers. The README should expose the GitHub Actions proof/check badge when the workflow is stable.
-- Add a vacuity/proof-depth guard. The project already checks for fake proofs; Phase VIII adds a heuristic guard that flags theorem proofs that are only bare constructors, projections, or one-step wrappers unless they are explicitly classified as wrappers or metadata contracts.
+- Add a vacuity/proof-depth guard. The project already checks for fake proofs; Phase VIII adds a heuristic guard that flags theorem proofs that are only bare constructors, projections, or one-step wrappers unless they are explicitly classified as wrappers or metadata contracts. The first version is `scripts/check_proof_depth_audit.py`, a non-failing syntactic audit wired into `make sourcecheck`; it reports review candidates without treating the heuristic as a formal depth theorem.
 
 ### 4. Communication
 
@@ -69,3 +69,9 @@ Phase VIII has real progress only when at least one of these lands:
 - Do not treat external validation as authority over Lean proof status; it is a reality check on usefulness and communication.
 
 The machine-readable target registry is `manifests/phase8_depth_validation.yaml`, checked by `scripts/check_phase8_targets.py`.
+
+## Proof-Depth Audit Boundary
+
+`scripts/check_proof_depth_audit.py` scans Lean theorem and lemma declarations for short proof bodies that start with patterns such as `rfl`, `simp`, `constructor`, `Or.inl`, `Or.inr`, simple existential packaging, or projections. The output is review triage only. It can identify places where the repo may be accumulating contract vocabulary instead of theorem content, but it cannot decide whether a theorem is mathematically meaningful.
+
+The default mode is intentionally non-failing. A future Phase VIII pass can add allowlists, proof-kind metadata, or `--strict` use once false positives have been reviewed and documented.
