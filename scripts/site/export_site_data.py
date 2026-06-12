@@ -519,9 +519,9 @@ def export_widget_index() -> dict:
         {
             "id": "multicoil_phase_explorer",
             "path": "site/widgets/ai/multicoil_phase_explorer.js",
-            "theorem_ids": ["AIA-T0001", "AIA-T0002", "AIA-T0004", "AIA-T0005"],
-            "dictionary_ids": ["COMMON-0046", "COMMON-0026", "COMMON-0027"],
-            "python_reference": "circle_math.applications.circle_ai.multicoil_phase; circle_math.applications.circle_ai.multicoil_cycle_length; circle_math.applications.circle_ai.multicoil_phase_label",
+            "theorem_ids": ["AIRA-T0016", "AIRA-T0017", "AIRA-T0018", "AIRA-T0019", "AIRA-T0020"],
+            "dictionary_ids": ["COMMON-0074", "COMMON-0046", "COMMON-0026"],
+            "python_reference": "circle_math.applications.circle_ai.multicoil_phase; circle_math.applications.circle_ai.multicoil_phase2; circle_math.applications.circle_ai.multicoil_product_cycle; circle_math.applications.circle_ai.run_multicoil_closure_benchmark",
         },
         {
             "id": "rope_relative_phase",

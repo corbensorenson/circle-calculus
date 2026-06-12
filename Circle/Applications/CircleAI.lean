@@ -40,6 +40,53 @@ theorem phaseChannel_zero (period : Nat) :
   unfold phaseChannel
   simp
 
+def multiPhase2 (periodA periodB position : Nat) : Nat × Nat :=
+  (phaseChannel periodA position, phaseChannel periodB position)
+
+theorem multiPhase2_fst_lt_periodA {periodA : Nat} (hA : 0 < periodA)
+    (periodB position : Nat) :
+    (multiPhase2 periodA periodB position).fst < periodA := by
+  unfold multiPhase2
+  exact phaseChannel_lt_period hA position
+
+theorem multiPhase2_snd_lt_periodB {periodB : Nat} (hB : 0 < periodB)
+    (periodA position : Nat) :
+    (multiPhase2 periodA periodB position).snd < periodB := by
+  unfold multiPhase2
+  exact phaseChannel_lt_period hB position
+
+theorem multiPhase2_zero (periodA periodB : Nat) :
+    multiPhase2 periodA periodB 0 = (0, 0) := by
+  unfold multiPhase2
+  simp [phaseChannel_zero]
+
+theorem multiPhase2_add_periodProduct {periodA periodB : Nat}
+    (hA : 0 < periodA) (hB : 0 < periodB) (position : Nat) :
+    multiPhase2 periodA periodB (position + periodA * periodB) =
+      multiPhase2 periodA periodB position := by
+  unfold multiPhase2
+  apply Prod.ext
+  · rw [Nat.mul_comm periodA periodB]
+    exact phaseChannel_add_mul_period hA position periodB
+  · exact phaseChannel_add_mul_period hB position periodA
+
+theorem multiPhase2_add_mul_periodProduct {periodA periodB : Nat}
+    (hA : 0 < periodA) (hB : 0 < periodB) (position passes : Nat) :
+    multiPhase2 periodA periodB (position + passes * (periodA * periodB)) =
+      multiPhase2 periodA periodB position := by
+  unfold multiPhase2
+  apply Prod.ext
+  · rw [
+      show passes * (periodA * periodB) =
+        (passes * periodB) * periodA by ac_rfl,
+    ]
+    exact phaseChannel_add_mul_period hA position (passes * periodB)
+  · rw [
+      show passes * (periodA * periodB) =
+        (passes * periodA) * periodB by ac_rfl,
+    ]
+    exact phaseChannel_add_mul_period hB position (passes * periodA)
+
 def memorySlot (bankSize token : Nat) : Nat :=
   token % bankSize
 

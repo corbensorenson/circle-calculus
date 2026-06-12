@@ -294,13 +294,13 @@ Companion non-widget prototype: `AIM-B0015` uses `circle_math.applications.circl
 
 ### multicoil_phase_explorer
 
-- Inputs: two required phase periods, one optional third phase period, and a position.
-- Outputs: combined phase tuple, joint repeat horizon, shifted phase tuple after one joint cycle, constructed synthetic fixture label, per-period closure rows, finite phase-channel theorem links, and dictionary links.
-- Theorem ids: `AIA-T0001`, `AIA-T0002`, `AIA-T0004`, and `AIA-T0005` as finite phase-channel primitives only.
-- Dictionary ids: `COMMON-0046`, `COMMON-0026`, and `COMMON-0027`.
-- Python references: `circle_math.applications.circle_ai.multicoil_phase`, `circle_math.applications.circle_ai.multicoil_cycle_length`, and `circle_math.applications.circle_ai.multicoil_phase_label`.
-- Guardrail: the widget is positional phase bookkeeping for a synthetic fixture only. It does not prove RoPE improvement, language-model quality, attention replacement, context-length improvement, or runtime improvement.
-- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python MultiCoil phase helpers.
+- Inputs: two required phase periods, one optional third phase period, a position, and a wrong-shift control.
+- Outputs: combined phase tuple, two-period phase pair, proof-backed product cycle, lcm comparison, shifted phase after one product cycle, wrong-shift phase, mismatch flag, constructed synthetic fixture label, per-period closure rows, theorem links, and dictionary links.
+- Theorem ids: `AIRA-T0016`, `AIRA-T0017`, `AIRA-T0018`, `AIRA-T0019`, and `AIRA-T0020` for two-period phase-pair bounds and product-cycle closure.
+- Dictionary ids: `COMMON-0074`, `COMMON-0046`, and `COMMON-0026`.
+- Python references: `circle_math.applications.circle_ai.multicoil_phase`, `circle_math.applications.circle_ai.multicoil_phase2`, `circle_math.applications.circle_ai.multicoil_product_cycle`, `circle_math.applications.circle_ai.multicoil_cycle_length`, `circle_math.applications.circle_ai.multicoil_phase_label`, and `circle_math.applications.circle_ai.run_multicoil_closure_benchmark`.
+- Guardrail: the widget is positional phase and closure bookkeeping for synthetic fixtures only. It does not prove RoPE improvement, language-model quality, attention replacement, context-length improvement, runtime improvement, or that the product cycle is a minimal joint period.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python MultiCoil phase and closure helpers.
 
 ### rope_relative_phase
 
@@ -449,7 +449,7 @@ Minimum parity cases:
 - cyclic memory slot reduction, one-bank closure, multi-bank closure, idempotent normalization, slot loads, and collision count.
 - coil-retrieval target index, selected coil path, local window, wrong-stride path, full-attention oracle hit, and near-lag local/coil controls.
 - content-gated retrieval mixed lags, gated/static/wrong/union/full hit rates, and average candidate counts.
-- MultiCoil phase tuple, joint cycle length, phase closure after one joint cycle, and constructed synthetic label.
+- MultiCoil phase tuple, product-cycle closure, lcm comparison, wrong-shift mismatch, joint cycle length, phase closure after one joint cycle, and constructed synthetic label.
 - RoPE-style relative phase lag, sine/cosine feature, query-period closure, and key-period closure.
 - adapter parameter-budget dense, LoRA-style, and block-cyclic counts; ratios; block loads; and collision count.
 - circulant mixer circular-convolution output, dense circulant-matrix output, wrong-shift output, max dense delta, and parameter counts.

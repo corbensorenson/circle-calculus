@@ -15,6 +15,12 @@ namespace Circle.PaperAI03
 #check Circle.Applications.adapterBlock_add_mul_blockSize
 #check Circle.Applications.adapterBlock_idempotent
 #check Circle.Applications.adapterBlock_zero
+#check Circle.Applications.multiPhase2
+#check Circle.Applications.multiPhase2_fst_lt_periodA
+#check Circle.Applications.multiPhase2_snd_lt_periodB
+#check Circle.Applications.multiPhase2_zero
+#check Circle.Applications.multiPhase2_add_periodProduct
+#check Circle.Applications.multiPhase2_add_mul_periodProduct
 #check Circle.Applications.blockCyclicCell
 #check Circle.Applications.blockCyclicCell_fst_lt_blockSize
 #check Circle.Applications.blockCyclicCell_snd_lt_blockSize

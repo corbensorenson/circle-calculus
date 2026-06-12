@@ -714,6 +714,25 @@ class MultiCoilRoPEBenchmarkResult:
 
 
 @dataclass(frozen=True)
+class MultiCoilClosureBenchmarkResult:
+    period_a: int
+    period_b: int
+    position: int
+    product_cycle: int
+    lcm_cycle: int
+    product_equals_lcm: bool
+    phase: tuple[int, int]
+    product_shifted_phase: tuple[int, int]
+    lcm_shifted_phase: tuple[int, int]
+    wrong_shift: int
+    wrong_shifted_phase: tuple[int, int]
+    product_closes: bool
+    lcm_closes: bool
+    wrong_shift_mismatch: bool
+    note: str = "Synthetic MultiCoil closure fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
 class RoPERelativePhaseBenchmarkResult:
     period: int
     wrong_period: int
@@ -4222,6 +4241,68 @@ def run_block_cyclic_mixer_benchmark(
         ),
         cell_collision_count=block_cyclic_cell_collision_count(block_size, channel_count),
         max_cell_load=max(load for row in loads for load in row),
+    )
+
+
+def multicoil_phase2(period_a: int, period_b: int, position: int) -> tuple[int, int]:
+    """Return the two-period MultiCoil phase pair for a natural-number position."""
+    _require_positive(period_a, "period_a")
+    _require_positive(period_b, "period_b")
+    if position < 0:
+        raise ValueError("position must be nonnegative")
+    return (position % period_a, position % period_b)
+
+
+def multicoil_product_cycle(period_a: int, period_b: int) -> int:
+    """Return the proof-backed common product cycle for two MultiCoil periods."""
+    _require_positive(period_a, "period_a")
+    _require_positive(period_b, "period_b")
+    return period_a * period_b
+
+
+def run_multicoil_closure_benchmark(
+    *,
+    period_a: int = 5,
+    period_b: int = 7,
+    position: int = 42,
+    wrong_shift: Optional[int] = None,
+) -> MultiCoilClosureBenchmarkResult:
+    """Validate two-period MultiCoil phase closure against a wrong-shift control.
+
+    The product cycle ``period_a * period_b`` is the common cycle certified by
+    the Lean theorem spine. The lcm cycle is reported as the minimal ordinary
+    repeat horizon when periods share factors. This fixture is structural
+    positional bookkeeping only, not a RoPE or model-quality benchmark.
+    """
+    _require_positive(period_a, "period_a")
+    _require_positive(period_b, "period_b")
+    if position < 0:
+        raise ValueError("position must be nonnegative")
+    normalized_wrong_shift = period_a if wrong_shift is None else wrong_shift
+    if normalized_wrong_shift < 0:
+        raise ValueError("wrong_shift must be nonnegative")
+
+    product_cycle = multicoil_product_cycle(period_a, period_b)
+    lcm_cycle = lcm(period_a, period_b)
+    phase = multicoil_phase2(period_a, period_b, position)
+    product_shifted_phase = multicoil_phase2(period_a, period_b, position + product_cycle)
+    lcm_shifted_phase = multicoil_phase2(period_a, period_b, position + lcm_cycle)
+    wrong_shifted_phase = multicoil_phase2(period_a, period_b, position + normalized_wrong_shift)
+    return MultiCoilClosureBenchmarkResult(
+        period_a=period_a,
+        period_b=period_b,
+        position=position,
+        product_cycle=product_cycle,
+        lcm_cycle=lcm_cycle,
+        product_equals_lcm=product_cycle == lcm_cycle,
+        phase=phase,
+        product_shifted_phase=product_shifted_phase,
+        lcm_shifted_phase=lcm_shifted_phase,
+        wrong_shift=normalized_wrong_shift,
+        wrong_shifted_phase=wrong_shifted_phase,
+        product_closes=phase == product_shifted_phase,
+        lcm_closes=phase == lcm_shifted_phase,
+        wrong_shift_mismatch=phase != wrong_shifted_phase,
     )
 
 

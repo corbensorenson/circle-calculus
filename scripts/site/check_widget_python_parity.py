@@ -51,7 +51,9 @@ from circle_math.applications import (
     multi_resolution_required_resolutions,
     multicoil_cycle_length,
     multicoil_phase,
+    multicoil_phase2,
     multicoil_phase_label,
+    multicoil_product_cycle,
     nonperiodic_threshold_label,
     periodic_phase_label,
     phase_channel,
@@ -82,6 +84,7 @@ from circle_math.applications import (
     run_learned_recurrence_schedule_benchmark,
     run_learned_token_level_recurrence_benchmark,
     run_ai_backend_parity_check,
+    run_multicoil_closure_benchmark,
     run_phase_channel_benchmark,
     run_tiny_looped_recurrent_prototype,
     run_training_free_loop_wrapper_benchmark,
@@ -859,6 +862,14 @@ def js_lcm(left: int, right: int) -> int:
 
 def js_multicoil_phase(periods: tuple[int, ...], position: int) -> tuple[int, ...]:
     return tuple(js_mod(position, period) for period in periods)
+
+
+def js_multicoil_phase2(period_a: int, period_b: int, position: int) -> tuple[int, int]:
+    return (js_mod(position, period_a), js_mod(position, period_b))
+
+
+def js_multicoil_product_cycle(period_a: int, period_b: int) -> int:
+    return period_a * period_b
 
 
 def js_multicoil_cycle_length(periods: tuple[int, ...]) -> int:
@@ -3246,6 +3257,35 @@ def main() -> int:
         assert multicoil_phase(periods, position + cycle) == multicoil_phase(periods, position)
         assert multicoil_phase_label(periods, position) == js_multicoil_phase_label(periods, position)
         assert multicoil_phase_label(periods, position + cycle) == multicoil_phase_label(periods, position)
+
+    multicoil_closure_cases = [
+        (5, 7, 42, 5),
+        (4, 6, 35, 4),
+        (8, 11, 140, 8),
+    ]
+    for period_a, period_b, position, wrong_shift in multicoil_closure_cases:
+        product_cycle = js_multicoil_product_cycle(period_a, period_b)
+        lcm_cycle = js_multicoil_cycle_length((period_a, period_b))
+        phase = js_multicoil_phase2(period_a, period_b, position)
+        assert multicoil_phase2(period_a, period_b, position) == phase
+        assert multicoil_product_cycle(period_a, period_b) == product_cycle
+        assert multicoil_phase2(period_a, period_b, position + product_cycle) == phase
+        assert multicoil_phase2(period_a, period_b, position + 3 * product_cycle) == phase
+        benchmark = run_multicoil_closure_benchmark(
+            period_a=period_a,
+            period_b=period_b,
+            position=position,
+            wrong_shift=wrong_shift,
+        )
+        assert benchmark.product_cycle == product_cycle
+        assert benchmark.lcm_cycle == lcm_cycle
+        assert benchmark.phase == phase
+        assert benchmark.product_shifted_phase == phase
+        assert benchmark.lcm_shifted_phase == js_multicoil_phase2(period_a, period_b, position + lcm_cycle)
+        assert benchmark.product_closes
+        assert benchmark.lcm_closes
+        assert benchmark.wrong_shifted_phase == js_multicoil_phase2(period_a, period_b, position + wrong_shift)
+        assert benchmark.wrong_shift_mismatch == (phase != benchmark.wrong_shifted_phase)
 
     rope_cases = [
         (8, 19, 11, 7),

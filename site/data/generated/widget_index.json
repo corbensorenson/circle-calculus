@@ -506,18 +506,19 @@
     },
     {
       "dictionary_ids": [
+        "COMMON-0074",
         "COMMON-0046",
-        "COMMON-0026",
-        "COMMON-0027"
+        "COMMON-0026"
       ],
       "id": "multicoil_phase_explorer",
       "path": "site/widgets/ai/multicoil_phase_explorer.js",
-      "python_reference": "circle_math.applications.circle_ai.multicoil_phase; circle_math.applications.circle_ai.multicoil_cycle_length; circle_math.applications.circle_ai.multicoil_phase_label",
+      "python_reference": "circle_math.applications.circle_ai.multicoil_phase; circle_math.applications.circle_ai.multicoil_phase2; circle_math.applications.circle_ai.multicoil_product_cycle; circle_math.applications.circle_ai.run_multicoil_closure_benchmark",
       "theorem_ids": [
-        "AIA-T0001",
-        "AIA-T0002",
-        "AIA-T0004",
-        "AIA-T0005"
+        "AIRA-T0016",
+        "AIRA-T0017",
+        "AIRA-T0018",
+        "AIRA-T0019",
+        "AIRA-T0020"
       ]
     },
     {

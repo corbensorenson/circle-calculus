@@ -767,6 +767,18 @@ entries:
       - "A proof that block-cyclic neural layers improve quality."
       - "Evidence that the smaller parameter table improves runtime, memory, training stability, or hardware efficiency."
       - "A replacement for dense, LoRA, block-circulant, circulant, FFT/NTT, or learned linear-layer baselines."
+  - id: COMMON-0074
+    name: "MultiCoil common-cycle closure fixture"
+    kind: experiment
+    symbol: "multicoil_closure_fixture"
+    formal_definition: "`circle_math.applications.circle_ai.run_multicoil_closure_benchmark`, a deterministic two-period phase-pair fixture comparing the proof-backed product cycle, the ordinary lcm cycle, and a wrong-shift control."
+    intuition: "A small bridge between formal finite-circle facts and MultiCoil/RoPE-style intuition: the product of two periods is always a common repeat horizon, even when the lcm is the smaller ordinary horizon."
+    dependencies: ["COMMON-0026", "COMMON-0046"]
+    introduced_in: "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
+    forbidden_meanings:
+      - "A proof that MultiCoil RoPE improves language models."
+      - "Evidence that product-cycle or lcm-cycle features improve context length, perplexity, runtime, or memory."
+      - "A replacement for standard RoPE, learned positional embeddings, ALiBi-style biases, attention, recurrent memory, or state-space baselines."
   - id: COMMON-0060
     name: "Proof-carrying physics model"
     kind: interface

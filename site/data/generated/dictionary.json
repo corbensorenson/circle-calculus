@@ -4331,6 +4331,36 @@
           "lean_name": "Circle.Applications.windingPosition_fst_mul_add_snd",
           "name": "Circle.Applications.windingPosition_fst_mul_add_snd",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0016",
+          "lean_name": "Circle.Applications.multiPhase2_fst_lt_periodA",
+          "name": "Circle.Applications.multiPhase2_fst_lt_periodA",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0017",
+          "lean_name": "Circle.Applications.multiPhase2_snd_lt_periodB",
+          "name": "Circle.Applications.multiPhase2_snd_lt_periodB",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0018",
+          "lean_name": "Circle.Applications.multiPhase2_zero",
+          "name": "Circle.Applications.multiPhase2_zero",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0019",
+          "lean_name": "Circle.Applications.multiPhase2_add_periodProduct",
+          "name": "Circle.Applications.multiPhase2_add_periodProduct",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0020",
+          "lean_name": "Circle.Applications.multiPhase2_add_mul_periodProduct",
+          "name": "Circle.Applications.multiPhase2_add_mul_periodProduct",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -4352,7 +4382,7 @@
         {
           "id": "multicoil_phase_explorer",
           "path": "site/widgets/ai/multicoil_phase_explorer.js",
-          "python_reference": "circle_math.applications.circle_ai.multicoil_phase; circle_math.applications.circle_ai.multicoil_cycle_length; circle_math.applications.circle_ai.multicoil_phase_label"
+          "python_reference": "circle_math.applications.circle_ai.multicoil_phase; circle_math.applications.circle_ai.multicoil_phase2; circle_math.applications.circle_ai.multicoil_product_cycle; circle_math.applications.circle_ai.run_multicoil_closure_benchmark"
         },
         {
           "id": "phase_channel_baseline",
@@ -4420,11 +4450,6 @@
           "id": "learned_feature_baseline",
           "path": "site/widgets/ai/learned_feature_baseline.js",
           "python_reference": "circle_math.applications.circle_ai.fit_phase_lookup; circle_math.applications.circle_ai.predict_phase_lookup; circle_math.applications.circle_ai.run_learned_feature_baseline_benchmark"
-        },
-        {
-          "id": "multicoil_phase_explorer",
-          "path": "site/widgets/ai/multicoil_phase_explorer.js",
-          "python_reference": "circle_math.applications.circle_ai.multicoil_phase; circle_math.applications.circle_ai.multicoil_cycle_length; circle_math.applications.circle_ai.multicoil_phase_label"
         },
         {
           "id": "phase_channel_baseline",
@@ -5414,7 +5439,38 @@
           "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
         }
       ],
-      "used_by_theorems": [],
+      "used_by_theorems": [
+        {
+          "id": "AIRA-T0016",
+          "lean_name": "Circle.Applications.multiPhase2_fst_lt_periodA",
+          "name": "Circle.Applications.multiPhase2_fst_lt_periodA",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0017",
+          "lean_name": "Circle.Applications.multiPhase2_snd_lt_periodB",
+          "name": "Circle.Applications.multiPhase2_snd_lt_periodB",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0018",
+          "lean_name": "Circle.Applications.multiPhase2_zero",
+          "name": "Circle.Applications.multiPhase2_zero",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0019",
+          "lean_name": "Circle.Applications.multiPhase2_add_periodProduct",
+          "name": "Circle.Applications.multiPhase2_add_periodProduct",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0020",
+          "lean_name": "Circle.Applications.multiPhase2_add_mul_periodProduct",
+          "name": "Circle.Applications.multiPhase2_add_mul_periodProduct",
+          "status": "proved"
+        }
+      ],
       "used_by_widgets": [
         {
           "id": "backend_parity_fixture",
@@ -5434,7 +5490,7 @@
         {
           "id": "multicoil_phase_explorer",
           "path": "site/widgets/ai/multicoil_phase_explorer.js",
-          "python_reference": "circle_math.applications.circle_ai.multicoil_phase; circle_math.applications.circle_ai.multicoil_cycle_length; circle_math.applications.circle_ai.multicoil_phase_label"
+          "python_reference": "circle_math.applications.circle_ai.multicoil_phase; circle_math.applications.circle_ai.multicoil_phase2; circle_math.applications.circle_ai.multicoil_product_cycle; circle_math.applications.circle_ai.run_multicoil_closure_benchmark"
         },
         {
           "id": "winding_aware_position",
@@ -9410,6 +9466,73 @@
           "id": "block_cyclic_mixer_validation",
           "path": "site/widgets/ai/block_cyclic_mixer_validation.js",
           "python_reference": "circle_math.applications.circle_ai.block_cyclic_cell; circle_math.applications.circle_ai.block_cyclic_mixer_output; circle_math.applications.circle_ai.dense_block_cyclic_matrix; circle_math.applications.circle_ai.run_block_cyclic_mixer_benchmark"
+        }
+      ]
+    },
+    {
+      "dependencies": [
+        "COMMON-0026",
+        "COMMON-0046"
+      ],
+      "forbidden_meanings": [
+        "A proof that MultiCoil RoPE improves language models.",
+        "Evidence that product-cycle or lcm-cycle features improve context length, perplexity, runtime, or memory.",
+        "A replacement for standard RoPE, learned positional embeddings, ALiBi-style biases, attention, recurrent memory, or state-space baselines."
+      ],
+      "formal_definition": "`circle_math.applications.circle_ai.run_multicoil_closure_benchmark`, a deterministic two-period phase-pair fixture comparing the proof-backed product cycle, the ordinary lcm cycle, and a wrong-shift control.",
+      "id": "COMMON-0074",
+      "introduced_in": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+      "intuition": "A small bridge between formal finite-circle facts and MultiCoil/RoPE-style intuition: the product of two periods is always a common repeat horizon, even when the lcm is the smaller ordinary horizon.",
+      "kind": "experiment",
+      "name": "MultiCoil common-cycle closure fixture",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "multicoil_closure_fixture",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIRA-T0016",
+          "lean_name": "Circle.Applications.multiPhase2_fst_lt_periodA",
+          "name": "Circle.Applications.multiPhase2_fst_lt_periodA",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0017",
+          "lean_name": "Circle.Applications.multiPhase2_snd_lt_periodB",
+          "name": "Circle.Applications.multiPhase2_snd_lt_periodB",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0018",
+          "lean_name": "Circle.Applications.multiPhase2_zero",
+          "name": "Circle.Applications.multiPhase2_zero",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0019",
+          "lean_name": "Circle.Applications.multiPhase2_add_periodProduct",
+          "name": "Circle.Applications.multiPhase2_add_periodProduct",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0020",
+          "lean_name": "Circle.Applications.multiPhase2_add_mul_periodProduct",
+          "name": "Circle.Applications.multiPhase2_add_mul_periodProduct",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": [
+        {
+          "id": "multicoil_phase_explorer",
+          "path": "site/widgets/ai/multicoil_phase_explorer.js",
+          "python_reference": "circle_math.applications.circle_ai.multicoil_phase; circle_math.applications.circle_ai.multicoil_phase2; circle_math.applications.circle_ai.multicoil_product_cycle; circle_math.applications.circle_ai.run_multicoil_closure_benchmark"
         }
       ]
     },

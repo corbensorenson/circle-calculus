@@ -21,6 +21,8 @@ from circle_math.applications.circle_ai import (
     lora_adapter_parameter_count,
     multicoil_cycle_length,
     multicoil_phase,
+    multicoil_phase2,
+    multicoil_product_cycle,
     position_residue,
     position_winding,
     predict_adapter_block_lookup,
@@ -32,6 +34,7 @@ from circle_math.applications.circle_ai import (
     run_adapter_parameter_budget_benchmark,
     run_block_cyclic_mixer_benchmark,
     run_circulant_mixer_benchmark,
+    run_multicoil_closure_benchmark,
     run_multicoil_rope_benchmark,
     run_rope_relative_phase_benchmark,
     run_winding_aware_position_benchmark,
@@ -234,6 +237,36 @@ def test_multicoil_phase_closes_after_joint_cycle() -> None:
     assert cycle == 35
     for position in range(0, 512):
         assert multicoil_phase(periods, position + cycle) == multicoil_phase(periods, position)
+
+
+def test_multicoil_phase2_is_bounded_and_closes_after_product_cycle() -> None:
+    for period_a in range(2, 12):
+        for period_b in range(2, 12):
+            product_cycle = multicoil_product_cycle(period_a, period_b)
+            assert product_cycle == period_a * period_b
+            for position in range(0, 128):
+                phase = multicoil_phase2(period_a, period_b, position)
+                assert 0 <= phase[0] < period_a
+                assert 0 <= phase[1] < period_b
+                assert multicoil_phase2(period_a, period_b, position + product_cycle) == phase
+                assert multicoil_phase2(period_a, period_b, position + 3 * product_cycle) == phase
+
+
+def test_multicoil_closure_benchmark_has_common_cycle_and_wrong_shift_control() -> None:
+    result = run_multicoil_closure_benchmark(period_a=5, period_b=7, position=42, wrong_shift=5)
+
+    assert result == run_multicoil_closure_benchmark(period_a=5, period_b=7, position=42, wrong_shift=5)
+    assert result.product_cycle == 35
+    assert result.lcm_cycle == 35
+    assert result.product_equals_lcm is True
+    assert result.phase == multicoil_phase2(5, 7, 42)
+    assert result.product_shifted_phase == result.phase
+    assert result.lcm_shifted_phase == result.phase
+    assert result.product_closes is True
+    assert result.lcm_closes is True
+    assert result.wrong_shifted_phase != result.phase
+    assert result.wrong_shift_mismatch is True
+    assert result.note.endswith("not a model-quality claim.")
 
 
 def test_multicoil_lookup_recovers_combined_phase_fixture() -> None:

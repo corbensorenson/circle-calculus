@@ -1,6 +1,6 @@
 # Circle Calculus AI 3: CoilRA and MultiCoil RoPE
 
-Status: polished draft with proved adapter-block, block-cyclic-cell, and winding-position seeds.
+Status: polished draft with proved adapter-block, block-cyclic-cell, MultiCoil common-cycle, and winding-position seeds.
 
 ## Aim
 
@@ -31,6 +31,7 @@ sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_adapter_paramete
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_circulant_mixer.py
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_block_cyclic_mixer.py
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_multicoil_rope.py
+sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_multicoil_closure.py
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_rope_relative_phase.py
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_winding_aware_position.py
 ```
@@ -54,6 +55,11 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `AIRA-T0013`: `Circle.Applications.blockCyclicCell_add_row_blockSize`
 - `AIRA-T0014`: `Circle.Applications.blockCyclicCell_add_column_blockSize`
 - `AIRA-T0015`: `Circle.Applications.blockCyclicCell_add_mul_blockSize`
+- `AIRA-T0016`: `Circle.Applications.multiPhase2_fst_lt_periodA`
+- `AIRA-T0017`: `Circle.Applications.multiPhase2_snd_lt_periodB`
+- `AIRA-T0018`: `Circle.Applications.multiPhase2_zero`
+- `AIRA-T0019`: `Circle.Applications.multiPhase2_add_periodProduct`
+- `AIRA-T0020`: `Circle.Applications.multiPhase2_add_mul_periodProduct`
 - `AIT-T0004`: `Circle.Applications.rope_relative_shift_invariant`
 - `AIT-T0005`: `Circle.Applications.rope_compose`
 - `AIT-T0006`: `Circle.Applications.circConv_shift_equivariant`
@@ -110,7 +116,16 @@ block_cyclic_cell(block_size,row,column)
 
 Lean proves that both cell coordinates are bounded by the positive block size and that the shared cell is unchanged after adding any whole number of block-size row or column passes. This is the exact finite law a block-cyclic matrix fixture uses when many dense cells share a smaller learned table.
 
-These facts certify only finite block indexing, finite residue/winding bookkeeping, and finite row/column residue-cell closure. They do not prove parameter efficiency, better fine-tuning, RoPE improvement, periodic-activation value, long-context quality, or runtime gains.
+`AIRA-T0016` through `AIRA-T0020` add a two-period MultiCoil seed. The phase pair is
+
+```text
+multi_phase2(period_a, period_b, position)
+  = (position mod period_a, position mod period_b)
+```
+
+Lean proves each component is bounded by its positive period, that position zero maps to the zero pair, and that adding `period_a * period_b` or any whole number of product-cycle passes preserves the pair. The product cycle is a proof-backed common repeat horizon. It is not a claim that this horizon is always minimal; the ordinary least common multiple may be smaller.
+
+These facts certify only finite block indexing, finite residue/winding bookkeeping, finite row/column residue-cell closure, and finite two-period MultiCoil product-cycle closure. They do not prove parameter efficiency, better fine-tuning, RoPE improvement, periodic-activation value, long-context quality, or runtime gains.
 
 ## Exploratory Benchmark Fixture
 
@@ -135,6 +150,10 @@ This fixture is only structural validation, parameter accounting, and alias/load
 `AIRA-B0002` adds the first MultiCoil/RoPE-style positional fixture. The positive synthetic task labels positions by a combined phase tuple over periods `(5,7)`. A combined-period lookup recovers the pattern, while a single-period phase lookup, a constant baseline, and a scalar-threshold baseline do worse. The nonperiodic control labels positions by a scalar threshold; there the threshold baseline wins and the combined-period lookup fails.
 
 This fixture is not evidence that MultiCoil RoPE improves a language model, that multiple periods beat standard RoPE, that learned positional encodings are unnecessary, or that attention should be replaced. It is a small reproducible check that multi-period phase structure can be represented and compared before real model experiments begin.
+
+`AIRA-B0008` adds a narrower two-period MultiCoil closure fixture. It compares the proof-backed product cycle, the ordinary lcm cycle, and a wrong-shift control for a phase pair. The default coprime periods `(5,7)` make product and lcm agree; noncoprime cases still use the product cycle as the proved common horizon while reporting that the lcm can be shorter.
+
+This fixture is not evidence that MultiCoil RoPE improves a model, that product cycles are minimal, or that a positional encoding should use the product horizon. It is only executable bookkeeping for the formal two-period closure facts.
 
 `AIRA-B0003` adds a RoPE-style relative phase fixture. The positive synthetic task labels query/key pairs by their relative lag modulo a true period. A correct-period relative phase lookup recovers the pattern; wrong-period relative lookup, query-position lookup, and scalar-threshold baselines remain weaker. The nonperiodic control labels pairs by the query index, where the scalar threshold baseline wins.
 
@@ -167,7 +186,7 @@ The Circle theorem layer can certify relative-phase invariance, circular-convolu
 ## Next Program
 
 - Treat `AIRA-B0001` as adapter-block benchmark scaffolding, `AIRA-B0004` as parameter-budget scaffolding, `AIRA-B0005` as CoilLinear/circulant-mixer scaffolding, and `AIRA-B0007` as block-cyclic mixer dense-parity and alias/load scaffolding only; CoilRA, model quality, parameter efficiency, memory, training stability, and runtime claims remain separate work.
-- Treat `AIRA-B0002` as MultiCoil/RoPE-style positional scaffolding, `AIRA-B0003` as relative RoPE-style phase scaffolding, and `AIRA-B0006` as residue-plus-winding alias-control scaffolding only; standard RoPE, ALiBi-style biases, learned-position, recurrent-memory, attention, dense sequence, and MLX comparisons remain separate work.
+- Treat `AIRA-B0002` as MultiCoil/RoPE-style positional scaffolding, `AIRA-B0008` as two-period common-cycle closure scaffolding, `AIRA-B0003` as relative RoPE-style phase scaffolding, and `AIRA-B0006` as residue-plus-winding alias-control scaffolding only; standard RoPE, ALiBi-style biases, learned-position, recurrent-memory, attention, dense sequence, and MLX comparisons remain separate work.
 - Start with small MLX prototypes and synthetic tasks.
 - Compare against dense, LoRA, block-circulant, circulant, and standard RoPE baselines.
 - Measure quality, memory, training stability, and runtime together; parameter reduction alone is not enough.

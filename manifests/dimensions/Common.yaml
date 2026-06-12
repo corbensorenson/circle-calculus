@@ -1866,6 +1866,76 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_block_cyclic_cell_is_bounded_and_closes_by_rows_and_columns
     blocker: ""
+  - id: AIRA-T0016
+    status: lean_proved
+    lean_name: Circle.Applications.multiPhase2_fst_lt_periodA
+    informal_statement: "For a positive first period, the first residue of a two-period MultiCoil phase pair is bounded by that period."
+    formal_statement: "forall {periodA : Nat}, 0 < periodA -> forall periodB position : Nat, (multiPhase2 periodA periodB position).fst < periodA"
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0046", "COMMON-0074"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_multicoil_phase2_is_bounded_and_closes_after_product_cycle
+    blocker: ""
+  - id: AIRA-T0017
+    status: lean_proved
+    lean_name: Circle.Applications.multiPhase2_snd_lt_periodB
+    informal_statement: "For a positive second period, the second residue of a two-period MultiCoil phase pair is bounded by that period."
+    formal_statement: "forall {periodB : Nat}, 0 < periodB -> forall periodA position : Nat, (multiPhase2 periodA periodB position).snd < periodB"
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0046", "COMMON-0074"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_multicoil_phase2_is_bounded_and_closes_after_product_cycle
+    blocker: ""
+  - id: AIRA-T0018
+    status: lean_proved
+    lean_name: Circle.Applications.multiPhase2_zero
+    informal_statement: "The two-period MultiCoil phase pair at position zero is the zero pair."
+    formal_statement: "forall periodA periodB : Nat, multiPhase2 periodA periodB 0 = (0, 0)"
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0046", "COMMON-0074"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_multicoil_phase2_is_bounded_and_closes_after_product_cycle
+    blocker: ""
+  - id: AIRA-T0019
+    status: lean_proved
+    lean_name: Circle.Applications.multiPhase2_add_periodProduct
+    informal_statement: "For positive periods, adding the product of the two periods preserves the two-period MultiCoil phase pair."
+    formal_statement: "forall {periodA periodB : Nat}, 0 < periodA -> 0 < periodB -> forall position : Nat, multiPhase2 periodA periodB (position + periodA * periodB) = multiPhase2 periodA periodB position"
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0046", "COMMON-0074"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_multicoil_phase2_is_bounded_and_closes_after_product_cycle
+    blocker: ""
+  - id: AIRA-T0020
+    status: lean_proved
+    lean_name: Circle.Applications.multiPhase2_add_mul_periodProduct
+    informal_statement: "For positive periods, adding any whole number of product-cycle passes preserves the two-period MultiCoil phase pair."
+    formal_statement: "forall {periodA periodB : Nat}, 0 < periodA -> 0 < periodB -> forall position passes : Nat, multiPhase2 periodA periodB (position + passes * (periodA * periodB)) = multiPhase2 periodA periodB position"
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0046", "COMMON-0074"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_multicoil_phase2_is_bounded_and_closes_after_product_cycle
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd
