@@ -125,6 +125,14 @@ theorem ropePhaseBankDistinguishable_of_period_ge_context
 def ropeCollisionPairCountAtGap (context gap : Nat) : Nat :=
   context - gap
 
+/-- The least common multiple of a finite integer-period RoPE bank.
+
+For the empty bank this is `1`, matching the vacuous all-channel collision
+predicate: every positive gap is a collision when no periods are declared. -/
+def ropePeriodBankLCM : List Nat → Nat
+  | [] => 1
+  | period :: rest => Nat.lcm period (ropePeriodBankLCM rest)
+
 /-- There is at least one ordered pair separated by `gap` inside a context iff
 the gap is strictly smaller than the context. -/
 theorem ropeCollisionPairCountAtGap_pos_iff {context gap : Nat} :
@@ -170,6 +178,52 @@ theorem ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd
   intro period hmem
   simpa [Nat.mul_comm, Nat.mul_left_comm, Nat.mul_assoc] using
     dvd_mul_of_dvd_right (hdivides period hmem) multiple
+
+/-- Every declared period divides the period-bank LCM. -/
+theorem ropePeriodBankLCM_dvd_of_mem
+    {periods : List Nat} {period : Nat} (hmem : period ∈ periods) :
+    period ∣ ropePeriodBankLCM periods := by
+  induction periods with
+  | nil =>
+      simp at hmem
+  | cons head rest ih =>
+      simp [List.mem_cons] at hmem
+      rcases hmem with hhead | hrest
+      · subst period
+        exact Nat.dvd_lcm_left head (ropePeriodBankLCM rest)
+      · exact Nat.dvd_trans (ih hrest) (Nat.dvd_lcm_right head (ropePeriodBankLCM rest))
+
+/-- If every declared period divides a gap, then the period-bank LCM divides
+that gap. -/
+theorem ropePeriodBankLCM_dvd_of_forall_dvd
+    {periods : List Nat} {gap : Nat}
+    (hdivides : ∀ period, period ∈ periods → period ∣ gap) :
+    ropePeriodBankLCM periods ∣ gap := by
+  induction periods with
+  | nil =>
+      simp [ropePeriodBankLCM]
+  | cons head rest ih =>
+      simpa [ropePeriodBankLCM] using Nat.lcm_dvd
+        (hdivides head (by simp))
+        (ih (by
+          intro period hmem
+          exact hdivides period (by simp [hmem])))
+
+/-- Exact finite-bank collision criterion compressed to one LCM divisibility
+test. This is the theorem that upgrades common-gap counting into total
+integer-period bank collision counting: after sorting pairs by positive gap,
+only positive multiples of `ropePeriodBankLCM periods` can collide in every
+declared channel, and every such multiple does collide. -/
+theorem ropePhaseBankCollision_iff_lcm_dvd_gap
+    {periods : List Nat} {left right : Nat} (hleft : left ≤ right) :
+    ropePhaseBankCollision periods left right ↔
+      ropePeriodBankLCM periods ∣ right - left := by
+  rw [ropePhaseBankCollision_iff_forall_gap_dvd (periods := periods) hleft]
+  constructor
+  · intro hdivides
+    exact ropePeriodBankLCM_dvd_of_forall_dvd hdivides
+  · intro hlcm period hmem
+    exact Nat.dvd_trans (ropePeriodBankLCM_dvd_of_mem hmem) hlcm
 
 /-- In a single positive-period channel, every in-context collision between
 unequal ordered positions has a positive period-multiple gap.

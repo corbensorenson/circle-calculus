@@ -49,6 +49,7 @@ Lean declarations determine proof status. The theorem manifest is the proof-stat
 - `AIRA-T0028`: `Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd`
 - `AIRA-T0034`: `Circle.Applications.ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd`
 - `AIRA-T0035`: `Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap`
+- `AIRA-T0036`: `Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap`
 - `AIRA-T0029`: `Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs`
 - `AIRA-T0030`: `Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower`
 - `AIRA-T0031`: `Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window`
@@ -64,7 +65,7 @@ iff every declared period divides their position gap.
 
 That is the usable contract. It turns position indistinguishability into a finite arithmetic check over divisibility.
 
-`AIRA-T0027`, `AIRA-T0028`, and `AIRA-T0034` add the first all-channel collision-counting seed. If the certifier finds a common exact collision gap inside the context, then `context - gap` ordered start positions have a paired position exactly `gap` steps ahead, and every one of those counted pairs is an all-channel collision when each declared period divides the gap. `AIRA-T0034` extends the same guarantee to every positive multiple of the common gap that still fits in the context. `AIRA-T0035` adds the single-channel converse: every unequal collision for one positive integer-period channel has a positive period-multiple gap. Together with the Python parity tests, this justifies the exact per-channel single-period counts reported by the certifier. This is still not yet a theorem for the total all-channel bank collision count outside the common-gap families.
+`AIRA-T0027`, `AIRA-T0028`, and `AIRA-T0034` add the first all-channel collision-counting seed. If the certifier finds a common exact collision gap inside the context, then `context - gap` ordered start positions have a paired position exactly `gap` steps ahead, and every one of those counted pairs is an all-channel collision when each declared period divides the gap. `AIRA-T0034` extends the same guarantee to every positive multiple of the common gap that still fits in the context. `AIRA-T0035` adds the single-channel converse: every unequal collision for one positive integer-period channel has a positive period-multiple gap. `AIRA-T0036` upgrades the all-channel count from guaranteed family to exact integer-bank count by proving that bank collision is equivalent to divisibility by the period-bank LCM. Together with the Python parity tests, this justifies the exact per-channel single-period counts and the exact total bank count reported by the certifier for the declared integer-period model.
 
 ## Real-Phase Precursor
 
@@ -112,6 +113,7 @@ It emits:
 - guaranteed common-gap collision-pair count when exact discrete distinguishability fails;
 - guaranteed common-gap-multiple collision-pair count when exact discrete distinguishability fails;
 - exact single-period collision-pair counts for each declared integer channel;
+- exact total bank collision-pair count for the declared integer-period phase bank;
 - numerical real-phase margin and worst gap;
 - theorem ids for the unwrapped real-phase precursor;
 - a machine-readable JSON certificate when `--format json` or `--json-out` is used.

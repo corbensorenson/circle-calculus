@@ -21,10 +21,14 @@ namespace Circle.PaperAI04
 #check Circle.Applications.ropePhaseBankDistinguishable_iff_exists_not_gap_dvd
 #check Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context
 #check Circle.Applications.ropeCollisionPairCountAtGap
+#check Circle.Applications.ropePeriodBankLCM
 #check Circle.Applications.ropeCollisionPairCountAtGap_pos_iff
 #check Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd
 #check Circle.Applications.ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd
 #check Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap
+#check Circle.Applications.ropePeriodBankLCM_dvd_of_mem
+#check Circle.Applications.ropePeriodBankLCM_dvd_of_forall_dvd
+#check Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap
 #check Circle.Applications.ropeRealPhaseGap
 #check Circle.Applications.ropeRealPhaseGapAbs
 #check Circle.Applications.ropeRealPhaseNatTurnError

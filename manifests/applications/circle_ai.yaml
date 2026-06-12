@@ -443,6 +443,10 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap
     dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0083"]
+  - id: AIRA-T0036
+    status: lean_proved
+    lean_name: Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0084"]
   - id: AIRA-T0029
     status: lean_proved
     lean_name: Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs

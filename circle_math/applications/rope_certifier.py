@@ -30,6 +30,7 @@ ROPE_CERTIFIER_THEOREMS: tuple[str, ...] = (
     "AIRA-T0028",
     "AIRA-T0034",
     "AIRA-T0035",
+    "AIRA-T0036",
 )
 
 ROPE_CERTIFIER_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -43,6 +44,7 @@ ROPE_CERTIFIER_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
     "Circle.Applications.ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd",
     "Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap",
+    "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
@@ -90,6 +92,7 @@ class ExactDiscreteRoPECertificate:
     common_collision_gap_reaches_context: bool
     guaranteed_common_gap_collision_pair_count: int
     guaranteed_common_gap_multiple_pair_count: int
+    total_bank_collision_pair_count: int
     sample_collision_pairs: tuple[tuple[int, int], ...]
     assumptions: tuple[str, ...]
     explanation: str
@@ -387,6 +390,7 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
         common_collision_gap_reaches_context=reaches_context,
         guaranteed_common_gap_collision_pair_count=guaranteed_pair_count,
         guaranteed_common_gap_multiple_pair_count=guaranteed_multiple_pair_count,
+        total_bank_collision_pair_count=guaranteed_multiple_pair_count,
         sample_collision_pairs=sample_collision_pairs(config.context_length, collision_gap),
         assumptions=(
             "Positions are natural numbers in [0, context_length).",
@@ -397,6 +401,7 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
             "Lean theorem AIRA-T0028 certifies every counted start at the common collision gap as an all-channel collision.",
             "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
             "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
+            "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model.",
         ),
         explanation=(
             "PASS: the common exact collision gap is at least the context length, so no two unequal "
@@ -443,7 +448,8 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         f"exact_discrete_contract={exact_status} common_collision_gap={gap} "
         f"period_count={exact.period_count} "
         f"guaranteed_common_gap_collision_pair_count={exact.guaranteed_common_gap_collision_pair_count} "
-        f"guaranteed_common_gap_multiple_pair_count={exact.guaranteed_common_gap_multiple_pair_count}",
+        f"guaranteed_common_gap_multiple_pair_count={exact.guaranteed_common_gap_multiple_pair_count} "
+        f"total_bank_collision_pair_count={exact.total_bank_collision_pair_count}",
         f"real_phase_margin={margin_status} worst_margin_radians={worst_margin} "
         f"worst_gap={worst_gap} scanned_gaps={margin.scanned_gap_count}",
         f"real_phase_formal_precursors={','.join(margin.formal_precursor_theorem_ids)} "

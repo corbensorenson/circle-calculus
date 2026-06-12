@@ -9858,6 +9858,12 @@
           "lean_name": "Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap",
           "name": "Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0036",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap",
+          "name": "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -9984,6 +9990,12 @@
           "lean_name": "Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap",
           "name": "Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0036",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap",
+          "name": "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -10044,6 +10056,12 @@
           "id": "AIRA-T0035",
           "lean_name": "Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap",
           "name": "Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0036",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap",
+          "name": "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap",
           "status": "proved"
         }
       ],
@@ -10293,6 +10311,45 @@
           "id": "AIRA-T0035",
           "lean_name": "Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap",
           "name": "Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
+    },
+    {
+      "dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0078",
+        "COMMON-0083"
+      ],
+      "forbidden_meanings": [
+        "A real-valued RoPE collision count.",
+        "A claim about model quality, context length, speed, memory, or perplexity.",
+        "A count for undeclared or floating-point channels outside the integer-period bank model."
+      ],
+      "formal_definition": "For a finite integer-period RoPE bank, Lean theorem `Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap` proves that all-channel collision for ordered positions is equivalent to the period-bank LCM dividing the position gap. The executable total bank count therefore sums `context - multiple * lcm` over positive in-context multiples of that LCM.",
+      "id": "COMMON-0084",
+      "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+      "intuition": "All channels repeat together exactly at multiples of their shared period-bank LCM, so the integer-model bank collision count is a finite sum over those shared repeats.",
+      "kind": "metric",
+      "name": "RoPE period-bank LCM collision count",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "bank_collision_pairs(context,lcm(periods))",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIRA-T0036",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap",
+          "name": "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap",
           "status": "proved"
         }
       ],
