@@ -373,7 +373,29 @@ class StrideFamilySparseAttentionBenchmarkResult:
     average_single_stride_candidate_count: float
     average_local_candidate_count: float
     average_full_candidate_count: float
+    coverage_certificate: "StrideFamilyCoverageCertificate"
     note: str = "Synthetic stride-family sparse-attention reachability fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
+class StrideFamilyCoverageCertificate:
+    sequence_length: int
+    strides: tuple[int, ...]
+    path_length: int
+    local_window: int
+    covered_lags: tuple[int, ...]
+    uncovered_lags: tuple[int, ...]
+    covered_lag_count: int
+    uncovered_lag_count: int
+    candidate_budget_per_query: int
+    full_attention_budget: int
+    coverage_complete: bool
+    coverage_ratio: float
+    theorem_ids: tuple[str, ...] = ("AIT-T0016", "AIT-T0017", "AIT-T0020")
+    note: str = (
+        "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
+        "for the declared local-window plus stride-family plan, not model-quality evidence."
+    )
 
 
 @dataclass(frozen=True)
@@ -1461,6 +1483,60 @@ def stride_family_attention_candidates(
     return _unique_preserving_order(tuple(candidates))
 
 
+def stride_family_covered_lags(
+    sequence_length: int,
+    strides: Sequence[int],
+    path_length: int,
+    local_window: int,
+) -> tuple[int, ...]:
+    """Return exact positive lags covered by local-window plus stride-family steps."""
+    _require_positive(sequence_length, "sequence_length")
+    normalized_strides = normalize_stride_family(strides)
+    _require_positive(path_length, "path_length")
+    _require_positive(local_window, "local_window")
+    covered: list[int] = list(range(1, min(local_window, sequence_length - 1) + 1))
+    for stride in normalized_strides:
+        for step in range(1, path_length + 1):
+            lag = (step * stride) % sequence_length
+            if lag != 0:
+                covered.append(lag)
+    return _unique_preserving_order(tuple(covered))
+
+
+def certify_stride_family_coverage(
+    sequence_length: int,
+    strides: Sequence[int],
+    path_length: int,
+    local_window: int,
+) -> StrideFamilyCoverageCertificate:
+    """Emit an exact finite lag coverage/gap certificate for a stride family."""
+    covered = stride_family_covered_lags(sequence_length, strides, path_length, local_window)
+    covered_set = set(covered)
+    uncovered = tuple(lag for lag in range(1, sequence_length) if lag not in covered_set)
+    candidate_budget = len(stride_family_attention_candidates(
+        sequence_length,
+        0,
+        strides,
+        path_length,
+        local_window,
+    ))
+    positive_lag_count = max(0, sequence_length - 1)
+    return StrideFamilyCoverageCertificate(
+        sequence_length=sequence_length,
+        strides=normalize_stride_family(strides),
+        path_length=path_length,
+        local_window=local_window,
+        covered_lags=covered,
+        uncovered_lags=uncovered,
+        covered_lag_count=len(covered),
+        uncovered_lag_count=len(uncovered),
+        candidate_budget_per_query=candidate_budget,
+        full_attention_budget=sequence_length,
+        coverage_complete=len(uncovered) == 0,
+        coverage_ratio=1.0 if positive_lag_count == 0 else len(covered) / positive_lag_count,
+    )
+
+
 def structured_hybrid_target_lags(
     query_indices: Sequence[int],
     *,
@@ -1715,6 +1791,12 @@ def run_stride_family_sparse_attention_benchmark(
         for query_index in query_indices
     )
     full_sets = tuple(tuple(range(sequence_length)) for _ in query_indices)
+    coverage_certificate = certify_stride_family_coverage(
+        sequence_length,
+        normalized_strides,
+        path_length,
+        local_window,
+    )
 
     return StrideFamilySparseAttentionBenchmarkResult(
         sequence_length=sequence_length,
@@ -1771,6 +1853,7 @@ def run_stride_family_sparse_attention_benchmark(
         average_single_stride_candidate_count=average_candidate_count(single_stride_sets),
         average_local_candidate_count=average_candidate_count(local_sets),
         average_full_candidate_count=average_candidate_count(full_sets),
+        coverage_certificate=coverage_certificate,
     )
 
 

@@ -50,7 +50,12 @@ def main() -> None:
         f"avg_family_candidates={result.average_family_candidate_count:.3f} "
         f"avg_single_stride_candidates={result.average_single_stride_candidate_count:.3f} "
         f"avg_local_candidates={result.average_local_candidate_count:.3f} "
-        f"avg_full_candidates={result.average_full_candidate_count:.3f}"
+        f"avg_full_candidates={result.average_full_candidate_count:.3f} "
+        f"covered_lag_count={result.coverage_certificate.covered_lag_count} "
+        f"uncovered_lag_count={result.coverage_certificate.uncovered_lag_count} "
+        f"coverage_complete={result.coverage_certificate.coverage_complete} "
+        f"coverage_ratio={result.coverage_certificate.coverage_ratio:.3f} "
+        f"uncovered_lag_sample={result.coverage_certificate.uncovered_lags[:12]}"
     )
 
 

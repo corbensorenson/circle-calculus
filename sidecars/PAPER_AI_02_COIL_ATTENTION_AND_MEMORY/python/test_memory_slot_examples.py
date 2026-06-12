@@ -1,6 +1,7 @@
 from circle_math.applications.circle_ai import (
     active_token_counts_by_budget,
     average_candidate_count,
+    certify_stride_family_coverage,
     coil_attention_path,
     content_route_label,
     fit_loop_budget_lookup,
@@ -52,6 +53,7 @@ from circle_math.applications.circle_ai import (
     run_token_level_recurrence_benchmark,
     shifted_recurrence_resolutions,
     stride_family_attention_candidates,
+    stride_family_covered_lags,
     structured_stride_family_target_lags,
     structured_hybrid_target_lags,
     token_active_at_step,
@@ -282,6 +284,7 @@ def test_stride_family_attention_candidates_union_multiple_coils() -> None:
     assert retrieval_target_index(120, 50, 14) in candidates
     assert retrieval_target_index(120, 50, 26) in candidates
     assert retrieval_target_index(120, 50, 39) in candidates
+    assert stride_family_covered_lags(120, (7, 13), 3, 4) == (1, 2, 3, 4, 7, 14, 21, 13, 26, 39)
 
 
 def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control() -> None:
@@ -319,6 +322,14 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     assert result.average_single_stride_candidate_count == 7.0
     assert result.average_local_candidate_count == 4.0
     assert result.average_full_candidate_count == 120.0
+    assert result.coverage_certificate == certify_stride_family_coverage(120, (7, 13), 3, 4)
+    assert result.coverage_certificate.covered_lags == (1, 2, 3, 4, 7, 14, 21, 13, 26, 39)
+    assert result.coverage_certificate.covered_lag_count == 10
+    assert result.coverage_certificate.uncovered_lag_count == 109
+    assert result.coverage_certificate.uncovered_lags[:5] == (5, 6, 8, 9, 10)
+    assert not result.coverage_certificate.coverage_complete
+    assert result.coverage_certificate.candidate_budget_per_query == 10
+    assert result.coverage_certificate.full_attention_budget == 120
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
     assert result.note.endswith("not a model-quality claim.")

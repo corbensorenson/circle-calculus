@@ -2,8 +2,8 @@ import { mod, positiveInt } from "../shared/circle_math_core.js";
 import { addLabeledNumber, addOutput, addWidgetHeader, clear, renderCircleSvg } from "../shared/svg_helpers.js";
 import { loadJson, mountWidgets, statusClass, statusLabel } from "../shared/widget_base.js";
 
-const THEOREM_IDS = ["AIT-T0015", "AIT-T0016", "AIT-T0017", "AIT-T0018", "AIT-T0019"];
-const DICTIONARY_IDS = ["COMMON-0075", "COMMON-0047", "COMMON-0029"];
+const THEOREM_IDS = ["AIT-T0015", "AIT-T0016", "AIT-T0017", "AIT-T0018", "AIT-T0019", "AIT-T0020"];
+const DICTIONARY_IDS = ["COMMON-0075", "COMMON-0079", "COMMON-0047", "COMMON-0029"];
 
 function coilAttentionPath(sequenceLength, queryIndex, stride, pathLength) {
   return Array.from(
@@ -37,6 +37,40 @@ function strideFamilyCandidates(sequenceLength, queryIndex, strides, pathLength,
     candidates.push(...coilAttentionPath(sequenceLength, queryIndex, stride, pathLength));
   }
   return uniquePreservingOrder(candidates);
+}
+
+function strideFamilyCoveredLags(sequenceLength, strides, pathLength, localWindow) {
+  const covered = Array.from(
+    { length: Math.min(localWindow, sequenceLength - 1) },
+    (_, index) => index + 1,
+  );
+  for (const stride of strides) {
+    for (let step = 1; step <= pathLength; step += 1) {
+      const lag = mod(step * stride, sequenceLength);
+      if (lag !== 0) covered.push(lag);
+    }
+  }
+  return uniquePreservingOrder(covered);
+}
+
+function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, localWindow) {
+  const coveredLags = strideFamilyCoveredLags(sequenceLength, strides, pathLength, localWindow);
+  const covered = new Set(coveredLags);
+  const uncoveredLags = [];
+  for (let lag = 1; lag < sequenceLength; lag += 1) {
+    if (!covered.has(lag)) uncoveredLags.push(lag);
+  }
+  const candidateBudget = strideFamilyCandidates(sequenceLength, 0, strides, pathLength, localWindow).length;
+  return {
+    coveredLags,
+    uncoveredLags,
+    coveredLagCount: coveredLags.length,
+    uncoveredLagCount: uncoveredLags.length,
+    candidateBudgetPerQuery: candidateBudget,
+    fullAttentionBudget: sequenceLength,
+    coverageComplete: uncoveredLags.length === 0,
+    coverageRatio: sequenceLength <= 1 ? 1 : coveredLags.length / (sequenceLength - 1),
+  };
 }
 
 function fullAttentionIndices(sequenceLength) {
@@ -207,6 +241,12 @@ function appendRecord(output, values, theoremById) {
   const inspectedLag = structuredLagForQuery(inspectedQuery);
   const inspectedTarget = retrievalTargetIndex(values.sequenceLength, inspectedQuery, inspectedLag);
   const inspectedCandidates = familyForQuery(inspectedQuery);
+  const coverage = strideFamilyCoverageCertificate(
+    values.sequenceLength,
+    strides,
+    values.pathLength,
+    values.localWindow,
+  );
 
   const record = document.createElement("section");
   record.className = "seed-rule-record";
@@ -226,6 +266,14 @@ function appendRecord(output, values, theoremById) {
     `local window: ${values.localWindow}`,
     `structured lag sample: ${Array.from({ length: 8 }, (_, index) => structuredLagForQuery(index)).join(", ")}`,
     `control lag sample: ${Array.from({ length: 8 }, (_, index) => controlLagForQuery(index)).join(", ")}`,
+    `covered positive lags: ${formatCandidates(coverage.coveredLags, 18)}`,
+    `uncovered lag sample: ${formatCandidates(coverage.uncoveredLags, 18)}`,
+    `covered lag count: ${coverage.coveredLagCount}`,
+    `uncovered lag count: ${coverage.uncoveredLagCount}`,
+    `coverage complete: ${coverage.coverageComplete}`,
+    `coverage ratio: ${formatNumber(coverage.coverageRatio)}`,
+    `candidate budget per query: ${coverage.candidateBudgetPerQuery}`,
+    `full-attention budget: ${coverage.fullAttentionBudget}`,
     `inspected query: ${inspectedQuery}`,
     `inspected structured lag: ${inspectedLag}`,
     `inspected target: ${inspectedTarget}`,
@@ -238,7 +286,7 @@ function appendRecord(output, values, theoremById) {
 
   const warning = document.createElement("p");
   warning.className = "warning-box";
-  warning.textContent = "Boundary: this widget checks finite stride-family candidate-set reachability only. It is not a sparse-attention quality, context-length, runtime, memory-scaling, throughput, or attention-replacement claim.";
+  warning.textContent = "Boundary: this widget checks finite stride-family candidate-set reachability and gap certificates only. It is not a sparse-attention quality, context-length, runtime, memory-scaling, throughput, or attention-replacement claim.";
   record.appendChild(warning);
 
   appendBadgeRow(record, theoremById);

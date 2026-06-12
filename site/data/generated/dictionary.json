@@ -4535,6 +4535,12 @@
           "lean_name": "Circle.Applications.coilStrideFamilyLagReach_add_context",
           "name": "Circle.Applications.coilStrideFamilyLagReach_add_context",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0020",
+          "lean_name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
+          "name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -4661,6 +4667,12 @@
           "id": "AIT-T0019",
           "lean_name": "Circle.Applications.hybridFamilyLagReach_of_member_step",
           "name": "Circle.Applications.hybridFamilyLagReach_of_member_step",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0020",
+          "lean_name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
+          "name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
           "status": "proved"
         }
       ],
@@ -5620,6 +5632,12 @@
           "id": "AIT-T0019",
           "lean_name": "Circle.Applications.hybridFamilyLagReach_of_member_step",
           "name": "Circle.Applications.hybridFamilyLagReach_of_member_step",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0020",
+          "lean_name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
+          "name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
           "status": "proved"
         }
       ],
@@ -9664,6 +9682,12 @@
           "lean_name": "Circle.Applications.hybridFamilyLagReach_of_member_step",
           "name": "Circle.Applications.hybridFamilyLagReach_of_member_step",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0020",
+          "lean_name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
+          "name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -9882,6 +9906,45 @@
           "id": "AIRA-T0028",
           "lean_name": "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
           "name": "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
+    },
+    {
+      "dependencies": [
+        "COMMON-0028",
+        "COMMON-0029",
+        "COMMON-0047",
+        "COMMON-0075"
+      ],
+      "forbidden_meanings": [
+        "A neural attention-quality benchmark.",
+        "A proof that sparse attention is faster or uses less memory.",
+        "A claim that uncovered lags are irrelevant to a real task."
+      ],
+      "formal_definition": "`circle_math.applications.circle_ai.certify_stride_family_coverage`, a finite certificate listing every positive lag covered by a local-window plus stride-family sparse-attention plan and every uncovered lag as a gap certificate; Lean theorem `Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family` states the corresponding gap predicate.",
+      "id": "COMMON-0079",
+      "introduced_in": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+      "intuition": "Instead of showing only successful example lags, the certificate exposes the holes in a sparse plan.",
+      "kind": "metric",
+      "name": "Stride-family sparse coverage certificate",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "StrideFamilyCoverage(covered,uncovered)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIT-T0020",
+          "lean_name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
+          "name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
           "status": "proved"
         }
       ],

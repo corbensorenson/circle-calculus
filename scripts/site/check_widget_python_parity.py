@@ -93,7 +93,9 @@ from circle_math.applications import (
     run_token_level_recurrence_benchmark,
     run_winding_aware_position_benchmark,
     synthetic_winding_position_dataset,
+    certify_stride_family_coverage,
     stride_family_attention_candidates,
+    stride_family_covered_lags,
     structured_stride_family_target_lags,
     token_active_at_step,
     token_recurrence_budget,
@@ -1278,6 +1280,21 @@ def js_stride_family_attention_candidates(
     for stride in strides:
         candidates.extend(js_coil_attention_path(sequence_length, query_index, stride, path_length))
     return js_unique_preserving_order(tuple(candidates))
+
+
+def js_stride_family_covered_lags(
+    sequence_length: int,
+    strides: tuple[int, ...],
+    path_length: int,
+    local_window: int,
+) -> tuple[int, ...]:
+    covered = list(range(1, min(local_window, sequence_length - 1) + 1))
+    for stride in strides:
+        for step in range(1, path_length + 1):
+            lag = js_mod(step * stride, sequence_length)
+            if lag != 0:
+                covered.append(lag)
+    return js_unique_preserving_order(tuple(covered))
 
 
 def js_retrieval_target_index(sequence_length: int, query_index: int, target_lag: int) -> int:
@@ -3235,6 +3252,18 @@ def main() -> int:
             js_stride_family_attention_candidates(sequence_length, query, wrong_strides, path_length, local_window)
             for query in query_indices
         )
+        covered_lags = stride_family_covered_lags(sequence_length, strides, path_length, local_window)
+        js_covered_lags = js_stride_family_covered_lags(sequence_length, strides, path_length, local_window)
+        assert covered_lags == js_covered_lags
+        coverage_certificate = certify_stride_family_coverage(sequence_length, strides, path_length, local_window)
+        assert coverage_certificate.covered_lags == js_covered_lags
+        assert coverage_certificate.uncovered_lags == tuple(
+            lag for lag in range(1, sequence_length) if lag not in set(js_covered_lags)
+        )
+        assert coverage_certificate.covered_lag_count == len(js_covered_lags)
+        assert coverage_certificate.uncovered_lag_count == sequence_length - 1 - len(js_covered_lags)
+        assert coverage_certificate.candidate_budget_per_query == len(js_family_sets[0])
+        assert coverage_certificate.full_attention_budget == sequence_length
         assert family_sets == js_family_sets
         assert single_sets == js_single_sets
         assert wrong_family_sets == js_wrong_family_sets
@@ -3293,6 +3322,7 @@ def main() -> int:
         assert benchmark.average_single_stride_candidate_count == js_average_candidate_count(js_single_sets)
         assert benchmark.average_local_candidate_count == js_average_candidate_count(local_sets)
         assert benchmark.average_full_candidate_count == js_average_candidate_count(full_sets)
+        assert benchmark.coverage_certificate == coverage_certificate
 
     learned_content_cases = [
         (64, 64, 32, 2, 3, 21, 3, 7, 3, 8),

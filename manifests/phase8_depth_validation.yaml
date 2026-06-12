@@ -42,8 +42,8 @@ targets:
       - "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md"
       - "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py"
       - "site/chapters/applications/ai.qmd"
-    dictionary_dependencies: ["COMMON-0075"]
-    next_action: "Design the smallest finite coverage predicate whose forward direction reuses current reachability theorems and whose reverse direction exposes uncovered lags."
+    dictionary_dependencies: ["COMMON-0075", "COMMON-0079"]
+    next_action: "The first gap-certificate iff and Python coverage certificate are now landed through AIT-T0020 and COMMON-0079; next extend from finite generated-lag certificates toward stronger coverage/no-gap conditions with budget formulas."
     guardrail: "Do not confuse lag coverage with neural attention quality or runtime."
 
   - id: P8-DEPTH-003

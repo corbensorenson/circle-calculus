@@ -734,11 +734,13 @@ papers:
       - AIT-T0017
       - AIT-T0018
       - AIT-T0019
+      - AIT-T0020
     dictionary_ids:
       - COMMON-0028
       - COMMON-0029
       - COMMON-0047
       - COMMON-0075
+      - COMMON-0079
       - COMMON-0052
       - COMMON-0053
       - COMMON-0054

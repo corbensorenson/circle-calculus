@@ -2227,6 +2227,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
     blocker: ""
+  - id: AIT-T0020
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family
+    informal_statement: "A local-window plus stride-family sparse-attention plan misses a lag if and only if neither its local window nor any admitted stride-family coil path reaches that lag."
+    formal_statement: "forall {n window pathLength lag : Nat} {strides : List Nat}, not Circle.Applications.hybridFamilyLagReach n window pathLength lag strides <-> not Circle.Applications.localLagReach window lag and not Circle.Applications.coilStrideFamilyLagReach n pathLength lag strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

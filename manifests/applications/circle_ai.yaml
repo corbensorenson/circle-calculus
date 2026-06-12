@@ -499,7 +499,7 @@ benchmarks:
     status: exploratory_python
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
     script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py
-    description: "Deterministic stride-family sparse-attention reachability fixture comparing a finite family of coil strides against local-window, single-stride, wrong-family, and full-attention baselines on structured and nonstructured lag controls with candidate-budget diagnostics."
+    description: "Deterministic stride-family sparse-attention reachability fixture comparing a finite family of coil strides against local-window, single-stride, wrong-family, and full-attention baselines on structured and nonstructured lag controls, now emitting covered-lag and uncovered-lag gap certificates plus candidate-budget diagnostics."
   - id: AIM-B0010
     status: exploratory_python
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_learned_content_gate_retrieval_benchmark_has_baselines_and_controls

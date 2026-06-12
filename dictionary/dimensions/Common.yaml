@@ -791,6 +791,18 @@ entries:
       - "A proof that sparse attention improves language models."
       - "Evidence that stride-family attention improves quality, context length, runtime, memory, or throughput."
       - "A replacement for full attention, sliding-window attention, learned sparse attention, Hyena-like mixers, recurrent memory, RWKV, Mamba, or state-space baselines."
+  - id: COMMON-0079
+    name: "Stride-family sparse coverage certificate"
+    kind: metric
+    symbol: "StrideFamilyCoverage(covered,uncovered)"
+    formal_definition: "`circle_math.applications.circle_ai.certify_stride_family_coverage`, a finite certificate listing every positive lag covered by a local-window plus stride-family sparse-attention plan and every uncovered lag as a gap certificate; Lean theorem `Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family` states the corresponding gap predicate."
+    intuition: "Instead of showing only successful example lags, the certificate exposes the holes in a sparse plan."
+    dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075"]
+    introduced_in: "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+    forbidden_meanings:
+      - "A neural attention-quality benchmark."
+      - "A proof that sparse attention is faster or uses less memory."
+      - "A claim that uncovered lags are irrelevant to a real task."
   - id: COMMON-0076
     name: "Discrete RoPE phase bank"
     kind: model

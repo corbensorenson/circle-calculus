@@ -179,6 +179,24 @@ theorem hybridFamilyLagReach_of_member_step
   hybridFamilyLagReach_of_family
     (coilStrideFamilyLagReach_of_member_step hmem hpos hstep)
 
+/-- A local+stride-family sparse plan misses a lag exactly when neither the
+local window nor any admitted stride-family coil path reaches it. This is the
+gap-certificate form of the sparse-attention reachability contract. -/
+theorem hybridFamilyLagGap_iff_not_local_and_not_family
+    {n window pathLength lag : Nat} {strides : List Nat} :
+    ¬ hybridFamilyLagReach n window pathLength lag strides ↔
+      ¬ localLagReach window lag ∧
+        ¬ coilStrideFamilyLagReach n pathLength lag strides := by
+  unfold hybridFamilyLagReach
+  constructor
+  · intro hgap
+    exact ⟨fun hlocal => hgap (Or.inl hlocal),
+      fun hfamily => hgap (Or.inr hfamily)⟩
+  · rintro ⟨hnotlocal, hnotfamily⟩ hreach
+    cases hreach with
+    | inl hlocal => exact hnotlocal hlocal
+    | inr hfamily => exact hnotfamily hfamily
+
 /-! ### RoPE relative position -/
 
 /-- The RoPE phase of a token at position `pos`: rotation by `pos` from the base node. -/

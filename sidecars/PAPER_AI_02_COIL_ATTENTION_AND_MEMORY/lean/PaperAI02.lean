@@ -80,5 +80,6 @@ namespace Circle.PaperAI02
 #check Circle.Applications.hybridFamilyLagReach_of_local
 #check Circle.Applications.hybridFamilyLagReach_of_family
 #check Circle.Applications.hybridFamilyLagReach_of_member_step
+#check Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family
 
 end Circle.PaperAI02
