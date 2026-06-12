@@ -4,7 +4,7 @@ This note is a durable audit trail for the real-valued RoPE phase-margin theorem
 
 ## Current Proved Bridge
 
-The real-phase theorem spine currently runs from `AIRA-T0029` through `AIRA-T0033`, then `AIRA-T0037` through `AIRA-T0045`, plus `AIRA-T0047`, `AIRA-T0050`, and `AIRA-T0053`.
+The real-phase theorem spine currently runs from `AIRA-T0029` through `AIRA-T0033`, then `AIRA-T0037` through `AIRA-T0045`, plus `AIRA-T0047`, `AIRA-T0050`, `AIRA-T0053`, and `AIRA-T0054`.
 
 `AIRA-T0041` is the Diophantine-scaling bridge:
 
@@ -29,6 +29,8 @@ This is not a lower-bound theorem. It is the normalization step that makes the n
 `AIRA-T0044` proves the monotonic context-transfer law: a finite-context margin certified for a larger horizon applies to every smaller requested horizon. `AIRA-T0047` proves margin-value monotonicity: a larger certified lower bound also proves any smaller advertised margin over the same context. `AIRA-T0045` packages context transfer at the bank level, so a channel margin certified up to `certifiedContext` can be reused for any `requestedContext <= certifiedContext`. `AIRA-T0050` packages both transfers at the bank level, so a larger-context, larger-margin channel certificate can be reused for a smaller requested context and smaller advertised margin in one final no-near-turn statement.
 
 `AIRA-T0053` proves a negative guardrail: if the turn ratio is an integer number of full turns per position and the context includes adjacent positions, then the finite-context margin predicate is equivalent to a nonpositive advertised margin. Whole-turn channels therefore cannot supply a positive real-phase separation certificate.
+
+`AIRA-T0054` proves the generated-gap bridge: the finite-context margin predicate is equivalent to checking the same lower bound for every positive gap in `List.range context`. This is a finite gap-enumeration theorem, not yet a finite integer-turn search theorem.
 
 ## Local Mathlib Anchors
 
@@ -68,6 +70,7 @@ The important warning is `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irratio
 7. Use `AIRA-T0047` to report a conservative smaller margin from a stronger certified lower bound.
 8. Use `AIRA-T0050` when both the requested context and advertised margin are smaller than the certified channel certificate.
 9. Use `AIRA-T0053` to reject integer turn-ratio channels as positive finite-margin witnesses once the unit gap is in scope.
+10. Use `AIRA-T0054` to connect generated gap lists to the abstract finite-context margin predicate before adding a nearest-integer or continued-fraction certificate for each gap.
 
 ## Guardrails
 
@@ -75,4 +78,5 @@ The important warning is `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irratio
 - Dirichlet-style results give close returns or upper bounds; they do not by themselves prove a margin lower bound.
 - An irrational turn ratio does not have a global positive no-return margin.
 - An integer turn ratio has zero finite-context margin once adjacent positions are in scope.
+- A generated gap list only handles the finite `gap` domain; it does not by itself discharge the integer-turn lower-bound obligation.
 - A full real RoPE bank certificate needs channel-wise finite-context lower bounds before the Living Book or certifier can mark the real-phase scan as formally certified.

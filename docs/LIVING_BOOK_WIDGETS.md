@@ -326,7 +326,7 @@ Companion non-widget prototype: `AIM-B0015` uses `circle_math.applications.circl
 
 - Inputs: head dimension, RoPE base, inspected context length, numerical tolerance, and integer-period discretization policy.
 - Outputs: discretized periods, exact discrete pass/fail, common collision gap, common-gap pair counts, bounded prefix collision reports, bounded selected-subfamily pass reports in the Python/CLI certificate, first exact pass prefix when reported, sample exact collision pairs when present, numerical real-phase margin, theorem links, and dictionary links.
-- Theorem ids: `AIRA-T0021`, `AIRA-T0022`, `AIRA-T0023`, `AIRA-T0024`, `AIRA-T0025`, `AIRA-T0026`, `AIRA-T0027`, `AIRA-T0028`, `AIRA-T0034`, `AIRA-T0035`, `AIRA-T0036`, `AIRA-T0046`, `AIRA-T0048`, `AIRA-T0049`, `AIRA-T0051`, and `AIRA-T0052`, plus real-phase precursor ids `AIRA-T0029` through `AIRA-T0033`, `AIRA-T0037` through `AIRA-T0045`, `AIRA-T0047`, `AIRA-T0050`, and `AIRA-T0053`.
+- Theorem ids: `AIRA-T0021`, `AIRA-T0022`, `AIRA-T0023`, `AIRA-T0024`, `AIRA-T0025`, `AIRA-T0026`, `AIRA-T0027`, `AIRA-T0028`, `AIRA-T0034`, `AIRA-T0035`, `AIRA-T0036`, `AIRA-T0046`, `AIRA-T0048`, `AIRA-T0049`, `AIRA-T0051`, and `AIRA-T0052`, plus real-phase precursor ids `AIRA-T0029` through `AIRA-T0033`, `AIRA-T0037` through `AIRA-T0045`, `AIRA-T0047`, `AIRA-T0050`, `AIRA-T0053`, and `AIRA-T0054`.
 - Dictionary ids: `COMMON-0076` and `COMMON-0077`.
 - Python references: `circle_math.applications.rope_certifier.certify_rope_positions` and `scripts/rope_certify.py`.
 - Guardrail: exact pass/fail is only for the integer-period discretized phase-bank model. The real-phase margin is numerical evidence only, not a Lean proof, model-quality result, context-length result, speed result, or memory result.

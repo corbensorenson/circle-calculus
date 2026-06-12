@@ -29,6 +29,7 @@ from circle_math.applications import (
     sample_collision_pairs,
     scan_turn_ratio_finite_margin,
     single_period_collision_pair_count,
+    turn_ratio_finite_margin_gap_candidates,
     turn_ratio_margin_covers_context,
     turn_ratio_margin_covers_margin,
     turn_ratio_margin_covers_request,
@@ -105,6 +106,7 @@ def test_real_phase_nat_turn_error_matches_endpoint_precursor_shape() -> None:
     assert "AIRA-T0047" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0050" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0053" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0054" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
 def test_real_phase_turn_separation_rules_out_smaller_near_turn() -> None:
@@ -145,6 +147,7 @@ def test_real_phase_scaled_turn_ratio_error_matches_int_turn_error() -> None:
 
 
 def test_turn_ratio_finite_margin_scan_matches_scaled_error() -> None:
+    assert turn_ratio_finite_margin_gap_candidates(context_length=5) == (1, 2, 3, 4)
     margin, gap, turns = scan_turn_ratio_finite_margin(
         turn_ratio=1.0 / 8.0,
         context_length=5,
@@ -175,6 +178,13 @@ def test_integer_turn_ratio_has_zero_finite_margin_once_unit_gap_exists() -> Non
     assert turns == 2
     assert turn_ratio_nearest_integer_error(turn_ratio=2.0, gap=1, turns=2) == 0.0
     assert "AIRA-T0053" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+
+
+def test_turn_ratio_finite_margin_gap_candidates_match_range_bridge() -> None:
+    assert turn_ratio_finite_margin_gap_candidates(context_length=0) == ()
+    assert turn_ratio_finite_margin_gap_candidates(context_length=1) == ()
+    assert turn_ratio_finite_margin_gap_candidates(context_length=6) == (1, 2, 3, 4, 5)
+    assert "AIRA-T0054" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
 def test_turn_ratio_margin_context_transfer_helper_is_monotone() -> None:

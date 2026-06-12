@@ -11250,6 +11250,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0054",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -11483,6 +11489,12 @@
           "id": "AIRA-T0053",
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0054",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds",
           "status": "proved"
         }
       ],
@@ -12095,6 +12107,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0054",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -12307,6 +12325,12 @@
           "id": "AIRA-T0053",
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0054",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds",
           "status": "proved"
         }
       ],
@@ -12618,6 +12642,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0054",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -12694,6 +12724,12 @@
           "id": "AIRA-T0053",
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0054",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds",
           "status": "proved"
         }
       ],

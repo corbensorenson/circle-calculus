@@ -76,6 +76,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0047",
     "AIRA-T0050",
     "AIRA-T0053",
+    "AIRA-T0054",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -96,6 +97,7 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin",
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
     "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
+    "Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -546,6 +548,19 @@ def turn_ratio_nearest_integer_error(*, turn_ratio: float, gap: int, turns: int)
     return abs(gap * turn_ratio - turns)
 
 
+def turn_ratio_finite_margin_gap_candidates(*, context_length: int) -> tuple[int, ...]:
+    """Positive gap candidates for a finite-context turn-ratio margin scan.
+
+    This mirrors the positive members of Lean's ``List.range context`` bridge:
+    a finite-context margin only needs gaps ``1 <= gap < context_length``.
+    The remaining integer-turn quantifier is still mathematical content; this
+    helper only fixes the finite gap domain.
+    """
+    if context_length < 0:
+        raise ValueError("context_length must be nonnegative")
+    return tuple(range(1, context_length))
+
+
 def scan_turn_ratio_finite_margin(
     *,
     turn_ratio: float,
@@ -562,7 +577,7 @@ def scan_turn_ratio_finite_margin(
     best_margin = float("inf")
     best_gap: int | None = None
     best_turns: int | None = None
-    for gap in range(1, context_length):
+    for gap in turn_ratio_finite_margin_gap_candidates(context_length=context_length):
         nearest_turn = int(floor(gap * turn_ratio + 0.5))
         for turns in (nearest_turn - 1, nearest_turn, nearest_turn + 1):
             margin = turn_ratio_nearest_integer_error(

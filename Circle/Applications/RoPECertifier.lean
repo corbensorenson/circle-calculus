@@ -634,6 +634,24 @@ def ropeTurnRatioFiniteMargin (turnRatio margin : ℝ) (context : Nat) : Prop :=
   ∀ gap : Nat, 0 < gap → gap < context → ∀ turns : Int,
     margin ≤ ropeTurnRatioError turnRatio gap turns
 
+/-- The finite-context margin predicate is exactly the same as checking every
+positive gap in the generated context range.
+
+This is the first formal finite-search bridge for the real RoPE margin
+program. It does not reduce the remaining integer-turn quantifier; it only
+connects the abstract predicate to the concrete list of gaps a certifier or a
+future bounded proof artifact must cover. -/
+theorem ropeTurnRatioFiniteMargin_iff_range_gap_bounds
+    {turnRatio margin : ℝ} {context : Nat} :
+    ropeTurnRatioFiniteMargin turnRatio margin context ↔
+      ∀ gap : Nat, gap ∈ List.range context → 0 < gap →
+        ∀ turns : Int, margin ≤ ropeTurnRatioError turnRatio gap turns := by
+  constructor
+  · intro hmargin gap hgap_range hgap_pos turns
+    exact hmargin gap hgap_pos (List.mem_range.mp hgap_range) turns
+  · intro hbounds gap hgap_pos hgap_context turns
+    exact hbounds gap (List.mem_range.mpr hgap_context) hgap_pos turns
+
 /-- Integer turn ratios have no positive finite-context margin once the
 context contains the unit gap.
 
