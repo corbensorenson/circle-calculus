@@ -44,13 +44,13 @@ AIRA-T0021 through AIRA-T0026
 Collision counting:
 
 ```text
-AIRA-T0027, AIRA-T0028, AIRA-T0034, AIRA-T0035, AIRA-T0036
+AIRA-T0027, AIRA-T0028, AIRA-T0034, AIRA-T0035, AIRA-T0036, AIRA-T0046, AIRA-T0048, AIRA-T0049
 ```
 
 Real-phase theorem program, still conditional:
 
 ```text
-AIRA-T0029 through AIRA-T0033, AIRA-T0037 through AIRA-T0043
+AIRA-T0029 through AIRA-T0033, AIRA-T0037 through AIRA-T0045, AIRA-T0047
 ```
 
 ## Known Boundaries
