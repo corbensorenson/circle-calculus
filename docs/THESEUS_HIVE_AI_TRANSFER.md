@@ -236,6 +236,13 @@ The companion Theseus-Hive workspace now has a report-only consumer:
 ../Theseus-Hive/reports/circle_trace_lane_integrity_audit.md
 ```
 
+When the generated contract pack exists beside the private Theseus-Hive
+workspace, `scripts/run_capability_ratchet.py` now runs the consumer, structural
+smoke, deterministic proxy, and aggregate real-workload attachment layers as
+part of the compiled local ratchet. The scored private benchmark layer remains
+explicitly data-gated and should be run only when the required private
+candidate, router, context, and provenance artifacts are present.
+
 Run it from Theseus-Hive with:
 
 ```bash
