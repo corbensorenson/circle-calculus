@@ -80,12 +80,15 @@ namespace Circle.PaperAI02
 #check Circle.Applications.hybridLagReach
 #check Circle.Applications.localLagReach_of_le
 #check Circle.Applications.not_localLagReach_iff_window_lt_of_pos
+#check Circle.Applications.localLagReach_mono_window
 #check Circle.Applications.coilLagReach_of_step
+#check Circle.Applications.coilLagReach_mono_pathLength
 #check Circle.Applications.coilLagReach_add_context
 #check Circle.Applications.coilStrideFamilyLagReach
 #check Circle.Applications.hybridFamilyLagReach
 #check Circle.Applications.coilStrideFamilyLagReach_of_member_step
 #check Circle.Applications.coilStrideFamilyLagReach_add_context
+#check Circle.Applications.coilStrideFamilyLagReach_mono_pathLength
 #check Circle.Applications.coilStrideFamilyLagReach_cons_iff
 #check Circle.Applications.not_coilStrideFamilyLagReach_nil
 #check Circle.Applications.hybridLagReach_of_local
@@ -93,6 +96,7 @@ namespace Circle.PaperAI02
 #check Circle.Applications.hybridFamilyLagReach_of_local
 #check Circle.Applications.hybridFamilyLagReach_of_family
 #check Circle.Applications.hybridFamilyLagReach_of_member_step
+#check Circle.Applications.hybridFamilyLagReach_mono_window_pathLength
 #check Circle.Applications.hybridFamilyLagReach_cons_iff
 #check Circle.Applications.hybridFamilyLagReach_nil_iff_local
 #check Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family

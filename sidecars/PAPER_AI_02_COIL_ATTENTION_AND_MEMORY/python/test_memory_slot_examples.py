@@ -394,6 +394,10 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0024",
         "AIT-T0025",
         "AIT-T0028",
+        "AIT-T0029",
+        "AIT-T0030",
+        "AIT-T0031",
+        "AIT-T0032",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy

@@ -2694,6 +2694,62 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
     blocker: ""
+  - id: AIT-T0029
+    status: lean_proved
+    lean_name: Circle.Applications.localLagReach_mono_window
+    informal_statement: "Increasing the local sliding-window width cannot remove a locally reachable dependency lag."
+    formal_statement: "forall {smallWindow largeWindow lag : Nat}, smallWindow <= largeWindow -> Circle.Applications.localLagReach smallWindow lag -> Circle.Applications.localLagReach largeWindow lag"
+    dictionary_dependencies: ["COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0030
+    status: lean_proved
+    lean_name: Circle.Applications.coilLagReach_mono_pathLength
+    informal_statement: "Increasing an admitted coil path length cannot remove a reachable dependency lag."
+    formal_statement: "forall {n stride smallPath largePath lag : Nat}, smallPath <= largePath -> Circle.Applications.coilLagReach n stride smallPath lag -> Circle.Applications.coilLagReach n stride largePath lag"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0031
+    status: lean_proved
+    lean_name: Circle.Applications.coilStrideFamilyLagReach_mono_pathLength
+    informal_statement: "Increasing the shared path length of a finite stride family cannot remove a reachable dependency lag."
+    formal_statement: "forall {n smallPath largePath lag : Nat} {strides : List Nat}, smallPath <= largePath -> Circle.Applications.coilStrideFamilyLagReach n smallPath lag strides -> Circle.Applications.coilStrideFamilyLagReach n largePath lag strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0032
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyLagReach_mono_window_pathLength
+    informal_statement: "Increasing both the local-window width and the shared stride-family path length cannot remove a lag already covered by the sparse-attention plan."
+    formal_statement: "forall {n smallWindow largeWindow smallPath largePath lag : Nat} {strides : List Nat}, smallWindow <= largeWindow -> smallPath <= largePath -> Circle.Applications.hybridFamilyLagReach n smallWindow smallPath lag strides -> Circle.Applications.hybridFamilyLagReach n largeWindow largePath lag strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant
