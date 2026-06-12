@@ -697,6 +697,32 @@ theorem not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_co
     (left := left) (right := right) hmem hleft hright hfrequency_nonneg hfull_pos
     (ropeTurnRatioFiniteMargin_mono_context hcontext hmargin) htolerance
 
+/-- A larger-context, larger-margin certificate can be reused for a smaller
+requested context and a smaller advertised margin at the bank level.
+
+This is the certifier-facing real-phase transfer theorem: a future
+Diophantine proof or externally checked finite search can certify one channel
+with a conservative horizon and lower bound, while downstream reports may ask
+for a shorter context and a smaller published margin. -/
+theorem not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin
+    {frequencies : List ℝ} {frequency fullTurn requestedMargin certifiedMargin tolerance : ℝ}
+    {requestedContext certifiedContext left right : Nat}
+    (hcontext : requestedContext ≤ certifiedContext)
+    (hmargin_le : requestedMargin ≤ certifiedMargin)
+    (hmem : frequency ∈ frequencies)
+    (hleft : left < right) (hright : right < requestedContext)
+    (hfrequency_nonneg : 0 ≤ frequency) (hfull_pos : 0 < fullTurn)
+    (hmargin : ropeTurnRatioFiniteMargin (frequency / fullTurn) certifiedMargin certifiedContext)
+    (htolerance : tolerance < fullTurn * requestedMargin) :
+    ¬ ropeRealPhaseBankNearTurn frequencies fullTurn tolerance left right :=
+  not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin
+    (frequencies := frequencies) (frequency := frequency) (fullTurn := fullTurn)
+    (margin := requestedMargin) (tolerance := tolerance) (context := requestedContext)
+    (left := left) (right := right) hmem hleft hright hfrequency_nonneg hfull_pos
+    (ropeTurnRatioFiniteMargin_mono_context hcontext
+      (ropeTurnRatioFiniteMargin_mono_margin hmargin_le hmargin))
+    htolerance
+
 /-- A single separating channel rules out an all-channel real-phase near-turn
 collision at any smaller tolerance.
 

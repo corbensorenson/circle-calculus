@@ -260,6 +260,7 @@ from .rope_certifier import (
     single_period_collision_pair_count,
     turn_ratio_margin_covers_context,
     turn_ratio_margin_covers_margin,
+    turn_ratio_margin_covers_request,
     turn_ratio_nearest_integer_error,
     validate_rope_config,
 )
@@ -442,6 +443,7 @@ __all__ = [
     "scan_turn_ratio_finite_margin",
     "turn_ratio_margin_covers_context",
     "turn_ratio_margin_covers_margin",
+    "turn_ratio_margin_covers_request",
     "turn_ratio_nearest_integer_error",
     "rotate_kernel",
     "rotate_block_cyclic_kernel_rows",

@@ -10308,6 +10308,12 @@
           "lean_name": "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
           "name": "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0050",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -10517,6 +10523,12 @@
           "id": "AIRA-T0049",
           "lean_name": "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
           "name": "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0050",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
           "status": "proved"
         }
       ],
@@ -10871,6 +10883,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0050",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -11059,6 +11077,12 @@
           "id": "AIRA-T0047",
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0050",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
           "status": "proved"
         }
       ],
@@ -11270,6 +11294,12 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0050",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -11340,6 +11370,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0050",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -11358,7 +11394,7 @@
         "A formal proof of the current numerical floating-point scan.",
         "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
       ],
-      "formal_definition": "In Lean, `Circle.Applications.ropeTurnRatioFiniteMargin alpha margin context` means every positive natural gap below `context` is at least `margin` away from every integer turn under `Circle.Applications.ropeTurnRatioError alpha gap turns`. Theorem `Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin` proves that such a margin rules out one-channel real near-turn collision below the scaled tolerance `fullTurn * margin`; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_context` proves the same margin transfers from a larger certified context to any smaller requested context; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin` proves a larger certified margin also proves any smaller advertised margin over the same context.",
+      "formal_definition": "In Lean, `Circle.Applications.ropeTurnRatioFiniteMargin alpha margin context` means every positive natural gap below `context` is at least `margin` away from every integer turn under `Circle.Applications.ropeTurnRatioError alpha gap turns`. Theorem `Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin` proves that such a margin rules out one-channel real near-turn collision below the scaled tolerance `fullTurn * margin`; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_context` proves the same margin transfers from a larger certified context to any smaller requested context; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin` proves a larger certified margin also proves any smaller advertised margin over the same context; theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin` packages both downgrades at the bank level.",
       "id": "COMMON-0088",
       "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
       "intuition": "This is the shape a real RoPE certifier ultimately needs: a finite-context lower bound on nearest-integer returns for a channel's turn ratio, with explicit monotonic rules for reusing a larger scan/proof horizon on smaller contexts and for downgrading a certified lower bound to a conservative reported margin.",
@@ -11405,6 +11441,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0050",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -11425,10 +11467,10 @@
         "A completed continued-fraction or three-distance theorem.",
         "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
       ],
-      "formal_definition": "In Lean, theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin` proves that if a frequency belongs to a finite real-phase bank and has a `ropeTurnRatioFiniteMargin` for the inspected context, then the whole bank cannot satisfy `ropeRealPhaseBankNearTurn` below the scaled tolerance. Theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context` transfers that bank-level consequence from a larger certified context to any smaller requested context.",
+      "formal_definition": "In Lean, theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin` proves that if a frequency belongs to a finite real-phase bank and has a `ropeTurnRatioFiniteMargin` for the inspected context, then the whole bank cannot satisfy `ropeRealPhaseBankNearTurn` below the scaled tolerance. Theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context` transfers that bank-level consequence from a larger certified context to any smaller requested context. Theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin` transfers both a larger context and a larger certified margin to a smaller requested context and smaller advertised margin.",
       "id": "COMMON-0089",
       "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
-      "intuition": "A bank-wide real RoPE certificate does not need every channel to be separated for a given gap; one proved separating channel is enough to rule out an all-channel near-turn collision, and a larger certified horizon can safely cover smaller requested horizons.",
+      "intuition": "A bank-wide real RoPE certificate does not need every channel to be separated for a given gap; one proved separating channel is enough to rule out an all-channel near-turn collision, and a stronger channel certificate can safely cover smaller requested horizons and conservative reported margins.",
       "kind": "relation",
       "name": "RoPE bank finite-context margin certificate",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
@@ -11453,6 +11495,12 @@
           "id": "AIRA-T0045",
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0050",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
           "status": "proved"
         }
       ],

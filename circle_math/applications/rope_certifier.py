@@ -69,6 +69,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0044",
     "AIRA-T0045",
     "AIRA-T0047",
+    "AIRA-T0050",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -87,6 +88,7 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioFiniteMargin_mono_context",
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context",
     "Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin",
+    "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -428,6 +430,29 @@ def turn_ratio_margin_covers_margin(
     return requested_margin <= certified_margin
 
 
+def turn_ratio_margin_covers_request(
+    *,
+    certified_context: int,
+    requested_context: int,
+    certified_margin: float,
+    requested_margin: float,
+) -> bool:
+    """Return whether one finite-margin certificate covers a request.
+
+    This mirrors the bank-level Lean transfer theorem: a stronger certificate
+    with a larger horizon and larger lower bound may be reused for a smaller
+    context and a conservative reported margin. It still does not prove that
+    the real RoPE turn ratio has the certified margin.
+    """
+    return turn_ratio_margin_covers_context(
+        certified_context=certified_context,
+        requested_context=requested_context,
+    ) and turn_ratio_margin_covers_margin(
+        certified_margin=certified_margin,
+        requested_margin=requested_margin,
+    )
+
+
 def real_phase_turn_separated(
     *,
     frequency: float,
@@ -686,7 +711,7 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         f"worst_gap={worst_gap} scanned_gaps={margin.scanned_gap_count}",
         f"real_phase_formal_precursors={','.join(margin.formal_precursor_theorem_ids)} "
         "(unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, "
-        "turn-ratio scaling, and finite-context margin consequence "
+        "turn-ratio scaling, finite-context margin consequence, and context-plus-margin transfer "
         "precursors only; not a Diophantine proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,

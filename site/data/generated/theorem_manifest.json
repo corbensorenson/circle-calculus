@@ -2510,7 +2510,7 @@
       "id": "AIRA-T0039",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 707,
+      "lean_source_line": 733,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2536,7 +2536,7 @@
       "id": "AIRA-T0040",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 728,
+      "lean_source_line": 754,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2873,6 +2873,50 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0080",
+        "COMMON-0082",
+        "COMMON-0086",
+        "COMMON-0087",
+        "COMMON-0088",
+        "COMMON-0089"
+      ],
+      "formal_statement": "forall {frequencies : List Real} {frequency fullTurn requestedMargin certifiedMargin tolerance : Real} {requestedContext certifiedContext left right : Nat}, requestedContext <= certifiedContext -> requestedMargin <= certifiedMargin -> frequency in frequencies -> left < right -> right < requestedContext -> 0 <= frequency -> 0 < fullTurn -> Circle.Applications.ropeTurnRatioFiniteMargin (frequency / fullTurn) certifiedMargin certifiedContext -> tolerance < fullTurn * requestedMargin -> not Circle.Applications.ropeRealPhaseBankNearTurn frequencies fullTurn tolerance left right",
+      "id": "AIRA-T0050",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "If one channel has a finite-context turn-ratio margin certified for a larger context and a larger lower bound, then every smaller requested context and smaller advertised margin inherits the bank-level no-near-turn consequence.",
+      "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
+      "lean_source": "Circle/Applications/RoPECertifier.lean",
+      "lean_source_line": 707,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "tests/test_rope_certifier.py::test_turn_ratio_margin_context_transfer_helper_is_monotone"
         ]
       }
     },

@@ -68,6 +68,7 @@ Lean declarations determine proof status. The theorem manifest is the proof-stat
 - `AIRA-T0044`: `Circle.Applications.ropeTurnRatioFiniteMargin_mono_context`
 - `AIRA-T0045`: `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context`
 - `AIRA-T0047`: `Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin`
+- `AIRA-T0050`: `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin`
 
 The main theorem is `AIRA-T0024`:
 
@@ -119,7 +120,7 @@ for ordered positions, nonnegative frequency, and positive full-turn scale. This
 
 `AIRA-T0042` states that if such a finite-context turn-ratio margin has been certified for every positive gap below the inspected context, then one-channel real near-turn collision is impossible below the scaled tolerance `fullTurn * margin`. This theorem does not prove the margin for a concrete RoPE ratio; it proves that the margin certificate, once obtained by a later bounded-search or continued-fraction proof, has the intended no-near-turn consequence.
 
-`AIRA-T0043` lifts the same finite-context margin certificate to a finite real-phase bank: one member channel with a proved finite-context margin is enough to rule out all-channel near-turn collision below the scaled tolerance. `AIRA-T0044` proves the monotonic transfer law for finite-context margins: a margin certified for a larger context automatically applies to any smaller requested context. `AIRA-T0047` proves the same downward closure for the margin value itself: a larger certified lower bound proves any smaller advertised margin over the same context. `AIRA-T0045` packages context transfer at the bank level, so one channel margin certified up to a larger horizon can rule out all-channel near-turn collision for smaller requested contexts. This is still conditional on proving the channel margin.
+`AIRA-T0043` lifts the same finite-context margin certificate to a finite real-phase bank: one member channel with a proved finite-context margin is enough to rule out all-channel near-turn collision below the scaled tolerance. `AIRA-T0044` proves the monotonic transfer law for finite-context margins: a margin certified for a larger context automatically applies to any smaller requested context. `AIRA-T0047` proves the same downward closure for the margin value itself: a larger certified lower bound proves any smaller advertised margin over the same context. `AIRA-T0045` packages context transfer at the bank level, so one channel margin certified up to a larger horizon can rule out all-channel near-turn collision for smaller requested contexts. `AIRA-T0050` packages both transfers at once: a larger-context, larger-margin channel certificate can be reused for a smaller requested context and a smaller advertised margin in the final bank-level no-near-turn statement. This is still conditional on proving the channel margin.
 
 ## Certifier Interface
 
