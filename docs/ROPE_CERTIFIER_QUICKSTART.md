@@ -60,7 +60,7 @@ The text output has two different evidence layers:
 exact_discrete_contract=PASS common_collision_gap=>= context
 guaranteed_common_gap_collision_pair_count=0
 real_phase_margin=PASS worst_margin_radians=...
-real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032 (unwrapped and nonnegative full-turn precursors only; not a signed nearest-turn proof)
+real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033 (unwrapped and signed full-turn window precursors only; not a Diophantine proof)
 theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028
 ```
 
@@ -68,7 +68,7 @@ theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AI
 
 `real_phase_margin=PASS` means the numerical scan did not find a real-valued near-collision below the chosen tolerance. This is not a Lean proof over real trigonometric RoPE.
 
-`real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032` means Lean has proved the unwrapped one-channel real phase-gap arithmetic and a nonnegative full-turn-multiple precursor used by later real-margin work. It is not a signed nearest-turn proof and does not certify the numerical scan.
+`real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033` means Lean has proved the unwrapped one-channel real phase-gap arithmetic and a signed full-turn-multiple window precursor used by later real-margin work. It is not a Diophantine proof that arbitrary RoPE gaps satisfy the window hypotheses and does not certify the numerical scan.
 
 If the exact discrete contract fails, the output includes a common collision gap and sample colliding pairs.
 It also reports `guaranteed_common_gap_collision_pair_count`, the number of starts whose paired position is exactly the common collision gap ahead. That count is theorem-backed for the declared integer-period phase bank, but it is not a total count of all collision pairs at every multiple of the gap.

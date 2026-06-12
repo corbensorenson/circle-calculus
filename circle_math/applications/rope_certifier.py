@@ -46,6 +46,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0030",
     "AIRA-T0031",
     "AIRA-T0032",
+    "AIRA-T0033",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -53,6 +54,7 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
     "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
     "Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window",
+    "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -239,6 +241,21 @@ def real_phase_nat_turn_error(
     return abs(phase - turns * full_turn)
 
 
+def real_phase_int_turn_error(
+    *,
+    frequency: float,
+    full_turn: float,
+    left: int,
+    right: int,
+    turns: int,
+) -> float:
+    """Mirror Lean's signed ``ropeRealPhaseIntTurnError``."""
+    if left < 0 or right < 0:
+        raise ValueError("left and right must be nonnegative")
+    phase = abs((right - left) * frequency)
+    return abs(phase - turns * full_turn)
+
+
 def real_phase_best_margin_for_gap(frequencies: Sequence[float], gap: int) -> tuple[float, int]:
     """Return the strongest channel margin for a gap and the channel that attains it."""
     best_margin = -1.0
@@ -382,7 +399,7 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         f"real_phase_margin={margin_status} worst_margin_radians={worst_margin} "
         f"worst_gap={worst_gap} scanned_gaps={margin.scanned_gap_count}",
         f"real_phase_formal_precursors={','.join(margin.formal_precursor_theorem_ids)} "
-        "(unwrapped and nonnegative full-turn precursors only; not a signed nearest-turn proof)",
+        "(unwrapped and signed full-turn window precursors only; not a Diophantine proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,
     )

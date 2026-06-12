@@ -1,4 +1,5 @@
 import Mathlib.Data.Nat.ModEq
+import Mathlib.Data.Int.Cast.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic.Linarith
 
@@ -173,6 +174,15 @@ def ropeRealPhaseNatTurnError
     (frequency fullTurn : ℝ) (left right turns : Nat) : ℝ :=
   |ropeRealPhaseGapAbs frequency left right - (turns : ℝ) * fullTurn|
 
+/-- Error between the nonnegative unwrapped phase magnitude and a signed
+full-turn multiple.
+
+This is the real-valued object needed before stating a nearest-integer
+circular-margin theorem. -/
+def ropeRealPhaseIntTurnError
+    (frequency fullTurn : ℝ) (left right : Nat) (turns : Int) : ℝ :=
+  |ropeRealPhaseGapAbs frequency left right - (turns : ℝ) * fullTurn|
+
 /-- For ordered positions, the absolute unwrapped real phase gap is exactly
 the natural position gap times the absolute frequency. -/
 theorem ropeRealPhaseGapAbs_eq_natGap_mul_abs
@@ -261,5 +271,45 @@ theorem ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window
           rw [abs_of_nonpos]
           · linarith
           · linarith
+
+/-- One-turn-window lower-bound transfer for all signed full-turn multiples.
+
+If the unwrapped phase magnitude lies inside one declared turn and stays at
+least `margin` away from both endpoints of that turn, then it is at least
+`margin` away from every signed full-turn multiple. Negative full-turn multiples
+are handled by the zero-turn endpoint bound; nonnegative multiples are handled
+by `ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window`.
+
+This is still a local one-turn-window theorem. It does not yet provide the
+Diophantine/continued-fraction lower bound needed to prove that arbitrary RoPE
+gaps actually satisfy the window hypotheses. -/
+theorem ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window
+    {frequency fullTurn margin : ℝ} {left right : Nat} {turns : Int}
+    (hfull_nonneg : 0 ≤ fullTurn)
+    (hphase_le_full : ropeRealPhaseGapAbs frequency left right ≤ fullTurn)
+    (hleft_margin : margin ≤ ropeRealPhaseGapAbs frequency left right)
+    (hright_margin : margin ≤ fullTurn - ropeRealPhaseGapAbs frequency left right) :
+    margin ≤ ropeRealPhaseIntTurnError frequency fullTurn left right turns := by
+  unfold ropeRealPhaseIntTurnError
+  cases turns with
+  | ofNat turnsNat =>
+      simpa [ropeRealPhaseNatTurnError] using
+        (ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window
+          (frequency := frequency) (fullTurn := fullTurn) (margin := margin)
+          (left := left) (right := right) (turns := turnsNat)
+          hfull_nonneg hphase_le_full hleft_margin hright_margin)
+  | negSucc turnsNat =>
+      have hphase_nonneg : 0 ≤ ropeRealPhaseGapAbs frequency left right := by
+        unfold ropeRealPhaseGapAbs
+        exact abs_nonneg _
+      have hcoef_nonpos : ((Int.negSucc turnsNat : Int) : ℝ) ≤ 0 := by
+        rw [Int.cast_negSucc]
+        exact neg_nonpos.mpr (Nat.cast_nonneg _)
+      have hturn_mul_nonpos :
+          ((Int.negSucc turnsNat : Int) : ℝ) * fullTurn ≤ 0 :=
+        mul_nonpos_of_nonpos_of_nonneg hcoef_nonpos hfull_nonneg
+      rw [abs_of_nonneg]
+      · linarith
+      · linarith
 
 end Circle.Applications

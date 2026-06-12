@@ -20,7 +20,7 @@ targets:
       - "site/chapters/applications/rope_certifier.qmd"
       - "docs/ROPE_CERTIFIER_QUICKSTART.md"
     dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082"]
-    next_action: "The unwrapped real phase-gap formula, lower-bound precursor, one-turn endpoint-error bridge, and all-nonnegative-full-turn bridge are now landed through AIRA-T0029 through AIRA-T0032; next extend from nonnegative multiples to signed nearest integer full-turn multiples, then to continued-fraction/Diophantine bounds."
+    next_action: "The unwrapped real phase-gap formula, lower-bound precursor, one-turn endpoint-error bridge, all-nonnegative-full-turn bridge, and signed-full-turn bridge are now landed through AIRA-T0029 through AIRA-T0033; next prove Diophantine/continued-fraction conditions that make real RoPE gaps satisfy the one-turn window hypotheses."
     guardrail: "Do not present numerical margin scans as Lean-proved real RoPE theorems."
 
   - id: P8-DEPTH-002
