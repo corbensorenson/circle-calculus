@@ -78,6 +78,7 @@ namespace Circle.PaperAI02
 #check Circle.Applications.coilLagReach
 #check Circle.Applications.hybridLagReach
 #check Circle.Applications.localLagReach_of_le
+#check Circle.Applications.not_localLagReach_iff_window_lt_of_pos
 #check Circle.Applications.coilLagReach_of_step
 #check Circle.Applications.coilLagReach_add_context
 #check Circle.Applications.coilStrideFamilyLagReach

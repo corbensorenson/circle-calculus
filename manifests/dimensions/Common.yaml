@@ -2638,6 +2638,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
     blocker: ""
+  - id: AIT-T0028
+    status: lean_proved
+    lean_name: Circle.Applications.not_localLagReach_iff_window_lt_of_pos
+    informal_statement: "For any positive lag, missing the local sliding window is equivalent to the lag being strictly beyond the local window width."
+    formal_statement: "forall {window lag : Nat}, 1 <= lag -> not Circle.Applications.localLagReach window lag <-> window < lag"
+    dictionary_dependencies: ["COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant
