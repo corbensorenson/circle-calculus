@@ -150,6 +150,20 @@ ROPE_CERTIFIER_PRESETS: dict[str, RoPEConfig] = {
         tolerance=1e-6,
         discretization="round",
     ),
+    "diagnostic_single_channel_10000_20": RoPEConfig(
+        head_dim=2,
+        base=10000.0,
+        context_length=20,
+        tolerance=1e-6,
+        discretization="round",
+    ),
+    "diagnostic_two_channel_36_128": RoPEConfig(
+        head_dim=4,
+        base=36.0,
+        context_length=128,
+        tolerance=1e-6,
+        discretization="round",
+    ),
 }
 
 

@@ -61,6 +61,13 @@ python scripts/rope_certify.py --preset llama_style_10000_128k
 python scripts/rope_certify.py --preset llama_style_500000_128k
 ```
 
+Diagnostic exact-discrete failure presets:
+
+```bash
+python scripts/rope_certify.py --preset diagnostic_single_channel_10000_20
+python scripts/rope_certify.py --preset diagnostic_two_channel_36_128
+```
+
 For machine-readable output:
 
 ```bash
@@ -87,7 +94,7 @@ Committed fixtures:
 
 <p>Preset Markdown: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/results/rope_certifier_presets.md">rope_certifier_presets.md</a></p>
 
-The current presets pass the exact discrete contract under the rounded integer-period phase-bank model. The real-phase rows are numerical diagnostics only.
+The model-like presets pass the exact discrete contract under the rounded integer-period phase-bank model. The diagnostic presets intentionally fail so the sample-collision and theorem-backed count fields are visible. The real-phase rows are numerical diagnostics only.
 
 ## What To Notice
 

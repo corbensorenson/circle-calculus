@@ -132,6 +132,27 @@ def test_rope_certify_cli_emits_json_certificate() -> None:
     assert payload["theorem_ids"] == list(ROPE_CERTIFIER_THEOREMS)
 
 
+def test_rope_diagnostic_preset_reports_exact_failure() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/rope_certify.py",
+            "--preset",
+            "diagnostic_single_channel_10000_20",
+            "--format",
+            "json",
+        ],
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    payload = json.loads(result.stdout)
+    assert payload["exact_discrete"]["pass_exact"] is False
+    assert payload["exact_discrete"]["common_collision_gap"] == 6
+    assert payload["exact_discrete"]["guaranteed_common_gap_collision_pair_count"] == 14
+    assert payload["exact_discrete"]["total_bank_collision_pair_count"] == 24
+
+
 def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     json_result = subprocess.run(
         [
@@ -166,4 +187,5 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
         capture_output=True,
     )
     assert "| llama_style_10000_4k |" in markdown_result.stdout
+    assert "Total bank pairs" in markdown_result.stdout
     assert "Reproduce with:" in markdown_result.stdout

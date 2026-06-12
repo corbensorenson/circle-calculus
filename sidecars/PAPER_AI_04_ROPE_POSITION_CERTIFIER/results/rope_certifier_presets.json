@@ -963,6 +963,315 @@
         "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]
+    },
+    {
+      "certificate": {
+        "claim_boundary": "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim.",
+        "config": {
+          "base": 10000.0,
+          "context_length": 20,
+          "discretization": "round",
+          "head_dim": 2,
+          "tolerance": 1e-06
+        },
+        "exact_discrete": {
+          "assumptions": [
+            "Positions are natural numbers in [0, context_length).",
+            "Each channel period is a positive integer produced by the declared discretization policy.",
+            "Exact discrete collision means equal residues in every declared period channel.",
+            "Lean theorem AIRA-T0024 characterizes all-channel collision by divisibility of the position gap.",
+            "Lean theorem AIRA-T0025 characterizes bank distinguishability by at least one non-dividing period.",
+            "Lean theorem AIRA-T0028 certifies every counted start at the common collision gap as an all-channel collision.",
+            "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
+            "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
+            "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model."
+          ],
+          "common_collision_gap": 6,
+          "common_collision_gap_reaches_context": false,
+          "context_length": 20,
+          "discretized_periods": [
+            6
+          ],
+          "explanation": "FAIL: the common exact collision gap is inside the context, so the listed sample pairs collide in every discrete channel under the declared integer-period model.",
+          "guaranteed_common_gap_collision_pair_count": 14,
+          "guaranteed_common_gap_multiple_pair_count": 24,
+          "lean_declarations": [
+            "Circle.Applications.ropeDiscreteCollision_iff_gap_dvd",
+            "Circle.Applications.ropeDiscreteDistinguishable_iff_not_gap_dvd",
+            "Circle.Applications.ropeDiscreteCollision_iff_eq_on_context",
+            "Circle.Applications.ropePhaseBankCollision_iff_forall_gap_dvd",
+            "Circle.Applications.ropePhaseBankDistinguishable_iff_exists_not_gap_dvd",
+            "Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context",
+            "Circle.Applications.ropeCollisionPairCountAtGap_pos_iff",
+            "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
+            "Circle.Applications.ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd",
+            "Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap",
+            "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap"
+          ],
+          "pass_exact": false,
+          "period_count": 1,
+          "sample_collision_pairs": [
+            [
+              0,
+              6
+            ],
+            [
+              1,
+              7
+            ],
+            [
+              2,
+              8
+            ],
+            [
+              3,
+              9
+            ],
+            [
+              4,
+              10
+            ]
+          ],
+          "single_period_collision_pair_counts": [
+            24
+          ],
+          "theorem_ids": [
+            "AIRA-T0021",
+            "AIRA-T0022",
+            "AIRA-T0023",
+            "AIRA-T0024",
+            "AIRA-T0025",
+            "AIRA-T0026",
+            "AIRA-T0027",
+            "AIRA-T0028",
+            "AIRA-T0034",
+            "AIRA-T0035",
+            "AIRA-T0036"
+          ],
+          "total_bank_collision_pair_count": 24
+        },
+        "lean_declarations": [
+          "Circle.Applications.ropeDiscreteCollision_iff_gap_dvd",
+          "Circle.Applications.ropeDiscreteDistinguishable_iff_not_gap_dvd",
+          "Circle.Applications.ropeDiscreteCollision_iff_eq_on_context",
+          "Circle.Applications.ropePhaseBankCollision_iff_forall_gap_dvd",
+          "Circle.Applications.ropePhaseBankDistinguishable_iff_exists_not_gap_dvd",
+          "Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context",
+          "Circle.Applications.ropeCollisionPairCountAtGap_pos_iff",
+          "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
+          "Circle.Applications.ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd",
+          "Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap",
+          "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap"
+        ],
+        "real_period_estimates": [
+          6.283185307179586
+        ],
+        "real_phase_margin": {
+          "explanation": "The numerical real-phase margin is the smallest, over all nonzero position gaps in the context, of the best channel's circular distance from a full-turn collision. It is not a Lean proof.",
+          "formal_precursor_lean_declarations": [
+            "Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs",
+            "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
+            "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
+            "Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window",
+            "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window"
+          ],
+          "formal_precursor_theorem_ids": [
+            "AIRA-T0029",
+            "AIRA-T0030",
+            "AIRA-T0031",
+            "AIRA-T0032",
+            "AIRA-T0033"
+          ],
+          "near_collision_gaps": [],
+          "pass_margin": true,
+          "scanned_gap_count": 19,
+          "tolerance": 1e-06,
+          "worst_channel_index": 0,
+          "worst_channel_period_estimate": 6.283185307179586,
+          "worst_gap": 19,
+          "worst_margin_radians": 0.1504440784612413
+        },
+        "schema_id": "circle_calculus.rope_position_distinguishability.v0",
+        "theorem_ids": [
+          "AIRA-T0021",
+          "AIRA-T0022",
+          "AIRA-T0023",
+          "AIRA-T0024",
+          "AIRA-T0025",
+          "AIRA-T0026",
+          "AIRA-T0027",
+          "AIRA-T0028",
+          "AIRA-T0034",
+          "AIRA-T0035",
+          "AIRA-T0036"
+        ]
+      },
+      "preset": "diagnostic_single_channel_10000_20",
+      "summary_lines": [
+        "RoPE position distinguishability certificate",
+        "config: head_dim=2 base=10000 context=20 tolerance=1e-06 discretization=round",
+        "exact_discrete_contract=FAIL common_collision_gap=6 period_count=1 guaranteed_common_gap_collision_pair_count=14 guaranteed_common_gap_multiple_pair_count=24 total_bank_collision_pair_count=24",
+        "real_phase_margin=PASS worst_margin_radians=0.150444078461 worst_gap=19 scanned_gaps=19",
+        "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033 (unwrapped and signed full-turn window precursors only; not a Diophantine proof)",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036",
+        "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
+      ]
+    },
+    {
+      "certificate": {
+        "claim_boundary": "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim.",
+        "config": {
+          "base": 36.0,
+          "context_length": 128,
+          "discretization": "round",
+          "head_dim": 4,
+          "tolerance": 1e-06
+        },
+        "exact_discrete": {
+          "assumptions": [
+            "Positions are natural numbers in [0, context_length).",
+            "Each channel period is a positive integer produced by the declared discretization policy.",
+            "Exact discrete collision means equal residues in every declared period channel.",
+            "Lean theorem AIRA-T0024 characterizes all-channel collision by divisibility of the position gap.",
+            "Lean theorem AIRA-T0025 characterizes bank distinguishability by at least one non-dividing period.",
+            "Lean theorem AIRA-T0028 certifies every counted start at the common collision gap as an all-channel collision.",
+            "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
+            "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
+            "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model."
+          ],
+          "common_collision_gap": 114,
+          "common_collision_gap_reaches_context": false,
+          "context_length": 128,
+          "discretized_periods": [
+            6,
+            38
+          ],
+          "explanation": "FAIL: the common exact collision gap is inside the context, so the listed sample pairs collide in every discrete channel under the declared integer-period model.",
+          "guaranteed_common_gap_collision_pair_count": 14,
+          "guaranteed_common_gap_multiple_pair_count": 14,
+          "lean_declarations": [
+            "Circle.Applications.ropeDiscreteCollision_iff_gap_dvd",
+            "Circle.Applications.ropeDiscreteDistinguishable_iff_not_gap_dvd",
+            "Circle.Applications.ropeDiscreteCollision_iff_eq_on_context",
+            "Circle.Applications.ropePhaseBankCollision_iff_forall_gap_dvd",
+            "Circle.Applications.ropePhaseBankDistinguishable_iff_exists_not_gap_dvd",
+            "Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context",
+            "Circle.Applications.ropeCollisionPairCountAtGap_pos_iff",
+            "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
+            "Circle.Applications.ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd",
+            "Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap",
+            "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap"
+          ],
+          "pass_exact": false,
+          "period_count": 2,
+          "sample_collision_pairs": [
+            [
+              0,
+              114
+            ],
+            [
+              1,
+              115
+            ],
+            [
+              2,
+              116
+            ],
+            [
+              3,
+              117
+            ],
+            [
+              4,
+              118
+            ]
+          ],
+          "single_period_collision_pair_counts": [
+            1302,
+            156
+          ],
+          "theorem_ids": [
+            "AIRA-T0021",
+            "AIRA-T0022",
+            "AIRA-T0023",
+            "AIRA-T0024",
+            "AIRA-T0025",
+            "AIRA-T0026",
+            "AIRA-T0027",
+            "AIRA-T0028",
+            "AIRA-T0034",
+            "AIRA-T0035",
+            "AIRA-T0036"
+          ],
+          "total_bank_collision_pair_count": 14
+        },
+        "lean_declarations": [
+          "Circle.Applications.ropeDiscreteCollision_iff_gap_dvd",
+          "Circle.Applications.ropeDiscreteDistinguishable_iff_not_gap_dvd",
+          "Circle.Applications.ropeDiscreteCollision_iff_eq_on_context",
+          "Circle.Applications.ropePhaseBankCollision_iff_forall_gap_dvd",
+          "Circle.Applications.ropePhaseBankDistinguishable_iff_exists_not_gap_dvd",
+          "Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context",
+          "Circle.Applications.ropeCollisionPairCountAtGap_pos_iff",
+          "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
+          "Circle.Applications.ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd",
+          "Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap",
+          "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap"
+        ],
+        "real_period_estimates": [
+          6.283185307179586,
+          37.69911184307752
+        ],
+        "real_phase_margin": {
+          "explanation": "The numerical real-phase margin is the smallest, over all nonzero position gaps in the context, of the best channel's circular distance from a full-turn collision. It is not a Lean proof.",
+          "formal_precursor_lean_declarations": [
+            "Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs",
+            "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
+            "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
+            "Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window",
+            "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window"
+          ],
+          "formal_precursor_theorem_ids": [
+            "AIRA-T0029",
+            "AIRA-T0030",
+            "AIRA-T0031",
+            "AIRA-T0032",
+            "AIRA-T0033"
+          ],
+          "near_collision_gaps": [],
+          "pass_margin": true,
+          "scanned_gap_count": 127,
+          "tolerance": 1e-06,
+          "worst_channel_index": 0,
+          "worst_channel_period_estimate": 6.283185307179586,
+          "worst_gap": 113,
+          "worst_margin_radians": 0.09733552923254862
+        },
+        "schema_id": "circle_calculus.rope_position_distinguishability.v0",
+        "theorem_ids": [
+          "AIRA-T0021",
+          "AIRA-T0022",
+          "AIRA-T0023",
+          "AIRA-T0024",
+          "AIRA-T0025",
+          "AIRA-T0026",
+          "AIRA-T0027",
+          "AIRA-T0028",
+          "AIRA-T0034",
+          "AIRA-T0035",
+          "AIRA-T0036"
+        ]
+      },
+      "preset": "diagnostic_two_channel_36_128",
+      "summary_lines": [
+        "RoPE position distinguishability certificate",
+        "config: head_dim=4 base=36 context=128 tolerance=1e-06 discretization=round",
+        "exact_discrete_contract=FAIL common_collision_gap=114 period_count=2 guaranteed_common_gap_collision_pair_count=14 guaranteed_common_gap_multiple_pair_count=14 total_bank_collision_pair_count=14",
+        "real_phase_margin=PASS worst_margin_radians=0.0973355292325 worst_gap=113 scanned_gaps=127",
+        "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033 (unwrapped and signed full-turn window precursors only; not a Diophantine proof)",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036",
+        "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
+      ]
     }
   ],
   "schema_id": "circle_calculus.rope_certifier_preset_results.v0"

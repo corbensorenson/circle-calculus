@@ -124,9 +124,11 @@ Named presets are available:
 python scripts/rope_certify.py --preset llama_style_10000_4k
 python scripts/rope_certify.py --preset llama_style_10000_128k
 python scripts/rope_certify.py --preset llama_style_500000_128k
+python scripts/rope_certify.py --preset diagnostic_single_channel_10000_20
+python scripts/rope_certify.py --preset diagnostic_two_channel_36_128
 ```
 
-The preset names are public-safe configuration labels, not claims about a particular vendor checkpoint.
+The `llama_style_*` preset names are public-safe configuration labels, not claims about a particular vendor checkpoint. The `diagnostic_*` presets are intentionally small exact-discrete failure cases used to exercise sample collisions, common-gap counts, and total bank counts.
 
 ## Reproducible Preset Results
 
@@ -145,7 +147,7 @@ python sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/python/benchmark_rope_certif
   --markdown-out sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/results/rope_certifier_presets.md
 ```
 
-The current preset table reports exact discrete `PASS` for the three public-safe presets under the rounded integer-period phase-bank model. It also reports numerical real-phase margin scans. These rows are reproducible configuration certificates, not evidence that any model has better perplexity, reasoning, context length, runtime, memory, training stability, or deployment readiness.
+The current preset table reports exact discrete `PASS` for the public-safe model-like presets under the rounded integer-period phase-bank model, and exact discrete `FAIL` for diagnostic presets where the declared integer periods intentionally collide inside the context. It also reports numerical real-phase margin scans. These rows are reproducible configuration certificates, not evidence that any model has better perplexity, reasoning, context length, runtime, memory, training stability, or deployment readiness.
 
 ## Exact Discrete Model
 
