@@ -45,12 +45,14 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0029",
     "AIRA-T0030",
     "AIRA-T0031",
+    "AIRA-T0032",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs",
     "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
     "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
+    "Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -380,7 +382,7 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         f"real_phase_margin={margin_status} worst_margin_radians={worst_margin} "
         f"worst_gap={worst_gap} scanned_gaps={margin.scanned_gap_count}",
         f"real_phase_formal_precursors={','.join(margin.formal_precursor_theorem_ids)} "
-        "(unwrapped and one-turn endpoint precursors only; not a circular-margin proof)",
+        "(unwrapped and nonnegative full-turn precursors only; not a signed nearest-turn proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,
     )

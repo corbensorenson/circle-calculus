@@ -29,5 +29,6 @@ namespace Circle.PaperAI04
 #check Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs
 #check Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower
 #check Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window
+#check Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window
 
 end Circle.PaperAI04

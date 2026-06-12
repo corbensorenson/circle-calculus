@@ -50,6 +50,7 @@ Lean declarations determine proof status. The theorem manifest is the proof-stat
 - `AIRA-T0029`: `Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs`
 - `AIRA-T0030`: `Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower`
 - `AIRA-T0031`: `Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window`
+- `AIRA-T0032`: `Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window`
 
 The main theorem is `AIRA-T0024`:
 
@@ -64,7 +65,7 @@ That is the usable contract. It turns position indistinguishability into a finit
 
 ## Real-Phase Precursor
 
-`AIRA-T0029`, `AIRA-T0030`, and `AIRA-T0031` start the real-valued RoPE theorem program without upgrading the numerical scan into a proof. They define the unwrapped real phase gap for one channel and prove:
+`AIRA-T0029` through `AIRA-T0032` start the real-valued RoPE theorem program without upgrading the numerical scan into a proof. They define the unwrapped real phase gap for one channel and prove:
 
 ```text
 |((right : R) - left) * frequency| =
@@ -87,7 +88,7 @@ This is a quantitative precursor only. It is not a circular distance modulo a fu
 turn_error(turns) = |phase - turns * fullTurn|
 ```
 
-If a phase lies inside one declared turn and is at least `margin` away from the left endpoint and the right endpoint, Lean proves the zero-turn and one-turn endpoint errors are both at least `margin`. This is still not the full nearest-integer/full-turn theorem. It only proves the endpoint part of the one-turn window that later circular-margin work can build on.
+If a phase lies inside one declared turn and is at least `margin` away from the left endpoint and the right endpoint, Lean proves the zero-turn and one-turn endpoint errors are both at least `margin`. `AIRA-T0032` strengthens that to every nonnegative full-turn multiple. This is still not the full signed nearest-integer/full-turn theorem, because the real circular distance must also account for signed integer multiples and later Diophantine lower bounds.
 
 ## Certifier Interface
 

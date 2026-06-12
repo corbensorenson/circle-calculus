@@ -9834,6 +9834,12 @@
           "lean_name": "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
           "name": "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0032",
+          "lean_name": "Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window",
+          "name": "Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -9935,6 +9941,12 @@
           "id": "AIRA-T0031",
           "lean_name": "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
           "name": "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0032",
+          "lean_name": "Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window",
+          "name": "Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window",
           "status": "proved"
         }
       ],
@@ -10073,6 +10085,12 @@
           "lean_name": "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
           "name": "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0032",
+          "lean_name": "Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window",
+          "name": "Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -10145,14 +10163,14 @@
         "COMMON-0080"
       ],
       "forbidden_meanings": [
-        "A completed circular distance theorem over all integer full-turn multiples.",
+        "A completed circular distance theorem over all signed integer full-turn multiples.",
         "A continued-fraction, three-distance, or Diophantine RoPE margin theorem.",
         "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
       ],
-      "formal_definition": "In Lean, `Circle.Applications.ropeRealPhaseNatTurnError frequency fullTurn left right turns` is the absolute distance between the nonnegative unwrapped one-channel phase magnitude and a chosen nonnegative full-turn multiple. The theorem `ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window` proves that if the phase lies inside one declared turn and is at least `margin` away from both endpoints, then the zero-turn and one-turn endpoint errors are each at least `margin`.",
+      "formal_definition": "In Lean, `Circle.Applications.ropeRealPhaseNatTurnError frequency fullTurn left right turns` is the absolute distance between the nonnegative unwrapped one-channel phase magnitude and a chosen nonnegative full-turn multiple. Theorems `ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window` and `ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window` prove that if the phase lies inside one declared turn and is at least `margin` away from both endpoints, then the endpoint errors and every nonnegative full-turn-multiple error are at least `margin`.",
       "id": "COMMON-0082",
       "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
-      "intuition": "This is the first bridge from unwrapped real phase arithmetic toward circular margin reasoning: it proves the endpoint part of a one-turn no-near-collision certificate without claiming the full nearest-integer or Diophantine theorem.",
+      "intuition": "This is the first bridge from unwrapped real phase arithmetic toward circular margin reasoning: it proves the one-turn no-near-collision condition against all nonnegative full-turn multiples without claiming the signed nearest-integer or Diophantine theorem.",
       "kind": "model",
       "name": "Real RoPE full-turn endpoint error",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
@@ -10171,6 +10189,12 @@
           "id": "AIRA-T0031",
           "lean_name": "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
           "name": "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0032",
+          "lean_name": "Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window",
+          "name": "Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window",
           "status": "proved"
         }
       ],

@@ -96,7 +96,7 @@ The current presets pass the exact discrete contract under the rounded integer-p
 - The guaranteed common-gap count is `context - gap`: every counted start gives an all-channel collision at that gap. It is not yet a total count of every colliding pair at every gap multiple.
 - If the exact discrete contract passes, the report still does not claim real model quality or long-context success.
 - The real-phase margin scan is useful engineering evidence, but it is not a Lean proof over real-valued trigonometric RoPE.
-- The real-valued formal work has begun with an unwrapped phase-gap formula (`AIRA-T0029`), lower-bound precursor (`AIRA-T0030`), and one-turn endpoint-error precursor (`AIRA-T0031`). These are not full circular modulo-full-turn margin theorems.
+- The real-valued formal work has begun with an unwrapped phase-gap formula (`AIRA-T0029`), lower-bound precursor (`AIRA-T0030`), one-turn endpoint-error precursor (`AIRA-T0031`), and nonnegative full-turn-multiple precursor (`AIRA-T0032`). These are not full signed circular modulo-full-turn margin theorems.
 
 ## Theorem Cards
 
@@ -111,6 +111,7 @@ The current presets pass the exact discrete contract under the rounded integer-p
 <div class="theorem-box" data-theorem-id="AIRA-T0029"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0030"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0031"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0032"></div>
 
 ## Dictionary
 

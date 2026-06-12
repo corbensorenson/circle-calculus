@@ -1,5 +1,6 @@
 import Mathlib.Data.Nat.ModEq
 import Mathlib.Data.Real.Basic
+import Mathlib.Tactic.Linarith
 
 /-!
 # Proof-carrying RoPE position distinguishability contracts
@@ -219,5 +220,46 @@ theorem ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window
     exact abs_nonneg _
   · rw [Nat.cast_one, one_mul, abs_of_nonpos (sub_nonpos.mpr hphase_le_full), neg_sub]
     exact hright_margin
+
+/-- One-turn-window lower-bound transfer for all nonnegative full-turn
+multiples.
+
+If the unwrapped phase magnitude lies inside one declared turn and stays at
+least `margin` away from both endpoints of that turn, then it is at least
+`margin` away from every nonnegative full-turn multiple. This is a generic
+real-inequality precursor; it still does not prove the nearest-integer or
+Diophantine theorem needed for a full real RoPE circular-margin certificate. -/
+theorem ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window
+    {frequency fullTurn margin : ℝ} {left right turns : Nat}
+    (hfull_nonneg : 0 ≤ fullTurn)
+    (hphase_le_full : ropeRealPhaseGapAbs frequency left right ≤ fullTurn)
+    (hleft_margin : margin ≤ ropeRealPhaseGapAbs frequency left right)
+    (hright_margin : margin ≤ fullTurn - ropeRealPhaseGapAbs frequency left right) :
+    margin ≤ ropeRealPhaseNatTurnError frequency fullTurn left right turns := by
+  unfold ropeRealPhaseNatTurnError
+  cases turns with
+  | zero =>
+      rw [Nat.cast_zero, zero_mul, sub_zero, abs_of_nonneg]
+      exact hleft_margin
+      unfold ropeRealPhaseGapAbs
+      exact abs_nonneg _
+  | succ turnTail =>
+      cases turnTail with
+      | zero =>
+          rw [Nat.cast_one, one_mul, abs_of_nonpos (sub_nonpos.mpr hphase_le_full), neg_sub]
+          exact hright_margin
+      | succ turnTail =>
+          have hcoef : (1 : ℝ) ≤ (Nat.succ (Nat.succ turnTail) : ℝ) := by
+            simpa using (Nat.cast_le (α := ℝ)).mpr
+              (Nat.succ_le_succ (Nat.zero_le (Nat.succ turnTail)))
+          have hfull_le_turn :
+              fullTurn ≤ (Nat.succ (Nat.succ turnTail) : ℝ) * fullTurn := by
+            calc
+              fullTurn = (1 : ℝ) * fullTurn := by rw [one_mul]
+              _ ≤ (Nat.succ (Nat.succ turnTail) : ℝ) * fullTurn :=
+                mul_le_mul_of_nonneg_right hcoef hfull_nonneg
+          rw [abs_of_nonpos]
+          · linarith
+          · linarith
 
 end Circle.Applications

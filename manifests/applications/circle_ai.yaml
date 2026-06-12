@@ -447,6 +447,10 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window
     dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082"]
+  - id: AIRA-T0032
+    status: lean_proved
+    lean_name: Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082"]
 next_targets:
   - >-
     Use COMMON-0052 through COMMON-0055 and COMMON-0059 as the looped/recursive transformer roadmap lane:
