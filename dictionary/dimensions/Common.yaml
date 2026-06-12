@@ -949,6 +949,19 @@ entries:
       - "A completed continued-fraction or three-distance theorem."
       - "A formal proof of the current numerical floating-point scan."
       - "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
+  - id: COMMON-0089
+    name: "RoPE bank finite-context margin certificate"
+    kind: relation
+    symbol: "one channel margin => not BankNearTurn"
+    formal_definition: "In Lean, theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin` proves that if a frequency belongs to a finite real-phase bank and has a `ropeTurnRatioFiniteMargin` for the inspected context, then the whole bank cannot satisfy `ropeRealPhaseBankNearTurn` below the scaled tolerance."
+    intuition: "A bank-wide real RoPE certificate does not need every channel to be separated for a given gap; one proved separating channel is enough to rule out an all-channel near-turn collision."
+    dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0086", "COMMON-0087", "COMMON-0088"]
+    introduced_in: "PAPER_AI_04_ROPE_POSITION_CERTIFIER"
+    forbidden_meanings:
+      - "A proof that a concrete RoPE bank has a usable channel margin."
+      - "A proof that all channels are separated."
+      - "A completed continued-fraction or three-distance theorem."
+      - "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
   - id: COMMON-0060
     name: "Proof-carrying physics model"
     kind: interface

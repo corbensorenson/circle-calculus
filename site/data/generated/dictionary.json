@@ -9942,6 +9942,12 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
           "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0043",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -10109,6 +10115,12 @@
           "id": "AIRA-T0042",
           "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
           "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0043",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
           "status": "proved"
         }
       ],
@@ -10325,6 +10337,12 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
           "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0043",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -10477,6 +10495,12 @@
           "id": "AIRA-T0042",
           "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
           "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0043",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
           "status": "proved"
         }
       ],
@@ -10658,6 +10682,12 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0043",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -10704,6 +10734,12 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
           "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0043",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -10744,6 +10780,55 @@
           "id": "AIRA-T0042",
           "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
           "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0043",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
+    },
+    {
+      "dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0080",
+        "COMMON-0082",
+        "COMMON-0086",
+        "COMMON-0087",
+        "COMMON-0088"
+      ],
+      "forbidden_meanings": [
+        "A proof that a concrete RoPE bank has a usable channel margin.",
+        "A proof that all channels are separated.",
+        "A completed continued-fraction or three-distance theorem.",
+        "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
+      ],
+      "formal_definition": "In Lean, theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin` proves that if a frequency belongs to a finite real-phase bank and has a `ropeTurnRatioFiniteMargin` for the inspected context, then the whole bank cannot satisfy `ropeRealPhaseBankNearTurn` below the scaled tolerance.",
+      "id": "COMMON-0089",
+      "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+      "intuition": "A bank-wide real RoPE certificate does not need every channel to be separated for a given gap; one proved separating channel is enough to rule out an all-channel near-turn collision.",
+      "kind": "relation",
+      "name": "RoPE bank finite-context margin certificate",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "one channel margin => not BankNearTurn",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIRA-T0043",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
           "status": "proved"
         }
       ],

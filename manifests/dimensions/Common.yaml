@@ -2336,6 +2336,20 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_turn_ratio_finite_margin_scan_matches_scaled_error
     blocker: ""
+  - id: AIRA-T0043
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin
+    informal_statement: "If one channel in a finite real-phase bank has a finite-context turn-ratio margin for every positive gap below the inspected context, then the whole bank cannot be near a full-turn collision in every channel below the corresponding scaled tolerance."
+    formal_statement: "forall {frequencies : List Real} {frequency fullTurn margin tolerance : Real} {context left right : Nat}, frequency in frequencies -> left < right -> right < context -> 0 <= frequency -> 0 < fullTurn -> Circle.Applications.ropeTurnRatioFiniteMargin (frequency / fullTurn) margin context -> tolerance < fullTurn * margin -> not Circle.Applications.ropeRealPhaseBankNearTurn frequencies fullTurn tolerance left right"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0086", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_real_phase_bank_separation_rules_out_all_channel_near_turn
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

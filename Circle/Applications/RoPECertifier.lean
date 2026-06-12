@@ -562,6 +562,30 @@ theorem not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin
     exact mul_le_mul_of_nonneg_left hratio (le_of_lt hfull_pos)
   linarith
 
+/-- A finite-context turn-ratio margin for one channel rules out all-channel
+real near-turn collision in a finite bank.
+
+This is the bank-level certificate shape for real RoPE margins: the bank is
+safe against an all-channel near-turn collision at a tolerance once at least one
+member channel has a proved finite-context turn-ratio margin whose scaled value
+is larger than that tolerance. -/
+theorem not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin
+    {frequencies : List ℝ} {frequency fullTurn margin tolerance : ℝ}
+    {context left right : Nat}
+    (hmem : frequency ∈ frequencies)
+    (hleft : left < right) (hright : right < context)
+    (hfrequency_nonneg : 0 ≤ frequency) (hfull_pos : 0 < fullTurn)
+    (hmargin : ropeTurnRatioFiniteMargin (frequency / fullTurn) margin context)
+    (htolerance : tolerance < fullTurn * margin) :
+    ¬ ropeRealPhaseBankNearTurn frequencies fullTurn tolerance left right := by
+  intro hnear
+  exact
+    (not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin
+      (frequency := frequency) (fullTurn := fullTurn) (margin := margin)
+      (tolerance := tolerance) (context := context) (left := left) (right := right)
+      hleft hright hfrequency_nonneg hfull_pos hmargin htolerance)
+      (hnear frequency hmem)
+
 /-- A single separating channel rules out an all-channel real-phase near-turn
 collision at any smaller tolerance.
 

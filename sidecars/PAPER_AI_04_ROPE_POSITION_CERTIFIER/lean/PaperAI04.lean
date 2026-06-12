@@ -50,5 +50,6 @@ namespace Circle.PaperAI04
 #check Circle.Applications.ropeTurnRatioError
 #check Circle.Applications.ropeTurnRatioFiniteMargin
 #check Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin
+#check Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin
 
 end Circle.PaperAI04

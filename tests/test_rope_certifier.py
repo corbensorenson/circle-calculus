@@ -81,6 +81,7 @@ def test_real_phase_nat_turn_error_matches_endpoint_precursor_shape() -> None:
     assert "AIRA-T0040" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0041" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0042" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0043" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
 def test_real_phase_turn_separation_rules_out_smaller_near_turn() -> None:
