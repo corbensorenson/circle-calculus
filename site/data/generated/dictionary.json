@@ -5711,6 +5711,12 @@
           "lean_name": "Circle.Applications.hybridFamilyLagReach_of_localWindow_ge_context_sub_one",
           "name": "Circle.Applications.hybridFamilyLagReach_of_localWindow_ge_context_sub_one",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0023",
+          "lean_name": "Circle.Applications.localWindowCoversContext_iff_context_sub_one_le",
+          "name": "Circle.Applications.localWindowCoversContext_iff_context_sub_one_le",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -9772,6 +9778,12 @@
           "lean_name": "Circle.Applications.hybridFamilyLagReach_of_localWindow_ge_context_sub_one",
           "name": "Circle.Applications.hybridFamilyLagReach_of_localWindow_ge_context_sub_one",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0023",
+          "lean_name": "Circle.Applications.localWindowCoversContext_iff_context_sub_one_le",
+          "name": "Circle.Applications.localWindowCoversContext_iff_context_sub_one_le",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -10205,10 +10217,10 @@
         "A proof that sparse attention is faster or uses less memory.",
         "A claim that uncovered lags are irrelevant to a real task."
       ],
-      "formal_definition": "`circle_math.applications.circle_ai.certify_stride_family_coverage`, a finite certificate listing every positive lag covered by a local-window plus stride-family sparse-attention plan and every uncovered lag as a gap certificate; Lean theorem `Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family` states the abstract gap predicate, `Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne` gives the concrete no-local/no-stride-step certificate condition, and `Circle.Applications.hybridFamilyLagReach_of_localWindow_ge_context_sub_one` gives the dense-local complete-coverage sufficient condition.",
+      "formal_definition": "`circle_math.applications.circle_ai.certify_stride_family_coverage`, a finite certificate listing every positive lag covered by a local-window plus stride-family sparse-attention plan and every uncovered lag as a gap certificate; Lean theorem `Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family` states the abstract gap predicate, `Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne` gives the concrete no-local/no-stride-step certificate condition, `Circle.Applications.hybridFamilyLagReach_of_localWindow_ge_context_sub_one` gives the dense-local complete-coverage sufficient condition, and `Circle.Applications.localWindowCoversContext_iff_context_sub_one_le` proves the exact local-window complete-coverage criterion.",
       "id": "COMMON-0079",
       "introduced_in": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
-      "intuition": "Instead of showing only successful example lags, the certificate exposes the holes in a sparse plan with a checkable reason for each hole, and it identifies the simple local-window condition that removes all positive-lag holes.",
+      "intuition": "Instead of showing only successful example lags, the certificate exposes the holes in a sparse plan with a checkable reason for each hole, and it identifies the exact local-window condition that removes all positive-lag holes.",
       "kind": "metric",
       "name": "Stride-family sparse coverage certificate",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
@@ -10239,6 +10251,12 @@
           "id": "AIT-T0022",
           "lean_name": "Circle.Applications.hybridFamilyLagReach_of_localWindow_ge_context_sub_one",
           "name": "Circle.Applications.hybridFamilyLagReach_of_localWindow_ge_context_sub_one",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0023",
+          "lean_name": "Circle.Applications.localWindowCoversContext_iff_context_sub_one_le",
+          "name": "Circle.Applications.localWindowCoversContext_iff_context_sub_one_le",
           "status": "proved"
         }
       ],

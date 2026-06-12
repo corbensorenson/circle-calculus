@@ -453,7 +453,14 @@ class StrideFamilyCoverageCertificate:
     full_attention_budget: int
     coverage_complete: bool
     coverage_ratio: float
-    theorem_ids: tuple[str, ...] = ("AIT-T0016", "AIT-T0017", "AIT-T0020", "AIT-T0021", "AIT-T0022")
+    theorem_ids: tuple[str, ...] = (
+        "AIT-T0016",
+        "AIT-T0017",
+        "AIT-T0020",
+        "AIT-T0021",
+        "AIT-T0022",
+        "AIT-T0023",
+    )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
         "for the declared local-window plus stride-family plan, not model-quality evidence."

@@ -2568,6 +2568,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_coverage_complete_when_local_window_covers_context
     blocker: ""
+  - id: AIT-T0023
+    status: lean_proved
+    lean_name: Circle.Applications.localWindowCoversContext_iff_context_sub_one_le
+    informal_statement: "The local window covers every positive lag inside a length-n context if and only if the window reaches the largest possible positive lag, n - 1."
+    formal_statement: "forall {n window : Nat}, Circle.Applications.localWindowCoversContext n window <-> n - 1 <= window"
+    dictionary_dependencies: ["COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_coverage_complete_when_local_window_covers_context
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

@@ -80,6 +80,11 @@ theorem stridedHead_fullCoverage_of_coprime {n k : Nat} (hn : n ≠ 0)
 the window width. -/
 def localLagReach (window lag : Nat) : Prop := 1 ≤ lag ∧ lag ≤ window
 
+/-- The local window covers every positive dependency lag inside a length-`n`
+context. -/
+def localWindowCoversContext (n window : Nat) : Prop :=
+  ∀ lag, 1 ≤ lag → lag < n → localLagReach window lag
+
 /-- A finite coil path reaches a dependency lag when some nonzero step within the path
 has the same cyclic lag modulo the context length. -/
 def coilLagReach (n stride pathLength lag : Nat) : Prop :=
@@ -231,6 +236,27 @@ theorem hybridFamilyLagReach_of_localWindow_ge_context_sub_one
     hybridFamilyLagReach n window pathLength lag strides :=
   hybridFamilyLagReach_of_local
     (localLagReach_of_le hpos (le_trans (Nat.le_sub_one_of_lt hcontext) hwindow))
+
+/-- Exact local-window coverage criterion.
+
+The local window covers every positive lag inside a length-`n` context iff it
+reaches the largest possible positive lag, `n - 1`. This is the converse side
+of the dense-local sparse-attention certificate. -/
+theorem localWindowCoversContext_iff_context_sub_one_le
+    {n window : Nat} :
+    localWindowCoversContext n window ↔ n - 1 ≤ window := by
+  constructor
+  · intro hcover
+    cases n with
+    | zero =>
+        exact Nat.zero_le window
+    | succ m =>
+        by_cases hm : m = 0
+        · simp [hm]
+        · have hpos : 1 ≤ m := Nat.succ_le_of_lt (Nat.pos_of_ne_zero hm)
+          exact (hcover m hpos (Nat.lt_succ_self m)).2
+  · intro hwindow lag hpos hcontext
+    exact localLagReach_of_le hpos (le_trans (Nat.le_sub_one_of_lt hcontext) hwindow)
 
 /-! ### RoPE relative position -/
 
