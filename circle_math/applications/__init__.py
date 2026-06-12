@@ -253,7 +253,9 @@ from .rope_certifier import (
     rope_period_estimates,
     sample_collision_pairs,
     scan_real_phase_margin,
+    scan_turn_ratio_finite_margin,
     single_period_collision_pair_count,
+    turn_ratio_nearest_integer_error,
     validate_rope_config,
 )
 
@@ -430,6 +432,8 @@ __all__ = [
     "real_phase_near_turn",
     "real_phase_scaled_turn_ratio_error",
     "real_phase_turn_separated",
+    "scan_turn_ratio_finite_margin",
+    "turn_ratio_nearest_integer_error",
     "rotate_kernel",
     "rotate_block_cyclic_kernel_rows",
     "recurrence_resolution_levels",

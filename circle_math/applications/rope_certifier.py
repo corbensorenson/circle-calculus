@@ -58,6 +58,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0039",
     "AIRA-T0040",
     "AIRA-T0041",
+    "AIRA-T0042",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -71,6 +72,7 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
     "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
+    "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -343,6 +345,44 @@ def real_phase_scaled_turn_ratio_error(
     return full_turn * abs(gap * (frequency / full_turn) - turns)
 
 
+def turn_ratio_nearest_integer_error(*, turn_ratio: float, gap: int, turns: int) -> float:
+    """Mirror Lean's ``ropeTurnRatioError`` for deterministic tests."""
+    if gap < 0:
+        raise ValueError("gap must be nonnegative")
+    return abs(gap * turn_ratio - turns)
+
+
+def scan_turn_ratio_finite_margin(
+    *,
+    turn_ratio: float,
+    context_length: int,
+) -> tuple[float, int | None, int | None]:
+    """Numerically scan the finite-context nearest-integer margin.
+
+    Returns ``(margin, gap, turns)`` for positive gaps below ``context_length``.
+    This is an executable mirror of the finite-margin predicate shape; it is
+    not a formal proof of that predicate for a real-valued turn ratio.
+    """
+    if context_length <= 1:
+        return float("inf"), None, None
+    best_margin = float("inf")
+    best_gap: int | None = None
+    best_turns: int | None = None
+    for gap in range(1, context_length):
+        nearest_turn = int(floor(gap * turn_ratio + 0.5))
+        for turns in (nearest_turn - 1, nearest_turn, nearest_turn + 1):
+            margin = turn_ratio_nearest_integer_error(
+                turn_ratio=turn_ratio,
+                gap=gap,
+                turns=turns,
+            )
+            if margin < best_margin:
+                best_margin = margin
+                best_gap = gap
+                best_turns = turns
+    return best_margin, best_gap, best_turns
+
+
 def real_phase_turn_separated(
     *,
     frequency: float,
@@ -601,7 +641,7 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         f"worst_gap={worst_gap} scanned_gaps={margin.scanned_gap_count}",
         f"real_phase_formal_precursors={','.join(margin.formal_precursor_theorem_ids)} "
         "(unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, "
-        "and turn-ratio scaling "
+        "turn-ratio scaling, and finite-context margin consequence "
         "precursors only; not a Diophantine proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,

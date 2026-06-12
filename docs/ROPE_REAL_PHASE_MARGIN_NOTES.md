@@ -4,7 +4,7 @@ This note is a durable audit trail for the real-valued RoPE phase-margin theorem
 
 ## Current Proved Bridge
 
-The real-phase theorem spine currently runs from `AIRA-T0029` through `AIRA-T0033`, then `AIRA-T0037` through `AIRA-T0041`.
+The real-phase theorem spine currently runs from `AIRA-T0029` through `AIRA-T0033`, then `AIRA-T0037` through `AIRA-T0042`.
 
 `AIRA-T0041` is the newest bridge:
 
@@ -21,6 +21,8 @@ alpha = frequency / fullTurn
 ```
 
 This is not a lower-bound theorem. It is the normalization step that makes the next theorem program precise.
+
+`AIRA-T0042` defines `ropeTurnRatioFiniteMargin alpha margin context` and proves that such a finite-context margin rules out one-channel real near-turn collision below the scaled tolerance `fullTurn * margin`. It is conditional: it does not prove that a concrete RoPE turn ratio has the margin.
 
 ## Local Mathlib Anchors
 
@@ -52,7 +54,7 @@ The important warning is `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irratio
 ## Honest Route
 
 1. Normalize to the turn ratio `alpha = frequency / fullTurn` with `AIRA-T0041`.
-2. Define a finite-context nearest-integer margin over gaps `1 <= gap < L`.
+2. Use `ropeTurnRatioFiniteMargin alpha margin L` as the finite-context nearest-integer margin over gaps `1 <= gap < L`.
 3. Use continued fractions to restrict near-turn candidates to convergent denominators or an explicitly bounded set of checks.
 4. Prove and compute a finite-context certificate for each channel.
 5. Lift channel-wise finite-context lower bounds to a bank-level no-near-turn theorem.

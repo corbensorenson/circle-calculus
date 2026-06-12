@@ -50,14 +50,14 @@ AIRA-T0027, AIRA-T0028, AIRA-T0034, AIRA-T0035, AIRA-T0036
 Real-phase theorem program, still conditional:
 
 ```text
-AIRA-T0029 through AIRA-T0033, AIRA-T0037 through AIRA-T0041
+AIRA-T0029 through AIRA-T0033, AIRA-T0037 through AIRA-T0042
 ```
 
 ## Known Boundaries
 
 - The exact proof object is the integer-period phase bank, not raw floating-point RoPE.
 - The real-phase scan is numerical evidence only.
-- The real-phase Lean work has conditional one-turn-window, turn-separation, finite bank no-near-turn, and turn-ratio scaling precursors, not the continued-fraction or Diophantine theorem needed for arbitrary RoPE gaps.
+- The real-phase Lean work has conditional one-turn-window, turn-separation, finite bank no-near-turn, turn-ratio scaling, and finite-context margin consequence precursors, not the continued-fraction or Diophantine theorem needed to certify arbitrary concrete RoPE ratios.
 - Diagnostic presets are intentionally small failure cases; they are not vendor checkpoint claims.
 
 ## Review Questions

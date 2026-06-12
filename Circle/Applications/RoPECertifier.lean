@@ -512,6 +512,56 @@ theorem ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError
     field_simp [hfull_pos.ne']
   rw [hscale, abs_mul, abs_of_pos hfull_pos]
 
+/-- Nearest-integer turn-ratio error for a natural position gap.
+
+After the normalization theorem
+`ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError`, this is the
+dimensionless Diophantine error object for the turn ratio
+`frequency / fullTurn`. -/
+def ropeTurnRatioError (turnRatio : ℝ) (gap : Nat) (turns : Int) : ℝ :=
+  |(gap : ℝ) * turnRatio - (turns : ℝ)|
+
+/-- A finite-context lower-bound certificate for a turn ratio.
+
+It says that every positive gap smaller than `context` is at least `margin`
+away from every integer multiple of a full turn after normalization. This is
+the finite-context object that a continued-fraction or bounded-search proof can
+target later. -/
+def ropeTurnRatioFiniteMargin (turnRatio margin : ℝ) (context : Nat) : Prop :=
+  ∀ gap : Nat, 0 < gap → gap < context → ∀ turns : Int,
+    margin ≤ ropeTurnRatioError turnRatio gap turns
+
+/-- A finite-context turn-ratio margin rules out one-channel real near-turn
+collisions at any smaller scaled tolerance.
+
+This is still conditional: it does not prove that a concrete RoPE turn ratio
+has such a finite-context margin. It proves that once a margin certificate is
+available, the certificate has the intended no-near-turn consequence inside
+the inspected context. -/
+theorem not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin
+    {frequency fullTurn margin tolerance : ℝ} {context left right : Nat}
+    (hleft : left < right) (hright : right < context)
+    (hfrequency_nonneg : 0 ≤ frequency) (hfull_pos : 0 < fullTurn)
+    (hmargin : ropeTurnRatioFiniteMargin (frequency / fullTurn) margin context)
+    (htolerance : tolerance < fullTurn * margin) :
+    ¬ ropeRealPhaseNearTurn frequency fullTurn tolerance left right := by
+  intro hnear
+  rcases hnear with ⟨turns, hturns⟩
+  have hleft_le : left ≤ right := Nat.le_of_lt hleft
+  have hgap_pos : 0 < right - left := Nat.sub_pos_of_lt hleft
+  have hgap_lt_context : right - left < context :=
+    lt_of_le_of_lt (Nat.sub_le right left) hright
+  have hratio :
+      margin ≤ ropeTurnRatioError (frequency / fullTurn) (right - left) turns :=
+    hmargin (right - left) hgap_pos hgap_lt_context turns
+  have hscaled :
+      fullTurn * margin ≤ ropeRealPhaseIntTurnError frequency fullTurn left right turns := by
+    rw [ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError
+      (frequency := frequency) (fullTurn := fullTurn) (left := left) (right := right)
+      (turns := turns) hleft_le hfrequency_nonneg hfull_pos]
+    exact mul_le_mul_of_nonneg_left hratio (le_of_lt hfull_pos)
+  linarith
+
 /-- A single separating channel rules out an all-channel real-phase near-turn
 collision at any smaller tolerance.
 

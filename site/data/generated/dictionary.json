@@ -9936,6 +9936,12 @@
           "lean_name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
           "name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0042",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
+          "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -10097,6 +10103,12 @@
           "id": "AIRA-T0041",
           "lean_name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
           "name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0042",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
+          "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
           "status": "proved"
         }
       ],
@@ -10307,6 +10319,12 @@
           "lean_name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
           "name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0042",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
+          "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -10453,6 +10471,12 @@
           "id": "AIRA-T0041",
           "lean_name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
           "name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0042",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
+          "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
           "status": "proved"
         }
       ],
@@ -10673,6 +10697,53 @@
           "id": "AIRA-T0041",
           "lean_name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
           "name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0042",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
+          "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
+    },
+    {
+      "dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0080",
+        "COMMON-0082",
+        "COMMON-0087"
+      ],
+      "forbidden_meanings": [
+        "A proof that a concrete RoPE turn ratio has the margin.",
+        "A completed continued-fraction or three-distance theorem.",
+        "A formal proof of the current numerical floating-point scan.",
+        "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
+      ],
+      "formal_definition": "In Lean, `Circle.Applications.ropeTurnRatioFiniteMargin alpha margin context` means every positive natural gap below `context` is at least `margin` away from every integer turn under `Circle.Applications.ropeTurnRatioError alpha gap turns`. Theorem `Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin` proves that such a margin rules out one-channel real near-turn collision below the scaled tolerance `fullTurn * margin`.",
+      "id": "COMMON-0088",
+      "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+      "intuition": "This is the shape a real RoPE certifier ultimately needs: a finite-context lower bound on nearest-integer returns for a channel's turn ratio.",
+      "kind": "relation",
+      "name": "RoPE finite-context turn-ratio margin",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "forall 0 < gap < context, margin <= |gap * alpha - turns|",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIRA-T0042",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
+          "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
           "status": "proved"
         }
       ],

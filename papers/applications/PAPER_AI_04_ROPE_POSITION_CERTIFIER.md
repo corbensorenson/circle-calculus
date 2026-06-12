@@ -60,6 +60,7 @@ Lean declarations determine proof status. The theorem manifest is the proof-stat
 - `AIRA-T0039`: `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt`
 - `AIRA-T0040`: `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window`
 - `AIRA-T0041`: `Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError`
+- `AIRA-T0042`: `Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin`
 
 The main theorem is `AIRA-T0024`:
 
@@ -108,6 +109,8 @@ fullTurn * |gap * (frequency / fullTurn) - turns|
 ```
 
 for ordered positions, nonnegative frequency, and positive full-turn scale. This rewrites the RoPE near-turn error as the ordinary nearest-integer error for the turn ratio `frequency / fullTurn`. It is still not the full RoPE real-margin theorem, because the hard part is proving finite-context lower bounds for `|gap * alpha - turns|` through continued fractions or Diophantine approximation.
+
+`AIRA-T0042` states that if such a finite-context turn-ratio margin has been certified for every positive gap below the inspected context, then one-channel real near-turn collision is impossible below the scaled tolerance `fullTurn * margin`. This theorem does not prove the margin for a concrete RoPE ratio; it proves that the margin certificate, once obtained by a later bounded-search or continued-fraction proof, has the intended no-near-turn consequence.
 
 ## Certifier Interface
 

@@ -22,7 +22,9 @@ from circle_math.applications import (
     real_phase_scaled_turn_ratio_error,
     real_phase_turn_separated,
     sample_collision_pairs,
+    scan_turn_ratio_finite_margin,
     single_period_collision_pair_count,
+    turn_ratio_nearest_integer_error,
 )
 
 
@@ -78,6 +80,7 @@ def test_real_phase_nat_turn_error_matches_endpoint_precursor_shape() -> None:
     assert "AIRA-T0039" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0040" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0041" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0042" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
 def test_real_phase_turn_separation_rules_out_smaller_near_turn() -> None:
@@ -115,6 +118,27 @@ def test_real_phase_scaled_turn_ratio_error_matches_int_turn_error() -> None:
         "turns": 1,
     }
     assert real_phase_scaled_turn_ratio_error(**kwargs) == real_phase_int_turn_error(**kwargs)
+
+
+def test_turn_ratio_finite_margin_scan_matches_scaled_error() -> None:
+    margin, gap, turns = scan_turn_ratio_finite_margin(
+        turn_ratio=1.0 / 8.0,
+        context_length=5,
+    )
+    assert gap == 1
+    assert turns == 0
+    assert margin == turn_ratio_nearest_integer_error(
+        turn_ratio=1.0 / 8.0,
+        gap=gap,
+        turns=turns,
+    )
+    assert 8.0 * margin == real_phase_scaled_turn_ratio_error(
+        frequency=1.0,
+        full_turn=8.0,
+        left=0,
+        right=gap,
+        turns=turns,
+    )
 
 
 def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:

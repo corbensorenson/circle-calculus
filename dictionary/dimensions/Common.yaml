@@ -936,6 +936,19 @@ entries:
       - "A completed continued-fraction or three-distance theorem."
       - "A formal proof of the current numerical floating-point scan."
       - "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
+  - id: COMMON-0088
+    name: "RoPE finite-context turn-ratio margin"
+    kind: relation
+    symbol: "forall 0 < gap < context, margin <= |gap * alpha - turns|"
+    formal_definition: "In Lean, `Circle.Applications.ropeTurnRatioFiniteMargin alpha margin context` means every positive natural gap below `context` is at least `margin` away from every integer turn under `Circle.Applications.ropeTurnRatioError alpha gap turns`. Theorem `Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin` proves that such a margin rules out one-channel real near-turn collision below the scaled tolerance `fullTurn * margin`."
+    intuition: "This is the shape a real RoPE certifier ultimately needs: a finite-context lower bound on nearest-integer returns for a channel's turn ratio."
+    dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087"]
+    introduced_in: "PAPER_AI_04_ROPE_POSITION_CERTIFIER"
+    forbidden_meanings:
+      - "A proof that a concrete RoPE turn ratio has the margin."
+      - "A completed continued-fraction or three-distance theorem."
+      - "A formal proof of the current numerical floating-point scan."
+      - "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
   - id: COMMON-0060
     name: "Proof-carrying physics model"
     kind: interface

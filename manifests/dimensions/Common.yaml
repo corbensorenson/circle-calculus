@@ -2322,6 +2322,20 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_real_phase_scaled_turn_ratio_error_matches_int_turn_error
     blocker: ""
+  - id: AIRA-T0042
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin
+    informal_statement: "If a turn ratio has a finite-context nearest-integer margin for every positive gap below the inspected context, then a one-channel real RoPE phase cannot be near a full-turn multiple below the corresponding scaled tolerance."
+    formal_statement: "forall {frequency fullTurn margin tolerance : Real} {context left right : Nat}, left < right -> right < context -> 0 <= frequency -> 0 < fullTurn -> Circle.Applications.ropeTurnRatioFiniteMargin (frequency / fullTurn) margin context -> tolerance < fullTurn * margin -> not Circle.Applications.ropeRealPhaseNearTurn frequency fullTurn tolerance left right"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_turn_ratio_finite_margin_scan_matches_scaled_error
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd
