@@ -29,6 +29,7 @@ ROPE_CERTIFIER_THEOREMS: tuple[str, ...] = (
     "AIRA-T0027",
     "AIRA-T0028",
     "AIRA-T0034",
+    "AIRA-T0035",
 )
 
 ROPE_CERTIFIER_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -41,6 +42,7 @@ ROPE_CERTIFIER_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeCollisionPairCountAtGap_pos_iff",
     "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
     "Circle.Applications.ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd",
+    "Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
@@ -82,6 +84,7 @@ class ExactDiscreteRoPECertificate:
     lean_declarations: tuple[str, ...]
     discretized_periods: tuple[int, ...]
     period_count: int
+    single_period_collision_pair_counts: tuple[int, ...]
     context_length: int
     common_collision_gap: int | None
     common_collision_gap_reaches_context: bool
@@ -234,6 +237,23 @@ def collision_pair_count_at_gap_multiples(context_length: int, common_gap: int) 
     return total
 
 
+def single_period_collision_pair_count(context_length: int, period: int) -> int:
+    """Count ordered unequal position pairs that collide in one integer-period channel."""
+    return collision_pair_count_at_gap_multiples(context_length, period)
+
+
+def brute_force_single_period_collision_pair_count(context_length: int, period: int) -> int:
+    """Brute-force parity oracle for ``single_period_collision_pair_count``."""
+    if context_length <= 0 or period <= 0:
+        return 0
+    count = 0
+    for left in range(context_length):
+        for right in range(left + 1, context_length):
+            if left % period == right % period:
+                count += 1
+    return count
+
+
 def circular_phase_distance(angle: float) -> float:
     """Distance in radians from ``angle`` to the nearest whole turn."""
     return abs((angle + pi) % tau - pi)
@@ -342,6 +362,10 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
     real_periods = rope_period_estimates(config.head_dim, config.base)
     discrete_periods = discretize_rope_periods(real_periods, config.discretization)
     collision_gap, reaches_context = capped_lcm(discrete_periods, config.context_length)
+    single_period_counts = tuple(
+        single_period_collision_pair_count(config.context_length, period)
+        for period in discrete_periods
+    )
     exact_pass = reaches_context
     guaranteed_pair_count = 0 if reaches_context else collision_pair_count_at_gap(
         config.context_length,
@@ -357,6 +381,7 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
         lean_declarations=ROPE_CERTIFIER_LEAN_DECLARATIONS,
         discretized_periods=discrete_periods,
         period_count=len(discrete_periods),
+        single_period_collision_pair_counts=single_period_counts,
         context_length=config.context_length,
         common_collision_gap=None if reaches_context else collision_gap,
         common_collision_gap_reaches_context=reaches_context,
@@ -371,6 +396,7 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
             "Lean theorem AIRA-T0025 characterizes bank distinguishability by at least one non-dividing period.",
             "Lean theorem AIRA-T0028 certifies every counted start at the common collision gap as an all-channel collision.",
             "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
+            "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
         ),
         explanation=(
             "PASS: the common exact collision gap is at least the context length, so no two unequal "

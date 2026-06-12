@@ -8,6 +8,7 @@ from circle_math.applications import (
     ROPE_CERTIFIER_THEOREMS,
     ROPE_REAL_PHASE_PRECURSOR_THEOREMS,
     RoPEConfig,
+    brute_force_single_period_collision_pair_count,
     capped_lcm,
     certify_rope_positions,
     collision_pair_count_at_gap,
@@ -16,6 +17,7 @@ from circle_math.applications import (
     real_phase_int_turn_error,
     real_phase_nat_turn_error,
     sample_collision_pairs,
+    single_period_collision_pair_count,
 )
 
 
@@ -27,8 +29,18 @@ def test_discretized_period_helpers_are_deterministic() -> None:
     assert capped_lcm((4, 6), 30) == (12, False)
     assert collision_pair_count_at_gap(10, 4) == 6
     assert collision_pair_count_at_gap_multiples(20, 6) == 24
+    assert single_period_collision_pair_count(20, 6) == 24
     assert collision_pair_count_at_gap(10, 10) == 0
     assert sample_collision_pairs(10, 4, limit=3) == ((0, 4), (1, 5), (2, 6))
+
+
+def test_single_period_collision_count_matches_bruteforce() -> None:
+    for context_length in range(1, 25):
+        for period in range(1, 12):
+            assert single_period_collision_pair_count(
+                context_length,
+                period,
+            ) == brute_force_single_period_collision_pair_count(context_length, period)
 
 
 def test_real_phase_nat_turn_error_matches_endpoint_precursor_shape() -> None:
@@ -64,6 +76,7 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     )
     assert not certificate.exact_discrete.pass_exact
     assert certificate.exact_discrete.common_collision_gap == 6
+    assert certificate.exact_discrete.single_period_collision_pair_counts == (24,)
     assert certificate.exact_discrete.guaranteed_common_gap_collision_pair_count == 14
     assert certificate.exact_discrete.guaranteed_common_gap_multiple_pair_count == 24
     assert certificate.exact_discrete.sample_collision_pairs[0] == (0, 6)
@@ -79,6 +92,7 @@ def test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context() 
     assert certificate.exact_discrete.pass_exact
     assert certificate.exact_discrete.common_collision_gap is None
     assert certificate.exact_discrete.common_collision_gap_reaches_context
+    assert certificate.exact_discrete.single_period_collision_pair_counts == (2, 0)
     assert certificate.exact_discrete.guaranteed_common_gap_collision_pair_count == 0
     assert certificate.exact_discrete.guaranteed_common_gap_multiple_pair_count == 0
     assert certificate.exact_discrete.sample_collision_pairs == ()
@@ -108,6 +122,7 @@ def test_rope_certify_cli_emits_json_certificate() -> None:
     assert payload["schema_id"] == "circle_calculus.rope_position_distinguishability.v0"
     assert payload["exact_discrete"]["pass_exact"] is False
     assert payload["exact_discrete"]["common_collision_gap"] == 6
+    assert payload["exact_discrete"]["single_period_collision_pair_counts"] == [24]
     assert payload["exact_discrete"]["guaranteed_common_gap_collision_pair_count"] == 14
     assert payload["exact_discrete"]["guaranteed_common_gap_multiple_pair_count"] == 24
     assert payload["real_phase_margin"]["formal_precursor_theorem_ids"] == list(ROPE_REAL_PHASE_PRECURSOR_THEOREMS)

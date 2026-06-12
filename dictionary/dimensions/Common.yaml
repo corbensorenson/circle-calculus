@@ -851,6 +851,18 @@ entries:
       - "The total number of every possible colliding pair beyond the common-gap multiple families unless a separate total-count theorem is cited."
       - "A real-valued RoPE collision count."
       - "Evidence that any model quality, context length, speed, or memory improves."
+  - id: COMMON-0083
+    name: "RoPE single-period collision-pair count"
+    kind: metric
+    symbol: "single_period_collision_pairs(context,period)"
+    formal_definition: "For one positive integer-period RoPE channel, the ordered unequal pairs in a finite context that collide are exactly those whose positive position gap is a positive multiple of the period. Lean theorem `Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap` proves the converse direction used by the executable formula that sums `context - multiple * period` over positive in-context multiples."
+    intuition: "A single rotary channel repeats every period, so the exact single-channel collision count is the sum of all pairs separated by one period, two periods, three periods, and so on until the context ends."
+    dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078"]
+    introduced_in: "PAPER_AI_04_ROPE_POSITION_CERTIFIER"
+    forbidden_meanings:
+      - "An all-channel phase-bank collision count."
+      - "A real-valued RoPE collision count."
+      - "Evidence that any model quality, context length, speed, or memory improves."
   - id: COMMON-0080
     name: "Unwrapped real RoPE phase gap"
     kind: model

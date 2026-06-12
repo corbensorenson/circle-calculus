@@ -171,6 +171,41 @@ theorem ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd
   simpa [Nat.mul_comm, Nat.mul_left_comm, Nat.mul_assoc] using
     dvd_mul_of_dvd_right (hdivides period hmem) multiple
 
+/-- In a single positive-period channel, every in-context collision between
+unequal ordered positions has a positive period-multiple gap.
+
+This is the converse direction needed by exact single-period collision counts:
+the only gaps that can contribute are `period`, `2 * period`, `3 * period`,
+and so on while the paired endpoint remains inside the context. -/
+theorem ropeDiscreteCollision_exists_positive_multiple_gap
+    {period context left right : Nat}
+    (_hperiod : 0 < period) (hleft : left < right) (hright : right < context)
+    (hcollision : ropeDiscreteCollision period left right) :
+    ∃ multiple, 0 < multiple ∧ right = left + multiple * period ∧
+      multiple * period < context := by
+  have hle : left ≤ right := Nat.le_of_lt hleft
+  have hdvd : period ∣ right - left :=
+    (ropeDiscreteCollision_iff_gap_dvd (period := period) hle).1 hcollision
+  rcases hdvd with ⟨multiple, hgap_raw⟩
+  have hgap : right - left = multiple * period := by
+    simpa [Nat.mul_comm] using hgap_raw
+  have hgap_pos : 0 < right - left := Nat.sub_pos_of_lt hleft
+  have hmultiple_pos : 0 < multiple := by
+    by_contra hnot
+    have hzero : multiple = 0 := Nat.eq_zero_of_not_pos hnot
+    have hgap_zero : right - left = 0 := by
+      simpa [hzero] using hgap
+    exact (Nat.ne_of_gt hgap_pos) hgap_zero
+  have hright_eq' : right = multiple * period + left :=
+    Nat.eq_add_of_sub_eq hle hgap
+  have hright_eq : right = left + multiple * period := by
+    simpa [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc] using hright_eq'
+  refine ⟨multiple, hmultiple_pos, hright_eq, ?_⟩
+  have hgap_le_right : multiple * period ≤ right := by
+    rw [hright_eq]
+    exact Nat.le_add_left (multiple * period) left
+  exact lt_of_le_of_lt hgap_le_right hright
+
 /-! ### Real phase-margin precursor -/
 
 /-- The unwrapped real-valued phase gap for one RoPE channel frequency.

@@ -237,6 +237,7 @@ from .rope_certifier import (
     certificate_summary_lines,
     certify_rope_positions,
     circular_phase_distance,
+    brute_force_single_period_collision_pair_count,
     collision_pair_count_at_gap,
     collision_pair_count_at_gap_multiples,
     discretize_rope_periods,
@@ -247,6 +248,7 @@ from .rope_certifier import (
     rope_period_estimates,
     sample_collision_pairs,
     scan_real_phase_margin,
+    single_period_collision_pair_count,
     validate_rope_config,
 )
 
@@ -327,6 +329,7 @@ __all__ = [
     "certificate_summary_lines",
     "certify_rope_positions",
     "circular_phase_distance",
+    "brute_force_single_period_collision_pair_count",
     "collision_pair_count_at_gap",
     "collision_pair_count_at_gap_multiples",
     "deterministic_noise",
@@ -455,6 +458,7 @@ __all__ = [
     "run_rope_relative_phase_benchmark",
     "sample_collision_pairs",
     "scan_real_phase_margin",
+    "single_period_collision_pair_count",
     "run_stride_family_sparse_attention_benchmark",
     "run_training_free_loop_wrapper_benchmark",
     "run_token_level_recurrence_benchmark",
