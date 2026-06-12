@@ -220,6 +220,7 @@ The companion Theseus-Hive workspace now has a report-only consumer:
 ../Theseus-Hive/scripts/circle_ai_private_workload_smoke.py
 ../Theseus-Hive/scripts/circle_ai_private_proxy_benchmark.py
 ../Theseus-Hive/scripts/circle_ai_real_workload_attachments.py
+../Theseus-Hive/scripts/circle_ai_feedback_summary.py
 ../Theseus-Hive/scripts/circle_ai_scored_private_benchmarks.py
 ../Theseus-Hive/docs/CIRCLE_CALCULUS_TRANSFER.md
 ../Theseus-Hive/reports/circle_ai_contract_consumer.json
@@ -230,6 +231,8 @@ The companion Theseus-Hive workspace now has a report-only consumer:
 ../Theseus-Hive/reports/circle_ai_private_proxy_benchmark.md
 ../Theseus-Hive/reports/circle_ai_real_workload_attachments.json
 ../Theseus-Hive/reports/circle_ai_real_workload_attachments.md
+../Theseus-Hive/reports/circle_ai_feedback_summary.json
+../Theseus-Hive/reports/circle_ai_feedback_summary.md
 ../Theseus-Hive/reports/circle_ai_scored_private_benchmarks.json
 ../Theseus-Hive/reports/circle_ai_scored_private_benchmarks.md
 ../Theseus-Hive/reports/circle_trace_lane_integrity_audit.json
@@ -246,6 +249,9 @@ The same compiled ratchet now runs `scripts/circle_ai_lane_integrity_audit.py`
 to verify the contract-pack gate, safe compiled layers, output map, workflow
 classifier entries, tool cards, and the non-compiled status of scored/private
 maintenance layers.
+It also runs `scripts/circle_ai_feedback_summary.py`, which exports only report
+presence, trigger states, booleans, counts, and numeric metrics for optional
+public-safe import into the Living Book.
 
 Run it from Theseus-Hive with:
 
@@ -255,6 +261,19 @@ python scripts/circle_ai_contract_consumer.py \
 ```
 
 Its current state is intentionally `YELLOW`: all six contract families load, all required axes are reported, and every governance gate is report-clean, but there are not yet named private benchmark results. The generated report has `external_inference_calls = 0`, `training_mutation = false`, `promotion_evidence = false`, and `public_calibration_used = false`.
+
+Import the sanitized feedback handoff into Circle with:
+
+```bash
+make theseus-ai-feedback
+```
+
+That command writes `site/data/generated/theseus_hive_ai_feedback_summary.json`.
+It accepts only the `theseus_hive.circle_ai_feedback_summary.v0` schema with
+`private_data_exported = false`, `external_inference_calls = 0`,
+`training_mutation = false`, `promotion_evidence = false`, and
+`advantage_claim_ready = false`; otherwise it fails instead of copying the
+handoff into the public repo.
 
 Run the aggregate local artifact attachment layer from Theseus-Hive with:
 

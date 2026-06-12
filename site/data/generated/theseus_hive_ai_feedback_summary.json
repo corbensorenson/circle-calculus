@@ -1,0 +1,50 @@
+{
+  "advantage_claim_ready": false,
+  "claim_boundary": "Imported Theseus-Hive feedback is aggregate report metadata only. It is not model-quality, reasoning, speed, context-length, transfer, promotion, or ASI evidence.",
+  "created_utc": "2026-06-12T04:16:59+00:00",
+  "external_inference_calls": 0,
+  "governance_gates": [
+    {
+      "gate": "source_feedback_schema_valid",
+      "passed": false
+    },
+    {
+      "gate": "private_data_export_absent",
+      "passed": true
+    },
+    {
+      "gate": "external_inference_calls_zero",
+      "passed": true
+    },
+    {
+      "gate": "promotion_evidence_absent",
+      "passed": true
+    },
+    {
+      "gate": "feedback_not_upgraded_to_claim",
+      "passed": true
+    }
+  ],
+  "import_state": "missing",
+  "private_data_exported": false,
+  "promotion_evidence": false,
+  "reports": [],
+  "schema_id": "circle_calculus.theseus_hive_ai_feedback_import.v0",
+  "source_path": "Theseus-Hive/reports/circle_ai_feedback_summary.json",
+  "source_policy": "",
+  "source_schema_id": "theseus_hive.circle_ai_feedback_summary.v0",
+  "summary": {
+    "advantage_claim_ready": false,
+    "expected_report_count": 6,
+    "external_inference_calls": 0,
+    "learned_model_quality_metrics_present": false,
+    "present_report_count": 0,
+    "private_data_exported": false,
+    "promotion_evidence": false,
+    "required_present_report_count": 0,
+    "required_report_count": 5,
+    "safe_to_import": true
+  },
+  "training_mutation": false,
+  "trigger_state": "YELLOW"
+}
