@@ -33,7 +33,7 @@ The next step is not another broad list of AI ideas. The next step is depth: tur
 
 - Publish findings, not just infrastructure. Run the RoPE certifier against named, reproducible configurations and write the result as a Living Book note.
 - Seek one external checkpoint: Lean Zulip, an ML verification workshop, a focused GitHub discussion, or a public issue from someone trying the certifier. The review packet is `docs/ROPE_CERTIFIER_REVIEW_PACKET.md`; the remaining step is the outside request and durable link.
-- Build a second proof-carrying AI contract end to end. The landed slice is ring-buffer/KV-cache safety (`AIM-T0059` through `AIM-T0065`): bounded slots, same-slot full-cache overwrite, collision iff divisibility, no collision for positive gaps smaller than cache size, next-overwrite-after-current for retained tokens, current-slot distinctness for retained older tokens, and pairwise slot distinctness for ordered retained tokens in the same live window.
+- Build a second proof-carrying AI contract end to end. The landed slice is ring-buffer/KV-cache safety (`AIM-T0059` through `AIM-T0066`): bounded slots, same-slot full-cache overwrite, collision iff divisibility, no collision for positive gaps smaller than cache size, next-overwrite-after-current for retained tokens, current-slot distinctness for retained older tokens, pairwise slot distinctness for ordered retained tokens, and unordered distinct-token slot distinctness in the same live window.
 
 ### 3. Engineering Hardening
 

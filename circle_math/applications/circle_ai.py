@@ -74,6 +74,23 @@ def kv_cache_retained_slots_distinct(
     return kv_cache_slot(cache_size, older) != kv_cache_slot(cache_size, newer)
 
 
+def kv_cache_distinct_retained_slots_distinct(
+    cache_size: int,
+    current: int,
+    left: int,
+    right: int,
+) -> bool:
+    """Return the unordered retained-window slot-distinctness certificate."""
+    _require_positive(cache_size, "cache_size")
+    if left == right:
+        return False
+    if not kv_cache_window_contains(cache_size, current, left):
+        return False
+    if not kv_cache_window_contains(cache_size, current, right):
+        return False
+    return kv_cache_slot(cache_size, left) != kv_cache_slot(cache_size, right)
+
+
 def adapter_block(block_size: int, channel: int) -> int:
     """Return the adapter block index ``channel mod block_size``."""
     _require_positive(block_size, "block_size")
@@ -325,6 +342,7 @@ class KVCacheWindowCertificate:
         "AIM-T0063",
         "AIM-T0064",
         "AIM-T0065",
+        "AIM-T0066",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheSlot_lt_cacheSize",
@@ -334,6 +352,7 @@ class KVCacheWindowCertificate:
         "Circle.Applications.kvCacheWindow_nextOverwrite_after_current",
         "Circle.Applications.kvCacheWindow_retainedSlot_ne_current_of_lt",
         "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_lt",
+        "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_ne",
     )
     note: str = (
         "KV-cache ring-buffer slot certificate only; this proves finite indexing "

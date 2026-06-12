@@ -210,6 +210,22 @@ theorem kvCacheWindow_retainedSlots_ne_of_lt
     Nat.sub_le_sub_right hnewer.1 older
   exact lt_of_le_of_lt hgap_le holder.2
 
+/-- Any two distinct tokens retained in the same KV-cache window occupy
+distinct ring-buffer slots.
+
+This removes the caller's burden of ordering the two retained tokens before
+applying the pairwise slot-separation theorem. -/
+theorem kvCacheWindow_retainedSlots_ne_of_ne
+    {cacheSize current left right : Nat}
+    (hleftWindow : kvCacheWindowContains cacheSize current left)
+    (hrightWindow : kvCacheWindowContains cacheSize current right)
+    (hne : left ≠ right) :
+    kvCacheSlot cacheSize left ≠ kvCacheSlot cacheSize right := by
+  rcases lt_or_gt_of_ne hne with hlt | hgt
+  · exact kvCacheWindow_retainedSlots_ne_of_lt hleftWindow hrightWindow hlt
+  · intro hslot
+    exact (kvCacheWindow_retainedSlots_ne_of_lt hrightWindow hleftWindow hgt) hslot.symm
+
 def loopRequiredSteps (loopPeriod sample : Nat) : Nat :=
   phaseChannel loopPeriod sample + 1
 

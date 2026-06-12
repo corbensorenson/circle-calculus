@@ -1017,6 +1017,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_retained_tokens_are_pairwise_slot_distinct
     blocker: ""
+  - id: AIM-T0066
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheWindow_retainedSlots_ne_of_ne
+    informal_statement: "Any two distinct tokens retained in the same KV-cache window occupy distinct ring-buffer slots, without requiring the caller to order them first."
+    formal_statement: "forall {cacheSize current left right : Nat}, kvCacheWindowContains cacheSize current left -> kvCacheWindowContains cacheSize current right -> left != right -> kvCacheSlot cacheSize left != kvCacheSlot cacheSize right"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_retained_tokens_are_pairwise_slot_distinct
+    blocker: ""
   - id: AIM-T0006
     status: lean_proved
     lean_name: Circle.Applications.loopRequiredSteps_pos
