@@ -106,11 +106,12 @@ targets:
       - "Record a durable link or issue and fold actionable feedback into the roadmap without changing proof status by social approval."
     artifact_refs:
       - "docs/PHASE8_DEPTH_VALIDATION.md"
+      - "docs/ROPE_CERTIFIER_REVIEW_PACKET.md"
       - "README.md"
       - "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md"
       - "site/chapters/applications/rope_certifier.qmd"
     dictionary_dependencies: ["COMMON-0077"]
-    next_action: "After the ML-engineer quickstart and results note exist, assemble a review packet and ask one focused external venue for critique."
+    next_action: "The public review packet now exists at docs/ROPE_CERTIFIER_REVIEW_PACKET.md; next ask one focused external venue for critique and record the durable link or issue."
     guardrail: "External interest is validation of usefulness and communication, not a substitute for Lean proofs."
 
   - id: P8-CONTRACT-001
