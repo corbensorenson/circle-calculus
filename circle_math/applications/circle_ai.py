@@ -600,6 +600,7 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0061",
         "AIT-T0062",
         "AIT-T0063",
+        "AIT-T0064",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -1883,6 +1884,25 @@ def stride_family_head_coil_residues_disjoint_from_tail(
         path_length,
     )) if len(normalized_strides) > 1 else set()
     return head_residues.isdisjoint(tail_residues)
+
+
+def stride_family_head_tail_no_wrap_separation_sufficient_condition(
+    sequence_length: int,
+    strides: Sequence[int],
+    path_length: int,
+) -> bool:
+    """Return whether the numeric head/tail disjointness theorem applies."""
+    _require_positive(sequence_length, "sequence_length")
+    normalized_strides = normalize_stride_family(strides)
+    _require_positive(path_length, "path_length")
+    head_stride = normalized_strides[0]
+    head_bound = path_length * head_stride
+    if head_bound >= sequence_length:
+        return False
+    return all(
+        path_length * tail_stride < sequence_length and head_bound < tail_stride
+        for tail_stride in normalized_strides[1:]
+    )
 
 
 def stride_family_local_coil_candidates_disjoint(

@@ -3302,6 +3302,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_head_tail_disjointness_detects_coil_block_overlap
     blocker: ""
+  - id: AIT-T0064
+    status: lean_proved
+    lean_name: Circle.Applications.coilLagResiduesDisjointFromFamily_of_path_mul_head_lt_tail_strides
+    informal_statement: "A new stride block is disjoint from a tail stride-family block when all involved stride multiples stay below the context length and the head block's largest possible value is strictly below every tail stride."
+    formal_statement: "forall {n stride pathLength : Nat} {strides : List Nat}, pathLength * stride < n -> (forall tailStride, tailStride in strides -> pathLength * tailStride < n) -> (forall tailStride, tailStride in strides -> pathLength * stride < tailStride) -> Circle.Applications.coilLagResiduesDisjointFromFamily n stride pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_head_tail_no_wrap_separation_is_sufficient_not_exact
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

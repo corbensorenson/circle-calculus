@@ -67,6 +67,7 @@ from circle_math.applications.circle_ai import (
     stride_family_coil_residues_no_collision,
     stride_family_deduplicated_candidate_budget_bound,
     stride_family_head_coil_residues_disjoint_from_tail,
+    stride_family_head_tail_no_wrap_separation_sufficient_condition,
     stride_family_lag_candidates_no_collision,
     stride_family_lag_candidate_list,
     stride_family_local_coil_candidates_disjoint,
@@ -558,6 +559,7 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0061",
         "AIT-T0062",
         "AIT-T0063",
+        "AIT-T0064",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -671,6 +673,7 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert "AIT-T0061" in certificate.theorem_ids
     assert "AIT-T0062" in certificate.theorem_ids
     assert "AIT-T0063" in certificate.theorem_ids
+    assert "AIT-T0064" in certificate.theorem_ids
     assert "AIT-T0025" in certificate.theorem_ids
 
 
@@ -699,6 +702,20 @@ def test_stride_family_head_tail_disjointness_detects_coil_block_overlap() -> No
     assert stride_family_head_coil_residues_disjoint_from_tail(120, (7, 13), 3)
     assert not stride_family_head_coil_residues_disjoint_from_tail(120, (7, 14), 3)
     assert stride_family_head_coil_residues_disjoint_from_tail(120, (7,), 3)
+
+
+def test_stride_family_head_tail_no_wrap_separation_is_sufficient_not_exact() -> None:
+    assert stride_family_head_tail_no_wrap_separation_sufficient_condition(
+        120, (7, 22), 3
+    )
+    assert stride_family_head_coil_residues_disjoint_from_tail(120, (7, 22), 3)
+    assert not stride_family_head_tail_no_wrap_separation_sufficient_condition(
+        120, (7, 20), 3
+    )
+    assert stride_family_head_coil_residues_disjoint_from_tail(120, (7, 20), 3)
+    assert not stride_family_head_tail_no_wrap_separation_sufficient_condition(
+        60, (7, 22), 3
+    )
 
 
 def test_learned_content_gate_route_lookup_helpers_are_deterministic() -> None:

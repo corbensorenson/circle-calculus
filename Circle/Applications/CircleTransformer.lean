@@ -743,6 +743,58 @@ theorem coilStrideFamilyLagResiduesNoCollision_cons_of_head_tail_disjoint
   unfold coilLagResiduesDisjointFromFamily at hdisjoint
   exact hhead.append htail hdisjoint
 
+/-- A numeric sufficient condition for the head stride block to be disjoint
+from a tail family.
+
+If the head block and every tail block remain below the context length before
+modulo reduction, and the largest possible head value is still below every
+tail stride, then no head residue can equal a tail-family residue. -/
+theorem coilLagResiduesDisjointFromFamily_of_path_mul_head_lt_tail_strides
+    {n stride pathLength : Nat} {strides : List Nat}
+    (hheadBound : pathLength * stride < n)
+    (htailBound : ∀ tailStride ∈ strides, pathLength * tailStride < n)
+    (hseparated : ∀ tailStride ∈ strides, pathLength * stride < tailStride) :
+    coilLagResiduesDisjointFromFamily n stride pathLength strides := by
+  unfold coilLagResiduesDisjointFromFamily
+  rw [List.disjoint_left]
+  intro lag hhead htail
+  unfold coilLagResidueList at hhead
+  rw [List.mem_map] at hhead
+  rcases hhead with ⟨headStep, hheadStepMem, hheadLag⟩
+  have hheadStepLe : headStep ≤ pathLength := by
+    rw [List.mem_range'] at hheadStepMem
+    rcases hheadStepMem with ⟨i, hi, hstep⟩
+    subst headStep
+    omega
+  have hheadStepBound : headStep * stride < n :=
+    lt_of_le_of_lt (Nat.mul_le_mul_right stride hheadStepLe) hheadBound
+  have hlag_eq_head : lag = headStep * stride := by
+    symm
+    simpa [Nat.mod_eq_of_lt hheadStepBound] using hheadLag
+  have hcontext : lag < n := by
+    rw [hlag_eq_head]
+    exact hheadStepBound
+  rw [mem_coilStrideFamilyLagResidueList_iff hcontext] at htail
+  rcases htail with ⟨tailStride, htailStrideMem, tailStep, htailStepPos,
+    htailStepLe, htailLag⟩
+  have htailStepBound : tailStep * tailStride < n :=
+    lt_of_le_of_lt (Nat.mul_le_mul_right tailStride htailStepLe)
+      (htailBound tailStride htailStrideMem)
+  have htail_eq_lag : tailStep * tailStride = lag := by
+    simpa [Nat.mod_eq_of_lt htailStepBound, Nat.mod_eq_of_lt hcontext] using htailLag
+  have hhead_le : headStep * stride ≤ pathLength * stride :=
+    Nat.mul_le_mul_right stride hheadStepLe
+  have htail_stride_le : tailStride ≤ tailStep * tailStride := by
+    calc
+      tailStride = 1 * tailStride := by rw [Nat.one_mul]
+      _ ≤ tailStep * tailStride := Nat.mul_le_mul_right tailStride htailStepPos
+  have hlt : lag < tailStep * tailStride := by
+    rw [hlag_eq_head]
+    exact lt_of_le_of_lt hhead_le
+      (lt_of_lt_of_le (hseparated tailStride htailStrideMem) htail_stride_le)
+  rw [htail_eq_lag] at hlt
+  exact (Nat.lt_irrefl lag) hlt
+
 /-- A no-wrap single stride above the local window is disjoint from local lags. -/
 theorem localCoilLagCandidatesDisjoint_singleton_of_window_lt_stride_of_path_mul_stride_lt_context
     {n window stride pathLength : Nat}
