@@ -65,8 +65,10 @@ from circle_math.applications.circle_ai import (
     stride_family_covered_lags,
     stride_family_deduplicated_candidate_budget_bound,
     stride_family_lag_candidate_list,
+    stride_family_query_candidate_list,
     stride_family_raw_candidate_budget,
     stride_family_unique_lag_candidate_count,
+    stride_family_unique_query_candidate_count,
     structured_stride_family_target_lags,
     structured_hybrid_target_lags,
     token_active_at_step,
@@ -433,6 +435,31 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     assert result.coverage_certificate.theorem_side_unique_lag_candidate_count <= (
         result.coverage_certificate.raw_candidate_budget_upper_bound
     )
+    assert result.coverage_certificate.theorem_side_query_candidates == (
+        119,
+        118,
+        117,
+        116,
+        113,
+        106,
+        99,
+        107,
+        94,
+        81,
+    )
+    assert result.coverage_certificate.theorem_side_query_candidates == (
+        stride_family_query_candidate_list(120, 0, (7, 13), 3, 4)
+    )
+    assert result.coverage_certificate.theorem_side_unique_query_candidate_count == 10
+    assert result.coverage_certificate.theorem_side_unique_query_candidate_count == (
+        stride_family_unique_query_candidate_count(120, 0, (7, 13), 3, 4)
+    )
+    assert result.coverage_certificate.theorem_side_unique_query_candidate_count <= (
+        result.coverage_certificate.raw_candidate_budget_upper_bound
+    )
+    assert result.coverage_certificate.theorem_side_unique_query_candidate_count == (
+        result.coverage_certificate.candidate_budget_per_query
+    )
     assert result.coverage_certificate.deduplicated_candidate_budget_upper_bound == (
         stride_family_deduplicated_candidate_budget_bound(
             sequence_length=120,
@@ -483,6 +510,10 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0048",
         "AIT-T0049",
         "AIT-T0050",
+        "AIT-T0051",
+        "AIT-T0052",
+        "AIT-T0053",
+        "AIT-T0054",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -526,6 +557,20 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert certificate.theorem_side_unique_lag_candidate_count <= (
         certificate.raw_candidate_budget_upper_bound
     )
+    assert certificate.theorem_side_query_candidates == (
+        stride_family_query_candidate_list(10, 0, (3,), 2, 9)
+    )
+    assert certificate.theorem_side_query_candidates == (9, 8, 7, 6, 5, 4, 3, 2, 1, 7, 4)
+    assert certificate.theorem_side_unique_query_candidate_count == 9
+    assert certificate.theorem_side_unique_query_candidate_count == (
+        stride_family_unique_query_candidate_count(10, 0, (3,), 2, 9)
+    )
+    assert certificate.theorem_side_unique_query_candidate_count <= (
+        certificate.raw_candidate_budget_upper_bound
+    )
+    assert certificate.theorem_side_unique_query_candidate_count == (
+        certificate.candidate_budget_per_query
+    )
     assert certificate.candidate_budget_per_query < certificate.raw_candidate_budget_upper_bound
     assert certificate.candidate_budget_per_query <= (
         certificate.deduplicated_candidate_budget_upper_bound
@@ -548,6 +593,10 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert "AIT-T0048" in certificate.theorem_ids
     assert "AIT-T0049" in certificate.theorem_ids
     assert "AIT-T0050" in certificate.theorem_ids
+    assert "AIT-T0051" in certificate.theorem_ids
+    assert "AIT-T0052" in certificate.theorem_ids
+    assert "AIT-T0053" in certificate.theorem_ids
+    assert "AIT-T0054" in certificate.theorem_ids
     assert "AIT-T0025" in certificate.theorem_ids
 
 

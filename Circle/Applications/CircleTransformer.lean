@@ -163,6 +163,23 @@ def hybridFamilyUniqueLagCandidateCount
     (n window pathLength : Nat) (strides : List Nat) : Nat :=
   (hybridFamilyLagCandidateList n window pathLength strides).dedup.length
 
+/-- Query-indexed predecessor position for a declared cyclic lag. -/
+def predecessorIndex (n query lag : Nat) : Nat :=
+  (query + n - (lag % n)) % n
+
+/-- Query-indexed raw predecessor candidates generated from the theorem-side
+lag-candidate list. -/
+def hybridFamilyQueryCandidateList
+    (n query window pathLength : Nat) (strides : List Nat) : List Nat :=
+  (hybridFamilyLagCandidateList n window pathLength strides).map
+    (predecessorIndex n query)
+
+/-- Exact deduplicated query-indexed candidate count for the theorem-side
+candidate generator. -/
+def hybridFamilyUniqueQueryCandidateCount
+    (n query window pathLength : Nat) (strides : List Nat) : Nat :=
+  (hybridFamilyQueryCandidateList n query window pathLength strides).dedup.length
+
 /-- The local reachability predicate is exactly the positive in-window lag condition. -/
 theorem localLagReach_of_le {window lag : Nat} (hpos : 1 ≤ lag) (hwindow : lag ≤ window) :
     localLagReach window lag :=
@@ -612,6 +629,46 @@ theorem mem_hybridFamilyLagCandidateList_iff
   rw [List.mem_append]
   rw [mem_localLagCandidateList_iff]
   rw [mem_coilStrideFamilyLagResidueList_iff hcontext]
+
+/-- The query-indexed candidate list has the same raw length as the theorem-side
+lag candidate list, hence the same raw candidate budget. -/
+theorem hybridFamilyQueryCandidateList_length
+    (n query window pathLength : Nat) (strides : List Nat) :
+    (hybridFamilyQueryCandidateList n query window pathLength strides).length =
+      hybridFamilyRawCandidateBudget window pathLength strides := by
+  unfold hybridFamilyQueryCandidateList
+  rw [List.length_map, hybridFamilyLagCandidateList_length]
+
+/-- The exact deduplicated query-indexed candidate count is never larger than
+the raw sparse-attention candidate budget. -/
+theorem hybridFamilyUniqueQueryCandidateCount_le_raw
+    (n query window pathLength : Nat) (strides : List Nat) :
+    hybridFamilyUniqueQueryCandidateCount n query window pathLength strides ≤
+      hybridFamilyRawCandidateBudget window pathLength strides := by
+  unfold hybridFamilyUniqueQueryCandidateCount
+  rw [← hybridFamilyQueryCandidateList_length n query window pathLength strides]
+  exact List.Sublist.length_le (List.dedup_sublist _)
+
+/-- Query-candidate membership is exactly membership after mapping some
+generated lag through the predecessor-index map. -/
+theorem mem_hybridFamilyQueryCandidateList_iff_exists_lag
+    {n query window pathLength candidate : Nat} {strides : List Nat} :
+    candidate ∈ hybridFamilyQueryCandidateList n query window pathLength strides ↔
+      ∃ lag, lag ∈ hybridFamilyLagCandidateList n window pathLength strides ∧
+        predecessorIndex n query lag = candidate := by
+  unfold hybridFamilyQueryCandidateList
+  rw [List.mem_map]
+
+/-- Any in-context lag reached by the local+stride-family plan maps to a
+query-indexed predecessor candidate. -/
+theorem predecessorIndex_mem_hybridFamilyQueryCandidateList_of_reach
+    {n query window pathLength lag : Nat} {strides : List Nat}
+    (hcontext : lag < n)
+    (hreach : hybridFamilyLagReach n window pathLength lag strides) :
+    predecessorIndex n query lag ∈
+      hybridFamilyQueryCandidateList n query window pathLength strides := by
+  rw [mem_hybridFamilyQueryCandidateList_iff_exists_lag]
+  exact ⟨lag, (mem_hybridFamilyLagCandidateList_iff hcontext).2 hreach, rfl⟩
 
 /-- Exact local-window coverage criterion.
 

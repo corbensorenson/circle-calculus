@@ -29,6 +29,10 @@ const THEOREM_IDS = [
   "AIT-T0048",
   "AIT-T0049",
   "AIT-T0050",
+  "AIT-T0051",
+  "AIT-T0052",
+  "AIT-T0053",
+  "AIT-T0054",
 ];
 const DICTIONARY_IDS = ["COMMON-0075", "COMMON-0079", "COMMON-0047", "COMMON-0029"];
 
@@ -90,6 +94,11 @@ function strideFamilyLagCandidateList(sequenceLength, strides, pathLength, local
   return candidates;
 }
 
+function strideFamilyQueryCandidateList(sequenceLength, queryIndex, strides, pathLength, localWindow) {
+  return strideFamilyLagCandidateList(sequenceLength, strides, pathLength, localWindow)
+    .map((lag) => mod(queryIndex - mod(lag, sequenceLength), sequenceLength));
+}
+
 function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, localWindow) {
   const coveredLags = strideFamilyCoveredLags(sequenceLength, strides, pathLength, localWindow);
   const covered = new Set(coveredLags);
@@ -106,6 +115,13 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
     pathLength,
     localWindow,
   );
+  const theoremSideQueryCandidates = strideFamilyQueryCandidateList(
+    sequenceLength,
+    0,
+    strides,
+    pathLength,
+    localWindow,
+  );
   return {
     coveredLags,
     uncoveredLags,
@@ -116,6 +132,8 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
     deduplicatedCandidateBudgetUpperBound,
     theoremSideLagCandidates,
     theoremSideUniqueLagCandidateCount: new Set(theoremSideLagCandidates).size,
+    theoremSideQueryCandidates,
+    theoremSideUniqueQueryCandidateCount: new Set(theoremSideQueryCandidates).size,
     fullAttentionBudget: sequenceLength,
     coverageComplete: uncoveredLags.length === 0,
     coverageRatio: sequenceLength <= 1 ? 1 : coveredLags.length / (sequenceLength - 1),
@@ -324,6 +342,8 @@ function appendRecord(output, values, theoremById) {
     `deduplicated candidate budget per query: ${coverage.candidateBudgetPerQuery}`,
     `theorem-side unique lag-candidate count: ${coverage.theoremSideUniqueLagCandidateCount}`,
     `theorem-side raw lag candidates: ${formatCandidates(coverage.theoremSideLagCandidates, 18)}`,
+    `theorem-side unique query-candidate count: ${coverage.theoremSideUniqueQueryCandidateCount}`,
+    `theorem-side raw query-0 candidates: ${formatCandidates(coverage.theoremSideQueryCandidates, 18)}`,
     `deduplicated candidate-budget upper bound: ${coverage.deduplicatedCandidateBudgetUpperBound}`,
     `raw candidate-budget upper bound: ${coverage.rawCandidateBudgetUpperBound}`,
     `full-attention budget: ${coverage.fullAttentionBudget}`,

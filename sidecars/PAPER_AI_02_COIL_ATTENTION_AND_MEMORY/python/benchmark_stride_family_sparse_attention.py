@@ -56,6 +56,8 @@ def main() -> None:
         f"dedup_candidate_budget={result.coverage_certificate.candidate_budget_per_query} "
         f"theorem_side_unique_lag_candidate_count="
         f"{result.coverage_certificate.theorem_side_unique_lag_candidate_count} "
+        f"theorem_side_unique_query_candidate_count="
+        f"{result.coverage_certificate.theorem_side_unique_query_candidate_count} "
         f"dedup_candidate_budget_upper_bound="
         f"{result.coverage_certificate.deduplicated_candidate_budget_upper_bound} "
         f"raw_candidate_budget_upper_bound={result.coverage_certificate.raw_candidate_budget_upper_bound} "

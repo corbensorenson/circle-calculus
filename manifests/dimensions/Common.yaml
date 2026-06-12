@@ -3115,6 +3115,63 @@ theorems:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_coverage_complete_when_local_window_covers_context
     blocker: ""
+  - id: AIT-T0051
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyQueryCandidateList_length
+    informal_statement: "The theorem-side query-indexed candidate list has exactly the raw sparse-attention candidate budget before duplicate removal."
+    formal_statement: "forall n query window pathLength : Nat, forall strides : List Nat, (Circle.Applications.hybridFamilyQueryCandidateList n query window pathLength strides).length = Circle.Applications.hybridFamilyRawCandidateBudget window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0052
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_raw
+    informal_statement: "The exact deduplicated theorem-side query-indexed candidate count is never larger than the raw candidate-budget upper bound."
+    formal_statement: "forall n query window pathLength : Nat, forall strides : List Nat, Circle.Applications.hybridFamilyUniqueQueryCandidateCount n query window pathLength strides <= Circle.Applications.hybridFamilyRawCandidateBudget window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0053
+    status: lean_proved
+    lean_name: Circle.Applications.mem_hybridFamilyQueryCandidateList_iff_exists_lag
+    informal_statement: "Membership in the theorem-side query-indexed candidate list is exactly membership after mapping some generated lag through the predecessor-index map."
+    formal_statement: "forall {n query window pathLength candidate : Nat} {strides : List Nat}, candidate in Circle.Applications.hybridFamilyQueryCandidateList n query window pathLength strides iff exists lag, lag in Circle.Applications.hybridFamilyLagCandidateList n window pathLength strides and Circle.Applications.predecessorIndex n query lag = candidate"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0054
+    status: lean_proved
+    lean_name: Circle.Applications.predecessorIndex_mem_hybridFamilyQueryCandidateList_of_reach
+    informal_statement: "Any in-context lag reached by the local plus stride-family plan maps to a query-indexed predecessor candidate."
+    formal_statement: "forall {n query window pathLength lag : Nat} {strides : List Nat}, lag < n -> Circle.Applications.hybridFamilyLagReach n window pathLength lag strides -> Circle.Applications.predecessorIndex n query lag in Circle.Applications.hybridFamilyQueryCandidateList n query window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_coverage_complete_when_local_window_covers_context
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

@@ -545,6 +545,8 @@ class StrideFamilyCoverageCertificate:
     deduplicated_candidate_budget_upper_bound: int
     theorem_side_lag_candidates: tuple[int, ...]
     theorem_side_unique_lag_candidate_count: int
+    theorem_side_query_candidates: tuple[int, ...]
+    theorem_side_unique_query_candidate_count: int
     full_attention_budget: int
     coverage_complete: bool
     coverage_ratio: float
@@ -580,6 +582,10 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0048",
         "AIT-T0049",
         "AIT-T0050",
+        "AIT-T0051",
+        "AIT-T0052",
+        "AIT-T0053",
+        "AIT-T0054",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -1803,6 +1809,48 @@ def stride_family_unique_lag_candidate_count(
     )))
 
 
+def stride_family_query_candidate_list(
+    sequence_length: int,
+    query_index: int,
+    strides: Sequence[int],
+    path_length: int,
+    local_window: int,
+) -> tuple[int, ...]:
+    """Return theorem-side query-indexed predecessor candidates.
+
+    This maps the theorem-side lag-candidate list through
+    ``query_index - lag`` on the finite circle. It preserves raw multiplicity;
+    callers can deduplicate when they need an exact unique count.
+    """
+    _require_positive(sequence_length, "sequence_length")
+    return tuple(
+        (query_index - (lag % sequence_length)) % sequence_length
+        for lag in stride_family_lag_candidate_list(
+            sequence_length,
+            strides,
+            path_length,
+            local_window,
+        )
+    )
+
+
+def stride_family_unique_query_candidate_count(
+    sequence_length: int,
+    query_index: int,
+    strides: Sequence[int],
+    path_length: int,
+    local_window: int,
+) -> int:
+    """Return the exact deduplicated theorem-side query-candidate count."""
+    return len(set(stride_family_query_candidate_list(
+        sequence_length,
+        query_index,
+        strides,
+        path_length,
+        local_window,
+    )))
+
+
 def stride_family_raw_candidate_budget(
     *,
     strides: Sequence[int],
@@ -1851,6 +1899,13 @@ def certify_stride_family_coverage(
         path_length,
         local_window,
     )
+    theorem_side_query_candidates = stride_family_query_candidate_list(
+        sequence_length,
+        0,
+        strides,
+        path_length,
+        local_window,
+    )
     candidate_budget = len(stride_family_attention_candidates(
         sequence_length,
         0,
@@ -1882,6 +1937,8 @@ def certify_stride_family_coverage(
         ),
         theorem_side_lag_candidates=theorem_side_lag_candidates,
         theorem_side_unique_lag_candidate_count=len(set(theorem_side_lag_candidates)),
+        theorem_side_query_candidates=theorem_side_query_candidates,
+        theorem_side_unique_query_candidate_count=len(set(theorem_side_query_candidates)),
         full_attention_budget=sequence_length,
         coverage_complete=len(uncovered) == 0,
         coverage_ratio=1.0 if positive_lag_count == 0 else len(covered) / positive_lag_count,

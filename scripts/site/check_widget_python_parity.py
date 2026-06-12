@@ -97,6 +97,7 @@ from circle_math.applications import (
     stride_family_attention_candidates,
     stride_family_covered_lags,
     stride_family_lag_candidate_list,
+    stride_family_query_candidate_list,
     structured_stride_family_target_lags,
     token_active_at_step,
     token_recurrence_budget,
@@ -1309,6 +1310,24 @@ def js_stride_family_lag_candidate_list(
         for step in range(1, path_length + 1):
             candidates.append(js_mod(step * stride, sequence_length))
     return tuple(candidates)
+
+
+def js_stride_family_query_candidate_list(
+    sequence_length: int,
+    query_index: int,
+    strides: tuple[int, ...],
+    path_length: int,
+    local_window: int,
+) -> tuple[int, ...]:
+    return tuple(
+        js_mod(query_index - js_mod(lag, sequence_length), sequence_length)
+        for lag in js_stride_family_lag_candidate_list(
+            sequence_length,
+            strides,
+            path_length,
+            local_window,
+        )
+    )
 
 
 def js_retrieval_target_index(sequence_length: int, query_index: int, target_lag: int) -> int:
@@ -3282,11 +3301,31 @@ def main() -> int:
             local_window,
         )
         assert lag_candidates == js_lag_candidates
+        query_candidates = stride_family_query_candidate_list(
+            sequence_length,
+            0,
+            strides,
+            path_length,
+            local_window,
+        )
+        js_query_candidates = js_stride_family_query_candidate_list(
+            sequence_length,
+            0,
+            strides,
+            path_length,
+            local_window,
+        )
+        assert query_candidates == js_query_candidates
         coverage_certificate = certify_stride_family_coverage(sequence_length, strides, path_length, local_window)
         assert coverage_certificate.covered_lags == js_covered_lags
         assert coverage_certificate.theorem_side_lag_candidates == js_lag_candidates
         assert coverage_certificate.theorem_side_unique_lag_candidate_count == len(set(js_lag_candidates))
         assert coverage_certificate.theorem_side_unique_lag_candidate_count <= (
+            local_window + path_length * len(strides)
+        )
+        assert coverage_certificate.theorem_side_query_candidates == js_query_candidates
+        assert coverage_certificate.theorem_side_unique_query_candidate_count == len(set(js_query_candidates))
+        assert coverage_certificate.theorem_side_unique_query_candidate_count <= (
             local_window + path_length * len(strides)
         )
         assert coverage_certificate.uncovered_lags == tuple(

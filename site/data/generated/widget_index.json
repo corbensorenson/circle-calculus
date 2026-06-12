@@ -498,7 +498,7 @@
       ],
       "id": "stride_family_attention",
       "path": "site/widgets/ai/stride_family_attention.js",
-      "python_reference": "circle_math.applications.circle_ai.stride_family_attention_candidates; circle_math.applications.circle_ai.stride_family_lag_candidate_list; circle_math.applications.circle_ai.structured_stride_family_target_lags; circle_math.applications.circle_ai.nonstructured_stride_family_control_lags; circle_math.applications.circle_ai.run_stride_family_sparse_attention_benchmark",
+      "python_reference": "circle_math.applications.circle_ai.stride_family_attention_candidates; circle_math.applications.circle_ai.stride_family_lag_candidate_list; circle_math.applications.circle_ai.stride_family_query_candidate_list; circle_math.applications.circle_ai.structured_stride_family_target_lags; circle_math.applications.circle_ai.nonstructured_stride_family_control_lags; circle_math.applications.circle_ai.run_stride_family_sparse_attention_benchmark",
       "theorem_ids": [
         "AIT-T0015",
         "AIT-T0016",
@@ -525,7 +525,11 @@
         "AIT-T0047",
         "AIT-T0048",
         "AIT-T0049",
-        "AIT-T0050"
+        "AIT-T0050",
+        "AIT-T0051",
+        "AIT-T0052",
+        "AIT-T0053",
+        "AIT-T0054"
       ]
     },
     {
