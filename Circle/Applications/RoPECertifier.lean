@@ -150,6 +150,27 @@ theorem ropePhaseBankCollision_at_gap_of_forall_dvd
       intro period hmem
       simpa [hgap] using hdivides period hmem)
 
+/-- If every declared period divides a common gap, then every positive multiple
+of that common gap also gives a certified all-channel collision family while
+the paired endpoint remains inside the inspected context.
+
+This extends the common-gap count from one gap to every in-context multiple of
+the common gap. It is still a guaranteed-family theorem, not a total collision
+count over all possible gaps. -/
+theorem ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd
+    {periods : List Nat} {context commonGap multiple start : Nat}
+    (hdivides : ∀ period, period ∈ periods → period ∣ commonGap)
+    (_hmultiple : 0 < multiple)
+    (hstart : start < ropeCollisionPairCountAtGap context (multiple * commonGap)) :
+    ropePhaseBankCollision periods start (start + multiple * commonGap) ∧
+      start + multiple * commonGap < context := by
+  refine ropePhaseBankCollision_at_gap_of_forall_dvd
+    (periods := periods) (context := context) (gap := multiple * commonGap)
+    (start := start) ?_ hstart
+  intro period hmem
+  simpa [Nat.mul_comm, Nat.mul_left_comm, Nat.mul_assoc] using
+    dvd_mul_of_dvd_right (hdivides period hmem) multiple
+
 /-! ### Real phase-margin precursor -/
 
 /-- The unwrapped real-valued phase gap for one RoPE channel frequency.

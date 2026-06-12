@@ -11,6 +11,7 @@ from circle_math.applications import (
     capped_lcm,
     certify_rope_positions,
     collision_pair_count_at_gap,
+    collision_pair_count_at_gap_multiples,
     discretize_rope_periods,
     real_phase_int_turn_error,
     real_phase_nat_turn_error,
@@ -25,6 +26,7 @@ def test_discretized_period_helpers_are_deterministic() -> None:
     assert capped_lcm((4, 6), 10) == (12, True)
     assert capped_lcm((4, 6), 30) == (12, False)
     assert collision_pair_count_at_gap(10, 4) == 6
+    assert collision_pair_count_at_gap_multiples(20, 6) == 24
     assert collision_pair_count_at_gap(10, 10) == 0
     assert sample_collision_pairs(10, 4, limit=3) == ((0, 4), (1, 5), (2, 6))
 
@@ -63,6 +65,7 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     assert not certificate.exact_discrete.pass_exact
     assert certificate.exact_discrete.common_collision_gap == 6
     assert certificate.exact_discrete.guaranteed_common_gap_collision_pair_count == 14
+    assert certificate.exact_discrete.guaranteed_common_gap_multiple_pair_count == 24
     assert certificate.exact_discrete.sample_collision_pairs[0] == (0, 6)
     assert certificate.theorem_ids == ROPE_CERTIFIER_THEOREMS
     assert "AIRA-T0024" in certificate.exact_discrete.assumptions[3]
@@ -77,6 +80,7 @@ def test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context() 
     assert certificate.exact_discrete.common_collision_gap is None
     assert certificate.exact_discrete.common_collision_gap_reaches_context
     assert certificate.exact_discrete.guaranteed_common_gap_collision_pair_count == 0
+    assert certificate.exact_discrete.guaranteed_common_gap_multiple_pair_count == 0
     assert certificate.exact_discrete.sample_collision_pairs == ()
     assert certificate.real_phase_margin.scanned_gap_count == 7
     assert certificate.real_phase_margin.formal_precursor_theorem_ids == ROPE_REAL_PHASE_PRECURSOR_THEOREMS
@@ -105,6 +109,7 @@ def test_rope_certify_cli_emits_json_certificate() -> None:
     assert payload["exact_discrete"]["pass_exact"] is False
     assert payload["exact_discrete"]["common_collision_gap"] == 6
     assert payload["exact_discrete"]["guaranteed_common_gap_collision_pair_count"] == 14
+    assert payload["exact_discrete"]["guaranteed_common_gap_multiple_pair_count"] == 24
     assert payload["real_phase_margin"]["formal_precursor_theorem_ids"] == list(ROPE_REAL_PHASE_PRECURSOR_THEOREMS)
     assert payload["theorem_ids"] == list(ROPE_CERTIFIER_THEOREMS)
 

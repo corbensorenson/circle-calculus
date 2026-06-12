@@ -47,6 +47,7 @@ Lean declarations determine proof status. The theorem manifest is the proof-stat
 - `AIRA-T0026`: `Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context`
 - `AIRA-T0027`: `Circle.Applications.ropeCollisionPairCountAtGap_pos_iff`
 - `AIRA-T0028`: `Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd`
+- `AIRA-T0034`: `Circle.Applications.ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd`
 - `AIRA-T0029`: `Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs`
 - `AIRA-T0030`: `Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower`
 - `AIRA-T0031`: `Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window`
@@ -62,7 +63,7 @@ iff every declared period divides their position gap.
 
 That is the usable contract. It turns position indistinguishability into a finite arithmetic check over divisibility.
 
-`AIRA-T0027` and `AIRA-T0028` add the first collision-counting seed. If the certifier finds a common exact collision gap inside the context, then `context - gap` ordered start positions have a paired position exactly `gap` steps ahead, and every one of those counted pairs is an all-channel collision when each declared period divides the gap. This is a certified common-gap count, not yet a theorem for the total number of all colliding pairs at all gap multiples.
+`AIRA-T0027`, `AIRA-T0028`, and `AIRA-T0034` add the first collision-counting seed. If the certifier finds a common exact collision gap inside the context, then `context - gap` ordered start positions have a paired position exactly `gap` steps ahead, and every one of those counted pairs is an all-channel collision when each declared period divides the gap. `AIRA-T0034` extends the same guarantee to every positive multiple of the common gap that still fits in the context. This is a certified common-gap-multiple family count, not yet a theorem for the total number of all colliding pairs outside those families.
 
 ## Real-Phase Precursor
 
@@ -108,6 +109,7 @@ It emits:
 - common exact collision gap when it is inside the context;
 - sample colliding pairs when exact discrete distinguishability fails;
 - guaranteed common-gap collision-pair count when exact discrete distinguishability fails;
+- guaranteed common-gap-multiple collision-pair count when exact discrete distinguishability fails;
 - numerical real-phase margin and worst gap;
 - theorem ids for the unwrapped real-phase precursor;
 - a machine-readable JSON certificate when `--format json` or `--json-out` is used.

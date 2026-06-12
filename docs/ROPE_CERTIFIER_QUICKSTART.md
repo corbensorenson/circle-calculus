@@ -58,10 +58,10 @@ The text output has two different evidence layers:
 
 ```text
 exact_discrete_contract=PASS common_collision_gap=>= context
-guaranteed_common_gap_collision_pair_count=0
+guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0
 real_phase_margin=PASS worst_margin_radians=...
 real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033 (unwrapped and signed full-turn window precursors only; not a Diophantine proof)
-theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028
+theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034
 ```
 
 `exact_discrete_contract=PASS` means the integer-period phase bank has no all-channel collision among unequal positions inside the inspected context. The Lean-backed theorem spine proves that all-channel collision is equivalent to every declared period dividing the position gap.
@@ -71,7 +71,7 @@ theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AI
 `real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033` means Lean has proved the unwrapped one-channel real phase-gap arithmetic and a signed full-turn-multiple window precursor used by later real-margin work. It is not a Diophantine proof that arbitrary RoPE gaps satisfy the window hypotheses and does not certify the numerical scan.
 
 If the exact discrete contract fails, the output includes a common collision gap and sample colliding pairs.
-It also reports `guaranteed_common_gap_collision_pair_count`, the number of starts whose paired position is exactly the common collision gap ahead. That count is theorem-backed for the declared integer-period phase bank, but it is not a total count of all collision pairs at every multiple of the gap.
+It also reports `guaranteed_common_gap_collision_pair_count`, the number of starts whose paired position is exactly the common collision gap ahead, and `guaranteed_common_gap_multiple_pair_count`, the corresponding guaranteed family summed over every positive in-context multiple of that gap. Those counts are theorem-backed for the declared integer-period phase bank, but they are not total counts of all possible collision pairs outside the common-gap families.
 
 ## Machine-Readable Output
 

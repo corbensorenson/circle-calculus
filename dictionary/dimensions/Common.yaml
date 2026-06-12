@@ -843,12 +843,12 @@ entries:
     name: "RoPE common-gap collision-pair count"
     kind: metric
     symbol: "collision_pairs_at_gap(context,gap)"
-    formal_definition: "For a context length and positive common collision gap, the finite count `context - gap` of ordered starts whose paired position is exactly that gap ahead; in Lean, `Circle.Applications.ropeCollisionPairCountAtGap` and `Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd` certify that every counted start gives an all-channel collision when every declared period divides the gap."
-    intuition: "When a common exact collision gap lands inside the inspected context, the certifier can report not just one sample pair but a theorem-backed count of guaranteed pairs at that gap."
+    formal_definition: "For a context length and positive common collision gap, the finite count `context - gap` of ordered starts whose paired position is exactly that gap ahead; in Lean, `Circle.Applications.ropeCollisionPairCountAtGap`, `Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd`, and `Circle.Applications.ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd` certify that every counted start gives an all-channel collision when every declared period divides the gap or a positive in-context multiple of the common gap."
+    intuition: "When a common exact collision gap lands inside the inspected context, the certifier can report not just one sample pair but theorem-backed counts of guaranteed pairs at that gap and at its in-context multiples."
     dependencies: ["COMMON-0076", "COMMON-0077"]
     introduced_in: "PAPER_AI_04_ROPE_POSITION_CERTIFIER"
     forbidden_meanings:
-      - "The total number of every possible colliding pair unless a separate total-count theorem is cited."
+      - "The total number of every possible colliding pair beyond the common-gap multiple families unless a separate total-count theorem is cited."
       - "A real-valued RoPE collision count."
       - "Evidence that any model quality, context length, speed, or memory improves."
   - id: COMMON-0080

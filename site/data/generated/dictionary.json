@@ -9846,6 +9846,12 @@
           "lean_name": "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window",
           "name": "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0034",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd",
+          "name": "Circle.Applications.ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -9960,6 +9966,12 @@
           "lean_name": "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window",
           "name": "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0034",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd",
+          "name": "Circle.Applications.ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -9976,14 +9988,14 @@
         "COMMON-0077"
       ],
       "forbidden_meanings": [
-        "The total number of every possible colliding pair unless a separate total-count theorem is cited.",
+        "The total number of every possible colliding pair beyond the common-gap multiple families unless a separate total-count theorem is cited.",
         "A real-valued RoPE collision count.",
         "Evidence that any model quality, context length, speed, or memory improves."
       ],
-      "formal_definition": "For a context length and positive common collision gap, the finite count `context - gap` of ordered starts whose paired position is exactly that gap ahead; in Lean, `Circle.Applications.ropeCollisionPairCountAtGap` and `Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd` certify that every counted start gives an all-channel collision when every declared period divides the gap.",
+      "formal_definition": "For a context length and positive common collision gap, the finite count `context - gap` of ordered starts whose paired position is exactly that gap ahead; in Lean, `Circle.Applications.ropeCollisionPairCountAtGap`, `Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd`, and `Circle.Applications.ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd` certify that every counted start gives an all-channel collision when every declared period divides the gap or a positive in-context multiple of the common gap.",
       "id": "COMMON-0078",
       "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
-      "intuition": "When a common exact collision gap lands inside the inspected context, the certifier can report not just one sample pair but a theorem-backed count of guaranteed pairs at that gap.",
+      "intuition": "When a common exact collision gap lands inside the inspected context, the certifier can report not just one sample pair but theorem-backed counts of guaranteed pairs at that gap and at its in-context multiples.",
       "kind": "metric",
       "name": "RoPE common-gap collision-pair count",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
@@ -10008,6 +10020,12 @@
           "id": "AIRA-T0028",
           "lean_name": "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
           "name": "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0034",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd",
+          "name": "Circle.Applications.ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd",
           "status": "proved"
         }
       ],

@@ -2122,6 +2122,21 @@ theorems:
         - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
         - tests/test_rope_certifier.py::test_rope_certify_cli_emits_json_certificate
     blocker: ""
+  - id: AIRA-T0034
+    status: lean_proved
+    lean_name: Circle.Applications.ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd
+    informal_statement: "If every declared RoPE-bank period divides a common gap, then every positive in-context multiple of that common gap gives a theorem-backed all-channel collision family."
+    formal_statement: "forall {periods : List Nat} {context commonGap multiple start : Nat}, (forall period, period in periods -> period ∣ commonGap) -> 0 < multiple -> start < Circle.Applications.ropeCollisionPairCountAtGap context (multiple * commonGap) -> Circle.Applications.ropePhaseBankCollision periods start (start + multiple * commonGap) and start + multiple * commonGap < context"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_discretized_period_helpers_are_deterministic
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
+    blocker: ""
   - id: AIRA-T0029
     status: lean_proved
     lean_name: Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs

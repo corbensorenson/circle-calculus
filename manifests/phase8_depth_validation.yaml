@@ -65,7 +65,7 @@ targets:
       - "circle_math/applications/rope_certifier.py"
       - "tests/test_rope_certifier.py"
     dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078"]
-    next_action: "The theorem-backed common-gap collision-pair count is now landed through AIRA-T0027 and AIRA-T0028; next extend toward total single-period collision counts and bounded bank counts, with brute-force Python parity for small contexts."
+    next_action: "The theorem-backed common-gap and common-gap-multiple collision-pair counts are now landed through AIRA-T0027, AIRA-T0028, and AIRA-T0034; next extend toward total single-period collision counts and bounded bank counts, with brute-force Python parity for small contexts."
     guardrail: "Do not imply the finite integer-period count is a count of real-valued RoPE collisions unless the real model is separately formalized."
 
   - id: P8-VALID-001
