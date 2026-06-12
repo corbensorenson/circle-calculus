@@ -37,9 +37,11 @@ reachability theory:
 
 - a stride-`k` head reaches exactly `n / gcd(n,k)` distinct positions (`AIT-T0001`);
 - it reaches **every** position iff `gcd(n,k) = 1` (`AIT-T0002`, `AIT-T0003`).
+- a local+coil hybrid reaches any dependency lag reached by either the local window or the admitted coil path (`AIT-T0010` through `AIT-T0014`).
 
 That is a proved design rule for sparse/dilated attention: *pick strides coprime to the
-context length and every token provably reaches every other.*
+context length and every token provably reaches every other; combine local and coil
+paths when the task mixes near and long dependencies.*
 
 **RoPE relative position.** Rotary embeddings encode position as rotation; their defining
 property — interaction depends only on relative position — is the rotation law:
@@ -58,6 +60,11 @@ proved:
 <div class="theorem-box" data-theorem-id="AIT-T0001"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0002"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0003"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0010"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0011"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0012"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0013"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0014"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0004"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0005"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0006"></div>
@@ -121,9 +128,11 @@ AI is now a dedicated Circle Calculus program, not a side note. The avenues to e
 
 Every avenue needs ordinary baselines, negative controls, and reproducible scripts before it becomes a claim about model quality or speed.
 
-## Theseus-Hive Transfer Lane
+## Optional Downstream Transfer Lane
 
-The most important applied AI target is the user's local Theseus-Hive system. Circle Calculus should feed it explicit contracts, not loose inspiration:
+Circle AI should stand on its own first: public theorem ids, executable fixtures, ordinary baselines, negative controls, and Living Book explanations must be useful without any private project. A local Theseus-Hive transfer lane exists as optional downstream context, but it is not the source of truth for Circle AI claims.
+
+The transfer boundary is still useful as a pattern: downstream systems should consume explicit contracts, not loose inspiration.
 
 ```text
 Circle AI proofs and fixtures
@@ -233,7 +242,7 @@ The update-cycle effort run is useful as instrumentation but still not a mainten
 All current reports are `YELLOW`: the bridge loads all six contract families, the smoke workloads pass, deterministic proxy metrics exist, six local aggregate workload attachments exist, the scored candidate-manifest benchmark exists, the semantic score-context layer exists, the full-frontier semantic execution layer exists, the recurrence work-budget execution layer exists, the memory context-packet retrieval layer exists, the phase-feature ablation layer exists, the route/ranker mixer ablation layer exists, the router-head mixer attachment layer exists, the seed-rule exact-regeneration layer exists, the seed-rule source-change stress layer exists, the workflow/tool-card rebuild layer exists, and update-cycle effort instrumentation exists, but there are no learned-model quality metrics or Circle advantage results yet.
 
 ::: {.warning-box}
-This lane is not evidence that Circle Calculus has already improved Theseus-Hive. It is an experiment plan. Lean can certify finite schedule, index, coverage, relative-phase, and equivariance facts; Theseus-Hive benchmarks must carry any quality, transfer, speed, memory, or reasoning claim.
+This lane is not evidence that Circle Calculus has improved any AI system. It is an optional experiment plan. Lean can certify finite schedule, index, coverage, relative-phase, and equivariance facts; public standalone benchmarks must carry public claims, and any private downstream benchmark remains separate evidence.
 :::
 
 ## Phase-Channel Baseline Path
@@ -289,6 +298,14 @@ The widget below compares content-gated routing against static coil, static loca
 The learned version fits a tiny phase-to-route lookup from training examples, then compares it with static coil, static local, wrong-period, flipped-gate, union-candidate, and full-attention controls. It is a route-table fixture, not a learned-model quality claim.
 
 <div class="widget-panel" data-widget="learned_content_gate_retrieval" data-dictionary-ids="COMMON-0057 COMMON-0047 COMMON-0028"></div>
+
+## Hybrid Sparse-Attention Path
+
+The next standalone sparse-attention step is not Theseus-specific: combine local and coil candidates, then ask whether the combined sparse set covers the dependencies it was designed for while staying cheaper than full attention.
+
+`AIM-B0016` is the current executable fixture. It mixes near dependencies with long dependencies that lie on the selected coil path. The hybrid local+coil candidate set reaches all structured targets with average candidate count `9`, while the full-attention oracle uses `96` candidates. Local-only, coil-only, and wrong-stride controls miss part of the structured task. The nonstructured control is just as important: arbitrary lags are not covered by the sparse pattern, so full attention remains the oracle.
+
+This is the right kind of Circle AI evidence: useful when the dependency structure matches the circle/coil assumption, visibly wrong when it does not. It is candidate-set reachability and budget accounting only, not a neural attention-quality, runtime, memory, or model-quality claim.
 
 ## Adapter Parameter-Budget Path
 
@@ -521,6 +538,7 @@ The Lean facts `AIM-T0049` through `AIM-T0055` certify only the finite state ari
 - `AIM-B0002` is a reachability harness over candidate index sets, not an attention-quality theorem.
 - `AIM-B0004` is a gated-route reachability and budget harness, not a learned attention-quality theorem.
 - `AIM-B0010` is learned route-table bookkeeping, not evidence about neural learned gates, retrieval quality, context length, runtime, or memory scaling.
+- `AIM-B0016` is hybrid local+coil candidate-set reachability and budget bookkeeping, not evidence about sparse-attention quality, runtime, memory scaling, or long-context model behavior.
 - `AIM-B0003` is a looped/recursive transformer schedule harness, not a recursive reasoning, context length, speed, memory, or model-quality result.
 - `AIM-B0011` is loop-exit certificate bookkeeping, not evidence about adaptive-exit quality, reasoning, context length, speed, memory, or throughput.
 - `AIM-B0005` is token-level recurrence routing bookkeeping, not evidence about learned routers, reasoning, perplexity, throughput, memory, or context length.

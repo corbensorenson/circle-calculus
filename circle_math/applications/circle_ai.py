@@ -329,6 +329,30 @@ class LearnedContentGateRetrievalBenchmarkResult:
 
 
 @dataclass(frozen=True)
+class HybridSparseAttentionBenchmarkResult:
+    sequence_length: int
+    query_count: int
+    stride: int
+    path_length: int
+    local_window: int
+    wrong_stride: int
+    structured_lag_sample: tuple[int, ...]
+    control_lag_sample: tuple[int, ...]
+    hybrid_accuracy: float
+    local_window_accuracy: float
+    coil_path_accuracy: float
+    wrong_stride_hybrid_accuracy: float
+    full_attention_accuracy: float
+    nonstructured_hybrid_accuracy: float
+    nonstructured_full_attention_accuracy: float
+    average_hybrid_candidate_count: float
+    average_local_candidate_count: float
+    average_coil_candidate_count: float
+    average_full_candidate_count: float
+    note: str = "Synthetic hybrid sparse-attention reachability fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
 class LoopedRecurrenceBenchmarkResult:
     loop_period: int
     train_length: int
@@ -1301,6 +1325,182 @@ def average_candidate_count(candidate_sets: Sequence[Sequence[int]]) -> float:
     if not candidate_sets:
         raise ValueError("candidate_sets must be nonempty")
     return sum(len(set(candidates)) for candidates in candidate_sets) / len(candidate_sets)
+
+
+def _unique_preserving_order(values: Sequence[int]) -> tuple[int, ...]:
+    seen: set[int] = set()
+    result = []
+    for value in values:
+        if value not in seen:
+            seen.add(value)
+            result.append(value)
+    return tuple(result)
+
+
+def hybrid_attention_candidates(
+    sequence_length: int,
+    query_index: int,
+    stride: int,
+    path_length: int,
+    local_window: int,
+) -> tuple[int, ...]:
+    """Return the local-window plus fixed-coil candidate set.
+
+    This is finite candidate-set bookkeeping only. It does not score attention
+    weights or claim that a neural head should use this exact union.
+    """
+    local = local_window_indices(sequence_length, query_index, local_window)
+    coil = coil_attention_path(sequence_length, query_index, stride, path_length)
+    return _unique_preserving_order(local + coil)
+
+
+def structured_hybrid_target_lags(
+    query_indices: Sequence[int],
+    *,
+    stride: int,
+    path_length: int,
+    local_window: int,
+) -> tuple[int, ...]:
+    """Return a deterministic mix of near and coil-reachable dependency lags."""
+    _require_positive(stride, "stride")
+    _require_positive(path_length, "path_length")
+    _require_positive(local_window, "local_window")
+    if not query_indices:
+        raise ValueError("query_indices must be nonempty")
+    near_lag = min(3, local_window)
+    first_coil_lag = stride * min(2, path_length)
+    second_coil_lag = stride * path_length
+    return tuple(
+        near_lag if query_index % 3 == 0
+        else first_coil_lag if query_index % 3 == 1
+        else second_coil_lag
+        for query_index in query_indices
+    )
+
+
+def nonstructured_hybrid_control_lags(
+    query_indices: Sequence[int],
+    *,
+    sequence_length: int,
+) -> tuple[int, ...]:
+    """Return deterministic control lags not designed for the local+coil union."""
+    if sequence_length <= 1:
+        raise ValueError("sequence_length must be greater than 1")
+    if not query_indices:
+        raise ValueError("query_indices must be nonempty")
+    return tuple(((7 * query_index + 13) % (sequence_length - 1)) + 1 for query_index in query_indices)
+
+
+def run_hybrid_sparse_attention_benchmark(
+    *,
+    sequence_length: int = 96,
+    query_count: int = 96,
+    stride: int = 11,
+    path_length: int = 4,
+    local_window: int = 5,
+    wrong_stride: int = 8,
+) -> HybridSparseAttentionBenchmarkResult:
+    """Compare local, coil, hybrid, wrong-stride, and dense candidate sets.
+
+    The positive task deliberately mixes near dependencies with long
+    dependencies that are reachable by the selected coil path. The control task
+    uses deterministic lags not generated from that structure, so the sparse
+    hybrid should not be mistaken for full attention. This is a reachability and
+    candidate-budget fixture, not an attention-quality benchmark.
+    """
+    _require_positive(sequence_length, "sequence_length")
+    _require_positive(query_count, "query_count")
+    _require_positive(stride, "stride")
+    _require_positive(path_length, "path_length")
+    _require_positive(local_window, "local_window")
+    _require_positive(wrong_stride, "wrong_stride")
+
+    query_indices = tuple(range(query_count))
+    structured_lags = structured_hybrid_target_lags(
+        query_indices,
+        stride=stride,
+        path_length=path_length,
+        local_window=local_window,
+    )
+    control_lags = nonstructured_hybrid_control_lags(
+        query_indices,
+        sequence_length=sequence_length,
+    )
+
+    local_sets = tuple(
+        local_window_indices(sequence_length, query_index, local_window)
+        for query_index in query_indices
+    )
+    coil_sets = tuple(
+        coil_attention_path(sequence_length, query_index, stride, path_length)
+        for query_index in query_indices
+    )
+    hybrid_sets = tuple(
+        hybrid_attention_candidates(sequence_length, query_index, stride, path_length, local_window)
+        for query_index in query_indices
+    )
+    wrong_hybrid_sets = tuple(
+        hybrid_attention_candidates(sequence_length, query_index, wrong_stride, path_length, local_window)
+        for query_index in query_indices
+    )
+    full_sets = tuple(tuple(range(sequence_length)) for _ in query_indices)
+
+    return HybridSparseAttentionBenchmarkResult(
+        sequence_length=sequence_length,
+        query_count=query_count,
+        stride=stride,
+        path_length=path_length,
+        local_window=local_window,
+        wrong_stride=wrong_stride,
+        structured_lag_sample=structured_lags[:12],
+        control_lag_sample=control_lags[:12],
+        hybrid_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            structured_lags,
+            hybrid_sets,
+        ),
+        local_window_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            structured_lags,
+            local_sets,
+        ),
+        coil_path_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            structured_lags,
+            coil_sets,
+        ),
+        wrong_stride_hybrid_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            structured_lags,
+            wrong_hybrid_sets,
+        ),
+        full_attention_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            structured_lags,
+            full_sets,
+        ),
+        nonstructured_hybrid_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            control_lags,
+            hybrid_sets,
+        ),
+        nonstructured_full_attention_accuracy=retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            control_lags,
+            full_sets,
+        ),
+        average_hybrid_candidate_count=average_candidate_count(hybrid_sets),
+        average_local_candidate_count=average_candidate_count(local_sets),
+        average_coil_candidate_count=average_candidate_count(coil_sets),
+        average_full_candidate_count=average_candidate_count(full_sets),
+    )
 
 
 def run_coil_retrieval_benchmark(

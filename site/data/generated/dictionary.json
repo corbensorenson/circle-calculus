@@ -4554,6 +4554,24 @@
           "lean_name": "Circle.Applications.stridedHead_fullCoverage_of_coprime",
           "name": "Circle.Applications.stridedHead_fullCoverage_of_coprime",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0011",
+          "lean_name": "Circle.Applications.coilLagReach_of_step",
+          "name": "Circle.Applications.coilLagReach_of_step",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0012",
+          "lean_name": "Circle.Applications.coilLagReach_add_context",
+          "name": "Circle.Applications.coilLagReach_add_context",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0014",
+          "lean_name": "Circle.Applications.hybridLagReach_of_coil",
+          "name": "Circle.Applications.hybridLagReach_of_coil",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5382,7 +5400,38 @@
           "title": "Circle Calculus AI 2: Coil Attention and Memory"
         }
       ],
-      "used_by_theorems": [],
+      "used_by_theorems": [
+        {
+          "id": "AIT-T0010",
+          "lean_name": "Circle.Applications.localLagReach_of_le",
+          "name": "Circle.Applications.localLagReach_of_le",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0011",
+          "lean_name": "Circle.Applications.coilLagReach_of_step",
+          "name": "Circle.Applications.coilLagReach_of_step",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0012",
+          "lean_name": "Circle.Applications.coilLagReach_add_context",
+          "name": "Circle.Applications.coilLagReach_add_context",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0013",
+          "lean_name": "Circle.Applications.hybridLagReach_of_local",
+          "name": "Circle.Applications.hybridLagReach_of_local",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0014",
+          "lean_name": "Circle.Applications.hybridLagReach_of_coil",
+          "name": "Circle.Applications.hybridLagReach_of_coil",
+          "status": "proved"
+        }
+      ],
       "used_by_widgets": [
         {
           "id": "backend_parity_fixture",

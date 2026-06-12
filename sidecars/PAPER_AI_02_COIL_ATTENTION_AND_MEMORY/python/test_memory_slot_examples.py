@@ -8,6 +8,7 @@ from circle_math.applications.circle_ai import (
     fit_content_route_lookup,
     fit_memory_slot_lookup,
     fit_recurrence_resolution_lookup,
+    hybrid_attention_candidates,
     local_window_indices,
     loop_exit_certificate,
     loop_exit_step,
@@ -24,6 +25,7 @@ from circle_math.applications.circle_ai import (
     middle_block_budget_route,
     mixed_retrieval_target_lags,
     multi_resolution_required_resolutions,
+    nonstructured_hybrid_control_lags,
     predict_loop_budget_lookup,
     predict_loop_block_lookup,
     predict_content_route_lookup,
@@ -34,6 +36,7 @@ from circle_math.applications.circle_ai import (
     recurrence_resolution_levels,
     run_coil_retrieval_benchmark,
     run_content_gated_retrieval_benchmark,
+    run_hybrid_sparse_attention_benchmark,
     run_learned_content_gate_retrieval_benchmark,
     run_learned_middle_block_recurrence_benchmark,
     run_learned_multi_resolution_recurrence_benchmark,
@@ -47,6 +50,7 @@ from circle_math.applications.circle_ai import (
     run_training_free_loop_wrapper_benchmark,
     run_token_level_recurrence_benchmark,
     shifted_recurrence_resolutions,
+    structured_hybrid_target_lags,
     token_active_at_step,
     synthetic_memory_slot_dataset,
     token_recurrence_budget,
@@ -202,6 +206,62 @@ def test_content_gated_retrieval_benchmark_has_route_and_budget_baselines() -> N
     assert result.average_gated_candidate_count == 5.5
     assert result.average_union_candidate_count == 10.0
     assert result.average_full_candidate_count == 64.0
+    assert result.note.endswith("not a model-quality claim.")
+
+
+def test_hybrid_attention_candidates_union_local_and_coil_paths() -> None:
+    candidates = hybrid_attention_candidates(
+        sequence_length=96,
+        query_index=50,
+        stride=11,
+        path_length=4,
+        local_window=5,
+    )
+
+    assert candidates == (49, 48, 47, 46, 45, 39, 28, 17, 6)
+    assert retrieval_target_index(96, 50, 3) in candidates
+    assert retrieval_target_index(96, 50, 22) in candidates
+    assert retrieval_target_index(96, 50, 44) in candidates
+
+
+def test_hybrid_sparse_attention_benchmark_has_budget_and_negative_control() -> None:
+    queries = tuple(range(6))
+    assert structured_hybrid_target_lags(queries, stride=11, path_length=4, local_window=5) == (
+        3,
+        22,
+        44,
+        3,
+        22,
+        44,
+    )
+    assert nonstructured_hybrid_control_lags(queries, sequence_length=96) == (14, 21, 28, 35, 42, 49)
+
+    result = run_hybrid_sparse_attention_benchmark(
+        sequence_length=96,
+        query_count=96,
+        stride=11,
+        path_length=4,
+        local_window=5,
+        wrong_stride=8,
+    )
+
+    assert result == run_hybrid_sparse_attention_benchmark(
+        sequence_length=96,
+        query_count=96,
+        stride=11,
+        path_length=4,
+        local_window=5,
+        wrong_stride=8,
+    )
+    assert result.hybrid_accuracy == 1.0
+    assert result.full_attention_accuracy == 1.0
+    assert result.local_window_accuracy == 1 / 3
+    assert result.coil_path_accuracy == 2 / 3
+    assert result.wrong_stride_hybrid_accuracy == 1 / 3
+    assert result.average_hybrid_candidate_count == 9.0
+    assert result.average_full_candidate_count == 96.0
+    assert result.nonstructured_full_attention_accuracy == 1.0
+    assert result.nonstructured_hybrid_accuracy < result.nonstructured_full_attention_accuracy
     assert result.note.endswith("not a model-quality claim.")
 
 

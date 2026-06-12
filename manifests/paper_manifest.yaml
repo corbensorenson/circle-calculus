@@ -724,6 +724,11 @@ papers:
       - AIT-T0001
       - AIT-T0002
       - AIT-T0003
+      - AIT-T0010
+      - AIT-T0011
+      - AIT-T0012
+      - AIT-T0013
+      - AIT-T0014
     dictionary_ids:
       - COMMON-0028
       - COMMON-0029

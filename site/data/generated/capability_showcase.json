@@ -5591,8 +5591,8 @@
     {
       "advertised_claim": "Circle Calculus can prove finite indexing, schedule-safety, sparse-coverage, relative-phase, and circulant-mixer structure facts that AI experiments can reuse.",
       "area": "AI systems",
-      "audience_interest": "Cyclic memory, recurrence budgets, loop-exit certificates, looped recurrent states, middle-block routing, phase routing, strided attention, RoPE, circulant mixers, and adapter indexing.",
-      "circle_math_expression": "AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, strided-attention reachability, RoPE relative phase, circulant mixer laws, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
+      "audience_interest": "Cyclic memory, recurrence budgets, loop-exit certificates, looped recurrent states, middle-block routing, phase routing, strided and hybrid sparse attention, RoPE, circulant mixers, and adapter indexing.",
+      "circle_math_expression": "AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, strided and hybrid sparse-attention reachability, RoPE relative phase, circulant mixer laws, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
       "circle_native_value": "Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made.",
       "claim_contract": {
         "gates": [
@@ -5609,7 +5609,7 @@
             "passed": true
           },
           {
-            "evidence": "AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, strided-attention reachability, RoPE relative phase, circulant mixer laws, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
+            "evidence": "AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, strided and hybrid sparse-attention reachability, RoPE relative phase, circulant mixer laws, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
             "id": "circle_expression",
             "label": "Circle Math expression",
             "passed": true
@@ -5627,7 +5627,7 @@
             "passed": true
           },
           {
-            "evidence": "Lean-proved finite memory-slot, loop-budget, active-token-step, looped recurrent-state, positive raw-budget closure, middle-block route, combined route/budget one-cycle and multi-cycle common-cycle closure, sample-zero route/budget initialization, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, strided-attention coverage, RoPE relative-phase invariance, circulant shift-equivariance/commutativity/additivity, shift-action, and adapter-block normalization facts.",
+            "evidence": "Lean-proved finite memory-slot, loop-budget, active-token-step, looped recurrent-state, positive raw-budget closure, middle-block route, combined route/budget one-cycle and multi-cycle common-cycle closure, sample-zero route/budget initialization, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, strided-attention coverage, local/coil/hybrid sparse-attention reachability, RoPE relative-phase invariance, circulant shift-equivariance/commutativity/additivity, shift-action, and adapter-block normalization facts.",
             "id": "proof_scope",
             "label": "proof scope",
             "passed": true
@@ -5639,7 +5639,7 @@
             "passed": true
           },
           {
-            "evidence": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, looped recurrent-state, positive raw-budget closure, active-step, middle-block route, combined route/budget common-cycle and sample-zero initialization, certificate, strided attention coverage, RoPE relative phase, circulant mixer laws, and adapter-index safety facts; benchmarks remain separate.",
+            "evidence": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, looped recurrent-state, positive raw-budget closure, active-step, middle-block route, combined route/budget common-cycle and sample-zero initialization, certificate, strided and hybrid sparse-attention reachability, RoPE relative phase, circulant mixer laws, and adapter-index safety facts; benchmarks remain separate.",
             "id": "proof_provenance",
             "label": "proof provenance text",
             "passed": true
@@ -5651,7 +5651,7 @@
             "passed": true
           },
           {
-            "evidence": "45",
+            "evidence": "50",
             "id": "proved_theorem_ids",
             "label": "proved paper-carried theorem ids",
             "passed": true
@@ -5663,7 +5663,7 @@
             "passed": true
           },
           {
-            "evidence": "5",
+            "evidence": "7",
             "id": "source_trail",
             "label": "paper-backed source refs",
             "passed": true
@@ -5693,7 +5693,7 @@
             "passed": true
           },
           {
-            "evidence": "standard_math_parity theorems 45/45; circle_native_value sources 5/5; Living Book pages 1/1; application_guardrail language clean",
+            "evidence": "standard_math_parity theorems 50/50; circle_native_value sources 7/7; Living Book pages 1/1; application_guardrail language clean",
             "id": "value_proposition",
             "label": "role-backed value proposition",
             "passed": true
@@ -5760,8 +5760,8 @@
         "living_book_page_count": 1,
         "living_book_widget_count": 7,
         "paper_count": 2,
-        "source_count": 5,
-        "theorem_count": 45
+        "source_count": 7,
+        "theorem_count": 50
       },
       "executable_refs": [
         "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
@@ -5899,6 +5899,11 @@
               "AIT-T0001",
               "AIT-T0002",
               "AIT-T0003",
+              "AIT-T0010",
+              "AIT-T0011",
+              "AIT-T0012",
+              "AIT-T0013",
+              "AIT-T0014",
               "AIT-T0004",
               "AIT-T0005",
               "AIT-T0006",
@@ -5909,15 +5914,17 @@
             "standard_parity_claimed": true
           },
           {
-            "evidence": "AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, strided-attention reachability, RoPE relative phase, circulant mixer laws, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
+            "evidence": "AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, strided and hybrid sparse-attention reachability, RoPE relative phase, circulant mixer laws, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
             "id": "circle_expression",
             "label": "Circle expression of the same surface",
             "ready": true,
             "refs": [
               "Circle/Applications/CircleAI.lean",
+              "Circle/Applications/CircleTransformer.lean",
               "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/lean/PaperAI02.lean",
               "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/lean/PaperAI03.lean",
               "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
+              "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_hybrid_sparse_attention.py",
               "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"
             ]
           },
@@ -5943,7 +5950,7 @@
             ]
           },
           {
-            "evidence": "papers 2; theorem refs 45/45; sources 5/5; executables 2; Living Book pages 1/1",
+            "evidence": "papers 2; theorem refs 50/50; sources 7/7; executables 2; Living Book pages 1/1",
             "id": "proof_backing",
             "label": "paper, theorem, source, executable, and Living Book backing",
             "ready": true,
@@ -5967,9 +5974,9 @@
         "standard_parity_claimed": true,
         "summary_lines": [
           "Standard reference: Finite cyclic buffers, schedule normalization, recurrence budgets, sparse strided attention, RoPE relative phase, circular convolution, and modular adapter indexing.",
-          "Circle expression: AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, strided-attention reachability, RoPE relative phase, circulant mixer laws, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
+          "Circle expression: AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, strided and hybrid sparse-attention reachability, RoPE relative phase, circulant mixer laws, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
           "Circle-native value: Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made.",
-          "Proof backing: 2 paper ids, 45/45 theorem refs, 5/5 source refs, 2 executable refs, and 1/1 Living Book page refs.",
+          "Proof backing: 2 paper ids, 50/50 theorem refs, 7/7 source refs, 2 executable refs, and 1/1 Living Book page refs.",
           "Boundary: No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence."
         ],
         "total_section_count": 6
@@ -5979,9 +5986,9 @@
         "circle_native_value",
         "application_guardrail"
       ],
-      "proof_provenance": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, looped recurrent-state, positive raw-budget closure, active-step, middle-block route, combined route/budget common-cycle and sample-zero initialization, certificate, strided attention coverage, RoPE relative phase, circulant mixer laws, and adapter-index safety facts; benchmarks remain separate.",
+      "proof_provenance": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, looped recurrent-state, positive raw-budget closure, active-step, middle-block route, combined route/budget common-cycle and sample-zero initialization, certificate, strided and hybrid sparse-attention reachability, RoPE relative phase, circulant mixer laws, and adapter-index safety facts; benchmarks remain separate.",
       "proof_provenance_kind": "project_native",
-      "proof_scope": "Lean-proved finite memory-slot, loop-budget, active-token-step, looped recurrent-state, positive raw-budget closure, middle-block route, combined route/budget one-cycle and multi-cycle common-cycle closure, sample-zero route/budget initialization, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, strided-attention coverage, RoPE relative-phase invariance, circulant shift-equivariance/commutativity/additivity, shift-action, and adapter-block normalization facts.",
+      "proof_scope": "Lean-proved finite memory-slot, loop-budget, active-token-step, looped recurrent-state, positive raw-budget closure, middle-block route, combined route/budget one-cycle and multi-cycle common-cycle closure, sample-zero route/budget initialization, recurrence-budget positivity, unavailable-budget clamp, loop-exit, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, strided-attention coverage, local/coil/hybrid sparse-attention reachability, RoPE relative-phase invariance, circulant shift-equivariance/commutativity/additivity, shift-action, and adapter-block normalization facts.",
       "proof_trail_contract": {
         "passed_step_count": 7,
         "ready_to_advertise": true,
@@ -5993,13 +6000,13 @@
             "ready": true
           },
           {
-            "evidence": "45/45 theorem refs",
+            "evidence": "50/50 theorem refs",
             "id": "theorem_refs",
             "label": "proved paper-carried theorem refs",
             "ready": true
           },
           {
-            "evidence": "5/5 source refs",
+            "evidence": "7/7 source refs",
             "id": "source_refs",
             "label": "paper-backed source refs",
             "ready": true
@@ -6054,7 +6061,7 @@
             ]
           },
           {
-            "evidence": "45/45 theorem refs",
+            "evidence": "50/50 theorem refs",
             "id": "theorem_trail",
             "label": "proved theorem trail",
             "ready": true,
@@ -6098,6 +6105,11 @@
               "AIT-T0001",
               "AIT-T0002",
               "AIT-T0003",
+              "AIT-T0010",
+              "AIT-T0011",
+              "AIT-T0012",
+              "AIT-T0013",
+              "AIT-T0014",
               "AIT-T0004",
               "AIT-T0005",
               "AIT-T0006",
@@ -6107,15 +6119,17 @@
             ]
           },
           {
-            "evidence": "5/5 source refs",
+            "evidence": "7/7 source refs",
             "id": "source_trail",
             "label": "paper-backed source trail",
             "ready": true,
             "refs": [
               "Circle/Applications/CircleAI.lean",
+              "Circle/Applications/CircleTransformer.lean",
               "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/lean/PaperAI02.lean",
               "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/lean/PaperAI03.lean",
               "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
+              "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_hybrid_sparse_attention.py",
               "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"
             ]
           },
@@ -6166,12 +6180,17 @@
         "total_section_count": 7
       },
       "source_ref_contract": {
-        "backed_count": 5,
+        "backed_count": 7,
         "refs": [
           {
             "backed": true,
             "backing": "lean_sidecar_import",
             "ref": "Circle/Applications/CircleAI.lean"
+          },
+          {
+            "backed": true,
+            "backing": "lean_sidecar_import",
+            "ref": "Circle/Applications/CircleTransformer.lean"
           },
           {
             "backed": true,
@@ -6191,17 +6210,24 @@
           {
             "backed": true,
             "backing": "source_trail",
+            "ref": "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_hybrid_sparse_attention.py"
+          },
+          {
+            "backed": true,
+            "backing": "source_trail",
             "ref": "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"
           }
         ],
-        "total_count": 5,
+        "total_count": 7,
         "unbacked_refs": []
       },
       "source_refs": [
         "Circle/Applications/CircleAI.lean",
+        "Circle/Applications/CircleTransformer.lean",
         "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/lean/PaperAI02.lean",
         "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/lean/PaperAI03.lean",
         "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
+        "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_hybrid_sparse_attention.py",
         "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"
       ],
       "standard_math_anchor": "Finite cyclic buffers, schedule normalization, recurrence budgets, sparse strided attention, RoPE relative phase, circular convolution, and modular adapter indexing.",
@@ -6245,6 +6271,11 @@
         "AIT-T0001",
         "AIT-T0002",
         "AIT-T0003",
+        "AIT-T0010",
+        "AIT-T0011",
+        "AIT-T0012",
+        "AIT-T0013",
+        "AIT-T0014",
         "AIT-T0004",
         "AIT-T0005",
         "AIT-T0006",
@@ -6253,7 +6284,7 @@
         "AIT-T0009"
       ],
       "theorem_ref_contract": {
-        "proved_and_paper_backed_count": 45,
+        "proved_and_paper_backed_count": 50,
         "refs": [
           {
             "canonical_status": "proved",
@@ -6687,6 +6718,61 @@
           {
             "canonical_status": "proved",
             "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIT-T0010",
+            "lean_name": "Circle.Applications.localLagReach_of_le",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIT-T0011",
+            "lean_name": "Circle.Applications.coilLagReach_of_step",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIT-T0012",
+            "lean_name": "Circle.Applications.coilLagReach_add_context",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIT-T0013",
+            "lean_name": "Circle.Applications.hybridLagReach_of_local",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIT-T0014",
+            "lean_name": "Circle.Applications.hybridLagReach_of_coil",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
               "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
             ],
             "id": "AIT-T0004",
@@ -6751,7 +6837,7 @@
             "status": "lean_proved"
           }
         ],
-        "total_count": 45,
+        "total_count": 50,
         "unproved_or_unbacked_ids": []
       },
       "title": "AI memory, loop, and adapter schedules",
@@ -6764,12 +6850,12 @@
             "required": true
           },
           "circle_native_value": {
-            "evidence": "sources 5/5; Living Book pages 1/1",
+            "evidence": "sources 7/7; Living Book pages 1/1",
             "ready": true,
             "required": true
           },
           "standard_math_parity": {
-            "evidence": "theorems 45/45",
+            "evidence": "theorems 50/50",
             "ready": true,
             "required": true
           }
@@ -8197,13 +8283,13 @@
           "total_count": 3
         },
         "source_refs": {
-          "backed_count": 14,
-          "total_count": 14,
+          "backed_count": 16,
+          "total_count": 16,
           "unbacked_refs": []
         },
         "theorem_refs": {
-          "proved_and_paper_backed_count": 77,
-          "total_count": 77,
+          "proved_and_paper_backed_count": 82,
+          "total_count": 82,
           "unproved_or_unbacked_refs": []
         },
         "unique_evidence_counts": {
@@ -8212,8 +8298,8 @@
           "living_book_page_count": 3,
           "living_book_widget_count": 11,
           "paper_count": 7,
-          "source_count": 14,
-          "theorem_count": 77
+          "source_count": 16,
+          "theorem_count": 82
         },
         "unknown_capability_ids": []
       },
@@ -8231,7 +8317,7 @@
           },
           {
             "capability_id": "SHOW-010",
-            "circle_math_expression": "AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, strided-attention reachability, RoPE relative phase, circulant mixer laws, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
+            "circle_math_expression": "AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, strided and hybrid sparse-attention reachability, RoPE relative phase, circulant mixer laws, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
             "circle_native_value": "Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made."
           },
           {
@@ -8274,7 +8360,7 @@
             ]
           },
           {
-            "evidence": "papers 7; theorem refs 77; source refs 14; executables 7; Living Book pages 3",
+            "evidence": "papers 7; theorem refs 82; source refs 16; executables 7; Living Book pages 3",
             "id": "proof_backing_counts",
             "label": "proof-backed evidence counts",
             "ready": true,
@@ -8308,7 +8394,7 @@
           },
           {
             "area": "AI systems",
-            "audience_interest": "Cyclic memory, recurrence budgets, loop-exit certificates, looped recurrent states, middle-block routing, phase routing, strided attention, RoPE, circulant mixers, and adapter indexing.",
+            "audience_interest": "Cyclic memory, recurrence budgets, loop-exit certificates, looped recurrent states, middle-block routing, phase routing, strided and hybrid sparse attention, RoPE, circulant mixers, and adapter indexing.",
             "capability_id": "SHOW-010",
             "standard_math_anchor": "Finite cyclic buffers, schedule normalization, recurrence budgets, sparse strided attention, RoPE relative phase, circular convolution, and modular adapter indexing."
           },
@@ -8322,7 +8408,7 @@
         "summary_lines": [
           "Audience: Builders who want generated artifacts, cyclic AI schedules, and compute layouts to carry checkable provenance before performance or quality claims.",
           "Capability surface: 3 route lanes across AI systems, Computation, Generation and compression interfaces.",
-          "Proof backing: 77 proved theorem refs, 7 paper ids, 14 source refs, 7 executable refs, and 3 Living Book page refs.",
+          "Proof backing: 82 proved theorem refs, 7 paper ids, 16 source refs, 7 executable refs, and 3 Living Book page refs.",
           "Circle-native value: 3 lanes state explicit Circle expression/value statements with role-backed checks.",
           "Boundary: This route does not claim universal compression, model-quality improvement, speedup, or context-length improvement without benchmark evidence."
         ],
@@ -8387,7 +8473,7 @@
             ]
           },
           {
-            "evidence": "provenance project_native; theorems 77/77; sources 14/14",
+            "evidence": "provenance project_native; theorems 82/82; sources 16/16",
             "id": "proof_provenance_surface",
             "label": "proof provenance and backing surface",
             "ready": true,
@@ -8450,13 +8536,13 @@
         "total_count": 11
       },
       "source_refs": {
-        "backed_count": 35,
-        "total_count": 35,
+        "backed_count": 37,
+        "total_count": 37,
         "unbacked_refs": []
       },
       "theorem_refs": {
-        "proved_and_paper_backed_count": 133,
-        "total_count": 133,
+        "proved_and_paper_backed_count": 138,
+        "total_count": 138,
         "unproved_or_unbacked_refs": []
       }
     },
@@ -8472,8 +8558,8 @@
       "living_book_page_count": 13,
       "living_book_widget_count": 19,
       "paper_count": 18,
-      "source_count": 35,
-      "theorem_count": 133
+      "source_count": 37,
+      "theorem_count": 138
     },
     "proof_provenance_counts": {
       "mathlib_bridge": 4,
@@ -8500,8 +8586,8 @@
       "living_book_page_count": 8,
       "living_book_widget_count": 19,
       "paper_count": 18,
-      "source_count": 35,
-      "theorem_count": 133
+      "source_count": 37,
+      "theorem_count": 138
     },
     "unique_living_book_pages": [
       "site/chapters/S1/03_coils_orbits_closure.qmd",

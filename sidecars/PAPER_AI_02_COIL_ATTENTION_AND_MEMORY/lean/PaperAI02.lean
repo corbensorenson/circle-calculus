@@ -1,4 +1,5 @@
 import Circle.Applications.CircleAI
+import Circle.Applications.CircleTransformer
 
 /-!
 AI 2 sidecar.
@@ -64,5 +65,13 @@ namespace Circle.PaperAI02
 #check Circle.Applications.loopExitCertificate_budget_eq_exitStep
 #check Circle.Applications.loopExitCertificate_exitStep_add_mul_loopPeriod
 #check Circle.Applications.loopExitCertificate_boundary_add_mul_loopPeriod
+#check Circle.Applications.localLagReach
+#check Circle.Applications.coilLagReach
+#check Circle.Applications.hybridLagReach
+#check Circle.Applications.localLagReach_of_le
+#check Circle.Applications.coilLagReach_of_step
+#check Circle.Applications.coilLagReach_add_context
+#check Circle.Applications.hybridLagReach_of_local
+#check Circle.Applications.hybridLagReach_of_coil
 
 end Circle.PaperAI02
