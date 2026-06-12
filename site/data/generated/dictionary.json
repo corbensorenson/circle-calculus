@@ -4883,6 +4883,12 @@
           "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_iff_noCollision",
           "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_iff_noCollision",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0078",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_range_lags_mem_candidate_list",
+          "name": "Circle.Applications.hybridFamilyCoversContext_iff_range_lags_mem_candidate_list",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5315,6 +5321,12 @@
           "id": "AIT-T0077",
           "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_iff_noCollision",
           "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_iff_noCollision",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0078",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_range_lags_mem_candidate_list",
+          "name": "Circle.Applications.hybridFamilyCoversContext_iff_range_lags_mem_candidate_list",
           "status": "proved"
         }
       ],
@@ -6622,6 +6634,12 @@
           "id": "AIT-T0077",
           "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_iff_noCollision",
           "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_iff_noCollision",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0078",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_range_lags_mem_candidate_list",
+          "name": "Circle.Applications.hybridFamilyCoversContext_iff_range_lags_mem_candidate_list",
           "status": "proved"
         }
       ],
@@ -11014,6 +11032,12 @@
           "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_iff_noCollision",
           "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_iff_noCollision",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0078",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_range_lags_mem_candidate_list",
+          "name": "Circle.Applications.hybridFamilyCoversContext_iff_range_lags_mem_candidate_list",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -12009,6 +12033,12 @@
           "id": "AIT-T0077",
           "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_iff_noCollision",
           "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_iff_noCollision",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0078",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_range_lags_mem_candidate_list",
+          "name": "Circle.Applications.hybridFamilyCoversContext_iff_range_lags_mem_candidate_list",
           "status": "proved"
         }
       ],

@@ -104,7 +104,8 @@
         "AIT-T0074",
         "AIT-T0075",
         "AIT-T0076",
-        "AIT-T0077"
+        "AIT-T0077",
+        "AIT-T0078"
       ],
       "theorem_side_coil_residues_no_collision": true,
       "theorem_side_lag_candidates": [

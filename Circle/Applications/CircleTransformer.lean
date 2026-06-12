@@ -752,6 +752,34 @@ theorem mem_hybridFamilyLagCandidateList_iff
   rw [mem_localLagCandidateList_iff]
   rw [mem_coilStrideFamilyLagResidueList_iff hcontext]
 
+/-- Complete context coverage is exactly finite coverage of the generated
+positive-lag range by the theorem-side candidate list.
+
+This is the list-level bridge used by executable sparse-attention certificates:
+checking the finite range `1, ..., n - 1` against the candidate list is
+equivalent to the quantified `hybridFamilyCoversContext` predicate. -/
+theorem hybridFamilyCoversContext_iff_range_lags_mem_candidate_list
+    {n window pathLength : Nat} {strides : List Nat} :
+    hybridFamilyCoversContext n window pathLength strides ↔
+      ∀ lag, lag ∈ List.range' 1 (n - 1) →
+        lag ∈ hybridFamilyLagCandidateList n window pathLength strides := by
+  constructor
+  · intro hcover lag hmem
+    rw [List.mem_range'] at hmem
+    rcases hmem with ⟨i, hi, hlag⟩
+    subst lag
+    have hpos : 1 ≤ 1 + i := by omega
+    have hcontext : 1 + i < n := by omega
+    simpa [Nat.one_mul] using
+      (mem_hybridFamilyLagCandidateList_iff hcontext).2
+        (hcover (1 + i) hpos hcontext)
+  · intro hmem lag hpos hcontext
+    have hlag_mem : lag ∈ List.range' 1 (n - 1) := by
+      rw [List.mem_range']
+      refine ⟨lag - 1, ?_, ?_⟩ <;> omega
+    exact (mem_hybridFamilyLagCandidateList_iff hcontext).1
+      (hmem lag hlag_mem)
+
 /-- If the local window is below the context length, then every theorem-side
 lag candidate is a strict in-context representative. -/
 theorem mem_hybridFamilyLagCandidateList_lt_context_of_window_lt_context
