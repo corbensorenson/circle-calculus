@@ -778,6 +778,37 @@ theorem ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den
     div_le_div_of_nonneg_right hone hden_nonneg
   simpa [herror, z] using hdiv
 
+/-- For a reduced natural rational turn ratio, the `1 / denominator` margin
+has an exact finite-context boundary.
+
+The positive certificate holds precisely while the inspected context does not
+reach past the denominator gap. Once the denominator gap is included, that gap
+lands exactly on an integer number of turns and no positive margin can remain.
+This packages the rational positive and negative guardrails into one theorem
+usable by certifiers. -/
+theorem ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den
+    {numerator denominator context : Nat} (hdenominator : 0 < denominator)
+    (hcoprime : Nat.Coprime numerator denominator) :
+    ropeTurnRatioFiniteMargin ((numerator : ℝ) / (denominator : ℝ))
+      (1 / (denominator : ℝ)) context ↔ context ≤ denominator := by
+  constructor
+  · intro hmargin
+    by_contra hnot
+    have hcontext : denominator < context := Nat.lt_of_not_ge hnot
+    have hnonpos :
+        (1 / (denominator : ℝ)) ≤ 0 :=
+      (ropeTurnRatioFiniteMargin_natRatio_iff_nonpos_of_den_lt_context
+        (numerator := numerator) (denominator := denominator)
+        (margin := 1 / (denominator : ℝ)) (context := context)
+        hdenominator hcontext).1 hmargin
+    have hden_pos_real : (0 : ℝ) < denominator := by exact_mod_cast hdenominator
+    have hpos : (0 : ℝ) < 1 / (denominator : ℝ) := one_div_pos.mpr hden_pos_real
+    linarith
+  · intro hcontext
+    exact ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den
+      (numerator := numerator) (denominator := denominator)
+      hdenominator hcoprime hcontext
+
 /-- Finite-context turn-ratio margins are monotone in the inspected context.
 
 A margin certificate proved for a larger context automatically applies to any

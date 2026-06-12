@@ -11268,6 +11268,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0057",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -11519,6 +11525,12 @@
           "id": "AIRA-T0056",
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0057",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
           "status": "proved"
         }
       ],
@@ -12149,6 +12161,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0057",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -12379,6 +12397,12 @@
           "id": "AIRA-T0056",
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0057",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
           "status": "proved"
         }
       ],
@@ -12708,6 +12732,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0057",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -12802,6 +12832,12 @@
           "id": "AIRA-T0056",
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0057",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
           "status": "proved"
         }
       ],

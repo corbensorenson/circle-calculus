@@ -4,7 +4,7 @@ This note is a durable audit trail for the real-valued RoPE phase-margin theorem
 
 ## Current Proved Bridge
 
-The real-phase theorem spine currently runs from `AIRA-T0029` through `AIRA-T0033`, then `AIRA-T0037` through `AIRA-T0045`, plus `AIRA-T0047`, `AIRA-T0050`, and `AIRA-T0053` through `AIRA-T0056`.
+The real-phase theorem spine currently runs from `AIRA-T0029` through `AIRA-T0033`, then `AIRA-T0037` through `AIRA-T0045`, plus `AIRA-T0047`, `AIRA-T0050`, and `AIRA-T0053` through `AIRA-T0057`.
 
 `AIRA-T0041` is the Diophantine-scaling bridge:
 
@@ -32,7 +32,7 @@ This is not a lower-bound theorem. It is the normalization step that makes the n
 
 `AIRA-T0055` extends the same negative guardrail to natural rational turn ratios. If `turnRatio = numerator / denominator` and the inspected context includes the denominator gap, then that gap lands exactly on `numerator` full turns, so the finite-context margin predicate is again equivalent to a nonpositive advertised margin. Rationalized or periodic channels therefore cannot supply a positive finite-context margin once their denominator gap is inside the context.
 
-`AIRA-T0056` gives the positive reduced-rational companion. If `numerator` and `denominator` are coprime and the inspected context is at most the denominator, then every positive inspected gap has nearest-integer error at least `1 / denominator`. This is a theorem-backed finite rational certificate for bounded contexts below the exact-return denominator gap. It is useful for rationalized phase policies, but it is not the irrational/nonperiodic RoPE Diophantine theorem.
+`AIRA-T0056` gives the positive reduced-rational companion. If `numerator` and `denominator` are coprime and the inspected context is at most the denominator, then every positive inspected gap has nearest-integer error at least `1 / denominator`. `AIRA-T0057` packages the exact boundary: for a reduced natural rational turn ratio, that `1 / denominator` margin holds iff the inspected context stays at or below the denominator. These are theorem-backed finite rational certificates for bounded contexts below the exact-return denominator gap. They are useful for rationalized phase policies, but they are not the irrational/nonperiodic RoPE Diophantine theorem.
 
 `AIRA-T0054` proves the generated-gap bridge: the finite-context margin predicate is equivalent to checking the same lower bound for every positive gap in `List.range context`. This is a finite gap-enumeration theorem, not yet a finite integer-turn search theorem.
 
@@ -76,6 +76,7 @@ The important warning is `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irratio
 9. Use `AIRA-T0053` to reject integer turn-ratio channels as positive finite-margin witnesses once the unit gap is in scope.
 10. Use `AIRA-T0055` to reject natural rational turn-ratio channels as positive finite-margin witnesses once their denominator gap is in scope.
 11. Use `AIRA-T0056` to certify reduced natural rational turn ratios with margin `1 / denominator` when the inspected context stays at or below the denominator.
+12. Use `AIRA-T0057` for the exact reduced-rational boundary: the `1 / denominator` certificate is available exactly up to the denominator horizon.
 12. Use `AIRA-T0054` to connect generated gap lists to the abstract finite-context margin predicate before adding a nearest-integer or continued-fraction certificate for each gap.
 
 ## Guardrails
