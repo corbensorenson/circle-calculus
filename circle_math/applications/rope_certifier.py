@@ -971,8 +971,9 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         f"worst_gap={worst_gap} scanned_gaps={margin.scanned_gap_count}",
         f"real_phase_formal_precursors={','.join(margin.formal_precursor_theorem_ids)} "
         "(unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, "
-        "turn-ratio scaling, finite-context margin consequence, and context-plus-margin transfer "
-        "precursors only; not a Diophantine proof)",
+        "turn-ratio scaling, finite-context margin consequence, context-plus-margin transfer, "
+        "integer-turn-ratio guardrail, and generated-gap enumeration precursors only; "
+        "not a Diophantine proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,
     )
