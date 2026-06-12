@@ -2406,6 +2406,20 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_turn_ratio_margin_context_transfer_helper_is_monotone
     blocker: ""
+  - id: AIRA-T0047
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin
+    informal_statement: "A finite-context turn-ratio margin certified for a larger lower bound automatically proves any smaller advertised margin over the same context."
+    formal_statement: "forall {turnRatio smallMargin largeMargin : Real} {context : Nat}, smallMargin <= largeMargin -> Circle.Applications.ropeTurnRatioFiniteMargin turnRatio largeMargin context -> Circle.Applications.ropeTurnRatioFiniteMargin turnRatio smallMargin context"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_turn_ratio_margin_context_transfer_helper_is_monotone
+    blocker: ""
   - id: AIRA-T0045
     status: lean_proved
     lean_name: Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context

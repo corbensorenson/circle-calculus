@@ -64,6 +64,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0043",
     "AIRA-T0044",
     "AIRA-T0045",
+    "AIRA-T0047",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -81,6 +82,7 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
     "Circle.Applications.ropeTurnRatioFiniteMargin_mono_context",
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context",
+    "Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -407,6 +409,19 @@ def turn_ratio_margin_covers_context(
     if requested_context <= 0:
         raise ValueError("requested_context must be positive")
     return requested_context <= certified_context
+
+
+def turn_ratio_margin_covers_margin(
+    *,
+    certified_margin: float,
+    requested_margin: float,
+) -> bool:
+    """Return whether a certified lower bound covers a requested lower bound."""
+    if certified_margin < 0:
+        raise ValueError("certified_margin must be nonnegative")
+    if requested_margin < 0:
+        raise ValueError("requested_margin must be nonnegative")
+    return requested_margin <= certified_margin
 
 
 def real_phase_turn_separated(

@@ -566,6 +566,19 @@ theorem ropeTurnRatioFiniteMargin_mono_context
   intro gap hgap_pos hgap_context turns
   exact hmargin gap hgap_pos (lt_of_lt_of_le hgap_context hcontext) turns
 
+/-- Finite-context turn-ratio margins are downward closed in the declared
+margin value.
+
+A certificate proving a larger lower bound also proves any smaller advertised
+margin over the same finite context. -/
+theorem ropeTurnRatioFiniteMargin_mono_margin
+    {turnRatio smallMargin largeMargin : ℝ} {context : Nat}
+    (hmargin_le : smallMargin ≤ largeMargin)
+    (hmargin : ropeTurnRatioFiniteMargin turnRatio largeMargin context) :
+    ropeTurnRatioFiniteMargin turnRatio smallMargin context := by
+  intro gap hgap_pos hgap_context turns
+  exact le_trans hmargin_le (hmargin gap hgap_pos hgap_context turns)
+
 /-- A finite-context turn-ratio margin rules out one-channel real near-turn
 collisions at any smaller scaled tolerance.
 

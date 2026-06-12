@@ -25,6 +25,7 @@ from circle_math.applications import (
     scan_turn_ratio_finite_margin,
     single_period_collision_pair_count,
     turn_ratio_margin_covers_context,
+    turn_ratio_margin_covers_margin,
     turn_ratio_nearest_integer_error,
 )
 
@@ -85,6 +86,7 @@ def test_real_phase_nat_turn_error_matches_endpoint_precursor_shape() -> None:
     assert "AIRA-T0043" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0044" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0045" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0047" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
 def test_real_phase_turn_separation_rules_out_smaller_near_turn() -> None:
@@ -149,6 +151,9 @@ def test_turn_ratio_margin_context_transfer_helper_is_monotone() -> None:
     assert turn_ratio_margin_covers_context(certified_context=128_000, requested_context=8_192)
     assert turn_ratio_margin_covers_context(certified_context=128_000, requested_context=128_000)
     assert not turn_ratio_margin_covers_context(certified_context=8_192, requested_context=128_000)
+    assert turn_ratio_margin_covers_margin(certified_margin=0.125, requested_margin=0.1)
+    assert turn_ratio_margin_covers_margin(certified_margin=0.125, requested_margin=0.125)
+    assert not turn_ratio_margin_covers_margin(certified_margin=0.125, requested_margin=0.2)
 
 
 def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:

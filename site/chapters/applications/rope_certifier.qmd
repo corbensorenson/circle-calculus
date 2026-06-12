@@ -104,7 +104,7 @@ The model-like presets pass the exact discrete contract under the rounded intege
 - The per-channel single-period counts are exact for each individual integer period; they are not all-channel bank counts.
 - If the exact discrete contract passes, the report still does not claim real model quality or long-context success.
 - The real-phase margin scan is useful engineering evidence, but it is not a Lean proof over real-valued trigonometric RoPE.
-- The real-valued formal work has begun with an unwrapped phase-gap formula (`AIRA-T0029`), lower-bound precursor (`AIRA-T0030`), one-turn endpoint-error precursor (`AIRA-T0031`), nonnegative full-turn-multiple precursor (`AIRA-T0032`), signed full-turn-multiple precursor (`AIRA-T0033`), turn-separation predicate (`AIRA-T0037`), no-near-turn consequence (`AIRA-T0038`), finite bank-level no-near-turn bridge (`AIRA-T0039`, `AIRA-T0040`), turn-ratio Diophantine scaling bridge (`AIRA-T0041`), finite-context margin consequence (`AIRA-T0042`), bank finite-context margin consequence (`AIRA-T0043`), finite-context monotonicity (`AIRA-T0044`), and bank-level certified-context transfer (`AIRA-T0045`). These are not Diophantine/continued-fraction RoPE margin theorems.
+- The real-valued formal work has begun with an unwrapped phase-gap formula (`AIRA-T0029`), lower-bound precursor (`AIRA-T0030`), one-turn endpoint-error precursor (`AIRA-T0031`), nonnegative full-turn-multiple precursor (`AIRA-T0032`), signed full-turn-multiple precursor (`AIRA-T0033`), turn-separation predicate (`AIRA-T0037`), no-near-turn consequence (`AIRA-T0038`), finite bank-level no-near-turn bridge (`AIRA-T0039`, `AIRA-T0040`), turn-ratio Diophantine scaling bridge (`AIRA-T0041`), finite-context margin consequence (`AIRA-T0042`), bank finite-context margin consequence (`AIRA-T0043`), finite-context monotonicity (`AIRA-T0044`), bank-level certified-context transfer (`AIRA-T0045`), and conservative margin downgrade (`AIRA-T0047`). These are not Diophantine/continued-fraction RoPE margin theorems.
 
 ## Theorem Cards
 
@@ -134,6 +134,7 @@ The model-like presets pass the exact discrete contract under the rounded intege
 <div class="theorem-box" data-theorem-id="AIRA-T0043"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0044"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0045"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0047"></div>
 
 ## Dictionary
 
