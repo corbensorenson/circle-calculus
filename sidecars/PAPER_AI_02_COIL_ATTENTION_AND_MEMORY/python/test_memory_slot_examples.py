@@ -124,6 +124,7 @@ def test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read() -> None
     assert "AIM-T0064" in certificate.theorem_ids
     assert "AIM-T0065" in certificate.theorem_ids
     assert "AIM-T0066" in certificate.theorem_ids
+    assert "AIM-T0069" in certificate.theorem_ids
     assert certificate.note.endswith("deployment safety.")
 
 
@@ -189,6 +190,7 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert payload["schema_id"] == "circle_calculus.kv_cache_ring_buffer_certificate.v0"
     assert payload["window_certificate"]["slot"] == 4
     assert payload["window_certificate"]["next_overwrite_after_current"] is True
+    assert "AIM-T0069" in payload["window_certificate"]["theorem_ids"]
     assert payload["batch_certificate"]["slots_distinct"] is True
     assert "AIM-T0068" in payload["batch_certificate"]["theorem_ids"]
     assert "not model-quality" in payload["claim_boundary"]

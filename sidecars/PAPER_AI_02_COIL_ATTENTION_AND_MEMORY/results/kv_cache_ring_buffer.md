@@ -4,7 +4,7 @@ These are proof-carrying finite ring-buffer indexing certificates for a declared
 
 | Cache size | Current | Token | Slot | Current slot | Lag | Retained | Distinct from current | Next overwrite | Overwrite after current | Theorem ids |
 | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | ---: | --- | --- |
-| 16 | 31 | 20 | 4 | 15 | 11 | True | True | 36 | True | AIM-T0059, AIM-T0060, AIM-T0061, AIM-T0062, AIM-T0063, AIM-T0064, AIM-T0065, AIM-T0066 |
+| 16 | 31 | 20 | 4 | 15 | 11 | True | True | 36 | True | AIM-T0059, AIM-T0060, AIM-T0061, AIM-T0062, AIM-T0063, AIM-T0064, AIM-T0065, AIM-T0066, AIM-T0069 |
 
 | Batch tokens | Batch slots | All retained | Tokens distinct | Slots distinct | Theorem ids |
 | --- | --- | --- | --- | --- | --- |

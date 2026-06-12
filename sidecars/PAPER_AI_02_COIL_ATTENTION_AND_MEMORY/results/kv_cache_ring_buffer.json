@@ -50,7 +50,8 @@
       "Circle.Applications.kvCacheWindow_nextOverwrite_after_current",
       "Circle.Applications.kvCacheWindow_retainedSlot_ne_current_of_lt",
       "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_lt",
-      "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_ne"
+      "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_ne",
+      "Circle.Applications.kvCacheWindowContains_iff_current_lt_nextOverwrite"
     ],
     "next_overwrite_after_current": true,
     "next_overwrite_token": 36,
@@ -66,7 +67,8 @@
       "AIM-T0063",
       "AIM-T0064",
       "AIM-T0065",
-      "AIM-T0066"
+      "AIM-T0066",
+      "AIM-T0069"
     ],
     "token": 20
   }

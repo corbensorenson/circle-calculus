@@ -4573,6 +4573,12 @@
           "status": "proved"
         },
         {
+          "id": "AIM-T0069",
+          "lean_name": "Circle.Applications.kvCacheWindowContains_iff_current_lt_nextOverwrite",
+          "name": "Circle.Applications.kvCacheWindowContains_iff_current_lt_nextOverwrite",
+          "status": "proved"
+        },
+        {
           "id": "AIT-T0001",
           "lean_name": "Circle.Applications.attentionReach_eq_div_gcd",
           "name": "Circle.Applications.attentionReach_eq_div_gcd",
@@ -12287,6 +12293,12 @@
           "id": "AIM-T0068",
           "lean_name": "Circle.Applications.kvCacheWindow_retainedBatchSlotMap_nodup",
           "name": "Circle.Applications.kvCacheWindow_retainedBatchSlotMap_nodup",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0069",
+          "lean_name": "Circle.Applications.kvCacheWindowContains_iff_current_lt_nextOverwrite",
+          "name": "Circle.Applications.kvCacheWindowContains_iff_current_lt_nextOverwrite",
           "status": "proved"
         }
       ],

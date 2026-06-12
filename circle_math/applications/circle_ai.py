@@ -361,6 +361,7 @@ class KVCacheWindowCertificate:
         "AIM-T0064",
         "AIM-T0065",
         "AIM-T0066",
+        "AIM-T0069",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheSlot_lt_cacheSize",
@@ -371,6 +372,7 @@ class KVCacheWindowCertificate:
         "Circle.Applications.kvCacheWindow_retainedSlot_ne_current_of_lt",
         "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_lt",
         "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_ne",
+        "Circle.Applications.kvCacheWindowContains_iff_current_lt_nextOverwrite",
     )
     note: str = (
         "KV-cache ring-buffer slot certificate only; this proves finite indexing "

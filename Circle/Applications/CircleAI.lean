@@ -180,6 +180,24 @@ theorem kvCacheWindow_nextOverwrite_after_current
   rw [Nat.sub_add_cancel htoken_current] at h
   simpa [Nat.add_comm] using h
 
+/-- Retained-window membership is exactly the implementation-facing
+next-overwrite boundary.
+
+For a non-future token, being retained in the cache window is equivalent to
+the next same-slot overwrite `token + cacheSize` occurring after `current`. -/
+theorem kvCacheWindowContains_iff_current_lt_nextOverwrite
+    {cacheSize current token : Nat} :
+    kvCacheWindowContains cacheSize current token ↔
+      token ≤ current ∧ current < token + cacheSize := by
+  constructor
+  · intro hwindow
+    exact ⟨hwindow.1, kvCacheWindow_nextOverwrite_after_current hwindow⟩
+  · rintro ⟨htoken_current, hcurrent_next⟩
+    refine ⟨htoken_current, ?_⟩
+    have hcurrent_next' : current < cacheSize + token := by
+      simpa [Nat.add_comm] using hcurrent_next
+    exact (Nat.sub_lt_iff_lt_add htoken_current).2 hcurrent_next'
+
 /-- If an older token is still inside the retained KV-cache window, it cannot
 share the current token's ring-buffer slot.
 

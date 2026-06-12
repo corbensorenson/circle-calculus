@@ -1059,6 +1059,21 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_retained_batch_slots_are_distinct
     blocker: ""
+  - id: AIM-T0069
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheWindowContains_iff_current_lt_nextOverwrite
+    informal_statement: "A token is retained in a KV-cache window exactly when it is not in the future and its next same-slot overwrite occurs after the current token."
+    formal_statement: "forall {cacheSize current token : Nat}, Circle.Applications.kvCacheWindowContains cacheSize current token <-> token <= current and current < token + cacheSize"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_marks_stale_token
+    blocker: ""
   - id: AIM-T0006
     status: lean_proved
     lean_name: Circle.Applications.loopRequiredSteps_pos
