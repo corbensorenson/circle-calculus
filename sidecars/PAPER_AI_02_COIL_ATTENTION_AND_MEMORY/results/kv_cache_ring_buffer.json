@@ -1,0 +1,73 @@
+{
+  "batch_certificate": {
+    "all_retained": true,
+    "cache_size": 16,
+    "current": 31,
+    "lean_declarations": [
+      "Circle.Applications.kvCacheSlot_lt_cacheSize",
+      "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_lt",
+      "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_ne",
+      "Circle.Applications.kvCacheWindow_retainedBatchSlots_pairwise_ne",
+      "Circle.Applications.kvCacheWindow_retainedBatchSlotMap_nodup"
+    ],
+    "note": "KV-cache retained-batch slot certificate only; this proves finite ring-buffer indexing facts for a declared live token batch, not paging policy quality, throughput, memory savings, retrieval quality, or deployment safety.",
+    "slots": [
+      4,
+      8,
+      13,
+      15
+    ],
+    "slots_distinct": true,
+    "theorem_ids": [
+      "AIM-T0059",
+      "AIM-T0065",
+      "AIM-T0066",
+      "AIM-T0067",
+      "AIM-T0068"
+    ],
+    "tokens": [
+      20,
+      24,
+      29,
+      31
+    ],
+    "tokens_distinct": true
+  },
+  "claim_boundary": "These are proof-carrying finite ring-buffer indexing certificates for a declared KV-cache window and retained token batch. They are not model-quality, throughput, memory-saving, retrieval-quality, paging-policy, implementation, or deployment-safety claims.",
+  "schema_id": "circle_calculus.kv_cache_ring_buffer_certificate.v0",
+  "window_certificate": {
+    "cache_size": 16,
+    "collision_with_current": false,
+    "collision_with_next_overwrite": true,
+    "current": 31,
+    "current_slot": 15,
+    "lag": 11,
+    "lean_declarations": [
+      "Circle.Applications.kvCacheSlot_lt_cacheSize",
+      "Circle.Applications.kvCacheSlot_add_cacheSize",
+      "Circle.Applications.kvCacheSlotCollision_iff_gap_dvd",
+      "Circle.Applications.kvCacheSlot_ne_of_positive_gap_lt_cache",
+      "Circle.Applications.kvCacheWindow_nextOverwrite_after_current",
+      "Circle.Applications.kvCacheWindow_retainedSlot_ne_current_of_lt",
+      "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_lt",
+      "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_ne"
+    ],
+    "next_overwrite_after_current": true,
+    "next_overwrite_token": 36,
+    "note": "KV-cache ring-buffer slot certificate only; this proves finite indexing and overwrite-window facts, not attention quality, throughput, memory savings, or deployment safety.",
+    "retained": true,
+    "retained_noncurrent_slot_distinct_from_current": true,
+    "slot": 4,
+    "theorem_ids": [
+      "AIM-T0059",
+      "AIM-T0060",
+      "AIM-T0061",
+      "AIM-T0062",
+      "AIM-T0063",
+      "AIM-T0064",
+      "AIM-T0065",
+      "AIM-T0066"
+    ],
+    "token": 20
+  }
+}

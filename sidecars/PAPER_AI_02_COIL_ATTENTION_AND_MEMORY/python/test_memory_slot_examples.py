@@ -1,3 +1,8 @@
+import json
+import subprocess
+import sys
+from pathlib import Path
+
 from circle_math.applications.circle_ai import (
     active_token_counts_by_budget,
     average_candidate_count,
@@ -166,6 +171,68 @@ def test_kv_cache_ring_buffer_certificate_marks_current_token_collision_as_self(
     assert certificate.slot == certificate.current_slot
     assert certificate.collision_with_current
     assert not certificate.retained_noncurrent_slot_distinct_from_current
+
+
+def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
+    json_result = subprocess.run(
+        [
+            sys.executable,
+            "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py",
+            "--format",
+            "json",
+        ],
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    payload = json.loads(json_result.stdout)
+    assert payload["schema_id"] == "circle_calculus.kv_cache_ring_buffer_certificate.v0"
+    assert payload["window_certificate"]["slot"] == 4
+    assert payload["window_certificate"]["next_overwrite_after_current"] is True
+    assert payload["batch_certificate"]["slots_distinct"] is True
+    assert "AIM-T0068" in payload["batch_certificate"]["theorem_ids"]
+    assert "not model-quality" in payload["claim_boundary"]
+
+    markdown_result = subprocess.run(
+        [
+            sys.executable,
+            "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py",
+            "--format",
+            "markdown",
+        ],
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert "KV-Cache Ring-Buffer Certificate Results" in markdown_result.stdout
+    assert "| 16 | 31 | 20 | 4 | 15 | 11 | True | True | 36 | True |" in markdown_result.stdout
+    assert "Batch tokens" in markdown_result.stdout
+
+
+def test_committed_kv_cache_ring_buffer_results_match_generator(tmp_path: Path) -> None:
+    generated_json = tmp_path / "kv_cache_ring_buffer.json"
+    generated_markdown = tmp_path / "kv_cache_ring_buffer.md"
+    subprocess.run(
+        [
+            sys.executable,
+            "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py",
+            "--json-out",
+            str(generated_json),
+            "--markdown-out",
+            str(generated_markdown),
+        ],
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    committed_json = Path(
+        "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/results/kv_cache_ring_buffer.json"
+    )
+    committed_markdown = Path(
+        "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/results/kv_cache_ring_buffer.md"
+    )
+    assert json.loads(committed_json.read_text()) == json.loads(generated_json.read_text())
+    assert committed_markdown.read_text() == generated_markdown.read_text()
 
 
 def test_memory_slot_closes_after_bank_size() -> None:

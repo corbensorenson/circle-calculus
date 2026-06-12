@@ -15,6 +15,9 @@ sidecars:
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/lean/PaperAI02.lean
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_memory_slot.py
+  - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py
+  - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/results/kv_cache_ring_buffer.json
+  - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/results/kv_cache_ring_buffer.md
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_coil_retrieval.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_content_gated_retrieval.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_hybrid_sparse_attention.py
@@ -588,7 +591,7 @@ benchmarks:
     status: exploratory_python
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read
     script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py
-    description: "Deterministic KV-cache ring-buffer certificate fixture reporting finite slot, current-slot, lag, retained-window, current-slot distinction, next-overwrite, and same-slot collision fields for a declared cache size/current/token triple, with the ordinary baseline being a non-cyclic monotone retained-window lag check. This is finite indexing evidence only, not a throughput, memory-saving, retrieval-quality, or deployment-safety claim."
+    description: "Deterministic KV-cache ring-buffer certificate fixture reporting finite slot, current-slot, lag, retained-window, current-slot distinction, next-overwrite, same-slot collision, retained-batch slot-distinctness, theorem ids, and JSON/Markdown result fixtures for a declared cache size/current/token triple, with the ordinary baseline being a non-cyclic monotone retained-window lag check. This is finite indexing evidence only, not a throughput, memory-saving, retrieval-quality, paging-policy, implementation, or deployment-safety claim."
   - id: AIM-B0010
     status: exploratory_python
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_learned_content_gate_retrieval_benchmark_has_baselines_and_controls

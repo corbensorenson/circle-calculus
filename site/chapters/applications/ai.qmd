@@ -366,7 +366,15 @@ The second memory contract is a KV-cache ring-buffer window certificate. Given `
 
 ```bash
 python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py
+python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py --format json
+python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py --format markdown
 ```
+
+Committed result fixtures:
+
+<p>KV-cache JSON: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/results/kv_cache_ring_buffer.json">kv_cache_ring_buffer.json</a></p>
+
+<p>KV-cache Markdown: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/results/kv_cache_ring_buffer.md">kv_cache_ring_buffer.md</a></p>
 
 <div class="theorem-box" data-theorem-id="AIM-T0059"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0060"></div>
