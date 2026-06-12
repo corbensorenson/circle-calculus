@@ -755,6 +755,18 @@ entries:
       - "A proof that RoPE or MultiCoil RoPE improves language models."
       - "Evidence that winding-aware features improve long-context quality, perplexity, runtime, or memory."
       - "A replacement for standard RoPE, ALiBi, learned positional embeddings, attention, recurrent memory, or state-space baselines."
+  - id: COMMON-0073
+    name: "Block-cyclic mixer validation fixture"
+    kind: experiment
+    symbol: "block_cyclic_mixer_fixture"
+    formal_definition: "`circle_math.applications.circle_ai.run_block_cyclic_mixer_benchmark`, a deterministic fixture comparing a block-cyclic matrix-vector path against its equivalent dense matrix baseline, a wrong-row-shift control, and parameter/cell-alias diagnostics."
+    intuition: "A CoilLinear/CoilRA-adjacent harness: before claiming a block-cyclic mixer is useful, verify the row/column residue bookkeeping, dense parity, parameter count, and alias pressure."
+    dependencies: ["COMMON-0030", "COMMON-0056", "COMMON-0058"]
+    introduced_in: "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
+    forbidden_meanings:
+      - "A proof that block-cyclic neural layers improve quality."
+      - "Evidence that the smaller parameter table improves runtime, memory, training stability, or hardware efficiency."
+      - "A replacement for dense, LoRA, block-circulant, circulant, FFT/NTT, or learned linear-layer baselines."
   - id: COMMON-0060
     name: "Proof-carrying physics model"
     kind: interface

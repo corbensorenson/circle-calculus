@@ -33,6 +33,7 @@ sidecars:
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_adapter_block.py
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_adapter_parameter_budget.py
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_circulant_mixer.py
+  - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_block_cyclic_mixer.py
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_multicoil_rope.py
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_rope_relative_phase.py
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_winding_aware_position.py
@@ -331,6 +332,26 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.windingPosition_fst_mul_add_snd
     dictionary_dependencies: ["COMMON-0026", "COMMON-0072"]
+  - id: AIRA-T0011
+    status: lean_proved
+    lean_name: Circle.Applications.blockCyclicCell_fst_lt_blockSize
+    dictionary_dependencies: ["COMMON-0030", "COMMON-0073"]
+  - id: AIRA-T0012
+    status: lean_proved
+    lean_name: Circle.Applications.blockCyclicCell_snd_lt_blockSize
+    dictionary_dependencies: ["COMMON-0030", "COMMON-0073"]
+  - id: AIRA-T0013
+    status: lean_proved
+    lean_name: Circle.Applications.blockCyclicCell_add_row_blockSize
+    dictionary_dependencies: ["COMMON-0030", "COMMON-0073"]
+  - id: AIRA-T0014
+    status: lean_proved
+    lean_name: Circle.Applications.blockCyclicCell_add_column_blockSize
+    dictionary_dependencies: ["COMMON-0030", "COMMON-0073"]
+  - id: AIRA-T0015
+    status: lean_proved
+    lean_name: Circle.Applications.blockCyclicCell_add_mul_blockSize
+    dictionary_dependencies: ["COMMON-0030", "COMMON-0073"]
 next_targets:
   - >-
     Use COMMON-0052 through COMMON-0055 and COMMON-0059 as the looped/recursive transformer roadmap lane:
@@ -356,7 +377,7 @@ next_targets:
     sparse/MoE, RWKV/Mamba-style, and standard state-space baselines.
   - "AIA-B0004 expands the learned phase fixture to dense-scalar, learned-position, wrong-period, and cyclic-feature baselines; AIA-B0005 adds a correct-frequency versus wrong-frequency harmonic/Fourier feature scaffold; next compare against standard RoPE, learned positional encodings, and learned dense models before model-quality claims."
   - "Use AIM-B0002 as fixed coil-retrieval reachability scaffolding, AIM-B0004 as hand-coded content-gated coil/local routing scaffolding, AIM-B0010 as learned route-table scaffolding, and AIM-B0016 as hybrid local+coil sparse-attention scaffolding only; expand toward learned gates, alias-control, full-attention, sparse-attention, Hyena-like, recurrent-memory, and state-space baselines before retrieval-quality claims."
-  - "Use AIRA-B0001 as adapter-block scaffolding, AIRA-B0004 as adapter parameter-budget scaffolding, and AIRA-B0005 as CoilLinear/circulant-mixer scaffolding only; expand toward CoilRA, block-circulant, LoRA, dense-adapter, learned quality, runtime, memory, and training-stability baselines before making parameter-efficiency or quality claims."
+  - "Use AIRA-B0001 as adapter-block scaffolding, AIRA-B0004 as adapter parameter-budget scaffolding, AIRA-B0005 as CoilLinear/circulant-mixer scaffolding, and AIRA-B0007 as block-cyclic mixer dense-parity/alias scaffolding only; expand toward CoilRA, block-circulant, LoRA, dense-adapter, learned quality, runtime, memory, and training-stability baselines before making parameter-efficiency or quality claims."
   - "Use AIRA-B0002 as MultiCoil/RoPE-style positional scaffolding, AIRA-B0003 as relative RoPE-style phase scaffolding, and AIRA-B0006 as residue-plus-winding alias-control scaffolding only; expand toward standard RoPE, learned positional encodings, attention, dense sequence, Fourier-feature, recurrent-memory, and MLX/CPU parity baselines before model-quality claims."
   - "Use AIA-B0003 as CPU/MLX scoring parity scaffolding only; expand toward actual MLX model prototypes and timing only after parity and baseline semantics are stable."
   - "Compare against dense, LoRA, block-circulant, standard RoPE, learned positional encoding, full attention, sparse attention, Hyena-like, recurrent-memory, looped-transformer, state-space, convolutional, Fourier-feature, and MLX/CPU parity baselines as appropriate."
@@ -481,6 +502,11 @@ benchmarks:
     path: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_circulant_mixer_benchmark_matches_dense_baseline_and_wrong_shift_control
     script: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_circulant_mixer.py
     description: "Deterministic circulant mixer validation fixture comparing circular-convolution output against a dense circulant-matrix baseline and wrong-shift baseline, with dense-vs-circulant parameter-count diagnostics."
+  - id: AIRA-B0007
+    status: exploratory_python
+    path: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_block_cyclic_mixer_benchmark_has_dense_parity_and_wrong_shift_control
+    script: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_block_cyclic_mixer.py
+    description: "Deterministic block-cyclic mixer validation fixture comparing block-cyclic matrix-vector output against a dense matrix baseline and wrong-row-shift baseline, with parameter-count and alias/load diagnostics."
   - id: AIRA-B0002
     status: exploratory_python
     path: sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_multicoil_rope_benchmark_has_baselines_and_negative_control

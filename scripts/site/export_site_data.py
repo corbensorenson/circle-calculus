@@ -552,6 +552,13 @@ def export_widget_index() -> dict:
             "python_reference": "circle_math.applications.circle_ai.circulant_mixer_output; circle_math.applications.circle_ai.dense_circulant_matrix; circle_math.applications.circle_ai.run_circulant_mixer_benchmark",
         },
         {
+            "id": "block_cyclic_mixer_validation",
+            "path": "site/widgets/ai/block_cyclic_mixer_validation.js",
+            "theorem_ids": ["AIRA-T0011", "AIRA-T0012", "AIRA-T0013", "AIRA-T0014", "AIRA-T0015"],
+            "dictionary_ids": ["COMMON-0073", "COMMON-0058", "COMMON-0056"],
+            "python_reference": "circle_math.applications.circle_ai.block_cyclic_cell; circle_math.applications.circle_ai.block_cyclic_mixer_output; circle_math.applications.circle_ai.dense_block_cyclic_matrix; circle_math.applications.circle_ai.run_block_cyclic_mixer_benchmark",
+        },
+        {
             "id": "finite_path_algebra",
             "path": "site/widgets/physics/finite_path_algebra.js",
             "theorem_ids": [

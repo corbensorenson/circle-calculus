@@ -679,6 +679,25 @@ class CirculantMixerBenchmarkResult:
 
 
 @dataclass(frozen=True)
+class BlockCyclicMixerBenchmarkResult:
+    channel_count: int
+    block_size: int
+    dense_parameters: int
+    block_cyclic_parameters: int
+    parameter_ratio: float
+    input_values: tuple[int, ...]
+    block_kernel: tuple[tuple[int, ...], ...]
+    block_cyclic_output: tuple[int, ...]
+    dense_output: tuple[int, ...]
+    wrong_row_shift_output: tuple[int, ...]
+    max_abs_dense_delta: int
+    wrong_shift_mismatch_count: int
+    cell_collision_count: int
+    max_cell_load: int
+    note: str = "Synthetic block-cyclic mixer fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
 class MultiCoilRoPEBenchmarkResult:
     periods: tuple[int, ...]
     train_length: int
@@ -4035,6 +4054,174 @@ def run_circulant_mixer_benchmark(
         wrong_shift_mismatch_count=sum(
             1 for correct, wrong in zip(circulant_output, wrong_output) if correct != wrong
         ),
+    )
+
+
+def block_cyclic_cell(block_size: int, row: int, column: int) -> tuple[int, int]:
+    """Return the shared parameter-cell index for a block-cyclic matrix."""
+    _require_positive(block_size, "block_size")
+    if row < 0:
+        raise ValueError("row must be nonnegative")
+    if column < 0:
+        raise ValueError("column must be nonnegative")
+    return (row % block_size, column % block_size)
+
+
+def block_cyclic_cell_loads(block_size: int, channel_count: int) -> tuple[tuple[int, ...], ...]:
+    """Count how many dense cells map to each block-cyclic parameter cell."""
+    _require_positive(block_size, "block_size")
+    _require_positive(channel_count, "channel_count")
+    loads = [[0 for _ in range(block_size)] for _ in range(block_size)]
+    for row in range(channel_count):
+        for column in range(channel_count):
+            block_row, block_column = block_cyclic_cell(block_size, row, column)
+            loads[block_row][block_column] += 1
+    return tuple(tuple(row) for row in loads)
+
+
+def block_cyclic_cell_collision_count(block_size: int, channel_count: int) -> int:
+    """Return dense matrix cells that collide into already-used block cells."""
+    loads = block_cyclic_cell_loads(block_size, channel_count)
+    return sum(max(0, load - 1) for row in loads for load in row)
+
+
+def default_block_cyclic_input(channel_count: int) -> tuple[int, ...]:
+    """Return a deterministic input vector for block-cyclic mixer fixtures."""
+    _require_positive(channel_count, "channel_count")
+    return tuple(((index * index + 5 * index + 2) % 11) - 5 for index in range(channel_count))
+
+
+def default_block_cyclic_kernel(block_size: int) -> tuple[tuple[int, ...], ...]:
+    """Return a deterministic block-cyclic kernel."""
+    _require_positive(block_size, "block_size")
+    return tuple(
+        tuple(((3 * row - 2 * column + row * column + 1) % 9) - 4 for column in range(block_size))
+        for row in range(block_size)
+    )
+
+
+def normalize_block_cyclic_input(
+    input_values: Optional[Sequence[int]],
+    channel_count: int,
+) -> tuple[int, ...]:
+    values = default_block_cyclic_input(channel_count) if input_values is None else tuple(
+        int(value)
+        for value in input_values
+    )
+    if len(values) != channel_count:
+        raise ValueError("input_values length must equal channel_count")
+    return values
+
+
+def normalize_block_cyclic_kernel(
+    kernel_values: Optional[Sequence[Sequence[int]]],
+    block_size: int,
+) -> tuple[tuple[int, ...], ...]:
+    kernel = default_block_cyclic_kernel(block_size) if kernel_values is None else tuple(
+        tuple(int(value) for value in row)
+        for row in kernel_values
+    )
+    if len(kernel) != block_size:
+        raise ValueError("block_kernel row count must equal block_size")
+    if any(len(row) != block_size for row in kernel):
+        raise ValueError("each block_kernel row length must equal block_size")
+    return kernel
+
+
+def block_cyclic_mixer_output(
+    input_values: Sequence[int],
+    block_kernel: Sequence[Sequence[int]],
+) -> tuple[int, ...]:
+    """Apply a block-cyclic matrix whose weights depend on row/column residues."""
+    values = tuple(input_values)
+    kernel = tuple(tuple(row) for row in block_kernel)
+    if not values:
+        raise ValueError("input_values must be nonempty")
+    block_size = len(kernel)
+    _require_positive(block_size, "block_size")
+    if any(len(row) != block_size for row in kernel):
+        raise ValueError("block_kernel must be square")
+    return tuple(
+        sum(kernel[row % block_size][column % block_size] * value for column, value in enumerate(values))
+        for row in range(len(values))
+    )
+
+
+def dense_block_cyclic_matrix(
+    channel_count: int,
+    block_kernel: Sequence[Sequence[int]],
+) -> tuple[tuple[int, ...], ...]:
+    """Return the dense matrix represented by a block-cyclic kernel."""
+    _require_positive(channel_count, "channel_count")
+    kernel = tuple(tuple(row) for row in block_kernel)
+    block_size = len(kernel)
+    _require_positive(block_size, "block_size")
+    if any(len(row) != block_size for row in kernel):
+        raise ValueError("block_kernel must be square")
+    return tuple(
+        tuple(kernel[row % block_size][column % block_size] for column in range(channel_count))
+        for row in range(channel_count)
+    )
+
+
+def rotate_block_cyclic_kernel_rows(
+    block_kernel: Sequence[Sequence[int]],
+    shift: int,
+) -> tuple[tuple[int, ...], ...]:
+    """Rotate block-cyclic kernel rows for a wrong-structure control."""
+    kernel = tuple(tuple(row) for row in block_kernel)
+    block_size = len(kernel)
+    _require_positive(block_size, "block_size")
+    if any(len(row) != block_size for row in kernel):
+        raise ValueError("block_kernel must be square")
+    return tuple(kernel[(row - shift) % block_size] for row in range(block_size))
+
+
+def run_block_cyclic_mixer_benchmark(
+    *,
+    channel_count: int = 16,
+    block_size: int = 4,
+    input_values: Optional[Sequence[int]] = None,
+    block_kernel: Optional[Sequence[Sequence[int]]] = None,
+    wrong_row_shift: int = 1,
+) -> BlockCyclicMixerBenchmarkResult:
+    """Validate a block-cyclic mixer against its dense matrix baseline.
+
+    This fixture checks exact output parity, parameter counts, and alias/load
+    diagnostics for a matrix whose weights depend only on row/column residues.
+    The wrong-row-shift control keeps structural mismatch visible. It is not a
+    neural layer quality, runtime, memory, training-stability, or hardware
+    benchmark.
+    """
+    _require_positive(channel_count, "channel_count")
+    _require_positive(block_size, "block_size")
+    values = normalize_block_cyclic_input(input_values, channel_count)
+    kernel = normalize_block_cyclic_kernel(block_kernel, block_size)
+    block_output = block_cyclic_mixer_output(values, kernel)
+    dense_output = dense_matrix_vector_product(dense_block_cyclic_matrix(channel_count, kernel), values)
+    wrong_output = block_cyclic_mixer_output(values, rotate_block_cyclic_kernel_rows(kernel, wrong_row_shift))
+    deltas = tuple(abs(left - right) for left, right in zip(block_output, dense_output))
+    loads = block_cyclic_cell_loads(block_size, channel_count)
+
+    dense_parameters = channel_count * channel_count
+    block_parameters = block_size * block_size
+    return BlockCyclicMixerBenchmarkResult(
+        channel_count=channel_count,
+        block_size=block_size,
+        dense_parameters=dense_parameters,
+        block_cyclic_parameters=block_parameters,
+        parameter_ratio=block_parameters / dense_parameters,
+        input_values=values,
+        block_kernel=kernel,
+        block_cyclic_output=block_output,
+        dense_output=dense_output,
+        wrong_row_shift_output=wrong_output,
+        max_abs_dense_delta=max(deltas) if deltas else 0,
+        wrong_shift_mismatch_count=sum(
+            1 for correct, wrong in zip(block_output, wrong_output) if correct != wrong
+        ),
+        cell_collision_count=block_cyclic_cell_collision_count(block_size, channel_count),
+        max_cell_load=max(load for row in loads for load in row),
     )
 
 

@@ -342,6 +342,16 @@ Companion non-widget prototype: `AIM-B0015` uses `circle_math.applications.circl
 - Guardrail: the widget validates circular-convolution bookkeeping only. It does not prove neural-layer quality, runtime, memory, training stability, hardware efficiency, or CoilLinear usefulness.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python circulant mixer helpers.
 
+### block_cyclic_mixer_validation
+
+- Inputs: channel count, block size, and wrong-row-shift control.
+- Outputs: deterministic input vector, deterministic block kernel, block-cyclic output, dense matrix output, wrong-row-shift output, max absolute dense delta, mismatch count, dense parameter count, block-cyclic parameter count, parameter ratio, cell collision count, max cell load, row/column residue-cell theorem links, and dictionary links.
+- Theorem ids: `AIRA-T0011`, `AIRA-T0012`, `AIRA-T0013`, `AIRA-T0014`, and `AIRA-T0015`.
+- Dictionary ids: `COMMON-0073`, `COMMON-0058`, and `COMMON-0056`.
+- Python references: `circle_math.applications.circle_ai.block_cyclic_cell`, `circle_math.applications.circle_ai.block_cyclic_mixer_output`, `circle_math.applications.circle_ai.dense_block_cyclic_matrix`, and `circle_math.applications.circle_ai.run_block_cyclic_mixer_benchmark`.
+- Guardrail: the widget validates block-cyclic matrix bookkeeping and alias pressure only. It does not prove neural-layer quality, parameter efficiency, runtime, memory, training stability, hardware efficiency, or CoilRA usefulness.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python block-cyclic mixer helpers.
+
 ## Physics Widgets
 
 ### finite_path_algebra

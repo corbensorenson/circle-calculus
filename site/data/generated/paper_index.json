@@ -910,7 +910,8 @@
         "COMMON-0051",
         "COMMON-0056",
         "COMMON-0058",
-        "COMMON-0072"
+        "COMMON-0072",
+        "COMMON-0073"
       ],
       "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
       "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
@@ -927,6 +928,11 @@
         "AIRA-T0008",
         "AIRA-T0009",
         "AIRA-T0010",
+        "AIRA-T0011",
+        "AIRA-T0012",
+        "AIRA-T0013",
+        "AIRA-T0014",
+        "AIRA-T0015",
         "AIT-T0004",
         "AIT-T0005",
         "AIT-T0006",

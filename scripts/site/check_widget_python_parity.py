@@ -10,11 +10,18 @@ from circle_math.applications import (
     active_token_counts_by_budget,
     average_candidate_count,
     block_cyclic_adapter_parameter_count,
+    block_cyclic_cell,
+    block_cyclic_cell_collision_count,
+    block_cyclic_cell_loads,
+    block_cyclic_mixer_output,
     coil_attention_path,
     circulant_mixer_output,
     content_route_label,
+    default_block_cyclic_input,
+    default_block_cyclic_kernel,
     default_circulant_input,
     default_circulant_kernel,
+    dense_block_cyclic_matrix,
     dense_circulant_matrix,
     dense_matrix_vector_product,
     dense_adapter_parameter_count,
@@ -63,6 +70,7 @@ from circle_math.applications import (
     predict_recurrence_resolution_lookup,
     rope_relative_feature,
     run_adapter_parameter_budget_benchmark,
+    run_block_cyclic_mixer_benchmark,
     run_content_gated_retrieval_benchmark,
     run_circulant_mixer_benchmark,
     run_harmonic_feature_baseline_benchmark,
@@ -85,6 +93,7 @@ from circle_math.applications import (
     token_recurrence_budgets,
     training_free_loop_budget,
     training_free_loop_budgets,
+    rotate_block_cyclic_kernel_rows,
     rotate_kernel,
     winding_alias_collision_count,
     winding_position,
@@ -966,6 +975,68 @@ def js_dense_matrix_vector_product(
 def js_rotate_kernel(kernel: tuple[int, ...], shift: int) -> tuple[int, ...]:
     period = len(kernel)
     return tuple(kernel[js_mod(index - shift, period)] for index in range(period))
+
+
+def js_block_cyclic_cell(block_size: int, row: int, column: int) -> tuple[int, int]:
+    return (js_mod(row, block_size), js_mod(column, block_size))
+
+
+def js_block_cyclic_cell_loads(block_size: int, channel_count: int) -> tuple[tuple[int, ...], ...]:
+    loads = [[0 for _ in range(block_size)] for _ in range(block_size)]
+    for row in range(channel_count):
+        for column in range(channel_count):
+            block_row, block_column = js_block_cyclic_cell(block_size, row, column)
+            loads[block_row][block_column] += 1
+    return tuple(tuple(row) for row in loads)
+
+
+def js_block_cyclic_cell_collision_count(block_size: int, channel_count: int) -> int:
+    return sum(
+        max(0, load - 1)
+        for row in js_block_cyclic_cell_loads(block_size, channel_count)
+        for load in row
+    )
+
+
+def js_default_block_cyclic_input(channel_count: int) -> tuple[int, ...]:
+    return tuple(((index * index + 5 * index + 2) % 11) - 5 for index in range(channel_count))
+
+
+def js_default_block_cyclic_kernel(block_size: int) -> tuple[tuple[int, ...], ...]:
+    return tuple(
+        tuple(((3 * row - 2 * column + row * column + 1) % 9) - 4 for column in range(block_size))
+        for row in range(block_size)
+    )
+
+
+def js_block_cyclic_mixer_output(
+    values: tuple[int, ...],
+    kernel: tuple[tuple[int, ...], ...],
+) -> tuple[int, ...]:
+    block_size = len(kernel)
+    return tuple(
+        sum(kernel[js_mod(row, block_size)][js_mod(column, block_size)] * value for column, value in enumerate(values))
+        for row in range(len(values))
+    )
+
+
+def js_dense_block_cyclic_matrix(
+    channel_count: int,
+    kernel: tuple[tuple[int, ...], ...],
+) -> tuple[tuple[int, ...], ...]:
+    block_size = len(kernel)
+    return tuple(
+        tuple(kernel[js_mod(row, block_size)][js_mod(column, block_size)] for column in range(channel_count))
+        for row in range(channel_count)
+    )
+
+
+def js_rotate_block_cyclic_kernel_rows(
+    kernel: tuple[tuple[int, ...], ...],
+    shift: int,
+) -> tuple[tuple[int, ...], ...]:
+    block_size = len(kernel)
+    return tuple(kernel[js_mod(row - shift, block_size)] for row in range(block_size))
 
 
 def js_quaternion_mul(left: Quaternion, right: Quaternion) -> Quaternion:
@@ -3389,6 +3460,61 @@ def main() -> int:
         assert benchmark.max_abs_dense_delta == 0
         assert benchmark.dense_parameters == period * period
         assert benchmark.circulant_parameters == period
+
+    block_cyclic_cases = [
+        (8, 2, 1),
+        (12, 3, 1),
+        (16, 4, 2),
+    ]
+    for channel_count, block_size, wrong_shift in block_cyclic_cases:
+        values = js_default_block_cyclic_input(channel_count)
+        kernel = js_default_block_cyclic_kernel(block_size)
+        loads = js_block_cyclic_cell_loads(block_size, channel_count)
+        assert default_block_cyclic_input(channel_count) == values
+        assert default_block_cyclic_kernel(block_size) == kernel
+        for row in range(channel_count):
+            for column in range(channel_count):
+                assert block_cyclic_cell(block_size, row, column) == js_block_cyclic_cell(
+                    block_size,
+                    row,
+                    column,
+                )
+        assert block_cyclic_mixer_output(values, kernel) == js_block_cyclic_mixer_output(values, kernel)
+        assert dense_block_cyclic_matrix(channel_count, kernel) == js_dense_block_cyclic_matrix(
+            channel_count,
+            kernel,
+        )
+        assert dense_matrix_vector_product(dense_block_cyclic_matrix(channel_count, kernel), values) == (
+            js_dense_matrix_vector_product(js_dense_block_cyclic_matrix(channel_count, kernel), values)
+        )
+        assert rotate_block_cyclic_kernel_rows(kernel, wrong_shift) == js_rotate_block_cyclic_kernel_rows(
+            kernel,
+            wrong_shift,
+        )
+        assert block_cyclic_cell_loads(block_size, channel_count) == loads
+        assert block_cyclic_cell_collision_count(block_size, channel_count) == js_block_cyclic_cell_collision_count(
+            block_size,
+            channel_count,
+        )
+        benchmark = run_block_cyclic_mixer_benchmark(
+            channel_count=channel_count,
+            block_size=block_size,
+            wrong_row_shift=wrong_shift,
+        )
+        assert benchmark.block_cyclic_output == js_block_cyclic_mixer_output(values, kernel)
+        assert benchmark.dense_output == js_dense_matrix_vector_product(
+            js_dense_block_cyclic_matrix(channel_count, kernel),
+            values,
+        )
+        assert benchmark.wrong_row_shift_output == js_block_cyclic_mixer_output(
+            values,
+            js_rotate_block_cyclic_kernel_rows(kernel, wrong_shift),
+        )
+        assert benchmark.max_abs_dense_delta == 0
+        assert benchmark.dense_parameters == channel_count * channel_count
+        assert benchmark.block_cyclic_parameters == block_size * block_size
+        assert benchmark.cell_collision_count == js_block_cyclic_cell_collision_count(block_size, channel_count)
+        assert benchmark.max_cell_load == max(load for row in loads for load in row)
 
     hopf_cases = [
         (12, 2, 1.0 - 1.0j, 2.0 + 1.0j),

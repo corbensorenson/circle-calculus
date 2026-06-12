@@ -1,6 +1,6 @@
 # Circle Calculus AI 3: CoilRA and MultiCoil RoPE
 
-Status: polished draft with proved adapter-block and winding-position seeds.
+Status: polished draft with proved adapter-block, block-cyclic-cell, and winding-position seeds.
 
 ## Aim
 
@@ -29,6 +29,7 @@ sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_example
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_adapter_block.py
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_adapter_parameter_budget.py
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_circulant_mixer.py
+sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_block_cyclic_mixer.py
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_multicoil_rope.py
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_rope_relative_phase.py
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_winding_aware_position.py
@@ -48,6 +49,11 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `AIRA-T0008`: `Circle.Applications.positionResidue_add_mul_period`
 - `AIRA-T0009`: `Circle.Applications.positionWinding_mul_add_residue`
 - `AIRA-T0010`: `Circle.Applications.windingPosition_fst_mul_add_snd`
+- `AIRA-T0011`: `Circle.Applications.blockCyclicCell_fst_lt_blockSize`
+- `AIRA-T0012`: `Circle.Applications.blockCyclicCell_snd_lt_blockSize`
+- `AIRA-T0013`: `Circle.Applications.blockCyclicCell_add_row_blockSize`
+- `AIRA-T0014`: `Circle.Applications.blockCyclicCell_add_column_blockSize`
+- `AIRA-T0015`: `Circle.Applications.blockCyclicCell_add_mul_blockSize`
 - `AIT-T0004`: `Circle.Applications.rope_relative_shift_invariant`
 - `AIT-T0005`: `Circle.Applications.rope_compose`
 - `AIT-T0006`: `Circle.Applications.circConv_shift_equivariant`
@@ -95,7 +101,16 @@ position = position_winding(period, position) * period
 
 That theorem is a bookkeeping guarantee, not a long-context or RoPE quality theorem. Its value is that it separates two things that are often collapsed in visual phase language: the visible residue on the circle and the winding count that says how many times the position has wrapped.
 
-These facts certify only finite block indexing and finite residue/winding bookkeeping. They do not prove parameter efficiency, better fine-tuning, RoPE improvement, periodic-activation value, long-context quality, or runtime gains.
+`AIRA-T0011` through `AIRA-T0015` add a block-cyclic mixer seed. The shared parameter cell for a dense matrix address is
+
+```text
+block_cyclic_cell(block_size,row,column)
+  = (row mod block_size, column mod block_size)
+```
+
+Lean proves that both cell coordinates are bounded by the positive block size and that the shared cell is unchanged after adding any whole number of block-size row or column passes. This is the exact finite law a block-cyclic matrix fixture uses when many dense cells share a smaller learned table.
+
+These facts certify only finite block indexing, finite residue/winding bookkeeping, and finite row/column residue-cell closure. They do not prove parameter efficiency, better fine-tuning, RoPE improvement, periodic-activation value, long-context quality, or runtime gains.
 
 ## Exploratory Benchmark Fixture
 
@@ -112,6 +127,10 @@ This fixture is only parameter accounting. It is not evidence that block-cyclic 
 `AIRA-B0005` adds a deterministic circulant-mixer validation fixture. It applies circular convolution, compares the result with the equivalent dense circulant-matrix product, reports dense-vs-circulant parameter counts, and includes a wrong-shift control.
 
 This fixture is only structural validation and parameter accounting for a CoilLinear-style mixer. It is not evidence that circulant neural layers improve quality, runtime, memory use, training stability, hardware efficiency, or downstream model behavior.
+
+`AIRA-B0007` adds a deterministic block-cyclic mixer validation fixture. It applies a matrix-vector path whose weight at `(row,column)` depends only on `(row mod block_size,column mod block_size)`, compares the result with the equivalent dense matrix product, reports dense-vs-block-cyclic parameter counts, and includes a wrong-row-shift control plus cell-collision and max-load diagnostics.
+
+This fixture is only structural validation, parameter accounting, and alias/load bookkeeping for a block-cyclic mixer. It is not evidence that block-cyclic neural layers improve quality, parameter efficiency, runtime, memory use, training stability, hardware efficiency, or downstream model behavior.
 
 `AIRA-B0002` adds the first MultiCoil/RoPE-style positional fixture. The positive synthetic task labels positions by a combined phase tuple over periods `(5,7)`. A combined-period lookup recovers the pattern, while a single-period phase lookup, a constant baseline, and a scalar-threshold baseline do worse. The nonperiodic control labels positions by a scalar threshold; there the threshold baseline wins and the combined-period lookup fails.
 
@@ -147,7 +166,7 @@ The Circle theorem layer can certify relative-phase invariance, circular-convolu
 
 ## Next Program
 
-- Treat `AIRA-B0001` as adapter-block benchmark scaffolding, `AIRA-B0004` as parameter-budget scaffolding, and `AIRA-B0005` as CoilLinear/circulant-mixer scaffolding only; CoilRA, model quality, parameter efficiency, memory, training stability, and runtime claims remain separate work.
+- Treat `AIRA-B0001` as adapter-block benchmark scaffolding, `AIRA-B0004` as parameter-budget scaffolding, `AIRA-B0005` as CoilLinear/circulant-mixer scaffolding, and `AIRA-B0007` as block-cyclic mixer dense-parity and alias/load scaffolding only; CoilRA, model quality, parameter efficiency, memory, training stability, and runtime claims remain separate work.
 - Treat `AIRA-B0002` as MultiCoil/RoPE-style positional scaffolding, `AIRA-B0003` as relative RoPE-style phase scaffolding, and `AIRA-B0006` as residue-plus-winding alias-control scaffolding only; standard RoPE, ALiBi-style biases, learned-position, recurrent-memory, attention, dense sequence, and MLX comparisons remain separate work.
 - Start with small MLX prototypes and synthetic tasks.
 - Compare against dense, LoRA, block-circulant, circulant, and standard RoPE baselines.

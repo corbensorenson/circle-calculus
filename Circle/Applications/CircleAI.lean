@@ -546,6 +546,43 @@ theorem adapterBlock_zero (blockSize : Nat) :
   unfold adapterBlock
   simp
 
+def blockCyclicCell (blockSize row column : Nat) : Nat × Nat :=
+  (adapterBlock blockSize row, adapterBlock blockSize column)
+
+theorem blockCyclicCell_fst_lt_blockSize {blockSize : Nat} (h : 0 < blockSize)
+    (row column : Nat) :
+    (blockCyclicCell blockSize row column).fst < blockSize := by
+  unfold blockCyclicCell
+  exact adapterBlock_lt_blockSize h row
+
+theorem blockCyclicCell_snd_lt_blockSize {blockSize : Nat} (h : 0 < blockSize)
+    (row column : Nat) :
+    (blockCyclicCell blockSize row column).snd < blockSize := by
+  unfold blockCyclicCell
+  exact adapterBlock_lt_blockSize h column
+
+theorem blockCyclicCell_add_row_blockSize {blockSize : Nat} (h : 0 < blockSize)
+    (row column : Nat) :
+    blockCyclicCell blockSize (row + blockSize) column =
+      blockCyclicCell blockSize row column := by
+  unfold blockCyclicCell
+  rw [adapterBlock_add_blockSize h]
+
+theorem blockCyclicCell_add_column_blockSize {blockSize : Nat} (h : 0 < blockSize)
+    (row column : Nat) :
+    blockCyclicCell blockSize row (column + blockSize) =
+      blockCyclicCell blockSize row column := by
+  unfold blockCyclicCell
+  rw [adapterBlock_add_blockSize h]
+
+theorem blockCyclicCell_add_mul_blockSize {blockSize : Nat} (h : 0 < blockSize)
+    (row column rowPasses columnPasses : Nat) :
+    blockCyclicCell blockSize (row + rowPasses * blockSize)
+        (column + columnPasses * blockSize) =
+      blockCyclicCell blockSize row column := by
+  unfold blockCyclicCell
+  rw [adapterBlock_add_mul_blockSize h, adapterBlock_add_mul_blockSize h]
+
 def positionResidue (period position : Nat) : Nat :=
   position % period
 

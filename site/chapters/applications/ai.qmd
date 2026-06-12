@@ -323,6 +323,14 @@ CoilLinear/circulant-mixer work starts with a basic validation question: does th
 
 <div class="widget-panel" data-widget="circulant_mixer_validation" data-dictionary-ids="COMMON-0058 COMMON-0056 COMMON-0046"></div>
 
+## Block-Cyclic Mixer Validation Path
+
+Block-cyclic mixer work asks the next finite-addressing question: when a dense matrix cell `(row, column)` is represented by the shared cell `(row mod block_size, column mod block_size)`, do the row and column residue rules close exactly as advertised?
+
+The proved facts `AIRA-T0011` through `AIRA-T0015` certify the row/column cell bounds and closure under whole block-size passes. `AIRA-B0007` is the executable fixture: it compares the block-cyclic matrix-vector path against the dense matrix it represents, records a wrong-row-shift control, and reports parameter/cell-alias diagnostics. It is not a neural-layer quality, runtime, memory, training-stability, or hardware-efficiency result.
+
+<div class="widget-panel" data-widget="block_cyclic_mixer_validation" data-theorem-id="AIRA-T0013" data-dictionary-ids="COMMON-0073 COMMON-0058 COMMON-0056"></div>
+
 ## MultiCoil Positional Phase Path
 
 MultiCoil/RoPE-style work begins with a modest bookkeeping question: if a position has several phase periods, what is its combined phase tuple and when does that tuple repeat?
@@ -535,7 +543,7 @@ The Lean facts `AIM-T0049` through `AIM-T0055` certify only the finite state ari
 16. Add learned multi-resolution recurrence controls: phase-to-budget lookup tables, phase-to-resolution lookup tables, single-resolution baselines, fixed budgets, wrong-period controls, over-loop controls, and active-sample accounting.
 17. Add learned recurrence-schedule controls: phase-to-budget lookup tables, fixed-budget baselines, wrong-period controls, over-loop controls, and schedule accuracy.
 18. Add tiny looped recurrent-state prototypes: certified budget state reads, state-to-label lookup, one-step controls, wrong-period controls, scalar controls, and nonperiodic controls.
-19. Move to adapters and circulant mixers: block sharing, circular-convolution parity, parameter accounting, and wrong-structure controls.
+19. Move to adapters, circulant mixers, and block-cyclic mixers: block sharing, circular-convolution parity, row/column residue cells, parameter accounting, alias diagnostics, and wrong-structure controls.
 20. Add MultiCoil positions: combined periods, RoPE-style phase structure, and mismatch controls.
 21. Compare RoPE-style relative phase: query/key lag labels, wrong-period controls, query-only controls, and scalar controls.
 22. Add winding-aware positions: residue, winding, alias diagnostics, wrong-period controls, absolute-position controls, and scalar controls.
@@ -571,6 +579,7 @@ The Lean facts `AIM-T0049` through `AIM-T0055` certify only the finite state ari
 - `AIRA-B0004` is parameter-count accounting, not evidence about quality, runtime, memory, training stability, or fine-tuning behavior.
 - `AIRA-B0005` is circulant-mixer validation and parameter accounting, not evidence about neural-layer quality, runtime, memory, training stability, or hardware efficiency.
 - `AIRA-B0006` is residue-plus-winding alias-control bookkeeping, not evidence about RoPE quality, context length, perplexity, runtime, or learned positional encodings.
+- `AIRA-B0007` is block-cyclic dense-parity and alias-load bookkeeping, not evidence about neural-layer quality, parameter efficiency, runtime, memory, training stability, or hardware efficiency.
 - MLX/Mac-first experiments should be reported as benchmarks, not proofs.
 
 ::: {.checkpoint-box}
@@ -650,6 +659,11 @@ Why is the nonperiodic control in `AIA-B0002` important before making any AI-imp
 <div class="theorem-box" data-theorem-id="AIRA-T0008"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0009"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0010"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0011"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0012"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0013"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0014"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0015"></div>
 
 <div class="dictionary-box" data-dictionary-id="COMMON-0039"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0046"></div>
@@ -672,6 +686,7 @@ Why is the nonperiodic control in `AIA-B0002` important before making any AI-imp
 <div class="dictionary-box" data-dictionary-id="COMMON-0070"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0071"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0072"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0073"></div>
 
 <p data-paper-ref="papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md">AI architecture paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md">Circle AI Architectures</a></p>
 <p data-paper-ref="papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Memory paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Coil Attention And Memory</a></p>
@@ -691,6 +706,7 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 <script type="module" src="../../widgets/ai/learned_content_gate_retrieval.js"></script>
 <script type="module" src="../../widgets/ai/adapter_parameter_budget.js"></script>
 <script type="module" src="../../widgets/ai/circulant_mixer_validation.js"></script>
+<script type="module" src="../../widgets/ai/block_cyclic_mixer_validation.js"></script>
 <script type="module" src="../../widgets/ai/multicoil_phase_explorer.js"></script>
 <script type="module" src="../../widgets/ai/rope_relative_phase.js"></script>
 <script type="module" src="../../widgets/ai/winding_aware_position.js"></script>

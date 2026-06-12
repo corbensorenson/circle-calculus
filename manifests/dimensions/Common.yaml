@@ -1796,6 +1796,76 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_winding_position_reconstructs_natural_position
     blocker: ""
+  - id: AIRA-T0011
+    status: lean_proved
+    lean_name: Circle.Applications.blockCyclicCell_fst_lt_blockSize
+    informal_statement: "For a positive block size, the row residue of a block-cyclic mixer cell is always inside the shared block table."
+    formal_statement: "forall {blockSize : Nat}, 0 < blockSize -> forall row column : Nat, (blockCyclicCell blockSize row column).fst < blockSize"
+    dictionary_dependencies: ["COMMON-0030", "COMMON-0073"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_block_cyclic_cell_is_bounded_and_closes_by_rows_and_columns
+    blocker: ""
+  - id: AIRA-T0012
+    status: lean_proved
+    lean_name: Circle.Applications.blockCyclicCell_snd_lt_blockSize
+    informal_statement: "For a positive block size, the column residue of a block-cyclic mixer cell is always inside the shared block table."
+    formal_statement: "forall {blockSize : Nat}, 0 < blockSize -> forall row column : Nat, (blockCyclicCell blockSize row column).snd < blockSize"
+    dictionary_dependencies: ["COMMON-0030", "COMMON-0073"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_block_cyclic_cell_is_bounded_and_closes_by_rows_and_columns
+    blocker: ""
+  - id: AIRA-T0013
+    status: lean_proved
+    lean_name: Circle.Applications.blockCyclicCell_add_row_blockSize
+    informal_statement: "Adding one whole block size to the dense row address preserves the block-cyclic shared cell."
+    formal_statement: "forall {blockSize : Nat}, 0 < blockSize -> forall row column : Nat, blockCyclicCell blockSize (row + blockSize) column = blockCyclicCell blockSize row column"
+    dictionary_dependencies: ["COMMON-0030", "COMMON-0073"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_block_cyclic_cell_is_bounded_and_closes_by_rows_and_columns
+    blocker: ""
+  - id: AIRA-T0014
+    status: lean_proved
+    lean_name: Circle.Applications.blockCyclicCell_add_column_blockSize
+    informal_statement: "Adding one whole block size to the dense column address preserves the block-cyclic shared cell."
+    formal_statement: "forall {blockSize : Nat}, 0 < blockSize -> forall row column : Nat, blockCyclicCell blockSize row (column + blockSize) = blockCyclicCell blockSize row column"
+    dictionary_dependencies: ["COMMON-0030", "COMMON-0073"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_block_cyclic_cell_is_bounded_and_closes_by_rows_and_columns
+    blocker: ""
+  - id: AIRA-T0015
+    status: lean_proved
+    lean_name: Circle.Applications.blockCyclicCell_add_mul_blockSize
+    informal_statement: "Adding any whole number of block-size row and column passes preserves the block-cyclic shared cell."
+    formal_statement: "forall {blockSize : Nat}, 0 < blockSize -> forall row column rowPasses columnPasses : Nat, blockCyclicCell blockSize (row + rowPasses * blockSize) (column + columnPasses * blockSize) = blockCyclicCell blockSize row column"
+    dictionary_dependencies: ["COMMON-0030", "COMMON-0073"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_block_cyclic_cell_is_bounded_and_closes_by_rows_and_columns
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

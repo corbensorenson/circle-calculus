@@ -2,11 +2,18 @@ from circle_math.applications.circle_ai import (
     adapter_block,
     adapter_block_collision_count,
     adapter_block_loads,
+    block_cyclic_cell,
+    block_cyclic_cell_collision_count,
+    block_cyclic_cell_loads,
+    block_cyclic_mixer_output,
     block_cyclic_adapter_parameter_count,
     circulant_mixer_output,
+    dense_block_cyclic_matrix,
     dense_circulant_matrix,
     dense_adapter_parameter_count,
     dense_matrix_vector_product,
+    default_block_cyclic_input,
+    default_block_cyclic_kernel,
     fit_adapter_block_lookup,
     fit_multicoil_phase_lookup,
     fit_rope_relative_lookup,
@@ -23,11 +30,13 @@ from circle_math.applications.circle_ai import (
     rope_relative_feature,
     run_adapter_block_benchmark,
     run_adapter_parameter_budget_benchmark,
+    run_block_cyclic_mixer_benchmark,
     run_circulant_mixer_benchmark,
     run_multicoil_rope_benchmark,
     run_rope_relative_phase_benchmark,
     run_winding_aware_position_benchmark,
     rotate_kernel,
+    rotate_block_cyclic_kernel_rows,
     synthetic_adapter_block_dataset,
     synthetic_multicoil_phase_dataset,
     synthetic_rope_relative_dataset,
@@ -153,6 +162,61 @@ def test_circulant_mixer_benchmark_matches_dense_baseline_and_wrong_shift_contro
     assert result.max_abs_dense_delta == 0
     assert result.circulant_output == result.dense_output
     assert result.wrong_shift_mismatch_count > 0
+    assert result.note.endswith("not a model-quality claim.")
+
+
+def test_block_cyclic_cell_is_bounded_and_closes_by_rows_and_columns() -> None:
+    for block_size in range(1, 17):
+        for row in range(0, 64):
+            for column in range(0, 64):
+                cell = block_cyclic_cell(block_size, row, column)
+                assert 0 <= cell[0] < block_size
+                assert 0 <= cell[1] < block_size
+                assert block_cyclic_cell(block_size, row + block_size, column) == cell
+                assert block_cyclic_cell(block_size, row, column + block_size) == cell
+                assert block_cyclic_cell(block_size, row + 3 * block_size, column + 5 * block_size) == cell
+
+
+def test_block_cyclic_mixer_matches_dense_block_cyclic_baseline() -> None:
+    values = (1, -1, 2, 0, 3, -2)
+    kernel = (
+        (2, -1, 0),
+        (1, 0, 3),
+        (-2, 1, 1),
+    )
+
+    assert block_cyclic_mixer_output(values, kernel) == dense_matrix_vector_product(
+        dense_block_cyclic_matrix(len(values), kernel),
+        values,
+    )
+    assert rotate_block_cyclic_kernel_rows(kernel, 1) == (
+        (-2, 1, 1),
+        (2, -1, 0),
+        (1, 0, 3),
+    )
+
+
+def test_block_cyclic_mixer_benchmark_has_dense_parity_and_wrong_shift_control() -> None:
+    result = run_block_cyclic_mixer_benchmark(channel_count=16, block_size=4, wrong_row_shift=1)
+
+    assert result == run_block_cyclic_mixer_benchmark(channel_count=16, block_size=4, wrong_row_shift=1)
+    assert result.input_values == default_block_cyclic_input(16)
+    assert result.block_kernel == default_block_cyclic_kernel(4)
+    assert result.dense_parameters == 256
+    assert result.block_cyclic_parameters == 16
+    assert result.parameter_ratio == 0.0625
+    assert result.max_abs_dense_delta == 0
+    assert result.block_cyclic_output == result.dense_output
+    assert result.wrong_shift_mismatch_count > 0
+    assert block_cyclic_cell_loads(4, 16) == (
+        (16, 16, 16, 16),
+        (16, 16, 16, 16),
+        (16, 16, 16, 16),
+        (16, 16, 16, 16),
+    )
+    assert result.cell_collision_count == block_cyclic_cell_collision_count(4, 16)
+    assert result.cell_collision_count == 240
+    assert result.max_cell_load == 16
     assert result.note.endswith("not a model-quality claim.")
 
 

@@ -4678,6 +4678,36 @@
           "status": "proved"
         },
         {
+          "id": "AIRA-T0011",
+          "lean_name": "Circle.Applications.blockCyclicCell_fst_lt_blockSize",
+          "name": "Circle.Applications.blockCyclicCell_fst_lt_blockSize",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0012",
+          "lean_name": "Circle.Applications.blockCyclicCell_snd_lt_blockSize",
+          "name": "Circle.Applications.blockCyclicCell_snd_lt_blockSize",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0013",
+          "lean_name": "Circle.Applications.blockCyclicCell_add_row_blockSize",
+          "name": "Circle.Applications.blockCyclicCell_add_row_blockSize",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0014",
+          "lean_name": "Circle.Applications.blockCyclicCell_add_column_blockSize",
+          "name": "Circle.Applications.blockCyclicCell_add_column_blockSize",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0015",
+          "lean_name": "Circle.Applications.blockCyclicCell_add_mul_blockSize",
+          "name": "Circle.Applications.blockCyclicCell_add_mul_blockSize",
+          "status": "proved"
+        },
+        {
           "id": "AIT-T0004",
           "lean_name": "Circle.Applications.rope_relative_shift_invariant",
           "name": "Circle.Applications.rope_relative_shift_invariant",
@@ -6547,6 +6577,11 @@
           "python_reference": "circle_math.applications.circle_ai.dense_adapter_parameter_count; circle_math.applications.circle_ai.lora_adapter_parameter_count; circle_math.applications.circle_ai.block_cyclic_adapter_parameter_count; circle_math.applications.circle_ai.run_adapter_parameter_budget_benchmark"
         },
         {
+          "id": "block_cyclic_mixer_validation",
+          "path": "site/widgets/ai/block_cyclic_mixer_validation.js",
+          "python_reference": "circle_math.applications.circle_ai.block_cyclic_cell; circle_math.applications.circle_ai.block_cyclic_mixer_output; circle_math.applications.circle_ai.dense_block_cyclic_matrix; circle_math.applications.circle_ai.run_block_cyclic_mixer_benchmark"
+        },
+        {
           "id": "circulant_mixer_validation",
           "path": "site/widgets/ai/circulant_mixer_validation.js",
           "python_reference": "circle_math.applications.circle_ai.circulant_mixer_output; circle_math.applications.circle_ai.dense_circulant_matrix; circle_math.applications.circle_ai.run_circulant_mixer_benchmark"
@@ -6623,6 +6658,11 @@
       ],
       "used_by_theorems": [],
       "used_by_widgets": [
+        {
+          "id": "block_cyclic_mixer_validation",
+          "path": "site/widgets/ai/block_cyclic_mixer_validation.js",
+          "python_reference": "circle_math.applications.circle_ai.block_cyclic_cell; circle_math.applications.circle_ai.block_cyclic_mixer_output; circle_math.applications.circle_ai.dense_block_cyclic_matrix; circle_math.applications.circle_ai.run_block_cyclic_mixer_benchmark"
+        },
         {
           "id": "circulant_mixer_validation",
           "path": "site/widgets/ai/circulant_mixer_validation.js",
@@ -9302,6 +9342,74 @@
           "id": "winding_aware_position",
           "path": "site/widgets/ai/winding_aware_position.js",
           "python_reference": "circle_math.applications.circle_ai.winding_position; circle_math.applications.circle_ai.winding_position_feature; circle_math.applications.circle_ai.run_winding_aware_position_benchmark"
+        }
+      ]
+    },
+    {
+      "dependencies": [
+        "COMMON-0030",
+        "COMMON-0056",
+        "COMMON-0058"
+      ],
+      "forbidden_meanings": [
+        "A proof that block-cyclic neural layers improve quality.",
+        "Evidence that the smaller parameter table improves runtime, memory, training stability, or hardware efficiency.",
+        "A replacement for dense, LoRA, block-circulant, circulant, FFT/NTT, or learned linear-layer baselines."
+      ],
+      "formal_definition": "`circle_math.applications.circle_ai.run_block_cyclic_mixer_benchmark`, a deterministic fixture comparing a block-cyclic matrix-vector path against its equivalent dense matrix baseline, a wrong-row-shift control, and parameter/cell-alias diagnostics.",
+      "id": "COMMON-0073",
+      "introduced_in": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+      "intuition": "A CoilLinear/CoilRA-adjacent harness: before claiming a block-cyclic mixer is useful, verify the row/column residue bookkeeping, dense parity, parameter count, and alias pressure.",
+      "kind": "experiment",
+      "name": "Block-cyclic mixer validation fixture",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "block_cyclic_mixer_fixture",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIRA-T0011",
+          "lean_name": "Circle.Applications.blockCyclicCell_fst_lt_blockSize",
+          "name": "Circle.Applications.blockCyclicCell_fst_lt_blockSize",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0012",
+          "lean_name": "Circle.Applications.blockCyclicCell_snd_lt_blockSize",
+          "name": "Circle.Applications.blockCyclicCell_snd_lt_blockSize",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0013",
+          "lean_name": "Circle.Applications.blockCyclicCell_add_row_blockSize",
+          "name": "Circle.Applications.blockCyclicCell_add_row_blockSize",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0014",
+          "lean_name": "Circle.Applications.blockCyclicCell_add_column_blockSize",
+          "name": "Circle.Applications.blockCyclicCell_add_column_blockSize",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0015",
+          "lean_name": "Circle.Applications.blockCyclicCell_add_mul_blockSize",
+          "name": "Circle.Applications.blockCyclicCell_add_mul_blockSize",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": [
+        {
+          "id": "block_cyclic_mixer_validation",
+          "path": "site/widgets/ai/block_cyclic_mixer_validation.js",
+          "python_reference": "circle_math.applications.circle_ai.block_cyclic_cell; circle_math.applications.circle_ai.block_cyclic_mixer_output; circle_math.applications.circle_ai.dense_block_cyclic_matrix; circle_math.applications.circle_ai.run_block_cyclic_mixer_benchmark"
         }
       ]
     },
