@@ -55,6 +55,8 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0033",
     "AIRA-T0037",
     "AIRA-T0038",
+    "AIRA-T0039",
+    "AIRA-T0040",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -65,6 +67,8 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window",
     "Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window",
     "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
+    "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
+    "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -358,6 +362,58 @@ def real_phase_near_turn(
     )
 
 
+def real_phase_bank_near_turn(
+    *,
+    frequencies: Sequence[float],
+    full_turn: float,
+    left: int,
+    right: int,
+    tolerance: float,
+    turns: Iterable[int],
+) -> bool:
+    """Mirror the all-channel ``ropeRealPhaseBankNearTurn`` predicate.
+
+    The turn iterable is materialized once so generator inputs can be reused
+    for each channel deterministically.
+    """
+    turn_values = tuple(turns)
+    return all(
+        real_phase_near_turn(
+            frequency=frequency,
+            full_turn=full_turn,
+            left=left,
+            right=right,
+            tolerance=tolerance,
+            turns=turn_values,
+        )
+        for frequency in frequencies
+    )
+
+
+def real_phase_bank_turn_separated(
+    *,
+    frequencies: Sequence[float],
+    full_turn: float,
+    left: int,
+    right: int,
+    margin: float,
+    turns: Iterable[int],
+) -> bool:
+    """Mirror the existence-of-one-channel bank separation predicate."""
+    turn_values = tuple(turns)
+    return any(
+        real_phase_turn_separated(
+            frequency=frequency,
+            full_turn=full_turn,
+            left=left,
+            right=right,
+            margin=margin,
+            turns=turn_values,
+        )
+        for frequency in frequencies
+    )
+
+
 def real_phase_best_margin_for_gap(frequencies: Sequence[float], gap: int) -> tuple[float, int]:
     """Return the strongest channel margin for a gap and the channel that attains it."""
     best_margin = -1.0
@@ -517,7 +573,8 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         f"real_phase_margin={margin_status} worst_margin_radians={worst_margin} "
         f"worst_gap={worst_gap} scanned_gaps={margin.scanned_gap_count}",
         f"real_phase_formal_precursors={','.join(margin.formal_precursor_theorem_ids)} "
-        "(unwrapped, signed full-turn, and turn-separation precursors only; not a Diophantine proof)",
+        "(unwrapped, signed full-turn, turn-separation, and bank-level no-near-turn "
+        "precursors only; not a Diophantine proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,
     )

@@ -9912,6 +9912,18 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
           "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0039",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0040",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -10055,6 +10067,18 @@
           "id": "AIRA-T0038",
           "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
           "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0039",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0040",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
           "status": "proved"
         }
       ],
@@ -10247,6 +10271,18 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
           "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0039",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0040",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -10370,6 +10406,18 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
           "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0039",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0040",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -10491,6 +10539,64 @@
           "id": "AIRA-T0038",
           "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
           "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0039",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0040",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
+    },
+    {
+      "dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0080",
+        "COMMON-0082",
+        "COMMON-0085"
+      ],
+      "forbidden_meanings": [
+        "A completed Diophantine or continued-fraction theorem proving standard RoPE frequencies have the declared margin.",
+        "A formal proof of the current numerical floating-point scan.",
+        "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
+      ],
+      "formal_definition": "In Lean, `Circle.Applications.ropeRealPhaseBankNearTurn frequencies fullTurn tolerance left right` means every declared real-phase channel is near some signed full-turn multiple, while `Circle.Applications.ropeRealPhaseBankTurnSeparated frequencies fullTurn margin left right` means at least one declared channel is separated from every signed full-turn multiple by `margin`. Theorems `not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt` and `not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window` prove that one separated channel rules out all-channel near-turn collision at any smaller tolerance.",
+      "id": "COMMON-0086",
+      "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+      "intuition": "The numerical scan looks for a best separating channel for each gap; this term is the formal bank-level contract shape behind that idea, without claiming the scan itself is proved.",
+      "kind": "relation",
+      "name": "Real RoPE phase-bank near-turn contract",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "BankNearTurn(frequencies,fullTurn,tolerance,left,right)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIRA-T0039",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0040",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
           "status": "proved"
         }
       ],

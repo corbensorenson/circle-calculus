@@ -2,17 +2,54 @@ import { positiveInt } from "../shared/circle_math_core.js";
 import { addLabeledNumber, addOutput, addWidgetHeader, clear } from "../shared/svg_helpers.js";
 import { loadJson, mountWidgets, statusClass, statusLabel } from "../shared/widget_base.js";
 
-const THEOREM_IDS = [
-  "AIRA-T0021",
-  "AIRA-T0022",
-  "AIRA-T0023",
-  "AIRA-T0024",
-  "AIRA-T0025",
-  "AIRA-T0026",
-  "AIRA-T0027",
-  "AIRA-T0028",
+const THEOREM_GROUPS = [
+  {
+    title: "Exact certifier theorems",
+    ids: [
+      "AIRA-T0021",
+      "AIRA-T0022",
+      "AIRA-T0023",
+      "AIRA-T0024",
+      "AIRA-T0025",
+      "AIRA-T0026",
+    ],
+  },
+  {
+    title: "Collision-count theorems",
+    ids: [
+      "AIRA-T0027",
+      "AIRA-T0028",
+      "AIRA-T0034",
+      "AIRA-T0035",
+      "AIRA-T0036",
+    ],
+  },
+  {
+    title: "Real-phase precursor theorems",
+    ids: [
+      "AIRA-T0029",
+      "AIRA-T0030",
+      "AIRA-T0031",
+      "AIRA-T0032",
+      "AIRA-T0033",
+      "AIRA-T0037",
+      "AIRA-T0038",
+      "AIRA-T0039",
+      "AIRA-T0040",
+    ],
+  },
 ];
-const DICTIONARY_IDS = ["COMMON-0076", "COMMON-0077", "COMMON-0078"];
+const DICTIONARY_IDS = [
+  "COMMON-0076",
+  "COMMON-0077",
+  "COMMON-0078",
+  "COMMON-0083",
+  "COMMON-0084",
+  "COMMON-0080",
+  "COMMON-0082",
+  "COMMON-0085",
+  "COMMON-0086",
+];
 const TWO_PI = 2 * Math.PI;
 
 function gcd(a, b) {
@@ -107,13 +144,13 @@ function makeLink(id, page) {
   return link;
 }
 
-function appendBadgeRow(section, theoremById) {
+function appendBadgeRow(section, theoremById, titleText, theoremIds) {
   const row = document.createElement("div");
   row.className = "generator-badge-row";
   const title = document.createElement("strong");
-  title.textContent = "Exact certifier theorems";
+  title.textContent = titleText;
   row.appendChild(title);
-  for (const id of THEOREM_IDS) {
+  for (const id of theoremIds) {
     const theorem = theoremById.get(id);
     const badge = makeLink(id, "theorems.html");
     badge.className = theorem ? statusClass(theorem) : "status-badge status-planned";
@@ -199,7 +236,9 @@ function appendRecord(output, values, theoremById) {
   ].join("\n");
   record.appendChild(data);
 
-  appendBadgeRow(record, theoremById);
+  for (const group of THEOREM_GROUPS) {
+    appendBadgeRow(record, theoremById, group.title, group.ids);
+  }
   appendDictionaryRow(record);
   appendPeriodTable(record, periods);
 

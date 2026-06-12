@@ -308,6 +308,25 @@ def ropeRealPhaseTurnSeparated
     (frequency fullTurn margin : ℝ) (left right : Nat) : Prop :=
   ∀ turns : Int, margin ≤ ropeRealPhaseIntTurnError frequency fullTurn left right turns
 
+/-- A finite real-phase bank is near a full-turn collision when every declared
+channel is individually near some signed full-turn multiple.
+
+This is the real-valued analogue of an all-channel collision warning. It is
+still conditional real arithmetic, not a Diophantine theorem for standard RoPE
+frequencies. -/
+def ropeRealPhaseBankNearTurn
+    (frequencies : List ℝ) (fullTurn tolerance : ℝ) (left right : Nat) : Prop :=
+  ∀ frequency, frequency ∈ frequencies →
+    ropeRealPhaseNearTurn frequency fullTurn tolerance left right
+
+/-- A finite real-phase bank has a separating channel when at least one
+declared channel is separated from every signed full-turn multiple by the
+given margin. -/
+def ropeRealPhaseBankTurnSeparated
+    (frequencies : List ℝ) (fullTurn margin : ℝ) (left right : Nat) : Prop :=
+  ∃ frequency, frequency ∈ frequencies ∧
+    ropeRealPhaseTurnSeparated frequency fullTurn margin left right
+
 /-- For ordered positions, the absolute unwrapped real phase gap is exactly
 the natural position gap times the absolute frequency. -/
 theorem ropeRealPhaseGapAbs_eq_natGap_mul_abs
@@ -469,5 +488,53 @@ theorem not_ropeRealPhaseNearTurn_of_turnSeparated_lt
   rintro ⟨turns, hnear⟩
   have hmargin := hseparated turns
   linarith
+
+/-- A single separating channel rules out an all-channel real-phase near-turn
+collision at any smaller tolerance.
+
+This is the bank-level bridge used by the certifier's numerical scan: if one
+channel has a proved turn-separation margin, then the whole bank cannot be
+simultaneously near a full-turn collision at a tighter tolerance. It still does
+not prove that arbitrary RoPE frequencies have such a margin. -/
+theorem not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt
+    {frequencies : List ℝ} {fullTurn margin tolerance : ℝ} {left right : Nat}
+    (hseparated :
+      ropeRealPhaseBankTurnSeparated frequencies fullTurn margin left right)
+    (htolerance : tolerance < margin) :
+    ¬ ropeRealPhaseBankNearTurn frequencies fullTurn tolerance left right := by
+  rintro hnear
+  rcases hseparated with ⟨frequency, hmem, hchannel⟩
+  exact
+    (not_ropeRealPhaseNearTurn_of_turnSeparated_lt
+      (frequency := frequency) (fullTurn := fullTurn) (margin := margin)
+      (tolerance := tolerance) (left := left) (right := right)
+      hchannel htolerance)
+      (hnear frequency hmem)
+
+/-- One one-turn-window channel is enough to rule out an all-channel near-turn
+collision at a smaller tolerance.
+
+This composes the one-channel endpoint theorem with the bank-level bridge. The
+substantive future work is still to prove the window hypotheses for the actual
+RoPE frequency schedule using Diophantine or continued-fraction bounds. -/
+theorem not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window
+    {frequencies : List ℝ} {frequency fullTurn margin tolerance : ℝ}
+    {left right : Nat}
+    (hmem : frequency ∈ frequencies)
+    (hfull_nonneg : 0 ≤ fullTurn)
+    (hphase_le_full : ropeRealPhaseGapAbs frequency left right ≤ fullTurn)
+    (hleft_margin : margin ≤ ropeRealPhaseGapAbs frequency left right)
+    (hright_margin : margin ≤ fullTurn - ropeRealPhaseGapAbs frequency left right)
+    (htolerance : tolerance < margin) :
+    ¬ ropeRealPhaseBankNearTurn frequencies fullTurn tolerance left right := by
+  exact not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt
+    (frequencies := frequencies) (fullTurn := fullTurn) (margin := margin)
+    (tolerance := tolerance) (left := left) (right := right)
+    ⟨frequency, hmem,
+      ropeRealPhaseTurnSeparated_of_one_turn_window
+        (frequency := frequency) (fullTurn := fullTurn) (margin := margin)
+        (left := left) (right := right)
+        hfull_nonneg hphase_le_full hleft_margin hright_margin⟩
+    htolerance
 
 end Circle.Applications

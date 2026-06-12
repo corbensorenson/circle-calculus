@@ -104,7 +104,7 @@ The model-like presets pass the exact discrete contract under the rounded intege
 - The per-channel single-period counts are exact for each individual integer period; they are not all-channel bank counts.
 - If the exact discrete contract passes, the report still does not claim real model quality or long-context success.
 - The real-phase margin scan is useful engineering evidence, but it is not a Lean proof over real-valued trigonometric RoPE.
-- The real-valued formal work has begun with an unwrapped phase-gap formula (`AIRA-T0029`), lower-bound precursor (`AIRA-T0030`), one-turn endpoint-error precursor (`AIRA-T0031`), nonnegative full-turn-multiple precursor (`AIRA-T0032`), signed full-turn-multiple precursor (`AIRA-T0033`), turn-separation predicate (`AIRA-T0037`), and no-near-turn consequence (`AIRA-T0038`). These are not Diophantine/continued-fraction RoPE margin theorems.
+- The real-valued formal work has begun with an unwrapped phase-gap formula (`AIRA-T0029`), lower-bound precursor (`AIRA-T0030`), one-turn endpoint-error precursor (`AIRA-T0031`), nonnegative full-turn-multiple precursor (`AIRA-T0032`), signed full-turn-multiple precursor (`AIRA-T0033`), turn-separation predicate (`AIRA-T0037`), no-near-turn consequence (`AIRA-T0038`), and finite bank-level no-near-turn bridge (`AIRA-T0039`, `AIRA-T0040`). These are not Diophantine/continued-fraction RoPE margin theorems.
 
 ## Theorem Cards
 
@@ -126,6 +126,8 @@ The model-like presets pass the exact discrete contract under the rounded intege
 <div class="theorem-box" data-theorem-id="AIRA-T0033"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0037"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0038"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0039"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0040"></div>
 
 ## Dictionary
 
@@ -137,6 +139,7 @@ The model-like presets pass the exact discrete contract under the rounded intege
 <div class="dictionary-box" data-dictionary-id="COMMON-0080"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0082"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0085"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0086"></div>
 
 ## Source Trail
 

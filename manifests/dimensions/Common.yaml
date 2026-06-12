@@ -2265,6 +2265,34 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_real_phase_turn_separation_rules_out_smaller_near_turn
     blocker: ""
+  - id: AIRA-T0039
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt
+    informal_statement: "If a finite real-phase bank has at least one channel separated from every signed full-turn multiple by a margin, then the bank cannot be near a full-turn collision in every channel at any smaller tolerance."
+    formal_statement: "forall {frequencies : List Real} {fullTurn margin tolerance : Real} {left right : Nat}, Circle.Applications.ropeRealPhaseBankTurnSeparated frequencies fullTurn margin left right -> tolerance < margin -> not Circle.Applications.ropeRealPhaseBankNearTurn frequencies fullTurn tolerance left right"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0085", "COMMON-0086"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_real_phase_bank_separation_rules_out_all_channel_near_turn
+    blocker: ""
+  - id: AIRA-T0040
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window
+    informal_statement: "If one channel in a finite real-phase bank satisfies the one-turn-window margin hypotheses, then the whole bank cannot be near a full-turn collision in every channel at any smaller tolerance."
+    formal_statement: "forall {frequencies : List Real} {frequency fullTurn margin tolerance : Real} {left right : Nat}, frequency in frequencies -> 0 <= fullTurn -> Circle.Applications.ropeRealPhaseGapAbs frequency left right <= fullTurn -> margin <= Circle.Applications.ropeRealPhaseGapAbs frequency left right -> margin <= fullTurn - Circle.Applications.ropeRealPhaseGapAbs frequency left right -> tolerance < margin -> not Circle.Applications.ropeRealPhaseBankNearTurn frequencies fullTurn tolerance left right"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0085", "COMMON-0086"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_real_phase_bank_separation_rules_out_all_channel_near_turn
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

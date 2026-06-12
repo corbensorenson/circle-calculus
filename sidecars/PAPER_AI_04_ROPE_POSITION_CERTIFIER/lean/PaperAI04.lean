@@ -35,6 +35,8 @@ namespace Circle.PaperAI04
 #check Circle.Applications.ropeRealPhaseIntTurnError
 #check Circle.Applications.ropeRealPhaseNearTurn
 #check Circle.Applications.ropeRealPhaseTurnSeparated
+#check Circle.Applications.ropeRealPhaseBankNearTurn
+#check Circle.Applications.ropeRealPhaseBankTurnSeparated
 #check Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs
 #check Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower
 #check Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window
@@ -42,5 +44,7 @@ namespace Circle.PaperAI04
 #check Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window
 #check Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window
 #check Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt
+#check Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt
+#check Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window
 
 end Circle.PaperAI04
