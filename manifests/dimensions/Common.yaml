@@ -2427,6 +2427,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
     blocker: ""
+  - id: AIT-T0021
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne
+    informal_statement: "A local-window plus stride-family sparse-attention plan misses any lag beyond the local window when every admitted stride/step pair has a different cyclic lag."
+    formal_statement: "forall {n window pathLength lag : Nat} {strides : List Nat}, window < lag -> (forall stride, stride in strides -> forall step, 1 <= step -> step <= pathLength -> (step * stride) % n != lag % n) -> not Circle.Applications.hybridFamilyLagReach n window pathLength lag strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

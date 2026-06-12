@@ -197,6 +197,28 @@ theorem hybridFamilyLagGap_iff_not_local_and_not_family
     | inl hlocal => exact hnotlocal hlocal
     | inr hfamily => exact hnotfamily hfamily
 
+/-- Concrete stride-family gap certificate.
+
+If a lag is beyond the local window and every admitted stride/step pair has a
+different cyclic lag, then the local+stride-family plan misses that lag. This
+is the form emitted by executable sparse-attention coverage certificates:
+uncovered lags are not merely absent from a Python list; they satisfy a
+checkable local-window and stride-step exclusion condition. -/
+theorem hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne
+    {n window pathLength lag : Nat} {strides : List Nat}
+    (habove : window < lag)
+    (hnoStride :
+      ∀ stride, stride ∈ strides → ∀ step, 1 ≤ step → step ≤ pathLength →
+        (step * stride) % n ≠ lag % n) :
+    ¬ hybridFamilyLagReach n window pathLength lag strides := by
+  rw [hybridFamilyLagGap_iff_not_local_and_not_family]
+  constructor
+  · intro hlocal
+    exact (not_le_of_gt habove) hlocal.2
+  · intro hfamily
+    rcases hfamily with ⟨stride, hmem, step, hpos, hstep, hmod⟩
+    exact hnoStride stride hmem step hpos hstep hmod
+
 /-! ### RoPE relative position -/
 
 /-- The RoPE phase of a token at position `pos`: rotation by `pos` from the base node. -/

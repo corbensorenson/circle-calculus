@@ -4571,6 +4571,12 @@
           "lean_name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
           "name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0021",
+          "lean_name": "Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne",
+          "name": "Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -4715,6 +4721,12 @@
           "id": "AIT-T0020",
           "lean_name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
           "name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0021",
+          "lean_name": "Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne",
+          "name": "Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne",
           "status": "proved"
         }
       ],
@@ -5680,6 +5692,12 @@
           "id": "AIT-T0020",
           "lean_name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
           "name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0021",
+          "lean_name": "Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne",
+          "name": "Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne",
           "status": "proved"
         }
       ],
@@ -9730,6 +9748,12 @@
           "lean_name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
           "name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0021",
+          "lean_name": "Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne",
+          "name": "Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -10079,10 +10103,10 @@
         "A proof that sparse attention is faster or uses less memory.",
         "A claim that uncovered lags are irrelevant to a real task."
       ],
-      "formal_definition": "`circle_math.applications.circle_ai.certify_stride_family_coverage`, a finite certificate listing every positive lag covered by a local-window plus stride-family sparse-attention plan and every uncovered lag as a gap certificate; Lean theorem `Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family` states the corresponding gap predicate.",
+      "formal_definition": "`circle_math.applications.circle_ai.certify_stride_family_coverage`, a finite certificate listing every positive lag covered by a local-window plus stride-family sparse-attention plan and every uncovered lag as a gap certificate; Lean theorem `Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family` states the abstract gap predicate, and `Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne` gives the concrete no-local/no-stride-step certificate condition.",
       "id": "COMMON-0079",
       "introduced_in": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
-      "intuition": "Instead of showing only successful example lags, the certificate exposes the holes in a sparse plan.",
+      "intuition": "Instead of showing only successful example lags, the certificate exposes the holes in a sparse plan with a checkable reason for each hole.",
       "kind": "metric",
       "name": "Stride-family sparse coverage certificate",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
@@ -10101,6 +10125,12 @@
           "id": "AIT-T0020",
           "lean_name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
           "name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0021",
+          "lean_name": "Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne",
+          "name": "Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne",
           "status": "proved"
         }
       ],

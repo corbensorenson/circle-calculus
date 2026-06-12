@@ -359,6 +359,7 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     assert not result.coverage_certificate.coverage_complete
     assert result.coverage_certificate.candidate_budget_per_query == 10
     assert result.coverage_certificate.full_attention_budget == 120
+    assert result.coverage_certificate.theorem_ids == ("AIT-T0016", "AIT-T0017", "AIT-T0020", "AIT-T0021")
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
     assert result.note.endswith("not a model-quality claim.")
