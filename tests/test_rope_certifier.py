@@ -16,6 +16,8 @@ from circle_math.applications import (
     discretize_rope_periods,
     real_phase_int_turn_error,
     real_phase_nat_turn_error,
+    real_phase_near_turn,
+    real_phase_turn_separated,
     sample_collision_pairs,
     single_period_collision_pair_count,
 )
@@ -68,6 +70,21 @@ def test_real_phase_nat_turn_error_matches_endpoint_precursor_shape() -> None:
     assert "AIRA-T0031" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0032" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0033" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0037" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0038" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+
+
+def test_real_phase_turn_separation_rules_out_smaller_near_turn() -> None:
+    turns = range(-3, 4)
+    kwargs = {
+        "frequency": 0.25,
+        "full_turn": 4.0,
+        "left": 0,
+        "right": 4,
+    }
+    assert real_phase_turn_separated(**kwargs, margin=1.0, turns=turns)
+    assert not real_phase_near_turn(**kwargs, tolerance=0.5, turns=turns)
+    assert real_phase_near_turn(**kwargs, tolerance=1.0, turns=turns)
 
 
 def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:

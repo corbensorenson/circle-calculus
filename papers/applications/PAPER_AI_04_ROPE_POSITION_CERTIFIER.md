@@ -55,6 +55,8 @@ Lean declarations determine proof status. The theorem manifest is the proof-stat
 - `AIRA-T0031`: `Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window`
 - `AIRA-T0032`: `Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window`
 - `AIRA-T0033`: `Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window`
+- `AIRA-T0037`: `Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window`
+- `AIRA-T0038`: `Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt`
 
 The main theorem is `AIRA-T0024`:
 
@@ -92,7 +94,7 @@ This is a quantitative precursor only. It is not a circular distance modulo a fu
 turn_error(turns) = |phase - turns * fullTurn|
 ```
 
-If a phase lies inside one declared turn and is at least `margin` away from the left endpoint and the right endpoint, Lean proves the zero-turn and one-turn endpoint errors are both at least `margin`. `AIRA-T0032` strengthens that to every nonnegative full-turn multiple, and `AIRA-T0033` strengthens it again to every signed full-turn multiple. This is still not the full RoPE real-margin theorem, because the hard part is proving arbitrary RoPE gaps satisfy the one-turn window hypotheses via Diophantine or continued-fraction bounds.
+If a phase lies inside one declared turn and is at least `margin` away from the left endpoint and the right endpoint, Lean proves the zero-turn and one-turn endpoint errors are both at least `margin`. `AIRA-T0032` strengthens that to every nonnegative full-turn multiple, and `AIRA-T0033` strengthens it again to every signed full-turn multiple. `AIRA-T0037` packages the result as a real phase-turn separation predicate, and `AIRA-T0038` proves that separation by `margin` rules out any near-turn collision at a smaller tolerance. This is still not the full RoPE real-margin theorem, because the hard part is proving arbitrary RoPE gaps satisfy the one-turn window hypotheses via Diophantine or continued-fraction bounds.
 
 ## Certifier Interface
 

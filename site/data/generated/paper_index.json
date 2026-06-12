@@ -972,7 +972,8 @@
         "COMMON-0083",
         "COMMON-0084",
         "COMMON-0080",
-        "COMMON-0082"
+        "COMMON-0082",
+        "COMMON-0085"
       ],
       "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
       "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
@@ -994,7 +995,9 @@
         "AIRA-T0030",
         "AIRA-T0031",
         "AIRA-T0032",
-        "AIRA-T0033"
+        "AIRA-T0033",
+        "AIRA-T0037",
+        "AIRA-T0038"
       ],
       "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
     },

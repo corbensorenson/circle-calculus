@@ -824,6 +824,8 @@ papers:
       - AIRA-T0031
       - AIRA-T0032
       - AIRA-T0033
+      - AIRA-T0037
+      - AIRA-T0038
     dictionary_ids:
       - COMMON-0076
       - COMMON-0077
@@ -832,6 +834,7 @@ papers:
       - COMMON-0084
       - COMMON-0080
       - COMMON-0082
+      - COMMON-0085
 
   - id: PAPER_PHYS_01_PROOF_CARRYING_LATTICE_GAUGE
     title: "Circle Calculus Physics 1: Proof-Carrying Finite Lattice Gauge Links"

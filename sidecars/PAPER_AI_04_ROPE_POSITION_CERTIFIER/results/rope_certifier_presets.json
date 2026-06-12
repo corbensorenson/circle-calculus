@@ -278,14 +278,18 @@
             "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
             "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
             "Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window",
-            "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window"
+            "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window",
+            "Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window",
+            "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt"
           ],
           "formal_precursor_theorem_ids": [
             "AIRA-T0029",
             "AIRA-T0030",
             "AIRA-T0031",
             "AIRA-T0032",
-            "AIRA-T0033"
+            "AIRA-T0033",
+            "AIRA-T0037",
+            "AIRA-T0038"
           ],
           "near_collision_gaps": [],
           "pass_margin": true,
@@ -317,7 +321,7 @@
         "config: head_dim=128 base=10000 context=4096 tolerance=1e-06 discretization=round",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "real_phase_margin=PASS worst_margin_radians=1 worst_gap=1 scanned_gaps=4095",
-        "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033 (unwrapped and signed full-turn window precursors only; not a Diophantine proof)",
+        "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038 (unwrapped, signed full-turn, and turn-separation precursors only; not a Diophantine proof)",
         "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]
@@ -599,14 +603,18 @@
             "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
             "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
             "Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window",
-            "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window"
+            "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window",
+            "Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window",
+            "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt"
           ],
           "formal_precursor_theorem_ids": [
             "AIRA-T0029",
             "AIRA-T0030",
             "AIRA-T0031",
             "AIRA-T0032",
-            "AIRA-T0033"
+            "AIRA-T0033",
+            "AIRA-T0037",
+            "AIRA-T0038"
           ],
           "near_collision_gaps": [],
           "pass_margin": true,
@@ -638,7 +646,7 @@
         "config: head_dim=128 base=10000 context=131072 tolerance=1e-06 discretization=round",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "real_phase_margin=PASS worst_margin_radians=1 worst_gap=1 scanned_gaps=131071",
-        "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033 (unwrapped and signed full-turn window precursors only; not a Diophantine proof)",
+        "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038 (unwrapped, signed full-turn, and turn-separation precursors only; not a Diophantine proof)",
         "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]
@@ -920,14 +928,18 @@
             "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
             "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
             "Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window",
-            "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window"
+            "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window",
+            "Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window",
+            "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt"
           ],
           "formal_precursor_theorem_ids": [
             "AIRA-T0029",
             "AIRA-T0030",
             "AIRA-T0031",
             "AIRA-T0032",
-            "AIRA-T0033"
+            "AIRA-T0033",
+            "AIRA-T0037",
+            "AIRA-T0038"
           ],
           "near_collision_gaps": [],
           "pass_margin": true,
@@ -959,7 +971,7 @@
         "config: head_dim=128 base=500000 context=131072 tolerance=1e-06 discretization=round",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "real_phase_margin=PASS worst_margin_radians=1 worst_gap=1 scanned_gaps=131071",
-        "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033 (unwrapped and signed full-turn window precursors only; not a Diophantine proof)",
+        "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038 (unwrapped, signed full-turn, and turn-separation precursors only; not a Diophantine proof)",
         "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]
@@ -1073,14 +1085,18 @@
             "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
             "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
             "Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window",
-            "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window"
+            "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window",
+            "Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window",
+            "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt"
           ],
           "formal_precursor_theorem_ids": [
             "AIRA-T0029",
             "AIRA-T0030",
             "AIRA-T0031",
             "AIRA-T0032",
-            "AIRA-T0033"
+            "AIRA-T0033",
+            "AIRA-T0037",
+            "AIRA-T0038"
           ],
           "near_collision_gaps": [],
           "pass_margin": true,
@@ -1112,7 +1128,7 @@
         "config: head_dim=2 base=10000 context=20 tolerance=1e-06 discretization=round",
         "exact_discrete_contract=FAIL common_collision_gap=6 period_count=1 guaranteed_common_gap_collision_pair_count=14 guaranteed_common_gap_multiple_pair_count=24 total_bank_collision_pair_count=24",
         "real_phase_margin=PASS worst_margin_radians=0.150444078461 worst_gap=19 scanned_gaps=19",
-        "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033 (unwrapped and signed full-turn window precursors only; not a Diophantine proof)",
+        "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038 (unwrapped, signed full-turn, and turn-separation precursors only; not a Diophantine proof)",
         "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]
@@ -1229,14 +1245,18 @@
             "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
             "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
             "Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window",
-            "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window"
+            "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window",
+            "Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window",
+            "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt"
           ],
           "formal_precursor_theorem_ids": [
             "AIRA-T0029",
             "AIRA-T0030",
             "AIRA-T0031",
             "AIRA-T0032",
-            "AIRA-T0033"
+            "AIRA-T0033",
+            "AIRA-T0037",
+            "AIRA-T0038"
           ],
           "near_collision_gaps": [],
           "pass_margin": true,
@@ -1268,7 +1288,7 @@
         "config: head_dim=4 base=36 context=128 tolerance=1e-06 discretization=round",
         "exact_discrete_contract=FAIL common_collision_gap=114 period_count=2 guaranteed_common_gap_collision_pair_count=14 guaranteed_common_gap_multiple_pair_count=14 total_bank_collision_pair_count=14",
         "real_phase_margin=PASS worst_margin_radians=0.0973355292325 worst_gap=113 scanned_gaps=127",
-        "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033 (unwrapped and signed full-turn window precursors only; not a Diophantine proof)",
+        "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038 (unwrapped, signed full-turn, and turn-separation precursors only; not a Diophantine proof)",
         "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]

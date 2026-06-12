@@ -9900,6 +9900,18 @@
           "lean_name": "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap",
           "name": "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0037",
+          "lean_name": "Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window",
+          "name": "Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0038",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
+          "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -10031,6 +10043,18 @@
           "id": "AIRA-T0036",
           "lean_name": "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap",
           "name": "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0037",
+          "lean_name": "Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window",
+          "name": "Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0038",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
+          "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
           "status": "proved"
         }
       ],
@@ -10211,6 +10235,18 @@
           "lean_name": "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window",
           "name": "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0037",
+          "lean_name": "Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window",
+          "name": "Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0038",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
+          "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -10322,6 +10358,18 @@
           "lean_name": "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window",
           "name": "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0037",
+          "lean_name": "Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window",
+          "name": "Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0038",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
+          "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -10398,6 +10446,51 @@
           "id": "AIRA-T0036",
           "lean_name": "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap",
           "name": "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
+    },
+    {
+      "dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0080",
+        "COMMON-0082"
+      ],
+      "forbidden_meanings": [
+        "A completed Diophantine or continued-fraction theorem proving arbitrary RoPE gaps satisfy the one-turn window hypotheses.",
+        "A formal proof of the current numerical scan.",
+        "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
+      ],
+      "formal_definition": "In Lean, `Circle.Applications.ropeRealPhaseTurnSeparated frequency fullTurn margin left right` means every signed full-turn error is at least `margin`; `Circle.Applications.ropeRealPhaseNearTurn frequency fullTurn tolerance left right` means some signed full-turn multiple is within `tolerance`. Theorems `ropeRealPhaseTurnSeparated_of_one_turn_window` and `not_ropeRealPhaseNearTurn_of_turnSeparated_lt` connect the one-turn-window precursor to a no-near-turn warning condition.",
+      "id": "COMMON-0085",
+      "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+      "intuition": "This turns the real-phase caveat into a precise contract shape: first prove a margin against every full turn, then the certifier may rule out smaller near-turn collisions.",
+      "kind": "relation",
+      "name": "Real RoPE near-turn separation",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "TurnSeparated(frequency,fullTurn,margin,left,right)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIRA-T0037",
+          "lean_name": "Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window",
+          "name": "Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0038",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
+          "name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
           "status": "proved"
         }
       ],

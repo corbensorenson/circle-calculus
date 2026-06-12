@@ -293,6 +293,21 @@ def ropeRealPhaseIntTurnError
     (frequency fullTurn : ℝ) (left right : Nat) (turns : Int) : ℝ :=
   |ropeRealPhaseGapAbs frequency left right - (turns : ℝ) * fullTurn|
 
+/-- A real one-channel phase gap is near a full turn when some signed full-turn
+multiple is within the declared tolerance.
+
+This predicate is still one-channel and real-valued. It does not by itself
+prove anything about a whole RoPE bank or about learned model quality. -/
+def ropeRealPhaseNearTurn
+    (frequency fullTurn tolerance : ℝ) (left right : Nat) : Prop :=
+  ∃ turns : Int, ropeRealPhaseIntTurnError frequency fullTurn left right turns ≤ tolerance
+
+/-- A real one-channel phase gap is separated from every signed full-turn
+multiple by at least a declared margin. -/
+def ropeRealPhaseTurnSeparated
+    (frequency fullTurn margin : ℝ) (left right : Nat) : Prop :=
+  ∀ turns : Int, margin ≤ ropeRealPhaseIntTurnError frequency fullTurn left right turns
+
 /-- For ordered positions, the absolute unwrapped real phase gap is exactly
 the natural position gap times the absolute frequency. -/
 theorem ropeRealPhaseGapAbs_eq_natGap_mul_abs
@@ -421,5 +436,38 @@ theorem ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window
       rw [abs_of_nonneg]
       · linarith
       · linarith
+
+/-- One-turn-window separation from every signed full-turn multiple.
+
+This packages `ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window` as the
+formal real-phase margin predicate used by the certifier roadmap. It is still
+conditional on the one-turn window hypotheses. -/
+theorem ropeRealPhaseTurnSeparated_of_one_turn_window
+    {frequency fullTurn margin : ℝ} {left right : Nat}
+    (hfull_nonneg : 0 ≤ fullTurn)
+    (hphase_le_full : ropeRealPhaseGapAbs frequency left right ≤ fullTurn)
+    (hleft_margin : margin ≤ ropeRealPhaseGapAbs frequency left right)
+    (hright_margin : margin ≤ fullTurn - ropeRealPhaseGapAbs frequency left right) :
+    ropeRealPhaseTurnSeparated frequency fullTurn margin left right := by
+  intro turns
+  exact ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window
+    (frequency := frequency) (fullTurn := fullTurn) (margin := margin)
+    (left := left) (right := right) (turns := turns)
+    hfull_nonneg hphase_le_full hleft_margin hright_margin
+
+/-- Separation by `margin` rules out any near-turn collision at a smaller
+`tolerance`.
+
+This is the first formal bridge from a lower-bound margin statement to the
+Boolean warning condition used by a numerical certifier. The theorem does not
+prove the margin hypotheses for arbitrary RoPE frequencies. -/
+theorem not_ropeRealPhaseNearTurn_of_turnSeparated_lt
+    {frequency fullTurn margin tolerance : ℝ} {left right : Nat}
+    (hseparated : ropeRealPhaseTurnSeparated frequency fullTurn margin left right)
+    (htolerance : tolerance < margin) :
+    ¬ ropeRealPhaseNearTurn frequency fullTurn tolerance left right := by
+  rintro ⟨turns, hnear⟩
+  have hmargin := hseparated turns
+  linarith
 
 end Circle.Applications
