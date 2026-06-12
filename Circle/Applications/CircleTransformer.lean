@@ -1134,6 +1134,31 @@ theorem hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision
   rw [List.Nodup.dedup hnoCollision]
   exact hybridFamilyLagCandidateList_length n window pathLength strides
 
+/-- Exact raw-budget survival criterion for theorem-side lag candidates.
+
+The deduplicated lag-candidate count equals the raw local+stride-family budget
+if and only if the theorem-side lag-candidate list has no duplicates. This is
+the necessary-and-sufficient endpoint behind sparse-plan budget certificates:
+any budget loss is exactly a duplicate lag candidate. -/
+theorem hybridFamilyUniqueLagCandidateCount_eq_raw_iff_noCollision
+    {n window pathLength : Nat} {strides : List Nat} :
+    hybridFamilyUniqueLagCandidateCount n window pathLength strides =
+      hybridFamilyRawCandidateBudget window pathLength strides ↔
+      hybridFamilyLagCandidatesNoCollision n window pathLength strides := by
+  unfold hybridFamilyUniqueLagCandidateCount hybridFamilyLagCandidatesNoCollision
+  rw [← hybridFamilyLagCandidateList_length n window pathLength strides]
+  constructor
+  · intro hlen
+    have hsub :=
+      List.dedup_sublist (hybridFamilyLagCandidateList n window pathLength strides)
+    have heq :
+        (hybridFamilyLagCandidateList n window pathLength strides).dedup =
+          hybridFamilyLagCandidateList n window pathLength strides :=
+      hsub.eq_of_length hlen
+    exact (List.dedup_eq_self).1 heq
+  · intro hnodup
+    rw [List.Nodup.dedup hnodup]
+
 /-- Ordered no-wrap separation plus a local-window lower bound makes the exact
 lag-candidate count equal the raw sparse-attention budget. -/
 theorem hybridFamilyUniqueLagCandidateCount_eq_raw_of_noWrapSeparated_of_window_lt_all_strides
@@ -1158,6 +1183,30 @@ theorem hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision
   unfold hybridFamilyUniqueQueryCandidateCount hybridFamilyQueryCandidatesNoCollision at *
   rw [List.Nodup.dedup hnoCollision]
   exact hybridFamilyQueryCandidateList_length n query window pathLength strides
+
+/-- Exact raw-budget survival criterion for query-indexed candidates.
+
+The deduplicated query-candidate count equals the raw local+stride-family
+budget if and only if the theorem-side query-indexed candidate list has no
+duplicates. This is the query-level version of the sparse-plan budget contract. -/
+theorem hybridFamilyUniqueQueryCandidateCount_eq_raw_iff_noCollision
+    {n query window pathLength : Nat} {strides : List Nat} :
+    hybridFamilyUniqueQueryCandidateCount n query window pathLength strides =
+      hybridFamilyRawCandidateBudget window pathLength strides ↔
+      hybridFamilyQueryCandidatesNoCollision n query window pathLength strides := by
+  unfold hybridFamilyUniqueQueryCandidateCount hybridFamilyQueryCandidatesNoCollision
+  rw [← hybridFamilyQueryCandidateList_length n query window pathLength strides]
+  constructor
+  · intro hlen
+    have hsub :=
+      List.dedup_sublist (hybridFamilyQueryCandidateList n query window pathLength strides)
+    have heq :
+        (hybridFamilyQueryCandidateList n query window pathLength strides).dedup =
+          hybridFamilyQueryCandidateList n query window pathLength strides :=
+      hsub.eq_of_length hlen
+    exact (List.dedup_eq_self).1 heq
+  · intro hnodup
+    rw [List.Nodup.dedup hnodup]
 
 /-- Ordered no-wrap separation plus predecessor injectivity makes the exact
 query-candidate count equal the raw sparse-attention budget. -/

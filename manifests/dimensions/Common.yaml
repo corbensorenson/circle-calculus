@@ -3498,6 +3498,36 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_no_wrap_separated_query_raw_budget_endpoint
     blocker: ""
+  - id: AIT-T0076
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyUniqueLagCandidateCount_eq_raw_iff_noCollision
+    informal_statement: "The exact deduplicated theorem-side lag-candidate count equals the raw sparse-attention candidate budget if and only if the lag-candidate list has no duplicate lag candidates."
+    formal_statement: "forall {n window pathLength : Nat} {strides : List Nat}, Circle.Applications.hybridFamilyUniqueLagCandidateCount n window pathLength strides = Circle.Applications.hybridFamilyRawCandidateBudget window pathLength strides <-> Circle.Applications.hybridFamilyLagCandidatesNoCollision n window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_coverage_complete_when_local_window_covers_context
+    blocker: ""
+  - id: AIT-T0077
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_iff_noCollision
+    informal_statement: "The exact deduplicated theorem-side query-candidate count equals the raw sparse-attention candidate budget if and only if the query-indexed candidate list has no duplicate predecessor candidates."
+    formal_statement: "forall {n query window pathLength : Nat} {strides : List Nat}, Circle.Applications.hybridFamilyUniqueQueryCandidateCount n query window pathLength strides = Circle.Applications.hybridFamilyRawCandidateBudget window pathLength strides <-> Circle.Applications.hybridFamilyQueryCandidatesNoCollision n query window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_coverage_complete_when_local_window_covers_context
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

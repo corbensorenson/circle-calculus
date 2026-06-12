@@ -577,6 +577,8 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0073",
         "AIT-T0074",
         "AIT-T0075",
+        "AIT-T0076",
+        "AIT-T0077",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -687,6 +689,8 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert "AIT-T0054" in certificate.theorem_ids
     assert "AIT-T0055" in certificate.theorem_ids
     assert "AIT-T0056" in certificate.theorem_ids
+    assert "AIT-T0076" in certificate.theorem_ids
+    assert "AIT-T0077" in certificate.theorem_ids
     assert "AIT-T0057" in certificate.theorem_ids
     assert "AIT-T0058" in certificate.theorem_ids
     assert "AIT-T0059" in certificate.theorem_ids
