@@ -53,6 +53,27 @@ def kv_cache_slots_collide(cache_size: int, left: int, right: int) -> bool:
     return kv_cache_slot(cache_size, left) == kv_cache_slot(cache_size, right)
 
 
+def kv_cache_retained_slots_distinct(
+    cache_size: int,
+    current: int,
+    older: int,
+    newer: int,
+) -> bool:
+    """Return the pairwise retained-window slot-distinctness certificate.
+
+    This mirrors the Lean theorem's hypotheses: both tokens must be retained
+    in the same window and the first token must be strictly older.
+    """
+    _require_positive(cache_size, "cache_size")
+    if not older < newer:
+        return False
+    if not kv_cache_window_contains(cache_size, current, older):
+        return False
+    if not kv_cache_window_contains(cache_size, current, newer):
+        return False
+    return kv_cache_slot(cache_size, older) != kv_cache_slot(cache_size, newer)
+
+
 def adapter_block(block_size: int, channel: int) -> int:
     """Return the adapter block index ``channel mod block_size``."""
     _require_positive(block_size, "block_size")
@@ -303,6 +324,7 @@ class KVCacheWindowCertificate:
         "AIM-T0062",
         "AIM-T0063",
         "AIM-T0064",
+        "AIM-T0065",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheSlot_lt_cacheSize",
@@ -311,6 +333,7 @@ class KVCacheWindowCertificate:
         "Circle.Applications.kvCacheSlot_ne_of_positive_gap_lt_cache",
         "Circle.Applications.kvCacheWindow_nextOverwrite_after_current",
         "Circle.Applications.kvCacheWindow_retainedSlot_ne_current_of_lt",
+        "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_lt",
     )
     note: str = (
         "KV-cache ring-buffer slot certificate only; this proves finite indexing "

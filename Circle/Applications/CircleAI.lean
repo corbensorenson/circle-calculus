@@ -193,6 +193,23 @@ theorem kvCacheWindow_retainedSlot_ne_current_of_lt
     kvCacheSlot cacheSize token ≠ kvCacheSlot cacheSize current :=
   kvCacheSlot_ne_of_positive_gap_lt_cache hstrict hwindow.2
 
+/-- Any two ordered tokens retained in the same KV-cache window occupy distinct
+ring-buffer slots.
+
+The older token's retained-window bound controls the entire gap to any newer
+retained token before the current point, so the positive-gap slot-separation
+theorem applies pairwise inside the retained window. -/
+theorem kvCacheWindow_retainedSlots_ne_of_lt
+    {cacheSize current older newer : Nat}
+    (holder : kvCacheWindowContains cacheSize current older)
+    (hnewer : kvCacheWindowContains cacheSize current newer)
+    (hstrict : older < newer) :
+    kvCacheSlot cacheSize older ≠ kvCacheSlot cacheSize newer := by
+  refine kvCacheSlot_ne_of_positive_gap_lt_cache hstrict ?_
+  have hgap_le : newer - older ≤ current - older :=
+    Nat.sub_le_sub_right hnewer.1 older
+  exact lt_of_le_of_lt hgap_le holder.2
+
 def loopRequiredSteps (loopPeriod sample : Nat) : Nat :=
   phaseChannel loopPeriod sample + 1
 

@@ -25,6 +25,7 @@ namespace Circle.PaperAI02
 #check Circle.Applications.kvCacheSlot_ne_of_positive_gap_lt_cache
 #check Circle.Applications.kvCacheWindow_nextOverwrite_after_current
 #check Circle.Applications.kvCacheWindow_retainedSlot_ne_current_of_lt
+#check Circle.Applications.kvCacheWindow_retainedSlots_ne_of_lt
 #check Circle.Applications.loopRequiredSteps_pos
 #check Circle.Applications.loopRequiredSteps_le_loopPeriod
 #check Circle.Applications.loopRequiredSteps_add_loopPeriod

@@ -12,6 +12,7 @@ from circle_math.applications.circle_ai import (
     fit_recurrence_resolution_lookup,
     hybrid_attention_candidates,
     kv_cache_next_overwrite_token,
+    kv_cache_retained_slots_distinct,
     kv_cache_slot,
     kv_cache_slots_collide,
     kv_cache_window_contains,
@@ -92,7 +93,17 @@ def test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read() -> None
     assert not kv_cache_slots_collide(16, 20, 31)
     assert "AIM-T0063" in certificate.theorem_ids
     assert "AIM-T0064" in certificate.theorem_ids
+    assert "AIM-T0065" in certificate.theorem_ids
     assert certificate.note.endswith("deployment safety.")
+
+
+def test_kv_cache_retained_tokens_are_pairwise_slot_distinct() -> None:
+    assert kv_cache_window_contains(16, 31, 20)
+    assert kv_cache_window_contains(16, 31, 29)
+    assert kv_cache_retained_slots_distinct(16, 31, 20, 29)
+    assert kv_cache_slot(16, 20) != kv_cache_slot(16, 29)
+    assert not kv_cache_retained_slots_distinct(16, 31, 29, 20)
+    assert not kv_cache_retained_slots_distinct(16, 40, 20, 29)
 
 
 def test_kv_cache_ring_buffer_certificate_marks_stale_token() -> None:
