@@ -59,6 +59,7 @@ Lean declarations determine proof status. The theorem manifest is the proof-stat
 - `AIRA-T0038`: `Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt`
 - `AIRA-T0039`: `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt`
 - `AIRA-T0040`: `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window`
+- `AIRA-T0041`: `Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError`
 
 The main theorem is `AIRA-T0024`:
 
@@ -96,7 +97,17 @@ This is a quantitative precursor only. It is not a circular distance modulo a fu
 turn_error(turns) = |phase - turns * fullTurn|
 ```
 
-If a phase lies inside one declared turn and is at least `margin` away from the left endpoint and the right endpoint, Lean proves the zero-turn and one-turn endpoint errors are both at least `margin`. `AIRA-T0032` strengthens that to every nonnegative full-turn multiple, and `AIRA-T0033` strengthens it again to every signed full-turn multiple. `AIRA-T0037` packages the result as a real phase-turn separation predicate, and `AIRA-T0038` proves that separation by `margin` rules out any near-turn collision at a smaller tolerance. `AIRA-T0039` and `AIRA-T0040` lift this to a finite real-phase bank: one separated channel is enough to rule out an all-channel near-turn collision at a smaller tolerance. This is still not the full RoPE real-margin theorem, because the hard part is proving arbitrary RoPE gaps satisfy the one-turn window hypotheses via Diophantine or continued-fraction bounds.
+If a phase lies inside one declared turn and is at least `margin` away from the left endpoint and the right endpoint, Lean proves the zero-turn and one-turn endpoint errors are both at least `margin`. `AIRA-T0032` strengthens that to every nonnegative full-turn multiple, and `AIRA-T0033` strengthens it again to every signed full-turn multiple. `AIRA-T0037` packages the result as a real phase-turn separation predicate, and `AIRA-T0038` proves that separation by `margin` rules out any near-turn collision at a smaller tolerance. `AIRA-T0039` and `AIRA-T0040` lift this to a finite real-phase bank: one separated channel is enough to rule out an all-channel near-turn collision at a smaller tolerance.
+
+`AIRA-T0041` adds the turn-ratio bridge needed for the Diophantine route:
+
+```text
+|gap * frequency - turns * fullTurn|
+=
+fullTurn * |gap * (frequency / fullTurn) - turns|
+```
+
+for ordered positions, nonnegative frequency, and positive full-turn scale. This rewrites the RoPE near-turn error as the ordinary nearest-integer error for the turn ratio `frequency / fullTurn`. It is still not the full RoPE real-margin theorem, because the hard part is proving finite-context lower bounds for `|gap * alpha - turns|` through continued fractions or Diophantine approximation.
 
 ## Certifier Interface
 
@@ -119,7 +130,7 @@ It emits:
 - exact single-period collision-pair counts for each declared integer channel;
 - exact total bank collision-pair count for the declared integer-period phase bank;
 - numerical real-phase margin and worst gap;
-- theorem ids for the unwrapped real-phase precursor;
+- theorem ids for the unwrapped real-phase and turn-ratio precursors;
 - a machine-readable JSON certificate when `--format json` or `--json-out` is used.
 
 Named presets are available:

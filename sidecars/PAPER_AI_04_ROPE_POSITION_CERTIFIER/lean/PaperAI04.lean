@@ -46,5 +46,6 @@ namespace Circle.PaperAI04
 #check Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt
 #check Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt
 #check Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window
+#check Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError
 
 end Circle.PaperAI04

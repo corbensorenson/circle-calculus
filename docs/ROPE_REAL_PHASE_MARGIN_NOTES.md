@@ -1,0 +1,65 @@
+# RoPE Real-Phase Margin Notes
+
+This note is a durable audit trail for the real-valued RoPE phase-margin theorem program. It records what is already proved, what mathlib infrastructure appears relevant, and what must not be claimed yet.
+
+## Current Proved Bridge
+
+The real-phase theorem spine currently runs from `AIRA-T0029` through `AIRA-T0033`, then `AIRA-T0037` through `AIRA-T0041`.
+
+`AIRA-T0041` is the newest bridge:
+
+```text
+|gap * frequency - turns * fullTurn|
+=
+fullTurn * |gap * (frequency / fullTurn) - turns|
+```
+
+under ordered positions, nonnegative frequency, and positive `fullTurn`. It rewrites RoPE near-turn error as the ordinary nearest-integer Diophantine error for the turn ratio:
+
+```text
+alpha = frequency / fullTurn
+```
+
+This is not a lower-bound theorem. It is the normalization step that makes the next theorem program precise.
+
+## Local Mathlib Anchors
+
+The following names exist in the local mathlib checkout and look relevant.
+
+`Mathlib/NumberTheory/DiophantineApproximation/Basic.lean`:
+
+- `Real.exists_int_int_abs_mul_sub_le`
+- `Real.exists_nat_abs_mul_sub_round_le`
+- `Real.exists_rat_abs_sub_le_and_den_le`
+- `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational`
+- `Real.exists_rat_eq_convergent`
+
+`Mathlib/NumberTheory/DiophantineApproximation/ContinuedFractions.lean`:
+
+- `Real.exists_convs_eq_rat`
+
+`Mathlib/Algebra/ContinuedFractions/Computation/Approximations.lean`:
+
+- `GenContFract.abs_sub_convs_le`
+
+`Mathlib/Algebra/ContinuedFractions/Computation/ApproximationCorollaries.lean`:
+
+- `GenContFract.of_convergence_epsilon`
+- `GenContFract.of_convergence`
+
+The important warning is `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational`: for irrational turn ratios, there is no global positive margin across all gaps. Any useful RoPE certifier theorem must be finite-context, conditional, or tied to a bounded search/convergent certificate.
+
+## Honest Route
+
+1. Normalize to the turn ratio `alpha = frequency / fullTurn` with `AIRA-T0041`.
+2. Define a finite-context nearest-integer margin over gaps `1 <= gap < L`.
+3. Use continued fractions to restrict near-turn candidates to convergent denominators or an explicitly bounded set of checks.
+4. Prove and compute a finite-context certificate for each channel.
+5. Lift channel-wise finite-context lower bounds to a bank-level no-near-turn theorem.
+
+## Guardrails
+
+- A numerical scan is not a proof.
+- Dirichlet-style results give close returns or upper bounds; they do not by themselves prove a margin lower bound.
+- An irrational turn ratio does not have a global positive no-return margin.
+- A full real RoPE bank certificate needs channel-wise finite-context lower bounds before the Living Book or certifier can mark the real-phase scan as formally certified.

@@ -9930,6 +9930,12 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0041",
+          "lean_name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
+          "name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -10085,6 +10091,12 @@
           "id": "AIRA-T0040",
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0041",
+          "lean_name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
+          "name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
           "status": "proved"
         }
       ],
@@ -10289,6 +10301,12 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0041",
+          "lean_name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
+          "name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -10429,6 +10447,12 @@
           "id": "AIRA-T0040",
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0041",
+          "lean_name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
+          "name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
           "status": "proved"
         }
       ],
@@ -10609,6 +10633,46 @@
           "id": "AIRA-T0040",
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
+    },
+    {
+      "dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0080",
+        "COMMON-0082"
+      ],
+      "forbidden_meanings": [
+        "A lower bound on the nearest-integer error.",
+        "A completed continued-fraction or three-distance theorem.",
+        "A formal proof of the current numerical floating-point scan.",
+        "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
+      ],
+      "formal_definition": "In Lean, theorem `Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError` proves that, for ordered positions, nonnegative frequency, and positive full-turn scale, `ropeRealPhaseIntTurnError frequency fullTurn left right turns` equals `fullTurn * |gap * (frequency / fullTurn) - turns|` where `gap = right - left`.",
+      "id": "COMMON-0087",
+      "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+      "intuition": "This is the bridge from RoPE phase language to ordinary Diophantine approximation: after dividing frequency by the full turn, near-turn collisions become nearest-integer questions about multiples of a real number.",
+      "kind": "metric",
+      "name": "RoPE turn-ratio Diophantine error",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "fullTurn * |gap * (frequency/fullTurn) - turns|",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIRA-T0041",
+          "lean_name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
+          "name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
           "status": "proved"
         }
       ],

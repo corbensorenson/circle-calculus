@@ -923,6 +923,19 @@ entries:
       - "A completed Diophantine or continued-fraction theorem proving standard RoPE frequencies have the declared margin."
       - "A formal proof of the current numerical floating-point scan."
       - "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
+  - id: COMMON-0087
+    name: "RoPE turn-ratio Diophantine error"
+    kind: metric
+    symbol: "fullTurn * |gap * (frequency/fullTurn) - turns|"
+    formal_definition: "In Lean, theorem `Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError` proves that, for ordered positions, nonnegative frequency, and positive full-turn scale, `ropeRealPhaseIntTurnError frequency fullTurn left right turns` equals `fullTurn * |gap * (frequency / fullTurn) - turns|` where `gap = right - left`."
+    intuition: "This is the bridge from RoPE phase language to ordinary Diophantine approximation: after dividing frequency by the full turn, near-turn collisions become nearest-integer questions about multiples of a real number."
+    dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082"]
+    introduced_in: "PAPER_AI_04_ROPE_POSITION_CERTIFIER"
+    forbidden_meanings:
+      - "A lower bound on the nearest-integer error."
+      - "A completed continued-fraction or three-distance theorem."
+      - "A formal proof of the current numerical floating-point scan."
+      - "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
   - id: COMMON-0060
     name: "Proof-carrying physics model"
     kind: interface

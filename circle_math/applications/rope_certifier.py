@@ -57,6 +57,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0038",
     "AIRA-T0039",
     "AIRA-T0040",
+    "AIRA-T0041",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -69,6 +70,7 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
+    "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -314,6 +316,31 @@ def real_phase_int_turn_error(
         raise ValueError("left and right must be nonnegative")
     phase = abs((right - left) * frequency)
     return abs(phase - turns * full_turn)
+
+
+def real_phase_scaled_turn_ratio_error(
+    *,
+    frequency: float,
+    full_turn: float,
+    left: int,
+    right: int,
+    turns: int,
+) -> float:
+    """Mirror the Diophantine-scaled full-turn error theorem.
+
+    This helper assumes the theorem-side hypotheses: ordered positions,
+    nonnegative frequency, and positive ``full_turn``.
+    """
+    if left < 0 or right < 0:
+        raise ValueError("left and right must be nonnegative")
+    if right < left:
+        raise ValueError("right must be greater than or equal to left")
+    if frequency < 0:
+        raise ValueError("frequency must be nonnegative")
+    if full_turn <= 0:
+        raise ValueError("full_turn must be positive")
+    gap = right - left
+    return full_turn * abs(gap * (frequency / full_turn) - turns)
 
 
 def real_phase_turn_separated(
@@ -573,7 +600,8 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         f"real_phase_margin={margin_status} worst_margin_radians={worst_margin} "
         f"worst_gap={worst_gap} scanned_gaps={margin.scanned_gap_count}",
         f"real_phase_formal_precursors={','.join(margin.formal_precursor_theorem_ids)} "
-        "(unwrapped, signed full-turn, turn-separation, and bank-level no-near-turn "
+        "(unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, "
+        "and turn-ratio scaling "
         "precursors only; not a Diophantine proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,

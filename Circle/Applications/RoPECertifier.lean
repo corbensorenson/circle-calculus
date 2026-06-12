@@ -1,6 +1,7 @@
 import Mathlib.Data.Nat.ModEq
 import Mathlib.Data.Int.Cast.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith
 
 /-!
@@ -488,6 +489,28 @@ theorem not_ropeRealPhaseNearTurn_of_turnSeparated_lt
   rintro ⟨turns, hnear⟩
   have hmargin := hseparated turns
   linarith
+
+/-- Scale real RoPE full-turn error into the standard Diophantine form.
+
+For ordered positions and a nonnegative channel frequency, the signed
+full-turn error is the declared full turn times the nearest-integer style
+quantity `|gap * (frequency / fullTurn) - turns|`. This is the bridge needed
+before applying continued-fraction or Diophantine approximation theorems to
+the real-phase margin program. -/
+theorem ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError
+    {frequency fullTurn : ℝ} {left right : Nat} {turns : Int}
+    (hleft : left ≤ right) (hfrequency_nonneg : 0 ≤ frequency)
+    (hfull_pos : 0 < fullTurn) :
+    ropeRealPhaseIntTurnError frequency fullTurn left right turns =
+      fullTurn * |((right - left : Nat) : ℝ) * (frequency / fullTurn) - (turns : ℝ)| := by
+  unfold ropeRealPhaseIntTurnError
+  rw [ropeRealPhaseGapAbs_eq_natGap_mul_abs (frequency := frequency) hleft,
+    abs_of_nonneg hfrequency_nonneg]
+  have hscale :
+      ((right - left : Nat) : ℝ) * frequency - (turns : ℝ) * fullTurn =
+        fullTurn * (((right - left : Nat) : ℝ) * (frequency / fullTurn) - (turns : ℝ)) := by
+    field_simp [hfull_pos.ne']
+  rw [hscale, abs_mul, abs_of_pos hfull_pos]
 
 /-- A single separating channel rules out an all-channel real-phase near-turn
 collision at any smaller tolerance.
