@@ -1,6 +1,6 @@
 # Circle Calculus Paper Roadmap
 
-The active completion checklist lives in `docs/COMPLETION_ROADMAP.md`. The original S1 roadmap lives in `circle_calculus_codex_handoff/PAPER_ROADMAP.md`, and the dimensional planning pack lives in `circle_calculus_dimensional_handoff/`.
+The active completion checklist lives in `docs/COMPLETION_ROADMAP.md`. The original S1 roadmap lives in `archive/handoffs/circle_calculus_codex_handoff/PAPER_ROADMAP.md`, and the dimensional planning pack lives in `archive/handoffs/circle_calculus_dimensional_handoff/`.
 
 The root repository will promote papers into `papers/` only when their dictionary entries, theorem manifest references, and sidecars are ready.
 

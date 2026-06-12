@@ -4,7 +4,7 @@ This note preserves the application and post-`S^15` context from the browser han
 
 None of this file changes proof status. A claim is proved only when it has a compiled Lean declaration and passes the repository proof checks.
 
-The exact 2026-06-05 compute-applications browser note is archived at `circle_calculus_codex_handoff/source_logs/04_compute_applications_browser_note.md`; this file keeps the actionable project context curated.
+The exact 2026-06-05 compute-applications browser note is archived at `archive/handoffs/circle_calculus_codex_handoff/source_logs/04_compute_applications_browser_note.md`; this file keeps the actionable project context curated.
 
 ## Novelty Position
 
@@ -78,7 +78,7 @@ Current Theseus-Hive transfer state: the companion scored private benchmark laye
 
 ## Looped And Recursive Transformer Lane
 
-The 2026-06-06 source review and 2026-06-07 online update are archived at `circle_calculus_codex_handoff/source_logs/06_looped_recursive_transformer_research.md`. They cover Universal Transformers, linear-attention recurrence, Recurrent Memory Transformer, looped transformers for learning algorithms, latent reasoning, and length generalization, RWKV, Mamba, LoopFormer, SpiralFormer, depth-recurrent reasoning, token-level Mixture-of-Recursions, middle-block recurrence, multi-resolution recurrence, recurrence-equivalence scaling laws, sparse/MoE looped models, and training-free loop wrappers.
+The 2026-06-06 source review and 2026-06-07 online update are archived at `archive/handoffs/circle_calculus_codex_handoff/source_logs/06_looped_recursive_transformer_research.md`. They cover Universal Transformers, linear-attention recurrence, Recurrent Memory Transformer, looped transformers for learning algorithms, latent reasoning, and length generalization, RWKV, Mamba, LoopFormer, SpiralFormer, depth-recurrent reasoning, token-level Mixture-of-Recursions, middle-block recurrence, multi-resolution recurrence, recurrence-equivalence scaling laws, sparse/MoE looped models, and training-free loop wrappers.
 
 The Circle Calculus opportunity is narrow and useful:
 

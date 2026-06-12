@@ -139,7 +139,7 @@ targets:
   - id: P8-ENG-001
     area: "Repository and CI visibility"
     priority: medium
-    status: planned
+    status: completed
     target_type: tooling
     title: "Root cleanup and public CI badge"
     question: "Can the repo become easier to consume without losing handoff context or proof visibility?"
@@ -151,10 +151,18 @@ targets:
     artifact_refs:
       - "docs/PHASE8_DEPTH_VALIDATION.md"
       - "README.md"
-      - "circle_calculus_codex_handoff"
-      - "circle_calculus_dimensional_handoff"
+      - "archive/handoffs/README.md"
+      - "archive/handoffs/circle_calculus_codex_handoff"
+      - "archive/handoffs/circle_calculus_dimensional_handoff"
+    evidence_refs:
+      - "README.md"
+      - "archive/handoffs/README.md"
+      - "archive/handoffs/circle_calculus_codex_handoff"
+      - "archive/handoffs/circle_calculus_dimensional_handoff"
+      - ".github/workflows/ci.yml"
+      - ".github/workflows/pages.yml"
     dictionary_dependencies: []
-    next_action: "Inventory references to the two handoff directories, then either keep them intentionally or move them into an archive path with link-preserving updates."
+    next_action: "Keep curated docs as the front door; do not add new root-level handoff folders."
     guardrail: "Do not move or delete handoff context in a way that breaks source trails."
 
   - id: P8-ENG-002

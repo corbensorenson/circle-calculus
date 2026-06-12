@@ -244,7 +244,7 @@
         "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
         "site/chapters/applications/ai.qmd",
         "circle_math/applications/circle_ai.py",
-        "circle_calculus_codex_handoff/source_logs/06_looped_recursive_transformer_research.md"
+        "archive/handoffs/circle_calculus_codex_handoff/source_logs/06_looped_recursive_transformer_research.md"
       ],
       "claim_type": "benchmark",
       "dictionary_dependencies": [
@@ -297,7 +297,7 @@
       ],
       "area": "Looped and recursive Circle AI",
       "artifact_refs": [
-        "circle_calculus_codex_handoff/source_logs/06_looped_recursive_transformer_research.md",
+        "archive/handoffs/circle_calculus_codex_handoff/source_logs/06_looped_recursive_transformer_research.md",
         "docs/PHASE2_AND_APPLICATIONS.md",
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
         "site/chapters/applications/ai.qmd"

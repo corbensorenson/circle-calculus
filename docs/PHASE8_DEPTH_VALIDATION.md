@@ -37,7 +37,7 @@ The next step is not another broad list of AI ideas. The next step is depth: tur
 
 ### 3. Engineering Hardening
 
-- Clean root clutter intentionally. Move archival handoff directories only after their references are updated or replaced by curated docs.
+- Clean root clutter intentionally. The original browser/Codex handoff directories now live under `archive/handoffs/`; curated docs remain the front door for current project state.
 - Keep CI visible to readers. The README should expose the GitHub Actions proof/check badge when the workflow is stable.
 - Add a vacuity/proof-depth guard. The project already checks for fake proofs; Phase VIII adds a heuristic guard that flags theorem proofs that are only bare constructors, projections, or one-step wrappers unless they are explicitly classified as wrappers or metadata contracts. The first version is `scripts/check_proof_depth_audit.py`, a non-failing syntactic audit wired into `make sourcecheck`; it reports review candidates without treating the heuristic as a formal depth theorem.
 

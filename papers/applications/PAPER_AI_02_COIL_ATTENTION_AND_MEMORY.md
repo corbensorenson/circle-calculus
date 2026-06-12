@@ -17,7 +17,7 @@ for positive memory-bank sizes. This is a memory indexing primitive, not a retri
 `COMMON-0052` through `COMMON-0054` add the planned looped/recursive transformer lane: recurrence schedules, loop-exit certificates, and overthinking guardrails. These are roadmap vocabulary terms, not proved architecture results. The research source note is:
 
 ```text
-circle_calculus_codex_handoff/source_logs/06_looped_recursive_transformer_research.md
+archive/handoffs/circle_calculus_codex_handoff/source_logs/06_looped_recursive_transformer_research.md
 ```
 
 ## Source Trail

@@ -614,7 +614,7 @@ Still planned:
 
 ## Latest Application Handoff Queue
 
-The 2026-06-05 compute handoff is preserved in `docs/PHASE2_AND_APPLICATIONS.md` and `circle_calculus_codex_handoff/source_logs/04_compute_applications_browser_note.md`. Keep these additions at the end of the roadmap so the proof-first dimensional work can continue without losing application context:
+The 2026-06-05 compute handoff is preserved in `docs/PHASE2_AND_APPLICATIONS.md` and `archive/handoffs/circle_calculus_codex_handoff/source_logs/04_compute_applications_browser_note.md`. Keep these additions at the end of the roadmap so the proof-first dimensional work can continue without losing application context:
 
 - [x] Preserve the disciplined rule: Circle Math helps compute only when the workload has real cyclic, periodic, angular, spherical, toroidal, rotational, circulant, ring-buffer, or fibered structure.
 - [x] Record the strongest current prototype priorities: `CoilRay Sort`, `CoilLayout`, and `CoilNTT`.
@@ -625,7 +625,7 @@ The 2026-06-05 compute handoff is preserved in `docs/PHASE2_AND_APPLICATIONS.md`
 
 ## Phase III: Circle Calculus Living Book
 
-The 2026-06-05 Living Book handoff is preserved in `circle_calculus_codex_handoff/source_logs/05_living_book_browser_note.md`. The curated operating docs are:
+The 2026-06-05 Living Book handoff is preserved in `archive/handoffs/circle_calculus_codex_handoff/source_logs/05_living_book_browser_note.md`. The curated operating docs are:
 
 - [x] `docs/LIVING_BOOK_POLICY.md`
 - [x] `docs/LIVING_BOOK_ROADMAP.md`

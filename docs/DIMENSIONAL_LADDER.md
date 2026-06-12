@@ -1,6 +1,6 @@
 # Dimensional Ladder
 
-This note summarizes the expanded post-`S^1` roadmap. The active completion checklist lives in `docs/COMPLETION_ROADMAP.md`, the deferred Phase II/application context lives in `docs/PHASE2_AND_APPLICATIONS.md`, and the detailed planning pack lives in `circle_calculus_dimensional_handoff/`.
+This note summarizes the expanded post-`S^1` roadmap. The active completion checklist lives in `docs/COMPLETION_ROADMAP.md`, the deferred Phase II/application context lives in `docs/PHASE2_AND_APPLICATIONS.md`, and the detailed planning pack lives in `archive/handoffs/circle_calculus_dimensional_handoff/`.
 
 The current proved core now spans the finite `S^0` through `S^7` ladder, with future `S^15` topological and bounded-coordinate landing seeds. Higher-dimensional work should keep extending lower layers without contaminating them.
 
