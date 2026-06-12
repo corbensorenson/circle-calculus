@@ -836,6 +836,66 @@ theorem coilStrideFamilyLagResiduesNoCollision_of_noWrapSeparated
             intro tailStride hmem
             exact (htailInfo tailStride hmem).2.2))
 
+/-- If every ordered no-wrap-separated stride starts beyond the local window,
+then local-window lags are disjoint from the full stride-family residue block. -/
+theorem localCoilLagCandidatesDisjoint_of_noWrapSeparated_of_window_lt_all_strides
+    {n window pathLength : Nat} {strides : List Nat}
+    (hseparated : coilStrideFamilyNoWrapSeparated n pathLength strides)
+    (hwindow : ∀ stride ∈ strides, window < stride) :
+    localCoilLagCandidatesDisjoint n window pathLength strides := by
+  induction strides with
+  | nil =>
+      unfold localCoilLagCandidatesDisjoint coilStrideFamilyLagResidueList
+      rw [List.disjoint_left]
+      intro _ _ hcoil
+      cases hcoil
+  | cons stride strides ih =>
+      simp [coilStrideFamilyNoWrapSeparated] at hseparated
+      rcases hseparated with ⟨_hstride, hheadBound, _htailInfo, htailSeparated⟩
+      unfold localCoilLagCandidatesDisjoint
+      rw [List.disjoint_left]
+      intro lag hlocalMem hcoil
+      have hlocal : localLagReach window lag := by
+        rwa [mem_localLagCandidateList_iff] at hlocalMem
+      change lag ∈ coilLagResidueList n stride pathLength ++
+        coilStrideFamilyLagResidueList n pathLength strides at hcoil
+      rw [List.mem_append] at hcoil
+      rcases hcoil with hhead | htail
+      · unfold coilLagResidueList at hhead
+        rw [List.mem_map] at hhead
+        rcases hhead with ⟨step, hstepMem, hlag⟩
+        have hstepPos : 1 ≤ step := by
+          rw [List.mem_range'] at hstepMem
+          rcases hstepMem with ⟨i, _hi, hstep⟩
+          subst step
+          omega
+        have hstepLe : step ≤ pathLength := by
+          rw [List.mem_range'] at hstepMem
+          rcases hstepMem with ⟨i, hi, hstep⟩
+          subst step
+          omega
+        have hstepBound : step * stride < n :=
+          lt_of_le_of_lt (Nat.mul_le_mul_right stride hstepLe) hheadBound
+        have hlag_eq : lag = step * stride := by
+          symm
+          simpa [Nat.mod_eq_of_lt hstepBound] using hlag
+        have hstride_le : stride ≤ step * stride := by
+          calc
+            stride = 1 * stride := by rw [Nat.one_mul]
+            _ ≤ step * stride := Nat.mul_le_mul_right stride hstepPos
+        have hlag_gt : window < lag := by
+          rw [hlag_eq]
+          exact lt_of_lt_of_le (hwindow stride (by simp)) hstride_le
+        exact (not_le_of_gt hlag_gt) hlocal.2
+      · have htailDisjoint :
+            localCoilLagCandidatesDisjoint n window pathLength strides :=
+          ih htailSeparated (by
+            intro tailStride hmem
+            exact hwindow tailStride (by simp [hmem]))
+        unfold localCoilLagCandidatesDisjoint at htailDisjoint
+        rw [List.disjoint_left] at htailDisjoint
+        exact htailDisjoint hlocalMem htail
+
 /-- A no-wrap single stride above the local window is disjoint from local lags. -/
 theorem localCoilLagCandidatesDisjoint_singleton_of_window_lt_stride_of_path_mul_stride_lt_context
     {n window stride pathLength : Nat}
@@ -890,6 +950,18 @@ theorem hybridFamilyLagCandidatesNoCollision_of_coil_noCollision_of_local_coil_d
   unfold coilStrideFamilyLagResiduesNoCollision at hcoil
   unfold localCoilLagCandidatesDisjoint at hdisjoint
   exact (List.nodup_range' (s := 1) (n := window)).append hcoil hdisjoint
+
+/-- Ordered no-wrap separation plus a local-window lower bound gives full
+duplicate-free theorem-side lag candidates. -/
+theorem hybridFamilyLagCandidatesNoCollision_of_noWrapSeparated_of_window_lt_all_strides
+    {n window pathLength : Nat} {strides : List Nat}
+    (hseparated : coilStrideFamilyNoWrapSeparated n pathLength strides)
+    (hwindow : ∀ stride ∈ strides, window < stride) :
+    hybridFamilyLagCandidatesNoCollision n window pathLength strides :=
+  hybridFamilyLagCandidatesNoCollision_of_coil_noCollision_of_local_coil_disjoint
+    (coilStrideFamilyLagResiduesNoCollision_of_noWrapSeparated hseparated)
+    (localCoilLagCandidatesDisjoint_of_noWrapSeparated_of_window_lt_all_strides
+      hseparated hwindow)
 
 /-- Concrete no-wrap single-stride sufficient condition for lag no-collision. -/
 theorem hybridFamilyLagCandidatesNoCollision_singleton_of_window_lt_stride_of_path_mul_stride_lt_context

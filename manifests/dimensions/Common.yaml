@@ -3330,6 +3330,34 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_no_wrap_separated_condition_certifies_ordered_family
     blocker: ""
+  - id: AIT-T0066
+    status: lean_proved
+    lean_name: Circle.Applications.localCoilLagCandidatesDisjoint_of_noWrapSeparated_of_window_lt_all_strides
+    informal_statement: "An ordered no-wrap separated stride family is disjoint from local-window lag candidates when every stride starts beyond the local window."
+    formal_statement: "forall {n window pathLength : Nat} {strides : List Nat}, Circle.Applications.coilStrideFamilyNoWrapSeparated n pathLength strides -> (forall stride, stride in strides -> window < stride) -> Circle.Applications.localCoilLagCandidatesDisjoint n window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_no_wrap_separated_local_and_lag_no_collision_conditions
+    blocker: ""
+  - id: AIT-T0067
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyLagCandidatesNoCollision_of_noWrapSeparated_of_window_lt_all_strides
+    informal_statement: "An ordered no-wrap separated stride family whose strides start beyond the local window has duplicate-free theorem-side lag candidates."
+    formal_statement: "forall {n window pathLength : Nat} {strides : List Nat}, Circle.Applications.coilStrideFamilyNoWrapSeparated n pathLength strides -> (forall stride, stride in strides -> window < stride) -> Circle.Applications.hybridFamilyLagCandidatesNoCollision n window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_no_wrap_separated_local_and_lag_no_collision_conditions
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

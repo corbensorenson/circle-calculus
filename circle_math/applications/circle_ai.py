@@ -602,6 +602,8 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0063",
         "AIT-T0064",
         "AIT-T0065",
+        "AIT-T0066",
+        "AIT-T0067",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -1925,6 +1927,37 @@ def stride_family_no_wrap_separated_sufficient_condition(
             if head_bound >= tail_stride:
                 return False
     return True
+
+
+def stride_family_no_wrap_separated_local_disjoint_sufficient_condition(
+    sequence_length: int,
+    strides: Sequence[int],
+    path_length: int,
+    local_window: int,
+) -> bool:
+    """Return whether separated family residues are theorem-disjoint from local lags."""
+    _require_positive(local_window, "local_window")
+    normalized_strides = normalize_stride_family(strides)
+    return stride_family_no_wrap_separated_sufficient_condition(
+        sequence_length,
+        normalized_strides,
+        path_length,
+    ) and all(local_window < stride for stride in normalized_strides)
+
+
+def stride_family_no_wrap_separated_lag_no_collision_sufficient_condition(
+    sequence_length: int,
+    strides: Sequence[int],
+    path_length: int,
+    local_window: int,
+) -> bool:
+    """Return whether the separated-family lag no-collision theorem applies."""
+    return stride_family_no_wrap_separated_local_disjoint_sufficient_condition(
+        sequence_length,
+        strides,
+        path_length,
+        local_window,
+    )
 
 
 def stride_family_local_coil_candidates_disjoint(

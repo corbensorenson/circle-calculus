@@ -71,6 +71,8 @@ from circle_math.applications.circle_ai import (
     stride_family_lag_candidates_no_collision,
     stride_family_lag_candidate_list,
     stride_family_local_coil_candidates_disjoint,
+    stride_family_no_wrap_separated_lag_no_collision_sufficient_condition,
+    stride_family_no_wrap_separated_local_disjoint_sufficient_condition,
     stride_family_no_wrap_separated_sufficient_condition,
     stride_family_predecessor_injective_on_lag_candidates,
     stride_family_query_candidates_no_collision,
@@ -562,6 +564,8 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0063",
         "AIT-T0064",
         "AIT-T0065",
+        "AIT-T0066",
+        "AIT-T0067",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -677,6 +681,8 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert "AIT-T0063" in certificate.theorem_ids
     assert "AIT-T0064" in certificate.theorem_ids
     assert "AIT-T0065" in certificate.theorem_ids
+    assert "AIT-T0066" in certificate.theorem_ids
+    assert "AIT-T0067" in certificate.theorem_ids
     assert "AIT-T0025" in certificate.theorem_ids
 
 
@@ -733,6 +739,25 @@ def test_stride_family_no_wrap_separated_condition_certifies_ordered_family() ->
     assert not stride_family_no_wrap_separated_sufficient_condition(
         120, (7, 22, 50), 3
     )
+
+
+def test_stride_family_no_wrap_separated_local_and_lag_no_collision_conditions() -> None:
+    assert stride_family_no_wrap_separated_local_disjoint_sufficient_condition(
+        200, (5, 17, 61), 3, 4
+    )
+    assert stride_family_no_wrap_separated_lag_no_collision_sufficient_condition(
+        200, (5, 17, 61), 3, 4
+    )
+    assert stride_family_local_coil_candidates_disjoint(200, (5, 17, 61), 3, 4)
+    assert stride_family_lag_candidates_no_collision(200, (5, 17, 61), 3, 4)
+    assert not stride_family_no_wrap_separated_local_disjoint_sufficient_condition(
+        200, (5, 17, 61), 3, 5
+    )
+    assert not stride_family_lag_candidates_no_collision(200, (5, 17, 61), 3, 5)
+    assert not stride_family_no_wrap_separated_lag_no_collision_sufficient_condition(
+        200, (17, 5, 61), 3, 4
+    )
+    assert stride_family_lag_candidates_no_collision(200, (17, 5, 61), 3, 4)
 
 
 def test_learned_content_gate_route_lookup_helpers_are_deterministic() -> None:
