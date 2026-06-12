@@ -4,7 +4,7 @@ title: "AI"
 
 This page covers the Circle AI program, and it is important not to confuse its three tiers:
 
-- **Proved structural guarantees** (the `AIT` family, below) — real, non-trivial facts about transformer components: strided-attention coverage, RoPE relative position, circulant equivariance. This is the substantive proved content, and it is what makes circle math earn a place here.
+- **Proof-carrying architecture contracts** (the `AIT` and selected `AIRA` families, below) — real structural facts about transformer components: strided-attention coverage, RoPE relative position, RoPE position distinguishability under a declared discretized phase bank, and circulant equivariance. This is the substantive proved content, and it is what makes circle math earn a place here.
 - **Finite-indexing bookkeeping** (the `AIA` / `AIM` / `AIRA` families) — elementary facts that an index stays in range and is unchanged by a full period, e.g. `memory_slot(bank, token) = token mod bank`. These are honest but **trivial**: they are instances of the S1 closure spine, infrastructure rather than evidence that circles help a model.
 - **Exploratory fixtures** (the `-B` ids) — tiny synthetic benchmarks with ordinary baselines and controls; **not** model-quality claims, and several are illustrative-only (see below).
 
@@ -12,7 +12,9 @@ Local compute language is MLX/Mac-first.
 
 <span class="showcase-backlink" data-showcase-ref="SHOW-010"></span>
 
-The exploratory fixtures (`AIA-B*`, `AIM-B*`, `AIRA-B*`, twenty-odd in all) follow one recipe: pit a circular feature against ordinary baselines — a scalar threshold, a learned-position lookup, a wrong-period table — plus a nonperiodic control where the circular feature *should not* win, with optional MLX scoring. That discipline (baselines and negative controls) is the good part. The honest caveat: many of these tasks are **tautological by construction** — the synthetic label is defined as a function of the phase, so a phase lookup wins by definition, demonstrating plumbing rather than usefulness. The one genuinely informative comparison on this page is the bias–variance experiment below, which reports a real result including where circle structure loses. These fixtures are not model-quality claims and not performance claims.
+The flagship standalone contract is the [RoPE position-distinguishability certifier](rope_certifier.qmd). It lets a non-Lean reader provide a rotary-position configuration and receive a theorem-linked exact discrete collision certificate plus a separate numerical real-phase margin report.
+
+The exploratory fixtures (`AIA-B*`, `AIM-B*`, `AIRA-B*`, twenty-odd in all) follow one recipe: pit a circular feature against ordinary baselines — a scalar threshold, a learned-position lookup, a wrong-period table — plus a nonperiodic control where the circular feature *should not* win, with optional MLX scoring. That discipline (baselines and negative controls) is the good part. The honest caveat: many of these tasks are **tautological by construction** — the synthetic label is defined as a function of the phase, so a phase lookup wins by definition, demonstrating plumbing rather than usefulness. These fixtures are not model-quality claims and not performance claims.
 
 <p data-showcase-ref="SHOW-010">Showcase evidence: <a href="../../showcase.qmd#SHOW-010">SHOW-010 AI memory, loop, and adapter schedules</a>.</p>
 
@@ -20,7 +22,7 @@ The exploratory fixtures (`AIA-B*`, `AIM-B*`, `AIRA-B*`, twenty-odd in all) foll
 
 ## Case-Study Frame
 
-The circular address spaces are phase channels, memory slots, and adapter blocks. The serious AI question is whether explicit cyclic structure helps when the task actually has periodic structure — an empirical question. The proved layer certifies *structure* (the `AIT` guarantees below) and elementary finite-indexing behaviour; performance stays a benchmark question.
+The circular address spaces are phase channels, memory slots, adapter blocks, sparse-attention strides, and RoPE phase banks. The serious AI contribution is proof-carrying structure: exact coverage, collision, aliasing, and equivariance contracts that ordinary experiments often leave implicit. Performance stays a benchmark question.
 
 :::
 
@@ -50,6 +52,15 @@ property — interaction depends only on relative position — is the rotation l
 - shifting query and key by the same amount leaves the relative phase fixed (`AIT-T0004`);
 - rotary rotations compose by adding strides (`AIT-T0005`).
 
+**RoPE position distinguishability.** A discretized RoPE phase bank represents a position by residues modulo declared integer periods. This is not a claim that real RoPE has exact integer periods; it is the exact contract a certifier can check:
+
+- one-channel collision is equivalent to the period dividing the ordered position gap (`AIRA-T0021`);
+- one-channel distinguishability is equivalent to that period not dividing the gap (`AIRA-T0022`);
+- if a context fits inside one declared period, that channel is injective on the context (`AIRA-T0023`);
+- all-channel bank collision is equivalent to every declared period dividing the same gap (`AIRA-T0024`);
+- bank distinguishability is equivalent to at least one declared period not dividing the gap (`AIRA-T0025`);
+- if the bank contains a period at least the context length, every unequal pair in context is distinguished (`AIRA-T0026`).
+
 **Circulant ("CoilLinear") token mixing.** A circulant mixer `(c ⋆ x)ᵢ = ∑ⱼ cⱼ·x(i−j)` is
 the `C_n` group algebra — the math behind FNet / long-convolution mixing. Its structure is
 proved:
@@ -73,6 +84,12 @@ proved:
 <div class="theorem-box" data-theorem-id="AIT-T0019"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0004"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0005"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0021"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0022"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0023"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0024"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0025"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0026"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0006"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0007"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0008"></div>
@@ -358,6 +375,22 @@ RoPE-style relative phase asks a related but different question: what phase feat
 `AIRA-B0003` is the current executable fixture for this idea. The widget below shows the correct-period relative feature, a wrong-period control, and the closure check after shifting query or key by a full period. It is not a standard RoPE benchmark or model-quality result.
 
 <div class="widget-panel" data-widget="rope_relative_phase" data-dictionary-ids="COMMON-0051 COMMON-0050 COMMON-0026"></div>
+
+## RoPE Position-Distinguishability Certifier
+
+The standalone RoPE contract asks a sharper engineering question: under a declared discretized phase-bank policy, do two positions collide in every channel, or does at least one channel distinguish them?
+
+`AIRA-T0024` is the main proof-carrying contract:
+
+```text
+all-channel collision
+iff
+every declared period divides the position gap
+```
+
+`AIRA-B0009` is the public certifier surface. It reports exact discrete pass/fail with theorem ids, then separately reports a numerical real-phase margin. The margin is useful, but it is not a Lean proof and not a context-length or model-quality claim.
+
+[Open the guided RoPE certifier lesson](rope_certifier.qmd).
 
 ## Winding-Aware Position Path
 

@@ -102,6 +102,11 @@ from circle_math.applications import (
     training_free_loop_budgets,
     rotate_block_cyclic_kernel_rows,
     rotate_kernel,
+    capped_lcm,
+    certify_rope_positions,
+    discretize_rope_periods,
+    rope_period_estimates,
+    RoPEConfig,
     winding_alias_collision_count,
     winding_position,
     winding_position_cycle_length,
@@ -893,6 +898,27 @@ def js_rope_relative_feature(period: int, query_position: int, key_position: int
     lag = js_mod(query_position - key_position, period)
     angle = tau * lag / period
     return (round(cos(angle), 12), round(sin(angle), 12))
+
+
+def js_rope_period_estimates(head_dim: int, base: float) -> tuple[float, ...]:
+    return tuple(tau / (base ** (-(2 * index) / head_dim)) for index in range(head_dim // 2))
+
+
+def js_discretize_rope_periods(periods: tuple[float, ...], policy: str) -> tuple[int, ...]:
+    if policy == "floor":
+        return tuple(max(1, int(period // 1)) for period in periods)
+    if policy == "ceil":
+        return tuple(max(1, int(-(-period // 1))) for period in periods)
+    return tuple(max(1, int((period + 0.5) // 1)) for period in periods)
+
+
+def js_capped_lcm(values: tuple[int, ...], cap: int) -> tuple[int, bool]:
+    current = 1
+    for value in values:
+        current = js_lcm(current, value)
+        if current >= cap:
+            return (current, True)
+    return (current, current >= cap)
 
 
 def js_position_residue(period: int, position: int) -> int:
@@ -3473,6 +3499,24 @@ def main() -> int:
             query_position,
             key_position,
         )
+
+    rope_certifier_cases = [
+        RoPEConfig(head_dim=2, base=10000.0, context_length=20, tolerance=1e-6),
+        RoPEConfig(head_dim=4, base=10000.0, context_length=8, tolerance=1e-6),
+        RoPEConfig(head_dim=8, base=500000.0, context_length=64, tolerance=1e-6),
+    ]
+    for config in rope_certifier_cases:
+        periods = rope_period_estimates(config.head_dim, config.base)
+        js_periods = js_rope_period_estimates(config.head_dim, config.base)
+        assert tuple(round(value, 12) for value in periods) == tuple(round(value, 12) for value in js_periods)
+        discrete = discretize_rope_periods(periods, config.discretization)
+        js_discrete = js_discretize_rope_periods(js_periods, config.discretization)
+        assert discrete == js_discrete
+        assert capped_lcm(discrete, config.context_length) == js_capped_lcm(js_discrete, config.context_length)
+        certificate = certify_rope_positions(config)
+        lcm_value, lcm_reaches = capped_lcm(discrete, config.context_length)
+        assert certificate.exact_discrete.common_collision_gap_reaches_context == lcm_reaches
+        assert certificate.exact_discrete.common_collision_gap == (None if lcm_reaches else lcm_value)
 
     winding_cases = [
         (8, 4, 37, 7),

@@ -556,6 +556,23 @@
     },
     {
       "dictionary_ids": [
+        "COMMON-0076",
+        "COMMON-0077"
+      ],
+      "id": "rope_certifier",
+      "path": "site/widgets/ai/rope_certifier.js",
+      "python_reference": "circle_math.applications.rope_certifier.certify_rope_positions; scripts/rope_certify.py",
+      "theorem_ids": [
+        "AIRA-T0021",
+        "AIRA-T0022",
+        "AIRA-T0023",
+        "AIRA-T0024",
+        "AIRA-T0025",
+        "AIRA-T0026"
+      ]
+    },
+    {
+      "dictionary_ids": [
         "COMMON-0072",
         "COMMON-0026",
         "COMMON-0046"

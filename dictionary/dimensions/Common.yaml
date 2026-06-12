@@ -791,6 +791,30 @@ entries:
       - "A proof that sparse attention improves language models."
       - "Evidence that stride-family attention improves quality, context length, runtime, memory, or throughput."
       - "A replacement for full attention, sliding-window attention, learned sparse attention, Hyena-like mixers, recurrent memory, RWKV, Mamba, or state-space baselines."
+  - id: COMMON-0076
+    name: "Discrete RoPE phase bank"
+    kind: model
+    symbol: "RoPEBank(periods)"
+    formal_definition: "A finite list of positive integer periods where a position is represented by its residues modulo each declared period; in Lean, collision and distinguishability are modeled by `Circle.Applications.ropePhaseBankCollision` and `Circle.Applications.ropePhaseBankDistinguishable`."
+    intuition: "An exact, checkable version of rotary position bookkeeping: two positions are indistinguishable in the bank exactly when every declared period wraps them to the same residue."
+    dependencies: ["COMMON-0026", "COMMON-0046", "COMMON-0072"]
+    introduced_in: "PAPER_AI_04_ROPE_POSITION_CERTIFIER"
+    forbidden_meanings:
+      - "A claim that real-valued RoPE has exact integer periods."
+      - "A full model of trigonometric RoPE over real numbers."
+      - "Evidence that a positional encoding improves context length, perplexity, speed, memory, or model quality."
+  - id: COMMON-0077
+    name: "RoPE distinguishability certifier"
+    kind: interface
+    symbol: "rope_certify(config)"
+    formal_definition: "`scripts/rope_certify.py` and `circle_math.applications.rope_certifier.certify_rope_positions`, which emit a theorem-linked certificate for exact integer-period RoPE-bank collisions plus a separate numerical real-phase margin report."
+    intuition: "A non-Lean user can provide a RoPE-like configuration and receive a pass/fail report that names the theorem ids, assumptions, exact discrete collision gap, sample collisions when present, and numerical margin caveats."
+    dependencies: ["COMMON-0076"]
+    introduced_in: "PAPER_AI_04_ROPE_POSITION_CERTIFIER"
+    forbidden_meanings:
+      - "A proof that an LLM can use a longer context."
+      - "A benchmark showing lower perplexity, better reasoning, faster inference, lower memory, or better training stability."
+      - "A replacement for empirical long-context evaluation or real-analysis proofs of trigonometric RoPE."
   - id: COMMON-0060
     name: "Proof-carrying physics model"
     kind: interface

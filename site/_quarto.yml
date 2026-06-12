@@ -134,6 +134,8 @@ website:
             text: Classical Bridges
           - href: chapters/applications/ai.qmd
             text: AI
+          - href: chapters/applications/rope_certifier.qmd
+            text: RoPE Certifier
           - href: chapters/applications/physics.qmd
             text: Physics
           - href: chapters/applications/generative.qmd

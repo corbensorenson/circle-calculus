@@ -1,0 +1,109 @@
+---
+title: "RoPE Certifier"
+---
+
+This lesson is the first standalone Circle Calculus AI contract meant for an ML engineer who does not know Lean.
+
+The question is narrow:
+
+```text
+Given a RoPE-like position configuration, can this declared phase bank distinguish positions in the inspected context?
+```
+
+The formal answer starts with an exact discretized model. Each channel has an integer period, and a position is represented by its residue modulo that period. Real-valued RoPE phases are also scanned numerically, but that margin report is not a formal proof.
+
+::: {.lesson-goal}
+
+## Goal
+
+Learn how the certifier turns RoPE position indistinguishability into a finite divisibility check, then inspect a configuration with the browser widget or Python CLI.
+
+:::
+
+## The Contract
+
+For one integer-period channel:
+
+```text
+phase(period, position) = position mod period
+```
+
+For a finite bank of periods, two ordered positions collide exactly when every declared period divides the position gap:
+
+```text
+bank_collision(left, right)
+iff
+forall period in periods:
+  period divides (right - left)
+```
+
+That is the main theorem-backed contract. The Python and browser certifiers compute the common collision gap implied by the declared integer periods. If that gap is at least the context length, no unequal pair inside the inspected context collides in every discrete channel.
+
+<div class="widget-panel" data-widget="rope_certifier" data-theorem-id="AIRA-T0024" data-dictionary-ids="COMMON-0076 COMMON-0077"></div>
+
+::: {.warning-box}
+The widget output is an explanation and executable check. It is not proof by itself. The proof source is the Lean declaration named by the theorem card.
+:::
+
+## Python CLI
+
+Use the public certifier from the repository root:
+
+```bash
+python scripts/rope_certify.py --head-dim 128 --base 10000 --context 32768 --tolerance 1e-6
+```
+
+Named public-safe presets:
+
+```bash
+python scripts/rope_certify.py --preset llama_style_10000_4k
+python scripts/rope_certify.py --preset llama_style_10000_128k
+python scripts/rope_certify.py --preset llama_style_500000_128k
+```
+
+For machine-readable output:
+
+```bash
+python scripts/rope_certify.py --preset llama_style_10000_4k --format json
+```
+
+The JSON report includes theorem ids, Lean declarations, assumptions, exact discrete pass/fail, sample exact collisions when present, and numerical real-phase margin diagnostics.
+
+## What To Notice
+
+- Exact collision is not guessed by scanning every pair. The theorem reduces it to divisibility of the position gap.
+- If the common exact collision gap is inside the context, the report lists sample colliding position pairs.
+- If the exact discrete contract passes, the report still does not claim real model quality or long-context success.
+- The real-phase margin scan is useful engineering evidence, but it is not a Lean proof over real-valued trigonometric RoPE.
+
+## Theorem Cards
+
+<div class="theorem-box" data-theorem-id="AIRA-T0021"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0022"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0023"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0024"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0025"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0026"></div>
+
+## Dictionary
+
+<div class="dictionary-box" data-dictionary-id="COMMON-0076"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0077"></div>
+
+## Source Trail
+
+<p data-paper-ref="papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md">Proof-Carrying RoPE Position Distinguishability</a></p>
+
+<p>Lean source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/Circle/Applications/RoPECertifier.lean">Circle/Applications/RoPECertifier.lean</a></p>
+
+<p>Python source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/circle_math/applications/rope_certifier.py">circle_math/applications/rope_certifier.py</a></p>
+
+<p>CLI source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/scripts/rope_certify.py">scripts/rope_certify.py</a></p>
+
+<div class="book-navigation">
+<a href="ai.qmd">Previous: AI</a>
+<a href="physics.qmd">Next: Physics</a>
+</div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>
+<script type="module" src="../../widgets/ai/rope_certifier.js"></script>

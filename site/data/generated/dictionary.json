@@ -9675,6 +9675,152 @@
       ]
     },
     {
+      "dependencies": [
+        "COMMON-0026",
+        "COMMON-0046",
+        "COMMON-0072"
+      ],
+      "forbidden_meanings": [
+        "A claim that real-valued RoPE has exact integer periods.",
+        "A full model of trigonometric RoPE over real numbers.",
+        "Evidence that a positional encoding improves context length, perplexity, speed, memory, or model quality."
+      ],
+      "formal_definition": "A finite list of positive integer periods where a position is represented by its residues modulo each declared period; in Lean, collision and distinguishability are modeled by `Circle.Applications.ropePhaseBankCollision` and `Circle.Applications.ropePhaseBankDistinguishable`.",
+      "id": "COMMON-0076",
+      "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+      "intuition": "An exact, checkable version of rotary position bookkeeping: two positions are indistinguishable in the bank exactly when every declared period wraps them to the same residue.",
+      "kind": "model",
+      "name": "Discrete RoPE phase bank",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "RoPEBank(periods)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIRA-T0021",
+          "lean_name": "Circle.Applications.ropeDiscreteCollision_iff_gap_dvd",
+          "name": "Circle.Applications.ropeDiscreteCollision_iff_gap_dvd",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0022",
+          "lean_name": "Circle.Applications.ropeDiscreteDistinguishable_iff_not_gap_dvd",
+          "name": "Circle.Applications.ropeDiscreteDistinguishable_iff_not_gap_dvd",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0023",
+          "lean_name": "Circle.Applications.ropeDiscreteCollision_iff_eq_on_context",
+          "name": "Circle.Applications.ropeDiscreteCollision_iff_eq_on_context",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0024",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_iff_forall_gap_dvd",
+          "name": "Circle.Applications.ropePhaseBankCollision_iff_forall_gap_dvd",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0025",
+          "lean_name": "Circle.Applications.ropePhaseBankDistinguishable_iff_exists_not_gap_dvd",
+          "name": "Circle.Applications.ropePhaseBankDistinguishable_iff_exists_not_gap_dvd",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0026",
+          "lean_name": "Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context",
+          "name": "Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": [
+        {
+          "id": "rope_certifier",
+          "path": "site/widgets/ai/rope_certifier.js",
+          "python_reference": "circle_math.applications.rope_certifier.certify_rope_positions; scripts/rope_certify.py"
+        }
+      ]
+    },
+    {
+      "dependencies": [
+        "COMMON-0076"
+      ],
+      "forbidden_meanings": [
+        "A proof that an LLM can use a longer context.",
+        "A benchmark showing lower perplexity, better reasoning, faster inference, lower memory, or better training stability.",
+        "A replacement for empirical long-context evaluation or real-analysis proofs of trigonometric RoPE."
+      ],
+      "formal_definition": "`scripts/rope_certify.py` and `circle_math.applications.rope_certifier.certify_rope_positions`, which emit a theorem-linked certificate for exact integer-period RoPE-bank collisions plus a separate numerical real-phase margin report.",
+      "id": "COMMON-0077",
+      "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+      "intuition": "A non-Lean user can provide a RoPE-like configuration and receive a pass/fail report that names the theorem ids, assumptions, exact discrete collision gap, sample collisions when present, and numerical margin caveats.",
+      "kind": "interface",
+      "name": "RoPE distinguishability certifier",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "rope_certify(config)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIRA-T0021",
+          "lean_name": "Circle.Applications.ropeDiscreteCollision_iff_gap_dvd",
+          "name": "Circle.Applications.ropeDiscreteCollision_iff_gap_dvd",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0022",
+          "lean_name": "Circle.Applications.ropeDiscreteDistinguishable_iff_not_gap_dvd",
+          "name": "Circle.Applications.ropeDiscreteDistinguishable_iff_not_gap_dvd",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0023",
+          "lean_name": "Circle.Applications.ropeDiscreteCollision_iff_eq_on_context",
+          "name": "Circle.Applications.ropeDiscreteCollision_iff_eq_on_context",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0024",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_iff_forall_gap_dvd",
+          "name": "Circle.Applications.ropePhaseBankCollision_iff_forall_gap_dvd",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0025",
+          "lean_name": "Circle.Applications.ropePhaseBankDistinguishable_iff_exists_not_gap_dvd",
+          "name": "Circle.Applications.ropePhaseBankDistinguishable_iff_exists_not_gap_dvd",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0026",
+          "lean_name": "Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context",
+          "name": "Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": [
+        {
+          "id": "rope_certifier",
+          "path": "site/widgets/ai/rope_certifier.js",
+          "python_reference": "circle_math.applications.rope_certifier.certify_rope_positions; scripts/rope_certify.py"
+        }
+      ]
+    },
+    {
       "dependencies": [],
       "forbidden_meanings": [
         "The one-node circle C_1.",

@@ -1,0 +1,24 @@
+import Circle.Applications.RoPECertifier
+
+/-!
+AI 4 sidecar: proof-carrying RoPE position distinguishability certifier.
+
+The paper and CLI cite these declarations for the exact integer-period
+discretized phase-bank contract.
+-/
+
+namespace Circle.PaperAI04
+
+#check Circle.Applications.ropeDiscretePhase
+#check Circle.Applications.ropeDiscreteCollision
+#check Circle.Applications.ropeDiscreteDistinguishable
+#check Circle.Applications.ropeDiscreteCollision_iff_gap_dvd
+#check Circle.Applications.ropeDiscreteDistinguishable_iff_not_gap_dvd
+#check Circle.Applications.ropeDiscreteCollision_iff_eq_on_context
+#check Circle.Applications.ropePhaseBankCollision
+#check Circle.Applications.ropePhaseBankDistinguishable
+#check Circle.Applications.ropePhaseBankCollision_iff_forall_gap_dvd
+#check Circle.Applications.ropePhaseBankDistinguishable_iff_exists_not_gap_dvd
+#check Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context
+
+end Circle.PaperAI04

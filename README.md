@@ -25,7 +25,7 @@ In plain terms — and stated at its true altitude — the proved core is **clea
 - **A finite sphere ladder (S0–S7):** suspension cell-counts and the Euler-characteristic rule `χ → 2 − χ`, the real-quaternion algebra spine, bounded Hopf-coordinate facts, and a bounded Cayley–Dickson (octonion) model including explicit non-associativity.
 - **Classical bridges:** Lean-checked *wrappers* around established mathlib results (Erdős–Ginzburg–Ziv, Cauchy–Davenport, Roth, and others), restated in Circle-facing language. These are not new theorems and not progress on open problems — they are labeled as wrappers.
 - **Finite "application" lanes (physics / AI / generative / compute):** these are deliberately modest, honestly named finite models. A "Wilson-loop invariance" theorem here is the fact that a sum of `ZMod n` phases around a closed loop is gauge-independent; an "AI memory-slot" theorem is the fact that an index stays below its bank size and is unchanged by adding a full period. They are correct, useful for keeping the prose honest, and **not** claims about physics or about model quality.
-- **Circle AI transfer:** the active AI lane now targets proof-linked recurrence, routing, memory, phase-feature, circulant-mixer, and seed-rule provenance contracts that can be tested in Theseus-Hive under ordinary baselines. This is a benchmark program, not a claim that Circle Calculus has already improved AI systems.
+- **Proof-carrying AI contracts:** the active AI lane now targets checked architecture facts: RoPE position distinguishability, sparse-attention reachability, cyclic memory/index safety, recurrence schedules, and circulant/block-cyclic mixer laws. The flagship public artifact is the RoPE position-distinguishability certifier, not a claim that Circle Calculus improves model quality, context length, speed, or memory.
 
 The exhaustive, per-theorem list lives where it belongs — in the manifests (`manifests/theorem_manifest.yaml` and `manifests/dimensions/`, `manifests/applications/`) — and is rendered, with live status, on the Living Book [Theorem Index](https://corbensorenson.github.io/circle-calculus/theorems.html). It is intentionally **not** duplicated here.
 
@@ -40,7 +40,8 @@ This repository does not claim to have rebuilt all of mathematics from circles. 
 3. `dictionary/circle_dictionary.yaml` for fixed vocabulary.
 4. `manifests/theorem_manifest.yaml` for theorem status.
 5. `docs/COMPLETION_ROADMAP.md` and `docs/DIMENSIONAL_LADDER.md` for where it is going.
-6. `docs/THESEUS_HIVE_AI_TRANSFER.md` for the AI transfer plan into the user's active Theseus-Hive project.
+6. `papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md` and `scripts/rope_certify.py` for the first externally usable AI contract.
+7. `docs/THESEUS_HIVE_AI_TRANSFER.md` for the optional private-transfer lane; it is not the public proof standard.
 
 The Living Book's [What "Proved" Means Here](https://corbensorenson.github.io/circle-calculus/what_proved_means.html) page is the one-paragraph contract the whole project lives by.
 
@@ -89,7 +90,18 @@ make check
 
 Useful targets: `make lean` (build the Lean library), `make test` (Python tests), `make sitecheck` (validate the Living Book), `make site-render` (render the book), and `make living-book-check` (everything, including the rendered artifact). See the `Makefile` for the full list.
 
-For the Theseus-Hive AI transfer lane, run:
+For the proof-carrying RoPE certifier, run:
+
+```bash
+python scripts/rope_certify.py --head-dim 128 --base 10000 --context 32768 --tolerance 1e-6
+python scripts/rope_certify.py --preset llama_style_10000_4k
+python scripts/rope_certify.py --preset llama_style_10000_128k
+python scripts/rope_certify.py --preset llama_style_500000_128k
+```
+
+The certifier emits theorem ids, Lean declaration names, exact discrete pass/fail, sample colliding pairs when present, and a separate numerical real-phase margin report. Exact pass/fail is for the declared integer-period phase-bank model; it is not a language-model quality, context-length, speed, or memory claim.
+
+For the optional Theseus-Hive AI transfer lane, run:
 
 ```bash
 make theseus-ai-contracts
@@ -98,8 +110,7 @@ make theseus-ai-feedback
 
 This writes `site/data/generated/theseus_hive_ai_contracts.json`, a public-safe fixture pack for recurrence, fanout, memory, phase-feature, mixer, and seed-rule experiments.
 The feedback target writes `site/data/generated/theseus_hive_ai_feedback_summary.json` from a sanitized Theseus-Hive handoff when present, or an explicit missing-state placeholder otherwise.
-
-If the companion Theseus-Hive workspace is present, its report-only consumers are `scripts/circle_ai_contract_consumer.py`, `scripts/circle_ai_private_workload_smoke.py`, `scripts/circle_ai_private_proxy_benchmark.py`, `scripts/circle_ai_real_workload_attachments.py`, and `scripts/circle_ai_scored_private_benchmarks.py`. When this generated contract pack is available, the private compiled ratchet now runs the consumer, smoke, proxy, and aggregate-attachment layers automatically; the scored layer remains data-gated until the required private artifacts are present, `scripts/circle_ai_lane_integrity_audit.py` verifies that compiled/data-gated split, and `scripts/circle_ai_feedback_summary.py` exports the public-safe aggregate handoff consumed by `make theseus-ai-feedback`. The current imported feedback summary is GREEN for handoff safety: five required safe reports are present, four remain YELLOW evidence layers, the lane audit is GREEN, the scored layer is still missing/data-gated, and the import records zero private export, zero external inference, and no promotion evidence. They treat the Circle pack as private experiment configuration and write YELLOW planning/smoke/proxy/aggregate-attachment/scored-candidate/semantic-context/full-frontier-semantic/recurrence-work-budget/context-memory/phase-feature/route-mixer/router-head-attachment/seed-rule/seed-rule-stress/workflow-rebuild/update-cycle-effort reports until runtime, transfer, or quality results beat ordinary baselines. The active Theseus-Hive trainer also has opt-in pure and residual Circle mixer paths plus an aggregate `circle_router_head_mixer_shadow_training_v1` benchmark; current local traces show compatibility with the baseline router-head trainer, while the keyword-boundary contrastive diagnostic shows full-gain Circle mixers still trail the no-mixer baseline. Synthetic gain sweeps preserve baseline exactness through `0.5`, but the real-trace boundary split narrows the diagnostic residual-gain range to `0.05` through `0.25`; a private-safe coverage report now finds `31` compatible real rows but `40` more rows needed to bring all hashed boundary bins to the target, and a collection planner converts those hashed gaps into bounded private row budgets plus validation commands. Future autonomous-goal traces now emit router-head-compatible `workflow`, `command`, `routing_pattern`, `selected_arms`, `expected_arms`, `split`, and `success` fields; the producer has a scratch-output smoke path plus a `head_router` fallback that strict-audits to one compatible non-live row, and the private compiled ratchet now runs schema audit, boundary coverage, collection planning, and a static trace-lane integrity audit before router-head training consumes workflow or autonomous routing-memory traces. This is tuning, coverage, feedback plumbing, and wiring evidence, not a model-quality, runtime, or memory win.
+Detailed private-transfer plumbing belongs in `docs/THESEUS_HIVE_AI_TRANSFER.md`. It is optional, aggregate-only, and remains separate from the public proof-carrying contract lane.
 
 ## License And Citation
 

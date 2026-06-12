@@ -1936,6 +1936,92 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_multicoil_phase2_is_bounded_and_closes_after_product_cycle
     blocker: ""
+  - id: AIRA-T0021
+    status: lean_proved
+    lean_name: Circle.Applications.ropeDiscreteCollision_iff_gap_dvd
+    informal_statement: "For ordered positions in one integer-period RoPE channel, exact phase collision is equivalent to the period dividing the position gap."
+    formal_statement: "forall {period left right : Nat}, left <= right -> (Circle.Applications.ropeDiscreteCollision period left right <-> period ∣ right - left)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
+    blocker: ""
+  - id: AIRA-T0022
+    status: lean_proved
+    lean_name: Circle.Applications.ropeDiscreteDistinguishable_iff_not_gap_dvd
+    informal_statement: "For ordered positions in one integer-period RoPE channel, exact distinguishability is equivalent to the period not dividing the position gap."
+    formal_statement: "forall {period left right : Nat}, left <= right -> (Circle.Applications.ropeDiscreteDistinguishable period left right <-> not period ∣ right - left)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
+    blocker: ""
+  - id: AIRA-T0023
+    status: lean_proved
+    lean_name: Circle.Applications.ropeDiscreteCollision_iff_eq_on_context
+    informal_statement: "If the inspected context fits inside one integer period, then residue collision in that channel is exactly equality of positions inside the context."
+    formal_statement: "forall {period context left right : Nat}, context <= period -> left < context -> right < context -> (Circle.Applications.ropeDiscreteCollision period left right <-> left = right)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context
+    blocker: ""
+  - id: AIRA-T0024
+    status: lean_proved
+    lean_name: Circle.Applications.ropePhaseBankCollision_iff_forall_gap_dvd
+    informal_statement: "For ordered positions in a finite integer-period RoPE bank, all-channel collision is equivalent to every declared period dividing the position gap."
+    formal_statement: "forall {periods : List Nat} {left right : Nat}, left <= right -> (Circle.Applications.ropePhaseBankCollision periods left right <-> forall period, period in periods -> period ∣ right - left)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context
+    blocker: ""
+  - id: AIRA-T0025
+    status: lean_proved
+    lean_name: Circle.Applications.ropePhaseBankDistinguishable_iff_exists_not_gap_dvd
+    informal_statement: "For ordered positions in a finite integer-period RoPE bank, bank distinguishability is equivalent to at least one declared period not dividing the position gap."
+    formal_statement: "forall {periods : List Nat} {left right : Nat}, left <= right -> (Circle.Applications.ropePhaseBankDistinguishable periods left right <-> exists period, period in periods and not period ∣ right - left)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context
+    blocker: ""
+  - id: AIRA-T0026
+    status: lean_proved
+    lean_name: Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context
+    informal_statement: "If a finite RoPE phase bank contains an integer period at least as large as the inspected context, then every unequal pair inside the context is distinguished by the bank."
+    formal_statement: "forall {periods : List Nat} {period context left right : Nat}, period in periods -> context <= period -> left < context -> right < context -> left != right -> Circle.Applications.ropePhaseBankDistinguishable periods left right"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

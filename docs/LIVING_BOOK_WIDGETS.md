@@ -322,6 +322,16 @@ Companion non-widget prototype: `AIM-B0015` uses `circle_math.applications.circl
 - Guardrail: the widget is a relative phase fixture only. It does not prove standard RoPE quality, attention quality, context-length improvement, perplexity improvement, or runtime improvement.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python RoPE relative phase helper.
 
+### rope_certifier
+
+- Inputs: head dimension, RoPE base, inspected context length, numerical tolerance, and integer-period discretization policy.
+- Outputs: discretized periods, exact discrete pass/fail, common collision gap, sample exact collision pairs when present, numerical real-phase margin, theorem links, and dictionary links.
+- Theorem ids: `AIRA-T0021`, `AIRA-T0022`, `AIRA-T0023`, `AIRA-T0024`, `AIRA-T0025`, and `AIRA-T0026`.
+- Dictionary ids: `COMMON-0076` and `COMMON-0077`.
+- Python references: `circle_math.applications.rope_certifier.certify_rope_positions` and `scripts/rope_certify.py`.
+- Guardrail: exact pass/fail is only for the integer-period discretized phase-bank model. The real-phase margin is numerical evidence only, not a Lean proof, model-quality result, context-length result, speed result, or memory result.
+- Validation: deterministic JavaScript-equivalent period-estimation, period-discretization, capped-LCM, and certificate-field formulas are parity-checked against the Python certifier.
+
 ### winding_aware_position
 
 - Inputs: period, finite winding period, wrong/control period, and natural-number position.
