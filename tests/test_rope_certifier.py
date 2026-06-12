@@ -104,6 +104,7 @@ def test_real_phase_nat_turn_error_matches_endpoint_precursor_shape() -> None:
     assert "AIRA-T0045" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0047" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0050" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0053" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
 def test_real_phase_turn_separation_rules_out_smaller_near_turn() -> None:
@@ -162,6 +163,18 @@ def test_turn_ratio_finite_margin_scan_matches_scaled_error() -> None:
         right=gap,
         turns=turns,
     )
+
+
+def test_integer_turn_ratio_has_zero_finite_margin_once_unit_gap_exists() -> None:
+    margin, gap, turns = scan_turn_ratio_finite_margin(
+        turn_ratio=2.0,
+        context_length=8,
+    )
+    assert margin == 0.0
+    assert gap == 1
+    assert turns == 2
+    assert turn_ratio_nearest_integer_error(turn_ratio=2.0, gap=1, turns=2) == 0.0
+    assert "AIRA-T0053" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
 def test_turn_ratio_margin_context_transfer_helper_is_monotone() -> None:

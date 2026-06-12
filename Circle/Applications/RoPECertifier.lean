@@ -634,6 +634,27 @@ def ropeTurnRatioFiniteMargin (turnRatio margin : ℝ) (context : Nat) : Prop :=
   ∀ gap : Nat, 0 < gap → gap < context → ∀ turns : Int,
     margin ≤ ropeTurnRatioError turnRatio gap turns
 
+/-- Integer turn ratios have no positive finite-context margin once the
+context contains the unit gap.
+
+This is a guardrail theorem for the real RoPE program: if a channel advances by
+an integer number of full turns per position, then adjacent positions can land
+exactly on a full-turn multiple. Such a channel can only certify nonpositive
+nearest-integer margins for any context with `1 < context`. -/
+theorem ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context
+    {turnRatio margin : ℝ} {turns : Int} {context : Nat}
+    (hturnRatio : turnRatio = (turns : ℝ)) (hcontext : 1 < context) :
+    ropeTurnRatioFiniteMargin turnRatio margin context ↔ margin ≤ 0 := by
+  constructor
+  · intro hmargin
+    have hbound := hmargin 1 (by decide) hcontext turns
+    unfold ropeTurnRatioError at hbound
+    rw [hturnRatio] at hbound
+    simpa using hbound
+  · intro hnonpos gap _hgap_pos _hgap_context z
+    unfold ropeTurnRatioError
+    exact le_trans hnonpos (abs_nonneg _)
+
 /-- Finite-context turn-ratio margins are monotone in the inspected context.
 
 A margin certificate proved for a larger context automatically applies to any

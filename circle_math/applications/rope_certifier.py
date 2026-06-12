@@ -75,6 +75,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0045",
     "AIRA-T0047",
     "AIRA-T0050",
+    "AIRA-T0053",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -94,6 +95,7 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context",
     "Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin",
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
+    "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (

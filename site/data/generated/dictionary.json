@@ -11244,6 +11244,12 @@
           "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context",
           "name": "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0053",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -11471,6 +11477,12 @@
           "id": "AIRA-T0052",
           "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context",
           "name": "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0053",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
           "status": "proved"
         }
       ],
@@ -12077,6 +12089,12 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0053",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -12283,6 +12301,12 @@
           "id": "AIRA-T0050",
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0053",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
           "status": "proved"
         }
       ],
@@ -12588,6 +12612,12 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0053",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -12658,6 +12688,12 @@
           "id": "AIRA-T0050",
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0053",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
           "status": "proved"
         }
       ],

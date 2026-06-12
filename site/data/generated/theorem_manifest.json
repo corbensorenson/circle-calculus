@@ -2586,7 +2586,7 @@
       "id": "AIRA-T0039",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 774,
+      "lean_source_line": 795,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2612,7 +2612,7 @@
       "id": "AIRA-T0040",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 795,
+      "lean_source_line": 816,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2663,7 +2663,7 @@
       "id": "AIRA-T0042",
       "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 670,
+      "lean_source_line": 691,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2691,7 +2691,7 @@
       "id": "AIRA-T0043",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 701,
+      "lean_source_line": 722,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2723,7 +2723,7 @@
       "informal_statement": "A finite-context turn-ratio margin certified for a larger context automatically applies to any smaller requested context.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_mono_context",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 642,
+      "lean_source_line": 663,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -2767,7 +2767,7 @@
       "informal_statement": "If one channel has a finite-context turn-ratio margin certified for a larger context, then every smaller requested context inherits the bank-level no-near-turn consequence.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 725,
+      "lean_source_line": 746,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -2849,7 +2849,7 @@
       "informal_statement": "A finite-context turn-ratio margin certified for a larger lower bound automatically proves any smaller advertised margin over the same context.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 655,
+      "lean_source_line": 676,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -2973,7 +2973,7 @@
       "informal_statement": "If one channel has a finite-context turn-ratio margin certified for a larger context and a larger lower bound, then every smaller requested context and smaller advertised margin inherits the bank-level no-near-turn consequence.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 748,
+      "lean_source_line": 769,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -3073,6 +3073,48 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "tests/test_rope_certifier.py::test_explicit_phase_bank_certifier_reports_exact_only_contract"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0080",
+        "COMMON-0082",
+        "COMMON-0087",
+        "COMMON-0088"
+      ],
+      "formal_statement": "forall {turnRatio margin : Real} {turns : Int} {context : Nat}, turnRatio = (turns : Real) -> 1 < context -> (Circle.Applications.ropeTurnRatioFiniteMargin turnRatio margin context <-> margin <= 0)",
+      "id": "AIRA-T0053",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "If a real RoPE turn ratio is an integer number of full turns per position and the inspected context contains the unit gap, then its finite-context turn-ratio margin is equivalent to a nonpositive margin; such a channel cannot certify positive real-phase separation.",
+      "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
+      "lean_source": "Circle/Applications/RoPECertifier.lean",
+      "lean_source_line": 644,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "tests/test_rope_certifier.py::test_integer_turn_ratio_has_zero_finite_margin_once_unit_gap_exists"
         ]
       }
     },
