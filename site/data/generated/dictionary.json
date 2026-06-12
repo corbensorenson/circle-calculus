@@ -4301,6 +4301,36 @@
           "lean_name": "Circle.Applications.loopedRecurrentState_tokenBudget_add_mul_loopPeriod",
           "name": "Circle.Applications.loopedRecurrentState_tokenBudget_add_mul_loopPeriod",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0006",
+          "lean_name": "Circle.Applications.positionResidue_lt_period",
+          "name": "Circle.Applications.positionResidue_lt_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0007",
+          "lean_name": "Circle.Applications.positionResidue_add_period",
+          "name": "Circle.Applications.positionResidue_add_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0008",
+          "lean_name": "Circle.Applications.positionResidue_add_mul_period",
+          "name": "Circle.Applications.positionResidue_add_mul_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0009",
+          "lean_name": "Circle.Applications.positionWinding_mul_add_residue",
+          "name": "Circle.Applications.positionWinding_mul_add_residue",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0010",
+          "lean_name": "Circle.Applications.windingPosition_fst_mul_add_snd",
+          "name": "Circle.Applications.windingPosition_fst_mul_add_snd",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -4333,6 +4363,11 @@
           "id": "rope_relative_phase",
           "path": "site/widgets/ai/rope_relative_phase.js",
           "python_reference": "circle_math.applications.circle_ai.rope_relative_feature; circle_math.applications.circle_ai.run_rope_relative_phase_benchmark"
+        },
+        {
+          "id": "winding_aware_position",
+          "path": "site/widgets/ai/winding_aware_position.js",
+          "python_reference": "circle_math.applications.circle_ai.winding_position; circle_math.applications.circle_ai.winding_position_feature; circle_math.applications.circle_ai.run_winding_aware_position_benchmark"
         }
       ]
     },
@@ -5370,6 +5405,11 @@
           "id": "multicoil_phase_explorer",
           "path": "site/widgets/ai/multicoil_phase_explorer.js",
           "python_reference": "circle_math.applications.circle_ai.multicoil_phase; circle_math.applications.circle_ai.multicoil_cycle_length; circle_math.applications.circle_ai.multicoil_phase_label"
+        },
+        {
+          "id": "winding_aware_position",
+          "path": "site/widgets/ai/winding_aware_position.js",
+          "python_reference": "circle_math.applications.circle_ai.winding_position; circle_math.applications.circle_ai.winding_position_feature; circle_math.applications.circle_ai.run_winding_aware_position_benchmark"
         }
       ]
     },
@@ -9196,6 +9236,74 @@
       ],
       "used_by_theorems": [],
       "used_by_widgets": []
+    },
+    {
+      "dependencies": [
+        "COMMON-0026",
+        "COMMON-0046",
+        "COMMON-0051"
+      ],
+      "forbidden_meanings": [
+        "A proof that RoPE or MultiCoil RoPE improves language models.",
+        "Evidence that winding-aware features improve long-context quality, perplexity, runtime, or memory.",
+        "A replacement for standard RoPE, ALiBi, learned positional embeddings, attention, recurrent memory, or state-space baselines."
+      ],
+      "formal_definition": "`circle_math.applications.circle_ai.run_winding_aware_position_benchmark`, a deterministic fixture that represents a natural-number position as residue plus finite winding phase and compares it against residue-only, wrong-period, learned absolute-position, scalar-threshold, and nonperiodic controls.",
+      "id": "COMMON-0072",
+      "introduced_in": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+      "intuition": "Residue alone aliases long positions; carrying winding beside residue makes the alias visible and gives a small test harness for long-position bookkeeping before making RoPE or long-context claims.",
+      "kind": "experiment",
+      "name": "Winding-aware position fixture",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "winding_position_fixture",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIRA-T0006",
+          "lean_name": "Circle.Applications.positionResidue_lt_period",
+          "name": "Circle.Applications.positionResidue_lt_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0007",
+          "lean_name": "Circle.Applications.positionResidue_add_period",
+          "name": "Circle.Applications.positionResidue_add_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0008",
+          "lean_name": "Circle.Applications.positionResidue_add_mul_period",
+          "name": "Circle.Applications.positionResidue_add_mul_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0009",
+          "lean_name": "Circle.Applications.positionWinding_mul_add_residue",
+          "name": "Circle.Applications.positionWinding_mul_add_residue",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0010",
+          "lean_name": "Circle.Applications.windingPosition_fst_mul_add_snd",
+          "name": "Circle.Applications.windingPosition_fst_mul_add_snd",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": [
+        {
+          "id": "winding_aware_position",
+          "path": "site/widgets/ai/winding_aware_position.js",
+          "python_reference": "circle_math.applications.circle_ai.winding_position; circle_math.applications.circle_ai.winding_position_feature; circle_math.applications.circle_ai.run_winding_aware_position_benchmark"
+        }
+      ]
     },
     {
       "dependencies": [],

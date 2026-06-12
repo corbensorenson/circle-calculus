@@ -531,6 +531,13 @@ def export_widget_index() -> dict:
             "python_reference": "circle_math.applications.circle_ai.rope_relative_feature; circle_math.applications.circle_ai.run_rope_relative_phase_benchmark",
         },
         {
+            "id": "winding_aware_position",
+            "path": "site/widgets/ai/winding_aware_position.js",
+            "theorem_ids": ["AIRA-T0006", "AIRA-T0007", "AIRA-T0008", "AIRA-T0009", "AIRA-T0010"],
+            "dictionary_ids": ["COMMON-0072", "COMMON-0026", "COMMON-0046"],
+            "python_reference": "circle_math.applications.circle_ai.winding_position; circle_math.applications.circle_ai.winding_position_feature; circle_math.applications.circle_ai.run_winding_aware_position_benchmark",
+        },
+        {
             "id": "adapter_parameter_budget",
             "path": "site/widgets/ai/adapter_parameter_budget.js",
             "theorem_ids": ["AIRA-T0001", "AIRA-T0002", "AIRA-T0004", "AIRA-T0005"],

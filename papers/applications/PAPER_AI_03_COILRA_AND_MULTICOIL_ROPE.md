@@ -1,6 +1,6 @@
 # Circle Calculus AI 3: CoilRA and MultiCoil RoPE
 
-Status: polished draft with a proved adapter-block seed.
+Status: polished draft with proved adapter-block and winding-position seeds.
 
 ## Aim
 
@@ -31,6 +31,7 @@ sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_adapter_paramete
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_circulant_mixer.py
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_multicoil_rope.py
 sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_rope_relative_phase.py
+sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_winding_aware_position.py
 ```
 
 The theorem and dictionary links are registered in `manifests/paper_manifest.yaml`. The Python sidecar checks adapter-block examples; Lean declarations determine proof status.
@@ -42,6 +43,11 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `AIRA-T0003`: `Circle.Applications.adapterBlock_zero`
 - `AIRA-T0004`: `Circle.Applications.adapterBlock_add_mul_blockSize`
 - `AIRA-T0005`: `Circle.Applications.adapterBlock_idempotent`
+- `AIRA-T0006`: `Circle.Applications.positionResidue_lt_period`
+- `AIRA-T0007`: `Circle.Applications.positionResidue_add_period`
+- `AIRA-T0008`: `Circle.Applications.positionResidue_add_mul_period`
+- `AIRA-T0009`: `Circle.Applications.positionWinding_mul_add_residue`
+- `AIRA-T0010`: `Circle.Applications.windingPosition_fst_mul_add_snd`
 - `AIT-T0004`: `Circle.Applications.rope_relative_shift_invariant`
 - `AIT-T0005`: `Circle.Applications.rope_compose`
 - `AIT-T0006`: `Circle.Applications.circConv_shift_equivariant`
@@ -80,7 +86,16 @@ and out of scope for the theorem layer.
 
 `AIRA-T0001` proves that the adapter block index is bounded by the positive block size. `AIRA-T0002` proves closure after one full block pass, `AIRA-T0004` proves closure after any whole number of full block passes, `AIRA-T0005` proves that normalizing an adapter block index twice is the same as normalizing it once, and `AIRA-T0003` proves the zero anchor. The Python sidecar checks the same finite examples.
 
-These facts certify only block indexing. They do not prove parameter efficiency, better fine-tuning, RoPE improvement, periodic-activation value, or runtime gains.
+`AIRA-T0006` through `AIRA-T0010` add a second finite positional seed. `positionResidue period position` is bounded by the positive period and closes after whole-period shifts. `positionWinding period position` records the integer number of completed passes. Together they reconstruct the natural-number position:
+
+```text
+position = position_winding(period, position) * period
+         + position_residue(period, position)
+```
+
+That theorem is a bookkeeping guarantee, not a long-context or RoPE quality theorem. Its value is that it separates two things that are often collapsed in visual phase language: the visible residue on the circle and the winding count that says how many times the position has wrapped.
+
+These facts certify only finite block indexing and finite residue/winding bookkeeping. They do not prove parameter efficiency, better fine-tuning, RoPE improvement, periodic-activation value, long-context quality, or runtime gains.
 
 ## Exploratory Benchmark Fixture
 
@@ -106,13 +121,17 @@ This fixture is not evidence that MultiCoil RoPE improves a language model, that
 
 This fixture is not evidence that standard RoPE improves a model, that relative phase solves attention quality, or that a language model has better context behavior. It is a small test that the relative-position claim is being represented and compared before stronger RoPE experiments begin.
 
+`AIRA-B0006` adds a winding-aware positional fixture. The positive synthetic task labels natural-number positions by both residue and finite winding phase. A residue-plus-winding lookup recovers the pattern, while residue-only, wrong-period winding, learned absolute-position, and scalar-threshold baselines are weaker. The alias diagnostic is explicit: on the default run, all `64` training examples sit in residue buckets that contain conflicting labels, so residue alone is known to be insufficient for the constructed task. The nonperiodic control labels positions by an ordinary scalar threshold, where the threshold baseline wins and the winding feature fails.
+
+This fixture is not evidence that winding-aware features improve RoPE, extrapolate context length, reduce perplexity, or beat learned positional encodings. It is a small alias-control harness for a real bookkeeping issue: finite phase loses winding unless the representation carries it.
+
 ## Prototype Program
 
 `CoilLinear` should test circulant and block-circulant layers against dense layers on tasks where convolutional or periodic structure is plausible.
 
 `CoilRA` should test cyclic/block-cyclic adapters against dense adapters, LoRA, and block-circulant baselines. Metrics should include quality, parameter count, inference cost, training stability, and MLX runtime on this Mac.
 
-`MultiCoil RoPE` should test multiple periods, coprime phases, winding-aware features, and torus-valued position views against standard RoPE and learned positional baselines.
+`MultiCoil RoPE` should test multiple periods, coprime phases, winding-aware features, and torus-valued position views against standard RoPE, ALiBi-style biases, learned positional baselines, recurrent memory, and state-space baselines.
 
 Periodic activations should be evaluated on signal, coordinate, and neural-field tasks where periodicity is real.
 
@@ -129,7 +148,7 @@ The Circle theorem layer can certify relative-phase invariance, circular-convolu
 ## Next Program
 
 - Treat `AIRA-B0001` as adapter-block benchmark scaffolding, `AIRA-B0004` as parameter-budget scaffolding, and `AIRA-B0005` as CoilLinear/circulant-mixer scaffolding only; CoilRA, model quality, parameter efficiency, memory, training stability, and runtime claims remain separate work.
-- Treat `AIRA-B0002` as MultiCoil/RoPE-style positional scaffolding and `AIRA-B0003` as relative RoPE-style phase scaffolding only; standard RoPE, learned-position, attention, dense sequence, and MLX comparisons remain separate work.
+- Treat `AIRA-B0002` as MultiCoil/RoPE-style positional scaffolding, `AIRA-B0003` as relative RoPE-style phase scaffolding, and `AIRA-B0006` as residue-plus-winding alias-control scaffolding only; standard RoPE, ALiBi-style biases, learned-position, recurrent-memory, attention, dense sequence, and MLX comparisons remain separate work.
 - Start with small MLX prototypes and synthetic tasks.
 - Compare against dense, LoRA, block-circulant, circulant, and standard RoPE baselines.
 - Measure quality, memory, training stability, and runtime together; parameter reduction alone is not enough.

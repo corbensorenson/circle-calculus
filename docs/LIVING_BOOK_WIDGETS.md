@@ -312,6 +312,16 @@ Companion non-widget prototype: `AIM-B0015` uses `circle_math.applications.circl
 - Guardrail: the widget is a relative phase fixture only. It does not prove standard RoPE quality, attention quality, context-length improvement, perplexity improvement, or runtime improvement.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python RoPE relative phase helper.
 
+### winding_aware_position
+
+- Inputs: period, finite winding period, wrong/control period, and natural-number position.
+- Outputs: selected residue node, winding, reconstruction check, one-period residue/winding update, finite winding-feature closure check, wrong-period feature, alias table for positions sharing the same residue, residue/winding theorem links, and dictionary links.
+- Theorem ids: `AIRA-T0006`, `AIRA-T0007`, `AIRA-T0008`, `AIRA-T0009`, and `AIRA-T0010`.
+- Dictionary ids: `COMMON-0072`, `COMMON-0026`, and `COMMON-0046`.
+- Python references: `circle_math.applications.circle_ai.winding_position`, `circle_math.applications.circle_ai.winding_position_feature`, and `circle_math.applications.circle_ai.run_winding_aware_position_benchmark`.
+- Guardrail: the widget is finite residue/winding bookkeeping only. It does not prove RoPE quality, context-length improvement, perplexity improvement, runtime improvement, or learned positional-encoding superiority.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python winding-aware position helpers.
+
 ### adapter_parameter_budget
 
 - Inputs: channel count, block size, LoRA-style rank, and parameters per channel/block.

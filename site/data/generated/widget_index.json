@@ -538,6 +538,23 @@
     },
     {
       "dictionary_ids": [
+        "COMMON-0072",
+        "COMMON-0026",
+        "COMMON-0046"
+      ],
+      "id": "winding_aware_position",
+      "path": "site/widgets/ai/winding_aware_position.js",
+      "python_reference": "circle_math.applications.circle_ai.winding_position; circle_math.applications.circle_ai.winding_position_feature; circle_math.applications.circle_ai.run_winding_aware_position_benchmark",
+      "theorem_ids": [
+        "AIRA-T0006",
+        "AIRA-T0007",
+        "AIRA-T0008",
+        "AIRA-T0009",
+        "AIRA-T0010"
+      ]
+    },
+    {
+      "dictionary_ids": [
         "COMMON-0056",
         "COMMON-0030",
         "COMMON-0031"

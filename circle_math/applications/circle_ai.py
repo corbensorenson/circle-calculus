@@ -711,6 +711,26 @@ class RoPERelativePhaseBenchmarkResult:
     note: str = "Synthetic RoPE-style relative phase fixture only; not a model-quality claim."
 
 
+@dataclass(frozen=True)
+class WindingAwarePositionBenchmarkResult:
+    period: int
+    winding_period: int
+    wrong_period: int
+    train_length: int
+    test_length: int
+    cycle_length: int
+    observed_winding_feature_count: int
+    alias_collision_count: int
+    winding_position_accuracy: float
+    residue_only_accuracy: float
+    wrong_period_winding_accuracy: float
+    learned_absolute_position_accuracy: float
+    scalar_threshold_accuracy: float
+    nonperiodic_winding_accuracy: float
+    nonperiodic_scalar_threshold_accuracy: float
+    note: str = "Synthetic winding-aware position fixture only; not a model-quality claim."
+
+
 def run_phase_channel_benchmark(
     *,
     period: int = 8,
@@ -4033,6 +4053,142 @@ def synthetic_multicoil_phase_dataset(
     return positions, labels
 
 
+def _require_natural_position(position: int, name: str = "position") -> None:
+    if position < 0:
+        raise ValueError(f"{name} must be nonnegative")
+
+
+def position_residue(period: int, position: int) -> int:
+    """Return the residue component of a natural-number position."""
+    _require_positive(period, "period")
+    _require_natural_position(position)
+    return position % period
+
+
+def position_winding(period: int, position: int) -> int:
+    """Return the winding component of a natural-number position."""
+    _require_positive(period, "period")
+    _require_natural_position(position)
+    return position // period
+
+
+def winding_position(period: int, position: int) -> tuple[int, int]:
+    """Return ``(winding, residue)`` for a natural-number position."""
+    return (position_winding(period, position), position_residue(period, position))
+
+
+def winding_position_feature(period: int, winding_period: int, position: int) -> tuple[int, int]:
+    """Return a finite residue-plus-winding-phase feature."""
+    _require_positive(winding_period, "winding_period")
+    winding, residue = winding_position(period, position)
+    return (winding % winding_period, residue)
+
+
+def winding_position_cycle_length(period: int, winding_period: int) -> int:
+    """Return the repeat horizon for a finite winding-aware feature."""
+    _require_positive(period, "period")
+    _require_positive(winding_period, "winding_period")
+    return period * winding_period
+
+
+def winding_position_label(period: int, winding_period: int, position: int) -> int:
+    """Return a deterministic binary label controlled by residue and winding phase."""
+    winding_phase, residue = winding_position_feature(period, winding_period, position)
+    score = residue + 2 * winding_phase
+    return 1 if score % 5 in (1, 3) else 0
+
+
+def synthetic_winding_position_dataset(
+    period: int,
+    winding_period: int,
+    length: int,
+    *,
+    start: int = 0,
+) -> tuple[tuple[int, ...], tuple[int, ...]]:
+    """Return positions and labels controlled by residue plus finite winding phase."""
+    _require_positive(period, "period")
+    _require_positive(winding_period, "winding_period")
+    if length <= 0:
+        raise ValueError("length must be positive")
+    if start < 0:
+        raise ValueError("start must be nonnegative")
+    positions = tuple(range(start, start + length))
+    labels = tuple(winding_position_label(period, winding_period, position) for position in positions)
+    return positions, labels
+
+
+def fit_winding_position_lookup(
+    period: int,
+    winding_period: int,
+    positions: Sequence[int],
+    labels: Sequence[int],
+) -> tuple[tuple[tuple[int, int], int], ...]:
+    """Fit a lookup table over finite winding-aware position features."""
+    _require_positive(period, "period")
+    _require_positive(winding_period, "winding_period")
+    if len(positions) != len(labels):
+        raise ValueError("positions and labels must have the same length")
+    if not positions:
+        raise ValueError("positions must be nonempty")
+    counts: dict[tuple[int, int], list[int]] = {}
+    for position, label in zip(positions, labels):
+        if label not in (0, 1):
+            raise ValueError("labels must be binary")
+        feature = winding_position_feature(period, winding_period, position)
+        if feature not in counts:
+            counts[feature] = [0, 0]
+        counts[feature][label] += 1
+    entries = []
+    for feature, (zero_count, one_count) in counts.items():
+        entries.append((feature, 1 if one_count >= zero_count else 0))
+    return tuple(sorted(entries))
+
+
+def predict_winding_position_lookup(
+    period: int,
+    winding_period: int,
+    lookup: Sequence[tuple[tuple[int, int], int]],
+    positions: Sequence[int],
+) -> tuple[int, ...]:
+    """Predict labels from a fitted residue-plus-winding feature table."""
+    _require_positive(period, "period")
+    _require_positive(winding_period, "winding_period")
+    lookup_map = {feature: label for feature, label in lookup}
+    if not lookup_map:
+        raise ValueError("lookup must be nonempty")
+    fallback = majority_label(tuple(lookup_map.values()))
+    return tuple(
+        lookup_map.get(winding_position_feature(period, winding_period, position), fallback)
+        for position in positions
+    )
+
+
+def winding_alias_collision_count(
+    period: int,
+    positions: Sequence[int],
+    labels: Sequence[int],
+) -> int:
+    """Count positions whose residue bucket contains conflicting labels."""
+    _require_positive(period, "period")
+    if len(positions) != len(labels):
+        raise ValueError("positions and labels must have the same length")
+    residue_labels: dict[int, set[int]] = {}
+    for position, label in zip(positions, labels):
+        if label not in (0, 1):
+            raise ValueError("labels must be binary")
+        residue_labels.setdefault(position_residue(period, position), set()).add(label)
+    ambiguous_residues = {
+        residue
+        for residue, bucket_labels in residue_labels.items()
+        if len(bucket_labels) > 1
+    }
+    return sum(
+        1
+        for position in positions
+        if position_residue(period, position) in ambiguous_residues
+    )
+
+
 def default_positive_lags(period: int) -> tuple[int, ...]:
     """Choose a deterministic nontrivial relative-lag pattern."""
     _require_positive(period, "period")
@@ -4347,6 +4503,131 @@ def run_rope_relative_phase_benchmark(
     )
 
 
+def run_winding_aware_position_benchmark(
+    *,
+    period: int = 8,
+    winding_period: int = 4,
+    wrong_period: int = 7,
+    train_length: int = 64,
+    test_length: int = 32,
+) -> WindingAwarePositionBenchmarkResult:
+    """Run a deterministic residue-plus-winding position fixture.
+
+    The positive task labels positions by both residue and finite winding
+    phase. A residue-only lookup aliases different windings, while a
+    residue-plus-winding lookup recovers the repeated finite pattern. The
+    nonperiodic control labels positions by a scalar threshold so the ordinary
+    scalar baseline should win. This is not a RoPE, long-context, or language
+    model quality benchmark.
+    """
+    _require_positive(period, "period")
+    _require_positive(winding_period, "winding_period")
+    _require_positive(wrong_period, "wrong_period")
+    if train_length <= 0:
+        raise ValueError("train_length must be positive")
+    if test_length <= 0:
+        raise ValueError("test_length must be positive")
+
+    train_positions, train_labels = synthetic_winding_position_dataset(
+        period,
+        winding_period,
+        train_length,
+    )
+    test_positions, test_labels = synthetic_winding_position_dataset(
+        period,
+        winding_period,
+        test_length,
+        start=train_length,
+    )
+
+    winding_lookup = fit_winding_position_lookup(
+        period,
+        winding_period,
+        train_positions,
+        train_labels,
+    )
+    winding_predictions = predict_winding_position_lookup(
+        period,
+        winding_period,
+        winding_lookup,
+        test_positions,
+    )
+    residue_lookup = fit_phase_lookup(period, train_positions, train_labels)
+    residue_predictions = predict_phase_lookup(period, residue_lookup, test_positions)
+    wrong_lookup = fit_winding_position_lookup(
+        wrong_period,
+        winding_period,
+        train_positions,
+        train_labels,
+    )
+    wrong_predictions = predict_winding_position_lookup(
+        wrong_period,
+        winding_period,
+        wrong_lookup,
+        test_positions,
+    )
+    position_lookup = _fit_position_lookup(train_positions, train_labels)
+    position_predictions = _predict_position_lookup(position_lookup, test_positions)
+    threshold, polarity = fit_threshold_classifier(train_positions, train_labels)
+    threshold_predictions = predict_threshold_classifier(test_positions, threshold, polarity)
+
+    control_threshold = (3 * train_length) // 4
+    control_train_labels = tuple(
+        nonperiodic_threshold_label(position, control_threshold)
+        for position in train_positions
+    )
+    control_test_labels = tuple(
+        nonperiodic_threshold_label(position, control_threshold)
+        for position in test_positions
+    )
+    control_winding_lookup = fit_winding_position_lookup(
+        period,
+        winding_period,
+        train_positions,
+        control_train_labels,
+    )
+    control_winding_predictions = predict_winding_position_lookup(
+        period,
+        winding_period,
+        control_winding_lookup,
+        test_positions,
+    )
+    control_threshold_fit, control_polarity = fit_threshold_classifier(
+        train_positions,
+        control_train_labels,
+    )
+    control_threshold_predictions = predict_threshold_classifier(
+        test_positions,
+        control_threshold_fit,
+        control_polarity,
+    )
+
+    return WindingAwarePositionBenchmarkResult(
+        period=period,
+        winding_period=winding_period,
+        wrong_period=wrong_period,
+        train_length=train_length,
+        test_length=test_length,
+        cycle_length=winding_position_cycle_length(period, winding_period),
+        observed_winding_feature_count=len(winding_lookup),
+        alias_collision_count=winding_alias_collision_count(
+            period,
+            train_positions,
+            train_labels,
+        ),
+        winding_position_accuracy=accuracy(winding_predictions, test_labels),
+        residue_only_accuracy=accuracy(residue_predictions, test_labels),
+        wrong_period_winding_accuracy=accuracy(wrong_predictions, test_labels),
+        learned_absolute_position_accuracy=accuracy(position_predictions, test_labels),
+        scalar_threshold_accuracy=accuracy(threshold_predictions, test_labels),
+        nonperiodic_winding_accuracy=accuracy(control_winding_predictions, control_test_labels),
+        nonperiodic_scalar_threshold_accuracy=accuracy(
+            control_threshold_predictions,
+            control_test_labels,
+        ),
+    )
+
+
 def _retrieval_hit_indicators(
     sequence_length: int,
     query_indices: Sequence[int],
@@ -4425,6 +4706,11 @@ def ai_backend_parity_cases() -> tuple[tuple[str, tuple[int, ...], tuple[int, ..
     rope_lookup = fit_rope_relative_lookup(8, rope_train_pairs, rope_train_labels)
     rope_predictions = predict_rope_relative_lookup(8, rope_lookup, rope_test_pairs)
 
+    winding_train_positions, winding_train_labels = synthetic_winding_position_dataset(8, 4, 64)
+    winding_test_positions, winding_test_labels = synthetic_winding_position_dataset(8, 4, 32, start=64)
+    winding_lookup = fit_winding_position_lookup(8, 4, winding_train_positions, winding_train_labels)
+    winding_predictions = predict_winding_position_lookup(8, 4, winding_lookup, winding_test_positions)
+
     near_local_candidates = tuple(
         local_window_indices(64, query_index, window=8)
         for query_index in retrieval_queries
@@ -4480,6 +4766,7 @@ def ai_backend_parity_cases() -> tuple[tuple[str, tuple[int, ...], tuple[int, ..
         ("learned_feature_cyclic", learned_predictions, learned_test_labels),
         ("harmonic_feature_lookup", harmonic_predictions, harmonic_test_labels),
         ("rope_relative_phase", rope_predictions, rope_test_labels),
+        ("winding_aware_position", winding_predictions, winding_test_labels),
         ("looped_recurrence_adaptive_exit", looped_predictions, looped_labels),
         (
             "learned_feature_nonperiodic_dense_scalar",

@@ -1536,6 +1536,116 @@
       ]
     },
     {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0026",
+        "COMMON-0072"
+      ],
+      "id": "AIRA-T0006",
+      "lean_name": "Circle.Applications.positionResidue_lt_period",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 558,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0026",
+        "COMMON-0072"
+      ],
+      "id": "AIRA-T0007",
+      "lean_name": "Circle.Applications.positionResidue_add_period",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 563,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0026",
+        "COMMON-0072"
+      ],
+      "id": "AIRA-T0008",
+      "lean_name": "Circle.Applications.positionResidue_add_mul_period",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 569,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0026",
+        "COMMON-0072"
+      ],
+      "id": "AIRA-T0009",
+      "lean_name": "Circle.Applications.positionWinding_mul_add_residue",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 575,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0026",
+        "COMMON-0072"
+      ],
+      "id": "AIRA-T0010",
+      "lean_name": "Circle.Applications.windingPosition_fst_mul_add_snd",
+      "lean_source": "Circle/Applications/CircleAI.lean",
+      "lean_source_line": 580,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE",
+          "path": "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 3: CoilRA and MultiCoil RoPE"
+        }
+      ]
+    },
+    {
       "blocker": "",
       "canonical_status": "proved",
       "dictionary_dependencies": [

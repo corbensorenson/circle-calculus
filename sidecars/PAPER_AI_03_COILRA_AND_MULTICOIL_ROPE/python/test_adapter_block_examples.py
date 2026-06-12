@@ -10,22 +10,32 @@ from circle_math.applications.circle_ai import (
     fit_adapter_block_lookup,
     fit_multicoil_phase_lookup,
     fit_rope_relative_lookup,
+    fit_winding_position_lookup,
     lora_adapter_parameter_count,
     multicoil_cycle_length,
     multicoil_phase,
+    position_residue,
+    position_winding,
     predict_adapter_block_lookup,
     predict_multicoil_phase_lookup,
     predict_rope_relative_lookup,
+    predict_winding_position_lookup,
     rope_relative_feature,
     run_adapter_block_benchmark,
     run_adapter_parameter_budget_benchmark,
     run_circulant_mixer_benchmark,
     run_multicoil_rope_benchmark,
     run_rope_relative_phase_benchmark,
+    run_winding_aware_position_benchmark,
     rotate_kernel,
     synthetic_adapter_block_dataset,
     synthetic_multicoil_phase_dataset,
     synthetic_rope_relative_dataset,
+    synthetic_winding_position_dataset,
+    winding_alias_collision_count,
+    winding_position,
+    winding_position_cycle_length,
+    winding_position_feature,
 )
 
 
@@ -225,4 +235,64 @@ def test_rope_relative_phase_benchmark_has_baselines_and_negative_control() -> N
     assert result.scalar_query_threshold_accuracy < result.rope_relative_accuracy
     assert result.nonperiodic_scalar_query_threshold_accuracy == 1.0
     assert result.nonperiodic_rope_relative_accuracy < result.nonperiodic_scalar_query_threshold_accuracy
+    assert result.note.endswith("not a model-quality claim.")
+
+
+def test_winding_position_reconstructs_natural_position() -> None:
+    period = 8
+    for position in range(0, 512):
+        winding = position_winding(period, position)
+        residue = position_residue(period, position)
+        assert winding_position(period, position) == (winding, residue)
+        assert winding * period + residue == position
+        assert 0 <= residue < period
+
+
+def test_winding_position_feature_closes_after_full_cycle() -> None:
+    period = 8
+    winding_period = 4
+    cycle = winding_position_cycle_length(period, winding_period)
+
+    assert cycle == 32
+    for position in range(0, 512):
+        assert winding_position_feature(period, winding_period, position + cycle) == winding_position_feature(
+            period,
+            winding_period,
+            position,
+        )
+
+
+def test_winding_position_lookup_recovers_residue_plus_winding_fixture() -> None:
+    period = 8
+    winding_period = 4
+    train_positions, train_labels = synthetic_winding_position_dataset(period, winding_period, 64)
+    test_positions, test_labels = synthetic_winding_position_dataset(period, winding_period, 32, start=64)
+
+    lookup = fit_winding_position_lookup(period, winding_period, train_positions, train_labels)
+    predictions = predict_winding_position_lookup(period, winding_period, lookup, test_positions)
+
+    assert len(lookup) == 32
+    assert predictions == test_labels
+    assert winding_alias_collision_count(period, train_positions, train_labels) > 0
+
+
+def test_winding_aware_position_benchmark_has_alias_and_control_baselines() -> None:
+    result = run_winding_aware_position_benchmark(
+        period=8,
+        winding_period=4,
+        wrong_period=7,
+        train_length=64,
+        test_length=32,
+    )
+
+    assert result.cycle_length == 32
+    assert result.observed_winding_feature_count == 32
+    assert result.alias_collision_count > 0
+    assert result.winding_position_accuracy == 1.0
+    assert result.residue_only_accuracy < result.winding_position_accuracy
+    assert result.wrong_period_winding_accuracy < result.winding_position_accuracy
+    assert result.learned_absolute_position_accuracy < result.winding_position_accuracy
+    assert result.scalar_threshold_accuracy < result.winding_position_accuracy
+    assert result.nonperiodic_scalar_threshold_accuracy == 1.0
+    assert result.nonperiodic_winding_accuracy < result.nonperiodic_scalar_threshold_accuracy
     assert result.note.endswith("not a model-quality claim.")

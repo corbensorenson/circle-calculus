@@ -15,5 +15,13 @@ namespace Circle.PaperAI03
 #check Circle.Applications.adapterBlock_add_mul_blockSize
 #check Circle.Applications.adapterBlock_idempotent
 #check Circle.Applications.adapterBlock_zero
+#check Circle.Applications.positionResidue
+#check Circle.Applications.positionWinding
+#check Circle.Applications.windingPosition
+#check Circle.Applications.positionResidue_lt_period
+#check Circle.Applications.positionResidue_add_period
+#check Circle.Applications.positionResidue_add_mul_period
+#check Circle.Applications.positionWinding_mul_add_residue
+#check Circle.Applications.windingPosition_fst_mul_add_snd
 
 end Circle.PaperAI03

@@ -546,4 +546,41 @@ theorem adapterBlock_zero (blockSize : Nat) :
   unfold adapterBlock
   simp
 
+def positionResidue (period position : Nat) : Nat :=
+  position % period
+
+def positionWinding (period position : Nat) : Nat :=
+  position / period
+
+def windingPosition (period position : Nat) : Nat × Nat :=
+  (positionWinding period position, positionResidue period position)
+
+theorem positionResidue_lt_period {period : Nat} (h : 0 < period) (position : Nat) :
+    positionResidue period position < period := by
+  unfold positionResidue
+  exact Nat.mod_lt position h
+
+theorem positionResidue_add_period {period : Nat} (h : 0 < period) (position : Nat) :
+    positionResidue period (position + period) = positionResidue period position := by
+  unfold positionResidue
+  rw [Nat.add_mod, Nat.mod_self, Nat.add_zero]
+  exact Nat.mod_eq_of_lt (Nat.mod_lt position h)
+
+theorem positionResidue_add_mul_period {period : Nat} (_h : 0 < period)
+    (position passes : Nat) :
+    positionResidue period (position + passes * period) = positionResidue period position := by
+  unfold positionResidue
+  exact Nat.add_mul_mod_self_right position passes period
+
+theorem positionWinding_mul_add_residue (period position : Nat) :
+    positionWinding period position * period + positionResidue period position = position := by
+  unfold positionWinding positionResidue
+  simpa [Nat.mul_comm] using Nat.div_add_mod position period
+
+theorem windingPosition_fst_mul_add_snd (period position : Nat) :
+    (windingPosition period position).fst * period + (windingPosition period position).snd =
+      position := by
+  unfold windingPosition
+  exact positionWinding_mul_add_residue period position
+
 end Circle.Applications

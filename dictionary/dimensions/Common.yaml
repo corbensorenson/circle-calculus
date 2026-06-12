@@ -743,6 +743,18 @@ entries:
       - "A learned neural attention mechanism or trained language model."
       - "Evidence that learned content gates improve retrieval quality, context length, runtime, memory, or parameter efficiency."
       - "A replacement for full attention, sparse attention, learned gates, recurrent-memory, Hyena-like, RWKV, Mamba, or state-space baselines."
+  - id: COMMON-0072
+    name: "Winding-aware position fixture"
+    kind: experiment
+    symbol: "winding_position_fixture"
+    formal_definition: "`circle_math.applications.circle_ai.run_winding_aware_position_benchmark`, a deterministic fixture that represents a natural-number position as residue plus finite winding phase and compares it against residue-only, wrong-period, learned absolute-position, scalar-threshold, and nonperiodic controls."
+    intuition: "Residue alone aliases long positions; carrying winding beside residue makes the alias visible and gives a small test harness for long-position bookkeeping before making RoPE or long-context claims."
+    dependencies: ["COMMON-0026", "COMMON-0046", "COMMON-0051"]
+    introduced_in: "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
+    forbidden_meanings:
+      - "A proof that RoPE or MultiCoil RoPE improves language models."
+      - "Evidence that winding-aware features improve long-context quality, perplexity, runtime, or memory."
+      - "A replacement for standard RoPE, ALiBi, learned positional embeddings, attention, recurrent memory, or state-space baselines."
   - id: COMMON-0060
     name: "Proof-carrying physics model"
     kind: interface

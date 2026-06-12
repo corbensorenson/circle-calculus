@@ -23,6 +23,7 @@ from circle_math.applications import (
     fit_loop_budget_lookup,
     fit_loop_block_lookup,
     fit_phase_lookup,
+    fit_winding_position_lookup,
     fit_recurrence_resolution_lookup,
     harmonic_feature,
     local_window_indices,
@@ -47,6 +48,8 @@ from circle_math.applications import (
     nonperiodic_threshold_label,
     periodic_phase_label,
     phase_channel,
+    position_residue,
+    position_winding,
     recurrence_resolution_levels,
     retrieval_hit_rate,
     retrieval_hit_rate_by_lag,
@@ -54,6 +57,7 @@ from circle_math.applications import (
     predict_content_route_lookup,
     predict_harmonic_feature_lookup,
     predict_phase_lookup,
+    predict_winding_position_lookup,
     predict_loop_budget_lookup,
     predict_loop_block_lookup,
     predict_recurrence_resolution_lookup,
@@ -74,12 +78,19 @@ from circle_math.applications import (
     run_tiny_looped_recurrent_prototype,
     run_training_free_loop_wrapper_benchmark,
     run_token_level_recurrence_benchmark,
+    run_winding_aware_position_benchmark,
+    synthetic_winding_position_dataset,
     token_active_at_step,
     token_recurrence_budget,
     token_recurrence_budgets,
     training_free_loop_budget,
     training_free_loop_budgets,
     rotate_kernel,
+    winding_alias_collision_count,
+    winding_position,
+    winding_position_cycle_length,
+    winding_position_feature,
+    winding_position_label,
 )
 from circle_math.finite import Circle
 from circle_math.dimensions.quaternion import (
@@ -860,6 +871,60 @@ def js_rope_relative_feature(period: int, query_position: int, key_position: int
     return (round(cos(angle), 12), round(sin(angle), 12))
 
 
+def js_position_residue(period: int, position: int) -> int:
+    return js_mod(position, period)
+
+
+def js_position_winding(period: int, position: int) -> int:
+    return position // period
+
+
+def js_winding_position(period: int, position: int) -> tuple[int, int]:
+    return (js_position_winding(period, position), js_position_residue(period, position))
+
+
+def js_winding_position_feature(period: int, winding_period: int, position: int) -> tuple[int, int]:
+    winding, residue = js_winding_position(period, position)
+    return (js_mod(winding, winding_period), residue)
+
+
+def js_winding_position_cycle_length(period: int, winding_period: int) -> int:
+    return period * winding_period
+
+
+def js_winding_position_label(period: int, winding_period: int, position: int) -> int:
+    winding_phase, residue = js_winding_position_feature(period, winding_period, position)
+    score = residue + 2 * winding_phase
+    return 1 if js_mod(score, 5) in (1, 3) else 0
+
+
+def js_synthetic_winding_position_dataset(
+    period: int,
+    winding_period: int,
+    length: int,
+    start: int = 0,
+) -> tuple[tuple[int, ...], tuple[int, ...]]:
+    positions = tuple(range(start, start + length))
+    labels = tuple(js_winding_position_label(period, winding_period, position) for position in positions)
+    return positions, labels
+
+
+def js_winding_alias_collision_count(
+    period: int,
+    positions: tuple[int, ...],
+    labels: tuple[int, ...],
+) -> int:
+    residue_labels: dict[int, set[int]] = {}
+    for position, label in zip(positions, labels):
+        residue_labels.setdefault(js_position_residue(period, position), set()).add(label)
+    ambiguous = {
+        residue
+        for residue, bucket_labels in residue_labels.items()
+        if len(bucket_labels) > 1
+    }
+    return sum(1 for position in positions if js_position_residue(period, position) in ambiguous)
+
+
 def js_default_circulant_input(period: int) -> tuple[int, ...]:
     return tuple(((index * index + 3 * index + 1) % 7) - 3 for index in range(period))
 
@@ -1332,6 +1397,19 @@ def js_ai_backend_parity_cases() -> tuple[tuple[str, tuple[int, ...], tuple[int,
         lambda pair: js_rope_relative_feature(8, pair[0], pair[1]),
     )
 
+    winding_train_positions, winding_train_labels = js_synthetic_winding_position_dataset(8, 4, 64)
+    winding_test_positions, winding_test_labels = js_synthetic_winding_position_dataset(8, 4, 32, 64)
+    winding_lookup = js_fit_map_lookup(
+        winding_train_positions,
+        winding_train_labels,
+        lambda position: js_winding_position_feature(8, 4, position),
+    )
+    winding_predictions = js_predict_map_lookup(
+        winding_lookup,
+        winding_test_positions,
+        lambda position: js_winding_position_feature(8, 4, position),
+    )
+
     near_local_candidates = tuple(
         js_local_window_indices(64, query_index, 8)
         for query_index in retrieval_queries
@@ -1377,6 +1455,7 @@ def js_ai_backend_parity_cases() -> tuple[tuple[str, tuple[int, ...], tuple[int,
         ("learned_feature_cyclic", learned_predictions, learned_test_labels),
         ("harmonic_feature_lookup", harmonic_predictions, harmonic_test_labels),
         ("rope_relative_phase", rope_predictions, rope_test_labels),
+        ("winding_aware_position", winding_predictions, winding_test_labels),
         ("looped_recurrence_adaptive_exit", looped_predictions, looped_labels),
         ("learned_feature_nonperiodic_dense_scalar", learned_control_predictions, learned_control_test_labels),
     )
@@ -3123,6 +3202,134 @@ def main() -> int:
             query_position,
             key_position,
         )
+
+    winding_cases = [
+        (8, 4, 37, 7),
+        (9, 5, 81, 8),
+        (13, 3, 140, 11),
+    ]
+    for period, winding_period, position, wrong_period in winding_cases:
+        js_position = js_winding_position(period, position)
+        assert position_winding(period, position) == js_position[0]
+        assert position_residue(period, position) == js_position[1]
+        assert winding_position(period, position) == js_position
+        assert js_position[0] * period + js_position[1] == position
+        assert winding_position_feature(period, winding_period, position) == js_winding_position_feature(
+            period,
+            winding_period,
+            position,
+        )
+        assert winding_position_label(period, winding_period, position) == js_winding_position_label(
+            period,
+            winding_period,
+            position,
+        )
+        cycle = winding_position_cycle_length(period, winding_period)
+        assert cycle == js_winding_position_cycle_length(period, winding_period)
+        assert winding_position_feature(period, winding_period, position + cycle) == winding_position_feature(
+            period,
+            winding_period,
+            position,
+        )
+        assert winding_position_feature(wrong_period, winding_period, position) == js_winding_position_feature(
+            wrong_period,
+            winding_period,
+            position,
+        )
+
+    period = 8
+    winding_period = 4
+    wrong_period = 7
+    train_length = 64
+    test_length = 32
+    train_positions, train_labels = synthetic_winding_position_dataset(period, winding_period, train_length)
+    test_positions, test_labels = synthetic_winding_position_dataset(
+        period,
+        winding_period,
+        test_length,
+        start=train_length,
+    )
+    js_train_positions, js_train_labels = js_synthetic_winding_position_dataset(
+        period,
+        winding_period,
+        train_length,
+    )
+    js_test_positions, js_test_labels = js_synthetic_winding_position_dataset(
+        period,
+        winding_period,
+        test_length,
+        train_length,
+    )
+    assert train_positions == js_train_positions
+    assert train_labels == js_train_labels
+    assert test_positions == js_test_positions
+    assert test_labels == js_test_labels
+    winding_lookup = fit_winding_position_lookup(period, winding_period, train_positions, train_labels)
+    js_winding_lookup = js_fit_map_lookup(
+        js_train_positions,
+        js_train_labels,
+        lambda item: js_winding_position_feature(period, winding_period, item),
+    )
+    assert winding_lookup == js_winding_lookup
+    winding_predictions = predict_winding_position_lookup(
+        period,
+        winding_period,
+        winding_lookup,
+        test_positions,
+    )
+    js_winding_predictions = js_predict_map_lookup(
+        js_winding_lookup,
+        js_test_positions,
+        lambda item: js_winding_position_feature(period, winding_period, item),
+    )
+    assert winding_predictions == js_winding_predictions
+    residue_lookup = fit_phase_lookup(period, train_positions, train_labels)
+    js_residue_lookup = js_fit_phase_lookup(period, js_train_positions, js_train_labels)
+    assert residue_lookup == js_residue_lookup
+    residue_predictions = predict_phase_lookup(period, residue_lookup, test_positions)
+    js_residue_predictions = js_predict_phase_lookup(period, js_residue_lookup, js_test_positions)
+    assert residue_predictions == js_residue_predictions
+    wrong_lookup = fit_winding_position_lookup(wrong_period, winding_period, train_positions, train_labels)
+    js_wrong_lookup = js_fit_map_lookup(
+        js_train_positions,
+        js_train_labels,
+        lambda item: js_winding_position_feature(wrong_period, winding_period, item),
+    )
+    assert wrong_lookup == js_wrong_lookup
+    wrong_predictions = predict_winding_position_lookup(
+        wrong_period,
+        winding_period,
+        wrong_lookup,
+        test_positions,
+    )
+    js_wrong_predictions = js_predict_map_lookup(
+        js_wrong_lookup,
+        js_test_positions,
+        lambda item: js_winding_position_feature(wrong_period, winding_period, item),
+    )
+    assert wrong_predictions == js_wrong_predictions
+    assert winding_alias_collision_count(period, train_positions, train_labels) == js_winding_alias_collision_count(
+        period,
+        js_train_positions,
+        js_train_labels,
+    )
+    winding_benchmark = run_winding_aware_position_benchmark(
+        period=period,
+        winding_period=winding_period,
+        wrong_period=wrong_period,
+        train_length=train_length,
+        test_length=test_length,
+    )
+    assert winding_benchmark.cycle_length == js_winding_position_cycle_length(period, winding_period)
+    assert winding_benchmark.observed_winding_feature_count == len(js_winding_lookup)
+    assert winding_benchmark.alias_collision_count == js_winding_alias_collision_count(
+        period,
+        js_train_positions,
+        js_train_labels,
+    )
+    assert winding_benchmark.winding_position_accuracy == js_accuracy(js_winding_predictions, js_test_labels)
+    assert winding_benchmark.residue_only_accuracy == js_accuracy(js_residue_predictions, js_test_labels)
+    assert winding_benchmark.wrong_period_winding_accuracy == js_accuracy(js_wrong_predictions, js_test_labels)
 
     adapter_budget_cases = [
         (64, 8, 4, 16),

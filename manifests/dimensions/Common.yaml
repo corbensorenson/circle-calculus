@@ -1726,6 +1726,76 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["adapter_block(block_size, adapter_block(block_size, channel)) == adapter_block(block_size, channel)"]
     blocker: ""
+  - id: AIRA-T0006
+    status: lean_proved
+    lean_name: Circle.Applications.positionResidue_lt_period
+    informal_statement: "For a positive position period, the residue component of a natural-number position is bounded by that period."
+    formal_statement: "forall {period : Nat}, 0 < period -> forall position : Nat, positionResidue period position < period"
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0072"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_winding_position_reconstructs_natural_position
+    blocker: ""
+  - id: AIRA-T0007
+    status: lean_proved
+    lean_name: Circle.Applications.positionResidue_add_period
+    informal_statement: "For a positive position period, adding one full period preserves the residue component."
+    formal_statement: "forall {period : Nat}, 0 < period -> forall position : Nat, positionResidue period (position + period) = positionResidue period position"
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0072"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_winding_position_feature_closes_after_full_cycle
+    blocker: ""
+  - id: AIRA-T0008
+    status: lean_proved
+    lean_name: Circle.Applications.positionResidue_add_mul_period
+    informal_statement: "For a positive position period, adding any whole number of full periods preserves the residue component."
+    formal_statement: "forall {period : Nat}, 0 < period -> forall position passes : Nat, positionResidue period (position + passes * period) = positionResidue period position"
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0072"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_winding_position_feature_closes_after_full_cycle
+    blocker: ""
+  - id: AIRA-T0009
+    status: lean_proved
+    lean_name: Circle.Applications.positionWinding_mul_add_residue
+    informal_statement: "A natural-number position is reconstructed by multiplying its winding component by the period and adding its residue component."
+    formal_statement: "forall period position : Nat, positionWinding period position * period + positionResidue period position = position"
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0072"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_winding_position_reconstructs_natural_position
+    blocker: ""
+  - id: AIRA-T0010
+    status: lean_proved
+    lean_name: Circle.Applications.windingPosition_fst_mul_add_snd
+    informal_statement: "The paired winding-position representation reconstructs the original natural-number position."
+    formal_statement: "forall period position : Nat, (windingPosition period position).fst * period + (windingPosition period position).snd = position"
+    dictionary_dependencies: ["COMMON-0026", "COMMON-0072"]
+    paper_refs: ["papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py::test_winding_position_reconstructs_natural_position
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd
