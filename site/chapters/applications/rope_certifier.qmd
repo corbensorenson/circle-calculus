@@ -100,7 +100,7 @@ The model-like presets pass the exact discrete contract under the rounded intege
 
 - Exact collision is not guessed by scanning every pair. The theorem reduces it to divisibility of the position gap.
 - If the common exact collision gap is inside the context, the report lists sample colliding position pairs.
-- The guaranteed common-gap count is `context - gap`: every counted start gives an all-channel collision at that gap. The LCM theorem upgrades the positive common-gap-multiple sum into the exact total bank collision count for the declared integer-period model, and the LCM pass theorem proves no unequal in-context all-channel collision when the LCM reaches the inspected context.
+- The guaranteed common-gap count is `context - gap`: every counted start gives an all-channel collision at that gap. The LCM theorem upgrades the positive common-gap-multiple sum into the exact total bank collision count for the declared integer-period model. The LCM pass theorem proves no unequal in-context all-channel collision when the LCM reaches the inspected context, and the LCM fail-witness theorem proves an explicit unequal collision exists when the positive LCM is below the context.
 - The per-channel single-period counts are exact for each individual integer period; they are not all-channel bank counts.
 - If the exact discrete contract passes, the report still does not claim real model quality or long-context success.
 - The real-phase margin scan is useful engineering evidence, but it is not a Lean proof over real-valued trigonometric RoPE.
@@ -120,6 +120,8 @@ The model-like presets pass the exact discrete contract under the rounded intege
 <div class="theorem-box" data-theorem-id="AIRA-T0035"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0036"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0046"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0048"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0049"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0029"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0030"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0031"></div>

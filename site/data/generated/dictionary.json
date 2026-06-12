@@ -10176,6 +10176,18 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0048",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
+          "name": "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0049",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
+          "name": "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -10374,6 +10386,18 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0048",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
+          "name": "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0049",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
+          "name": "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -10446,6 +10470,18 @@
           "id": "AIRA-T0046",
           "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
           "name": "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0048",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
+          "name": "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0049",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
+          "name": "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
           "status": "proved"
         }
       ],
@@ -10922,10 +10958,10 @@
         "A claim about model quality, context length, speed, memory, or perplexity.",
         "A count for undeclared or floating-point channels outside the integer-period bank model."
       ],
-      "formal_definition": "For a finite integer-period RoPE bank, Lean theorem `Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap` proves that all-channel collision for ordered positions is equivalent to the period-bank LCM dividing the position gap. The executable total bank count therefore sums `context - multiple * lcm` over positive in-context multiples of that LCM. Theorem `Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context` proves the pass case: if the LCM reaches the inspected context, no unequal ordered in-context all-channel collision exists.",
+      "formal_definition": "For a finite integer-period RoPE bank, Lean theorem `Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap` proves that all-channel collision for ordered positions is equivalent to the period-bank LCM dividing the position gap. The executable total bank count therefore sums `context - multiple * lcm` over positive in-context multiples of that LCM. Theorem `Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context` proves the pass case: if the LCM reaches the inspected context, no unequal ordered in-context all-channel collision exists. Theorems `Circle.Applications.ropePhaseBankCollision_at_lcm_gap` and `Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context` prove the fail side: every counted start at the LCM gap collides, and a positive LCM below context yields an explicit unequal collision witness.",
       "id": "COMMON-0084",
       "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
-      "intuition": "All channels repeat together exactly at multiples of their shared period-bank LCM. If the first shared repeat is inside the context, the integer-model bank collision count is a finite sum over those repeats; if it is outside the context, the bank has no unequal in-context all-channel collision.",
+      "intuition": "All channels repeat together exactly at multiples of their shared period-bank LCM. If the first shared repeat is inside the context, the integer-model bank collision count is a finite sum over those repeats and the certifier has a checked sample-collision witness; if it is outside the context, the bank has no unequal in-context all-channel collision.",
       "kind": "metric",
       "name": "RoPE period-bank LCM collision count",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
@@ -10950,6 +10986,18 @@
           "id": "AIRA-T0046",
           "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
           "name": "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0048",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
+          "name": "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0049",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
+          "name": "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
           "status": "proved"
         }
       ],

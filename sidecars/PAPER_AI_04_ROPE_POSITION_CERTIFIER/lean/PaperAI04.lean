@@ -30,6 +30,8 @@ namespace Circle.PaperAI04
 #check Circle.Applications.ropePeriodBankLCM_dvd_of_forall_dvd
 #check Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap
 #check Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context
+#check Circle.Applications.ropePhaseBankCollision_at_lcm_gap
+#check Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context
 #check Circle.Applications.ropeRealPhaseGap
 #check Circle.Applications.ropeRealPhaseGapAbs
 #check Circle.Applications.ropeRealPhaseNatTurnError

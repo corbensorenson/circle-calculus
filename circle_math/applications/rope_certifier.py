@@ -32,6 +32,8 @@ ROPE_CERTIFIER_THEOREMS: tuple[str, ...] = (
     "AIRA-T0035",
     "AIRA-T0036",
     "AIRA-T0046",
+    "AIRA-T0048",
+    "AIRA-T0049",
 )
 
 ROPE_CERTIFIER_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -47,6 +49,8 @@ ROPE_CERTIFIER_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap",
     "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap",
     "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
+    "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
+    "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
@@ -629,7 +633,7 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
             "Lean theorem AIRA-T0028 certifies every counted start at the common collision gap as an all-channel collision.",
             "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
             "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
-            "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists.",
+            "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness.",
         ),
         explanation=(
             "PASS: the common exact collision gap is at least the context length, so no two unequal "

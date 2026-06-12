@@ -226,6 +226,46 @@ theorem ropePhaseBankCollision_iff_lcm_dvd_gap
   · intro hlcm period hmem
     exact Nat.dvd_trans (ropePeriodBankLCM_dvd_of_mem hmem) hlcm
 
+/-- Every in-context start paired with the period-bank LCM gap is an
+all-channel collision.
+
+This is the exact fail-side companion to the LCM pass condition: when the LCM
+is below the requested context, the certifier can cite this theorem for the
+reported collision family rather than treating the family as a brute-force
+observation. -/
+theorem ropePhaseBankCollision_at_lcm_gap
+    {periods : List Nat} {context start : Nat}
+    (hstart : start < ropeCollisionPairCountAtGap context (ropePeriodBankLCM periods)) :
+    ropePhaseBankCollision periods start (start + ropePeriodBankLCM periods) ∧
+      start + ropePeriodBankLCM periods < context := by
+  exact ropePhaseBankCollision_at_gap_of_forall_dvd
+    (periods := periods) (context := context) (gap := ropePeriodBankLCM periods)
+    (start := start) (fun period hmem => ropePeriodBankLCM_dvd_of_mem hmem) hstart
+
+/-- If the period-bank LCM is positive and smaller than the inspected context,
+then the integer-period bank has an explicit unequal all-channel collision
+witness inside the context.
+
+Together with `not_ropePhaseBankCollision_of_lcm_ge_context`, this gives the
+certifier a two-sided exact LCM contract: reaching the context proves no
+unequal in-context all-channel collisions; falling short produces a checked
+collision witness. -/
+theorem ropePhaseBankCollision_exists_of_lcm_pos_lt_context
+    {periods : List Nat} {context : Nat}
+    (hlcm_pos : 0 < ropePeriodBankLCM periods)
+    (hlcm_lt_context : ropePeriodBankLCM periods < context) :
+    ∃ left right,
+      left < right ∧ right < context ∧ ropePhaseBankCollision periods left right := by
+  have hstart : 0 < ropeCollisionPairCountAtGap context (ropePeriodBankLCM periods) :=
+    ropeCollisionPairCountAtGap_pos_iff.mpr hlcm_lt_context
+  have hfamily :=
+    ropePhaseBankCollision_at_lcm_gap (periods := periods) (context := context)
+      (start := 0) hstart
+  refine ⟨0, ropePeriodBankLCM periods, ?_, ?_, ?_⟩
+  · simpa using hlcm_pos
+  · simpa using hfamily.2
+  · simpa using hfamily.1
+
 /-- If the period-bank LCM reaches the inspected context, no unequal ordered
 in-context pair can collide in every declared channel.
 

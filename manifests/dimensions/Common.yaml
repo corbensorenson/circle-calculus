@@ -2224,6 +2224,34 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context
     blocker: ""
+  - id: AIRA-T0048
+    status: lean_proved
+    lean_name: Circle.Applications.ropePhaseBankCollision_at_lcm_gap
+    informal_statement: "Every in-context start paired with the period-bank LCM gap gives an all-channel collision in the declared integer-period RoPE bank."
+    formal_statement: "forall {periods : List Nat} {context start : Nat}, start < Circle.Applications.ropeCollisionPairCountAtGap context (Circle.Applications.ropePeriodBankLCM periods) -> Circle.Applications.ropePhaseBankCollision periods start (start + Circle.Applications.ropePeriodBankLCM periods) and start + Circle.Applications.ropePeriodBankLCM periods < context"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
+    blocker: ""
+  - id: AIRA-T0049
+    status: lean_proved
+    lean_name: Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context
+    informal_statement: "If the period-bank LCM is positive and below the inspected context, the declared integer-period RoPE bank has an explicit unequal all-channel collision witness inside the context."
+    formal_statement: "forall {periods : List Nat} {context : Nat}, 0 < Circle.Applications.ropePeriodBankLCM periods -> Circle.Applications.ropePeriodBankLCM periods < context -> exists left right, left < right and right < context and Circle.Applications.ropePhaseBankCollision periods left right"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
+    blocker: ""
   - id: AIRA-T0029
     status: lean_proved
     lean_name: Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs
