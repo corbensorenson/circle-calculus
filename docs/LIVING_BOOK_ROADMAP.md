@@ -128,6 +128,20 @@ finite gauge loops -> holonomy -> Hopf hidden phase -> spin sign ambiguity -> pe
 
 Each mature lesson must show the ordinary baseline, the Circle Calculus representation, the proof boundary, the executable fixture, the limitation, and then the source links. Physics pages must not imply a proved continuum model, and generator pages must not call a generator minimal without an explicit criterion and search space.
 
+## Main Project Phase VIII: Depth And External Validation
+
+The Living Book should make the proof-carrying contract lane tangible to readers. Its application path should lead with the RoPE certifier demo, then teach the finite-circle foundations and limitations that make the certificate honest.
+
+Required reader-facing additions:
+
+- an ML-engineer quickstart for `scripts/rope_certify.py`;
+- a reproducible RoPE results note for named presets and model-like configurations;
+- clear separation between exact integer-period phase-bank certificates and numerical real-phase margin scans;
+- future theorem boxes for real-phase bounds, collision counts, sparse-coverage iffs, and ring-buffer/KV-cache safety only when their manifest entries exist;
+- a short explanation of the proof-depth/vacuity guard once it is implemented.
+
+This phase should not make the Living Book sound like a benchmark win. It should show the useful contract first, then state exactly what it proves, what it measures numerically, and what it does not claim.
+
 ## First Milestone Acceptance Criteria
 
 - [x] `site/` exists as a Quarto project.

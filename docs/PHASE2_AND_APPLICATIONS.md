@@ -90,6 +90,22 @@ The Circle Calculus opportunity is narrow and useful:
 
 The first implementation target is `P5-EDGE-010`, now seeded by `AIM-B0003`, `AIM-B0011`, `AIM-B0005`, `AIM-B0012`, `AIM-B0006`, `AIM-B0007`, `AIM-B0013`, `AIM-B0008`, `AIM-B0014`, and `AIM-B0009`: deterministic recurrence-schedule, loop-exit certificate, token-level recurrence routing, learned token-level recurrence routing, training-free loop-wrapper, middle-block recurrence, learned middle-block recurrence, multi-resolution recurrence, learned multi-resolution recurrence, and learned recurrence-schedule fixtures. The adjacent coil-attention lane now includes `AIM-B0010`, a deterministic learned content-gate fixture with route accuracy, wrong-period/flipped-gate controls, and candidate-budget accounting. These fixtures report loop budget, exit step, score trace, exit availability, overthinking guardrail status, active-token counts, selected middle block, resolution labels, wrong-period and wrong/over-loop controls, CPU/optional-MLX scoring, block-pass accounting, single-resolution controls, wrong-resolution controls, learned token phase-to-budget lookup tables, learned block phase lookup tables, learned resolution lookup tables, learned schedule lookup tables, learned phase-to-route lookup tables, and baseline labels before any MLX model training begins. Lean theorem targets should stay at finite schedule/index/closure facts unless a stronger formal model is explicitly built.
 
+## Phase VIII AI Contract Hardening
+
+The AI lane should now prefer fewer, deeper, externally useful contracts over broad fixture growth. The RoPE position-distinguishability certifier is the first complete shape: theorem spine, Python CLI, Living Book widget, paper, manifest entries, and a non-Lean user path.
+
+Next AI work should target:
+
+- real RoPE phase-margin theorem work or a bounded quantitative precursor;
+- sparse-attention coverage iffs that expose uncovered lags, not just reachable examples;
+- finite phase-bank collision counting for the certifier;
+- reproducible RoPE findings on named configurations;
+- one external checkpoint from a Lean, ML-verification, or engineering audience;
+- ring-buffer/KV-cache safety as the second proof-carrying AI contract;
+- a proof-depth/vacuity guard so the theorem list does not fill with ceremonial declarations.
+
+The success metric is not beating ordinary neural baselines. The success metric is a checked contract that gives guarantees ordinary unchecked configs, comments, or benchmark scripts do not provide. Benchmark and model-quality work can continue, but it should no longer crowd out the contract lane.
+
 ## First Demonstrators
 
 The first useful artifacts should be small enough to verify end to end.

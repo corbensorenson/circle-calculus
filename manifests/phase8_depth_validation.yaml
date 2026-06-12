@@ -1,0 +1,197 @@
+targets:
+  - id: P8-DEPTH-001
+    area: "RoPE real-phase margin"
+    priority: high
+    status: active
+    target_type: proof_program
+    title: "Real RoPE phase-margin theorem program"
+    question: "Can the RoPE certifier's numerical real-phase margin caveat become a theorem-backed quantitative bound?"
+    ordinary_baseline: "Unchecked numerical phase scans and prose notes about RoPE aliasing or long-context scaling."
+    acceptance_criteria:
+      - "State a precise real-valued phase-distance object and distinguish it from the existing integer-period phase-bank model."
+      - "Prove at least one quantitative lower-bound, nearest-convergent, or bounded-search precursor whose proof is more than definitional unfolding."
+      - "Keep continued-fraction, three-distance, or Diophantine approximation dependencies explicit before claiming the full theorem."
+      - "Update the RoPE paper, certifier output, and Living Book page only to the level justified by the proved theorem."
+    artifact_refs:
+      - "docs/PHASE8_DEPTH_VALIDATION.md"
+      - "Circle/Applications/RoPECertifier.lean"
+      - "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md"
+      - "circle_math/applications/rope_certifier.py"
+      - "site/chapters/applications/rope_certifier.qmd"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077"]
+    next_action: "Audit mathlib support for continued fractions, fractional-part distance, and finite minimum bounds, then choose the smallest theorem that gives the certifier a real quantitative margin statement."
+    guardrail: "Do not present numerical margin scans as Lean-proved real RoPE theorems."
+
+  - id: P8-DEPTH-002
+    area: "Sparse attention coverage"
+    priority: high
+    status: active
+    target_type: proof_program
+    title: "Sparse-attention coverage iff and gap certificates"
+    question: "Can local plus stride-family attention contracts characterize exactly which lags are covered, not just exhibit reachable lags?"
+    ordinary_baseline: "Sparse-attention design notes that list reachable examples without a proof of coverage gaps."
+    acceptance_criteria:
+      - "Define a coverage predicate for local-window plus finite stride-family plans over a finite context and candidate budget."
+      - "Prove an iff, converse, or no-gap/no-coverage statement that can identify missing lags."
+      - "Emit Python certificates that list covered lags, uncovered lags, and candidate counts for fixed plans."
+      - "Keep model-quality, long-context, throughput, and memory claims outside the theorem."
+    artifact_refs:
+      - "docs/PHASE8_DEPTH_VALIDATION.md"
+      - "Circle/Applications/CircleTransformer.lean"
+      - "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md"
+      - "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py"
+      - "site/chapters/applications/ai.qmd"
+    dictionary_dependencies: ["COMMON-0075"]
+    next_action: "Design the smallest finite coverage predicate whose forward direction reuses current reachability theorems and whose reverse direction exposes uncovered lags."
+    guardrail: "Do not confuse lag coverage with neural attention quality or runtime."
+
+  - id: P8-DEPTH-003
+    area: "Collision counting"
+    priority: high
+    status: planned
+    target_type: proof_program
+    title: "Finite phase-bank collision counting"
+    question: "Can the RoPE certifier count colliding position pairs, not only report the first collision?"
+    ordinary_baseline: "Manual or brute-force scan over position pairs without theorem-backed counting."
+    acceptance_criteria:
+      - "Define colliding unordered or ordered pair counts for a finite context and period bank."
+      - "Prove exact formulas for one-period banks and a tractable multi-period case, using gcd/lcm/CRT-style reasoning where appropriate."
+      - "Update Python output to include theorem-cited collision counts and representative examples."
+      - "Add tests comparing the formula to brute-force enumeration on bounded contexts."
+    artifact_refs:
+      - "docs/PHASE8_DEPTH_VALIDATION.md"
+      - "Circle/Applications/RoPECertifier.lean"
+      - "circle_math/applications/rope_certifier.py"
+      - "tests/test_rope_certifier.py"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077"]
+    next_action: "Start with the one-period ordered-pair count, then extend to banks through common collision period when the lcm is bounded."
+    guardrail: "Do not imply the finite integer-period count is a count of real-valued RoPE collisions unless the real model is separately formalized."
+
+  - id: P8-VALID-001
+    area: "RoPE results note"
+    priority: high
+    status: planned
+    target_type: results_note
+    title: "Reproducible RoPE certifier findings on named configurations"
+    question: "Can the project say something checkable about real model-like RoPE configurations rather than only shipping tooling?"
+    ordinary_baseline: "Configuration prose that states head dimension, base, and context length without a reproducible certificate."
+    acceptance_criteria:
+      - "Run the certifier on named Llama-style base/context/head-dim configurations plus discretized or quantized variants where exact collisions can occur."
+      - "Store JSON outputs or deterministic fixtures under sidecars or generated site data, not as loose reports."
+      - "Write a short Living Book results note that distinguishes exact discrete certificates from numerical real-phase margins."
+      - "Include commands so a reader can reproduce every table row."
+    artifact_refs:
+      - "docs/PHASE8_DEPTH_VALIDATION.md"
+      - "scripts/rope_certify.py"
+      - "sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/python/benchmark_rope_certifier.py"
+      - "site/chapters/applications/rope_certifier.qmd"
+    dictionary_dependencies: ["COMMON-0077"]
+    next_action: "Promote the three existing preset runs into a reader-facing results table with reproducible commands and no model-quality claims."
+    guardrail: "A pass/fail certificate is not evidence of perplexity, long-context ability, runtime, or memory behavior."
+
+  - id: P8-VALID-002
+    area: "External checkpoint"
+    priority: medium
+    status: planned
+    target_type: external_review
+    title: "One outside review or use checkpoint"
+    question: "Can one person outside the repo understand, try, critique, or reuse the certifier?"
+    ordinary_baseline: "Private self-review and local tests only."
+    acceptance_criteria:
+      - "Prepare a concise public review packet: quickstart, theorem ids, limitations, and reproduction commands."
+      - "Ask for feedback in an appropriate venue such as Lean Zulip, an ML-verification forum, a GitHub discussion, or a workshop-style note."
+      - "Record a durable link or issue and fold actionable feedback into the roadmap without changing proof status by social approval."
+    artifact_refs:
+      - "docs/PHASE8_DEPTH_VALIDATION.md"
+      - "README.md"
+      - "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md"
+      - "site/chapters/applications/rope_certifier.qmd"
+    dictionary_dependencies: ["COMMON-0077"]
+    next_action: "After the ML-engineer quickstart and results note exist, assemble a review packet and ask one focused external venue for critique."
+    guardrail: "External interest is validation of usefulness and communication, not a substitute for Lean proofs."
+
+  - id: P8-CONTRACT-001
+    area: "Second AI contract"
+    priority: high
+    status: planned
+    target_type: proof_contract
+    title: "Ring-buffer and KV-cache safety contract"
+    question: "Can Circle Calculus prove practical cyclic cache-index safety properties for streaming or long-context inference?"
+    ordinary_baseline: "Implementation comments and tests for ring-buffer indexing, overwrite policy, and stale-read avoidance."
+    acceptance_criteria:
+      - "Define a finite ring-buffer/KV-cache policy with capacity, write step, retained window, and read request."
+      - "Prove no-overwrite-before-read or no-stale-read theorems under explicit policy assumptions."
+      - "Provide a Python CLI or fixture that emits theorem-cited pass/fail certificates for simple cache policies."
+      - "Add a Living Book lesson that treats this as an engineering contract, not a model-quality result."
+    artifact_refs:
+      - "docs/PHASE8_DEPTH_VALIDATION.md"
+      - "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md"
+      - "Circle/Applications/CircleTransformer.lean"
+      - "site/chapters/applications/ai.qmd"
+    dictionary_dependencies: ["COMMON-0019", "COMMON-0020"]
+    next_action: "Draft the minimal finite cache policy and decide whether it belongs in a new Lean file or extends the existing AI memory-slot module."
+    guardrail: "Do not claim the contract proves an implementation language, GPU kernel, or deployed cache unless that implementation is modeled."
+
+  - id: P8-ENG-001
+    area: "Repository and CI visibility"
+    priority: medium
+    status: planned
+    target_type: tooling
+    title: "Root cleanup and public CI badge"
+    question: "Can the repo become easier to consume without losing handoff context or proof visibility?"
+    ordinary_baseline: "Root-level archival folders and proof checks visible only in local runs."
+    acceptance_criteria:
+      - "Move or archive root handoff folders only after replacing all docs links with stable curated references."
+      - "Add a GitHub Actions badge for the workflow that runs the public proof/check suite when that workflow is stable."
+      - "Keep generated render artifacts, caches, and transient reports out of git."
+    artifact_refs:
+      - "docs/PHASE8_DEPTH_VALIDATION.md"
+      - "README.md"
+      - "circle_calculus_codex_handoff"
+      - "circle_calculus_dimensional_handoff"
+    dictionary_dependencies: []
+    next_action: "Inventory references to the two handoff directories, then either keep them intentionally or move them into an archive path with link-preserving updates."
+    guardrail: "Do not move or delete handoff context in a way that breaks source trails."
+
+  - id: P8-ENG-002
+    area: "Proof-depth guardrails"
+    priority: high
+    status: planned
+    target_type: tooling
+    title: "Vacuity and proof-depth guard"
+    question: "Can the project flag theorem declarations that are technically proved but mostly ceremonial?"
+    ordinary_baseline: "Manual code review of proof substance after fake-proof checks pass."
+    acceptance_criteria:
+      - "Add a heuristic checker that flags bare constructor/projection/trivial wrapper proof bodies unless the theorem is classified as a wrapper, metadata projection, or scaffold."
+      - "Expose a proof-depth or proof-kind field in manifests or generated audit output without pretending a heuristic is a sound mathematical measure."
+      - "Wire the checker into `make check` once false positives are documented and manageable."
+    artifact_refs:
+      - "docs/PHASE8_DEPTH_VALIDATION.md"
+      - "scripts/check_no_fake_proofs.py"
+      - "manifests/dimensions/Common.yaml"
+      - "Circle/Applications/CircleTransformer.lean"
+    dictionary_dependencies: []
+    next_action: "Prototype a non-failing audit report first, then decide which categories should become failing checks."
+    guardrail: "A proof-depth heuristic is a review aid, not a formal soundness theorem."
+
+  - id: P8-COMM-001
+    area: "ML-engineer communication"
+    priority: high
+    status: planned
+    target_type: communication
+    title: "Certifier quickstart and Living Book front-door demo"
+    question: "Can an ML engineer use the RoPE certifier without reading Lean internals?"
+    ordinary_baseline: "A formalization repo that requires readers to inspect Lean files before understanding the artifact."
+    acceptance_criteria:
+      - "Write a short quickstart: install, run preset, run custom config, read pass/fail, inspect theorem ids, understand limitations."
+      - "Make the Living Book application path lead with the RoPE certifier demo before broad AI scaffolding."
+      - "Keep the README short and link to detailed docs instead of front-loading benchmark plumbing."
+    artifact_refs:
+      - "docs/PHASE8_DEPTH_VALIDATION.md"
+      - "README.md"
+      - "scripts/rope_certify.py"
+      - "site/chapters/applications/rope_certifier.qmd"
+      - "docs/LIVING_BOOK_ROADMAP.md"
+    dictionary_dependencies: ["COMMON-0077"]
+    next_action: "Add a dedicated quickstart page or section and make the application landing path surface the certifier as the flagship AI contract."
+    guardrail: "Do not hide assumptions or limitations to make the demo sound stronger."

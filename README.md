@@ -41,7 +41,8 @@ This repository does not claim to have rebuilt all of mathematics from circles. 
 4. `manifests/theorem_manifest.yaml` for theorem status.
 5. `docs/COMPLETION_ROADMAP.md` and `docs/DIMENSIONAL_LADDER.md` for where it is going.
 6. `papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md` and `scripts/rope_certify.py` for the first externally usable AI contract.
-7. `docs/THESEUS_HIVE_AI_TRANSFER.md` for the optional private-transfer lane; it is not the public proof standard.
+7. `docs/PHASE8_DEPTH_VALIDATION.md` for the current depth-and-validation push: RoPE real-phase theorem work, sparse coverage iffs, collision counting, KV-cache safety, external review, and proof-depth guardrails.
+8. `docs/THESEUS_HIVE_AI_TRANSFER.md` for the optional private-transfer lane; it is not the public proof standard.
 
 The Living Book's [What "Proved" Means Here](https://corbensorenson.github.io/circle-calculus/what_proved_means.html) page is the one-paragraph contract the whole project lives by.
 
