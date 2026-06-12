@@ -4691,6 +4691,36 @@
           "lean_name": "Circle.Applications.hybridFamilyDedupCandidateBudgetBound_eq_context_of_context_le_raw",
           "name": "Circle.Applications.hybridFamilyDedupCandidateBudgetBound_eq_context_of_context_le_raw",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0043",
+          "lean_name": "Circle.Applications.localLagCandidateList_length",
+          "name": "Circle.Applications.localLagCandidateList_length",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0045",
+          "lean_name": "Circle.Applications.hybridFamilyLagCandidateList_length",
+          "name": "Circle.Applications.hybridFamilyLagCandidateList_length",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0046",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_le_raw",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_le_raw",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0047",
+          "lean_name": "Circle.Applications.mem_localLagCandidateList_iff",
+          "name": "Circle.Applications.mem_localLagCandidateList_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0050",
+          "lean_name": "Circle.Applications.mem_hybridFamilyLagCandidateList_iff",
+          "name": "Circle.Applications.mem_hybridFamilyLagCandidateList_iff",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -4926,6 +4956,42 @@
           "lean_name": "Circle.Applications.hybridFamilyDedupCandidateBudgetBound_eq_context_of_context_le_raw",
           "name": "Circle.Applications.hybridFamilyDedupCandidateBudgetBound_eq_context_of_context_le_raw",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0044",
+          "lean_name": "Circle.Applications.coilStrideFamilyLagResidueList_length",
+          "name": "Circle.Applications.coilStrideFamilyLagResidueList_length",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0045",
+          "lean_name": "Circle.Applications.hybridFamilyLagCandidateList_length",
+          "name": "Circle.Applications.hybridFamilyLagCandidateList_length",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0046",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_le_raw",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_le_raw",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0048",
+          "lean_name": "Circle.Applications.mem_coilLagResidueList_iff",
+          "name": "Circle.Applications.mem_coilLagResidueList_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0049",
+          "lean_name": "Circle.Applications.mem_coilStrideFamilyLagResidueList_iff",
+          "name": "Circle.Applications.mem_coilStrideFamilyLagResidueList_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0050",
+          "lean_name": "Circle.Applications.mem_hybridFamilyLagCandidateList_iff",
+          "name": "Circle.Applications.mem_hybridFamilyLagCandidateList_iff",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -4942,7 +5008,7 @@
         {
           "id": "stride_family_attention",
           "path": "site/widgets/ai/stride_family_attention.js",
-          "python_reference": "circle_math.applications.circle_ai.stride_family_attention_candidates; circle_math.applications.circle_ai.structured_stride_family_target_lags; circle_math.applications.circle_ai.nonstructured_stride_family_control_lags; circle_math.applications.circle_ai.run_stride_family_sparse_attention_benchmark"
+          "python_reference": "circle_math.applications.circle_ai.stride_family_attention_candidates; circle_math.applications.circle_ai.stride_family_lag_candidate_list; circle_math.applications.circle_ai.structured_stride_family_target_lags; circle_math.applications.circle_ai.nonstructured_stride_family_control_lags; circle_math.applications.circle_ai.run_stride_family_sparse_attention_benchmark"
         }
       ]
     },
@@ -6023,6 +6089,54 @@
           "lean_name": "Circle.Applications.hybridFamilyDedupCandidateBudgetBound_eq_context_of_context_le_raw",
           "name": "Circle.Applications.hybridFamilyDedupCandidateBudgetBound_eq_context_of_context_le_raw",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0043",
+          "lean_name": "Circle.Applications.localLagCandidateList_length",
+          "name": "Circle.Applications.localLagCandidateList_length",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0044",
+          "lean_name": "Circle.Applications.coilStrideFamilyLagResidueList_length",
+          "name": "Circle.Applications.coilStrideFamilyLagResidueList_length",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0045",
+          "lean_name": "Circle.Applications.hybridFamilyLagCandidateList_length",
+          "name": "Circle.Applications.hybridFamilyLagCandidateList_length",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0046",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_le_raw",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_le_raw",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0047",
+          "lean_name": "Circle.Applications.mem_localLagCandidateList_iff",
+          "name": "Circle.Applications.mem_localLagCandidateList_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0048",
+          "lean_name": "Circle.Applications.mem_coilLagResidueList_iff",
+          "name": "Circle.Applications.mem_coilLagResidueList_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0049",
+          "lean_name": "Circle.Applications.mem_coilStrideFamilyLagResidueList_iff",
+          "name": "Circle.Applications.mem_coilStrideFamilyLagResidueList_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0050",
+          "lean_name": "Circle.Applications.mem_hybridFamilyLagCandidateList_iff",
+          "name": "Circle.Applications.mem_hybridFamilyLagCandidateList_iff",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -6049,7 +6163,7 @@
         {
           "id": "stride_family_attention",
           "path": "site/widgets/ai/stride_family_attention.js",
-          "python_reference": "circle_math.applications.circle_ai.stride_family_attention_candidates; circle_math.applications.circle_ai.structured_stride_family_target_lags; circle_math.applications.circle_ai.nonstructured_stride_family_control_lags; circle_math.applications.circle_ai.run_stride_family_sparse_attention_benchmark"
+          "python_reference": "circle_math.applications.circle_ai.stride_family_attention_candidates; circle_math.applications.circle_ai.stride_family_lag_candidate_list; circle_math.applications.circle_ai.structured_stride_family_target_lags; circle_math.applications.circle_ai.nonstructured_stride_family_control_lags; circle_math.applications.circle_ai.run_stride_family_sparse_attention_benchmark"
         }
       ]
     },
@@ -10204,13 +10318,61 @@
           "lean_name": "Circle.Applications.hybridFamilyDedupCandidateBudgetBound_eq_context_of_context_le_raw",
           "name": "Circle.Applications.hybridFamilyDedupCandidateBudgetBound_eq_context_of_context_le_raw",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0043",
+          "lean_name": "Circle.Applications.localLagCandidateList_length",
+          "name": "Circle.Applications.localLagCandidateList_length",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0044",
+          "lean_name": "Circle.Applications.coilStrideFamilyLagResidueList_length",
+          "name": "Circle.Applications.coilStrideFamilyLagResidueList_length",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0045",
+          "lean_name": "Circle.Applications.hybridFamilyLagCandidateList_length",
+          "name": "Circle.Applications.hybridFamilyLagCandidateList_length",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0046",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_le_raw",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_le_raw",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0047",
+          "lean_name": "Circle.Applications.mem_localLagCandidateList_iff",
+          "name": "Circle.Applications.mem_localLagCandidateList_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0048",
+          "lean_name": "Circle.Applications.mem_coilLagResidueList_iff",
+          "name": "Circle.Applications.mem_coilLagResidueList_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0049",
+          "lean_name": "Circle.Applications.mem_coilStrideFamilyLagResidueList_iff",
+          "name": "Circle.Applications.mem_coilStrideFamilyLagResidueList_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0050",
+          "lean_name": "Circle.Applications.mem_hybridFamilyLagCandidateList_iff",
+          "name": "Circle.Applications.mem_hybridFamilyLagCandidateList_iff",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
         {
           "id": "stride_family_attention",
           "path": "site/widgets/ai/stride_family_attention.js",
-          "python_reference": "circle_math.applications.circle_ai.stride_family_attention_candidates; circle_math.applications.circle_ai.structured_stride_family_target_lags; circle_math.applications.circle_ai.nonstructured_stride_family_control_lags; circle_math.applications.circle_ai.run_stride_family_sparse_attention_benchmark"
+          "python_reference": "circle_math.applications.circle_ai.stride_family_attention_candidates; circle_math.applications.circle_ai.stride_family_lag_candidate_list; circle_math.applications.circle_ai.structured_stride_family_target_lags; circle_math.applications.circle_ai.nonstructured_stride_family_control_lags; circle_math.applications.circle_ai.run_stride_family_sparse_attention_benchmark"
         }
       ]
     },
@@ -10739,10 +10901,10 @@
         "A proof that sparse attention is faster or uses less memory.",
         "A claim that uncovered lags are irrelevant to a real task."
       ],
-      "formal_definition": "`circle_math.applications.circle_ai.certify_stride_family_coverage`, a finite certificate listing every positive lag covered by a local-window plus stride-family sparse-attention plan and every uncovered lag as a gap certificate; Lean theorem `Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family` states the abstract gap predicate, `Circle.Applications.not_localLagReach_iff_window_lt_of_pos` characterizes the local-window miss for positive lags, `Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne` gives the concrete no-local/no-stride-step certificate condition, `Circle.Applications.hybridFamilyCoversContext_iff_no_uncovered_lag` proves that the named complete-coverage predicate is equivalent to having no positive in-context uncovered-lag witness, `Circle.Applications.hybridFamilyLagReach_of_localWindow_ge_context_sub_one` and `Circle.Applications.hybridFamilyCoversContext_of_localWindow_ge_context_sub_one` give the dense-local complete-coverage sufficient condition, `Circle.Applications.localWindowCoversContext_iff_context_sub_one_le` proves the exact local-window complete-coverage criterion, the `*_cons_iff` theorems decompose one added stride against the rest of the finite family, `Circle.Applications.hybridFamilyLagReach_nil_iff_local` records the empty-family local-only baseline, the monotonicity theorems prove that increasing local-window width or admitted path length cannot remove covered lags or complete coverage, `Circle.Applications.hybridFamilyRawCandidateBudget_*` theorems account for the raw upper bound `window + pathLength * strides.length` before duplicate removal, and `Circle.Applications.hybridFamilyDedupCandidateBudgetBound_*` theorems account for the tighter `min(context, raw_budget)` deduplicated-count cap.",
+      "formal_definition": "`circle_math.applications.circle_ai.certify_stride_family_coverage`, a finite certificate listing every positive lag covered by a local-window plus stride-family sparse-attention plan and every uncovered lag as a gap certificate; Lean theorem `Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family` states the abstract gap predicate, `Circle.Applications.not_localLagReach_iff_window_lt_of_pos` characterizes the local-window miss for positive lags, `Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne` gives the concrete no-local/no-stride-step certificate condition, `Circle.Applications.hybridFamilyCoversContext_iff_no_uncovered_lag` proves that the named complete-coverage predicate is equivalent to having no positive in-context uncovered-lag witness, `Circle.Applications.hybridFamilyLagReach_of_localWindow_ge_context_sub_one` and `Circle.Applications.hybridFamilyCoversContext_of_localWindow_ge_context_sub_one` give the dense-local complete-coverage sufficient condition, `Circle.Applications.localWindowCoversContext_iff_context_sub_one_le` proves the exact local-window complete-coverage criterion, the `*_cons_iff` theorems decompose one added stride against the rest of the finite family, `Circle.Applications.hybridFamilyLagReach_nil_iff_local` records the empty-family local-only baseline, the monotonicity theorems prove that increasing local-window width or admitted path length cannot remove covered lags or complete coverage, `Circle.Applications.hybridFamilyRawCandidateBudget_*` theorems account for the raw upper bound `window + pathLength * strides.length` before duplicate removal, `Circle.Applications.hybridFamilyDedupCandidateBudgetBound_*` theorems account for the tighter `min(context, raw_budget)` deduplicated-count cap, and `Circle.Applications.mem_hybridFamilyLagCandidateList_iff` proves that the theorem-side lag-candidate list has exactly the same in-context membership semantics as the local+stride-family reachability predicate.",
       "id": "COMMON-0079",
       "introduced_in": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
-      "intuition": "Instead of showing only successful example lags, the certificate exposes the holes in a sparse plan with a checkable reason for each hole, identifies the exact local-window condition that removes all positive-lag holes, proves that conservative budget increases preserve existing lag coverage and complete coverage, and separates exact deduplicated candidate count from theorem-backed raw and context-clipped candidate-budget upper bounds.",
+      "intuition": "Instead of showing only successful example lags, the certificate exposes the holes in a sparse plan with a checkable reason for each hole, identifies the exact local-window condition that removes all positive-lag holes, proves that conservative budget increases preserve existing lag coverage and complete coverage, and separates exact theorem-side lag-candidate count from theorem-backed raw and context-clipped candidate-budget upper bounds.",
       "kind": "metric",
       "name": "Stride-family sparse coverage certificate",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
@@ -10893,6 +11055,54 @@
           "id": "AIT-T0042",
           "lean_name": "Circle.Applications.hybridFamilyDedupCandidateBudgetBound_eq_context_of_context_le_raw",
           "name": "Circle.Applications.hybridFamilyDedupCandidateBudgetBound_eq_context_of_context_le_raw",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0043",
+          "lean_name": "Circle.Applications.localLagCandidateList_length",
+          "name": "Circle.Applications.localLagCandidateList_length",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0044",
+          "lean_name": "Circle.Applications.coilStrideFamilyLagResidueList_length",
+          "name": "Circle.Applications.coilStrideFamilyLagResidueList_length",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0045",
+          "lean_name": "Circle.Applications.hybridFamilyLagCandidateList_length",
+          "name": "Circle.Applications.hybridFamilyLagCandidateList_length",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0046",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_le_raw",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_le_raw",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0047",
+          "lean_name": "Circle.Applications.mem_localLagCandidateList_iff",
+          "name": "Circle.Applications.mem_localLagCandidateList_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0048",
+          "lean_name": "Circle.Applications.mem_coilLagResidueList_iff",
+          "name": "Circle.Applications.mem_coilLagResidueList_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0049",
+          "lean_name": "Circle.Applications.mem_coilStrideFamilyLagResidueList_iff",
+          "name": "Circle.Applications.mem_coilStrideFamilyLagResidueList_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0050",
+          "lean_name": "Circle.Applications.mem_hybridFamilyLagCandidateList_iff",
+          "name": "Circle.Applications.mem_hybridFamilyLagCandidateList_iff",
           "status": "proved"
         }
       ],

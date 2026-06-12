@@ -3002,6 +3002,119 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_coverage_complete_when_local_window_covers_context
     blocker: ""
+  - id: AIT-T0043
+    status: lean_proved
+    lean_name: Circle.Applications.localLagCandidateList_length
+    informal_statement: "The theorem-side local lag-candidate list has exactly one raw entry for each admitted local-window lag."
+    formal_statement: "forall window : Nat, (Circle.Applications.localLagCandidateList window).length = window"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0044
+    status: lean_proved
+    lean_name: Circle.Applications.coilStrideFamilyLagResidueList_length
+    informal_statement: "The theorem-side stride-family residue list has exactly pathLength times number-of-strides raw entries before duplicate removal."
+    formal_statement: "forall n pathLength : Nat, forall strides : List Nat, (Circle.Applications.coilStrideFamilyLagResidueList n pathLength strides).length = pathLength * strides.length"
+    dictionary_dependencies: ["COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0045
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyLagCandidateList_length
+    informal_statement: "The theorem-side local plus stride-family lag-candidate list has exactly the raw sparse-attention candidate budget before duplicate removal."
+    formal_statement: "forall n window pathLength : Nat, forall strides : List Nat, (Circle.Applications.hybridFamilyLagCandidateList n window pathLength strides).length = Circle.Applications.hybridFamilyRawCandidateBudget window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0046
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyUniqueLagCandidateCount_le_raw
+    informal_statement: "The exact deduplicated theorem-side lag-candidate count is never larger than the raw candidate-budget upper bound."
+    formal_statement: "forall n window pathLength : Nat, forall strides : List Nat, Circle.Applications.hybridFamilyUniqueLagCandidateCount n window pathLength strides <= Circle.Applications.hybridFamilyRawCandidateBudget window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0047
+    status: lean_proved
+    lean_name: Circle.Applications.mem_localLagCandidateList_iff
+    informal_statement: "Membership in the theorem-side local lag-candidate list is exactly local-window reachability."
+    formal_statement: "forall {window lag : Nat}, lag in Circle.Applications.localLagCandidateList window iff Circle.Applications.localLagReach window lag"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_coverage_complete_when_local_window_covers_context
+    blocker: ""
+  - id: AIT-T0048
+    status: lean_proved
+    lean_name: Circle.Applications.mem_coilLagResidueList_iff
+    informal_statement: "For an in-context lag, membership in one stride's theorem-side residue list is exactly coil-path reachability."
+    formal_statement: "forall {n stride pathLength lag : Nat}, lag < n -> (lag in Circle.Applications.coilLagResidueList n stride pathLength iff Circle.Applications.coilLagReach n stride pathLength lag)"
+    dictionary_dependencies: ["COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0049
+    status: lean_proved
+    lean_name: Circle.Applications.mem_coilStrideFamilyLagResidueList_iff
+    informal_statement: "For an in-context lag, membership in the theorem-side finite stride-family residue list is exactly stride-family reachability."
+    formal_statement: "forall {n pathLength lag : Nat} {strides : List Nat}, lag < n -> (lag in Circle.Applications.coilStrideFamilyLagResidueList n pathLength strides iff Circle.Applications.coilStrideFamilyLagReach n pathLength lag strides)"
+    dictionary_dependencies: ["COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0050
+    status: lean_proved
+    lean_name: Circle.Applications.mem_hybridFamilyLagCandidateList_iff
+    informal_statement: "For an in-context lag, membership in the theorem-side hybrid candidate list is exactly local plus stride-family reachability."
+    formal_statement: "forall {n window pathLength lag : Nat} {strides : List Nat}, lag < n -> (lag in Circle.Applications.hybridFamilyLagCandidateList n window pathLength strides iff Circle.Applications.hybridFamilyLagReach n window pathLength lag strides)"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_coverage_complete_when_local_window_covers_context
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

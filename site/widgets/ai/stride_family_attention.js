@@ -21,6 +21,14 @@ const THEOREM_IDS = [
   "AIT-T0040",
   "AIT-T0041",
   "AIT-T0042",
+  "AIT-T0043",
+  "AIT-T0044",
+  "AIT-T0045",
+  "AIT-T0046",
+  "AIT-T0047",
+  "AIT-T0048",
+  "AIT-T0049",
+  "AIT-T0050",
 ];
 const DICTIONARY_IDS = ["COMMON-0075", "COMMON-0079", "COMMON-0047", "COMMON-0029"];
 
@@ -72,6 +80,16 @@ function strideFamilyCoveredLags(sequenceLength, strides, pathLength, localWindo
   return uniquePreservingOrder(covered);
 }
 
+function strideFamilyLagCandidateList(sequenceLength, strides, pathLength, localWindow) {
+  const candidates = Array.from({ length: localWindow }, (_, index) => index + 1);
+  for (const stride of strides) {
+    for (let step = 1; step <= pathLength; step += 1) {
+      candidates.push(mod(step * stride, sequenceLength));
+    }
+  }
+  return candidates;
+}
+
 function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, localWindow) {
   const coveredLags = strideFamilyCoveredLags(sequenceLength, strides, pathLength, localWindow);
   const covered = new Set(coveredLags);
@@ -82,6 +100,12 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
   const candidateBudget = strideFamilyCandidates(sequenceLength, 0, strides, pathLength, localWindow).length;
   const rawCandidateBudgetUpperBound = localWindow + pathLength * strides.length;
   const deduplicatedCandidateBudgetUpperBound = Math.min(sequenceLength, rawCandidateBudgetUpperBound);
+  const theoremSideLagCandidates = strideFamilyLagCandidateList(
+    sequenceLength,
+    strides,
+    pathLength,
+    localWindow,
+  );
   return {
     coveredLags,
     uncoveredLags,
@@ -90,6 +114,8 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
     candidateBudgetPerQuery: candidateBudget,
     rawCandidateBudgetUpperBound,
     deduplicatedCandidateBudgetUpperBound,
+    theoremSideLagCandidates,
+    theoremSideUniqueLagCandidateCount: new Set(theoremSideLagCandidates).size,
     fullAttentionBudget: sequenceLength,
     coverageComplete: uncoveredLags.length === 0,
     coverageRatio: sequenceLength <= 1 ? 1 : coveredLags.length / (sequenceLength - 1),
@@ -296,6 +322,8 @@ function appendRecord(output, values, theoremById) {
     `coverage complete: ${coverage.coverageComplete}`,
     `coverage ratio: ${formatNumber(coverage.coverageRatio)}`,
     `deduplicated candidate budget per query: ${coverage.candidateBudgetPerQuery}`,
+    `theorem-side unique lag-candidate count: ${coverage.theoremSideUniqueLagCandidateCount}`,
+    `theorem-side raw lag candidates: ${formatCandidates(coverage.theoremSideLagCandidates, 18)}`,
     `deduplicated candidate-budget upper bound: ${coverage.deduplicatedCandidateBudgetUpperBound}`,
     `raw candidate-budget upper bound: ${coverage.rawCandidateBudgetUpperBound}`,
     `full-attention budget: ${coverage.fullAttentionBudget}`,
