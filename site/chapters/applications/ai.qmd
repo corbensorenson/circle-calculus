@@ -151,7 +151,7 @@ The companion Theseus-Hive workspace now has five report-only local layers:
 - `scripts/circle_ai_real_workload_attachments.py` reads local Theseus-Hive artifacts and emits aggregate-only workload attachments without exporting private row content;
 - `scripts/circle_ai_scored_private_benchmarks.py` compares candidate-fanout, recurrence work-budget, cyclic-memory, phase-feature, route/ranker mixer, router-head attachment, and seed-rule contracts against ordinary baselines using private candidate-manifest score/gate fields, local private heldout tests, the local context-packet ledger, private sequence rows, local Octopus router traces, current router-head decisions, and safe provenance envelopes.
 
-When the generated contract pack is available, the private compiled ratchet now runs the consumer, structural smoke, deterministic proxy, and aggregate real-workload attachment layers automatically. The scored private layer remains data-gated: it should only run when the required private candidate, router, context, and provenance artifacts are present.
+When the generated contract pack is available, the private compiled ratchet now runs the consumer, structural smoke, deterministic proxy, and aggregate real-workload attachment layers automatically. The scored private layer remains data-gated: it should only run when the required private candidate, router, context, and provenance artifacts are present. The companion `scripts/circle_ai_lane_integrity_audit.py` report verifies that compiled/data-gated boundary as wiring evidence only.
 
 The smoke workload ids are:
 

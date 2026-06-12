@@ -242,6 +242,10 @@ smoke, deterministic proxy, and aggregate real-workload attachment layers as
 part of the compiled local ratchet. The scored private benchmark layer remains
 explicitly data-gated and should be run only when the required private
 candidate, router, context, and provenance artifacts are present.
+The same compiled ratchet now runs `scripts/circle_ai_lane_integrity_audit.py`
+to verify the contract-pack gate, safe compiled layers, output map, workflow
+classifier entries, tool cards, and the non-compiled status of scored/private
+maintenance layers.
 
 Run it from Theseus-Hive with:
 
