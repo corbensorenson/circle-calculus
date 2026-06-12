@@ -147,6 +147,26 @@ theorem coilStrideFamilyLagReach_add_context
   unfold coilStrideFamilyLagReach
   exact ⟨stride, hmem, coilLagReach_add_context hcoil⟩
 
+/-- Exact decomposition for adding one stride to a finite stride family. -/
+theorem coilStrideFamilyLagReach_cons_iff
+    {n pathLength lag stride : Nat} {strides : List Nat} :
+    coilStrideFamilyLagReach n pathLength lag (stride :: strides) ↔
+      coilLagReach n stride pathLength lag ∨
+        coilStrideFamilyLagReach n pathLength lag strides := by
+  unfold coilStrideFamilyLagReach
+  constructor
+  · rintro ⟨candidate, hmem, hreach⟩
+    simp at hmem
+    rcases hmem with hhead | htail
+    · subst candidate
+      exact Or.inl hreach
+    · exact Or.inr ⟨candidate, htail, hreach⟩
+  · intro hreach
+    rcases hreach with hhead | htail
+    · exact ⟨stride, by simp, hhead⟩
+    · rcases htail with ⟨candidate, hmem, hcandidate⟩
+      exact ⟨candidate, by simp [hmem], hcandidate⟩
+
 /-- A hybrid sparse head reaches every lag already reached by its local window. -/
 theorem hybridLagReach_of_local {n window stride pathLength lag : Nat}
     (hlocal : localLagReach window lag) :
@@ -183,6 +203,29 @@ theorem hybridFamilyLagReach_of_member_step
     hybridFamilyLagReach n window pathLength (step * stride) strides :=
   hybridFamilyLagReach_of_family
     (coilStrideFamilyLagReach_of_member_step hmem hpos hstep)
+
+/-- Exact decomposition for a local+stride-family plan when one stride is
+added to the family. -/
+theorem hybridFamilyLagReach_cons_iff
+    {n window pathLength lag stride : Nat} {strides : List Nat} :
+    hybridFamilyLagReach n window pathLength lag (stride :: strides) ↔
+      hybridFamilyLagReach n window pathLength lag strides ∨
+        coilLagReach n stride pathLength lag := by
+  unfold hybridFamilyLagReach
+  rw [coilStrideFamilyLagReach_cons_iff]
+  constructor
+  · intro hreach
+    rcases hreach with hlocal | hfamily
+    · exact Or.inl (Or.inl hlocal)
+    · rcases hfamily with hhead | htail
+      · exact Or.inr hhead
+      · exact Or.inl (Or.inr htail)
+  · intro hreach
+    rcases hreach with hrest | hhead
+    · rcases hrest with hlocal | htail
+      · exact Or.inl hlocal
+      · exact Or.inr (Or.inr htail)
+    · exact Or.inr (Or.inl hhead)
 
 /-- A local+stride-family sparse plan misses a lag exactly when neither the
 local window nor any admitted stride-family coil path reaches it. This is the

@@ -460,6 +460,8 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0021",
         "AIT-T0022",
         "AIT-T0023",
+        "AIT-T0024",
+        "AIT-T0025",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "

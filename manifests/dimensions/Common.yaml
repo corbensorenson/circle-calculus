@@ -2582,6 +2582,34 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_coverage_complete_when_local_window_covers_context
     blocker: ""
+  - id: AIT-T0024
+    status: lean_proved
+    lean_name: Circle.Applications.coilStrideFamilyLagReach_cons_iff
+    informal_statement: "Adding one stride to a finite stride-family reaches exactly the lags reached by that stride or by the remaining stride family."
+    formal_statement: "forall {n pathLength lag stride : Nat} {strides : List Nat}, Circle.Applications.coilStrideFamilyLagReach n pathLength lag (stride :: strides) <-> Circle.Applications.coilLagReach n stride pathLength lag or Circle.Applications.coilStrideFamilyLagReach n pathLength lag strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0025
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyLagReach_cons_iff
+    informal_statement: "Adding one stride to a local plus stride-family sparse plan reaches exactly the lags already reached by the previous plan or by the added stride."
+    formal_statement: "forall {n window pathLength lag stride : Nat} {strides : List Nat}, Circle.Applications.hybridFamilyLagReach n window pathLength lag (stride :: strides) <-> Circle.Applications.hybridFamilyLagReach n window pathLength lag strides or Circle.Applications.coilLagReach n stride pathLength lag"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant
