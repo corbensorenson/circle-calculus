@@ -34,6 +34,7 @@ ROPE_CERTIFIER_THEOREMS: tuple[str, ...] = (
     "AIRA-T0046",
     "AIRA-T0048",
     "AIRA-T0049",
+    "AIRA-T0051",
 )
 
 ROPE_CERTIFIER_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -51,6 +52,7 @@ ROPE_CERTIFIER_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
     "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
     "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
+    "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
@@ -120,6 +122,7 @@ class PhaseBankPrefixCollisionReport:
         "AIRA-T0046",
         "AIRA-T0048",
         "AIRA-T0049",
+        "AIRA-T0051",
     )
 
 
@@ -750,7 +753,7 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
             "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
             "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
             "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness.",
-            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context.",
+            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context.",
         ),
         explanation=(
             "PASS: the common exact collision gap is at least the context length, so no two unequal "

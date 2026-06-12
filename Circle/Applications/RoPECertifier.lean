@@ -288,6 +288,26 @@ theorem not_ropePhaseBankCollision_of_lcm_ge_context
     lt_of_le_of_lt (Nat.sub_le right left) hright
   exact (not_lt_of_ge (le_trans hlcm_context hlcm_le_gap)) hgap_lt_context
 
+/-- If a prefix subbank already has LCM at least the inspected context, then
+adding more channels cannot create an unequal all-channel collision.
+
+This is the formal bridge used by prefix collision reports: a small declared
+prefix that distinguishes the context is enough to certify the larger bank,
+because every collision in the larger bank restricts to a collision in the
+prefix. -/
+theorem not_ropePhaseBankCollision_of_prefix_lcm_ge_context
+    {pref suffix : List Nat} {context left right : Nat}
+    (hlcm_context : context ≤ ropePeriodBankLCM pref)
+    (hleft : left < right) (hright : right < context) :
+    ¬ ropePhaseBankCollision (pref ++ suffix) left right := by
+  intro hcollision
+  have hpref : ropePhaseBankCollision pref left right := by
+    intro period hmem
+    exact hcollision period (by simp [List.mem_append, hmem])
+  exact not_ropePhaseBankCollision_of_lcm_ge_context
+    (periods := pref) (context := context) (left := left) (right := right)
+    hlcm_context hleft hright hpref
+
 /-- In a single positive-period channel, every in-context collision between
 unequal ordered positions has a positive period-multiple gap.
 

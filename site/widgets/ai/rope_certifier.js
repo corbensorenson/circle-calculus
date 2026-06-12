@@ -25,6 +25,7 @@ const THEOREM_GROUPS = [
       "AIRA-T0046",
       "AIRA-T0048",
       "AIRA-T0049",
+      "AIRA-T0051",
     ],
   },
   {
