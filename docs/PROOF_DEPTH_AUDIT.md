@@ -8,6 +8,10 @@ The audit is intentionally non-failing in normal project checks. It flags candid
 - `mathlib_bridge_wrapper`: theorem restates or routes an external mathlib theorem through Circle vocabulary.
 - `scaffold_or_roadmap_fact`: theorem belongs to dimensional scaffolding or roadmap algebra.
 - `metadata_projection`: theorem projects or validates manifest/glyph metadata.
+- `finite_physics_contract`: theorem belongs to the finite lattice/gauge contract layer.
+- `generative_fixture_contract`: theorem belongs to seed/rule/provenance fixture bookkeeping.
+- `core_arithmetic_normalization`: theorem belongs to core finite-circle arithmetic normalization.
+- `proof_interface_contract`: theorem belongs to proof-glyph or proof-interface bookkeeping.
 - `iff_packaging`: theorem packages an equivalence or one direction of an equivalence.
 - `normalization_fact`: theorem proves a definitional normalization, zero, equality, or idempotence fact.
 - `review_required`: no clear benign category was inferred.

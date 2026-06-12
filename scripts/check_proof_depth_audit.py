@@ -107,6 +107,14 @@ def suggest_review_category(path: Path, decl_name: str) -> str:
         return "metadata_projection"
     if "Certifier.lean" in path_text or "Certificate" in decl_name or "certificate" in decl_name:
         return "application_contract_bridge"
+    if "/Physics/" in path_text:
+        return "finite_physics_contract"
+    if "/Generative/" in path_text:
+        return "generative_fixture_contract"
+    if "/Core/" in path_text:
+        return "core_arithmetic_normalization"
+    if "/Phase2/" in path_text:
+        return "proof_interface_contract"
     if decl_name.endswith("_iff") or "_iff_" in decl_name:
         return "iff_packaging"
     if decl_name.endswith("_eq") or "_zero" in decl_name or "_idempotent" in decl_name:
