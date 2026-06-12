@@ -22,7 +22,7 @@
             "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
             "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
             "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness.",
-            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context."
+            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context. Subfamily reports use AIRA-T0052 for the unordered selected-subbank version."
           ],
           "common_collision_gap": null,
           "common_collision_gap_reaches_context": true,
@@ -112,7 +112,8 @@
             "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
             "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
             "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
-            "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context"
+            "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
+            "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context"
           ],
           "pass_exact": true,
           "period_count": 64,
@@ -401,6 +402,121 @@
             0,
             0
           ],
+          "smallest_pass_subfamily_size": 1,
+          "subfamily_pass_reports": [
+            {
+              "lcm_value": 4712,
+              "periods": [
+                4712
+              ],
+              "subfamily_indices": [
+                46
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 5441,
+              "periods": [
+                5441
+              ],
+              "subfamily_indices": [
+                47
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 6283,
+              "periods": [
+                6283
+              ],
+              "subfamily_indices": [
+                48
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 7256,
+              "periods": [
+                7256
+              ],
+              "subfamily_indices": [
+                49
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 8379,
+              "periods": [
+                8379
+              ],
+              "subfamily_indices": [
+                50
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 9676,
+              "periods": [
+                9676
+              ],
+              "subfamily_indices": [
+                51
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 11173,
+              "periods": [
+                11173
+              ],
+              "subfamily_indices": [
+                52
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 12903,
+              "periods": [
+                12903
+              ],
+              "subfamily_indices": [
+                53
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            }
+          ],
           "theorem_ids": [
             "AIRA-T0021",
             "AIRA-T0022",
@@ -416,7 +532,8 @@
             "AIRA-T0046",
             "AIRA-T0048",
             "AIRA-T0049",
-            "AIRA-T0051"
+            "AIRA-T0051",
+            "AIRA-T0052"
           ],
           "total_bank_collision_pair_count": 0
         },
@@ -435,7 +552,8 @@
           "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
           "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
           "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
-          "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context"
+          "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
+          "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context"
         ],
         "real_period_estimates": [
           6.283185307179586,
@@ -566,7 +684,8 @@
           "AIRA-T0046",
           "AIRA-T0048",
           "AIRA-T0049",
-          "AIRA-T0051"
+          "AIRA-T0051",
+          "AIRA-T0052"
         ]
       },
       "preset": "llama_style_10000_4k",
@@ -575,9 +694,10 @@
         "config: head_dim=128 base=10000 context=4096 tolerance=1e-06 discretization=round",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=8 first_exact_pass_prefix_length=5",
+        "subfamily_pass_reports=8 smallest_pass_subfamily_size=1",
         "real_phase_margin=PASS worst_margin_radians=1 worst_gap=1 scanned_gaps=4095",
         "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050 (unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, turn-ratio scaling, finite-context margin consequence, and context-plus-margin transfer precursors only; not a Diophantine proof)",
-        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]
     },
@@ -602,7 +722,7 @@
             "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
             "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
             "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness.",
-            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context."
+            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context. Subfamily reports use AIRA-T0052 for the unordered selected-subbank version."
           ],
           "common_collision_gap": null,
           "common_collision_gap_reaches_context": true,
@@ -692,7 +812,8 @@
             "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
             "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
             "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
-            "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context"
+            "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
+            "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context"
           ],
           "pass_exact": true,
           "period_count": 64,
@@ -1020,6 +1141,137 @@
             120793,
             98914
           ],
+          "smallest_pass_subfamily_size": 2,
+          "subfamily_pass_reports": [
+            {
+              "lcm_value": 137670,
+              "periods": [
+                6,
+                22945
+              ],
+              "subfamily_indices": [
+                0,
+                57
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 211998,
+              "periods": [
+                6,
+                35333
+              ],
+              "subfamily_indices": [
+                0,
+                60
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 282702,
+              "periods": [
+                6,
+                47117
+              ],
+              "subfamily_indices": [
+                0,
+                62
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 163230,
+              "periods": [
+                6,
+                54410
+              ],
+              "subfamily_indices": [
+                0,
+                63
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 139083,
+              "periods": [
+                7,
+                19869
+              ],
+              "subfamily_indices": [
+                1,
+                56
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 160615,
+              "periods": [
+                7,
+                22945
+              ],
+              "subfamily_indices": [
+                1,
+                57
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 185472,
+              "periods": [
+                7,
+                26496
+              ],
+              "subfamily_indices": [
+                1,
+                58
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 247331,
+              "periods": [
+                7,
+                35333
+              ],
+              "subfamily_indices": [
+                1,
+                60
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            }
+          ],
           "theorem_ids": [
             "AIRA-T0021",
             "AIRA-T0022",
@@ -1035,7 +1287,8 @@
             "AIRA-T0046",
             "AIRA-T0048",
             "AIRA-T0049",
-            "AIRA-T0051"
+            "AIRA-T0051",
+            "AIRA-T0052"
           ],
           "total_bank_collision_pair_count": 0
         },
@@ -1054,7 +1307,8 @@
           "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
           "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
           "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
-          "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context"
+          "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
+          "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context"
         ],
         "real_period_estimates": [
           6.283185307179586,
@@ -1185,7 +1439,8 @@
           "AIRA-T0046",
           "AIRA-T0048",
           "AIRA-T0049",
-          "AIRA-T0051"
+          "AIRA-T0051",
+          "AIRA-T0052"
         ]
       },
       "preset": "llama_style_10000_128k",
@@ -1194,9 +1449,10 @@
         "config: head_dim=128 base=10000 context=131072 tolerance=1e-06 discretization=round",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=8 first_exact_pass_prefix_length=8",
+        "subfamily_pass_reports=8 smallest_pass_subfamily_size=2",
         "real_phase_margin=PASS worst_margin_radians=1 worst_gap=1 scanned_gaps=131071",
         "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050 (unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, turn-ratio scaling, finite-context margin consequence, and context-plus-margin transfer precursors only; not a Diophantine proof)",
-        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]
     },
@@ -1221,7 +1477,7 @@
             "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
             "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
             "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness.",
-            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context."
+            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context. Subfamily reports use AIRA-T0052 for the unordered selected-subbank version."
           ],
           "common_collision_gap": null,
           "common_collision_gap_reaches_context": true,
@@ -1311,7 +1567,8 @@
             "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
             "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
             "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
-            "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context"
+            "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
+            "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context"
           ],
           "pass_exact": true,
           "period_count": 64,
@@ -1652,6 +1909,121 @@
             0,
             0
           ],
+          "smallest_pass_subfamily_size": 1,
+          "subfamily_pass_reports": [
+            {
+              "lcm_value": 145029,
+              "periods": [
+                145029
+              ],
+              "subfamily_indices": [
+                49
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 178033,
+              "periods": [
+                178033
+              ],
+              "subfamily_indices": [
+                50
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 218548,
+              "periods": [
+                218548
+              ],
+              "subfamily_indices": [
+                51
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 268283,
+              "periods": [
+                268283
+              ],
+              "subfamily_indices": [
+                52
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 329336,
+              "periods": [
+                329336
+              ],
+              "subfamily_indices": [
+                53
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 404283,
+              "periods": [
+                404283
+              ],
+              "subfamily_indices": [
+                54
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 496286,
+              "periods": [
+                496286
+              ],
+              "subfamily_indices": [
+                55
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 609226,
+              "periods": [
+                609226
+              ],
+              "subfamily_indices": [
+                56
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            }
+          ],
           "theorem_ids": [
             "AIRA-T0021",
             "AIRA-T0022",
@@ -1667,7 +2039,8 @@
             "AIRA-T0046",
             "AIRA-T0048",
             "AIRA-T0049",
-            "AIRA-T0051"
+            "AIRA-T0051",
+            "AIRA-T0052"
           ],
           "total_bank_collision_pair_count": 0
         },
@@ -1686,7 +2059,8 @@
           "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
           "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
           "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
-          "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context"
+          "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
+          "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context"
         ],
         "real_period_estimates": [
           6.283185307179586,
@@ -1817,7 +2191,8 @@
           "AIRA-T0046",
           "AIRA-T0048",
           "AIRA-T0049",
-          "AIRA-T0051"
+          "AIRA-T0051",
+          "AIRA-T0052"
         ]
       },
       "preset": "llama_style_500000_128k",
@@ -1826,9 +2201,10 @@
         "config: head_dim=128 base=500000 context=131072 tolerance=1e-06 discretization=round",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=8 first_exact_pass_prefix_length=none",
+        "subfamily_pass_reports=8 smallest_pass_subfamily_size=1",
         "real_phase_margin=PASS worst_margin_radians=1 worst_gap=1 scanned_gaps=131071",
         "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050 (unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, turn-ratio scaling, finite-context margin consequence, and context-plus-margin transfer precursors only; not a Diophantine proof)",
-        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]
     },
@@ -1853,7 +2229,7 @@
             "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
             "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
             "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness.",
-            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context."
+            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context. Subfamily reports use AIRA-T0052 for the unordered selected-subbank version."
           ],
           "common_collision_gap": 6,
           "common_collision_gap_reaches_context": false,
@@ -1880,7 +2256,8 @@
             "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
             "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
             "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
-            "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context"
+            "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
+            "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context"
           ],
           "pass_exact": false,
           "period_count": 1,
@@ -1941,6 +2318,8 @@
           "single_period_collision_pair_counts": [
             24
           ],
+          "smallest_pass_subfamily_size": null,
+          "subfamily_pass_reports": [],
           "theorem_ids": [
             "AIRA-T0021",
             "AIRA-T0022",
@@ -1956,7 +2335,8 @@
             "AIRA-T0046",
             "AIRA-T0048",
             "AIRA-T0049",
-            "AIRA-T0051"
+            "AIRA-T0051",
+            "AIRA-T0052"
           ],
           "total_bank_collision_pair_count": 24
         },
@@ -1975,7 +2355,8 @@
           "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
           "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
           "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
-          "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context"
+          "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
+          "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context"
         ],
         "real_period_estimates": [
           6.283185307179586
@@ -2043,7 +2424,8 @@
           "AIRA-T0046",
           "AIRA-T0048",
           "AIRA-T0049",
-          "AIRA-T0051"
+          "AIRA-T0051",
+          "AIRA-T0052"
         ]
       },
       "preset": "diagnostic_single_channel_10000_20",
@@ -2052,9 +2434,10 @@
         "config: head_dim=2 base=10000 context=20 tolerance=1e-06 discretization=round",
         "exact_discrete_contract=FAIL common_collision_gap=6 period_count=1 guaranteed_common_gap_collision_pair_count=14 guaranteed_common_gap_multiple_pair_count=24 total_bank_collision_pair_count=24",
         "prefix_collision_reports=1 first_exact_pass_prefix_length=none",
+        "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
         "real_phase_margin=PASS worst_margin_radians=0.150444078461 worst_gap=19 scanned_gaps=19",
         "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050 (unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, turn-ratio scaling, finite-context margin consequence, and context-plus-margin transfer precursors only; not a Diophantine proof)",
-        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]
     },
@@ -2079,7 +2462,7 @@
             "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
             "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
             "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness.",
-            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context."
+            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context. Subfamily reports use AIRA-T0052 for the unordered selected-subbank version."
           ],
           "common_collision_gap": 114,
           "common_collision_gap_reaches_context": false,
@@ -2107,7 +2490,8 @@
             "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
             "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
             "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
-            "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context"
+            "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
+            "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context"
           ],
           "pass_exact": false,
           "period_count": 2,
@@ -2200,6 +2584,8 @@
             1302,
             156
           ],
+          "smallest_pass_subfamily_size": null,
+          "subfamily_pass_reports": [],
           "theorem_ids": [
             "AIRA-T0021",
             "AIRA-T0022",
@@ -2215,7 +2601,8 @@
             "AIRA-T0046",
             "AIRA-T0048",
             "AIRA-T0049",
-            "AIRA-T0051"
+            "AIRA-T0051",
+            "AIRA-T0052"
           ],
           "total_bank_collision_pair_count": 14
         },
@@ -2234,7 +2621,8 @@
           "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
           "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
           "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
-          "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context"
+          "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
+          "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context"
         ],
         "real_period_estimates": [
           6.283185307179586,
@@ -2303,7 +2691,8 @@
           "AIRA-T0046",
           "AIRA-T0048",
           "AIRA-T0049",
-          "AIRA-T0051"
+          "AIRA-T0051",
+          "AIRA-T0052"
         ]
       },
       "preset": "diagnostic_two_channel_36_128",
@@ -2312,9 +2701,10 @@
         "config: head_dim=4 base=36 context=128 tolerance=1e-06 discretization=round",
         "exact_discrete_contract=FAIL common_collision_gap=114 period_count=2 guaranteed_common_gap_collision_pair_count=14 guaranteed_common_gap_multiple_pair_count=14 total_bank_collision_pair_count=14",
         "prefix_collision_reports=2 first_exact_pass_prefix_length=none",
+        "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
         "real_phase_margin=PASS worst_margin_radians=0.0973355292325 worst_gap=113 scanned_gaps=127",
         "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050 (unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, turn-ratio scaling, finite-context margin consequence, and context-plus-margin transfer precursors only; not a Diophantine proof)",
-        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]
     },
@@ -2339,7 +2729,7 @@
             "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
             "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
             "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness.",
-            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context."
+            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context. Subfamily reports use AIRA-T0052 for the unordered selected-subbank version."
           ],
           "common_collision_gap": null,
           "common_collision_gap_reaches_context": true,
@@ -2369,7 +2759,8 @@
             "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
             "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
             "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
-            "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context"
+            "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
+            "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context"
           ],
           "pass_exact": true,
           "period_count": 4,
@@ -2482,6 +2873,79 @@
             567,
             392
           ],
+          "smallest_pass_subfamily_size": 2,
+          "subfamily_pass_reports": [
+            {
+              "lcm_value": 234,
+              "periods": [
+                13,
+                18
+              ],
+              "subfamily_indices": [
+                2,
+                3
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 234,
+              "periods": [
+                6,
+                9,
+                13
+              ],
+              "subfamily_indices": [
+                0,
+                1,
+                2
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 234,
+              "periods": [
+                6,
+                13,
+                18
+              ],
+              "subfamily_indices": [
+                0,
+                2,
+                3
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            },
+            {
+              "lcm_value": 234,
+              "periods": [
+                9,
+                13,
+                18
+              ],
+              "subfamily_indices": [
+                1,
+                2,
+                3
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0052"
+              ]
+            }
+          ],
           "theorem_ids": [
             "AIRA-T0021",
             "AIRA-T0022",
@@ -2497,7 +2961,8 @@
             "AIRA-T0046",
             "AIRA-T0048",
             "AIRA-T0049",
-            "AIRA-T0051"
+            "AIRA-T0051",
+            "AIRA-T0052"
           ],
           "total_bank_collision_pair_count": 0
         },
@@ -2516,7 +2981,8 @@
           "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
           "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
           "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
-          "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context"
+          "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
+          "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context"
         ],
         "real_period_estimates": [
           6.283185307179586,
@@ -2587,7 +3053,8 @@
           "AIRA-T0046",
           "AIRA-T0048",
           "AIRA-T0049",
-          "AIRA-T0051"
+          "AIRA-T0051",
+          "AIRA-T0052"
         ]
       },
       "preset": "diagnostic_prefix_pass_4_128",
@@ -2596,9 +3063,10 @@
         "config: head_dim=8 base=4 context=128 tolerance=1e-06 discretization=round",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=4 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=4 first_exact_pass_prefix_length=3",
+        "subfamily_pass_reports=4 smallest_pass_subfamily_size=2",
         "real_phase_margin=PASS worst_margin_radians=0.60645632738 worst_gap=88 scanned_gaps=127",
         "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050 (unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, turn-ratio scaling, finite-context margin consequence, and context-plus-margin transfer precursors only; not a Diophantine proof)",
-        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]
     },
@@ -2623,7 +3091,7 @@
             "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
             "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
             "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness.",
-            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context."
+            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context. Subfamily reports use AIRA-T0052 for the unordered selected-subbank version."
           ],
           "common_collision_gap": 54,
           "common_collision_gap_reaches_context": false,
@@ -2652,7 +3120,8 @@
             "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
             "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
             "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
-            "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context"
+            "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
+            "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context"
           ],
           "pass_exact": false,
           "period_count": 3,
@@ -2778,6 +3247,8 @@
             84,
             10
           ],
+          "smallest_pass_subfamily_size": null,
+          "subfamily_pass_reports": [],
           "theorem_ids": [
             "AIRA-T0021",
             "AIRA-T0022",
@@ -2793,7 +3264,8 @@
             "AIRA-T0046",
             "AIRA-T0048",
             "AIRA-T0049",
-            "AIRA-T0051"
+            "AIRA-T0051",
+            "AIRA-T0052"
           ],
           "total_bank_collision_pair_count": 10
         },
@@ -2812,7 +3284,8 @@
           "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
           "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
           "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
-          "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context"
+          "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
+          "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context"
         ],
         "real_period_estimates": [
           6.283185307179586,
@@ -2882,7 +3355,8 @@
           "AIRA-T0046",
           "AIRA-T0048",
           "AIRA-T0049",
-          "AIRA-T0051"
+          "AIRA-T0051",
+          "AIRA-T0052"
         ]
       },
       "preset": "diagnostic_shared_factor_25_64",
@@ -2891,9 +3365,10 @@
         "config: head_dim=6 base=25 context=64 tolerance=1e-06 discretization=round",
         "exact_discrete_contract=FAIL common_collision_gap=54 period_count=3 guaranteed_common_gap_collision_pair_count=10 guaranteed_common_gap_multiple_pair_count=10 total_bank_collision_pair_count=10",
         "prefix_collision_reports=3 first_exact_pass_prefix_length=none",
+        "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
         "real_phase_margin=PASS worst_margin_radians=0.548667764616 worst_gap=56 scanned_gaps=63",
         "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050 (unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, turn-ratio scaling, finite-context margin consequence, and context-plus-margin transfer precursors only; not a Diophantine proof)",
-        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]
     }

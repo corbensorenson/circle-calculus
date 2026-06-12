@@ -12,6 +12,7 @@ The certifier has two layers:
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+from itertools import combinations
 from math import ceil, floor, gcd, pi, tau
 from typing import Any, Iterable, Literal, Sequence
 
@@ -35,6 +36,7 @@ ROPE_CERTIFIER_THEOREMS: tuple[str, ...] = (
     "AIRA-T0048",
     "AIRA-T0049",
     "AIRA-T0051",
+    "AIRA-T0052",
 )
 
 ROPE_CERTIFIER_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -53,6 +55,7 @@ ROPE_CERTIFIER_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
     "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
     "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
+    "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
@@ -139,6 +142,18 @@ class PhaseBankPrefixCollisionReport:
 
 
 @dataclass(frozen=True)
+class PhaseBankSubfamilyPassReport:
+    subfamily_indices: tuple[int, ...]
+    periods: tuple[int, ...]
+    lcm_value: int
+    theorem_ids: tuple[str, ...] = (
+        "AIRA-T0036",
+        "AIRA-T0046",
+        "AIRA-T0052",
+    )
+
+
+@dataclass(frozen=True)
 class ExactDiscreteRoPECertificate:
     pass_exact: bool
     theorem_ids: tuple[str, ...]
@@ -148,6 +163,8 @@ class ExactDiscreteRoPECertificate:
     single_period_collision_pair_counts: tuple[int, ...]
     prefix_collision_reports: tuple[PhaseBankPrefixCollisionReport, ...]
     first_exact_pass_prefix_length: int | None
+    subfamily_pass_reports: tuple[PhaseBankSubfamilyPassReport, ...]
+    smallest_pass_subfamily_size: int | None
     context_length: int
     common_collision_gap: int | None
     common_collision_gap_reaches_context: bool
@@ -403,6 +420,46 @@ def phase_bank_prefix_collision_reports(
                 limit=sample_limit,
             ),
         ))
+    return tuple(reports)
+
+
+def phase_bank_subfamily_pass_reports(
+    context_length: int,
+    periods: Sequence[int],
+    *,
+    max_size: int = 3,
+    limit: int = 8,
+) -> tuple[PhaseBankSubfamilyPassReport, ...]:
+    """Return bounded subfamilies whose LCM already reaches the context.
+
+    These reports are exact integer-period certificates for small selected
+    subbanks. They are bounded intentionally: the goal is to expose small
+    sufficient channel subsets for inspection, not to solve a minimum set-cover
+    problem over large phase banks.
+    """
+    if context_length <= 0:
+        raise ValueError("context_length must be positive")
+    if max_size <= 0:
+        raise ValueError("max_size must be positive")
+    if limit < 0:
+        raise ValueError("limit must be nonnegative")
+    normalized_periods = tuple(periods)
+    for period in normalized_periods:
+        if period <= 0:
+            raise ValueError("periods must be positive")
+    reports: list[PhaseBankSubfamilyPassReport] = []
+    for size in range(1, min(max_size, len(normalized_periods)) + 1):
+        for indices in combinations(range(len(normalized_periods)), size):
+            subfamily = tuple(normalized_periods[index] for index in indices)
+            lcm_value, reaches_context = capped_lcm(subfamily, context_length)
+            if reaches_context:
+                reports.append(PhaseBankSubfamilyPassReport(
+                    subfamily_indices=indices,
+                    periods=subfamily,
+                    lcm_value=lcm_value,
+                ))
+                if len(reports) >= limit:
+                    return tuple(reports)
     return tuple(reports)
 
 
@@ -784,6 +841,15 @@ def certify_exact_discrete_phase_bank(
         (report.prefix_length for report in prefix_reports if report.lcm_reaches_context),
         None,
     )
+    subfamily_reports = phase_bank_subfamily_pass_reports(
+        context_length,
+        discrete_periods,
+    )
+    smallest_subfamily = (
+        None
+        if not subfamily_reports
+        else min(len(report.subfamily_indices) for report in subfamily_reports)
+    )
     exact_pass = reaches_context
     guaranteed_pair_count = 0 if reaches_context else collision_pair_count_at_gap(
         context_length,
@@ -802,6 +868,8 @@ def certify_exact_discrete_phase_bank(
         single_period_collision_pair_counts=single_period_counts,
         prefix_collision_reports=prefix_reports,
         first_exact_pass_prefix_length=first_pass_prefix,
+        subfamily_pass_reports=subfamily_reports,
+        smallest_pass_subfamily_size=smallest_subfamily,
         context_length=context_length,
         common_collision_gap=None if reaches_context else collision_gap,
         common_collision_gap_reaches_context=reaches_context,
@@ -819,7 +887,7 @@ def certify_exact_discrete_phase_bank(
             "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
             "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
             "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness.",
-            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context.",
+            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context. Subfamily reports use AIRA-T0052 for the unordered selected-subbank version.",
         ),
         explanation=(
             "PASS: the common exact collision gap is at least the context length, so no two unequal "
@@ -858,6 +926,11 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         if exact.first_exact_pass_prefix_length is None
         else str(exact.first_exact_pass_prefix_length)
     )
+    smallest_subfamily = (
+        "none"
+        if exact.smallest_pass_subfamily_size is None
+        else str(exact.smallest_pass_subfamily_size)
+    )
     worst_gap = "none" if margin.worst_gap is None else str(margin.worst_gap)
     worst_margin = (
         "inf"
@@ -875,6 +948,8 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         f"total_bank_collision_pair_count={exact.total_bank_collision_pair_count}",
         f"prefix_collision_reports={len(exact.prefix_collision_reports)} "
         f"first_exact_pass_prefix_length={first_prefix}",
+        f"subfamily_pass_reports={len(exact.subfamily_pass_reports)} "
+        f"smallest_pass_subfamily_size={smallest_subfamily}",
         f"real_phase_margin={margin_status} worst_margin_radians={worst_margin} "
         f"worst_gap={worst_gap} scanned_gaps={margin.scanned_gap_count}",
         f"real_phase_formal_precursors={','.join(margin.formal_precursor_theorem_ids)} "
@@ -898,6 +973,11 @@ def phase_bank_certificate_summary_lines(
         if exact.first_exact_pass_prefix_length is None
         else str(exact.first_exact_pass_prefix_length)
     )
+    smallest_subfamily = (
+        "none"
+        if exact.smallest_pass_subfamily_size is None
+        else str(exact.smallest_pass_subfamily_size)
+    )
     return (
         "Integer phase-bank position distinguishability certificate",
         f"config: periods={','.join(str(period) for period in config.periods)} "
@@ -909,6 +989,8 @@ def phase_bank_certificate_summary_lines(
         f"total_bank_collision_pair_count={exact.total_bank_collision_pair_count}",
         f"prefix_collision_reports={len(exact.prefix_collision_reports)} "
         f"first_exact_pass_prefix_length={first_prefix}",
+        f"subfamily_pass_reports={len(exact.subfamily_pass_reports)} "
+        f"smallest_pass_subfamily_size={smallest_subfamily}",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,
     )

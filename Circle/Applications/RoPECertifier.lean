@@ -308,6 +308,27 @@ theorem not_ropePhaseBankCollision_of_prefix_lcm_ge_context
     (periods := pref) (context := context) (left := left) (right := right)
     hlcm_context hleft hright hpref
 
+/-- If any selected subbank has LCM at least the inspected context, then a
+larger bank containing that subbank cannot have an unequal all-channel
+collision.
+
+This is the unordered-subfamily version of the prefix bridge. It supports
+certificates that search for a small sufficient subset of channels instead of
+only checking initial prefixes. -/
+theorem not_ropePhaseBankCollision_of_subbank_lcm_ge_context
+    {subbank bank : List Nat} {context left right : Nat}
+    (hsubset : ∀ period, period ∈ subbank → period ∈ bank)
+    (hlcm_context : context ≤ ropePeriodBankLCM subbank)
+    (hleft : left < right) (hright : right < context) :
+    ¬ ropePhaseBankCollision bank left right := by
+  intro hcollision
+  have hsubbank : ropePhaseBankCollision subbank left right := by
+    intro period hmem
+    exact hcollision period (hsubset period hmem)
+  exact not_ropePhaseBankCollision_of_lcm_ge_context
+    (periods := subbank) (context := context) (left := left) (right := right)
+    hlcm_context hleft hright hsubbank
+
 /-- In a single positive-period channel, every in-context collision between
 unequal ordered positions has a positive period-multiple gap.
 

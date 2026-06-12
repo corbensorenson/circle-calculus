@@ -2294,6 +2294,20 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_rope_diagnostic_prefix_and_shared_factor_presets_are_stable
     blocker: ""
+  - id: AIRA-T0052
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context
+    informal_statement: "If any selected subbank contained in a larger integer-period RoPE bank has LCM reaching the inspected context, then the larger bank cannot have an unequal all-channel collision."
+    formal_statement: "forall {subbank bank : List Nat} {context left right : Nat}, (forall period, period in subbank -> period in bank) -> context <= Circle.Applications.ropePeriodBankLCM subbank -> left < right -> right < context -> not Circle.Applications.ropePhaseBankCollision bank left right"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_explicit_phase_bank_certifier_reports_exact_only_contract
+    blocker: ""
   - id: AIRA-T0029
     status: lean_proved
     lean_name: Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs

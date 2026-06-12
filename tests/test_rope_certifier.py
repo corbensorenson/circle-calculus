@@ -18,6 +18,7 @@ from circle_math.applications import (
     discretize_rope_periods,
     phase_bank_prefix_collision_reports,
     phase_bank_certificate_summary_lines,
+    phase_bank_subfamily_pass_reports,
     real_phase_bank_near_turn,
     real_phase_bank_turn_separated,
     real_phase_int_turn_error,
@@ -52,6 +53,10 @@ def test_discretized_period_helpers_are_deterministic() -> None:
     assert reports[0].total_bank_collision_pair_count == 24
     assert reports[1].lcm_reaches_context
     assert reports[1].total_bank_collision_pair_count == 0
+    subfamilies = phase_bank_subfamily_pass_reports(128, (6, 9, 13, 18), max_size=3)
+    assert subfamilies[0].subfamily_indices == (2, 3)
+    assert subfamilies[0].periods == (13, 18)
+    assert subfamilies[0].lcm_value == 234
 
 
 def test_single_period_collision_count_matches_bruteforce() -> None:
@@ -206,6 +211,7 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     assert "AIRA-T0048" in certificate.theorem_ids
     assert "AIRA-T0049" in certificate.theorem_ids
     assert "AIRA-T0051" in certificate.theorem_ids
+    assert "AIRA-T0052" in certificate.theorem_ids
     assert "AIRA-T0024" in certificate.exact_discrete.assumptions[3]
     assert "AIRA-T0049" in certificate.exact_discrete.assumptions[-1]
     assert "not a model-quality" in certificate.claim_boundary
@@ -230,6 +236,7 @@ def test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context() 
     assert "AIRA-T0048" in certificate.theorem_ids
     assert "AIRA-T0049" in certificate.theorem_ids
     assert "AIRA-T0051" in certificate.theorem_ids
+    assert "AIRA-T0052" in certificate.theorem_ids
     assert certificate.real_phase_margin.scanned_gap_count == 7
     assert certificate.real_phase_margin.formal_precursor_theorem_ids == ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
@@ -259,6 +266,7 @@ def test_rope_certify_cli_emits_json_certificate() -> None:
     assert payload["exact_discrete"]["single_period_collision_pair_counts"] == [24]
     assert payload["exact_discrete"]["first_exact_pass_prefix_length"] is None
     assert payload["exact_discrete"]["prefix_collision_reports"][0]["lcm_collision_gap"] == 6
+    assert payload["exact_discrete"]["smallest_pass_subfamily_size"] is None
     assert payload["exact_discrete"]["guaranteed_common_gap_collision_pair_count"] == 14
     assert payload["exact_discrete"]["guaranteed_common_gap_multiple_pair_count"] == 24
     assert payload["exact_discrete"]["total_bank_collision_pair_count"] == 24
@@ -305,6 +313,8 @@ def test_rope_diagnostic_prefix_and_shared_factor_presets_are_stable() -> None:
     assert prefix_payload["exact_discrete"]["pass_exact"] is True
     assert prefix_payload["exact_discrete"]["discretized_periods"] == [6, 9, 13, 18]
     assert prefix_payload["exact_discrete"]["first_exact_pass_prefix_length"] == 3
+    assert prefix_payload["exact_discrete"]["smallest_pass_subfamily_size"] == 2
+    assert prefix_payload["exact_discrete"]["subfamily_pass_reports"][0]["subfamily_indices"] == [2, 3]
     assert prefix_payload["exact_discrete"]["prefix_collision_reports"][1]["lcm_collision_gap"] == 18
     assert prefix_payload["exact_discrete"]["prefix_collision_reports"][2]["lcm_reaches_context"]
 
@@ -336,11 +346,14 @@ def test_explicit_phase_bank_certifier_reports_exact_only_contract() -> None:
     assert certificate.schema_id == "circle_calculus.integer_phase_bank_distinguishability.v0"
     assert certificate.exact_discrete.pass_exact
     assert certificate.exact_discrete.first_exact_pass_prefix_length == 3
+    assert certificate.exact_discrete.smallest_pass_subfamily_size == 2
+    assert certificate.exact_discrete.subfamily_pass_reports[0].periods == (13, 18)
     assert certificate.exact_discrete.prefix_collision_reports[1].lcm_collision_gap == 18
     assert "No real-valued RoPE" in certificate.claim_boundary
     summary = "\n".join(phase_bank_certificate_summary_lines(certificate))
     assert "Integer phase-bank position distinguishability certificate" in summary
     assert "first_exact_pass_prefix_length=3" in summary
+    assert "smallest_pass_subfamily_size=2" in summary
 
 
 def test_phase_bank_certify_cli_emits_json_certificate() -> None:
@@ -365,6 +378,7 @@ def test_phase_bank_certify_cli_emits_json_certificate() -> None:
     assert payload["exact_discrete"]["pass_exact"] is False
     assert payload["exact_discrete"]["common_collision_gap"] == 54
     assert payload["exact_discrete"]["total_bank_collision_pair_count"] == 10
+    assert payload["exact_discrete"]["smallest_pass_subfamily_size"] is None
     assert "real_phase_margin" not in payload
 
 
@@ -404,4 +418,5 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert "| llama_style_10000_4k |" in markdown_result.stdout
     assert "Total bank pairs" in markdown_result.stdout
     assert "First pass prefix" in markdown_result.stdout
+    assert "Smallest pass subfamily" in markdown_result.stdout
     assert "Reproduce with:" in markdown_result.stdout

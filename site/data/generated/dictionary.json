@@ -11190,6 +11190,12 @@
           "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
           "name": "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0052",
+          "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context",
+          "name": "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -11412,6 +11418,12 @@
           "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
           "name": "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0052",
+          "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context",
+          "name": "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -11502,6 +11514,12 @@
           "id": "AIRA-T0051",
           "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
           "name": "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0052",
+          "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context",
+          "name": "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context",
           "status": "proved"
         }
       ],
@@ -12306,6 +12324,12 @@
           "id": "AIRA-T0051",
           "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
           "name": "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0052",
+          "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context",
+          "name": "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context",
           "status": "proved"
         }
       ],
