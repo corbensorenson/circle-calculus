@@ -137,6 +137,8 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `AIT-T0023`: `Circle.Applications.localWindowCoversContext_iff_context_sub_one_le`
 - `AIT-T0024`: `Circle.Applications.coilStrideFamilyLagReach_cons_iff`
 - `AIT-T0025`: `Circle.Applications.hybridFamilyLagReach_cons_iff`
+- `AIT-T0026`: `Circle.Applications.not_coilStrideFamilyLagReach_nil`
+- `AIT-T0027`: `Circle.Applications.hybridFamilyLagReach_nil_iff_local`
 
 ## Strided Attention Coverage (Proved Structural Guarantee)
 
@@ -159,6 +161,7 @@ attention:
 - `AIT-T0022` (`Circle.Applications.hybridFamilyLagReach_of_localWindow_ge_context_sub_one`): if the local window is at least `n - 1`, every positive lag inside a length-`n` context is covered by the local part of the plan.
 - `AIT-T0023` (`Circle.Applications.localWindowCoversContext_iff_context_sub_one_le`): conversely, local-window coverage of every positive in-context lag is equivalent to the exact condition `n - 1 <= window`.
 - `AIT-T0024` and `AIT-T0025` (`Circle.Applications.coilStrideFamilyLagReach_cons_iff`, `Circle.Applications.hybridFamilyLagReach_cons_iff`): adding one stride decomposes exactly into coverage by the added stride or by the previous family, matching the finite-family coverage certificate recursion.
+- `AIT-T0026` and `AIT-T0027` (`Circle.Applications.not_coilStrideFamilyLagReach_nil`, `Circle.Applications.hybridFamilyLagReach_nil_iff_local`): the empty-family control has no coil reachability and reduces exactly to the local-window baseline.
 
 This is the kind of structural guarantee practitioners reason about informally for
 dilated/strided attention, here made exact and Lean-checked on top of the orbit spine
@@ -213,7 +216,7 @@ The same fixture now emits an explicit coverage certificate. For the default `se
 1, 2, 3, 4, 7, 14, 21, 13, 26, 39
 ```
 
-The remaining `109` positive lags are exposed as uncovered-lag gap certificates. `AIT-T0021` states the concrete condition behind those holes: an uncovered lag is beyond the local window and every admitted stride/step pair misses its cyclic residue. `AIT-T0022` records the dense-local limit: if the local window is at least `n - 1`, there are no positive-lag holes. `AIT-T0023` adds the converse for local-only coverage: that threshold is exact for covering every positive in-context lag by the local window alone. `AIT-T0024` and `AIT-T0025` state the exact recursion for adding one stride to a family. This is the practical point of the Phase VIII upgrade: the artifact reports holes, not only successful examples.
+The remaining `109` positive lags are exposed as uncovered-lag gap certificates. `AIT-T0021` states the concrete condition behind those holes: an uncovered lag is beyond the local window and every admitted stride/step pair misses its cyclic residue. `AIT-T0022` records the dense-local limit: if the local window is at least `n - 1`, there are no positive-lag holes. `AIT-T0023` adds the converse for local-only coverage: that threshold is exact for covering every positive in-context lag by the local window alone. `AIT-T0024` and `AIT-T0025` state the exact recursion for adding one stride to a family. `AIT-T0026` and `AIT-T0027` prove the no-stride control reduces exactly to local-window reachability. This is the practical point of the Phase VIII upgrade: the artifact reports holes, not only successful examples.
 
 This fixture checks multi-stride candidate-set reachability and budget only. It is not evidence that stride-family sparse attention improves neural attention quality, long-context behavior, throughput, runtime, memory use, or model quality.
 

@@ -2610,6 +2610,34 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
     blocker: ""
+  - id: AIT-T0026
+    status: lean_proved
+    lean_name: Circle.Applications.not_coilStrideFamilyLagReach_nil
+    informal_statement: "An empty stride family reaches no coil lags."
+    formal_statement: "forall {n pathLength lag : Nat}, not Circle.Applications.coilStrideFamilyLagReach n pathLength lag []"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0027
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyLagReach_nil_iff_local
+    informal_statement: "With no admitted coil strides, a local plus stride-family sparse plan reaches exactly the local-window lags."
+    formal_statement: "forall {n window pathLength lag : Nat}, Circle.Applications.hybridFamilyLagReach n window pathLength lag [] <-> Circle.Applications.localLagReach window lag"
+    dictionary_dependencies: ["COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

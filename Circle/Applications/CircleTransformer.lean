@@ -167,6 +167,13 @@ theorem coilStrideFamilyLagReach_cons_iff
     · rcases htail with ⟨candidate, hmem, hcandidate⟩
       exact ⟨candidate, by simp [hmem], hcandidate⟩
 
+/-- An empty stride family reaches no coil lags. -/
+theorem not_coilStrideFamilyLagReach_nil
+    {n pathLength lag : Nat} :
+    ¬ coilStrideFamilyLagReach n pathLength lag [] := by
+  rintro ⟨_stride, hmem, _hreach⟩
+  cases hmem
+
 /-- A hybrid sparse head reaches every lag already reached by its local window. -/
 theorem hybridLagReach_of_local {n window stride pathLength lag : Nat}
     (hlocal : localLagReach window lag) :
@@ -226,6 +233,20 @@ theorem hybridFamilyLagReach_cons_iff
       · exact Or.inl hlocal
       · exact Or.inr (Or.inr htail)
     · exact Or.inr (Or.inl hhead)
+
+/-- With no admitted coil strides, a local+stride-family plan reaches exactly
+the local-window lags. -/
+theorem hybridFamilyLagReach_nil_iff_local
+    {n window pathLength lag : Nat} :
+    hybridFamilyLagReach n window pathLength lag [] ↔ localLagReach window lag := by
+  unfold hybridFamilyLagReach
+  constructor
+  · intro hreach
+    rcases hreach with hlocal | hfamily
+    · exact hlocal
+    · exact False.elim (not_coilStrideFamilyLagReach_nil hfamily)
+  · intro hlocal
+    exact Or.inl hlocal
 
 /-- A local+stride-family sparse plan misses a lag exactly when neither the
 local window nor any admitted stride-family coil path reaches it. This is the
