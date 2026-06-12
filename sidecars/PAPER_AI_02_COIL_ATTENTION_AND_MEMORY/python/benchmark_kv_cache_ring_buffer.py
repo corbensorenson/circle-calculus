@@ -12,7 +12,13 @@ from __future__ import annotations
 
 import argparse
 
-from circle_math.applications.circle_ai import certify_kv_cache_window
+from circle_math.applications.circle_ai import certify_kv_cache_batch, certify_kv_cache_window
+
+
+def parse_tokens(raw: str) -> tuple[int, ...]:
+    if not raw.strip():
+        return ()
+    return tuple(int(part.strip()) for part in raw.split(","))
 
 
 def main() -> None:
@@ -20,6 +26,7 @@ def main() -> None:
     parser.add_argument("--cache-size", type=int, default=16)
     parser.add_argument("--current", type=int, default=31)
     parser.add_argument("--token", type=int, default=20)
+    parser.add_argument("--batch-tokens", default="20,24,29,31")
     args = parser.parse_args()
 
     certificate = certify_kv_cache_window(
@@ -45,6 +52,24 @@ def main() -> None:
         f"theorem_ids={','.join(certificate.theorem_ids)}"
     )
     print(certificate.note)
+
+    batch = certify_kv_cache_batch(
+        cache_size=args.cache_size,
+        current=args.current,
+        tokens=parse_tokens(args.batch_tokens),
+    )
+    print(
+        "kv_cache_ring_buffer_batch "
+        f"cache_size={batch.cache_size} "
+        f"current={batch.current} "
+        f"tokens={','.join(str(token) for token in batch.tokens)} "
+        f"slots={','.join(str(slot) for slot in batch.slots)} "
+        f"all_retained={batch.all_retained} "
+        f"tokens_distinct={batch.tokens_distinct} "
+        f"slots_distinct={batch.slots_distinct} "
+        f"theorem_ids={','.join(batch.theorem_ids)}"
+    )
+    print(batch.note)
 
 
 if __name__ == "__main__":

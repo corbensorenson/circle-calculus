@@ -1,6 +1,7 @@
 from circle_math.applications.circle_ai import (
     active_token_counts_by_budget,
     average_candidate_count,
+    certify_kv_cache_batch,
     certify_kv_cache_window,
     certify_stride_family_coverage,
     coil_attention_path,
@@ -13,6 +14,7 @@ from circle_math.applications.circle_ai import (
     hybrid_attention_candidates,
     kv_cache_distinct_retained_slots_distinct,
     kv_cache_next_overwrite_token,
+    kv_cache_retained_batch_slots_distinct,
     kv_cache_retained_slots_distinct,
     kv_cache_slot,
     kv_cache_slots_collide,
@@ -111,6 +113,20 @@ def test_kv_cache_retained_tokens_are_pairwise_slot_distinct() -> None:
     assert not kv_cache_distinct_retained_slots_distinct(16, 31, 20, 20)
     assert not kv_cache_retained_slots_distinct(16, 40, 20, 29)
     assert not kv_cache_distinct_retained_slots_distinct(16, 40, 20, 29)
+
+
+def test_kv_cache_retained_batch_slots_are_distinct() -> None:
+    certificate = certify_kv_cache_batch(cache_size=16, current=31, tokens=(20, 24, 29, 31))
+    assert certificate.slots == (4, 8, 13, 15)
+    assert certificate.all_retained
+    assert certificate.tokens_distinct
+    assert certificate.slots_distinct
+    assert kv_cache_retained_batch_slots_distinct(16, 31, (20, 24, 29, 31))
+    assert not kv_cache_retained_batch_slots_distinct(16, 31, (20, 20, 29))
+    assert not kv_cache_retained_batch_slots_distinct(16, 40, (20, 24, 29))
+    assert "AIM-T0067" in certificate.theorem_ids
+    assert "AIM-T0068" in certificate.theorem_ids
+    assert "retained-batch slot certificate only" in certificate.note
 
 
 def test_kv_cache_ring_buffer_certificate_marks_stale_token() -> None:

@@ -91,6 +91,24 @@ def kv_cache_distinct_retained_slots_distinct(
     return kv_cache_slot(cache_size, left) != kv_cache_slot(cache_size, right)
 
 
+def kv_cache_retained_batch_slots_distinct(
+    cache_size: int,
+    current: int,
+    tokens: Sequence[int],
+) -> bool:
+    """Return whether a retained token batch has distinct ring-buffer slots."""
+    _require_positive(cache_size, "cache_size")
+    token_tuple = tuple(tokens)
+    if any(token < 0 for token in token_tuple):
+        raise ValueError("tokens must be nonnegative")
+    if len(set(token_tuple)) != len(token_tuple):
+        return False
+    if not all(kv_cache_window_contains(cache_size, current, token) for token in token_tuple):
+        return False
+    slots = tuple(kv_cache_slot(cache_size, token) for token in token_tuple)
+    return len(set(slots)) == len(slots)
+
+
 def adapter_block(block_size: int, channel: int) -> int:
     """Return the adapter block index ``channel mod block_size``."""
     _require_positive(block_size, "block_size")
@@ -358,6 +376,37 @@ class KVCacheWindowCertificate:
         "KV-cache ring-buffer slot certificate only; this proves finite indexing "
         "and overwrite-window facts, not attention quality, throughput, memory savings, "
         "or deployment safety."
+    )
+
+
+@dataclass(frozen=True)
+class KVCacheBatchCertificate:
+    cache_size: int
+    current: int
+    tokens: tuple[int, ...]
+    slots: tuple[int, ...]
+    all_retained: bool
+    tokens_distinct: bool
+    slots_distinct: bool
+    theorem_ids: tuple[str, ...] = (
+        "AIM-T0059",
+        "AIM-T0065",
+        "AIM-T0066",
+        "AIM-T0067",
+        "AIM-T0068",
+    )
+    lean_declarations: tuple[str, ...] = (
+        "Circle.Applications.kvCacheSlot_lt_cacheSize",
+        "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_lt",
+        "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_ne",
+        "Circle.Applications.kvCacheWindow_retainedBatchSlots_pairwise_ne",
+        "Circle.Applications.kvCacheWindow_retainedBatchSlotMap_nodup",
+    )
+    note: str = (
+        "KV-cache retained-batch slot certificate only; this proves finite "
+        "ring-buffer indexing facts for a declared live token batch, not paging "
+        "policy quality, throughput, memory savings, retrieval quality, or "
+        "deployment safety."
     )
 
 
@@ -1424,6 +1473,40 @@ def certify_kv_cache_window(
         next_overwrite_token=next_overwrite,
         next_overwrite_after_current=current < next_overwrite,
         collision_with_next_overwrite=kv_cache_slots_collide(cache_size, token, next_overwrite),
+    )
+
+
+def certify_kv_cache_batch(
+    *,
+    cache_size: int,
+    current: int,
+    tokens: Sequence[int],
+) -> KVCacheBatchCertificate:
+    """Emit a retained-batch ring-buffer slot-distinctness certificate."""
+    _require_positive(cache_size, "cache_size")
+    if current < 0:
+        raise ValueError("current must be nonnegative")
+    token_tuple = tuple(tokens)
+    if any(token < 0 for token in token_tuple):
+        raise ValueError("tokens must be nonnegative")
+    slots = tuple(kv_cache_slot(cache_size, token) for token in token_tuple)
+    all_retained = all(
+        kv_cache_window_contains(cache_size, current, token) for token in token_tuple
+    )
+    tokens_distinct = len(set(token_tuple)) == len(token_tuple)
+    slots_distinct = (
+        kv_cache_retained_batch_slots_distinct(cache_size, current, token_tuple)
+        if tokens_distinct and all_retained
+        else False
+    )
+    return KVCacheBatchCertificate(
+        cache_size=cache_size,
+        current=current,
+        tokens=token_tuple,
+        slots=slots,
+        all_retained=all_retained,
+        tokens_distinct=tokens_distinct,
+        slots_distinct=slots_distinct,
     )
 
 

@@ -226,6 +226,50 @@ theorem kvCacheWindow_retainedSlots_ne_of_ne
   · intro hslot
     exact (kvCacheWindow_retainedSlots_ne_of_lt hrightWindow hleftWindow hgt) hslot.symm
 
+/-- A batch of pairwise-distinct retained tokens maps to pairwise-distinct
+KV-cache ring-buffer slots.
+
+This is the finite batch-read version of the pairwise window theorem: if every
+token in the requested batch is live in the current window and no two token
+positions are the same, then their ring-buffer slots are all distinct. -/
+theorem kvCacheWindow_retainedBatchSlots_pairwise_ne
+    {cacheSize current : Nat} :
+    ∀ {tokens : List Nat},
+      (∀ token ∈ tokens, kvCacheWindowContains cacheSize current token) →
+      List.Pairwise (fun left right => left ≠ right) tokens →
+      List.Pairwise
+        (fun left right => kvCacheSlot cacheSize left ≠ kvCacheSlot cacheSize right)
+        tokens := by
+  intro tokens
+  induction tokens with
+  | nil =>
+      intro _hwindow _hpairwise
+      exact List.Pairwise.nil
+  | cons head tail ih =>
+      intro hwindow hpairwise
+      cases hpairwise with
+      | cons hhead htail =>
+          refine List.Pairwise.cons ?_ ?_
+          · intro token htoken
+            exact
+              kvCacheWindow_retainedSlots_ne_of_ne
+                (hwindow head (by simp))
+                (hwindow token (by simp [htoken]))
+                (hhead token htoken)
+          · exact ih (fun token htoken => hwindow token (by simp [htoken])) htail
+
+/-- A `Nodup` retained-token batch has `Nodup` ring-buffer slots. -/
+theorem kvCacheWindow_retainedBatchSlotMap_nodup
+    {cacheSize current : Nat} {tokens : List Nat}
+    (hwindow : ∀ token ∈ tokens, kvCacheWindowContains cacheSize current token)
+    (hnodup : tokens.Nodup) :
+    (tokens.map (kvCacheSlot cacheSize)).Nodup := by
+  rw [List.nodup_iff_pairwise_ne, List.pairwise_map]
+  exact
+    kvCacheWindow_retainedBatchSlots_pairwise_ne
+      (cacheSize := cacheSize) (current := current) hwindow
+      (List.nodup_iff_pairwise_ne.mp hnodup)
+
 def loopRequiredSteps (loopPeriod sample : Nat) : Nat :=
   phaseChannel loopPeriod sample + 1
 
