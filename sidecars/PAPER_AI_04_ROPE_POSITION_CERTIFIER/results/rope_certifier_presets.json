@@ -21,7 +21,8 @@
             "Lean theorem AIRA-T0028 certifies every counted start at the common collision gap as an all-channel collision.",
             "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
             "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
-            "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness."
+            "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness.",
+            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context."
           ],
           "common_collision_gap": null,
           "common_collision_gap_reaches_context": true,
@@ -93,6 +94,7 @@
             54410
           ],
           "explanation": "PASS: the common exact collision gap is at least the context length, so no two unequal positions inside the inspected context collide in every discrete channel.",
+          "first_exact_pass_prefix_length": 5,
           "guaranteed_common_gap_collision_pair_count": 0,
           "guaranteed_common_gap_multiple_pair_count": 0,
           "lean_declarations": [
@@ -113,6 +115,216 @@
           ],
           "pass_exact": true,
           "period_count": 64,
+          "prefix_collision_reports": [
+            {
+              "lcm_collision_gap": 6,
+              "lcm_reaches_context": false,
+              "periods": [
+                6
+              ],
+              "prefix_length": 1,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  6
+                ],
+                [
+                  1,
+                  7
+                ],
+                [
+                  2,
+                  8
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 1396054
+            },
+            {
+              "lcm_collision_gap": 42,
+              "lcm_reaches_context": false,
+              "periods": [
+                6,
+                7
+              ],
+              "prefix_length": 2,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  42
+                ],
+                [
+                  1,
+                  43
+                ],
+                [
+                  2,
+                  44
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 197686
+            },
+            {
+              "lcm_collision_gap": 168,
+              "lcm_reaches_context": false,
+              "periods": [
+                6,
+                7,
+                8
+              ],
+              "prefix_length": 3,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  168
+                ],
+                [
+                  1,
+                  169
+                ],
+                [
+                  2,
+                  170
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 47904
+            },
+            {
+              "lcm_collision_gap": 840,
+              "lcm_reaches_context": false,
+              "periods": [
+                6,
+                7,
+                8,
+                10
+              ],
+              "prefix_length": 4,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  840
+                ],
+                [
+                  1,
+                  841
+                ],
+                [
+                  2,
+                  842
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 7984
+            },
+            {
+              "lcm_collision_gap": null,
+              "lcm_reaches_context": true,
+              "periods": [
+                6,
+                7,
+                8,
+                10,
+                11
+              ],
+              "prefix_length": 5,
+              "sample_collision_pairs": [],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 0
+            },
+            {
+              "lcm_collision_gap": null,
+              "lcm_reaches_context": true,
+              "periods": [
+                6,
+                7,
+                8,
+                10,
+                11,
+                13
+              ],
+              "prefix_length": 6,
+              "sample_collision_pairs": [],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 0
+            },
+            {
+              "lcm_collision_gap": null,
+              "lcm_reaches_context": true,
+              "periods": [
+                6,
+                7,
+                8,
+                10,
+                11,
+                13,
+                15
+              ],
+              "prefix_length": 7,
+              "sample_collision_pairs": [],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 0
+            },
+            {
+              "lcm_collision_gap": null,
+              "lcm_reaches_context": true,
+              "periods": [
+                6,
+                7,
+                8,
+                10,
+                11,
+                13,
+                15,
+                17
+              ],
+              "prefix_length": 8,
+              "sample_collision_pairs": [],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 0
+            }
+          ],
           "sample_collision_pairs": [],
           "single_period_collision_pair_counts": [
             1396054,
@@ -350,6 +562,7 @@
         "RoPE position distinguishability certificate",
         "config: head_dim=128 base=10000 context=4096 tolerance=1e-06 discretization=round",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
+        "prefix_collision_reports=8 first_exact_pass_prefix_length=5",
         "real_phase_margin=PASS worst_margin_radians=1 worst_gap=1 scanned_gaps=4095",
         "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050 (unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, turn-ratio scaling, finite-context margin consequence, and context-plus-margin transfer precursors only; not a Diophantine proof)",
         "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0046,AIRA-T0048,AIRA-T0049",
@@ -376,7 +589,8 @@
             "Lean theorem AIRA-T0028 certifies every counted start at the common collision gap as an all-channel collision.",
             "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
             "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
-            "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness."
+            "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness.",
+            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context."
           ],
           "common_collision_gap": null,
           "common_collision_gap_reaches_context": true,
@@ -448,6 +662,7 @@
             54410
           ],
           "explanation": "PASS: the common exact collision gap is at least the context length, so no two unequal positions inside the inspected context collide in every discrete channel.",
+          "first_exact_pass_prefix_length": 8,
           "guaranteed_common_gap_collision_pair_count": 0,
           "guaranteed_common_gap_multiple_pair_count": 0,
           "lean_declarations": [
@@ -468,6 +683,255 @@
           ],
           "pass_exact": true,
           "period_count": 64,
+          "prefix_collision_reports": [
+            {
+              "lcm_collision_gap": 6,
+              "lcm_reaches_context": false,
+              "periods": [
+                6
+              ],
+              "prefix_length": 1,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  6
+                ],
+                [
+                  1,
+                  7
+                ],
+                [
+                  2,
+                  8
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 1431590230
+            },
+            {
+              "lcm_collision_gap": 42,
+              "lcm_reaches_context": false,
+              "periods": [
+                6,
+                7
+              ],
+              "prefix_length": 2,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  42
+                ],
+                [
+                  1,
+                  43
+                ],
+                [
+                  2,
+                  44
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 204456720
+            },
+            {
+              "lcm_collision_gap": 168,
+              "lcm_reaches_context": false,
+              "periods": [
+                6,
+                7,
+                8
+              ],
+              "prefix_length": 3,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  168
+                ],
+                [
+                  1,
+                  169
+                ],
+                [
+                  2,
+                  170
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 51065040
+            },
+            {
+              "lcm_collision_gap": 840,
+              "lcm_reaches_context": false,
+              "periods": [
+                6,
+                7,
+                8,
+                10
+              ],
+              "prefix_length": 4,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  840
+                ],
+                [
+                  1,
+                  841
+                ],
+                [
+                  2,
+                  842
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 10160592
+            },
+            {
+              "lcm_collision_gap": 9240,
+              "lcm_reaches_context": false,
+              "periods": [
+                6,
+                7,
+                8,
+                10,
+                11
+              ],
+              "prefix_length": 5,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  9240
+                ],
+                [
+                  1,
+                  9241
+                ],
+                [
+                  2,
+                  9242
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 864808
+            },
+            {
+              "lcm_collision_gap": 120120,
+              "lcm_reaches_context": false,
+              "periods": [
+                6,
+                7,
+                8,
+                10,
+                11,
+                13
+              ],
+              "prefix_length": 6,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  120120
+                ],
+                [
+                  1,
+                  120121
+                ],
+                [
+                  2,
+                  120122
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 10952
+            },
+            {
+              "lcm_collision_gap": 120120,
+              "lcm_reaches_context": false,
+              "periods": [
+                6,
+                7,
+                8,
+                10,
+                11,
+                13,
+                15
+              ],
+              "prefix_length": 7,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  120120
+                ],
+                [
+                  1,
+                  120121
+                ],
+                [
+                  2,
+                  120122
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 10952
+            },
+            {
+              "lcm_collision_gap": null,
+              "lcm_reaches_context": true,
+              "periods": [
+                6,
+                7,
+                8,
+                10,
+                11,
+                13,
+                15,
+                17
+              ],
+              "prefix_length": 8,
+              "sample_collision_pairs": [],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 0
+            }
+          ],
           "sample_collision_pairs": [],
           "single_period_collision_pair_counts": [
             1431590230,
@@ -705,6 +1169,7 @@
         "RoPE position distinguishability certificate",
         "config: head_dim=128 base=10000 context=131072 tolerance=1e-06 discretization=round",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
+        "prefix_collision_reports=8 first_exact_pass_prefix_length=8",
         "real_phase_margin=PASS worst_margin_radians=1 worst_gap=1 scanned_gaps=131071",
         "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050 (unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, turn-ratio scaling, finite-context margin consequence, and context-plus-margin transfer precursors only; not a Diophantine proof)",
         "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0046,AIRA-T0048,AIRA-T0049",
@@ -731,7 +1196,8 @@
             "Lean theorem AIRA-T0028 certifies every counted start at the common collision gap as an all-channel collision.",
             "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
             "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
-            "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness."
+            "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness.",
+            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context."
           ],
           "common_collision_gap": null,
           "common_collision_gap_reaches_context": true,
@@ -803,6 +1269,7 @@
             2559196
           ],
           "explanation": "PASS: the common exact collision gap is at least the context length, so no two unequal positions inside the inspected context collide in every discrete channel.",
+          "first_exact_pass_prefix_length": null,
           "guaranteed_common_gap_collision_pair_count": 0,
           "guaranteed_common_gap_multiple_pair_count": 0,
           "lean_declarations": [
@@ -823,6 +1290,268 @@
           ],
           "pass_exact": true,
           "period_count": 64,
+          "prefix_collision_reports": [
+            {
+              "lcm_collision_gap": 6,
+              "lcm_reaches_context": false,
+              "periods": [
+                6
+              ],
+              "prefix_length": 1,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  6
+                ],
+                [
+                  1,
+                  7
+                ],
+                [
+                  2,
+                  8
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 1431590230
+            },
+            {
+              "lcm_collision_gap": 24,
+              "lcm_reaches_context": false,
+              "periods": [
+                6,
+                8
+              ],
+              "prefix_length": 2,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  24
+                ],
+                [
+                  1,
+                  25
+                ],
+                [
+                  2,
+                  26
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 357848408
+            },
+            {
+              "lcm_collision_gap": 72,
+              "lcm_reaches_context": false,
+              "periods": [
+                6,
+                8,
+                9
+              ],
+              "prefix_length": 3,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  72
+                ],
+                [
+                  1,
+                  73
+                ],
+                [
+                  2,
+                  74
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 119239120
+            },
+            {
+              "lcm_collision_gap": 72,
+              "lcm_reaches_context": false,
+              "periods": [
+                6,
+                8,
+                9,
+                12
+              ],
+              "prefix_length": 4,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  72
+                ],
+                [
+                  1,
+                  73
+                ],
+                [
+                  2,
+                  74
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 119239120
+            },
+            {
+              "lcm_collision_gap": 504,
+              "lcm_reaches_context": false,
+              "periods": [
+                6,
+                8,
+                9,
+                12,
+                14
+              ],
+              "prefix_length": 5,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  504
+                ],
+                [
+                  1,
+                  505
+                ],
+                [
+                  2,
+                  506
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 16978000
+            },
+            {
+              "lcm_collision_gap": 504,
+              "lcm_reaches_context": false,
+              "periods": [
+                6,
+                8,
+                9,
+                12,
+                14,
+                18
+              ],
+              "prefix_length": 6,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  504
+                ],
+                [
+                  1,
+                  505
+                ],
+                [
+                  2,
+                  506
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 16978000
+            },
+            {
+              "lcm_collision_gap": 5544,
+              "lcm_reaches_context": false,
+              "periods": [
+                6,
+                8,
+                9,
+                12,
+                14,
+                18,
+                22
+              ],
+              "prefix_length": 7,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  5544
+                ],
+                [
+                  1,
+                  5545
+                ],
+                [
+                  2,
+                  5546
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 1484512
+            },
+            {
+              "lcm_collision_gap": 72072,
+              "lcm_reaches_context": false,
+              "periods": [
+                6,
+                8,
+                9,
+                12,
+                14,
+                18,
+                22,
+                26
+              ],
+              "prefix_length": 8,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  72072
+                ],
+                [
+                  1,
+                  72073
+                ],
+                [
+                  2,
+                  72074
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 59000
+            }
+          ],
           "sample_collision_pairs": [],
           "single_period_collision_pair_counts": [
             1431590230,
@@ -1060,6 +1789,7 @@
         "RoPE position distinguishability certificate",
         "config: head_dim=128 base=500000 context=131072 tolerance=1e-06 discretization=round",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
+        "prefix_collision_reports=8 first_exact_pass_prefix_length=none",
         "real_phase_margin=PASS worst_margin_radians=1 worst_gap=1 scanned_gaps=131071",
         "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050 (unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, turn-ratio scaling, finite-context margin consequence, and context-plus-margin transfer precursors only; not a Diophantine proof)",
         "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0046,AIRA-T0048,AIRA-T0049",
@@ -1086,7 +1816,8 @@
             "Lean theorem AIRA-T0028 certifies every counted start at the common collision gap as an all-channel collision.",
             "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
             "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
-            "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness."
+            "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness.",
+            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context."
           ],
           "common_collision_gap": 6,
           "common_collision_gap_reaches_context": false,
@@ -1095,6 +1826,7 @@
             6
           ],
           "explanation": "FAIL: the common exact collision gap is inside the context, so the listed sample pairs collide in every discrete channel under the declared integer-period model.",
+          "first_exact_pass_prefix_length": null,
           "guaranteed_common_gap_collision_pair_count": 14,
           "guaranteed_common_gap_multiple_pair_count": 24,
           "lean_declarations": [
@@ -1115,6 +1847,37 @@
           ],
           "pass_exact": false,
           "period_count": 1,
+          "prefix_collision_reports": [
+            {
+              "lcm_collision_gap": 6,
+              "lcm_reaches_context": false,
+              "periods": [
+                6
+              ],
+              "prefix_length": 1,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  6
+                ],
+                [
+                  1,
+                  7
+                ],
+                [
+                  2,
+                  8
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 24
+            }
+          ],
           "sample_collision_pairs": [
             [
               0,
@@ -1247,6 +2010,7 @@
         "RoPE position distinguishability certificate",
         "config: head_dim=2 base=10000 context=20 tolerance=1e-06 discretization=round",
         "exact_discrete_contract=FAIL common_collision_gap=6 period_count=1 guaranteed_common_gap_collision_pair_count=14 guaranteed_common_gap_multiple_pair_count=24 total_bank_collision_pair_count=24",
+        "prefix_collision_reports=1 first_exact_pass_prefix_length=none",
         "real_phase_margin=PASS worst_margin_radians=0.150444078461 worst_gap=19 scanned_gaps=19",
         "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050 (unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, turn-ratio scaling, finite-context margin consequence, and context-plus-margin transfer precursors only; not a Diophantine proof)",
         "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0046,AIRA-T0048,AIRA-T0049",
@@ -1273,7 +2037,8 @@
             "Lean theorem AIRA-T0028 certifies every counted start at the common collision gap as an all-channel collision.",
             "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
             "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
-            "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness."
+            "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness.",
+            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context."
           ],
           "common_collision_gap": 114,
           "common_collision_gap_reaches_context": false,
@@ -1283,6 +2048,7 @@
             38
           ],
           "explanation": "FAIL: the common exact collision gap is inside the context, so the listed sample pairs collide in every discrete channel under the declared integer-period model.",
+          "first_exact_pass_prefix_length": null,
           "guaranteed_common_gap_collision_pair_count": 14,
           "guaranteed_common_gap_multiple_pair_count": 14,
           "lean_declarations": [
@@ -1303,6 +2069,67 @@
           ],
           "pass_exact": false,
           "period_count": 2,
+          "prefix_collision_reports": [
+            {
+              "lcm_collision_gap": 6,
+              "lcm_reaches_context": false,
+              "periods": [
+                6
+              ],
+              "prefix_length": 1,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  6
+                ],
+                [
+                  1,
+                  7
+                ],
+                [
+                  2,
+                  8
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 1302
+            },
+            {
+              "lcm_collision_gap": 114,
+              "lcm_reaches_context": false,
+              "periods": [
+                6,
+                38
+              ],
+              "prefix_length": 2,
+              "sample_collision_pairs": [
+                [
+                  0,
+                  114
+                ],
+                [
+                  1,
+                  115
+                ],
+                [
+                  2,
+                  116
+                ]
+              ],
+              "theorem_ids": [
+                "AIRA-T0036",
+                "AIRA-T0046",
+                "AIRA-T0048",
+                "AIRA-T0049"
+              ],
+              "total_bank_collision_pair_count": 14
+            }
+          ],
           "sample_collision_pairs": [
             [
               0,
@@ -1437,6 +2264,7 @@
         "RoPE position distinguishability certificate",
         "config: head_dim=4 base=36 context=128 tolerance=1e-06 discretization=round",
         "exact_discrete_contract=FAIL common_collision_gap=114 period_count=2 guaranteed_common_gap_collision_pair_count=14 guaranteed_common_gap_multiple_pair_count=14 total_bank_collision_pair_count=14",
+        "prefix_collision_reports=2 first_exact_pass_prefix_length=none",
         "real_phase_margin=PASS worst_margin_radians=0.0973355292325 worst_gap=113 scanned_gaps=127",
         "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050 (unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, turn-ratio scaling, finite-context margin consequence, and context-plus-margin transfer precursors only; not a Diophantine proof)",
         "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0046,AIRA-T0048,AIRA-T0049",

@@ -114,7 +114,9 @@ from circle_math.applications import (
     capped_lcm,
     certify_rope_positions,
     collision_pair_count_at_gap,
+    collision_pair_count_at_gap_multiples,
     discretize_rope_periods,
+    phase_bank_prefix_collision_reports,
     rope_period_estimates,
     RoPEConfig,
     winding_alias_collision_count,
@@ -929,6 +931,36 @@ def js_capped_lcm(values: tuple[int, ...], cap: int) -> tuple[int, bool]:
         if current >= cap:
             return (current, True)
     return (current, current >= cap)
+
+
+def js_collision_pair_count_at_gap_multiples(context: int, gap: int) -> int:
+    if gap <= 0 or gap >= context:
+        return 0
+    total = 0
+    multiple = 1
+    while multiple * gap < context:
+        total += context - multiple * gap
+        multiple += 1
+    return total
+
+
+def js_phase_bank_prefix_collision_reports(
+    context: int,
+    periods: tuple[int, ...],
+    limit: int = 8,
+):
+    reports = []
+    for prefix_length in range(1, min(len(periods), limit) + 1):
+        lcm_value, reaches_context = js_capped_lcm(periods[:prefix_length], context)
+        reports.append(
+            (
+                prefix_length,
+                None if reaches_context else lcm_value,
+                reaches_context,
+                0 if reaches_context else js_collision_pair_count_at_gap_multiples(context, lcm_value),
+            )
+        )
+    return tuple(reports)
 
 
 def js_position_residue(period: int, position: int) -> int:
@@ -3718,6 +3750,31 @@ def main() -> int:
         js_pair_count = 0 if lcm_reaches else max(0, config.context_length - lcm_value)
         assert certificate.exact_discrete.guaranteed_common_gap_collision_pair_count == js_pair_count
         assert collision_pair_count_at_gap(config.context_length, lcm_value) == js_pair_count
+        js_multiple_count = 0 if lcm_reaches else js_collision_pair_count_at_gap_multiples(
+            config.context_length,
+            lcm_value,
+        )
+        assert (
+            certificate.exact_discrete.guaranteed_common_gap_multiple_pair_count
+            == js_multiple_count
+        )
+        assert collision_pair_count_at_gap_multiples(config.context_length, lcm_value) == js_multiple_count
+        python_prefix_reports = phase_bank_prefix_collision_reports(config.context_length, discrete)
+        js_prefix_reports = js_phase_bank_prefix_collision_reports(config.context_length, js_discrete)
+        assert tuple(
+            (
+                report.prefix_length,
+                report.lcm_collision_gap,
+                report.lcm_reaches_context,
+                report.total_bank_collision_pair_count,
+            )
+            for report in python_prefix_reports
+        ) == js_prefix_reports
+        first_prefix = next(
+            (report.prefix_length for report in python_prefix_reports if report.lcm_reaches_context),
+            None,
+        )
+        assert certificate.exact_discrete.first_exact_pass_prefix_length == first_prefix
 
     winding_cases = [
         (8, 4, 37, 7),

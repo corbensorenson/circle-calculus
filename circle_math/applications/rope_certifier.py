@@ -108,6 +108,22 @@ class RoPEConfig:
 
 
 @dataclass(frozen=True)
+class PhaseBankPrefixCollisionReport:
+    prefix_length: int
+    periods: tuple[int, ...]
+    lcm_collision_gap: int | None
+    lcm_reaches_context: bool
+    total_bank_collision_pair_count: int
+    sample_collision_pairs: tuple[tuple[int, int], ...]
+    theorem_ids: tuple[str, ...] = (
+        "AIRA-T0036",
+        "AIRA-T0046",
+        "AIRA-T0048",
+        "AIRA-T0049",
+    )
+
+
+@dataclass(frozen=True)
 class ExactDiscreteRoPECertificate:
     pass_exact: bool
     theorem_ids: tuple[str, ...]
@@ -115,6 +131,8 @@ class ExactDiscreteRoPECertificate:
     discretized_periods: tuple[int, ...]
     period_count: int
     single_period_collision_pair_counts: tuple[int, ...]
+    prefix_collision_reports: tuple[PhaseBankPrefixCollisionReport, ...]
+    first_exact_pass_prefix_length: int | None
     context_length: int
     common_collision_gap: int | None
     common_collision_gap_reaches_context: bool
@@ -285,6 +303,55 @@ def collision_pair_count_at_gap_multiples(context_length: int, common_gap: int) 
 def single_period_collision_pair_count(context_length: int, period: int) -> int:
     """Count ordered unequal position pairs that collide in one integer-period channel."""
     return collision_pair_count_at_gap_multiples(context_length, period)
+
+
+def phase_bank_prefix_collision_reports(
+    context_length: int,
+    periods: Sequence[int],
+    *,
+    limit: int = 8,
+    sample_limit: int = 3,
+) -> tuple[PhaseBankPrefixCollisionReport, ...]:
+    """Return exact collision summaries for bounded prefixes of a phase bank.
+
+    Each prefix reuses the same theorem-backed LCM contract as the full bank:
+    if the prefix LCM reaches the inspected context, that prefix has no unequal
+    all-channel collision inside the context; otherwise its exact all-channel
+    collision count is the sum over positive in-context multiples of the prefix
+    LCM. Prefixes are reported to help identify how many declared channels are
+    needed before the integer-period bank becomes position-distinguishing.
+    """
+    if context_length <= 0:
+        raise ValueError("context_length must be positive")
+    if limit < 0:
+        raise ValueError("limit must be nonnegative")
+    if sample_limit < 0:
+        raise ValueError("sample_limit must be nonnegative")
+    normalized_periods = tuple(periods)
+    for period in normalized_periods:
+        if period <= 0:
+            raise ValueError("periods must be positive")
+    reports: list[PhaseBankPrefixCollisionReport] = []
+    for prefix_length in range(1, min(len(normalized_periods), limit) + 1):
+        prefix = normalized_periods[:prefix_length]
+        collision_gap, reaches_context = capped_lcm(prefix, context_length)
+        pair_count = 0 if reaches_context else collision_pair_count_at_gap_multiples(
+            context_length,
+            collision_gap,
+        )
+        reports.append(PhaseBankPrefixCollisionReport(
+            prefix_length=prefix_length,
+            periods=prefix,
+            lcm_collision_gap=None if reaches_context else collision_gap,
+            lcm_reaches_context=reaches_context,
+            total_bank_collision_pair_count=pair_count,
+            sample_collision_pairs=sample_collision_pairs(
+                context_length,
+                collision_gap,
+                limit=sample_limit,
+            ),
+        ))
+    return tuple(reports)
 
 
 def brute_force_single_period_collision_pair_count(context_length: int, period: int) -> int:
@@ -626,6 +693,14 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
         single_period_collision_pair_count(config.context_length, period)
         for period in discrete_periods
     )
+    prefix_reports = phase_bank_prefix_collision_reports(
+        config.context_length,
+        discrete_periods,
+    )
+    first_pass_prefix = next(
+        (report.prefix_length for report in prefix_reports if report.lcm_reaches_context),
+        None,
+    )
     exact_pass = reaches_context
     guaranteed_pair_count = 0 if reaches_context else collision_pair_count_at_gap(
         config.context_length,
@@ -642,6 +717,8 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
         discretized_periods=discrete_periods,
         period_count=len(discrete_periods),
         single_period_collision_pair_counts=single_period_counts,
+        prefix_collision_reports=prefix_reports,
+        first_exact_pass_prefix_length=first_pass_prefix,
         context_length=config.context_length,
         common_collision_gap=None if reaches_context else collision_gap,
         common_collision_gap_reaches_context=reaches_context,
@@ -659,6 +736,7 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
             "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
             "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
             "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0046 proves that if the LCM reaches the inspected context, no unequal in-context all-channel collision exists. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness.",
+            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context.",
         ),
         explanation=(
             "PASS: the common exact collision gap is at least the context length, so no two unequal "
@@ -692,6 +770,11 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
     exact_status = "PASS" if exact.pass_exact else "FAIL"
     margin_status = "PASS" if margin.pass_margin else "WARN"
     gap = ">= context" if exact.common_collision_gap is None else str(exact.common_collision_gap)
+    first_prefix = (
+        "none"
+        if exact.first_exact_pass_prefix_length is None
+        else str(exact.first_exact_pass_prefix_length)
+    )
     worst_gap = "none" if margin.worst_gap is None else str(margin.worst_gap)
     worst_margin = (
         "inf"
@@ -707,6 +790,8 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         f"guaranteed_common_gap_collision_pair_count={exact.guaranteed_common_gap_collision_pair_count} "
         f"guaranteed_common_gap_multiple_pair_count={exact.guaranteed_common_gap_multiple_pair_count} "
         f"total_bank_collision_pair_count={exact.total_bank_collision_pair_count}",
+        f"prefix_collision_reports={len(exact.prefix_collision_reports)} "
+        f"first_exact_pass_prefix_length={first_prefix}",
         f"real_phase_margin={margin_status} worst_margin_radians={worst_margin} "
         f"worst_gap={worst_gap} scanned_gaps={margin.scanned_gap_count}",
         f"real_phase_formal_precursors={','.join(margin.formal_precursor_theorem_ids)} "

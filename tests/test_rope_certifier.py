@@ -14,6 +14,7 @@ from circle_math.applications import (
     collision_pair_count_at_gap,
     collision_pair_count_at_gap_multiples,
     discretize_rope_periods,
+    phase_bank_prefix_collision_reports,
     real_phase_bank_near_turn,
     real_phase_bank_turn_separated,
     real_phase_int_turn_error,
@@ -42,6 +43,12 @@ def test_discretized_period_helpers_are_deterministic() -> None:
     assert single_period_collision_pair_count(20, 6) == 24
     assert collision_pair_count_at_gap(10, 10) == 0
     assert sample_collision_pairs(10, 4, limit=3) == ((0, 4), (1, 5), (2, 6))
+    reports = phase_bank_prefix_collision_reports(20, (6, 35), limit=2)
+    assert tuple(report.prefix_length for report in reports) == (1, 2)
+    assert reports[0].lcm_collision_gap == 6
+    assert reports[0].total_bank_collision_pair_count == 24
+    assert reports[1].lcm_reaches_context
+    assert reports[1].total_bank_collision_pair_count == 0
 
 
 def test_single_period_collision_count_matches_bruteforce() -> None:
@@ -183,6 +190,10 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     assert not certificate.exact_discrete.pass_exact
     assert certificate.exact_discrete.common_collision_gap == 6
     assert certificate.exact_discrete.single_period_collision_pair_counts == (24,)
+    assert certificate.exact_discrete.first_exact_pass_prefix_length is None
+    assert certificate.exact_discrete.prefix_collision_reports[0].prefix_length == 1
+    assert certificate.exact_discrete.prefix_collision_reports[0].lcm_collision_gap == 6
+    assert certificate.exact_discrete.prefix_collision_reports[0].total_bank_collision_pair_count == 24
     assert certificate.exact_discrete.guaranteed_common_gap_collision_pair_count == 14
     assert certificate.exact_discrete.guaranteed_common_gap_multiple_pair_count == 24
     assert certificate.exact_discrete.total_bank_collision_pair_count == 24
@@ -204,6 +215,9 @@ def test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context() 
     assert certificate.exact_discrete.common_collision_gap is None
     assert certificate.exact_discrete.common_collision_gap_reaches_context
     assert certificate.exact_discrete.single_period_collision_pair_counts == (2, 0)
+    assert certificate.exact_discrete.first_exact_pass_prefix_length == 2
+    assert certificate.exact_discrete.prefix_collision_reports[0].total_bank_collision_pair_count == 2
+    assert certificate.exact_discrete.prefix_collision_reports[1].lcm_reaches_context
     assert certificate.exact_discrete.guaranteed_common_gap_collision_pair_count == 0
     assert certificate.exact_discrete.guaranteed_common_gap_multiple_pair_count == 0
     assert certificate.exact_discrete.total_bank_collision_pair_count == 0
@@ -238,6 +252,8 @@ def test_rope_certify_cli_emits_json_certificate() -> None:
     assert payload["exact_discrete"]["pass_exact"] is False
     assert payload["exact_discrete"]["common_collision_gap"] == 6
     assert payload["exact_discrete"]["single_period_collision_pair_counts"] == [24]
+    assert payload["exact_discrete"]["first_exact_pass_prefix_length"] is None
+    assert payload["exact_discrete"]["prefix_collision_reports"][0]["lcm_collision_gap"] == 6
     assert payload["exact_discrete"]["guaranteed_common_gap_collision_pair_count"] == 14
     assert payload["exact_discrete"]["guaranteed_common_gap_multiple_pair_count"] == 24
     assert payload["exact_discrete"]["total_bank_collision_pair_count"] == 24
@@ -301,4 +317,5 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     )
     assert "| llama_style_10000_4k |" in markdown_result.stdout
     assert "Total bank pairs" in markdown_result.stdout
+    assert "First pass prefix" in markdown_result.stdout
     assert "Reproduce with:" in markdown_result.stdout

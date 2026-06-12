@@ -64,8 +64,8 @@ def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
 
 def markdown_results(payload: dict[str, Any]) -> str:
     rows = [
-        "| Preset | Head dim | Base | Context | Exact discrete | Common collision gap | Common-gap pairs | Total bank pairs | Real margin | Worst gap | Theorem ids |",
-        "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | --- | --- | --- |",
+        "| Preset | Head dim | Base | Context | Exact discrete | Common collision gap | Common-gap pairs | Total bank pairs | First pass prefix | Real margin | Worst gap | Theorem ids |",
+        "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | --- | --- | --- | --- |",
     ]
     for item in payload["presets"]:
         cert = item["certificate"]
@@ -80,10 +80,15 @@ def markdown_results(payload: dict[str, Any]) -> str:
             else str(exact["common_collision_gap"])
         )
         worst_gap = "none" if margin["worst_gap"] is None else str(margin["worst_gap"])
+        first_prefix = (
+            "none"
+            if exact["first_exact_pass_prefix_length"] is None
+            else str(exact["first_exact_pass_prefix_length"])
+        )
         theorem_ids = ", ".join(cert["theorem_ids"])
         rows.append(
             "| {preset} | {head_dim} | {base:g} | {context} | {exact_label} | "
-            "{common_gap} | {pair_count} | {total_count} | {margin_label} ({worst_margin:.6g} rad) | {worst_gap} | {theorem_ids} |".format(
+            "{common_gap} | {pair_count} | {total_count} | {first_prefix} | {margin_label} ({worst_margin:.6g} rad) | {worst_gap} | {theorem_ids} |".format(
                 preset=item["preset"],
                 head_dim=config["head_dim"],
                 base=config["base"],
@@ -92,6 +97,7 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 common_gap=common_gap,
                 pair_count=exact["guaranteed_common_gap_collision_pair_count"],
                 total_count=exact["total_bank_collision_pair_count"],
+                first_prefix=first_prefix,
                 margin_label=margin_label,
                 worst_margin=margin["worst_margin_radians"],
                 worst_gap=worst_gap,

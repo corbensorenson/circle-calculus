@@ -22,6 +22,9 @@ const THEOREM_GROUPS = [
       "AIRA-T0034",
       "AIRA-T0035",
       "AIRA-T0036",
+      "AIRA-T0046",
+      "AIRA-T0048",
+      "AIRA-T0049",
     ],
   },
   {
@@ -36,6 +39,13 @@ const THEOREM_GROUPS = [
       "AIRA-T0038",
       "AIRA-T0039",
       "AIRA-T0040",
+      "AIRA-T0041",
+      "AIRA-T0042",
+      "AIRA-T0043",
+      "AIRA-T0044",
+      "AIRA-T0045",
+      "AIRA-T0047",
+      "AIRA-T0050",
     ],
   },
 ];
@@ -74,6 +84,31 @@ function cappedLcm(values, cap) {
     if (current >= cap) return { value: current, reachesContext: true };
   }
   return { value: current, reachesContext: current >= cap };
+}
+
+function collisionPairCountAtGapMultiples(context, gap) {
+  if (gap <= 0 || gap >= context) return 0;
+  let total = 0;
+  for (let multiple = 1; multiple * gap < context; multiple += 1) {
+    total += context - multiple * gap;
+  }
+  return total;
+}
+
+function phaseBankPrefixReports(context, periods, limit = 8) {
+  const reports = [];
+  const prefixLimit = Math.min(periods.length, limit);
+  for (let prefixLength = 1; prefixLength <= prefixLimit; prefixLength += 1) {
+    const prefix = periods.slice(0, prefixLength);
+    const exact = cappedLcm(prefix, context);
+    reports.push({
+      prefixLength,
+      reachesContext: exact.reachesContext,
+      gap: exact.reachesContext ? null : exact.value,
+      totalPairs: exact.reachesContext ? 0 : collisionPairCountAtGapMultiples(context, exact.value),
+    });
+  }
+  return reports;
 }
 
 function angularFrequencies(headDim, base) {
@@ -210,6 +245,11 @@ function appendRecord(output, values, theoremById) {
     ? []
     : Array.from({ length: Math.min(5, values.context - exact.value) }, (_, start) => [start, start + exact.value]);
   const guaranteedPairCount = exact.reachesContext ? 0 : Math.max(0, values.context - exact.value);
+  const guaranteedMultiplePairCount = exact.reachesContext
+    ? 0
+    : collisionPairCountAtGapMultiples(values.context, exact.value);
+  const prefixReports = phaseBankPrefixReports(values.context, periods);
+  const firstPassPrefix = prefixReports.find((report) => report.reachesContext);
   const margin = realMargin(values.headDim, values.base, values.context, values.tolerance);
 
   const record = document.createElement("section");
@@ -230,6 +270,9 @@ function appendRecord(output, values, theoremById) {
     `exact discrete contract: ${exact.reachesContext ? "PASS" : "FAIL"}`,
     `common collision gap: ${exact.reachesContext ? ">= context" : exact.value}`,
     `guaranteed common-gap collision pairs: ${guaranteedPairCount}`,
+    `guaranteed common-gap multiple pairs: ${guaranteedMultiplePairCount}`,
+    `bounded prefix reports: ${prefixReports.length}`,
+    `first exact pass prefix length: ${firstPassPrefix ? firstPassPrefix.prefixLength : "none"}`,
     `real-phase margin: ${margin.pass ? "PASS" : "WARN"}`,
     `worst margin radians: ${Number.isFinite(margin.worstMargin) ? margin.worstMargin.toPrecision(6) : "inf"}`,
     `worst gap: ${margin.worstGap === null ? "none" : margin.worstGap}`,
@@ -241,6 +284,17 @@ function appendRecord(output, values, theoremById) {
   }
   appendDictionaryRow(record);
   appendPeriodTable(record, periods);
+
+  if (prefixReports.length > 0) {
+    const prefixes = document.createElement("p");
+    prefixes.textContent = `Prefix reports: ${prefixReports
+      .map((report) => {
+        const gap = report.reachesContext ? ">= context" : report.gap;
+        return `first ${report.prefixLength}: gap ${gap}, pairs ${report.totalPairs}`;
+      })
+      .join("; ")}.`;
+    record.appendChild(prefixes);
+  }
 
   if (samplePairs.length > 0) {
     const pairs = document.createElement("p");
