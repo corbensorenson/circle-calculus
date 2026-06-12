@@ -2862,6 +2862,48 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
     blocker: ""
+  - id: AIT-T0036
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyRawCandidateBudget_ge_window
+    informal_statement: "The raw candidate-budget upper bound for a local-window plus stride-family sparse-attention plan is always at least the local-window budget."
+    formal_statement: "forall {window pathLength : Nat} {strides : List Nat}, window <= Circle.Applications.hybridFamilyRawCandidateBudget window pathLength strides"
+    dictionary_dependencies: ["COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0037
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyRawCandidateBudget_cons
+    informal_statement: "Adding one stride to a local-window plus stride-family sparse-attention plan adds one path-length block to the raw candidate-budget upper bound."
+    formal_statement: "forall {window pathLength stride : Nat} {strides : List Nat}, Circle.Applications.hybridFamilyRawCandidateBudget window pathLength (stride :: strides) = Circle.Applications.hybridFamilyRawCandidateBudget window pathLength strides + pathLength"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0038
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyRawCandidateBudget_mono_window_pathLength
+    informal_statement: "Increasing local-window or path-length budgets cannot reduce the raw candidate-budget upper bound for a fixed stride family."
+    formal_statement: "forall {smallWindow largeWindow smallPath largePath : Nat} {strides : List Nat}, smallWindow <= largeWindow -> smallPath <= largePath -> Circle.Applications.hybridFamilyRawCandidateBudget smallWindow smallPath strides <= Circle.Applications.hybridFamilyRawCandidateBudget largeWindow largePath strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

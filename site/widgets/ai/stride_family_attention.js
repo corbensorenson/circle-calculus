@@ -2,7 +2,22 @@ import { mod, positiveInt } from "../shared/circle_math_core.js";
 import { addLabeledNumber, addOutput, addWidgetHeader, clear, renderCircleSvg } from "../shared/svg_helpers.js";
 import { loadJson, mountWidgets, statusClass, statusLabel } from "../shared/widget_base.js";
 
-const THEOREM_IDS = ["AIT-T0015", "AIT-T0016", "AIT-T0017", "AIT-T0018", "AIT-T0019", "AIT-T0020"];
+const THEOREM_IDS = [
+  "AIT-T0015",
+  "AIT-T0016",
+  "AIT-T0017",
+  "AIT-T0018",
+  "AIT-T0019",
+  "AIT-T0020",
+  "AIT-T0021",
+  "AIT-T0028",
+  "AIT-T0033",
+  "AIT-T0034",
+  "AIT-T0035",
+  "AIT-T0036",
+  "AIT-T0037",
+  "AIT-T0038",
+];
 const DICTIONARY_IDS = ["COMMON-0075", "COMMON-0079", "COMMON-0047", "COMMON-0029"];
 
 function coilAttentionPath(sequenceLength, queryIndex, stride, pathLength) {
@@ -61,12 +76,14 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
     if (!covered.has(lag)) uncoveredLags.push(lag);
   }
   const candidateBudget = strideFamilyCandidates(sequenceLength, 0, strides, pathLength, localWindow).length;
+  const rawCandidateBudgetUpperBound = localWindow + pathLength * strides.length;
   return {
     coveredLags,
     uncoveredLags,
     coveredLagCount: coveredLags.length,
     uncoveredLagCount: uncoveredLags.length,
     candidateBudgetPerQuery: candidateBudget,
+    rawCandidateBudgetUpperBound,
     fullAttentionBudget: sequenceLength,
     coverageComplete: uncoveredLags.length === 0,
     coverageRatio: sequenceLength <= 1 ? 1 : coveredLags.length / (sequenceLength - 1),
@@ -272,7 +289,8 @@ function appendRecord(output, values, theoremById) {
     `uncovered lag count: ${coverage.uncoveredLagCount}`,
     `coverage complete: ${coverage.coverageComplete}`,
     `coverage ratio: ${formatNumber(coverage.coverageRatio)}`,
-    `candidate budget per query: ${coverage.candidateBudgetPerQuery}`,
+    `deduplicated candidate budget per query: ${coverage.candidateBudgetPerQuery}`,
+    `raw candidate-budget upper bound: ${coverage.rawCandidateBudgetUpperBound}`,
     `full-attention budget: ${coverage.fullAttentionBudget}`,
     `inspected query: ${inspectedQuery}`,
     `inspected structured lag: ${inspectedLag}`,

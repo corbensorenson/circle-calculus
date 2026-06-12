@@ -112,6 +112,15 @@ def hybridFamilyCoversContext
     (n window pathLength : Nat) (strides : List Nat) : Prop :=
   ∀ lag, 1 ≤ lag → lag < n → hybridFamilyLagReach n window pathLength lag strides
 
+/-- Raw per-query candidate budget for a local-window plus stride-family plan,
+before boundary clipping and duplicate removal.
+
+The executable sparse-attention certificate reports this as an upper bound
+beside the exact deduplicated candidate count. -/
+def hybridFamilyRawCandidateBudget
+    (window pathLength : Nat) (strides : List Nat) : Nat :=
+  window + pathLength * strides.length
+
 /-- The local reachability predicate is exactly the positive in-window lag condition. -/
 theorem localLagReach_of_le {window lag : Nat} (hpos : 1 ≤ lag) (hwindow : lag ≤ window) :
     localLagReach window lag :=
@@ -392,6 +401,33 @@ theorem hybridFamilyCoversContext_mono_window_pathLength
   intro lag hpos hcontext
   exact hybridFamilyLagReach_mono_window_pathLength hwindow hpath
     (hcover lag hpos hcontext)
+
+/-- The raw candidate budget always contains the local-window budget. -/
+theorem hybridFamilyRawCandidateBudget_ge_window
+    {window pathLength : Nat} {strides : List Nat} :
+    window ≤ hybridFamilyRawCandidateBudget window pathLength strides := by
+  unfold hybridFamilyRawCandidateBudget
+  exact Nat.le_add_right window (pathLength * strides.length)
+
+/-- Adding one stride contributes one additional path-length block to the raw
+candidate budget. -/
+theorem hybridFamilyRawCandidateBudget_cons
+    {window pathLength stride : Nat} {strides : List Nat} :
+    hybridFamilyRawCandidateBudget window pathLength (stride :: strides) =
+      hybridFamilyRawCandidateBudget window pathLength strides + pathLength := by
+  unfold hybridFamilyRawCandidateBudget
+  simp [Nat.mul_succ, Nat.add_comm, Nat.add_left_comm]
+
+/-- Increasing the local-window or path-length budget cannot reduce the raw
+candidate-budget upper bound for a fixed stride family. -/
+theorem hybridFamilyRawCandidateBudget_mono_window_pathLength
+    {smallWindow largeWindow smallPath largePath : Nat} {strides : List Nat}
+    (hwindow : smallWindow ≤ largeWindow)
+    (hpath : smallPath ≤ largePath) :
+    hybridFamilyRawCandidateBudget smallWindow smallPath strides ≤
+      hybridFamilyRawCandidateBudget largeWindow largePath strides := by
+  unfold hybridFamilyRawCandidateBudget
+  exact Nat.add_le_add hwindow (Nat.mul_le_mul_right strides.length hpath)
 
 /-- Exact local-window coverage criterion.
 

@@ -4643,6 +4643,18 @@
           "lean_name": "Circle.Applications.hybridFamilyCoversContext_mono_window_pathLength",
           "name": "Circle.Applications.hybridFamilyCoversContext_mono_window_pathLength",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0037",
+          "lean_name": "Circle.Applications.hybridFamilyRawCandidateBudget_cons",
+          "name": "Circle.Applications.hybridFamilyRawCandidateBudget_cons",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0038",
+          "lean_name": "Circle.Applications.hybridFamilyRawCandidateBudget_mono_window_pathLength",
+          "name": "Circle.Applications.hybridFamilyRawCandidateBudget_mono_window_pathLength",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -4841,6 +4853,18 @@
           "id": "AIT-T0035",
           "lean_name": "Circle.Applications.hybridFamilyCoversContext_mono_window_pathLength",
           "name": "Circle.Applications.hybridFamilyCoversContext_mono_window_pathLength",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0037",
+          "lean_name": "Circle.Applications.hybridFamilyRawCandidateBudget_cons",
+          "name": "Circle.Applications.hybridFamilyRawCandidateBudget_cons",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0038",
+          "lean_name": "Circle.Applications.hybridFamilyRawCandidateBudget_mono_window_pathLength",
+          "name": "Circle.Applications.hybridFamilyRawCandidateBudget_mono_window_pathLength",
           "status": "proved"
         }
       ],
@@ -5896,6 +5920,24 @@
           "id": "AIT-T0035",
           "lean_name": "Circle.Applications.hybridFamilyCoversContext_mono_window_pathLength",
           "name": "Circle.Applications.hybridFamilyCoversContext_mono_window_pathLength",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0036",
+          "lean_name": "Circle.Applications.hybridFamilyRawCandidateBudget_ge_window",
+          "name": "Circle.Applications.hybridFamilyRawCandidateBudget_ge_window",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0037",
+          "lean_name": "Circle.Applications.hybridFamilyRawCandidateBudget_cons",
+          "name": "Circle.Applications.hybridFamilyRawCandidateBudget_cons",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0038",
+          "lean_name": "Circle.Applications.hybridFamilyRawCandidateBudget_mono_window_pathLength",
+          "name": "Circle.Applications.hybridFamilyRawCandidateBudget_mono_window_pathLength",
           "status": "proved"
         }
       ],
@@ -10036,6 +10078,24 @@
           "lean_name": "Circle.Applications.hybridFamilyCoversContext_mono_window_pathLength",
           "name": "Circle.Applications.hybridFamilyCoversContext_mono_window_pathLength",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0036",
+          "lean_name": "Circle.Applications.hybridFamilyRawCandidateBudget_ge_window",
+          "name": "Circle.Applications.hybridFamilyRawCandidateBudget_ge_window",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0037",
+          "lean_name": "Circle.Applications.hybridFamilyRawCandidateBudget_cons",
+          "name": "Circle.Applications.hybridFamilyRawCandidateBudget_cons",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0038",
+          "lean_name": "Circle.Applications.hybridFamilyRawCandidateBudget_mono_window_pathLength",
+          "name": "Circle.Applications.hybridFamilyRawCandidateBudget_mono_window_pathLength",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -10559,10 +10619,10 @@
         "A proof that sparse attention is faster or uses less memory.",
         "A claim that uncovered lags are irrelevant to a real task."
       ],
-      "formal_definition": "`circle_math.applications.circle_ai.certify_stride_family_coverage`, a finite certificate listing every positive lag covered by a local-window plus stride-family sparse-attention plan and every uncovered lag as a gap certificate; Lean theorem `Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family` states the abstract gap predicate, `Circle.Applications.not_localLagReach_iff_window_lt_of_pos` characterizes the local-window miss for positive lags, `Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne` gives the concrete no-local/no-stride-step certificate condition, `Circle.Applications.hybridFamilyCoversContext_iff_no_uncovered_lag` proves that the named complete-coverage predicate is equivalent to having no positive in-context uncovered-lag witness, `Circle.Applications.hybridFamilyLagReach_of_localWindow_ge_context_sub_one` and `Circle.Applications.hybridFamilyCoversContext_of_localWindow_ge_context_sub_one` give the dense-local complete-coverage sufficient condition, `Circle.Applications.localWindowCoversContext_iff_context_sub_one_le` proves the exact local-window complete-coverage criterion, the `*_cons_iff` theorems decompose one added stride against the rest of the finite family, `Circle.Applications.hybridFamilyLagReach_nil_iff_local` records the empty-family local-only baseline, and the monotonicity theorems prove that increasing local-window width or admitted path length cannot remove covered lags or complete coverage.",
+      "formal_definition": "`circle_math.applications.circle_ai.certify_stride_family_coverage`, a finite certificate listing every positive lag covered by a local-window plus stride-family sparse-attention plan and every uncovered lag as a gap certificate; Lean theorem `Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family` states the abstract gap predicate, `Circle.Applications.not_localLagReach_iff_window_lt_of_pos` characterizes the local-window miss for positive lags, `Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne` gives the concrete no-local/no-stride-step certificate condition, `Circle.Applications.hybridFamilyCoversContext_iff_no_uncovered_lag` proves that the named complete-coverage predicate is equivalent to having no positive in-context uncovered-lag witness, `Circle.Applications.hybridFamilyLagReach_of_localWindow_ge_context_sub_one` and `Circle.Applications.hybridFamilyCoversContext_of_localWindow_ge_context_sub_one` give the dense-local complete-coverage sufficient condition, `Circle.Applications.localWindowCoversContext_iff_context_sub_one_le` proves the exact local-window complete-coverage criterion, the `*_cons_iff` theorems decompose one added stride against the rest of the finite family, `Circle.Applications.hybridFamilyLagReach_nil_iff_local` records the empty-family local-only baseline, the monotonicity theorems prove that increasing local-window width or admitted path length cannot remove covered lags or complete coverage, and `Circle.Applications.hybridFamilyRawCandidateBudget_*` theorems account for the raw upper bound `window + pathLength * strides.length` before duplicate removal.",
       "id": "COMMON-0079",
       "introduced_in": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
-      "intuition": "Instead of showing only successful example lags, the certificate exposes the holes in a sparse plan with a checkable reason for each hole, identifies the exact local-window condition that removes all positive-lag holes, and proves that conservative budget increases preserve existing lag coverage and complete coverage.",
+      "intuition": "Instead of showing only successful example lags, the certificate exposes the holes in a sparse plan with a checkable reason for each hole, identifies the exact local-window condition that removes all positive-lag holes, proves that conservative budget increases preserve existing lag coverage and complete coverage, and separates exact deduplicated candidate count from a theorem-backed raw candidate-budget upper bound.",
       "kind": "metric",
       "name": "Stride-family sparse coverage certificate",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
@@ -10671,6 +10731,24 @@
           "id": "AIT-T0035",
           "lean_name": "Circle.Applications.hybridFamilyCoversContext_mono_window_pathLength",
           "name": "Circle.Applications.hybridFamilyCoversContext_mono_window_pathLength",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0036",
+          "lean_name": "Circle.Applications.hybridFamilyRawCandidateBudget_ge_window",
+          "name": "Circle.Applications.hybridFamilyRawCandidateBudget_ge_window",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0037",
+          "lean_name": "Circle.Applications.hybridFamilyRawCandidateBudget_cons",
+          "name": "Circle.Applications.hybridFamilyRawCandidateBudget_cons",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0038",
+          "lean_name": "Circle.Applications.hybridFamilyRawCandidateBudget_mono_window_pathLength",
+          "name": "Circle.Applications.hybridFamilyRawCandidateBudget_mono_window_pathLength",
           "status": "proved"
         }
       ],

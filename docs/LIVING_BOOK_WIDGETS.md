@@ -285,8 +285,8 @@ Companion non-widget prototype: `AIM-B0015` uses `circle_math.applications.circl
 ### stride_family_attention
 
 - Inputs: sequence length, query count, inspected query, two admitted strides, two wrong/control strides, path length, and local-window width.
-- Outputs: structured lag sample, nonstructured control lag sample, inspected target and candidate list, stride-family/single-stride/local/wrong-family/full rows, structured hit rates, control hit rates, average candidate counts, theorem links, and dictionary links.
-- Theorem ids: `AIT-T0015`, `AIT-T0016`, `AIT-T0017`, `AIT-T0018`, and `AIT-T0019`.
+- Outputs: structured lag sample, nonstructured control lag sample, inspected target and candidate list, stride-family/single-stride/local/wrong-family/full rows, structured hit rates, control hit rates, average candidate counts, raw budget upper bound, theorem links, and dictionary links.
+- Theorem ids: `AIT-T0015` through `AIT-T0038`.
 - Dictionary ids: `COMMON-0075`, `COMMON-0047`, and `COMMON-0029`.
 - Python references: `circle_math.applications.circle_ai.stride_family_attention_candidates`, `circle_math.applications.circle_ai.structured_stride_family_target_lags`, `circle_math.applications.circle_ai.nonstructured_stride_family_control_lags`, and `circle_math.applications.circle_ai.run_stride_family_sparse_attention_benchmark`.
 - Guardrail: the widget is finite stride-family candidate-set reachability and budget bookkeeping only. It does not prove sparse-attention quality, multi-head attention quality, context length, runtime, memory scaling, throughput, attention replacement, or model-quality improvement.

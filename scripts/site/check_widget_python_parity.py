@@ -3263,6 +3263,13 @@ def main() -> int:
         assert coverage_certificate.covered_lag_count == len(js_covered_lags)
         assert coverage_certificate.uncovered_lag_count == sequence_length - 1 - len(js_covered_lags)
         assert coverage_certificate.candidate_budget_per_query == len(js_family_sets[0])
+        assert coverage_certificate.raw_candidate_budget_upper_bound == (
+            local_window + path_length * len(strides)
+        )
+        assert (
+            coverage_certificate.candidate_budget_per_query
+            <= coverage_certificate.raw_candidate_budget_upper_bound
+        )
         assert coverage_certificate.full_attention_budget == sequence_length
         assert family_sets == js_family_sets
         assert single_sets == js_single_sets

@@ -53,6 +53,8 @@ def main() -> None:
         f"avg_full_candidates={result.average_full_candidate_count:.3f} "
         f"covered_lag_count={result.coverage_certificate.covered_lag_count} "
         f"uncovered_lag_count={result.coverage_certificate.uncovered_lag_count} "
+        f"dedup_candidate_budget={result.coverage_certificate.candidate_budget_per_query} "
+        f"raw_candidate_budget_upper_bound={result.coverage_certificate.raw_candidate_budget_upper_bound} "
         f"coverage_complete={result.coverage_certificate.coverage_complete} "
         f"coverage_ratio={result.coverage_certificate.coverage_ratio:.3f} "
         f"uncovered_lag_sample={result.coverage_certificate.uncovered_lags[:12]}"

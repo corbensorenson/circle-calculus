@@ -492,6 +492,7 @@ class StrideFamilyCoverageCertificate:
     covered_lag_count: int
     uncovered_lag_count: int
     candidate_budget_per_query: int
+    raw_candidate_budget_upper_bound: int
     full_attention_budget: int
     coverage_complete: bool
     coverage_ratio: float
@@ -512,6 +513,9 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0033",
         "AIT-T0034",
         "AIT-T0035",
+        "AIT-T0036",
+        "AIT-T0037",
+        "AIT-T0038",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -1662,6 +1666,19 @@ def stride_family_covered_lags(
     return _unique_preserving_order(tuple(covered))
 
 
+def stride_family_raw_candidate_budget(
+    *,
+    strides: Sequence[int],
+    path_length: int,
+    local_window: int,
+) -> int:
+    """Return the raw local+stride candidate budget before deduplication."""
+    normalized_strides = normalize_stride_family(strides)
+    _require_positive(path_length, "path_length")
+    _require_positive(local_window, "local_window")
+    return local_window + path_length * len(normalized_strides)
+
+
 def certify_stride_family_coverage(
     sequence_length: int,
     strides: Sequence[int],
@@ -1690,6 +1707,11 @@ def certify_stride_family_coverage(
         covered_lag_count=len(covered),
         uncovered_lag_count=len(uncovered),
         candidate_budget_per_query=candidate_budget,
+        raw_candidate_budget_upper_bound=stride_family_raw_candidate_budget(
+            strides=strides,
+            path_length=path_length,
+            local_window=local_window,
+        ),
         full_attention_budget=sequence_length,
         coverage_complete=len(uncovered) == 0,
         coverage_ratio=1.0 if positive_lag_count == 0 else len(covered) / positive_lag_count,

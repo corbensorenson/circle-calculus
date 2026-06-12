@@ -88,6 +88,7 @@ namespace Circle.PaperAI02
 #check Circle.Applications.coilStrideFamilyLagReach
 #check Circle.Applications.hybridFamilyLagReach
 #check Circle.Applications.hybridFamilyCoversContext
+#check Circle.Applications.hybridFamilyRawCandidateBudget
 #check Circle.Applications.coilStrideFamilyLagReach_of_member_step
 #check Circle.Applications.coilStrideFamilyLagReach_add_context
 #check Circle.Applications.coilStrideFamilyLagReach_mono_pathLength
@@ -107,6 +108,9 @@ namespace Circle.PaperAI02
 #check Circle.Applications.hybridFamilyLagReach_of_localWindow_ge_context_sub_one
 #check Circle.Applications.hybridFamilyCoversContext_of_localWindow_ge_context_sub_one
 #check Circle.Applications.hybridFamilyCoversContext_mono_window_pathLength
+#check Circle.Applications.hybridFamilyRawCandidateBudget_ge_window
+#check Circle.Applications.hybridFamilyRawCandidateBudget_cons
+#check Circle.Applications.hybridFamilyRawCandidateBudget_mono_window_pathLength
 #check Circle.Applications.localWindowCoversContext
 #check Circle.Applications.localWindowCoversContext_iff_context_sub_one_le
 

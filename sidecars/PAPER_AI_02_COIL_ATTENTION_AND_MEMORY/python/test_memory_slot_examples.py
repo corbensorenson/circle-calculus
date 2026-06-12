@@ -61,6 +61,7 @@ from circle_math.applications.circle_ai import (
     shifted_recurrence_resolutions,
     stride_family_attention_candidates,
     stride_family_covered_lags,
+    stride_family_raw_candidate_budget,
     structured_stride_family_target_lags,
     structured_hybrid_target_lags,
     token_active_at_step,
@@ -389,6 +390,10 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     assert result.coverage_certificate.uncovered_lags[:5] == (5, 6, 8, 9, 10)
     assert not result.coverage_certificate.coverage_complete
     assert result.coverage_certificate.candidate_budget_per_query == 10
+    assert result.coverage_certificate.raw_candidate_budget_upper_bound == 10
+    assert result.coverage_certificate.candidate_budget_per_query <= (
+        result.coverage_certificate.raw_candidate_budget_upper_bound
+    )
     assert result.coverage_certificate.full_attention_budget == 120
     assert result.coverage_certificate.theorem_ids == (
         "AIT-T0016",
@@ -407,6 +412,9 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0033",
         "AIT-T0034",
         "AIT-T0035",
+        "AIT-T0036",
+        "AIT-T0037",
+        "AIT-T0038",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -425,9 +433,18 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert certificate.uncovered_lags == ()
     assert certificate.coverage_complete
     assert certificate.coverage_ratio == 1.0
+    assert certificate.raw_candidate_budget_upper_bound == stride_family_raw_candidate_budget(
+        strides=(3,),
+        path_length=2,
+        local_window=9,
+    )
+    assert certificate.candidate_budget_per_query < certificate.raw_candidate_budget_upper_bound
     assert "AIT-T0022" in certificate.theorem_ids
     assert "AIT-T0023" in certificate.theorem_ids
     assert "AIT-T0024" in certificate.theorem_ids
+    assert "AIT-T0036" in certificate.theorem_ids
+    assert "AIT-T0037" in certificate.theorem_ids
+    assert "AIT-T0038" in certificate.theorem_ids
     assert "AIT-T0025" in certificate.theorem_ids
 
 
