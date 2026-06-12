@@ -673,6 +673,34 @@ theorem ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context
     unfold ropeTurnRatioError
     exact le_trans hnonpos (abs_nonneg _)
 
+/-- Rational turn ratios have no positive finite-context margin once the
+context contains the denominator gap.
+
+This extends the integer-ratio guardrail to discretized or rationalized RoPE
+channels: if `turnRatio = numerator / denominator`, then the denominator-sized
+gap lands exactly on an integer number of full turns. Such a channel cannot
+certify positive nearest-integer separation for any context with
+`denominator < context`. -/
+theorem ropeTurnRatioFiniteMargin_natRatio_iff_nonpos_of_den_lt_context
+    {numerator denominator : Nat} {margin : ℝ} {context : Nat}
+    (hdenominator : 0 < denominator) (hcontext : denominator < context) :
+    ropeTurnRatioFiniteMargin ((numerator : ℝ) / (denominator : ℝ)) margin context ↔
+      margin ≤ 0 := by
+  constructor
+  · intro hmargin
+    have hbound := hmargin denominator hdenominator hcontext (Int.ofNat numerator)
+    unfold ropeTurnRatioError at hbound
+    have hden_ne : (denominator : ℝ) ≠ 0 := by exact_mod_cast hdenominator.ne'
+    have hzero :
+        (denominator : ℝ) * ((numerator : ℝ) / (denominator : ℝ)) -
+            ((Int.ofNat numerator : Int) : ℝ) = 0 := by
+      field_simp [hden_ne]
+      norm_num
+    rwa [hzero, abs_zero] at hbound
+  · intro hnonpos gap _hgap_pos _hgap_context turns
+    unfold ropeTurnRatioError
+    exact le_trans hnonpos (abs_nonneg _)
+
 /-- Finite-context turn-ratio margins are monotone in the inspected context.
 
 A margin certificate proved for a larger context automatically applies to any

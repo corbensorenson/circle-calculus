@@ -2560,6 +2560,20 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_turn_ratio_finite_margin_gap_candidates_match_range_bridge
     blocker: ""
+  - id: AIRA-T0055
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_iff_nonpos_of_den_lt_context
+    informal_statement: "If a RoPE turn ratio is a natural rational numerator/denominator and the inspected context contains the denominator gap, then its finite-context turn-ratio margin is equivalent to a nonpositive margin; the denominator gap lands exactly on an integer turn."
+    formal_statement: "forall {numerator denominator : Nat} {margin : Real} {context : Nat}, 0 < denominator -> denominator < context -> (Circle.Applications.ropeTurnRatioFiniteMargin ((numerator : Real) / (denominator : Real)) margin context <-> margin <= 0)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rational_turn_ratio_has_zero_margin_at_denominator_gap
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd
