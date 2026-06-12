@@ -2,8 +2,17 @@ import { positiveInt } from "../shared/circle_math_core.js";
 import { addLabeledNumber, addOutput, addWidgetHeader, clear } from "../shared/svg_helpers.js";
 import { loadJson, mountWidgets, statusClass, statusLabel } from "../shared/widget_base.js";
 
-const THEOREM_IDS = ["AIRA-T0021", "AIRA-T0022", "AIRA-T0023", "AIRA-T0024", "AIRA-T0025", "AIRA-T0026"];
-const DICTIONARY_IDS = ["COMMON-0076", "COMMON-0077"];
+const THEOREM_IDS = [
+  "AIRA-T0021",
+  "AIRA-T0022",
+  "AIRA-T0023",
+  "AIRA-T0024",
+  "AIRA-T0025",
+  "AIRA-T0026",
+  "AIRA-T0027",
+  "AIRA-T0028",
+];
+const DICTIONARY_IDS = ["COMMON-0076", "COMMON-0077", "COMMON-0078"];
 const TWO_PI = 2 * Math.PI;
 
 function gcd(a, b) {
@@ -163,6 +172,7 @@ function appendRecord(output, values, theoremById) {
   const samplePairs = exact.reachesContext
     ? []
     : Array.from({ length: Math.min(5, values.context - exact.value) }, (_, start) => [start, start + exact.value]);
+  const guaranteedPairCount = exact.reachesContext ? 0 : Math.max(0, values.context - exact.value);
   const margin = realMargin(values.headDim, values.base, values.context, values.tolerance);
 
   const record = document.createElement("section");
@@ -182,6 +192,7 @@ function appendRecord(output, values, theoremById) {
     `tolerance: ${values.tolerance}`,
     `exact discrete contract: ${exact.reachesContext ? "PASS" : "FAIL"}`,
     `common collision gap: ${exact.reachesContext ? ">= context" : exact.value}`,
+    `guaranteed common-gap collision pairs: ${guaranteedPairCount}`,
     `real-phase margin: ${margin.pass ? "PASS" : "WARN"}`,
     `worst margin radians: ${Number.isFinite(margin.worstMargin) ? margin.worstMargin.toPrecision(6) : "inf"}`,
     `worst gap: ${margin.worstGap === null ? "none" : margin.worstGap}`,

@@ -104,6 +104,7 @@ from circle_math.applications import (
     rotate_kernel,
     capped_lcm,
     certify_rope_positions,
+    collision_pair_count_at_gap,
     discretize_rope_periods,
     rope_period_estimates,
     RoPEConfig,
@@ -3517,6 +3518,9 @@ def main() -> int:
         lcm_value, lcm_reaches = capped_lcm(discrete, config.context_length)
         assert certificate.exact_discrete.common_collision_gap_reaches_context == lcm_reaches
         assert certificate.exact_discrete.common_collision_gap == (None if lcm_reaches else lcm_value)
+        js_pair_count = 0 if lcm_reaches else max(0, config.context_length - lcm_value)
+        assert certificate.exact_discrete.guaranteed_common_gap_collision_pair_count == js_pair_count
+        assert collision_pair_count_at_gap(config.context_length, lcm_value) == js_pair_count
 
     winding_cases = [
         (8, 4, 37, 7),

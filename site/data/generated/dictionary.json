@@ -9738,6 +9738,18 @@
           "lean_name": "Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context",
           "name": "Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0027",
+          "lean_name": "Circle.Applications.ropeCollisionPairCountAtGap_pos_iff",
+          "name": "Circle.Applications.ropeCollisionPairCountAtGap_pos_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0028",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
+          "name": "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -9810,6 +9822,18 @@
           "lean_name": "Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context",
           "name": "Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0027",
+          "lean_name": "Circle.Applications.ropeCollisionPairCountAtGap_pos_iff",
+          "name": "Circle.Applications.ropeCollisionPairCountAtGap_pos_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0028",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
+          "name": "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -9819,6 +9843,49 @@
           "python_reference": "circle_math.applications.rope_certifier.certify_rope_positions; scripts/rope_certify.py"
         }
       ]
+    },
+    {
+      "dependencies": [
+        "COMMON-0076",
+        "COMMON-0077"
+      ],
+      "forbidden_meanings": [
+        "The total number of every possible colliding pair unless a separate total-count theorem is cited.",
+        "A real-valued RoPE collision count.",
+        "Evidence that any model quality, context length, speed, or memory improves."
+      ],
+      "formal_definition": "For a context length and positive common collision gap, the finite count `context - gap` of ordered starts whose paired position is exactly that gap ahead; in Lean, `Circle.Applications.ropeCollisionPairCountAtGap` and `Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd` certify that every counted start gives an all-channel collision when every declared period divides the gap.",
+      "id": "COMMON-0078",
+      "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+      "intuition": "When a common exact collision gap lands inside the inspected context, the certifier can report not just one sample pair but a theorem-backed count of guaranteed pairs at that gap.",
+      "kind": "metric",
+      "name": "RoPE common-gap collision-pair count",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "collision_pairs_at_gap(context,gap)",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIRA-T0027",
+          "lean_name": "Circle.Applications.ropeCollisionPairCountAtGap_pos_iff",
+          "name": "Circle.Applications.ropeCollisionPairCountAtGap_pos_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0028",
+          "lean_name": "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
+          "name": "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
     },
     {
       "dependencies": [],

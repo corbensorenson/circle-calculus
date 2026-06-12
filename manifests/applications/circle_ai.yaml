@@ -407,6 +407,14 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context
     dictionary_dependencies: ["COMMON-0076", "COMMON-0077"]
+  - id: AIRA-T0027
+    status: lean_proved
+    lean_name: Circle.Applications.ropeCollisionPairCountAtGap_pos_iff
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078"]
+  - id: AIRA-T0028
+    status: lean_proved
+    lean_name: Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078"]
 next_targets:
   - >-
     Use COMMON-0052 through COMMON-0055 and COMMON-0059 as the looped/recursive transformer roadmap lane:
@@ -591,5 +599,5 @@ benchmarks:
     status: exploratory_python
     path: tests/test_rope_certifier.py::test_rope_preset_sidecar_emits_json_and_markdown
     script: sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/python/benchmark_rope_certifier.py
-    description: "Proof-carrying RoPE position distinguishability certifier plus reproducible preset-result sidecar that emits exact integer-period phase-bank collision certificates linked to Lean theorem ids and separate numerical real-phase margin reports, replacing the ordinary unchecked configuration-note baseline for this audit task."
+    description: "Proof-carrying RoPE position distinguishability certifier plus reproducible preset-result sidecar that emits exact integer-period phase-bank collision certificates, theorem-backed common-gap collision-pair counts, and separate numerical real-phase margin reports, replacing the ordinary unchecked configuration-note baseline for this audit task."
 guardrail: "No claim that circles improve all AI."

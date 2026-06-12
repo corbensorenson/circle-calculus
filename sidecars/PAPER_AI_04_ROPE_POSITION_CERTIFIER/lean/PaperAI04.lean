@@ -20,5 +20,8 @@ namespace Circle.PaperAI04
 #check Circle.Applications.ropePhaseBankCollision_iff_forall_gap_dvd
 #check Circle.Applications.ropePhaseBankDistinguishable_iff_exists_not_gap_dvd
 #check Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context
+#check Circle.Applications.ropeCollisionPairCountAtGap
+#check Circle.Applications.ropeCollisionPairCountAtGap_pos_iff
+#check Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd
 
 end Circle.PaperAI04

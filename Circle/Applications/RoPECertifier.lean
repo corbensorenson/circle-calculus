@@ -114,4 +114,37 @@ theorem ropePhaseBankDistinguishable_of_period_ge_context
   intro hcollision
   exact hne ((ropeDiscreteCollision_iff_eq_on_context hcontext hleft hright).1 hcollision)
 
+/-! ### Collision-counting seed -/
+
+/-- The number of ordered start positions whose paired position is exactly
+`gap` steps ahead inside a context. When `gap < context`, these are the pairs
+`(0,gap)`, `(1,1+gap)`, ..., `(context-gap-1, context-1)`. -/
+def ropeCollisionPairCountAtGap (context gap : Nat) : Nat :=
+  context - gap
+
+/-- There is at least one ordered pair separated by `gap` inside a context iff
+the gap is strictly smaller than the context. -/
+theorem ropeCollisionPairCountAtGap_pos_iff {context gap : Nat} :
+    0 < ropeCollisionPairCountAtGap context gap ↔ gap < context := by
+  unfold ropeCollisionPairCountAtGap
+  exact Nat.sub_pos_iff_lt
+
+/-- If every declared period divides a gap, then every start counted by
+`ropeCollisionPairCountAtGap context gap` gives a colliding pair in the phase
+bank. This is a theorem-backed collision-counting seed: the count is not yet
+the total number of all colliding pairs, but it is a certified family of that
+many all-channel collisions at the declared common gap. -/
+theorem ropePhaseBankCollision_at_gap_of_forall_dvd
+    {periods : List Nat} {context gap start : Nat}
+    (hdivides : ∀ period, period ∈ periods → period ∣ gap)
+    (hstart : start < ropeCollisionPairCountAtGap context gap) :
+    ropePhaseBankCollision periods start (start + gap) ∧ start + gap < context := by
+  have hleft : start ≤ start + gap := Nat.le_add_right start gap
+  have hgap : start + gap - start = gap := Nat.add_sub_cancel_left start gap
+  refine ⟨?_, Nat.add_lt_of_lt_sub hstart⟩
+  exact (ropePhaseBankCollision_iff_forall_gap_dvd (periods := periods) hleft).2
+    (by
+      intro period hmem
+      simpa [hgap] using hdivides period hmem)
+
 end Circle.Applications

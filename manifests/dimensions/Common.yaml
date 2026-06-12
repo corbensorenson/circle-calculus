@@ -2022,6 +2022,35 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context
     blocker: ""
+  - id: AIRA-T0027
+    status: lean_proved
+    lean_name: Circle.Applications.ropeCollisionPairCountAtGap_pos_iff
+    informal_statement: "The common-gap collision-pair count is positive exactly when the declared gap is strictly smaller than the inspected context."
+    formal_statement: "forall {context gap : Nat}, 0 < Circle.Applications.ropeCollisionPairCountAtGap context gap <-> gap < context"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_discretized_period_helpers_are_deterministic
+    blocker: ""
+  - id: AIRA-T0028
+    status: lean_proved
+    lean_name: Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd
+    informal_statement: "If every declared RoPE-bank period divides a gap, then every counted start at that gap gives an all-channel colliding pair whose right endpoint remains inside the inspected context."
+    formal_statement: "forall {periods : List Nat} {context gap start : Nat}, (forall period, period in periods -> period ∣ gap) -> start < Circle.Applications.ropeCollisionPairCountAtGap context gap -> Circle.Applications.ropePhaseBankCollision periods start (start + gap) and start + gap < context"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
+        - tests/test_rope_certifier.py::test_rope_certify_cli_emits_json_certificate
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

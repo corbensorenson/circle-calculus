@@ -93,6 +93,7 @@ The current presets pass the exact discrete contract under the rounded integer-p
 
 - Exact collision is not guessed by scanning every pair. The theorem reduces it to divisibility of the position gap.
 - If the common exact collision gap is inside the context, the report lists sample colliding position pairs.
+- The guaranteed common-gap count is `context - gap`: every counted start gives an all-channel collision at that gap. It is not yet a total count of every colliding pair at every gap multiple.
 - If the exact discrete contract passes, the report still does not claim real model quality or long-context success.
 - The real-phase margin scan is useful engineering evidence, but it is not a Lean proof over real-valued trigonometric RoPE.
 
@@ -104,11 +105,14 @@ The current presets pass the exact discrete contract under the rounded integer-p
 <div class="theorem-box" data-theorem-id="AIRA-T0024"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0025"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0026"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0027"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0028"></div>
 
 ## Dictionary
 
 <div class="dictionary-box" data-dictionary-id="COMMON-0076"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0077"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0078"></div>
 
 ## Source Trail
 

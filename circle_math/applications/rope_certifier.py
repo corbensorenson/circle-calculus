@@ -26,6 +26,8 @@ ROPE_CERTIFIER_THEOREMS: tuple[str, ...] = (
     "AIRA-T0024",
     "AIRA-T0025",
     "AIRA-T0026",
+    "AIRA-T0027",
+    "AIRA-T0028",
 )
 
 ROPE_CERTIFIER_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -35,6 +37,8 @@ ROPE_CERTIFIER_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropePhaseBankCollision_iff_forall_gap_dvd",
     "Circle.Applications.ropePhaseBankDistinguishable_iff_exists_not_gap_dvd",
     "Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context",
+    "Circle.Applications.ropeCollisionPairCountAtGap_pos_iff",
+    "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -63,6 +67,7 @@ class ExactDiscreteRoPECertificate:
     context_length: int
     common_collision_gap: int | None
     common_collision_gap_reaches_context: bool
+    guaranteed_common_gap_collision_pair_count: int
     sample_collision_pairs: tuple[tuple[int, int], ...]
     assumptions: tuple[str, ...]
     explanation: str
@@ -189,6 +194,13 @@ def sample_collision_pairs(context_length: int, gap: int, limit: int = 5) -> tup
     return tuple((start, start + gap) for start in range(min(limit, context_length - gap)))
 
 
+def collision_pair_count_at_gap(context_length: int, gap: int) -> int:
+    """Count ordered starts whose paired position is exactly ``gap`` ahead."""
+    if gap <= 0 or gap >= context_length:
+        return 0
+    return context_length - gap
+
+
 def circular_phase_distance(angle: float) -> float:
     """Distance in radians from ``angle`` to the nearest whole turn."""
     return abs((angle + pi) % tau - pi)
@@ -266,6 +278,10 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
     discrete_periods = discretize_rope_periods(real_periods, config.discretization)
     collision_gap, reaches_context = capped_lcm(discrete_periods, config.context_length)
     exact_pass = reaches_context
+    guaranteed_pair_count = 0 if reaches_context else collision_pair_count_at_gap(
+        config.context_length,
+        collision_gap,
+    )
     exact = ExactDiscreteRoPECertificate(
         pass_exact=exact_pass,
         theorem_ids=ROPE_CERTIFIER_THEOREMS,
@@ -275,6 +291,7 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
         context_length=config.context_length,
         common_collision_gap=None if reaches_context else collision_gap,
         common_collision_gap_reaches_context=reaches_context,
+        guaranteed_common_gap_collision_pair_count=guaranteed_pair_count,
         sample_collision_pairs=sample_collision_pairs(config.context_length, collision_gap),
         assumptions=(
             "Positions are natural numbers in [0, context_length).",
@@ -282,6 +299,7 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
             "Exact discrete collision means equal residues in every declared period channel.",
             "Lean theorem AIRA-T0024 characterizes all-channel collision by divisibility of the position gap.",
             "Lean theorem AIRA-T0025 characterizes bank distinguishability by at least one non-dividing period.",
+            "Lean theorem AIRA-T0028 certifies every counted start at the common collision gap as an all-channel collision.",
         ),
         explanation=(
             "PASS: the common exact collision gap is at least the context length, so no two unequal "
@@ -326,7 +344,8 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         f"config: head_dim={config.head_dim} base={config.base:g} context={config.context_length} "
         f"tolerance={config.tolerance:g} discretization={config.discretization}",
         f"exact_discrete_contract={exact_status} common_collision_gap={gap} "
-        f"period_count={exact.period_count}",
+        f"period_count={exact.period_count} "
+        f"guaranteed_common_gap_collision_pair_count={exact.guaranteed_common_gap_collision_pair_count}",
         f"real_phase_margin={margin_status} worst_margin_radians={worst_margin} "
         f"worst_gap={worst_gap} scanned_gaps={margin.scanned_gap_count}",
         f"theorem_ids={','.join(certificate.theorem_ids)}",

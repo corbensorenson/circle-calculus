@@ -45,6 +45,8 @@ Lean declarations determine proof status. The theorem manifest is the proof-stat
 - `AIRA-T0024`: `Circle.Applications.ropePhaseBankCollision_iff_forall_gap_dvd`
 - `AIRA-T0025`: `Circle.Applications.ropePhaseBankDistinguishable_iff_exists_not_gap_dvd`
 - `AIRA-T0026`: `Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context`
+- `AIRA-T0027`: `Circle.Applications.ropeCollisionPairCountAtGap_pos_iff`
+- `AIRA-T0028`: `Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd`
 
 The main theorem is `AIRA-T0024`:
 
@@ -54,6 +56,8 @@ iff every declared period divides their position gap.
 ```
 
 That is the usable contract. It turns position indistinguishability into a finite arithmetic check over divisibility.
+
+`AIRA-T0027` and `AIRA-T0028` add the first collision-counting seed. If the certifier finds a common exact collision gap inside the context, then `context - gap` ordered start positions have a paired position exactly `gap` steps ahead, and every one of those counted pairs is an all-channel collision when each declared period divides the gap. This is a certified common-gap count, not yet a theorem for the total number of all colliding pairs at all gap multiples.
 
 ## Certifier Interface
 
@@ -71,6 +75,7 @@ It emits:
 - exact discrete pass/fail;
 - common exact collision gap when it is inside the context;
 - sample colliding pairs when exact discrete distinguishability fails;
+- guaranteed common-gap collision-pair count when exact discrete distinguishability fails;
 - numerical real-phase margin and worst gap;
 - a machine-readable JSON certificate when `--format json` or `--json-out` is used.
 
@@ -156,6 +161,7 @@ The proved result is a finite exact contract:
 - exact collision in a finite bank is characterized by all declared periods dividing the same gap;
 - exact distinguishability is equivalent to at least one declared period not dividing the gap;
 - if the bank contains a period at least as large as the inspected context, unequal positions inside that context are distinguished by that channel.
+- if a common exact collision gap lies inside the context, `context - gap` start positions produce theorem-certified all-channel collisions at that gap.
 
 The ordinary baseline for this interface is an unchecked numerical scan or hand-written RoPE configuration note. The Circle Calculus certifier improves the audit path by attaching theorem ids and assumptions to the exact discrete claim. That benchmark-facing comparison is not evidence of model quality, and the Python report is not a proof.
 

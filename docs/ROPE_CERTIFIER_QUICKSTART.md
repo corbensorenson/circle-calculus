@@ -58,8 +58,9 @@ The text output has two different evidence layers:
 
 ```text
 exact_discrete_contract=PASS common_collision_gap=>= context
+guaranteed_common_gap_collision_pair_count=0
 real_phase_margin=PASS worst_margin_radians=...
-theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026
+theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028
 ```
 
 `exact_discrete_contract=PASS` means the integer-period phase bank has no all-channel collision among unequal positions inside the inspected context. The Lean-backed theorem spine proves that all-channel collision is equivalent to every declared period dividing the position gap.
@@ -67,6 +68,7 @@ theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026
 `real_phase_margin=PASS` means the numerical scan did not find a real-valued near-collision below the chosen tolerance. This is not a Lean proof over real trigonometric RoPE.
 
 If the exact discrete contract fails, the output includes a common collision gap and sample colliding pairs.
+It also reports `guaranteed_common_gap_collision_pair_count`, the number of starts whose paired position is exactly the common collision gap ahead. That count is theorem-backed for the declared integer-period phase bank, but it is not a total count of all collision pairs at every multiple of the gap.
 
 ## Machine-Readable Output
 

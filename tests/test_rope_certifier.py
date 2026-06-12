@@ -9,6 +9,7 @@ from circle_math.applications import (
     RoPEConfig,
     capped_lcm,
     certify_rope_positions,
+    collision_pair_count_at_gap,
     discretize_rope_periods,
     sample_collision_pairs,
 )
@@ -20,6 +21,8 @@ def test_discretized_period_helpers_are_deterministic() -> None:
     assert discretize_rope_periods((4.2, 7.6), "ceil") == (5, 8)
     assert capped_lcm((4, 6), 10) == (12, True)
     assert capped_lcm((4, 6), 30) == (12, False)
+    assert collision_pair_count_at_gap(10, 4) == 6
+    assert collision_pair_count_at_gap(10, 10) == 0
     assert sample_collision_pairs(10, 4, limit=3) == ((0, 4), (1, 5), (2, 6))
 
 
@@ -29,6 +32,7 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     )
     assert not certificate.exact_discrete.pass_exact
     assert certificate.exact_discrete.common_collision_gap == 6
+    assert certificate.exact_discrete.guaranteed_common_gap_collision_pair_count == 14
     assert certificate.exact_discrete.sample_collision_pairs[0] == (0, 6)
     assert certificate.theorem_ids == ROPE_CERTIFIER_THEOREMS
     assert "AIRA-T0024" in certificate.exact_discrete.assumptions[3]
@@ -42,6 +46,7 @@ def test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context() 
     assert certificate.exact_discrete.pass_exact
     assert certificate.exact_discrete.common_collision_gap is None
     assert certificate.exact_discrete.common_collision_gap_reaches_context
+    assert certificate.exact_discrete.guaranteed_common_gap_collision_pair_count == 0
     assert certificate.exact_discrete.sample_collision_pairs == ()
     assert certificate.real_phase_margin.scanned_gap_count == 7
 
@@ -68,6 +73,7 @@ def test_rope_certify_cli_emits_json_certificate() -> None:
     assert payload["schema_id"] == "circle_calculus.rope_position_distinguishability.v0"
     assert payload["exact_discrete"]["pass_exact"] is False
     assert payload["exact_discrete"]["common_collision_gap"] == 6
+    assert payload["exact_discrete"]["guaranteed_common_gap_collision_pair_count"] == 14
     assert payload["theorem_ids"] == list(ROPE_CERTIFIER_THEOREMS)
 
 

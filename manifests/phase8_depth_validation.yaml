@@ -49,7 +49,7 @@ targets:
   - id: P8-DEPTH-003
     area: "Collision counting"
     priority: high
-    status: planned
+    status: active
     target_type: proof_program
     title: "Finite phase-bank collision counting"
     question: "Can the RoPE certifier count colliding position pairs, not only report the first collision?"
@@ -64,14 +64,14 @@ targets:
       - "Circle/Applications/RoPECertifier.lean"
       - "circle_math/applications/rope_certifier.py"
       - "tests/test_rope_certifier.py"
-    dictionary_dependencies: ["COMMON-0076", "COMMON-0077"]
-    next_action: "Start with the one-period ordered-pair count, then extend to banks through common collision period when the lcm is bounded."
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078"]
+    next_action: "The theorem-backed common-gap collision-pair count is now landed through AIRA-T0027 and AIRA-T0028; next extend toward total single-period collision counts and bounded bank counts, with brute-force Python parity for small contexts."
     guardrail: "Do not imply the finite integer-period count is a count of real-valued RoPE collisions unless the real model is separately formalized."
 
   - id: P8-VALID-001
     area: "RoPE results note"
     priority: high
-    status: planned
+    status: active
     target_type: results_note
     title: "Reproducible RoPE certifier findings on named configurations"
     question: "Can the project say something checkable about real model-like RoPE configurations rather than only shipping tooling?"
@@ -89,7 +89,7 @@ targets:
       - "sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/results/rope_certifier_presets.md"
       - "site/chapters/applications/rope_certifier.qmd"
     dictionary_dependencies: ["COMMON-0077"]
-    next_action: "Promote the three existing preset runs into a reader-facing results table with reproducible commands and no model-quality claims."
+    next_action: "The first preset JSON/Markdown fixtures and Living Book links are in place; next add more named quantized/discretized failure cases where exact collisions genuinely occur and keep model-quality claims out."
     guardrail: "A pass/fail certificate is not evidence of perplexity, long-context ability, runtime, or memory behavior."
 
   - id: P8-VALID-002
@@ -180,7 +180,7 @@ targets:
   - id: P8-COMM-001
     area: "ML-engineer communication"
     priority: high
-    status: planned
+    status: active
     target_type: communication
     title: "Certifier quickstart and Living Book front-door demo"
     question: "Can an ML engineer use the RoPE certifier without reading Lean internals?"
@@ -197,5 +197,5 @@ targets:
       - "site/chapters/applications/rope_certifier.qmd"
       - "docs/LIVING_BOOK_ROADMAP.md"
     dictionary_dependencies: ["COMMON-0077"]
-    next_action: "Add a dedicated quickstart page or section and make the application landing path surface the certifier as the flagship AI contract."
+    next_action: "The dedicated quickstart exists and the RoPE page links it; next make the application landing path surface the certifier as the flagship AI contract and keep output examples synced with the schema."
     guardrail: "Do not hide assumptions or limitations to make the demo sound stronger."
