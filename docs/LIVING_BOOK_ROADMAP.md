@@ -138,7 +138,7 @@ Required reader-facing additions:
 - a reproducible RoPE results note for named presets and model-like configurations;
 - clear separation between exact integer-period phase-bank certificates and numerical real-phase margin scans;
 - future theorem boxes for real-phase bounds, collision counts, sparse-coverage iffs, and ring-buffer/KV-cache safety only when their manifest entries exist;
-- a short explanation of the proof-depth/vacuity guard once it is implemented.
+- a short explanation of the proof-depth/vacuity guard and its review categories.
 
 This phase should not make the Living Book sound like a benchmark win. It should show the useful contract first, then state exactly what it proves, what it measures numerically, and what it does not claim.
 

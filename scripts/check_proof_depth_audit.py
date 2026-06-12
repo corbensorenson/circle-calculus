@@ -33,6 +33,7 @@ class ProofDepthCandidate:
     line: int
     declaration: str
     reason: str
+    review_category: str
     proof_line_count: int
     first_proof_lines: list[str]
 
@@ -96,6 +97,23 @@ def classify_candidate(decl_name: str, proof_lines: list[str]) -> str | None:
     return None
 
 
+def suggest_review_category(path: Path, decl_name: str) -> str:
+    path_text = str(path)
+    if "/Erdos/" in path_text:
+        return "mathlib_bridge_wrapper"
+    if "/Future/" in path_text or "Scaffold.lean" in path_text:
+        return "scaffold_or_roadmap_fact"
+    if "GlyphProof.lean" in path_text or "metadata" in decl_name.lower():
+        return "metadata_projection"
+    if "Certifier.lean" in path_text or "Certificate" in decl_name or "certificate" in decl_name:
+        return "application_contract_bridge"
+    if decl_name.endswith("_iff") or "_iff_" in decl_name:
+        return "iff_packaging"
+    if decl_name.endswith("_eq") or "_zero" in decl_name or "_idempotent" in decl_name:
+        return "normalization_fact"
+    return "review_required"
+
+
 def scan(root: Path) -> tuple[int, list[ProofDepthCandidate]]:
     scanned = 0
     candidates: list[ProofDepthCandidate] = []
@@ -118,6 +136,7 @@ def scan(root: Path) -> tuple[int, list[ProofDepthCandidate]]:
                     line=index + 1,
                     declaration=decl_name,
                     reason=reason,
+                    review_category=suggest_review_category(path, decl_name),
                     proof_line_count=len(proof_lines),
                     first_proof_lines=proof_lines[:4],
                 )
@@ -166,7 +185,7 @@ def main() -> int:
         preview = " | ".join(candidate.first_proof_lines)
         print(
             f"{candidate.path}:{candidate.line}: {candidate.declaration}: "
-            f"{candidate.reason}; proof={preview}"
+            f"{candidate.reason}; category={candidate.review_category}; proof={preview}"
         )
     if len(candidates) > 25:
         print(f"... {len(candidates) - 25} more candidates omitted")

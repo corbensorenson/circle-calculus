@@ -24,3 +24,5 @@ def test_proof_depth_audit_runs_as_nonfailing_heuristic(tmp_path) -> None:
     assert payload["schema_id"] == "circle_calculus.proof_depth_audit.v0"
     assert payload["scanned_theorem_count"] > 0
     assert "not a sound mathematical depth measure" in payload["heuristic_boundary"]
+    assert payload["candidates"]
+    assert "review_category" in payload["candidates"][0]

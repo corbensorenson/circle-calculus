@@ -183,10 +183,11 @@ targets:
       - "docs/PHASE8_DEPTH_VALIDATION.md"
       - "scripts/check_no_fake_proofs.py"
       - "scripts/check_proof_depth_audit.py"
+      - "docs/PROOF_DEPTH_AUDIT.md"
       - "manifests/dimensions/Common.yaml"
       - "Circle/Applications/CircleTransformer.lean"
     dictionary_dependencies: []
-    next_action: "Review the non-failing proof-depth audit output, document false-positive categories, then decide which categories should become failing checks."
+    next_action: "The non-failing proof-depth audit now emits suggested review categories and docs/PROOF_DEPTH_AUDIT.md documents the false-positive classes; next inspect review_required cases and decide whether any category should become strict."
     guardrail: "A proof-depth heuristic is a review aid, not a formal soundness theorem."
 
   - id: P8-COMM-001
