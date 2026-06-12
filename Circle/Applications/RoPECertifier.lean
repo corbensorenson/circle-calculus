@@ -226,6 +226,28 @@ theorem ropePhaseBankCollision_iff_lcm_dvd_gap
   · intro hlcm period hmem
     exact Nat.dvd_trans (ropePeriodBankLCM_dvd_of_mem hmem) hlcm
 
+/-- If the period-bank LCM reaches the inspected context, no unequal ordered
+in-context pair can collide in every declared channel.
+
+This is the exact finite-bank pass condition used by the certifier: once the
+least common collision gap is at least the context length, every positive
+in-context position gap is too small to be divisible by that bank LCM. -/
+theorem not_ropePhaseBankCollision_of_lcm_ge_context
+    {periods : List Nat} {context left right : Nat}
+    (hlcm_context : context ≤ ropePeriodBankLCM periods)
+    (hleft : left < right) (hright : right < context) :
+    ¬ ropePhaseBankCollision periods left right := by
+  intro hcollision
+  have hle : left ≤ right := Nat.le_of_lt hleft
+  have hdvd : ropePeriodBankLCM periods ∣ right - left :=
+    (ropePhaseBankCollision_iff_lcm_dvd_gap (periods := periods) hle).1 hcollision
+  have hgap_pos : 0 < right - left := Nat.sub_pos_of_lt hleft
+  have hlcm_le_gap : ropePeriodBankLCM periods ≤ right - left :=
+    Nat.le_of_dvd hgap_pos hdvd
+  have hgap_lt_context : right - left < context :=
+    lt_of_le_of_lt (Nat.sub_le right left) hright
+  exact (not_lt_of_ge (le_trans hlcm_context hlcm_le_gap)) hgap_lt_context
+
 /-- In a single positive-period channel, every in-context collision between
 unequal ordered positions has a positive period-multiple gap.
 

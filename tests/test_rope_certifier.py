@@ -163,6 +163,7 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     assert certificate.exact_discrete.total_bank_collision_pair_count == 24
     assert certificate.exact_discrete.sample_collision_pairs[0] == (0, 6)
     assert certificate.theorem_ids == ROPE_CERTIFIER_THEOREMS
+    assert "AIRA-T0046" in certificate.theorem_ids
     assert "AIRA-T0024" in certificate.exact_discrete.assumptions[3]
     assert "not a model-quality" in certificate.claim_boundary
 
@@ -179,6 +180,7 @@ def test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context() 
     assert certificate.exact_discrete.guaranteed_common_gap_multiple_pair_count == 0
     assert certificate.exact_discrete.total_bank_collision_pair_count == 0
     assert certificate.exact_discrete.sample_collision_pairs == ()
+    assert "AIRA-T0046" in certificate.theorem_ids
     assert certificate.real_phase_margin.scanned_gap_count == 7
     assert certificate.real_phase_margin.formal_precursor_theorem_ids == ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 

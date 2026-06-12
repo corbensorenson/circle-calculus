@@ -2268,7 +2268,7 @@
       "id": "AIRA-T0029",
       "lean_name": "Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 333,
+      "lean_source_line": 355,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2291,7 +2291,7 @@
       "id": "AIRA-T0030",
       "lean_name": "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 346,
+      "lean_source_line": 368,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2315,7 +2315,7 @@
       "id": "AIRA-T0031",
       "lean_name": "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 363,
+      "lean_source_line": 385,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2339,7 +2339,7 @@
       "id": "AIRA-T0032",
       "lean_name": "Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 387,
+      "lean_source_line": 409,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2363,7 +2363,7 @@
       "id": "AIRA-T0033",
       "lean_name": "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 431,
+      "lean_source_line": 453,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2410,7 +2410,7 @@
       "id": "AIRA-T0035",
       "lean_name": "Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 235,
+      "lean_source_line": 257,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2459,7 +2459,7 @@
       "id": "AIRA-T0037",
       "lean_name": "Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 465,
+      "lean_source_line": 487,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2484,7 +2484,7 @@
       "id": "AIRA-T0038",
       "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 484,
+      "lean_source_line": 506,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2510,7 +2510,7 @@
       "id": "AIRA-T0039",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 632,
+      "lean_source_line": 654,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2536,7 +2536,7 @@
       "id": "AIRA-T0040",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 653,
+      "lean_source_line": 675,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2561,7 +2561,7 @@
       "id": "AIRA-T0041",
       "lean_name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 500,
+      "lean_source_line": 522,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2587,7 +2587,7 @@
       "id": "AIRA-T0042",
       "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 554,
+      "lean_source_line": 576,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2615,7 +2615,7 @@
       "id": "AIRA-T0043",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 585,
+      "lean_source_line": 607,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2647,7 +2647,7 @@
       "informal_statement": "A finite-context turn-ratio margin certified for a larger context automatically applies to any smaller requested context.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_mono_context",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 539,
+      "lean_source_line": 561,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -2691,7 +2691,7 @@
       "informal_statement": "If one channel has a finite-context turn-ratio margin certified for a larger context, then every smaller requested context inherits the bank-level no-near-turn consequence.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 609,
+      "lean_source_line": 631,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -2711,6 +2711,46 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "tests/test_rope_certifier.py::test_turn_ratio_margin_context_transfer_helper_is_monotone"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0078",
+        "COMMON-0084"
+      ],
+      "formal_statement": "forall {periods : List Nat} {context left right : Nat}, context <= Circle.Applications.ropePeriodBankLCM periods -> left < right -> right < context -> not Circle.Applications.ropePhaseBankCollision periods left right",
+      "id": "AIRA-T0046",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "If the period-bank LCM reaches the inspected context, no unequal ordered in-context pair can collide in every declared integer-period RoPE channel.",
+      "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
+      "lean_source": "Circle/Applications/RoPECertifier.lean",
+      "lean_source_line": 235,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "tests/test_rope_certifier.py::test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context"
         ]
       }
     },
