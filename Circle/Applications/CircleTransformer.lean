@@ -994,6 +994,20 @@ theorem hybridFamilyQueryCandidatesNoCollision_of_lag_noCollision_of_predecessor
   unfold hybridFamilyPredecessorInjectiveOnLagCandidates at hinjective
   exact hnoCollision.map_on hinjective
 
+/-- Ordered no-wrap separation plus predecessor injectivity gives
+duplicate-free query-indexed candidates. -/
+theorem hybridFamilyQueryCandidatesNoCollision_of_noWrapSeparated_of_window_lt_all_strides_of_predecessor_injective
+    {n query window pathLength : Nat} {strides : List Nat}
+    (hseparated : coilStrideFamilyNoWrapSeparated n pathLength strides)
+    (hwindow : ∀ stride ∈ strides, window < stride)
+    (hinjective :
+      hybridFamilyPredecessorInjectiveOnLagCandidates n query window pathLength strides) :
+    hybridFamilyQueryCandidatesNoCollision n query window pathLength strides :=
+  hybridFamilyQueryCandidatesNoCollision_of_lag_noCollision_of_predecessor_injective
+    (hybridFamilyLagCandidatesNoCollision_of_noWrapSeparated_of_window_lt_all_strides
+      hseparated hwindow)
+    hinjective
+
 /-- If the theorem-side lag-candidate list has no duplicate lag candidates, its
 exact deduplicated count equals the raw candidate budget. -/
 theorem hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision
@@ -1005,6 +1019,18 @@ theorem hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision
   unfold hybridFamilyUniqueLagCandidateCount hybridFamilyLagCandidatesNoCollision at *
   rw [List.Nodup.dedup hnoCollision]
   exact hybridFamilyLagCandidateList_length n window pathLength strides
+
+/-- Ordered no-wrap separation plus a local-window lower bound makes the exact
+lag-candidate count equal the raw sparse-attention budget. -/
+theorem hybridFamilyUniqueLagCandidateCount_eq_raw_of_noWrapSeparated_of_window_lt_all_strides
+    {n window pathLength : Nat} {strides : List Nat}
+    (hseparated : coilStrideFamilyNoWrapSeparated n pathLength strides)
+    (hwindow : ∀ stride ∈ strides, window < stride) :
+    hybridFamilyUniqueLagCandidateCount n window pathLength strides =
+      hybridFamilyRawCandidateBudget window pathLength strides :=
+  hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision
+    (hybridFamilyLagCandidatesNoCollision_of_noWrapSeparated_of_window_lt_all_strides
+      hseparated hwindow)
 
 /-- If the theorem-side query-indexed candidate list has no duplicate
 predecessor candidates, its exact deduplicated count equals the raw candidate
@@ -1018,6 +1044,20 @@ theorem hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision
   unfold hybridFamilyUniqueQueryCandidateCount hybridFamilyQueryCandidatesNoCollision at *
   rw [List.Nodup.dedup hnoCollision]
   exact hybridFamilyQueryCandidateList_length n query window pathLength strides
+
+/-- Ordered no-wrap separation plus predecessor injectivity makes the exact
+query-candidate count equal the raw sparse-attention budget. -/
+theorem hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noWrapSeparated_of_window_lt_all_strides_of_predecessor_injective
+    {n query window pathLength : Nat} {strides : List Nat}
+    (hseparated : coilStrideFamilyNoWrapSeparated n pathLength strides)
+    (hwindow : ∀ stride ∈ strides, window < stride)
+    (hinjective :
+      hybridFamilyPredecessorInjectiveOnLagCandidates n query window pathLength strides) :
+    hybridFamilyUniqueQueryCandidateCount n query window pathLength strides =
+      hybridFamilyRawCandidateBudget window pathLength strides :=
+  hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision
+    (hybridFamilyQueryCandidatesNoCollision_of_noWrapSeparated_of_window_lt_all_strides_of_predecessor_injective
+      hseparated hwindow hinjective)
 
 /-- Query-candidate membership is exactly membership after mapping some
 generated lag through the predecessor-index map. -/

@@ -604,6 +604,9 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0065",
         "AIT-T0066",
         "AIT-T0067",
+        "AIT-T0068",
+        "AIT-T0069",
+        "AIT-T0070",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -1954,6 +1957,45 @@ def stride_family_no_wrap_separated_lag_no_collision_sufficient_condition(
     """Return whether the separated-family lag no-collision theorem applies."""
     return stride_family_no_wrap_separated_local_disjoint_sufficient_condition(
         sequence_length,
+        strides,
+        path_length,
+        local_window,
+    )
+
+
+def stride_family_no_wrap_separated_query_no_collision_sufficient_condition(
+    sequence_length: int,
+    query_index: int,
+    strides: Sequence[int],
+    path_length: int,
+    local_window: int,
+) -> bool:
+    """Return whether the separated-family query no-collision theorem applies."""
+    return stride_family_no_wrap_separated_lag_no_collision_sufficient_condition(
+        sequence_length,
+        strides,
+        path_length,
+        local_window,
+    ) and stride_family_predecessor_injective_on_lag_candidates(
+        sequence_length,
+        query_index,
+        strides,
+        path_length,
+        local_window,
+    )
+
+
+def stride_family_no_wrap_separated_query_raw_budget_exact_sufficient_condition(
+    sequence_length: int,
+    query_index: int,
+    strides: Sequence[int],
+    path_length: int,
+    local_window: int,
+) -> bool:
+    """Return whether the exact query-candidate count equals raw budget by theorem."""
+    return stride_family_no_wrap_separated_query_no_collision_sufficient_condition(
+        sequence_length,
+        query_index,
         strides,
         path_length,
         local_window,

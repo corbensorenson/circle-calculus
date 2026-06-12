@@ -3358,6 +3358,48 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_no_wrap_separated_local_and_lag_no_collision_conditions
     blocker: ""
+  - id: AIT-T0068
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyQueryCandidatesNoCollision_of_noWrapSeparated_of_window_lt_all_strides_of_predecessor_injective
+    informal_statement: "An ordered no-wrap separated stride family whose strides start beyond the local window has duplicate-free query-indexed candidates whenever predecessor indexing is injective on generated lag candidates."
+    formal_statement: "forall {n query window pathLength : Nat} {strides : List Nat}, Circle.Applications.coilStrideFamilyNoWrapSeparated n pathLength strides -> (forall stride, stride in strides -> window < stride) -> Circle.Applications.hybridFamilyPredecessorInjectiveOnLagCandidates n query window pathLength strides -> Circle.Applications.hybridFamilyQueryCandidatesNoCollision n query window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_no_wrap_separated_query_raw_budget_endpoint
+    blocker: ""
+  - id: AIT-T0069
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyUniqueLagCandidateCount_eq_raw_of_noWrapSeparated_of_window_lt_all_strides
+    informal_statement: "For an ordered no-wrap separated stride family whose strides start beyond the local window, the exact deduplicated theorem-side lag-candidate count equals the raw candidate budget."
+    formal_statement: "forall {n window pathLength : Nat} {strides : List Nat}, Circle.Applications.coilStrideFamilyNoWrapSeparated n pathLength strides -> (forall stride, stride in strides -> window < stride) -> Circle.Applications.hybridFamilyUniqueLagCandidateCount n window pathLength strides = Circle.Applications.hybridFamilyRawCandidateBudget window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_no_wrap_separated_query_raw_budget_endpoint
+    blocker: ""
+  - id: AIT-T0070
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noWrapSeparated_of_window_lt_all_strides_of_predecessor_injective
+    informal_statement: "For an ordered no-wrap separated stride family whose strides start beyond the local window, predecessor injectivity makes the exact deduplicated query-candidate count equal the raw candidate budget."
+    formal_statement: "forall {n query window pathLength : Nat} {strides : List Nat}, Circle.Applications.coilStrideFamilyNoWrapSeparated n pathLength strides -> (forall stride, stride in strides -> window < stride) -> Circle.Applications.hybridFamilyPredecessorInjectiveOnLagCandidates n query window pathLength strides -> Circle.Applications.hybridFamilyUniqueQueryCandidateCount n query window pathLength strides = Circle.Applications.hybridFamilyRawCandidateBudget window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_no_wrap_separated_query_raw_budget_endpoint
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant
