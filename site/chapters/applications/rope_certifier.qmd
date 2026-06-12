@@ -69,6 +69,26 @@ python scripts/rope_certify.py --preset llama_style_10000_4k --format json
 
 The JSON report includes theorem ids, Lean declarations, assumptions, exact discrete pass/fail, sample exact collisions when present, and numerical real-phase margin diagnostics.
 
+## ML-Engineer Quickstart
+
+The short non-Lean entrypoint is [RoPE Certifier Quickstart](https://github.com/corbensorenson/circle-calculus/blob/main/docs/ROPE_CERTIFIER_QUICKSTART.md). It covers installation, presets, custom configs, text and JSON output, theorem ids, and limitations.
+
+## Reproducible Results
+
+The paper sidecar generates the current preset results:
+
+```bash
+python sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/python/benchmark_rope_certifier.py --format markdown
+```
+
+Committed fixtures:
+
+<p>Preset JSON: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/results/rope_certifier_presets.json">rope_certifier_presets.json</a></p>
+
+<p>Preset Markdown: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/results/rope_certifier_presets.md">rope_certifier_presets.md</a></p>
+
+The current presets pass the exact discrete contract under the rounded integer-period phase-bank model. The real-phase rows are numerical diagnostics only.
+
 ## What To Notice
 
 - Exact collision is not guessed by scanning every pair. The theorem reduces it to divisibility of the position gap.

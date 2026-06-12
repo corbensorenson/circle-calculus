@@ -18,6 +18,7 @@ targets:
       - "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md"
       - "circle_math/applications/rope_certifier.py"
       - "site/chapters/applications/rope_certifier.qmd"
+      - "docs/ROPE_CERTIFIER_QUICKSTART.md"
     dictionary_dependencies: ["COMMON-0076", "COMMON-0077"]
     next_action: "Audit mathlib support for continued fractions, fractional-part distance, and finite minimum bounds, then choose the smallest theorem that gives the certifier a real quantitative margin statement."
     guardrail: "Do not present numerical margin scans as Lean-proved real RoPE theorems."
@@ -84,6 +85,8 @@ targets:
       - "docs/PHASE8_DEPTH_VALIDATION.md"
       - "scripts/rope_certify.py"
       - "sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/python/benchmark_rope_certifier.py"
+      - "sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/results/rope_certifier_presets.json"
+      - "sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/results/rope_certifier_presets.md"
       - "site/chapters/applications/rope_certifier.qmd"
     dictionary_dependencies: ["COMMON-0077"]
     next_action: "Promote the three existing preset runs into a reader-facing results table with reproducible commands and no model-quality claims."
@@ -189,6 +192,7 @@ targets:
     artifact_refs:
       - "docs/PHASE8_DEPTH_VALIDATION.md"
       - "README.md"
+      - "docs/ROPE_CERTIFIER_QUICKSTART.md"
       - "scripts/rope_certify.py"
       - "site/chapters/applications/rope_certifier.qmd"
       - "docs/LIVING_BOOK_ROADMAP.md"

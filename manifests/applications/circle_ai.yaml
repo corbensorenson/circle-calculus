@@ -42,8 +42,11 @@ sidecars:
   - sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/benchmark_winding_aware_position.py
   - sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/lean/PaperAI04.lean
   - sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/python/benchmark_rope_certifier.py
+  - sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/results/rope_certifier_presets.json
+  - sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/results/rope_certifier_presets.md
   - scripts/rope_certify.py
   - tests/test_rope_certifier.py
+  - docs/ROPE_CERTIFIER_QUICKSTART.md
 python_reference:
   - circle_math/applications/circle_ai.py
   - circle_math/applications/rope_certifier.py
@@ -586,7 +589,7 @@ benchmarks:
     description: "Deterministic winding-aware positional synthetic fixture comparing residue-plus-winding features against residue-only, wrong-period winding, learned absolute-position, and scalar-threshold baselines, with alias diagnostics and a nonperiodic scalar-control baseline."
   - id: AIRA-B0009
     status: exploratory_python
-    path: tests/test_rope_certifier.py::test_rope_certify_cli_emits_json_certificate
-    script: scripts/rope_certify.py
-    description: "Proof-carrying RoPE position distinguishability certifier that emits exact integer-period phase-bank collision certificates linked to Lean theorem ids plus a separate numerical real-phase margin report, replacing the ordinary unchecked configuration-note baseline for this audit task."
+    path: tests/test_rope_certifier.py::test_rope_preset_sidecar_emits_json_and_markdown
+    script: sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/python/benchmark_rope_certifier.py
+    description: "Proof-carrying RoPE position distinguishability certifier plus reproducible preset-result sidecar that emits exact integer-period phase-bank collision certificates linked to Lean theorem ids and separate numerical real-phase margin reports, replacing the ordinary unchecked configuration-note baseline for this audit task."
 guardrail: "No claim that circles improve all AI."

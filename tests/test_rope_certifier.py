@@ -69,3 +69,40 @@ def test_rope_certify_cli_emits_json_certificate() -> None:
     assert payload["exact_discrete"]["pass_exact"] is False
     assert payload["exact_discrete"]["common_collision_gap"] == 6
     assert payload["theorem_ids"] == list(ROPE_CERTIFIER_THEOREMS)
+
+
+def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
+    json_result = subprocess.run(
+        [
+            sys.executable,
+            "sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/python/benchmark_rope_certifier.py",
+            "--preset",
+            "llama_style_10000_4k",
+            "--format",
+            "json",
+        ],
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    payload = json.loads(json_result.stdout)
+    assert payload["schema_id"] == "circle_calculus.rope_certifier_preset_results.v0"
+    assert payload["presets"][0]["preset"] == "llama_style_10000_4k"
+    assert payload["presets"][0]["certificate"]["exact_discrete"]["pass_exact"] is True
+    assert "not model-quality" in payload["claim_boundary"]
+
+    markdown_result = subprocess.run(
+        [
+            sys.executable,
+            "sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/python/benchmark_rope_certifier.py",
+            "--preset",
+            "llama_style_10000_4k",
+            "--format",
+            "markdown",
+        ],
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert "| llama_style_10000_4k |" in markdown_result.stdout
+    assert "Reproduce with:" in markdown_result.stdout
