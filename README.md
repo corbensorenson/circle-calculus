@@ -1,5 +1,8 @@
 # Circle Calculus
 
+[![CI](https://github.com/corbensorenson/circle-calculus/actions/workflows/ci.yml/badge.svg)](https://github.com/corbensorenson/circle-calculus/actions/workflows/ci.yml)
+[![Deploy Living Book](https://github.com/corbensorenson/circle-calculus/actions/workflows/pages.yml/badge.svg)](https://github.com/corbensorenson/circle-calculus/actions/workflows/pages.yml)
+
 **Start here:** the [Circle Calculus Living Book](https://corbensorenson.github.io/circle-calculus/) is the public, interactive textbook for this project. If you only click one link, click that one.
 
 Circle Calculus rebuilds familiar mathematics from one move — *count, and when you run out of room, wrap around* — and keeps every claimed result tied to a machine-checked Lean proof. It is a staged, honest formalization: papers are allowed to be ambitious, but a theorem only counts as proved when a Lean declaration says so.
