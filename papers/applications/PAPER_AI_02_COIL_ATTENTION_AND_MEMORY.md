@@ -146,6 +146,9 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `AIT-T0030`: `Circle.Applications.coilLagReach_mono_pathLength`
 - `AIT-T0031`: `Circle.Applications.coilStrideFamilyLagReach_mono_pathLength`
 - `AIT-T0032`: `Circle.Applications.hybridFamilyLagReach_mono_window_pathLength`
+- `AIT-T0033`: `Circle.Applications.hybridFamilyCoversContext_iff_no_uncovered_lag`
+- `AIT-T0034`: `Circle.Applications.hybridFamilyCoversContext_of_localWindow_ge_context_sub_one`
+- `AIT-T0035`: `Circle.Applications.hybridFamilyCoversContext_mono_window_pathLength`
 
 ## Strided Attention Coverage (Proved Structural Guarantee)
 
@@ -171,6 +174,7 @@ attention:
 - `AIT-T0026` and `AIT-T0027` (`Circle.Applications.not_coilStrideFamilyLagReach_nil`, `Circle.Applications.hybridFamilyLagReach_nil_iff_local`): the empty-family control has no coil reachability and reduces exactly to the local-window baseline.
 - `AIT-T0028` (`Circle.Applications.not_localLagReach_iff_window_lt_of_pos`): for positive lags, the local-window miss condition is exactly `window < lag`.
 - `AIT-T0029` through `AIT-T0032`: increasing the local-window width or admitted path length cannot remove lags already covered by the local, coil, stride-family, or combined sparse plan.
+- `AIT-T0033` through `AIT-T0035`: the named complete-coverage predicate for a local+stride-family plan is equivalent to having no positive in-context uncovered-lag certificate, is implied by the dense-local `n - 1` threshold, and is preserved by conservative window/path-length budget increases.
 
 This is the kind of structural guarantee practitioners reason about informally for
 dilated/strided attention, here made exact and Lean-checked on top of the orbit spine
@@ -225,7 +229,7 @@ The same fixture now emits an explicit coverage certificate. For the default `se
 1, 2, 3, 4, 7, 14, 21, 13, 26, 39
 ```
 
-The remaining `109` positive lags are exposed as uncovered-lag gap certificates. `AIT-T0021` states the concrete condition behind those holes: an uncovered lag is beyond the local window and every admitted stride/step pair misses its cyclic residue. `AIT-T0028` tightens the local part by proving that, for positive lags, missing the local window is exactly `window < lag`. `AIT-T0022` records the dense-local limit: if the local window is at least `n - 1`, there are no positive-lag holes. `AIT-T0023` adds the converse for local-only coverage: that threshold is exact for covering every positive in-context lag by the local window alone. `AIT-T0024` and `AIT-T0025` state the exact recursion for adding one stride to a family. `AIT-T0026` and `AIT-T0027` prove the no-stride control reduces exactly to local-window reachability. `AIT-T0029` through `AIT-T0032` add the tuning guarantee: increasing the local-window width or admitted path length cannot remove lags already covered by the plan. This is the practical point of the Phase VIII upgrade: the artifact reports holes and preserves known coverage under conservative budget increases, not only successful examples.
+The remaining `109` positive lags are exposed as uncovered-lag gap certificates. `AIT-T0021` states the concrete condition behind those holes: an uncovered lag is beyond the local window and every admitted stride/step pair misses its cyclic residue. `AIT-T0028` tightens the local part by proving that, for positive lags, missing the local window is exactly `window < lag`. `AIT-T0022` records the dense-local limit: if the local window is at least `n - 1`, there are no positive-lag holes. `AIT-T0023` adds the converse for local-only coverage: that threshold is exact for covering every positive in-context lag by the local window alone. `AIT-T0024` and `AIT-T0025` state the exact recursion for adding one stride to a family. `AIT-T0026` and `AIT-T0027` prove the no-stride control reduces exactly to local-window reachability. `AIT-T0029` through `AIT-T0032` add the tuning guarantee: increasing the local-window width or admitted path length cannot remove lags already covered by the plan. `AIT-T0033` through `AIT-T0035` package the full-plan coverage status itself: complete coverage is exactly the absence of positive uncovered-lag witnesses, dense local coverage implies that complete-coverage predicate, and conservative budget increases preserve complete coverage. This is the practical point of the Phase VIII upgrade: the artifact reports holes and preserves known coverage under conservative budget increases, not only successful examples.
 
 This fixture checks multi-stride candidate-set reachability and budget only. It is not evidence that stride-family sparse attention improves neural attention quality, long-context behavior, throughput, runtime, memory use, or model quality.
 

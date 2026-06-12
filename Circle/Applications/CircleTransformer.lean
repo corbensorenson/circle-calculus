@@ -106,6 +106,12 @@ local window reaches it or one admitted coil stride reaches it. -/
 def hybridFamilyLagReach (n window pathLength lag : Nat) (strides : List Nat) : Prop :=
   localLagReach window lag ∨ coilStrideFamilyLagReach n pathLength lag strides
 
+/-- A local-window plus finite stride-family sparse plan covers every positive
+dependency lag inside a length-`n` context. -/
+def hybridFamilyCoversContext
+    (n window pathLength : Nat) (strides : List Nat) : Prop :=
+  ∀ lag, 1 ≤ lag → lag < n → hybridFamilyLagReach n window pathLength lag strides
+
 /-- The local reachability predicate is exactly the positive in-window lag condition. -/
 theorem localLagReach_of_le {window lag : Nat} (hpos : 1 ≤ lag) (hwindow : lag ≤ window) :
     localLagReach window lag :=
@@ -338,6 +344,21 @@ theorem hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne
     rcases hfamily with ⟨stride, hmem, step, hpos, hstep, hmod⟩
     exact hnoStride stride hmem step hpos hstep hmod
 
+/-- A stride-family plan covers the context exactly when there is no positive
+in-context lag carrying a gap certificate. -/
+theorem hybridFamilyCoversContext_iff_no_uncovered_lag
+    {n window pathLength : Nat} {strides : List Nat} :
+    hybridFamilyCoversContext n window pathLength strides ↔
+      ¬ ∃ lag, 1 ≤ lag ∧ lag < n ∧
+        ¬ hybridFamilyLagReach n window pathLength lag strides := by
+  constructor
+  · intro hcover
+    rintro ⟨lag, hpos, hcontext, hgap⟩
+    exact hgap (hcover lag hpos hcontext)
+  · intro hnogap lag hpos hcontext
+    by_contra hgap
+    exact hnogap ⟨lag, hpos, hcontext, hgap⟩
+
 /-- Local-window full-coverage sufficient condition.
 
 If the local window is at least `n - 1`, then every positive lag inside a
@@ -350,6 +371,27 @@ theorem hybridFamilyLagReach_of_localWindow_ge_context_sub_one
     hybridFamilyLagReach n window pathLength lag strides :=
   hybridFamilyLagReach_of_local
     (localLagReach_of_le hpos (le_trans (Nat.le_sub_one_of_lt hcontext) hwindow))
+
+/-- Dense local-window coverage lifts to the named complete-coverage predicate
+for any declared stride family. -/
+theorem hybridFamilyCoversContext_of_localWindow_ge_context_sub_one
+    {n window pathLength : Nat} {strides : List Nat}
+    (hwindow : n - 1 ≤ window) :
+    hybridFamilyCoversContext n window pathLength strides := by
+  intro lag hpos hcontext
+  exact hybridFamilyLagReach_of_localWindow_ge_context_sub_one hpos hcontext hwindow
+
+/-- Increasing both sparse-attention budgets preserves complete context
+coverage for a local-window plus stride-family plan. -/
+theorem hybridFamilyCoversContext_mono_window_pathLength
+    {n smallWindow largeWindow smallPath largePath : Nat} {strides : List Nat}
+    (hwindow : smallWindow ≤ largeWindow)
+    (hpath : smallPath ≤ largePath)
+    (hcover : hybridFamilyCoversContext n smallWindow smallPath strides) :
+    hybridFamilyCoversContext n largeWindow largePath strides := by
+  intro lag hpos hcontext
+  exact hybridFamilyLagReach_mono_window_pathLength hwindow hpath
+    (hcover lag hpos hcontext)
 
 /-- Exact local-window coverage criterion.
 

@@ -2820,6 +2820,48 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
     blocker: ""
+  - id: AIT-T0033
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyCoversContext_iff_no_uncovered_lag
+    informal_statement: "A local-window plus stride-family sparse-attention plan covers every positive in-context lag exactly when there is no positive in-context lag carrying a gap certificate."
+    formal_statement: "forall {n window pathLength : Nat} {strides : List Nat}, Circle.Applications.hybridFamilyCoversContext n window pathLength strides <-> not exists lag, 1 <= lag and lag < n and not Circle.Applications.hybridFamilyLagReach n window pathLength lag strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0034
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyCoversContext_of_localWindow_ge_context_sub_one
+    informal_statement: "If the local window reaches n - 1, any local-window plus stride-family sparse-attention plan satisfies the named complete-coverage predicate."
+    formal_statement: "forall {n window pathLength : Nat} {strides : List Nat}, n - 1 <= window -> Circle.Applications.hybridFamilyCoversContext n window pathLength strides"
+    dictionary_dependencies: ["COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_coverage_complete_when_local_window_covers_context
+    blocker: ""
+  - id: AIT-T0035
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyCoversContext_mono_window_pathLength
+    informal_statement: "Increasing local-window and path-length budgets preserves complete context coverage for a local-window plus stride-family sparse-attention plan."
+    formal_statement: "forall {n smallWindow largeWindow smallPath largePath : Nat} {strides : List Nat}, smallWindow <= largeWindow -> smallPath <= largePath -> Circle.Applications.hybridFamilyCoversContext n smallWindow smallPath strides -> Circle.Applications.hybridFamilyCoversContext n largeWindow largePath strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant
