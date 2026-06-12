@@ -3320,11 +3320,17 @@ def main() -> int:
         assert coverage_certificate.covered_lags == js_covered_lags
         assert coverage_certificate.theorem_side_lag_candidates == js_lag_candidates
         assert coverage_certificate.theorem_side_unique_lag_candidate_count == len(set(js_lag_candidates))
+        assert coverage_certificate.theorem_side_lag_candidates_no_collision == (
+            len(set(js_lag_candidates)) == len(js_lag_candidates)
+        )
         assert coverage_certificate.theorem_side_unique_lag_candidate_count <= (
             local_window + path_length * len(strides)
         )
         assert coverage_certificate.theorem_side_query_candidates == js_query_candidates
         assert coverage_certificate.theorem_side_unique_query_candidate_count == len(set(js_query_candidates))
+        assert coverage_certificate.theorem_side_query_candidates_no_collision == (
+            len(set(js_query_candidates)) == len(js_query_candidates)
+        )
         assert coverage_certificate.theorem_side_unique_query_candidate_count <= (
             local_window + path_length * len(strides)
         )

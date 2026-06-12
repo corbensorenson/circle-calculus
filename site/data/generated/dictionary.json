@@ -4745,6 +4745,18 @@
           "lean_name": "Circle.Applications.predecessorIndex_mem_hybridFamilyQueryCandidateList_of_reach",
           "name": "Circle.Applications.predecessorIndex_mem_hybridFamilyQueryCandidateList_of_reach",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0055",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0056",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5039,6 +5051,18 @@
           "id": "AIT-T0054",
           "lean_name": "Circle.Applications.predecessorIndex_mem_hybridFamilyQueryCandidateList_of_reach",
           "name": "Circle.Applications.predecessorIndex_mem_hybridFamilyQueryCandidateList_of_reach",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0055",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0056",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision",
           "status": "proved"
         }
       ],
@@ -6208,6 +6232,18 @@
           "id": "AIT-T0054",
           "lean_name": "Circle.Applications.predecessorIndex_mem_hybridFamilyQueryCandidateList_of_reach",
           "name": "Circle.Applications.predecessorIndex_mem_hybridFamilyQueryCandidateList_of_reach",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0055",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0056",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision",
           "status": "proved"
         }
       ],
@@ -10462,6 +10498,18 @@
           "lean_name": "Circle.Applications.predecessorIndex_mem_hybridFamilyQueryCandidateList_of_reach",
           "name": "Circle.Applications.predecessorIndex_mem_hybridFamilyQueryCandidateList_of_reach",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0055",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0056",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -10997,10 +11045,10 @@
         "A proof that sparse attention is faster or uses less memory.",
         "A claim that uncovered lags are irrelevant to a real task."
       ],
-      "formal_definition": "`circle_math.applications.circle_ai.certify_stride_family_coverage`, a finite certificate listing every positive lag covered by a local-window plus stride-family sparse-attention plan and every uncovered lag as a gap certificate; Lean theorem `Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family` states the abstract gap predicate, `Circle.Applications.not_localLagReach_iff_window_lt_of_pos` characterizes the local-window miss for positive lags, `Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne` gives the concrete no-local/no-stride-step certificate condition, `Circle.Applications.hybridFamilyCoversContext_iff_no_uncovered_lag` proves that the named complete-coverage predicate is equivalent to having no positive in-context uncovered-lag witness, `Circle.Applications.hybridFamilyLagReach_of_localWindow_ge_context_sub_one` and `Circle.Applications.hybridFamilyCoversContext_of_localWindow_ge_context_sub_one` give the dense-local complete-coverage sufficient condition, `Circle.Applications.localWindowCoversContext_iff_context_sub_one_le` proves the exact local-window complete-coverage criterion, the `*_cons_iff` theorems decompose one added stride against the rest of the finite family, `Circle.Applications.hybridFamilyLagReach_nil_iff_local` records the empty-family local-only baseline, the monotonicity theorems prove that increasing local-window width or admitted path length cannot remove covered lags or complete coverage, `Circle.Applications.hybridFamilyRawCandidateBudget_*` theorems account for the raw upper bound `window + pathLength * strides.length` before duplicate removal, `Circle.Applications.hybridFamilyDedupCandidateBudgetBound_*` theorems account for the tighter `min(context, raw_budget)` deduplicated-count cap, `Circle.Applications.mem_hybridFamilyLagCandidateList_iff` proves that the theorem-side lag-candidate list has exactly the same in-context membership semantics as the local+stride-family reachability predicate, and `Circle.Applications.predecessorIndex_mem_hybridFamilyQueryCandidateList_of_reach` maps every reached in-context lag to a query-indexed predecessor candidate.",
+      "formal_definition": "`circle_math.applications.circle_ai.certify_stride_family_coverage`, a finite certificate listing every positive lag covered by a local-window plus stride-family sparse-attention plan and every uncovered lag as a gap certificate; Lean theorem `Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family` states the abstract gap predicate, `Circle.Applications.not_localLagReach_iff_window_lt_of_pos` characterizes the local-window miss for positive lags, `Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne` gives the concrete no-local/no-stride-step certificate condition, `Circle.Applications.hybridFamilyCoversContext_iff_no_uncovered_lag` proves that the named complete-coverage predicate is equivalent to having no positive in-context uncovered-lag witness, `Circle.Applications.hybridFamilyLagReach_of_localWindow_ge_context_sub_one` and `Circle.Applications.hybridFamilyCoversContext_of_localWindow_ge_context_sub_one` give the dense-local complete-coverage sufficient condition, `Circle.Applications.localWindowCoversContext_iff_context_sub_one_le` proves the exact local-window complete-coverage criterion, the `*_cons_iff` theorems decompose one added stride against the rest of the finite family, `Circle.Applications.hybridFamilyLagReach_nil_iff_local` records the empty-family local-only baseline, the monotonicity theorems prove that increasing local-window width or admitted path length cannot remove covered lags or complete coverage, `Circle.Applications.hybridFamilyRawCandidateBudget_*` theorems account for the raw upper bound `window + pathLength * strides.length` before duplicate removal, `Circle.Applications.hybridFamilyDedupCandidateBudgetBound_*` theorems account for the tighter `min(context, raw_budget)` deduplicated-count cap, `Circle.Applications.mem_hybridFamilyLagCandidateList_iff` proves that the theorem-side lag-candidate list has exactly the same in-context membership semantics as the local+stride-family reachability predicate, `Circle.Applications.predecessorIndex_mem_hybridFamilyQueryCandidateList_of_reach` maps every reached in-context lag to a query-indexed predecessor candidate, and the `*_eq_raw_of_noCollision` theorems prove that no-collision candidate lists deduplicate without budget loss.",
       "id": "COMMON-0079",
       "introduced_in": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
-      "intuition": "Instead of showing only successful example lags, the certificate exposes the holes in a sparse plan with a checkable reason for each hole, identifies the exact local-window condition that removes all positive-lag holes, proves that conservative budget increases preserve existing lag coverage and complete coverage, and separates exact theorem-side lag and query-candidate counts from theorem-backed raw and context-clipped candidate-budget upper bounds.",
+      "intuition": "Instead of showing only successful example lags, the certificate exposes the holes in a sparse plan with a checkable reason for each hole, identifies the exact local-window condition that removes all positive-lag holes, proves that conservative budget increases preserve existing lag coverage and complete coverage, and separates exact theorem-side lag and query-candidate counts from theorem-backed raw and context-clipped candidate-budget upper bounds while marking when no-collision makes exact counts equal raw budget.",
       "kind": "metric",
       "name": "Stride-family sparse coverage certificate",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
@@ -11223,6 +11271,18 @@
           "id": "AIT-T0054",
           "lean_name": "Circle.Applications.predecessorIndex_mem_hybridFamilyQueryCandidateList_of_reach",
           "name": "Circle.Applications.predecessorIndex_mem_hybridFamilyQueryCandidateList_of_reach",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0055",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0056",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision",
           "status": "proved"
         }
       ],

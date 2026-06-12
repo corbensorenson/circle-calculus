@@ -543,6 +543,8 @@ def export_widget_index() -> dict:
                 "AIT-T0052",
                 "AIT-T0053",
                 "AIT-T0054",
+                "AIT-T0055",
+                "AIT-T0056",
             ],
             "dictionary_ids": ["COMMON-0075", "COMMON-0047", "COMMON-0029"],
             "python_reference": "circle_math.applications.circle_ai.stride_family_attention_candidates; circle_math.applications.circle_ai.stride_family_lag_candidate_list; circle_math.applications.circle_ai.stride_family_query_candidate_list; circle_math.applications.circle_ai.structured_stride_family_target_lags; circle_math.applications.circle_ai.nonstructured_stride_family_control_lags; circle_math.applications.circle_ai.run_stride_family_sparse_attention_benchmark",

@@ -126,6 +126,8 @@ namespace Circle.PaperAI02
 #check Circle.Applications.predecessorIndex
 #check Circle.Applications.hybridFamilyQueryCandidateList
 #check Circle.Applications.hybridFamilyUniqueQueryCandidateCount
+#check Circle.Applications.hybridFamilyLagCandidatesNoCollision
+#check Circle.Applications.hybridFamilyQueryCandidatesNoCollision
 #check Circle.Applications.localLagCandidateList_length
 #check Circle.Applications.coilLagResidueList_length
 #check Circle.Applications.coilStrideFamilyLagResidueList_length
@@ -137,6 +139,8 @@ namespace Circle.PaperAI02
 #check Circle.Applications.mem_hybridFamilyLagCandidateList_iff
 #check Circle.Applications.hybridFamilyQueryCandidateList_length
 #check Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_raw
+#check Circle.Applications.hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision
+#check Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision
 #check Circle.Applications.mem_hybridFamilyQueryCandidateList_iff_exists_lag
 #check Circle.Applications.predecessorIndex_mem_hybridFamilyQueryCandidateList_of_reach
 #check Circle.Applications.localWindowCoversContext

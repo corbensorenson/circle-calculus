@@ -33,6 +33,8 @@ const THEOREM_IDS = [
   "AIT-T0052",
   "AIT-T0053",
   "AIT-T0054",
+  "AIT-T0055",
+  "AIT-T0056",
 ];
 const DICTIONARY_IDS = ["COMMON-0075", "COMMON-0079", "COMMON-0047", "COMMON-0029"];
 
@@ -132,8 +134,12 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
     deduplicatedCandidateBudgetUpperBound,
     theoremSideLagCandidates,
     theoremSideUniqueLagCandidateCount: new Set(theoremSideLagCandidates).size,
+    theoremSideLagCandidatesNoCollision: new Set(theoremSideLagCandidates).size === theoremSideLagCandidates.length,
     theoremSideQueryCandidates,
     theoremSideUniqueQueryCandidateCount: new Set(theoremSideQueryCandidates).size,
+    theoremSideQueryCandidatesNoCollision: (
+      new Set(theoremSideQueryCandidates).size === theoremSideQueryCandidates.length
+    ),
     fullAttentionBudget: sequenceLength,
     coverageComplete: uncoveredLags.length === 0,
     coverageRatio: sequenceLength <= 1 ? 1 : coveredLags.length / (sequenceLength - 1),
@@ -341,8 +347,10 @@ function appendRecord(output, values, theoremById) {
     `coverage ratio: ${formatNumber(coverage.coverageRatio)}`,
     `deduplicated candidate budget per query: ${coverage.candidateBudgetPerQuery}`,
     `theorem-side unique lag-candidate count: ${coverage.theoremSideUniqueLagCandidateCount}`,
+    `lag candidates no collision: ${coverage.theoremSideLagCandidatesNoCollision}`,
     `theorem-side raw lag candidates: ${formatCandidates(coverage.theoremSideLagCandidates, 18)}`,
     `theorem-side unique query-candidate count: ${coverage.theoremSideUniqueQueryCandidateCount}`,
+    `query candidates no collision: ${coverage.theoremSideQueryCandidatesNoCollision}`,
     `theorem-side raw query-0 candidates: ${formatCandidates(coverage.theoremSideQueryCandidates, 18)}`,
     `deduplicated candidate-budget upper bound: ${coverage.deduplicatedCandidateBudgetUpperBound}`,
     `raw candidate-budget upper bound: ${coverage.rawCandidateBudgetUpperBound}`,

@@ -180,6 +180,16 @@ def hybridFamilyUniqueQueryCandidateCount
     (n query window pathLength : Nat) (strides : List Nat) : Nat :=
   (hybridFamilyQueryCandidateList n query window pathLength strides).dedup.length
 
+/-- No-collision predicate for the theorem-side lag-candidate list. -/
+def hybridFamilyLagCandidatesNoCollision
+    (n window pathLength : Nat) (strides : List Nat) : Prop :=
+  (hybridFamilyLagCandidateList n window pathLength strides).Nodup
+
+/-- No-collision predicate for the theorem-side query-indexed candidate list. -/
+def hybridFamilyQueryCandidatesNoCollision
+    (n query window pathLength : Nat) (strides : List Nat) : Prop :=
+  (hybridFamilyQueryCandidateList n query window pathLength strides).Nodup
+
 /-- The local reachability predicate is exactly the positive in-window lag condition. -/
 theorem localLagReach_of_le {window lag : Nat} (hpos : 1 ≤ lag) (hwindow : lag ≤ window) :
     localLagReach window lag :=
@@ -648,6 +658,31 @@ theorem hybridFamilyUniqueQueryCandidateCount_le_raw
   unfold hybridFamilyUniqueQueryCandidateCount
   rw [← hybridFamilyQueryCandidateList_length n query window pathLength strides]
   exact List.Sublist.length_le (List.dedup_sublist _)
+
+/-- If the theorem-side lag-candidate list has no duplicate lag candidates, its
+exact deduplicated count equals the raw candidate budget. -/
+theorem hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision
+    {n window pathLength : Nat} {strides : List Nat}
+    (hnoCollision :
+      hybridFamilyLagCandidatesNoCollision n window pathLength strides) :
+    hybridFamilyUniqueLagCandidateCount n window pathLength strides =
+      hybridFamilyRawCandidateBudget window pathLength strides := by
+  unfold hybridFamilyUniqueLagCandidateCount hybridFamilyLagCandidatesNoCollision at *
+  rw [List.Nodup.dedup hnoCollision]
+  exact hybridFamilyLagCandidateList_length n window pathLength strides
+
+/-- If the theorem-side query-indexed candidate list has no duplicate
+predecessor candidates, its exact deduplicated count equals the raw candidate
+budget. -/
+theorem hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision
+    {n query window pathLength : Nat} {strides : List Nat}
+    (hnoCollision :
+      hybridFamilyQueryCandidatesNoCollision n query window pathLength strides) :
+    hybridFamilyUniqueQueryCandidateCount n query window pathLength strides =
+      hybridFamilyRawCandidateBudget window pathLength strides := by
+  unfold hybridFamilyUniqueQueryCandidateCount hybridFamilyQueryCandidatesNoCollision at *
+  rw [List.Nodup.dedup hnoCollision]
+  exact hybridFamilyQueryCandidateList_length n query window pathLength strides
 
 /-- Query-candidate membership is exactly membership after mapping some
 generated lag through the predecessor-index map. -/
