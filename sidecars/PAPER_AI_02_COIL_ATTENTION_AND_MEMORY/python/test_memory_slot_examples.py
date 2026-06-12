@@ -652,6 +652,76 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     assert result.note.endswith("not a model-quality claim.")
 
 
+def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> None:
+    json_result = subprocess.run(
+        [
+            sys.executable,
+            "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py",
+            "--format",
+            "json",
+        ],
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    payload = json.loads(json_result.stdout)
+    assert payload["schema_id"] == (
+        "circle_calculus.stride_family_sparse_attention_certificate.v0"
+    )
+    assert "not a neural attention-quality" in payload["claim_boundary"]
+    result = payload["benchmark_result"]
+    certificate = result["coverage_certificate"]
+    assert result["family_accuracy"] == 1.0
+    assert result["wrong_family_accuracy"] == 0.25
+    assert certificate["covered_lag_count"] == 10
+    assert certificate["uncovered_lag_count"] == 109
+    assert certificate["coverage_complete"] is False
+    assert certificate["theorem_side_lag_candidates_no_collision"] is True
+    assert "AIT-T0021" in certificate["theorem_ids"]
+    assert "AIT-T0077" in certificate["theorem_ids"]
+
+    markdown_result = subprocess.run(
+        [
+            sys.executable,
+            "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py",
+            "--format",
+            "markdown",
+        ],
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert "Stride-Family Sparse-Attention Certificate Results" in markdown_result.stdout
+    assert "| 120 | 120 | 4 | 3 | 7, 13 | 5, 9 | False | 0.084 |" in markdown_result.stdout
+    assert "First uncovered lags" in markdown_result.stdout
+
+
+def test_committed_stride_family_sparse_attention_results_match_generator(tmp_path: Path) -> None:
+    generated_json = tmp_path / "stride_family_sparse_attention.json"
+    generated_markdown = tmp_path / "stride_family_sparse_attention.md"
+    subprocess.run(
+        [
+            sys.executable,
+            "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py",
+            "--json-out",
+            str(generated_json),
+            "--markdown-out",
+            str(generated_markdown),
+        ],
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    committed_json = Path(
+        "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/results/stride_family_sparse_attention.json"
+    )
+    committed_markdown = Path(
+        "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/results/stride_family_sparse_attention.md"
+    )
+    assert json.loads(committed_json.read_text()) == json.loads(generated_json.read_text())
+    assert committed_markdown.read_text() == generated_markdown.read_text()
+
+
 def test_stride_family_coverage_complete_when_local_window_covers_context() -> None:
     certificate = certify_stride_family_coverage(
         sequence_length=10,

@@ -420,7 +420,16 @@ Run the same certificate outside the browser:
 
 ```bash
 python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4
+python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py
+python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py --format json
+python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py --format markdown
 ```
+
+Committed result fixtures:
+
+<p>Stride-family sparse-attention JSON: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/results/stride_family_sparse_attention.json">stride_family_sparse_attention.json</a></p>
+
+<p>Stride-family sparse-attention Markdown: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/results/stride_family_sparse_attention.md">stride_family_sparse_attention.md</a></p>
 
 <div class="widget-panel" data-widget="stride_family_attention" data-theorem-id="AIT-T0021" data-dictionary-ids="COMMON-0075 COMMON-0079 COMMON-0047 COMMON-0029"></div>
 

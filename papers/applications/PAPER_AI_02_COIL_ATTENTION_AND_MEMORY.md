@@ -57,6 +57,13 @@ sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/results/kv_cache_ring_buffer.json
 sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/results/kv_cache_ring_buffer.md
 ```
 
+The stride-family sparse-attention sidecar also stores reproducible result fixtures:
+
+```text
+sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/results/stride_family_sparse_attention.json
+sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/results/stride_family_sparse_attention.md
+```
+
 The command-line sparse-plan certifier is:
 
 ```text
@@ -279,7 +286,7 @@ This fixture checks routing reachability and candidate budget only. It is not ev
 
 This fixture checks candidate-set reachability and budget only. It is not evidence that hybrid sparse attention improves neural retrieval quality, long-context behavior, runtime, memory use, or model quality.
 
-`AIM-B0017` adds a deterministic stride-family sparse-attention fixture. It compares a local-window plus finite stride family against local-only, single-stride, wrong-family, and full-attention candidate sets. On the default structured task, generated lags are either local or produced by one of the admitted strides `(7,13)`, so the family reaches all structured dependencies with average candidate count `10` versus `120` for full attention. The certificate now reports both no-collision flags and the iff theorem ids (`AIT-T0076`, `AIT-T0077`) that characterize exactly when deduplicated theorem-side counts preserve the raw candidate budget. The single-stride baseline reaches only the local plus first-stride portion, the wrong-family control misses the generated long lags, and the nonstructured control again shows that arbitrary lags are not covered by the sparse pattern.
+`AIM-B0017` adds a deterministic stride-family sparse-attention fixture. It compares a local-window plus finite stride family against local-only, single-stride, wrong-family, and full-attention candidate sets. On the default structured task, generated lags are either local or produced by one of the admitted strides `(7,13)`, so the family reaches all structured dependencies with average candidate count `10` versus `120` for full attention. The sidecar emits text, JSON, and Markdown result fixtures whose payloads record covered lags, uncovered gap witnesses, no-collision flags, query/lag candidate counts, and the iff theorem ids (`AIT-T0076`, `AIT-T0077`) that characterize exactly when deduplicated theorem-side counts preserve the raw candidate budget. The single-stride baseline reaches only the local plus first-stride portion, the wrong-family control misses the generated long lags, and the nonstructured control again shows that arbitrary lags are not covered by the sparse pattern.
 
 The same fixture now emits an explicit coverage certificate. For the default `sequence_length = 120`, `local_window = 4`, `path_length = 3`, and strides `(7,13)`, the covered positive lags are:
 
