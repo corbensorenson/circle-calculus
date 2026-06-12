@@ -34,6 +34,7 @@ from circle_math.applications import (
     turn_ratio_margin_covers_context,
     turn_ratio_margin_covers_margin,
     turn_ratio_margin_covers_request,
+    turn_ratio_nat_ratio_coprime_margin_certificate,
     turn_ratio_nat_ratio_zero_margin_witness,
     turn_ratio_nearest_integer_error,
 )
@@ -110,6 +111,7 @@ def test_real_phase_nat_turn_error_matches_endpoint_precursor_shape() -> None:
     assert "AIRA-T0053" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0054" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0055" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0056" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
 def test_real_phase_turn_separation_rules_out_smaller_near_turn() -> None:
@@ -203,6 +205,33 @@ def test_rational_turn_ratio_has_zero_margin_at_denominator_gap() -> None:
     assert turns == 3
     assert turn_ratio_nearest_integer_error(turn_ratio=3.0 / 7.0, gap=7, turns=3) == 0.0
     assert "AIRA-T0055" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+
+
+def test_coprime_rational_turn_ratio_certifies_margin_before_denominator_gap() -> None:
+    certified_margin = turn_ratio_nat_ratio_coprime_margin_certificate(
+        numerator=3,
+        denominator=7,
+        context_length=7,
+    )
+    assert certified_margin == 1.0 / 7.0
+    scanned_margin, gap, turns = scan_turn_ratio_finite_margin(
+        turn_ratio=3.0 / 7.0,
+        context_length=7,
+    )
+    assert abs(scanned_margin - certified_margin) < 1e-12
+    assert gap in {2, 5}
+    assert turns in {1, 2}
+    assert turn_ratio_nat_ratio_coprime_margin_certificate(
+        numerator=3,
+        denominator=7,
+        context_length=8,
+    ) is None
+    assert turn_ratio_nat_ratio_coprime_margin_certificate(
+        numerator=2,
+        denominator=6,
+        context_length=6,
+    ) is None
+    assert "AIRA-T0056" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
 def test_turn_ratio_finite_margin_gap_candidates_match_range_bridge() -> None:

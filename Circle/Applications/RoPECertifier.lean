@@ -701,6 +701,83 @@ theorem ropeTurnRatioFiniteMargin_natRatio_iff_nonpos_of_den_lt_context
     unfold ropeTurnRatioError
     exact le_trans hnonpos (abs_nonneg _)
 
+private theorem one_le_abs_intCast_of_ne_zero {z : ℤ} (hz : z ≠ 0) :
+    (1 : ℝ) ≤ |(z : ℝ)| := by
+  have hnat : 1 ≤ z.natAbs := Nat.succ_le_of_lt (Int.natAbs_pos.mpr hz)
+  have hint : (1 : ℤ) ≤ |z| := by
+    rw [Int.abs_eq_natAbs]
+    exact_mod_cast hnat
+  exact_mod_cast hint
+
+private theorem ropeTurnRatioError_natRatio_eq_abs_int_num_sub_turn_mul_den_div_den
+    {numerator denominator gap : Nat} {turns : Int}
+    (hdenominator : 0 < denominator) :
+    let z : Int := ((gap * numerator : Nat) : Int) - turns * (denominator : Int)
+    ropeTurnRatioError ((numerator : ℝ) / (denominator : ℝ)) gap turns =
+      |(z : ℝ)| / (denominator : ℝ) := by
+  intro z
+  unfold ropeTurnRatioError
+  have hden_ne : (denominator : ℝ) ≠ 0 := by exact_mod_cast (ne_of_gt hdenominator)
+  have hcast :
+      (z : ℝ) = (gap : ℝ) * (numerator : ℝ) - (turns : ℝ) * (denominator : ℝ) := by
+    dsimp [z]
+    norm_num [Nat.cast_mul]
+  have hden_pos_real : (0 : ℝ) < denominator := by exact_mod_cast hdenominator
+  have hquot :
+      (gap : ℝ) * ((numerator : ℝ) / (denominator : ℝ)) - (turns : ℝ) =
+        ((gap : ℝ) * (numerator : ℝ) - (turns : ℝ) * (denominator : ℝ)) /
+          (denominator : ℝ) := by
+    field_simp [hden_ne]
+  calc
+    |(gap : ℝ) * ((numerator : ℝ) / (denominator : ℝ)) - (turns : ℝ)|
+        = |((gap : ℝ) * (numerator : ℝ) - (turns : ℝ) * (denominator : ℝ)) /
+            (denominator : ℝ)| := by rw [hquot]
+    _ = |((gap : ℝ) * (numerator : ℝ) - (turns : ℝ) * (denominator : ℝ))| /
+            (denominator : ℝ) := by rw [abs_div, abs_of_pos hden_pos_real]
+    _ = |(z : ℝ)| / (denominator : ℝ) := by rw [hcast]
+
+/-- Coprime natural rational turn ratios have a theorem-backed positive finite
+margin as long as the inspected context does not reach the denominator gap.
+
+If `turnRatio = numerator / denominator`, `numerator` is coprime to
+`denominator`, and every inspected positive gap is strictly below the
+denominator, then every nearest-integer error is at least `1 / denominator`.
+This is a positive rational finite-context certificate, not an irrational or
+continued-fraction RoPE margin theorem. -/
+theorem ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den
+    {numerator denominator : Nat} (hdenominator : 0 < denominator)
+    (hcoprime : Nat.Coprime numerator denominator) {context : Nat}
+    (hcontext : context ≤ denominator) :
+    ropeTurnRatioFiniteMargin ((numerator : ℝ) / (denominator : ℝ))
+      (1 / (denominator : ℝ)) context := by
+  intro gap hgap_pos hgap_context turns
+  let z : Int := ((gap * numerator : Nat) : Int) - turns * (denominator : Int)
+  have herror :=
+    ropeTurnRatioError_natRatio_eq_abs_int_num_sub_turn_mul_den_div_den
+      (numerator := numerator) (denominator := denominator) (gap := gap)
+      (turns := turns) hdenominator
+  have hgap_lt_den : gap < denominator := lt_of_lt_of_le hgap_context hcontext
+  have hz_ne : z ≠ 0 := by
+    intro hz
+    have hz0 : ((gap * numerator : Nat) : Int) - turns * (denominator : Int) = 0 := by
+      simpa [z] using hz
+    have heq : ((gap * numerator : Nat) : Int) = turns * (denominator : Int) := by
+      linarith
+    have hdiv_int : (denominator : Int) ∣ ((gap * numerator : Nat) : Int) := by
+      refine ⟨turns, ?_⟩
+      simpa [mul_comm] using heq
+    have hdiv_nat : denominator ∣ gap * numerator :=
+      Int.natCast_dvd_natCast.mp hdiv_int
+    have hden_dvd_gap : denominator ∣ gap := by
+      exact hcoprime.symm.dvd_of_dvd_mul_left (by simpa [mul_comm] using hdiv_nat)
+    have hgap_zero : gap = 0 := Nat.eq_zero_of_dvd_of_lt hden_dvd_gap hgap_lt_den
+    exact Nat.ne_of_gt hgap_pos hgap_zero
+  have hone : (1 : ℝ) ≤ |(z : ℝ)| := one_le_abs_intCast_of_ne_zero hz_ne
+  have hden_nonneg : (0 : ℝ) ≤ denominator := by exact_mod_cast (Nat.zero_le denominator)
+  have hdiv : (1 : ℝ) / (denominator : ℝ) ≤ |(z : ℝ)| / (denominator : ℝ) :=
+    div_le_div_of_nonneg_right hone hden_nonneg
+  simpa [herror, z] using hdiv
+
 /-- Finite-context turn-ratio margins are monotone in the inspected context.
 
 A margin certificate proved for a larger context automatically applies to any

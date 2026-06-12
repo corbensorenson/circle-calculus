@@ -2574,6 +2574,20 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_rational_turn_ratio_has_zero_margin_at_denominator_gap
     blocker: ""
+  - id: AIRA-T0056
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den
+    informal_statement: "If a natural rational turn ratio numerator/denominator is reduced and the inspected context stays at or below the denominator, then the finite-context nearest-integer margin is at least 1/denominator."
+    formal_statement: "forall {numerator denominator : Nat}, 0 < denominator -> Nat.Coprime numerator denominator -> forall {context : Nat}, context <= denominator -> Circle.Applications.ropeTurnRatioFiniteMargin ((numerator : Real) / (denominator : Real)) (1 / (denominator : Real)) context"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_coprime_rational_turn_ratio_certifies_margin_before_denominator_gap
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

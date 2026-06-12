@@ -78,6 +78,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0053",
     "AIRA-T0054",
     "AIRA-T0055",
+    "AIRA-T0056",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -100,6 +101,7 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
     "Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds",
     "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_iff_nonpos_of_den_lt_context",
+    "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -587,6 +589,30 @@ def turn_ratio_nat_ratio_zero_margin_witness(
     return None
 
 
+def turn_ratio_nat_ratio_coprime_margin_certificate(
+    *,
+    numerator: int,
+    denominator: int,
+    context_length: int,
+) -> float | None:
+    """Return the proved rational finite-context margin when hypotheses hold.
+
+    Lean proves that a reduced natural rational turn ratio ``numerator /
+    denominator`` has finite-context nearest-integer margin at least
+    ``1 / denominator`` as long as every inspected positive gap is strictly
+    below the denominator, expressed by ``context_length <= denominator``.
+    """
+    if numerator < 0:
+        raise ValueError("numerator must be nonnegative")
+    if denominator <= 0:
+        raise ValueError("denominator must be positive")
+    if context_length <= 0:
+        raise ValueError("context_length must be positive")
+    if gcd(numerator, denominator) == 1 and context_length <= denominator:
+        return 1.0 / denominator
+    return None
+
+
 def scan_turn_ratio_finite_margin(
     *,
     turn_ratio: float,
@@ -998,7 +1024,8 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         f"real_phase_formal_precursors={','.join(margin.formal_precursor_theorem_ids)} "
         "(unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, "
         "turn-ratio scaling, finite-context margin consequence, context-plus-margin transfer, "
-        "integer/rational-turn-ratio guardrails, and generated-gap enumeration precursors only; "
+        "integer/rational-turn-ratio guardrails, positive rational finite-context "
+        "certificate, and generated-gap enumeration precursors only; "
         "not a Diophantine proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,
