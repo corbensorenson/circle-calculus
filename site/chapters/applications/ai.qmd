@@ -154,6 +154,8 @@ The companion Theseus-Hive workspace now has six report-only local layers:
 
 When the generated contract pack is available, the private compiled ratchet now runs the consumer, structural smoke, deterministic proxy, aggregate real-workload attachment, lane-integrity audit, and feedback-summary layers automatically. The scored private layer remains data-gated: it should only run when the required private candidate, router, context, and provenance artifacts are present. The companion `scripts/circle_ai_lane_integrity_audit.py` report verifies that compiled/data-gated boundary as wiring evidence only. The Living Book can import only the sanitized feedback summary through `make theseus-ai-feedback`; raw private reports do not belong in this public repository.
 
+The current imported feedback state is GREEN for handoff safety: five required safe reports are present, four are YELLOW evidence layers, the lane-integrity audit is GREEN, and the scored private benchmark remains missing/data-gated. The import records no private export, no external inference, no training mutation, and no promotion evidence. That makes the loop auditable; it does not make a model-quality claim.
+
 The smoke workload ids are:
 
 ```text

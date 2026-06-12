@@ -12,7 +12,10 @@ if str(ROOT) not in sys.path:
 from circle_math.applications.theseus_hive_feedback import import_feedback_summary
 
 
-DEFAULT_INPUT = ROOT.parent / "Theseus-Hive" / "reports" / "circle_ai_feedback_summary.json"
+DEFAULT_INPUTS = [
+    ROOT.parent / "Theseus-Hive" / "reports" / "circle_ai_feedback_summary.json",
+    ROOT.parent / "Theseus-Hive-circle-router-head-mixer" / "reports" / "circle_ai_feedback_summary.json",
+]
 DEFAULT_OUT = ROOT / "site" / "data" / "generated" / "theseus_hive_ai_feedback_summary.json"
 
 
@@ -22,7 +25,7 @@ def main() -> int:
     )
     parser.add_argument(
         "--input",
-        default=str(DEFAULT_INPUT),
+        default="",
         help="Sanitized Theseus feedback summary JSON path.",
     )
     parser.add_argument(
@@ -37,9 +40,7 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    source = Path(args.input)
-    if not source.is_absolute():
-        source = ROOT / source
+    source = input_path(args.input)
     out = Path(args.out)
     if not out.is_absolute():
         out = ROOT / out
@@ -62,13 +63,28 @@ def main() -> int:
 
 def display_path(path: Path) -> str:
     try:
-        return str(path.resolve().relative_to(ROOT.resolve())).replace("\\", "/")
+        rel = path.resolve().relative_to(ROOT.resolve())
+        return str(rel).replace("\\", "/")
     except ValueError:
         pass
     try:
-        return str(path.resolve().relative_to(ROOT.parent.resolve())).replace("\\", "/")
+        rel = path.resolve().relative_to(ROOT.parent.resolve())
+        parts = rel.parts
+        if parts and parts[0].startswith("Theseus-Hive"):
+            return str(Path("Theseus-Hive", *parts[1:])).replace("\\", "/")
+        return str(rel).replace("\\", "/")
     except ValueError:
         return path.name
+
+
+def input_path(value: str) -> Path:
+    if value:
+        path = Path(value)
+        return path if path.is_absolute() else ROOT / path
+    for candidate in DEFAULT_INPUTS:
+        if candidate.exists():
+            return candidate
+    return DEFAULT_INPUTS[0]
 
 
 if __name__ == "__main__":

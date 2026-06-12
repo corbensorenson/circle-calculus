@@ -1,12 +1,12 @@
 {
   "advantage_claim_ready": false,
   "claim_boundary": "Imported Theseus-Hive feedback is aggregate report metadata only. It is not model-quality, reasoning, speed, context-length, transfer, promotion, or ASI evidence.",
-  "created_utc": "2026-06-12T04:16:59+00:00",
+  "created_utc": "2026-06-12T04:27:16+00:00",
   "external_inference_calls": 0,
   "governance_gates": [
     {
       "gate": "source_feedback_schema_valid",
-      "passed": false
+      "passed": true
     },
     {
       "gate": "private_data_export_absent",
@@ -25,26 +25,130 @@
       "passed": true
     }
   ],
-  "import_state": "missing",
+  "import_state": "imported",
   "private_data_exported": false,
   "promotion_evidence": false,
-  "reports": [],
+  "reports": [
+    {
+      "data_gated": false,
+      "exists": true,
+      "ok": null,
+      "path": "reports/circle_ai_contract_consumer.json",
+      "report_id": "contract_consumer",
+      "safe_summary": {
+        "axis_gap_contracts": [],
+        "benchmark_results_present": false,
+        "contract_count": 6,
+        "contract_reports": 6,
+        "failed_contracts": [],
+        "ordinary_baseline_rows": 23,
+        "ready_for_private_benchmark_design": true,
+        "unknown_contracts": []
+      },
+      "trigger_state": "YELLOW"
+    },
+    {
+      "data_gated": false,
+      "exists": true,
+      "ok": null,
+      "path": "reports/circle_ai_private_workload_smoke.json",
+      "report_id": "private_workload_smoke",
+      "safe_summary": {
+        "failed_workloads": [],
+        "model_quality_metrics_present": false,
+        "named_workloads_present": true,
+        "passed_workload_count": 6,
+        "unknown_workloads": [],
+        "workload_count": 6
+      },
+      "trigger_state": "YELLOW"
+    },
+    {
+      "data_gated": false,
+      "exists": true,
+      "ok": null,
+      "path": "reports/circle_ai_private_proxy_benchmark.json",
+      "report_id": "private_proxy_benchmark",
+      "safe_summary": {
+        "deterministic_proxy_metrics_present": true,
+        "failed_proxy_benchmarks": [],
+        "learned_model_quality_metrics_present": false,
+        "passed_proxy_benchmark_count": 6,
+        "proxy_benchmark_count": 6,
+        "real_private_workload_results_present": false,
+        "unknown_proxy_benchmarks": []
+      },
+      "trigger_state": "YELLOW"
+    },
+    {
+      "data_gated": false,
+      "exists": true,
+      "ok": null,
+      "path": "reports/circle_ai_real_workload_attachments.json",
+      "report_id": "real_workload_attachments",
+      "safe_summary": {
+        "attached_real_local_workload_count": 3,
+        "contract_count": 6,
+        "error_workload_count": 0,
+        "learned_model_quality_metrics_present": false,
+        "missing_or_insufficient_workload_count": 3,
+        "promotion_ready": false,
+        "real_local_workload_aggregates_present": true,
+        "real_private_model_benchmark_results_present": false,
+        "workload_attachment_count": 6
+      },
+      "trigger_state": "YELLOW"
+    },
+    {
+      "data_gated": false,
+      "exists": true,
+      "ok": true,
+      "path": "reports/circle_ai_lane_integrity_audit.json",
+      "report_id": "lane_integrity_audit",
+      "safe_summary": {
+        "contract_pack_gate_present": true,
+        "external_inference_calls": 0,
+        "maintenance_recorder_compiled": false,
+        "outputs_ok": true,
+        "private_data_exported": false,
+        "promotion_evidence": false,
+        "safe_layers_ordered": true,
+        "scored_private_layer_compiled": false,
+        "tool_cards_ok": true,
+        "workflow_classifier_ok": true
+      },
+      "trigger_state": "GREEN"
+    },
+    {
+      "data_gated": true,
+      "exists": false,
+      "ok": null,
+      "path": "reports/circle_ai_scored_private_benchmarks.json",
+      "report_id": "scored_private_benchmarks",
+      "safe_summary": {},
+      "trigger_state": "MISSING"
+    }
+  ],
   "schema_id": "circle_calculus.theseus_hive_ai_feedback_import.v0",
   "source_path": "Theseus-Hive/reports/circle_ai_feedback_summary.json",
-  "source_policy": "",
+  "source_policy": "theseus_hive_circle_ai_feedback_summary_v0",
   "source_schema_id": "theseus_hive.circle_ai_feedback_summary.v0",
   "summary": {
     "advantage_claim_ready": false,
+    "data_gated_present_report_count": 0,
     "expected_report_count": 6,
     "external_inference_calls": 0,
+    "green_report_count": 1,
     "learned_model_quality_metrics_present": false,
-    "present_report_count": 0,
+    "present_report_count": 5,
     "private_data_exported": false,
     "promotion_evidence": false,
-    "required_present_report_count": 0,
+    "red_report_count": 0,
+    "required_present_report_count": 5,
     "required_report_count": 5,
-    "safe_to_import": true
+    "safe_to_import": true,
+    "yellow_report_count": 4
   },
   "training_mutation": false,
-  "trigger_state": "YELLOW"
+  "trigger_state": "GREEN"
 }

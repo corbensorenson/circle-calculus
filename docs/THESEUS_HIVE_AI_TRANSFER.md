@@ -275,6 +275,13 @@ It accepts only the `theseus_hive.circle_ai_feedback_summary.v0` schema with
 `advantage_claim_ready = false`; otherwise it fails instead of copying the
 handoff into the public repo.
 
+The current imported summary is GREEN as a handoff-safety artifact: five
+required report-only layers are present, four of them remain YELLOW evidence,
+the lane-integrity audit is GREEN, the scored private layer remains
+missing/data-gated, and the imported aggregate records no private export, no
+external inference, no training mutation, and no promotion evidence. This is
+feedback plumbing, not a Circle advantage claim.
+
 Run the aggregate local artifact attachment layer from Theseus-Hive with:
 
 ```bash
