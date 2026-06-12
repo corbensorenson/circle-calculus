@@ -66,6 +66,8 @@ Diagnostic exact-discrete failure presets:
 ```bash
 python scripts/rope_certify.py --preset diagnostic_single_channel_10000_20
 python scripts/rope_certify.py --preset diagnostic_two_channel_36_128
+python scripts/rope_certify.py --preset diagnostic_prefix_pass_4_128
+python scripts/rope_certify.py --preset diagnostic_shared_factor_25_64
 ```
 
 For machine-readable output:
@@ -94,7 +96,7 @@ Committed fixtures:
 
 <p>Preset Markdown: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/results/rope_certifier_presets.md">rope_certifier_presets.md</a></p>
 
-The model-like presets pass the exact discrete contract under the rounded integer-period phase-bank model. The diagnostic presets intentionally fail so the sample-collision and theorem-backed count fields are visible. The real-phase rows are numerical diagnostics only.
+The model-like presets pass the exact discrete contract under the rounded integer-period phase-bank model. The diagnostic presets include intentional failures and a prefix-pass case so the sample-collision, theorem-backed count, shared-factor, and prefix fields are visible. The real-phase rows are numerical diagnostics only.
 
 ## What To Notice
 

@@ -282,6 +282,48 @@ def test_rope_diagnostic_preset_reports_exact_failure() -> None:
     assert payload["exact_discrete"]["total_bank_collision_pair_count"] == 24
 
 
+def test_rope_diagnostic_prefix_and_shared_factor_presets_are_stable() -> None:
+    prefix_result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/rope_certify.py",
+            "--preset",
+            "diagnostic_prefix_pass_4_128",
+            "--format",
+            "json",
+        ],
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    prefix_payload = json.loads(prefix_result.stdout)
+    assert prefix_payload["exact_discrete"]["pass_exact"] is True
+    assert prefix_payload["exact_discrete"]["discretized_periods"] == [6, 9, 13, 18]
+    assert prefix_payload["exact_discrete"]["first_exact_pass_prefix_length"] == 3
+    assert prefix_payload["exact_discrete"]["prefix_collision_reports"][1]["lcm_collision_gap"] == 18
+    assert prefix_payload["exact_discrete"]["prefix_collision_reports"][2]["lcm_reaches_context"]
+
+    shared_result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/rope_certify.py",
+            "--preset",
+            "diagnostic_shared_factor_25_64",
+            "--format",
+            "json",
+        ],
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    shared_payload = json.loads(shared_result.stdout)
+    assert shared_payload["exact_discrete"]["pass_exact"] is False
+    assert shared_payload["exact_discrete"]["discretized_periods"] == [6, 18, 54]
+    assert shared_payload["exact_discrete"]["common_collision_gap"] == 54
+    assert shared_payload["exact_discrete"]["total_bank_collision_pair_count"] == 10
+    assert shared_payload["exact_discrete"]["prefix_collision_reports"][2]["total_bank_collision_pair_count"] == 10
+
+
 def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     json_result = subprocess.run(
         [

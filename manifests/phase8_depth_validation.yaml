@@ -66,7 +66,7 @@ targets:
       - "circle_math/applications/rope_certifier.py"
       - "tests/test_rope_certifier.py"
     dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078"]
-    next_action: "The theorem-backed common-gap, common-gap-multiple, exact single-period, exact integer-bank collision-pair counts, LCM pass/fail witnesses, and bounded prefix collision reports are now landed through AIRA-T0027, AIRA-T0028, AIRA-T0034, AIRA-T0035, AIRA-T0036, AIRA-T0046, AIRA-T0048, and AIRA-T0049; next add representative discretized failure cases and, eventually, formally stated prefix/subfamily selection theorems, with brute-force Python parity for small contexts."
+    next_action: "The theorem-backed common-gap, common-gap-multiple, exact single-period, exact integer-bank collision-pair counts, LCM pass/fail witnesses, bounded prefix collision reports, and representative prefix-pass/shared-factor diagnostic cases are now landed through AIRA-T0027, AIRA-T0028, AIRA-T0034, AIRA-T0035, AIRA-T0036, AIRA-T0046, AIRA-T0048, and AIRA-T0049; next consider formally stated prefix/subfamily selection theorems, with brute-force Python parity for small contexts."
     guardrail: "Do not imply the finite integer-period count is a count of real-valued RoPE collisions unless the real model is separately formalized."
 
   - id: P8-VALID-001
@@ -90,7 +90,7 @@ targets:
       - "sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/results/rope_certifier_presets.md"
       - "site/chapters/applications/rope_certifier.qmd"
     dictionary_dependencies: ["COMMON-0077"]
-    next_action: "The first preset JSON/Markdown fixtures, prefix-collision table field, and Living Book links are in place; next add more named quantized/discretized failure cases where exact collisions genuinely occur and keep model-quality claims out."
+    next_action: "The preset JSON/Markdown fixtures, prefix-collision table field, Living Book links, and named diagnostic prefix-pass/shared-factor cases are in place; next add explicit quantized/discretized period-bank cases if the public interface grows beyond RoPE-derived periods, and keep model-quality claims out."
     guardrail: "A pass/fail certificate is not evidence of perplexity, long-context ability, runtime, or memory behavior."
 
   - id: P8-VALID-002

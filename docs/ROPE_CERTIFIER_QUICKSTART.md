@@ -36,9 +36,11 @@ python scripts/rope_certify.py --preset llama_style_10000_128k
 python scripts/rope_certify.py --preset llama_style_500000_128k
 python scripts/rope_certify.py --preset diagnostic_single_channel_10000_20
 python scripts/rope_certify.py --preset diagnostic_two_channel_36_128
+python scripts/rope_certify.py --preset diagnostic_prefix_pass_4_128
+python scripts/rope_certify.py --preset diagnostic_shared_factor_25_64
 ```
 
-The `llama_style_*` preset names are public-safe configuration labels. They are not claims about a particular vendor checkpoint. The `diagnostic_*` presets are small exact-discrete failure cases for checking the collision-count fields.
+The `llama_style_*` preset names are public-safe configuration labels. They are not claims about a particular vendor checkpoint. The `diagnostic_*` presets are small exact-discrete cases for checking collision-count, prefix-pass, and shared-factor failure fields.
 
 ## Run A Custom Config
 

@@ -210,6 +210,20 @@ ROPE_CERTIFIER_PRESETS: dict[str, RoPEConfig] = {
         tolerance=1e-6,
         discretization="round",
     ),
+    "diagnostic_prefix_pass_4_128": RoPEConfig(
+        head_dim=8,
+        base=4.0,
+        context_length=128,
+        tolerance=1e-6,
+        discretization="round",
+    ),
+    "diagnostic_shared_factor_25_64": RoPEConfig(
+        head_dim=6,
+        base=25.0,
+        context_length=64,
+        tolerance=1e-6,
+        discretization="round",
+    ),
 }
 
 
