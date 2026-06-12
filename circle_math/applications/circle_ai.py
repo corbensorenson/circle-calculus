@@ -28,6 +28,31 @@ def memory_slot(bank_size: int, token: int) -> int:
     return token % bank_size
 
 
+def kv_cache_slot(cache_size: int, token: int) -> int:
+    """Return the KV-cache ring-buffer slot ``token mod cache_size``."""
+    _require_positive(cache_size, "cache_size")
+    return token % cache_size
+
+
+def kv_cache_window_contains(cache_size: int, current: int, token: int) -> bool:
+    """Return whether ``token`` is retained in a cache window ending at ``current``."""
+    _require_positive(cache_size, "cache_size")
+    if token > current:
+        return False
+    return current - token < cache_size
+
+
+def kv_cache_next_overwrite_token(cache_size: int, token: int) -> int:
+    """Return the next token position that writes the same ring-buffer slot."""
+    _require_positive(cache_size, "cache_size")
+    return token + cache_size
+
+
+def kv_cache_slots_collide(cache_size: int, left: int, right: int) -> bool:
+    """Return whether two token positions write the same KV-cache ring slot."""
+    return kv_cache_slot(cache_size, left) == kv_cache_slot(cache_size, right)
+
+
 def adapter_block(block_size: int, channel: int) -> int:
     """Return the adapter block index ``channel mod block_size``."""
     _require_positive(block_size, "block_size")
@@ -255,6 +280,32 @@ class MemorySlotBenchmarkResult:
     train_collision_count: int
     max_train_slot_load: int
     note: str = "Synthetic cyclic-memory fixture only; not a model-quality claim."
+
+
+@dataclass(frozen=True)
+class KVCacheWindowCertificate:
+    cache_size: int
+    current: int
+    token: int
+    slot: int
+    lag: int
+    retained: bool
+    next_overwrite_token: int
+    next_overwrite_after_current: bool
+    collision_with_next_overwrite: bool
+    theorem_ids: tuple[str, ...] = ("AIM-T0059", "AIM-T0060", "AIM-T0061", "AIM-T0062", "AIM-T0063")
+    lean_declarations: tuple[str, ...] = (
+        "Circle.Applications.kvCacheSlot_lt_cacheSize",
+        "Circle.Applications.kvCacheSlot_add_cacheSize",
+        "Circle.Applications.kvCacheSlotCollision_iff_gap_dvd",
+        "Circle.Applications.kvCacheSlot_ne_of_positive_gap_lt_cache",
+        "Circle.Applications.kvCacheWindow_nextOverwrite_after_current",
+    )
+    note: str = (
+        "KV-cache ring-buffer slot certificate only; this proves finite indexing "
+        "and overwrite-window facts, not attention quality, throughput, memory savings, "
+        "or deployment safety."
+    )
 
 
 @dataclass(frozen=True)
@@ -1262,6 +1313,35 @@ def memory_slot_collision_count(bank_size: int, tokens: Sequence[int]) -> int:
     """Count extra tokens beyond the first occupant of each used slot."""
     loads = memory_slot_loads(bank_size, tokens)
     return sum(max(0, load - 1) for load in loads)
+
+
+def certify_kv_cache_window(
+    *,
+    cache_size: int,
+    current: int,
+    token: int,
+) -> KVCacheWindowCertificate:
+    """Emit a finite ring-buffer/KV-cache retention certificate for one token."""
+    _require_positive(cache_size, "cache_size")
+    if current < 0:
+        raise ValueError("current must be nonnegative")
+    if token < 0:
+        raise ValueError("token must be nonnegative")
+    if token > current:
+        raise ValueError("token must not be in the future of current")
+    lag = current - token
+    next_overwrite = kv_cache_next_overwrite_token(cache_size, token)
+    return KVCacheWindowCertificate(
+        cache_size=cache_size,
+        current=current,
+        token=token,
+        slot=kv_cache_slot(cache_size, token),
+        lag=lag,
+        retained=lag < cache_size,
+        next_overwrite_token=next_overwrite,
+        next_overwrite_after_current=current < next_overwrite,
+        collision_with_next_overwrite=kv_cache_slots_collide(cache_size, token, next_overwrite),
+    )
 
 
 def run_memory_slot_benchmark(

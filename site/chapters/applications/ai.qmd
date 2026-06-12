@@ -305,6 +305,19 @@ The widget below shows that finite layer. It is not a retrieval-quality result a
 
 <div class="widget-panel" data-widget="cyclic_memory_slots" data-theorem-id="AIM-T0001" data-dictionary-ids="COMMON-0028 COMMON-0029"></div>
 
+The second memory contract is a KV-cache ring-buffer window certificate. Given `cache_size`, `current`, and `token`, the sidecar reports the token slot, its lag from current, whether it is retained, and whether the next same-slot overwrite occurs after the current read point. The Lean theorems `AIM-T0059` through `AIM-T0063` certify the finite slot and overwrite-window facts; the certificate is not a paging policy, deployment-safety proof, throughput result, memory-saving result, or retrieval-quality claim.
+
+```bash
+python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py
+```
+
+<div class="theorem-box" data-theorem-id="AIM-T0059"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0060"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0061"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0062"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0063"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0081"></div>
+
 ## Coil Retrieval Reachability Path
 
 Coil retrieval asks a narrower question than "does this improve attention?": can a fixed finite stride path reach a known long-lag dependency that a local window misses, while ordinary local attention still wins on a near-lag control?
@@ -694,6 +707,11 @@ Why is the nonperiodic control in `AIA-B0002` important before making any AI-imp
 <div class="theorem-box" data-theorem-id="AIM-T0056"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0057"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0058"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0059"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0060"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0061"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0062"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0063"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0049"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0050"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0051"></div>

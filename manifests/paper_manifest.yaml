@@ -668,6 +668,11 @@ papers:
       - AIM-T0003
       - AIM-T0004
       - AIM-T0005
+      - AIM-T0059
+      - AIM-T0060
+      - AIM-T0061
+      - AIM-T0062
+      - AIM-T0063
       - AIM-T0006
       - AIM-T0007
       - AIM-T0008
@@ -738,6 +743,7 @@ papers:
     dictionary_ids:
       - COMMON-0028
       - COMMON-0029
+      - COMMON-0081
       - COMMON-0047
       - COMMON-0075
       - COMMON-0079

@@ -91,6 +91,26 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.memorySlot_idempotent
     dictionary_dependencies: ["COMMON-0028"]
+  - id: AIM-T0059
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSlot_lt_cacheSize
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+  - id: AIM-T0060
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSlot_add_cacheSize
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0081"]
+  - id: AIM-T0061
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSlotCollision_iff_gap_dvd
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0081"]
+  - id: AIM-T0062
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSlot_ne_of_positive_gap_lt_cache
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+  - id: AIM-T0063
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheWindow_nextOverwrite_after_current
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
   - id: AIM-T0006
     status: lean_proved
     lean_name: Circle.Applications.loopRequiredSteps_pos
@@ -508,6 +528,11 @@ benchmarks:
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
     script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py
     description: "Deterministic stride-family sparse-attention reachability fixture comparing a finite family of coil strides against local-window, single-stride, wrong-family, and full-attention baselines on structured and nonstructured lag controls, now emitting covered-lag and uncovered-lag gap certificates plus candidate-budget diagnostics."
+  - id: AIM-B0018
+    status: exploratory_python
+    path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read
+    script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py
+    description: "Deterministic KV-cache ring-buffer certificate fixture reporting finite slot, lag, retained-window, next-overwrite, and same-slot collision fields for a declared cache size/current/token triple, with the ordinary baseline being a non-cyclic monotone retained-window lag check. This is finite indexing evidence only, not a throughput, memory-saving, retrieval-quality, or deployment-safety claim."
   - id: AIM-B0010
     status: exploratory_python
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_learned_content_gate_retrieval_benchmark_has_baselines_and_controls

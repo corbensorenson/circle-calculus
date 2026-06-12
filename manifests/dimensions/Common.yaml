@@ -917,6 +917,77 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["memory_slot(bank_size, memory_slot(bank_size, token)) == memory_slot(bank_size, token)"]
     blocker: ""
+  - id: AIM-T0059
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSlot_lt_cacheSize
+    informal_statement: "For a positive KV-cache ring-buffer size, a token's cache slot is bounded by the cache size."
+    formal_statement: "forall {cacheSize : Nat}, 0 < cacheSize -> forall token : Nat, kvCacheSlot cacheSize token < cacheSize"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read
+    blocker: ""
+  - id: AIM-T0060
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSlot_add_cacheSize
+    informal_statement: "Writing exactly one cache-size later returns to the same KV-cache ring-buffer slot."
+    formal_statement: "forall {cacheSize : Nat}, 0 < cacheSize -> forall token : Nat, kvCacheSlot cacheSize (token + cacheSize) = kvCacheSlot cacheSize token"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read
+    blocker: ""
+  - id: AIM-T0061
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSlotCollision_iff_gap_dvd
+    informal_statement: "For ordered token positions, two KV-cache ring-buffer slots collide exactly when the cache size divides the position gap."
+    formal_statement: "forall {cacheSize left right : Nat}, left <= right -> (kvCacheSlotCollision cacheSize left right <-> cacheSize ∣ right - left)"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read
+    blocker: ""
+  - id: AIM-T0062
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSlot_ne_of_positive_gap_lt_cache
+    informal_statement: "Two ordered token positions with a positive gap smaller than the cache size cannot occupy the same KV-cache ring-buffer slot."
+    formal_statement: "forall {cacheSize left right : Nat}, left < right -> right - left < cacheSize -> kvCacheSlot cacheSize left != kvCacheSlot cacheSize right"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read
+    blocker: ""
+  - id: AIM-T0063
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheWindow_nextOverwrite_after_current
+    informal_statement: "If a token is still inside the retained KV-cache window at the current token, then its next same-slot overwrite occurs after the current token."
+    formal_statement: "forall {cacheSize current token : Nat}, kvCacheWindowContains cacheSize current token -> current < token + cacheSize"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_marks_stale_token
+    blocker: ""
   - id: AIM-T0006
     status: lean_proved
     lean_name: Circle.Applications.loopRequiredSteps_pos

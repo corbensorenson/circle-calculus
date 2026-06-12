@@ -1,3 +1,5 @@
+import Mathlib.Data.Nat.ModEq
+
 /-!
 Application seeds for Circle AI tracks.
 
@@ -118,6 +120,65 @@ theorem memorySlot_zero (bankSize : Nat) :
     memorySlot bankSize 0 = 0 := by
   unfold memorySlot
   simp
+
+/-! ### Ring-buffer / KV-cache slot safety -/
+
+/-- A KV-cache ring-buffer slot is the cyclic memory slot used by a token. -/
+def kvCacheSlot (cacheSize token : Nat) : Nat :=
+  token % cacheSize
+
+/-- Two token positions collide in the same KV-cache ring-buffer slot. -/
+def kvCacheSlotCollision (cacheSize left right : Nat) : Prop :=
+  kvCacheSlot cacheSize left = kvCacheSlot cacheSize right
+
+/-- A retained token is still inside the current ring-buffer window when it is
+not in the future and its lag from the current token is smaller than the cache
+size. -/
+def kvCacheWindowContains (cacheSize current token : Nat) : Prop :=
+  token ≤ current ∧ current - token < cacheSize
+
+theorem kvCacheSlot_lt_cacheSize {cacheSize : Nat} (h : 0 < cacheSize) (token : Nat) :
+    kvCacheSlot cacheSize token < cacheSize := by
+  unfold kvCacheSlot
+  exact Nat.mod_lt token h
+
+theorem kvCacheSlot_add_cacheSize {cacheSize : Nat} (h : 0 < cacheSize) (token : Nat) :
+    kvCacheSlot cacheSize (token + cacheSize) = kvCacheSlot cacheSize token := by
+  unfold kvCacheSlot
+  rw [Nat.add_mod, Nat.mod_self, Nat.add_zero]
+  exact Nat.mod_eq_of_lt (Nat.mod_lt token h)
+
+theorem kvCacheSlotCollision_iff_gap_dvd
+    {cacheSize left right : Nat} (hleft : left ≤ right) :
+    kvCacheSlotCollision cacheSize left right ↔ cacheSize ∣ right - left := by
+  unfold kvCacheSlotCollision kvCacheSlot
+  exact Nat.modEq_iff_dvd' hleft
+
+/-- Two ordered token positions with a positive gap smaller than the cache size
+cannot occupy the same KV-cache ring-buffer slot. -/
+theorem kvCacheSlot_ne_of_positive_gap_lt_cache
+    {cacheSize left right : Nat}
+    (hleft : left < right) (hgap : right - left < cacheSize) :
+    kvCacheSlot cacheSize left ≠ kvCacheSlot cacheSize right := by
+  intro hcollision
+  have hdvd : cacheSize ∣ right - left :=
+    (kvCacheSlotCollision_iff_gap_dvd (cacheSize := cacheSize)
+      (left := left) (right := right) (Nat.le_of_lt hleft)).1 hcollision
+  have hgap_pos : 0 < right - left := Nat.sub_pos_of_lt hleft
+  have hcache_le_gap : cacheSize ≤ right - left := Nat.le_of_dvd hgap_pos hdvd
+  exact (not_lt.mpr hcache_le_gap) hgap
+
+/-- If a token is still inside the retained KV-cache window at `current`, then
+its next write to the same ring-buffer slot, `token + cacheSize`, occurs after
+`current`. -/
+theorem kvCacheWindow_nextOverwrite_after_current
+    {cacheSize current token : Nat}
+    (hwindow : kvCacheWindowContains cacheSize current token) :
+    current < token + cacheSize := by
+  rcases hwindow with ⟨htoken_current, hlag⟩
+  have h := Nat.add_lt_add_right hlag token
+  rw [Nat.sub_add_cancel htoken_current] at h
+  simpa [Nat.add_comm] using h
 
 def loopRequiredSteps (loopPeriod sample : Nat) : Nat :=
   phaseChannel loopPeriod sample + 1

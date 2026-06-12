@@ -1,6 +1,7 @@
 from circle_math.applications.circle_ai import (
     active_token_counts_by_budget,
     average_candidate_count,
+    certify_kv_cache_window,
     certify_stride_family_coverage,
     coil_attention_path,
     content_route_label,
@@ -10,6 +11,10 @@ from circle_math.applications.circle_ai import (
     fit_memory_slot_lookup,
     fit_recurrence_resolution_lookup,
     hybrid_attention_candidates,
+    kv_cache_next_overwrite_token,
+    kv_cache_slot,
+    kv_cache_slots_collide,
+    kv_cache_window_contains,
     local_window_indices,
     loop_exit_certificate,
     loop_exit_step,
@@ -69,6 +74,30 @@ def test_memory_slot_is_bounded() -> None:
     for bank_size in range(1, 65):
         for token in range(0, 512):
             assert 0 <= memory_slot(bank_size, token) < bank_size
+
+
+def test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read() -> None:
+    certificate = certify_kv_cache_window(cache_size=16, current=31, token=20)
+    assert certificate.slot == kv_cache_slot(16, 20) == 4
+    assert certificate.lag == 11
+    assert certificate.retained
+    assert kv_cache_window_contains(16, 31, 20)
+    assert certificate.next_overwrite_token == kv_cache_next_overwrite_token(16, 20) == 36
+    assert certificate.next_overwrite_after_current
+    assert certificate.collision_with_next_overwrite
+    assert kv_cache_slots_collide(16, 20, 36)
+    assert not kv_cache_slots_collide(16, 20, 31)
+    assert "AIM-T0063" in certificate.theorem_ids
+    assert certificate.note.endswith("deployment safety.")
+
+
+def test_kv_cache_ring_buffer_certificate_marks_stale_token() -> None:
+    certificate = certify_kv_cache_window(cache_size=16, current=40, token=20)
+    assert certificate.lag == 20
+    assert not certificate.retained
+    assert not kv_cache_window_contains(16, 40, 20)
+    assert not certificate.next_overwrite_after_current
+    assert certificate.next_overwrite_token == 36
 
 
 def test_memory_slot_closes_after_bank_size() -> None:

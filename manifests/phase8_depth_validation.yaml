@@ -116,7 +116,7 @@ targets:
   - id: P8-CONTRACT-001
     area: "Second AI contract"
     priority: high
-    status: planned
+    status: active
     target_type: proof_contract
     title: "Ring-buffer and KV-cache safety contract"
     question: "Can Circle Calculus prove practical cyclic cache-index safety properties for streaming or long-context inference?"
@@ -129,10 +129,11 @@ targets:
     artifact_refs:
       - "docs/PHASE8_DEPTH_VALIDATION.md"
       - "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md"
-      - "Circle/Applications/CircleTransformer.lean"
+      - "Circle/Applications/CircleAI.lean"
+      - "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py"
       - "site/chapters/applications/ai.qmd"
-    dictionary_dependencies: ["COMMON-0019", "COMMON-0020"]
-    next_action: "Draft the minimal finite cache policy and decide whether it belongs in a new Lean file or extends the existing AI memory-slot module."
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0081"]
+    next_action: "The first KV-cache ring-buffer slot/window certificate is now landed through AIM-T0059 through AIM-T0063 and AIM-B0018; next extend from one-token retained-window certificates to batched read/write policies or implementation-level adapters."
     guardrail: "Do not claim the contract proves an implementation language, GPU kernel, or deployed cache unless that implementation is modeled."
 
   - id: P8-ENG-001

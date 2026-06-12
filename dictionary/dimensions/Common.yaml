@@ -331,6 +331,18 @@ entries:
     forbidden_meanings:
       - "A no-aliasing theorem."
       - "A long-context retrieval benchmark."
+  - id: COMMON-0081
+    name: "KV-cache ring-buffer window certificate"
+    kind: interface
+    symbol: "KVCacheWindow(cache,current,token)"
+    formal_definition: "`circle_math.applications.circle_ai.certify_kv_cache_window`, a finite certificate for a KV-cache ring-buffer slot `token % cache_size`, the current-token lag, whether the token is still inside the retained window, and whether the next same-slot overwrite `token + cache_size` occurs after the current token. Lean theorems `kvCacheSlotCollision_iff_gap_dvd`, `kvCacheSlot_ne_of_positive_gap_lt_cache`, and `kvCacheWindow_nextOverwrite_after_current` certify the finite slot and window facts."
+    intuition: "A non-Lean engineer can ask whether a token is still inside a declared ring-buffer cache window and whether its next overwrite is after the current read point."
+    dependencies: ["COMMON-0028", "COMMON-0029"]
+    introduced_in: "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+    forbidden_meanings:
+      - "A retrieval-quality guarantee."
+      - "A proof that cyclic memory replaces attention."
+      - "A throughput, memory-saving, paging-policy, or deployment-safety guarantee."
   - id: COMMON-0030
     name: "Adapter block index"
     kind: operation

@@ -16,6 +16,14 @@ namespace Circle.PaperAI02
 #check Circle.Applications.memorySlot_add_mul_bankSize
 #check Circle.Applications.memorySlot_idempotent
 #check Circle.Applications.memorySlot_zero
+#check Circle.Applications.kvCacheSlot
+#check Circle.Applications.kvCacheSlotCollision
+#check Circle.Applications.kvCacheWindowContains
+#check Circle.Applications.kvCacheSlot_lt_cacheSize
+#check Circle.Applications.kvCacheSlot_add_cacheSize
+#check Circle.Applications.kvCacheSlotCollision_iff_gap_dvd
+#check Circle.Applications.kvCacheSlot_ne_of_positive_gap_lt_cache
+#check Circle.Applications.kvCacheWindow_nextOverwrite_after_current
 #check Circle.Applications.loopRequiredSteps_pos
 #check Circle.Applications.loopRequiredSteps_le_loopPeriod
 #check Circle.Applications.loopRequiredSteps_add_loopPeriod
