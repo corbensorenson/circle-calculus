@@ -9774,6 +9774,18 @@
           "lean_name": "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
           "name": "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0029",
+          "lean_name": "Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs",
+          "name": "Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0030",
+          "lean_name": "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
+          "name": "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -9857,6 +9869,18 @@
           "id": "AIRA-T0028",
           "lean_name": "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
           "name": "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0029",
+          "lean_name": "Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs",
+          "name": "Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0030",
+          "lean_name": "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
+          "name": "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
           "status": "proved"
         }
       ],
@@ -9945,6 +9969,49 @@
           "id": "AIT-T0020",
           "lean_name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
           "name": "Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": []
+    },
+    {
+      "dependencies": [
+        "COMMON-0076",
+        "COMMON-0077"
+      ],
+      "forbidden_meanings": [
+        "A circular distance modulo 2*pi.",
+        "A completed Diophantine or continued-fraction RoPE margin theorem.",
+        "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
+      ],
+      "formal_definition": "In Lean, `Circle.Applications.ropeRealPhaseGapAbs frequency left right` is the absolute unwrapped real-valued phase gap for one RoPE channel frequency. Theorems `ropeRealPhaseGapAbs_eq_natGap_mul_abs` and `ropeRealPhaseGapAbs_ge_minGap_mul_lower` give the exact natural-gap formula and a simple lower-bound precursor.",
+      "id": "COMMON-0080",
+      "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+      "intuition": "Before proving a circular modulo-full-turn RoPE margin theorem, the project first proves the real-valued gap arithmetic that any such theorem must use.",
+      "kind": "model",
+      "name": "Unwrapped real RoPE phase gap",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "|(right-left) * frequency|",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIRA-T0029",
+          "lean_name": "Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs",
+          "name": "Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0030",
+          "lean_name": "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
+          "name": "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
           "status": "proved"
         }
       ],

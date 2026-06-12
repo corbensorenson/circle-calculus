@@ -2051,6 +2051,34 @@ theorems:
         - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
         - tests/test_rope_certifier.py::test_rope_certify_cli_emits_json_certificate
     blocker: ""
+  - id: AIRA-T0029
+    status: lean_proved
+    lean_name: Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs
+    informal_statement: "For ordered positions in one real RoPE channel, the absolute unwrapped phase gap equals the natural position gap times the absolute channel frequency."
+    formal_statement: "forall {frequency : Real} {left right : Nat}, left <= right -> Circle.Applications.ropeRealPhaseGapAbs frequency left right = ((right - left : Nat) : Real) * abs frequency"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context
+    blocker: ""
+  - id: AIRA-T0030
+    status: lean_proved
+    lean_name: Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower
+    informal_statement: "If an ordered position gap is at least a declared minimum gap and the channel frequency has absolute value at least a nonnegative lower bound, then the unwrapped absolute real phase gap is at least minimum gap times that lower bound."
+    formal_statement: "forall {frequency lower : Real} {left right minGap : Nat}, left <= right -> minGap <= right - left -> 0 <= lower -> lower <= abs frequency -> (minGap : Real) * lower <= Circle.Applications.ropeRealPhaseGapAbs frequency left right"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

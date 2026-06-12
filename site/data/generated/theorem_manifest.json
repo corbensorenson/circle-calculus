@@ -1879,7 +1879,7 @@
       "id": "AIRA-T0021",
       "lean_name": "Circle.Applications.ropeDiscreteCollision_iff_gap_dvd",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 39,
+      "lean_source_line": 40,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -1901,7 +1901,7 @@
       "id": "AIRA-T0022",
       "lean_name": "Circle.Applications.ropeDiscreteDistinguishable_iff_not_gap_dvd",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 46,
+      "lean_source_line": 47,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -1923,7 +1923,7 @@
       "id": "AIRA-T0023",
       "lean_name": "Circle.Applications.ropeDiscreteCollision_iff_eq_on_context",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 54,
+      "lean_source_line": 55,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -1945,7 +1945,7 @@
       "id": "AIRA-T0024",
       "lean_name": "Circle.Applications.ropePhaseBankCollision_iff_forall_gap_dvd",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 77,
+      "lean_source_line": 78,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -1967,7 +1967,7 @@
       "id": "AIRA-T0025",
       "lean_name": "Circle.Applications.ropePhaseBankDistinguishable_iff_exists_not_gap_dvd",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 92,
+      "lean_source_line": 93,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -1989,7 +1989,7 @@
       "id": "AIRA-T0026",
       "lean_name": "Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 107,
+      "lean_source_line": 108,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2012,7 +2012,7 @@
       "id": "AIRA-T0027",
       "lean_name": "Circle.Applications.ropeCollisionPairCountAtGap_pos_iff",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 127,
+      "lean_source_line": 128,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -2035,7 +2035,53 @@
       "id": "AIRA-T0028",
       "lean_name": "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 137,
+      "lean_source_line": 138,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0080"
+      ],
+      "id": "AIRA-T0029",
+      "lean_name": "Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs",
+      "lean_source": "Circle/Applications/RoPECertifier.lean",
+      "lean_source_line": 167,
+      "original_status": "lean_proved",
+      "source_manifest": "manifests/applications/circle_ai.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ]
+    },
+    {
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0080"
+      ],
+      "id": "AIRA-T0030",
+      "lean_name": "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
+      "lean_source": "Circle/Applications/RoPECertifier.lean",
+      "lean_source_line": 180,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",

@@ -1,4 +1,5 @@
 import Mathlib.Data.Nat.ModEq
+import Mathlib.Data.Real.Basic
 
 /-!
 # Proof-carrying RoPE position distinguishability contracts
@@ -146,5 +147,44 @@ theorem ropePhaseBankCollision_at_gap_of_forall_dvd
     (by
       intro period hmem
       simpa [hgap] using hdivides period hmem)
+
+/-! ### Real phase-margin precursor -/
+
+/-- The unwrapped real-valued phase gap for one RoPE channel frequency.
+
+This is not yet the circular distance modulo a full turn. It is the first
+formal real-valued object needed before a Diophantine/circular-margin theorem
+can replace the current numerical scan. -/
+def ropeRealPhaseGap (frequency : ℝ) (left right : Nat) : ℝ :=
+  ((right : ℝ) - (left : ℝ)) * frequency
+
+/-- Absolute unwrapped real-valued phase gap for one channel frequency. -/
+def ropeRealPhaseGapAbs (frequency : ℝ) (left right : Nat) : ℝ :=
+  |ropeRealPhaseGap frequency left right|
+
+/-- For ordered positions, the absolute unwrapped real phase gap is exactly
+the natural position gap times the absolute frequency. -/
+theorem ropeRealPhaseGapAbs_eq_natGap_mul_abs
+    {frequency : ℝ} {left right : Nat} (hleft : left ≤ right) :
+    ropeRealPhaseGapAbs frequency left right =
+      ((right - left : Nat) : ℝ) * |frequency| := by
+  unfold ropeRealPhaseGapAbs ropeRealPhaseGap
+  rw [← Nat.cast_sub hleft, abs_mul, abs_of_nonneg (Nat.cast_nonneg _)]
+
+/-- A simple quantitative precursor: if the inspected position gap is at least
+`minGap` and the channel frequency has absolute value at least `lower`, then
+the unwrapped absolute phase gap is at least `minGap * lower`.
+
+This is an unwrapped lower bound only. It is not a circular modulo-full-turn
+margin theorem and should not be cited as one. -/
+theorem ropeRealPhaseGapAbs_ge_minGap_mul_lower
+    {frequency lower : ℝ} {left right minGap : Nat}
+    (hleft : left ≤ right) (hgap : minGap ≤ right - left)
+    (hlower_nonneg : 0 ≤ lower) (hlower : lower ≤ |frequency|) :
+    (minGap : ℝ) * lower ≤ ropeRealPhaseGapAbs frequency left right := by
+  rw [ropeRealPhaseGapAbs_eq_natGap_mul_abs (frequency := frequency) hleft]
+  have hgap_real : (minGap : ℝ) ≤ ((right - left : Nat) : ℝ) := by
+    exact Nat.cast_le.mpr hgap
+  exact mul_le_mul hgap_real hlower hlower_nonneg (Nat.cast_nonneg _)
 
 end Circle.Applications

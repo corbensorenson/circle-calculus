@@ -6,6 +6,7 @@ import sys
 
 from circle_math.applications import (
     ROPE_CERTIFIER_THEOREMS,
+    ROPE_REAL_PHASE_PRECURSOR_THEOREMS,
     RoPEConfig,
     capped_lcm,
     certify_rope_positions,
@@ -49,6 +50,7 @@ def test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context() 
     assert certificate.exact_discrete.guaranteed_common_gap_collision_pair_count == 0
     assert certificate.exact_discrete.sample_collision_pairs == ()
     assert certificate.real_phase_margin.scanned_gap_count == 7
+    assert certificate.real_phase_margin.formal_precursor_theorem_ids == ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
 def test_rope_certify_cli_emits_json_certificate() -> None:
@@ -74,6 +76,7 @@ def test_rope_certify_cli_emits_json_certificate() -> None:
     assert payload["exact_discrete"]["pass_exact"] is False
     assert payload["exact_discrete"]["common_collision_gap"] == 6
     assert payload["exact_discrete"]["guaranteed_common_gap_collision_pair_count"] == 14
+    assert payload["real_phase_margin"]["formal_precursor_theorem_ids"] == list(ROPE_REAL_PHASE_PRECURSOR_THEOREMS)
     assert payload["theorem_ids"] == list(ROPE_CERTIFIER_THEOREMS)
 
 

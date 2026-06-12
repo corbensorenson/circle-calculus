@@ -41,6 +41,16 @@ ROPE_CERTIFIER_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
 )
 
+ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
+    "AIRA-T0029",
+    "AIRA-T0030",
+)
+
+ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
+    "Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs",
+    "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
+)
+
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
     "Exact pass/fail is for the declared integer-period discretized RoPE model. "
     "The real-phase margin scan is numerical evidence only. This is not a model-quality, "
@@ -84,6 +94,8 @@ class RealPhaseMarginReport:
     scanned_gap_count: int
     near_collision_gaps: tuple[tuple[int, float], ...]
     explanation: str
+    formal_precursor_theorem_ids: tuple[str, ...] = ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    formal_precursor_lean_declarations: tuple[str, ...] = ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS
 
 
 @dataclass(frozen=True)
@@ -348,6 +360,8 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         f"guaranteed_common_gap_collision_pair_count={exact.guaranteed_common_gap_collision_pair_count}",
         f"real_phase_margin={margin_status} worst_margin_radians={worst_margin} "
         f"worst_gap={worst_gap} scanned_gaps={margin.scanned_gap_count}",
+        f"real_phase_formal_precursors={','.join(margin.formal_precursor_theorem_ids)} "
+        "(unwrapped only; not a circular-margin proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,
     )

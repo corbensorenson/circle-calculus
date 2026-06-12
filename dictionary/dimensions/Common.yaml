@@ -839,6 +839,18 @@ entries:
       - "The total number of every possible colliding pair unless a separate total-count theorem is cited."
       - "A real-valued RoPE collision count."
       - "Evidence that any model quality, context length, speed, or memory improves."
+  - id: COMMON-0080
+    name: "Unwrapped real RoPE phase gap"
+    kind: model
+    symbol: "|(right-left) * frequency|"
+    formal_definition: "In Lean, `Circle.Applications.ropeRealPhaseGapAbs frequency left right` is the absolute unwrapped real-valued phase gap for one RoPE channel frequency. Theorems `ropeRealPhaseGapAbs_eq_natGap_mul_abs` and `ropeRealPhaseGapAbs_ge_minGap_mul_lower` give the exact natural-gap formula and a simple lower-bound precursor."
+    intuition: "Before proving a circular modulo-full-turn RoPE margin theorem, the project first proves the real-valued gap arithmetic that any such theorem must use."
+    dependencies: ["COMMON-0076", "COMMON-0077"]
+    introduced_in: "PAPER_AI_04_ROPE_POSITION_CERTIFIER"
+    forbidden_meanings:
+      - "A circular distance modulo 2*pi."
+      - "A completed Diophantine or continued-fraction RoPE margin theorem."
+      - "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
   - id: COMMON-0060
     name: "Proof-carrying physics model"
     kind: interface

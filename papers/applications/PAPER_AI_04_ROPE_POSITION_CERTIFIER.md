@@ -47,6 +47,8 @@ Lean declarations determine proof status. The theorem manifest is the proof-stat
 - `AIRA-T0026`: `Circle.Applications.ropePhaseBankDistinguishable_of_period_ge_context`
 - `AIRA-T0027`: `Circle.Applications.ropeCollisionPairCountAtGap_pos_iff`
 - `AIRA-T0028`: `Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd`
+- `AIRA-T0029`: `Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs`
+- `AIRA-T0030`: `Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower`
 
 The main theorem is `AIRA-T0024`:
 
@@ -58,6 +60,25 @@ iff every declared period divides their position gap.
 That is the usable contract. It turns position indistinguishability into a finite arithmetic check over divisibility.
 
 `AIRA-T0027` and `AIRA-T0028` add the first collision-counting seed. If the certifier finds a common exact collision gap inside the context, then `context - gap` ordered start positions have a paired position exactly `gap` steps ahead, and every one of those counted pairs is an all-channel collision when each declared period divides the gap. This is a certified common-gap count, not yet a theorem for the total number of all colliding pairs at all gap multiples.
+
+## Real-Phase Precursor
+
+`AIRA-T0029` and `AIRA-T0030` start the real-valued RoPE theorem program without upgrading the numerical scan into a proof. They define the unwrapped real phase gap for one channel and prove:
+
+```text
+|((right : R) - left) * frequency| =
+  (right - left) * |frequency|
+```
+
+for ordered natural positions, plus the lower-bound consequence:
+
+```text
+minGap * lower <= unwrapped_gap
+```
+
+whenever `minGap <= right-left`, `0 <= lower`, and `lower <= |frequency|`.
+
+This is a quantitative precursor only. It is not a circular distance modulo a full turn, not a continued-fraction/Diophantine lower bound, and not a proof that the numerical real-phase margin report is formally certified.
 
 ## Certifier Interface
 
@@ -77,6 +98,7 @@ It emits:
 - sample colliding pairs when exact discrete distinguishability fails;
 - guaranteed common-gap collision-pair count when exact discrete distinguishability fails;
 - numerical real-phase margin and worst gap;
+- theorem ids for the unwrapped real-phase precursor;
 - a machine-readable JSON certificate when `--format json` or `--json-out` is used.
 
 Named presets are available:

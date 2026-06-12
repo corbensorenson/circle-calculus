@@ -415,6 +415,14 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd
     dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078"]
+  - id: AIRA-T0029
+    status: lean_proved
+    lean_name: Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080"]
+  - id: AIRA-T0030
+    status: lean_proved
+    lean_name: Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080"]
 next_targets:
   - >-
     Use COMMON-0052 through COMMON-0055 and COMMON-0059 as the looped/recursive transformer roadmap lane:
