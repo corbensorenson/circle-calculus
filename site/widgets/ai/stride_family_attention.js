@@ -17,6 +17,10 @@ const THEOREM_IDS = [
   "AIT-T0036",
   "AIT-T0037",
   "AIT-T0038",
+  "AIT-T0039",
+  "AIT-T0040",
+  "AIT-T0041",
+  "AIT-T0042",
 ];
 const DICTIONARY_IDS = ["COMMON-0075", "COMMON-0079", "COMMON-0047", "COMMON-0029"];
 
@@ -77,6 +81,7 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
   }
   const candidateBudget = strideFamilyCandidates(sequenceLength, 0, strides, pathLength, localWindow).length;
   const rawCandidateBudgetUpperBound = localWindow + pathLength * strides.length;
+  const deduplicatedCandidateBudgetUpperBound = Math.min(sequenceLength, rawCandidateBudgetUpperBound);
   return {
     coveredLags,
     uncoveredLags,
@@ -84,6 +89,7 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
     uncoveredLagCount: uncoveredLags.length,
     candidateBudgetPerQuery: candidateBudget,
     rawCandidateBudgetUpperBound,
+    deduplicatedCandidateBudgetUpperBound,
     fullAttentionBudget: sequenceLength,
     coverageComplete: uncoveredLags.length === 0,
     coverageRatio: sequenceLength <= 1 ? 1 : coveredLags.length / (sequenceLength - 1),
@@ -290,6 +296,7 @@ function appendRecord(output, values, theoremById) {
     `coverage complete: ${coverage.coverageComplete}`,
     `coverage ratio: ${formatNumber(coverage.coverageRatio)}`,
     `deduplicated candidate budget per query: ${coverage.candidateBudgetPerQuery}`,
+    `deduplicated candidate-budget upper bound: ${coverage.deduplicatedCandidateBudgetUpperBound}`,
     `raw candidate-budget upper bound: ${coverage.rawCandidateBudgetUpperBound}`,
     `full-attention budget: ${coverage.fullAttentionBudget}`,
     `inspected query: ${inspectedQuery}`,

@@ -121,6 +121,16 @@ def hybridFamilyRawCandidateBudget
     (window pathLength : Nat) (strides : List Nat) : Nat :=
   window + pathLength * strides.length
 
+/-- A theorem-side upper bound for deduplicated per-query candidate count.
+
+The raw budget counts every local and stride-family candidate before duplicate
+removal; a deduplicated candidate set also cannot exceed the finite context
+size. This bound records the useful minimum of those two caps without modeling
+the executable list generator. -/
+def hybridFamilyDedupCandidateBudgetBound
+    (n window pathLength : Nat) (strides : List Nat) : Nat :=
+  Nat.min n (hybridFamilyRawCandidateBudget window pathLength strides)
+
 /-- The local reachability predicate is exactly the positive in-window lag condition. -/
 theorem localLagReach_of_le {window lag : Nat} (hpos : 1 ≤ lag) (hwindow : lag ≤ window) :
     localLagReach window lag :=
@@ -428,6 +438,42 @@ theorem hybridFamilyRawCandidateBudget_mono_window_pathLength
       hybridFamilyRawCandidateBudget largeWindow largePath strides := by
   unfold hybridFamilyRawCandidateBudget
   exact Nat.add_le_add hwindow (Nat.mul_le_mul_right strides.length hpath)
+
+/-- The deduplicated candidate-count bound never exceeds the raw candidate
+budget. -/
+theorem hybridFamilyDedupCandidateBudgetBound_le_raw
+    {n window pathLength : Nat} {strides : List Nat} :
+    hybridFamilyDedupCandidateBudgetBound n window pathLength strides ≤
+      hybridFamilyRawCandidateBudget window pathLength strides := by
+  unfold hybridFamilyDedupCandidateBudgetBound
+  exact Nat.min_le_right n (hybridFamilyRawCandidateBudget window pathLength strides)
+
+/-- The deduplicated candidate-count bound never exceeds the finite context
+size. -/
+theorem hybridFamilyDedupCandidateBudgetBound_le_context
+    {n window pathLength : Nat} {strides : List Nat} :
+    hybridFamilyDedupCandidateBudgetBound n window pathLength strides ≤ n := by
+  unfold hybridFamilyDedupCandidateBudgetBound
+  exact Nat.min_le_left n (hybridFamilyRawCandidateBudget window pathLength strides)
+
+/-- If the raw budget fits inside the context, the deduplicated candidate bound
+is the raw budget. -/
+theorem hybridFamilyDedupCandidateBudgetBound_eq_raw_of_raw_le_context
+    {n window pathLength : Nat} {strides : List Nat}
+    (hraw : hybridFamilyRawCandidateBudget window pathLength strides ≤ n) :
+    hybridFamilyDedupCandidateBudgetBound n window pathLength strides =
+      hybridFamilyRawCandidateBudget window pathLength strides := by
+  unfold hybridFamilyDedupCandidateBudgetBound
+  exact Nat.min_eq_right hraw
+
+/-- If the context is no larger than the raw budget, the deduplicated candidate
+bound is the context size. -/
+theorem hybridFamilyDedupCandidateBudgetBound_eq_context_of_context_le_raw
+    {n window pathLength : Nat} {strides : List Nat}
+    (hcontext : n ≤ hybridFamilyRawCandidateBudget window pathLength strides) :
+    hybridFamilyDedupCandidateBudgetBound n window pathLength strides = n := by
+  unfold hybridFamilyDedupCandidateBudgetBound
+  exact Nat.min_eq_left hcontext
 
 /-- Exact local-window coverage criterion.
 

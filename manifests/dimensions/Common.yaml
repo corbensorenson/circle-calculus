@@ -2946,6 +2946,62 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
     blocker: ""
+  - id: AIT-T0039
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyDedupCandidateBudgetBound_le_raw
+    informal_statement: "The deduplicated candidate-budget upper bound for a local-window plus stride-family sparse-attention plan never exceeds the raw candidate-budget upper bound."
+    formal_statement: "forall {n window pathLength : Nat} {strides : List Nat}, Circle.Applications.hybridFamilyDedupCandidateBudgetBound n window pathLength strides <= Circle.Applications.hybridFamilyRawCandidateBudget window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0040
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyDedupCandidateBudgetBound_le_context
+    informal_statement: "The deduplicated candidate-budget upper bound for a local-window plus stride-family sparse-attention plan never exceeds the finite context size."
+    formal_statement: "forall {n window pathLength : Nat} {strides : List Nat}, Circle.Applications.hybridFamilyDedupCandidateBudgetBound n window pathLength strides <= n"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0041
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyDedupCandidateBudgetBound_eq_raw_of_raw_le_context
+    informal_statement: "If the raw candidate-budget upper bound fits inside the context, then the deduplicated candidate-budget bound equals the raw budget."
+    formal_statement: "forall {n window pathLength : Nat} {strides : List Nat}, Circle.Applications.hybridFamilyRawCandidateBudget window pathLength strides <= n -> Circle.Applications.hybridFamilyDedupCandidateBudgetBound n window pathLength strides = Circle.Applications.hybridFamilyRawCandidateBudget window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0042
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyDedupCandidateBudgetBound_eq_context_of_context_le_raw
+    informal_statement: "If the context is no larger than the raw candidate-budget upper bound, then the deduplicated candidate-budget bound equals the context size."
+    formal_statement: "forall {n window pathLength : Nat} {strides : List Nat}, n <= Circle.Applications.hybridFamilyRawCandidateBudget window pathLength strides -> Circle.Applications.hybridFamilyDedupCandidateBudgetBound n window pathLength strides = n"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_coverage_complete_when_local_window_covers_context
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant
