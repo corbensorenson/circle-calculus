@@ -816,6 +816,7 @@
         "COMMON-0028",
         "COMMON-0029",
         "COMMON-0047",
+        "COMMON-0075",
         "COMMON-0052",
         "COMMON-0053",
         "COMMON-0054",
@@ -898,7 +899,12 @@
         "AIT-T0011",
         "AIT-T0012",
         "AIT-T0013",
-        "AIT-T0014"
+        "AIT-T0014",
+        "AIT-T0015",
+        "AIT-T0016",
+        "AIT-T0017",
+        "AIT-T0018",
+        "AIT-T0019"
       ],
       "title": "Circle Calculus AI 2: Coil Attention and Memory"
     },

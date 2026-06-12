@@ -4529,6 +4529,12 @@
           "lean_name": "Circle.Applications.stridedHead_fullCoverage_of_coprime",
           "name": "Circle.Applications.stridedHead_fullCoverage_of_coprime",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0016",
+          "lean_name": "Circle.Applications.coilStrideFamilyLagReach_add_context",
+          "name": "Circle.Applications.coilStrideFamilyLagReach_add_context",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -4632,6 +4638,30 @@
           "lean_name": "Circle.Applications.hybridLagReach_of_coil",
           "name": "Circle.Applications.hybridLagReach_of_coil",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0015",
+          "lean_name": "Circle.Applications.coilStrideFamilyLagReach_of_member_step",
+          "name": "Circle.Applications.coilStrideFamilyLagReach_of_member_step",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0016",
+          "lean_name": "Circle.Applications.coilStrideFamilyLagReach_add_context",
+          "name": "Circle.Applications.coilStrideFamilyLagReach_add_context",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0018",
+          "lean_name": "Circle.Applications.hybridFamilyLagReach_of_family",
+          "name": "Circle.Applications.hybridFamilyLagReach_of_family",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0019",
+          "lean_name": "Circle.Applications.hybridFamilyLagReach_of_member_step",
+          "name": "Circle.Applications.hybridFamilyLagReach_of_member_step",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -4644,6 +4674,11 @@
           "id": "cyclic_memory_slots",
           "path": "site/widgets/ai/cyclic_memory_slots.js",
           "python_reference": "circle_math.applications.circle_ai.memory_slot; circle_math.applications.circle_ai.memory_slot_loads; circle_math.applications.circle_ai.memory_slot_collision_count"
+        },
+        {
+          "id": "stride_family_attention",
+          "path": "site/widgets/ai/stride_family_attention.js",
+          "python_reference": "circle_math.applications.circle_ai.stride_family_attention_candidates; circle_math.applications.circle_ai.structured_stride_family_target_lags; circle_math.applications.circle_ai.nonstructured_stride_family_control_lags; circle_math.applications.circle_ai.run_stride_family_sparse_attention_benchmark"
         }
       ]
     },
@@ -5556,6 +5591,36 @@
           "lean_name": "Circle.Applications.hybridLagReach_of_coil",
           "name": "Circle.Applications.hybridLagReach_of_coil",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0015",
+          "lean_name": "Circle.Applications.coilStrideFamilyLagReach_of_member_step",
+          "name": "Circle.Applications.coilStrideFamilyLagReach_of_member_step",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0016",
+          "lean_name": "Circle.Applications.coilStrideFamilyLagReach_add_context",
+          "name": "Circle.Applications.coilStrideFamilyLagReach_add_context",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0017",
+          "lean_name": "Circle.Applications.hybridFamilyLagReach_of_local",
+          "name": "Circle.Applications.hybridFamilyLagReach_of_local",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0018",
+          "lean_name": "Circle.Applications.hybridFamilyLagReach_of_family",
+          "name": "Circle.Applications.hybridFamilyLagReach_of_family",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0019",
+          "lean_name": "Circle.Applications.hybridFamilyLagReach_of_member_step",
+          "name": "Circle.Applications.hybridFamilyLagReach_of_member_step",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5578,6 +5643,11 @@
           "id": "learned_content_gate_retrieval",
           "path": "site/widgets/ai/learned_content_gate_retrieval.js",
           "python_reference": "circle_math.applications.circle_ai.content_route_label; circle_math.applications.circle_ai.fit_content_route_lookup; circle_math.applications.circle_ai.predict_content_route_lookup; circle_math.applications.circle_ai.run_learned_content_gate_retrieval_benchmark"
+        },
+        {
+          "id": "stride_family_attention",
+          "path": "site/widgets/ai/stride_family_attention.js",
+          "python_reference": "circle_math.applications.circle_ai.stride_family_attention_candidates; circle_math.applications.circle_ai.structured_stride_family_target_lags; circle_math.applications.circle_ai.nonstructured_stride_family_control_lags; circle_math.applications.circle_ai.run_stride_family_sparse_attention_benchmark"
         }
       ]
     },
@@ -9533,6 +9603,74 @@
           "id": "multicoil_phase_explorer",
           "path": "site/widgets/ai/multicoil_phase_explorer.js",
           "python_reference": "circle_math.applications.circle_ai.multicoil_phase; circle_math.applications.circle_ai.multicoil_phase2; circle_math.applications.circle_ai.multicoil_product_cycle; circle_math.applications.circle_ai.run_multicoil_closure_benchmark"
+        }
+      ]
+    },
+    {
+      "dependencies": [
+        "COMMON-0028",
+        "COMMON-0029",
+        "COMMON-0047"
+      ],
+      "forbidden_meanings": [
+        "A proof that sparse attention improves language models.",
+        "Evidence that stride-family attention improves quality, context length, runtime, memory, or throughput.",
+        "A replacement for full attention, sliding-window attention, learned sparse attention, Hyena-like mixers, recurrent memory, RWKV, Mamba, or state-space baselines."
+      ],
+      "formal_definition": "`circle_math.applications.circle_ai.run_stride_family_sparse_attention_benchmark`, a deterministic candidate-set reachability fixture comparing a finite family of coil strides against local-window, single-stride, wrong-family, and full-attention baselines on structured and nonstructured lag controls.",
+      "id": "COMMON-0075",
+      "introduced_in": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+      "intuition": "A multi-head sparse-attention harness: if the task asks for lags generated by admitted strides, the stride family can cover them with far fewer candidates than full attention; if the task is arbitrary, full attention remains the oracle.",
+      "kind": "experiment",
+      "name": "Stride-family sparse-attention fixture",
+      "source_dictionary": "dictionary/dimensions/Common.yaml",
+      "symbol": "stride_family_attention_fixture",
+      "used_by_glyphs": [],
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "used_by_theorems": [
+        {
+          "id": "AIT-T0015",
+          "lean_name": "Circle.Applications.coilStrideFamilyLagReach_of_member_step",
+          "name": "Circle.Applications.coilStrideFamilyLagReach_of_member_step",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0016",
+          "lean_name": "Circle.Applications.coilStrideFamilyLagReach_add_context",
+          "name": "Circle.Applications.coilStrideFamilyLagReach_add_context",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0017",
+          "lean_name": "Circle.Applications.hybridFamilyLagReach_of_local",
+          "name": "Circle.Applications.hybridFamilyLagReach_of_local",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0018",
+          "lean_name": "Circle.Applications.hybridFamilyLagReach_of_family",
+          "name": "Circle.Applications.hybridFamilyLagReach_of_family",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0019",
+          "lean_name": "Circle.Applications.hybridFamilyLagReach_of_member_step",
+          "name": "Circle.Applications.hybridFamilyLagReach_of_member_step",
+          "status": "proved"
+        }
+      ],
+      "used_by_widgets": [
+        {
+          "id": "stride_family_attention",
+          "path": "site/widgets/ai/stride_family_attention.js",
+          "python_reference": "circle_math.applications.circle_ai.stride_family_attention_candidates; circle_math.applications.circle_ai.structured_stride_family_target_lags; circle_math.applications.circle_ai.nonstructured_stride_family_control_lags; circle_math.applications.circle_ai.run_stride_family_sparse_attention_benchmark"
         }
       ]
     },

@@ -1,0 +1,58 @@
+"""Tiny stride-family sparse-attention reachability sidecar.
+
+This script reports candidate-set reachability only. It is not a neural
+attention-quality, runtime, memory, or sparse-attention replacement benchmark.
+
+Run:
+    python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py
+"""
+
+from __future__ import annotations
+
+import argparse
+
+from circle_math.applications.circle_ai import run_stride_family_sparse_attention_benchmark
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--sequence-length", type=int, default=120)
+    parser.add_argument("--query-count", type=int, default=120)
+    parser.add_argument("--strides", type=int, nargs="+", default=[7, 13])
+    parser.add_argument("--wrong-strides", type=int, nargs="+", default=[5, 9])
+    parser.add_argument("--path-length", type=int, default=3)
+    parser.add_argument("--local-window", type=int, default=4)
+    args = parser.parse_args()
+
+    result = run_stride_family_sparse_attention_benchmark(
+        sequence_length=args.sequence_length,
+        query_count=args.query_count,
+        strides=tuple(args.strides),
+        wrong_strides=tuple(args.wrong_strides),
+        path_length=args.path_length,
+        local_window=args.local_window,
+    )
+    print(
+        "stride_family_sparse_attention "
+        f"sequence_length={result.sequence_length} "
+        f"query_count={result.query_count} "
+        f"strides={result.strides} "
+        f"wrong_strides={result.wrong_strides} "
+        f"path_length={result.path_length} "
+        f"local_window={result.local_window} "
+        f"family_accuracy={result.family_accuracy:.3f} "
+        f"single_stride_accuracy={result.single_stride_accuracy:.3f} "
+        f"local_window_accuracy={result.local_window_accuracy:.3f} "
+        f"wrong_family_accuracy={result.wrong_family_accuracy:.3f} "
+        f"full_attention_accuracy={result.full_attention_accuracy:.3f} "
+        f"nonstructured_family_accuracy={result.nonstructured_family_accuracy:.3f} "
+        f"nonstructured_full_attention_accuracy={result.nonstructured_full_attention_accuracy:.3f} "
+        f"avg_family_candidates={result.average_family_candidate_count:.3f} "
+        f"avg_single_stride_candidates={result.average_single_stride_candidate_count:.3f} "
+        f"avg_local_candidates={result.average_local_candidate_count:.3f} "
+        f"avg_full_candidates={result.average_full_candidate_count:.3f}"
+    )
+
+
+if __name__ == "__main__":
+    main()

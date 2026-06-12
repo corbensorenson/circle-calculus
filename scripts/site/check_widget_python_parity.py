@@ -55,6 +55,7 @@ from circle_math.applications import (
     multicoil_phase_label,
     multicoil_product_cycle,
     nonperiodic_threshold_label,
+    nonstructured_stride_family_control_lags,
     periodic_phase_label,
     phase_channel,
     position_residue,
@@ -86,11 +87,14 @@ from circle_math.applications import (
     run_ai_backend_parity_check,
     run_multicoil_closure_benchmark,
     run_phase_channel_benchmark,
+    run_stride_family_sparse_attention_benchmark,
     run_tiny_looped_recurrent_prototype,
     run_training_free_loop_wrapper_benchmark,
     run_token_level_recurrence_benchmark,
     run_winding_aware_position_benchmark,
     synthetic_winding_position_dataset,
+    stride_family_attention_candidates,
+    structured_stride_family_target_lags,
     token_active_at_step,
     token_recurrence_budget,
     token_recurrence_budgets,
@@ -1226,6 +1230,29 @@ def js_local_window_indices(sequence_length: int, query_index: int, window: int)
     return tuple(js_mod(query_index - step, sequence_length) for step in range(1, window + 1))
 
 
+def js_unique_preserving_order(values: tuple[int, ...]) -> tuple[int, ...]:
+    seen: set[int] = set()
+    result: list[int] = []
+    for value in values:
+        if value not in seen:
+            seen.add(value)
+            result.append(value)
+    return tuple(result)
+
+
+def js_stride_family_attention_candidates(
+    sequence_length: int,
+    query_index: int,
+    strides: tuple[int, ...],
+    path_length: int,
+    local_window: int,
+) -> tuple[int, ...]:
+    candidates = list(js_local_window_indices(sequence_length, query_index, local_window))
+    for stride in strides:
+        candidates.extend(js_coil_attention_path(sequence_length, query_index, stride, path_length))
+    return js_unique_preserving_order(tuple(candidates))
+
+
 def js_retrieval_target_index(sequence_length: int, query_index: int, target_lag: int) -> int:
     return js_mod(query_index - target_lag, sequence_length)
 
@@ -1251,6 +1278,25 @@ def js_mixed_retrieval_target_lags(
     near_target_lag: int,
 ) -> tuple[int, ...]:
     return tuple(long_target_lag if query_index % 2 == 0 else near_target_lag for query_index in query_indices)
+
+
+def js_structured_stride_family_target_lags(
+    query_indices: tuple[int, ...],
+    strides: tuple[int, ...],
+    path_length: int,
+    local_window: int,
+) -> tuple[int, ...]:
+    near_lag = min(3, local_window)
+    lag_cycle = [near_lag, *(stride * min(2, path_length) for stride in strides)]
+    lag_cycle.append(strides[-1] * path_length)
+    return tuple(lag_cycle[index % len(lag_cycle)] for index, _query in enumerate(query_indices))
+
+
+def js_nonstructured_stride_family_control_lags(
+    query_indices: tuple[int, ...],
+    sequence_length: int,
+) -> tuple[int, ...]:
+    return tuple(js_mod(11 * query_index + 17, sequence_length - 1) + 1 for query_index in query_indices)
 
 
 def js_retrieval_hit_rate_by_lag(
@@ -3106,6 +3152,120 @@ def main() -> int:
         assert benchmark.average_gated_candidate_count == js_average_candidate_count(js_gated_candidates)
         assert benchmark.average_union_candidate_count == js_average_candidate_count(js_union_candidates)
         assert benchmark.average_full_candidate_count == js_average_candidate_count(full_candidates)
+
+    stride_family_cases = [
+        (120, 120, (7, 13), (5, 9), 3, 4),
+        (96, 96, (11, 17), (8, 15), 4, 5),
+    ]
+    for sequence_length, query_count, strides, wrong_strides, path_length, local_window in stride_family_cases:
+        query_indices = tuple(range(query_count))
+        target_lags = structured_stride_family_target_lags(
+            query_indices,
+            strides=strides,
+            path_length=path_length,
+            local_window=local_window,
+        )
+        control_lags = nonstructured_stride_family_control_lags(
+            query_indices,
+            sequence_length=sequence_length,
+        )
+        js_target_lags = js_structured_stride_family_target_lags(
+            query_indices,
+            strides,
+            path_length,
+            local_window,
+        )
+        js_control_lags = js_nonstructured_stride_family_control_lags(query_indices, sequence_length)
+        assert target_lags == js_target_lags
+        assert control_lags == js_control_lags
+
+        family_sets = tuple(
+            stride_family_attention_candidates(sequence_length, query, strides, path_length, local_window)
+            for query in query_indices
+        )
+        single_sets = tuple(
+            stride_family_attention_candidates(sequence_length, query, (strides[0],), path_length, local_window)
+            for query in query_indices
+        )
+        local_sets = tuple(
+            js_local_window_indices(sequence_length, query, local_window)
+            for query in query_indices
+        )
+        wrong_family_sets = tuple(
+            stride_family_attention_candidates(sequence_length, query, wrong_strides, path_length, local_window)
+            for query in query_indices
+        )
+        full_sets = tuple(tuple(range(sequence_length)) for _ in query_indices)
+        js_family_sets = tuple(
+            js_stride_family_attention_candidates(sequence_length, query, strides, path_length, local_window)
+            for query in query_indices
+        )
+        js_single_sets = tuple(
+            js_stride_family_attention_candidates(sequence_length, query, (strides[0],), path_length, local_window)
+            for query in query_indices
+        )
+        js_wrong_family_sets = tuple(
+            js_stride_family_attention_candidates(sequence_length, query, wrong_strides, path_length, local_window)
+            for query in query_indices
+        )
+        assert family_sets == js_family_sets
+        assert single_sets == js_single_sets
+        assert wrong_family_sets == js_wrong_family_sets
+
+        benchmark = run_stride_family_sparse_attention_benchmark(
+            sequence_length=sequence_length,
+            query_count=query_count,
+            strides=strides,
+            wrong_strides=wrong_strides,
+            path_length=path_length,
+            local_window=local_window,
+        )
+        assert benchmark.family_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            js_target_lags,
+            js_family_sets,
+        )
+        assert benchmark.single_stride_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            js_target_lags,
+            js_single_sets,
+        )
+        assert benchmark.local_window_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            js_target_lags,
+            local_sets,
+        )
+        assert benchmark.wrong_family_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            js_target_lags,
+            js_wrong_family_sets,
+        )
+        assert benchmark.full_attention_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            js_target_lags,
+            full_sets,
+        )
+        assert benchmark.nonstructured_family_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            js_control_lags,
+            js_family_sets,
+        )
+        assert benchmark.nonstructured_full_attention_accuracy == js_retrieval_hit_rate_by_lag(
+            sequence_length,
+            query_indices,
+            js_control_lags,
+            full_sets,
+        )
+        assert benchmark.average_family_candidate_count == js_average_candidate_count(js_family_sets)
+        assert benchmark.average_single_stride_candidate_count == js_average_candidate_count(js_single_sets)
+        assert benchmark.average_local_candidate_count == js_average_candidate_count(local_sets)
+        assert benchmark.average_full_candidate_count == js_average_candidate_count(full_sets)
 
     learned_content_cases = [
         (64, 64, 32, 2, 3, 21, 3, 7, 3, 8),

@@ -510,6 +510,13 @@ def export_widget_index() -> dict:
             "python_reference": "circle_math.applications.circle_ai.mixed_retrieval_target_lags; circle_math.applications.circle_ai.retrieval_hit_rate_by_lag; circle_math.applications.circle_ai.average_candidate_count; circle_math.applications.circle_ai.run_content_gated_retrieval_benchmark",
         },
         {
+            "id": "stride_family_attention",
+            "path": "site/widgets/ai/stride_family_attention.js",
+            "theorem_ids": ["AIT-T0015", "AIT-T0016", "AIT-T0017", "AIT-T0018", "AIT-T0019"],
+            "dictionary_ids": ["COMMON-0075", "COMMON-0047", "COMMON-0029"],
+            "python_reference": "circle_math.applications.circle_ai.stride_family_attention_candidates; circle_math.applications.circle_ai.structured_stride_family_target_lags; circle_math.applications.circle_ai.nonstructured_stride_family_control_lags; circle_math.applications.circle_ai.run_stride_family_sparse_attention_benchmark",
+        },
+        {
             "id": "learned_content_gate_retrieval",
             "path": "site/widgets/ai/learned_content_gate_retrieval.js",
             "theorem_ids": ["CC-T0002", "CC-T0005"],

@@ -71,7 +71,14 @@ namespace Circle.PaperAI02
 #check Circle.Applications.localLagReach_of_le
 #check Circle.Applications.coilLagReach_of_step
 #check Circle.Applications.coilLagReach_add_context
+#check Circle.Applications.coilStrideFamilyLagReach
+#check Circle.Applications.hybridFamilyLagReach
+#check Circle.Applications.coilStrideFamilyLagReach_of_member_step
+#check Circle.Applications.coilStrideFamilyLagReach_add_context
 #check Circle.Applications.hybridLagReach_of_local
 #check Circle.Applications.hybridLagReach_of_coil
+#check Circle.Applications.hybridFamilyLagReach_of_local
+#check Circle.Applications.hybridFamilyLagReach_of_family
+#check Circle.Applications.hybridFamilyLagReach_of_member_step
 
 end Circle.PaperAI02

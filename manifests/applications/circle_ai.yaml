@@ -17,6 +17,7 @@ sidecars:
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_coil_retrieval.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_content_gated_retrieval.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_hybrid_sparse_attention.py
+  - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_learned_content_gate_retrieval.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_looped_recurrence.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_loop_exit_certificate.py
@@ -397,7 +398,7 @@ next_targets:
     middle-block recurrence, multi-resolution recurrence,
     sparse/MoE, RWKV/Mamba-style, and standard state-space baselines.
   - "AIA-B0004 expands the learned phase fixture to dense-scalar, learned-position, wrong-period, and cyclic-feature baselines; AIA-B0005 adds a correct-frequency versus wrong-frequency harmonic/Fourier feature scaffold; next compare against standard RoPE, learned positional encodings, and learned dense models before model-quality claims."
-  - "Use AIM-B0002 as fixed coil-retrieval reachability scaffolding, AIM-B0004 as hand-coded content-gated coil/local routing scaffolding, AIM-B0010 as learned route-table scaffolding, and AIM-B0016 as hybrid local+coil sparse-attention scaffolding only; expand toward learned gates, alias-control, full-attention, sparse-attention, Hyena-like, recurrent-memory, and state-space baselines before retrieval-quality claims."
+  - "Use AIM-B0002 as fixed coil-retrieval reachability scaffolding, AIM-B0004 as hand-coded content-gated coil/local routing scaffolding, AIM-B0010 as learned route-table scaffolding, AIM-B0016 as hybrid local+coil sparse-attention scaffolding, and AIM-B0017 as finite stride-family sparse-attention scaffolding only; expand toward learned gates, alias-control, full-attention, sparse-attention, Hyena-like, recurrent-memory, and state-space baselines before retrieval-quality claims."
   - "Use AIRA-B0001 as adapter-block scaffolding, AIRA-B0004 as adapter parameter-budget scaffolding, AIRA-B0005 as CoilLinear/circulant-mixer scaffolding, and AIRA-B0007 as block-cyclic mixer dense-parity/alias scaffolding only; expand toward CoilRA, block-circulant, LoRA, dense-adapter, learned quality, runtime, memory, and training-stability baselines before making parameter-efficiency or quality claims."
   - "Use AIRA-B0002 as MultiCoil/RoPE-style positional scaffolding, AIRA-B0008 as two-period common-cycle closure scaffolding, AIRA-B0003 as relative RoPE-style phase scaffolding, and AIRA-B0006 as residue-plus-winding alias-control scaffolding only; expand toward standard RoPE, learned positional encodings, attention, dense sequence, Fourier-feature, recurrent-memory, and MLX/CPU parity baselines before model-quality claims."
   - "Use AIA-B0003 as CPU/MLX scoring parity scaffolding only; expand toward actual MLX model prototypes and timing only after parity and baseline semantics are stable."
@@ -453,6 +454,11 @@ benchmarks:
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_hybrid_sparse_attention_benchmark_has_budget_and_negative_control
     script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_hybrid_sparse_attention.py
     description: "Deterministic hybrid local+coil sparse-attention reachability fixture comparing the hybrid against ordinary local-window and full-attention baselines plus coil-only and wrong-stride hybrid controls on structured mixed-lag and nonstructured control tasks with candidate-budget diagnostics."
+  - id: AIM-B0017
+    status: exploratory_python
+    path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    script: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py
+    description: "Deterministic stride-family sparse-attention reachability fixture comparing a finite family of coil strides against local-window, single-stride, wrong-family, and full-attention baselines on structured and nonstructured lag controls with candidate-budget diagnostics."
   - id: AIM-B0010
     status: exploratory_python
     path: sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_learned_content_gate_retrieval_benchmark_has_baselines_and_controls

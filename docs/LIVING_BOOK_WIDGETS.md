@@ -282,6 +282,16 @@ Companion non-widget prototype: `AIM-B0015` uses `circle_math.applications.circl
 - Guardrail: the widget is deterministic route and candidate-budget bookkeeping only. It does not prove learned-gate quality, retrieval quality, context length, runtime, memory scaling, attention replacement, or model-quality improvement.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python content-gated retrieval helpers.
 
+### stride_family_attention
+
+- Inputs: sequence length, query count, inspected query, two admitted strides, two wrong/control strides, path length, and local-window width.
+- Outputs: structured lag sample, nonstructured control lag sample, inspected target and candidate list, stride-family/single-stride/local/wrong-family/full rows, structured hit rates, control hit rates, average candidate counts, theorem links, and dictionary links.
+- Theorem ids: `AIT-T0015`, `AIT-T0016`, `AIT-T0017`, `AIT-T0018`, and `AIT-T0019`.
+- Dictionary ids: `COMMON-0075`, `COMMON-0047`, and `COMMON-0029`.
+- Python references: `circle_math.applications.circle_ai.stride_family_attention_candidates`, `circle_math.applications.circle_ai.structured_stride_family_target_lags`, `circle_math.applications.circle_ai.nonstructured_stride_family_control_lags`, and `circle_math.applications.circle_ai.run_stride_family_sparse_attention_benchmark`.
+- Guardrail: the widget is finite stride-family candidate-set reachability and budget bookkeeping only. It does not prove sparse-attention quality, multi-head attention quality, context length, runtime, memory scaling, throughput, attention replacement, or model-quality improvement.
+- Validation: deterministic JavaScript-equivalent stride-family candidate, lag-generation, hit-rate, and candidate-budget formulas are parity-checked against the Python stride-family sparse-attention benchmark.
+
 ### learned_content_gate_retrieval
 
 - Inputs: sequence length, train length, test length, route period, wrong route period, long lag, near lag, selected stride, path length, and local-window width.
@@ -449,6 +459,7 @@ Minimum parity cases:
 - cyclic memory slot reduction, one-bank closure, multi-bank closure, idempotent normalization, slot loads, and collision count.
 - coil-retrieval target index, selected coil path, local window, wrong-stride path, full-attention oracle hit, and near-lag local/coil controls.
 - content-gated retrieval mixed lags, gated/static/wrong/union/full hit rates, and average candidate counts.
+- stride-family sparse-attention structured/control lags, candidate sets, hit rates, and average candidate counts.
 - MultiCoil phase tuple, product-cycle closure, lcm comparison, wrong-shift mismatch, joint cycle length, phase closure after one joint cycle, and constructed synthetic label.
 - RoPE-style relative phase lag, sine/cosine feature, query-period closure, and key-period closure.
 - adapter parameter-budget dense, LoRA-style, and block-cyclic counts; ratios; block loads; and collision count.

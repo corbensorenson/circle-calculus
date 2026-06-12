@@ -47,9 +47,12 @@ from circle_math.applications.circle_ai import (
     run_memory_slot_benchmark,
     run_middle_block_recurrence_benchmark,
     run_multi_resolution_recurrence_benchmark,
+    run_stride_family_sparse_attention_benchmark,
     run_training_free_loop_wrapper_benchmark,
     run_token_level_recurrence_benchmark,
     shifted_recurrence_resolutions,
+    stride_family_attention_candidates,
+    structured_stride_family_target_lags,
     structured_hybrid_target_lags,
     token_active_at_step,
     synthetic_memory_slot_dataset,
@@ -262,6 +265,62 @@ def test_hybrid_sparse_attention_benchmark_has_budget_and_negative_control() -> 
     assert result.average_full_candidate_count == 96.0
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_hybrid_accuracy < result.nonstructured_full_attention_accuracy
+    assert result.note.endswith("not a model-quality claim.")
+
+
+def test_stride_family_attention_candidates_union_multiple_coils() -> None:
+    candidates = stride_family_attention_candidates(
+        sequence_length=120,
+        query_index=50,
+        strides=(7, 13),
+        path_length=3,
+        local_window=4,
+    )
+
+    assert candidates == (49, 48, 47, 46, 43, 36, 29, 37, 24, 11)
+    assert retrieval_target_index(120, 50, 3) in candidates
+    assert retrieval_target_index(120, 50, 14) in candidates
+    assert retrieval_target_index(120, 50, 26) in candidates
+    assert retrieval_target_index(120, 50, 39) in candidates
+
+
+def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control() -> None:
+    queries = tuple(range(8))
+    assert structured_stride_family_target_lags(
+        queries,
+        strides=(7, 13),
+        path_length=3,
+        local_window=4,
+    ) == (3, 14, 26, 39, 3, 14, 26, 39)
+
+    result = run_stride_family_sparse_attention_benchmark(
+        sequence_length=120,
+        query_count=120,
+        strides=(7, 13),
+        wrong_strides=(5, 9),
+        path_length=3,
+        local_window=4,
+    )
+
+    assert result == run_stride_family_sparse_attention_benchmark(
+        sequence_length=120,
+        query_count=120,
+        strides=(7, 13),
+        wrong_strides=(5, 9),
+        path_length=3,
+        local_window=4,
+    )
+    assert result.family_accuracy == 1.0
+    assert result.full_attention_accuracy == 1.0
+    assert result.local_window_accuracy == 0.25
+    assert result.single_stride_accuracy == 0.5
+    assert result.wrong_family_accuracy == 0.25
+    assert result.average_family_candidate_count == 10.0
+    assert result.average_single_stride_candidate_count == 7.0
+    assert result.average_local_candidate_count == 4.0
+    assert result.average_full_candidate_count == 120.0
+    assert result.nonstructured_full_attention_accuracy == 1.0
+    assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
     assert result.note.endswith("not a model-quality claim.")
 
 
