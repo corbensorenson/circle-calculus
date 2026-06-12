@@ -359,10 +359,31 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     assert not result.coverage_certificate.coverage_complete
     assert result.coverage_certificate.candidate_budget_per_query == 10
     assert result.coverage_certificate.full_attention_budget == 120
-    assert result.coverage_certificate.theorem_ids == ("AIT-T0016", "AIT-T0017", "AIT-T0020", "AIT-T0021")
+    assert result.coverage_certificate.theorem_ids == (
+        "AIT-T0016",
+        "AIT-T0017",
+        "AIT-T0020",
+        "AIT-T0021",
+        "AIT-T0022",
+    )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
     assert result.note.endswith("not a model-quality claim.")
+
+
+def test_stride_family_coverage_complete_when_local_window_covers_context() -> None:
+    certificate = certify_stride_family_coverage(
+        sequence_length=10,
+        strides=(3,),
+        path_length=2,
+        local_window=9,
+    )
+
+    assert certificate.covered_lags == tuple(range(1, 10))
+    assert certificate.uncovered_lags == ()
+    assert certificate.coverage_complete
+    assert certificate.coverage_ratio == 1.0
+    assert "AIT-T0022" in certificate.theorem_ids
 
 
 def test_learned_content_gate_route_lookup_helpers_are_deterministic() -> None:

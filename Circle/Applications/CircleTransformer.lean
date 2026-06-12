@@ -219,6 +219,19 @@ theorem hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne
     rcases hfamily with ⟨stride, hmem, step, hpos, hstep, hmod⟩
     exact hnoStride stride hmem step hpos hstep hmod
 
+/-- Local-window full-coverage sufficient condition.
+
+If the local window is at least `n - 1`, then every positive lag inside a
+length-`n` context is reached by the local part of any local+stride-family
+plan. This is the simple complete-coverage certificate for the dense-local
+limit of the sparse-attention model. -/
+theorem hybridFamilyLagReach_of_localWindow_ge_context_sub_one
+    {n window pathLength lag : Nat} {strides : List Nat}
+    (hpos : 1 ≤ lag) (hcontext : lag < n) (hwindow : n - 1 ≤ window) :
+    hybridFamilyLagReach n window pathLength lag strides :=
+  hybridFamilyLagReach_of_local
+    (localLagReach_of_le hpos (le_trans (Nat.le_sub_one_of_lt hcontext) hwindow))
+
 /-! ### RoPE relative position -/
 
 /-- The RoPE phase of a token at position `pos`: rotation by `pos` from the base node. -/

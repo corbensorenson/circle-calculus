@@ -90,5 +90,6 @@ namespace Circle.PaperAI02
 #check Circle.Applications.hybridFamilyLagReach_of_member_step
 #check Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family
 #check Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne
+#check Circle.Applications.hybridFamilyLagReach_of_localWindow_ge_context_sub_one
 
 end Circle.PaperAI02
