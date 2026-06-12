@@ -988,6 +988,21 @@ theorems:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_marks_stale_token
     blocker: ""
+  - id: AIM-T0064
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheWindow_retainedSlot_ne_current_of_lt
+    informal_statement: "If an older token is still inside the retained KV-cache window, then it cannot share the current token's ring-buffer slot."
+    formal_statement: "forall {cacheSize current token : Nat}, kvCacheWindowContains cacheSize current token -> token < current -> kvCacheSlot cacheSize token != kvCacheSlot cacheSize current"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_marks_current_token_collision_as_self
+    blocker: ""
   - id: AIM-T0006
     status: lean_proved
     lean_name: Circle.Applications.loopRequiredSteps_pos

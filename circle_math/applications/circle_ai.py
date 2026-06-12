@@ -288,18 +288,29 @@ class KVCacheWindowCertificate:
     current: int
     token: int
     slot: int
+    current_slot: int
     lag: int
     retained: bool
+    collision_with_current: bool
+    retained_noncurrent_slot_distinct_from_current: bool
     next_overwrite_token: int
     next_overwrite_after_current: bool
     collision_with_next_overwrite: bool
-    theorem_ids: tuple[str, ...] = ("AIM-T0059", "AIM-T0060", "AIM-T0061", "AIM-T0062", "AIM-T0063")
+    theorem_ids: tuple[str, ...] = (
+        "AIM-T0059",
+        "AIM-T0060",
+        "AIM-T0061",
+        "AIM-T0062",
+        "AIM-T0063",
+        "AIM-T0064",
+    )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheSlot_lt_cacheSize",
         "Circle.Applications.kvCacheSlot_add_cacheSize",
         "Circle.Applications.kvCacheSlotCollision_iff_gap_dvd",
         "Circle.Applications.kvCacheSlot_ne_of_positive_gap_lt_cache",
         "Circle.Applications.kvCacheWindow_nextOverwrite_after_current",
+        "Circle.Applications.kvCacheWindow_retainedSlot_ne_current_of_lt",
     )
     note: str = (
         "KV-cache ring-buffer slot certificate only; this proves finite indexing "
@@ -1331,13 +1342,22 @@ def certify_kv_cache_window(
         raise ValueError("token must not be in the future of current")
     lag = current - token
     next_overwrite = kv_cache_next_overwrite_token(cache_size, token)
+    slot = kv_cache_slot(cache_size, token)
+    current_slot = kv_cache_slot(cache_size, current)
+    collision_with_current = slot == current_slot
+    retained = lag < cache_size
     return KVCacheWindowCertificate(
         cache_size=cache_size,
         current=current,
         token=token,
-        slot=kv_cache_slot(cache_size, token),
+        slot=slot,
+        current_slot=current_slot,
         lag=lag,
-        retained=lag < cache_size,
+        retained=retained,
+        collision_with_current=collision_with_current,
+        retained_noncurrent_slot_distinct_from_current=(
+            retained and token < current and not collision_with_current
+        ),
         next_overwrite_token=next_overwrite,
         next_overwrite_after_current=current < next_overwrite,
         collision_with_next_overwrite=kv_cache_slots_collide(cache_size, token, next_overwrite),

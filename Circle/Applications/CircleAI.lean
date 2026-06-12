@@ -180,6 +180,19 @@ theorem kvCacheWindow_nextOverwrite_after_current
   rw [Nat.sub_add_cancel htoken_current] at h
   simpa [Nat.add_comm] using h
 
+/-- If an older token is still inside the retained KV-cache window, it cannot
+share the current token's ring-buffer slot.
+
+This is the current-read specialization of the positive-gap theorem: retained
+non-current tokens have lag smaller than the cache size, so they are slot
+distinct from the current token. -/
+theorem kvCacheWindow_retainedSlot_ne_current_of_lt
+    {cacheSize current token : Nat}
+    (hwindow : kvCacheWindowContains cacheSize current token)
+    (hstrict : token < current) :
+    kvCacheSlot cacheSize token ≠ kvCacheSlot cacheSize current :=
+  kvCacheSlot_ne_of_positive_gap_lt_cache hstrict hwindow.2
+
 def loopRequiredSteps (loopPeriod sample : Nat) : Nat :=
   phaseChannel loopPeriod sample + 1
 

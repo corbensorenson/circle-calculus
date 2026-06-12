@@ -4543,6 +4543,12 @@
           "status": "proved"
         },
         {
+          "id": "AIM-T0064",
+          "lean_name": "Circle.Applications.kvCacheWindow_retainedSlot_ne_current_of_lt",
+          "name": "Circle.Applications.kvCacheWindow_retainedSlot_ne_current_of_lt",
+          "status": "proved"
+        },
+        {
           "id": "AIT-T0001",
           "lean_name": "Circle.Applications.attentionReach_eq_div_gcd",
           "name": "Circle.Applications.attentionReach_eq_div_gcd",
@@ -10297,10 +10303,10 @@
         "A proof that cyclic memory replaces attention.",
         "A throughput, memory-saving, paging-policy, or deployment-safety guarantee."
       ],
-      "formal_definition": "`circle_math.applications.circle_ai.certify_kv_cache_window`, a finite certificate for a KV-cache ring-buffer slot `token % cache_size`, the current-token lag, whether the token is still inside the retained window, and whether the next same-slot overwrite `token + cache_size` occurs after the current token. Lean theorems `kvCacheSlotCollision_iff_gap_dvd`, `kvCacheSlot_ne_of_positive_gap_lt_cache`, and `kvCacheWindow_nextOverwrite_after_current` certify the finite slot and window facts.",
+      "formal_definition": "`circle_math.applications.circle_ai.certify_kv_cache_window`, a finite certificate for a KV-cache ring-buffer slot `token % cache_size`, the current-token slot, the lag from current, whether the token is still inside the retained window, whether a retained older token is slot-distinct from the current token, and whether the next same-slot overwrite `token + cache_size` occurs after the current token. Lean theorems `kvCacheSlotCollision_iff_gap_dvd`, `kvCacheSlot_ne_of_positive_gap_lt_cache`, `kvCacheWindow_nextOverwrite_after_current`, and `kvCacheWindow_retainedSlot_ne_current_of_lt` certify the finite slot and window facts.",
       "id": "COMMON-0081",
       "introduced_in": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
-      "intuition": "A non-Lean engineer can ask whether a token is still inside a declared ring-buffer cache window and whether its next overwrite is after the current read point.",
+      "intuition": "A non-Lean engineer can ask whether a token is still inside a declared ring-buffer cache window, whether it is distinct from the current token's slot while retained, and whether its next overwrite is after the current read point.",
       "kind": "interface",
       "name": "KV-cache ring-buffer window certificate",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
@@ -10343,6 +10349,12 @@
           "id": "AIM-T0063",
           "lean_name": "Circle.Applications.kvCacheWindow_nextOverwrite_after_current",
           "name": "Circle.Applications.kvCacheWindow_nextOverwrite_after_current",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0064",
+          "lean_name": "Circle.Applications.kvCacheWindow_retainedSlot_ne_current_of_lt",
+          "name": "Circle.Applications.kvCacheWindow_retainedSlot_ne_current_of_lt",
           "status": "proved"
         }
       ],
