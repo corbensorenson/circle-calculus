@@ -1274,6 +1274,10 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert payload["rational_margin_certificate"]["pass_certificate"] is True
     assert payload["standard_interval_certificate"]["name"] == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME
     assert payload["standard_interval_certificate"]["pass_certificate"] is True
+    assert payload["standard_interval_certificate"]["witness_count"] == 8191
+    assert payload["standard_interval_certificate"]["first_interval_witness"]["gap"] == 1
+    assert payload["standard_interval_certificate"]["last_interval_witness"]["gap"] == 8191
+    assert "interval_witnesses" not in payload["standard_interval_certificate"]
     assert payload["standard_d12_bank_bridge_request"]["pass_certificate"] is True
     assert payload["standard_d12_bank_bridge_request"]["requested_context"] == 8192
     assert payload["standard_d12_bank_bridge_request"]["requested_margin"] == "1/104220"

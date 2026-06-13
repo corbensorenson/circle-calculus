@@ -117,6 +117,26 @@ def compact_rope_certificate(certificate: Any) -> dict[str, Any]:
     }
 
 
+def compact_interval_certificate(certificate: Any) -> dict[str, Any]:
+    witnesses = certificate.interval_witnesses
+    return {
+        "schema_id": certificate.schema_id,
+        "name": certificate.name,
+        "turn_ratio_expression": certificate.turn_ratio_expression,
+        "context_length": certificate.context_length,
+        "certified_margin": certificate.certified_margin,
+        "pass_certificate": certificate.pass_certificate,
+        "pi_bounds": certificate.pi_bounds,
+        "witness_count": len(witnesses),
+        "first_interval_witness": asdict(witnesses[0]) if witnesses else None,
+        "last_interval_witness": asdict(witnesses[-1]) if witnesses else None,
+        "theorem_ids": certificate.theorem_ids,
+        "lean_declarations": certificate.lean_declarations,
+        "explanation": certificate.explanation,
+        "claim_boundary": certificate.claim_boundary,
+    }
+
+
 def compact_phase_bank_certificate(certificate: Any) -> dict[str, Any]:
     return {
         "schema_id": certificate.schema_id,
@@ -157,7 +177,9 @@ def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
             "perplexity, or deployment claims."
         ),
         "rational_margin_certificate": certify_rational_preset_4099().to_dict(),
-        "standard_interval_certificate": certify_standard_channel0_interval_seed().to_dict(),
+        "standard_interval_certificate": compact_interval_certificate(
+            certify_standard_channel0_interval_seed()
+        ),
         "standard_d12_bank_bridge_request": certify_standard_channel0_d12_bank_request(
             requested_context=8192,
             requested_margin=Fraction(1, 104220),
