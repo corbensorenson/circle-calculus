@@ -158,6 +158,17 @@ def hybridFamilyLagCandidateList
   localLagCandidateList window ++
     coilStrideFamilyLagResidueList n pathLength strides
 
+/-- Finite list of positive in-context lags missing from a local+stride-family
+sparse-attention plan.
+
+This is the theorem-side object mirrored by executable sparse-attention
+coverage certificates: a nonempty list is a concrete gap report, while an
+empty list is complete context coverage. -/
+def hybridFamilyUncoveredLagList
+    (n window pathLength : Nat) (strides : List Nat) : List Nat :=
+  (List.range' 1 (n - 1)).filter fun lag =>
+    lag ∉ hybridFamilyLagCandidateList n window pathLength strides
+
 /-- Exact deduplicated lag-candidate count for the theorem-side candidate list. -/
 def hybridFamilyUniqueLagCandidateCount
     (n window pathLength : Nat) (strides : List Nat) : Nat :=
@@ -780,6 +791,64 @@ theorem hybridFamilyCoversContext_iff_range_lags_mem_candidate_list
     exact (mem_hybridFamilyLagCandidateList_iff hcontext).1
       (hmem lag hlag_mem)
 
+/-- Membership in the finite uncovered-lag list is exactly a positive
+in-context semantic gap.
+
+This is the proof-carrying sparse-attention contract form an executable
+certifier can cite: every listed lag is really uncovered, and every real
+uncovered positive in-context lag appears in the finite list. -/
+theorem mem_hybridFamilyUncoveredLagList_iff
+    {n window pathLength lag : Nat} {strides : List Nat} :
+    lag ∈ hybridFamilyUncoveredLagList n window pathLength strides ↔
+      1 ≤ lag ∧ lag < n ∧
+        ¬ hybridFamilyLagReach n window pathLength lag strides := by
+  unfold hybridFamilyUncoveredLagList
+  simp only [List.mem_filter, decide_eq_true_eq]
+  constructor
+  · rintro ⟨hrange, hnotmem⟩
+    rw [List.mem_range'] at hrange
+    rcases hrange with ⟨i, hi, hlag⟩
+    subst lag
+    have hpos : 1 ≤ 1 + 1 * i := by omega
+    have hcontext : 1 + 1 * i < n := by omega
+    refine ⟨hpos, hcontext, ?_⟩
+    intro hreach
+    exact hnotmem ((mem_hybridFamilyLagCandidateList_iff hcontext).2 hreach)
+  · rintro ⟨hpos, hcontext, hgap⟩
+    constructor
+    · rw [List.mem_range']
+      refine ⟨lag - 1, ?_, ?_⟩ <;> omega
+    · intro hmem
+      exact hgap ((mem_hybridFamilyLagCandidateList_iff hcontext).1 hmem)
+
+/-- Complete sparse-attention coverage is equivalent to an empty finite
+uncovered-lag list. -/
+theorem hybridFamilyCoversContext_iff_uncoveredLagList_eq_nil
+    {n window pathLength : Nat} {strides : List Nat} :
+    hybridFamilyCoversContext n window pathLength strides ↔
+      hybridFamilyUncoveredLagList n window pathLength strides = [] := by
+  constructor
+  · intro hcover
+    apply List.eq_nil_iff_forall_not_mem.2
+    intro lag hmem
+    have hgap := (mem_hybridFamilyUncoveredLagList_iff).1 hmem
+    exact hgap.2.2 (hcover lag hgap.1 hgap.2.1)
+  · intro hempty
+    exact (hybridFamilyCoversContext_iff_no_uncovered_lag).2 (by
+      rintro ⟨lag, hpos, hcontext, hgap⟩
+      have hmem : lag ∈ hybridFamilyUncoveredLagList n window pathLength strides :=
+        (mem_hybridFamilyUncoveredLagList_iff).2 ⟨hpos, hcontext, hgap⟩
+      rw [hempty] at hmem
+      exact List.not_mem_nil hmem)
+
+/-- Complete sparse-attention coverage is equivalent to zero uncovered lags. -/
+theorem hybridFamilyCoversContext_iff_uncoveredLagList_length_eq_zero
+    {n window pathLength : Nat} {strides : List Nat} :
+    hybridFamilyCoversContext n window pathLength strides ↔
+      (hybridFamilyUncoveredLagList n window pathLength strides).length = 0 := by
+  rw [hybridFamilyCoversContext_iff_uncoveredLagList_eq_nil,
+    List.length_eq_zero_iff]
+
 /-- If the local window is below the context length, then every theorem-side
 lag candidate is a strict in-context representative. -/
 theorem mem_hybridFamilyLagCandidateList_lt_context_of_window_lt_context
@@ -1331,6 +1400,13 @@ theorem not_hybridFamilyCoversContext_default_120_4_3_7_13 :
   intro hcover
   exact hybridFamilyLagGap_default_120_4_3_7_13_lag5
     (hcover 5 (by omega) (by omega))
+
+/-- The default sparse-attention plan's finite uncovered-lag list contains the
+same concrete gap witness, lag `5`. -/
+theorem mem_hybridFamilyUncoveredLagList_default_120_4_3_7_13_lag5 :
+    5 ∈ hybridFamilyUncoveredLagList 120 4 3 [7, 13] := by
+  exact (mem_hybridFamilyUncoveredLagList_iff).2
+    ⟨by omega, by omega, hybridFamilyLagGap_default_120_4_3_7_13_lag5⟩
 
 /-! ### RoPE relative position -/
 

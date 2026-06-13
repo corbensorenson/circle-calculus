@@ -300,7 +300,7 @@ Companion non-widget prototype: `AIM-B0015` uses `circle_math.applications.circl
 - Dictionary ids: `COMMON-0075`, `COMMON-0047`, and `COMMON-0029`.
 - Python references: `circle_math.applications.circle_ai.stride_family_attention_candidates`, `circle_math.applications.circle_ai.stride_family_lag_candidate_list`, `circle_math.applications.circle_ai.stride_family_query_candidate_list`, `circle_math.applications.circle_ai.structured_stride_family_target_lags`, `circle_math.applications.circle_ai.nonstructured_stride_family_control_lags`, and `circle_math.applications.circle_ai.run_stride_family_sparse_attention_benchmark`.
 - Guardrail: the widget is finite stride-family candidate-set reachability and budget bookkeeping only. It does not prove sparse-attention quality, multi-head attention quality, context length, runtime, memory scaling, throughput, attention replacement, or model-quality improvement.
-- Validation: deterministic JavaScript-equivalent stride-family candidate, lag-generation, hit-rate, and candidate-budget formulas are parity-checked against the Python stride-family sparse-attention benchmark.
+- Validation: deterministic JavaScript-equivalent stride-family candidate, uncovered-lag, lag-generation, hit-rate, and candidate-budget formulas are parity-checked against the Python stride-family sparse-attention benchmark.
 
 ### learned_content_gate_retrieval
 
