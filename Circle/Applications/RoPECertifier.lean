@@ -823,6 +823,39 @@ def ropeTurnRatioIntervalCertificate
       ∃ lower upper : ℚ, ∃ cell : Int,
         ropeTurnRatioIntervalWitness turnRatio margin gap lower upper cell
 
+/-- A rational interval witness remains valid when the advertised margin is
+decreased. -/
+theorem ropeTurnRatioIntervalWitness_mono_margin
+    {turnRatio smallMargin largeMargin : ℝ} {gap : Nat}
+    {lower upper : ℚ} {cell : Int}
+    (hmargin_le : smallMargin ≤ largeMargin)
+    (hwitness :
+      ropeTurnRatioIntervalWitness turnRatio largeMargin gap lower upper cell) :
+    ropeTurnRatioIntervalWitness turnRatio smallMargin gap lower upper cell := by
+  rcases hwitness with ⟨hlower, hupper, hleft, hright⟩
+  exact ⟨hlower, hupper, by linarith, by linarith⟩
+
+/-- A rational interval certificate remains valid when the advertised margin is
+decreased to a nonnegative value. -/
+theorem ropeTurnRatioIntervalCertificate_mono_margin
+    {turnRatio smallMargin largeMargin : ℝ} {context : Nat}
+    (hsmall_nonneg : 0 ≤ smallMargin)
+    (hmargin_le : smallMargin ≤ largeMargin)
+    (certificate :
+      ropeTurnRatioIntervalCertificate turnRatio largeMargin context) :
+    ropeTurnRatioIntervalCertificate turnRatio smallMargin context := by
+  rcases certificate with ⟨_hlarge_nonneg, hwitnesses⟩
+  refine ⟨hsmall_nonneg, ?_⟩
+  intro gap hgap_range hgap_pos
+  rcases hwitnesses gap hgap_range hgap_pos with ⟨lower, upper, cell, hwitness⟩
+  exact
+    ⟨lower, upper, cell,
+      ropeTurnRatioIntervalWitness_mono_margin
+        (turnRatio := turnRatio) (smallMargin := smallMargin)
+        (largeMargin := largeMargin) (gap := gap)
+        (lower := lower) (upper := upper) (cell := cell)
+        hmargin_le hwitness⟩
+
 /-- A finite rational interval certificate proves the finite-context
 turn-ratio margin. -/
 theorem ropeTurnRatioFiniteMargin_of_intervalCertificate
@@ -1075,6 +1108,14 @@ def ropeStandardChannel0D4SeedContext : Nat := 19
 
 /-- The advertised margin for the fourth standard channel-0 interval seed. -/
 noncomputable def ropeStandardChannel0D4SeedMargin : ℝ := 1 / 32
+
+/-- A fifth tiny inspected context for the standard-RoPE interval certificate.
+This lowers the advertised margin to `1/64` and carries the same elementary
+pi-bounds through all positive gaps below `44`. -/
+def ropeStandardChannel0D5SeedContext : Nat := 44
+
+/-- The advertised margin for the fifth standard channel-0 interval seed. -/
+noncomputable def ropeStandardChannel0D5SeedMargin : ℝ := 1 / 64
 
 private theorem ropeStandardChannel0_base_lower :
     (1 : ℝ) / 8 ≤ ropeStandardChannel0TurnRatio := by
@@ -1427,6 +1468,138 @@ theorem ropeStandardChannel0D4Seed_turnRatioFiniteMargin :
   ropeTurnRatioFiniteMargin_of_intervalCertificate
     ropeStandardChannel0D4Seed_intervalCertificate
 
+private theorem ropeStandardChannel0_d5IntervalWitness_of_scaled_bounds
+    {gap : Nat} {cell : Int}
+    (hcell_lower :
+      (cell : ℝ) + (1 : ℝ) / 64 ≤ (gap : ℝ) * ((10 : ℝ) / 63))
+    (hcell_upper :
+      (gap : ℝ) * ((25 : ℝ) / 157) ≤ (cell : ℝ) + 1 - (1 : ℝ) / 64) :
+    ropeTurnRatioIntervalWitness ropeStandardChannel0TurnRatio
+      ropeStandardChannel0D5SeedMargin gap (((10 * gap : Nat) : ℚ) / 63)
+      (((25 * gap : Nat) : ℚ) / 157) cell := by
+  unfold ropeTurnRatioIntervalWitness ropeStandardChannel0D5SeedMargin
+  constructor
+  · calc
+      ((((10 * gap : Nat) : ℚ) / 63 : ℚ) : ℝ) =
+          (gap : ℝ) * ((10 : ℝ) / 63) := by
+        norm_num [Nat.cast_mul]
+        ring_nf
+      _ ≤ (gap : ℝ) * ropeStandardChannel0TurnRatio :=
+        mul_le_mul_of_nonneg_left ropeStandardChannel0_d3_base_lower (by positivity)
+  constructor
+  · calc
+      (gap : ℝ) * ropeStandardChannel0TurnRatio ≤ (gap : ℝ) * ((25 : ℝ) / 157) :=
+        mul_le_mul_of_nonneg_left ropeStandardChannel0_d2_base_upper (by positivity)
+      _ = ((((25 * gap : Nat) : ℚ) / 157 : ℚ) : ℝ) := by
+        norm_num [Nat.cast_mul]
+        ring_nf
+  constructor
+  · calc
+      (cell : ℝ) + (1 : ℝ) / 64 ≤ (gap : ℝ) * ((10 : ℝ) / 63) := hcell_lower
+      _ = ((((10 * gap : Nat) : ℚ) / 63 : ℚ) : ℝ) := by
+        norm_num [Nat.cast_mul]
+        ring_nf
+  · calc
+      ((((25 * gap : Nat) : ℚ) / 157 : ℚ) : ℝ) =
+          (gap : ℝ) * ((25 : ℝ) / 157) := by
+        norm_num [Nat.cast_mul]
+        ring_nf
+      _ ≤ (cell : ℝ) + 1 - (1 : ℝ) / 64 := hcell_upper
+
+/-- A fifth standard-RoPE interval seed: channel 0 has margin `1/64` over
+the tiny context containing gaps `1` through `43`.
+
+The proof reuses the context-19, margin-`1/32` certificate for gaps through
+`18`, then checks cell bands `3` through `6` for the remaining gaps using the
+same rational enclosure `10*gap/63 <= gap/(2π) <= 25*gap/157`. -/
+theorem ropeStandardChannel0D5Seed_intervalCertificate :
+    ropeTurnRatioIntervalCertificate ropeStandardChannel0TurnRatio
+      ropeStandardChannel0D5SeedMargin ropeStandardChannel0D5SeedContext := by
+  refine ⟨by dsimp [ropeStandardChannel0D5SeedMargin]; norm_num, ?_⟩
+  intro gap hgap_range hgap_pos
+  have hgap_lt_forty_four : gap < 44 := by
+    simpa [ropeStandardChannel0D5SeedContext] using List.mem_range.mp hgap_range
+  by_cases hgap_le_eighteen : gap ≤ 18
+  · have hgap_range_d4 : gap ∈ List.range ropeStandardChannel0D4SeedContext := by
+      apply List.mem_range.mpr
+      simpa [ropeStandardChannel0D4SeedContext] using Nat.lt_succ_of_le hgap_le_eighteen
+    have hsmall :
+        ropeTurnRatioIntervalCertificate ropeStandardChannel0TurnRatio
+          ropeStandardChannel0D5SeedMargin ropeStandardChannel0D4SeedContext :=
+      ropeTurnRatioIntervalCertificate_mono_margin
+        (turnRatio := ropeStandardChannel0TurnRatio)
+        (smallMargin := ropeStandardChannel0D5SeedMargin)
+        (largeMargin := ropeStandardChannel0D4SeedMargin)
+        (context := ropeStandardChannel0D4SeedContext)
+        (by dsimp [ropeStandardChannel0D5SeedMargin]; norm_num)
+        (by dsimp [ropeStandardChannel0D5SeedMargin, ropeStandardChannel0D4SeedMargin]; norm_num)
+        ropeStandardChannel0D4Seed_intervalCertificate
+    exact hsmall.2 gap hgap_range_d4 hgap_pos
+  · by_cases hgap_le_twenty_five : gap ≤ 25
+    · have hgap_min : 19 ≤ gap := by omega
+      have hgap_min_real : (19 : ℝ) ≤ gap := by exact_mod_cast hgap_min
+      have hgap_max_real : (gap : ℝ) ≤ 25 := by exact_mod_cast hgap_le_twenty_five
+      have hcell_lower :
+          (((3 : Int) : ℝ) + (1 : ℝ) / 64) ≤ (gap : ℝ) * ((10 : ℝ) / 63) := by
+        nlinarith
+      have hcell_upper :
+          (gap : ℝ) * ((25 : ℝ) / 157) ≤ (((3 : Int) : ℝ) + 1 - (1 : ℝ) / 64) := by
+        nlinarith
+      exact
+        ⟨((10 * gap : Nat) : ℚ) / 63, ((25 * gap : Nat) : ℚ) / 157, 3,
+          ropeStandardChannel0_d5IntervalWitness_of_scaled_bounds
+            (gap := gap) (cell := 3) hcell_lower hcell_upper⟩
+    · by_cases hgap_le_thirty_one : gap ≤ 31
+      · have hgap_min : 26 ≤ gap := by omega
+        have hgap_min_real : (26 : ℝ) ≤ gap := by exact_mod_cast hgap_min
+        have hgap_max_real : (gap : ℝ) ≤ 31 := by exact_mod_cast hgap_le_thirty_one
+        have hcell_lower :
+            (((4 : Int) : ℝ) + (1 : ℝ) / 64) ≤ (gap : ℝ) * ((10 : ℝ) / 63) := by
+          nlinarith
+        have hcell_upper :
+            (gap : ℝ) * ((25 : ℝ) / 157) ≤ (((4 : Int) : ℝ) + 1 - (1 : ℝ) / 64) := by
+          nlinarith
+        exact
+          ⟨((10 * gap : Nat) : ℚ) / 63, ((25 * gap : Nat) : ℚ) / 157, 4,
+            ropeStandardChannel0_d5IntervalWitness_of_scaled_bounds
+              (gap := gap) (cell := 4) hcell_lower hcell_upper⟩
+      · by_cases hgap_le_thirty_seven : gap ≤ 37
+        · have hgap_min : 32 ≤ gap := by omega
+          have hgap_min_real : (32 : ℝ) ≤ gap := by exact_mod_cast hgap_min
+          have hgap_max_real : (gap : ℝ) ≤ 37 := by exact_mod_cast hgap_le_thirty_seven
+          have hcell_lower :
+              (((5 : Int) : ℝ) + (1 : ℝ) / 64) ≤ (gap : ℝ) * ((10 : ℝ) / 63) := by
+            nlinarith
+          have hcell_upper :
+              (gap : ℝ) * ((25 : ℝ) / 157) ≤ (((5 : Int) : ℝ) + 1 - (1 : ℝ) / 64) := by
+            nlinarith
+          exact
+            ⟨((10 * gap : Nat) : ℚ) / 63, ((25 * gap : Nat) : ℚ) / 157, 5,
+              ropeStandardChannel0_d5IntervalWitness_of_scaled_bounds
+                (gap := gap) (cell := 5) hcell_lower hcell_upper⟩
+        · have hgap_min : 38 ≤ gap := by omega
+          have hgap_max : gap ≤ 43 := by omega
+          have hgap_min_real : (38 : ℝ) ≤ gap := by exact_mod_cast hgap_min
+          have hgap_max_real : (gap : ℝ) ≤ 43 := by exact_mod_cast hgap_max
+          have hcell_lower :
+              (((6 : Int) : ℝ) + (1 : ℝ) / 64) ≤ (gap : ℝ) * ((10 : ℝ) / 63) := by
+            nlinarith
+          have hcell_upper :
+              (gap : ℝ) * ((25 : ℝ) / 157) ≤ (((6 : Int) : ℝ) + 1 - (1 : ℝ) / 64) := by
+            nlinarith
+          exact
+            ⟨((10 * gap : Nat) : ℚ) / 63, ((25 * gap : Nat) : ℚ) / 157, 6,
+              ropeStandardChannel0_d5IntervalWitness_of_scaled_bounds
+                (gap := gap) (cell := 6) hcell_lower hcell_upper⟩
+
+/-- The fifth named standard-RoPE channel-0 seed has a proved finite
+turn-ratio margin over context `44`. -/
+theorem ropeStandardChannel0D5Seed_turnRatioFiniteMargin :
+    ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio
+      ropeStandardChannel0D5SeedMargin ropeStandardChannel0D5SeedContext :=
+  ropeTurnRatioFiniteMargin_of_intervalCertificate
+    ropeStandardChannel0D5Seed_intervalCertificate
+
 /-- Finite-context turn-ratio margins are monotone in the inspected context.
 
 A margin certificate proved for a larger context automatically applies to any
@@ -1586,6 +1759,26 @@ theorem not_ropeStandardChannel0D4Seed_nearTurn
       (by norm_num)
       (by simpa using ropeStandardChannel0D4Seed_turnRatioFiniteMargin)
       (by simpa [ropeStandardChannel0D4SeedMargin] using htolerance)
+
+/-- The smaller-margin standard-RoPE channel-0 interval seed rules out
+one-channel near-turn collisions below margin `1/64` over context `44`. -/
+theorem not_ropeStandardChannel0D5Seed_nearTurn
+    {tolerance : ℝ} {left right : Nat}
+    (hleft : left < right) (hright : right < ropeStandardChannel0D5SeedContext)
+    (htolerance : tolerance < ropeStandardChannel0D5SeedMargin) :
+    ¬ ropeRealPhaseNearTurn ropeStandardChannel0TurnRatio 1 tolerance left right := by
+  exact
+    not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin
+      (frequency := ropeStandardChannel0TurnRatio) (fullTurn := 1)
+      (margin := ropeStandardChannel0D5SeedMargin) (tolerance := tolerance)
+      (context := ropeStandardChannel0D5SeedContext) (left := left) (right := right)
+      hleft hright
+      (by
+        dsimp [ropeStandardChannel0TurnRatio]
+        positivity)
+      (by norm_num)
+      (by simpa using ropeStandardChannel0D5Seed_turnRatioFiniteMargin)
+      (by simpa [ropeStandardChannel0D5SeedMargin] using htolerance)
 
 /-- A finite-context turn-ratio margin for one channel rules out all-channel
 real near-turn collision in a finite bank.

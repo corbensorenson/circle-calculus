@@ -72,7 +72,9 @@ namespace Circle.PaperAI04
 #check Circle.Applications.not_ropeRationalPreset4099_nearTurn
 #check Circle.Applications.ropeTurnRatioIntervalWitness
 #check Circle.Applications.ropeTurnRatioIntervalWitness_forall_int
+#check Circle.Applications.ropeTurnRatioIntervalWitness_mono_margin
 #check Circle.Applications.ropeTurnRatioIntervalCertificate
+#check Circle.Applications.ropeTurnRatioIntervalCertificate_mono_margin
 #check Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate
 #check Circle.Applications.ropeStandardChannel0TurnRatio
 #check Circle.Applications.ropeStandardChannel0SeedContext
@@ -95,6 +97,11 @@ namespace Circle.PaperAI04
 #check Circle.Applications.ropeStandardChannel0D4Seed_intervalCertificate
 #check Circle.Applications.ropeStandardChannel0D4Seed_turnRatioFiniteMargin
 #check Circle.Applications.not_ropeStandardChannel0D4Seed_nearTurn
+#check Circle.Applications.ropeStandardChannel0D5SeedContext
+#check Circle.Applications.ropeStandardChannel0D5SeedMargin
+#check Circle.Applications.ropeStandardChannel0D5Seed_intervalCertificate
+#check Circle.Applications.ropeStandardChannel0D5Seed_turnRatioFiniteMargin
+#check Circle.Applications.not_ropeStandardChannel0D5Seed_nearTurn
 #check Circle.Applications.ropeTurnRatioFiniteMargin_mono_context
 #check Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin
 #check Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin
