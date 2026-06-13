@@ -74,6 +74,7 @@ namespace Circle.PaperAI04
 #check Circle.Applications.ropeTurnRatioIntervalWitness
 #check Circle.Applications.ropeTurnRatioIntervalWitness_forall_int
 #check Circle.Applications.ropeTurnRatioIntervalWitness_mono_margin
+#check Circle.Applications.ropeTurnRatioIntervalWitness_of_band_bounds
 #check Circle.Applications.ropeTurnRatioIntervalCertificate
 #check Circle.Applications.ropeTurnRatioIntervalCertificate_mono_margin
 #check Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate

@@ -240,6 +240,10 @@ def test_turn_ratio_floor_ceil_witness_bridge_matches_scan() -> None:
     assert "AIRA-T0059" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
+def test_real_phase_band_witness_bridge_is_listed() -> None:
+    assert "AIRA-T0126" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+
+
 def test_integer_turn_ratio_has_zero_finite_margin_once_unit_gap_exists() -> None:
     margin, gap, turns = scan_turn_ratio_finite_margin(
         turn_ratio=2.0,
@@ -400,6 +404,7 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert "AIRA-T0123" in certificate.theorem_ids
     assert "AIRA-T0124" in certificate.theorem_ids
     assert "AIRA-T0125" in certificate.theorem_ids
+    assert "AIRA-T0126" in certificate.theorem_ids
     assert (
         "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed"
         in certificate.lean_declarations
@@ -494,6 +499,10 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     )
     assert (
         "Circle.Applications.ropeStandardChannel0D12_context8192_margin_bracket"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.ropeTurnRatioIntervalWitness_of_band_bounds"
         in certificate.lean_declarations
     )
     assert "1/104219 is proved" in certificate.explanation

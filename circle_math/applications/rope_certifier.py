@@ -84,6 +84,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0057",
     "AIRA-T0058",
     "AIRA-T0059",
+    "AIRA-T0126",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -110,6 +111,7 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
     "Circle.Applications.ropeNearestIntegerWitnesses_iff_forall_int",
     "Circle.Applications.ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses",
+    "Circle.Applications.ropeTurnRatioIntervalWitness_of_band_bounds",
 )
 
 ROPE_RATIONAL_PRESET_4099_NAME = "rational_turn_ratio_1_4099_context_4096"
@@ -196,6 +198,7 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS: tuple[str, ...] = (
     "AIRA-T0123",
     "AIRA-T0124",
     "AIRA-T0125",
+    "AIRA-T0126",
 )
 
 ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -262,6 +265,7 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed",
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed_cons",
     "Circle.Applications.ropeStandardChannel0D12_context8192_margin_bracket",
+    "Circle.Applications.ropeTurnRatioIntervalWitness_of_band_bounds",
 )
 
 ROPE_STANDARD_CHANNEL0_D12_BANK_BRIDGE_THEOREMS: tuple[str, ...] = (
@@ -1999,7 +2003,7 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         "turn-ratio scaling, finite-context margin consequence, context-plus-margin transfer, "
         "integer/rational-turn-ratio guardrails, positive rational finite-context "
         "certificate and exact rational boundary, generated-gap enumeration, and "
-        "floor/ceiling nearest-integer witness bridge precursors only; "
+        "floor/ceiling nearest-integer plus band-endpoint witness bridge precursors only; "
         "not a Diophantine proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,

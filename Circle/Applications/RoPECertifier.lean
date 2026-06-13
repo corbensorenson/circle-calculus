@@ -784,6 +784,46 @@ def ropeTurnRatioIntervalWitness
       (cell : ℝ) + margin ≤ (lower : ℝ) ∧
         (upper : ℝ) ≤ (cell : ℝ) + 1 - margin
 
+/-- Endpoint bounds for a whole gap band produce one interval witness inside
+that band.
+
+This is the reusable compression rule for generated interval certificates: a
+future generator may group consecutive gaps into a band with one integer cell,
+then prove only the lower endpoint and upper endpoint inequalities for that
+band. Monotonicity fills in every intermediate gap. -/
+theorem ropeTurnRatioIntervalWitness_of_band_bounds
+    {turnRatio margin lowerBound upperBound : ℝ}
+    {gap start stop : Nat} {lower upper : ℚ} {cell : Int}
+    (hlower_eval : (lower : ℝ) = (gap : ℝ) * lowerBound)
+    (hupper_eval : (upper : ℝ) = (gap : ℝ) * upperBound)
+    (hlower_turn : lowerBound ≤ turnRatio)
+    (hupper_turn : turnRatio ≤ upperBound)
+    (hlower_nonneg : 0 ≤ lowerBound)
+    (hupper_nonneg : 0 ≤ upperBound)
+    (hstart : start ≤ gap) (hstop : gap ≤ stop)
+    (hcell_lower : (cell : ℝ) + margin ≤ (start : ℝ) * lowerBound)
+    (hcell_upper : (stop : ℝ) * upperBound ≤ (cell : ℝ) + 1 - margin) :
+    ropeTurnRatioIntervalWitness turnRatio margin gap lower upper cell := by
+  have hgap_nonneg : 0 ≤ (gap : ℝ) := by positivity
+  have hstart_le_gap_real : (start : ℝ) ≤ gap := by exact_mod_cast hstart
+  have hgap_le_stop_real : (gap : ℝ) ≤ stop := by exact_mod_cast hstop
+  constructor
+  · rw [hlower_eval]
+    exact mul_le_mul_of_nonneg_left hlower_turn hgap_nonneg
+  constructor
+  · rw [hupper_eval]
+    exact mul_le_mul_of_nonneg_left hupper_turn hgap_nonneg
+  constructor
+  · rw [hlower_eval]
+    exact
+      le_trans hcell_lower
+        (mul_le_mul_of_nonneg_right hstart_le_gap_real hlower_nonneg)
+  · rw [hupper_eval]
+    exact
+      le_trans
+        (mul_le_mul_of_nonneg_right hgap_le_stop_real hupper_nonneg)
+        hcell_upper
+
 /-- A rational interval witness proves the nearest-integer lower bound for
 all integer turns at one generated gap. -/
 theorem ropeTurnRatioIntervalWitness_forall_int

@@ -102,6 +102,7 @@ The conditional bank bridge says that if a finite real-phase bank contains that 
 <div class="theorem-box" data-theorem-id="AIRA-T0123"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0124"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0125"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0126"></div>
 
 ::: {.warning-box}
 This is not a full real-RoPE bank theorem. It is a theorem-backed channel-0 seed plus a one-separating-channel conditional bank transfer. The remaining hard work is broader channel-wise certification or sharper Diophantine machinery.
