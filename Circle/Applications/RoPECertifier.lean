@@ -1210,6 +1210,14 @@ noncomputable def ropeStandardChannel0D9SeedMargin : ℝ := 1 / 131072
 private def ropeStandardChannel0D9Cell (gap : Nat) : Int :=
   Int.ofNat ((100000000000000000000 * gap) / 628318530717958647694)
 
+/-- A tenth inspected context for the standard-RoPE interval certificate.
+This keeps the 4k horizon and tightens the channel-0 margin with the same
+20-decimal `π` bounds. -/
+def ropeStandardChannel0D10SeedContext : Nat := 4096
+
+/-- The advertised margin for the tenth standard channel-0 interval seed. -/
+noncomputable def ropeStandardChannel0D10SeedMargin : ℝ := 1 / 105000
+
 private theorem ropeStandardChannel0_base_lower :
     (1 : ℝ) / 8 ≤ ropeStandardChannel0TurnRatio := by
   have htwo_pi_pos : 0 < 2 * Real.pi := Real.two_pi_pos
@@ -2190,6 +2198,98 @@ theorem ropeStandardChannel0D9Seed_turnRatioFiniteMargin :
   ropeTurnRatioFiniteMargin_of_intervalCertificate
     ropeStandardChannel0D9Seed_intervalCertificate
 
+private theorem ropeStandardChannel0_d10IntervalWitness_of_scaled_bounds
+    {gap : Nat} {cell : Int}
+    (hcell_lower :
+      (cell : ℝ) + (1 : ℝ) / 105000 ≤
+        (gap : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647694))
+    (hcell_upper :
+      (gap : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647692) ≤
+        (cell : ℝ) + 1 - (1 : ℝ) / 105000) :
+    ropeTurnRatioIntervalWitness ropeStandardChannel0TurnRatio
+      ropeStandardChannel0D10SeedMargin gap
+      (((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647694)
+      (((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647692)
+      cell := by
+  unfold ropeTurnRatioIntervalWitness ropeStandardChannel0D10SeedMargin
+  constructor
+  · calc
+      ((((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647694 :
+          ℚ) : ℝ) =
+          (gap : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647694) := by
+        norm_num [Nat.cast_mul]
+        ring_nf
+      _ ≤ (gap : ℝ) * ropeStandardChannel0TurnRatio :=
+        mul_le_mul_of_nonneg_left ropeStandardChannel0_piD20_base_lower (by positivity)
+  constructor
+  · calc
+      (gap : ℝ) * ropeStandardChannel0TurnRatio ≤
+          (gap : ℝ) *
+            ((100000000000000000000 : ℝ) / 628318530717958647692) :=
+        mul_le_mul_of_nonneg_left ropeStandardChannel0_piD20_base_upper (by positivity)
+      _ = ((((100000000000000000000 * gap : Nat) : ℚ) /
+          628318530717958647692 : ℚ) : ℝ) := by
+        norm_num [Nat.cast_mul]
+        ring_nf
+  constructor
+  · calc
+      (cell : ℝ) + (1 : ℝ) / 105000 ≤
+          (gap : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647694) :=
+        hcell_lower
+      _ = ((((100000000000000000000 * gap : Nat) : ℚ) /
+          628318530717958647694 : ℚ) : ℝ) := by
+        norm_num [Nat.cast_mul]
+        ring_nf
+  · calc
+      ((((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647692 :
+          ℚ) : ℝ) =
+          (gap : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647692) := by
+        norm_num [Nat.cast_mul]
+        ring_nf
+      _ ≤ (cell : ℝ) + 1 - (1 : ℝ) / 105000 := hcell_upper
+
+set_option maxHeartbeats 5000000 in
+private theorem ropeStandardChannel0_d10IntervalWitness_of_gap_lt_context
+    {gap : Nat} (hgap_pos : 0 < gap)
+    (hgap_lt : gap < ropeStandardChannel0D10SeedContext) :
+    ropeTurnRatioIntervalWitness ropeStandardChannel0TurnRatio
+      ropeStandardChannel0D10SeedMargin gap
+      (((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647694)
+      (((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647692)
+      (ropeStandardChannel0D9Cell gap) := by
+  unfold ropeStandardChannel0D10SeedContext at hgap_lt
+  interval_cases hgap_value : gap <;> subst gap <;>
+    dsimp [ropeStandardChannel0D10SeedMargin, ropeStandardChannel0D9Cell]
+  all_goals
+    apply ropeStandardChannel0_d10IntervalWitness_of_scaled_bounds <;> norm_num
+
+/-- A tenth standard-RoPE interval seed: channel 0 has margin `1/105000`
+over the same 4k context as the D9 seed.
+
+This tightens the previous advertised `1/131072` margin using the same
+20-decimal rational enclosure and generated integer-cell table. It is still a
+finite one-channel certificate, not a full-bank or long-context theorem. -/
+theorem ropeStandardChannel0D10Seed_intervalCertificate :
+    ropeTurnRatioIntervalCertificate ropeStandardChannel0TurnRatio
+      ropeStandardChannel0D10SeedMargin ropeStandardChannel0D10SeedContext := by
+  refine ⟨by dsimp [ropeStandardChannel0D10SeedMargin]; norm_num, ?_⟩
+  intro gap hgap_range hgap_pos
+  have hgap_lt : gap < ropeStandardChannel0D10SeedContext := by
+    simpa [ropeStandardChannel0D10SeedContext] using List.mem_range.mp hgap_range
+  exact
+    ⟨((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647694,
+      ((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647692,
+      ropeStandardChannel0D9Cell gap,
+      ropeStandardChannel0_d10IntervalWitness_of_gap_lt_context hgap_pos hgap_lt⟩
+
+/-- The tenth named standard-RoPE channel-0 seed has a proved finite
+turn-ratio margin `1/105000` over context `4096`. -/
+theorem ropeStandardChannel0D10Seed_turnRatioFiniteMargin :
+    ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio
+      ropeStandardChannel0D10SeedMargin ropeStandardChannel0D10SeedContext :=
+  ropeTurnRatioFiniteMargin_of_intervalCertificate
+    ropeStandardChannel0D10Seed_intervalCertificate
+
 /-- Gap `710` is already within margin `1/65536` of integer turn `113` for
 the genuine standard channel-0 turn ratio.
 
@@ -2238,6 +2338,51 @@ theorem not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710
   have hcertifies_gap :=
     hmargin 710 (by norm_num) hcontext (113 : Int)
   have hobstruction := ropeStandardChannel0_gap710_error_lt_one_over_65536
+  linarith
+
+/-- Gap `710` is already within margin `1/104000` of integer turn `113` for
+the genuine standard channel-0 turn ratio.
+
+This brackets the tighter 4k D10 seed: Lean proves margin `1/105000` over the
+4k context, while this concrete near-return prevents the nearby larger margin
+`1/104000` for every context containing gap `710`. -/
+theorem ropeStandardChannel0_gap710_error_lt_one_over_104000 :
+    ropeTurnRatioError ropeStandardChannel0TurnRatio 710 (113 : Int) <
+      (1 : ℝ) / 104000 := by
+  unfold ropeTurnRatioError
+  have hlower :
+      (710 : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647694) ≤
+        (710 : ℝ) * ropeStandardChannel0TurnRatio :=
+    mul_le_mul_of_nonneg_left ropeStandardChannel0_piD20_base_lower (by norm_num)
+  have hupper :
+      (710 : ℝ) * ropeStandardChannel0TurnRatio ≤
+        (710 : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647692) :=
+    mul_le_mul_of_nonneg_left ropeStandardChannel0_piD20_base_upper (by norm_num)
+  rw [abs_lt]
+  constructor
+  · have hgap_lower :
+        (113 : ℝ) - (1 : ℝ) / 104000 <
+          (710 : ℝ) *
+            ((100000000000000000000 : ℝ) / 628318530717958647694) := by
+      norm_num
+    linarith
+  · have hgap_upper :
+        (710 : ℝ) *
+            ((100000000000000000000 : ℝ) / 628318530717958647692) <
+          (113 : ℝ) + (1 : ℝ) / 104000 := by
+      norm_num
+    linarith
+
+/-- No standard channel-0 finite-context margin of `1/104000` is possible once
+the inspected context contains gap `710`. -/
+theorem not_ropeStandardChannel0_margin_one_over_104000_of_context_gt_710
+    {context : Nat} (hcontext : 710 < context) :
+    ¬ ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio
+      ((1 : ℝ) / 104000) context := by
+  intro hmargin
+  have hcertifies_gap :=
+    hmargin 710 (by norm_num) hcontext (113 : Int)
+  have hobstruction := ropeStandardChannel0_gap710_error_lt_one_over_104000
   linarith
 
 /-- Finite-context turn-ratio margins are monotone in the inspected context.
@@ -2501,6 +2646,27 @@ theorem not_ropeStandardChannel0D9Seed_nearTurn
       (by simpa using ropeStandardChannel0D9Seed_turnRatioFiniteMargin)
       (by simpa [ropeStandardChannel0D9SeedMargin] using htolerance)
 
+/-- The tighter 20-decimal generated-band standard-RoPE channel-0 interval seed
+rules out one-channel near-turn collisions below margin `1/105000` over context
+`4096`. -/
+theorem not_ropeStandardChannel0D10Seed_nearTurn
+    {tolerance : ℝ} {left right : Nat}
+    (hleft : left < right) (hright : right < ropeStandardChannel0D10SeedContext)
+    (htolerance : tolerance < ropeStandardChannel0D10SeedMargin) :
+    ¬ ropeRealPhaseNearTurn ropeStandardChannel0TurnRatio 1 tolerance left right := by
+  exact
+    not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin
+      (frequency := ropeStandardChannel0TurnRatio) (fullTurn := 1)
+      (margin := ropeStandardChannel0D10SeedMargin) (tolerance := tolerance)
+      (context := ropeStandardChannel0D10SeedContext) (left := left) (right := right)
+      hleft hright
+      (by
+        dsimp [ropeStandardChannel0TurnRatio]
+        positivity)
+      (by norm_num)
+      (by simpa using ropeStandardChannel0D10Seed_turnRatioFiniteMargin)
+      (by simpa [ropeStandardChannel0D10SeedMargin] using htolerance)
+
 /-- A finite-context turn-ratio margin for one channel rules out all-channel
 real near-turn collision in a finite bank.
 
@@ -2613,6 +2779,49 @@ theorem not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed
       (tolerance := tolerance)
       (requestedContext := requestedContext)
       (certifiedContext := ropeStandardChannel0D9SeedContext)
+      (left := left) (right := right)
+      hcontext hmargin_le hmem hleft hright hfrequency_nonneg hfull_pos hmargin
+      htolerance
+
+/-- The tighter context-`4096` standard channel-0 interval seed can be used as
+a bank-level no-near-turn certificate whenever that channel frequency is
+present.
+
+This is the D10 version of the certifier-facing transfer: one separating
+standard channel rules out a simultaneous all-bank near-turn event below any
+downgraded requested margin and context. -/
+theorem not_ropeRealPhaseBankNearTurn_of_standardChannel0D10Seed
+    {frequencies : List ℝ} {fullTurn requestedMargin tolerance : ℝ}
+    {requestedContext left right : Nat}
+    (hcontext : requestedContext ≤ ropeStandardChannel0D10SeedContext)
+    (hmargin_le : requestedMargin ≤ ropeStandardChannel0D10SeedMargin)
+    (hmem : ropeStandardChannel0TurnRatio * fullTurn ∈ frequencies)
+    (hleft : left < right) (hright : right < requestedContext)
+    (hfull_pos : 0 < fullTurn)
+    (htolerance : tolerance < fullTurn * requestedMargin) :
+    ¬ ropeRealPhaseBankNearTurn frequencies fullTurn tolerance left right := by
+  have hratio :
+      (ropeStandardChannel0TurnRatio * fullTurn) / fullTurn =
+        ropeStandardChannel0TurnRatio := by
+    field_simp [hfull_pos.ne']
+  have hfrequency_nonneg : 0 ≤ ropeStandardChannel0TurnRatio * fullTurn := by
+    dsimp [ropeStandardChannel0TurnRatio]
+    positivity
+  have hmargin :
+      ropeTurnRatioFiniteMargin
+        ((ropeStandardChannel0TurnRatio * fullTurn) / fullTurn)
+        ropeStandardChannel0D10SeedMargin ropeStandardChannel0D10SeedContext := by
+    simpa [hratio] using ropeStandardChannel0D10Seed_turnRatioFiniteMargin
+  exact
+    not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin
+      (frequencies := frequencies)
+      (frequency := ropeStandardChannel0TurnRatio * fullTurn)
+      (fullTurn := fullTurn)
+      (requestedMargin := requestedMargin)
+      (certifiedMargin := ropeStandardChannel0D10SeedMargin)
+      (tolerance := tolerance)
+      (requestedContext := requestedContext)
+      (certifiedContext := ropeStandardChannel0D10SeedContext)
       (left := left) (right := right)
       hcontext hmargin_le hmem hleft hright hfrequency_nonneg hfull_pos hmargin
       htolerance

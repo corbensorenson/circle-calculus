@@ -894,7 +894,13 @@
               "AIRA-T0101",
               "AIRA-T0102",
               "AIRA-T0103",
-              "AIRA-T0104"
+              "AIRA-T0104",
+              "AIRA-T0105",
+              "AIRA-T0106",
+              "AIRA-T0107",
+              "AIRA-T0108",
+              "AIRA-T0109",
+              "AIRA-T0110"
             ]
           },
           {
@@ -1442,7 +1448,13 @@
               "AIRA-T0101",
               "AIRA-T0102",
               "AIRA-T0103",
-              "AIRA-T0104"
+              "AIRA-T0104",
+              "AIRA-T0105",
+              "AIRA-T0106",
+              "AIRA-T0107",
+              "AIRA-T0108",
+              "AIRA-T0109",
+              "AIRA-T0110"
             ]
           },
           {
@@ -1974,7 +1986,13 @@
               "AIRA-T0101",
               "AIRA-T0102",
               "AIRA-T0103",
-              "AIRA-T0104"
+              "AIRA-T0104",
+              "AIRA-T0105",
+              "AIRA-T0106",
+              "AIRA-T0107",
+              "AIRA-T0108",
+              "AIRA-T0109",
+              "AIRA-T0110"
             ]
           },
           {
@@ -2237,7 +2255,13 @@
               "AIRA-T0101",
               "AIRA-T0102",
               "AIRA-T0103",
-              "AIRA-T0104"
+              "AIRA-T0104",
+              "AIRA-T0105",
+              "AIRA-T0106",
+              "AIRA-T0107",
+              "AIRA-T0108",
+              "AIRA-T0109",
+              "AIRA-T0110"
             ]
           },
           {
@@ -2512,7 +2536,13 @@
               "AIRA-T0101",
               "AIRA-T0102",
               "AIRA-T0103",
-              "AIRA-T0104"
+              "AIRA-T0104",
+              "AIRA-T0105",
+              "AIRA-T0106",
+              "AIRA-T0107",
+              "AIRA-T0108",
+              "AIRA-T0109",
+              "AIRA-T0110"
             ]
           },
           {
@@ -2844,7 +2874,13 @@
               "AIRA-T0101",
               "AIRA-T0102",
               "AIRA-T0103",
-              "AIRA-T0104"
+              "AIRA-T0104",
+              "AIRA-T0105",
+              "AIRA-T0106",
+              "AIRA-T0107",
+              "AIRA-T0108",
+              "AIRA-T0109",
+              "AIRA-T0110"
             ]
           },
           {
@@ -3132,7 +3168,13 @@
               "AIRA-T0101",
               "AIRA-T0102",
               "AIRA-T0103",
-              "AIRA-T0104"
+              "AIRA-T0104",
+              "AIRA-T0105",
+              "AIRA-T0106",
+              "AIRA-T0107",
+              "AIRA-T0108",
+              "AIRA-T0109",
+              "AIRA-T0110"
             ]
           },
           {
@@ -3535,7 +3577,7 @@
       ],
       "claim_boundary": "Interval-plan data only unless theorem_status names a compiled Lean seed. Even the proved seed is not a model-quality claim, large-context bank claim, speed claim, or deployment claim.",
       "context_length": 333,
-      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072 context-4096 plan have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
+      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072 plus margin-1/105000 context-4096 plans have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
       "first_uncovered_gap": 333,
       "lower_turn_ratio_bound": "625/3927",
       "name": "standard_rope_channel0_interval_plan_d4_margin_1_512_context_333",
@@ -4119,7 +4161,7 @@
       ],
       "claim_boundary": "Interval-plan data only unless theorem_status names a compiled Lean seed. Even the proved seed is not a model-quality claim, large-context bank claim, speed claim, or deployment claim.",
       "context_length": 710,
-      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072 context-4096 plan have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
+      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072 plus margin-1/105000 context-4096 plans have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
       "first_uncovered_gap": 710,
       "lower_turn_ratio_bound": "500000/3141593",
       "name": "standard_rope_channel0_interval_plan_d6_margin_1_1024_context_710",
@@ -7398,25 +7440,25 @@
       ],
       "claim_boundary": "Interval-plan data only unless theorem_status names a compiled Lean seed. Even the proved seed is not a model-quality claim, large-context bank claim, speed claim, or deployment claim.",
       "context_length": 4096,
-      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072 context-4096 plan have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
+      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072 plus margin-1/105000 context-4096 plans have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
       "first_uncovered_gap": null,
       "lower_turn_ratio_bound": "50000000000000000000/314159265358979323847",
-      "name": "standard_rope_channel0_interval_plan_d20_margin_1_131072_context_4096",
+      "name": "standard_rope_channel0_interval_plan_d20_margin_1_105000_context_4096",
       "pass_plan": true,
       "pi_bound_preset": "d20",
       "pi_bounds": "3.14159265358979323846 < pi and pi < 3.14159265358979323847",
-      "planned_margin": "1/131072",
+      "planned_margin": "1/105000",
       "schema_id": "circle_calculus.standard_rope_interval_plan.v0",
-      "theorem_status": "lean_proved_interval_seed_AIRA-T0097_to_AIRA-T0101",
+      "theorem_status": "lean_proved_interval_seed_AIRA-T0105_to_AIRA-T0108",
       "turn_ratio_expression": "1/(2*pi)",
       "upper_turn_ratio_bound": "25000000000000000000/157079632679489661923"
     }
   ],
   "standard_interval_certificate": {
-    "certified_margin": "1/131072",
+    "certified_margin": "1/105000",
     "claim_boundary": "This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 4096 only. It is not a full standard RoPE bank certificate and does not certify larger contexts or other channels.",
     "context_length": 4096,
-    "explanation": "Lean proves that standard RoPE channel 0, with turn ratio 1/(2*pi), has finite nearest-integer margin 1/131072 for gaps 1 through 4095. Every gap uses the 20-decimal enclosure 10^20*gap/628318530717958647694 <= gap/(2*pi) <= 10^20*gap/628318530717958647692, split across computed integer cells 0 through 651. Lean also proves that the earlier 1/1024 margin stops at gap 710, so this 4k seed deliberately uses a smaller advertised margin, and that the doubled D9 margin 1/65536 is already impossible for any context containing gap 710. The theorem trail also includes a conditional bank-level bridge for banks containing the standard channel-0 angular frequency.",
+    "explanation": "Lean proves that standard RoPE channel 0, with turn ratio 1/(2*pi), has finite nearest-integer margin 1/105000 for gaps 1 through 4095. Every gap uses the 20-decimal enclosure 10^20*gap/628318530717958647694 <= gap/(2*pi) <= 10^20*gap/628318530717958647692, split across computed integer cells 0 through 651. Lean also proves that the earlier 1/1024 margin stops at gap 710, and that margins 1/65536 and 1/104000 are already impossible for any context containing that gap. The theorem trail also includes a conditional bank-level bridge for banks containing the standard channel-0 angular frequency.",
     "interval_witnesses": [
       {
         "cell": 0,
@@ -32031,7 +32073,13 @@
       "Circle.Applications.not_ropeStandardChannel0D9Seed_nearTurn",
       "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
       "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_65536",
-      "Circle.Applications.not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710"
+      "Circle.Applications.not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710",
+      "Circle.Applications.ropeStandardChannel0D10Seed_intervalCertificate",
+      "Circle.Applications.ropeStandardChannel0D10Seed_turnRatioFiniteMargin",
+      "Circle.Applications.not_ropeStandardChannel0D10Seed_nearTurn",
+      "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D10Seed",
+      "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_104000",
+      "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104000_of_context_gt_710"
     ],
     "name": "standard_rope_channel0_interval_context_4096",
     "pass_certificate": true,
@@ -32079,7 +32127,13 @@
       "AIRA-T0101",
       "AIRA-T0102",
       "AIRA-T0103",
-      "AIRA-T0104"
+      "AIRA-T0104",
+      "AIRA-T0105",
+      "AIRA-T0106",
+      "AIRA-T0107",
+      "AIRA-T0108",
+      "AIRA-T0109",
+      "AIRA-T0110"
     ],
     "turn_ratio_expression": "1/(2*pi)"
   }
