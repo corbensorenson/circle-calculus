@@ -172,6 +172,7 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS: tuple[str, ...] = (
     "AIRA-T0099",
     "AIRA-T0100",
     "AIRA-T0101",
+    "AIRA-T0102",
 )
 
 ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -214,6 +215,7 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeStandardChannel0D9Seed_intervalCertificate",
     "Circle.Applications.ropeStandardChannel0D9Seed_turnRatioFiniteMargin",
     "Circle.Applications.not_ropeStandardChannel0D9Seed_nearTurn",
+    "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -1260,7 +1262,9 @@ def certify_standard_channel0_interval_seed() -> IntervalBackedTurnRatioCertific
             "10^20*gap/628318530717958647692, split across computed integer "
             "cells 0 through 651. Lean also proves that the earlier 1/1024 "
             "margin stops at gap 710, so this 4k seed deliberately uses a "
-            "smaller advertised margin."
+            "smaller advertised margin. The theorem trail also includes a "
+            "conditional bank-level bridge for banks containing the standard "
+            "channel-0 angular frequency."
         ),
         claim_boundary=(
             "This is a theorem-backed interval certificate for the genuine standard "

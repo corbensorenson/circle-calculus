@@ -11579,6 +11579,12 @@
           "lean_name": "Circle.Applications.not_ropeStandardChannel0D9Seed_nearTurn",
           "name": "Circle.Applications.not_ropeStandardChannel0D9Seed_nearTurn",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0102",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -12094,6 +12100,12 @@
           "id": "AIRA-T0101",
           "lean_name": "Circle.Applications.not_ropeStandardChannel0D9Seed_nearTurn",
           "name": "Circle.Applications.not_ropeStandardChannel0D9Seed_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0102",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
           "status": "proved"
         }
       ],
@@ -12994,6 +13006,12 @@
           "lean_name": "Circle.Applications.not_ropeStandardChannel0D9Seed_nearTurn",
           "name": "Circle.Applications.not_ropeStandardChannel0D9Seed_nearTurn",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0102",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -13506,6 +13524,12 @@
           "id": "AIRA-T0101",
           "lean_name": "Circle.Applications.not_ropeStandardChannel0D9Seed_nearTurn",
           "name": "Circle.Applications.not_ropeStandardChannel0D9Seed_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0102",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
           "status": "proved"
         }
       ],
@@ -14105,6 +14129,12 @@
           "lean_name": "Circle.Applications.not_ropeStandardChannel0D9Seed_nearTurn",
           "name": "Circle.Applications.not_ropeStandardChannel0D9Seed_nearTurn",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0102",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -14123,10 +14153,10 @@
         "A formal proof of the current numerical floating-point scan.",
         "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
       ],
-      "formal_definition": "In Lean, `Circle.Applications.ropeTurnRatioFiniteMargin alpha margin context` means every positive natural gap below `context` is at least `margin` away from every integer turn under `Circle.Applications.ropeTurnRatioError alpha gap turns`. Theorem `Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds` reduces the gap side to generated positive members of `List.range context`; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses` reduces the integer-turn side for each generated gap to floor and ceiling witnesses. Theorem `Circle.Applications.RopeTurnRatioFiniteMarginCertificate.certifies` packages those witnesses as a proof-carrying certificate object. Theorem `Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate` packages a finite table of rational interval witnesses as the same margin predicate. Theorem `Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin` proves the named rational/discretized preset `1/4099` has margin `1/4099` over context `4096`; theorem `Circle.Applications.ropeStandardChannel0D9Seed_turnRatioFiniteMargin` proves the current strongest standard channel-0 seed for `1 / (2*pi)`, context `4096`, margin `1/131072`; theorem `Circle.Applications.not_ropeStandardChannel0D8SeedMargin_of_context_gt_seed` proves that the earlier margin `1/1024` cannot extend past context `710` because gap `710` is already within that margin of integer turn `113`. Their no-near-turn consequences are `not_ropeRationalPreset4099_nearTurn`, `not_ropeStandardChannel0D8Seed_nearTurn`, and `not_ropeStandardChannel0D9Seed_nearTurn`. Theorem `Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin` proves that any such margin rules out one-channel real near-turn collision below the scaled tolerance `fullTurn * margin`; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_context` proves the same margin transfers from a larger certified context to any smaller requested context; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin` proves a larger certified margin also proves any smaller advertised margin over the same context; theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin` packages both downgrades at the bank level.",
+      "formal_definition": "In Lean, `Circle.Applications.ropeTurnRatioFiniteMargin alpha margin context` means every positive natural gap below `context` is at least `margin` away from every integer turn under `Circle.Applications.ropeTurnRatioError alpha gap turns`. Theorem `Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds` reduces the gap side to generated positive members of `List.range context`; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses` reduces the integer-turn side for each generated gap to floor and ceiling witnesses. Theorem `Circle.Applications.RopeTurnRatioFiniteMarginCertificate.certifies` packages those witnesses as a proof-carrying certificate object. Theorem `Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate` packages a finite table of rational interval witnesses as the same margin predicate. Theorem `Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin` proves the named rational/discretized preset `1/4099` has margin `1/4099` over context `4096`; theorem `Circle.Applications.ropeStandardChannel0D9Seed_turnRatioFiniteMargin` proves the current strongest standard channel-0 seed for `1 / (2*pi)`, context `4096`, margin `1/131072`; theorem `Circle.Applications.not_ropeStandardChannel0D8SeedMargin_of_context_gt_seed` proves that the earlier margin `1/1024` cannot extend past context `710` because gap `710` is already within that margin of integer turn `113`. Their no-near-turn consequences are `not_ropeRationalPreset4099_nearTurn`, `not_ropeStandardChannel0D8Seed_nearTurn`, and `not_ropeStandardChannel0D9Seed_nearTurn`. Theorem `Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin` proves that any such margin rules out one-channel real near-turn collision below the scaled tolerance `fullTurn * margin`; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_context` proves the same margin transfers from a larger certified context to any smaller requested context; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin` proves a larger certified margin also proves any smaller advertised margin over the same context; theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin` packages both downgrades at the bank level; theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed` specializes that transfer to banks containing the standard channel-0 angular frequency.",
       "id": "COMMON-0088",
       "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
-      "intuition": "This is the shape a real RoPE certifier ultimately needs: a finite-context lower bound on nearest-integer returns for a channel's turn ratio. The formal spine now has one complete rational/discretized 4k certificate, a generic interval-certificate route, a theorem-backed standard-RoPE channel-0 seed through context 4096, and a proof-backed reason that the larger 1/1024 margin stops at context 710. The remaining hard work is scaling channel-wise interval witnesses or continued-fraction arguments to full standard-RoPE banks and larger contexts.",
+      "intuition": "This is the shape a real RoPE certifier ultimately needs: a finite-context lower bound on nearest-integer returns for a channel's turn ratio. The formal spine now has one complete rational/discretized 4k certificate, a generic interval-certificate route, a theorem-backed standard-RoPE channel-0 seed through context 4096, a conditional bank bridge when that channel is present, and a proof-backed reason that the larger 1/1024 margin stops at context 710. The remaining hard work is scaling channel-wise interval witnesses or continued-fraction arguments to full standard-RoPE banks and larger contexts.",
       "kind": "relation",
       "name": "RoPE finite-context turn-ratio margin",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
@@ -14470,6 +14500,12 @@
           "lean_name": "Circle.Applications.not_ropeStandardChannel0D9Seed_nearTurn",
           "name": "Circle.Applications.not_ropeStandardChannel0D9Seed_nearTurn",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0102",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -14764,6 +14800,12 @@
           "id": "AIRA-T0101",
           "lean_name": "Circle.Applications.not_ropeStandardChannel0D9Seed_nearTurn",
           "name": "Circle.Applications.not_ropeStandardChannel0D9Seed_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0102",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
           "status": "proved"
         }
       ],

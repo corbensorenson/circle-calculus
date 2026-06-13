@@ -145,10 +145,10 @@ Expected meaning:
 standard_rope_channel0_interval_context_4096
 True
 1/131072
-AIRA-T0063,AIRA-T0064,AIRA-T0065,...,AIRA-T0101
+AIRA-T0063,AIRA-T0064,AIRA-T0065,...,AIRA-T0102
 ```
 
-Lean proves that channel 0 with standard turn ratio `1 / (2π)` has finite-context nearest-integer margin `1/131072` for gaps `1` through `4095`. The current strongest seed uses the 20-decimal enclosure `10^20*gap/628318530717958647694 <= gap/(2π) <= 10^20*gap/628318530717958647692`, split across computed integer cells `0` through `651`. Lean also proves that the earlier `1/1024` margin stops at gap `710`, so the 4k seed deliberately uses a smaller advertised margin. This is a real standard-RoPE theorem, but only for one channel and context `4096`; it is not a proof for 128k or the whole multi-channel bank.
+Lean proves that channel 0 with standard turn ratio `1 / (2π)` has finite-context nearest-integer margin `1/131072` for gaps `1` through `4095`. The current strongest seed uses the 20-decimal enclosure `10^20*gap/628318530717958647694 <= gap/(2π) <= 10^20*gap/628318530717958647692`, split across computed integer cells `0` through `651`. Lean also proves that the earlier `1/1024` margin stops at gap `710`, so the 4k seed deliberately uses a smaller advertised margin. `AIRA-T0102` adds the conditional bank-level bridge when a finite real-phase bank contains the standard channel-0 angular frequency. This is real standard-RoPE theorem content, but still channel-0 based; it is not a proof for 128k or every channel in the whole multi-channel bank.
 
 For audit and future Lean work, the sidecar also exposes interval plans:
 
