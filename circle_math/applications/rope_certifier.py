@@ -19,6 +19,7 @@ from typing import Any, Iterable, Literal, Sequence
 
 
 DiscretizationPolicy = Literal["round", "floor", "ceil"]
+PiBoundPreset = Literal["d4", "d6", "d20"]
 
 
 ROPE_CERTIFIER_THEOREMS: tuple[str, ...] = (
@@ -345,6 +346,36 @@ class RationalIntervalWitnessReport:
     lower: str
     upper: str
     cell: int
+
+
+@dataclass(frozen=True)
+class StandardRoPEIntervalBandReport:
+    start_gap: int
+    end_gap: int
+    cell: int
+
+
+@dataclass(frozen=True)
+class StandardRoPEIntervalPlan:
+    schema_id: str
+    name: str
+    turn_ratio_expression: str
+    context_length: int
+    planned_margin: str
+    pi_bound_preset: PiBoundPreset
+    pi_bounds: str
+    lower_turn_ratio_bound: str
+    upper_turn_ratio_bound: str
+    pass_plan: bool
+    first_uncovered_gap: int | None
+    band_count: int
+    bands: tuple[StandardRoPEIntervalBandReport, ...]
+    theorem_status: str
+    explanation: str
+    claim_boundary: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
 
 
 @dataclass(frozen=True)
@@ -956,6 +987,156 @@ def format_fraction(value: Fraction) -> str:
     if value.denominator == 1:
         return str(value.numerator)
     return f"{value.numerator}/{value.denominator}"
+
+
+def _floor_fraction(value: Fraction) -> int:
+    return value.numerator // value.denominator
+
+
+def standard_channel0_turn_ratio_bounds(
+    *,
+    pi_bound_preset: PiBoundPreset,
+) -> tuple[Fraction, Fraction, str]:
+    """Return exact rational bounds for the standard channel-0 turn ratio.
+
+    The returned pair is ``lower <= 1/(2*pi) <= upper`` as exact ``Fraction``
+    objects derived from the named mathlib-style decimal bounds on ``pi``.
+    This helper emits executable planning data only; a Lean theorem must still
+    be added before a generated plan is formal proof.
+    """
+    if pi_bound_preset == "d4":
+        return (
+            Fraction(5_000, 31_416),
+            Fraction(5_000, 31_415),
+            "3.1415 < pi and pi < 3.1416",
+        )
+    if pi_bound_preset == "d6":
+        return (
+            Fraction(500_000, 3_141_593),
+            Fraction(500_000, 3_141_592),
+            "3.141592 < pi and pi < 3.141593",
+        )
+    if pi_bound_preset == "d20":
+        return (
+            Fraction(10**20, 2 * 314_159_265_358_979_323_847),
+            Fraction(10**20, 2 * 314_159_265_358_979_323_846),
+            "3.14159265358979323846 < pi and pi < 3.14159265358979323847",
+        )
+    raise ValueError("pi_bound_preset must be one of: d4, d6, d20")
+
+
+def _standard_channel0_interval_cell(
+    *,
+    gap: int,
+    margin: Fraction,
+    lower_turn_ratio_bound: Fraction,
+    upper_turn_ratio_bound: Fraction,
+) -> int | None:
+    lower_value = gap * lower_turn_ratio_bound
+    upper_value = gap * upper_turn_ratio_bound
+    start_cell = _floor_fraction(lower_value)
+    end_cell = _floor_fraction(upper_value)
+    for cell in range(max(0, start_cell - 1), end_cell + 2):
+        if (
+            Fraction(cell, 1) + margin <= lower_value
+            and upper_value <= Fraction(cell + 1, 1) - margin
+        ):
+            return cell
+    return None
+
+
+def plan_standard_channel0_interval_bands(
+    *,
+    pi_bound_preset: PiBoundPreset = "d6",
+    margin: Fraction = Fraction(1, 1024),
+    max_context_length: int = 4096,
+) -> StandardRoPEIntervalPlan:
+    """Plan exact rational interval bands for standard RoPE channel 0.
+
+    This is a deterministic source-data generator for future Lean interval
+    certificates. It does not mark the generated plan as proved. A plan covers
+    context ``N`` exactly when every positive gap below ``N`` has a rational
+    interval contained in one integer cell with the requested margin.
+    """
+    if margin < 0:
+        raise ValueError("margin must be nonnegative")
+    if max_context_length <= 1:
+        raise ValueError("max_context_length must be greater than 1")
+
+    lower, upper, pi_bounds = standard_channel0_turn_ratio_bounds(
+        pi_bound_preset=pi_bound_preset,
+    )
+    bands: list[StandardRoPEIntervalBandReport] = []
+    active_start: int | None = None
+    active_end: int | None = None
+    active_cell: int | None = None
+    first_uncovered_gap: int | None = None
+
+    for gap in range(1, max_context_length):
+        cell = _standard_channel0_interval_cell(
+            gap=gap,
+            margin=margin,
+            lower_turn_ratio_bound=lower,
+            upper_turn_ratio_bound=upper,
+        )
+        if cell is None:
+            first_uncovered_gap = gap
+            break
+        if active_cell is None:
+            active_start = gap
+            active_end = gap
+            active_cell = cell
+        elif cell == active_cell and active_end == gap - 1:
+            active_end = gap
+        else:
+            bands.append(StandardRoPEIntervalBandReport(
+                start_gap=active_start or gap,
+                end_gap=active_end or gap,
+                cell=active_cell,
+            ))
+            active_start = gap
+            active_end = gap
+            active_cell = cell
+
+    if active_cell is not None:
+        bands.append(StandardRoPEIntervalBandReport(
+            start_gap=active_start or 1,
+            end_gap=active_end or 1,
+            cell=active_cell,
+        ))
+
+    context_length = first_uncovered_gap or max_context_length
+    margin_text = format_fraction(margin)
+    return StandardRoPEIntervalPlan(
+        schema_id="circle_calculus.standard_rope_interval_plan.v0",
+        name=(
+            f"standard_rope_channel0_interval_plan_{pi_bound_preset}_"
+            f"margin_{margin.numerator}_{margin.denominator}_context_{context_length}"
+        ),
+        turn_ratio_expression="1/(2*pi)",
+        context_length=context_length,
+        planned_margin=margin_text,
+        pi_bound_preset=pi_bound_preset,
+        pi_bounds=pi_bounds,
+        lower_turn_ratio_bound=format_fraction(lower),
+        upper_turn_ratio_bound=format_fraction(upper),
+        pass_plan=bool(bands),
+        first_uncovered_gap=first_uncovered_gap,
+        band_count=len(bands),
+        bands=tuple(bands),
+        theorem_status="candidate_plan_not_lean_proved",
+        explanation=(
+            "This exact-rational plan groups positive gaps into integer-cell "
+            "bands for a future Lean interval certificate. The plan is useful "
+            "source data, but it is not formal proof until the corresponding "
+            "Lean declarations compile and manifest ids are marked proved."
+        ),
+        claim_boundary=(
+            "Candidate interval-plan data only. Do not cite as a proved RoPE "
+            "margin, model-quality claim, context-length claim, speed claim, "
+            "or deployment claim."
+        ),
+    )
 
 
 def certify_standard_channel0_interval_seed() -> IntervalBackedTurnRatioCertificate:

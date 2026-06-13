@@ -18,6 +18,15 @@ This is a theorem-backed rational/discretized turn-ratio certificate. It is not 
 
 This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 57 only. It is not a full standard RoPE bank certificate and does not certify 512, 4096, or larger contexts.
 
+## Standard RoPE Candidate Interval Plans
+
+These exact-rational plans are generated source data for future Lean certificates. They are not marked proved and do not upgrade the theorem-backed context-57 seed.
+
+| Plan | Pi bounds | Planned margin | Covered context | First uncovered gap | Bands | Status |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| standard_rope_channel0_interval_plan_d4_margin_1_512_context_333 | 3.1415 < pi and pi < 3.1416 | 1/512 | 333 | 333 | 53 | candidate_plan_not_lean_proved |
+| standard_rope_channel0_interval_plan_d6_margin_1_1024_context_710 | 3.141592 < pi and pi < 3.141593 | 1/1024 | 710 | 710 | 113 | candidate_plan_not_lean_proved |
+
 ## RoPE Preset Diagnostics
 
 | Preset | Head dim | Base | Context | Exact discrete | Common collision gap | Common-gap pairs | Total bank pairs | First pass prefix | Smallest pass subfamily | Real margin | Worst gap | Theorem ids |

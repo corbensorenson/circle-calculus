@@ -150,6 +150,25 @@ AIRA-T0063,AIRA-T0064,AIRA-T0065,...,AIRA-T0086
 
 Lean proves that channel 0 with standard turn ratio `1 / (2π)` has finite-context nearest-integer margin `1/512` for gaps `1` through `56`. Gaps `1` through `43` reuse earlier interval seeds after lowering the advertised margin; gaps `44` through `56` use the sharper four-decimal enclosure `5000*gap/31416 <= gap/(2π) <= 5000*gap/31415` from `π < 3.1416` and `3.1415 < π`, split across integer cells `7` and `8`. This is a real standard-RoPE theorem, but only for context `57`; it is not a proof for 512, 4096, 128k, or the whole multi-channel bank.
 
+For future Lean work, the sidecar also exposes candidate interval plans:
+
+```python
+from fractions import Fraction
+from circle_math.applications import plan_standard_channel0_interval_bands
+
+plan_standard_channel0_interval_bands(
+    pi_bound_preset="d4",
+    margin=Fraction(1, 512),
+).context_length  # 333
+
+plan_standard_channel0_interval_bands(
+    pi_bound_preset="d6",
+    margin=Fraction(1, 1024),
+).context_length  # 710
+```
+
+Those plans are exact-rational source data only. They are not Lean-proved until matching declarations compile and manifest ids are marked proved.
+
 If the exact discrete contract fails, the output includes a common collision gap and sample colliding pairs.
 It also reports `guaranteed_common_gap_collision_pair_count`, the number of starts whose paired position is exactly the common collision gap ahead, and `guaranteed_common_gap_multiple_pair_count`, the corresponding guaranteed family summed over every positive in-context multiple of that gap. `total_bank_collision_pair_count` is the exact all-channel count for the declared integer-period bank, backed by the period-bank LCM theorem. `AIRA-T0048` proves the LCM-gap collision family, and `AIRA-T0049` proves that a positive LCM below the context gives an explicit unequal collision witness. It is not a real-valued RoPE collision count.
 

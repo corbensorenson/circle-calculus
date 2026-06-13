@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import json
 from dataclasses import asdict
+from fractions import Fraction
 from pathlib import Path
 from typing import Any
 
@@ -22,6 +23,7 @@ from circle_math.applications import (
     certify_rational_preset_4099,
     certify_rope_positions,
     certify_standard_channel0_interval_seed,
+    plan_standard_channel0_interval_bands,
     phase_bank_certificate_summary_lines,
 )
 
@@ -152,6 +154,18 @@ def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
         ),
         "rational_margin_certificate": certify_rational_preset_4099().to_dict(),
         "standard_interval_certificate": certify_standard_channel0_interval_seed().to_dict(),
+        "standard_interval_candidate_plans": (
+            plan_standard_channel0_interval_bands(
+                pi_bound_preset="d4",
+                margin=Fraction(1, 512),
+                max_context_length=4096,
+            ).to_dict(),
+            plan_standard_channel0_interval_bands(
+                pi_bound_preset="d6",
+                margin=Fraction(1, 1024),
+                max_context_length=4096,
+            ).to_dict(),
+        ),
         "presets": certificates,
         "phase_bank_diagnostics": phase_bank_diagnostics,
     }
@@ -160,6 +174,7 @@ def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
 def markdown_results(payload: dict[str, Any]) -> str:
     rational = payload["rational_margin_certificate"]
     standard_interval = payload["standard_interval_certificate"]
+    standard_plans = payload["standard_interval_candidate_plans"]
     rows = [
         "| Preset | Head dim | Base | Context | Exact discrete | Common collision gap | Common-gap pairs | Total bank pairs | First pass prefix | Smallest pass subfamily | Real margin | Worst gap | Theorem ids |",
         "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | --- | --- | --- | --- | --- |",
@@ -245,6 +260,28 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 theorems=", ".join(cert["theorem_ids"]),
             )
         )
+    plan_rows = [
+        "| Plan | Pi bounds | Planned margin | Covered context | First uncovered gap | Bands | Status |",
+        "| --- | --- | ---: | ---: | ---: | ---: | --- |",
+    ]
+    for plan in standard_plans:
+        first_uncovered = (
+            "none"
+            if plan["first_uncovered_gap"] is None
+            else str(plan["first_uncovered_gap"])
+        )
+        plan_rows.append(
+            "| {name} | {pi_bounds} | {margin} | {context} | {first_uncovered} | "
+            "{bands} | {status} |".format(
+                name=plan["name"],
+                pi_bounds=plan["pi_bounds"],
+                margin=plan["planned_margin"],
+                context=plan["context_length"],
+                first_uncovered=first_uncovered,
+                bands=plan["band_count"],
+                status=plan["theorem_status"],
+            )
+        )
     return "\n".join(
         [
             "# RoPE Certifier Preset Results",
@@ -282,6 +319,12 @@ def markdown_results(payload: dict[str, Any]) -> str:
             ),
             "",
             standard_interval["claim_boundary"],
+            "",
+            "## Standard RoPE Candidate Interval Plans",
+            "",
+            "These exact-rational plans are generated source data for future Lean certificates. They are not marked proved and do not upgrade the theorem-backed context-57 seed.",
+            "",
+            *plan_rows,
             "",
             "## RoPE Preset Diagnostics",
             "",
@@ -336,6 +379,18 @@ def main() -> None:
                 print(f"pass_certificate={standard_interval['pass_certificate']}")
                 print(f"certified_margin={standard_interval['certified_margin']}")
                 print(f"theorem_ids={','.join(standard_interval['theorem_ids'])}")
+                for plan in payload["standard_interval_candidate_plans"]:
+                    print(
+                        "candidate_interval_plan={name} context={context} "
+                        "first_uncovered_gap={first_uncovered} bands={bands} "
+                        "status={status}".format(
+                            name=plan["name"],
+                            context=plan["context_length"],
+                            first_uncovered=plan["first_uncovered_gap"],
+                            bands=plan["band_count"],
+                            status=plan["theorem_status"],
+                        )
+                    )
                 print()
             if index:
                 print()

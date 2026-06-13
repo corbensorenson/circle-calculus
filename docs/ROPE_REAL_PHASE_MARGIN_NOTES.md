@@ -44,6 +44,8 @@ This is not a lower-bound theorem. It is the normalization step that makes the n
 
 `AIRA-T0065` through `AIRA-T0067` are the first named standard-RoPE interval seed. For channel 0, where `alpha = 1 / (2π)`, Lean proves a context-6 margin `1/8` using the elementary bounds `3 < π <= 4`. `AIRA-T0068` through `AIRA-T0070` strengthen the same genuine standard channel to context 7 with margin `1/32`: the witness table encloses each inspected value as `gap/8 <= gap/(2π) <= 25*gap/157` for gaps `1` through `6`, using `π <= 4` and the sharper bound `3.14 < π`. `AIRA-T0071` through `AIRA-T0073` extend the seed to context 8 by certifying gap `7` in integer cell `1` with `10/9 <= 7/(2π) <= 175/157`, using `π < 3.15` and `3.14 < π`. `AIRA-T0074` through `AIRA-T0076` extend the same margin to context 19: gaps `7` through `12` are certified in cell `1`, and gaps `13` through `18` are certified in cell `2`, with `10*gap/63 <= gap/(2π) <= 25*gap/157`. `AIRA-T0077` and `AIRA-T0078` prove the interval-witness and interval-certificate margin-monotonicity bridge. `AIRA-T0079` through `AIRA-T0081` use that bridge plus new cell bands to certify context 44 with margin `1/64`. `AIRA-T0082` and `AIRA-T0083` add four-decimal rational bounds for the same standard channel, and `AIRA-T0084` through `AIRA-T0086` use those sharper bounds to cross the gap-44 near-integer obstruction and certify context 57 with margin `1/512`. This is theorem-backed standard-RoPE content, but only for a tiny seed context. It does not certify 512, 4096, or model-scale RoPE contexts.
 
+The Python sidecar now also emits exact-rational candidate interval plans for the next formal targets. With four-decimal `π` bounds it finds a margin-`1/512` plan through context `333`; with six-decimal `π` bounds it finds a margin-`1/1024` plan through context `710`. These plans are deterministic source data for future Lean interval certificates. They are not theorem ids, not Lean-proved, and do not upgrade the current context-57 standard seed.
+
 ## Local Mathlib Anchors
 
 The following names exist in the local mathlib checkout and look relevant.
@@ -98,7 +100,8 @@ The important warning is `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irratio
 23. Use `AIRA-T0079` through `AIRA-T0081` as the context-44 tiny standard-RoPE seed: channel 0, `alpha = 1 / (2π)`, context `44`, margin `1/64`, with gaps through `43` split across integer cells `0` through `6`.
 24. Use `AIRA-T0082` and `AIRA-T0083` as the four-decimal rational enclosure for standard channel 0.
 25. Use `AIRA-T0084` through `AIRA-T0086` as the current tiny standard-RoPE seed: channel 0, `alpha = 1 / (2π)`, context `57`, margin `1/512`, with gaps `44` through `56` split across integer cells `7` and `8`.
-26. Scale the interval route by generating exact rational interval data for larger contexts such as 512 or 4096 and proving sharper `π` or continued-fraction bounds for those intervals.
+26. Use the executable interval planner as source data for the next standard-channel formalization targets: four-decimal bounds suggest context `333` at margin `1/512`, and six-decimal bounds suggest context `710` at margin `1/1024`.
+27. Scale the interval route by converting those generated exact rational bands into Lean declarations, then continue toward larger contexts such as 4096 using sharper `π` or continued-fraction bounds.
 
 ## Guardrails
 
@@ -112,4 +115,5 @@ The important warning is `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irratio
 - The floor/ceiling witness bridge discharges the infinite integer-turn quantifier for each fixed gap, but it does not prove that a concrete irrational or nonperiodic RoPE turn ratio has a positive lower bound.
 - The `1/4099` preset certificate is theorem-backed, but it is a rational/discretized turn-ratio certificate, not a standard irrational RoPE certificate.
 - The current strongest standard channel-0 interval seed is theorem-backed for context 57 only. Larger standard-RoPE contexts need generated rational interval data and sharper `π` or continued-fraction bounds.
+- Candidate interval plans from Python are planning data, not formal proof. They become proof only after corresponding Lean declarations compile and manifest ids are marked proved.
 - A full standard real RoPE bank certificate needs channel-wise finite-context lower bounds before the Living Book or certifier can mark the ordinary real-phase scan as formally certified.

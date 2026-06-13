@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+from fractions import Fraction
 from pathlib import Path
 
 from circle_math.applications import (
@@ -28,6 +29,7 @@ from circle_math.applications import (
     phase_bank_prefix_collision_reports,
     phase_bank_certificate_summary_lines,
     phase_bank_subfamily_pass_reports,
+    plan_standard_channel0_interval_bands,
     real_phase_bank_near_turn,
     real_phase_bank_turn_separated,
     real_phase_int_turn_error,
@@ -39,6 +41,7 @@ from circle_math.applications import (
     scale_phase_bank_periods,
     scan_turn_ratio_finite_margin,
     single_period_collision_pair_count,
+    standard_channel0_turn_ratio_bounds,
     turn_ratio_finite_margin_gap_candidates,
     turn_ratio_floor_ceil_witness_errors,
     turn_ratio_floor_ceil_witness_margin,
@@ -398,6 +401,57 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert "context 57 only" in certificate.claim_boundary
 
 
+def test_standard_channel0_interval_plan_finds_next_exact_rational_targets() -> None:
+    d4_lower, d4_upper, d4_label = standard_channel0_turn_ratio_bounds(
+        pi_bound_preset="d4"
+    )
+    assert d4_lower == Fraction(5_000, 31_416)
+    assert d4_upper == Fraction(5_000, 31_415)
+    assert "3.1415 < pi" in d4_label
+
+    d4_plan = plan_standard_channel0_interval_bands(
+        pi_bound_preset="d4",
+        margin=Fraction(1, 512),
+        max_context_length=4096,
+    )
+    assert d4_plan.schema_id == "circle_calculus.standard_rope_interval_plan.v0"
+    assert d4_plan.context_length == 333
+    assert d4_plan.first_uncovered_gap == 333
+    assert d4_plan.planned_margin == "1/512"
+    assert d4_plan.lower_turn_ratio_bound == "625/3927"
+    assert d4_plan.upper_turn_ratio_bound == "1000/6283"
+    assert d4_plan.band_count == 53
+    assert d4_plan.bands[0].start_gap == 1
+    assert d4_plan.bands[0].end_gap == 6
+    assert d4_plan.bands[0].cell == 0
+    assert d4_plan.bands[-1].start_gap == 327
+    assert d4_plan.bands[-1].end_gap == 332
+    assert d4_plan.bands[-1].cell == 52
+    assert d4_plan.theorem_status == "candidate_plan_not_lean_proved"
+    assert "Candidate interval-plan data only" in d4_plan.claim_boundary
+
+    d6_lower, d6_upper, d6_label = standard_channel0_turn_ratio_bounds(
+        pi_bound_preset="d6"
+    )
+    assert d6_lower == Fraction(500_000, 3_141_593)
+    assert d6_upper == Fraction(62_500, 392_699)
+    assert "3.141592 < pi" in d6_label
+
+    d6_plan = plan_standard_channel0_interval_bands(
+        pi_bound_preset="d6",
+        margin=Fraction(1, 1024),
+        max_context_length=4096,
+    )
+    assert d6_plan.context_length == 710
+    assert d6_plan.first_uncovered_gap == 710
+    assert d6_plan.planned_margin == "1/1024"
+    assert d6_plan.band_count == 113
+    assert d6_plan.bands[0] == d4_plan.bands[0]
+    assert d6_plan.bands[-1].start_gap == 704
+    assert d6_plan.bands[-1].end_gap == 709
+    assert d6_plan.bands[-1].cell == 112
+
+
 def test_rational_turn_ratio_certificate_reports_denominator_boundary() -> None:
     certificate = certify_rational_turn_ratio_finite_margin(
         numerator=3,
@@ -731,6 +785,12 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert payload["rational_margin_certificate"]["pass_certificate"] is True
     assert payload["standard_interval_certificate"]["name"] == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME
     assert payload["standard_interval_certificate"]["pass_certificate"] is True
+    assert payload["standard_interval_candidate_plans"][0]["context_length"] == 333
+    assert payload["standard_interval_candidate_plans"][0]["theorem_status"] == (
+        "candidate_plan_not_lean_proved"
+    )
+    assert payload["standard_interval_candidate_plans"][1]["context_length"] == 710
+    assert payload["standard_interval_candidate_plans"][1]["band_count"] == 113
     assert payload["presets"][0]["preset"] == "llama_style_10000_4k"
     assert payload["presets"][0]["certificate"]["exact_discrete_summary"]["pass_exact"] is True
     assert "lean_declarations" not in payload["presets"][0]["certificate"]
@@ -760,6 +820,8 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert "| llama_style_10000_4k |" in markdown_result.stdout
     assert "Named Rational Margin Certificate" in markdown_result.stdout
     assert "Named Standard RoPE Interval Seed" in markdown_result.stdout
+    assert "Standard RoPE Candidate Interval Plans" in markdown_result.stdout
+    assert "candidate_plan_not_lean_proved" in markdown_result.stdout
     assert "Exact Phase-Bank Diagnostics" in markdown_result.stdout
     assert ROPE_RATIONAL_PRESET_4099_NAME in markdown_result.stdout
     assert ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME in markdown_result.stdout

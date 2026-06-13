@@ -201,6 +201,27 @@ certificate.theorem_ids           # AIRA-T0063,AIRA-T0064,AIRA-T0065,...,AIRA-T0
 
 This is standard RoPE, but it is only context `57`. Larger contexts need generated interval data plus sharper `π` or continued-fraction bounds before they can be marked proved.
 
+The Python sidecar now exposes those next targets as candidate plans:
+
+```python
+from fractions import Fraction
+from circle_math.applications import plan_standard_channel0_interval_bands
+
+d4_plan = plan_standard_channel0_interval_bands(
+    pi_bound_preset="d4",
+    margin=Fraction(1, 512),
+)
+d6_plan = plan_standard_channel0_interval_bands(
+    pi_bound_preset="d6",
+    margin=Fraction(1, 1024),
+)
+
+d4_plan.context_length  # 333
+d6_plan.context_length  # 710
+```
+
+These are exact-rational planning artifacts, not theorem boxes. They identify the next Lean formalization targets without changing the current proof status.
+
 ## What To Notice
 
 - Exact collision is not guessed by scanning every pair. The theorem reduces it to divisibility of the position gap.
