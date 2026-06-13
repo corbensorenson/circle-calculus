@@ -142,13 +142,13 @@ print(certificate.theorem_ids)
 Expected meaning:
 
 ```text
-standard_rope_channel0_interval_context_710
+standard_rope_channel0_interval_context_4096
 True
-1/1024
-AIRA-T0063,AIRA-T0064,AIRA-T0065,...,AIRA-T0096
+1/131072
+AIRA-T0063,AIRA-T0064,AIRA-T0065,...,AIRA-T0101
 ```
 
-Lean proves that channel 0 with standard turn ratio `1 / (2π)` has finite-context nearest-integer margin `1/1024` for gaps `1` through `709`. The current strongest seed uses the six-decimal enclosure `500000*gap/3141593 <= gap/(2π) <= 500000*gap/3141592` from `π < 3.141593` and `3.141592 < π`, split across computed integer cells `0` through `112`. Lean also proves that gap `710` is already within margin `1/1024` of integer turn `113`, so this exact margin cannot extend to any larger context for channel 0. This is a real standard-RoPE theorem, but only for one channel and context `710`; it is not a proof for 4096, 128k, or the whole multi-channel bank.
+Lean proves that channel 0 with standard turn ratio `1 / (2π)` has finite-context nearest-integer margin `1/131072` for gaps `1` through `4095`. The current strongest seed uses the 20-decimal enclosure `10^20*gap/628318530717958647694 <= gap/(2π) <= 10^20*gap/628318530717958647692`, split across computed integer cells `0` through `651`. Lean also proves that the earlier `1/1024` margin stops at gap `710`, so the 4k seed deliberately uses a smaller advertised margin. This is a real standard-RoPE theorem, but only for one channel and context `4096`; it is not a proof for 128k or the whole multi-channel bank.
 
 For audit and future Lean work, the sidecar also exposes interval plans:
 
@@ -165,9 +165,14 @@ plan_standard_channel0_interval_bands(
     pi_bound_preset="d6",
     margin=Fraction(1, 1024),
 ).theorem_status  # lean_proved_interval_seed_AIRA-T0090_to_AIRA-T0094
+
+plan_standard_channel0_interval_bands(
+    pi_bound_preset="d20",
+    margin=Fraction(1, 131072),
+).theorem_status  # lean_proved_interval_seed_AIRA-T0097_to_AIRA-T0101
 ```
 
-The d4 and d6 plans have both been converted into Lean proof. Future plans are exact-rational source data only until matching declarations compile and manifest ids are marked proved.
+The d4, d6, and d20 plans have been converted into Lean proof. Future plans are exact-rational source data only until matching declarations compile and manifest ids are marked proved.
 
 If the exact discrete contract fails, the output includes a common collision gap and sample colliding pairs.
 It also reports `guaranteed_common_gap_collision_pair_count`, the number of starts whose paired position is exactly the common collision gap ahead, and `guaranteed_common_gap_multiple_pair_count`, the corresponding guaranteed family summed over every positive in-context multiple of that gap. `total_bank_collision_pair_count` is the exact all-channel count for the declared integer-period bank, backed by the period-bank LCM theorem. `AIRA-T0048` proves the LCM-gap collision family, and `AIRA-T0049` proves that a positive LCM below the context gives an explicit unequal collision witness. It is not a real-valued RoPE collision count.
