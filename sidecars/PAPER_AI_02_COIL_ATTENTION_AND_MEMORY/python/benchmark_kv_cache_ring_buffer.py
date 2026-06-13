@@ -84,6 +84,8 @@ def text_results(payload: dict[str, Any]) -> str:
             f"{certificate['no_same_slot_overwrite_before_current']} "
             "same_slot_overwrite_witness_when_stale="
             f"{certificate['same_slot_overwrite_witness_when_stale']} "
+            "retained_iff_no_same_slot_overwrite_trace="
+            f"{certificate['retained_iff_no_same_slot_overwrite_trace']} "
             f"collision_with_next_overwrite={certificate['collision_with_next_overwrite']} "
             f"theorem_ids={','.join(certificate['theorem_ids'])}"
         ),
@@ -132,8 +134,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             payload["claim_boundary"],
             "",
-            "| Cache size | Current | Token | Slot | Current slot | Lag | Retained | Distinct from current | Next overwrite | Overwrite after current | Stale by overwrite boundary | No same-slot overwrite before current | Stale same-slot overwrite witness | Theorem ids |",
-            "| ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- |",
+            "| Cache size | Current | Token | Slot | Current slot | Lag | Retained | Distinct from current | Next overwrite | Overwrite after current | Stale by overwrite boundary | No same-slot overwrite before current | Stale same-slot overwrite witness | Retained iff no later same-slot write | Theorem ids |",
+            "| ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- | --- |",
             (
                 f"| {certificate['cache_size']} | {certificate['current']} | "
                 f"{certificate['token']} | {certificate['slot']} | "
@@ -145,6 +147,7 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{certificate['stale_by_next_overwrite_boundary']} | "
                 f"{certificate['no_same_slot_overwrite_before_current']} | "
                 f"{certificate['same_slot_overwrite_witness_when_stale']} | "
+                f"{certificate['retained_iff_no_same_slot_overwrite_trace']} | "
                 f"{', '.join(certificate['theorem_ids'])} |"
             ),
             "",

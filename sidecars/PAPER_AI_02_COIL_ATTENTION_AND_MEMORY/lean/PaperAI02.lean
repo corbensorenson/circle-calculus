@@ -31,6 +31,7 @@ namespace Circle.PaperAI02
 #check Circle.Applications.kvCacheWindow_retainedSlots_ne_of_lt
 #check Circle.Applications.kvCacheWindow_retainedSlots_ne_of_ne
 #check Circle.Applications.kvCacheWindow_noSameSlotOverwrite_between
+#check Circle.Applications.kvCacheWindowContains_iff_noSameSlotOverwrite_between_of_le
 #check Circle.Applications.kvCacheWindow_retainedBatchSlots_pairwise_ne
 #check Circle.Applications.kvCacheWindow_retainedBatchSlotMap_nodup
 #check Circle.Applications.kvCacheLiveWindowStart_add_length

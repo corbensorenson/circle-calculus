@@ -38,6 +38,7 @@ That iff is `AIM-T0069`. The earlier theorem cards prove the supporting facts: s
 The stale-read guard is the converse form `AIM-T0070`: for a non-future token, not being retained is exactly the next same-slot overwrite being at or before the current token.
 The read/write adapter guard is `AIM-T0075`: if a token is retained, every strictly later write position up to the current read point uses a different ring-buffer slot.
 The stale-witness guard is `AIM-T0076`: if a non-future token is not retained, then `token + cache_size` is a concrete later same-slot write that has already occurred by the current read point.
+The trace contract is `AIM-T0077`: for a non-future token and positive cache size, retention is equivalent to the absence of any later same-slot write in the finite trace up to `current`.
 
 The generated live-window certificate makes the retained set explicit:
 
@@ -82,9 +83,10 @@ overwrite after current = true
 stale by overwrite boundary = false
 no same-slot overwrite before current = true
 stale same-slot overwrite witness = false
+retained iff no later same-slot write trace = true
 ```
 
-The default retained batch `(20, 24, 29, 31)` maps to slots `(4, 8, 13, 15)`, all distinct inside the live window. The generated live window is tokens `16` through `31`, length `16`, mapping to slots `0` through `15`; the CLI and sidecar mark `no_same_slot_overwrite_before_current = true`, `same_slot_overwrite_witness_when_stale = false`, and `full_coverage_contract = true` for that full-window case.
+The default retained batch `(20, 24, 29, 31)` maps to slots `(4, 8, 13, 15)`, all distinct inside the live window. The generated live window is tokens `16` through `31`, length `16`, mapping to slots `0` through `15`; the CLI and sidecar mark `no_same_slot_overwrite_before_current = true`, `same_slot_overwrite_witness_when_stale = false`, `retained_iff_no_same_slot_overwrite_trace = true`, and `full_coverage_contract = true` for that full-window case.
 
 ## Reproducible Results
 
@@ -105,6 +107,7 @@ The default sidecar result has three layers:
 | Single token | cache size `16`, current token `31`, inspected token `20` | token `20` writes slot `4`, is retained at current `31`, and its next same-slot overwrite is token `36` |
 | Read/write guard | no same-slot overwrite before current `true` | no token from `21` through `31` has reused token `20`'s slot |
 | Stale witness guard | stale same-slot overwrite witness `false` | because token `20` is retained at current `31`, its same-slot overwrite token `36` has not happened yet |
+| Trace iff | retained iff no later same-slot write trace `true` | the finite write trace condition and retained-window predicate agree |
 | Retained batch | tokens `20, 24, 29, 31` | all four tokens are retained, pairwise distinct, and mapped to pairwise distinct slots `4, 8, 13, 15` |
 | Generated live window | tokens `16` through `31` | the generated list is exactly the retained window and maps to every slot `0` through `15` without duplicates |
 | Full-window coverage | `full_coverage_contract = true` | once the live window is full, the generated slot list has `cache_size` in-range duplicate-free entries |
@@ -129,6 +132,7 @@ The important point is that freshness is not only a residue fact. Slot `4` repea
 - A non-future token is stale exactly when the next same-slot overwrite is no longer in the future.
 - A retained token has no later same-slot writer before the current read point.
 - A stale non-future token has an explicit same-slot overwrite witness at `token + cache_size`.
+- For non-future tokens, being retained is exactly having no later same-slot write in the trace up to `current`.
 - Pairwise-distinct retained tokens in the same live window occupy pairwise-distinct slots.
 - The whole generated live window occupies duplicate-free ring-buffer slots; when the window is full, the emitted slot list has one in-range entry per declared cache slot.
 - A stale token may have the same residue as a live token; residue alone is not freshness.
@@ -157,6 +161,7 @@ The important point is that freshness is not only a residue fact. Slot `4` repea
 <div class="theorem-box" data-theorem-id="AIM-T0074"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0075"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0076"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0077"></div>
 
 </details>
 

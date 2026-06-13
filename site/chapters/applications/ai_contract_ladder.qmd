@@ -116,7 +116,7 @@ iff
 token <= current and current < token + cache_size
 ```
 
-The generated live-window theorem then upgrades a Python-style list of live tokens into a theorem-backed object: membership in the list is equivalent to retention, the whole live window maps to duplicate-free slots, and a full live window has one in-range emitted entry per declared cache slot. The read/write guard also says that a retained token has no later same-slot writer before the current read point, while the stale-witness theorem gives `token + cache_size` as the concrete later same-slot write for stale non-future tokens.
+The generated live-window theorem then upgrades a Python-style list of live tokens into a theorem-backed object: membership in the list is equivalent to retention, the whole live window maps to duplicate-free slots, and a full live window has one in-range emitted entry per declared cache slot. The read/write guard says that a retained token has no later same-slot writer before the current read point, the stale-witness theorem gives `token + cache_size` as the concrete later same-slot write for stale non-future tokens, and the trace iff says those two sides exactly characterize freshness.
 
 <div class="theorem-box" data-theorem-id="AIM-T0069"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0070"></div>
@@ -124,6 +124,7 @@ The generated live-window theorem then upgrades a Python-style list of live toke
 <div class="theorem-box" data-theorem-id="AIM-T0074"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0075"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0076"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0077"></div>
 
 ## 4. Sparse-Attention Coverage
 

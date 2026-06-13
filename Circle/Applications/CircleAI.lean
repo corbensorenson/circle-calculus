@@ -372,6 +372,35 @@ theorem kvCacheWindow_noSameSlotOverwrite_between
     kvCacheWindow_retainedSlots_ne_of_lt
       hwindow hoverwrite_window htoken_overwrite
 
+/-- Retained-window membership is exactly the absence of a later same-slot
+write in the finite trace up to `current`.
+
+The forward direction is the read/write guard. The converse uses the stale
+same-slot overwrite witness: if a non-future token is not retained, then
+`token + cacheSize` is a later write to the same slot at or before `current`. -/
+theorem kvCacheWindowContains_iff_noSameSlotOverwrite_between_of_le
+    {cacheSize current token : Nat} (hcache : 0 < cacheSize)
+    (htoken_current : token ≤ current) :
+    kvCacheWindowContains cacheSize current token ↔
+      ∀ overwrite,
+        token < overwrite →
+        overwrite ≤ current →
+        kvCacheSlot cacheSize token ≠ kvCacheSlot cacheSize overwrite := by
+  constructor
+  · intro hwindow overwrite htoken_overwrite hoverwrite_current
+    exact
+      kvCacheWindow_noSameSlotOverwrite_between
+        hwindow htoken_overwrite hoverwrite_current
+  · intro hnoOverwrite
+    by_contra hstale
+    rcases
+      kvCacheWindow_sameSlotOverwrite_witness_of_not_contains
+        hcache htoken_current hstale with
+      ⟨hoverwrite_after_token, hoverwrite_current, hoverwrite_slot⟩
+    exact
+      (hnoOverwrite (token + cacheSize)
+        hoverwrite_after_token hoverwrite_current) hoverwrite_slot
+
 /-- Any two distinct tokens retained in the same KV-cache window occupy
 distinct ring-buffer slots.
 

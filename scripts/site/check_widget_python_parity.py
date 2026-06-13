@@ -36,7 +36,10 @@ from circle_math.applications import (
     certify_kv_cache_batch,
     certify_kv_cache_window,
     kv_cache_next_overwrite_token,
+    kv_cache_no_same_slot_overwrite_before_current,
     kv_cache_retained_batch_slots_distinct,
+    kv_cache_retained_iff_no_same_slot_overwrite_trace,
+    kv_cache_same_slot_overwrite_witness_when_stale,
     kv_cache_slot,
     kv_cache_window_contains,
     local_window_indices,
@@ -1264,6 +1267,47 @@ def js_kv_cache_window_contains(cache_size: int, current: int, token: int) -> bo
 
 def js_kv_cache_next_overwrite_token(cache_size: int, token: int) -> int:
     return token + cache_size
+
+
+def js_kv_cache_no_same_slot_overwrite_before_current(
+    cache_size: int,
+    current: int,
+    token: int,
+) -> bool:
+    if token > current:
+        return False
+    slot = js_kv_cache_slot(cache_size, token)
+    return all(
+        js_kv_cache_slot(cache_size, overwrite) != slot
+        for overwrite in range(token + 1, current + 1)
+    )
+
+
+def js_kv_cache_same_slot_overwrite_witness_when_stale(
+    cache_size: int,
+    current: int,
+    token: int,
+) -> bool:
+    if token > current:
+        return False
+    overwrite = js_kv_cache_next_overwrite_token(cache_size, token)
+    return (
+        not js_kv_cache_window_contains(cache_size, current, token)
+        and token < overwrite <= current
+        and js_kv_cache_slot(cache_size, token) == js_kv_cache_slot(cache_size, overwrite)
+    )
+
+
+def js_kv_cache_retained_iff_no_same_slot_overwrite_trace(
+    cache_size: int,
+    current: int,
+    token: int,
+) -> bool:
+    if token > current:
+        return False
+    return js_kv_cache_window_contains(cache_size, current, token) == (
+        js_kv_cache_no_same_slot_overwrite_before_current(cache_size, current, token)
+    )
 
 
 def js_kv_cache_retained_batch_slots_distinct(
@@ -3119,16 +3163,37 @@ def main() -> int:
         current_slot = js_kv_cache_slot(cache_size, current)
         retained = js_kv_cache_window_contains(cache_size, current, token)
         next_overwrite = js_kv_cache_next_overwrite_token(cache_size, token)
+        no_same_slot_overwrite = js_kv_cache_no_same_slot_overwrite_before_current(
+            cache_size,
+            current,
+            token,
+        )
+        stale_witness = js_kv_cache_same_slot_overwrite_witness_when_stale(
+            cache_size,
+            current,
+            token,
+        )
+        trace_iff = js_kv_cache_retained_iff_no_same_slot_overwrite_trace(
+            cache_size,
+            current,
+            token,
+        )
 
         assert kv_cache_slot(cache_size, token) == slot
         assert kv_cache_window_contains(cache_size, current, token) == retained
         assert kv_cache_next_overwrite_token(cache_size, token) == next_overwrite
+        assert kv_cache_no_same_slot_overwrite_before_current(cache_size, current, token) == no_same_slot_overwrite
+        assert kv_cache_same_slot_overwrite_witness_when_stale(cache_size, current, token) == stale_witness
+        assert kv_cache_retained_iff_no_same_slot_overwrite_trace(cache_size, current, token) == trace_iff
         assert window.slot == slot
         assert window.current_slot == current_slot
         assert window.lag == current - token
         assert window.retained == retained
         assert window.next_overwrite_token == next_overwrite
         assert window.next_overwrite_after_current == (current < next_overwrite)
+        assert window.no_same_slot_overwrite_before_current == no_same_slot_overwrite
+        assert window.same_slot_overwrite_witness_when_stale == stale_witness
+        assert window.retained_iff_no_same_slot_overwrite_trace == trace_iff
         assert batch.slots == tuple(js_kv_cache_slot(cache_size, token) for token in batch_tokens)
         assert batch.all_retained == all(
             js_kv_cache_window_contains(cache_size, current, token)

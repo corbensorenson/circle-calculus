@@ -124,6 +124,24 @@ def kv_cache_same_slot_overwrite_witness_when_stale(
     )
 
 
+def kv_cache_retained_iff_no_same_slot_overwrite_trace(
+    cache_size: int,
+    current: int,
+    token: int,
+) -> bool:
+    """Return whether retention matches the finite no-later-same-slot-write trace."""
+    _require_positive(cache_size, "cache_size")
+    if current < 0:
+        raise ValueError("current must be nonnegative")
+    if token < 0:
+        raise ValueError("token must be nonnegative")
+    if token > current:
+        return False
+    return kv_cache_window_contains(cache_size, current, token) == (
+        kv_cache_no_same_slot_overwrite_before_current(cache_size, current, token)
+    )
+
+
 def kv_cache_slots_collide(cache_size: int, left: int, right: int) -> bool:
     """Return whether two token positions write the same KV-cache ring slot."""
     return kv_cache_slot(cache_size, left) == kv_cache_slot(cache_size, right)
@@ -437,6 +455,7 @@ class KVCacheWindowCertificate:
     stale_by_next_overwrite_boundary: bool
     no_same_slot_overwrite_before_current: bool
     same_slot_overwrite_witness_when_stale: bool
+    retained_iff_no_same_slot_overwrite_trace: bool
     collision_with_next_overwrite: bool
     theorem_ids: tuple[str, ...] = (
         "AIM-T0059",
@@ -451,6 +470,7 @@ class KVCacheWindowCertificate:
         "AIM-T0070",
         "AIM-T0075",
         "AIM-T0076",
+        "AIM-T0077",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheSlot_lt_cacheSize",
@@ -465,6 +485,7 @@ class KVCacheWindowCertificate:
         "Circle.Applications.not_kvCacheWindowContains_iff_nextOverwrite_le_current_of_le",
         "Circle.Applications.kvCacheWindow_noSameSlotOverwrite_between",
         "Circle.Applications.kvCacheWindow_sameSlotOverwrite_witness_of_not_contains",
+        "Circle.Applications.kvCacheWindowContains_iff_noSameSlotOverwrite_between_of_le",
     )
     note: str = (
         "KV-cache ring-buffer slot certificate only; this proves finite indexing "
@@ -1669,6 +1690,9 @@ def certify_kv_cache_window(
         ),
         same_slot_overwrite_witness_when_stale=(
             kv_cache_same_slot_overwrite_witness_when_stale(cache_size, current, token)
+        ),
+        retained_iff_no_same_slot_overwrite_trace=(
+            kv_cache_retained_iff_no_same_slot_overwrite_trace(cache_size, current, token)
         ),
         collision_with_next_overwrite=kv_cache_slots_collide(cache_size, token, next_overwrite),
     )
