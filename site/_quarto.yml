@@ -136,6 +136,8 @@ website:
             text: AI
           - href: chapters/applications/rope_certifier.qmd
             text: RoPE Certifier
+          - href: chapters/applications/kv_cache_ring_buffer.qmd
+            text: KV-Cache Ring Buffer
           - href: chapters/applications/physics.qmd
             text: Physics
           - href: chapters/applications/generative.qmd

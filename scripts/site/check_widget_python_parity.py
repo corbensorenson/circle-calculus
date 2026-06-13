@@ -33,6 +33,12 @@ from circle_math.applications import (
     fit_winding_position_lookup,
     fit_recurrence_resolution_lookup,
     harmonic_feature,
+    certify_kv_cache_batch,
+    certify_kv_cache_window,
+    kv_cache_next_overwrite_token,
+    kv_cache_retained_batch_slots_distinct,
+    kv_cache_slot,
+    kv_cache_window_contains,
     local_window_indices,
     loop_block_indices,
     loop_exit_certificate,
@@ -1246,6 +1252,31 @@ def js_hopf_phase_record(z0: complex, z1: complex, period: int, step: int) -> di
 
 def js_memory_slot(bank_size: int, token: int) -> int:
     return js_mod(token, bank_size)
+
+
+def js_kv_cache_slot(cache_size: int, token: int) -> int:
+    return js_mod(token, cache_size)
+
+
+def js_kv_cache_window_contains(cache_size: int, current: int, token: int) -> bool:
+    return token <= current and current < token + cache_size
+
+
+def js_kv_cache_next_overwrite_token(cache_size: int, token: int) -> int:
+    return token + cache_size
+
+
+def js_kv_cache_retained_batch_slots_distinct(
+    cache_size: int,
+    current: int,
+    tokens: tuple[int, ...],
+) -> bool:
+    if len(set(tokens)) != len(tokens):
+        return False
+    if not all(js_kv_cache_window_contains(cache_size, current, token) for token in tokens):
+        return False
+    slots = tuple(js_kv_cache_slot(cache_size, token) for token in tokens)
+    return len(set(slots)) == len(slots)
 
 
 def js_dense_adapter_parameter_count(channel_count: int, parameters_per_channel: int) -> int:
@@ -3075,6 +3106,41 @@ def main() -> int:
             bank_size,
             tokens,
         )
+
+    kv_cache_cases = [
+        (16, 31, 20, (20, 24, 29, 31)),
+        (16, 40, 20, (25, 31, 39, 40)),
+        (8, 12, 12, (5, 7, 10, 12)),
+    ]
+    for cache_size, current, token, batch_tokens in kv_cache_cases:
+        window = certify_kv_cache_window(cache_size=cache_size, current=current, token=token)
+        batch = certify_kv_cache_batch(cache_size=cache_size, current=current, tokens=batch_tokens)
+        slot = js_kv_cache_slot(cache_size, token)
+        current_slot = js_kv_cache_slot(cache_size, current)
+        retained = js_kv_cache_window_contains(cache_size, current, token)
+        next_overwrite = js_kv_cache_next_overwrite_token(cache_size, token)
+
+        assert kv_cache_slot(cache_size, token) == slot
+        assert kv_cache_window_contains(cache_size, current, token) == retained
+        assert kv_cache_next_overwrite_token(cache_size, token) == next_overwrite
+        assert window.slot == slot
+        assert window.current_slot == current_slot
+        assert window.lag == current - token
+        assert window.retained == retained
+        assert window.next_overwrite_token == next_overwrite
+        assert window.next_overwrite_after_current == (current < next_overwrite)
+        assert batch.slots == tuple(js_kv_cache_slot(cache_size, token) for token in batch_tokens)
+        assert batch.all_retained == all(
+            js_kv_cache_window_contains(cache_size, current, token)
+            for token in batch_tokens
+        )
+        assert batch.tokens_distinct == (len(set(batch_tokens)) == len(batch_tokens))
+        assert batch.slots_distinct == js_kv_cache_retained_batch_slots_distinct(
+            cache_size,
+            current,
+            batch_tokens,
+        )
+        assert kv_cache_retained_batch_slots_distinct(cache_size, current, batch_tokens) == batch.slots_distinct
 
     retrieval_cases = [
         (64, tuple(range(64)), 21, 7, 3, 8, 5, 3),

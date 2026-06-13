@@ -262,6 +262,16 @@ Companion non-widget prototype: `AIM-B0015` uses `circle_math.applications.circl
 - Guardrail: the widget is finite indexing and alias bookkeeping only. It does not prove retrieval quality, memory scaling, model-quality improvement, speedup, or training effectiveness.
 - Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python cyclic-memory helpers.
 
+### kv_cache_ring_buffer
+
+- Inputs: cache size, current token, and inspected token.
+- Outputs: selected token slot, current slot, retained-window status, next same-slot overwrite, overwrite-after-current flag, current-slot collision flag, retained-older-token distinctness flag, live-window token list, live-window slot list, theorem-status badges, and dictionary links.
+- Theorem ids: `AIM-T0059` through `AIM-T0069`.
+- Dictionary ids: `COMMON-0028` and `COMMON-0081`.
+- Python references: `circle_math.applications.circle_ai.kv_cache_slot`, `circle_math.applications.circle_ai.kv_cache_window_contains`, `circle_math.applications.circle_ai.kv_cache_next_overwrite_token`, `circle_math.applications.circle_ai.certify_kv_cache_window`, and `circle_math.applications.circle_ai.certify_kv_cache_batch`.
+- Guardrail: the widget is finite KV-cache ring-buffer indexing and overwrite-window bookkeeping only. It does not prove paging-policy quality, throughput, memory savings, retrieval quality, implementation correctness, deployment safety, or model-quality improvement.
+- Validation: deterministic JavaScript-equivalent formulas are parity-checked against the Python KV-cache certifier helpers for retained, stale, and current-token cases.
+
 ### coil_retrieval_reachability
 
 - Inputs: sequence length, query index, target lag, selected stride, path length, local-window width, wrong stride, and near-control lag.

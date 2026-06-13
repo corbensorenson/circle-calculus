@@ -281,7 +281,7 @@ This is standard RoPE, but it is only context `7`. Larger contexts need generate
 
 <div class="book-navigation">
 <a href="ai.qmd">Previous: AI</a>
-<a href="physics.qmd">Next: Physics</a>
+<a href="kv_cache_ring_buffer.qmd">Next: KV-Cache Ring Buffer</a>
 </div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

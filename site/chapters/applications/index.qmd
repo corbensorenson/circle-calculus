@@ -31,6 +31,7 @@ The claim is *not* that circular language automatically improves every domain. I
 - [Classical bridges](erdos_bridges.qmd) — Erdős-style combinatorics restated through Circle vocabulary (Lean-checked wrappers, not new results).
 - [AI](ai.qmd) — phase channels, cyclic memory, coil retrieval, routing, and adapter-block indexing seeds.
 - [RoPE certifier](rope_certifier.qmd) — proof-carrying position-distinguishability certificates for exact discretized rotary phase banks.
+- [KV-cache ring buffer](kv_cache_ring_buffer.qmd) — proof-carrying finite slot and retained-window certificates for ring-buffer cache indexing.
 - [Physics](physics.qmd) — finite gauge links, path holonomy, Wilson-loop certificates, plaquettes.
 - [Generative structures](generative.qmd) — seed-rule provenance and exact-regeneration fixtures.
 - [Compute](compute.qmd) — cyclic addresses, direction bins, stride layouts, round-robin schedules.
@@ -59,6 +60,7 @@ Pick one application page and name its finite circular address space before read
 <div class="theorem-box" data-theorem-id="AIA-T0005"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0005"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0010"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0069"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0005"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0024"></div>
 
