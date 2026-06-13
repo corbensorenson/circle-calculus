@@ -18,6 +18,14 @@ This is a theorem-backed rational/discretized turn-ratio certificate. It is not 
 
 This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 4096, with a theorem-trail extension to an 8192-context one-channel seed and conditional one-separating-channel bank bridges. It is not a proof that every standard RoPE channel has a large-context margin, and it does not certify 128k contexts.
 
+## Standard RoPE D12 Bank Bridge Request
+
+| Name | Bank shape | Requested context | Requested margin | Certified context | Certified margin | Status | Theorem ids |
+| --- | --- | ---: | ---: | ---: | ---: | --- | --- |
+| standard_rope_channel0_d12_bank_bridge_request | standard_channel0_first | 8192 | 1/104220 | 8192 | 1/104220 | PASS | AIRA-T0123, AIRA-T0124 |
+
+This is a conditional one-separating-channel bank certificate based on standard channel 0. It is not a full all-channel standard-RoPE margin theorem, not a 128k certificate, and not a model-quality claim.
+
 ## Standard RoPE Candidate Interval Plans
 
 These exact-rational plans are generated source data for Lean interval certificates. The d4 context-333, d6 context-710, d20 context-4096, and d20 context-8192 plans listed here are now matched by compiled Lean declarations; candidate-only rows remain unproved until matching declarations and manifest ids exist.

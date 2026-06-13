@@ -262,6 +262,16 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed_cons",
 )
 
+ROPE_STANDARD_CHANNEL0_D12_BANK_BRIDGE_THEOREMS: tuple[str, ...] = (
+    "AIRA-T0123",
+    "AIRA-T0124",
+)
+
+ROPE_STANDARD_CHANNEL0_D12_BANK_BRIDGE_LEAN_DECLARATIONS: tuple[str, ...] = (
+    "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed",
+    "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed_cons",
+)
+
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
     "Exact pass/fail is for the declared integer-period discretized RoPE model. "
     "The real-phase margin scan is numerical evidence only. This is not a model-quality, "
@@ -466,6 +476,28 @@ class IntervalBackedTurnRatioCertificate:
     interval_witnesses: tuple[RationalIntervalWitnessReport, ...]
     theorem_ids: tuple[str, ...]
     lean_declarations: tuple[str, ...]
+    explanation: str
+    claim_boundary: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class StandardChannel0D12BankBridgeCertificate:
+    schema_id: str
+    name: str
+    requested_context: int
+    requested_margin: str
+    certified_context: int
+    certified_margin: str
+    pass_certificate: bool
+    failure_reason: str | None
+    bank_shape: str
+    theorem_ids: tuple[str, ...]
+    lean_declarations: tuple[str, ...]
+    assumptions: tuple[str, ...]
+    tolerance_rule: str
     explanation: str
     claim_boundary: str
 
@@ -1433,6 +1465,86 @@ def turn_ratio_margin_covers_request(
     ) and turn_ratio_margin_covers_margin(
         certified_margin=certified_margin,
         requested_margin=requested_margin,
+    )
+
+
+def certify_standard_channel0_d12_bank_request(
+    *,
+    requested_context: int,
+    requested_margin: Fraction = Fraction(1, 104220),
+    first_channel_shape: bool = True,
+) -> StandardChannel0D12BankBridgeCertificate:
+    """Certify whether a request is inside the D12 standard-channel bank bridge.
+
+    The result packages the Lean theorem trail for the conditional
+    one-separating-channel bank certificate. It checks only the exact request
+    inequalities exposed by the D12 transfer theorem: the requested context must
+    be no larger than 8192, and the requested margin must be no larger than
+    1/104220. It does not prove that every channel in a standard RoPE bank has a
+    margin, and it does not say anything about model quality.
+    """
+    if requested_context <= 0:
+        raise ValueError("requested_context must be positive")
+    if requested_margin < 0:
+        raise ValueError("requested_margin must be nonnegative")
+
+    certified_context = 8192
+    certified_margin = Fraction(1, 104220)
+    context_ok = requested_context <= certified_context
+    margin_ok = requested_margin <= certified_margin
+    pass_certificate = context_ok and margin_ok
+    if not context_ok:
+        failure_reason = "requested_context_exceeds_d12_seed"
+    elif not margin_ok:
+        failure_reason = "requested_margin_exceeds_d12_seed"
+    else:
+        failure_reason = None
+
+    if first_channel_shape:
+        theorem_ids = ROPE_STANDARD_CHANNEL0_D12_BANK_BRIDGE_THEOREMS
+        lean_declarations = ROPE_STANDARD_CHANNEL0_D12_BANK_BRIDGE_LEAN_DECLARATIONS
+        bank_shape = "standard_channel0_first"
+        assumptions = (
+            "The finite real-phase bank has standard channel 0 as its first channel.",
+            "The requested context is at most 8192.",
+            "The requested margin is at most 1/104220.",
+        )
+    else:
+        theorem_ids = ("AIRA-T0123",)
+        lean_declarations = (
+            "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed",
+        )
+        bank_shape = "contains_standard_channel0"
+        assumptions = (
+            "The finite real-phase bank contains the standard channel-0 angular frequency.",
+            "The requested context is at most 8192.",
+            "The requested margin is at most 1/104220.",
+        )
+
+    return StandardChannel0D12BankBridgeCertificate(
+        schema_id="circle_calculus.standard_rope_channel0_d12_bank_bridge.v0",
+        name="standard_rope_channel0_d12_bank_bridge_request",
+        requested_context=requested_context,
+        requested_margin=format_fraction(requested_margin),
+        certified_context=certified_context,
+        certified_margin=format_fraction(certified_margin),
+        pass_certificate=pass_certificate,
+        failure_reason=failure_reason,
+        bank_shape=bank_shape,
+        theorem_ids=theorem_ids,
+        lean_declarations=lean_declarations,
+        assumptions=assumptions,
+        tolerance_rule="Lean conclusion applies when tolerance < fullTurn * requestedMargin.",
+        explanation=(
+            "This request is inside the D12 standard-channel bank bridge."
+            if pass_certificate
+            else "This request is outside the D12 standard-channel bank bridge."
+        ),
+        claim_boundary=(
+            "This is a conditional one-separating-channel bank certificate based on "
+            "standard channel 0. It is not a full all-channel standard-RoPE margin "
+            "theorem, not a 128k certificate, and not a model-quality claim."
+        ),
     )
 
 

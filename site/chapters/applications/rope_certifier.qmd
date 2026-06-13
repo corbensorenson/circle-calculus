@@ -248,7 +248,22 @@ certificate.theorem_ids           # AIRA-T0063,AIRA-T0064,AIRA-T0065,...,AIRA-T0
 
 `AIRA-T0063` proves that one rational interval witness covers every integer turn for one gap. `AIRA-T0064` turns a finite table of those witnesses into a finite-context margin. `AIRA-T0077` and `AIRA-T0078` prove that interval witnesses and certificates survive when the advertised margin is decreased. `AIRA-T0065` through `AIRA-T0076` are the context-6, context-7, context-8, and context-19 seeds; `AIRA-T0079` through `AIRA-T0081` are the context-44 seed; `AIRA-T0082` through `AIRA-T0086` are the context-57 seed; `AIRA-T0087` through `AIRA-T0089` are the context-333 seed; `AIRA-T0090` through `AIRA-T0094` are the context-710 seed, using generated six-decimal `π`-bound bands to cover gaps `1` through `709`; `AIRA-T0095` through `AIRA-T0096` prove that the same `1/1024` margin cannot extend past gap `710`; `AIRA-T0097` through `AIRA-T0101` are the conservative context-4096 seed, using generated twenty-decimal `π`-bound bands to cover gaps `1` through `4095`; `AIRA-T0102` is the D9 conditional bank-level transfer; `AIRA-T0103` through `AIRA-T0104` prove that the doubled D9 margin `1/65536` is already blocked by gap `710`; `AIRA-T0105` through `AIRA-T0108` are the tighter D10 context-4096 seed and bank transfer at margin `1/105000`; `AIRA-T0109` through `AIRA-T0110` prove that margin `1/104000` is already blocked by the same gap; `AIRA-T0111` through `AIRA-T0114` are the current D11 seed and bank transfer at margin `1/104219`; `AIRA-T0115` through `AIRA-T0116` prove that margin `1/104218` is already blocked by gap `710`; `AIRA-T0117` packages the D11 bridge for banks whose first frequency is standard channel 0; `AIRA-T0118` generalizes the obstruction to every margin at or above `1/104218`; `AIRA-T0119` packages the proved/impossible bracket for context `4096`; `AIRA-T0120` through `AIRA-T0122` extend the standard channel-0 interval seed to context `8192` at margin `1/104220`; and `AIRA-T0123` through `AIRA-T0124` package the D12 one-separating-channel bank bridge, including the common first-channel bank shape.
 
-This is standard RoPE, but it is one channel and only context `4096`. Larger contexts and full RoPE banks need generated interval data plus sharper `π`, continued-fraction bounds, or a different proof shape before they can be marked proved.
+This is standard RoPE, but it is still channel-0 based. The D12 bridge can rule out an all-bank near-turn event when standard channel 0 is present and the requested context and margin fit inside the D12 seed; it does not prove independent margins for every channel.
+
+```python
+from fractions import Fraction
+from circle_math.applications import certify_standard_channel0_d12_bank_request
+
+request = certify_standard_channel0_d12_bank_request(
+    requested_context=8192,
+    requested_margin=Fraction(1, 104220),
+)
+request.pass_certificate  # True
+request.theorem_ids       # AIRA-T0123,AIRA-T0124
+request.tolerance_rule    # tolerance < fullTurn * requestedMargin
+```
+
+Larger contexts and full all-channel RoPE-bank margins need generated interval data plus sharper `π`, continued-fraction bounds, or a different proof shape before they can be marked proved.
 
 The Python sidecar now exposes those next targets as candidate plans:
 

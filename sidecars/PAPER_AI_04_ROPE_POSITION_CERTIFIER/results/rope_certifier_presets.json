@@ -3403,6 +3403,33 @@
     "zero_margin_witness": null
   },
   "schema_id": "circle_calculus.rope_certifier_preset_results.v0",
+  "standard_d12_bank_bridge_request": {
+    "assumptions": [
+      "The finite real-phase bank has standard channel 0 as its first channel.",
+      "The requested context is at most 8192.",
+      "The requested margin is at most 1/104220."
+    ],
+    "bank_shape": "standard_channel0_first",
+    "certified_context": 8192,
+    "certified_margin": "1/104220",
+    "claim_boundary": "This is a conditional one-separating-channel bank certificate based on standard channel 0. It is not a full all-channel standard-RoPE margin theorem, not a 128k certificate, and not a model-quality claim.",
+    "explanation": "This request is inside the D12 standard-channel bank bridge.",
+    "failure_reason": null,
+    "lean_declarations": [
+      "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed",
+      "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed_cons"
+    ],
+    "name": "standard_rope_channel0_d12_bank_bridge_request",
+    "pass_certificate": true,
+    "requested_context": 8192,
+    "requested_margin": "1/104220",
+    "schema_id": "circle_calculus.standard_rope_channel0_d12_bank_bridge.v0",
+    "theorem_ids": [
+      "AIRA-T0123",
+      "AIRA-T0124"
+    ],
+    "tolerance_rule": "Lean conclusion applies when tolerance < fullTurn * requestedMargin."
+  },
   "standard_interval_candidate_plans": [
     {
       "band_count": 53,

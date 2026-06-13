@@ -22,6 +22,7 @@ from circle_math.applications import (
     certify_phase_bank_positions,
     certify_rational_preset_4099,
     certify_rope_positions,
+    certify_standard_channel0_d12_bank_request,
     certify_standard_channel0_interval_seed,
     plan_standard_channel0_interval_bands,
     phase_bank_certificate_summary_lines,
@@ -154,6 +155,10 @@ def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
         ),
         "rational_margin_certificate": certify_rational_preset_4099().to_dict(),
         "standard_interval_certificate": certify_standard_channel0_interval_seed().to_dict(),
+        "standard_d12_bank_bridge_request": certify_standard_channel0_d12_bank_request(
+            requested_context=8192,
+            requested_margin=Fraction(1, 104220),
+        ).to_dict(),
         "standard_interval_candidate_plans": (
             plan_standard_channel0_interval_bands(
                 pi_bound_preset="d4",
@@ -184,6 +189,7 @@ def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
 def markdown_results(payload: dict[str, Any]) -> str:
     rational = payload["rational_margin_certificate"]
     standard_interval = payload["standard_interval_certificate"]
+    standard_d12_bank = payload["standard_d12_bank_bridge_request"]
     standard_plans = payload["standard_interval_candidate_plans"]
     rows = [
         "| Preset | Head dim | Base | Context | Exact discrete | Common collision gap | Common-gap pairs | Total bank pairs | First pass prefix | Smallest pass subfamily | Real margin | Worst gap | Theorem ids |",
@@ -330,6 +336,23 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             standard_interval["claim_boundary"],
             "",
+            "## Standard RoPE D12 Bank Bridge Request",
+            "",
+            "| Name | Bank shape | Requested context | Requested margin | Certified context | Certified margin | Status | Theorem ids |",
+            "| --- | --- | ---: | ---: | ---: | ---: | --- | --- |",
+            "| {name} | {bank_shape} | {requested_context} | {requested_margin} | {certified_context} | {certified_margin} | {status} | {theorems} |".format(
+                name=standard_d12_bank["name"],
+                bank_shape=standard_d12_bank["bank_shape"],
+                requested_context=standard_d12_bank["requested_context"],
+                requested_margin=standard_d12_bank["requested_margin"],
+                certified_context=standard_d12_bank["certified_context"],
+                certified_margin=standard_d12_bank["certified_margin"],
+                status="PASS" if standard_d12_bank["pass_certificate"] else "FAIL",
+                theorems=", ".join(standard_d12_bank["theorem_ids"]),
+            ),
+            "",
+            standard_d12_bank["claim_boundary"],
+            "",
             "## Standard RoPE Candidate Interval Plans",
             "",
             "These exact-rational plans are generated source data for Lean interval certificates. The d4 context-333, d6 context-710, d20 context-4096, and d20 context-8192 plans listed here are now matched by compiled Lean declarations; candidate-only rows remain unproved until matching declarations and manifest ids exist.",
@@ -389,6 +412,17 @@ def main() -> None:
                 print(f"pass_certificate={standard_interval['pass_certificate']}")
                 print(f"certified_margin={standard_interval['certified_margin']}")
                 print(f"theorem_ids={','.join(standard_interval['theorem_ids'])}")
+                standard_d12_bank = payload["standard_d12_bank_bridge_request"]
+                print()
+                print(f"standard_d12_bank_bridge_request={standard_d12_bank['name']}")
+                print(f"pass_certificate={standard_d12_bank['pass_certificate']}")
+                print(
+                    "requested_context={requested_context} requested_margin={requested_margin}".format(
+                        requested_context=standard_d12_bank["requested_context"],
+                        requested_margin=standard_d12_bank["requested_margin"],
+                    )
+                )
+                print(f"theorem_ids={','.join(standard_d12_bank['theorem_ids'])}")
                 for plan in payload["standard_interval_candidate_plans"]:
                     print(
                         "candidate_interval_plan={name} context={context} "

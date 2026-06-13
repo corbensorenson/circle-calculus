@@ -7,6 +7,8 @@ import sys
 from fractions import Fraction
 from pathlib import Path
 
+import pytest
+
 from circle_math.applications import (
     ROPE_CERTIFIER_THEOREMS,
     ROPE_RATIONAL_PRESET_4099_NAME,
@@ -24,6 +26,7 @@ from circle_math.applications import (
     certify_rope_positions,
     certify_phase_bank_positions,
     certify_standard_channel0_interval_seed,
+    certify_standard_channel0_d12_bank_request,
     collision_pair_count_at_gap,
     collision_pair_count_at_gap_multiples,
     discretize_rope_periods,
@@ -700,6 +703,70 @@ def test_turn_ratio_margin_context_transfer_helper_is_monotone() -> None:
     )
 
 
+def test_standard_channel0_d12_bank_request_certificate_marks_covered_request() -> None:
+    certificate = certify_standard_channel0_d12_bank_request(
+        requested_context=8192,
+        requested_margin=Fraction(1, 104220),
+    )
+    assert certificate.pass_certificate
+    assert certificate.failure_reason is None
+    assert certificate.requested_context == 8192
+    assert certificate.requested_margin == "1/104220"
+    assert certificate.certified_context == 8192
+    assert certificate.certified_margin == "1/104220"
+    assert certificate.bank_shape == "standard_channel0_first"
+    assert certificate.theorem_ids == ("AIRA-T0123", "AIRA-T0124")
+    assert certificate.lean_declarations == (
+        "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed",
+        "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed_cons",
+    )
+    assert "standard channel 0 as its first channel" in certificate.assumptions[0]
+    assert "tolerance < fullTurn * requestedMargin" in certificate.tolerance_rule
+    assert "not a full all-channel" in certificate.claim_boundary
+
+
+def test_standard_channel0_d12_bank_request_certificate_supports_membership_shape() -> None:
+    certificate = certify_standard_channel0_d12_bank_request(
+        requested_context=4096,
+        requested_margin=Fraction(1, 200000),
+        first_channel_shape=False,
+    )
+    assert certificate.pass_certificate
+    assert certificate.bank_shape == "contains_standard_channel0"
+    assert certificate.theorem_ids == ("AIRA-T0123",)
+    assert certificate.lean_declarations == (
+        "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed",
+    )
+    assert "contains the standard channel-0" in certificate.assumptions[0]
+
+
+def test_standard_channel0_d12_bank_request_certificate_reports_failures() -> None:
+    context_failure = certify_standard_channel0_d12_bank_request(
+        requested_context=8193,
+        requested_margin=Fraction(1, 104220),
+    )
+    assert not context_failure.pass_certificate
+    assert context_failure.failure_reason == "requested_context_exceeds_d12_seed"
+
+    margin_failure = certify_standard_channel0_d12_bank_request(
+        requested_context=8192,
+        requested_margin=Fraction(1, 104219),
+    )
+    assert not margin_failure.pass_certificate
+    assert margin_failure.failure_reason == "requested_margin_exceeds_d12_seed"
+
+    with pytest.raises(ValueError, match="requested_context must be positive"):
+        certify_standard_channel0_d12_bank_request(
+            requested_context=0,
+            requested_margin=Fraction(1, 104220),
+        )
+    with pytest.raises(ValueError, match="requested_margin must be nonnegative"):
+        certify_standard_channel0_d12_bank_request(
+            requested_context=1,
+            requested_margin=Fraction(-1, 104220),
+        )
+
+
 def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     certificate = certify_rope_positions(
         RoPEConfig(head_dim=2, base=10000.0, context_length=20, tolerance=1e-6)
@@ -990,6 +1057,13 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert payload["rational_margin_certificate"]["pass_certificate"] is True
     assert payload["standard_interval_certificate"]["name"] == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME
     assert payload["standard_interval_certificate"]["pass_certificate"] is True
+    assert payload["standard_d12_bank_bridge_request"]["pass_certificate"] is True
+    assert payload["standard_d12_bank_bridge_request"]["requested_context"] == 8192
+    assert payload["standard_d12_bank_bridge_request"]["requested_margin"] == "1/104220"
+    assert payload["standard_d12_bank_bridge_request"]["theorem_ids"] == [
+        "AIRA-T0123",
+        "AIRA-T0124",
+    ]
     assert payload["standard_interval_candidate_plans"][0]["context_length"] == 333
     assert payload["standard_interval_candidate_plans"][0]["theorem_status"] == (
         "lean_proved_interval_seed_AIRA-T0087_to_AIRA-T0089"
@@ -1040,6 +1114,8 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert "| llama_style_10000_4k |" in markdown_result.stdout
     assert "Named Rational Margin Certificate" in markdown_result.stdout
     assert "Named Standard RoPE Interval Seed" in markdown_result.stdout
+    assert "Standard RoPE D12 Bank Bridge Request" in markdown_result.stdout
+    assert "AIRA-T0123, AIRA-T0124" in markdown_result.stdout
     assert "Standard RoPE Candidate Interval Plans" in markdown_result.stdout
     assert "lean_proved_interval_seed_AIRA-T0090_to_AIRA-T0094" in markdown_result.stdout
     assert "lean_proved_interval_seed_AIRA-T0111_to_AIRA-T0114" in markdown_result.stdout
