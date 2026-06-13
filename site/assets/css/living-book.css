@@ -101,6 +101,7 @@ body {
 .learning-unit,
 .lesson-card,
 .checkpoint-box,
+.proof-shelf,
 .source-trail,
 .lesson-goal,
 .definition-box,
@@ -232,6 +233,19 @@ body {
 
 .source-trail {
   background: #fbfdff;
+}
+
+.proof-shelf {
+  background: #fcfcfd;
+}
+
+.proof-shelf summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.proof-shelf[open] summary {
+  margin-bottom: 1rem;
 }
 
 .widget-panel label {
