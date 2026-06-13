@@ -775,7 +775,7 @@ theorem RopeTurnRatioFiniteMarginCertificate.certifies
 
 The rational interval `[lower, upper]` encloses `gap * turnRatio` and sits
 inside a single integer cell `[cell + margin, cell + 1 - margin]`. This is the
-exact-arithmetic shape needed by future generated interval certificates: the
+exact-arithmetic shape needed by generated interval certificates: the
 certificate never asks Lean to trust a floating-point scan. -/
 def ropeTurnRatioIntervalWitness
     (turnRatio margin : ℝ) (gap : Nat) (lower upper : ℚ) (cell : Int) : Prop :=
@@ -788,7 +788,7 @@ def ropeTurnRatioIntervalWitness
 that band.
 
 This is the reusable compression rule for generated interval certificates: a
-future generator may group consecutive gaps into a band with one integer cell,
+generator may group consecutive gaps into a band with one integer cell,
 then prove only the lower endpoint and upper endpoint inequalities for that
 band. Monotonicity fills in every intermediate gap. -/
 theorem ropeTurnRatioIntervalWitness_of_band_bounds
