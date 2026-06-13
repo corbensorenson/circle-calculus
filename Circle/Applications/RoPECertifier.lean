@@ -1461,36 +1461,24 @@ private theorem ropeStandardChannel0_intervalWitness_of_gap_le_five
     {gap : Nat} (hgap_pos : 0 < gap) (hgap_le_five : gap ≤ 5) :
     ropeTurnRatioIntervalWitness ropeStandardChannel0TurnRatio
       ropeStandardChannel0SeedMargin gap ((gap : ℚ) / 8) ((gap : ℚ) / 6) 0 := by
-  unfold ropeTurnRatioIntervalWitness ropeStandardChannel0SeedMargin
-  have hgap_nonneg : 0 ≤ (gap : ℝ) := by positivity
-  have hgap_one_le : (1 : ℝ) ≤ gap := by exact_mod_cast hgap_pos
-  have hgap_le_five_real : (gap : ℝ) ≤ 5 := by exact_mod_cast hgap_le_five
-  constructor
-  · calc
-      (((gap : ℚ) / 8 : ℚ) : ℝ) = (gap : ℝ) * ((1 : ℝ) / 8) := by
-        norm_num [div_eq_mul_inv]
-      _ ≤ (gap : ℝ) * ropeStandardChannel0TurnRatio :=
-        mul_le_mul_of_nonneg_left ropeStandardChannel0_base_lower hgap_nonneg
-  constructor
-  · calc
-      (gap : ℝ) * ropeStandardChannel0TurnRatio ≤ (gap : ℝ) * ((1 : ℝ) / 6) :=
-        mul_le_mul_of_nonneg_left ropeStandardChannel0_base_upper hgap_nonneg
-      _ = (((gap : ℚ) / 6 : ℚ) : ℝ) := by
-        norm_num [div_eq_mul_inv]
-  constructor
-  · calc
-      ((0 : Int) : ℝ) + (1 : ℝ) / 8 = (1 : ℝ) / 8 := by norm_num
-      _ ≤ (gap : ℝ) / 8 := by
-        exact div_le_div_of_nonneg_right hgap_one_le (by norm_num : (0 : ℝ) ≤ 8)
-      _ = (((gap : ℚ) / 8 : ℚ) : ℝ) := by
-        norm_num
-  · calc
-      (((gap : ℚ) / 6 : ℚ) : ℝ) = (gap : ℝ) / 6 := by
-        norm_num
-      _ ≤ (5 : ℝ) / 6 := by
-        exact div_le_div_of_nonneg_right hgap_le_five_real (by norm_num : (0 : ℝ) ≤ 6)
-      _ ≤ (7 : ℝ) / 8 := by norm_num
-      _ = ((0 : Int) : ℝ) + 1 - (1 : ℝ) / 8 := by norm_num
+  exact
+    ropeTurnRatioIntervalWitness_of_band_bounds
+      (turnRatio := ropeStandardChannel0TurnRatio)
+      (margin := ropeStandardChannel0SeedMargin)
+      (lowerBound := (1 : ℝ) / 8)
+      (upperBound := (1 : ℝ) / 6)
+      (gap := gap) (start := 1) (stop := 5)
+      (lower := (gap : ℚ) / 8) (upper := (gap : ℚ) / 6) (cell := 0)
+      (by norm_num [div_eq_mul_inv])
+      (by norm_num [div_eq_mul_inv])
+      ropeStandardChannel0_base_lower
+      ropeStandardChannel0_base_upper
+      (by norm_num)
+      (by norm_num)
+      (Nat.succ_le_of_lt hgap_pos)
+      hgap_le_five
+      (by norm_num [ropeStandardChannel0SeedMargin])
+      (by norm_num [ropeStandardChannel0SeedMargin])
 
 /-- The first standard-RoPE interval seed: channel 0 has margin `1/8` over
 the tiny context containing gaps `1` through `5`.
