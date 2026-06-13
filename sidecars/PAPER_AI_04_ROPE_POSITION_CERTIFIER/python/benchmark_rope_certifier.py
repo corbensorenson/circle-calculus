@@ -188,6 +188,40 @@ def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
     }
 
 
+def band_endpoint_audit_rows(standard_plans: tuple[dict[str, Any], ...]) -> list[str]:
+    rows = [
+        "| Plan | Band | Gap range | Cell | Start lower endpoint | End upper endpoint | Endpoint check | Bridge |",
+        "| --- | --- | --- | ---: | ---: | ---: | --- | --- |",
+    ]
+    for plan in standard_plans:
+        bands = plan["bands"]
+        if not bands:
+            rows.append(
+                "| {name} | none | none | n/a | n/a | n/a | FAIL | n/a |".format(
+                    name=plan["name"],
+                )
+            )
+            continue
+        selected_bands = (("first", bands[0]),)
+        if len(bands) > 1:
+            selected_bands = selected_bands + (("last", bands[-1]),)
+        for label, band in selected_bands:
+            rows.append(
+                "| {name} | {label} | {start}-{end} | {cell} | {lower} | {upper} | {status} | {bridge} |".format(
+                    name=plan["name"],
+                    label=label,
+                    start=band["start_gap"],
+                    end=band["end_gap"],
+                    cell=band["cell"],
+                    lower=band["start_lower_value"],
+                    upper=band["end_upper_value"],
+                    status="PASS" if band["endpoint_cell_margin_ok"] else "FAIL",
+                    bridge=band["bridge_theorem_id"],
+                )
+            )
+    return rows
+
+
 def markdown_results(payload: dict[str, Any]) -> str:
     rational = payload["rational_margin_certificate"]
     standard_interval = payload["standard_interval_certificate"]
@@ -376,6 +410,12 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "These exact-rational plans are generated source data for Lean interval certificates. The d4 context-333, d6 context-710, d20 context-4096, and d20 context-8192 plans listed here are now matched by compiled Lean declarations; candidate-only rows remain unproved until matching declarations and manifest ids exist.",
             "",
             *plan_rows,
+            "",
+            "### Band Endpoint Audit",
+            "",
+            "Each row shows the endpoint inequalities a generator must justify before the Lean bridge `AIRA-T0126` can fill in the intermediate gaps for that band. This table samples the first and last band for each generated plan; the full deterministic band list is in the JSON sidecar.",
+            "",
+            *band_endpoint_audit_rows(standard_plans),
             "",
             "## RoPE Preset Diagnostics",
             "",

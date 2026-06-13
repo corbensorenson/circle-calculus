@@ -1199,6 +1199,12 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert "lean_proved_interval_seed_AIRA-T0090_to_AIRA-T0094" in markdown_result.stdout
     assert "lean_proved_interval_seed_AIRA-T0111_to_AIRA-T0114" in markdown_result.stdout
     assert "lean_proved_interval_seed_AIRA-T0120_to_AIRA-T0122" in markdown_result.stdout
+    assert "Band Endpoint Audit" in markdown_result.stdout
+    assert (
+        "| standard_rope_channel0_interval_plan_d20_margin_1_104220_context_8192 "
+        "| last | 8187-8191 | 1303 |"
+    ) in markdown_result.stdout
+    assert "AIRA-T0126" in markdown_result.stdout
     assert "Exact Phase-Bank Diagnostics" in markdown_result.stdout
     assert ROPE_RATIONAL_PRESET_4099_NAME in markdown_result.stdout
     assert ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME in markdown_result.stdout

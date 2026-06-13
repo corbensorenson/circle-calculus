@@ -45,6 +45,21 @@ These exact-rational plans are generated source data for Lean interval certifica
 | standard_rope_channel0_interval_plan_d20_margin_1_104219_context_4096 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/104219 | 4096 | none | 652 | lean_proved_interval_seed_AIRA-T0111_to_AIRA-T0114 |
 | standard_rope_channel0_interval_plan_d20_margin_1_104220_context_8192 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/104220 | 8192 | none | 1304 | lean_proved_interval_seed_AIRA-T0120_to_AIRA-T0122 |
 
+### Band Endpoint Audit
+
+Each row shows the endpoint inequalities a generator must justify before the Lean bridge `AIRA-T0126` can fill in the intermediate gaps for that band. This table samples the first and last band for each generated plan; the full deterministic band list is in the JSON sidecar.
+
+| Plan | Band | Gap range | Cell | Start lower endpoint | End upper endpoint | Endpoint check | Bridge |
+| --- | --- | --- | ---: | ---: | ---: | --- | --- |
+| standard_rope_channel0_interval_plan_d4_margin_1_512_context_333 | first | 1-6 | 0 | 625/3927 | 6000/6283 | PASS | AIRA-T0126 |
+| standard_rope_channel0_interval_plan_d4_margin_1_512_context_333 | last | 327-332 | 52 | 68125/1309 | 332000/6283 | PASS | AIRA-T0126 |
+| standard_rope_channel0_interval_plan_d6_margin_1_1024_context_710 | first | 1-6 | 0 | 500000/3141593 | 375000/392699 | PASS | AIRA-T0126 |
+| standard_rope_channel0_interval_plan_d6_margin_1_1024_context_710 | last | 704-709 | 112 | 352000000/3141593 | 44312500/392699 | PASS | AIRA-T0126 |
+| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_4096 | first | 1-6 | 0 | 50000000000000000000/314159265358979323847 | 150000000000000000000/157079632679489661923 | PASS | AIRA-T0126 |
+| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_4096 | last | 4091-4095 | 651 | 204550000000000000000000/314159265358979323847 | 102375000000000000000000/157079632679489661923 | PASS | AIRA-T0126 |
+| standard_rope_channel0_interval_plan_d20_margin_1_104220_context_8192 | first | 1-6 | 0 | 50000000000000000000/314159265358979323847 | 150000000000000000000/157079632679489661923 | PASS | AIRA-T0126 |
+| standard_rope_channel0_interval_plan_d20_margin_1_104220_context_8192 | last | 8187-8191 | 1303 | 409350000000000000000000/314159265358979323847 | 204775000000000000000000/157079632679489661923 | PASS | AIRA-T0126 |
+
 ## RoPE Preset Diagnostics
 
 | Preset | Head dim | Base | Context | Exact discrete | Common collision gap | Common-gap pairs | Total bank pairs | First pass prefix | Smallest pass subfamily | Real margin | Worst gap | Theorem ids |
