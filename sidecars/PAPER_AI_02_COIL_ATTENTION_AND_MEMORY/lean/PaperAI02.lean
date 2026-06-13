@@ -178,5 +178,6 @@ namespace Circle.PaperAI02
 #check Circle.Applications.localWindowCoversContext
 #check Circle.Applications.localWindowCoversContext_iff_context_sub_one_le
 #check Circle.Applications.mem_hybridFamilyUncoveredLagList_default_120_4_3_7_13_lag5
+#check Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length
 
 end Circle.PaperAI02

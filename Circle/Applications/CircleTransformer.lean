@@ -1408,6 +1408,12 @@ theorem mem_hybridFamilyUncoveredLagList_default_120_4_3_7_13_lag5 :
   exact (mem_hybridFamilyUncoveredLagList_iff).2
     ⟨by omega, by omega, hybridFamilyLagGap_default_120_4_3_7_13_lag5⟩
 
+/-- The default sparse-attention plan has exactly `109` positive in-context
+uncovered lags. This is the finite count reported by the executable sidecar. -/
+theorem hybridFamilyUncoveredLagList_default_120_4_3_7_13_length :
+    (hybridFamilyUncoveredLagList 120 4 3 [7, 13]).length = 109 := by
+  native_decide
+
 /-! ### RoPE relative position -/
 
 /-- The RoPE phase of a token at position `pos`: rotation by `pos` from the base node. -/

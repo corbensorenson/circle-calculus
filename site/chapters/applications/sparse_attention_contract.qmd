@@ -104,9 +104,9 @@ The default sidecar is intentionally incomplete so the gap certificates are visi
 | Uncovered lag count | `109` | most positive in-context lags are not covered by this small sparse plan |
 | Candidate budget | `10` | four local candidates plus six stride-family candidates before full attention's `120` candidates |
 | No-collision predicates | all true in the default fixture | the raw candidate budget survives deduplication for this plan |
-| Uncovered-list theorem | lag `5` appears in the finite uncovered-lag list | the sidecar's gap list is linked to semantic reachability, not only to Python filtering |
+| Uncovered-list theorem | lag `5` appears in a finite uncovered-lag list of length `109` | the sidecar's gap list is linked to semantic reachability, not only to Python filtering |
 
-The key upgrade is the finite uncovered-lag list. `AIT-T0081` says membership in that list is exactly a positive in-context semantic miss. `AIT-T0082` and `AIT-T0083` say complete coverage is exactly an empty list, equivalently zero uncovered lags. `AIT-T0084` proves that the default fixture's lag `5` is one of those listed misses.
+The key upgrade is the finite uncovered-lag list. `AIT-T0081` says membership in that list is exactly a positive in-context semantic miss. `AIT-T0082` and `AIT-T0083` say complete coverage is exactly an empty list, equivalently zero uncovered lags. `AIT-T0084` proves that the default fixture's lag `5` is one of those listed misses, and `AIT-T0085` proves the default list has exactly `109` entries.
 
 That is the proof-carrying contract shape: a sparse plan should show what it covers, what it misses, and which budget assumptions justify the count. The structured-family score in the sidecar is a fixture diagnostic, not a learned attention-quality result.
 
@@ -158,6 +158,7 @@ That is the proof-carrying contract shape: a sparse plan should show what it cov
 <div class="theorem-box" data-theorem-id="AIT-T0082"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0083"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0084"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0085"></div>
 
 </details>
 

@@ -131,6 +131,7 @@ This is why the sparse lane now emphasizes iffs and gap certificates. A sparse p
 <div class="theorem-box" data-theorem-id="AIT-T0081"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0083"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0084"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0085"></div>
 
 ## 5. Looped Recurrence
 

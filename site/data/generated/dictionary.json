@@ -4955,6 +4955,12 @@
           "lean_name": "Circle.Applications.mem_hybridFamilyUncoveredLagList_default_120_4_3_7_13_lag5",
           "name": "Circle.Applications.mem_hybridFamilyUncoveredLagList_default_120_4_3_7_13_lag5",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0085",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5434,6 +5440,12 @@
           "id": "AIT-T0084",
           "lean_name": "Circle.Applications.mem_hybridFamilyUncoveredLagList_default_120_4_3_7_13_lag5",
           "name": "Circle.Applications.mem_hybridFamilyUncoveredLagList_default_120_4_3_7_13_lag5",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0085",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
           "status": "proved"
         }
       ],
@@ -6783,6 +6795,12 @@
           "id": "AIT-T0084",
           "lean_name": "Circle.Applications.mem_hybridFamilyUncoveredLagList_default_120_4_3_7_13_lag5",
           "name": "Circle.Applications.mem_hybridFamilyUncoveredLagList_default_120_4_3_7_13_lag5",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0085",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
           "status": "proved"
         }
       ],
@@ -11217,6 +11235,12 @@
           "lean_name": "Circle.Applications.mem_hybridFamilyUncoveredLagList_default_120_4_3_7_13_lag5",
           "name": "Circle.Applications.mem_hybridFamilyUncoveredLagList_default_120_4_3_7_13_lag5",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0085",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -12562,7 +12586,7 @@
         "A proof that sparse attention is faster or uses less memory.",
         "A claim that uncovered lags are irrelevant to a real task."
       ],
-      "formal_definition": "`circle_math.applications.circle_ai.certify_stride_family_coverage`, a finite certificate listing every positive lag covered by a local-window plus stride-family sparse-attention plan and every uncovered lag as a gap certificate; Lean theorem `Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family` states the abstract gap predicate, `Circle.Applications.not_localLagReach_iff_window_lt_of_pos` characterizes the local-window miss for positive lags, `Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne` gives the concrete no-local/no-stride-step certificate condition, `Circle.Applications.hybridFamilyLagGap_default_120_4_3_7_13_lag5` proves the default fixture's lag-5 gap witness, `Circle.Applications.not_hybridFamilyCoversContext_default_120_4_3_7_13` proves the default fixture is not complete coverage, `Circle.Applications.hybridFamilyCoversContext_iff_no_uncovered_lag` proves that the named complete-coverage predicate is equivalent to having no positive in-context uncovered-lag witness, `Circle.Applications.hybridFamilyUncoveredLagList` is the finite theorem-side list of positive in-context lags missing from the candidate list, `Circle.Applications.mem_hybridFamilyUncoveredLagList_iff` proves membership in that list is exactly a semantic sparse-plan miss, `Circle.Applications.hybridFamilyCoversContext_iff_uncoveredLagList_eq_nil` and `Circle.Applications.hybridFamilyCoversContext_iff_uncoveredLagList_length_eq_zero` prove complete coverage is equivalent to an empty or zero-length uncovered list, `Circle.Applications.mem_hybridFamilyUncoveredLagList_default_120_4_3_7_13_lag5` proves the default fixture's lag-5 uncovered-list membership, `Circle.Applications.hybridFamilyLagReach_of_localWindow_ge_context_sub_one` and `Circle.Applications.hybridFamilyCoversContext_of_localWindow_ge_context_sub_one` give the dense-local complete-coverage sufficient condition, `Circle.Applications.localWindowCoversContext_iff_context_sub_one_le` proves the exact local-window complete-coverage criterion, the `*_cons_iff` theorems decompose one added stride against the rest of the finite family, `Circle.Applications.hybridFamilyLagReach_nil_iff_local` records the empty-family local-only baseline, the monotonicity theorems prove that increasing local-window width or admitted path length cannot remove covered lags or complete coverage, `Circle.Applications.hybridFamilyRawCandidateBudget_*` theorems account for the raw upper bound `window + pathLength * strides.length` before duplicate removal, `Circle.Applications.hybridFamilyDedupCandidateBudgetBound_*` theorems account for the tighter `min(context, raw_budget)` deduplicated-count cap, `Circle.Applications.mem_hybridFamilyLagCandidateList_iff` proves that the theorem-side lag-candidate list has exactly the same in-context membership semantics as the local+stride-family reachability predicate, `Circle.Applications.predecessorIndex_mem_hybridFamilyQueryCandidateList_of_reach` maps every reached in-context lag to a query-indexed predecessor candidate, the `*_eq_raw_of_noCollision` theorems prove that no-collision candidate lists deduplicate without budget loss, `Circle.Applications.hybridFamilyLagCandidatesNoCollision_of_coil_noCollision_of_local_coil_disjoint` derives lag no-collision from coil-residue uniqueness plus local/coil disjointness, `Circle.Applications.hybridFamilyQueryCandidatesNoCollision_of_lag_noCollision_of_predecessor_injective` lifts lag no-collision to query-candidate no-collision when predecessor indexing is injective on generated lag values, the `*_singleton_*_path_mul_stride_lt_context` theorems prove a concrete no-wrap single-stride sufficient condition for duplicate-free lag candidates, `Circle.Applications.coilStrideFamilyLagResiduesNoCollision_cons_of_head_tail_disjoint` makes residue no-collision compositional over finite stride families, `Circle.Applications.coilLagResiduesDisjointFromFamily_of_path_mul_head_lt_tail_strides` proves a numeric head/tail separation condition for that compositional premise, `Circle.Applications.coilStrideFamilyLagResiduesNoCollision_of_noWrapSeparated` lifts the numeric separation rule to a whole ordered stride family, `Circle.Applications.localCoilLagCandidatesDisjoint_of_noWrapSeparated_of_window_lt_all_strides` proves local/coil disjointness for separated families whose strides start beyond the local window, `Circle.Applications.hybridFamilyLagCandidatesNoCollision_of_noWrapSeparated_of_window_lt_all_strides` packages those conditions into full theorem-side lag-candidate no-collision, `Circle.Applications.hybridFamilyPredecessorInjectiveOnLagCandidates_of_window_lt_context` proves the numeric `window < n` predecessor-injectivity condition, and the separated-family query/raw-budget theorems package exact lag/query raw-budget equality.",
+      "formal_definition": "`circle_math.applications.circle_ai.certify_stride_family_coverage`, a finite certificate listing every positive lag covered by a local-window plus stride-family sparse-attention plan and every uncovered lag as a gap certificate; Lean theorem `Circle.Applications.hybridFamilyLagGap_iff_not_local_and_not_family` states the abstract gap predicate, `Circle.Applications.not_localLagReach_iff_window_lt_of_pos` characterizes the local-window miss for positive lags, `Circle.Applications.hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne` gives the concrete no-local/no-stride-step certificate condition, `Circle.Applications.hybridFamilyLagGap_default_120_4_3_7_13_lag5` proves the default fixture's lag-5 gap witness, `Circle.Applications.not_hybridFamilyCoversContext_default_120_4_3_7_13` proves the default fixture is not complete coverage, `Circle.Applications.hybridFamilyCoversContext_iff_no_uncovered_lag` proves that the named complete-coverage predicate is equivalent to having no positive in-context uncovered-lag witness, `Circle.Applications.hybridFamilyUncoveredLagList` is the finite theorem-side list of positive in-context lags missing from the candidate list, `Circle.Applications.mem_hybridFamilyUncoveredLagList_iff` proves membership in that list is exactly a semantic sparse-plan miss, `Circle.Applications.hybridFamilyCoversContext_iff_uncoveredLagList_eq_nil` and `Circle.Applications.hybridFamilyCoversContext_iff_uncoveredLagList_length_eq_zero` prove complete coverage is equivalent to an empty or zero-length uncovered list, `Circle.Applications.mem_hybridFamilyUncoveredLagList_default_120_4_3_7_13_lag5` proves the default fixture's lag-5 uncovered-list membership, `Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length` proves the default fixture has exactly 109 uncovered lags, `Circle.Applications.hybridFamilyLagReach_of_localWindow_ge_context_sub_one` and `Circle.Applications.hybridFamilyCoversContext_of_localWindow_ge_context_sub_one` give the dense-local complete-coverage sufficient condition, `Circle.Applications.localWindowCoversContext_iff_context_sub_one_le` proves the exact local-window complete-coverage criterion, the `*_cons_iff` theorems decompose one added stride against the rest of the finite family, `Circle.Applications.hybridFamilyLagReach_nil_iff_local` records the empty-family local-only baseline, the monotonicity theorems prove that increasing local-window width or admitted path length cannot remove covered lags or complete coverage, `Circle.Applications.hybridFamilyRawCandidateBudget_*` theorems account for the raw upper bound `window + pathLength * strides.length` before duplicate removal, `Circle.Applications.hybridFamilyDedupCandidateBudgetBound_*` theorems account for the tighter `min(context, raw_budget)` deduplicated-count cap, `Circle.Applications.mem_hybridFamilyLagCandidateList_iff` proves that the theorem-side lag-candidate list has exactly the same in-context membership semantics as the local+stride-family reachability predicate, `Circle.Applications.predecessorIndex_mem_hybridFamilyQueryCandidateList_of_reach` maps every reached in-context lag to a query-indexed predecessor candidate, the `*_eq_raw_of_noCollision` theorems prove that no-collision candidate lists deduplicate without budget loss, `Circle.Applications.hybridFamilyLagCandidatesNoCollision_of_coil_noCollision_of_local_coil_disjoint` derives lag no-collision from coil-residue uniqueness plus local/coil disjointness, `Circle.Applications.hybridFamilyQueryCandidatesNoCollision_of_lag_noCollision_of_predecessor_injective` lifts lag no-collision to query-candidate no-collision when predecessor indexing is injective on generated lag values, the `*_singleton_*_path_mul_stride_lt_context` theorems prove a concrete no-wrap single-stride sufficient condition for duplicate-free lag candidates, `Circle.Applications.coilStrideFamilyLagResiduesNoCollision_cons_of_head_tail_disjoint` makes residue no-collision compositional over finite stride families, `Circle.Applications.coilLagResiduesDisjointFromFamily_of_path_mul_head_lt_tail_strides` proves a numeric head/tail separation condition for that compositional premise, `Circle.Applications.coilStrideFamilyLagResiduesNoCollision_of_noWrapSeparated` lifts the numeric separation rule to a whole ordered stride family, `Circle.Applications.localCoilLagCandidatesDisjoint_of_noWrapSeparated_of_window_lt_all_strides` proves local/coil disjointness for separated families whose strides start beyond the local window, `Circle.Applications.hybridFamilyLagCandidatesNoCollision_of_noWrapSeparated_of_window_lt_all_strides` packages those conditions into full theorem-side lag-candidate no-collision, `Circle.Applications.hybridFamilyPredecessorInjectiveOnLagCandidates_of_window_lt_context` proves the numeric `window < n` predecessor-injectivity condition, and the separated-family query/raw-budget theorems package exact lag/query raw-budget equality.",
       "id": "COMMON-0079",
       "introduced_in": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
       "intuition": "Instead of showing only successful example lags, the certificate exposes the holes in a sparse plan with a checkable reason for each hole and a finite theorem-side uncovered-lag list whose membership is proved equivalent to semantic reachability failure. It identifies the exact local-window condition that removes all positive-lag holes, proves that conservative budget increases preserve existing lag coverage and complete coverage, and separates exact theorem-side lag and query-candidate counts from theorem-backed raw and context-clipped candidate-budget upper bounds while marking when structural no-collision conditions make exact counts equal raw budget. For one-stride plans, it can point to a simple numeric condition: put the stride above the local window and keep every admitted stride multiple before wraparound. For multi-stride plans, it now has a family-level sufficient condition: order the stride blocks so each no-wrap head block ends before every tail stride, keep every stride beyond the local window, and keep the local window below the context length for query-indexed exact raw-budget equality.",
@@ -12968,6 +12992,12 @@
           "id": "AIT-T0084",
           "lean_name": "Circle.Applications.mem_hybridFamilyUncoveredLagList_default_120_4_3_7_13_lag5",
           "name": "Circle.Applications.mem_hybridFamilyUncoveredLagList_default_120_4_3_7_13_lag5",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0085",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
           "status": "proved"
         }
       ],
