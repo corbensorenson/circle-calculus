@@ -2687,6 +2687,76 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
     blocker: ""
+  - id: AIRA-T0063
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioIntervalWitness_forall_int
+    informal_statement: "A rational enclosure for one generated gap proves that every integer-turn witness is at least the advertised margin away when the whole enclosure lies inside one integer cell away from both endpoints."
+    formal_statement: "forall {turnRatio margin : Real} {gap : Nat} {lower upper : Rat} {cell : Int}, 0 <= margin -> Circle.Applications.ropeTurnRatioIntervalWitness turnRatio margin gap lower upper cell -> forall turns : Int, margin <= Circle.Applications.ropeTurnRatioError turnRatio gap turns"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_interval_seed_is_theorem_backed
+    blocker: ""
+  - id: AIRA-T0064
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate
+    informal_statement: "A finite table of rational interval witnesses, one for every positive generated gap below the context, proves the finite-context turn-ratio margin."
+    formal_statement: "forall {turnRatio margin : Real} {context : Nat}, Circle.Applications.ropeTurnRatioIntervalCertificate turnRatio margin context -> Circle.Applications.ropeTurnRatioFiniteMargin turnRatio margin context"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_interval_seed_is_theorem_backed
+    blocker: ""
+  - id: AIRA-T0065
+    status: lean_proved
+    lean_name: Circle.Applications.ropeStandardChannel0Seed_intervalCertificate
+    informal_statement: "For the genuine standard RoPE channel-0 turn ratio 1/(2*pi), the tiny context containing gaps 1 through 5 has a rational interval certificate with margin 1/8, using the bounds 3 < pi <= 4."
+    formal_statement: "Circle.Applications.ropeTurnRatioIntervalCertificate Circle.Applications.ropeStandardChannel0TurnRatio Circle.Applications.ropeStandardChannel0SeedMargin Circle.Applications.ropeStandardChannel0SeedContext"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_interval_seed_is_theorem_backed
+    blocker: ""
+  - id: AIRA-T0066
+    status: lean_proved
+    lean_name: Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin
+    informal_statement: "The standard RoPE channel-0 interval seed proves a finite-context nearest-integer margin 1/8 over context 6."
+    formal_statement: "Circle.Applications.ropeTurnRatioFiniteMargin Circle.Applications.ropeStandardChannel0TurnRatio Circle.Applications.ropeStandardChannel0SeedMargin Circle.Applications.ropeStandardChannel0SeedContext"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_interval_seed_is_theorem_backed
+    blocker: ""
+  - id: AIRA-T0067
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropeStandardChannel0Seed_nearTurn
+    informal_statement: "The standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/8 throughout the tiny context 6."
+    formal_statement: "forall {tolerance : Real} {left right : Nat}, left < right -> right < Circle.Applications.ropeStandardChannel0SeedContext -> tolerance < Circle.Applications.ropeStandardChannel0SeedMargin -> not (Circle.Applications.ropeRealPhaseNearTurn Circle.Applications.ropeStandardChannel0TurnRatio 1 tolerance left right)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_interval_seed_is_theorem_backed
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

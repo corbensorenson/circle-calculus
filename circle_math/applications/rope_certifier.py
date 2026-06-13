@@ -12,6 +12,7 @@ The certifier has two layers:
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+from fractions import Fraction
 from itertools import combinations
 from math import ceil, floor, gcd, pi, tau
 from typing import Any, Iterable, Literal, Sequence
@@ -128,6 +129,24 @@ ROPE_RATIONAL_PRESET_4099_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
 )
 
+ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME = "standard_rope_channel0_interval_context_6"
+
+ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS: tuple[str, ...] = (
+    "AIRA-T0063",
+    "AIRA-T0064",
+    "AIRA-T0065",
+    "AIRA-T0066",
+    "AIRA-T0067",
+)
+
+ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
+    "Circle.Applications.ropeTurnRatioIntervalWitness_forall_int",
+    "Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate",
+    "Circle.Applications.ropeStandardChannel0Seed_intervalCertificate",
+    "Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin",
+    "Circle.Applications.not_ropeStandardChannel0Seed_nearTurn",
+)
+
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
     "Exact pass/fail is for the declared integer-period discretized RoPE model. "
     "The real-phase margin scan is numerical evidence only. This is not a model-quality, "
@@ -224,12 +243,23 @@ class RealPhaseMarginReport:
 
 
 @dataclass(frozen=True)
+class RoPEProofLayerReport:
+    layer: str
+    status: str
+    theorem_backed: bool
+    theorem_ids: tuple[str, ...]
+    lean_declarations: tuple[str, ...]
+    explanation: str
+
+
+@dataclass(frozen=True)
 class RoPEPositionCertificate:
     schema_id: str
     config: RoPEConfig
     exact_discrete: ExactDiscreteRoPECertificate
     real_phase_margin: RealPhaseMarginReport
     real_period_estimates: tuple[float, ...]
+    proof_layers: tuple[RoPEProofLayerReport, ...]
     theorem_ids: tuple[str, ...]
     lean_declarations: tuple[str, ...]
     claim_boundary: str = ROPE_CERTIFIER_CLAIM_BOUNDARY
@@ -262,6 +292,33 @@ class TurnRatioFiniteMarginCertificate:
     certified_margin: float | None
     pass_certificate: bool
     zero_margin_witness: tuple[int, int] | None
+    theorem_ids: tuple[str, ...]
+    lean_declarations: tuple[str, ...]
+    explanation: str
+    claim_boundary: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class RationalIntervalWitnessReport:
+    gap: int
+    lower: str
+    upper: str
+    cell: int
+
+
+@dataclass(frozen=True)
+class IntervalBackedTurnRatioCertificate:
+    schema_id: str
+    name: str
+    turn_ratio_expression: str
+    context_length: int
+    certified_margin: str
+    pass_certificate: bool
+    pi_bounds: str
+    interval_witnesses: tuple[RationalIntervalWitnessReport, ...]
     theorem_ids: tuple[str, ...]
     lean_declarations: tuple[str, ...]
     explanation: str
@@ -819,6 +876,64 @@ def certify_rational_preset_4099() -> TurnRatioFiniteMarginCertificate:
     )
 
 
+def format_fraction(value: Fraction) -> str:
+    """Format an exact rational for certificate JSON and Markdown output."""
+    if value.denominator == 1:
+        return str(value.numerator)
+    return f"{value.numerator}/{value.denominator}"
+
+
+def certify_standard_channel0_interval_seed() -> IntervalBackedTurnRatioCertificate:
+    """Return the first theorem-backed interval certificate for standard RoPE.
+
+    The Lean theorem proves the same finite witness table for the genuine
+    channel-0 turn ratio ``1 / (2π)`` over the tiny context containing gaps
+    1 through 5. The certificate is intentionally small because it relies only
+    on mathlib's basic bounds ``3 < π <= 4``.
+    """
+    context_length = 6
+    margin = Fraction(1, 8)
+    witnesses: list[RationalIntervalWitnessReport] = []
+    for gap in range(1, context_length):
+        lower = Fraction(gap, 8)
+        upper = Fraction(gap, 6)
+        cell = 0
+        if not (margin <= lower and upper <= Fraction(cell + 1, 1) - margin):
+            raise AssertionError("standard channel-0 seed witness table is invalid")
+        witnesses.append(
+            RationalIntervalWitnessReport(
+                gap=gap,
+                lower=format_fraction(lower),
+                upper=format_fraction(upper),
+                cell=cell,
+            )
+        )
+
+    return IntervalBackedTurnRatioCertificate(
+        schema_id="circle_calculus.standard_rope_interval_margin.v0",
+        name=ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME,
+        turn_ratio_expression="1/(2*pi)",
+        context_length=context_length,
+        certified_margin=format_fraction(margin),
+        pass_certificate=True,
+        pi_bounds="3 < pi <= 4",
+        interval_witnesses=tuple(witnesses),
+        theorem_ids=ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS,
+        lean_declarations=ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS,
+        explanation=(
+            "Lean proves that standard RoPE channel 0, with turn ratio 1/(2*pi), "
+            "has finite nearest-integer margin 1/8 for gaps 1 through 5 by enclosing "
+            "gap/(2*pi) between gap/8 and gap/6. Larger contexts need generated "
+            "rational interval data and sharper pi or continued-fraction bounds."
+        ),
+        claim_boundary=(
+            "This is a theorem-backed interval certificate for the genuine standard "
+            "RoPE channel-0 turn ratio over context 6 only. It is not a full standard "
+            "RoPE bank certificate and does not certify 512, 4096, or larger contexts."
+        ),
+    )
+
+
 def scan_turn_ratio_finite_margin(
     *,
     turn_ratio: float,
@@ -1083,12 +1198,71 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
         context_length=config.context_length,
         tolerance=config.tolerance,
     )
+    rational_preset = certify_rational_preset_4099()
+    standard_interval_seed = certify_standard_channel0_interval_seed()
+    proof_layers = (
+        RoPEProofLayerReport(
+            layer="exact_integer_period_phase_bank",
+            status="PASS" if exact.pass_exact else "FAIL",
+            theorem_backed=True,
+            theorem_ids=ROPE_CERTIFIER_THEOREMS,
+            lean_declarations=ROPE_CERTIFIER_LEAN_DECLARATIONS,
+            explanation=(
+                "The declared integer-period phase bank is checked by Lean-backed "
+                "LCM/divisibility theorems. It applies to the discretized phase-bank "
+                "model, not directly to irrational standard RoPE."
+            ),
+        ),
+        RoPEProofLayerReport(
+            layer="rational_discretized_finite_margin",
+            status=(
+                "AVAILABLE_NAMED_PRESET"
+                if rational_preset.pass_certificate
+                else "UNAVAILABLE"
+            ),
+            theorem_backed=True,
+            theorem_ids=rational_preset.theorem_ids,
+            lean_declarations=rational_preset.lean_declarations,
+            explanation=(
+                "The named 1/4099 context-4096 preset is a theorem-backed "
+                "rational/discretized turn-ratio finite-margin certificate."
+            ),
+        ),
+        RoPEProofLayerReport(
+            layer="interval_backed_standard_rope",
+            status=(
+                "AVAILABLE_SEED_CONTEXT_6"
+                if standard_interval_seed.pass_certificate
+                else "UNAVAILABLE"
+            ),
+            theorem_backed=True,
+            theorem_ids=standard_interval_seed.theorem_ids,
+            lean_declarations=standard_interval_seed.lean_declarations,
+            explanation=(
+                "The first genuine standard-RoPE interval seed certifies channel 0 "
+                "with turn ratio 1/(2*pi), margin 1/8, and context 6 only."
+            ),
+        ),
+        RoPEProofLayerReport(
+            layer="numerical_real_phase_scan",
+            status="PASS" if margin.pass_margin else "WARN",
+            theorem_backed=False,
+            theorem_ids=margin.formal_precursor_theorem_ids,
+            lean_declarations=margin.formal_precursor_lean_declarations,
+            explanation=(
+                "The floating-point scan is a diagnostic over the requested config. "
+                "The listed Lean declarations are structural precursors; they do not "
+                "turn this scan into a formal proof."
+            ),
+        ),
+    )
     return RoPEPositionCertificate(
         schema_id="circle_calculus.rope_position_distinguishability.v0",
         config=config,
         exact_discrete=exact,
         real_phase_margin=margin,
         real_period_estimates=real_periods,
+        proof_layers=proof_layers,
         theorem_ids=ROPE_CERTIFIER_THEOREMS,
         lean_declarations=ROPE_CERTIFIER_LEAN_DECLARATIONS,
     )
@@ -1216,6 +1390,8 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         "RoPE position distinguishability certificate",
         f"config: head_dim={config.head_dim} base={config.base:g} context={config.context_length} "
         f"tolerance={config.tolerance:g} discretization={config.discretization}",
+        "proof_layers="
+        + ",".join(f"{layer.layer}:{layer.status}" for layer in certificate.proof_layers),
         f"exact_discrete_contract={exact_status} common_collision_gap={gap} "
         f"period_count={exact.period_count} "
         f"guaranteed_common_gap_collision_pair_count={exact.guaranteed_common_gap_collision_pair_count} "

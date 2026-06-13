@@ -4,7 +4,7 @@ This note is a durable audit trail for the real-valued RoPE phase-margin theorem
 
 ## Current Proved Bridge
 
-The real-phase theorem spine currently runs from `AIRA-T0029` through `AIRA-T0033`, then `AIRA-T0037` through `AIRA-T0045`, plus `AIRA-T0047`, `AIRA-T0050`, and `AIRA-T0053` through `AIRA-T0062`.
+The real-phase theorem spine currently runs from `AIRA-T0029` through `AIRA-T0033`, then `AIRA-T0037` through `AIRA-T0045`, plus `AIRA-T0047`, `AIRA-T0050`, and `AIRA-T0053` through `AIRA-T0067`.
 
 `AIRA-T0041` is the Diophantine-scaling bridge:
 
@@ -39,6 +39,10 @@ This is not a lower-bound theorem. It is the normalization step that makes the n
 `AIRA-T0058` and `AIRA-T0059` prove the finite nearest-integer witness bridge. For a fixed real value, checking a lower bound against the integer floor and integer ceiling is equivalent to checking it against every integer. Applied to every generated positive gap, this makes `ropeTurnRatioFiniteMargin alpha margin context` equivalent to two floor/ceiling checks per gap. This is a bounded integer-turn search theorem, not yet a lower-bound theorem for a concrete irrational or nonperiodic RoPE turn ratio.
 
 `AIRA-T0060` introduces the proof-carrying certificate interface: a `RopeTurnRatioFiniteMarginCertificate` whose payload is the nearest-integer witness predicate proves the corresponding `ropeTurnRatioFiniteMargin`. `AIRA-T0061` is the first named end-to-end finite-margin certificate: the rational/discretized turn ratio `1/4099` has margin `1/4099` over context `4096`. `AIRA-T0062` applies that certificate to rule out one-channel near-turn collisions below the certified margin. This is a complete theorem-backed certificate for a declared rational/discretized turn ratio, not a proof for the standard irrational `1 / (2π)` RoPE channel.
+
+`AIRA-T0063` and `AIRA-T0064` introduce the interval-certificate route for genuine nonperiodic turn ratios. A single rational interval witness proves all integer-turn lower bounds for one generated gap when the enclosure lies inside one integer cell and stays at least `margin` from both endpoints. A finite table of those witnesses proves `ropeTurnRatioFiniteMargin alpha margin context`.
+
+`AIRA-T0065` through `AIRA-T0067` are the first named standard-RoPE interval seed. For channel 0, where `alpha = 1 / (2π)`, Lean proves a context-6 margin `1/8` using the elementary bounds `3 < π <= 4`. The witness table encloses each inspected value as `gap/8 <= gap/(2π) <= gap/6` for gaps `1` through `5`, all inside the cell `[1/8, 7/8]`. This is a theorem-backed certificate for the genuine standard channel, but only for the tiny seed context. It does not certify 512, 4096, or model-scale RoPE contexts.
 
 ## Local Mathlib Anchors
 
@@ -85,7 +89,9 @@ The important warning is `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irratio
 14. Use `AIRA-T0058` and `AIRA-T0059` to reduce the integer-turn obligation for each generated gap to the floor and ceiling witnesses of `gap * alpha`.
 15. Use `AIRA-T0060` to package a finite nearest-integer witness payload as a proof-carrying certificate.
 16. Use `AIRA-T0061` and `AIRA-T0062` as the first fully proved rational/discretized named preset: `1/4099`, context `4096`, margin `1/4099`, and no near-turn collision below that margin.
-17. Add a continued-fraction, Diophantine, or exact-arithmetic interval certificate that proves the floor/ceiling witness inequalities for standard nonperiodic RoPE turn ratios such as `1 / (2π)`.
+17. Use `AIRA-T0063` and `AIRA-T0064` to turn exact rational interval witness tables into finite-context margin proofs.
+18. Use `AIRA-T0065` through `AIRA-T0067` as the first tiny standard-RoPE seed: channel 0, `alpha = 1 / (2π)`, context `6`, margin `1/8`, no near-turn below that margin.
+19. Scale the interval route by generating exact rational interval data for larger contexts such as 512 or 4096 and proving sharper `π` or continued-fraction bounds for those intervals.
 
 ## Guardrails
 
@@ -98,4 +104,5 @@ The important warning is `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irratio
 - A generated gap list only handles the finite `gap` domain; it does not by itself discharge the integer-turn lower-bound obligation.
 - The floor/ceiling witness bridge discharges the infinite integer-turn quantifier for each fixed gap, but it does not prove that a concrete irrational or nonperiodic RoPE turn ratio has a positive lower bound.
 - The `1/4099` preset certificate is theorem-backed, but it is a rational/discretized turn-ratio certificate, not a standard irrational RoPE certificate.
+- The standard channel-0 interval seed is theorem-backed for context 6 only. Larger standard-RoPE contexts need generated rational interval data and sharper `π` or continued-fraction bounds.
 - A full standard real RoPE bank certificate needs channel-wise finite-context lower bounds before the Living Book or certifier can mark the ordinary real-phase scan as formally certified.

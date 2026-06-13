@@ -10,6 +10,14 @@ These are proof-carrying position-contract reports for declared integer-period p
 
 This is a theorem-backed rational/discretized turn-ratio certificate. It is not a proof of the standard irrational real RoPE schedule unless that schedule is explicitly replaced by the declared rational ratio.
 
+## Named Standard RoPE Interval Seed
+
+| Name | Turn ratio | Context | Certified margin | Pi bounds | Status | Theorem ids |
+| --- | --- | ---: | --- | --- | --- | --- |
+| standard_rope_channel0_interval_context_6 | 1/(2*pi) | 6 | 1/8 | 3 < pi <= 4 | PASS | AIRA-T0063, AIRA-T0064, AIRA-T0065, AIRA-T0066, AIRA-T0067 |
+
+This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 6 only. It is not a full standard RoPE bank certificate and does not certify 512, 4096, or larger contexts.
+
 ## RoPE Preset Diagnostics
 
 | Preset | Head dim | Base | Context | Exact discrete | Common collision gap | Common-gap pairs | Total bank pairs | First pass prefix | Smallest pass subfamily | Real margin | Worst gap | Theorem ids |

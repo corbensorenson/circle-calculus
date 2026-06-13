@@ -10,6 +10,8 @@ from circle_math.applications import (
     ROPE_RATIONAL_PRESET_4099_NAME,
     ROPE_RATIONAL_PRESET_4099_THEOREMS,
     ROPE_REAL_PHASE_PRECURSOR_THEOREMS,
+    ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME,
+    ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS,
     PhaseBankConfig,
     RoPEConfig,
     brute_force_single_period_collision_pair_count,
@@ -18,6 +20,7 @@ from circle_math.applications import (
     certify_rational_turn_ratio_finite_margin,
     certify_rope_positions,
     certify_phase_bank_positions,
+    certify_standard_channel0_interval_seed,
     collision_pair_count_at_gap,
     collision_pair_count_at_gap_multiples,
     discretize_rope_periods,
@@ -313,6 +316,30 @@ def test_named_rational_turn_ratio_certificate_is_theorem_backed() -> None:
     assert "not a proof of the standard irrational real RoPE" in certificate.claim_boundary
 
 
+def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
+    certificate = certify_standard_channel0_interval_seed()
+    assert certificate.schema_id == "circle_calculus.standard_rope_interval_margin.v0"
+    assert certificate.name == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME
+    assert certificate.turn_ratio_expression == "1/(2*pi)"
+    assert certificate.context_length == 6
+    assert certificate.certified_margin == "1/8"
+    assert certificate.pass_certificate
+    assert certificate.pi_bounds == "3 < pi <= 4"
+    assert certificate.theorem_ids == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS
+    assert "AIRA-T0063" in certificate.theorem_ids
+    assert "AIRA-T0064" in certificate.theorem_ids
+    assert "AIRA-T0065" in certificate.theorem_ids
+    assert "AIRA-T0066" in certificate.theorem_ids
+    assert "AIRA-T0067" in certificate.theorem_ids
+    assert tuple(witness.gap for witness in certificate.interval_witnesses) == (1, 2, 3, 4, 5)
+    assert certificate.interval_witnesses[0].lower == "1/8"
+    assert certificate.interval_witnesses[0].upper == "1/6"
+    assert certificate.interval_witnesses[-1].lower == "5/8"
+    assert certificate.interval_witnesses[-1].upper == "5/6"
+    assert all(witness.cell == 0 for witness in certificate.interval_witnesses)
+    assert "context 6 only" in certificate.claim_boundary
+
+
 def test_rational_turn_ratio_certificate_reports_denominator_boundary() -> None:
     certificate = certify_rational_turn_ratio_finite_margin(
         numerator=3,
@@ -375,6 +402,17 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     assert certificate.exact_discrete.total_bank_collision_pair_count == 24
     assert certificate.exact_discrete.sample_collision_pairs[0] == (0, 6)
     assert certificate.theorem_ids == ROPE_CERTIFIER_THEOREMS
+    assert tuple(layer.layer for layer in certificate.proof_layers) == (
+        "exact_integer_period_phase_bank",
+        "rational_discretized_finite_margin",
+        "interval_backed_standard_rope",
+        "numerical_real_phase_scan",
+    )
+    assert certificate.proof_layers[0].status == "FAIL"
+    assert certificate.proof_layers[1].status == "AVAILABLE_NAMED_PRESET"
+    assert certificate.proof_layers[2].status == "AVAILABLE_SEED_CONTEXT_6"
+    assert certificate.proof_layers[2].theorem_ids == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS
+    assert not certificate.proof_layers[3].theorem_backed
     assert "AIRA-T0046" in certificate.theorem_ids
     assert "AIRA-T0048" in certificate.theorem_ids
     assert "AIRA-T0049" in certificate.theorem_ids
@@ -439,6 +477,16 @@ def test_rope_certify_cli_emits_json_certificate() -> None:
     assert payload["exact_discrete"]["guaranteed_common_gap_multiple_pair_count"] == 24
     assert payload["exact_discrete"]["total_bank_collision_pair_count"] == 24
     assert payload["real_phase_margin"]["formal_precursor_theorem_ids"] == list(ROPE_REAL_PHASE_PRECURSOR_THEOREMS)
+    assert [layer["layer"] for layer in payload["proof_layers"]] == [
+        "exact_integer_period_phase_bank",
+        "rational_discretized_finite_margin",
+        "interval_backed_standard_rope",
+        "numerical_real_phase_scan",
+    ]
+    assert payload["proof_layers"][2]["theorem_ids"] == list(
+        ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS
+    )
+    assert payload["proof_layers"][3]["theorem_backed"] is False
     assert payload["theorem_ids"] == list(ROPE_CERTIFIER_THEOREMS)
 
 
@@ -568,6 +616,8 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert payload["schema_id"] == "circle_calculus.rope_certifier_preset_results.v0"
     assert payload["rational_margin_certificate"]["name"] == ROPE_RATIONAL_PRESET_4099_NAME
     assert payload["rational_margin_certificate"]["pass_certificate"] is True
+    assert payload["standard_interval_certificate"]["name"] == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME
+    assert payload["standard_interval_certificate"]["pass_certificate"] is True
     assert payload["presets"][0]["preset"] == "llama_style_10000_4k"
     assert payload["presets"][0]["certificate"]["exact_discrete"]["pass_exact"] is True
     assert "not model-quality" in payload["claim_boundary"]
@@ -587,7 +637,9 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     )
     assert "| llama_style_10000_4k |" in markdown_result.stdout
     assert "Named Rational Margin Certificate" in markdown_result.stdout
+    assert "Named Standard RoPE Interval Seed" in markdown_result.stdout
     assert ROPE_RATIONAL_PRESET_4099_NAME in markdown_result.stdout
+    assert ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME in markdown_result.stdout
     assert "Total bank pairs" in markdown_result.stdout
     assert "First pass prefix" in markdown_result.stdout
     assert "Smallest pass subfamily" in markdown_result.stdout

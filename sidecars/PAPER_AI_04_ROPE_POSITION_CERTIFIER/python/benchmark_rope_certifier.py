@@ -18,6 +18,7 @@ from circle_math.applications import (
     certificate_summary_lines,
     certify_rational_preset_4099,
     certify_rope_positions,
+    certify_standard_channel0_interval_seed,
 )
 
 
@@ -60,12 +61,14 @@ def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
             "perplexity, or deployment claims."
         ),
         "rational_margin_certificate": certify_rational_preset_4099().to_dict(),
+        "standard_interval_certificate": certify_standard_channel0_interval_seed().to_dict(),
         "presets": certificates,
     }
 
 
 def markdown_results(payload: dict[str, Any]) -> str:
     rational = payload["rational_margin_certificate"]
+    standard_interval = payload["standard_interval_certificate"]
     rows = [
         "| Preset | Head dim | Base | Context | Exact discrete | Common collision gap | Common-gap pairs | Total bank pairs | First pass prefix | Smallest pass subfamily | Real margin | Worst gap | Theorem ids |",
         "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | --- | --- | --- | --- | --- |",
@@ -135,6 +138,22 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             rational["claim_boundary"],
             "",
+            "## Named Standard RoPE Interval Seed",
+            "",
+            "| Name | Turn ratio | Context | Certified margin | Pi bounds | Status | Theorem ids |",
+            "| --- | --- | ---: | --- | --- | --- | --- |",
+            "| {name} | {ratio} | {context} | {margin} | {pi_bounds} | {status} | {theorems} |".format(
+                name=standard_interval["name"],
+                ratio=standard_interval["turn_ratio_expression"],
+                context=standard_interval["context_length"],
+                margin=standard_interval["certified_margin"],
+                pi_bounds=standard_interval["pi_bounds"],
+                status="PASS" if standard_interval["pass_certificate"] else "FAIL",
+                theorems=", ".join(standard_interval["theorem_ids"]),
+            ),
+            "",
+            standard_interval["claim_boundary"],
+            "",
             "## RoPE Preset Diagnostics",
             "",
             *rows,
@@ -172,10 +191,16 @@ def main() -> None:
         for index, item in enumerate(payload["presets"]):
             if index == 0:
                 rational = payload["rational_margin_certificate"]
+                standard_interval = payload["standard_interval_certificate"]
                 print(f"rational_margin_certificate={rational['name']}")
                 print(f"pass_certificate={rational['pass_certificate']}")
                 print(f"certified_margin={rational['certified_margin']}")
                 print(f"theorem_ids={','.join(rational['theorem_ids'])}")
+                print()
+                print(f"standard_interval_certificate={standard_interval['name']}")
+                print(f"pass_certificate={standard_interval['pass_certificate']}")
+                print(f"certified_margin={standard_interval['certified_margin']}")
+                print(f"theorem_ids={','.join(standard_interval['theorem_ids'])}")
                 print()
             if index:
                 print()

@@ -61,6 +61,10 @@ const THEOREM_GROUPS = [
     title: "Named finite-margin certificate",
     ids: ["AIRA-T0060", "AIRA-T0061", "AIRA-T0062"],
   },
+  {
+    title: "Standard interval seed",
+    ids: ["AIRA-T0063", "AIRA-T0064", "AIRA-T0065", "AIRA-T0066", "AIRA-T0067"],
+  },
 ];
 const DICTIONARY_IDS = [
   "COMMON-0076",

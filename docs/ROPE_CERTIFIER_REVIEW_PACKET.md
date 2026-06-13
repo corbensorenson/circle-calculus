@@ -49,17 +49,18 @@ Collision counting:
 AIRA-T0027, AIRA-T0028, AIRA-T0034, AIRA-T0035, AIRA-T0036, AIRA-T0046, AIRA-T0048, AIRA-T0049, AIRA-T0051, AIRA-T0052
 ```
 
-Real-phase theorem program, still conditional:
+Real-phase theorem program and finite-margin certificates:
 
 ```text
-AIRA-T0029 through AIRA-T0033, AIRA-T0037 through AIRA-T0045, AIRA-T0047, AIRA-T0050, AIRA-T0053, AIRA-T0054
+AIRA-T0029 through AIRA-T0033, AIRA-T0037 through AIRA-T0045, AIRA-T0047, AIRA-T0050, AIRA-T0053 through AIRA-T0067
 ```
 
 ## Known Boundaries
 
 - The exact proof object is the integer-period phase bank, not raw floating-point RoPE.
 - The real-phase scan is numerical evidence only.
-- The real-phase Lean work has conditional one-turn-window, turn-separation, finite bank no-near-turn, turn-ratio scaling, one-channel plus bank-level finite-context margin consequence, context-plus-margin transfer, integer/rational-turn-ratio guardrails, generated-gap finite-enumeration, floor/ceiling nearest-integer witness bridge precursors, and one named theorem-backed rational/discretized `1/4099` context-4096 certificate. It still does not have the continued-fraction or Diophantine theorem needed to certify arbitrary standard irrational RoPE ratios.
+- The real-phase Lean work has conditional one-turn-window, turn-separation, finite bank no-near-turn, turn-ratio scaling, one-channel plus bank-level finite-context margin consequence, context-plus-margin transfer, integer/rational-turn-ratio guardrails, generated-gap finite-enumeration, floor/ceiling nearest-integer witness bridge precursors, one named theorem-backed rational/discretized `1/4099` context-4096 certificate, a generic rational interval-certificate bridge, and one tiny standard-RoPE channel-0 seed for `1 / (2π)`, context `6`, margin `1/8`.
+- The standard-RoPE interval seed is a real theorem for that tiny context only. It still does not have the continued-fraction, generated-interval, or Diophantine theorem needed to certify arbitrary standard irrational RoPE ratios at large contexts.
 - Diagnostic presets are intentionally small failure cases; they are not vendor checkpoint claims.
 
 ## Review Questions

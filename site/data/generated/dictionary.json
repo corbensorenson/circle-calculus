@@ -11334,6 +11334,36 @@
           "lean_name": "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
           "name": "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0063",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalWitness_forall_int",
+          "name": "Circle.Applications.ropeTurnRatioIntervalWitness_forall_int",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0064",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0065",
+          "lean_name": "Circle.Applications.ropeStandardChannel0Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0066",
+          "lean_name": "Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0067",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0Seed_nearTurn",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -11615,6 +11645,36 @@
           "id": "AIRA-T0062",
           "lean_name": "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
           "name": "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0063",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalWitness_forall_int",
+          "name": "Circle.Applications.ropeTurnRatioIntervalWitness_forall_int",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0064",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0065",
+          "lean_name": "Circle.Applications.ropeStandardChannel0Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0066",
+          "lean_name": "Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0067",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0Seed_nearTurn",
           "status": "proved"
         }
       ],
@@ -12281,6 +12341,36 @@
           "lean_name": "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
           "name": "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0063",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalWitness_forall_int",
+          "name": "Circle.Applications.ropeTurnRatioIntervalWitness_forall_int",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0064",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0065",
+          "lean_name": "Circle.Applications.ropeStandardChannel0Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0066",
+          "lean_name": "Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0067",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0Seed_nearTurn",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -12547,6 +12637,36 @@
           "id": "AIRA-T0062",
           "lean_name": "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
           "name": "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0063",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalWitness_forall_int",
+          "name": "Circle.Applications.ropeTurnRatioIntervalWitness_forall_int",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0064",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0065",
+          "lean_name": "Circle.Applications.ropeStandardChannel0Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0066",
+          "lean_name": "Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0067",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0Seed_nearTurn",
           "status": "proved"
         }
       ],
@@ -12912,6 +13032,36 @@
           "lean_name": "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
           "name": "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0063",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalWitness_forall_int",
+          "name": "Circle.Applications.ropeTurnRatioIntervalWitness_forall_int",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0064",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0065",
+          "lean_name": "Circle.Applications.ropeStandardChannel0Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0066",
+          "lean_name": "Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0067",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0Seed_nearTurn",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -12925,15 +13075,15 @@
         "COMMON-0087"
       ],
       "forbidden_meanings": [
-        "A proof that an arbitrary or standard irrational RoPE turn ratio has the margin.",
+        "A proof that an arbitrary standard irrational RoPE turn ratio has a large-context margin.",
         "A completed continued-fraction or three-distance theorem.",
         "A formal proof of the current numerical floating-point scan.",
         "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
       ],
-      "formal_definition": "In Lean, `Circle.Applications.ropeTurnRatioFiniteMargin alpha margin context` means every positive natural gap below `context` is at least `margin` away from every integer turn under `Circle.Applications.ropeTurnRatioError alpha gap turns`. Theorem `Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds` reduces the gap side to generated positive members of `List.range context`; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses` reduces the integer-turn side for each generated gap to floor and ceiling witnesses. Theorem `Circle.Applications.RopeTurnRatioFiniteMarginCertificate.certifies` packages those witnesses as a proof-carrying certificate object. Theorem `Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin` proves the named rational/discretized preset `1/4099` has margin `1/4099` over context `4096`; theorem `Circle.Applications.not_ropeRationalPreset4099_nearTurn` gives its one-channel no-near-turn consequence. Theorem `Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin` proves that any such margin rules out one-channel real near-turn collision below the scaled tolerance `fullTurn * margin`; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_context` proves the same margin transfers from a larger certified context to any smaller requested context; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin` proves a larger certified margin also proves any smaller advertised margin over the same context; theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin` packages both downgrades at the bank level.",
+      "formal_definition": "In Lean, `Circle.Applications.ropeTurnRatioFiniteMargin alpha margin context` means every positive natural gap below `context` is at least `margin` away from every integer turn under `Circle.Applications.ropeTurnRatioError alpha gap turns`. Theorem `Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds` reduces the gap side to generated positive members of `List.range context`; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses` reduces the integer-turn side for each generated gap to floor and ceiling witnesses. Theorem `Circle.Applications.RopeTurnRatioFiniteMarginCertificate.certifies` packages those witnesses as a proof-carrying certificate object. Theorem `Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate` packages a finite table of rational interval witnesses as the same margin predicate. Theorem `Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin` proves the named rational/discretized preset `1/4099` has margin `1/4099` over context `4096`; theorem `Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin` proves a tiny standard channel-0 seed for `1 / (2*pi)`, context `6`, margin `1/8`; their no-near-turn consequences are `not_ropeRationalPreset4099_nearTurn` and `not_ropeStandardChannel0Seed_nearTurn`. Theorem `Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin` proves that any such margin rules out one-channel real near-turn collision below the scaled tolerance `fullTurn * margin`; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_context` proves the same margin transfers from a larger certified context to any smaller requested context; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin` proves a larger certified margin also proves any smaller advertised margin over the same context; theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin` packages both downgrades at the bank level.",
       "id": "COMMON-0088",
       "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
-      "intuition": "This is the shape a real RoPE certifier ultimately needs: a finite-context lower bound on nearest-integer returns for a channel's turn ratio. The formal spine now has one complete rational/discretized 4k certificate and has reduced the finite check for future nonperiodic ratios to generated gaps and floor/ceiling witnesses. The remaining hard work is proving those witness inequalities for standard irrational RoPE turn ratios.",
+      "intuition": "This is the shape a real RoPE certifier ultimately needs: a finite-context lower bound on nearest-integer returns for a channel's turn ratio. The formal spine now has one complete rational/discretized 4k certificate, a generic interval-certificate route, and one tiny theorem-backed standard-RoPE channel-0 seed. The remaining hard work is scaling those interval or continued-fraction witnesses to useful standard-RoPE contexts.",
       "kind": "relation",
       "name": "RoPE finite-context turn-ratio margin",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
@@ -13043,6 +13193,36 @@
           "lean_name": "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
           "name": "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0063",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalWitness_forall_int",
+          "name": "Circle.Applications.ropeTurnRatioIntervalWitness_forall_int",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0064",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0065",
+          "lean_name": "Circle.Applications.ropeStandardChannel0Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0066",
+          "lean_name": "Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0067",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0Seed_nearTurn",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -13103,6 +13283,36 @@
           "id": "AIRA-T0062",
           "lean_name": "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
           "name": "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0063",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalWitness_forall_int",
+          "name": "Circle.Applications.ropeTurnRatioIntervalWitness_forall_int",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0064",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0065",
+          "lean_name": "Circle.Applications.ropeStandardChannel0Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0066",
+          "lean_name": "Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0067",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0Seed_nearTurn",
           "status": "proved"
         }
       ],
