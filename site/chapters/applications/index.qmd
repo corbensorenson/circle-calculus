@@ -33,6 +33,7 @@ The claim is *not* that circular language automatically improves every domain. I
 - [AI contract ladder](ai_contract_ladder.qmd) — guided sequence from RoPE phase certificates to KV-cache freshness, sparse-attention coverage, and circulant mixer guarantees.
 - [RoPE certifier](rope_certifier.qmd) — proof-carrying position-distinguishability certificates for exact discretized rotary phase banks.
 - [KV-cache ring buffer](kv_cache_ring_buffer.qmd) — proof-carrying finite slot and retained-window certificates for ring-buffer cache indexing.
+- [Sparse attention coverage](sparse_attention_contract.qmd) — proof-carrying finite coverage, gap-witness, and candidate-budget certificates for local-window plus stride-family sparse plans.
 - [Physics](physics.qmd) — finite gauge links, path holonomy, Wilson-loop certificates, plaquettes.
 - [Generative structures](generative.qmd) — seed-rule provenance and exact-regeneration fixtures.
 - [Compute](compute.qmd) — cyclic addresses, direction bins, stride layouts, round-robin schedules.
@@ -65,6 +66,7 @@ Pick one application page and name its finite circular address space before read
 <div class="theorem-box" data-theorem-id="AIM-T0073"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0005"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0024"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0078"></div>
 
 <div class="book-navigation">
 <a href="../phase2/proof_carrying_glyphs.qmd">Previous: Proof-Carrying Glyphs</a>

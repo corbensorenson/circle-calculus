@@ -1305,6 +1305,33 @@ theorem localWindowCoversContext_iff_context_sub_one_le
   · intro hwindow lag hpos hcontext
     exact localLagReach_of_le hpos (le_trans (Nat.le_sub_one_of_lt hcontext) hwindow)
 
+/-- Concrete default sparse-plan gap certificate used by the executable
+stride-family sidecar.
+
+For the default plan `C_120`, local window `4`, path length `3`, and strides
+`[7,13]`, lag `5` is beyond the local window and is not equal to any admitted
+stride step modulo `120`. -/
+theorem hybridFamilyLagGap_default_120_4_3_7_13_lag5 :
+    ¬ hybridFamilyLagReach 120 4 3 5 [7, 13] := by
+  apply hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne
+  · omega
+  · intro stride hmem step hpos hstep
+    simp at hmem
+    rcases hmem with hstride | hstride <;> subst stride
+    · have hstep_cases : step = 1 ∨ step = 2 ∨ step = 3 := by omega
+      rcases hstep_cases with rfl | rfl | rfl <;> omega
+    · have hstep_cases : step = 1 ∨ step = 2 ∨ step = 3 := by omega
+      rcases hstep_cases with rfl | rfl | rfl <;> omega
+
+/-- The default `C_120`, local-window `4`, path-length `3`, strides `[7,13]`
+sparse plan is not complete coverage because lag `5` is a concrete uncovered
+positive in-context witness. -/
+theorem not_hybridFamilyCoversContext_default_120_4_3_7_13 :
+    ¬ hybridFamilyCoversContext 120 4 3 [7, 13] := by
+  intro hcover
+  exact hybridFamilyLagGap_default_120_4_3_7_13_lag5
+    (hcover 5 (by omega) (by omega))
+
 /-! ### RoPE relative position -/
 
 /-- The RoPE phase of a token at position `pos`: rotation by `pos` from the base node. -/

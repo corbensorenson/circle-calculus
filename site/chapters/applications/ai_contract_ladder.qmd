@@ -99,9 +99,13 @@ A strided sparse-attention path is a coil orbit on a finite context. The basic t
 
 This is why the sparse lane now emphasizes iffs and gap certificates. A sparse plan is more useful when it can tell you what it misses.
 
+[Open the guided sparse-attention coverage lesson](sparse_attention_contract.qmd).
+
 <div class="theorem-box" data-theorem-id="AIT-T0002"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0020"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0078"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0079"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0080"></div>
 
 ## 5. Circulant Mixers
 

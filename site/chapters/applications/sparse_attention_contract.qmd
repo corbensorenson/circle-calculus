@@ -1,0 +1,159 @@
+---
+title: "Sparse Attention Coverage"
+---
+
+This lesson is the third standalone Circle Calculus AI contract. It is for the engineer who asks:
+
+```text
+Given a declared local-window plus stride-family sparse-attention plan, which dependency lags are covered, which lags are missed, and how large is the candidate set?
+```
+
+The contract is finite and exact. It is not a neural attention-quality claim, long-context claim, runtime claim, memory-use claim, or model-quality claim.
+
+::: {.lesson-goal}
+
+## Goal
+
+Learn how a sparse-attention pattern becomes a finite lag-coverage contract, then inspect coverage, gap witnesses, and candidate-budget boundaries with the browser widget or Python CLI.
+
+:::
+
+## The Contract
+
+For a context `C_n`, a local window covers the first few positive lags:
+
+```text
+1, 2, ..., local_window
+```
+
+A stride path covers finite coil steps:
+
+```text
+stride, 2*stride, ..., path_length*stride   modulo n
+```
+
+A stride family combines those candidate lags. The contract asks two questions:
+
+```text
+covered(lag)
+iff
+lag is local or lag is an admitted stride step
+
+complete_coverage
+iff
+there is no positive uncovered-lag witness below n
+```
+
+That second line is what makes the contract useful. A sparse plan should report the lags it misses, not only the lags it can reach.
+
+<div class="widget-panel" data-widget="stride_family_attention" data-theorem-id="AIT-T0021" data-dictionary-ids="COMMON-0075 COMMON-0079 COMMON-0047 COMMON-0029"></div>
+
+::: {.warning-box}
+The widget, CLI, benchmarks, and fixtures are executable references and not proofs. This page does not claim attention quality, speed, memory savings, or real-data usefulness; theorem cards and Lean declarations remain the proof source of truth.
+:::
+
+## Python CLI
+
+Run the finite coverage certifier from the repository root:
+
+```bash
+python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4
+python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4 --format json
+```
+
+For the sidecar benchmark and committed fixture:
+
+```bash
+python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py
+python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py --format json
+python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py --format markdown
+```
+
+The default sidecar case is:
+
+```text
+context      = 120
+local window = 4
+path length  = 3
+strides      = 7, 13
+covered lags = 1,2,3,4,7,14,21,13,26,39
+gaps         = 109 positive lags
+raw budget   = 10 candidates per query
+full budget  = 120 candidates per query
+```
+
+That is a partial-coverage sparse plan by design: it is a good demo because it shows both covered structured lags and explicit misses.
+
+## Reproducible Results
+
+Committed fixtures:
+
+<p>Stride-family JSON: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/results/stride_family_sparse_attention.json">stride_family_sparse_attention.json</a></p>
+
+<p>Stride-family Markdown: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/results/stride_family_sparse_attention.md">stride_family_sparse_attention.md</a></p>
+
+The sidecar compares structured-family reachability with single-stride, local-only, wrong-family, full-attention, and nonstructured controls. Those controls are benchmark scaffolding, not proof artifacts.
+
+## What To Notice
+
+- A single coprime stride can eventually cover a full circle, but finite path length still matters.
+- A local window gives predictable near-lag coverage.
+- A stride family can cover selected long lags cheaply, but arbitrary lags remain gaps unless the plan certifies otherwise.
+- Complete coverage is equivalent to the absence of positive uncovered-lag witnesses.
+- Candidate budget has both raw and deduplicated forms; no-collision hypotheses tell when the raw count survives exactly.
+- The sparse contract certifies candidate-set coverage and budget arithmetic, not learned attention quality.
+
+## Theorem Cards
+
+<details class="proof-shelf">
+<summary>Open theorem-card shelf for the sparse-attention coverage contract</summary>
+
+<div class="theorem-box" data-theorem-id="AIT-T0001"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0002"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0003"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0016"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0017"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0020"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0021"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0028"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0033"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0036"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0039"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0043"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0055"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0063"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0065"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0067"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0076"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0078"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0079"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0080"></div>
+
+</details>
+
+## Dictionary
+
+<div class="dictionary-box" data-dictionary-id="COMMON-0029"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0047"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0075"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0079"></div>
+
+## Source Trail
+
+<p data-paper-ref="papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Coil Attention And Memory</a></p>
+
+<p>Lean source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/Circle/Applications/CircleTransformer.lean">Circle/Applications/CircleTransformer.lean</a></p>
+
+<p>Python source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/circle_math/applications/circle_transformer.py">circle_math/applications/circle_transformer.py</a></p>
+
+<p>CLI source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/scripts/stride_family_certify.py">scripts/stride_family_certify.py</a></p>
+
+<p>Sidecar source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py">benchmark_stride_family_sparse_attention.py</a></p>
+
+<div class="book-navigation">
+<a href="kv_cache_ring_buffer.qmd">Previous: KV-Cache Ring Buffer</a>
+<a href="physics.qmd">Next: Physics</a>
+</div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>
+<script type="module" src="../../widgets/ai/stride_family_attention.js"></script>

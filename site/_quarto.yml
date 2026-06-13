@@ -140,6 +140,8 @@ website:
             text: RoPE Certifier
           - href: chapters/applications/kv_cache_ring_buffer.qmd
             text: KV-Cache Ring Buffer
+          - href: chapters/applications/sparse_attention_contract.qmd
+            text: Sparse Attention Coverage
           - href: chapters/applications/physics.qmd
             text: Physics
           - href: chapters/applications/generative.qmd

@@ -141,7 +141,7 @@ The Python tests regenerate those fixtures and compare them with the committed o
 
 <div class="book-navigation">
 <a href="rope_certifier.qmd">Previous: RoPE Certifier</a>
-<a href="physics.qmd">Next: Physics</a>
+<a href="sparse_attention_contract.qmd">Next: Sparse Attention Coverage</a>
 </div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>
