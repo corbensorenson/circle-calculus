@@ -78,7 +78,7 @@ context    = 4096
 margin     = 1 / 104219
 ```
 
-The conditional bank bridge says that if a finite real-phase bank contains that channel and the inspected context and margin are within the seed, then the all-channel near-turn condition is ruled out under the stated tolerance scaling. The concrete D11 bridge packages the common bank shape where standard channel 0 is first and additional frequencies follow. The theorem trail also proves useful negative companions: gap `710` blocks the doubled D9 margin `1/65536`, the nearby D10 margin `1/104000`, and the adjacent D11 margin `1/104218`, so the seed cannot be strengthened by only changing the advertised margin.
+The conditional bank bridge says that if a finite real-phase bank contains that channel and the inspected context and margin are within the seed, then the all-channel near-turn condition is ruled out under the stated tolerance scaling. The concrete D11 bridge packages the common bank shape where standard channel 0 is first and additional frequencies follow. The theorem trail also proves useful negative companions: gap `710` blocks the doubled D9 margin `1/65536`, the nearby D10 margin `1/104000`, and the adjacent D11 margin `1/104218`. The latest bracket theorem packages the useful engineering reading: at context `4096`, `1/104219` is proved, while every advertised margin at or above `1/104218` is impossible for this channel.
 
 <div class="theorem-box" data-theorem-id="AIRA-T0061"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0101"></div>
@@ -94,6 +94,8 @@ The conditional bank bridge says that if a finite real-phase bank contains that 
 <div class="theorem-box" data-theorem-id="AIRA-T0115"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0116"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0117"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0118"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0119"></div>
 
 ::: {.warning-box}
 This is not a full real-RoPE bank theorem. It is a theorem-backed one-channel seed plus a conditional bank transfer. The remaining hard work is broader channel-wise certification or sharper Diophantine machinery.

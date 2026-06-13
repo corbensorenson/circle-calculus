@@ -2552,6 +2552,36 @@ theorem not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710
       (by norm_num) hcontext
       ropeStandardChannel0_gap710_error_lt_one_over_104218
 
+/-- No standard channel-0 finite-context margin at or above `1/104218` is
+possible once the inspected context contains gap `710`. -/
+theorem not_ropeStandardChannel0_margin_ge_one_over_104218_of_context_gt_710
+    {context : Nat} {margin : ℝ} (hcontext : 710 < context)
+    (hmargin : (1 : ℝ) / 104218 ≤ margin) :
+    ¬ ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio margin context := by
+  exact
+    not_ropeTurnRatioFiniteMargin_of_error_lt_margin
+      (turnRatio := ropeStandardChannel0TurnRatio)
+      (margin := margin)
+      (context := context) (gap := 710) (turns := 113)
+      (by norm_num) hcontext
+      (lt_of_lt_of_le
+        ropeStandardChannel0_gap710_error_lt_one_over_104218 hmargin)
+
+/-- The current standard channel-0 4k seed brackets the advertised finite margin:
+`1/104219` is proved, while every margin at or above `1/104218` is impossible. -/
+theorem ropeStandardChannel0D11_context4096_margin_bracket :
+    ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio
+      ((1 : ℝ) / 104219) 4096 ∧
+    ∀ margin : ℝ, (1 : ℝ) / 104218 ≤ margin →
+      ¬ ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio margin 4096 := by
+  constructor
+  · simpa [ropeStandardChannel0D11SeedMargin, ropeStandardChannel0D11SeedContext]
+      using ropeStandardChannel0D11Seed_turnRatioFiniteMargin
+  · intro margin hmargin
+    exact
+      not_ropeStandardChannel0_margin_ge_one_over_104218_of_context_gt_710
+        (context := 4096) (margin := margin) (by norm_num) hmargin
+
 /-- Finite-context turn-ratio margins are monotone in the inspected context.
 
 A margin certificate proved for a larger context automatically applies to any

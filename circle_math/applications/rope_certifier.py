@@ -188,6 +188,8 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS: tuple[str, ...] = (
     "AIRA-T0115",
     "AIRA-T0116",
     "AIRA-T0117",
+    "AIRA-T0118",
+    "AIRA-T0119",
 )
 
 ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -246,6 +248,8 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_104218",
     "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710",
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons",
+    "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_104218_of_context_gt_710",
+    "Circle.Applications.ropeStandardChannel0D11_context4096_margin_bracket",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -1311,7 +1315,9 @@ def certify_standard_channel0_interval_seed() -> IntervalBackedTurnRatioCertific
             "10^20*gap/628318530717958647692, split across computed integer "
             "cells 0 through 651. Lean also proves that the earlier 1/1024 "
             "margin stops at gap 710, and that margins 1/65536, 1/104000, and 1/104218 "
-            "are already impossible for any context containing that gap. The theorem trail also includes a "
+            "are already impossible for any context containing that gap. Lean further packages the D11 "
+            "result as a 4k bracket: 1/104219 is proved, while every margin at or above "
+            "1/104218 is impossible for context 4096. The theorem trail also includes a "
             "conditional bank-level bridge for banks containing the standard "
             "channel-0 angular frequency, plus a concrete bridge for banks whose "
             "first channel is that standard frequency."
