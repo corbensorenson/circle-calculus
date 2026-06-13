@@ -323,13 +323,19 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert certificate.schema_id == "circle_calculus.standard_rope_interval_margin.v0"
     assert certificate.name == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME
     assert certificate.turn_ratio_expression == "1/(2*pi)"
-    assert certificate.context_length == 44
-    assert certificate.certified_margin == "1/64"
+    assert certificate.context_length == 57
+    assert certificate.certified_margin == "1/512"
     assert certificate.pass_certificate
-    assert certificate.pi_bounds == "pi <= 4, 3.14 < pi, and pi < 3.15"
+    assert (
+        certificate.pi_bounds
+        == "pi <= 4, 3.14 < pi, pi < 3.15, 3.1415 < pi, and pi < 3.1416"
+    )
     assert certificate.theorem_ids == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS
     assert "AIRA-T0063" in certificate.theorem_ids
     assert "AIRA-T0064" in certificate.theorem_ids
+    assert "AIRA-T0065" in certificate.theorem_ids
+    assert "AIRA-T0066" in certificate.theorem_ids
+    assert "AIRA-T0067" in certificate.theorem_ids
     assert "AIRA-T0077" in certificate.theorem_ids
     assert "AIRA-T0078" in certificate.theorem_ids
     assert "AIRA-T0068" in certificate.theorem_ids
@@ -344,8 +350,13 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert "AIRA-T0079" in certificate.theorem_ids
     assert "AIRA-T0080" in certificate.theorem_ids
     assert "AIRA-T0081" in certificate.theorem_ids
+    assert "AIRA-T0082" in certificate.theorem_ids
+    assert "AIRA-T0083" in certificate.theorem_ids
+    assert "AIRA-T0084" in certificate.theorem_ids
+    assert "AIRA-T0085" in certificate.theorem_ids
+    assert "AIRA-T0086" in certificate.theorem_ids
     assert tuple(witness.gap for witness in certificate.interval_witnesses) == tuple(
-        range(1, 44)
+        range(1, 57)
     )
     assert certificate.interval_witnesses[0].lower == "1/8"
     assert certificate.interval_witnesses[0].upper == "25/157"
@@ -358,6 +369,14 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert certificate.interval_witnesses[12].lower == "130/63"
     assert certificate.interval_witnesses[12].upper == "325/157"
     assert certificate.interval_witnesses[24].lower == "250/63"
+    assert certificate.interval_witnesses[43].lower == "2500/357"
+    assert certificate.interval_witnesses[43].upper == "44000/6283"
+    assert certificate.interval_witnesses[49].lower == "31250/3927"
+    assert certificate.interval_witnesses[49].upper == "50000/6283"
+    assert certificate.interval_witnesses[50].lower == "625/77"
+    assert certificate.interval_witnesses[50].upper == "51000/6283"
+    assert certificate.interval_witnesses[55].lower == "5000/561"
+    assert certificate.interval_witnesses[55].upper == "56000/6283"
     assert certificate.interval_witnesses[24].upper == "625/157"
     assert certificate.interval_witnesses[25].lower == "260/63"
     assert certificate.interval_witnesses[25].upper == "650/157"
@@ -365,16 +384,18 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert certificate.interval_witnesses[31].upper == "800/157"
     assert certificate.interval_witnesses[37].lower == "380/63"
     assert certificate.interval_witnesses[37].upper == "950/157"
-    assert certificate.interval_witnesses[-1].lower == "430/63"
-    assert certificate.interval_witnesses[-1].upper == "1075/157"
+    assert certificate.interval_witnesses[42].lower == "430/63"
+    assert certificate.interval_witnesses[42].upper == "1075/157"
     assert all(witness.cell == 0 for witness in certificate.interval_witnesses[:6])
     assert all(witness.cell == 1 for witness in certificate.interval_witnesses[6:12])
     assert all(witness.cell == 2 for witness in certificate.interval_witnesses[12:18])
     assert all(witness.cell == 3 for witness in certificate.interval_witnesses[18:25])
     assert all(witness.cell == 4 for witness in certificate.interval_witnesses[25:31])
     assert all(witness.cell == 5 for witness in certificate.interval_witnesses[31:37])
-    assert all(witness.cell == 6 for witness in certificate.interval_witnesses[37:])
-    assert "context 44 only" in certificate.claim_boundary
+    assert all(witness.cell == 6 for witness in certificate.interval_witnesses[37:43])
+    assert all(witness.cell == 7 for witness in certificate.interval_witnesses[43:50])
+    assert all(witness.cell == 8 for witness in certificate.interval_witnesses[50:])
+    assert "context 57 only" in certificate.claim_boundary
 
 
 def test_rational_turn_ratio_certificate_reports_denominator_boundary() -> None:
@@ -447,7 +468,7 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     )
     assert certificate.proof_layers[0].status == "FAIL"
     assert certificate.proof_layers[1].status == "AVAILABLE_NAMED_PRESET"
-    assert certificate.proof_layers[2].status == "AVAILABLE_SEED_CONTEXT_44"
+    assert certificate.proof_layers[2].status == "AVAILABLE_SEED_CONTEXT_57"
     assert certificate.proof_layers[2].theorem_ids == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS
     assert not certificate.proof_layers[3].theorem_backed
     assert "AIRA-T0046" in certificate.theorem_ids

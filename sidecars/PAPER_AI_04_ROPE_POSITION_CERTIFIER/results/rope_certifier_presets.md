@@ -14,9 +14,9 @@ This is a theorem-backed rational/discretized turn-ratio certificate. It is not 
 
 | Name | Turn ratio | Context | Certified margin | Pi bounds | Status | Theorem ids |
 | --- | --- | ---: | --- | --- | --- | --- |
-| standard_rope_channel0_interval_context_44 | 1/(2*pi) | 44 | 1/64 | pi <= 4, 3.14 < pi, and pi < 3.15 | PASS | AIRA-T0063, AIRA-T0064, AIRA-T0077, AIRA-T0078, AIRA-T0068, AIRA-T0069, AIRA-T0070, AIRA-T0071, AIRA-T0072, AIRA-T0073, AIRA-T0074, AIRA-T0075, AIRA-T0076, AIRA-T0079, AIRA-T0080, AIRA-T0081 |
+| standard_rope_channel0_interval_context_57 | 1/(2*pi) | 57 | 1/512 | pi <= 4, 3.14 < pi, pi < 3.15, 3.1415 < pi, and pi < 3.1416 | PASS | AIRA-T0063, AIRA-T0064, AIRA-T0065, AIRA-T0066, AIRA-T0067, AIRA-T0068, AIRA-T0069, AIRA-T0070, AIRA-T0071, AIRA-T0072, AIRA-T0073, AIRA-T0074, AIRA-T0075, AIRA-T0076, AIRA-T0077, AIRA-T0078, AIRA-T0079, AIRA-T0080, AIRA-T0081, AIRA-T0082, AIRA-T0083, AIRA-T0084, AIRA-T0085, AIRA-T0086 |
 
-This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 44 only. It is not a full standard RoPE bank certificate and does not certify 512, 4096, or larger contexts.
+This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 57 only. It is not a full standard RoPE bank certificate and does not certify 512, 4096, or larger contexts.
 
 ## RoPE Preset Diagnostics
 

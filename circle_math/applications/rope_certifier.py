@@ -129,13 +129,14 @@ ROPE_RATIONAL_PRESET_4099_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
 )
 
-ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME = "standard_rope_channel0_interval_context_44"
+ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME = "standard_rope_channel0_interval_context_57"
 
 ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS: tuple[str, ...] = (
     "AIRA-T0063",
     "AIRA-T0064",
-    "AIRA-T0077",
-    "AIRA-T0078",
+    "AIRA-T0065",
+    "AIRA-T0066",
+    "AIRA-T0067",
     "AIRA-T0068",
     "AIRA-T0069",
     "AIRA-T0070",
@@ -145,9 +146,16 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS: tuple[str, ...] = (
     "AIRA-T0074",
     "AIRA-T0075",
     "AIRA-T0076",
+    "AIRA-T0077",
+    "AIRA-T0078",
     "AIRA-T0079",
     "AIRA-T0080",
     "AIRA-T0081",
+    "AIRA-T0082",
+    "AIRA-T0083",
+    "AIRA-T0084",
+    "AIRA-T0085",
+    "AIRA-T0086",
 )
 
 ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -155,6 +163,9 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate",
     "Circle.Applications.ropeTurnRatioIntervalWitness_mono_margin",
     "Circle.Applications.ropeTurnRatioIntervalCertificate_mono_margin",
+    "Circle.Applications.ropeStandardChannel0Seed_intervalCertificate",
+    "Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin",
+    "Circle.Applications.not_ropeStandardChannel0Seed_nearTurn",
     "Circle.Applications.ropeStandardChannel0D2Seed_intervalCertificate",
     "Circle.Applications.ropeStandardChannel0D2Seed_turnRatioFiniteMargin",
     "Circle.Applications.not_ropeStandardChannel0D2Seed_nearTurn",
@@ -167,6 +178,11 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeStandardChannel0D5Seed_intervalCertificate",
     "Circle.Applications.ropeStandardChannel0D5Seed_turnRatioFiniteMargin",
     "Circle.Applications.not_ropeStandardChannel0D5Seed_nearTurn",
+    "Circle.Applications.ropeStandardChannel0_piD4_base_lower",
+    "Circle.Applications.ropeStandardChannel0_piD4_base_upper",
+    "Circle.Applications.ropeStandardChannel0D6Seed_intervalCertificate",
+    "Circle.Applications.ropeStandardChannel0D6Seed_turnRatioFiniteMargin",
+    "Circle.Applications.not_ropeStandardChannel0D6Seed_nearTurn",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -943,23 +959,23 @@ def format_fraction(value: Fraction) -> str:
 
 
 def certify_standard_channel0_interval_seed() -> IntervalBackedTurnRatioCertificate:
-    """Return the first theorem-backed interval certificate for standard RoPE.
+    """Return the strongest named theorem-backed interval seed for standard RoPE.
 
     The Lean theorem proves the same finite witness table for the genuine
     channel-0 turn ratio ``1 / (2π)`` over the tiny context containing gaps
-    1 through 43. The certificate is intentionally small; it uses ``π <= 4`` for
-    the cell-0 lower enclosure, ``3.14 < π`` for upper enclosures, and the
-    sharper bound ``π < 3.15`` to place later gaps in integer cells 1 through 6.
+    1 through 56. The certificate is intentionally small; it reuses the earlier
+    context-44 seed for gaps 1 through 43, then uses four-decimal bounds on
+    ``π`` to cross the first near-integer obstruction at gap 44.
     """
-    context_length = 44
-    margin = Fraction(1, 64)
+    context_length = 57
+    margin = Fraction(1, 512)
     witnesses: list[RationalIntervalWitnessReport] = []
     for gap in range(1, context_length):
         if gap <= 6:
             lower = Fraction(gap, 8)
             upper = Fraction(25 * gap, 157)
             cell = 0
-        else:
+        elif gap <= 43:
             lower = Fraction(10 * gap, 63)
             upper = Fraction(25 * gap, 157)
             if gap <= 12:
@@ -974,6 +990,13 @@ def certify_standard_channel0_interval_seed() -> IntervalBackedTurnRatioCertific
                 cell = 5
             else:
                 cell = 6
+        else:
+            lower = Fraction(5000 * gap, 31416)
+            upper = Fraction(5000 * gap, 31415)
+            if gap <= 50:
+                cell = 7
+            else:
+                cell = 8
         if not (
             Fraction(cell, 1) + margin <= lower
             and upper <= Fraction(cell + 1, 1) - margin
@@ -995,21 +1018,24 @@ def certify_standard_channel0_interval_seed() -> IntervalBackedTurnRatioCertific
         context_length=context_length,
         certified_margin=format_fraction(margin),
         pass_certificate=True,
-        pi_bounds="pi <= 4, 3.14 < pi, and pi < 3.15",
+        pi_bounds="pi <= 4, 3.14 < pi, pi < 3.15, 3.1415 < pi, and pi < 3.1416",
         interval_witnesses=tuple(witnesses),
         theorem_ids=ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS,
         lean_declarations=ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS,
         explanation=(
             "Lean proves that standard RoPE channel 0, with turn ratio 1/(2*pi), "
-            "has finite nearest-integer margin 1/64 for gaps 1 through 43. Gaps 1 "
+            "has finite nearest-integer margin 1/512 for gaps 1 through 56. Gaps 1 "
             "through 6 use the cell-0 enclosure gap/8 <= gap/(2*pi) <= 25*gap/157; "
             "gaps 7 through 43 use 10*gap/63 <= gap/(2*pi) <= 25*gap/157 and are "
-            "split across integer cells 1 through 6. Larger contexts need generated "
-            "rational interval data and sharper pi or continued-fraction bounds."
+            "split across integer cells 1 through 6. Gaps 44 through 56 use the "
+            "sharper four-decimal enclosure 5000*gap/31416 <= gap/(2*pi) <= "
+            "5000*gap/31415 and are split across cells 7 and 8. Larger contexts "
+            "need generated rational interval data and sharper pi or "
+            "continued-fraction bounds."
         ),
         claim_boundary=(
             "This is a theorem-backed interval certificate for the genuine standard "
-            "RoPE channel-0 turn ratio over context 44 only. It is not a full standard "
+            "RoPE channel-0 turn ratio over context 57 only. It is not a full standard "
             "RoPE bank certificate and does not certify 512, 4096, or larger contexts."
         ),
     )
@@ -1312,7 +1338,7 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
         RoPEProofLayerReport(
             layer="interval_backed_standard_rope",
             status=(
-                "AVAILABLE_SEED_CONTEXT_44"
+                "AVAILABLE_SEED_CONTEXT_57"
                 if standard_interval_seed.pass_certificate
                 else "UNAVAILABLE"
             ),
@@ -1320,8 +1346,8 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
             theorem_ids=standard_interval_seed.theorem_ids,
             lean_declarations=standard_interval_seed.lean_declarations,
             explanation=(
-                "The first strengthened genuine standard-RoPE interval seed certifies channel 0 "
-                "with turn ratio 1/(2*pi), margin 1/64, and context 44 only."
+                "The strongest named genuine standard-RoPE interval seed certifies channel 0 "
+                "with turn ratio 1/(2*pi), margin 1/512, and context 57 only."
             ),
         ),
         RoPEProofLayerReport(
