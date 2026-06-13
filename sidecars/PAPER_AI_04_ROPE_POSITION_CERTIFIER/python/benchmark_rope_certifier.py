@@ -24,6 +24,8 @@ from circle_math.applications import (
     certify_rope_positions,
     certify_standard_channel0_d12_bank_request,
     certify_standard_channel0_d12_margin_bracket,
+    certify_standard_channel0_d13_bank_request,
+    certify_standard_channel0_d13_margin_bracket,
     certify_standard_channel0_interval_seed,
     plan_standard_channel0_interval_bands,
     phase_bank_certificate_summary_lines,
@@ -161,6 +163,11 @@ def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
             requested_margin=Fraction(1, 104220),
         ).to_dict(),
         "standard_d12_margin_bracket": certify_standard_channel0_d12_margin_bracket().to_dict(),
+        "standard_d13_bank_bridge_request": certify_standard_channel0_d13_bank_request(
+            requested_context=8192,
+            requested_margin=Fraction(1, 104219),
+        ).to_dict(),
+        "standard_d13_margin_bracket": certify_standard_channel0_d13_margin_bracket().to_dict(),
         "standard_interval_candidate_plans": (
             plan_standard_channel0_interval_bands(
                 pi_bound_preset="d4",
@@ -180,6 +187,11 @@ def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
             plan_standard_channel0_interval_bands(
                 pi_bound_preset="d20",
                 margin=Fraction(1, 104220),
+                max_context_length=8192,
+            ).to_dict(),
+            plan_standard_channel0_interval_bands(
+                pi_bound_preset="d20",
+                margin=Fraction(1, 104219),
                 max_context_length=8192,
             ).to_dict(),
         ),
@@ -227,6 +239,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
     standard_interval = payload["standard_interval_certificate"]
     standard_d12_bank = payload["standard_d12_bank_bridge_request"]
     standard_d12_bracket = payload["standard_d12_margin_bracket"]
+    standard_d13_bank = payload["standard_d13_bank_bridge_request"]
+    standard_d13_bracket = payload["standard_d13_margin_bracket"]
     standard_plans = payload["standard_interval_candidate_plans"]
     rows = [
         "| Preset | Head dim | Base | Context | Exact discrete | Common collision gap | Common-gap pairs | Total bank pairs | First pass prefix | Smallest pass subfamily | Real margin | Worst gap | Theorem ids |",
@@ -405,6 +419,38 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             standard_d12_bracket["claim_boundary"],
             "",
+            "## Standard RoPE D13 Bank Bridge Request",
+            "",
+            "| Name | Bank shape | Requested context | Requested margin | Certified context | Certified margin | Status | Theorem ids |",
+            "| --- | --- | ---: | ---: | ---: | ---: | --- | --- |",
+            "| {name} | {bank_shape} | {requested_context} | {requested_margin} | {certified_context} | {certified_margin} | {status} | {theorems} |".format(
+                name=standard_d13_bank["name"],
+                bank_shape=standard_d13_bank["bank_shape"],
+                requested_context=standard_d13_bank["requested_context"],
+                requested_margin=standard_d13_bank["requested_margin"],
+                certified_context=standard_d13_bank["certified_context"],
+                certified_margin=standard_d13_bank["certified_margin"],
+                status="PASS" if standard_d13_bank["pass_certificate"] else "FAIL",
+                theorems=", ".join(standard_d13_bank["theorem_ids"]),
+            ),
+            "",
+            standard_d13_bank["claim_boundary"],
+            "",
+            "## Standard RoPE D13 Margin Bracket",
+            "",
+            "| Name | Context | Proved margin | Impossible margin floor | Status | Theorem ids |",
+            "| --- | ---: | ---: | ---: | --- | --- |",
+            "| {name} | {context} | {proved_margin} | {impossible_margin_floor} | {status} | {theorems} |".format(
+                name=standard_d13_bracket["name"],
+                context=standard_d13_bracket["context_length"],
+                proved_margin=standard_d13_bracket["proved_margin"],
+                impossible_margin_floor=standard_d13_bracket["impossible_margin_floor"],
+                status="PASS" if standard_d13_bracket["pass_certificate"] else "FAIL",
+                theorems=", ".join(standard_d13_bracket["theorem_ids"]),
+            ),
+            "",
+            standard_d13_bracket["claim_boundary"],
+            "",
             "## Standard RoPE Candidate Interval Plans",
             "",
             "These exact-rational plans are generated source data for Lean interval certificates. The d4 context-333, d6 context-710, d20 context-4096, and d20 context-8192 plans listed here are now matched by compiled Lean declarations; candidate-only rows remain unproved until matching declarations and manifest ids exist.",
@@ -494,6 +540,30 @@ def main() -> None:
                     )
                 )
                 print(f"theorem_ids={','.join(standard_d12_bracket['theorem_ids'])}")
+                standard_d13_bank = payload["standard_d13_bank_bridge_request"]
+                print()
+                print(f"standard_d13_bank_bridge_request={standard_d13_bank['name']}")
+                print(f"pass_certificate={standard_d13_bank['pass_certificate']}")
+                print(
+                    "requested_context={requested_context} requested_margin={requested_margin}".format(
+                        requested_context=standard_d13_bank["requested_context"],
+                        requested_margin=standard_d13_bank["requested_margin"],
+                    )
+                )
+                print(f"theorem_ids={','.join(standard_d13_bank['theorem_ids'])}")
+                standard_d13_bracket = payload["standard_d13_margin_bracket"]
+                print()
+                print(f"standard_d13_margin_bracket={standard_d13_bracket['name']}")
+                print(f"pass_certificate={standard_d13_bracket['pass_certificate']}")
+                print(
+                    "context={context} proved_margin={proved_margin} "
+                    "impossible_margin_floor={impossible_margin_floor}".format(
+                        context=standard_d13_bracket["context_length"],
+                        proved_margin=standard_d13_bracket["proved_margin"],
+                        impossible_margin_floor=standard_d13_bracket["impossible_margin_floor"],
+                    )
+                )
+                print(f"theorem_ids={','.join(standard_d13_bracket['theorem_ids'])}")
                 for plan in payload["standard_interval_candidate_plans"]:
                     print(
                         "candidate_interval_plan={name} context={context} "
