@@ -66,6 +66,17 @@ python scripts/phase_bank_certify.py --periods 6,9,13,18 --context 128
 
 This command emits the theorem-linked exact discrete certificate only. It does not compute or claim any real-valued RoPE margin.
 
+Named exact-only diagnostics are also available:
+
+```bash
+python scripts/phase_bank_certify.py --preset quantized_shared_factor_256
+python scripts/phase_bank_certify.py --preset quantized_lcm_boundary_fail_241
+python scripts/phase_bank_certify.py --preset interpolated_x4_boundary_pass_960
+python scripts/phase_bank_certify.py --preset interpolated_x4_boundary_fail_961
+```
+
+The `quantized_*` presets exercise shared-factor and one-token-past-boundary failures for declared integer periods. The `interpolated_x4_*` presets use the exact integer-period analogue of slowing phase advance by multiplying declared periods by `4`; they show the pass/fail boundary at LCM `960`. These are exact phase-bank contracts, not real-valued interpolation proofs.
+
 ## Read The Output
 
 The text output has two different evidence layers:
@@ -177,6 +188,8 @@ The JSON includes:
 - sample exact collisions when present;
 - numerical real-phase margin data;
 - a claim boundary.
+
+The full CLI JSON is intentionally verbose. The paper sidecar fixture uses compact certificate summaries so the committed results stay readable while preserving pass/fail status, periods, collision gaps, counts, samples, proof layers, theorem ids, and claim boundaries.
 
 ## Reproduce The Preset Results Table
 

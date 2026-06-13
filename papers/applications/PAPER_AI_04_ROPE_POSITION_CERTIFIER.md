@@ -176,9 +176,13 @@ For explicit positive integer-period banks that are not derived from a RoPE base
 
 ```bash
 python scripts/phase_bank_certify.py --periods 6,9,13,18 --context 128
+python scripts/phase_bank_certify.py --preset quantized_shared_factor_256
+python scripts/phase_bank_certify.py --preset quantized_lcm_boundary_fail_241
+python scripts/phase_bank_certify.py --preset interpolated_x4_boundary_pass_960
+python scripts/phase_bank_certify.py --preset interpolated_x4_boundary_fail_961
 ```
 
-This path emits the same theorem-linked exact discrete certificate fields but deliberately omits numerical real-phase margin output.
+This path emits the same theorem-linked exact discrete certificate fields but deliberately omits numerical real-phase margin output. The quantized presets are declared shared-factor and near-boundary integer-period banks. The interpolation-style presets use the exact integer-period analogue of multiplying declared periods by an integer scale factor; they are not real-valued interpolation theorems.
 
 Named presets are available:
 
@@ -211,7 +215,7 @@ python sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/python/benchmark_rope_certif
   --markdown-out sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/results/rope_certifier_presets.md
 ```
 
-The current preset table reports exact discrete `PASS` for the public-safe model-like presets under the rounded integer-period phase-bank model, exact discrete `FAIL` for diagnostic presets where the declared integer periods intentionally collide inside the context, and the first bounded prefix whose LCM already reaches the inspected context when the prefix report finds one. The diagnostic rows include both collision failures and prefix-pass cases. It also reports numerical real-phase margin scans. These rows are reproducible configuration certificates, not evidence that any model has better perplexity, reasoning, context length, runtime, memory, training stability, or deployment readiness.
+The current preset table reports exact discrete `PASS` for the public-safe model-like presets under the rounded integer-period phase-bank model, exact discrete `FAIL` for diagnostic presets where the declared integer periods intentionally collide inside the context, and the first bounded prefix whose LCM already reaches the inspected context when the prefix report finds one. The exact phase-bank table adds quantized shared-factor cases and interpolation-style scaled-period boundary cases. The sidecar JSON stores compact certificate summaries rather than full nested CLI certificates, preserving theorem ids and count evidence while avoiding repeated Lean declaration and assumption payloads. These rows are reproducible configuration certificates, not evidence that any model has better perplexity, reasoning, context length, runtime, memory, training stability, or deployment readiness.
 
 ## Exact Discrete Model
 

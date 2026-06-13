@@ -82,6 +82,10 @@ For an explicit integer phase bank that is not derived from a RoPE base/head-dim
 
 ```bash
 python scripts/phase_bank_certify.py --periods 6,9,13,18 --context 128
+python scripts/phase_bank_certify.py --preset quantized_shared_factor_256
+python scripts/phase_bank_certify.py --preset quantized_lcm_boundary_fail_241
+python scripts/phase_bank_certify.py --preset interpolated_x4_boundary_pass_960
+python scripts/phase_bank_certify.py --preset interpolated_x4_boundary_fail_961
 ```
 
 That exact-only path emits theorem-linked discrete certificate fields without a real-phase margin section.
@@ -104,7 +108,7 @@ Committed fixtures:
 
 <p>Preset Markdown: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/results/rope_certifier_presets.md">rope_certifier_presets.md</a></p>
 
-The model-like presets pass the exact discrete contract under the rounded integer-period phase-bank model. The diagnostic presets include intentional failures and a prefix-pass case so the sample-collision, theorem-backed count, shared-factor, and prefix fields are visible. The real-phase rows are numerical diagnostics only.
+The model-like presets pass the exact discrete contract under the rounded integer-period phase-bank model. The diagnostic presets include intentional failures and a prefix-pass case so the sample-collision, theorem-backed count, shared-factor, and prefix fields are visible. The exact phase-bank diagnostics include quantized shared-factor cases and interpolation-style scaled-period boundary cases. The sidecar JSON uses compact summaries for readability; the CLI can still emit the full nested certificate. The real-phase rows are numerical diagnostics only.
 
 ## Real-Phase Proof Front
 

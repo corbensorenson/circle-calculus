@@ -11383,10 +11383,10 @@
         "A benchmark showing lower perplexity, better reasoning, faster inference, lower memory, or better training stability.",
         "A replacement for empirical long-context evaluation or real-analysis proofs of trigonometric RoPE."
       ],
-      "formal_definition": "`scripts/rope_certify.py` and `circle_math.applications.rope_certifier.certify_rope_positions`, which emit a theorem-linked certificate for exact integer-period RoPE-bank collisions plus a separate numerical real-phase margin report.",
+      "formal_definition": "`scripts/rope_certify.py`, `scripts/phase_bank_certify.py`, `circle_math.applications.rope_certifier.certify_rope_positions`, and `circle_math.applications.rope_certifier.certify_phase_bank_positions`, which emit theorem-linked certificates for exact integer-period RoPE-bank collisions; the RoPE-config path also emits a separate numerical real-phase margin report.",
       "id": "COMMON-0077",
       "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
-      "intuition": "A non-Lean user can provide a RoPE-like configuration and receive a pass/fail report that names the theorem ids, assumptions, exact discrete collision gap, sample collisions when present, and numerical margin caveats.",
+      "intuition": "A non-Lean user can provide a RoPE-like configuration or declared integer phase bank and receive a pass/fail report that names the theorem ids, assumptions, exact discrete collision gap, sample collisions when present, and numerical margin caveats where applicable.",
       "kind": "interface",
       "name": "RoPE distinguishability certifier",
       "source_dictionary": "dictionary/dimensions/Common.yaml",

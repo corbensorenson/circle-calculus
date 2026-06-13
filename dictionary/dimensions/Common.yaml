@@ -831,8 +831,8 @@ entries:
     name: "RoPE distinguishability certifier"
     kind: interface
     symbol: "rope_certify(config)"
-    formal_definition: "`scripts/rope_certify.py` and `circle_math.applications.rope_certifier.certify_rope_positions`, which emit a theorem-linked certificate for exact integer-period RoPE-bank collisions plus a separate numerical real-phase margin report."
-    intuition: "A non-Lean user can provide a RoPE-like configuration and receive a pass/fail report that names the theorem ids, assumptions, exact discrete collision gap, sample collisions when present, and numerical margin caveats."
+    formal_definition: "`scripts/rope_certify.py`, `scripts/phase_bank_certify.py`, `circle_math.applications.rope_certifier.certify_rope_positions`, and `circle_math.applications.rope_certifier.certify_phase_bank_positions`, which emit theorem-linked certificates for exact integer-period RoPE-bank collisions; the RoPE-config path also emits a separate numerical real-phase margin report."
+    intuition: "A non-Lean user can provide a RoPE-like configuration or declared integer phase bank and receive a pass/fail report that names the theorem ids, assumptions, exact discrete collision gap, sample collisions when present, and numerical margin caveats where applicable."
     dependencies: ["COMMON-0076"]
     introduced_in: "PAPER_AI_04_ROPE_POSITION_CERTIFIER"
     forbidden_meanings:

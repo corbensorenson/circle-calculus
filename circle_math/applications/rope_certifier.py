@@ -328,6 +328,23 @@ class IntervalBackedTurnRatioCertificate:
         return asdict(self)
 
 
+def scale_phase_bank_periods(periods: Sequence[int], scale_factor: int) -> tuple[int, ...]:
+    """Scale declared integer periods for an exact interpolation-style analogue.
+
+    This is not a real-valued RoPE interpolation theorem. It is the exact
+    integer-period phase-bank model where slowing phase advance by an integer
+    factor is represented by multiplying every declared period by that factor.
+    """
+    if scale_factor <= 0:
+        raise ValueError("scale_factor must be positive")
+    result: list[int] = []
+    for period in periods:
+        if period <= 0:
+            raise ValueError("periods must be positive")
+        result.append(period * scale_factor)
+    return tuple(result)
+
+
 ROPE_CERTIFIER_PRESETS: dict[str, RoPEConfig] = {
     "llama_style_10000_4k": RoPEConfig(
         head_dim=128,
@@ -377,6 +394,26 @@ ROPE_CERTIFIER_PRESETS: dict[str, RoPEConfig] = {
         context_length=64,
         tolerance=1e-6,
         discretization="round",
+    ),
+}
+
+
+PHASE_BANK_CERTIFIER_PRESETS: dict[str, PhaseBankConfig] = {
+    "quantized_shared_factor_256": PhaseBankConfig(
+        periods=(32, 48, 96),
+        context_length=256,
+    ),
+    "quantized_lcm_boundary_fail_241": PhaseBankConfig(
+        periods=(15, 16),
+        context_length=241,
+    ),
+    "interpolated_x4_boundary_pass_960": PhaseBankConfig(
+        periods=scale_phase_bank_periods((15, 16), 4),
+        context_length=960,
+    ),
+    "interpolated_x4_boundary_fail_961": PhaseBankConfig(
+        periods=scale_phase_bank_periods((15, 16), 4),
+        context_length=961,
     ),
 }
 

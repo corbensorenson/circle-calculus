@@ -12,6 +12,7 @@ from circle_math.applications import (
     ROPE_REAL_PHASE_PRECURSOR_THEOREMS,
     ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME,
     ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS,
+    PHASE_BANK_CERTIFIER_PRESETS,
     PhaseBankConfig,
     RoPEConfig,
     brute_force_single_period_collision_pair_count,
@@ -35,6 +36,7 @@ from circle_math.applications import (
     real_phase_scaled_turn_ratio_error,
     real_phase_turn_separated,
     sample_collision_pairs,
+    scale_phase_bank_periods,
     scan_turn_ratio_finite_margin,
     single_period_collision_pair_count,
     turn_ratio_finite_margin_gap_candidates,
@@ -572,6 +574,42 @@ def test_explicit_phase_bank_certifier_reports_exact_only_contract() -> None:
     assert "smallest_pass_subfamily_size=2" in summary
 
 
+def test_exact_phase_bank_diagnostic_presets_cover_quantized_and_scaled_boundaries() -> None:
+    assert scale_phase_bank_periods((15, 16), 4) == (60, 64)
+
+    shared = certify_phase_bank_positions(
+        PHASE_BANK_CERTIFIER_PRESETS["quantized_shared_factor_256"],
+    )
+    assert not shared.exact_discrete.pass_exact
+    assert shared.exact_discrete.discretized_periods == (32, 48, 96)
+    assert shared.exact_discrete.common_collision_gap == 96
+    assert shared.exact_discrete.total_bank_collision_pair_count == 224
+
+    boundary_fail = certify_phase_bank_positions(
+        PHASE_BANK_CERTIFIER_PRESETS["quantized_lcm_boundary_fail_241"],
+    )
+    assert not boundary_fail.exact_discrete.pass_exact
+    assert boundary_fail.exact_discrete.common_collision_gap == 240
+    assert boundary_fail.exact_discrete.guaranteed_common_gap_collision_pair_count == 1
+    assert boundary_fail.exact_discrete.total_bank_collision_pair_count == 1
+    assert boundary_fail.exact_discrete.sample_collision_pairs == ((0, 240),)
+
+    scaled_pass = certify_phase_bank_positions(
+        PHASE_BANK_CERTIFIER_PRESETS["interpolated_x4_boundary_pass_960"],
+    )
+    assert scaled_pass.exact_discrete.pass_exact
+    assert scaled_pass.exact_discrete.discretized_periods == (60, 64)
+    assert scaled_pass.exact_discrete.common_collision_gap is None
+
+    scaled_fail = certify_phase_bank_positions(
+        PHASE_BANK_CERTIFIER_PRESETS["interpolated_x4_boundary_fail_961"],
+    )
+    assert not scaled_fail.exact_discrete.pass_exact
+    assert scaled_fail.exact_discrete.common_collision_gap == 960
+    assert scaled_fail.exact_discrete.total_bank_collision_pair_count == 1
+    assert scaled_fail.exact_discrete.sample_collision_pairs == ((0, 960),)
+
+
 def test_phase_bank_certify_cli_emits_json_certificate() -> None:
     result = subprocess.run(
         [
@@ -597,6 +635,25 @@ def test_phase_bank_certify_cli_emits_json_certificate() -> None:
     assert payload["exact_discrete"]["smallest_pass_subfamily_size"] is None
     assert "real_phase_margin" not in payload
 
+    preset_result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/phase_bank_certify.py",
+            "--preset",
+            "interpolated_x4_boundary_fail_961",
+            "--format",
+            "json",
+        ],
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    preset_payload = json.loads(preset_result.stdout)
+    assert preset_payload["config"]["periods"] == [60, 64]
+    assert preset_payload["config"]["context_length"] == 961
+    assert preset_payload["exact_discrete"]["common_collision_gap"] == 960
+    assert preset_payload["exact_discrete"]["total_bank_collision_pair_count"] == 1
+
 
 def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     json_result = subprocess.run(
@@ -619,7 +676,16 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert payload["standard_interval_certificate"]["name"] == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME
     assert payload["standard_interval_certificate"]["pass_certificate"] is True
     assert payload["presets"][0]["preset"] == "llama_style_10000_4k"
-    assert payload["presets"][0]["certificate"]["exact_discrete"]["pass_exact"] is True
+    assert payload["presets"][0]["certificate"]["exact_discrete_summary"]["pass_exact"] is True
+    assert "lean_declarations" not in payload["presets"][0]["certificate"]
+    assert "assumptions" not in payload["presets"][0]["certificate"]["exact_discrete_summary"]
+    assert payload["phase_bank_diagnostics"][0]["preset"] == "quantized_shared_factor_256"
+    assert (
+        payload["phase_bank_diagnostics"][0]["certificate"]["exact_discrete_summary"][
+            "common_collision_gap"
+        ]
+        == 96
+    )
     assert "not model-quality" in payload["claim_boundary"]
 
     markdown_result = subprocess.run(
@@ -638,8 +704,11 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert "| llama_style_10000_4k |" in markdown_result.stdout
     assert "Named Rational Margin Certificate" in markdown_result.stdout
     assert "Named Standard RoPE Interval Seed" in markdown_result.stdout
+    assert "Exact Phase-Bank Diagnostics" in markdown_result.stdout
     assert ROPE_RATIONAL_PRESET_4099_NAME in markdown_result.stdout
     assert ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME in markdown_result.stdout
+    assert "quantized_shared_factor_256" in markdown_result.stdout
+    assert "interpolated_x4_boundary_fail_961" in markdown_result.stdout
     assert "Total bank pairs" in markdown_result.stdout
     assert "First pass prefix" in markdown_result.stdout
     assert "Smallest pass subfamily" in markdown_result.stdout
