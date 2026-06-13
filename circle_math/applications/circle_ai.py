@@ -83,6 +83,26 @@ def kv_cache_stale_by_next_overwrite_boundary(
     return kv_cache_next_overwrite_token(cache_size, token) <= current
 
 
+def kv_cache_no_same_slot_overwrite_before_current(
+    cache_size: int,
+    current: int,
+    token: int,
+) -> bool:
+    """Return whether later writes up to ``current`` avoid ``token``'s slot."""
+    _require_positive(cache_size, "cache_size")
+    if current < 0:
+        raise ValueError("current must be nonnegative")
+    if token < 0:
+        raise ValueError("token must be nonnegative")
+    if token > current:
+        return False
+    token_slot = kv_cache_slot(cache_size, token)
+    return all(
+        kv_cache_slot(cache_size, overwrite) != token_slot
+        for overwrite in range(token + 1, current + 1)
+    )
+
+
 def kv_cache_slots_collide(cache_size: int, left: int, right: int) -> bool:
     """Return whether two token positions write the same KV-cache ring slot."""
     return kv_cache_slot(cache_size, left) == kv_cache_slot(cache_size, right)
@@ -394,6 +414,7 @@ class KVCacheWindowCertificate:
     next_overwrite_token: int
     next_overwrite_after_current: bool
     stale_by_next_overwrite_boundary: bool
+    no_same_slot_overwrite_before_current: bool
     collision_with_next_overwrite: bool
     theorem_ids: tuple[str, ...] = (
         "AIM-T0059",
@@ -406,6 +427,7 @@ class KVCacheWindowCertificate:
         "AIM-T0066",
         "AIM-T0069",
         "AIM-T0070",
+        "AIM-T0075",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheSlot_lt_cacheSize",
@@ -418,6 +440,7 @@ class KVCacheWindowCertificate:
         "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_ne",
         "Circle.Applications.kvCacheWindowContains_iff_current_lt_nextOverwrite",
         "Circle.Applications.not_kvCacheWindowContains_iff_nextOverwrite_le_current_of_le",
+        "Circle.Applications.kvCacheWindow_noSameSlotOverwrite_between",
     )
     note: str = (
         "KV-cache ring-buffer slot certificate only; this proves finite indexing "
@@ -1616,6 +1639,9 @@ def certify_kv_cache_window(
             cache_size,
             current,
             token,
+        ),
+        no_same_slot_overwrite_before_current=(
+            kv_cache_no_same_slot_overwrite_before_current(cache_size, current, token)
         ),
         collision_with_next_overwrite=kv_cache_slots_collide(cache_size, token, next_overwrite),
     )

@@ -27,7 +27,7 @@ Expected shape:
 
 ```text
 kv_cache_contract=LIVE cache_size=16 current=31 token=20 slot=4 current_slot=15 lag=11
-overwrite_boundary=next_overwrite=36 after_current=True stale_by_boundary=False
+overwrite_boundary=next_overwrite=36 after_current=True stale_by_boundary=False no_same_slot_overwrite_before_current=True
 batch_contract=tokens=(20, 24, 29, 31) slots=(4, 8, 13, 15) all_retained=True tokens_distinct=True slots_distinct=True
 live_window_contract=FULL start=16 length=16 slots_distinct=True slot_count_matches_cache_size=True full_coverage_contract=True
 ```
@@ -46,7 +46,7 @@ python scripts/kv_cache_certify.py \
 
 ## Reading The Certificate
 
-- `window_certificate`: the inspected token's slot, current slot, lag, retained-window status, and next same-slot overwrite boundary.
+- `window_certificate`: the inspected token's slot, current slot, lag, retained-window status, next same-slot overwrite boundary, and whether any later token up to the current read point reused the same slot.
 - `batch_certificate`: the optional retained batch, its slots, whether all batch tokens are retained, and whether the batch slots are duplicate-free.
 - `live_window_certificate`: the generated retained-token interval, its slot list, and whether the full-window coverage contract applies.
 - `full_coverage_contract`: true when the live window is full, the generated slot list is duplicate-free, its length equals `cache_size`, and every emitted slot is inside the cache range.
@@ -57,6 +57,7 @@ The main theorem spine is:
 - `AIM-T0065` through `AIM-T0068`: ordered, unordered, and retained-batch slot distinctness.
 - `AIM-T0069` and `AIM-T0070`: retained-window membership and stale-token status as next-overwrite boundary facts.
 - `AIM-T0071` through `AIM-T0074`: generated live-window exactness, duplicate-free slots, and full-window finite slot coverage.
+- `AIM-T0075`: retained-token no-same-slot-overwrite-before-current guard for read/write adapter checks.
 
 ## Boundary
 

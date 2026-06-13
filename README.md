@@ -116,7 +116,7 @@ python scripts/kv_cache_certify.py --cache-size 16 --current 31 --token 20 --bat
 python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py --format markdown
 ```
 
-The certifier emits theorem ids, Lean declaration names, a finite slot/window certificate, retained-batch distinctness, and a full generated live-window coverage flag. It proves finite ring-buffer indexing and overwrite-window facts only; it is not a paging-policy, throughput, memory-saving, retrieval-quality, implementation-correctness, deployment-safety, or model-quality claim.
+The certifier emits theorem ids, Lean declaration names, a finite slot/window certificate, retained-batch distinctness, a no-same-slot-overwrite-before-current read guard, and a full generated live-window coverage flag. It proves finite ring-buffer indexing and overwrite-window facts only; it is not a paging-policy, throughput, memory-saving, retrieval-quality, implementation-correctness, deployment-safety, or model-quality claim.
 
 For the proof-carrying sparse-attention coverage certificate, run:
 

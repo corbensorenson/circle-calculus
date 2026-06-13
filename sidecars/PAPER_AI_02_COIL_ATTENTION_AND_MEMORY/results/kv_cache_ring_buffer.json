@@ -113,10 +113,12 @@
       "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_lt",
       "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_ne",
       "Circle.Applications.kvCacheWindowContains_iff_current_lt_nextOverwrite",
-      "Circle.Applications.not_kvCacheWindowContains_iff_nextOverwrite_le_current_of_le"
+      "Circle.Applications.not_kvCacheWindowContains_iff_nextOverwrite_le_current_of_le",
+      "Circle.Applications.kvCacheWindow_noSameSlotOverwrite_between"
     ],
     "next_overwrite_after_current": true,
     "next_overwrite_token": 36,
+    "no_same_slot_overwrite_before_current": true,
     "note": "KV-cache ring-buffer slot certificate only; this proves finite indexing and overwrite-window facts, not attention quality, throughput, memory savings, or deployment safety.",
     "retained": true,
     "retained_noncurrent_slot_distinct_from_current": true,
@@ -132,7 +134,8 @@
       "AIM-T0065",
       "AIM-T0066",
       "AIM-T0069",
-      "AIM-T0070"
+      "AIM-T0070",
+      "AIM-T0075"
     ],
     "token": 20
   }

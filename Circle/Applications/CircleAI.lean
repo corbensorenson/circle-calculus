@@ -331,6 +331,27 @@ theorem kvCacheWindow_retainedSlots_ne_of_lt
     Nat.sub_le_sub_right hnewer.1 older
   exact lt_of_le_of_lt hgap_le holder.2
 
+/-- A retained token has no later same-slot overwrite before the current read.
+
+This is the implementation-facing read/write adapter fact: if `token` is still
+retained at `current`, then every strictly later write position up to `current`
+must use a different ring-buffer slot. -/
+theorem kvCacheWindow_noSameSlotOverwrite_between
+    {cacheSize current token overwrite : Nat}
+    (hwindow : kvCacheWindowContains cacheSize current token)
+    (htoken_overwrite : token < overwrite)
+    (hoverwrite_current : overwrite ≤ current) :
+    kvCacheSlot cacheSize token ≠ kvCacheSlot cacheSize overwrite := by
+  have hoverwrite_window : kvCacheWindowContains cacheSize current overwrite := by
+    have hlag_le : current - overwrite ≤ current - token :=
+      Nat.sub_le_sub_left (Nat.le_of_lt htoken_overwrite) current
+    constructor
+    · exact hoverwrite_current
+    · exact lt_of_le_of_lt hlag_le hwindow.2
+  exact
+    kvCacheWindow_retainedSlots_ne_of_lt
+      hwindow hoverwrite_window htoken_overwrite
+
 /-- Any two distinct tokens retained in the same KV-cache window occupy
 distinct ring-buffer slots.
 

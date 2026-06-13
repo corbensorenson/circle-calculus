@@ -1147,6 +1147,22 @@ theorems:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_live_window_tokens_are_exact_and_slot_distinct
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown
     blocker: ""
+  - id: AIM-T0075
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheWindow_noSameSlotOverwrite_between
+    informal_statement: "If a token is retained in the KV-cache window, no strictly later token position up to the current read point writes the same ring-buffer slot."
+    formal_statement: "forall {cacheSize current token overwrite : Nat}, Circle.Applications.kvCacheWindowContains cacheSize current token -> token < overwrite -> overwrite <= current -> Circle.Applications.kvCacheSlot cacheSize token != Circle.Applications.kvCacheSlot cacheSize overwrite"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_marks_stale_token
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_and_json_out
+    blocker: ""
   - id: AIM-T0006
     status: lean_proved
     lean_name: Circle.Applications.loopRequiredSteps_pos
