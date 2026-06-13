@@ -637,6 +637,21 @@ def ropeTurnRatioFiniteMargin (turnRatio margin : ℝ) (context : Nat) : Prop :=
   ∀ gap : Nat, 0 < gap → gap < context → ∀ turns : Int,
     margin ≤ ropeTurnRatioError turnRatio gap turns
 
+/-- One near-integer witness obstructs a finite-context turn-ratio margin.
+
+This is the generic proof shape behind the standard channel-0 gap-`710`
+negative certificates: if one inspected positive gap is already closer to an
+integer turn than the advertised margin, then the whole finite-context margin
+predicate cannot hold for any context containing that gap. -/
+theorem not_ropeTurnRatioFiniteMargin_of_error_lt_margin
+    {turnRatio margin : ℝ} {context gap : Nat} {turns : Int}
+    (hgap_pos : 0 < gap) (hgap_context : gap < context)
+    (herror : ropeTurnRatioError turnRatio gap turns < margin) :
+    ¬ ropeTurnRatioFiniteMargin turnRatio margin context := by
+  intro hmargin
+  have hcertifies_gap := hmargin gap hgap_pos hgap_context turns
+  linarith
+
 /-- The finite-context margin predicate is exactly the same as checking every
 positive gap in the generated context range.
 
@@ -2097,13 +2112,14 @@ theorem not_ropeStandardChannel0D8SeedMargin_of_context_gt_seed
     {context : Nat} (hcontext : ropeStandardChannel0D8SeedContext < context) :
     ¬ ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio
       ropeStandardChannel0D8SeedMargin context := by
-  intro hmargin
   have hgap_lt : 710 < context := by
     simpa [ropeStandardChannel0D8SeedContext] using hcontext
-  have hcertifies_gap :=
-    hmargin 710 (by norm_num) hgap_lt (113 : Int)
-  have hobstruction := ropeStandardChannel0D8_gap710_error_lt_margin
-  linarith
+  exact
+    not_ropeTurnRatioFiniteMargin_of_error_lt_margin
+      (turnRatio := ropeStandardChannel0TurnRatio)
+      (margin := ropeStandardChannel0D8SeedMargin)
+      (context := context) (gap := 710) (turns := 113)
+      (by norm_num) hgap_lt ropeStandardChannel0D8_gap710_error_lt_margin
 
 private theorem ropeStandardChannel0_d9IntervalWitness_of_scaled_bounds
     {gap : Nat} {cell : Int}
@@ -2334,11 +2350,13 @@ theorem not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710
     {context : Nat} (hcontext : 710 < context) :
     ¬ ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio
       ((1 : ℝ) / 65536) context := by
-  intro hmargin
-  have hcertifies_gap :=
-    hmargin 710 (by norm_num) hcontext (113 : Int)
-  have hobstruction := ropeStandardChannel0_gap710_error_lt_one_over_65536
-  linarith
+  exact
+    not_ropeTurnRatioFiniteMargin_of_error_lt_margin
+      (turnRatio := ropeStandardChannel0TurnRatio)
+      (margin := (1 : ℝ) / 65536)
+      (context := context) (gap := 710) (turns := 113)
+      (by norm_num) hcontext
+      ropeStandardChannel0_gap710_error_lt_one_over_65536
 
 /-- Gap `710` is already within margin `1/104000` of integer turn `113` for
 the genuine standard channel-0 turn ratio.
@@ -2379,11 +2397,13 @@ theorem not_ropeStandardChannel0_margin_one_over_104000_of_context_gt_710
     {context : Nat} (hcontext : 710 < context) :
     ¬ ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio
       ((1 : ℝ) / 104000) context := by
-  intro hmargin
-  have hcertifies_gap :=
-    hmargin 710 (by norm_num) hcontext (113 : Int)
-  have hobstruction := ropeStandardChannel0_gap710_error_lt_one_over_104000
-  linarith
+  exact
+    not_ropeTurnRatioFiniteMargin_of_error_lt_margin
+      (turnRatio := ropeStandardChannel0TurnRatio)
+      (margin := (1 : ℝ) / 104000)
+      (context := context) (gap := 710) (turns := 113)
+      (by norm_num) hcontext
+      ropeStandardChannel0_gap710_error_lt_one_over_104000
 
 /-- Finite-context turn-ratio margins are monotone in the inspected context.
 

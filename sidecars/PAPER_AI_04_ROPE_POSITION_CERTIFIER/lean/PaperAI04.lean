@@ -54,6 +54,7 @@ namespace Circle.PaperAI04
 #check Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError
 #check Circle.Applications.ropeTurnRatioError
 #check Circle.Applications.ropeTurnRatioFiniteMargin
+#check Circle.Applications.not_ropeTurnRatioFiniteMargin_of_error_lt_margin
 #check Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds
 #check Circle.Applications.ropeTurnRatioNearestIntegerWitnesses
 #check Circle.Applications.ropeNearestIntegerWitnesses_iff_forall_int

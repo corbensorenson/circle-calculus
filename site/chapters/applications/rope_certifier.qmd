@@ -110,6 +110,31 @@ Committed fixtures:
 
 The model-like presets pass the exact discrete contract under the rounded integer-period phase-bank model. The diagnostic presets include intentional failures and a prefix-pass case so the sample-collision, theorem-backed count, shared-factor, and prefix fields are visible. The exact phase-bank diagnostics include quantized shared-factor cases and interpolation-style scaled-period boundary cases. The sidecar JSON uses compact summaries for readability; the CLI can still emit the full nested certificate. The real-phase rows are numerical diagnostics only.
 
+### Reading The Current Results
+
+The committed sidecar results are meant to be read as contract evidence, not as benchmark wins. A `PASS` in the exact column means the declared integer-period phase bank has no unequal all-channel collision inside the inspected context. A `FAIL` gives a theorem-backed common collision gap and collision count for that declared model.
+
+| Preset | Context | Exact Discrete Contract | Main Evidence | Real-Phase Row |
+| --- | ---: | --- | --- | --- |
+| `llama_style_10000_4k` | 4096 | PASS | common gap is outside context; first reported prefix already passes at length `5`; a one-channel standard seed is available through context `4096` | numerical scan PASS |
+| `llama_style_10000_128k` | 131072 | PASS | common gap is outside context; first reported prefix already passes at length `8`; exact result is still the rounded integer-period model | numerical scan PASS |
+| `llama_style_500000_128k` | 131072 | PASS | common gap is outside context; bounded subfamily report finds a sufficient subbank; prefix search does not find a passing prefix in the bounded report | numerical scan PASS |
+| `diagnostic_single_channel_10000_20` | 20 | FAIL | common gap `6`; exact integer-bank collision-pair count `24` | numerical scan PASS |
+| `diagnostic_two_channel_36_128` | 128 | FAIL | common gap `114`; exact integer-bank collision-pair count `14` | numerical scan PASS |
+| `diagnostic_shared_factor_25_64` | 64 | FAIL | common gap `54`; exact integer-bank collision-pair count `10` | numerical scan PASS |
+
+The most important distinction is that the first three rows are exact only after the real-valued RoPE schedule has been converted into the declared integer periods used by the certifier. The numerical real-phase scan is reported beside the proof-carrying discrete contract because it is useful engineering evidence, but this page does not call it a proof.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+1. In the exact discrete model, which field tells you whether the first repeated all-channel position gap is inside the inspected context?
+2. Why can the `llama_style_10000_128k` row be exact for its declared integer-period bank without proving a real-valued 128k RoPE theorem?
+3. In a failure row, what is the difference between a common collision gap and the total integer-bank collision-pair count?
+
+:::
+
 ## Real-Phase Proof Front
 
 The exact integer-period contract is already complete enough to use for declared discrete phase banks. Real-valued RoPE needs a different theorem shape because the channel angle usually does not have an exact integer period.

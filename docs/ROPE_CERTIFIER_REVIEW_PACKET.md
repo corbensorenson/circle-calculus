@@ -26,6 +26,21 @@ lake build Circle.Applications.RoPECertifier
 python -m pytest tests/test_rope_certifier.py -q
 ```
 
+## Expected Observations
+
+The commands should show contract behavior, not benchmark claims:
+
+| Case | Expected Contract Result | What It Demonstrates |
+| --- | --- | --- |
+| `llama_style_10000_4k` | exact discrete PASS | the rounded integer-period bank has no unequal all-channel collision inside context `4096`; the first bounded prefix pass appears at length `5` |
+| `llama_style_10000_128k` | exact discrete PASS | the rounded integer-period bank still has its common gap outside context; this is not a real-valued 128k RoPE theorem |
+| `llama_style_500000_128k` | exact discrete PASS | a larger-base rounded bank also passes the declared exact model; the bounded subfamily report finds a sufficient subbank |
+| `diagnostic_single_channel_10000_20` | exact discrete FAIL | common gap `6` and exact integer-bank collision-pair count `24` |
+| `diagnostic_two_channel_36_128` | exact discrete FAIL | common gap `114` and exact integer-bank collision-pair count `14` |
+| `interpolated_x4_boundary_fail_961` | exact discrete FAIL | the scaled-period integer analogue fails one token past its LCM boundary |
+
+The real-phase rows are numerical diagnostics unless the output is specifically citing the theorem-backed rational or interval seed layers.
+
 ## Source Trail
 
 - Quickstart: `docs/ROPE_CERTIFIER_QUICKSTART.md`
