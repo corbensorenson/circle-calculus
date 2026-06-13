@@ -160,7 +160,7 @@ The first theorem-backed certificates for the genuine standard channel are delib
 
 ```text
 turn ratio = 1 / (2π)
-context    = 8
+context    = 19
 margin     = 1 / 32
 ```
 
@@ -171,10 +171,10 @@ gap / 8 <= gap / (2π) <= 25*gap / 157
 ```
 
 for gaps `1` through `6`, using `π <= 4` for the lower side and `3.14 < π` for the sharper upper side. The whole enclosure sits inside the integer cell from `0` to `1` and stays at least `1/32` from both endpoints.
-Gap `7` is the next step because `7/(2π)` has crossed one full turn. Lean certifies it in integer cell `1` with:
+The larger seed keeps the same margin after the turn ratio crosses one and two full turns. Lean certifies gaps `7` through `12` in integer cell `1` and gaps `13` through `18` in integer cell `2` with:
 
 ```text
-10 / 9 <= 7 / (2π) <= 175 / 157
+10*gap / 63 <= gap / (2π) <= 25*gap / 157
 ```
 
 using `π < 3.15` for the lower side and `3.14 < π` for the upper side.
@@ -187,12 +187,12 @@ from circle_math.applications import certify_standard_channel0_interval_seed
 certificate = certify_standard_channel0_interval_seed()
 certificate.pass_certificate      # True
 certificate.certified_margin      # 1/32
-certificate.theorem_ids           # AIRA-T0063,AIRA-T0064,AIRA-T0068,...,AIRA-T0073
+certificate.theorem_ids           # AIRA-T0063,AIRA-T0064,AIRA-T0068,...,AIRA-T0076
 ```
 
-`AIRA-T0063` proves that one rational interval witness covers every integer turn for one gap. `AIRA-T0064` turns a finite table of those witnesses into a finite-context margin. `AIRA-T0065` through `AIRA-T0067` are the first context-6 channel-0 seed; `AIRA-T0068` through `AIRA-T0070` are the stronger context-7 seed; `AIRA-T0071` through `AIRA-T0073` are the current context-8 standard-channel seed and its no-near-turn consequence.
+`AIRA-T0063` proves that one rational interval witness covers every integer turn for one gap. `AIRA-T0064` turns a finite table of those witnesses into a finite-context margin. `AIRA-T0065` through `AIRA-T0067` are the first context-6 channel-0 seed; `AIRA-T0068` through `AIRA-T0070` are the stronger context-7 seed; `AIRA-T0071` through `AIRA-T0073` extend it to context 8; `AIRA-T0074` through `AIRA-T0076` are the current context-19 standard-channel seed and its no-near-turn consequence.
 
-This is standard RoPE, but it is only context `8`. Larger contexts need generated interval data plus sharper `π` or continued-fraction bounds before they can be marked proved.
+This is standard RoPE, but it is only context `19`. Larger contexts need generated interval data plus sharper `π` or continued-fraction bounds before they can be marked proved.
 
 ## What To Notice
 
@@ -204,7 +204,7 @@ This is standard RoPE, but it is only context `8`. Larger contexts need generate
 - The per-channel single-period counts are exact for each individual integer period; they are not all-channel bank counts.
 - If the exact discrete contract passes, the report still does not claim real model quality or long-context success.
 - The real-phase margin scan is useful engineering evidence, but it is not a Lean proof over real-valued trigonometric RoPE.
-- The real-valued formal work has begun with an unwrapped phase-gap formula (`AIRA-T0029`), lower-bound precursor (`AIRA-T0030`), one-turn endpoint-error precursor (`AIRA-T0031`), nonnegative full-turn-multiple precursor (`AIRA-T0032`), signed full-turn-multiple precursor (`AIRA-T0033`), turn-separation predicate (`AIRA-T0037`), no-near-turn consequence (`AIRA-T0038`), finite bank-level no-near-turn bridge (`AIRA-T0039`, `AIRA-T0040`), turn-ratio Diophantine scaling bridge (`AIRA-T0041`), finite-context margin consequence (`AIRA-T0042`), bank finite-context margin consequence (`AIRA-T0043`), finite-context monotonicity (`AIRA-T0044`), bank-level certified-context transfer (`AIRA-T0045`), conservative margin downgrade (`AIRA-T0047`), combined context-plus-margin bank transfer (`AIRA-T0050`), integer-turn-ratio and natural-rational-turn-ratio no-positive-margin guardrails (`AIRA-T0053`, `AIRA-T0055`), a positive reduced-rational finite-context certificate before the denominator gap (`AIRA-T0056`), an exact reduced-rational denominator-boundary iff (`AIRA-T0057`), generated-gap finite-enumeration bridge (`AIRA-T0054`), floor/ceiling nearest-integer witness bridge (`AIRA-T0058`, `AIRA-T0059`), the named rational/discretized `1/4099` certificate (`AIRA-T0060` through `AIRA-T0062`), and standard channel-0 interval seeds (`AIRA-T0063` through `AIRA-T0073`). The current strongest standard seed is proved only for context `8`; it is not a large-context Diophantine/continued-fraction theorem.
+- The real-valued formal work has begun with an unwrapped phase-gap formula (`AIRA-T0029`), lower-bound precursor (`AIRA-T0030`), one-turn endpoint-error precursor (`AIRA-T0031`), nonnegative full-turn-multiple precursor (`AIRA-T0032`), signed full-turn-multiple precursor (`AIRA-T0033`), turn-separation predicate (`AIRA-T0037`), no-near-turn consequence (`AIRA-T0038`), finite bank-level no-near-turn bridge (`AIRA-T0039`, `AIRA-T0040`), turn-ratio Diophantine scaling bridge (`AIRA-T0041`), finite-context margin consequence (`AIRA-T0042`), bank finite-context margin consequence (`AIRA-T0043`), finite-context monotonicity (`AIRA-T0044`), bank-level certified-context transfer (`AIRA-T0045`), conservative margin downgrade (`AIRA-T0047`), combined context-plus-margin bank transfer (`AIRA-T0050`), integer-turn-ratio and natural-rational-turn-ratio no-positive-margin guardrails (`AIRA-T0053`, `AIRA-T0055`), a positive reduced-rational finite-context certificate before the denominator gap (`AIRA-T0056`), an exact reduced-rational denominator-boundary iff (`AIRA-T0057`), generated-gap finite-enumeration bridge (`AIRA-T0054`), floor/ceiling nearest-integer witness bridge (`AIRA-T0058`, `AIRA-T0059`), the named rational/discretized `1/4099` certificate (`AIRA-T0060` through `AIRA-T0062`), and standard channel-0 interval seeds (`AIRA-T0063` through `AIRA-T0076`). The current strongest standard seed is proved only for context `19`; it is not a large-context Diophantine/continued-fraction theorem.
 
 ## Theorem Cards
 
@@ -261,6 +261,9 @@ This is standard RoPE, but it is only context `8`. Larger contexts need generate
 <div class="theorem-box" data-theorem-id="AIRA-T0071"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0072"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0073"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0074"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0075"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0076"></div>
 
 ## Dictionary
 

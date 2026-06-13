@@ -82,7 +82,7 @@ The `quantized_*` presets exercise shared-factor and one-token-past-boundary fai
 The text output has two different evidence layers:
 
 ```text
-proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_8,numerical_real_phase_scan:PASS
+proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_19,numerical_real_phase_scan:PASS
 exact_discrete_contract=PASS common_collision_gap=>= context
 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0
 prefix_collision_reports=... first_exact_pass_prefix_length=...
@@ -142,13 +142,13 @@ print(certificate.theorem_ids)
 Expected meaning:
 
 ```text
-standard_rope_channel0_interval_context_8
+standard_rope_channel0_interval_context_19
 True
 1/32
-AIRA-T0063,AIRA-T0064,AIRA-T0068,AIRA-T0069,AIRA-T0070,AIRA-T0071,AIRA-T0072,AIRA-T0073
+AIRA-T0063,AIRA-T0064,AIRA-T0068,AIRA-T0069,AIRA-T0070,AIRA-T0071,AIRA-T0072,AIRA-T0073,AIRA-T0074,AIRA-T0075,AIRA-T0076
 ```
 
-Lean proves that channel 0 with standard turn ratio `1 / (2π)` has finite-context nearest-integer margin `1/32` for gaps `1` through `7`. Gaps `1` through `6` use the rational enclosures `gap/8 <= gap/(2π) <= 25*gap/157` from `π <= 4` and `3.14 < π`; gap `7` is certified in integer cell `1` by `10/9 <= 7/(2π) <= 175/157`, using `π < 3.15` for the lower side and `3.14 < π` for the upper side. This is a real standard-RoPE theorem, but only for context `8`; it is not a proof for 512, 4096, 128k, or the whole multi-channel bank.
+Lean proves that channel 0 with standard turn ratio `1 / (2π)` has finite-context nearest-integer margin `1/32` for gaps `1` through `18`. Gaps `1` through `6` use the rational enclosures `gap/8 <= gap/(2π) <= 25*gap/157` from `π <= 4` and `3.14 < π`; gaps `7` through `12` use integer cell `1`, and gaps `13` through `18` use integer cell `2`, with `10*gap/63 <= gap/(2π) <= 25*gap/157` from `π < 3.15` and `3.14 < π`. This is a real standard-RoPE theorem, but only for context `19`; it is not a proof for 512, 4096, 128k, or the whole multi-channel bank.
 
 If the exact discrete contract fails, the output includes a common collision gap and sample colliding pairs.
 It also reports `guaranteed_common_gap_collision_pair_count`, the number of starts whose paired position is exactly the common collision gap ahead, and `guaranteed_common_gap_multiple_pair_count`, the corresponding guaranteed family summed over every positive in-context multiple of that gap. `total_bank_collision_pair_count` is the exact all-channel count for the declared integer-period bank, backed by the period-bank LCM theorem. `AIRA-T0048` proves the LCM-gap collision family, and `AIRA-T0049` proves that a positive LCM below the context gives an explicit unequal collision witness. It is not a real-valued RoPE collision count.

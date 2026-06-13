@@ -323,7 +323,7 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert certificate.schema_id == "circle_calculus.standard_rope_interval_margin.v0"
     assert certificate.name == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME
     assert certificate.turn_ratio_expression == "1/(2*pi)"
-    assert certificate.context_length == 8
+    assert certificate.context_length == 19
     assert certificate.certified_margin == "1/32"
     assert certificate.pass_certificate
     assert certificate.pi_bounds == "pi <= 4, 3.14 < pi, and pi < 3.15"
@@ -336,24 +336,28 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert "AIRA-T0071" in certificate.theorem_ids
     assert "AIRA-T0072" in certificate.theorem_ids
     assert "AIRA-T0073" in certificate.theorem_ids
-    assert tuple(witness.gap for witness in certificate.interval_witnesses) == (
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
+    assert "AIRA-T0074" in certificate.theorem_ids
+    assert "AIRA-T0075" in certificate.theorem_ids
+    assert "AIRA-T0076" in certificate.theorem_ids
+    assert tuple(witness.gap for witness in certificate.interval_witnesses) == tuple(
+        range(1, 19)
     )
     assert certificate.interval_witnesses[0].lower == "1/8"
     assert certificate.interval_witnesses[0].upper == "25/157"
-    assert certificate.interval_witnesses[-2].lower == "3/4"
-    assert certificate.interval_witnesses[-2].upper == "150/157"
-    assert certificate.interval_witnesses[-1].lower == "10/9"
-    assert certificate.interval_witnesses[-1].upper == "175/157"
-    assert certificate.interval_witnesses[-1].cell == 1
-    assert all(witness.cell == 0 for witness in certificate.interval_witnesses[:-1])
-    assert "context 8 only" in certificate.claim_boundary
+    assert certificate.interval_witnesses[5].lower == "3/4"
+    assert certificate.interval_witnesses[5].upper == "150/157"
+    assert certificate.interval_witnesses[6].lower == "10/9"
+    assert certificate.interval_witnesses[6].upper == "175/157"
+    assert certificate.interval_witnesses[11].lower == "40/21"
+    assert certificate.interval_witnesses[11].upper == "300/157"
+    assert certificate.interval_witnesses[12].lower == "130/63"
+    assert certificate.interval_witnesses[12].upper == "325/157"
+    assert certificate.interval_witnesses[-1].lower == "20/7"
+    assert certificate.interval_witnesses[-1].upper == "450/157"
+    assert all(witness.cell == 0 for witness in certificate.interval_witnesses[:6])
+    assert all(witness.cell == 1 for witness in certificate.interval_witnesses[6:12])
+    assert all(witness.cell == 2 for witness in certificate.interval_witnesses[12:])
+    assert "context 19 only" in certificate.claim_boundary
 
 
 def test_rational_turn_ratio_certificate_reports_denominator_boundary() -> None:
@@ -426,7 +430,7 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     )
     assert certificate.proof_layers[0].status == "FAIL"
     assert certificate.proof_layers[1].status == "AVAILABLE_NAMED_PRESET"
-    assert certificate.proof_layers[2].status == "AVAILABLE_SEED_CONTEXT_8"
+    assert certificate.proof_layers[2].status == "AVAILABLE_SEED_CONTEXT_19"
     assert certificate.proof_layers[2].theorem_ids == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS
     assert not certificate.proof_layers[3].theorem_backed
     assert "AIRA-T0046" in certificate.theorem_ids

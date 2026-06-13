@@ -850,7 +850,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_8",
+            "status": "AVAILABLE_SEED_CONTEXT_19",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -860,7 +860,10 @@
               "AIRA-T0070",
               "AIRA-T0071",
               "AIRA-T0072",
-              "AIRA-T0073"
+              "AIRA-T0073",
+              "AIRA-T0074",
+              "AIRA-T0075",
+              "AIRA-T0076"
             ]
           },
           {
@@ -952,7 +955,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=128 base=10000 context=4096 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_8,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_19,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=8 first_exact_pass_prefix_length=5",
         "subfamily_pass_reports=8 smallest_pass_subfamily_size=1",
@@ -1364,7 +1367,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_8",
+            "status": "AVAILABLE_SEED_CONTEXT_19",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -1374,7 +1377,10 @@
               "AIRA-T0070",
               "AIRA-T0071",
               "AIRA-T0072",
-              "AIRA-T0073"
+              "AIRA-T0073",
+              "AIRA-T0074",
+              "AIRA-T0075",
+              "AIRA-T0076"
             ]
           },
           {
@@ -1466,7 +1472,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=128 base=10000 context=131072 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_8,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_19,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=8 first_exact_pass_prefix_length=8",
         "subfamily_pass_reports=8 smallest_pass_subfamily_size=2",
@@ -1862,7 +1868,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_8",
+            "status": "AVAILABLE_SEED_CONTEXT_19",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -1872,7 +1878,10 @@
               "AIRA-T0070",
               "AIRA-T0071",
               "AIRA-T0072",
-              "AIRA-T0073"
+              "AIRA-T0073",
+              "AIRA-T0074",
+              "AIRA-T0075",
+              "AIRA-T0076"
             ]
           },
           {
@@ -1964,7 +1973,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=128 base=500000 context=131072 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_8,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_19,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=8 first_exact_pass_prefix_length=none",
         "subfamily_pass_reports=8 smallest_pass_subfamily_size=1",
@@ -2091,7 +2100,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_8",
+            "status": "AVAILABLE_SEED_CONTEXT_19",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -2101,7 +2110,10 @@
               "AIRA-T0070",
               "AIRA-T0071",
               "AIRA-T0072",
-              "AIRA-T0073"
+              "AIRA-T0073",
+              "AIRA-T0074",
+              "AIRA-T0075",
+              "AIRA-T0076"
             ]
           },
           {
@@ -2193,7 +2205,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=2 base=10000 context=20 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_8,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_19,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=FAIL common_collision_gap=6 period_count=1 guaranteed_common_gap_collision_pair_count=14 guaranteed_common_gap_multiple_pair_count=24 total_bank_collision_pair_count=24",
         "prefix_collision_reports=1 first_exact_pass_prefix_length=none",
         "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
@@ -2332,7 +2344,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_8",
+            "status": "AVAILABLE_SEED_CONTEXT_19",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -2342,7 +2354,10 @@
               "AIRA-T0070",
               "AIRA-T0071",
               "AIRA-T0072",
-              "AIRA-T0073"
+              "AIRA-T0073",
+              "AIRA-T0074",
+              "AIRA-T0075",
+              "AIRA-T0076"
             ]
           },
           {
@@ -2434,7 +2449,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=4 base=36 context=128 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_8,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_19,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=FAIL common_collision_gap=114 period_count=2 guaranteed_common_gap_collision_pair_count=14 guaranteed_common_gap_multiple_pair_count=14 total_bank_collision_pair_count=14",
         "prefix_collision_reports=2 first_exact_pass_prefix_length=none",
         "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
@@ -2630,7 +2645,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_8",
+            "status": "AVAILABLE_SEED_CONTEXT_19",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -2640,7 +2655,10 @@
               "AIRA-T0070",
               "AIRA-T0071",
               "AIRA-T0072",
-              "AIRA-T0073"
+              "AIRA-T0073",
+              "AIRA-T0074",
+              "AIRA-T0075",
+              "AIRA-T0076"
             ]
           },
           {
@@ -2732,7 +2750,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=8 base=4 context=128 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_8,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_19,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=4 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=4 first_exact_pass_prefix_length=3",
         "subfamily_pass_reports=4 smallest_pass_subfamily_size=2",
@@ -2884,7 +2902,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_8",
+            "status": "AVAILABLE_SEED_CONTEXT_19",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -2894,7 +2912,10 @@
               "AIRA-T0070",
               "AIRA-T0071",
               "AIRA-T0072",
-              "AIRA-T0073"
+              "AIRA-T0073",
+              "AIRA-T0074",
+              "AIRA-T0075",
+              "AIRA-T0076"
             ]
           },
           {
@@ -2986,7 +3007,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=6 base=25 context=64 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_8,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_19,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=FAIL common_collision_gap=54 period_count=3 guaranteed_common_gap_collision_pair_count=10 guaranteed_common_gap_multiple_pair_count=10 total_bank_collision_pair_count=10",
         "prefix_collision_reports=3 first_exact_pass_prefix_length=none",
         "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
@@ -3027,9 +3048,9 @@
   "schema_id": "circle_calculus.rope_certifier_preset_results.v0",
   "standard_interval_certificate": {
     "certified_margin": "1/32",
-    "claim_boundary": "This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 8 only. It is not a full standard RoPE bank certificate and does not certify 512, 4096, or larger contexts.",
-    "context_length": 8,
-    "explanation": "Lean proves that standard RoPE channel 0, with turn ratio 1/(2*pi), has finite nearest-integer margin 1/32 for gaps 1 through 7. Gaps 1 through 6 use the cell-0 enclosure gap/8 <= gap/(2*pi) <= 25*gap/157; gap 7 is certified in integer cell 1 by 10/9 <= 7/(2*pi) <= 175/157. Larger contexts need generated rational interval data and sharper pi or continued-fraction bounds.",
+    "claim_boundary": "This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 19 only. It is not a full standard RoPE bank certificate and does not certify 512, 4096, or larger contexts.",
+    "context_length": 19,
+    "explanation": "Lean proves that standard RoPE channel 0, with turn ratio 1/(2*pi), has finite nearest-integer margin 1/32 for gaps 1 through 18. Gaps 1 through 6 use the cell-0 enclosure gap/8 <= gap/(2*pi) <= 25*gap/157; gaps 7 through 12 are certified in integer cell 1, and gaps 13 through 18 are certified in integer cell 2, using 10*gap/63 <= gap/(2*pi) <= 25*gap/157. Larger contexts need generated rational interval data and sharper pi or continued-fraction bounds.",
     "interval_witnesses": [
       {
         "cell": 0,
@@ -3072,6 +3093,72 @@
         "gap": 7,
         "lower": "10/9",
         "upper": "175/157"
+      },
+      {
+        "cell": 1,
+        "gap": 8,
+        "lower": "80/63",
+        "upper": "200/157"
+      },
+      {
+        "cell": 1,
+        "gap": 9,
+        "lower": "10/7",
+        "upper": "225/157"
+      },
+      {
+        "cell": 1,
+        "gap": 10,
+        "lower": "100/63",
+        "upper": "250/157"
+      },
+      {
+        "cell": 1,
+        "gap": 11,
+        "lower": "110/63",
+        "upper": "275/157"
+      },
+      {
+        "cell": 1,
+        "gap": 12,
+        "lower": "40/21",
+        "upper": "300/157"
+      },
+      {
+        "cell": 2,
+        "gap": 13,
+        "lower": "130/63",
+        "upper": "325/157"
+      },
+      {
+        "cell": 2,
+        "gap": 14,
+        "lower": "20/9",
+        "upper": "350/157"
+      },
+      {
+        "cell": 2,
+        "gap": 15,
+        "lower": "50/21",
+        "upper": "375/157"
+      },
+      {
+        "cell": 2,
+        "gap": 16,
+        "lower": "160/63",
+        "upper": "400/157"
+      },
+      {
+        "cell": 2,
+        "gap": 17,
+        "lower": "170/63",
+        "upper": "425/157"
+      },
+      {
+        "cell": 2,
+        "gap": 18,
+        "lower": "20/7",
+        "upper": "450/157"
       }
     ],
     "lean_declarations": [
@@ -3082,9 +3169,12 @@
       "Circle.Applications.not_ropeStandardChannel0D2Seed_nearTurn",
       "Circle.Applications.ropeStandardChannel0D3Seed_intervalCertificate",
       "Circle.Applications.ropeStandardChannel0D3Seed_turnRatioFiniteMargin",
-      "Circle.Applications.not_ropeStandardChannel0D3Seed_nearTurn"
+      "Circle.Applications.not_ropeStandardChannel0D3Seed_nearTurn",
+      "Circle.Applications.ropeStandardChannel0D4Seed_intervalCertificate",
+      "Circle.Applications.ropeStandardChannel0D4Seed_turnRatioFiniteMargin",
+      "Circle.Applications.not_ropeStandardChannel0D4Seed_nearTurn"
     ],
-    "name": "standard_rope_channel0_interval_context_8",
+    "name": "standard_rope_channel0_interval_context_19",
     "pass_certificate": true,
     "pi_bounds": "pi <= 4, 3.14 < pi, and pi < 3.15",
     "schema_id": "circle_calculus.standard_rope_interval_margin.v0",
@@ -3096,7 +3186,10 @@
       "AIRA-T0070",
       "AIRA-T0071",
       "AIRA-T0072",
-      "AIRA-T0073"
+      "AIRA-T0073",
+      "AIRA-T0074",
+      "AIRA-T0075",
+      "AIRA-T0076"
     ],
     "turn_ratio_expression": "1/(2*pi)"
   }

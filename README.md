@@ -105,7 +105,7 @@ python scripts/rope_certify.py --preset llama_style_500000_128k
 python scripts/phase_bank_certify.py --preset interpolated_x4_boundary_fail_961
 ```
 
-The certifier emits theorem ids, Lean declaration names, exact discrete pass/fail, sample colliding pairs when present, a proof-layer inventory, and a separate numerical real-phase margin report. Exact pass/fail is for the declared integer-period phase-bank model; it is not a language-model quality, context-length, speed, or memory claim. The exact phase-bank CLI includes quantized and interpolation-style boundary diagnostics. The real-phase proof program now reduces finite margin checks to generated gaps, floor/ceiling witnesses, and rational interval certificates; it includes one theorem-backed rational/discretized `1/4099` context-4096 certificate plus a tiny genuine standard-RoPE channel-0 interval seed for `1 / (2π)`, context `8`, margin `1/32`.
+The certifier emits theorem ids, Lean declaration names, exact discrete pass/fail, sample colliding pairs when present, a proof-layer inventory, and a separate numerical real-phase margin report. Exact pass/fail is for the declared integer-period phase-bank model; it is not a language-model quality, context-length, speed, or memory claim. The exact phase-bank CLI includes quantized and interpolation-style boundary diagnostics. The real-phase proof program now reduces finite margin checks to generated gaps, floor/ceiling witnesses, and rational interval certificates; it includes one theorem-backed rational/discretized `1/4099` context-4096 certificate plus a tiny genuine standard-RoPE channel-0 interval seed for `1 / (2π)`, context `19`, margin `1/32`.
 
 For the proof-carrying KV-cache ring-buffer certificate, run:
 
