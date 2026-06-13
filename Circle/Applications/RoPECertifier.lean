@@ -1,5 +1,6 @@
 import Mathlib.Data.Nat.ModEq
 import Mathlib.Data.Int.Cast.Basic
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith
@@ -651,6 +652,85 @@ theorem ropeTurnRatioFiniteMargin_iff_range_gap_bounds
     exact hmargin gap hgap_pos (List.mem_range.mp hgap_range) turns
   · intro hbounds gap hgap_pos hgap_context turns
     exact hbounds gap (List.mem_range.mpr hgap_context) hgap_pos turns
+
+/-- Finite floor/ceiling witnesses for a turn-ratio margin.
+
+For each positive generated gap, this asks only for the two nearest-integer
+boundary checks: the integer floor and the integer ceiling of
+`gap * turnRatio`. The theorem below proves that these two checks are
+equivalent to the full `∀ turns : Int` obligation in
+`ropeTurnRatioFiniteMargin`. -/
+def ropeTurnRatioNearestIntegerWitnesses
+    (turnRatio margin : ℝ) (context : Nat) : Prop :=
+  ∀ gap : Nat, gap ∈ List.range context → 0 < gap →
+    margin ≤ |(gap : ℝ) * turnRatio - ((⌊(gap : ℝ) * turnRatio⌋ : ℤ) : ℝ)| ∧
+      margin ≤ |(gap : ℝ) * turnRatio - ((⌈(gap : ℝ) * turnRatio⌉ : ℤ) : ℝ)|
+
+/-- Checking a lower bound against the floor and ceiling of a real value is
+equivalent to checking the same lower bound against every integer.
+
+This is the finite nearest-integer bridge behind the RoPE real-phase theorem
+program: for a fixed real value, all integer-turn obligations collapse to two
+auditable witnesses. -/
+theorem ropeNearestIntegerWitnesses_iff_forall_int {x margin : ℝ} :
+    (margin ≤ |x - ((⌊x⌋ : ℤ) : ℝ)| ∧ margin ≤ |x - ((⌈x⌉ : ℤ) : ℝ)|) ↔
+      ∀ turns : Int, margin ≤ |x - (turns : ℝ)| := by
+  constructor
+  · intro h turns
+    rcases h with ⟨hfloor, hceil⟩
+    by_cases hturns_le_floor : turns ≤ ⌊x⌋
+    · have hturns_le_floor_real : (turns : ℝ) ≤ ((⌊x⌋ : ℤ) : ℝ) := by
+        exact_mod_cast hturns_le_floor
+      have hfloor_le_x : ((⌊x⌋ : ℤ) : ℝ) ≤ x := Int.floor_le x
+      have hfloor_dist : |x - ((⌊x⌋ : ℤ) : ℝ)| ≤ |x - (turns : ℝ)| := by
+        rw [abs_of_nonneg (sub_nonneg.mpr hfloor_le_x)]
+        rw [abs_of_nonneg (sub_nonneg.mpr (le_trans hturns_le_floor_real hfloor_le_x))]
+        linarith
+      exact le_trans hfloor hfloor_dist
+    · have hfloor_lt_turns : ⌊x⌋ < turns := lt_of_not_ge hturns_le_floor
+      have hfloor_add_le_turns : ⌊x⌋ + 1 ≤ turns :=
+        Int.add_one_le_iff.mpr hfloor_lt_turns
+      have hx_lt_floor_add : x < (((⌊x⌋ : ℤ) + 1 : ℤ) : ℝ) := by
+        simp [Int.cast_add, Int.cast_one, Int.lt_floor_add_one x]
+      have hfloor_add_le_turns_real :
+          (((⌊x⌋ : ℤ) + 1 : ℤ) : ℝ) ≤ (turns : ℝ) := by
+        exact_mod_cast hfloor_add_le_turns
+      have hx_le_turns : x ≤ (turns : ℝ) :=
+        le_of_lt (lt_of_lt_of_le hx_lt_floor_add hfloor_add_le_turns_real)
+      have hceil_le_turns : ⌈x⌉ ≤ turns := Int.ceil_le.mpr hx_le_turns
+      have hceil_le_turns_real : ((⌈x⌉ : ℤ) : ℝ) ≤ (turns : ℝ) := by
+        exact_mod_cast hceil_le_turns
+      have hx_le_ceil : x ≤ ((⌈x⌉ : ℤ) : ℝ) := Int.le_ceil x
+      have hceil_dist : |x - ((⌈x⌉ : ℤ) : ℝ)| ≤ |x - (turns : ℝ)| := by
+        rw [abs_of_nonpos (sub_nonpos.mpr hx_le_ceil)]
+        rw [abs_of_nonpos (sub_nonpos.mpr hx_le_turns)]
+        linarith
+      exact le_trans hceil hceil_dist
+  · intro h
+    exact ⟨h ⌊x⌋, h ⌈x⌉⟩
+
+/-- Finite-context turn-ratio margins are equivalent to checking the floor and
+ceiling nearest-integer witnesses for every positive generated gap.
+
+This upgrades the generated-gap bridge by removing the infinite integer-turn
+quantifier. It is still not a continued-fraction lower-bound theorem: the
+remaining mathematical work is to prove or independently certify the two
+witness inequalities for the concrete turn ratios under study. -/
+theorem ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses
+    {turnRatio margin : ℝ} {context : Nat} :
+    ropeTurnRatioFiniteMargin turnRatio margin context ↔
+      ropeTurnRatioNearestIntegerWitnesses turnRatio margin context := by
+  rw [ropeTurnRatioFiniteMargin_iff_range_gap_bounds]
+  constructor
+  · intro hbounds gap hgap_range hgap_pos
+    exact
+      ⟨hbounds gap hgap_range hgap_pos ⌊(gap : ℝ) * turnRatio⌋,
+        hbounds gap hgap_range hgap_pos ⌈(gap : ℝ) * turnRatio⌉⟩
+  · intro hwitness gap hgap_range hgap_pos turns
+    exact
+      (ropeNearestIntegerWitnesses_iff_forall_int
+        (x := (gap : ℝ) * turnRatio) (margin := margin)).1
+        (hwitness gap hgap_range hgap_pos) turns
 
 /-- Integer turn ratios have no positive finite-context margin once the
 context contains the unit gap.

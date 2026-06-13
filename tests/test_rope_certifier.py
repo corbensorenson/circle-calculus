@@ -31,6 +31,9 @@ from circle_math.applications import (
     scan_turn_ratio_finite_margin,
     single_period_collision_pair_count,
     turn_ratio_finite_margin_gap_candidates,
+    turn_ratio_floor_ceil_witness_errors,
+    turn_ratio_floor_ceil_witness_margin,
+    turn_ratio_floor_ceil_witnesses_certify_margin,
     turn_ratio_margin_covers_context,
     turn_ratio_margin_covers_margin,
     turn_ratio_margin_covers_request,
@@ -172,6 +175,52 @@ def test_turn_ratio_finite_margin_scan_matches_scaled_error() -> None:
         right=gap,
         turns=turns,
     )
+
+
+def test_turn_ratio_floor_ceil_witness_bridge_matches_scan() -> None:
+    floor_error, ceil_error = turn_ratio_floor_ceil_witness_errors(
+        turn_ratio=3.0 / 7.0,
+        gap=2,
+    )
+    assert abs(floor_error - 6.0 / 7.0) < 1e-12
+    assert abs(ceil_error - 1.0 / 7.0) < 1e-12
+    assert abs(
+        turn_ratio_floor_ceil_witness_margin(
+            turn_ratio=3.0 / 7.0,
+            gap=2,
+        )
+        - 1.0 / 7.0
+    ) < 1e-12
+
+    for turn_ratio in (1.0 / 8.0, 3.0 / 7.0, 0.123456789):
+        for context_length in (2, 5, 10):
+            scanned_margin, _gap, _turns = scan_turn_ratio_finite_margin(
+                turn_ratio=turn_ratio,
+                context_length=context_length,
+            )
+            witness_margin = min(
+                turn_ratio_floor_ceil_witness_margin(
+                    turn_ratio=turn_ratio,
+                    gap=gap,
+                )
+                for gap in turn_ratio_finite_margin_gap_candidates(
+                    context_length=context_length,
+                )
+            )
+            assert abs(scanned_margin - witness_margin) < 1e-12
+            assert turn_ratio_floor_ceil_witnesses_certify_margin(
+                turn_ratio=turn_ratio,
+                margin=scanned_margin - 1e-12,
+                context_length=context_length,
+            )
+            assert not turn_ratio_floor_ceil_witnesses_certify_margin(
+                turn_ratio=turn_ratio,
+                margin=scanned_margin + 1e-6,
+                context_length=context_length,
+            )
+
+    assert "AIRA-T0058" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0059" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
 def test_integer_turn_ratio_has_zero_finite_margin_once_unit_gap_exists() -> None:

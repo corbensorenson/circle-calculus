@@ -4,7 +4,7 @@ This note is a durable audit trail for the real-valued RoPE phase-margin theorem
 
 ## Current Proved Bridge
 
-The real-phase theorem spine currently runs from `AIRA-T0029` through `AIRA-T0033`, then `AIRA-T0037` through `AIRA-T0045`, plus `AIRA-T0047`, `AIRA-T0050`, and `AIRA-T0053` through `AIRA-T0057`.
+The real-phase theorem spine currently runs from `AIRA-T0029` through `AIRA-T0033`, then `AIRA-T0037` through `AIRA-T0045`, plus `AIRA-T0047`, `AIRA-T0050`, and `AIRA-T0053` through `AIRA-T0059`.
 
 `AIRA-T0041` is the Diophantine-scaling bridge:
 
@@ -34,7 +34,9 @@ This is not a lower-bound theorem. It is the normalization step that makes the n
 
 `AIRA-T0056` gives the positive reduced-rational companion. If `numerator` and `denominator` are coprime and the inspected context is at most the denominator, then every positive inspected gap has nearest-integer error at least `1 / denominator`. `AIRA-T0057` packages the exact boundary: for a reduced natural rational turn ratio, that `1 / denominator` margin holds iff the inspected context stays at or below the denominator. These are theorem-backed finite rational certificates for bounded contexts below the exact-return denominator gap. They are useful for rationalized phase policies, but they are not the irrational/nonperiodic RoPE Diophantine theorem.
 
-`AIRA-T0054` proves the generated-gap bridge: the finite-context margin predicate is equivalent to checking the same lower bound for every positive gap in `List.range context`. This is a finite gap-enumeration theorem, not yet a finite integer-turn search theorem.
+`AIRA-T0054` proves the generated-gap bridge: the finite-context margin predicate is equivalent to checking the same lower bound for every positive gap in `List.range context`.
+
+`AIRA-T0058` and `AIRA-T0059` prove the finite nearest-integer witness bridge. For a fixed real value, checking a lower bound against the integer floor and integer ceiling is equivalent to checking it against every integer. Applied to every generated positive gap, this makes `ropeTurnRatioFiniteMargin alpha margin context` equivalent to two floor/ceiling checks per gap. This is a bounded integer-turn search theorem, not yet a lower-bound theorem for a concrete irrational or nonperiodic RoPE turn ratio.
 
 ## Local Mathlib Anchors
 
@@ -77,7 +79,9 @@ The important warning is `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irratio
 10. Use `AIRA-T0055` to reject natural rational turn-ratio channels as positive finite-margin witnesses once their denominator gap is in scope.
 11. Use `AIRA-T0056` to certify reduced natural rational turn ratios with margin `1 / denominator` when the inspected context stays at or below the denominator.
 12. Use `AIRA-T0057` for the exact reduced-rational boundary: the `1 / denominator` certificate is available exactly up to the denominator horizon.
-12. Use `AIRA-T0054` to connect generated gap lists to the abstract finite-context margin predicate before adding a nearest-integer or continued-fraction certificate for each gap.
+13. Use `AIRA-T0054` to connect generated gap lists to the abstract finite-context margin predicate.
+14. Use `AIRA-T0058` and `AIRA-T0059` to reduce the integer-turn obligation for each generated gap to the floor and ceiling witnesses of `gap * alpha`.
+15. Add a continued-fraction, Diophantine, or externally checked exact-arithmetic certificate that proves those floor/ceiling witness inequalities for the concrete turn ratios under study.
 
 ## Guardrails
 
@@ -88,4 +92,5 @@ The important warning is `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irratio
 - A natural rational turn ratio has zero finite-context margin once its denominator gap is in scope.
 - A reduced natural rational turn ratio has a positive `1 / denominator` finite-context margin only before that denominator gap enters scope.
 - A generated gap list only handles the finite `gap` domain; it does not by itself discharge the integer-turn lower-bound obligation.
+- The floor/ceiling witness bridge discharges the infinite integer-turn quantifier for each fixed gap, but it does not prove that a concrete irrational or nonperiodic RoPE turn ratio has a positive lower bound.
 - A full real RoPE bank certificate needs channel-wise finite-context lower bounds before the Living Book or certifier can mark the real-phase scan as formally certified.

@@ -106,6 +106,23 @@ Committed fixtures:
 
 The model-like presets pass the exact discrete contract under the rounded integer-period phase-bank model. The diagnostic presets include intentional failures and a prefix-pass case so the sample-collision, theorem-backed count, shared-factor, and prefix fields are visible. The real-phase rows are numerical diagnostics only.
 
+## Real-Phase Proof Front
+
+The exact integer-period contract is already complete enough to use for declared discrete phase banks. Real-valued RoPE needs a different theorem shape because the channel angle usually does not have an exact integer period.
+
+The current real-phase program proves this reduction:
+
+```text
+real phase error
+-> turn-ratio nearest-integer error
+-> positive generated gaps below the context
+-> floor and ceiling witnesses for each gap
+```
+
+`AIRA-T0041` converts one-channel real phase error into the normalized nearest-integer expression `|gap * alpha - turns|`, where `alpha = frequency / fullTurn`. `AIRA-T0054` says the finite-context predicate is equivalent to checking the generated positive gaps in `List.range context`. `AIRA-T0058` proves that for one fixed real value, checking the integer floor and integer ceiling is equivalent to checking every integer. `AIRA-T0059` applies that result to every generated gap, reducing the remaining integer-turn side of the finite-context margin predicate to two witnesses per gap.
+
+That is a real formal improvement, but it is not the final Diophantine theorem. The next mathematical step is to prove, by continued fractions, Diophantine estimates, or an exact finite certificate, that those floor/ceiling inequalities hold for a concrete nonperiodic RoPE turn ratio and margin.
+
 ## What To Notice
 
 - Exact collision is not guessed by scanning every pair. The theorem reduces it to divisibility of the position gap.
@@ -116,7 +133,7 @@ The model-like presets pass the exact discrete contract under the rounded intege
 - The per-channel single-period counts are exact for each individual integer period; they are not all-channel bank counts.
 - If the exact discrete contract passes, the report still does not claim real model quality or long-context success.
 - The real-phase margin scan is useful engineering evidence, but it is not a Lean proof over real-valued trigonometric RoPE.
-- The real-valued formal work has begun with an unwrapped phase-gap formula (`AIRA-T0029`), lower-bound precursor (`AIRA-T0030`), one-turn endpoint-error precursor (`AIRA-T0031`), nonnegative full-turn-multiple precursor (`AIRA-T0032`), signed full-turn-multiple precursor (`AIRA-T0033`), turn-separation predicate (`AIRA-T0037`), no-near-turn consequence (`AIRA-T0038`), finite bank-level no-near-turn bridge (`AIRA-T0039`, `AIRA-T0040`), turn-ratio Diophantine scaling bridge (`AIRA-T0041`), finite-context margin consequence (`AIRA-T0042`), bank finite-context margin consequence (`AIRA-T0043`), finite-context monotonicity (`AIRA-T0044`), bank-level certified-context transfer (`AIRA-T0045`), conservative margin downgrade (`AIRA-T0047`), combined context-plus-margin bank transfer (`AIRA-T0050`), integer-turn-ratio and natural-rational-turn-ratio no-positive-margin guardrails (`AIRA-T0053`, `AIRA-T0055`), a positive reduced-rational finite-context certificate before the denominator gap (`AIRA-T0056`), an exact reduced-rational denominator-boundary iff (`AIRA-T0057`), and generated-gap finite-enumeration bridge (`AIRA-T0054`). These are not Diophantine/continued-fraction RoPE margin theorems.
+- The real-valued formal work has begun with an unwrapped phase-gap formula (`AIRA-T0029`), lower-bound precursor (`AIRA-T0030`), one-turn endpoint-error precursor (`AIRA-T0031`), nonnegative full-turn-multiple precursor (`AIRA-T0032`), signed full-turn-multiple precursor (`AIRA-T0033`), turn-separation predicate (`AIRA-T0037`), no-near-turn consequence (`AIRA-T0038`), finite bank-level no-near-turn bridge (`AIRA-T0039`, `AIRA-T0040`), turn-ratio Diophantine scaling bridge (`AIRA-T0041`), finite-context margin consequence (`AIRA-T0042`), bank finite-context margin consequence (`AIRA-T0043`), finite-context monotonicity (`AIRA-T0044`), bank-level certified-context transfer (`AIRA-T0045`), conservative margin downgrade (`AIRA-T0047`), combined context-plus-margin bank transfer (`AIRA-T0050`), integer-turn-ratio and natural-rational-turn-ratio no-positive-margin guardrails (`AIRA-T0053`, `AIRA-T0055`), a positive reduced-rational finite-context certificate before the denominator gap (`AIRA-T0056`), an exact reduced-rational denominator-boundary iff (`AIRA-T0057`), generated-gap finite-enumeration bridge (`AIRA-T0054`), and floor/ceiling nearest-integer witness bridge (`AIRA-T0058`, `AIRA-T0059`). These are not Diophantine/continued-fraction RoPE margin theorems.
 
 ## Theorem Cards
 
@@ -157,6 +174,8 @@ The model-like presets pass the exact discrete contract under the rounded intege
 <div class="theorem-box" data-theorem-id="AIRA-T0055"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0056"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0057"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0058"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0059"></div>
 
 ## Dictionary
 

@@ -80,6 +80,8 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0055",
     "AIRA-T0056",
     "AIRA-T0057",
+    "AIRA-T0058",
+    "AIRA-T0059",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -104,6 +106,8 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_iff_nonpos_of_den_lt_context",
     "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
     "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
+    "Circle.Applications.ropeNearestIntegerWitnesses_iff_forall_int",
+    "Circle.Applications.ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -554,13 +558,75 @@ def turn_ratio_nearest_integer_error(*, turn_ratio: float, gap: int, turns: int)
     return abs(gap * turn_ratio - turns)
 
 
+def turn_ratio_floor_ceil_witness_errors(
+    *,
+    turn_ratio: float,
+    gap: int,
+) -> tuple[float, float]:
+    """Return the floor/ceiling witness errors for one turn-ratio gap.
+
+    This mirrors ``ropeNearestIntegerWitnesses_iff_forall_int``: for a fixed
+    real value ``gap * turn_ratio``, checking the floor and ceiling integer
+    witnesses is equivalent to checking every integer turn. The returned
+    values are executable diagnostics, not formal proof objects.
+    """
+    if gap < 0:
+        raise ValueError("gap must be nonnegative")
+    value = gap * turn_ratio
+    floor_turn = int(floor(value))
+    ceil_turn = int(ceil(value))
+    return (
+        turn_ratio_nearest_integer_error(
+            turn_ratio=turn_ratio,
+            gap=gap,
+            turns=floor_turn,
+        ),
+        turn_ratio_nearest_integer_error(
+            turn_ratio=turn_ratio,
+            gap=gap,
+            turns=ceil_turn,
+        ),
+    )
+
+
+def turn_ratio_floor_ceil_witness_margin(*, turn_ratio: float, gap: int) -> float:
+    """Return the smaller floor/ceiling witness error for one gap."""
+    floor_error, ceil_error = turn_ratio_floor_ceil_witness_errors(
+        turn_ratio=turn_ratio,
+        gap=gap,
+    )
+    return min(floor_error, ceil_error)
+
+
+def turn_ratio_floor_ceil_witnesses_certify_margin(
+    *,
+    turn_ratio: float,
+    margin: float,
+    context_length: int,
+) -> bool:
+    """Check the finite floor/ceiling witness shape for a margin.
+
+    This helper mirrors the Lean equivalence between
+    ``ropeTurnRatioFiniteMargin`` and the finite generated-gap floor/ceiling
+    witness predicate. It is still a floating-point executable check, not a
+    Lean proof for a concrete irrational RoPE ratio.
+    """
+    return all(
+        margin <= turn_ratio_floor_ceil_witness_margin(
+            turn_ratio=turn_ratio,
+            gap=gap,
+        )
+        for gap in turn_ratio_finite_margin_gap_candidates(context_length=context_length)
+    )
+
+
 def turn_ratio_finite_margin_gap_candidates(*, context_length: int) -> tuple[int, ...]:
     """Positive gap candidates for a finite-context turn-ratio margin scan.
 
     This mirrors the positive members of Lean's ``List.range context`` bridge:
-    a finite-context margin only needs gaps ``1 <= gap < context_length``.
-    The remaining integer-turn quantifier is still mathematical content; this
-    helper only fixes the finite gap domain.
+    a finite-context margin only needs gaps ``1 <= gap < context_length``. The
+    Lean floor/ceiling witness bridge then reduces the integer-turn obligation
+    for each generated gap to two nearest-integer witnesses.
     """
     if context_length < 0:
         raise ValueError("context_length must be nonnegative")
@@ -1027,7 +1093,8 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         "(unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, "
         "turn-ratio scaling, finite-context margin consequence, context-plus-margin transfer, "
         "integer/rational-turn-ratio guardrails, positive rational finite-context "
-        "certificate and exact rational boundary, and generated-gap enumeration precursors only; "
+        "certificate and exact rational boundary, generated-gap enumeration, and "
+        "floor/ceiling nearest-integer witness bridge precursors only; "
         "not a Diophantine proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,

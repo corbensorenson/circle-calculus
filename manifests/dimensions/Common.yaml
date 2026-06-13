@@ -2617,6 +2617,34 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_coprime_rational_turn_ratio_certifies_margin_before_denominator_gap
     blocker: ""
+  - id: AIRA-T0058
+    status: lean_proved
+    lean_name: Circle.Applications.ropeNearestIntegerWitnesses_iff_forall_int
+    informal_statement: "For a fixed real turn-ratio value, a lower bound against the integer floor and integer ceiling is equivalent to the same lower bound against every integer turn."
+    formal_statement: "forall {x margin : Real}, (margin <= abs (x - ((floor x : Int) : Real)) and margin <= abs (x - ((ceil x : Int) : Real))) <-> forall turns : Int, margin <= abs (x - (turns : Real))"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_turn_ratio_floor_ceil_witness_bridge_matches_scan
+    blocker: ""
+  - id: AIRA-T0059
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses
+    informal_statement: "A finite-context turn-ratio margin is equivalent to checking floor and ceiling nearest-integer witnesses for every positive generated gap below the inspected context."
+    formal_statement: "forall {turnRatio margin : Real} {context : Nat}, Circle.Applications.ropeTurnRatioFiniteMargin turnRatio margin context <-> Circle.Applications.ropeTurnRatioNearestIntegerWitnesses turnRatio margin context"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_turn_ratio_floor_ceil_witness_bridge_matches_scan
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd
