@@ -322,7 +322,7 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "## Standard RoPE Candidate Interval Plans",
             "",
-            "These exact-rational plans are generated source data for Lean interval certificates. The d4 context-333 plan is now matched by compiled Lean declarations; candidate-only rows remain unproved until matching declarations and manifest ids exist.",
+            "These exact-rational plans are generated source data for Lean interval certificates. The d4 context-333 and d6 context-710 plans are now matched by compiled Lean declarations; candidate-only rows remain unproved until matching declarations and manifest ids exist.",
             "",
             *plan_rows,
             "",

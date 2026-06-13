@@ -850,7 +850,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_333",
+            "status": "AVAILABLE_SEED_CONTEXT_710",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -879,7 +879,12 @@
               "AIRA-T0086",
               "AIRA-T0087",
               "AIRA-T0088",
-              "AIRA-T0089"
+              "AIRA-T0089",
+              "AIRA-T0090",
+              "AIRA-T0091",
+              "AIRA-T0092",
+              "AIRA-T0093",
+              "AIRA-T0094"
             ]
           },
           {
@@ -971,7 +976,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=128 base=10000 context=4096 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_333,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_710,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=8 first_exact_pass_prefix_length=5",
         "subfamily_pass_reports=8 smallest_pass_subfamily_size=1",
@@ -1383,7 +1388,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_333",
+            "status": "AVAILABLE_SEED_CONTEXT_710",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -1412,7 +1417,12 @@
               "AIRA-T0086",
               "AIRA-T0087",
               "AIRA-T0088",
-              "AIRA-T0089"
+              "AIRA-T0089",
+              "AIRA-T0090",
+              "AIRA-T0091",
+              "AIRA-T0092",
+              "AIRA-T0093",
+              "AIRA-T0094"
             ]
           },
           {
@@ -1504,7 +1514,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=128 base=10000 context=131072 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_333,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_710,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=8 first_exact_pass_prefix_length=8",
         "subfamily_pass_reports=8 smallest_pass_subfamily_size=2",
@@ -1900,7 +1910,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_333",
+            "status": "AVAILABLE_SEED_CONTEXT_710",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -1929,7 +1939,12 @@
               "AIRA-T0086",
               "AIRA-T0087",
               "AIRA-T0088",
-              "AIRA-T0089"
+              "AIRA-T0089",
+              "AIRA-T0090",
+              "AIRA-T0091",
+              "AIRA-T0092",
+              "AIRA-T0093",
+              "AIRA-T0094"
             ]
           },
           {
@@ -2021,7 +2036,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=128 base=500000 context=131072 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_333,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_710,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=8 first_exact_pass_prefix_length=none",
         "subfamily_pass_reports=8 smallest_pass_subfamily_size=1",
@@ -2148,7 +2163,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_333",
+            "status": "AVAILABLE_SEED_CONTEXT_710",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -2177,7 +2192,12 @@
               "AIRA-T0086",
               "AIRA-T0087",
               "AIRA-T0088",
-              "AIRA-T0089"
+              "AIRA-T0089",
+              "AIRA-T0090",
+              "AIRA-T0091",
+              "AIRA-T0092",
+              "AIRA-T0093",
+              "AIRA-T0094"
             ]
           },
           {
@@ -2269,7 +2289,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=2 base=10000 context=20 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_333,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_710,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=FAIL common_collision_gap=6 period_count=1 guaranteed_common_gap_collision_pair_count=14 guaranteed_common_gap_multiple_pair_count=24 total_bank_collision_pair_count=24",
         "prefix_collision_reports=1 first_exact_pass_prefix_length=none",
         "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
@@ -2408,7 +2428,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_333",
+            "status": "AVAILABLE_SEED_CONTEXT_710",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -2437,7 +2457,12 @@
               "AIRA-T0086",
               "AIRA-T0087",
               "AIRA-T0088",
-              "AIRA-T0089"
+              "AIRA-T0089",
+              "AIRA-T0090",
+              "AIRA-T0091",
+              "AIRA-T0092",
+              "AIRA-T0093",
+              "AIRA-T0094"
             ]
           },
           {
@@ -2529,7 +2554,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=4 base=36 context=128 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_333,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_710,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=FAIL common_collision_gap=114 period_count=2 guaranteed_common_gap_collision_pair_count=14 guaranteed_common_gap_multiple_pair_count=14 total_bank_collision_pair_count=14",
         "prefix_collision_reports=2 first_exact_pass_prefix_length=none",
         "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
@@ -2725,7 +2750,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_333",
+            "status": "AVAILABLE_SEED_CONTEXT_710",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -2754,7 +2779,12 @@
               "AIRA-T0086",
               "AIRA-T0087",
               "AIRA-T0088",
-              "AIRA-T0089"
+              "AIRA-T0089",
+              "AIRA-T0090",
+              "AIRA-T0091",
+              "AIRA-T0092",
+              "AIRA-T0093",
+              "AIRA-T0094"
             ]
           },
           {
@@ -2846,7 +2876,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=8 base=4 context=128 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_333,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_710,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=4 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=4 first_exact_pass_prefix_length=3",
         "subfamily_pass_reports=4 smallest_pass_subfamily_size=2",
@@ -2998,7 +3028,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_333",
+            "status": "AVAILABLE_SEED_CONTEXT_710",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -3027,7 +3057,12 @@
               "AIRA-T0086",
               "AIRA-T0087",
               "AIRA-T0088",
-              "AIRA-T0089"
+              "AIRA-T0089",
+              "AIRA-T0090",
+              "AIRA-T0091",
+              "AIRA-T0092",
+              "AIRA-T0093",
+              "AIRA-T0094"
             ]
           },
           {
@@ -3119,7 +3154,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=6 base=25 context=64 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_333,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_710,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=FAIL common_collision_gap=54 period_count=3 guaranteed_common_gap_collision_pair_count=10 guaranteed_common_gap_multiple_pair_count=10 total_bank_collision_pair_count=10",
         "prefix_collision_reports=3 first_exact_pass_prefix_length=none",
         "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
@@ -3430,7 +3465,7 @@
       ],
       "claim_boundary": "Interval-plan data only unless theorem_status names a compiled Lean seed. Even the proved seed is not a model-quality claim, large-context bank claim, speed claim, or deployment claim.",
       "context_length": 333,
-      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan has now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
+      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan and d6 margin-1/1024 context-710 plan have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
       "first_uncovered_gap": 333,
       "lower_turn_ratio_bound": "625/3927",
       "name": "standard_rope_channel0_interval_plan_d4_margin_1_512_context_333",
@@ -4014,7 +4049,7 @@
       ],
       "claim_boundary": "Interval-plan data only unless theorem_status names a compiled Lean seed. Even the proved seed is not a model-quality claim, large-context bank claim, speed claim, or deployment claim.",
       "context_length": 710,
-      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan has now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
+      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan and d6 margin-1/1024 context-710 plan have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
       "first_uncovered_gap": 710,
       "lower_turn_ratio_bound": "500000/3141593",
       "name": "standard_rope_channel0_interval_plan_d6_margin_1_1024_context_710",
@@ -4023,2008 +4058,4270 @@
       "pi_bounds": "3.141592 < pi and pi < 3.141593",
       "planned_margin": "1/1024",
       "schema_id": "circle_calculus.standard_rope_interval_plan.v0",
-      "theorem_status": "candidate_plan_not_lean_proved",
+      "theorem_status": "lean_proved_interval_seed_AIRA-T0090_to_AIRA-T0094",
       "turn_ratio_expression": "1/(2*pi)",
       "upper_turn_ratio_bound": "62500/392699"
     }
   ],
   "standard_interval_certificate": {
-    "certified_margin": "1/512",
-    "claim_boundary": "This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 333 only. It is not a full standard RoPE bank certificate and does not certify 512, 4096, or larger contexts.",
-    "context_length": 333,
-    "explanation": "Lean proves that standard RoPE channel 0, with turn ratio 1/(2*pi), has finite nearest-integer margin 1/512 for gaps 1 through 332. Every gap uses the four-decimal enclosure 5000*gap/31416 <= gap/(2*pi) <= 5000*gap/31415, split across generated integer cells 0 through 52. Larger contexts need sharper pi or continued-fraction bounds; the same d4 table first fails at gap 333.",
+    "certified_margin": "1/1024",
+    "claim_boundary": "This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 710 only. It is not a full standard RoPE bank certificate and does not certify 512, 4096, or larger contexts.",
+    "context_length": 710,
+    "explanation": "Lean proves that standard RoPE channel 0, with turn ratio 1/(2*pi), has finite nearest-integer margin 1/1024 for gaps 1 through 709. Every gap uses the six-decimal enclosure 500000*gap/3141593 <= gap/(2*pi) <= 500000*gap/3141592, split across computed integer cells 0 through 112. Larger contexts need sharper pi or continued-fraction bounds; the same d6 table first fails at gap 710.",
     "interval_witnesses": [
       {
         "cell": 0,
         "gap": 1,
-        "lower": "625/3927",
-        "upper": "1000/6283"
+        "lower": "500000/3141593",
+        "upper": "62500/392699"
       },
       {
         "cell": 0,
         "gap": 2,
-        "lower": "1250/3927",
-        "upper": "2000/6283"
+        "lower": "1000000/3141593",
+        "upper": "125000/392699"
       },
       {
         "cell": 0,
         "gap": 3,
-        "lower": "625/1309",
-        "upper": "3000/6283"
+        "lower": "1500000/3141593",
+        "upper": "187500/392699"
       },
       {
         "cell": 0,
         "gap": 4,
-        "lower": "2500/3927",
-        "upper": "4000/6283"
+        "lower": "2000000/3141593",
+        "upper": "250000/392699"
       },
       {
         "cell": 0,
         "gap": 5,
-        "lower": "3125/3927",
-        "upper": "5000/6283"
+        "lower": "2500000/3141593",
+        "upper": "312500/392699"
       },
       {
         "cell": 0,
         "gap": 6,
-        "lower": "1250/1309",
-        "upper": "6000/6283"
+        "lower": "3000000/3141593",
+        "upper": "375000/392699"
       },
       {
         "cell": 1,
         "gap": 7,
-        "lower": "625/561",
-        "upper": "7000/6283"
+        "lower": "500000/448799",
+        "upper": "437500/392699"
       },
       {
         "cell": 1,
         "gap": 8,
-        "lower": "5000/3927",
-        "upper": "8000/6283"
+        "lower": "4000000/3141593",
+        "upper": "500000/392699"
       },
       {
         "cell": 1,
         "gap": 9,
-        "lower": "1875/1309",
-        "upper": "9000/6283"
+        "lower": "4500000/3141593",
+        "upper": "562500/392699"
       },
       {
         "cell": 1,
         "gap": 10,
-        "lower": "6250/3927",
-        "upper": "10000/6283"
+        "lower": "5000000/3141593",
+        "upper": "625000/392699"
       },
       {
         "cell": 1,
         "gap": 11,
-        "lower": "625/357",
-        "upper": "11000/6283"
+        "lower": "5500000/3141593",
+        "upper": "687500/392699"
       },
       {
         "cell": 1,
         "gap": 12,
-        "lower": "2500/1309",
-        "upper": "12000/6283"
+        "lower": "6000000/3141593",
+        "upper": "750000/392699"
       },
       {
         "cell": 2,
         "gap": 13,
-        "lower": "8125/3927",
-        "upper": "13000/6283"
+        "lower": "500000/241661",
+        "upper": "812500/392699"
       },
       {
         "cell": 2,
         "gap": 14,
-        "lower": "1250/561",
-        "upper": "14000/6283"
+        "lower": "1000000/448799",
+        "upper": "875000/392699"
       },
       {
         "cell": 2,
         "gap": 15,
-        "lower": "3125/1309",
-        "upper": "15000/6283"
+        "lower": "7500000/3141593",
+        "upper": "937500/392699"
       },
       {
         "cell": 2,
         "gap": 16,
-        "lower": "10000/3927",
-        "upper": "16000/6283"
+        "lower": "8000000/3141593",
+        "upper": "1000000/392699"
       },
       {
         "cell": 2,
         "gap": 17,
-        "lower": "625/231",
-        "upper": "17000/6283"
+        "lower": "8500000/3141593",
+        "upper": "1062500/392699"
       },
       {
         "cell": 2,
         "gap": 18,
-        "lower": "3750/1309",
-        "upper": "18000/6283"
+        "lower": "9000000/3141593",
+        "upper": "1125000/392699"
       },
       {
         "cell": 3,
         "gap": 19,
-        "lower": "11875/3927",
-        "upper": "19000/6283"
+        "lower": "500000/165347",
+        "upper": "1187500/392699"
       },
       {
         "cell": 3,
         "gap": 20,
-        "lower": "12500/3927",
-        "upper": "20000/6283"
+        "lower": "10000000/3141593",
+        "upper": "1250000/392699"
       },
       {
         "cell": 3,
         "gap": 21,
-        "lower": "625/187",
-        "upper": "21000/6283"
+        "lower": "1500000/448799",
+        "upper": "1312500/392699"
       },
       {
         "cell": 3,
         "gap": 22,
-        "lower": "1250/357",
-        "upper": "22000/6283"
+        "lower": "11000000/3141593",
+        "upper": "1375000/392699"
       },
       {
         "cell": 3,
         "gap": 23,
-        "lower": "14375/3927",
-        "upper": "23000/6283"
+        "lower": "500000/136591",
+        "upper": "1437500/392699"
       },
       {
         "cell": 3,
         "gap": 24,
-        "lower": "5000/1309",
-        "upper": "24000/6283"
+        "lower": "12000000/3141593",
+        "upper": "1500000/392699"
       },
       {
         "cell": 3,
         "gap": 25,
-        "lower": "15625/3927",
-        "upper": "25000/6283"
+        "lower": "12500000/3141593",
+        "upper": "1562500/392699"
       },
       {
         "cell": 4,
         "gap": 26,
-        "lower": "16250/3927",
-        "upper": "26000/6283"
+        "lower": "1000000/241661",
+        "upper": "1625000/392699"
       },
       {
         "cell": 4,
         "gap": 27,
-        "lower": "5625/1309",
-        "upper": "27000/6283"
+        "lower": "13500000/3141593",
+        "upper": "1687500/392699"
       },
       {
         "cell": 4,
         "gap": 28,
-        "lower": "2500/561",
-        "upper": "28000/6283"
+        "lower": "2000000/448799",
+        "upper": "1750000/392699"
       },
       {
         "cell": 4,
         "gap": 29,
-        "lower": "18125/3927",
-        "upper": "29000/6283"
+        "lower": "14500000/3141593",
+        "upper": "1812500/392699"
       },
       {
         "cell": 4,
         "gap": 30,
-        "lower": "6250/1309",
-        "upper": "30000/6283"
+        "lower": "15000000/3141593",
+        "upper": "1875000/392699"
       },
       {
         "cell": 4,
         "gap": 31,
-        "lower": "19375/3927",
-        "upper": "31000/6283"
+        "lower": "15500000/3141593",
+        "upper": "1937500/392699"
       },
       {
         "cell": 5,
         "gap": 32,
-        "lower": "20000/3927",
-        "upper": "32000/6283"
+        "lower": "16000000/3141593",
+        "upper": "2000000/392699"
       },
       {
         "cell": 5,
         "gap": 33,
-        "lower": "625/119",
-        "upper": "33000/6283"
+        "lower": "16500000/3141593",
+        "upper": "2062500/392699"
       },
       {
         "cell": 5,
         "gap": 34,
-        "lower": "1250/231",
-        "upper": "34000/6283"
+        "lower": "17000000/3141593",
+        "upper": "2125000/392699"
       },
       {
         "cell": 5,
         "gap": 35,
-        "lower": "3125/561",
-        "upper": "35000/6283"
+        "lower": "2500000/448799",
+        "upper": "2187500/392699"
       },
       {
         "cell": 5,
         "gap": 36,
-        "lower": "7500/1309",
-        "upper": "36000/6283"
+        "lower": "18000000/3141593",
+        "upper": "2250000/392699"
       },
       {
         "cell": 5,
         "gap": 37,
-        "lower": "23125/3927",
-        "upper": "37000/6283"
+        "lower": "18500000/3141593",
+        "upper": "2312500/392699"
       },
       {
         "cell": 6,
         "gap": 38,
-        "lower": "23750/3927",
-        "upper": "38000/6283"
+        "lower": "1000000/165347",
+        "upper": "2375000/392699"
       },
       {
         "cell": 6,
         "gap": 39,
-        "lower": "8125/1309",
-        "upper": "39000/6283"
+        "lower": "1500000/241661",
+        "upper": "2437500/392699"
       },
       {
         "cell": 6,
         "gap": 40,
-        "lower": "25000/3927",
-        "upper": "40000/6283"
+        "lower": "20000000/3141593",
+        "upper": "2500000/392699"
       },
       {
         "cell": 6,
         "gap": 41,
-        "lower": "25625/3927",
-        "upper": "41000/6283"
+        "lower": "20500000/3141593",
+        "upper": "2562500/392699"
       },
       {
         "cell": 6,
         "gap": 42,
-        "lower": "1250/187",
-        "upper": "42000/6283"
+        "lower": "3000000/448799",
+        "upper": "2625000/392699"
       },
       {
         "cell": 6,
         "gap": 43,
-        "lower": "26875/3927",
-        "upper": "43000/6283"
+        "lower": "21500000/3141593",
+        "upper": "2687500/392699"
       },
       {
         "cell": 7,
         "gap": 44,
-        "lower": "2500/357",
-        "upper": "44000/6283"
+        "lower": "22000000/3141593",
+        "upper": "2750000/392699"
       },
       {
         "cell": 7,
         "gap": 45,
-        "lower": "9375/1309",
-        "upper": "45000/6283"
+        "lower": "22500000/3141593",
+        "upper": "2812500/392699"
       },
       {
         "cell": 7,
         "gap": 46,
-        "lower": "28750/3927",
-        "upper": "46000/6283"
+        "lower": "1000000/136591",
+        "upper": "2875000/392699"
       },
       {
         "cell": 7,
         "gap": 47,
-        "lower": "29375/3927",
-        "upper": "47000/6283"
+        "lower": "23500000/3141593",
+        "upper": "2937500/392699"
       },
       {
         "cell": 7,
         "gap": 48,
-        "lower": "10000/1309",
-        "upper": "48000/6283"
+        "lower": "24000000/3141593",
+        "upper": "3000000/392699"
       },
       {
         "cell": 7,
         "gap": 49,
-        "lower": "4375/561",
-        "upper": "49000/6283"
+        "lower": "3500000/448799",
+        "upper": "3062500/392699"
       },
       {
         "cell": 7,
         "gap": 50,
-        "lower": "31250/3927",
-        "upper": "50000/6283"
+        "lower": "25000000/3141593",
+        "upper": "3125000/392699"
       },
       {
         "cell": 8,
         "gap": 51,
-        "lower": "625/77",
-        "upper": "51000/6283"
+        "lower": "25500000/3141593",
+        "upper": "3187500/392699"
       },
       {
         "cell": 8,
         "gap": 52,
-        "lower": "32500/3927",
-        "upper": "52000/6283"
+        "lower": "2000000/241661",
+        "upper": "3250000/392699"
       },
       {
         "cell": 8,
         "gap": 53,
-        "lower": "33125/3927",
-        "upper": "53000/6283"
+        "lower": "26500000/3141593",
+        "upper": "3312500/392699"
       },
       {
         "cell": 8,
         "gap": 54,
-        "lower": "11250/1309",
-        "upper": "54000/6283"
+        "lower": "27000000/3141593",
+        "upper": "3375000/392699"
       },
       {
         "cell": 8,
         "gap": 55,
-        "lower": "3125/357",
-        "upper": "55000/6283"
+        "lower": "27500000/3141593",
+        "upper": "3437500/392699"
       },
       {
         "cell": 8,
         "gap": 56,
-        "lower": "5000/561",
-        "upper": "56000/6283"
+        "lower": "4000000/448799",
+        "upper": "3500000/392699"
       },
       {
         "cell": 9,
         "gap": 57,
-        "lower": "11875/1309",
-        "upper": "57000/6283"
+        "lower": "1500000/165347",
+        "upper": "3562500/392699"
       },
       {
         "cell": 9,
         "gap": 58,
-        "lower": "36250/3927",
-        "upper": "58000/6283"
+        "lower": "29000000/3141593",
+        "upper": "3625000/392699"
       },
       {
         "cell": 9,
         "gap": 59,
-        "lower": "36875/3927",
-        "upper": "59000/6283"
+        "lower": "29500000/3141593",
+        "upper": "3687500/392699"
       },
       {
         "cell": 9,
         "gap": 60,
-        "lower": "12500/1309",
-        "upper": "60000/6283"
+        "lower": "30000000/3141593",
+        "upper": "3750000/392699"
       },
       {
         "cell": 9,
         "gap": 61,
-        "lower": "38125/3927",
-        "upper": "1000/103"
+        "lower": "30500000/3141593",
+        "upper": "3812500/392699"
       },
       {
         "cell": 9,
         "gap": 62,
-        "lower": "38750/3927",
-        "upper": "62000/6283"
+        "lower": "31000000/3141593",
+        "upper": "3875000/392699"
       },
       {
         "cell": 10,
         "gap": 63,
-        "lower": "1875/187",
-        "upper": "63000/6283"
+        "lower": "4500000/448799",
+        "upper": "3937500/392699"
       },
       {
         "cell": 10,
         "gap": 64,
-        "lower": "40000/3927",
-        "upper": "64000/6283"
+        "lower": "32000000/3141593",
+        "upper": "4000000/392699"
       },
       {
         "cell": 10,
         "gap": 65,
-        "lower": "40625/3927",
-        "upper": "65000/6283"
+        "lower": "2500000/241661",
+        "upper": "4062500/392699"
       },
       {
         "cell": 10,
         "gap": 66,
-        "lower": "1250/119",
-        "upper": "66000/6283"
+        "lower": "33000000/3141593",
+        "upper": "4125000/392699"
       },
       {
         "cell": 10,
         "gap": 67,
-        "lower": "41875/3927",
-        "upper": "67000/6283"
+        "lower": "33500000/3141593",
+        "upper": "4187500/392699"
       },
       {
         "cell": 10,
         "gap": 68,
-        "lower": "2500/231",
-        "upper": "68000/6283"
+        "lower": "34000000/3141593",
+        "upper": "4250000/392699"
       },
       {
         "cell": 10,
         "gap": 69,
-        "lower": "14375/1309",
-        "upper": "69000/6283"
+        "lower": "1500000/136591",
+        "upper": "4312500/392699"
       },
       {
         "cell": 11,
         "gap": 70,
-        "lower": "6250/561",
-        "upper": "70000/6283"
+        "lower": "5000000/448799",
+        "upper": "4375000/392699"
       },
       {
         "cell": 11,
         "gap": 71,
-        "lower": "44375/3927",
-        "upper": "71000/6283"
+        "lower": "35500000/3141593",
+        "upper": "4437500/392699"
       },
       {
         "cell": 11,
         "gap": 72,
-        "lower": "15000/1309",
-        "upper": "72000/6283"
+        "lower": "36000000/3141593",
+        "upper": "4500000/392699"
       },
       {
         "cell": 11,
         "gap": 73,
-        "lower": "45625/3927",
-        "upper": "73000/6283"
+        "lower": "36500000/3141593",
+        "upper": "4562500/392699"
       },
       {
         "cell": 11,
         "gap": 74,
-        "lower": "46250/3927",
-        "upper": "74000/6283"
+        "lower": "37000000/3141593",
+        "upper": "4625000/392699"
       },
       {
         "cell": 11,
         "gap": 75,
-        "lower": "15625/1309",
-        "upper": "75000/6283"
+        "lower": "37500000/3141593",
+        "upper": "4687500/392699"
       },
       {
         "cell": 12,
         "gap": 76,
-        "lower": "47500/3927",
-        "upper": "76000/6283"
+        "lower": "2000000/165347",
+        "upper": "4750000/392699"
       },
       {
         "cell": 12,
         "gap": 77,
-        "lower": "625/51",
-        "upper": "77000/6283"
+        "lower": "5500000/448799",
+        "upper": "4812500/392699"
       },
       {
         "cell": 12,
         "gap": 78,
-        "lower": "16250/1309",
-        "upper": "78000/6283"
+        "lower": "3000000/241661",
+        "upper": "4875000/392699"
       },
       {
         "cell": 12,
         "gap": 79,
-        "lower": "49375/3927",
-        "upper": "79000/6283"
+        "lower": "500000/39767",
+        "upper": "4937500/392699"
       },
       {
         "cell": 12,
         "gap": 80,
-        "lower": "50000/3927",
-        "upper": "80000/6283"
+        "lower": "40000000/3141593",
+        "upper": "5000000/392699"
       },
       {
         "cell": 12,
         "gap": 81,
-        "lower": "16875/1309",
-        "upper": "81000/6283"
+        "lower": "40500000/3141593",
+        "upper": "5062500/392699"
       },
       {
         "cell": 13,
         "gap": 82,
-        "lower": "51250/3927",
-        "upper": "82000/6283"
+        "lower": "41000000/3141593",
+        "upper": "5125000/392699"
       },
       {
         "cell": 13,
         "gap": 83,
-        "lower": "51875/3927",
-        "upper": "83000/6283"
+        "lower": "41500000/3141593",
+        "upper": "5187500/392699"
       },
       {
         "cell": 13,
         "gap": 84,
-        "lower": "2500/187",
-        "upper": "84000/6283"
+        "lower": "6000000/448799",
+        "upper": "5250000/392699"
       },
       {
         "cell": 13,
         "gap": 85,
-        "lower": "3125/231",
-        "upper": "85000/6283"
+        "lower": "42500000/3141593",
+        "upper": "5312500/392699"
       },
       {
         "cell": 13,
         "gap": 86,
-        "lower": "53750/3927",
-        "upper": "86000/6283"
+        "lower": "43000000/3141593",
+        "upper": "5375000/392699"
       },
       {
         "cell": 13,
         "gap": 87,
-        "lower": "18125/1309",
-        "upper": "87000/6283"
+        "lower": "43500000/3141593",
+        "upper": "5437500/392699"
       },
       {
         "cell": 14,
         "gap": 88,
-        "lower": "5000/357",
-        "upper": "88000/6283"
+        "lower": "44000000/3141593",
+        "upper": "5500000/392699"
       },
       {
         "cell": 14,
         "gap": 89,
-        "lower": "55625/3927",
-        "upper": "89000/6283"
+        "lower": "44500000/3141593",
+        "upper": "5562500/392699"
       },
       {
         "cell": 14,
         "gap": 90,
-        "lower": "18750/1309",
-        "upper": "90000/6283"
+        "lower": "45000000/3141593",
+        "upper": "5625000/392699"
       },
       {
         "cell": 14,
         "gap": 91,
-        "lower": "8125/561",
-        "upper": "91000/6283"
+        "lower": "500000/34523",
+        "upper": "5687500/392699"
       },
       {
         "cell": 14,
         "gap": 92,
-        "lower": "57500/3927",
-        "upper": "92000/6283"
+        "lower": "2000000/136591",
+        "upper": "5750000/392699"
       },
       {
         "cell": 14,
         "gap": 93,
-        "lower": "19375/1309",
-        "upper": "93000/6283"
+        "lower": "46500000/3141593",
+        "upper": "5812500/392699"
       },
       {
         "cell": 14,
         "gap": 94,
-        "lower": "58750/3927",
-        "upper": "94000/6283"
+        "lower": "47000000/3141593",
+        "upper": "5875000/392699"
       },
       {
         "cell": 15,
         "gap": 95,
-        "lower": "59375/3927",
-        "upper": "95000/6283"
+        "lower": "2500000/165347",
+        "upper": "5937500/392699"
       },
       {
         "cell": 15,
         "gap": 96,
-        "lower": "20000/1309",
-        "upper": "96000/6283"
+        "lower": "48000000/3141593",
+        "upper": "6000000/392699"
       },
       {
         "cell": 15,
         "gap": 97,
-        "lower": "60625/3927",
-        "upper": "97000/6283"
+        "lower": "48500000/3141593",
+        "upper": "6062500/392699"
       },
       {
         "cell": 15,
         "gap": 98,
-        "lower": "8750/561",
-        "upper": "98000/6283"
+        "lower": "7000000/448799",
+        "upper": "6125000/392699"
       },
       {
         "cell": 15,
         "gap": 99,
-        "lower": "1875/119",
-        "upper": "99000/6283"
+        "lower": "49500000/3141593",
+        "upper": "6187500/392699"
       },
       {
         "cell": 15,
         "gap": 100,
-        "lower": "62500/3927",
-        "upper": "100000/6283"
+        "lower": "50000000/3141593",
+        "upper": "6250000/392699"
       },
       {
         "cell": 16,
         "gap": 101,
-        "lower": "63125/3927",
-        "upper": "101000/6283"
+        "lower": "50500000/3141593",
+        "upper": "6312500/392699"
       },
       {
         "cell": 16,
         "gap": 102,
-        "lower": "1250/77",
-        "upper": "102000/6283"
+        "lower": "51000000/3141593",
+        "upper": "6375000/392699"
       },
       {
         "cell": 16,
         "gap": 103,
-        "lower": "64375/3927",
-        "upper": "1000/61"
+        "lower": "51500000/3141593",
+        "upper": "6437500/392699"
       },
       {
         "cell": 16,
         "gap": 104,
-        "lower": "65000/3927",
-        "upper": "104000/6283"
+        "lower": "4000000/241661",
+        "upper": "6500000/392699"
       },
       {
         "cell": 16,
         "gap": 105,
-        "lower": "3125/187",
-        "upper": "105000/6283"
+        "lower": "7500000/448799",
+        "upper": "6562500/392699"
       },
       {
         "cell": 16,
         "gap": 106,
-        "lower": "66250/3927",
-        "upper": "106000/6283"
+        "lower": "53000000/3141593",
+        "upper": "6625000/392699"
       },
       {
         "cell": 17,
         "gap": 107,
-        "lower": "66875/3927",
-        "upper": "107000/6283"
+        "lower": "53500000/3141593",
+        "upper": "6687500/392699"
       },
       {
         "cell": 17,
         "gap": 108,
-        "lower": "22500/1309",
-        "upper": "108000/6283"
+        "lower": "54000000/3141593",
+        "upper": "6750000/392699"
       },
       {
         "cell": 17,
         "gap": 109,
-        "lower": "68125/3927",
-        "upper": "109000/6283"
+        "lower": "54500000/3141593",
+        "upper": "6812500/392699"
       },
       {
         "cell": 17,
         "gap": 110,
-        "lower": "6250/357",
-        "upper": "110000/6283"
+        "lower": "55000000/3141593",
+        "upper": "6875000/392699"
       },
       {
         "cell": 17,
         "gap": 111,
-        "lower": "23125/1309",
-        "upper": "111000/6283"
+        "lower": "55500000/3141593",
+        "upper": "6937500/392699"
       },
       {
         "cell": 17,
         "gap": 112,
-        "lower": "10000/561",
-        "upper": "112000/6283"
+        "lower": "8000000/448799",
+        "upper": "7000000/392699"
       },
       {
         "cell": 17,
         "gap": 113,
-        "lower": "70625/3927",
-        "upper": "113000/6283"
+        "lower": "56500000/3141593",
+        "upper": "7062500/392699"
       },
       {
         "cell": 18,
         "gap": 114,
-        "lower": "23750/1309",
-        "upper": "114000/6283"
+        "lower": "3000000/165347",
+        "upper": "7125000/392699"
       },
       {
         "cell": 18,
         "gap": 115,
-        "lower": "71875/3927",
-        "upper": "115000/6283"
+        "lower": "2500000/136591",
+        "upper": "7187500/392699"
       },
       {
         "cell": 18,
         "gap": 116,
-        "lower": "72500/3927",
-        "upper": "116000/6283"
+        "lower": "58000000/3141593",
+        "upper": "7250000/392699"
       },
       {
         "cell": 18,
         "gap": 117,
-        "lower": "24375/1309",
-        "upper": "117000/6283"
+        "lower": "4500000/241661",
+        "upper": "7312500/392699"
       },
       {
         "cell": 18,
         "gap": 118,
-        "lower": "73750/3927",
-        "upper": "118000/6283"
+        "lower": "59000000/3141593",
+        "upper": "7375000/392699"
       },
       {
         "cell": 18,
         "gap": 119,
-        "lower": "625/33",
-        "upper": "119000/6283"
+        "lower": "8500000/448799",
+        "upper": "7437500/392699"
       },
       {
         "cell": 19,
         "gap": 120,
-        "lower": "25000/1309",
-        "upper": "120000/6283"
+        "lower": "60000000/3141593",
+        "upper": "7500000/392699"
       },
       {
         "cell": 19,
         "gap": 121,
-        "lower": "6875/357",
-        "upper": "121000/6283"
+        "lower": "60500000/3141593",
+        "upper": "7562500/392699"
       },
       {
         "cell": 19,
         "gap": 122,
-        "lower": "76250/3927",
-        "upper": "2000/103"
+        "lower": "61000000/3141593",
+        "upper": "7625000/392699"
       },
       {
         "cell": 19,
         "gap": 123,
-        "lower": "25625/1309",
-        "upper": "123000/6283"
+        "lower": "61500000/3141593",
+        "upper": "7687500/392699"
       },
       {
         "cell": 19,
         "gap": 124,
-        "lower": "77500/3927",
-        "upper": "124000/6283"
+        "lower": "62000000/3141593",
+        "upper": "7750000/392699"
       },
       {
         "cell": 19,
         "gap": 125,
-        "lower": "78125/3927",
-        "upper": "125000/6283"
+        "lower": "62500000/3141593",
+        "upper": "7812500/392699"
       },
       {
         "cell": 20,
         "gap": 126,
-        "lower": "3750/187",
-        "upper": "126000/6283"
+        "lower": "9000000/448799",
+        "upper": "7875000/392699"
       },
       {
         "cell": 20,
         "gap": 127,
-        "lower": "79375/3927",
-        "upper": "127000/6283"
+        "lower": "63500000/3141593",
+        "upper": "7937500/392699"
       },
       {
         "cell": 20,
         "gap": 128,
-        "lower": "80000/3927",
-        "upper": "128000/6283"
+        "lower": "64000000/3141593",
+        "upper": "8000000/392699"
       },
       {
         "cell": 20,
         "gap": 129,
-        "lower": "26875/1309",
-        "upper": "129000/6283"
+        "lower": "64500000/3141593",
+        "upper": "8062500/392699"
       },
       {
         "cell": 20,
         "gap": 130,
-        "lower": "81250/3927",
-        "upper": "130000/6283"
+        "lower": "5000000/241661",
+        "upper": "8125000/392699"
       },
       {
         "cell": 20,
         "gap": 131,
-        "lower": "81875/3927",
-        "upper": "131000/6283"
+        "lower": "65500000/3141593",
+        "upper": "8187500/392699"
       },
       {
         "cell": 21,
         "gap": 132,
-        "lower": "2500/119",
-        "upper": "132000/6283"
+        "lower": "66000000/3141593",
+        "upper": "8250000/392699"
       },
       {
         "cell": 21,
         "gap": 133,
-        "lower": "11875/561",
-        "upper": "133000/6283"
+        "lower": "500000/23621",
+        "upper": "8312500/392699"
       },
       {
         "cell": 21,
         "gap": 134,
-        "lower": "83750/3927",
-        "upper": "134000/6283"
+        "lower": "67000000/3141593",
+        "upper": "8375000/392699"
       },
       {
         "cell": 21,
         "gap": 135,
-        "lower": "28125/1309",
-        "upper": "135000/6283"
+        "lower": "67500000/3141593",
+        "upper": "8437500/392699"
       },
       {
         "cell": 21,
         "gap": 136,
-        "lower": "5000/231",
-        "upper": "136000/6283"
+        "lower": "68000000/3141593",
+        "upper": "8500000/392699"
       },
       {
         "cell": 21,
         "gap": 137,
-        "lower": "85625/3927",
-        "upper": "137000/6283"
+        "lower": "68500000/3141593",
+        "upper": "8562500/392699"
       },
       {
         "cell": 21,
         "gap": 138,
-        "lower": "28750/1309",
-        "upper": "138000/6283"
+        "lower": "3000000/136591",
+        "upper": "8625000/392699"
       },
       {
         "cell": 22,
         "gap": 139,
-        "lower": "86875/3927",
-        "upper": "139000/6283"
+        "lower": "69500000/3141593",
+        "upper": "8687500/392699"
       },
       {
         "cell": 22,
         "gap": 140,
-        "lower": "12500/561",
-        "upper": "140000/6283"
+        "lower": "10000000/448799",
+        "upper": "8750000/392699"
       },
       {
         "cell": 22,
         "gap": 141,
-        "lower": "29375/1309",
-        "upper": "141000/6283"
+        "lower": "70500000/3141593",
+        "upper": "8812500/392699"
       },
       {
         "cell": 22,
         "gap": 142,
-        "lower": "88750/3927",
-        "upper": "142000/6283"
+        "lower": "71000000/3141593",
+        "upper": "8875000/392699"
       },
       {
         "cell": 22,
         "gap": 143,
-        "lower": "8125/357",
-        "upper": "143000/6283"
+        "lower": "5500000/241661",
+        "upper": "8937500/392699"
       },
       {
         "cell": 22,
         "gap": 144,
-        "lower": "30000/1309",
-        "upper": "144000/6283"
+        "lower": "72000000/3141593",
+        "upper": "9000000/392699"
       },
       {
         "cell": 23,
         "gap": 145,
-        "lower": "90625/3927",
-        "upper": "145000/6283"
+        "lower": "72500000/3141593",
+        "upper": "9062500/392699"
       },
       {
         "cell": 23,
         "gap": 146,
-        "lower": "91250/3927",
-        "upper": "146000/6283"
+        "lower": "73000000/3141593",
+        "upper": "9125000/392699"
       },
       {
         "cell": 23,
         "gap": 147,
-        "lower": "4375/187",
-        "upper": "147000/6283"
+        "lower": "10500000/448799",
+        "upper": "9187500/392699"
       },
       {
         "cell": 23,
         "gap": 148,
-        "lower": "92500/3927",
-        "upper": "148000/6283"
+        "lower": "74000000/3141593",
+        "upper": "9250000/392699"
       },
       {
         "cell": 23,
         "gap": 149,
-        "lower": "93125/3927",
-        "upper": "149000/6283"
+        "lower": "74500000/3141593",
+        "upper": "9312500/392699"
       },
       {
         "cell": 23,
         "gap": 150,
-        "lower": "31250/1309",
-        "upper": "150000/6283"
+        "lower": "75000000/3141593",
+        "upper": "9375000/392699"
       },
       {
         "cell": 24,
         "gap": 151,
-        "lower": "94375/3927",
-        "upper": "151000/6283"
+        "lower": "75500000/3141593",
+        "upper": "9437500/392699"
       },
       {
         "cell": 24,
         "gap": 152,
-        "lower": "95000/3927",
-        "upper": "152000/6283"
+        "lower": "4000000/165347",
+        "upper": "9500000/392699"
       },
       {
         "cell": 24,
         "gap": 153,
-        "lower": "1875/77",
-        "upper": "153000/6283"
+        "lower": "76500000/3141593",
+        "upper": "9562500/392699"
       },
       {
         "cell": 24,
         "gap": 154,
-        "lower": "1250/51",
-        "upper": "154000/6283"
+        "lower": "11000000/448799",
+        "upper": "9625000/392699"
       },
       {
         "cell": 24,
         "gap": 155,
-        "lower": "96875/3927",
-        "upper": "155000/6283"
+        "lower": "77500000/3141593",
+        "upper": "9687500/392699"
       },
       {
         "cell": 24,
         "gap": 156,
-        "lower": "32500/1309",
-        "upper": "156000/6283"
+        "lower": "6000000/241661",
+        "upper": "9750000/392699"
       },
       {
         "cell": 24,
         "gap": 157,
-        "lower": "98125/3927",
-        "upper": "157000/6283"
+        "lower": "78500000/3141593",
+        "upper": "9812500/392699"
       },
       {
         "cell": 25,
         "gap": 158,
-        "lower": "98750/3927",
-        "upper": "158000/6283"
+        "lower": "1000000/39767",
+        "upper": "9875000/392699"
       },
       {
         "cell": 25,
         "gap": 159,
-        "lower": "33125/1309",
-        "upper": "159000/6283"
+        "lower": "79500000/3141593",
+        "upper": "9937500/392699"
       },
       {
         "cell": 25,
         "gap": 160,
-        "lower": "100000/3927",
-        "upper": "160000/6283"
+        "lower": "80000000/3141593",
+        "upper": "10000000/392699"
       },
       {
         "cell": 25,
         "gap": 161,
-        "lower": "14375/561",
-        "upper": "161000/6283"
+        "lower": "500000/19513",
+        "upper": "10062500/392699"
       },
       {
         "cell": 25,
         "gap": 162,
-        "lower": "33750/1309",
-        "upper": "162000/6283"
+        "lower": "81000000/3141593",
+        "upper": "10125000/392699"
       },
       {
         "cell": 25,
         "gap": 163,
-        "lower": "101875/3927",
-        "upper": "163000/6283"
+        "lower": "81500000/3141593",
+        "upper": "10187500/392699"
       },
       {
         "cell": 26,
         "gap": 164,
-        "lower": "102500/3927",
-        "upper": "164000/6283"
+        "lower": "82000000/3141593",
+        "upper": "10250000/392699"
       },
       {
         "cell": 26,
         "gap": 165,
-        "lower": "3125/119",
-        "upper": "165000/6283"
+        "lower": "82500000/3141593",
+        "upper": "10312500/392699"
       },
       {
         "cell": 26,
         "gap": 166,
-        "lower": "103750/3927",
-        "upper": "166000/6283"
+        "lower": "83000000/3141593",
+        "upper": "10375000/392699"
       },
       {
         "cell": 26,
         "gap": 167,
-        "lower": "104375/3927",
-        "upper": "167000/6283"
+        "lower": "83500000/3141593",
+        "upper": "10437500/392699"
       },
       {
         "cell": 26,
         "gap": 168,
-        "lower": "5000/187",
-        "upper": "168000/6283"
+        "lower": "12000000/448799",
+        "upper": "10500000/392699"
       },
       {
         "cell": 26,
         "gap": 169,
-        "lower": "105625/3927",
-        "upper": "169000/6283"
+        "lower": "6500000/241661",
+        "upper": "10562500/392699"
       },
       {
         "cell": 27,
         "gap": 170,
-        "lower": "6250/231",
-        "upper": "170000/6283"
+        "lower": "85000000/3141593",
+        "upper": "10625000/392699"
       },
       {
         "cell": 27,
         "gap": 171,
-        "lower": "35625/1309",
-        "upper": "171000/6283"
+        "lower": "4500000/165347",
+        "upper": "10687500/392699"
       },
       {
         "cell": 27,
         "gap": 172,
-        "lower": "107500/3927",
-        "upper": "172000/6283"
+        "lower": "86000000/3141593",
+        "upper": "10750000/392699"
       },
       {
         "cell": 27,
         "gap": 173,
-        "lower": "108125/3927",
-        "upper": "173000/6283"
+        "lower": "86500000/3141593",
+        "upper": "10812500/392699"
       },
       {
         "cell": 27,
         "gap": 174,
-        "lower": "36250/1309",
-        "upper": "174000/6283"
+        "lower": "87000000/3141593",
+        "upper": "10875000/392699"
       },
       {
         "cell": 27,
         "gap": 175,
-        "lower": "15625/561",
-        "upper": "175000/6283"
+        "lower": "12500000/448799",
+        "upper": "10937500/392699"
       },
       {
         "cell": 28,
         "gap": 176,
-        "lower": "10000/357",
-        "upper": "176000/6283"
+        "lower": "88000000/3141593",
+        "upper": "11000000/392699"
       },
       {
         "cell": 28,
         "gap": 177,
-        "lower": "36875/1309",
-        "upper": "177000/6283"
+        "lower": "88500000/3141593",
+        "upper": "11062500/392699"
       },
       {
         "cell": 28,
         "gap": 178,
-        "lower": "111250/3927",
-        "upper": "178000/6283"
+        "lower": "89000000/3141593",
+        "upper": "11125000/392699"
       },
       {
         "cell": 28,
         "gap": 179,
-        "lower": "111875/3927",
-        "upper": "179000/6283"
+        "lower": "89500000/3141593",
+        "upper": "11187500/392699"
       },
       {
         "cell": 28,
         "gap": 180,
-        "lower": "37500/1309",
-        "upper": "180000/6283"
+        "lower": "90000000/3141593",
+        "upper": "11250000/392699"
       },
       {
         "cell": 28,
         "gap": 181,
-        "lower": "113125/3927",
-        "upper": "181000/6283"
+        "lower": "90500000/3141593",
+        "upper": "11312500/392699"
       },
       {
         "cell": 28,
         "gap": 182,
-        "lower": "16250/561",
-        "upper": "182000/6283"
+        "lower": "1000000/34523",
+        "upper": "11375000/392699"
       },
       {
         "cell": 29,
         "gap": 183,
-        "lower": "38125/1309",
-        "upper": "3000/103"
+        "lower": "91500000/3141593",
+        "upper": "11437500/392699"
       },
       {
         "cell": 29,
         "gap": 184,
-        "lower": "115000/3927",
-        "upper": "184000/6283"
+        "lower": "4000000/136591",
+        "upper": "11500000/392699"
       },
       {
         "cell": 29,
         "gap": 185,
-        "lower": "115625/3927",
-        "upper": "185000/6283"
+        "lower": "92500000/3141593",
+        "upper": "11562500/392699"
       },
       {
         "cell": 29,
         "gap": 186,
-        "lower": "38750/1309",
-        "upper": "186000/6283"
+        "lower": "93000000/3141593",
+        "upper": "11625000/392699"
       },
       {
         "cell": 29,
         "gap": 187,
-        "lower": "625/21",
-        "upper": "187000/6283"
+        "lower": "93500000/3141593",
+        "upper": "11687500/392699"
       },
       {
         "cell": 29,
         "gap": 188,
-        "lower": "117500/3927",
-        "upper": "188000/6283"
+        "lower": "94000000/3141593",
+        "upper": "11750000/392699"
       },
       {
         "cell": 30,
         "gap": 189,
-        "lower": "5625/187",
-        "upper": "189000/6283"
+        "lower": "13500000/448799",
+        "upper": "11812500/392699"
       },
       {
         "cell": 30,
         "gap": 190,
-        "lower": "118750/3927",
-        "upper": "190000/6283"
+        "lower": "5000000/165347",
+        "upper": "11875000/392699"
       },
       {
         "cell": 30,
         "gap": 191,
-        "lower": "119375/3927",
-        "upper": "191000/6283"
+        "lower": "95500000/3141593",
+        "upper": "11937500/392699"
       },
       {
         "cell": 30,
         "gap": 192,
-        "lower": "40000/1309",
-        "upper": "192000/6283"
+        "lower": "96000000/3141593",
+        "upper": "12000000/392699"
       },
       {
         "cell": 30,
         "gap": 193,
-        "lower": "120625/3927",
-        "upper": "193000/6283"
+        "lower": "96500000/3141593",
+        "upper": "12062500/392699"
       },
       {
         "cell": 30,
         "gap": 194,
-        "lower": "121250/3927",
-        "upper": "194000/6283"
+        "lower": "97000000/3141593",
+        "upper": "12125000/392699"
       },
       {
         "cell": 31,
         "gap": 195,
-        "lower": "40625/1309",
-        "upper": "195000/6283"
+        "lower": "7500000/241661",
+        "upper": "12187500/392699"
       },
       {
         "cell": 31,
         "gap": 196,
-        "lower": "17500/561",
-        "upper": "196000/6283"
+        "lower": "14000000/448799",
+        "upper": "12250000/392699"
       },
       {
         "cell": 31,
         "gap": 197,
-        "lower": "123125/3927",
-        "upper": "197000/6283"
+        "lower": "98500000/3141593",
+        "upper": "12312500/392699"
       },
       {
         "cell": 31,
         "gap": 198,
-        "lower": "3750/119",
-        "upper": "198000/6283"
+        "lower": "99000000/3141593",
+        "upper": "12375000/392699"
       },
       {
         "cell": 31,
         "gap": 199,
-        "lower": "124375/3927",
-        "upper": "199000/6283"
+        "lower": "99500000/3141593",
+        "upper": "12437500/392699"
       },
       {
         "cell": 31,
         "gap": 200,
-        "lower": "125000/3927",
-        "upper": "200000/6283"
+        "lower": "100000000/3141593",
+        "upper": "12500000/392699"
       },
       {
         "cell": 31,
         "gap": 201,
-        "lower": "41875/1309",
-        "upper": "201000/6283"
+        "lower": "100500000/3141593",
+        "upper": "12562500/392699"
       },
       {
         "cell": 32,
         "gap": 202,
-        "lower": "126250/3927",
-        "upper": "202000/6283"
+        "lower": "101000000/3141593",
+        "upper": "12625000/392699"
       },
       {
         "cell": 32,
         "gap": 203,
-        "lower": "18125/561",
-        "upper": "203000/6283"
+        "lower": "14500000/448799",
+        "upper": "12687500/392699"
       },
       {
         "cell": 32,
         "gap": 204,
-        "lower": "2500/77",
-        "upper": "204000/6283"
+        "lower": "102000000/3141593",
+        "upper": "12750000/392699"
       },
       {
         "cell": 32,
         "gap": 205,
-        "lower": "128125/3927",
-        "upper": "205000/6283"
+        "lower": "102500000/3141593",
+        "upper": "12812500/392699"
       },
       {
         "cell": 32,
         "gap": 206,
-        "lower": "128750/3927",
-        "upper": "2000/61"
+        "lower": "103000000/3141593",
+        "upper": "12875000/392699"
       },
       {
         "cell": 32,
         "gap": 207,
-        "lower": "43125/1309",
-        "upper": "207000/6283"
+        "lower": "4500000/136591",
+        "upper": "12937500/392699"
       },
       {
         "cell": 33,
         "gap": 208,
-        "lower": "130000/3927",
-        "upper": "208000/6283"
+        "lower": "8000000/241661",
+        "upper": "13000000/392699"
       },
       {
         "cell": 33,
         "gap": 209,
-        "lower": "11875/357",
-        "upper": "209000/6283"
+        "lower": "5500000/165347",
+        "upper": "13062500/392699"
       },
       {
         "cell": 33,
         "gap": 210,
-        "lower": "6250/187",
-        "upper": "210000/6283"
+        "lower": "15000000/448799",
+        "upper": "13125000/392699"
       },
       {
         "cell": 33,
         "gap": 211,
-        "lower": "131875/3927",
-        "upper": "211000/6283"
+        "lower": "105500000/3141593",
+        "upper": "13187500/392699"
       },
       {
         "cell": 33,
         "gap": 212,
-        "lower": "132500/3927",
-        "upper": "212000/6283"
+        "lower": "106000000/3141593",
+        "upper": "13250000/392699"
       },
       {
         "cell": 33,
         "gap": 213,
-        "lower": "44375/1309",
-        "upper": "213000/6283"
+        "lower": "106500000/3141593",
+        "upper": "13312500/392699"
       },
       {
         "cell": 34,
         "gap": 214,
-        "lower": "133750/3927",
-        "upper": "214000/6283"
+        "lower": "107000000/3141593",
+        "upper": "13375000/392699"
       },
       {
         "cell": 34,
         "gap": 215,
-        "lower": "134375/3927",
-        "upper": "215000/6283"
+        "lower": "107500000/3141593",
+        "upper": "13437500/392699"
       },
       {
         "cell": 34,
         "gap": 216,
-        "lower": "45000/1309",
-        "upper": "216000/6283"
+        "lower": "108000000/3141593",
+        "upper": "13500000/392699"
       },
       {
         "cell": 34,
         "gap": 217,
-        "lower": "19375/561",
-        "upper": "217000/6283"
+        "lower": "15500000/448799",
+        "upper": "13562500/392699"
       },
       {
         "cell": 34,
         "gap": 218,
-        "lower": "136250/3927",
-        "upper": "218000/6283"
+        "lower": "109000000/3141593",
+        "upper": "13625000/392699"
       },
       {
         "cell": 34,
         "gap": 219,
-        "lower": "45625/1309",
-        "upper": "219000/6283"
+        "lower": "109500000/3141593",
+        "upper": "13687500/392699"
       },
       {
         "cell": 35,
         "gap": 220,
-        "lower": "12500/357",
-        "upper": "220000/6283"
+        "lower": "110000000/3141593",
+        "upper": "13750000/392699"
       },
       {
         "cell": 35,
         "gap": 221,
-        "lower": "8125/231",
-        "upper": "221000/6283"
+        "lower": "8500000/241661",
+        "upper": "13812500/392699"
       },
       {
         "cell": 35,
         "gap": 222,
-        "lower": "46250/1309",
-        "upper": "222000/6283"
+        "lower": "111000000/3141593",
+        "upper": "13875000/392699"
       },
       {
         "cell": 35,
         "gap": 223,
-        "lower": "139375/3927",
-        "upper": "223000/6283"
+        "lower": "111500000/3141593",
+        "upper": "13937500/392699"
       },
       {
         "cell": 35,
         "gap": 224,
-        "lower": "20000/561",
-        "upper": "224000/6283"
+        "lower": "16000000/448799",
+        "upper": "14000000/392699"
       },
       {
         "cell": 35,
         "gap": 225,
-        "lower": "46875/1309",
-        "upper": "225000/6283"
+        "lower": "112500000/3141593",
+        "upper": "14062500/392699"
       },
       {
         "cell": 35,
         "gap": 226,
-        "lower": "141250/3927",
-        "upper": "226000/6283"
+        "lower": "113000000/3141593",
+        "upper": "14125000/392699"
       },
       {
         "cell": 36,
         "gap": 227,
-        "lower": "141875/3927",
-        "upper": "227000/6283"
+        "lower": "113500000/3141593",
+        "upper": "14187500/392699"
       },
       {
         "cell": 36,
         "gap": 228,
-        "lower": "47500/1309",
-        "upper": "228000/6283"
+        "lower": "6000000/165347",
+        "upper": "14250000/392699"
       },
       {
         "cell": 36,
         "gap": 229,
-        "lower": "143125/3927",
-        "upper": "229000/6283"
+        "lower": "114500000/3141593",
+        "upper": "14312500/392699"
       },
       {
         "cell": 36,
         "gap": 230,
-        "lower": "143750/3927",
-        "upper": "230000/6283"
+        "lower": "5000000/136591",
+        "upper": "14375000/392699"
       },
       {
         "cell": 36,
         "gap": 231,
-        "lower": "625/17",
-        "upper": "231000/6283"
+        "lower": "16500000/448799",
+        "upper": "14437500/392699"
       },
       {
         "cell": 36,
         "gap": 232,
-        "lower": "145000/3927",
-        "upper": "232000/6283"
+        "lower": "116000000/3141593",
+        "upper": "14500000/392699"
       },
       {
         "cell": 37,
         "gap": 233,
-        "lower": "145625/3927",
-        "upper": "233000/6283"
+        "lower": "116500000/3141593",
+        "upper": "14562500/392699"
       },
       {
         "cell": 37,
         "gap": 234,
-        "lower": "48750/1309",
-        "upper": "234000/6283"
+        "lower": "9000000/241661",
+        "upper": "14625000/392699"
       },
       {
         "cell": 37,
         "gap": 235,
-        "lower": "146875/3927",
-        "upper": "235000/6283"
+        "lower": "117500000/3141593",
+        "upper": "14687500/392699"
       },
       {
         "cell": 37,
         "gap": 236,
-        "lower": "147500/3927",
-        "upper": "236000/6283"
+        "lower": "118000000/3141593",
+        "upper": "14750000/392699"
       },
       {
         "cell": 37,
         "gap": 237,
-        "lower": "49375/1309",
-        "upper": "237000/6283"
+        "lower": "1500000/39767",
+        "upper": "14812500/392699"
       },
       {
         "cell": 37,
         "gap": 238,
-        "lower": "1250/33",
-        "upper": "238000/6283"
+        "lower": "17000000/448799",
+        "upper": "14875000/392699"
       },
       {
         "cell": 38,
         "gap": 239,
-        "lower": "149375/3927",
-        "upper": "239000/6283"
+        "lower": "119500000/3141593",
+        "upper": "14937500/392699"
       },
       {
         "cell": 38,
         "gap": 240,
-        "lower": "50000/1309",
-        "upper": "240000/6283"
+        "lower": "120000000/3141593",
+        "upper": "15000000/392699"
       },
       {
         "cell": 38,
         "gap": 241,
-        "lower": "150625/3927",
-        "upper": "241000/6283"
+        "lower": "120500000/3141593",
+        "upper": "15062500/392699"
       },
       {
         "cell": 38,
         "gap": 242,
-        "lower": "13750/357",
-        "upper": "242000/6283"
+        "lower": "121000000/3141593",
+        "upper": "15125000/392699"
       },
       {
         "cell": 38,
         "gap": 243,
-        "lower": "50625/1309",
-        "upper": "243000/6283"
+        "lower": "121500000/3141593",
+        "upper": "15187500/392699"
       },
       {
         "cell": 38,
         "gap": 244,
-        "lower": "152500/3927",
-        "upper": "4000/103"
+        "lower": "122000000/3141593",
+        "upper": "15250000/392699"
       },
       {
         "cell": 38,
         "gap": 245,
-        "lower": "21875/561",
-        "upper": "245000/6283"
+        "lower": "17500000/448799",
+        "upper": "15312500/392699"
       },
       {
         "cell": 39,
         "gap": 246,
-        "lower": "51250/1309",
-        "upper": "246000/6283"
+        "lower": "123000000/3141593",
+        "upper": "15375000/392699"
       },
       {
         "cell": 39,
         "gap": 247,
-        "lower": "154375/3927",
-        "upper": "247000/6283"
+        "lower": "500000/12719",
+        "upper": "15437500/392699"
       },
       {
         "cell": 39,
         "gap": 248,
-        "lower": "155000/3927",
-        "upper": "248000/6283"
+        "lower": "124000000/3141593",
+        "upper": "15500000/392699"
       },
       {
         "cell": 39,
         "gap": 249,
-        "lower": "51875/1309",
-        "upper": "249000/6283"
+        "lower": "124500000/3141593",
+        "upper": "15562500/392699"
       },
       {
         "cell": 39,
         "gap": 250,
-        "lower": "156250/3927",
-        "upper": "250000/6283"
+        "lower": "125000000/3141593",
+        "upper": "15625000/392699"
       },
       {
         "cell": 39,
         "gap": 251,
-        "lower": "156875/3927",
-        "upper": "251000/6283"
+        "lower": "125500000/3141593",
+        "upper": "15687500/392699"
       },
       {
         "cell": 40,
         "gap": 252,
-        "lower": "7500/187",
-        "upper": "252000/6283"
+        "lower": "18000000/448799",
+        "upper": "15750000/392699"
       },
       {
         "cell": 40,
         "gap": 253,
-        "lower": "14375/357",
-        "upper": "253000/6283"
+        "lower": "5500000/136591",
+        "upper": "15812500/392699"
       },
       {
         "cell": 40,
         "gap": 254,
-        "lower": "158750/3927",
-        "upper": "254000/6283"
+        "lower": "127000000/3141593",
+        "upper": "15875000/392699"
       },
       {
         "cell": 40,
         "gap": 255,
-        "lower": "3125/77",
-        "upper": "255000/6283"
+        "lower": "127500000/3141593",
+        "upper": "15937500/392699"
       },
       {
         "cell": 40,
         "gap": 256,
-        "lower": "160000/3927",
-        "upper": "256000/6283"
+        "lower": "128000000/3141593",
+        "upper": "16000000/392699"
       },
       {
         "cell": 40,
         "gap": 257,
-        "lower": "160625/3927",
-        "upper": "257000/6283"
+        "lower": "128500000/3141593",
+        "upper": "16062500/392699"
       },
       {
         "cell": 41,
         "gap": 258,
-        "lower": "53750/1309",
-        "upper": "258000/6283"
+        "lower": "129000000/3141593",
+        "upper": "16125000/392699"
       },
       {
         "cell": 41,
         "gap": 259,
-        "lower": "23125/561",
-        "upper": "259000/6283"
+        "lower": "18500000/448799",
+        "upper": "16187500/392699"
       },
       {
         "cell": 41,
         "gap": 260,
-        "lower": "162500/3927",
-        "upper": "260000/6283"
+        "lower": "10000000/241661",
+        "upper": "16250000/392699"
       },
       {
         "cell": 41,
         "gap": 261,
-        "lower": "54375/1309",
-        "upper": "261000/6283"
+        "lower": "130500000/3141593",
+        "upper": "16312500/392699"
       },
       {
         "cell": 41,
         "gap": 262,
-        "lower": "163750/3927",
-        "upper": "262000/6283"
+        "lower": "131000000/3141593",
+        "upper": "16375000/392699"
       },
       {
         "cell": 41,
         "gap": 263,
-        "lower": "164375/3927",
-        "upper": "263000/6283"
+        "lower": "131500000/3141593",
+        "upper": "16437500/392699"
       },
       {
         "cell": 42,
         "gap": 264,
-        "lower": "5000/119",
-        "upper": "264000/6283"
+        "lower": "132000000/3141593",
+        "upper": "16500000/392699"
       },
       {
         "cell": 42,
         "gap": 265,
-        "lower": "165625/3927",
-        "upper": "265000/6283"
+        "lower": "132500000/3141593",
+        "upper": "16562500/392699"
       },
       {
         "cell": 42,
         "gap": 266,
-        "lower": "23750/561",
-        "upper": "266000/6283"
+        "lower": "1000000/23621",
+        "upper": "16625000/392699"
       },
       {
         "cell": 42,
         "gap": 267,
-        "lower": "55625/1309",
-        "upper": "267000/6283"
+        "lower": "133500000/3141593",
+        "upper": "16687500/392699"
       },
       {
         "cell": 42,
         "gap": 268,
-        "lower": "167500/3927",
-        "upper": "268000/6283"
+        "lower": "134000000/3141593",
+        "upper": "16750000/392699"
       },
       {
         "cell": 42,
         "gap": 269,
-        "lower": "168125/3927",
-        "upper": "269000/6283"
+        "lower": "134500000/3141593",
+        "upper": "16812500/392699"
       },
       {
         "cell": 42,
         "gap": 270,
-        "lower": "56250/1309",
-        "upper": "270000/6283"
+        "lower": "135000000/3141593",
+        "upper": "16875000/392699"
       },
       {
         "cell": 43,
         "gap": 271,
-        "lower": "169375/3927",
-        "upper": "271000/6283"
+        "lower": "135500000/3141593",
+        "upper": "16937500/392699"
       },
       {
         "cell": 43,
         "gap": 272,
-        "lower": "10000/231",
-        "upper": "272000/6283"
+        "lower": "136000000/3141593",
+        "upper": "17000000/392699"
       },
       {
         "cell": 43,
         "gap": 273,
-        "lower": "8125/187",
-        "upper": "273000/6283"
+        "lower": "1500000/34523",
+        "upper": "17062500/392699"
       },
       {
         "cell": 43,
         "gap": 274,
-        "lower": "171250/3927",
-        "upper": "274000/6283"
+        "lower": "137000000/3141593",
+        "upper": "17125000/392699"
       },
       {
         "cell": 43,
         "gap": 275,
-        "lower": "15625/357",
-        "upper": "275000/6283"
+        "lower": "137500000/3141593",
+        "upper": "17187500/392699"
       },
       {
         "cell": 43,
         "gap": 276,
-        "lower": "57500/1309",
-        "upper": "276000/6283"
+        "lower": "6000000/136591",
+        "upper": "17250000/392699"
       },
       {
         "cell": 44,
         "gap": 277,
-        "lower": "173125/3927",
-        "upper": "277000/6283"
+        "lower": "138500000/3141593",
+        "upper": "17312500/392699"
       },
       {
         "cell": 44,
         "gap": 278,
-        "lower": "173750/3927",
-        "upper": "278000/6283"
+        "lower": "139000000/3141593",
+        "upper": "17375000/392699"
       },
       {
         "cell": 44,
         "gap": 279,
-        "lower": "58125/1309",
-        "upper": "279000/6283"
+        "lower": "139500000/3141593",
+        "upper": "17437500/392699"
       },
       {
         "cell": 44,
         "gap": 280,
-        "lower": "25000/561",
-        "upper": "280000/6283"
+        "lower": "20000000/448799",
+        "upper": "17500000/392699"
       },
       {
         "cell": 44,
         "gap": 281,
-        "lower": "175625/3927",
-        "upper": "281000/6283"
+        "lower": "140500000/3141593",
+        "upper": "17562500/392699"
       },
       {
         "cell": 44,
         "gap": 282,
-        "lower": "58750/1309",
-        "upper": "282000/6283"
+        "lower": "141000000/3141593",
+        "upper": "17625000/392699"
       },
       {
         "cell": 45,
         "gap": 283,
-        "lower": "176875/3927",
-        "upper": "283000/6283"
+        "lower": "141500000/3141593",
+        "upper": "17687500/392699"
       },
       {
         "cell": 45,
         "gap": 284,
-        "lower": "177500/3927",
-        "upper": "284000/6283"
+        "lower": "142000000/3141593",
+        "upper": "17750000/392699"
       },
       {
         "cell": 45,
         "gap": 285,
-        "lower": "59375/1309",
-        "upper": "285000/6283"
+        "lower": "7500000/165347",
+        "upper": "17812500/392699"
       },
       {
         "cell": 45,
         "gap": 286,
-        "lower": "16250/357",
-        "upper": "286000/6283"
+        "lower": "11000000/241661",
+        "upper": "17875000/392699"
       },
       {
         "cell": 45,
         "gap": 287,
-        "lower": "25625/561",
-        "upper": "287000/6283"
+        "lower": "20500000/448799",
+        "upper": "17937500/392699"
       },
       {
         "cell": 45,
         "gap": 288,
-        "lower": "60000/1309",
-        "upper": "288000/6283"
+        "lower": "144000000/3141593",
+        "upper": "18000000/392699"
       },
       {
         "cell": 45,
         "gap": 289,
-        "lower": "10625/231",
-        "upper": "289000/6283"
+        "lower": "144500000/3141593",
+        "upper": "18062500/392699"
       },
       {
         "cell": 46,
         "gap": 290,
-        "lower": "181250/3927",
-        "upper": "290000/6283"
+        "lower": "145000000/3141593",
+        "upper": "18125000/392699"
       },
       {
         "cell": 46,
         "gap": 291,
-        "lower": "60625/1309",
-        "upper": "291000/6283"
+        "lower": "145500000/3141593",
+        "upper": "18187500/392699"
       },
       {
         "cell": 46,
         "gap": 292,
-        "lower": "182500/3927",
-        "upper": "292000/6283"
+        "lower": "146000000/3141593",
+        "upper": "18250000/392699"
       },
       {
         "cell": 46,
         "gap": 293,
-        "lower": "183125/3927",
-        "upper": "293000/6283"
+        "lower": "146500000/3141593",
+        "upper": "18312500/392699"
       },
       {
         "cell": 46,
         "gap": 294,
-        "lower": "8750/187",
-        "upper": "294000/6283"
+        "lower": "21000000/448799",
+        "upper": "18375000/392699"
       },
       {
         "cell": 46,
         "gap": 295,
-        "lower": "184375/3927",
-        "upper": "295000/6283"
+        "lower": "147500000/3141593",
+        "upper": "18437500/392699"
       },
       {
         "cell": 47,
         "gap": 296,
-        "lower": "185000/3927",
-        "upper": "296000/6283"
+        "lower": "148000000/3141593",
+        "upper": "18500000/392699"
       },
       {
         "cell": 47,
         "gap": 297,
-        "lower": "5625/119",
-        "upper": "297000/6283"
+        "lower": "148500000/3141593",
+        "upper": "18562500/392699"
       },
       {
         "cell": 47,
         "gap": 298,
-        "lower": "186250/3927",
-        "upper": "298000/6283"
+        "lower": "149000000/3141593",
+        "upper": "18625000/392699"
       },
       {
         "cell": 47,
         "gap": 299,
-        "lower": "186875/3927",
-        "upper": "299000/6283"
+        "lower": "500000/10507",
+        "upper": "18687500/392699"
       },
       {
         "cell": 47,
         "gap": 300,
-        "lower": "62500/1309",
-        "upper": "300000/6283"
+        "lower": "150000000/3141593",
+        "upper": "18750000/392699"
       },
       {
         "cell": 47,
         "gap": 301,
-        "lower": "26875/561",
-        "upper": "301000/6283"
+        "lower": "21500000/448799",
+        "upper": "18812500/392699"
       },
       {
         "cell": 48,
         "gap": 302,
-        "lower": "188750/3927",
-        "upper": "302000/6283"
+        "lower": "151000000/3141593",
+        "upper": "18875000/392699"
       },
       {
         "cell": 48,
         "gap": 303,
-        "lower": "63125/1309",
-        "upper": "303000/6283"
+        "lower": "151500000/3141593",
+        "upper": "18937500/392699"
       },
       {
         "cell": 48,
         "gap": 304,
-        "lower": "190000/3927",
-        "upper": "304000/6283"
+        "lower": "8000000/165347",
+        "upper": "19000000/392699"
       },
       {
         "cell": 48,
         "gap": 305,
-        "lower": "190625/3927",
-        "upper": "5000/103"
+        "lower": "152500000/3141593",
+        "upper": "19062500/392699"
       },
       {
         "cell": 48,
         "gap": 306,
-        "lower": "3750/77",
-        "upper": "306000/6283"
+        "lower": "153000000/3141593",
+        "upper": "19125000/392699"
       },
       {
         "cell": 48,
         "gap": 307,
-        "lower": "191875/3927",
-        "upper": "307000/6283"
+        "lower": "153500000/3141593",
+        "upper": "19187500/392699"
       },
       {
         "cell": 49,
         "gap": 308,
-        "lower": "2500/51",
-        "upper": "308000/6283"
+        "lower": "22000000/448799",
+        "upper": "19250000/392699"
       },
       {
         "cell": 49,
         "gap": 309,
-        "lower": "64375/1309",
-        "upper": "3000/61"
+        "lower": "154500000/3141593",
+        "upper": "19312500/392699"
       },
       {
         "cell": 49,
         "gap": 310,
-        "lower": "193750/3927",
-        "upper": "310000/6283"
+        "lower": "155000000/3141593",
+        "upper": "19375000/392699"
       },
       {
         "cell": 49,
         "gap": 311,
-        "lower": "194375/3927",
-        "upper": "311000/6283"
+        "lower": "155500000/3141593",
+        "upper": "19437500/392699"
       },
       {
         "cell": 49,
         "gap": 312,
-        "lower": "65000/1309",
-        "upper": "312000/6283"
+        "lower": "12000000/241661",
+        "upper": "19500000/392699"
       },
       {
         "cell": 49,
         "gap": 313,
-        "lower": "195625/3927",
-        "upper": "313000/6283"
+        "lower": "156500000/3141593",
+        "upper": "19562500/392699"
       },
       {
         "cell": 49,
         "gap": 314,
-        "lower": "196250/3927",
-        "upper": "314000/6283"
+        "lower": "157000000/3141593",
+        "upper": "19625000/392699"
       },
       {
         "cell": 50,
         "gap": 315,
-        "lower": "9375/187",
-        "upper": "315000/6283"
+        "lower": "22500000/448799",
+        "upper": "19687500/392699"
       },
       {
         "cell": 50,
         "gap": 316,
-        "lower": "197500/3927",
-        "upper": "316000/6283"
+        "lower": "2000000/39767",
+        "upper": "19750000/392699"
       },
       {
         "cell": 50,
         "gap": 317,
-        "lower": "198125/3927",
-        "upper": "317000/6283"
+        "lower": "158500000/3141593",
+        "upper": "19812500/392699"
       },
       {
         "cell": 50,
         "gap": 318,
-        "lower": "66250/1309",
-        "upper": "318000/6283"
+        "lower": "159000000/3141593",
+        "upper": "19875000/392699"
       },
       {
         "cell": 50,
         "gap": 319,
-        "lower": "18125/357",
-        "upper": "319000/6283"
+        "lower": "159500000/3141593",
+        "upper": "19937500/392699"
       },
       {
         "cell": 50,
         "gap": 320,
-        "lower": "200000/3927",
-        "upper": "320000/6283"
+        "lower": "160000000/3141593",
+        "upper": "20000000/392699"
       },
       {
         "cell": 51,
         "gap": 321,
-        "lower": "66875/1309",
-        "upper": "321000/6283"
+        "lower": "160500000/3141593",
+        "upper": "20062500/392699"
       },
       {
         "cell": 51,
         "gap": 322,
-        "lower": "28750/561",
-        "upper": "322000/6283"
+        "lower": "1000000/19513",
+        "upper": "20125000/392699"
       },
       {
         "cell": 51,
         "gap": 323,
-        "lower": "11875/231",
-        "upper": "323000/6283"
+        "lower": "8500000/165347",
+        "upper": "20187500/392699"
       },
       {
         "cell": 51,
         "gap": 324,
-        "lower": "67500/1309",
-        "upper": "324000/6283"
+        "lower": "162000000/3141593",
+        "upper": "20250000/392699"
       },
       {
         "cell": 51,
         "gap": 325,
-        "lower": "203125/3927",
-        "upper": "325000/6283"
+        "lower": "12500000/241661",
+        "upper": "20312500/392699"
       },
       {
         "cell": 51,
         "gap": 326,
-        "lower": "203750/3927",
-        "upper": "326000/6283"
+        "lower": "163000000/3141593",
+        "upper": "20375000/392699"
       },
       {
         "cell": 52,
         "gap": 327,
-        "lower": "68125/1309",
-        "upper": "327000/6283"
+        "lower": "163500000/3141593",
+        "upper": "20437500/392699"
       },
       {
         "cell": 52,
         "gap": 328,
-        "lower": "205000/3927",
-        "upper": "328000/6283"
+        "lower": "164000000/3141593",
+        "upper": "20500000/392699"
       },
       {
         "cell": 52,
         "gap": 329,
-        "lower": "29375/561",
-        "upper": "329000/6283"
+        "lower": "23500000/448799",
+        "upper": "20562500/392699"
       },
       {
         "cell": 52,
         "gap": 330,
-        "lower": "6250/119",
-        "upper": "330000/6283"
+        "lower": "165000000/3141593",
+        "upper": "20625000/392699"
       },
       {
         "cell": 52,
         "gap": 331,
-        "lower": "206875/3927",
-        "upper": "331000/6283"
+        "lower": "165500000/3141593",
+        "upper": "20687500/392699"
       },
       {
         "cell": 52,
         "gap": 332,
-        "lower": "207500/3927",
-        "upper": "332000/6283"
+        "lower": "166000000/3141593",
+        "upper": "20750000/392699"
+      },
+      {
+        "cell": 52,
+        "gap": 333,
+        "lower": "166500000/3141593",
+        "upper": "20812500/392699"
+      },
+      {
+        "cell": 53,
+        "gap": 334,
+        "lower": "167000000/3141593",
+        "upper": "20875000/392699"
+      },
+      {
+        "cell": 53,
+        "gap": 335,
+        "lower": "167500000/3141593",
+        "upper": "20937500/392699"
+      },
+      {
+        "cell": 53,
+        "gap": 336,
+        "lower": "24000000/448799",
+        "upper": "21000000/392699"
+      },
+      {
+        "cell": 53,
+        "gap": 337,
+        "lower": "168500000/3141593",
+        "upper": "21062500/392699"
+      },
+      {
+        "cell": 53,
+        "gap": 338,
+        "lower": "13000000/241661",
+        "upper": "21125000/392699"
+      },
+      {
+        "cell": 53,
+        "gap": 339,
+        "lower": "169500000/3141593",
+        "upper": "21187500/392699"
+      },
+      {
+        "cell": 54,
+        "gap": 340,
+        "lower": "170000000/3141593",
+        "upper": "21250000/392699"
+      },
+      {
+        "cell": 54,
+        "gap": 341,
+        "lower": "170500000/3141593",
+        "upper": "21312500/392699"
+      },
+      {
+        "cell": 54,
+        "gap": 342,
+        "lower": "9000000/165347",
+        "upper": "21375000/392699"
+      },
+      {
+        "cell": 54,
+        "gap": 343,
+        "lower": "24500000/448799",
+        "upper": "21437500/392699"
+      },
+      {
+        "cell": 54,
+        "gap": 344,
+        "lower": "172000000/3141593",
+        "upper": "21500000/392699"
+      },
+      {
+        "cell": 54,
+        "gap": 345,
+        "lower": "7500000/136591",
+        "upper": "21562500/392699"
+      },
+      {
+        "cell": 55,
+        "gap": 346,
+        "lower": "173000000/3141593",
+        "upper": "21625000/392699"
+      },
+      {
+        "cell": 55,
+        "gap": 347,
+        "lower": "173500000/3141593",
+        "upper": "21687500/392699"
+      },
+      {
+        "cell": 55,
+        "gap": 348,
+        "lower": "174000000/3141593",
+        "upper": "21750000/392699"
+      },
+      {
+        "cell": 55,
+        "gap": 349,
+        "lower": "174500000/3141593",
+        "upper": "21812500/392699"
+      },
+      {
+        "cell": 55,
+        "gap": 350,
+        "lower": "25000000/448799",
+        "upper": "21875000/392699"
+      },
+      {
+        "cell": 55,
+        "gap": 351,
+        "lower": "13500000/241661",
+        "upper": "21937500/392699"
+      },
+      {
+        "cell": 56,
+        "gap": 352,
+        "lower": "176000000/3141593",
+        "upper": "22000000/392699"
+      },
+      {
+        "cell": 56,
+        "gap": 353,
+        "lower": "176500000/3141593",
+        "upper": "22062500/392699"
+      },
+      {
+        "cell": 56,
+        "gap": 354,
+        "lower": "177000000/3141593",
+        "upper": "22125000/392699"
+      },
+      {
+        "cell": 56,
+        "gap": 355,
+        "lower": "177500000/3141593",
+        "upper": "22187500/392699"
+      },
+      {
+        "cell": 56,
+        "gap": 356,
+        "lower": "178000000/3141593",
+        "upper": "22250000/392699"
+      },
+      {
+        "cell": 56,
+        "gap": 357,
+        "lower": "25500000/448799",
+        "upper": "22312500/392699"
+      },
+      {
+        "cell": 56,
+        "gap": 358,
+        "lower": "179000000/3141593",
+        "upper": "22375000/392699"
+      },
+      {
+        "cell": 57,
+        "gap": 359,
+        "lower": "179500000/3141593",
+        "upper": "22437500/392699"
+      },
+      {
+        "cell": 57,
+        "gap": 360,
+        "lower": "180000000/3141593",
+        "upper": "22500000/392699"
+      },
+      {
+        "cell": 57,
+        "gap": 361,
+        "lower": "9500000/165347",
+        "upper": "22562500/392699"
+      },
+      {
+        "cell": 57,
+        "gap": 362,
+        "lower": "181000000/3141593",
+        "upper": "22625000/392699"
+      },
+      {
+        "cell": 57,
+        "gap": 363,
+        "lower": "181500000/3141593",
+        "upper": "22687500/392699"
+      },
+      {
+        "cell": 57,
+        "gap": 364,
+        "lower": "2000000/34523",
+        "upper": "22750000/392699"
+      },
+      {
+        "cell": 58,
+        "gap": 365,
+        "lower": "182500000/3141593",
+        "upper": "22812500/392699"
+      },
+      {
+        "cell": 58,
+        "gap": 366,
+        "lower": "183000000/3141593",
+        "upper": "22875000/392699"
+      },
+      {
+        "cell": 58,
+        "gap": 367,
+        "lower": "183500000/3141593",
+        "upper": "22937500/392699"
+      },
+      {
+        "cell": 58,
+        "gap": 368,
+        "lower": "8000000/136591",
+        "upper": "23000000/392699"
+      },
+      {
+        "cell": 58,
+        "gap": 369,
+        "lower": "184500000/3141593",
+        "upper": "23062500/392699"
+      },
+      {
+        "cell": 58,
+        "gap": 370,
+        "lower": "185000000/3141593",
+        "upper": "23125000/392699"
+      },
+      {
+        "cell": 59,
+        "gap": 371,
+        "lower": "26500000/448799",
+        "upper": "23187500/392699"
+      },
+      {
+        "cell": 59,
+        "gap": 372,
+        "lower": "186000000/3141593",
+        "upper": "23250000/392699"
+      },
+      {
+        "cell": 59,
+        "gap": 373,
+        "lower": "186500000/3141593",
+        "upper": "23312500/392699"
+      },
+      {
+        "cell": 59,
+        "gap": 374,
+        "lower": "187000000/3141593",
+        "upper": "23375000/392699"
+      },
+      {
+        "cell": 59,
+        "gap": 375,
+        "lower": "187500000/3141593",
+        "upper": "23437500/392699"
+      },
+      {
+        "cell": 59,
+        "gap": 376,
+        "lower": "188000000/3141593",
+        "upper": "23500000/392699"
+      },
+      {
+        "cell": 60,
+        "gap": 377,
+        "lower": "14500000/241661",
+        "upper": "23562500/392699"
+      },
+      {
+        "cell": 60,
+        "gap": 378,
+        "lower": "27000000/448799",
+        "upper": "23625000/392699"
+      },
+      {
+        "cell": 60,
+        "gap": 379,
+        "lower": "189500000/3141593",
+        "upper": "23687500/392699"
+      },
+      {
+        "cell": 60,
+        "gap": 380,
+        "lower": "10000000/165347",
+        "upper": "23750000/392699"
+      },
+      {
+        "cell": 60,
+        "gap": 381,
+        "lower": "190500000/3141593",
+        "upper": "23812500/392699"
+      },
+      {
+        "cell": 60,
+        "gap": 382,
+        "lower": "191000000/3141593",
+        "upper": "23875000/392699"
+      },
+      {
+        "cell": 60,
+        "gap": 383,
+        "lower": "191500000/3141593",
+        "upper": "23937500/392699"
+      },
+      {
+        "cell": 61,
+        "gap": 384,
+        "lower": "192000000/3141593",
+        "upper": "24000000/392699"
+      },
+      {
+        "cell": 61,
+        "gap": 385,
+        "lower": "27500000/448799",
+        "upper": "24062500/392699"
+      },
+      {
+        "cell": 61,
+        "gap": 386,
+        "lower": "193000000/3141593",
+        "upper": "24125000/392699"
+      },
+      {
+        "cell": 61,
+        "gap": 387,
+        "lower": "193500000/3141593",
+        "upper": "24187500/392699"
+      },
+      {
+        "cell": 61,
+        "gap": 388,
+        "lower": "194000000/3141593",
+        "upper": "24250000/392699"
+      },
+      {
+        "cell": 61,
+        "gap": 389,
+        "lower": "194500000/3141593",
+        "upper": "24312500/392699"
+      },
+      {
+        "cell": 62,
+        "gap": 390,
+        "lower": "15000000/241661",
+        "upper": "24375000/392699"
+      },
+      {
+        "cell": 62,
+        "gap": 391,
+        "lower": "8500000/136591",
+        "upper": "24437500/392699"
+      },
+      {
+        "cell": 62,
+        "gap": 392,
+        "lower": "28000000/448799",
+        "upper": "24500000/392699"
+      },
+      {
+        "cell": 62,
+        "gap": 393,
+        "lower": "196500000/3141593",
+        "upper": "24562500/392699"
+      },
+      {
+        "cell": 62,
+        "gap": 394,
+        "lower": "197000000/3141593",
+        "upper": "24625000/392699"
+      },
+      {
+        "cell": 62,
+        "gap": 395,
+        "lower": "2500000/39767",
+        "upper": "24687500/392699"
+      },
+      {
+        "cell": 63,
+        "gap": 396,
+        "lower": "198000000/3141593",
+        "upper": "24750000/392699"
+      },
+      {
+        "cell": 63,
+        "gap": 397,
+        "lower": "198500000/3141593",
+        "upper": "24812500/392699"
+      },
+      {
+        "cell": 63,
+        "gap": 398,
+        "lower": "199000000/3141593",
+        "upper": "24875000/392699"
+      },
+      {
+        "cell": 63,
+        "gap": 399,
+        "lower": "1500000/23621",
+        "upper": "24937500/392699"
+      },
+      {
+        "cell": 63,
+        "gap": 400,
+        "lower": "200000000/3141593",
+        "upper": "25000000/392699"
+      },
+      {
+        "cell": 63,
+        "gap": 401,
+        "lower": "200500000/3141593",
+        "upper": "25062500/392699"
+      },
+      {
+        "cell": 63,
+        "gap": 402,
+        "lower": "201000000/3141593",
+        "upper": "25125000/392699"
+      },
+      {
+        "cell": 64,
+        "gap": 403,
+        "lower": "15500000/241661",
+        "upper": "25187500/392699"
+      },
+      {
+        "cell": 64,
+        "gap": 404,
+        "lower": "202000000/3141593",
+        "upper": "25250000/392699"
+      },
+      {
+        "cell": 64,
+        "gap": 405,
+        "lower": "202500000/3141593",
+        "upper": "25312500/392699"
+      },
+      {
+        "cell": 64,
+        "gap": 406,
+        "lower": "29000000/448799",
+        "upper": "25375000/392699"
+      },
+      {
+        "cell": 64,
+        "gap": 407,
+        "lower": "203500000/3141593",
+        "upper": "25437500/392699"
+      },
+      {
+        "cell": 64,
+        "gap": 408,
+        "lower": "204000000/3141593",
+        "upper": "25500000/392699"
+      },
+      {
+        "cell": 65,
+        "gap": 409,
+        "lower": "204500000/3141593",
+        "upper": "25562500/392699"
+      },
+      {
+        "cell": 65,
+        "gap": 410,
+        "lower": "205000000/3141593",
+        "upper": "25625000/392699"
+      },
+      {
+        "cell": 65,
+        "gap": 411,
+        "lower": "205500000/3141593",
+        "upper": "25687500/392699"
+      },
+      {
+        "cell": 65,
+        "gap": 412,
+        "lower": "206000000/3141593",
+        "upper": "25750000/392699"
+      },
+      {
+        "cell": 65,
+        "gap": 413,
+        "lower": "29500000/448799",
+        "upper": "25812500/392699"
+      },
+      {
+        "cell": 65,
+        "gap": 414,
+        "lower": "9000000/136591",
+        "upper": "25875000/392699"
+      },
+      {
+        "cell": 66,
+        "gap": 415,
+        "lower": "207500000/3141593",
+        "upper": "25937500/392699"
+      },
+      {
+        "cell": 66,
+        "gap": 416,
+        "lower": "16000000/241661",
+        "upper": "26000000/392699"
+      },
+      {
+        "cell": 66,
+        "gap": 417,
+        "lower": "208500000/3141593",
+        "upper": "26062500/392699"
+      },
+      {
+        "cell": 66,
+        "gap": 418,
+        "lower": "11000000/165347",
+        "upper": "26125000/392699"
+      },
+      {
+        "cell": 66,
+        "gap": 419,
+        "lower": "209500000/3141593",
+        "upper": "26187500/392699"
+      },
+      {
+        "cell": 66,
+        "gap": 420,
+        "lower": "30000000/448799",
+        "upper": "26250000/392699"
+      },
+      {
+        "cell": 67,
+        "gap": 421,
+        "lower": "210500000/3141593",
+        "upper": "26312500/392699"
+      },
+      {
+        "cell": 67,
+        "gap": 422,
+        "lower": "211000000/3141593",
+        "upper": "26375000/392699"
+      },
+      {
+        "cell": 67,
+        "gap": 423,
+        "lower": "211500000/3141593",
+        "upper": "26437500/392699"
+      },
+      {
+        "cell": 67,
+        "gap": 424,
+        "lower": "212000000/3141593",
+        "upper": "26500000/392699"
+      },
+      {
+        "cell": 67,
+        "gap": 425,
+        "lower": "212500000/3141593",
+        "upper": "26562500/392699"
+      },
+      {
+        "cell": 67,
+        "gap": 426,
+        "lower": "213000000/3141593",
+        "upper": "26625000/392699"
+      },
+      {
+        "cell": 67,
+        "gap": 427,
+        "lower": "30500000/448799",
+        "upper": "26687500/392699"
+      },
+      {
+        "cell": 68,
+        "gap": 428,
+        "lower": "214000000/3141593",
+        "upper": "26750000/392699"
+      },
+      {
+        "cell": 68,
+        "gap": 429,
+        "lower": "16500000/241661",
+        "upper": "26812500/392699"
+      },
+      {
+        "cell": 68,
+        "gap": 430,
+        "lower": "215000000/3141593",
+        "upper": "26875000/392699"
+      },
+      {
+        "cell": 68,
+        "gap": 431,
+        "lower": "215500000/3141593",
+        "upper": "26937500/392699"
+      },
+      {
+        "cell": 68,
+        "gap": 432,
+        "lower": "216000000/3141593",
+        "upper": "27000000/392699"
+      },
+      {
+        "cell": 68,
+        "gap": 433,
+        "lower": "216500000/3141593",
+        "upper": "27062500/392699"
+      },
+      {
+        "cell": 69,
+        "gap": 434,
+        "lower": "31000000/448799",
+        "upper": "27125000/392699"
+      },
+      {
+        "cell": 69,
+        "gap": 435,
+        "lower": "217500000/3141593",
+        "upper": "27187500/392699"
+      },
+      {
+        "cell": 69,
+        "gap": 436,
+        "lower": "218000000/3141593",
+        "upper": "27250000/392699"
+      },
+      {
+        "cell": 69,
+        "gap": 437,
+        "lower": "500000/7189",
+        "upper": "27312500/392699"
+      },
+      {
+        "cell": 69,
+        "gap": 438,
+        "lower": "219000000/3141593",
+        "upper": "27375000/392699"
+      },
+      {
+        "cell": 69,
+        "gap": 439,
+        "lower": "219500000/3141593",
+        "upper": "27437500/392699"
+      },
+      {
+        "cell": 70,
+        "gap": 440,
+        "lower": "220000000/3141593",
+        "upper": "27500000/392699"
+      },
+      {
+        "cell": 70,
+        "gap": 441,
+        "lower": "31500000/448799",
+        "upper": "27562500/392699"
+      },
+      {
+        "cell": 70,
+        "gap": 442,
+        "lower": "17000000/241661",
+        "upper": "27625000/392699"
+      },
+      {
+        "cell": 70,
+        "gap": 443,
+        "lower": "221500000/3141593",
+        "upper": "27687500/392699"
+      },
+      {
+        "cell": 70,
+        "gap": 444,
+        "lower": "222000000/3141593",
+        "upper": "27750000/392699"
+      },
+      {
+        "cell": 70,
+        "gap": 445,
+        "lower": "222500000/3141593",
+        "upper": "27812500/392699"
+      },
+      {
+        "cell": 70,
+        "gap": 446,
+        "lower": "223000000/3141593",
+        "upper": "27875000/392699"
+      },
+      {
+        "cell": 71,
+        "gap": 447,
+        "lower": "223500000/3141593",
+        "upper": "27937500/392699"
+      },
+      {
+        "cell": 71,
+        "gap": 448,
+        "lower": "32000000/448799",
+        "upper": "28000000/392699"
+      },
+      {
+        "cell": 71,
+        "gap": 449,
+        "lower": "224500000/3141593",
+        "upper": "28062500/392699"
+      },
+      {
+        "cell": 71,
+        "gap": 450,
+        "lower": "225000000/3141593",
+        "upper": "28125000/392699"
+      },
+      {
+        "cell": 71,
+        "gap": 451,
+        "lower": "225500000/3141593",
+        "upper": "28187500/392699"
+      },
+      {
+        "cell": 71,
+        "gap": 452,
+        "lower": "226000000/3141593",
+        "upper": "28250000/392699"
+      },
+      {
+        "cell": 72,
+        "gap": 453,
+        "lower": "226500000/3141593",
+        "upper": "28312500/392699"
+      },
+      {
+        "cell": 72,
+        "gap": 454,
+        "lower": "227000000/3141593",
+        "upper": "28375000/392699"
+      },
+      {
+        "cell": 72,
+        "gap": 455,
+        "lower": "2500000/34523",
+        "upper": "28437500/392699"
+      },
+      {
+        "cell": 72,
+        "gap": 456,
+        "lower": "12000000/165347",
+        "upper": "28500000/392699"
+      },
+      {
+        "cell": 72,
+        "gap": 457,
+        "lower": "228500000/3141593",
+        "upper": "28562500/392699"
+      },
+      {
+        "cell": 72,
+        "gap": 458,
+        "lower": "229000000/3141593",
+        "upper": "28625000/392699"
+      },
+      {
+        "cell": 73,
+        "gap": 459,
+        "lower": "229500000/3141593",
+        "upper": "28687500/392699"
+      },
+      {
+        "cell": 73,
+        "gap": 460,
+        "lower": "10000000/136591",
+        "upper": "28750000/392699"
+      },
+      {
+        "cell": 73,
+        "gap": 461,
+        "lower": "230500000/3141593",
+        "upper": "28812500/392699"
+      },
+      {
+        "cell": 73,
+        "gap": 462,
+        "lower": "33000000/448799",
+        "upper": "28875000/392699"
+      },
+      {
+        "cell": 73,
+        "gap": 463,
+        "lower": "231500000/3141593",
+        "upper": "28937500/392699"
+      },
+      {
+        "cell": 73,
+        "gap": 464,
+        "lower": "232000000/3141593",
+        "upper": "29000000/392699"
+      },
+      {
+        "cell": 74,
+        "gap": 465,
+        "lower": "232500000/3141593",
+        "upper": "29062500/392699"
+      },
+      {
+        "cell": 74,
+        "gap": 466,
+        "lower": "233000000/3141593",
+        "upper": "29125000/392699"
+      },
+      {
+        "cell": 74,
+        "gap": 467,
+        "lower": "233500000/3141593",
+        "upper": "29187500/392699"
+      },
+      {
+        "cell": 74,
+        "gap": 468,
+        "lower": "18000000/241661",
+        "upper": "29250000/392699"
+      },
+      {
+        "cell": 74,
+        "gap": 469,
+        "lower": "33500000/448799",
+        "upper": "29312500/392699"
+      },
+      {
+        "cell": 74,
+        "gap": 470,
+        "lower": "235000000/3141593",
+        "upper": "29375000/392699"
+      },
+      {
+        "cell": 74,
+        "gap": 471,
+        "lower": "235500000/3141593",
+        "upper": "29437500/392699"
+      },
+      {
+        "cell": 75,
+        "gap": 472,
+        "lower": "236000000/3141593",
+        "upper": "29500000/392699"
+      },
+      {
+        "cell": 75,
+        "gap": 473,
+        "lower": "236500000/3141593",
+        "upper": "29562500/392699"
+      },
+      {
+        "cell": 75,
+        "gap": 474,
+        "lower": "3000000/39767",
+        "upper": "29625000/392699"
+      },
+      {
+        "cell": 75,
+        "gap": 475,
+        "lower": "12500000/165347",
+        "upper": "29687500/392699"
+      },
+      {
+        "cell": 75,
+        "gap": 476,
+        "lower": "34000000/448799",
+        "upper": "29750000/392699"
+      },
+      {
+        "cell": 75,
+        "gap": 477,
+        "lower": "238500000/3141593",
+        "upper": "29812500/392699"
+      },
+      {
+        "cell": 76,
+        "gap": 478,
+        "lower": "239000000/3141593",
+        "upper": "29875000/392699"
+      },
+      {
+        "cell": 76,
+        "gap": 479,
+        "lower": "239500000/3141593",
+        "upper": "29937500/392699"
+      },
+      {
+        "cell": 76,
+        "gap": 480,
+        "lower": "240000000/3141593",
+        "upper": "30000000/392699"
+      },
+      {
+        "cell": 76,
+        "gap": 481,
+        "lower": "18500000/241661",
+        "upper": "30062500/392699"
+      },
+      {
+        "cell": 76,
+        "gap": 482,
+        "lower": "241000000/3141593",
+        "upper": "30125000/392699"
+      },
+      {
+        "cell": 76,
+        "gap": 483,
+        "lower": "1500000/19513",
+        "upper": "30187500/392699"
+      },
+      {
+        "cell": 77,
+        "gap": 484,
+        "lower": "242000000/3141593",
+        "upper": "30250000/392699"
+      },
+      {
+        "cell": 77,
+        "gap": 485,
+        "lower": "242500000/3141593",
+        "upper": "30312500/392699"
+      },
+      {
+        "cell": 77,
+        "gap": 486,
+        "lower": "243000000/3141593",
+        "upper": "30375000/392699"
+      },
+      {
+        "cell": 77,
+        "gap": 487,
+        "lower": "243500000/3141593",
+        "upper": "30437500/392699"
+      },
+      {
+        "cell": 77,
+        "gap": 488,
+        "lower": "244000000/3141593",
+        "upper": "30500000/392699"
+      },
+      {
+        "cell": 77,
+        "gap": 489,
+        "lower": "244500000/3141593",
+        "upper": "30562500/392699"
+      },
+      {
+        "cell": 77,
+        "gap": 490,
+        "lower": "35000000/448799",
+        "upper": "30625000/392699"
+      },
+      {
+        "cell": 78,
+        "gap": 491,
+        "lower": "245500000/3141593",
+        "upper": "30687500/392699"
+      },
+      {
+        "cell": 78,
+        "gap": 492,
+        "lower": "246000000/3141593",
+        "upper": "30750000/392699"
+      },
+      {
+        "cell": 78,
+        "gap": 493,
+        "lower": "246500000/3141593",
+        "upper": "30812500/392699"
+      },
+      {
+        "cell": 78,
+        "gap": 494,
+        "lower": "1000000/12719",
+        "upper": "30875000/392699"
+      },
+      {
+        "cell": 78,
+        "gap": 495,
+        "lower": "247500000/3141593",
+        "upper": "30937500/392699"
+      },
+      {
+        "cell": 78,
+        "gap": 496,
+        "lower": "248000000/3141593",
+        "upper": "31000000/392699"
+      },
+      {
+        "cell": 79,
+        "gap": 497,
+        "lower": "35500000/448799",
+        "upper": "31062500/392699"
+      },
+      {
+        "cell": 79,
+        "gap": 498,
+        "lower": "249000000/3141593",
+        "upper": "31125000/392699"
+      },
+      {
+        "cell": 79,
+        "gap": 499,
+        "lower": "249500000/3141593",
+        "upper": "31187500/392699"
+      },
+      {
+        "cell": 79,
+        "gap": 500,
+        "lower": "250000000/3141593",
+        "upper": "31250000/392699"
+      },
+      {
+        "cell": 79,
+        "gap": 501,
+        "lower": "250500000/3141593",
+        "upper": "31312500/392699"
+      },
+      {
+        "cell": 79,
+        "gap": 502,
+        "lower": "251000000/3141593",
+        "upper": "31375000/392699"
+      },
+      {
+        "cell": 80,
+        "gap": 503,
+        "lower": "251500000/3141593",
+        "upper": "31437500/392699"
+      },
+      {
+        "cell": 80,
+        "gap": 504,
+        "lower": "36000000/448799",
+        "upper": "31500000/392699"
+      },
+      {
+        "cell": 80,
+        "gap": 505,
+        "lower": "252500000/3141593",
+        "upper": "31562500/392699"
+      },
+      {
+        "cell": 80,
+        "gap": 506,
+        "lower": "11000000/136591",
+        "upper": "31625000/392699"
+      },
+      {
+        "cell": 80,
+        "gap": 507,
+        "lower": "19500000/241661",
+        "upper": "31687500/392699"
+      },
+      {
+        "cell": 80,
+        "gap": 508,
+        "lower": "254000000/3141593",
+        "upper": "31750000/392699"
+      },
+      {
+        "cell": 81,
+        "gap": 509,
+        "lower": "254500000/3141593",
+        "upper": "31812500/392699"
+      },
+      {
+        "cell": 81,
+        "gap": 510,
+        "lower": "255000000/3141593",
+        "upper": "31875000/392699"
+      },
+      {
+        "cell": 81,
+        "gap": 511,
+        "lower": "36500000/448799",
+        "upper": "31937500/392699"
+      },
+      {
+        "cell": 81,
+        "gap": 512,
+        "lower": "256000000/3141593",
+        "upper": "32000000/392699"
+      },
+      {
+        "cell": 81,
+        "gap": 513,
+        "lower": "13500000/165347",
+        "upper": "32062500/392699"
+      },
+      {
+        "cell": 81,
+        "gap": 514,
+        "lower": "257000000/3141593",
+        "upper": "32125000/392699"
+      },
+      {
+        "cell": 81,
+        "gap": 515,
+        "lower": "257500000/3141593",
+        "upper": "32187500/392699"
+      },
+      {
+        "cell": 82,
+        "gap": 516,
+        "lower": "258000000/3141593",
+        "upper": "32250000/392699"
+      },
+      {
+        "cell": 82,
+        "gap": 517,
+        "lower": "258500000/3141593",
+        "upper": "32312500/392699"
+      },
+      {
+        "cell": 82,
+        "gap": 518,
+        "lower": "37000000/448799",
+        "upper": "32375000/392699"
+      },
+      {
+        "cell": 82,
+        "gap": 519,
+        "lower": "259500000/3141593",
+        "upper": "32437500/392699"
+      },
+      {
+        "cell": 82,
+        "gap": 520,
+        "lower": "20000000/241661",
+        "upper": "32500000/392699"
+      },
+      {
+        "cell": 82,
+        "gap": 521,
+        "lower": "260500000/3141593",
+        "upper": "32562500/392699"
+      },
+      {
+        "cell": 83,
+        "gap": 522,
+        "lower": "261000000/3141593",
+        "upper": "32625000/392699"
+      },
+      {
+        "cell": 83,
+        "gap": 523,
+        "lower": "261500000/3141593",
+        "upper": "32687500/392699"
+      },
+      {
+        "cell": 83,
+        "gap": 524,
+        "lower": "262000000/3141593",
+        "upper": "32750000/392699"
+      },
+      {
+        "cell": 83,
+        "gap": 525,
+        "lower": "37500000/448799",
+        "upper": "32812500/392699"
+      },
+      {
+        "cell": 83,
+        "gap": 526,
+        "lower": "263000000/3141593",
+        "upper": "32875000/392699"
+      },
+      {
+        "cell": 83,
+        "gap": 527,
+        "lower": "263500000/3141593",
+        "upper": "32937500/392699"
+      },
+      {
+        "cell": 84,
+        "gap": 528,
+        "lower": "264000000/3141593",
+        "upper": "33000000/392699"
+      },
+      {
+        "cell": 84,
+        "gap": 529,
+        "lower": "11500000/136591",
+        "upper": "33062500/392699"
+      },
+      {
+        "cell": 84,
+        "gap": 530,
+        "lower": "265000000/3141593",
+        "upper": "33125000/392699"
+      },
+      {
+        "cell": 84,
+        "gap": 531,
+        "lower": "265500000/3141593",
+        "upper": "33187500/392699"
+      },
+      {
+        "cell": 84,
+        "gap": 532,
+        "lower": "2000000/23621",
+        "upper": "33250000/392699"
+      },
+      {
+        "cell": 84,
+        "gap": 533,
+        "lower": "20500000/241661",
+        "upper": "33312500/392699"
+      },
+      {
+        "cell": 84,
+        "gap": 534,
+        "lower": "267000000/3141593",
+        "upper": "33375000/392699"
+      },
+      {
+        "cell": 85,
+        "gap": 535,
+        "lower": "267500000/3141593",
+        "upper": "33437500/392699"
+      },
+      {
+        "cell": 85,
+        "gap": 536,
+        "lower": "268000000/3141593",
+        "upper": "33500000/392699"
+      },
+      {
+        "cell": 85,
+        "gap": 537,
+        "lower": "268500000/3141593",
+        "upper": "33562500/392699"
+      },
+      {
+        "cell": 85,
+        "gap": 538,
+        "lower": "269000000/3141593",
+        "upper": "33625000/392699"
+      },
+      {
+        "cell": 85,
+        "gap": 539,
+        "lower": "38500000/448799",
+        "upper": "33687500/392699"
+      },
+      {
+        "cell": 85,
+        "gap": 540,
+        "lower": "270000000/3141593",
+        "upper": "33750000/392699"
+      },
+      {
+        "cell": 86,
+        "gap": 541,
+        "lower": "270500000/3141593",
+        "upper": "33812500/392699"
+      },
+      {
+        "cell": 86,
+        "gap": 542,
+        "lower": "271000000/3141593",
+        "upper": "33875000/392699"
+      },
+      {
+        "cell": 86,
+        "gap": 543,
+        "lower": "271500000/3141593",
+        "upper": "33937500/392699"
+      },
+      {
+        "cell": 86,
+        "gap": 544,
+        "lower": "272000000/3141593",
+        "upper": "34000000/392699"
+      },
+      {
+        "cell": 86,
+        "gap": 545,
+        "lower": "272500000/3141593",
+        "upper": "34062500/392699"
+      },
+      {
+        "cell": 86,
+        "gap": 546,
+        "lower": "3000000/34523",
+        "upper": "34125000/392699"
+      },
+      {
+        "cell": 87,
+        "gap": 547,
+        "lower": "273500000/3141593",
+        "upper": "34187500/392699"
+      },
+      {
+        "cell": 87,
+        "gap": 548,
+        "lower": "274000000/3141593",
+        "upper": "34250000/392699"
+      },
+      {
+        "cell": 87,
+        "gap": 549,
+        "lower": "274500000/3141593",
+        "upper": "34312500/392699"
+      },
+      {
+        "cell": 87,
+        "gap": 550,
+        "lower": "275000000/3141593",
+        "upper": "34375000/392699"
+      },
+      {
+        "cell": 87,
+        "gap": 551,
+        "lower": "14500000/165347",
+        "upper": "34437500/392699"
+      },
+      {
+        "cell": 87,
+        "gap": 552,
+        "lower": "12000000/136591",
+        "upper": "34500000/392699"
+      },
+      {
+        "cell": 88,
+        "gap": 553,
+        "lower": "500000/5681",
+        "upper": "34562500/392699"
+      },
+      {
+        "cell": 88,
+        "gap": 554,
+        "lower": "277000000/3141593",
+        "upper": "34625000/392699"
+      },
+      {
+        "cell": 88,
+        "gap": 555,
+        "lower": "277500000/3141593",
+        "upper": "34687500/392699"
+      },
+      {
+        "cell": 88,
+        "gap": 556,
+        "lower": "278000000/3141593",
+        "upper": "34750000/392699"
+      },
+      {
+        "cell": 88,
+        "gap": 557,
+        "lower": "278500000/3141593",
+        "upper": "34812500/392699"
+      },
+      {
+        "cell": 88,
+        "gap": 558,
+        "lower": "279000000/3141593",
+        "upper": "34875000/392699"
+      },
+      {
+        "cell": 88,
+        "gap": 559,
+        "lower": "21500000/241661",
+        "upper": "34937500/392699"
+      },
+      {
+        "cell": 89,
+        "gap": 560,
+        "lower": "40000000/448799",
+        "upper": "35000000/392699"
+      },
+      {
+        "cell": 89,
+        "gap": 561,
+        "lower": "280500000/3141593",
+        "upper": "35062500/392699"
+      },
+      {
+        "cell": 89,
+        "gap": 562,
+        "lower": "281000000/3141593",
+        "upper": "35125000/392699"
+      },
+      {
+        "cell": 89,
+        "gap": 563,
+        "lower": "281500000/3141593",
+        "upper": "35187500/392699"
+      },
+      {
+        "cell": 89,
+        "gap": 564,
+        "lower": "282000000/3141593",
+        "upper": "35250000/392699"
+      },
+      {
+        "cell": 89,
+        "gap": 565,
+        "lower": "282500000/3141593",
+        "upper": "35312500/392699"
+      },
+      {
+        "cell": 90,
+        "gap": 566,
+        "lower": "283000000/3141593",
+        "upper": "35375000/392699"
+      },
+      {
+        "cell": 90,
+        "gap": 567,
+        "lower": "40500000/448799",
+        "upper": "35437500/392699"
+      },
+      {
+        "cell": 90,
+        "gap": 568,
+        "lower": "284000000/3141593",
+        "upper": "35500000/392699"
+      },
+      {
+        "cell": 90,
+        "gap": 569,
+        "lower": "284500000/3141593",
+        "upper": "35562500/392699"
+      },
+      {
+        "cell": 90,
+        "gap": 570,
+        "lower": "15000000/165347",
+        "upper": "35625000/392699"
+      },
+      {
+        "cell": 90,
+        "gap": 571,
+        "lower": "285500000/3141593",
+        "upper": "35687500/392699"
+      },
+      {
+        "cell": 91,
+        "gap": 572,
+        "lower": "22000000/241661",
+        "upper": "35750000/392699"
+      },
+      {
+        "cell": 91,
+        "gap": 573,
+        "lower": "286500000/3141593",
+        "upper": "35812500/392699"
+      },
+      {
+        "cell": 91,
+        "gap": 574,
+        "lower": "41000000/448799",
+        "upper": "35875000/392699"
+      },
+      {
+        "cell": 91,
+        "gap": 575,
+        "lower": "12500000/136591",
+        "upper": "35937500/392699"
+      },
+      {
+        "cell": 91,
+        "gap": 576,
+        "lower": "288000000/3141593",
+        "upper": "36000000/392699"
+      },
+      {
+        "cell": 91,
+        "gap": 577,
+        "lower": "288500000/3141593",
+        "upper": "36062500/392699"
+      },
+      {
+        "cell": 91,
+        "gap": 578,
+        "lower": "289000000/3141593",
+        "upper": "36125000/392699"
+      },
+      {
+        "cell": 92,
+        "gap": 579,
+        "lower": "289500000/3141593",
+        "upper": "36187500/392699"
+      },
+      {
+        "cell": 92,
+        "gap": 580,
+        "lower": "290000000/3141593",
+        "upper": "36250000/392699"
+      },
+      {
+        "cell": 92,
+        "gap": 581,
+        "lower": "41500000/448799",
+        "upper": "36312500/392699"
+      },
+      {
+        "cell": 92,
+        "gap": 582,
+        "lower": "291000000/3141593",
+        "upper": "36375000/392699"
+      },
+      {
+        "cell": 92,
+        "gap": 583,
+        "lower": "291500000/3141593",
+        "upper": "36437500/392699"
+      },
+      {
+        "cell": 92,
+        "gap": 584,
+        "lower": "292000000/3141593",
+        "upper": "36500000/392699"
+      },
+      {
+        "cell": 93,
+        "gap": 585,
+        "lower": "22500000/241661",
+        "upper": "36562500/392699"
+      },
+      {
+        "cell": 93,
+        "gap": 586,
+        "lower": "293000000/3141593",
+        "upper": "36625000/392699"
+      },
+      {
+        "cell": 93,
+        "gap": 587,
+        "lower": "293500000/3141593",
+        "upper": "36687500/392699"
+      },
+      {
+        "cell": 93,
+        "gap": 588,
+        "lower": "42000000/448799",
+        "upper": "36750000/392699"
+      },
+      {
+        "cell": 93,
+        "gap": 589,
+        "lower": "15500000/165347",
+        "upper": "36812500/392699"
+      },
+      {
+        "cell": 93,
+        "gap": 590,
+        "lower": "295000000/3141593",
+        "upper": "36875000/392699"
+      },
+      {
+        "cell": 94,
+        "gap": 591,
+        "lower": "295500000/3141593",
+        "upper": "36937500/392699"
+      },
+      {
+        "cell": 94,
+        "gap": 592,
+        "lower": "296000000/3141593",
+        "upper": "37000000/392699"
+      },
+      {
+        "cell": 94,
+        "gap": 593,
+        "lower": "296500000/3141593",
+        "upper": "37062500/392699"
+      },
+      {
+        "cell": 94,
+        "gap": 594,
+        "lower": "297000000/3141593",
+        "upper": "37125000/392699"
+      },
+      {
+        "cell": 94,
+        "gap": 595,
+        "lower": "42500000/448799",
+        "upper": "37187500/392699"
+      },
+      {
+        "cell": 94,
+        "gap": 596,
+        "lower": "298000000/3141593",
+        "upper": "37250000/392699"
+      },
+      {
+        "cell": 95,
+        "gap": 597,
+        "lower": "298500000/3141593",
+        "upper": "37312500/392699"
+      },
+      {
+        "cell": 95,
+        "gap": 598,
+        "lower": "1000000/10507",
+        "upper": "37375000/392699"
+      },
+      {
+        "cell": 95,
+        "gap": 599,
+        "lower": "299500000/3141593",
+        "upper": "37437500/392699"
+      },
+      {
+        "cell": 95,
+        "gap": 600,
+        "lower": "300000000/3141593",
+        "upper": "37500000/392699"
+      },
+      {
+        "cell": 95,
+        "gap": 601,
+        "lower": "300500000/3141593",
+        "upper": "37562500/392699"
+      },
+      {
+        "cell": 95,
+        "gap": 602,
+        "lower": "43000000/448799",
+        "upper": "37625000/392699"
+      },
+      {
+        "cell": 95,
+        "gap": 603,
+        "lower": "301500000/3141593",
+        "upper": "37687500/392699"
+      },
+      {
+        "cell": 96,
+        "gap": 604,
+        "lower": "302000000/3141593",
+        "upper": "37750000/392699"
+      },
+      {
+        "cell": 96,
+        "gap": 605,
+        "lower": "302500000/3141593",
+        "upper": "37812500/392699"
+      },
+      {
+        "cell": 96,
+        "gap": 606,
+        "lower": "303000000/3141593",
+        "upper": "37875000/392699"
+      },
+      {
+        "cell": 96,
+        "gap": 607,
+        "lower": "303500000/3141593",
+        "upper": "37937500/392699"
+      },
+      {
+        "cell": 96,
+        "gap": 608,
+        "lower": "16000000/165347",
+        "upper": "38000000/392699"
+      },
+      {
+        "cell": 96,
+        "gap": 609,
+        "lower": "43500000/448799",
+        "upper": "38062500/392699"
+      },
+      {
+        "cell": 97,
+        "gap": 610,
+        "lower": "305000000/3141593",
+        "upper": "38125000/392699"
+      },
+      {
+        "cell": 97,
+        "gap": 611,
+        "lower": "23500000/241661",
+        "upper": "38187500/392699"
+      },
+      {
+        "cell": 97,
+        "gap": 612,
+        "lower": "306000000/3141593",
+        "upper": "38250000/392699"
+      },
+      {
+        "cell": 97,
+        "gap": 613,
+        "lower": "306500000/3141593",
+        "upper": "38312500/392699"
+      },
+      {
+        "cell": 97,
+        "gap": 614,
+        "lower": "307000000/3141593",
+        "upper": "38375000/392699"
+      },
+      {
+        "cell": 97,
+        "gap": 615,
+        "lower": "307500000/3141593",
+        "upper": "38437500/392699"
+      },
+      {
+        "cell": 98,
+        "gap": 616,
+        "lower": "44000000/448799",
+        "upper": "38500000/392699"
+      },
+      {
+        "cell": 98,
+        "gap": 617,
+        "lower": "308500000/3141593",
+        "upper": "38562500/392699"
+      },
+      {
+        "cell": 98,
+        "gap": 618,
+        "lower": "309000000/3141593",
+        "upper": "38625000/392699"
+      },
+      {
+        "cell": 98,
+        "gap": 619,
+        "lower": "309500000/3141593",
+        "upper": "38687500/392699"
+      },
+      {
+        "cell": 98,
+        "gap": 620,
+        "lower": "310000000/3141593",
+        "upper": "38750000/392699"
+      },
+      {
+        "cell": 98,
+        "gap": 621,
+        "lower": "13500000/136591",
+        "upper": "38812500/392699"
+      },
+      {
+        "cell": 98,
+        "gap": 622,
+        "lower": "311000000/3141593",
+        "upper": "38875000/392699"
+      },
+      {
+        "cell": 99,
+        "gap": 623,
+        "lower": "44500000/448799",
+        "upper": "38937500/392699"
+      },
+      {
+        "cell": 99,
+        "gap": 624,
+        "lower": "24000000/241661",
+        "upper": "39000000/392699"
+      },
+      {
+        "cell": 99,
+        "gap": 625,
+        "lower": "312500000/3141593",
+        "upper": "39062500/392699"
+      },
+      {
+        "cell": 99,
+        "gap": 626,
+        "lower": "313000000/3141593",
+        "upper": "39125000/392699"
+      },
+      {
+        "cell": 99,
+        "gap": 627,
+        "lower": "16500000/165347",
+        "upper": "39187500/392699"
+      },
+      {
+        "cell": 99,
+        "gap": 628,
+        "lower": "314000000/3141593",
+        "upper": "39250000/392699"
+      },
+      {
+        "cell": 100,
+        "gap": 629,
+        "lower": "314500000/3141593",
+        "upper": "39312500/392699"
+      },
+      {
+        "cell": 100,
+        "gap": 630,
+        "lower": "45000000/448799",
+        "upper": "39375000/392699"
+      },
+      {
+        "cell": 100,
+        "gap": 631,
+        "lower": "315500000/3141593",
+        "upper": "39437500/392699"
+      },
+      {
+        "cell": 100,
+        "gap": 632,
+        "lower": "4000000/39767",
+        "upper": "39500000/392699"
+      },
+      {
+        "cell": 100,
+        "gap": 633,
+        "lower": "316500000/3141593",
+        "upper": "39562500/392699"
+      },
+      {
+        "cell": 100,
+        "gap": 634,
+        "lower": "317000000/3141593",
+        "upper": "39625000/392699"
+      },
+      {
+        "cell": 101,
+        "gap": 635,
+        "lower": "317500000/3141593",
+        "upper": "39687500/392699"
+      },
+      {
+        "cell": 101,
+        "gap": 636,
+        "lower": "318000000/3141593",
+        "upper": "39750000/392699"
+      },
+      {
+        "cell": 101,
+        "gap": 637,
+        "lower": "3500000/34523",
+        "upper": "39812500/392699"
+      },
+      {
+        "cell": 101,
+        "gap": 638,
+        "lower": "319000000/3141593",
+        "upper": "39875000/392699"
+      },
+      {
+        "cell": 101,
+        "gap": 639,
+        "lower": "319500000/3141593",
+        "upper": "39937500/392699"
+      },
+      {
+        "cell": 101,
+        "gap": 640,
+        "lower": "320000000/3141593",
+        "upper": "40000000/392699"
+      },
+      {
+        "cell": 102,
+        "gap": 641,
+        "lower": "320500000/3141593",
+        "upper": "40062500/392699"
+      },
+      {
+        "cell": 102,
+        "gap": 642,
+        "lower": "321000000/3141593",
+        "upper": "40125000/392699"
+      },
+      {
+        "cell": 102,
+        "gap": 643,
+        "lower": "321500000/3141593",
+        "upper": "40187500/392699"
+      },
+      {
+        "cell": 102,
+        "gap": 644,
+        "lower": "2000000/19513",
+        "upper": "40250000/392699"
+      },
+      {
+        "cell": 102,
+        "gap": 645,
+        "lower": "322500000/3141593",
+        "upper": "40312500/392699"
+      },
+      {
+        "cell": 102,
+        "gap": 646,
+        "lower": "17000000/165347",
+        "upper": "40375000/392699"
+      },
+      {
+        "cell": 102,
+        "gap": 647,
+        "lower": "323500000/3141593",
+        "upper": "40437500/392699"
+      },
+      {
+        "cell": 103,
+        "gap": 648,
+        "lower": "324000000/3141593",
+        "upper": "40500000/392699"
+      },
+      {
+        "cell": 103,
+        "gap": 649,
+        "lower": "324500000/3141593",
+        "upper": "40562500/392699"
+      },
+      {
+        "cell": 103,
+        "gap": 650,
+        "lower": "25000000/241661",
+        "upper": "40625000/392699"
+      },
+      {
+        "cell": 103,
+        "gap": 651,
+        "lower": "46500000/448799",
+        "upper": "40687500/392699"
+      },
+      {
+        "cell": 103,
+        "gap": 652,
+        "lower": "326000000/3141593",
+        "upper": "40750000/392699"
+      },
+      {
+        "cell": 103,
+        "gap": 653,
+        "lower": "326500000/3141593",
+        "upper": "40812500/392699"
+      },
+      {
+        "cell": 104,
+        "gap": 654,
+        "lower": "327000000/3141593",
+        "upper": "40875000/392699"
+      },
+      {
+        "cell": 104,
+        "gap": 655,
+        "lower": "327500000/3141593",
+        "upper": "40937500/392699"
+      },
+      {
+        "cell": 104,
+        "gap": 656,
+        "lower": "328000000/3141593",
+        "upper": "41000000/392699"
+      },
+      {
+        "cell": 104,
+        "gap": 657,
+        "lower": "328500000/3141593",
+        "upper": "41062500/392699"
+      },
+      {
+        "cell": 104,
+        "gap": 658,
+        "lower": "47000000/448799",
+        "upper": "41125000/392699"
+      },
+      {
+        "cell": 104,
+        "gap": 659,
+        "lower": "329500000/3141593",
+        "upper": "41187500/392699"
+      },
+      {
+        "cell": 105,
+        "gap": 660,
+        "lower": "330000000/3141593",
+        "upper": "41250000/392699"
+      },
+      {
+        "cell": 105,
+        "gap": 661,
+        "lower": "330500000/3141593",
+        "upper": "41312500/392699"
+      },
+      {
+        "cell": 105,
+        "gap": 662,
+        "lower": "331000000/3141593",
+        "upper": "41375000/392699"
+      },
+      {
+        "cell": 105,
+        "gap": 663,
+        "lower": "25500000/241661",
+        "upper": "41437500/392699"
+      },
+      {
+        "cell": 105,
+        "gap": 664,
+        "lower": "332000000/3141593",
+        "upper": "41500000/392699"
+      },
+      {
+        "cell": 105,
+        "gap": 665,
+        "lower": "2500000/23621",
+        "upper": "41562500/392699"
+      },
+      {
+        "cell": 105,
+        "gap": 666,
+        "lower": "333000000/3141593",
+        "upper": "41625000/392699"
+      },
+      {
+        "cell": 106,
+        "gap": 667,
+        "lower": "14500000/136591",
+        "upper": "41687500/392699"
+      },
+      {
+        "cell": 106,
+        "gap": 668,
+        "lower": "334000000/3141593",
+        "upper": "41750000/392699"
+      },
+      {
+        "cell": 106,
+        "gap": 669,
+        "lower": "334500000/3141593",
+        "upper": "41812500/392699"
+      },
+      {
+        "cell": 106,
+        "gap": 670,
+        "lower": "335000000/3141593",
+        "upper": "41875000/392699"
+      },
+      {
+        "cell": 106,
+        "gap": 671,
+        "lower": "335500000/3141593",
+        "upper": "41937500/392699"
+      },
+      {
+        "cell": 106,
+        "gap": 672,
+        "lower": "48000000/448799",
+        "upper": "42000000/392699"
+      },
+      {
+        "cell": 107,
+        "gap": 673,
+        "lower": "336500000/3141593",
+        "upper": "42062500/392699"
+      },
+      {
+        "cell": 107,
+        "gap": 674,
+        "lower": "337000000/3141593",
+        "upper": "42125000/392699"
+      },
+      {
+        "cell": 107,
+        "gap": 675,
+        "lower": "337500000/3141593",
+        "upper": "42187500/392699"
+      },
+      {
+        "cell": 107,
+        "gap": 676,
+        "lower": "26000000/241661",
+        "upper": "42250000/392699"
+      },
+      {
+        "cell": 107,
+        "gap": 677,
+        "lower": "338500000/3141593",
+        "upper": "42312500/392699"
+      },
+      {
+        "cell": 107,
+        "gap": 678,
+        "lower": "339000000/3141593",
+        "upper": "42375000/392699"
+      },
+      {
+        "cell": 108,
+        "gap": 679,
+        "lower": "48500000/448799",
+        "upper": "42437500/392699"
+      },
+      {
+        "cell": 108,
+        "gap": 680,
+        "lower": "340000000/3141593",
+        "upper": "42500000/392699"
+      },
+      {
+        "cell": 108,
+        "gap": 681,
+        "lower": "340500000/3141593",
+        "upper": "42562500/392699"
+      },
+      {
+        "cell": 108,
+        "gap": 682,
+        "lower": "341000000/3141593",
+        "upper": "42625000/392699"
+      },
+      {
+        "cell": 108,
+        "gap": 683,
+        "lower": "341500000/3141593",
+        "upper": "42687500/392699"
+      },
+      {
+        "cell": 108,
+        "gap": 684,
+        "lower": "18000000/165347",
+        "upper": "42750000/392699"
+      },
+      {
+        "cell": 109,
+        "gap": 685,
+        "lower": "342500000/3141593",
+        "upper": "42812500/392699"
+      },
+      {
+        "cell": 109,
+        "gap": 686,
+        "lower": "49000000/448799",
+        "upper": "42875000/392699"
+      },
+      {
+        "cell": 109,
+        "gap": 687,
+        "lower": "343500000/3141593",
+        "upper": "42937500/392699"
+      },
+      {
+        "cell": 109,
+        "gap": 688,
+        "lower": "344000000/3141593",
+        "upper": "43000000/392699"
+      },
+      {
+        "cell": 109,
+        "gap": 689,
+        "lower": "26500000/241661",
+        "upper": "43062500/392699"
+      },
+      {
+        "cell": 109,
+        "gap": 690,
+        "lower": "15000000/136591",
+        "upper": "43125000/392699"
+      },
+      {
+        "cell": 109,
+        "gap": 691,
+        "lower": "345500000/3141593",
+        "upper": "43187500/392699"
+      },
+      {
+        "cell": 110,
+        "gap": 692,
+        "lower": "346000000/3141593",
+        "upper": "43250000/392699"
+      },
+      {
+        "cell": 110,
+        "gap": 693,
+        "lower": "49500000/448799",
+        "upper": "43312500/392699"
+      },
+      {
+        "cell": 110,
+        "gap": 694,
+        "lower": "347000000/3141593",
+        "upper": "43375000/392699"
+      },
+      {
+        "cell": 110,
+        "gap": 695,
+        "lower": "347500000/3141593",
+        "upper": "43437500/392699"
+      },
+      {
+        "cell": 110,
+        "gap": 696,
+        "lower": "348000000/3141593",
+        "upper": "43500000/392699"
+      },
+      {
+        "cell": 110,
+        "gap": 697,
+        "lower": "348500000/3141593",
+        "upper": "43562500/392699"
+      },
+      {
+        "cell": 111,
+        "gap": 698,
+        "lower": "349000000/3141593",
+        "upper": "43625000/392699"
+      },
+      {
+        "cell": 111,
+        "gap": 699,
+        "lower": "349500000/3141593",
+        "upper": "43687500/392699"
+      },
+      {
+        "cell": 111,
+        "gap": 700,
+        "lower": "50000000/448799",
+        "upper": "43750000/392699"
+      },
+      {
+        "cell": 111,
+        "gap": 701,
+        "lower": "350500000/3141593",
+        "upper": "43812500/392699"
+      },
+      {
+        "cell": 111,
+        "gap": 702,
+        "lower": "27000000/241661",
+        "upper": "43875000/392699"
+      },
+      {
+        "cell": 111,
+        "gap": 703,
+        "lower": "18500000/165347",
+        "upper": "43937500/392699"
+      },
+      {
+        "cell": 112,
+        "gap": 704,
+        "lower": "352000000/3141593",
+        "upper": "44000000/392699"
+      },
+      {
+        "cell": 112,
+        "gap": 705,
+        "lower": "352500000/3141593",
+        "upper": "44062500/392699"
+      },
+      {
+        "cell": 112,
+        "gap": 706,
+        "lower": "353000000/3141593",
+        "upper": "44125000/392699"
+      },
+      {
+        "cell": 112,
+        "gap": 707,
+        "lower": "50500000/448799",
+        "upper": "44187500/392699"
+      },
+      {
+        "cell": 112,
+        "gap": 708,
+        "lower": "354000000/3141593",
+        "upper": "44250000/392699"
+      },
+      {
+        "cell": 112,
+        "gap": 709,
+        "lower": "354500000/3141593",
+        "upper": "44312500/392699"
       }
     ],
     "lean_declarations": [
@@ -6054,11 +8351,16 @@
       "Circle.Applications.not_ropeStandardChannel0D6Seed_nearTurn",
       "Circle.Applications.ropeStandardChannel0D7Seed_intervalCertificate",
       "Circle.Applications.ropeStandardChannel0D7Seed_turnRatioFiniteMargin",
-      "Circle.Applications.not_ropeStandardChannel0D7Seed_nearTurn"
+      "Circle.Applications.not_ropeStandardChannel0D7Seed_nearTurn",
+      "Circle.Applications.ropeStandardChannel0_piD6_base_lower",
+      "Circle.Applications.ropeStandardChannel0_piD6_base_upper",
+      "Circle.Applications.ropeStandardChannel0D8Seed_intervalCertificate",
+      "Circle.Applications.ropeStandardChannel0D8Seed_turnRatioFiniteMargin",
+      "Circle.Applications.not_ropeStandardChannel0D8Seed_nearTurn"
     ],
-    "name": "standard_rope_channel0_interval_context_333",
+    "name": "standard_rope_channel0_interval_context_710",
     "pass_certificate": true,
-    "pi_bounds": "pi <= 4, 3.14 < pi, pi < 3.15, 3.1415 < pi, and pi < 3.1416",
+    "pi_bounds": "pi <= 4, 3.14 < pi, pi < 3.15, 3.1415 < pi, pi < 3.1416, 3.141592 < pi, and pi < 3.141593",
     "schema_id": "circle_calculus.standard_rope_interval_margin.v0",
     "theorem_ids": [
       "AIRA-T0063",
@@ -6087,7 +8389,12 @@
       "AIRA-T0086",
       "AIRA-T0087",
       "AIRA-T0088",
-      "AIRA-T0089"
+      "AIRA-T0089",
+      "AIRA-T0090",
+      "AIRA-T0091",
+      "AIRA-T0092",
+      "AIRA-T0093",
+      "AIRA-T0094"
     ],
     "turn_ratio_expression": "1/(2*pi)"
   }

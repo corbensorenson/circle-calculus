@@ -1190,6 +1190,16 @@ private def ropeStandardChannel0D7Cell (gap : Nat) : Int :=
   else if gap ≤ 332 then 52
   else 0
 
+/-- An eighth inspected context for the standard-RoPE interval certificate.
+This is the next generated target from six-decimal `π` bounds. -/
+def ropeStandardChannel0D8SeedContext : Nat := 710
+
+/-- The advertised margin for the eighth standard channel-0 interval seed. -/
+noncomputable def ropeStandardChannel0D8SeedMargin : ℝ := 1 / 1024
+
+private def ropeStandardChannel0D8Cell (gap : Nat) : Int :=
+  Int.ofNat ((500000 * gap) / 3141593)
+
 private theorem ropeStandardChannel0_base_lower :
     (1 : ℝ) / 8 ≤ ropeStandardChannel0TurnRatio := by
   have htwo_pi_pos : 0 < 2 * Real.pi := Real.two_pi_pos
@@ -1265,6 +1275,40 @@ theorem ropeStandardChannel0_piD4_base_upper :
     (inv_lt_inv₀ htwo_pi_pos (by norm_num : (0 : ℝ) < (31415 : ℝ) / 5000)).2
       hlower
   have hupper_le : (2 * Real.pi)⁻¹ ≤ (5000 : ℝ) / 31415 := by
+    rw [← hrecip]
+    exact le_of_lt hupper
+  simpa [ropeStandardChannel0TurnRatio, one_div] using hupper_le
+
+/-- Six-decimal lower rational enclosure for the standard channel-0 turn
+ratio `1 / (2π)`. -/
+theorem ropeStandardChannel0_piD6_base_lower :
+    (500000 : ℝ) / 3141593 ≤ ropeStandardChannel0TurnRatio := by
+  have htwo_pi_pos : 0 < 2 * Real.pi := Real.two_pi_pos
+  have htwo_pi_lt : 2 * Real.pi < (3141593 : ℝ) / 500000 := by
+    nlinarith [Real.pi_lt_d6]
+  have hrecip : ((3141593 : ℝ) / 500000)⁻¹ = (500000 : ℝ) / 3141593 := by
+    norm_num
+  have hlower : ((3141593 : ℝ) / 500000)⁻¹ < (2 * Real.pi)⁻¹ :=
+    (inv_lt_inv₀ (by norm_num : (0 : ℝ) < (3141593 : ℝ) / 500000) htwo_pi_pos).2
+      htwo_pi_lt
+  have hlower_le : (500000 : ℝ) / 3141593 ≤ (2 * Real.pi)⁻¹ := by
+    rw [← hrecip]
+    exact le_of_lt hlower
+  simpa [ropeStandardChannel0TurnRatio, one_div] using hlower_le
+
+/-- Six-decimal upper rational enclosure for the standard channel-0 turn
+ratio `1 / (2π)`. -/
+theorem ropeStandardChannel0_piD6_base_upper :
+    ropeStandardChannel0TurnRatio ≤ (500000 : ℝ) / 3141592 := by
+  have htwo_pi_pos : 0 < 2 * Real.pi := Real.two_pi_pos
+  have hlower : (3141592 : ℝ) / 500000 < 2 * Real.pi := by
+    nlinarith [Real.pi_gt_d6]
+  have hrecip : ((3141592 : ℝ) / 500000)⁻¹ = (500000 : ℝ) / 3141592 := by
+    norm_num
+  have hupper : (2 * Real.pi)⁻¹ < ((3141592 : ℝ) / 500000)⁻¹ :=
+    (inv_lt_inv₀ htwo_pi_pos (by norm_num : (0 : ℝ) < (3141592 : ℝ) / 500000)).2
+      hlower
+  have hupper_le : (2 * Real.pi)⁻¹ ≤ (500000 : ℝ) / 3141592 := by
     rw [← hrecip]
     exact le_of_lt hupper
   simpa [ropeStandardChannel0TurnRatio, one_div] using hupper_le
@@ -1859,6 +1903,87 @@ theorem ropeStandardChannel0D7Seed_turnRatioFiniteMargin :
   ropeTurnRatioFiniteMargin_of_intervalCertificate
     ropeStandardChannel0D7Seed_intervalCertificate
 
+private theorem ropeStandardChannel0_d8IntervalWitness_of_scaled_bounds
+    {gap : Nat} {cell : Int}
+    (hcell_lower :
+      (cell : ℝ) + (1 : ℝ) / 1024 ≤ (gap : ℝ) * ((500000 : ℝ) / 3141593))
+    (hcell_upper :
+      (gap : ℝ) * ((500000 : ℝ) / 3141592) ≤ (cell : ℝ) + 1 - (1 : ℝ) / 1024) :
+    ropeTurnRatioIntervalWitness ropeStandardChannel0TurnRatio
+      ropeStandardChannel0D8SeedMargin gap (((500000 * gap : Nat) : ℚ) / 3141593)
+      (((500000 * gap : Nat) : ℚ) / 3141592) cell := by
+  unfold ropeTurnRatioIntervalWitness ropeStandardChannel0D8SeedMargin
+  constructor
+  · calc
+      ((((500000 * gap : Nat) : ℚ) / 3141593 : ℚ) : ℝ) =
+          (gap : ℝ) * ((500000 : ℝ) / 3141593) := by
+        norm_num [Nat.cast_mul]
+        ring_nf
+      _ ≤ (gap : ℝ) * ropeStandardChannel0TurnRatio :=
+        mul_le_mul_of_nonneg_left ropeStandardChannel0_piD6_base_lower (by positivity)
+  constructor
+  · calc
+      (gap : ℝ) * ropeStandardChannel0TurnRatio ≤
+          (gap : ℝ) * ((500000 : ℝ) / 3141592) :=
+        mul_le_mul_of_nonneg_left ropeStandardChannel0_piD6_base_upper (by positivity)
+      _ = ((((500000 * gap : Nat) : ℚ) / 3141592 : ℚ) : ℝ) := by
+        norm_num [Nat.cast_mul]
+        ring_nf
+  constructor
+  · calc
+      (cell : ℝ) + (1 : ℝ) / 1024 ≤ (gap : ℝ) * ((500000 : ℝ) / 3141593) :=
+        hcell_lower
+      _ = ((((500000 * gap : Nat) : ℚ) / 3141593 : ℚ) : ℝ) := by
+        norm_num [Nat.cast_mul]
+        ring_nf
+  · calc
+      ((((500000 * gap : Nat) : ℚ) / 3141592 : ℚ) : ℝ) =
+          (gap : ℝ) * ((500000 : ℝ) / 3141592) := by
+        norm_num [Nat.cast_mul]
+        ring_nf
+      _ ≤ (cell : ℝ) + 1 - (1 : ℝ) / 1024 := hcell_upper
+
+private theorem ropeStandardChannel0_d8IntervalWitness_of_gap_lt_context
+    {gap : Nat} (hgap_pos : 0 < gap)
+    (hgap_lt : gap < ropeStandardChannel0D8SeedContext) :
+    ropeTurnRatioIntervalWitness ropeStandardChannel0TurnRatio
+      ropeStandardChannel0D8SeedMargin gap (((500000 * gap : Nat) : ℚ) / 3141593)
+      (((500000 * gap : Nat) : ℚ) / 3141592) (ropeStandardChannel0D8Cell gap) := by
+  unfold ropeStandardChannel0D8SeedContext at hgap_lt
+  interval_cases hgap_value : gap <;> subst gap <;>
+    dsimp [ropeStandardChannel0D8SeedMargin, ropeStandardChannel0D8Cell]
+  all_goals
+    apply ropeStandardChannel0_d8IntervalWitness_of_scaled_bounds <;> norm_num
+
+/-- An eighth standard-RoPE interval seed: channel 0 has margin `1/1024`
+over the context containing gaps `1` through `709`.
+
+The proof uses a generated exact rational cell table expressed as a computed
+floor cell for the six-decimal enclosure
+`500000*gap/3141593 <= gap/(2π) <= 500000*gap/3141592`. The next obstruction
+for this table appears at gap `710`, so this certificate stops at context
+`710`. -/
+theorem ropeStandardChannel0D8Seed_intervalCertificate :
+    ropeTurnRatioIntervalCertificate ropeStandardChannel0TurnRatio
+      ropeStandardChannel0D8SeedMargin ropeStandardChannel0D8SeedContext := by
+  refine ⟨by dsimp [ropeStandardChannel0D8SeedMargin]; norm_num, ?_⟩
+  intro gap hgap_range hgap_pos
+  have hgap_lt : gap < ropeStandardChannel0D8SeedContext := by
+    simpa [ropeStandardChannel0D8SeedContext] using List.mem_range.mp hgap_range
+  exact
+    ⟨((500000 * gap : Nat) : ℚ) / 3141593,
+      ((500000 * gap : Nat) : ℚ) / 3141592,
+      ropeStandardChannel0D8Cell gap,
+      ropeStandardChannel0_d8IntervalWitness_of_gap_lt_context hgap_pos hgap_lt⟩
+
+/-- The eighth named standard-RoPE channel-0 seed has a proved finite
+turn-ratio margin over context `710`. -/
+theorem ropeStandardChannel0D8Seed_turnRatioFiniteMargin :
+    ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio
+      ropeStandardChannel0D8SeedMargin ropeStandardChannel0D8SeedContext :=
+  ropeTurnRatioFiniteMargin_of_intervalCertificate
+    ropeStandardChannel0D8Seed_intervalCertificate
+
 /-- Finite-context turn-ratio margins are monotone in the inspected context.
 
 A margin certificate proved for a larger context automatically applies to any
@@ -2078,6 +2203,26 @@ theorem not_ropeStandardChannel0D7Seed_nearTurn
       (by norm_num)
       (by simpa using ropeStandardChannel0D7Seed_turnRatioFiniteMargin)
       (by simpa [ropeStandardChannel0D7SeedMargin] using htolerance)
+
+/-- The six-decimal generated-band standard-RoPE channel-0 interval seed rules
+out one-channel near-turn collisions below margin `1/1024` over context `710`. -/
+theorem not_ropeStandardChannel0D8Seed_nearTurn
+    {tolerance : ℝ} {left right : Nat}
+    (hleft : left < right) (hright : right < ropeStandardChannel0D8SeedContext)
+    (htolerance : tolerance < ropeStandardChannel0D8SeedMargin) :
+    ¬ ropeRealPhaseNearTurn ropeStandardChannel0TurnRatio 1 tolerance left right := by
+  exact
+    not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin
+      (frequency := ropeStandardChannel0TurnRatio) (fullTurn := 1)
+      (margin := ropeStandardChannel0D8SeedMargin) (tolerance := tolerance)
+      (context := ropeStandardChannel0D8SeedContext) (left := left) (right := right)
+      hleft hright
+      (by
+        dsimp [ropeStandardChannel0TurnRatio]
+        positivity)
+      (by norm_num)
+      (by simpa using ropeStandardChannel0D8Seed_turnRatioFiniteMargin)
+      (by simpa [ropeStandardChannel0D8SeedMargin] using htolerance)
 
 /-- A finite-context turn-ratio margin for one channel rules out all-channel
 real near-turn collision in a finite bank.
