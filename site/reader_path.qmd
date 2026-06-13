@@ -127,7 +127,11 @@ Application chapters are case studies, not hype pages. They reuse S1 language: a
 - [Classical Bridges](chapters/applications/erdos_bridges.qmd): a reader-facing audit page for the Erdos-style combinatorics showcase lanes.
 - [Data Analysis](chapters/applications/data_analysis.qmd): periodic coordinates and benchmark guardrails.
 - [Compute](chapters/applications/compute.qmd): cyclic addresses, stride layouts, and schedules.
-- [AI](chapters/applications/ai.qmd): phase channels, memory slots, and adapter blocks.
+- [AI](chapters/applications/ai.qmd): the overview for proof-carrying AI contracts and exploratory fixtures.
+- [AI Contract Ladder](chapters/applications/ai_contract_ladder.qmd): the guided contract sequence from RoPE phase banks to KV-cache freshness, sparse-attention coverage, and circulant mixers.
+- [RoPE Certifier](chapters/applications/rope_certifier.qmd): exact phase-bank distinguishability plus bounded real-phase proof seeds.
+- [KV-Cache Ring Buffer](chapters/applications/kv_cache_ring_buffer.qmd): finite slot, freshness, and live-window certificates.
+- [Sparse Attention Coverage](chapters/applications/sparse_attention_contract.qmd): finite local-window plus stride-family coverage, gap-witness, and candidate-budget certificates.
 - [Physics](chapters/applications/physics.qmd): finite gauge links, path holonomy, and Wilson-loop certificates.
 - [Generative Structures](chapters/applications/generative.qmd): seed-rule provenance and exact regeneration fixtures.
 - [Rendering](chapters/applications/rendering.qmd): direction bins and visual-compute scaffolds.

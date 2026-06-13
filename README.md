@@ -28,7 +28,7 @@ In plain terms — and stated at its true altitude — the proved core is **clea
 - **A finite sphere ladder (S0–S7):** suspension cell-counts and the Euler-characteristic rule `χ → 2 − χ`, the real-quaternion algebra spine, bounded Hopf-coordinate facts, and a bounded Cayley–Dickson (octonion) model including explicit non-associativity.
 - **Classical bridges:** Lean-checked *wrappers* around established mathlib results (Erdős–Ginzburg–Ziv, Cauchy–Davenport, Roth, and others), restated in Circle-facing language. These are not new theorems and not progress on open problems — they are labeled as wrappers.
 - **Finite "application" lanes (physics / AI / generative / compute):** these are deliberately modest, honestly named finite models. A "Wilson-loop invariance" theorem here is the fact that a sum of `ZMod n` phases around a closed loop is gauge-independent; an "AI memory-slot" theorem is the fact that an index stays below its bank size and is unchanged by adding a full period. They are correct, useful for keeping the prose honest, and **not** claims about physics or about model quality.
-- **Proof-carrying AI contracts:** the active AI lane now targets checked architecture facts: RoPE position distinguishability, sparse-attention reachability, KV-cache ring-buffer safety, recurrence schedules, and circulant/block-cyclic mixer laws. The flagship public artifact is the RoPE position-distinguishability certifier, with the KV-cache ring-buffer certificate as the second standalone contract; neither is a claim that Circle Calculus improves model quality, context length, speed, or memory.
+- **Proof-carrying AI contracts:** the active AI lane now targets checked architecture facts: RoPE position distinguishability, KV-cache ring-buffer safety, sparse-attention coverage and gap witnesses, recurrence schedules, and circulant/block-cyclic mixer laws. The flagship public artifact is the RoPE position-distinguishability certifier, followed by KV-cache ring-buffer and sparse-attention coverage contracts; none is a claim that Circle Calculus improves model quality, context length, speed, or memory.
 
 The exhaustive, per-theorem list lives where it belongs — in the manifests (`manifests/theorem_manifest.yaml` and `manifests/dimensions/`, `manifests/applications/`) — and is rendered, with live status, on the Living Book [Theorem Index](https://corbensorenson.github.io/circle-calculus/theorems.html). It is intentionally **not** duplicated here.
 
@@ -45,8 +45,9 @@ This repository does not claim to have rebuilt all of mathematics from circles. 
 5. `docs/COMPLETION_ROADMAP.md` and `docs/DIMENSIONAL_LADDER.md` for where it is going.
 6. `docs/ROPE_CERTIFIER_QUICKSTART.md`, `docs/ROPE_CERTIFIER_REVIEW_PACKET.md`, `papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md`, and `scripts/rope_certify.py` for the first externally usable AI contract.
 7. The Living Book [KV-cache ring-buffer lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/kv_cache_ring_buffer.html), `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py` for the second standalone AI contract.
-8. `docs/PHASE8_DEPTH_VALIDATION.md` for the current depth-and-validation push: RoPE real-phase theorem work, sparse coverage iffs, collision counting, KV-cache safety, external review, and proof-depth guardrails.
-9. `docs/THESEUS_HIVE_AI_TRANSFER.md` for the optional private-transfer lane; it is not the public proof standard.
+8. The Living Book [sparse-attention coverage lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/sparse_attention_contract.html), `scripts/stride_family_certify.py`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py` for the third standalone AI contract.
+9. `docs/PHASE8_DEPTH_VALIDATION.md` for the current depth-and-validation push: RoPE real-phase theorem work, sparse coverage iffs, collision counting, KV-cache safety, external review, and proof-depth guardrails.
+10. `docs/THESEUS_HIVE_AI_TRANSFER.md` for the optional private-transfer lane; it is not the public proof standard.
 
 The Living Book's [What "Proved" Means Here](https://corbensorenson.github.io/circle-calculus/what_proved_means.html) page is the one-paragraph contract the whole project lives by.
 
@@ -114,6 +115,15 @@ python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_
 ```
 
 The sidecar emits theorem ids, Lean declaration names, a finite slot/window certificate, and a retained-batch distinctness certificate. It proves finite ring-buffer indexing and overwrite-window facts only; it is not a paging-policy, throughput, memory-saving, retrieval-quality, implementation-correctness, deployment-safety, or model-quality claim.
+
+For the proof-carrying sparse-attention coverage certificate, run:
+
+```bash
+python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4
+python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py --format markdown
+```
+
+The sparse certificate emits theorem ids, covered lags, uncovered gap witnesses, no-collision budget predicates, and candidate-count fields. It proves finite candidate-set coverage and budget facts only; it is not an attention-quality, long-context, throughput, runtime, memory-use, or model-quality claim.
 
 For the optional Theseus-Hive AI transfer lane, run:
 
