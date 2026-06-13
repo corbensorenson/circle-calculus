@@ -1513,39 +1513,27 @@ private theorem ropeStandardChannel0_d2IntervalWitness_of_gap_le_six
     ropeTurnRatioIntervalWitness ropeStandardChannel0TurnRatio
       ropeStandardChannel0D2SeedMargin gap ((gap : ℚ) / 8)
       (((25 * gap : Nat) : ℚ) / 157) 0 := by
-  unfold ropeTurnRatioIntervalWitness ropeStandardChannel0D2SeedMargin
-  have hgap_nonneg : 0 ≤ (gap : ℝ) := by positivity
-  have hgap_one_le : (1 : ℝ) ≤ gap := by exact_mod_cast hgap_pos
-  have hgap_le_six_real : (gap : ℝ) ≤ 6 := by exact_mod_cast hgap_le_six
-  constructor
-  · calc
-      (((gap : ℚ) / 8 : ℚ) : ℝ) = (gap : ℝ) * ((1 : ℝ) / 8) := by
-        norm_num [div_eq_mul_inv]
-      _ ≤ (gap : ℝ) * ropeStandardChannel0TurnRatio :=
-        mul_le_mul_of_nonneg_left ropeStandardChannel0_base_lower hgap_nonneg
-  constructor
-  · calc
-      (gap : ℝ) * ropeStandardChannel0TurnRatio ≤ (gap : ℝ) * ((25 : ℝ) / 157) :=
-        mul_le_mul_of_nonneg_left ropeStandardChannel0_d2_base_upper hgap_nonneg
-      _ = ((((25 * gap : Nat) : ℚ) / 157 : ℚ) : ℝ) := by
+  exact
+    ropeTurnRatioIntervalWitness_of_band_bounds
+      (turnRatio := ropeStandardChannel0TurnRatio)
+      (margin := ropeStandardChannel0D2SeedMargin)
+      (lowerBound := (1 : ℝ) / 8)
+      (upperBound := (25 : ℝ) / 157)
+      (gap := gap) (start := 1) (stop := 6)
+      (lower := (gap : ℚ) / 8)
+      (upper := (((25 * gap : Nat) : ℚ) / 157)) (cell := 0)
+      (by norm_num [div_eq_mul_inv])
+      (by
         norm_num [Nat.cast_mul, div_eq_mul_inv]
-        ring
-  constructor
-  · calc
-      ((0 : Int) : ℝ) + (1 : ℝ) / 32 = (1 : ℝ) / 32 := by norm_num
-      _ ≤ (gap : ℝ) / 8 := by
-        nlinarith [hgap_one_le]
-      _ = (((gap : ℚ) / 8 : ℚ) : ℝ) := by
-        norm_num
-  · calc
-      ((((25 * gap : Nat) : ℚ) / 157 : ℚ) : ℝ) = ((25 : ℝ) * gap) / 157 := by
-        norm_num [Nat.cast_mul]
-      _ ≤ ((25 : ℝ) * 6) / 157 := by
-        exact div_le_div_of_nonneg_right
-          (mul_le_mul_of_nonneg_left hgap_le_six_real (by norm_num : (0 : ℝ) ≤ 25))
-          (by norm_num : (0 : ℝ) ≤ 157)
-      _ ≤ (31 : ℝ) / 32 := by norm_num
-      _ = ((0 : Int) : ℝ) + 1 - (1 : ℝ) / 32 := by norm_num
+        ring)
+      ropeStandardChannel0_base_lower
+      ropeStandardChannel0_d2_base_upper
+      (by norm_num)
+      (by norm_num)
+      (Nat.succ_le_of_lt hgap_pos)
+      hgap_le_six
+      (by norm_num [ropeStandardChannel0D2SeedMargin])
+      (by norm_num [ropeStandardChannel0D2SeedMargin])
 
 /-- A sharper standard-RoPE interval seed: channel 0 has margin `1/32` over
 the tiny context containing gaps `1` through `6`.
