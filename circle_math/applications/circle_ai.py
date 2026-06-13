@@ -467,20 +467,27 @@ class KVCacheLiveWindowCertificate:
     slots: tuple[int, ...]
     all_tokens_retained: bool
     slots_distinct: bool
+    full_window: bool
+    slots_within_cache: bool
+    slot_count_matches_cache_size: bool
+    full_coverage_contract: bool
     theorem_ids: tuple[str, ...] = (
         "AIM-T0071",
         "AIM-T0072",
         "AIM-T0073",
+        "AIM-T0074",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheLiveWindowStart_add_length",
         "Circle.Applications.kvCacheWindowContains_iff_mem_liveWindowTokens",
         "Circle.Applications.kvCacheLiveWindowTokens_slotMap_nodup",
+        "Circle.Applications.kvCacheLiveWindowTokens_slotMap_fullCoverageContract",
     )
     note: str = (
         "KV-cache generated-live-window certificate only; this proves finite "
-        "retention-window enumeration and slot distinctness, not paging policy, "
-        "retrieval quality, throughput, or deployment safety."
+        "retention-window enumeration, slot distinctness, and full-window finite "
+        "slot coverage, not paging policy, retrieval quality, throughput, or "
+        "deployment safety."
     )
 
 
@@ -1661,6 +1668,10 @@ def certify_kv_cache_live_window(
     length = kv_cache_live_window_length(cache_size, current)
     tokens = kv_cache_live_window_tokens(cache_size, current)
     slots = tuple(kv_cache_slot(cache_size, token) for token in tokens)
+    full_window = cache_size <= current + 1
+    slots_within_cache = all(0 <= slot < cache_size for slot in slots)
+    slot_count_matches_cache_size = len(slots) == cache_size
+    slots_distinct = kv_cache_live_window_slots_distinct(cache_size, current)
     return KVCacheLiveWindowCertificate(
         cache_size=cache_size,
         current=current,
@@ -1671,7 +1682,16 @@ def certify_kv_cache_live_window(
         all_tokens_retained=all(
             kv_cache_window_contains(cache_size, current, token) for token in tokens
         ),
-        slots_distinct=kv_cache_live_window_slots_distinct(cache_size, current),
+        slots_distinct=slots_distinct,
+        full_window=full_window,
+        slots_within_cache=slots_within_cache,
+        slot_count_matches_cache_size=slot_count_matches_cache_size,
+        full_coverage_contract=(
+            full_window
+            and slots_distinct
+            and slots_within_cache
+            and slot_count_matches_cache_size
+        ),
     )
 
 

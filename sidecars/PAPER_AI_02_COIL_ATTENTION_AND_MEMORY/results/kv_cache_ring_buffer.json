@@ -38,13 +38,17 @@
     "all_tokens_retained": true,
     "cache_size": 16,
     "current": 31,
+    "full_coverage_contract": true,
+    "full_window": true,
     "lean_declarations": [
       "Circle.Applications.kvCacheLiveWindowStart_add_length",
       "Circle.Applications.kvCacheWindowContains_iff_mem_liveWindowTokens",
-      "Circle.Applications.kvCacheLiveWindowTokens_slotMap_nodup"
+      "Circle.Applications.kvCacheLiveWindowTokens_slotMap_nodup",
+      "Circle.Applications.kvCacheLiveWindowTokens_slotMap_fullCoverageContract"
     ],
     "length": 16,
-    "note": "KV-cache generated-live-window certificate only; this proves finite retention-window enumeration and slot distinctness, not paging policy, retrieval quality, throughput, or deployment safety.",
+    "note": "KV-cache generated-live-window certificate only; this proves finite retention-window enumeration, slot distinctness, and full-window finite slot coverage, not paging policy, retrieval quality, throughput, or deployment safety.",
+    "slot_count_matches_cache_size": true,
     "slots": [
       0,
       1,
@@ -64,11 +68,13 @@
       15
     ],
     "slots_distinct": true,
+    "slots_within_cache": true,
     "start": 16,
     "theorem_ids": [
       "AIM-T0071",
       "AIM-T0072",
-      "AIM-T0073"
+      "AIM-T0073",
+      "AIM-T0074"
     ],
     "tokens": [
       16,

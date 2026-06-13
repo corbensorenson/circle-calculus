@@ -406,6 +406,43 @@ theorem kvCacheLiveWindowTokens_slotMap_nodup
   · unfold kvCacheLiveWindowTokens
     exact List.nodup_range'
 
+/-- Every slot emitted by the generated live-window slot map is inside the
+declared ring-buffer slot range. -/
+theorem kvCacheLiveWindowTokens_slotMap_lt_cacheSize
+    {cacheSize current : Nat} (hcache : 0 < cacheSize) :
+    ∀ slot ∈ ((kvCacheLiveWindowTokens cacheSize current).map
+      (kvCacheSlot cacheSize)), slot < cacheSize := by
+  intro slot hslot
+  rcases List.mem_map.mp hslot with ⟨token, _htoken, rfl⟩
+  exact kvCacheSlot_lt_cacheSize hcache token
+
+/-- Once the seen prefix is at least one full cache, the generated live-window
+slot map has exactly `cacheSize` entries. -/
+theorem kvCacheLiveWindowTokens_slotMap_length_eq_cacheSize_of_full
+    {cacheSize current : Nat} (hfull : cacheSize ≤ current + 1) :
+    ((kvCacheLiveWindowTokens cacheSize current).map
+      (kvCacheSlot cacheSize)).length = cacheSize := by
+  unfold kvCacheLiveWindowTokens kvCacheLiveWindowLength
+  rw [List.length_map]
+  simpa using Nat.min_eq_left hfull
+
+/-- Full generated live windows give a finite slot-coverage contract: the slot
+list is duplicate-free, has one entry for each declared slot, and every emitted
+slot is inside the declared ring-buffer range. -/
+theorem kvCacheLiveWindowTokens_slotMap_fullCoverageContract
+    {cacheSize current : Nat} (hcache : 0 < cacheSize)
+    (hfull : cacheSize ≤ current + 1) :
+    ((kvCacheLiveWindowTokens cacheSize current).map
+      (kvCacheSlot cacheSize)).Nodup ∧
+    ((kvCacheLiveWindowTokens cacheSize current).map
+      (kvCacheSlot cacheSize)).length = cacheSize ∧
+    ∀ slot ∈ ((kvCacheLiveWindowTokens cacheSize current).map
+      (kvCacheSlot cacheSize)), slot < cacheSize := by
+  exact
+    ⟨kvCacheLiveWindowTokens_slotMap_nodup cacheSize current,
+      kvCacheLiveWindowTokens_slotMap_length_eq_cacheSize_of_full hfull,
+      kvCacheLiveWindowTokens_slotMap_lt_cacheSize hcache⟩
+
 def loopRequiredSteps (loopPeriod sample : Nat) : Nat :=
   phaseChannel loopPeriod sample + 1
 

@@ -1132,6 +1132,21 @@ theorems:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_live_window_tokens_are_exact_and_slot_distinct
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown
     blocker: ""
+  - id: AIM-T0074
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheLiveWindowTokens_slotMap_fullCoverageContract
+    informal_statement: "Once a KV-cache live window is full, its generated slot list is duplicate-free, has exactly one entry per declared cache slot, and every emitted slot lies inside the cache range."
+    formal_statement: "forall {cacheSize current : Nat}, 0 < cacheSize -> cacheSize <= current + 1 -> (Circle.Applications.kvCacheLiveWindowTokens cacheSize current).map (Circle.Applications.kvCacheSlot cacheSize) is duplicate-free and has length cacheSize and every emitted slot is less than cacheSize"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_live_window_tokens_are_exact_and_slot_distinct
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown
+    blocker: ""
   - id: AIM-T0006
     status: lean_proved
     lean_name: Circle.Applications.loopRequiredSteps_pos

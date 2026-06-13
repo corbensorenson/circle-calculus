@@ -4603,6 +4603,12 @@
           "status": "proved"
         },
         {
+          "id": "AIM-T0074",
+          "lean_name": "Circle.Applications.kvCacheLiveWindowTokens_slotMap_fullCoverageContract",
+          "name": "Circle.Applications.kvCacheLiveWindowTokens_slotMap_fullCoverageContract",
+          "status": "proved"
+        },
+        {
           "id": "AIT-T0001",
           "lean_name": "Circle.Applications.attentionReach_eq_div_gcd",
           "name": "Circle.Applications.attentionReach_eq_div_gcd",
@@ -13770,10 +13776,10 @@
         "A proof that cyclic memory replaces attention.",
         "A throughput, memory-saving, paging-policy, or deployment-safety guarantee."
       ],
-      "formal_definition": "`circle_math.applications.circle_ai.certify_kv_cache_window`, `certify_kv_cache_batch`, `certify_kv_cache_live_window`, `kv_cache_retained_slots_distinct`, `kv_cache_distinct_retained_slots_distinct`, `kv_cache_retained_batch_slots_distinct`, and `kv_cache_live_window_slots_distinct`, finite certificates for KV-cache ring-buffer slots `token % cache_size`, current-token slots, retained-window membership, same-slot overwrite timing, current-slot distinctness, ordered pairwise slot distinctness, unordered distinct-token slot distinctness, retained-batch slot distinctness for live token batches, and generated live-window slot distinctness. Lean theorems `kvCacheSlotCollision_iff_gap_dvd`, `kvCacheSlot_ne_of_positive_gap_lt_cache`, `kvCacheWindow_nextOverwrite_after_current`, `kvCacheWindow_retainedSlot_ne_current_of_lt`, `kvCacheWindow_retainedSlots_ne_of_lt`, `kvCacheWindow_retainedSlots_ne_of_ne`, `kvCacheWindow_retainedBatchSlots_pairwise_ne`, `kvCacheWindow_retainedBatchSlotMap_nodup`, `kvCacheLiveWindowStart_add_length`, `kvCacheWindowContains_iff_mem_liveWindowTokens`, and `kvCacheLiveWindowTokens_slotMap_nodup` certify the finite slot and window facts.",
+      "formal_definition": "`circle_math.applications.circle_ai.certify_kv_cache_window`, `certify_kv_cache_batch`, `certify_kv_cache_live_window`, `kv_cache_retained_slots_distinct`, `kv_cache_distinct_retained_slots_distinct`, `kv_cache_retained_batch_slots_distinct`, and `kv_cache_live_window_slots_distinct`, finite certificates for KV-cache ring-buffer slots `token % cache_size`, current-token slots, retained-window membership, same-slot overwrite timing, current-slot distinctness, ordered pairwise slot distinctness, unordered distinct-token slot distinctness, retained-batch slot distinctness for live token batches, generated live-window slot distinctness, and full live-window finite slot coverage. Lean theorems `kvCacheSlotCollision_iff_gap_dvd`, `kvCacheSlot_ne_of_positive_gap_lt_cache`, `kvCacheWindow_nextOverwrite_after_current`, `kvCacheWindow_retainedSlot_ne_current_of_lt`, `kvCacheWindow_retainedSlots_ne_of_lt`, `kvCacheWindow_retainedSlots_ne_of_ne`, `kvCacheWindow_retainedBatchSlots_pairwise_ne`, `kvCacheWindow_retainedBatchSlotMap_nodup`, `kvCacheLiveWindowStart_add_length`, `kvCacheWindowContains_iff_mem_liveWindowTokens`, `kvCacheLiveWindowTokens_slotMap_nodup`, and `kvCacheLiveWindowTokens_slotMap_fullCoverageContract` certify the finite slot and window facts.",
       "id": "COMMON-0081",
       "introduced_in": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
-      "intuition": "A non-Lean engineer can ask whether tokens are still inside a declared ring-buffer cache window, whether retained tokens or retained batches are slot-distinct while live, whether the generated live-token list exactly matches the retention predicate, and whether the next overwrite is after the current read point.",
+      "intuition": "A non-Lean engineer can ask whether tokens are still inside a declared ring-buffer cache window, whether retained tokens or retained batches are slot-distinct while live, whether the generated live-token list exactly matches the retention predicate, whether a full live window covers the finite slot universe, and whether the next overwrite is after the current read point.",
       "kind": "interface",
       "name": "KV-cache ring-buffer window certificate",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
@@ -13876,6 +13882,12 @@
           "id": "AIM-T0073",
           "lean_name": "Circle.Applications.kvCacheLiveWindowTokens_slotMap_nodup",
           "name": "Circle.Applications.kvCacheLiveWindowTokens_slotMap_nodup",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0074",
+          "lean_name": "Circle.Applications.kvCacheLiveWindowTokens_slotMap_fullCoverageContract",
+          "name": "Circle.Applications.kvCacheLiveWindowTokens_slotMap_fullCoverageContract",
           "status": "proved"
         }
       ],
