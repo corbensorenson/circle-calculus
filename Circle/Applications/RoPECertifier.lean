@@ -1726,34 +1726,29 @@ private theorem ropeStandardChannel0_d5IntervalWitness_of_scaled_bounds
     ropeTurnRatioIntervalWitness ropeStandardChannel0TurnRatio
       ropeStandardChannel0D5SeedMargin gap (((10 * gap : Nat) : ℚ) / 63)
       (((25 * gap : Nat) : ℚ) / 157) cell := by
-  unfold ropeTurnRatioIntervalWitness ropeStandardChannel0D5SeedMargin
-  constructor
-  · calc
-      ((((10 * gap : Nat) : ℚ) / 63 : ℚ) : ℝ) =
-          (gap : ℝ) * ((10 : ℝ) / 63) := by
+  exact
+    ropeTurnRatioIntervalWitness_of_band_bounds
+      (turnRatio := ropeStandardChannel0TurnRatio)
+      (margin := ropeStandardChannel0D5SeedMargin)
+      (lowerBound := (10 : ℝ) / 63)
+      (upperBound := (25 : ℝ) / 157)
+      (gap := gap) (start := gap) (stop := gap)
+      (lower := ((10 * gap : Nat) : ℚ) / 63)
+      (upper := ((25 * gap : Nat) : ℚ) / 157) (cell := cell)
+      (by
         norm_num [Nat.cast_mul]
-        ring_nf
-      _ ≤ (gap : ℝ) * ropeStandardChannel0TurnRatio :=
-        mul_le_mul_of_nonneg_left ropeStandardChannel0_d3_base_lower (by positivity)
-  constructor
-  · calc
-      (gap : ℝ) * ropeStandardChannel0TurnRatio ≤ (gap : ℝ) * ((25 : ℝ) / 157) :=
-        mul_le_mul_of_nonneg_left ropeStandardChannel0_d2_base_upper (by positivity)
-      _ = ((((25 * gap : Nat) : ℚ) / 157 : ℚ) : ℝ) := by
+        ring_nf)
+      (by
         norm_num [Nat.cast_mul]
-        ring_nf
-  constructor
-  · calc
-      (cell : ℝ) + (1 : ℝ) / 64 ≤ (gap : ℝ) * ((10 : ℝ) / 63) := hcell_lower
-      _ = ((((10 * gap : Nat) : ℚ) / 63 : ℚ) : ℝ) := by
-        norm_num [Nat.cast_mul]
-        ring_nf
-  · calc
-      ((((25 * gap : Nat) : ℚ) / 157 : ℚ) : ℝ) =
-          (gap : ℝ) * ((25 : ℝ) / 157) := by
-        norm_num [Nat.cast_mul]
-        ring_nf
-      _ ≤ (cell : ℝ) + 1 - (1 : ℝ) / 64 := hcell_upper
+        ring_nf)
+      ropeStandardChannel0_d3_base_lower
+      ropeStandardChannel0_d2_base_upper
+      (by norm_num)
+      (by norm_num)
+      le_rfl
+      le_rfl
+      (by simpa [ropeStandardChannel0D5SeedMargin] using hcell_lower)
+      (by simpa [ropeStandardChannel0D5SeedMargin] using hcell_upper)
 
 /-- A fifth standard-RoPE interval seed: channel 0 has margin `1/64` over
 the tiny context containing gaps `1` through `43`.
@@ -1858,36 +1853,29 @@ private theorem ropeStandardChannel0_d6IntervalWitness_of_scaled_bounds
     ropeTurnRatioIntervalWitness ropeStandardChannel0TurnRatio
       ropeStandardChannel0D6SeedMargin gap (((5000 * gap : Nat) : ℚ) / 31416)
       (((5000 * gap : Nat) : ℚ) / 31415) cell := by
-  unfold ropeTurnRatioIntervalWitness ropeStandardChannel0D6SeedMargin
-  constructor
-  · calc
-      ((((5000 * gap : Nat) : ℚ) / 31416 : ℚ) : ℝ) =
-          (gap : ℝ) * ((5000 : ℝ) / 31416) := by
+  exact
+    ropeTurnRatioIntervalWitness_of_band_bounds
+      (turnRatio := ropeStandardChannel0TurnRatio)
+      (margin := ropeStandardChannel0D6SeedMargin)
+      (lowerBound := (5000 : ℝ) / 31416)
+      (upperBound := (5000 : ℝ) / 31415)
+      (gap := gap) (start := gap) (stop := gap)
+      (lower := ((5000 * gap : Nat) : ℚ) / 31416)
+      (upper := ((5000 * gap : Nat) : ℚ) / 31415) (cell := cell)
+      (by
         norm_num [Nat.cast_mul]
-        ring_nf
-      _ ≤ (gap : ℝ) * ropeStandardChannel0TurnRatio :=
-        mul_le_mul_of_nonneg_left ropeStandardChannel0_piD4_base_lower (by positivity)
-  constructor
-  · calc
-      (gap : ℝ) * ropeStandardChannel0TurnRatio ≤
-          (gap : ℝ) * ((5000 : ℝ) / 31415) :=
-        mul_le_mul_of_nonneg_left ropeStandardChannel0_piD4_base_upper (by positivity)
-      _ = ((((5000 * gap : Nat) : ℚ) / 31415 : ℚ) : ℝ) := by
+        ring_nf)
+      (by
         norm_num [Nat.cast_mul]
-        ring_nf
-  constructor
-  · calc
-      (cell : ℝ) + (1 : ℝ) / 512 ≤ (gap : ℝ) * ((5000 : ℝ) / 31416) :=
-        hcell_lower
-      _ = ((((5000 * gap : Nat) : ℚ) / 31416 : ℚ) : ℝ) := by
-        norm_num [Nat.cast_mul]
-        ring_nf
-  · calc
-      ((((5000 * gap : Nat) : ℚ) / 31415 : ℚ) : ℝ) =
-          (gap : ℝ) * ((5000 : ℝ) / 31415) := by
-        norm_num [Nat.cast_mul]
-        ring_nf
-      _ ≤ (cell : ℝ) + 1 - (1 : ℝ) / 512 := hcell_upper
+        ring_nf)
+      ropeStandardChannel0_piD4_base_lower
+      ropeStandardChannel0_piD4_base_upper
+      (by norm_num)
+      (by norm_num)
+      le_rfl
+      le_rfl
+      (by simpa [ropeStandardChannel0D6SeedMargin] using hcell_lower)
+      (by simpa [ropeStandardChannel0D6SeedMargin] using hcell_upper)
 
 /-- A sixth standard-RoPE interval seed: channel 0 has margin `1/512` over
 the tiny context containing gaps `1` through `56`.
@@ -2012,36 +2000,29 @@ private theorem ropeStandardChannel0_d8IntervalWitness_of_scaled_bounds
     ropeTurnRatioIntervalWitness ropeStandardChannel0TurnRatio
       ropeStandardChannel0D8SeedMargin gap (((500000 * gap : Nat) : ℚ) / 3141593)
       (((500000 * gap : Nat) : ℚ) / 3141592) cell := by
-  unfold ropeTurnRatioIntervalWitness ropeStandardChannel0D8SeedMargin
-  constructor
-  · calc
-      ((((500000 * gap : Nat) : ℚ) / 3141593 : ℚ) : ℝ) =
-          (gap : ℝ) * ((500000 : ℝ) / 3141593) := by
+  exact
+    ropeTurnRatioIntervalWitness_of_band_bounds
+      (turnRatio := ropeStandardChannel0TurnRatio)
+      (margin := ropeStandardChannel0D8SeedMargin)
+      (lowerBound := (500000 : ℝ) / 3141593)
+      (upperBound := (500000 : ℝ) / 3141592)
+      (gap := gap) (start := gap) (stop := gap)
+      (lower := ((500000 * gap : Nat) : ℚ) / 3141593)
+      (upper := ((500000 * gap : Nat) : ℚ) / 3141592) (cell := cell)
+      (by
         norm_num [Nat.cast_mul]
-        ring_nf
-      _ ≤ (gap : ℝ) * ropeStandardChannel0TurnRatio :=
-        mul_le_mul_of_nonneg_left ropeStandardChannel0_piD6_base_lower (by positivity)
-  constructor
-  · calc
-      (gap : ℝ) * ropeStandardChannel0TurnRatio ≤
-          (gap : ℝ) * ((500000 : ℝ) / 3141592) :=
-        mul_le_mul_of_nonneg_left ropeStandardChannel0_piD6_base_upper (by positivity)
-      _ = ((((500000 * gap : Nat) : ℚ) / 3141592 : ℚ) : ℝ) := by
+        ring_nf)
+      (by
         norm_num [Nat.cast_mul]
-        ring_nf
-  constructor
-  · calc
-      (cell : ℝ) + (1 : ℝ) / 1024 ≤ (gap : ℝ) * ((500000 : ℝ) / 3141593) :=
-        hcell_lower
-      _ = ((((500000 * gap : Nat) : ℚ) / 3141593 : ℚ) : ℝ) := by
-        norm_num [Nat.cast_mul]
-        ring_nf
-  · calc
-      ((((500000 * gap : Nat) : ℚ) / 3141592 : ℚ) : ℝ) =
-          (gap : ℝ) * ((500000 : ℝ) / 3141592) := by
-        norm_num [Nat.cast_mul]
-        ring_nf
-      _ ≤ (cell : ℝ) + 1 - (1 : ℝ) / 1024 := hcell_upper
+        ring_nf)
+      ropeStandardChannel0_piD6_base_lower
+      ropeStandardChannel0_piD6_base_upper
+      (by norm_num)
+      (by norm_num)
+      le_rfl
+      le_rfl
+      (by simpa [ropeStandardChannel0D8SeedMargin] using hcell_lower)
+      (by simpa [ropeStandardChannel0D8SeedMargin] using hcell_upper)
 
 private theorem ropeStandardChannel0_d8IntervalWitness_of_gap_lt_context
     {gap : Nat} (hgap_pos : 0 < gap)
@@ -2146,42 +2127,32 @@ private theorem ropeStandardChannel0_d9IntervalWitness_of_scaled_bounds
       (((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647694)
       (((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647692)
       cell := by
-  unfold ropeTurnRatioIntervalWitness ropeStandardChannel0D9SeedMargin
-  constructor
-  · calc
-      ((((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647694 :
-          ℚ) : ℝ) =
-          (gap : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647694) := by
+  exact
+    ropeTurnRatioIntervalWitness_of_band_bounds
+      (turnRatio := ropeStandardChannel0TurnRatio)
+      (margin := ropeStandardChannel0D9SeedMargin)
+      (lowerBound := (100000000000000000000 : ℝ) / 628318530717958647694)
+      (upperBound := (100000000000000000000 : ℝ) / 628318530717958647692)
+      (gap := gap) (start := gap) (stop := gap)
+      (lower :=
+        ((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647694)
+      (upper :=
+        ((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647692)
+      (cell := cell)
+      (by
         norm_num [Nat.cast_mul]
-        ring_nf
-      _ ≤ (gap : ℝ) * ropeStandardChannel0TurnRatio :=
-        mul_le_mul_of_nonneg_left ropeStandardChannel0_piD20_base_lower (by positivity)
-  constructor
-  · calc
-      (gap : ℝ) * ropeStandardChannel0TurnRatio ≤
-          (gap : ℝ) *
-            ((100000000000000000000 : ℝ) / 628318530717958647692) :=
-        mul_le_mul_of_nonneg_left ropeStandardChannel0_piD20_base_upper (by positivity)
-      _ = ((((100000000000000000000 * gap : Nat) : ℚ) /
-          628318530717958647692 : ℚ) : ℝ) := by
+        ring_nf)
+      (by
         norm_num [Nat.cast_mul]
-        ring_nf
-  constructor
-  · calc
-      (cell : ℝ) + (1 : ℝ) / 131072 ≤
-          (gap : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647694) :=
-        hcell_lower
-      _ = ((((100000000000000000000 * gap : Nat) : ℚ) /
-          628318530717958647694 : ℚ) : ℝ) := by
-        norm_num [Nat.cast_mul]
-        ring_nf
-  · calc
-      ((((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647692 :
-          ℚ) : ℝ) =
-          (gap : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647692) := by
-        norm_num [Nat.cast_mul]
-        ring_nf
-      _ ≤ (cell : ℝ) + 1 - (1 : ℝ) / 131072 := hcell_upper
+        ring_nf)
+      ropeStandardChannel0_piD20_base_lower
+      ropeStandardChannel0_piD20_base_upper
+      (by norm_num)
+      (by norm_num)
+      le_rfl
+      le_rfl
+      (by simpa [ropeStandardChannel0D9SeedMargin] using hcell_lower)
+      (by simpa [ropeStandardChannel0D9SeedMargin] using hcell_upper)
 
 set_option maxHeartbeats 5000000 in
 private theorem ropeStandardChannel0_d9IntervalWitness_of_gap_lt_context
@@ -2239,42 +2210,32 @@ private theorem ropeStandardChannel0_d10IntervalWitness_of_scaled_bounds
       (((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647694)
       (((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647692)
       cell := by
-  unfold ropeTurnRatioIntervalWitness ropeStandardChannel0D10SeedMargin
-  constructor
-  · calc
-      ((((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647694 :
-          ℚ) : ℝ) =
-          (gap : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647694) := by
+  exact
+    ropeTurnRatioIntervalWitness_of_band_bounds
+      (turnRatio := ropeStandardChannel0TurnRatio)
+      (margin := ropeStandardChannel0D10SeedMargin)
+      (lowerBound := (100000000000000000000 : ℝ) / 628318530717958647694)
+      (upperBound := (100000000000000000000 : ℝ) / 628318530717958647692)
+      (gap := gap) (start := gap) (stop := gap)
+      (lower :=
+        ((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647694)
+      (upper :=
+        ((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647692)
+      (cell := cell)
+      (by
         norm_num [Nat.cast_mul]
-        ring_nf
-      _ ≤ (gap : ℝ) * ropeStandardChannel0TurnRatio :=
-        mul_le_mul_of_nonneg_left ropeStandardChannel0_piD20_base_lower (by positivity)
-  constructor
-  · calc
-      (gap : ℝ) * ropeStandardChannel0TurnRatio ≤
-          (gap : ℝ) *
-            ((100000000000000000000 : ℝ) / 628318530717958647692) :=
-        mul_le_mul_of_nonneg_left ropeStandardChannel0_piD20_base_upper (by positivity)
-      _ = ((((100000000000000000000 * gap : Nat) : ℚ) /
-          628318530717958647692 : ℚ) : ℝ) := by
+        ring_nf)
+      (by
         norm_num [Nat.cast_mul]
-        ring_nf
-  constructor
-  · calc
-      (cell : ℝ) + (1 : ℝ) / 105000 ≤
-          (gap : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647694) :=
-        hcell_lower
-      _ = ((((100000000000000000000 * gap : Nat) : ℚ) /
-          628318530717958647694 : ℚ) : ℝ) := by
-        norm_num [Nat.cast_mul]
-        ring_nf
-  · calc
-      ((((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647692 :
-          ℚ) : ℝ) =
-          (gap : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647692) := by
-        norm_num [Nat.cast_mul]
-        ring_nf
-      _ ≤ (cell : ℝ) + 1 - (1 : ℝ) / 105000 := hcell_upper
+        ring_nf)
+      ropeStandardChannel0_piD20_base_lower
+      ropeStandardChannel0_piD20_base_upper
+      (by norm_num)
+      (by norm_num)
+      le_rfl
+      le_rfl
+      (by simpa [ropeStandardChannel0D10SeedMargin] using hcell_lower)
+      (by simpa [ropeStandardChannel0D10SeedMargin] using hcell_upper)
 
 set_option maxHeartbeats 5000000 in
 private theorem ropeStandardChannel0_d10IntervalWitness_of_gap_lt_context
@@ -2331,42 +2292,32 @@ private theorem ropeStandardChannel0_d11IntervalWitness_of_scaled_bounds
       (((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647694)
       (((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647692)
       cell := by
-  unfold ropeTurnRatioIntervalWitness ropeStandardChannel0D11SeedMargin
-  constructor
-  · calc
-      ((((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647694 :
-          ℚ) : ℝ) =
-          (gap : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647694) := by
+  exact
+    ropeTurnRatioIntervalWitness_of_band_bounds
+      (turnRatio := ropeStandardChannel0TurnRatio)
+      (margin := ropeStandardChannel0D11SeedMargin)
+      (lowerBound := (100000000000000000000 : ℝ) / 628318530717958647694)
+      (upperBound := (100000000000000000000 : ℝ) / 628318530717958647692)
+      (gap := gap) (start := gap) (stop := gap)
+      (lower :=
+        ((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647694)
+      (upper :=
+        ((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647692)
+      (cell := cell)
+      (by
         norm_num [Nat.cast_mul]
-        ring_nf
-      _ ≤ (gap : ℝ) * ropeStandardChannel0TurnRatio :=
-        mul_le_mul_of_nonneg_left ropeStandardChannel0_piD20_base_lower (by positivity)
-  constructor
-  · calc
-      (gap : ℝ) * ropeStandardChannel0TurnRatio ≤
-          (gap : ℝ) *
-            ((100000000000000000000 : ℝ) / 628318530717958647692) :=
-        mul_le_mul_of_nonneg_left ropeStandardChannel0_piD20_base_upper (by positivity)
-      _ = ((((100000000000000000000 * gap : Nat) : ℚ) /
-          628318530717958647692 : ℚ) : ℝ) := by
+        ring_nf)
+      (by
         norm_num [Nat.cast_mul]
-        ring_nf
-  constructor
-  · calc
-      (cell : ℝ) + (1 : ℝ) / 104219 ≤
-          (gap : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647694) :=
-        hcell_lower
-      _ = ((((100000000000000000000 * gap : Nat) : ℚ) /
-          628318530717958647694 : ℚ) : ℝ) := by
-        norm_num [Nat.cast_mul]
-        ring_nf
-  · calc
-      ((((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647692 :
-          ℚ) : ℝ) =
-          (gap : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647692) := by
-        norm_num [Nat.cast_mul]
-        ring_nf
-      _ ≤ (cell : ℝ) + 1 - (1 : ℝ) / 104219 := hcell_upper
+        ring_nf)
+      ropeStandardChannel0_piD20_base_lower
+      ropeStandardChannel0_piD20_base_upper
+      (by norm_num)
+      (by norm_num)
+      le_rfl
+      le_rfl
+      (by simpa [ropeStandardChannel0D11SeedMargin] using hcell_lower)
+      (by simpa [ropeStandardChannel0D11SeedMargin] using hcell_upper)
 
 set_option maxHeartbeats 5000000 in
 private theorem ropeStandardChannel0_d11IntervalWitness_of_gap_lt_context
@@ -2423,42 +2374,32 @@ private theorem ropeStandardChannel0_d12IntervalWitness_of_scaled_bounds
       (((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647694)
       (((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647692)
       cell := by
-  unfold ropeTurnRatioIntervalWitness ropeStandardChannel0D12SeedMargin
-  constructor
-  · calc
-      ((((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647694 :
-          ℚ) : ℝ) =
-          (gap : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647694) := by
+  exact
+    ropeTurnRatioIntervalWitness_of_band_bounds
+      (turnRatio := ropeStandardChannel0TurnRatio)
+      (margin := ropeStandardChannel0D12SeedMargin)
+      (lowerBound := (100000000000000000000 : ℝ) / 628318530717958647694)
+      (upperBound := (100000000000000000000 : ℝ) / 628318530717958647692)
+      (gap := gap) (start := gap) (stop := gap)
+      (lower :=
+        ((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647694)
+      (upper :=
+        ((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647692)
+      (cell := cell)
+      (by
         norm_num [Nat.cast_mul]
-        ring_nf
-      _ ≤ (gap : ℝ) * ropeStandardChannel0TurnRatio :=
-        mul_le_mul_of_nonneg_left ropeStandardChannel0_piD20_base_lower (by positivity)
-  constructor
-  · calc
-      (gap : ℝ) * ropeStandardChannel0TurnRatio ≤
-          (gap : ℝ) *
-            ((100000000000000000000 : ℝ) / 628318530717958647692) :=
-        mul_le_mul_of_nonneg_left ropeStandardChannel0_piD20_base_upper (by positivity)
-      _ = ((((100000000000000000000 * gap : Nat) : ℚ) /
-          628318530717958647692 : ℚ) : ℝ) := by
+        ring_nf)
+      (by
         norm_num [Nat.cast_mul]
-        ring_nf
-  constructor
-  · calc
-      (cell : ℝ) + (1 : ℝ) / 104220 ≤
-          (gap : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647694) :=
-        hcell_lower
-      _ = ((((100000000000000000000 * gap : Nat) : ℚ) /
-          628318530717958647694 : ℚ) : ℝ) := by
-        norm_num [Nat.cast_mul]
-        ring_nf
-  · calc
-      ((((100000000000000000000 * gap : Nat) : ℚ) / 628318530717958647692 :
-          ℚ) : ℝ) =
-          (gap : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647692) := by
-        norm_num [Nat.cast_mul]
-        ring_nf
-      _ ≤ (cell : ℝ) + 1 - (1 : ℝ) / 104220 := hcell_upper
+        ring_nf)
+      ropeStandardChannel0_piD20_base_lower
+      ropeStandardChannel0_piD20_base_upper
+      (by norm_num)
+      (by norm_num)
+      le_rfl
+      le_rfl
+      (by simpa [ropeStandardChannel0D12SeedMargin] using hcell_lower)
+      (by simpa [ropeStandardChannel0D12SeedMargin] using hcell_upper)
 
 set_option maxHeartbeats 8000000 in
 private theorem ropeStandardChannel0_d12IntervalWitness_of_gap_lt_context
