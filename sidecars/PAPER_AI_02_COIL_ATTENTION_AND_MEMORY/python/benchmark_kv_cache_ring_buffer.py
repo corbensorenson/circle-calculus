@@ -16,7 +16,11 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
-from circle_math.applications.circle_ai import certify_kv_cache_batch, certify_kv_cache_window
+from circle_math.applications.circle_ai import (
+    certify_kv_cache_batch,
+    certify_kv_cache_live_window,
+    certify_kv_cache_window,
+)
 
 CLAIM_BOUNDARY = (
     "These are proof-carrying finite ring-buffer indexing certificates for a "
@@ -43,17 +47,23 @@ def build_payload(*, cache_size: int, current: int, token: int, batch_tokens: st
         current=current,
         tokens=parse_tokens(batch_tokens),
     )
+    live_window = certify_kv_cache_live_window(
+        cache_size=cache_size,
+        current=current,
+    )
     return {
         "schema_id": "circle_calculus.kv_cache_ring_buffer_certificate.v0",
         "claim_boundary": CLAIM_BOUNDARY,
         "window_certificate": asdict(certificate),
         "batch_certificate": asdict(batch),
+        "live_window_certificate": asdict(live_window),
     }
 
 
 def text_results(payload: dict[str, Any]) -> str:
     certificate = payload["window_certificate"]
     batch = payload["batch_certificate"]
+    live_window = payload["live_window_certificate"]
     lines = [
         (
             "kv_cache_ring_buffer "
@@ -86,6 +96,19 @@ def text_results(payload: dict[str, Any]) -> str:
             f"theorem_ids={','.join(batch['theorem_ids'])}"
         ),
         batch["note"],
+        (
+            "kv_cache_live_window "
+            f"cache_size={live_window['cache_size']} "
+            f"current={live_window['current']} "
+            f"start={live_window['start']} "
+            f"length={live_window['length']} "
+            f"tokens={','.join(str(token) for token in live_window['tokens'])} "
+            f"slots={','.join(str(slot) for slot in live_window['slots'])} "
+            f"all_tokens_retained={live_window['all_tokens_retained']} "
+            f"slots_distinct={live_window['slots_distinct']} "
+            f"theorem_ids={','.join(live_window['theorem_ids'])}"
+        ),
+        live_window["note"],
     ]
     return "\n".join(lines) + "\n"
 
@@ -93,6 +116,7 @@ def text_results(payload: dict[str, Any]) -> str:
 def markdown_results(payload: dict[str, Any]) -> str:
     certificate = payload["window_certificate"]
     batch = payload["batch_certificate"]
+    live_window = payload["live_window_certificate"]
     return "\n".join(
         [
             "# KV-Cache Ring-Buffer Certificate Results",
@@ -120,6 +144,16 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{', '.join(str(slot) for slot in batch['slots'])} | "
                 f"{batch['all_retained']} | {batch['tokens_distinct']} | "
                 f"{batch['slots_distinct']} | {', '.join(batch['theorem_ids'])} |"
+            ),
+            "",
+            "| Live start | Live length | Live tokens | Live slots | All retained | Slots distinct | Theorem ids |",
+            "| ---: | ---: | --- | --- | --- | --- | --- |",
+            (
+                f"| {live_window['start']} | {live_window['length']} | "
+                f"{', '.join(str(token) for token in live_window['tokens'])} | "
+                f"{', '.join(str(slot) for slot in live_window['slots'])} | "
+                f"{live_window['all_tokens_retained']} | {live_window['slots_distinct']} | "
+                f"{', '.join(live_window['theorem_ids'])} |"
             ),
             "",
             "Reproduce with:",

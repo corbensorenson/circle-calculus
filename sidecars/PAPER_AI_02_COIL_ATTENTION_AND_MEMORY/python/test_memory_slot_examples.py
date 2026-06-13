@@ -7,6 +7,7 @@ from circle_math.applications.circle_ai import (
     active_token_counts_by_budget,
     average_candidate_count,
     certify_kv_cache_batch,
+    certify_kv_cache_live_window,
     certify_kv_cache_window,
     certify_stride_family_coverage,
     coil_attention_path,
@@ -18,6 +19,10 @@ from circle_math.applications.circle_ai import (
     fit_recurrence_resolution_lookup,
     hybrid_attention_candidates,
     kv_cache_distinct_retained_slots_distinct,
+    kv_cache_live_window_length,
+    kv_cache_live_window_slots_distinct,
+    kv_cache_live_window_start,
+    kv_cache_live_window_tokens,
     kv_cache_next_overwrite_token,
     kv_cache_retained_batch_slots_distinct,
     kv_cache_retained_slots_distinct,
@@ -159,6 +164,32 @@ def test_kv_cache_retained_batch_slots_are_distinct() -> None:
     assert "retained-batch slot certificate only" in certificate.note
 
 
+def test_kv_cache_live_window_tokens_are_exact_and_slot_distinct() -> None:
+    certificate = certify_kv_cache_live_window(cache_size=16, current=31)
+    assert certificate.start == kv_cache_live_window_start(16, 31) == 16
+    assert certificate.length == kv_cache_live_window_length(16, 31) == 16
+    assert certificate.tokens == kv_cache_live_window_tokens(16, 31) == tuple(range(16, 32))
+    assert certificate.slots == tuple(range(16))
+    assert certificate.all_tokens_retained
+    assert certificate.slots_distinct
+    assert kv_cache_live_window_slots_distinct(16, 31)
+    assert "AIM-T0071" in certificate.theorem_ids
+    assert "AIM-T0072" in certificate.theorem_ids
+    assert "AIM-T0073" in certificate.theorem_ids
+    assert (
+        "Circle.Applications.kvCacheLiveWindowTokens_slotMap_nodup"
+        in certificate.lean_declarations
+    )
+
+    prefix = certify_kv_cache_live_window(cache_size=16, current=5)
+    assert prefix.start == 0
+    assert prefix.length == 6
+    assert prefix.tokens == tuple(range(6))
+    assert prefix.slots == tuple(range(6))
+    assert prefix.all_tokens_retained
+    assert prefix.slots_distinct
+
+
 def test_kv_cache_ring_buffer_certificate_marks_stale_token() -> None:
     certificate = certify_kv_cache_window(cache_size=16, current=40, token=20)
     assert certificate.lag == 20
@@ -199,6 +230,10 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert "AIM-T0069" in payload["window_certificate"]["theorem_ids"]
     assert payload["batch_certificate"]["slots_distinct"] is True
     assert "AIM-T0068" in payload["batch_certificate"]["theorem_ids"]
+    assert payload["live_window_certificate"]["start"] == 16
+    assert payload["live_window_certificate"]["length"] == 16
+    assert payload["live_window_certificate"]["slots_distinct"] is True
+    assert "AIM-T0073" in payload["live_window_certificate"]["theorem_ids"]
     assert "not model-quality" in payload["claim_boundary"]
 
     markdown_result = subprocess.run(
@@ -215,6 +250,8 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert "KV-Cache Ring-Buffer Certificate Results" in markdown_result.stdout
     assert "| 16 | 31 | 20 | 4 | 15 | 11 | True | True | 36 | True | False |" in markdown_result.stdout
     assert "Batch tokens" in markdown_result.stdout
+    assert "Live start" in markdown_result.stdout
+    assert "AIM-T0073" in markdown_result.stdout
 
 
 def test_committed_kv_cache_ring_buffer_results_match_generator(tmp_path: Path) -> None:

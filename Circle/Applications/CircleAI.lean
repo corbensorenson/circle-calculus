@@ -1,4 +1,5 @@
 import Mathlib.Data.Nat.ModEq
+import Mathlib.Tactic.Ring
 
 /-!
 Application seeds for Circle AI tracks.
@@ -137,6 +138,24 @@ size. -/
 def kvCacheWindowContains (cacheSize current token : Nat) : Prop :=
   token ≤ current ∧ current - token < cacheSize
 
+/-- The first token position still live in the KV-cache window ending at
+`current`. If the cache is larger than the prefix seen so far, the window starts
+at zero. -/
+def kvCacheLiveWindowStart (cacheSize current : Nat) : Nat :=
+  (current + 1) - cacheSize
+
+/-- The number of live token positions in the KV-cache window ending at
+`current`. -/
+def kvCacheLiveWindowLength (cacheSize current : Nat) : Nat :=
+  min cacheSize (current + 1)
+
+/-- The explicit finite list of token positions still live in the KV-cache
+window ending at `current`. -/
+def kvCacheLiveWindowTokens (cacheSize current : Nat) : List Nat :=
+  List.range'
+    (kvCacheLiveWindowStart cacheSize current)
+    (kvCacheLiveWindowLength cacheSize current)
+
 theorem kvCacheSlot_lt_cacheSize {cacheSize : Nat} (h : 0 < cacheSize) (token : Nat) :
     kvCacheSlot cacheSize token < cacheSize := by
   unfold kvCacheSlot
@@ -214,6 +233,73 @@ theorem not_kvCacheWindowContains_iff_nextOverwrite_le_current_of_le
         ⟨htoken_current, hcurrent_next⟩))
   · intro hoverwritten hwindow
     exact (not_lt_of_ge hoverwritten) (kvCacheWindow_nextOverwrite_after_current hwindow)
+
+/-- The explicit live-window list ends exactly one past `current`. -/
+theorem kvCacheLiveWindowStart_add_length (cacheSize current : Nat) :
+    kvCacheLiveWindowStart cacheSize current +
+      kvCacheLiveWindowLength cacheSize current = current + 1 := by
+  unfold kvCacheLiveWindowStart kvCacheLiveWindowLength
+  by_cases hcache : cacheSize ≤ current + 1
+  · rw [Nat.min_eq_left hcache]
+    exact Nat.sub_add_cancel hcache
+  · have hprefix : current + 1 ≤ cacheSize := le_of_not_ge hcache
+    rw [Nat.min_eq_right hprefix, Nat.sub_eq_zero_of_le hprefix, Nat.zero_add]
+
+/-- The generated live-window token list is exactly the retained-window
+predicate. -/
+theorem kvCacheWindowContains_iff_mem_liveWindowTokens
+    {cacheSize current token : Nat} :
+    kvCacheWindowContains cacheSize current token ↔
+      token ∈ kvCacheLiveWindowTokens cacheSize current := by
+  unfold kvCacheWindowContains kvCacheLiveWindowTokens
+  rw [List.mem_range']
+  unfold kvCacheLiveWindowStart kvCacheLiveWindowLength
+  by_cases hcache : cacheSize ≤ current + 1
+  · rw [Nat.min_eq_left hcache]
+    constructor
+    · intro hwindow
+      have hcurrent_eq : current - token + token = current :=
+        Nat.sub_add_cancel hwindow.1
+      have hcurrent_eq' : current = token + (current - token) := by
+        simpa [Nat.add_comm] using hcurrent_eq.symm
+      have hupper :
+          (current + 1 - cacheSize) + cacheSize = current + 1 :=
+        Nat.sub_add_cancel hcache
+      have hstart_le : current + 1 - cacheSize ≤ token := by
+        rw [Nat.sub_le_iff_le_add, hcurrent_eq']
+        omega
+      refine ⟨token - (current + 1 - cacheSize), ?_, ?_⟩
+      · have htoken_eq :
+            current + 1 - cacheSize + (token - (current + 1 - cacheSize)) =
+              token := by
+          simpa [Nat.add_comm] using Nat.sub_add_cancel hstart_le
+        omega
+      · simpa [Nat.one_mul, Nat.add_comm] using (Nat.sub_add_cancel hstart_le).symm
+    · rintro ⟨offset, hoffset, htoken⟩
+      have hupper :
+          (current + 1 - cacheSize) + cacheSize = current + 1 :=
+        Nat.sub_add_cancel hcache
+      have htoken_current : token ≤ current := by
+        omega
+      constructor
+      · exact htoken_current
+      · rw [Nat.sub_lt_iff_lt_add htoken_current]
+        omega
+  · have hprefix : current + 1 ≤ cacheSize := le_of_not_ge hcache
+    rw [Nat.min_eq_right hprefix, Nat.sub_eq_zero_of_le hprefix]
+    constructor
+    · intro hwindow
+      refine ⟨token, ?_, ?_⟩
+      · exact Nat.lt_succ_of_le hwindow.1
+      · simp
+    · rintro ⟨offset, hoffset, htoken⟩
+      have htoken_current : token ≤ current := by
+        omega
+      have hcurrent_lt_cache : current < cacheSize := by
+        omega
+      constructor
+      · exact htoken_current
+      · exact lt_of_le_of_lt (Nat.sub_le current token) hcurrent_lt_cache
 
 /-- If an older token is still inside the retained KV-cache window, it cannot
 share the current token's ring-buffer slot.
@@ -304,6 +390,21 @@ theorem kvCacheWindow_retainedBatchSlotMap_nodup
     kvCacheWindow_retainedBatchSlots_pairwise_ne
       (cacheSize := cacheSize) (current := current) hwindow
       (List.nodup_iff_pairwise_ne.mp hnodup)
+
+/-- The explicit live KV-cache window maps to duplicate-free ring-buffer slots.
+
+This is the end-to-end live-window version of the retained-batch theorem: the
+generated list contains exactly the retained positions, and every retained token
+in that list occupies a distinct slot. -/
+theorem kvCacheLiveWindowTokens_slotMap_nodup
+    (cacheSize current : Nat) :
+    ((kvCacheLiveWindowTokens cacheSize current).map
+      (kvCacheSlot cacheSize)).Nodup := by
+  apply kvCacheWindow_retainedBatchSlotMap_nodup
+  · intro token htoken
+    exact (kvCacheWindowContains_iff_mem_liveWindowTokens).2 htoken
+  · unfold kvCacheLiveWindowTokens
+    exact List.nodup_range'
 
 def loopRequiredSteps (loopPeriod sample : Nat) : Nat :=
   phaseChannel loopPeriod sample + 1

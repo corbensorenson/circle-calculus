@@ -1089,6 +1089,49 @@ theorems:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_marks_stale_token
     blocker: ""
+  - id: AIM-T0071
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheLiveWindowStart_add_length
+    informal_statement: "The generated KV-cache live-window start plus live-window length ends exactly one token past the current token."
+    formal_statement: "forall cacheSize current : Nat, kvCacheLiveWindowStart cacheSize current + kvCacheLiveWindowLength cacheSize current = current + 1"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_live_window_tokens_are_exact_and_slot_distinct
+    blocker: ""
+  - id: AIM-T0072
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheWindowContains_iff_mem_liveWindowTokens
+    informal_statement: "A token is retained in the KV-cache window exactly when it appears in the generated live-token list for that current position."
+    formal_statement: "forall {cacheSize current token : Nat}, Circle.Applications.kvCacheWindowContains cacheSize current token <-> token in Circle.Applications.kvCacheLiveWindowTokens cacheSize current"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_live_window_tokens_are_exact_and_slot_distinct
+    blocker: ""
+  - id: AIM-T0073
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheLiveWindowTokens_slotMap_nodup
+    informal_statement: "The generated live KV-cache window maps to duplicate-free ring-buffer slots."
+    formal_statement: "forall cacheSize current : Nat, (Circle.Applications.kvCacheLiveWindowTokens cacheSize current).map (Circle.Applications.kvCacheSlot cacheSize) is duplicate-free"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_live_window_tokens_are_exact_and_slot_distinct
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown
+    blocker: ""
   - id: AIM-T0006
     status: lean_proved
     lean_name: Circle.Applications.loopRequiredSteps_pos

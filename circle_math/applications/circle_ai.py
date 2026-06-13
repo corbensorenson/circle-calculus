@@ -42,6 +42,29 @@ def kv_cache_window_contains(cache_size: int, current: int, token: int) -> bool:
     return current - token < cache_size
 
 
+def kv_cache_live_window_start(cache_size: int, current: int) -> int:
+    """Return the first token still live in a KV-cache window ending at ``current``."""
+    _require_positive(cache_size, "cache_size")
+    if current < 0:
+        raise ValueError("current must be nonnegative")
+    return max(0, current + 1 - cache_size)
+
+
+def kv_cache_live_window_length(cache_size: int, current: int) -> int:
+    """Return the number of tokens still live in the current KV-cache window."""
+    _require_positive(cache_size, "cache_size")
+    if current < 0:
+        raise ValueError("current must be nonnegative")
+    return min(cache_size, current + 1)
+
+
+def kv_cache_live_window_tokens(cache_size: int, current: int) -> tuple[int, ...]:
+    """Return the explicit token list still live in the current KV-cache window."""
+    start = kv_cache_live_window_start(cache_size, current)
+    length = kv_cache_live_window_length(cache_size, current)
+    return tuple(range(start, start + length))
+
+
 def kv_cache_next_overwrite_token(cache_size: int, token: int) -> int:
     """Return the next token position that writes the same ring-buffer slot."""
     _require_positive(cache_size, "cache_size")
@@ -118,6 +141,13 @@ def kv_cache_retained_batch_slots_distinct(
     if not all(kv_cache_window_contains(cache_size, current, token) for token in token_tuple):
         return False
     slots = tuple(kv_cache_slot(cache_size, token) for token in token_tuple)
+    return len(set(slots)) == len(slots)
+
+
+def kv_cache_live_window_slots_distinct(cache_size: int, current: int) -> bool:
+    """Return whether the generated live-window tokens occupy distinct slots."""
+    tokens = kv_cache_live_window_tokens(cache_size, current)
+    slots = tuple(kv_cache_slot(cache_size, token) for token in tokens)
     return len(set(slots)) == len(slots)
 
 
@@ -387,6 +417,7 @@ class KVCacheWindowCertificate:
         "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_lt",
         "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_ne",
         "Circle.Applications.kvCacheWindowContains_iff_current_lt_nextOverwrite",
+        "Circle.Applications.not_kvCacheWindowContains_iff_nextOverwrite_le_current_of_le",
     )
     note: str = (
         "KV-cache ring-buffer slot certificate only; this proves finite indexing "
@@ -423,6 +454,33 @@ class KVCacheBatchCertificate:
         "ring-buffer indexing facts for a declared live token batch, not paging "
         "policy quality, throughput, memory savings, retrieval quality, or "
         "deployment safety."
+    )
+
+
+@dataclass(frozen=True)
+class KVCacheLiveWindowCertificate:
+    cache_size: int
+    current: int
+    start: int
+    length: int
+    tokens: tuple[int, ...]
+    slots: tuple[int, ...]
+    all_tokens_retained: bool
+    slots_distinct: bool
+    theorem_ids: tuple[str, ...] = (
+        "AIM-T0071",
+        "AIM-T0072",
+        "AIM-T0073",
+    )
+    lean_declarations: tuple[str, ...] = (
+        "Circle.Applications.kvCacheLiveWindowStart_add_length",
+        "Circle.Applications.kvCacheWindowContains_iff_mem_liveWindowTokens",
+        "Circle.Applications.kvCacheLiveWindowTokens_slotMap_nodup",
+    )
+    note: str = (
+        "KV-cache generated-live-window certificate only; this proves finite "
+        "retention-window enumeration and slot distinctness, not paging policy, "
+        "retrieval quality, throughput, or deployment safety."
     )
 
 
@@ -1579,6 +1637,33 @@ def certify_kv_cache_batch(
         all_retained=all_retained,
         tokens_distinct=tokens_distinct,
         slots_distinct=slots_distinct,
+    )
+
+
+def certify_kv_cache_live_window(
+    *,
+    cache_size: int,
+    current: int,
+) -> KVCacheLiveWindowCertificate:
+    """Emit the generated retained-window token list and slot certificate."""
+    _require_positive(cache_size, "cache_size")
+    if current < 0:
+        raise ValueError("current must be nonnegative")
+    start = kv_cache_live_window_start(cache_size, current)
+    length = kv_cache_live_window_length(cache_size, current)
+    tokens = kv_cache_live_window_tokens(cache_size, current)
+    slots = tuple(kv_cache_slot(cache_size, token) for token in tokens)
+    return KVCacheLiveWindowCertificate(
+        cache_size=cache_size,
+        current=current,
+        start=start,
+        length=length,
+        tokens=tokens,
+        slots=slots,
+        all_tokens_retained=all(
+            kv_cache_window_contains(cache_size, current, token) for token in tokens
+        ),
+        slots_distinct=kv_cache_live_window_slots_distinct(cache_size, current),
     )
 
 
