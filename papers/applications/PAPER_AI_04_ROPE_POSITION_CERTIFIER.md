@@ -1,6 +1,6 @@
 # Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability
 
-Status: draft with proved exact discretized RoPE-bank collision criteria, rational/discretized finite-margin certificate, a tiny standard-RoPE interval seed, and a public Python certifier.
+Status: draft with proved exact discretized RoPE-bank collision criteria, rational/discretized finite-margin certificate, tiny standard-RoPE interval seeds, and a public Python certifier.
 
 ## Purpose
 
@@ -9,7 +9,7 @@ This paper ships the first externally usable Circle Calculus AI contract: a RoPE
 The key separation is:
 
 - **formal certificate:** exact integer-period/discretized phase-bank distinguishability;
-- **finite-margin certificates:** a rational/discretized `1/4099` preset and a tiny standard-RoPE channel-0 interval seed;
+- **finite-margin certificates:** a rational/discretized `1/4099` preset and tiny standard-RoPE channel-0 interval seeds;
 - **numerical diagnostic:** real-valued RoPE phase-margin scan;
 - **out of scope:** claims about model quality, context-length improvement, perplexity, speed, memory, training stability, or deployment readiness.
 
@@ -88,6 +88,9 @@ Lean declarations determine proof status. The theorem manifest is the proof-stat
 - `AIRA-T0065`: `Circle.Applications.ropeStandardChannel0Seed_intervalCertificate`
 - `AIRA-T0066`: `Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin`
 - `AIRA-T0067`: `Circle.Applications.not_ropeStandardChannel0Seed_nearTurn`
+- `AIRA-T0068`: `Circle.Applications.ropeStandardChannel0D2Seed_intervalCertificate`
+- `AIRA-T0069`: `Circle.Applications.ropeStandardChannel0D2Seed_turnRatioFiniteMargin`
+- `AIRA-T0070`: `Circle.Applications.not_ropeStandardChannel0D2Seed_nearTurn`
 
 The main theorem is `AIRA-T0024`:
 
@@ -143,7 +146,7 @@ for ordered positions, nonnegative frequency, and positive full-turn scale. This
 
 `AIRA-T0060` packages the finite witness payload as a proof-carrying certificate object. `AIRA-T0061` is the first named end-to-end finite-margin preset: the declared rational/discretized turn ratio `1/4099` has margin `1/4099` over context `4096`. `AIRA-T0062` applies that certificate to rule out one-channel near-turn collision below the certified margin. This is a complete theorem-backed certificate for a rational/discretized turn-ratio policy; it still does not prove the irrational/nonperiodic standard RoPE margin theorem.
 
-`AIRA-T0063` and `AIRA-T0064` add the interval-certificate route. A rational enclosure of `gap * alpha` that lies inside one integer cell and stays at least `margin` from both cell endpoints proves the nearest-integer lower bound for that gap; a finite table of those witnesses proves the full finite-context turn-ratio margin. `AIRA-T0065` through `AIRA-T0067` instantiate that route for the genuine standard RoPE channel-0 turn ratio `alpha = 1 / (2π)` over the tiny context `6`, with margin `1/8`. The proof uses the elementary bounds `3 < π <= 4` to show `gap/8 <= gap/(2π) <= gap/6` for gaps `1` through `5`. This is a real standard-RoPE theorem, but it is intentionally only a seed: it does not certify 512, 4096, 128k, or a multi-channel bank.
+`AIRA-T0063` and `AIRA-T0064` add the interval-certificate route. A rational enclosure of `gap * alpha` that lies inside one integer cell and stays at least `margin` from both cell endpoints proves the nearest-integer lower bound for that gap; a finite table of those witnesses proves the full finite-context turn-ratio margin. `AIRA-T0065` through `AIRA-T0067` instantiate that route for the genuine standard RoPE channel-0 turn ratio `alpha = 1 / (2π)` over the tiny context `6`, with margin `1/8`, using `3 < π <= 4`. `AIRA-T0068` through `AIRA-T0070` strengthen the same genuine standard-channel seed to context `7`, with margin `1/32`, using the sharper bound `3.14 < π` to certify the sixth gap by the enclosure `gap/8 <= gap/(2π) <= 25*gap/157`. This is real standard-RoPE theorem content, but it is intentionally still tiny: it does not certify 512, 4096, 128k, or a multi-channel bank.
 
 ## Certifier Interface
 

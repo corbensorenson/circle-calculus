@@ -4,7 +4,7 @@ This note is a durable audit trail for the real-valued RoPE phase-margin theorem
 
 ## Current Proved Bridge
 
-The real-phase theorem spine currently runs from `AIRA-T0029` through `AIRA-T0033`, then `AIRA-T0037` through `AIRA-T0045`, plus `AIRA-T0047`, `AIRA-T0050`, and `AIRA-T0053` through `AIRA-T0067`.
+The real-phase theorem spine currently runs from `AIRA-T0029` through `AIRA-T0033`, then `AIRA-T0037` through `AIRA-T0045`, plus `AIRA-T0047`, `AIRA-T0050`, and `AIRA-T0053` through `AIRA-T0070`.
 
 `AIRA-T0041` is the Diophantine-scaling bridge:
 
@@ -42,7 +42,7 @@ This is not a lower-bound theorem. It is the normalization step that makes the n
 
 `AIRA-T0063` and `AIRA-T0064` introduce the interval-certificate route for genuine nonperiodic turn ratios. A single rational interval witness proves all integer-turn lower bounds for one generated gap when the enclosure lies inside one integer cell and stays at least `margin` from both endpoints. A finite table of those witnesses proves `ropeTurnRatioFiniteMargin alpha margin context`.
 
-`AIRA-T0065` through `AIRA-T0067` are the first named standard-RoPE interval seed. For channel 0, where `alpha = 1 / (2π)`, Lean proves a context-6 margin `1/8` using the elementary bounds `3 < π <= 4`. The witness table encloses each inspected value as `gap/8 <= gap/(2π) <= gap/6` for gaps `1` through `5`, all inside the cell `[1/8, 7/8]`. This is a theorem-backed certificate for the genuine standard channel, but only for the tiny seed context. It does not certify 512, 4096, or model-scale RoPE contexts.
+`AIRA-T0065` through `AIRA-T0067` are the first named standard-RoPE interval seed. For channel 0, where `alpha = 1 / (2π)`, Lean proves a context-6 margin `1/8` using the elementary bounds `3 < π <= 4`. `AIRA-T0068` through `AIRA-T0070` strengthen the same genuine standard channel to context 7 with margin `1/32`: the witness table encloses each inspected value as `gap/8 <= gap/(2π) <= 25*gap/157` for gaps `1` through `6`, using `π <= 4` and the sharper bound `3.14 < π`. This is theorem-backed standard-RoPE content, but only for a tiny seed context. It does not certify 512, 4096, or model-scale RoPE contexts.
 
 ## Local Mathlib Anchors
 
@@ -91,6 +91,7 @@ The important warning is `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irratio
 16. Use `AIRA-T0061` and `AIRA-T0062` as the first fully proved rational/discretized named preset: `1/4099`, context `4096`, margin `1/4099`, and no near-turn collision below that margin.
 17. Use `AIRA-T0063` and `AIRA-T0064` to turn exact rational interval witness tables into finite-context margin proofs.
 18. Use `AIRA-T0065` through `AIRA-T0067` as the first tiny standard-RoPE seed: channel 0, `alpha = 1 / (2π)`, context `6`, margin `1/8`, no near-turn below that margin.
+19. Use `AIRA-T0068` through `AIRA-T0070` as the strengthened tiny standard-RoPE seed: channel 0, `alpha = 1 / (2π)`, context `7`, margin `1/32`, no near-turn below that margin.
 19. Scale the interval route by generating exact rational interval data for larger contexts such as 512 or 4096 and proving sharper `π` or continued-fraction bounds for those intervals.
 
 ## Guardrails
@@ -104,5 +105,5 @@ The important warning is `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irratio
 - A generated gap list only handles the finite `gap` domain; it does not by itself discharge the integer-turn lower-bound obligation.
 - The floor/ceiling witness bridge discharges the infinite integer-turn quantifier for each fixed gap, but it does not prove that a concrete irrational or nonperiodic RoPE turn ratio has a positive lower bound.
 - The `1/4099` preset certificate is theorem-backed, but it is a rational/discretized turn-ratio certificate, not a standard irrational RoPE certificate.
-- The standard channel-0 interval seed is theorem-backed for context 6 only. Larger standard-RoPE contexts need generated rational interval data and sharper `π` or continued-fraction bounds.
+- The current strongest standard channel-0 interval seed is theorem-backed for context 7 only. Larger standard-RoPE contexts need generated rational interval data and sharper `π` or continued-fraction bounds.
 - A full standard real RoPE bank certificate needs channel-wise finite-context lower bounds before the Living Book or certifier can mark the ordinary real-phase scan as formally certified.
