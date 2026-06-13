@@ -1636,7 +1636,9 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
             lean_declarations=standard_interval_seed.lean_declarations,
             explanation=(
                 "The strongest named genuine standard-RoPE interval seed certifies channel 0 "
-                "with turn ratio 1/(2*pi), margin 1/104219, and context 4096 only."
+                "with turn ratio 1/(2*pi), margin 1/104219, and context 4096 only; "
+                "the same theorem trail brackets the 4k margin by refuting every "
+                "advertised margin at or above 1/104218 for that channel."
             ),
         ),
         RoPEProofLayerReport(

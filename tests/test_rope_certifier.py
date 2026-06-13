@@ -688,6 +688,8 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     assert certificate.proof_layers[1].status == "AVAILABLE_NAMED_PRESET"
     assert certificate.proof_layers[2].status == "AVAILABLE_SEED_CONTEXT_4096"
     assert certificate.proof_layers[2].theorem_ids == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS
+    assert "margin 1/104219" in certificate.proof_layers[2].explanation
+    assert "at or above 1/104218" in certificate.proof_layers[2].explanation
     assert not certificate.proof_layers[3].theorem_backed
     assert "AIRA-T0046" in certificate.theorem_ids
     assert "AIRA-T0048" in certificate.theorem_ids
