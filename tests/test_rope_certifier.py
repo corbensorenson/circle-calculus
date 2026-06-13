@@ -390,6 +390,9 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert "AIRA-T0117" in certificate.theorem_ids
     assert "AIRA-T0118" in certificate.theorem_ids
     assert "AIRA-T0119" in certificate.theorem_ids
+    assert "AIRA-T0120" in certificate.theorem_ids
+    assert "AIRA-T0121" in certificate.theorem_ids
+    assert "AIRA-T0122" in certificate.theorem_ids
     assert (
         "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed"
         in certificate.lean_declarations
@@ -462,8 +465,21 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
         "Circle.Applications.ropeStandardChannel0D11_context4096_margin_bracket"
         in certificate.lean_declarations
     )
+    assert (
+        "Circle.Applications.ropeStandardChannel0D12Seed_intervalCertificate"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.ropeStandardChannel0D12Seed_turnRatioFiniteMargin"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.not_ropeStandardChannel0D12Seed_nearTurn"
+        in certificate.lean_declarations
+    )
     assert "1/104219 is proved" in certificate.explanation
     assert "at or above 1/104218 is impossible" in certificate.explanation
+    assert "8k one-channel seed at margin 1/104220" in certificate.explanation
     assert tuple(witness.gap for witness in certificate.interval_witnesses) == tuple(
         range(1, 4096)
     )
@@ -501,6 +517,15 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     )
     assert d20_sharp_plan.theorem_status == "lean_proved_interval_seed_AIRA-T0111_to_AIRA-T0114"
     assert d20_sharp_plan.planned_margin == "1/104219"
+    d20_8k_plan = plan_standard_channel0_interval_bands(
+        pi_bound_preset="d20",
+        margin=Fraction(1, 104220),
+        max_context_length=8192,
+    )
+    assert d20_8k_plan.theorem_status == "lean_proved_interval_seed_AIRA-T0120_to_AIRA-T0122"
+    assert d20_8k_plan.context_length == 8192
+    assert d20_8k_plan.first_uncovered_gap is None
+    assert d20_8k_plan.planned_margin == "1/104220"
     assert d20_plan.context_length == 4096
     assert d20_plan.first_uncovered_gap is None
     assert d20_plan.band_count == 652
@@ -686,7 +711,7 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     )
     assert certificate.proof_layers[0].status == "FAIL"
     assert certificate.proof_layers[1].status == "AVAILABLE_NAMED_PRESET"
-    assert certificate.proof_layers[2].status == "AVAILABLE_SEED_CONTEXT_4096"
+    assert certificate.proof_layers[2].status == "AVAILABLE_SEED_CONTEXT_8192"
     assert certificate.proof_layers[2].theorem_ids == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS
     assert "margin 1/104219" in certificate.proof_layers[2].explanation
     assert "at or above 1/104218" in certificate.proof_layers[2].explanation
@@ -966,6 +991,12 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert payload["standard_interval_candidate_plans"][2]["theorem_status"] == (
         "lean_proved_interval_seed_AIRA-T0111_to_AIRA-T0114"
     )
+    assert payload["standard_interval_candidate_plans"][3]["context_length"] == 8192
+    assert payload["standard_interval_candidate_plans"][3]["band_count"] == 1304
+    assert payload["standard_interval_candidate_plans"][3]["planned_margin"] == "1/104220"
+    assert payload["standard_interval_candidate_plans"][3]["theorem_status"] == (
+        "lean_proved_interval_seed_AIRA-T0120_to_AIRA-T0122"
+    )
     assert payload["presets"][0]["preset"] == "llama_style_10000_4k"
     assert payload["presets"][0]["certificate"]["exact_discrete_summary"]["pass_exact"] is True
     assert "lean_declarations" not in payload["presets"][0]["certificate"]
@@ -998,6 +1029,7 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert "Standard RoPE Candidate Interval Plans" in markdown_result.stdout
     assert "lean_proved_interval_seed_AIRA-T0090_to_AIRA-T0094" in markdown_result.stdout
     assert "lean_proved_interval_seed_AIRA-T0111_to_AIRA-T0114" in markdown_result.stdout
+    assert "lean_proved_interval_seed_AIRA-T0120_to_AIRA-T0122" in markdown_result.stdout
     assert "Exact Phase-Bank Diagnostics" in markdown_result.stdout
     assert ROPE_RATIONAL_PRESET_4099_NAME in markdown_result.stdout
     assert ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME in markdown_result.stdout

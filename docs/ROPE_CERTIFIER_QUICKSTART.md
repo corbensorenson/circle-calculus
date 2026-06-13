@@ -145,10 +145,10 @@ Expected meaning:
 standard_rope_channel0_interval_context_4096
 True
 1/104219
-AIRA-T0063,AIRA-T0064,AIRA-T0065,...,AIRA-T0119
+AIRA-T0063,AIRA-T0064,AIRA-T0065,...,AIRA-T0122
 ```
 
-Lean proves that channel 0 with standard turn ratio `1 / (2π)` has finite-context nearest-integer margin `1/104219` for gaps `1` through `4095`. The current strongest seed uses the 20-decimal enclosure `10^20*gap/628318530717958647694 <= gap/(2π) <= 10^20*gap/628318530717958647692`, split across computed integer cells `0` through `651`. Lean also proves that the earlier `1/1024` margin stops at gap `710`, that the doubled D9 margin `1/65536` is impossible for any context containing gap `710`, that the nearby larger D10 margin `1/104000` is impossible once that gap is in scope, and that the adjacent larger D11 margin `1/104218` is also impossible there. `AIRA-T0118` generalizes the last obstruction to every advertised margin at or above `1/104218`; `AIRA-T0119` packages the 4k bracket: `1/104219` is proved, while `1/104218` and larger margins are impossible. `AIRA-T0102`, `AIRA-T0108`, and `AIRA-T0114` add conditional bank-level bridges when a finite real-phase bank contains the standard channel-0 angular frequency. `AIRA-T0117` packages the D11 bridge for banks whose first channel is standard channel 0. This is real standard-RoPE theorem content, but still channel-0 based; it is not a proof for 128k or every channel in the whole multi-channel bank.
+Lean proves that channel 0 with standard turn ratio `1 / (2π)` has finite-context nearest-integer margin `1/104219` for gaps `1` through `4095`. The sharp 4k seed uses the 20-decimal enclosure `10^20*gap/628318530717958647694 <= gap/(2π) <= 10^20*gap/628318530717958647692`, split across computed integer cells `0` through `651`. Lean also proves that the earlier `1/1024` margin stops at gap `710`, that the doubled D9 margin `1/65536` is impossible for any context containing gap `710`, that the nearby larger D10 margin `1/104000` is impossible once that gap is in scope, and that the adjacent larger D11 margin `1/104218` is also impossible there. `AIRA-T0118` generalizes the last obstruction to every advertised margin at or above `1/104218`; `AIRA-T0119` packages the 4k bracket: `1/104219` is proved, while `1/104218` and larger margins are impossible. `AIRA-T0120` through `AIRA-T0122` then lower the margin to `1/104220` and extend the same one-channel interval-certificate method to context `8192`. `AIRA-T0102`, `AIRA-T0108`, and `AIRA-T0114` add conditional bank-level bridges when a finite real-phase bank contains the standard channel-0 angular frequency. `AIRA-T0117` packages the D11 bridge for banks whose first channel is standard channel 0. This is real standard-RoPE theorem content, but still channel-0 based; it is not a proof for 128k or every channel in the whole multi-channel bank.
 
 For audit and future Lean work, the sidecar also exposes interval plans:
 
@@ -170,9 +170,15 @@ plan_standard_channel0_interval_bands(
     pi_bound_preset="d20",
     margin=Fraction(1, 104219),
 ).theorem_status  # lean_proved_interval_seed_AIRA-T0111_to_AIRA-T0114
+
+plan_standard_channel0_interval_bands(
+    pi_bound_preset="d20",
+    margin=Fraction(1, 104220),
+    max_context_length=8192,
+).theorem_status  # lean_proved_interval_seed_AIRA-T0120_to_AIRA-T0122
 ```
 
-The d4, d6, conservative d20 `1/131072`, tighter d20 `1/105000`, and current d20 `1/104219` plans have been converted into Lean proof. Future plans are exact-rational source data only until matching declarations compile and manifest ids are marked proved.
+The d4, d6, conservative d20 `1/131072`, tighter d20 `1/105000`, sharp d20 `1/104219`, and 8k d20 `1/104220` plans have been converted into Lean proof. Future plans are exact-rational source data only until matching declarations compile and manifest ids are marked proved.
 
 If the exact discrete contract fails, the output includes a common collision gap and sample colliding pairs.
 It also reports `guaranteed_common_gap_collision_pair_count`, the number of starts whose paired position is exactly the common collision gap ahead, and `guaranteed_common_gap_multiple_pair_count`, the corresponding guaranteed family summed over every positive in-context multiple of that gap. `total_bank_collision_pair_count` is the exact all-channel count for the declared integer-period bank, backed by the period-bank LCM theorem. `AIRA-T0048` proves the LCM-gap collision family, and `AIRA-T0049` proves that a positive LCM below the context gives an explicit unequal collision witness. It is not a real-valued RoPE collision count.

@@ -190,6 +190,9 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS: tuple[str, ...] = (
     "AIRA-T0117",
     "AIRA-T0118",
     "AIRA-T0119",
+    "AIRA-T0120",
+    "AIRA-T0121",
+    "AIRA-T0122",
 )
 
 ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -250,6 +253,9 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons",
     "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_104218_of_context_gt_710",
     "Circle.Applications.ropeStandardChannel0D11_context4096_margin_bracket",
+    "Circle.Applications.ropeStandardChannel0D12Seed_intervalCertificate",
+    "Circle.Applications.ropeStandardChannel0D12Seed_turnRatioFiniteMargin",
+    "Circle.Applications.not_ropeStandardChannel0D12Seed_nearTurn",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -1203,6 +1209,12 @@ def plan_standard_channel0_interval_bands(
         and context_length == 4096
         and first_uncovered_gap is None
     )
+    proven_d20_8k_seed = (
+        pi_bound_preset == "d20"
+        and margin == Fraction(1, 104220)
+        and context_length == 8192
+        and first_uncovered_gap is None
+    )
     return StandardRoPEIntervalPlan(
         schema_id="circle_calculus.standard_rope_interval_plan.v0",
         name=(
@@ -1231,13 +1243,16 @@ def plan_standard_channel0_interval_bands(
             if proven_d20_tight_seed
             else "lean_proved_interval_seed_AIRA-T0111_to_AIRA-T0114"
             if proven_d20_sharp_seed
+            else "lean_proved_interval_seed_AIRA-T0120_to_AIRA-T0122"
+            if proven_d20_8k_seed
             else "candidate_plan_not_lean_proved"
         ),
         explanation=(
             "This exact-rational plan groups positive gaps into integer-cell "
             "bands for a Lean interval certificate. The d4 margin-1/512 "
             "context-333 plan, d6 margin-1/1024 context-710 plan, and d20 "
-            "margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans have now "
+            "margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 "
+            "plans plus the d20 margin-1/104220 context-8192 plan have now "
             "been converted into compiled Lean declarations; other generated "
             "plans remain source data until matching declarations compile and "
             "manifest ids are marked proved."
@@ -1317,7 +1332,8 @@ def certify_standard_channel0_interval_seed() -> IntervalBackedTurnRatioCertific
             "margin stops at gap 710, and that margins 1/65536, 1/104000, and 1/104218 "
             "are already impossible for any context containing that gap. Lean further packages the D11 "
             "result as a 4k bracket: 1/104219 is proved, while every margin at or above "
-            "1/104218 is impossible for context 4096. The theorem trail also includes a "
+            "1/104218 is impossible for context 4096. The theorem trail also includes an "
+            "8k one-channel seed at margin 1/104220. It also includes a "
             "conditional bank-level bridge for banks containing the standard "
             "channel-0 angular frequency, plus a concrete bridge for banks whose "
             "first channel is that standard frequency."
@@ -1627,7 +1643,7 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
         RoPEProofLayerReport(
             layer="interval_backed_standard_rope",
             status=(
-                "AVAILABLE_SEED_CONTEXT_4096"
+                "AVAILABLE_SEED_CONTEXT_8192"
                 if standard_interval_seed.pass_certificate
                 else "UNAVAILABLE"
             ),
@@ -1635,10 +1651,11 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
             theorem_ids=standard_interval_seed.theorem_ids,
             lean_declarations=standard_interval_seed.lean_declarations,
             explanation=(
-                "The strongest named genuine standard-RoPE interval seed certifies channel 0 "
-                "with turn ratio 1/(2*pi), margin 1/104219, and context 4096 only; "
-                "the same theorem trail brackets the 4k margin by refuting every "
-                "advertised margin at or above 1/104218 for that channel."
+                "The bracketed 4k genuine standard-RoPE interval seed certifies channel 0 "
+                "with turn ratio 1/(2*pi), margin 1/104219, and context 4096; "
+                "the same theorem trail refutes every advertised margin at or above "
+                "1/104218 for that channel, while the planner also exposes a Lean-proved "
+                "8k seed at margin 1/104220."
             ),
         ),
         RoPEProofLayerReport(
