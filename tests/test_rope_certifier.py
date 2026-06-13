@@ -393,6 +393,8 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert "AIRA-T0120" in certificate.theorem_ids
     assert "AIRA-T0121" in certificate.theorem_ids
     assert "AIRA-T0122" in certificate.theorem_ids
+    assert "AIRA-T0123" in certificate.theorem_ids
+    assert "AIRA-T0124" in certificate.theorem_ids
     assert (
         "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed"
         in certificate.lean_declarations
@@ -477,9 +479,18 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
         "Circle.Applications.not_ropeStandardChannel0D12Seed_nearTurn"
         in certificate.lean_declarations
     )
+    assert (
+        "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed_cons"
+        in certificate.lean_declarations
+    )
     assert "1/104219 is proved" in certificate.explanation
     assert "at or above 1/104218 is impossible" in certificate.explanation
     assert "8k one-channel seed at margin 1/104220" in certificate.explanation
+    assert "D12 bank-level bridges" in certificate.explanation
     assert tuple(witness.gap for witness in certificate.interval_witnesses) == tuple(
         range(1, 4096)
     )
@@ -555,7 +566,9 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert scanned_margin < 1 / 1024
     assert scanned_margin < 1 / 104000
     assert scanned_margin < 1 / 104218
-    assert "context 4096 only" in certificate.claim_boundary
+    assert "over context 4096" in certificate.claim_boundary
+    assert "8192-context one-channel seed" in certificate.claim_boundary
+    assert "does not certify 128k contexts" in certificate.claim_boundary
 
 
 def test_standard_channel0_interval_plan_finds_next_exact_rational_targets() -> None:
@@ -715,6 +728,7 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     assert certificate.proof_layers[2].theorem_ids == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS
     assert "margin 1/104219" in certificate.proof_layers[2].explanation
     assert "at or above 1/104218" in certificate.proof_layers[2].explanation
+    assert "D12 one-separating-channel bank bridges" in certificate.proof_layers[2].explanation
     assert not certificate.proof_layers[3].theorem_backed
     assert "AIRA-T0046" in certificate.theorem_ids
     assert "AIRA-T0048" in certificate.theorem_ids

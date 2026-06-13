@@ -912,7 +912,9 @@
               "AIRA-T0119",
               "AIRA-T0120",
               "AIRA-T0121",
-              "AIRA-T0122"
+              "AIRA-T0122",
+              "AIRA-T0123",
+              "AIRA-T0124"
             ]
           },
           {
@@ -1478,7 +1480,9 @@
               "AIRA-T0119",
               "AIRA-T0120",
               "AIRA-T0121",
-              "AIRA-T0122"
+              "AIRA-T0122",
+              "AIRA-T0123",
+              "AIRA-T0124"
             ]
           },
           {
@@ -2028,7 +2032,9 @@
               "AIRA-T0119",
               "AIRA-T0120",
               "AIRA-T0121",
-              "AIRA-T0122"
+              "AIRA-T0122",
+              "AIRA-T0123",
+              "AIRA-T0124"
             ]
           },
           {
@@ -2309,7 +2315,9 @@
               "AIRA-T0119",
               "AIRA-T0120",
               "AIRA-T0121",
-              "AIRA-T0122"
+              "AIRA-T0122",
+              "AIRA-T0123",
+              "AIRA-T0124"
             ]
           },
           {
@@ -2602,7 +2610,9 @@
               "AIRA-T0119",
               "AIRA-T0120",
               "AIRA-T0121",
-              "AIRA-T0122"
+              "AIRA-T0122",
+              "AIRA-T0123",
+              "AIRA-T0124"
             ]
           },
           {
@@ -2952,7 +2962,9 @@
               "AIRA-T0119",
               "AIRA-T0120",
               "AIRA-T0121",
-              "AIRA-T0122"
+              "AIRA-T0122",
+              "AIRA-T0123",
+              "AIRA-T0124"
             ]
           },
           {
@@ -3258,7 +3270,9 @@
               "AIRA-T0119",
               "AIRA-T0120",
               "AIRA-T0121",
-              "AIRA-T0122"
+              "AIRA-T0122",
+              "AIRA-T0123",
+              "AIRA-T0124"
             ]
           },
           {
@@ -14079,9 +14093,9 @@
   ],
   "standard_interval_certificate": {
     "certified_margin": "1/104219",
-    "claim_boundary": "This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 4096 only. It is not a full standard RoPE bank certificate and does not certify larger contexts or other channels.",
+    "claim_boundary": "This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 4096, with a theorem-trail extension to an 8192-context one-channel seed and conditional one-separating-channel bank bridges. It is not a proof that every standard RoPE channel has a large-context margin, and it does not certify 128k contexts.",
     "context_length": 4096,
-    "explanation": "Lean proves that standard RoPE channel 0, with turn ratio 1/(2*pi), has finite nearest-integer margin 1/104219 for gaps 1 through 4095. Every gap uses the 20-decimal enclosure 10^20*gap/628318530717958647694 <= gap/(2*pi) <= 10^20*gap/628318530717958647692, split across computed integer cells 0 through 651. Lean also proves that the earlier 1/1024 margin stops at gap 710, and that margins 1/65536, 1/104000, and 1/104218 are already impossible for any context containing that gap. Lean further packages the D11 result as a 4k bracket: 1/104219 is proved, while every margin at or above 1/104218 is impossible for context 4096. The theorem trail also includes an 8k one-channel seed at margin 1/104220. It also includes a conditional bank-level bridge for banks containing the standard channel-0 angular frequency, plus a concrete bridge for banks whose first channel is that standard frequency.",
+    "explanation": "Lean proves that standard RoPE channel 0, with turn ratio 1/(2*pi), has finite nearest-integer margin 1/104219 for gaps 1 through 4095. Every gap uses the 20-decimal enclosure 10^20*gap/628318530717958647694 <= gap/(2*pi) <= 10^20*gap/628318530717958647692, split across computed integer cells 0 through 651. Lean also proves that the earlier 1/1024 margin stops at gap 710, and that margins 1/65536, 1/104000, and 1/104218 are already impossible for any context containing that gap. Lean further packages the D11 result as a 4k bracket: 1/104219 is proved, while every margin at or above 1/104218 is impossible for context 4096. The theorem trail also includes an 8k one-channel seed at margin 1/104220, plus D12 bank-level bridges for banks containing the standard channel-0 angular frequency and for banks whose first channel is that standard frequency.",
     "interval_witnesses": [
       {
         "cell": 0,
@@ -38714,7 +38728,9 @@
       "Circle.Applications.ropeStandardChannel0D11_context4096_margin_bracket",
       "Circle.Applications.ropeStandardChannel0D12Seed_intervalCertificate",
       "Circle.Applications.ropeStandardChannel0D12Seed_turnRatioFiniteMargin",
-      "Circle.Applications.not_ropeStandardChannel0D12Seed_nearTurn"
+      "Circle.Applications.not_ropeStandardChannel0D12Seed_nearTurn",
+      "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed",
+      "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed_cons"
     ],
     "name": "standard_rope_channel0_interval_context_4096",
     "pass_certificate": true,
@@ -38780,7 +38796,9 @@
       "AIRA-T0119",
       "AIRA-T0120",
       "AIRA-T0121",
-      "AIRA-T0122"
+      "AIRA-T0122",
+      "AIRA-T0123",
+      "AIRA-T0124"
     ],
     "turn_ratio_expression": "1/(2*pi)"
   }

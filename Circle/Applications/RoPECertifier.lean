@@ -3250,6 +3250,77 @@ theorem not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons
       (left := left) (right := right)
       hcontext hmargin_le (by simp) hleft hright hfull_pos htolerance
 
+/-- The context-`8192` standard channel-0 interval seed can be used as a
+bank-level no-near-turn certificate whenever that channel frequency is
+present.
+
+This is the D12 version of the certifier-facing transfer. It lowers the
+advertised margin to `1/104220` and extends the reusable one-separating-channel
+bank contract to the longer `8192` seed context. It still does not prove
+independent margins for the other standard RoPE channels. -/
+theorem not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed
+    {frequencies : List ℝ} {fullTurn requestedMargin tolerance : ℝ}
+    {requestedContext left right : Nat}
+    (hcontext : requestedContext ≤ ropeStandardChannel0D12SeedContext)
+    (hmargin_le : requestedMargin ≤ ropeStandardChannel0D12SeedMargin)
+    (hmem : ropeStandardChannel0TurnRatio * fullTurn ∈ frequencies)
+    (hleft : left < right) (hright : right < requestedContext)
+    (hfull_pos : 0 < fullTurn)
+    (htolerance : tolerance < fullTurn * requestedMargin) :
+    ¬ ropeRealPhaseBankNearTurn frequencies fullTurn tolerance left right := by
+  have hratio :
+      (ropeStandardChannel0TurnRatio * fullTurn) / fullTurn =
+        ropeStandardChannel0TurnRatio := by
+    field_simp [hfull_pos.ne']
+  have hfrequency_nonneg : 0 ≤ ropeStandardChannel0TurnRatio * fullTurn := by
+    dsimp [ropeStandardChannel0TurnRatio]
+    positivity
+  have hmargin :
+      ropeTurnRatioFiniteMargin
+        ((ropeStandardChannel0TurnRatio * fullTurn) / fullTurn)
+        ropeStandardChannel0D12SeedMargin ropeStandardChannel0D12SeedContext := by
+    simpa [hratio] using ropeStandardChannel0D12Seed_turnRatioFiniteMargin
+  exact
+    not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin
+      (frequencies := frequencies)
+      (frequency := ropeStandardChannel0TurnRatio * fullTurn)
+      (fullTurn := fullTurn)
+      (requestedMargin := requestedMargin)
+      (certifiedMargin := ropeStandardChannel0D12SeedMargin)
+      (tolerance := tolerance)
+      (requestedContext := requestedContext)
+      (certifiedContext := ropeStandardChannel0D12SeedContext)
+      (left := left) (right := right)
+      hcontext hmargin_le hmem hleft hright hfrequency_nonneg hfull_pos hmargin
+      htolerance
+
+/-- Any finite real-phase bank whose first channel is the standard channel-0
+frequency inherits the D12 no-near-turn certificate.
+
+This removes the explicit membership premise from the D12 bridge for the common
+"standard channel plus additional channels" bank shape. It remains a
+one-separating-channel certificate, not a full all-channel margin theorem. -/
+theorem not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed_cons
+    {extraFrequencies : List ℝ} {fullTurn requestedMargin tolerance : ℝ}
+    {requestedContext left right : Nat}
+    (hcontext : requestedContext ≤ ropeStandardChannel0D12SeedContext)
+    (hmargin_le : requestedMargin ≤ ropeStandardChannel0D12SeedMargin)
+    (hleft : left < right) (hright : right < requestedContext)
+    (hfull_pos : 0 < fullTurn)
+    (htolerance : tolerance < fullTurn * requestedMargin) :
+    ¬ ropeRealPhaseBankNearTurn
+      ((ropeStandardChannel0TurnRatio * fullTurn) :: extraFrequencies)
+      fullTurn tolerance left right := by
+  exact
+    not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed
+      (frequencies := (ropeStandardChannel0TurnRatio * fullTurn) :: extraFrequencies)
+      (fullTurn := fullTurn)
+      (requestedMargin := requestedMargin)
+      (tolerance := tolerance)
+      (requestedContext := requestedContext)
+      (left := left) (right := right)
+      hcontext hmargin_le (by simp) hleft hright hfull_pos htolerance
+
 /-- A single separating channel rules out an all-channel real-phase near-turn
 collision at any smaller tolerance.
 

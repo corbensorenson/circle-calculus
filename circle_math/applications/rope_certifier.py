@@ -193,6 +193,8 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS: tuple[str, ...] = (
     "AIRA-T0120",
     "AIRA-T0121",
     "AIRA-T0122",
+    "AIRA-T0123",
+    "AIRA-T0124",
 )
 
 ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -256,6 +258,8 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeStandardChannel0D12Seed_intervalCertificate",
     "Circle.Applications.ropeStandardChannel0D12Seed_turnRatioFiniteMargin",
     "Circle.Applications.not_ropeStandardChannel0D12Seed_nearTurn",
+    "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed",
+    "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed_cons",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -1333,15 +1337,16 @@ def certify_standard_channel0_interval_seed() -> IntervalBackedTurnRatioCertific
             "are already impossible for any context containing that gap. Lean further packages the D11 "
             "result as a 4k bracket: 1/104219 is proved, while every margin at or above "
             "1/104218 is impossible for context 4096. The theorem trail also includes an "
-            "8k one-channel seed at margin 1/104220. It also includes a "
-            "conditional bank-level bridge for banks containing the standard "
-            "channel-0 angular frequency, plus a concrete bridge for banks whose "
-            "first channel is that standard frequency."
+            "8k one-channel seed at margin 1/104220, plus D12 bank-level bridges "
+            "for banks containing the standard channel-0 angular frequency and for "
+            "banks whose first channel is that standard frequency."
         ),
         claim_boundary=(
             "This is a theorem-backed interval certificate for the genuine standard "
-            "RoPE channel-0 turn ratio over context 4096 only. It is not a full standard "
-            "RoPE bank certificate and does not certify larger contexts or other channels."
+            "RoPE channel-0 turn ratio over context 4096, with a theorem-trail extension "
+            "to an 8192-context one-channel seed and conditional one-separating-channel "
+            "bank bridges. It is not a proof that every standard RoPE channel has a "
+            "large-context margin, and it does not certify 128k contexts."
         ),
     )
 
@@ -1655,7 +1660,7 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
                 "with turn ratio 1/(2*pi), margin 1/104219, and context 4096; "
                 "the same theorem trail refutes every advertised margin at or above "
                 "1/104218 for that channel, while the planner also exposes a Lean-proved "
-                "8k seed at margin 1/104220."
+                "8k seed at margin 1/104220 and D12 one-separating-channel bank bridges."
             ),
         ),
         RoPEProofLayerReport(
