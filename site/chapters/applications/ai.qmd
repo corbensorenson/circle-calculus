@@ -14,6 +14,8 @@ Local compute language is MLX/Mac-first.
 
 The flagship standalone contract is the [RoPE position-distinguishability certifier](rope_certifier.qmd). It lets a non-Lean reader provide a rotary-position configuration and receive a theorem-linked exact discrete collision certificate plus a separate numerical real-phase margin report.
 
+For a guided sequence through the standalone contract pattern, read the [AI contract ladder](ai_contract_ladder.qmd) before opening the theorem shelves.
+
 The exploratory fixtures (`AIA-B*`, `AIM-B*`, `AIRA-B*`, twenty-odd in all) follow one recipe: pit a circular feature against ordinary baselines — a scalar threshold, a learned-position lookup, a wrong-period table — plus a nonperiodic control where the circular feature *should not* win, with optional MLX scoring. That discipline (baselines and negative controls) is the good part. The honest caveat: many of these tasks are **tautological by construction** — the synthetic label is defined as a function of the phase, so a phase lookup wins by definition, demonstrating plumbing rather than usefulness. These fixtures are not model-quality claims and not performance claims.
 
 <p data-showcase-ref="SHOW-010">Showcase evidence: <a href="../../showcase.qmd#SHOW-010">SHOW-010 AI memory, loop, and adapter schedules</a>.</p>
@@ -61,6 +63,20 @@ context length and every token provably reaches every other; combine local and c
 paths when the task mixes near and long dependencies.*
 
 The gap theorem is the contract form: it lets a tool report not only "these lags are reachable" but also "these lags are uncovered by this declared sparse plan." That is coverage bookkeeping, not attention quality.
+
+**KV-cache ring-buffer safety.** A fixed-size KV cache is a circular address
+space: token `t` writes slot `t mod cache_size`. The proved contract says what
+that finite address arithmetic can and cannot certify:
+
+- a token's slot is always inside the declared cache size (`AIM-T0059`);
+- ordered same-slot collision is exactly divisibility of the token gap (`AIM-T0061`);
+- retained-window membership is exactly the next-overwrite boundary (`AIM-T0069`);
+- a non-future stale token is exactly one whose next same-slot overwrite has already happened (`AIM-T0070`);
+- the generated live-token list exactly matches retained-window membership and maps to duplicate-free slots (`AIM-T0071` through `AIM-T0073`).
+
+This is an implementation-facing safety contract for finite indexing and freshness
+bookkeeping. It does not prove paging quality, retrieval quality, memory savings,
+or deployment safety.
 
 **RoPE relative position.** Rotary embeddings encode position as rotation; their defining
 property — interaction depends only on relative position — is the rotation law:
@@ -162,6 +178,13 @@ proved:
 <div class="theorem-box" data-theorem-id="AIT-T0078"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0004"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0005"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0059"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0061"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0069"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0070"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0071"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0072"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0073"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0021"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0022"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0023"></div>
@@ -875,7 +898,7 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 <script type="module" src="../../widgets/ai/learned_recurrence_schedule.js"></script>
 <div class="book-navigation">
 <a href="erdos_bridges.qmd">Previous: Classical Bridges</a>
-<a href="rope_certifier.qmd">Next: RoPE Certifier</a>
+<a href="ai_contract_ladder.qmd">Next: AI Contract Ladder</a>
 </div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

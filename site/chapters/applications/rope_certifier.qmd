@@ -374,7 +374,7 @@ The d4, d6, and d20 plans are now source tables for compiled Lean declarations. 
 <p>Exact phase-bank CLI source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/scripts/phase_bank_certify.py">scripts/phase_bank_certify.py</a></p>
 
 <div class="book-navigation">
-<a href="ai.qmd">Previous: AI</a>
+<a href="ai_contract_ladder.qmd">Previous: AI Contract Ladder</a>
 <a href="kv_cache_ring_buffer.qmd">Next: KV-Cache Ring Buffer</a>
 </div>
 

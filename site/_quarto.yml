@@ -134,6 +134,8 @@ website:
             text: Classical Bridges
           - href: chapters/applications/ai.qmd
             text: AI
+          - href: chapters/applications/ai_contract_ladder.qmd
+            text: AI Contract Ladder
           - href: chapters/applications/rope_certifier.qmd
             text: RoPE Certifier
           - href: chapters/applications/kv_cache_ring_buffer.qmd

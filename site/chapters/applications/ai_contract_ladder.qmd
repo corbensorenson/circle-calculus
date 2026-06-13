@@ -1,0 +1,148 @@
+---
+title: "AI Contract Ladder"
+---
+
+This lesson turns the AI application lane into a sequence of proof-carrying contracts. The point is not to claim that circular structure improves every model. The point is to learn how a real ML component can expose a finite circular boundary, attach theorem ids to that boundary, and keep performance claims separate from proof claims.
+
+::: {.lesson-goal}
+
+## Goal
+
+Read the Circle AI contracts in dependency order: exact phase banks, ring-buffer freshness, sparse-attention coverage, and circulant mixing. By the end, you should be able to name the circular address space, the repeated action, the Lean-backed statement, the executable sidecar, and the claim boundary for each contract.
+
+:::
+
+## Contract Pattern
+
+Every usable contract in this lane has the same shape:
+
+```text
+engineering object
+  -> finite circular address space
+  -> repeated action or stride
+  -> theorem-backed boundary
+  -> Python/browser certificate
+  -> explicit non-claim
+```
+
+The non-claim matters. Theorem cards certify structural facts such as collision, coverage, freshness, equivariance, or exact budget accounting. They do not certify model quality, speed, memory savings, or production safety.
+
+::: {.warning-box}
+The browser widgets, Python CLIs, benchmarks, and fixtures on this page are executable references and not proofs. This page does not claim model-quality, speed, memory, or real-data usefulness results; theorem cards and Lean declarations remain the proof source of truth.
+:::
+
+## Ladder
+
+| Step | Component | Circular Object | What Gets Certified | Main Lesson |
+| ---: | --- | --- | --- | --- |
+| 1 | RoPE phase-bank certifier | residues modulo declared periods | exact discrete position collision and distinguishability | proof-carrying phase contracts |
+| 2 | Real-phase RoPE seed | turn ratio below a finite context | theorem-backed one-channel finite margin examples | numerical diagnostics need proof-backed bounds |
+| 3 | KV-cache ring buffer | token slots modulo cache size | slot collision, retained-window membership, live-window duplicate freedom | freshness is residue plus time boundary |
+| 4 | Sparse attention | local windows plus stride-family lag candidates | covered lags, gap witnesses, budget caps, no-duplicate candidate survival | sparse plans need gap certificates, not just examples |
+| 5 | Circulant mixers | cyclic shift on token indices | shift equivariance, convolution laws, linearity | structure can be guaranteed before benchmarking |
+
+## 1. Exact RoPE Phase Banks
+
+The exact certifier models a declared phase bank as integer periods. Two positions collide in one channel exactly when the period divides their ordered gap, and they collide in the whole bank exactly when every declared period divides that same gap.
+
+This is the cleanest contract because it gives both pass and fail evidence: a context either fits before the common collision gap, or the certifier can show sample colliding pairs.
+
+<div class="theorem-box" data-theorem-id="AIRA-T0021"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0024"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0026"></div>
+
+::: {.warning-box}
+This is exact for the declared integer-period phase-bank model. It is not a claim that real-valued RoPE channels have exact integer periods.
+:::
+
+## 2. Real-Phase RoPE Seeds
+
+Real RoPE moves from divisibility to distance from an integer turn. The current theorem program proves finite-margin certificates for named ratios and a bounded standard channel-0 seed. That is the important shift: the question becomes quantitative, and the proof has to account for every inspected positive gap.
+
+The current strongest standard seed is a one-channel statement for the standard channel-0 turn ratio:
+
+```text
+turn ratio = 1 / (2*pi)
+context    = 4096
+margin     = 1 / 131072
+```
+
+The conditional bank bridge says that if a finite real-phase bank contains that channel and the inspected context and margin are within the seed, then the all-channel near-turn condition is ruled out under the stated tolerance scaling.
+
+<div class="theorem-box" data-theorem-id="AIRA-T0061"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0101"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0102"></div>
+
+::: {.warning-box}
+This is not a full real-RoPE bank theorem. It is a theorem-backed one-channel seed plus a conditional bank transfer. The remaining hard work is broader channel-wise certification or sharper Diophantine machinery.
+:::
+
+## 3. KV-Cache Ring Buffer
+
+A fixed-size KV cache writes token `t` to slot `t mod cache_size`. The slot residue alone cannot prove freshness, because stale and live tokens can share a slot across time. The useful contract is the retained-window boundary:
+
+```text
+token is retained at current
+iff
+token <= current and current < token + cache_size
+```
+
+The generated live-window theorem then upgrades a Python-style list of live tokens into a theorem-backed object: membership in the list is equivalent to retention, and the whole live window maps to duplicate-free slots.
+
+<div class="theorem-box" data-theorem-id="AIM-T0069"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0070"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0073"></div>
+
+## 4. Sparse-Attention Coverage
+
+A strided sparse-attention path is a coil orbit on a finite context. The basic theorem says a stride reaches every position iff it is coprime to the context size. The useful engineering contract is stronger: for a local window plus a finite family of stride paths, the certifier should report covered lags, uncovered-lag witnesses, and candidate-budget boundaries.
+
+This is why the sparse lane now emphasizes iffs and gap certificates. A sparse plan is more useful when it can tell you what it misses.
+
+<div class="theorem-box" data-theorem-id="AIT-T0002"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0020"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0078"></div>
+
+## 5. Circulant Mixers
+
+A circulant mixer is not a proof that a model will perform well. It is a structure with a guarantee: cyclic shifts commute with the mixer, and the convolution laws are fixed before training. That makes it a good negative-control example for the whole AI lane: the proof can certify equivariance, while benchmarks decide whether that bias fits the data.
+
+<div class="theorem-box" data-theorem-id="AIT-T0006"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0007"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0008"></div>
+
+## How To Use This Ladder
+
+For a new AI component, fill in this checklist before writing a theorem or benchmark:
+
+1. What is the finite circular address space?
+2. What operation repeats, wraps, rotates, or strides?
+3. What exact failure mode should the contract expose?
+4. Which statement needs an iff, counterexample witness, count, or quantitative bound?
+5. What Python/browser certificate would a non-Lean engineer run?
+6. Which claim is deliberately outside the theorem?
+
+If the answer is only "this has a circle metaphor," it is not ready. If the answer produces a pass/fail certificate, a gap witness, a collision count, or a margin bound, it belongs in this lane.
+
+## Source Trail
+
+<p data-paper-ref="papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md">RoPE paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md">Proof-Carrying RoPE Position Distinguishability</a></p>
+
+<p data-paper-ref="papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Attention and memory paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Coil Attention And Memory</a></p>
+
+<p data-paper-ref="papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md">Architecture paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md">Circle AI Architectures</a></p>
+
+## Dictionary
+
+<div class="dictionary-box" data-dictionary-id="COMMON-0028"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0076"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0077"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0079"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0081"></div>
+
+<div class="book-navigation">
+<a href="ai.qmd">Previous: AI</a>
+<a href="rope_certifier.qmd">Next: RoPE Certifier</a>
+</div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>
