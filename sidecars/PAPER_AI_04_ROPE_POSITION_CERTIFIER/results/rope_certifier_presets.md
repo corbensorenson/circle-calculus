@@ -14,17 +14,17 @@ This is a theorem-backed rational/discretized turn-ratio certificate. It is not 
 
 | Name | Turn ratio | Context | Certified margin | Pi bounds | Status | Theorem ids |
 | --- | --- | ---: | --- | --- | --- | --- |
-| standard_rope_channel0_interval_context_57 | 1/(2*pi) | 57 | 1/512 | pi <= 4, 3.14 < pi, pi < 3.15, 3.1415 < pi, and pi < 3.1416 | PASS | AIRA-T0063, AIRA-T0064, AIRA-T0065, AIRA-T0066, AIRA-T0067, AIRA-T0068, AIRA-T0069, AIRA-T0070, AIRA-T0071, AIRA-T0072, AIRA-T0073, AIRA-T0074, AIRA-T0075, AIRA-T0076, AIRA-T0077, AIRA-T0078, AIRA-T0079, AIRA-T0080, AIRA-T0081, AIRA-T0082, AIRA-T0083, AIRA-T0084, AIRA-T0085, AIRA-T0086 |
+| standard_rope_channel0_interval_context_333 | 1/(2*pi) | 333 | 1/512 | pi <= 4, 3.14 < pi, pi < 3.15, 3.1415 < pi, and pi < 3.1416 | PASS | AIRA-T0063, AIRA-T0064, AIRA-T0065, AIRA-T0066, AIRA-T0067, AIRA-T0068, AIRA-T0069, AIRA-T0070, AIRA-T0071, AIRA-T0072, AIRA-T0073, AIRA-T0074, AIRA-T0075, AIRA-T0076, AIRA-T0077, AIRA-T0078, AIRA-T0079, AIRA-T0080, AIRA-T0081, AIRA-T0082, AIRA-T0083, AIRA-T0084, AIRA-T0085, AIRA-T0086, AIRA-T0087, AIRA-T0088, AIRA-T0089 |
 
-This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 57 only. It is not a full standard RoPE bank certificate and does not certify 512, 4096, or larger contexts.
+This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 333 only. It is not a full standard RoPE bank certificate and does not certify 512, 4096, or larger contexts.
 
 ## Standard RoPE Candidate Interval Plans
 
-These exact-rational plans are generated source data for future Lean certificates. They are not marked proved and do not upgrade the theorem-backed context-57 seed.
+These exact-rational plans are generated source data for Lean interval certificates. The d4 context-333 plan is now matched by compiled Lean declarations; candidate-only rows remain unproved until matching declarations and manifest ids exist.
 
 | Plan | Pi bounds | Planned margin | Covered context | First uncovered gap | Bands | Status |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
-| standard_rope_channel0_interval_plan_d4_margin_1_512_context_333 | 3.1415 < pi and pi < 3.1416 | 1/512 | 333 | 333 | 53 | candidate_plan_not_lean_proved |
+| standard_rope_channel0_interval_plan_d4_margin_1_512_context_333 | 3.1415 < pi and pi < 3.1416 | 1/512 | 333 | 333 | 53 | lean_proved_interval_seed_AIRA-T0087_to_AIRA-T0089 |
 | standard_rope_channel0_interval_plan_d6_margin_1_1024_context_710 | 3.141592 < pi and pi < 3.141593 | 1/1024 | 710 | 710 | 113 | candidate_plan_not_lean_proved |
 
 ## RoPE Preset Diagnostics

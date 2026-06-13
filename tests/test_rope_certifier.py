@@ -326,7 +326,7 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert certificate.schema_id == "circle_calculus.standard_rope_interval_margin.v0"
     assert certificate.name == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME
     assert certificate.turn_ratio_expression == "1/(2*pi)"
-    assert certificate.context_length == 57
+    assert certificate.context_length == 333
     assert certificate.certified_margin == "1/512"
     assert certificate.pass_certificate
     assert (
@@ -358,47 +358,30 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert "AIRA-T0084" in certificate.theorem_ids
     assert "AIRA-T0085" in certificate.theorem_ids
     assert "AIRA-T0086" in certificate.theorem_ids
+    assert "AIRA-T0087" in certificate.theorem_ids
+    assert "AIRA-T0088" in certificate.theorem_ids
+    assert "AIRA-T0089" in certificate.theorem_ids
     assert tuple(witness.gap for witness in certificate.interval_witnesses) == tuple(
-        range(1, 57)
+        range(1, 333)
     )
-    assert certificate.interval_witnesses[0].lower == "1/8"
-    assert certificate.interval_witnesses[0].upper == "25/157"
-    assert certificate.interval_witnesses[5].lower == "3/4"
-    assert certificate.interval_witnesses[5].upper == "150/157"
-    assert certificate.interval_witnesses[6].lower == "10/9"
-    assert certificate.interval_witnesses[6].upper == "175/157"
-    assert certificate.interval_witnesses[11].lower == "40/21"
-    assert certificate.interval_witnesses[11].upper == "300/157"
-    assert certificate.interval_witnesses[12].lower == "130/63"
-    assert certificate.interval_witnesses[12].upper == "325/157"
-    assert certificate.interval_witnesses[24].lower == "250/63"
-    assert certificate.interval_witnesses[43].lower == "2500/357"
-    assert certificate.interval_witnesses[43].upper == "44000/6283"
-    assert certificate.interval_witnesses[49].lower == "31250/3927"
-    assert certificate.interval_witnesses[49].upper == "50000/6283"
-    assert certificate.interval_witnesses[50].lower == "625/77"
-    assert certificate.interval_witnesses[50].upper == "51000/6283"
-    assert certificate.interval_witnesses[55].lower == "5000/561"
-    assert certificate.interval_witnesses[55].upper == "56000/6283"
-    assert certificate.interval_witnesses[24].upper == "625/157"
-    assert certificate.interval_witnesses[25].lower == "260/63"
-    assert certificate.interval_witnesses[25].upper == "650/157"
-    assert certificate.interval_witnesses[31].lower == "320/63"
-    assert certificate.interval_witnesses[31].upper == "800/157"
-    assert certificate.interval_witnesses[37].lower == "380/63"
-    assert certificate.interval_witnesses[37].upper == "950/157"
-    assert certificate.interval_witnesses[42].lower == "430/63"
-    assert certificate.interval_witnesses[42].upper == "1075/157"
-    assert all(witness.cell == 0 for witness in certificate.interval_witnesses[:6])
-    assert all(witness.cell == 1 for witness in certificate.interval_witnesses[6:12])
-    assert all(witness.cell == 2 for witness in certificate.interval_witnesses[12:18])
-    assert all(witness.cell == 3 for witness in certificate.interval_witnesses[18:25])
-    assert all(witness.cell == 4 for witness in certificate.interval_witnesses[25:31])
-    assert all(witness.cell == 5 for witness in certificate.interval_witnesses[31:37])
-    assert all(witness.cell == 6 for witness in certificate.interval_witnesses[37:43])
-    assert all(witness.cell == 7 for witness in certificate.interval_witnesses[43:50])
-    assert all(witness.cell == 8 for witness in certificate.interval_witnesses[50:])
-    assert "context 57 only" in certificate.claim_boundary
+    assert certificate.interval_witnesses[0].lower == "625/3927"
+    assert certificate.interval_witnesses[0].upper == "1000/6283"
+    assert certificate.interval_witnesses[-1].gap == 332
+    assert certificate.interval_witnesses[-1].cell == 52
+    d4_plan = plan_standard_channel0_interval_bands(
+        pi_bound_preset="d4",
+        margin=Fraction(1, 512),
+        max_context_length=4096,
+    )
+    assert d4_plan.theorem_status == "lean_proved_interval_seed_AIRA-T0087_to_AIRA-T0089"
+    for band in d4_plan.bands:
+        assert all(
+            witness.cell == band.cell
+            for witness in certificate.interval_witnesses[
+                band.start_gap - 1 : band.end_gap
+            ]
+        )
+    assert "context 333 only" in certificate.claim_boundary
 
 
 def test_standard_channel0_interval_plan_finds_next_exact_rational_targets() -> None:
@@ -427,8 +410,8 @@ def test_standard_channel0_interval_plan_finds_next_exact_rational_targets() -> 
     assert d4_plan.bands[-1].start_gap == 327
     assert d4_plan.bands[-1].end_gap == 332
     assert d4_plan.bands[-1].cell == 52
-    assert d4_plan.theorem_status == "candidate_plan_not_lean_proved"
-    assert "Candidate interval-plan data only" in d4_plan.claim_boundary
+    assert d4_plan.theorem_status == "lean_proved_interval_seed_AIRA-T0087_to_AIRA-T0089"
+    assert "compiled Lean seed" in d4_plan.claim_boundary
 
     d6_lower, d6_upper, d6_label = standard_channel0_turn_ratio_bounds(
         pi_bound_preset="d6"
@@ -522,7 +505,7 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     )
     assert certificate.proof_layers[0].status == "FAIL"
     assert certificate.proof_layers[1].status == "AVAILABLE_NAMED_PRESET"
-    assert certificate.proof_layers[2].status == "AVAILABLE_SEED_CONTEXT_57"
+    assert certificate.proof_layers[2].status == "AVAILABLE_SEED_CONTEXT_333"
     assert certificate.proof_layers[2].theorem_ids == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS
     assert not certificate.proof_layers[3].theorem_backed
     assert "AIRA-T0046" in certificate.theorem_ids
@@ -787,7 +770,7 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert payload["standard_interval_certificate"]["pass_certificate"] is True
     assert payload["standard_interval_candidate_plans"][0]["context_length"] == 333
     assert payload["standard_interval_candidate_plans"][0]["theorem_status"] == (
-        "candidate_plan_not_lean_proved"
+        "lean_proved_interval_seed_AIRA-T0087_to_AIRA-T0089"
     )
     assert payload["standard_interval_candidate_plans"][1]["context_length"] == 710
     assert payload["standard_interval_candidate_plans"][1]["band_count"] == 113

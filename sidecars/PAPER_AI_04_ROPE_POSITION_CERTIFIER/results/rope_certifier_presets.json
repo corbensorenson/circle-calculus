@@ -850,7 +850,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_57",
+            "status": "AVAILABLE_SEED_CONTEXT_333",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -876,7 +876,10 @@
               "AIRA-T0083",
               "AIRA-T0084",
               "AIRA-T0085",
-              "AIRA-T0086"
+              "AIRA-T0086",
+              "AIRA-T0087",
+              "AIRA-T0088",
+              "AIRA-T0089"
             ]
           },
           {
@@ -968,7 +971,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=128 base=10000 context=4096 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_57,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_333,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=8 first_exact_pass_prefix_length=5",
         "subfamily_pass_reports=8 smallest_pass_subfamily_size=1",
@@ -1380,7 +1383,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_57",
+            "status": "AVAILABLE_SEED_CONTEXT_333",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -1406,7 +1409,10 @@
               "AIRA-T0083",
               "AIRA-T0084",
               "AIRA-T0085",
-              "AIRA-T0086"
+              "AIRA-T0086",
+              "AIRA-T0087",
+              "AIRA-T0088",
+              "AIRA-T0089"
             ]
           },
           {
@@ -1498,7 +1504,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=128 base=10000 context=131072 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_57,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_333,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=8 first_exact_pass_prefix_length=8",
         "subfamily_pass_reports=8 smallest_pass_subfamily_size=2",
@@ -1894,7 +1900,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_57",
+            "status": "AVAILABLE_SEED_CONTEXT_333",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -1920,7 +1926,10 @@
               "AIRA-T0083",
               "AIRA-T0084",
               "AIRA-T0085",
-              "AIRA-T0086"
+              "AIRA-T0086",
+              "AIRA-T0087",
+              "AIRA-T0088",
+              "AIRA-T0089"
             ]
           },
           {
@@ -2012,7 +2021,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=128 base=500000 context=131072 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_57,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_333,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=8 first_exact_pass_prefix_length=none",
         "subfamily_pass_reports=8 smallest_pass_subfamily_size=1",
@@ -2139,7 +2148,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_57",
+            "status": "AVAILABLE_SEED_CONTEXT_333",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -2165,7 +2174,10 @@
               "AIRA-T0083",
               "AIRA-T0084",
               "AIRA-T0085",
-              "AIRA-T0086"
+              "AIRA-T0086",
+              "AIRA-T0087",
+              "AIRA-T0088",
+              "AIRA-T0089"
             ]
           },
           {
@@ -2257,7 +2269,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=2 base=10000 context=20 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_57,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_333,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=FAIL common_collision_gap=6 period_count=1 guaranteed_common_gap_collision_pair_count=14 guaranteed_common_gap_multiple_pair_count=24 total_bank_collision_pair_count=24",
         "prefix_collision_reports=1 first_exact_pass_prefix_length=none",
         "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
@@ -2396,7 +2408,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_57",
+            "status": "AVAILABLE_SEED_CONTEXT_333",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -2422,7 +2434,10 @@
               "AIRA-T0083",
               "AIRA-T0084",
               "AIRA-T0085",
-              "AIRA-T0086"
+              "AIRA-T0086",
+              "AIRA-T0087",
+              "AIRA-T0088",
+              "AIRA-T0089"
             ]
           },
           {
@@ -2514,7 +2529,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=4 base=36 context=128 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_57,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_333,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=FAIL common_collision_gap=114 period_count=2 guaranteed_common_gap_collision_pair_count=14 guaranteed_common_gap_multiple_pair_count=14 total_bank_collision_pair_count=14",
         "prefix_collision_reports=2 first_exact_pass_prefix_length=none",
         "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
@@ -2710,7 +2725,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_57",
+            "status": "AVAILABLE_SEED_CONTEXT_333",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -2736,7 +2751,10 @@
               "AIRA-T0083",
               "AIRA-T0084",
               "AIRA-T0085",
-              "AIRA-T0086"
+              "AIRA-T0086",
+              "AIRA-T0087",
+              "AIRA-T0088",
+              "AIRA-T0089"
             ]
           },
           {
@@ -2828,7 +2846,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=8 base=4 context=128 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_57,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_333,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=4 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=4 first_exact_pass_prefix_length=3",
         "subfamily_pass_reports=4 smallest_pass_subfamily_size=2",
@@ -2980,7 +2998,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_57",
+            "status": "AVAILABLE_SEED_CONTEXT_333",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -3006,7 +3024,10 @@
               "AIRA-T0083",
               "AIRA-T0084",
               "AIRA-T0085",
-              "AIRA-T0086"
+              "AIRA-T0086",
+              "AIRA-T0087",
+              "AIRA-T0088",
+              "AIRA-T0089"
             ]
           },
           {
@@ -3098,7 +3119,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=6 base=25 context=64 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_57,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_333,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=FAIL common_collision_gap=54 period_count=3 guaranteed_common_gap_collision_pair_count=10 guaranteed_common_gap_multiple_pair_count=10 total_bank_collision_pair_count=10",
         "prefix_collision_reports=3 first_exact_pass_prefix_length=none",
         "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
@@ -3407,9 +3428,9 @@
           "start_gap": 327
         }
       ],
-      "claim_boundary": "Candidate interval-plan data only. Do not cite as a proved RoPE margin, model-quality claim, context-length claim, speed claim, or deployment claim.",
+      "claim_boundary": "Interval-plan data only unless theorem_status names a compiled Lean seed. Even the proved seed is not a model-quality claim, large-context bank claim, speed claim, or deployment claim.",
       "context_length": 333,
-      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a future Lean interval certificate. The plan is useful source data, but it is not formal proof until the corresponding Lean declarations compile and manifest ids are marked proved.",
+      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan has now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
       "first_uncovered_gap": 333,
       "lower_turn_ratio_bound": "625/3927",
       "name": "standard_rope_channel0_interval_plan_d4_margin_1_512_context_333",
@@ -3418,7 +3439,7 @@
       "pi_bounds": "3.1415 < pi and pi < 3.1416",
       "planned_margin": "1/512",
       "schema_id": "circle_calculus.standard_rope_interval_plan.v0",
-      "theorem_status": "candidate_plan_not_lean_proved",
+      "theorem_status": "lean_proved_interval_seed_AIRA-T0087_to_AIRA-T0089",
       "turn_ratio_expression": "1/(2*pi)",
       "upper_turn_ratio_bound": "1000/6283"
     },
@@ -3991,9 +4012,9 @@
           "start_gap": 704
         }
       ],
-      "claim_boundary": "Candidate interval-plan data only. Do not cite as a proved RoPE margin, model-quality claim, context-length claim, speed claim, or deployment claim.",
+      "claim_boundary": "Interval-plan data only unless theorem_status names a compiled Lean seed. Even the proved seed is not a model-quality claim, large-context bank claim, speed claim, or deployment claim.",
       "context_length": 710,
-      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a future Lean interval certificate. The plan is useful source data, but it is not formal proof until the corresponding Lean declarations compile and manifest ids are marked proved.",
+      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan has now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
       "first_uncovered_gap": 710,
       "lower_turn_ratio_bound": "500000/3141593",
       "name": "standard_rope_channel0_interval_plan_d6_margin_1_1024_context_710",
@@ -4009,267 +4030,267 @@
   ],
   "standard_interval_certificate": {
     "certified_margin": "1/512",
-    "claim_boundary": "This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 57 only. It is not a full standard RoPE bank certificate and does not certify 512, 4096, or larger contexts.",
-    "context_length": 57,
-    "explanation": "Lean proves that standard RoPE channel 0, with turn ratio 1/(2*pi), has finite nearest-integer margin 1/512 for gaps 1 through 56. Gaps 1 through 6 use the cell-0 enclosure gap/8 <= gap/(2*pi) <= 25*gap/157; gaps 7 through 43 use 10*gap/63 <= gap/(2*pi) <= 25*gap/157 and are split across integer cells 1 through 6. Gaps 44 through 56 use the sharper four-decimal enclosure 5000*gap/31416 <= gap/(2*pi) <= 5000*gap/31415 and are split across cells 7 and 8. Larger contexts need generated rational interval data and sharper pi or continued-fraction bounds.",
+    "claim_boundary": "This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 333 only. It is not a full standard RoPE bank certificate and does not certify 512, 4096, or larger contexts.",
+    "context_length": 333,
+    "explanation": "Lean proves that standard RoPE channel 0, with turn ratio 1/(2*pi), has finite nearest-integer margin 1/512 for gaps 1 through 332. Every gap uses the four-decimal enclosure 5000*gap/31416 <= gap/(2*pi) <= 5000*gap/31415, split across generated integer cells 0 through 52. Larger contexts need sharper pi or continued-fraction bounds; the same d4 table first fails at gap 333.",
     "interval_witnesses": [
       {
         "cell": 0,
         "gap": 1,
-        "lower": "1/8",
-        "upper": "25/157"
+        "lower": "625/3927",
+        "upper": "1000/6283"
       },
       {
         "cell": 0,
         "gap": 2,
-        "lower": "1/4",
-        "upper": "50/157"
+        "lower": "1250/3927",
+        "upper": "2000/6283"
       },
       {
         "cell": 0,
         "gap": 3,
-        "lower": "3/8",
-        "upper": "75/157"
+        "lower": "625/1309",
+        "upper": "3000/6283"
       },
       {
         "cell": 0,
         "gap": 4,
-        "lower": "1/2",
-        "upper": "100/157"
+        "lower": "2500/3927",
+        "upper": "4000/6283"
       },
       {
         "cell": 0,
         "gap": 5,
-        "lower": "5/8",
-        "upper": "125/157"
+        "lower": "3125/3927",
+        "upper": "5000/6283"
       },
       {
         "cell": 0,
         "gap": 6,
-        "lower": "3/4",
-        "upper": "150/157"
+        "lower": "1250/1309",
+        "upper": "6000/6283"
       },
       {
         "cell": 1,
         "gap": 7,
-        "lower": "10/9",
-        "upper": "175/157"
+        "lower": "625/561",
+        "upper": "7000/6283"
       },
       {
         "cell": 1,
         "gap": 8,
-        "lower": "80/63",
-        "upper": "200/157"
+        "lower": "5000/3927",
+        "upper": "8000/6283"
       },
       {
         "cell": 1,
         "gap": 9,
-        "lower": "10/7",
-        "upper": "225/157"
+        "lower": "1875/1309",
+        "upper": "9000/6283"
       },
       {
         "cell": 1,
         "gap": 10,
-        "lower": "100/63",
-        "upper": "250/157"
+        "lower": "6250/3927",
+        "upper": "10000/6283"
       },
       {
         "cell": 1,
         "gap": 11,
-        "lower": "110/63",
-        "upper": "275/157"
+        "lower": "625/357",
+        "upper": "11000/6283"
       },
       {
         "cell": 1,
         "gap": 12,
-        "lower": "40/21",
-        "upper": "300/157"
+        "lower": "2500/1309",
+        "upper": "12000/6283"
       },
       {
         "cell": 2,
         "gap": 13,
-        "lower": "130/63",
-        "upper": "325/157"
+        "lower": "8125/3927",
+        "upper": "13000/6283"
       },
       {
         "cell": 2,
         "gap": 14,
-        "lower": "20/9",
-        "upper": "350/157"
+        "lower": "1250/561",
+        "upper": "14000/6283"
       },
       {
         "cell": 2,
         "gap": 15,
-        "lower": "50/21",
-        "upper": "375/157"
+        "lower": "3125/1309",
+        "upper": "15000/6283"
       },
       {
         "cell": 2,
         "gap": 16,
-        "lower": "160/63",
-        "upper": "400/157"
+        "lower": "10000/3927",
+        "upper": "16000/6283"
       },
       {
         "cell": 2,
         "gap": 17,
-        "lower": "170/63",
-        "upper": "425/157"
+        "lower": "625/231",
+        "upper": "17000/6283"
       },
       {
         "cell": 2,
         "gap": 18,
-        "lower": "20/7",
-        "upper": "450/157"
+        "lower": "3750/1309",
+        "upper": "18000/6283"
       },
       {
         "cell": 3,
         "gap": 19,
-        "lower": "190/63",
-        "upper": "475/157"
+        "lower": "11875/3927",
+        "upper": "19000/6283"
       },
       {
         "cell": 3,
         "gap": 20,
-        "lower": "200/63",
-        "upper": "500/157"
+        "lower": "12500/3927",
+        "upper": "20000/6283"
       },
       {
         "cell": 3,
         "gap": 21,
-        "lower": "10/3",
-        "upper": "525/157"
+        "lower": "625/187",
+        "upper": "21000/6283"
       },
       {
         "cell": 3,
         "gap": 22,
-        "lower": "220/63",
-        "upper": "550/157"
+        "lower": "1250/357",
+        "upper": "22000/6283"
       },
       {
         "cell": 3,
         "gap": 23,
-        "lower": "230/63",
-        "upper": "575/157"
+        "lower": "14375/3927",
+        "upper": "23000/6283"
       },
       {
         "cell": 3,
         "gap": 24,
-        "lower": "80/21",
-        "upper": "600/157"
+        "lower": "5000/1309",
+        "upper": "24000/6283"
       },
       {
         "cell": 3,
         "gap": 25,
-        "lower": "250/63",
-        "upper": "625/157"
+        "lower": "15625/3927",
+        "upper": "25000/6283"
       },
       {
         "cell": 4,
         "gap": 26,
-        "lower": "260/63",
-        "upper": "650/157"
+        "lower": "16250/3927",
+        "upper": "26000/6283"
       },
       {
         "cell": 4,
         "gap": 27,
-        "lower": "30/7",
-        "upper": "675/157"
+        "lower": "5625/1309",
+        "upper": "27000/6283"
       },
       {
         "cell": 4,
         "gap": 28,
-        "lower": "40/9",
-        "upper": "700/157"
+        "lower": "2500/561",
+        "upper": "28000/6283"
       },
       {
         "cell": 4,
         "gap": 29,
-        "lower": "290/63",
-        "upper": "725/157"
+        "lower": "18125/3927",
+        "upper": "29000/6283"
       },
       {
         "cell": 4,
         "gap": 30,
-        "lower": "100/21",
-        "upper": "750/157"
+        "lower": "6250/1309",
+        "upper": "30000/6283"
       },
       {
         "cell": 4,
         "gap": 31,
-        "lower": "310/63",
-        "upper": "775/157"
+        "lower": "19375/3927",
+        "upper": "31000/6283"
       },
       {
         "cell": 5,
         "gap": 32,
-        "lower": "320/63",
-        "upper": "800/157"
+        "lower": "20000/3927",
+        "upper": "32000/6283"
       },
       {
         "cell": 5,
         "gap": 33,
-        "lower": "110/21",
-        "upper": "825/157"
+        "lower": "625/119",
+        "upper": "33000/6283"
       },
       {
         "cell": 5,
         "gap": 34,
-        "lower": "340/63",
-        "upper": "850/157"
+        "lower": "1250/231",
+        "upper": "34000/6283"
       },
       {
         "cell": 5,
         "gap": 35,
-        "lower": "50/9",
-        "upper": "875/157"
+        "lower": "3125/561",
+        "upper": "35000/6283"
       },
       {
         "cell": 5,
         "gap": 36,
-        "lower": "40/7",
-        "upper": "900/157"
+        "lower": "7500/1309",
+        "upper": "36000/6283"
       },
       {
         "cell": 5,
         "gap": 37,
-        "lower": "370/63",
-        "upper": "925/157"
+        "lower": "23125/3927",
+        "upper": "37000/6283"
       },
       {
         "cell": 6,
         "gap": 38,
-        "lower": "380/63",
-        "upper": "950/157"
+        "lower": "23750/3927",
+        "upper": "38000/6283"
       },
       {
         "cell": 6,
         "gap": 39,
-        "lower": "130/21",
-        "upper": "975/157"
+        "lower": "8125/1309",
+        "upper": "39000/6283"
       },
       {
         "cell": 6,
         "gap": 40,
-        "lower": "400/63",
-        "upper": "1000/157"
+        "lower": "25000/3927",
+        "upper": "40000/6283"
       },
       {
         "cell": 6,
         "gap": 41,
-        "lower": "410/63",
-        "upper": "1025/157"
+        "lower": "25625/3927",
+        "upper": "41000/6283"
       },
       {
         "cell": 6,
         "gap": 42,
-        "lower": "20/3",
-        "upper": "1050/157"
+        "lower": "1250/187",
+        "upper": "42000/6283"
       },
       {
         "cell": 6,
         "gap": 43,
-        "lower": "430/63",
-        "upper": "1075/157"
+        "lower": "26875/3927",
+        "upper": "43000/6283"
       },
       {
         "cell": 7,
@@ -4348,6 +4369,1662 @@
         "gap": 56,
         "lower": "5000/561",
         "upper": "56000/6283"
+      },
+      {
+        "cell": 9,
+        "gap": 57,
+        "lower": "11875/1309",
+        "upper": "57000/6283"
+      },
+      {
+        "cell": 9,
+        "gap": 58,
+        "lower": "36250/3927",
+        "upper": "58000/6283"
+      },
+      {
+        "cell": 9,
+        "gap": 59,
+        "lower": "36875/3927",
+        "upper": "59000/6283"
+      },
+      {
+        "cell": 9,
+        "gap": 60,
+        "lower": "12500/1309",
+        "upper": "60000/6283"
+      },
+      {
+        "cell": 9,
+        "gap": 61,
+        "lower": "38125/3927",
+        "upper": "1000/103"
+      },
+      {
+        "cell": 9,
+        "gap": 62,
+        "lower": "38750/3927",
+        "upper": "62000/6283"
+      },
+      {
+        "cell": 10,
+        "gap": 63,
+        "lower": "1875/187",
+        "upper": "63000/6283"
+      },
+      {
+        "cell": 10,
+        "gap": 64,
+        "lower": "40000/3927",
+        "upper": "64000/6283"
+      },
+      {
+        "cell": 10,
+        "gap": 65,
+        "lower": "40625/3927",
+        "upper": "65000/6283"
+      },
+      {
+        "cell": 10,
+        "gap": 66,
+        "lower": "1250/119",
+        "upper": "66000/6283"
+      },
+      {
+        "cell": 10,
+        "gap": 67,
+        "lower": "41875/3927",
+        "upper": "67000/6283"
+      },
+      {
+        "cell": 10,
+        "gap": 68,
+        "lower": "2500/231",
+        "upper": "68000/6283"
+      },
+      {
+        "cell": 10,
+        "gap": 69,
+        "lower": "14375/1309",
+        "upper": "69000/6283"
+      },
+      {
+        "cell": 11,
+        "gap": 70,
+        "lower": "6250/561",
+        "upper": "70000/6283"
+      },
+      {
+        "cell": 11,
+        "gap": 71,
+        "lower": "44375/3927",
+        "upper": "71000/6283"
+      },
+      {
+        "cell": 11,
+        "gap": 72,
+        "lower": "15000/1309",
+        "upper": "72000/6283"
+      },
+      {
+        "cell": 11,
+        "gap": 73,
+        "lower": "45625/3927",
+        "upper": "73000/6283"
+      },
+      {
+        "cell": 11,
+        "gap": 74,
+        "lower": "46250/3927",
+        "upper": "74000/6283"
+      },
+      {
+        "cell": 11,
+        "gap": 75,
+        "lower": "15625/1309",
+        "upper": "75000/6283"
+      },
+      {
+        "cell": 12,
+        "gap": 76,
+        "lower": "47500/3927",
+        "upper": "76000/6283"
+      },
+      {
+        "cell": 12,
+        "gap": 77,
+        "lower": "625/51",
+        "upper": "77000/6283"
+      },
+      {
+        "cell": 12,
+        "gap": 78,
+        "lower": "16250/1309",
+        "upper": "78000/6283"
+      },
+      {
+        "cell": 12,
+        "gap": 79,
+        "lower": "49375/3927",
+        "upper": "79000/6283"
+      },
+      {
+        "cell": 12,
+        "gap": 80,
+        "lower": "50000/3927",
+        "upper": "80000/6283"
+      },
+      {
+        "cell": 12,
+        "gap": 81,
+        "lower": "16875/1309",
+        "upper": "81000/6283"
+      },
+      {
+        "cell": 13,
+        "gap": 82,
+        "lower": "51250/3927",
+        "upper": "82000/6283"
+      },
+      {
+        "cell": 13,
+        "gap": 83,
+        "lower": "51875/3927",
+        "upper": "83000/6283"
+      },
+      {
+        "cell": 13,
+        "gap": 84,
+        "lower": "2500/187",
+        "upper": "84000/6283"
+      },
+      {
+        "cell": 13,
+        "gap": 85,
+        "lower": "3125/231",
+        "upper": "85000/6283"
+      },
+      {
+        "cell": 13,
+        "gap": 86,
+        "lower": "53750/3927",
+        "upper": "86000/6283"
+      },
+      {
+        "cell": 13,
+        "gap": 87,
+        "lower": "18125/1309",
+        "upper": "87000/6283"
+      },
+      {
+        "cell": 14,
+        "gap": 88,
+        "lower": "5000/357",
+        "upper": "88000/6283"
+      },
+      {
+        "cell": 14,
+        "gap": 89,
+        "lower": "55625/3927",
+        "upper": "89000/6283"
+      },
+      {
+        "cell": 14,
+        "gap": 90,
+        "lower": "18750/1309",
+        "upper": "90000/6283"
+      },
+      {
+        "cell": 14,
+        "gap": 91,
+        "lower": "8125/561",
+        "upper": "91000/6283"
+      },
+      {
+        "cell": 14,
+        "gap": 92,
+        "lower": "57500/3927",
+        "upper": "92000/6283"
+      },
+      {
+        "cell": 14,
+        "gap": 93,
+        "lower": "19375/1309",
+        "upper": "93000/6283"
+      },
+      {
+        "cell": 14,
+        "gap": 94,
+        "lower": "58750/3927",
+        "upper": "94000/6283"
+      },
+      {
+        "cell": 15,
+        "gap": 95,
+        "lower": "59375/3927",
+        "upper": "95000/6283"
+      },
+      {
+        "cell": 15,
+        "gap": 96,
+        "lower": "20000/1309",
+        "upper": "96000/6283"
+      },
+      {
+        "cell": 15,
+        "gap": 97,
+        "lower": "60625/3927",
+        "upper": "97000/6283"
+      },
+      {
+        "cell": 15,
+        "gap": 98,
+        "lower": "8750/561",
+        "upper": "98000/6283"
+      },
+      {
+        "cell": 15,
+        "gap": 99,
+        "lower": "1875/119",
+        "upper": "99000/6283"
+      },
+      {
+        "cell": 15,
+        "gap": 100,
+        "lower": "62500/3927",
+        "upper": "100000/6283"
+      },
+      {
+        "cell": 16,
+        "gap": 101,
+        "lower": "63125/3927",
+        "upper": "101000/6283"
+      },
+      {
+        "cell": 16,
+        "gap": 102,
+        "lower": "1250/77",
+        "upper": "102000/6283"
+      },
+      {
+        "cell": 16,
+        "gap": 103,
+        "lower": "64375/3927",
+        "upper": "1000/61"
+      },
+      {
+        "cell": 16,
+        "gap": 104,
+        "lower": "65000/3927",
+        "upper": "104000/6283"
+      },
+      {
+        "cell": 16,
+        "gap": 105,
+        "lower": "3125/187",
+        "upper": "105000/6283"
+      },
+      {
+        "cell": 16,
+        "gap": 106,
+        "lower": "66250/3927",
+        "upper": "106000/6283"
+      },
+      {
+        "cell": 17,
+        "gap": 107,
+        "lower": "66875/3927",
+        "upper": "107000/6283"
+      },
+      {
+        "cell": 17,
+        "gap": 108,
+        "lower": "22500/1309",
+        "upper": "108000/6283"
+      },
+      {
+        "cell": 17,
+        "gap": 109,
+        "lower": "68125/3927",
+        "upper": "109000/6283"
+      },
+      {
+        "cell": 17,
+        "gap": 110,
+        "lower": "6250/357",
+        "upper": "110000/6283"
+      },
+      {
+        "cell": 17,
+        "gap": 111,
+        "lower": "23125/1309",
+        "upper": "111000/6283"
+      },
+      {
+        "cell": 17,
+        "gap": 112,
+        "lower": "10000/561",
+        "upper": "112000/6283"
+      },
+      {
+        "cell": 17,
+        "gap": 113,
+        "lower": "70625/3927",
+        "upper": "113000/6283"
+      },
+      {
+        "cell": 18,
+        "gap": 114,
+        "lower": "23750/1309",
+        "upper": "114000/6283"
+      },
+      {
+        "cell": 18,
+        "gap": 115,
+        "lower": "71875/3927",
+        "upper": "115000/6283"
+      },
+      {
+        "cell": 18,
+        "gap": 116,
+        "lower": "72500/3927",
+        "upper": "116000/6283"
+      },
+      {
+        "cell": 18,
+        "gap": 117,
+        "lower": "24375/1309",
+        "upper": "117000/6283"
+      },
+      {
+        "cell": 18,
+        "gap": 118,
+        "lower": "73750/3927",
+        "upper": "118000/6283"
+      },
+      {
+        "cell": 18,
+        "gap": 119,
+        "lower": "625/33",
+        "upper": "119000/6283"
+      },
+      {
+        "cell": 19,
+        "gap": 120,
+        "lower": "25000/1309",
+        "upper": "120000/6283"
+      },
+      {
+        "cell": 19,
+        "gap": 121,
+        "lower": "6875/357",
+        "upper": "121000/6283"
+      },
+      {
+        "cell": 19,
+        "gap": 122,
+        "lower": "76250/3927",
+        "upper": "2000/103"
+      },
+      {
+        "cell": 19,
+        "gap": 123,
+        "lower": "25625/1309",
+        "upper": "123000/6283"
+      },
+      {
+        "cell": 19,
+        "gap": 124,
+        "lower": "77500/3927",
+        "upper": "124000/6283"
+      },
+      {
+        "cell": 19,
+        "gap": 125,
+        "lower": "78125/3927",
+        "upper": "125000/6283"
+      },
+      {
+        "cell": 20,
+        "gap": 126,
+        "lower": "3750/187",
+        "upper": "126000/6283"
+      },
+      {
+        "cell": 20,
+        "gap": 127,
+        "lower": "79375/3927",
+        "upper": "127000/6283"
+      },
+      {
+        "cell": 20,
+        "gap": 128,
+        "lower": "80000/3927",
+        "upper": "128000/6283"
+      },
+      {
+        "cell": 20,
+        "gap": 129,
+        "lower": "26875/1309",
+        "upper": "129000/6283"
+      },
+      {
+        "cell": 20,
+        "gap": 130,
+        "lower": "81250/3927",
+        "upper": "130000/6283"
+      },
+      {
+        "cell": 20,
+        "gap": 131,
+        "lower": "81875/3927",
+        "upper": "131000/6283"
+      },
+      {
+        "cell": 21,
+        "gap": 132,
+        "lower": "2500/119",
+        "upper": "132000/6283"
+      },
+      {
+        "cell": 21,
+        "gap": 133,
+        "lower": "11875/561",
+        "upper": "133000/6283"
+      },
+      {
+        "cell": 21,
+        "gap": 134,
+        "lower": "83750/3927",
+        "upper": "134000/6283"
+      },
+      {
+        "cell": 21,
+        "gap": 135,
+        "lower": "28125/1309",
+        "upper": "135000/6283"
+      },
+      {
+        "cell": 21,
+        "gap": 136,
+        "lower": "5000/231",
+        "upper": "136000/6283"
+      },
+      {
+        "cell": 21,
+        "gap": 137,
+        "lower": "85625/3927",
+        "upper": "137000/6283"
+      },
+      {
+        "cell": 21,
+        "gap": 138,
+        "lower": "28750/1309",
+        "upper": "138000/6283"
+      },
+      {
+        "cell": 22,
+        "gap": 139,
+        "lower": "86875/3927",
+        "upper": "139000/6283"
+      },
+      {
+        "cell": 22,
+        "gap": 140,
+        "lower": "12500/561",
+        "upper": "140000/6283"
+      },
+      {
+        "cell": 22,
+        "gap": 141,
+        "lower": "29375/1309",
+        "upper": "141000/6283"
+      },
+      {
+        "cell": 22,
+        "gap": 142,
+        "lower": "88750/3927",
+        "upper": "142000/6283"
+      },
+      {
+        "cell": 22,
+        "gap": 143,
+        "lower": "8125/357",
+        "upper": "143000/6283"
+      },
+      {
+        "cell": 22,
+        "gap": 144,
+        "lower": "30000/1309",
+        "upper": "144000/6283"
+      },
+      {
+        "cell": 23,
+        "gap": 145,
+        "lower": "90625/3927",
+        "upper": "145000/6283"
+      },
+      {
+        "cell": 23,
+        "gap": 146,
+        "lower": "91250/3927",
+        "upper": "146000/6283"
+      },
+      {
+        "cell": 23,
+        "gap": 147,
+        "lower": "4375/187",
+        "upper": "147000/6283"
+      },
+      {
+        "cell": 23,
+        "gap": 148,
+        "lower": "92500/3927",
+        "upper": "148000/6283"
+      },
+      {
+        "cell": 23,
+        "gap": 149,
+        "lower": "93125/3927",
+        "upper": "149000/6283"
+      },
+      {
+        "cell": 23,
+        "gap": 150,
+        "lower": "31250/1309",
+        "upper": "150000/6283"
+      },
+      {
+        "cell": 24,
+        "gap": 151,
+        "lower": "94375/3927",
+        "upper": "151000/6283"
+      },
+      {
+        "cell": 24,
+        "gap": 152,
+        "lower": "95000/3927",
+        "upper": "152000/6283"
+      },
+      {
+        "cell": 24,
+        "gap": 153,
+        "lower": "1875/77",
+        "upper": "153000/6283"
+      },
+      {
+        "cell": 24,
+        "gap": 154,
+        "lower": "1250/51",
+        "upper": "154000/6283"
+      },
+      {
+        "cell": 24,
+        "gap": 155,
+        "lower": "96875/3927",
+        "upper": "155000/6283"
+      },
+      {
+        "cell": 24,
+        "gap": 156,
+        "lower": "32500/1309",
+        "upper": "156000/6283"
+      },
+      {
+        "cell": 24,
+        "gap": 157,
+        "lower": "98125/3927",
+        "upper": "157000/6283"
+      },
+      {
+        "cell": 25,
+        "gap": 158,
+        "lower": "98750/3927",
+        "upper": "158000/6283"
+      },
+      {
+        "cell": 25,
+        "gap": 159,
+        "lower": "33125/1309",
+        "upper": "159000/6283"
+      },
+      {
+        "cell": 25,
+        "gap": 160,
+        "lower": "100000/3927",
+        "upper": "160000/6283"
+      },
+      {
+        "cell": 25,
+        "gap": 161,
+        "lower": "14375/561",
+        "upper": "161000/6283"
+      },
+      {
+        "cell": 25,
+        "gap": 162,
+        "lower": "33750/1309",
+        "upper": "162000/6283"
+      },
+      {
+        "cell": 25,
+        "gap": 163,
+        "lower": "101875/3927",
+        "upper": "163000/6283"
+      },
+      {
+        "cell": 26,
+        "gap": 164,
+        "lower": "102500/3927",
+        "upper": "164000/6283"
+      },
+      {
+        "cell": 26,
+        "gap": 165,
+        "lower": "3125/119",
+        "upper": "165000/6283"
+      },
+      {
+        "cell": 26,
+        "gap": 166,
+        "lower": "103750/3927",
+        "upper": "166000/6283"
+      },
+      {
+        "cell": 26,
+        "gap": 167,
+        "lower": "104375/3927",
+        "upper": "167000/6283"
+      },
+      {
+        "cell": 26,
+        "gap": 168,
+        "lower": "5000/187",
+        "upper": "168000/6283"
+      },
+      {
+        "cell": 26,
+        "gap": 169,
+        "lower": "105625/3927",
+        "upper": "169000/6283"
+      },
+      {
+        "cell": 27,
+        "gap": 170,
+        "lower": "6250/231",
+        "upper": "170000/6283"
+      },
+      {
+        "cell": 27,
+        "gap": 171,
+        "lower": "35625/1309",
+        "upper": "171000/6283"
+      },
+      {
+        "cell": 27,
+        "gap": 172,
+        "lower": "107500/3927",
+        "upper": "172000/6283"
+      },
+      {
+        "cell": 27,
+        "gap": 173,
+        "lower": "108125/3927",
+        "upper": "173000/6283"
+      },
+      {
+        "cell": 27,
+        "gap": 174,
+        "lower": "36250/1309",
+        "upper": "174000/6283"
+      },
+      {
+        "cell": 27,
+        "gap": 175,
+        "lower": "15625/561",
+        "upper": "175000/6283"
+      },
+      {
+        "cell": 28,
+        "gap": 176,
+        "lower": "10000/357",
+        "upper": "176000/6283"
+      },
+      {
+        "cell": 28,
+        "gap": 177,
+        "lower": "36875/1309",
+        "upper": "177000/6283"
+      },
+      {
+        "cell": 28,
+        "gap": 178,
+        "lower": "111250/3927",
+        "upper": "178000/6283"
+      },
+      {
+        "cell": 28,
+        "gap": 179,
+        "lower": "111875/3927",
+        "upper": "179000/6283"
+      },
+      {
+        "cell": 28,
+        "gap": 180,
+        "lower": "37500/1309",
+        "upper": "180000/6283"
+      },
+      {
+        "cell": 28,
+        "gap": 181,
+        "lower": "113125/3927",
+        "upper": "181000/6283"
+      },
+      {
+        "cell": 28,
+        "gap": 182,
+        "lower": "16250/561",
+        "upper": "182000/6283"
+      },
+      {
+        "cell": 29,
+        "gap": 183,
+        "lower": "38125/1309",
+        "upper": "3000/103"
+      },
+      {
+        "cell": 29,
+        "gap": 184,
+        "lower": "115000/3927",
+        "upper": "184000/6283"
+      },
+      {
+        "cell": 29,
+        "gap": 185,
+        "lower": "115625/3927",
+        "upper": "185000/6283"
+      },
+      {
+        "cell": 29,
+        "gap": 186,
+        "lower": "38750/1309",
+        "upper": "186000/6283"
+      },
+      {
+        "cell": 29,
+        "gap": 187,
+        "lower": "625/21",
+        "upper": "187000/6283"
+      },
+      {
+        "cell": 29,
+        "gap": 188,
+        "lower": "117500/3927",
+        "upper": "188000/6283"
+      },
+      {
+        "cell": 30,
+        "gap": 189,
+        "lower": "5625/187",
+        "upper": "189000/6283"
+      },
+      {
+        "cell": 30,
+        "gap": 190,
+        "lower": "118750/3927",
+        "upper": "190000/6283"
+      },
+      {
+        "cell": 30,
+        "gap": 191,
+        "lower": "119375/3927",
+        "upper": "191000/6283"
+      },
+      {
+        "cell": 30,
+        "gap": 192,
+        "lower": "40000/1309",
+        "upper": "192000/6283"
+      },
+      {
+        "cell": 30,
+        "gap": 193,
+        "lower": "120625/3927",
+        "upper": "193000/6283"
+      },
+      {
+        "cell": 30,
+        "gap": 194,
+        "lower": "121250/3927",
+        "upper": "194000/6283"
+      },
+      {
+        "cell": 31,
+        "gap": 195,
+        "lower": "40625/1309",
+        "upper": "195000/6283"
+      },
+      {
+        "cell": 31,
+        "gap": 196,
+        "lower": "17500/561",
+        "upper": "196000/6283"
+      },
+      {
+        "cell": 31,
+        "gap": 197,
+        "lower": "123125/3927",
+        "upper": "197000/6283"
+      },
+      {
+        "cell": 31,
+        "gap": 198,
+        "lower": "3750/119",
+        "upper": "198000/6283"
+      },
+      {
+        "cell": 31,
+        "gap": 199,
+        "lower": "124375/3927",
+        "upper": "199000/6283"
+      },
+      {
+        "cell": 31,
+        "gap": 200,
+        "lower": "125000/3927",
+        "upper": "200000/6283"
+      },
+      {
+        "cell": 31,
+        "gap": 201,
+        "lower": "41875/1309",
+        "upper": "201000/6283"
+      },
+      {
+        "cell": 32,
+        "gap": 202,
+        "lower": "126250/3927",
+        "upper": "202000/6283"
+      },
+      {
+        "cell": 32,
+        "gap": 203,
+        "lower": "18125/561",
+        "upper": "203000/6283"
+      },
+      {
+        "cell": 32,
+        "gap": 204,
+        "lower": "2500/77",
+        "upper": "204000/6283"
+      },
+      {
+        "cell": 32,
+        "gap": 205,
+        "lower": "128125/3927",
+        "upper": "205000/6283"
+      },
+      {
+        "cell": 32,
+        "gap": 206,
+        "lower": "128750/3927",
+        "upper": "2000/61"
+      },
+      {
+        "cell": 32,
+        "gap": 207,
+        "lower": "43125/1309",
+        "upper": "207000/6283"
+      },
+      {
+        "cell": 33,
+        "gap": 208,
+        "lower": "130000/3927",
+        "upper": "208000/6283"
+      },
+      {
+        "cell": 33,
+        "gap": 209,
+        "lower": "11875/357",
+        "upper": "209000/6283"
+      },
+      {
+        "cell": 33,
+        "gap": 210,
+        "lower": "6250/187",
+        "upper": "210000/6283"
+      },
+      {
+        "cell": 33,
+        "gap": 211,
+        "lower": "131875/3927",
+        "upper": "211000/6283"
+      },
+      {
+        "cell": 33,
+        "gap": 212,
+        "lower": "132500/3927",
+        "upper": "212000/6283"
+      },
+      {
+        "cell": 33,
+        "gap": 213,
+        "lower": "44375/1309",
+        "upper": "213000/6283"
+      },
+      {
+        "cell": 34,
+        "gap": 214,
+        "lower": "133750/3927",
+        "upper": "214000/6283"
+      },
+      {
+        "cell": 34,
+        "gap": 215,
+        "lower": "134375/3927",
+        "upper": "215000/6283"
+      },
+      {
+        "cell": 34,
+        "gap": 216,
+        "lower": "45000/1309",
+        "upper": "216000/6283"
+      },
+      {
+        "cell": 34,
+        "gap": 217,
+        "lower": "19375/561",
+        "upper": "217000/6283"
+      },
+      {
+        "cell": 34,
+        "gap": 218,
+        "lower": "136250/3927",
+        "upper": "218000/6283"
+      },
+      {
+        "cell": 34,
+        "gap": 219,
+        "lower": "45625/1309",
+        "upper": "219000/6283"
+      },
+      {
+        "cell": 35,
+        "gap": 220,
+        "lower": "12500/357",
+        "upper": "220000/6283"
+      },
+      {
+        "cell": 35,
+        "gap": 221,
+        "lower": "8125/231",
+        "upper": "221000/6283"
+      },
+      {
+        "cell": 35,
+        "gap": 222,
+        "lower": "46250/1309",
+        "upper": "222000/6283"
+      },
+      {
+        "cell": 35,
+        "gap": 223,
+        "lower": "139375/3927",
+        "upper": "223000/6283"
+      },
+      {
+        "cell": 35,
+        "gap": 224,
+        "lower": "20000/561",
+        "upper": "224000/6283"
+      },
+      {
+        "cell": 35,
+        "gap": 225,
+        "lower": "46875/1309",
+        "upper": "225000/6283"
+      },
+      {
+        "cell": 35,
+        "gap": 226,
+        "lower": "141250/3927",
+        "upper": "226000/6283"
+      },
+      {
+        "cell": 36,
+        "gap": 227,
+        "lower": "141875/3927",
+        "upper": "227000/6283"
+      },
+      {
+        "cell": 36,
+        "gap": 228,
+        "lower": "47500/1309",
+        "upper": "228000/6283"
+      },
+      {
+        "cell": 36,
+        "gap": 229,
+        "lower": "143125/3927",
+        "upper": "229000/6283"
+      },
+      {
+        "cell": 36,
+        "gap": 230,
+        "lower": "143750/3927",
+        "upper": "230000/6283"
+      },
+      {
+        "cell": 36,
+        "gap": 231,
+        "lower": "625/17",
+        "upper": "231000/6283"
+      },
+      {
+        "cell": 36,
+        "gap": 232,
+        "lower": "145000/3927",
+        "upper": "232000/6283"
+      },
+      {
+        "cell": 37,
+        "gap": 233,
+        "lower": "145625/3927",
+        "upper": "233000/6283"
+      },
+      {
+        "cell": 37,
+        "gap": 234,
+        "lower": "48750/1309",
+        "upper": "234000/6283"
+      },
+      {
+        "cell": 37,
+        "gap": 235,
+        "lower": "146875/3927",
+        "upper": "235000/6283"
+      },
+      {
+        "cell": 37,
+        "gap": 236,
+        "lower": "147500/3927",
+        "upper": "236000/6283"
+      },
+      {
+        "cell": 37,
+        "gap": 237,
+        "lower": "49375/1309",
+        "upper": "237000/6283"
+      },
+      {
+        "cell": 37,
+        "gap": 238,
+        "lower": "1250/33",
+        "upper": "238000/6283"
+      },
+      {
+        "cell": 38,
+        "gap": 239,
+        "lower": "149375/3927",
+        "upper": "239000/6283"
+      },
+      {
+        "cell": 38,
+        "gap": 240,
+        "lower": "50000/1309",
+        "upper": "240000/6283"
+      },
+      {
+        "cell": 38,
+        "gap": 241,
+        "lower": "150625/3927",
+        "upper": "241000/6283"
+      },
+      {
+        "cell": 38,
+        "gap": 242,
+        "lower": "13750/357",
+        "upper": "242000/6283"
+      },
+      {
+        "cell": 38,
+        "gap": 243,
+        "lower": "50625/1309",
+        "upper": "243000/6283"
+      },
+      {
+        "cell": 38,
+        "gap": 244,
+        "lower": "152500/3927",
+        "upper": "4000/103"
+      },
+      {
+        "cell": 38,
+        "gap": 245,
+        "lower": "21875/561",
+        "upper": "245000/6283"
+      },
+      {
+        "cell": 39,
+        "gap": 246,
+        "lower": "51250/1309",
+        "upper": "246000/6283"
+      },
+      {
+        "cell": 39,
+        "gap": 247,
+        "lower": "154375/3927",
+        "upper": "247000/6283"
+      },
+      {
+        "cell": 39,
+        "gap": 248,
+        "lower": "155000/3927",
+        "upper": "248000/6283"
+      },
+      {
+        "cell": 39,
+        "gap": 249,
+        "lower": "51875/1309",
+        "upper": "249000/6283"
+      },
+      {
+        "cell": 39,
+        "gap": 250,
+        "lower": "156250/3927",
+        "upper": "250000/6283"
+      },
+      {
+        "cell": 39,
+        "gap": 251,
+        "lower": "156875/3927",
+        "upper": "251000/6283"
+      },
+      {
+        "cell": 40,
+        "gap": 252,
+        "lower": "7500/187",
+        "upper": "252000/6283"
+      },
+      {
+        "cell": 40,
+        "gap": 253,
+        "lower": "14375/357",
+        "upper": "253000/6283"
+      },
+      {
+        "cell": 40,
+        "gap": 254,
+        "lower": "158750/3927",
+        "upper": "254000/6283"
+      },
+      {
+        "cell": 40,
+        "gap": 255,
+        "lower": "3125/77",
+        "upper": "255000/6283"
+      },
+      {
+        "cell": 40,
+        "gap": 256,
+        "lower": "160000/3927",
+        "upper": "256000/6283"
+      },
+      {
+        "cell": 40,
+        "gap": 257,
+        "lower": "160625/3927",
+        "upper": "257000/6283"
+      },
+      {
+        "cell": 41,
+        "gap": 258,
+        "lower": "53750/1309",
+        "upper": "258000/6283"
+      },
+      {
+        "cell": 41,
+        "gap": 259,
+        "lower": "23125/561",
+        "upper": "259000/6283"
+      },
+      {
+        "cell": 41,
+        "gap": 260,
+        "lower": "162500/3927",
+        "upper": "260000/6283"
+      },
+      {
+        "cell": 41,
+        "gap": 261,
+        "lower": "54375/1309",
+        "upper": "261000/6283"
+      },
+      {
+        "cell": 41,
+        "gap": 262,
+        "lower": "163750/3927",
+        "upper": "262000/6283"
+      },
+      {
+        "cell": 41,
+        "gap": 263,
+        "lower": "164375/3927",
+        "upper": "263000/6283"
+      },
+      {
+        "cell": 42,
+        "gap": 264,
+        "lower": "5000/119",
+        "upper": "264000/6283"
+      },
+      {
+        "cell": 42,
+        "gap": 265,
+        "lower": "165625/3927",
+        "upper": "265000/6283"
+      },
+      {
+        "cell": 42,
+        "gap": 266,
+        "lower": "23750/561",
+        "upper": "266000/6283"
+      },
+      {
+        "cell": 42,
+        "gap": 267,
+        "lower": "55625/1309",
+        "upper": "267000/6283"
+      },
+      {
+        "cell": 42,
+        "gap": 268,
+        "lower": "167500/3927",
+        "upper": "268000/6283"
+      },
+      {
+        "cell": 42,
+        "gap": 269,
+        "lower": "168125/3927",
+        "upper": "269000/6283"
+      },
+      {
+        "cell": 42,
+        "gap": 270,
+        "lower": "56250/1309",
+        "upper": "270000/6283"
+      },
+      {
+        "cell": 43,
+        "gap": 271,
+        "lower": "169375/3927",
+        "upper": "271000/6283"
+      },
+      {
+        "cell": 43,
+        "gap": 272,
+        "lower": "10000/231",
+        "upper": "272000/6283"
+      },
+      {
+        "cell": 43,
+        "gap": 273,
+        "lower": "8125/187",
+        "upper": "273000/6283"
+      },
+      {
+        "cell": 43,
+        "gap": 274,
+        "lower": "171250/3927",
+        "upper": "274000/6283"
+      },
+      {
+        "cell": 43,
+        "gap": 275,
+        "lower": "15625/357",
+        "upper": "275000/6283"
+      },
+      {
+        "cell": 43,
+        "gap": 276,
+        "lower": "57500/1309",
+        "upper": "276000/6283"
+      },
+      {
+        "cell": 44,
+        "gap": 277,
+        "lower": "173125/3927",
+        "upper": "277000/6283"
+      },
+      {
+        "cell": 44,
+        "gap": 278,
+        "lower": "173750/3927",
+        "upper": "278000/6283"
+      },
+      {
+        "cell": 44,
+        "gap": 279,
+        "lower": "58125/1309",
+        "upper": "279000/6283"
+      },
+      {
+        "cell": 44,
+        "gap": 280,
+        "lower": "25000/561",
+        "upper": "280000/6283"
+      },
+      {
+        "cell": 44,
+        "gap": 281,
+        "lower": "175625/3927",
+        "upper": "281000/6283"
+      },
+      {
+        "cell": 44,
+        "gap": 282,
+        "lower": "58750/1309",
+        "upper": "282000/6283"
+      },
+      {
+        "cell": 45,
+        "gap": 283,
+        "lower": "176875/3927",
+        "upper": "283000/6283"
+      },
+      {
+        "cell": 45,
+        "gap": 284,
+        "lower": "177500/3927",
+        "upper": "284000/6283"
+      },
+      {
+        "cell": 45,
+        "gap": 285,
+        "lower": "59375/1309",
+        "upper": "285000/6283"
+      },
+      {
+        "cell": 45,
+        "gap": 286,
+        "lower": "16250/357",
+        "upper": "286000/6283"
+      },
+      {
+        "cell": 45,
+        "gap": 287,
+        "lower": "25625/561",
+        "upper": "287000/6283"
+      },
+      {
+        "cell": 45,
+        "gap": 288,
+        "lower": "60000/1309",
+        "upper": "288000/6283"
+      },
+      {
+        "cell": 45,
+        "gap": 289,
+        "lower": "10625/231",
+        "upper": "289000/6283"
+      },
+      {
+        "cell": 46,
+        "gap": 290,
+        "lower": "181250/3927",
+        "upper": "290000/6283"
+      },
+      {
+        "cell": 46,
+        "gap": 291,
+        "lower": "60625/1309",
+        "upper": "291000/6283"
+      },
+      {
+        "cell": 46,
+        "gap": 292,
+        "lower": "182500/3927",
+        "upper": "292000/6283"
+      },
+      {
+        "cell": 46,
+        "gap": 293,
+        "lower": "183125/3927",
+        "upper": "293000/6283"
+      },
+      {
+        "cell": 46,
+        "gap": 294,
+        "lower": "8750/187",
+        "upper": "294000/6283"
+      },
+      {
+        "cell": 46,
+        "gap": 295,
+        "lower": "184375/3927",
+        "upper": "295000/6283"
+      },
+      {
+        "cell": 47,
+        "gap": 296,
+        "lower": "185000/3927",
+        "upper": "296000/6283"
+      },
+      {
+        "cell": 47,
+        "gap": 297,
+        "lower": "5625/119",
+        "upper": "297000/6283"
+      },
+      {
+        "cell": 47,
+        "gap": 298,
+        "lower": "186250/3927",
+        "upper": "298000/6283"
+      },
+      {
+        "cell": 47,
+        "gap": 299,
+        "lower": "186875/3927",
+        "upper": "299000/6283"
+      },
+      {
+        "cell": 47,
+        "gap": 300,
+        "lower": "62500/1309",
+        "upper": "300000/6283"
+      },
+      {
+        "cell": 47,
+        "gap": 301,
+        "lower": "26875/561",
+        "upper": "301000/6283"
+      },
+      {
+        "cell": 48,
+        "gap": 302,
+        "lower": "188750/3927",
+        "upper": "302000/6283"
+      },
+      {
+        "cell": 48,
+        "gap": 303,
+        "lower": "63125/1309",
+        "upper": "303000/6283"
+      },
+      {
+        "cell": 48,
+        "gap": 304,
+        "lower": "190000/3927",
+        "upper": "304000/6283"
+      },
+      {
+        "cell": 48,
+        "gap": 305,
+        "lower": "190625/3927",
+        "upper": "5000/103"
+      },
+      {
+        "cell": 48,
+        "gap": 306,
+        "lower": "3750/77",
+        "upper": "306000/6283"
+      },
+      {
+        "cell": 48,
+        "gap": 307,
+        "lower": "191875/3927",
+        "upper": "307000/6283"
+      },
+      {
+        "cell": 49,
+        "gap": 308,
+        "lower": "2500/51",
+        "upper": "308000/6283"
+      },
+      {
+        "cell": 49,
+        "gap": 309,
+        "lower": "64375/1309",
+        "upper": "3000/61"
+      },
+      {
+        "cell": 49,
+        "gap": 310,
+        "lower": "193750/3927",
+        "upper": "310000/6283"
+      },
+      {
+        "cell": 49,
+        "gap": 311,
+        "lower": "194375/3927",
+        "upper": "311000/6283"
+      },
+      {
+        "cell": 49,
+        "gap": 312,
+        "lower": "65000/1309",
+        "upper": "312000/6283"
+      },
+      {
+        "cell": 49,
+        "gap": 313,
+        "lower": "195625/3927",
+        "upper": "313000/6283"
+      },
+      {
+        "cell": 49,
+        "gap": 314,
+        "lower": "196250/3927",
+        "upper": "314000/6283"
+      },
+      {
+        "cell": 50,
+        "gap": 315,
+        "lower": "9375/187",
+        "upper": "315000/6283"
+      },
+      {
+        "cell": 50,
+        "gap": 316,
+        "lower": "197500/3927",
+        "upper": "316000/6283"
+      },
+      {
+        "cell": 50,
+        "gap": 317,
+        "lower": "198125/3927",
+        "upper": "317000/6283"
+      },
+      {
+        "cell": 50,
+        "gap": 318,
+        "lower": "66250/1309",
+        "upper": "318000/6283"
+      },
+      {
+        "cell": 50,
+        "gap": 319,
+        "lower": "18125/357",
+        "upper": "319000/6283"
+      },
+      {
+        "cell": 50,
+        "gap": 320,
+        "lower": "200000/3927",
+        "upper": "320000/6283"
+      },
+      {
+        "cell": 51,
+        "gap": 321,
+        "lower": "66875/1309",
+        "upper": "321000/6283"
+      },
+      {
+        "cell": 51,
+        "gap": 322,
+        "lower": "28750/561",
+        "upper": "322000/6283"
+      },
+      {
+        "cell": 51,
+        "gap": 323,
+        "lower": "11875/231",
+        "upper": "323000/6283"
+      },
+      {
+        "cell": 51,
+        "gap": 324,
+        "lower": "67500/1309",
+        "upper": "324000/6283"
+      },
+      {
+        "cell": 51,
+        "gap": 325,
+        "lower": "203125/3927",
+        "upper": "325000/6283"
+      },
+      {
+        "cell": 51,
+        "gap": 326,
+        "lower": "203750/3927",
+        "upper": "326000/6283"
+      },
+      {
+        "cell": 52,
+        "gap": 327,
+        "lower": "68125/1309",
+        "upper": "327000/6283"
+      },
+      {
+        "cell": 52,
+        "gap": 328,
+        "lower": "205000/3927",
+        "upper": "328000/6283"
+      },
+      {
+        "cell": 52,
+        "gap": 329,
+        "lower": "29375/561",
+        "upper": "329000/6283"
+      },
+      {
+        "cell": 52,
+        "gap": 330,
+        "lower": "6250/119",
+        "upper": "330000/6283"
+      },
+      {
+        "cell": 52,
+        "gap": 331,
+        "lower": "206875/3927",
+        "upper": "331000/6283"
+      },
+      {
+        "cell": 52,
+        "gap": 332,
+        "lower": "207500/3927",
+        "upper": "332000/6283"
       }
     ],
     "lean_declarations": [
@@ -4374,9 +6051,12 @@
       "Circle.Applications.ropeStandardChannel0_piD4_base_upper",
       "Circle.Applications.ropeStandardChannel0D6Seed_intervalCertificate",
       "Circle.Applications.ropeStandardChannel0D6Seed_turnRatioFiniteMargin",
-      "Circle.Applications.not_ropeStandardChannel0D6Seed_nearTurn"
+      "Circle.Applications.not_ropeStandardChannel0D6Seed_nearTurn",
+      "Circle.Applications.ropeStandardChannel0D7Seed_intervalCertificate",
+      "Circle.Applications.ropeStandardChannel0D7Seed_turnRatioFiniteMargin",
+      "Circle.Applications.not_ropeStandardChannel0D7Seed_nearTurn"
     ],
-    "name": "standard_rope_channel0_interval_context_57",
+    "name": "standard_rope_channel0_interval_context_333",
     "pass_certificate": true,
     "pi_bounds": "pi <= 4, 3.14 < pi, pi < 3.15, 3.1415 < pi, and pi < 3.1416",
     "schema_id": "circle_calculus.standard_rope_interval_margin.v0",
@@ -4404,7 +6084,10 @@
       "AIRA-T0083",
       "AIRA-T0084",
       "AIRA-T0085",
-      "AIRA-T0086"
+      "AIRA-T0086",
+      "AIRA-T0087",
+      "AIRA-T0088",
+      "AIRA-T0089"
     ],
     "turn_ratio_expression": "1/(2*pi)"
   }

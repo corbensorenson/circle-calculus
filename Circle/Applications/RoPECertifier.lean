@@ -4,6 +4,7 @@ import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.IntervalCases
 import Mathlib.Tactic.Linarith
 
 /-!
@@ -1125,6 +1126,70 @@ def ropeStandardChannel0D6SeedContext : Nat := 57
 /-- The advertised margin for the sixth standard channel-0 interval seed. -/
 noncomputable def ropeStandardChannel0D6SeedMargin : ℝ := 1 / 512
 
+/-- A seventh inspected context for the standard-RoPE interval certificate.
+This extends the four-decimal interval route through all positive gaps below
+`333`. Gap `333` is the first obstruction for this d4 bound table. -/
+def ropeStandardChannel0D7SeedContext : Nat := 333
+
+/-- The advertised margin for the seventh standard channel-0 interval seed. -/
+noncomputable def ropeStandardChannel0D7SeedMargin : ℝ := 1 / 512
+
+private def ropeStandardChannel0D7Cell (gap : Nat) : Int :=
+  if gap ≤ 6 then 0
+  else if gap ≤ 12 then 1
+  else if gap ≤ 18 then 2
+  else if gap ≤ 25 then 3
+  else if gap ≤ 31 then 4
+  else if gap ≤ 37 then 5
+  else if gap ≤ 43 then 6
+  else if gap ≤ 50 then 7
+  else if gap ≤ 56 then 8
+  else if gap ≤ 62 then 9
+  else if gap ≤ 69 then 10
+  else if gap ≤ 75 then 11
+  else if gap ≤ 81 then 12
+  else if gap ≤ 87 then 13
+  else if gap ≤ 94 then 14
+  else if gap ≤ 100 then 15
+  else if gap ≤ 106 then 16
+  else if gap ≤ 113 then 17
+  else if gap ≤ 119 then 18
+  else if gap ≤ 125 then 19
+  else if gap ≤ 131 then 20
+  else if gap ≤ 138 then 21
+  else if gap ≤ 144 then 22
+  else if gap ≤ 150 then 23
+  else if gap ≤ 157 then 24
+  else if gap ≤ 163 then 25
+  else if gap ≤ 169 then 26
+  else if gap ≤ 175 then 27
+  else if gap ≤ 182 then 28
+  else if gap ≤ 188 then 29
+  else if gap ≤ 194 then 30
+  else if gap ≤ 201 then 31
+  else if gap ≤ 207 then 32
+  else if gap ≤ 213 then 33
+  else if gap ≤ 219 then 34
+  else if gap ≤ 226 then 35
+  else if gap ≤ 232 then 36
+  else if gap ≤ 238 then 37
+  else if gap ≤ 245 then 38
+  else if gap ≤ 251 then 39
+  else if gap ≤ 257 then 40
+  else if gap ≤ 263 then 41
+  else if gap ≤ 270 then 42
+  else if gap ≤ 276 then 43
+  else if gap ≤ 282 then 44
+  else if gap ≤ 289 then 45
+  else if gap ≤ 295 then 46
+  else if gap ≤ 301 then 47
+  else if gap ≤ 307 then 48
+  else if gap ≤ 314 then 49
+  else if gap ≤ 320 then 50
+  else if gap ≤ 326 then 51
+  else if gap ≤ 332 then 52
+  else 0
+
 private theorem ropeStandardChannel0_base_lower :
     (1 : ℝ) / 8 ≤ ropeStandardChannel0TurnRatio := by
   have htwo_pi_pos : 0 < 2 * Real.pi := Real.two_pi_pos
@@ -1753,6 +1818,47 @@ theorem ropeStandardChannel0D6Seed_turnRatioFiniteMargin :
   ropeTurnRatioFiniteMargin_of_intervalCertificate
     ropeStandardChannel0D6Seed_intervalCertificate
 
+private theorem ropeStandardChannel0_d7IntervalWitness_of_gap_lt_context
+    {gap : Nat} (hgap_pos : 0 < gap)
+    (hgap_lt : gap < ropeStandardChannel0D7SeedContext) :
+    ropeTurnRatioIntervalWitness ropeStandardChannel0TurnRatio
+      ropeStandardChannel0D7SeedMargin gap (((5000 * gap : Nat) : ℚ) / 31416)
+      (((5000 * gap : Nat) : ℚ) / 31415) (ropeStandardChannel0D7Cell gap) := by
+  unfold ropeStandardChannel0D7SeedContext at hgap_lt
+  interval_cases hgap_value : gap <;> subst gap <;>
+    dsimp [ropeStandardChannel0D7SeedMargin, ropeStandardChannel0D6SeedMargin,
+      ropeStandardChannel0D7Cell]
+  all_goals
+    apply ropeStandardChannel0_d6IntervalWitness_of_scaled_bounds <;> norm_num
+
+/-- A seventh standard-RoPE interval seed: channel 0 has margin `1/512` over
+the context containing gaps `1` through `332`.
+
+The proof uses a generated exact rational cell table for the same four-decimal
+enclosure `5000*gap/31416 <= gap/(2π) <= 5000*gap/31415`. The next obstruction
+for this table appears at gap `333`, so this certificate stops at context
+`333`. -/
+theorem ropeStandardChannel0D7Seed_intervalCertificate :
+    ropeTurnRatioIntervalCertificate ropeStandardChannel0TurnRatio
+      ropeStandardChannel0D7SeedMargin ropeStandardChannel0D7SeedContext := by
+  refine ⟨by dsimp [ropeStandardChannel0D7SeedMargin]; norm_num, ?_⟩
+  intro gap hgap_range hgap_pos
+  have hgap_lt : gap < ropeStandardChannel0D7SeedContext := by
+    simpa [ropeStandardChannel0D7SeedContext] using List.mem_range.mp hgap_range
+  exact
+    ⟨((5000 * gap : Nat) : ℚ) / 31416,
+      ((5000 * gap : Nat) : ℚ) / 31415,
+      ropeStandardChannel0D7Cell gap,
+      ropeStandardChannel0_d7IntervalWitness_of_gap_lt_context hgap_pos hgap_lt⟩
+
+/-- The seventh named standard-RoPE channel-0 seed has a proved finite
+turn-ratio margin over context `333`. -/
+theorem ropeStandardChannel0D7Seed_turnRatioFiniteMargin :
+    ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio
+      ropeStandardChannel0D7SeedMargin ropeStandardChannel0D7SeedContext :=
+  ropeTurnRatioFiniteMargin_of_intervalCertificate
+    ropeStandardChannel0D7Seed_intervalCertificate
+
 /-- Finite-context turn-ratio margins are monotone in the inspected context.
 
 A margin certificate proved for a larger context automatically applies to any
@@ -1952,6 +2058,26 @@ theorem not_ropeStandardChannel0D6Seed_nearTurn
       (by norm_num)
       (by simpa using ropeStandardChannel0D6Seed_turnRatioFiniteMargin)
       (by simpa [ropeStandardChannel0D6SeedMargin] using htolerance)
+
+/-- The generated-band standard-RoPE channel-0 interval seed rules out
+one-channel near-turn collisions below margin `1/512` over context `333`. -/
+theorem not_ropeStandardChannel0D7Seed_nearTurn
+    {tolerance : ℝ} {left right : Nat}
+    (hleft : left < right) (hright : right < ropeStandardChannel0D7SeedContext)
+    (htolerance : tolerance < ropeStandardChannel0D7SeedMargin) :
+    ¬ ropeRealPhaseNearTurn ropeStandardChannel0TurnRatio 1 tolerance left right := by
+  exact
+    not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin
+      (frequency := ropeStandardChannel0TurnRatio) (fullTurn := 1)
+      (margin := ropeStandardChannel0D7SeedMargin) (tolerance := tolerance)
+      (context := ropeStandardChannel0D7SeedContext) (left := left) (right := right)
+      hleft hright
+      (by
+        dsimp [ropeStandardChannel0TurnRatio]
+        positivity)
+      (by norm_num)
+      (by simpa using ropeStandardChannel0D7Seed_turnRatioFiniteMargin)
+      (by simpa [ropeStandardChannel0D7SeedMargin] using htolerance)
 
 /-- A finite-context turn-ratio margin for one channel rules out all-channel
 real near-turn collision in a finite bank.
