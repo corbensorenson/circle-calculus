@@ -62,8 +62,17 @@ The raw-budget iff endpoints are:
 - `AIT-T0076`: lag-candidate raw-budget equality holds if and only if the lag-candidate list has no duplicates.
 - `AIT-T0077`: query-candidate raw-budget equality holds if and only if the query-indexed candidate list has no duplicates.
 
+The finite-list endpoints are:
+
+- `AIT-T0081`: membership in the uncovered-lag list is exactly a positive in-context semantic miss.
+- `AIT-T0082`: complete coverage is equivalent to an empty uncovered-lag list.
+- `AIT-T0083`: complete coverage is equivalent to uncovered-lag count zero.
+- `AIT-T0090`: membership in the covered-lag list is exactly a positive in-context semantic hit.
+- `AIT-T0091`: the default fixture's covered-lag list has exactly `10` entries.
+
 The gap/coverage spine is `AIT-T0020` through `AIT-T0035`. The theorem-side candidate-list,
 budget, no-collision, and predecessor-indexing spine is `AIT-T0036` through `AIT-T0077`.
+The finite uncovered/covered list and count spine is `AIT-T0078` through `AIT-T0091`.
 
 ## Boundary
 
