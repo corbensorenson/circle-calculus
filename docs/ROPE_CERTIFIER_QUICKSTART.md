@@ -211,6 +211,8 @@ plan_standard_channel0_interval_bands(
 
 Each emitted band also records `start_lower_value`, `end_upper_value`, `endpoint_cell_margin_ok`, and `bridge_theorem_id=AIRA-T0126`. Those fields are the executable sidecar version of the Lean band-endpoint bridge: a generator can prove the band endpoints stay inside one integer cell, then use `AIRA-T0126` to justify every intermediate gap in that band.
 
+For example, the first d4 band records `start_gap=1`, `end_gap=6`, `cell=0`, `start_lower_value=625/3927`, `end_upper_value=6000/6283`, and `endpoint_cell_margin_ok=true`. That means the band endpoints fit safely inside the integer cell from `0` to `1` with the advertised margin, so the monotone band theorem covers gaps `1` through `6`.
+
 The d4, d6, conservative d20 `1/131072`, tighter d20 `1/105000`, sharp d20 `1/104219`, and 8k d20 `1/104220` plans have been converted into Lean proof. Future plans are exact-rational source data only until matching declarations compile and manifest ids are marked proved.
 
 If the exact discrete contract fails, the output includes a common collision gap and sample colliding pairs.

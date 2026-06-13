@@ -298,7 +298,20 @@ d20_8k_plan.context_length # 8192
 d20_8k_plan.theorem_status # lean_proved_interval_seed_AIRA-T0120_to_AIRA-T0122
 ```
 
-The d4, d6, conservative d20, tighter d20, and sharp d20 plans are now source tables for compiled Lean declarations. Each emitted band also records the lower endpoint value, upper endpoint value, whether the endpoint cell-margin check passes, and `bridge_theorem_id = AIRA-T0126`. Future exact-rational plans remain planning artifacts until matching declarations compile and manifest ids are marked proved.
+The d4, d6, conservative d20, tighter d20, and sharp d20 plans are now source tables for compiled Lean declarations. Each emitted band also records the lower endpoint value, upper endpoint value, whether the endpoint cell-margin check passes, and `bridge_theorem_id = AIRA-T0126`.
+
+Read one band like this:
+
+```text
+start_gap = 1
+end_gap = 6
+cell = 0
+start_lower_value = 625 / 3927
+end_upper_value = 6000 / 6283
+endpoint_cell_margin_ok = true
+```
+
+This says the generator has one cell band covering gaps `1` through `6`. The lower endpoint already lies at least the requested margin after integer cell `0`, and the upper endpoint still lies at least the requested margin before integer cell `1`. Because multiplication by the rational lower and upper turn-ratio bounds is monotone over nonnegative gaps, `AIRA-T0126` fills in every gap between those endpoints. Future exact-rational plans remain planning artifacts until matching declarations compile and manifest ids are marked proved.
 
 ## What To Notice
 
