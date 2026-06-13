@@ -165,6 +165,8 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS: tuple[str, ...] = (
     "AIRA-T0092",
     "AIRA-T0093",
     "AIRA-T0094",
+    "AIRA-T0095",
+    "AIRA-T0096",
 )
 
 ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -200,6 +202,8 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeStandardChannel0D8Seed_intervalCertificate",
     "Circle.Applications.ropeStandardChannel0D8Seed_turnRatioFiniteMargin",
     "Circle.Applications.not_ropeStandardChannel0D8Seed_nearTurn",
+    "Circle.Applications.ropeStandardChannel0D8_gap710_error_lt_margin",
+    "Circle.Applications.not_ropeStandardChannel0D8SeedMargin_of_context_gt_seed",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -1233,8 +1237,9 @@ def certify_standard_channel0_interval_seed() -> IntervalBackedTurnRatioCertific
             "has finite nearest-integer margin 1/1024 for gaps 1 through 709. "
             "Every gap uses the six-decimal enclosure 500000*gap/3141593 <= "
             "gap/(2*pi) <= 500000*gap/3141592, split across computed integer "
-            "cells 0 through 112. Larger contexts need sharper pi or "
-            "continued-fraction bounds; the same d6 table first fails at gap 710."
+            "cells 0 through 112. Lean also proves that gap 710 is already "
+            "within the same 1/1024 margin of integer turn 113, so this exact "
+            "margin cannot extend to a larger context for channel 0."
         ),
         claim_boundary=(
             "This is a theorem-backed interval certificate for the genuine standard "

@@ -145,10 +145,10 @@ Expected meaning:
 standard_rope_channel0_interval_context_710
 True
 1/1024
-AIRA-T0063,AIRA-T0064,AIRA-T0065,...,AIRA-T0094
+AIRA-T0063,AIRA-T0064,AIRA-T0065,...,AIRA-T0096
 ```
 
-Lean proves that channel 0 with standard turn ratio `1 / (2π)` has finite-context nearest-integer margin `1/1024` for gaps `1` through `709`. The current strongest seed uses the six-decimal enclosure `500000*gap/3141593 <= gap/(2π) <= 500000*gap/3141592` from `π < 3.141593` and `3.141592 < π`, split across computed integer cells `0` through `112`. This is a real standard-RoPE theorem, but only for one channel and context `710`; it is not a proof for 4096, 128k, or the whole multi-channel bank.
+Lean proves that channel 0 with standard turn ratio `1 / (2π)` has finite-context nearest-integer margin `1/1024` for gaps `1` through `709`. The current strongest seed uses the six-decimal enclosure `500000*gap/3141593 <= gap/(2π) <= 500000*gap/3141592` from `π < 3.141593` and `3.141592 < π`, split across computed integer cells `0` through `112`. Lean also proves that gap `710` is already within margin `1/1024` of integer turn `113`, so this exact margin cannot extend to any larger context for channel 0. This is a real standard-RoPE theorem, but only for one channel and context `710`; it is not a proof for 4096, 128k, or the whole multi-channel bank.
 
 For audit and future Lean work, the sidecar also exposes interval plans:
 

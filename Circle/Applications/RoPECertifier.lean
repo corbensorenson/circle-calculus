@@ -1984,6 +1984,54 @@ theorem ropeStandardChannel0D8Seed_turnRatioFiniteMargin :
   ropeTurnRatioFiniteMargin_of_intervalCertificate
     ropeStandardChannel0D8Seed_intervalCertificate
 
+/-- The gap `710` is already within the advertised `1/1024` margin of integer
+turn `113` for standard RoPE channel 0.
+
+This explains why the context-`710` seed is a sharp stopping point for this
+margin: the seed context contains gaps below `710`, while any larger context
+would have to certify the obstructing gap `710`. -/
+theorem ropeStandardChannel0D8_gap710_error_lt_margin :
+    ropeTurnRatioError ropeStandardChannel0TurnRatio 710 113 <
+      ropeStandardChannel0D8SeedMargin := by
+  unfold ropeTurnRatioError ropeStandardChannel0D8SeedMargin
+  have hlower :
+      (710 : ℝ) * ((500000 : ℝ) / 3141593) ≤
+        (710 : ℝ) * ropeStandardChannel0TurnRatio :=
+    mul_le_mul_of_nonneg_left ropeStandardChannel0_piD6_base_lower (by norm_num)
+  have hupper :
+      (710 : ℝ) * ropeStandardChannel0TurnRatio ≤
+        (710 : ℝ) * ((500000 : ℝ) / 3141592) :=
+    mul_le_mul_of_nonneg_left ropeStandardChannel0_piD6_base_upper (by norm_num)
+  rw [abs_lt]
+  constructor
+  · have hgap_lower :
+        (113 : ℝ) - (1 : ℝ) / 1024 <
+          (710 : ℝ) * ((500000 : ℝ) / 3141593) := by
+      norm_num
+    linarith
+  · have hgap_upper :
+        (710 : ℝ) * ((500000 : ℝ) / 3141592) <
+          (113 : ℝ) + (1 : ℝ) / 1024 := by
+      norm_num
+    linarith
+
+/-- The context-`710`, margin-`1/1024` standard-channel seed cannot be extended
+to any strictly larger context at the same margin.
+
+The obstruction is the concrete near-integer return at gap `710`, integer turn
+`113`. -/
+theorem not_ropeStandardChannel0D8SeedMargin_of_context_gt_seed
+    {context : Nat} (hcontext : ropeStandardChannel0D8SeedContext < context) :
+    ¬ ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio
+      ropeStandardChannel0D8SeedMargin context := by
+  intro hmargin
+  have hgap_lt : 710 < context := by
+    simpa [ropeStandardChannel0D8SeedContext] using hcontext
+  have hcertifies_gap :=
+    hmargin 710 (by norm_num) hgap_lt (113 : Int)
+  have hobstruction := ropeStandardChannel0D8_gap710_error_lt_margin
+  linarith
+
 /-- Finite-context turn-ratio margins are monotone in the inspected context.
 
 A margin certificate proved for a larger context automatically applies to any

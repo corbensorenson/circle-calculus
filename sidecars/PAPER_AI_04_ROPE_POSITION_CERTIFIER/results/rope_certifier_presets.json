@@ -884,7 +884,9 @@
               "AIRA-T0091",
               "AIRA-T0092",
               "AIRA-T0093",
-              "AIRA-T0094"
+              "AIRA-T0094",
+              "AIRA-T0095",
+              "AIRA-T0096"
             ]
           },
           {
@@ -1422,7 +1424,9 @@
               "AIRA-T0091",
               "AIRA-T0092",
               "AIRA-T0093",
-              "AIRA-T0094"
+              "AIRA-T0094",
+              "AIRA-T0095",
+              "AIRA-T0096"
             ]
           },
           {
@@ -1944,7 +1948,9 @@
               "AIRA-T0091",
               "AIRA-T0092",
               "AIRA-T0093",
-              "AIRA-T0094"
+              "AIRA-T0094",
+              "AIRA-T0095",
+              "AIRA-T0096"
             ]
           },
           {
@@ -2197,7 +2203,9 @@
               "AIRA-T0091",
               "AIRA-T0092",
               "AIRA-T0093",
-              "AIRA-T0094"
+              "AIRA-T0094",
+              "AIRA-T0095",
+              "AIRA-T0096"
             ]
           },
           {
@@ -2462,7 +2470,9 @@
               "AIRA-T0091",
               "AIRA-T0092",
               "AIRA-T0093",
-              "AIRA-T0094"
+              "AIRA-T0094",
+              "AIRA-T0095",
+              "AIRA-T0096"
             ]
           },
           {
@@ -2784,7 +2794,9 @@
               "AIRA-T0091",
               "AIRA-T0092",
               "AIRA-T0093",
-              "AIRA-T0094"
+              "AIRA-T0094",
+              "AIRA-T0095",
+              "AIRA-T0096"
             ]
           },
           {
@@ -3062,7 +3074,9 @@
               "AIRA-T0091",
               "AIRA-T0092",
               "AIRA-T0093",
-              "AIRA-T0094"
+              "AIRA-T0094",
+              "AIRA-T0095",
+              "AIRA-T0096"
             ]
           },
           {
@@ -4067,7 +4081,7 @@
     "certified_margin": "1/1024",
     "claim_boundary": "This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 710 only. It is not a full standard RoPE bank certificate and does not certify 512, 4096, or larger contexts.",
     "context_length": 710,
-    "explanation": "Lean proves that standard RoPE channel 0, with turn ratio 1/(2*pi), has finite nearest-integer margin 1/1024 for gaps 1 through 709. Every gap uses the six-decimal enclosure 500000*gap/3141593 <= gap/(2*pi) <= 500000*gap/3141592, split across computed integer cells 0 through 112. Larger contexts need sharper pi or continued-fraction bounds; the same d6 table first fails at gap 710.",
+    "explanation": "Lean proves that standard RoPE channel 0, with turn ratio 1/(2*pi), has finite nearest-integer margin 1/1024 for gaps 1 through 709. Every gap uses the six-decimal enclosure 500000*gap/3141593 <= gap/(2*pi) <= 500000*gap/3141592, split across computed integer cells 0 through 112. Lean also proves that gap 710 is already within the same 1/1024 margin of integer turn 113, so this exact margin cannot extend to a larger context for channel 0.",
     "interval_witnesses": [
       {
         "cell": 0,
@@ -8356,7 +8370,9 @@
       "Circle.Applications.ropeStandardChannel0_piD6_base_upper",
       "Circle.Applications.ropeStandardChannel0D8Seed_intervalCertificate",
       "Circle.Applications.ropeStandardChannel0D8Seed_turnRatioFiniteMargin",
-      "Circle.Applications.not_ropeStandardChannel0D8Seed_nearTurn"
+      "Circle.Applications.not_ropeStandardChannel0D8Seed_nearTurn",
+      "Circle.Applications.ropeStandardChannel0D8_gap710_error_lt_margin",
+      "Circle.Applications.not_ropeStandardChannel0D8SeedMargin_of_context_gt_seed"
     ],
     "name": "standard_rope_channel0_interval_context_710",
     "pass_certificate": true,
@@ -8394,7 +8410,9 @@
       "AIRA-T0091",
       "AIRA-T0092",
       "AIRA-T0093",
-      "AIRA-T0094"
+      "AIRA-T0094",
+      "AIRA-T0095",
+      "AIRA-T0096"
     ],
     "turn_ratio_expression": "1/(2*pi)"
   }

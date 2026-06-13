@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 import subprocess
 import sys
 from fractions import Fraction
@@ -364,6 +365,8 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert "AIRA-T0092" in certificate.theorem_ids
     assert "AIRA-T0093" in certificate.theorem_ids
     assert "AIRA-T0094" in certificate.theorem_ids
+    assert "AIRA-T0095" in certificate.theorem_ids
+    assert "AIRA-T0096" in certificate.theorem_ids
     assert tuple(witness.gap for witness in certificate.interval_witnesses) == tuple(
         range(1, 710)
     )
@@ -384,6 +387,15 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
                 band.start_gap - 1 : band.end_gap
             ]
         )
+    assert "gap 710" in certificate.explanation
+    assert "cannot extend" in certificate.explanation
+    scanned_margin, scanned_gap, scanned_turns = scan_turn_ratio_finite_margin(
+        turn_ratio=1 / (2 * math.pi),
+        context_length=711,
+    )
+    assert scanned_gap == 710
+    assert scanned_turns == 113
+    assert scanned_margin < 1 / 1024
     assert "context 710 only" in certificate.claim_boundary
 
 
