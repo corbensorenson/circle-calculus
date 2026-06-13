@@ -47,7 +47,7 @@ python scripts/kv_cache_certify.py \
 ## Reading The Certificate
 
 - `window_certificate`: the inspected token's slot, current slot, lag, retained-window status, next same-slot overwrite boundary, whether any later token up to the current read point reused the same slot, whether a stale token has the explicit same-slot overwrite witness `token + cache_size`, and whether retained-window membership is equivalent to no later same-slot write in the trace up to `current`.
-- `batch_certificate`: the optional retained batch, its slots, whether all batch tokens are retained, whether the batch slots are duplicate-free, and whether all-retained is equivalent to every requested non-future token having no later same-slot write up to `current`.
+- `batch_certificate`: the optional retained batch, its slots, whether all batch tokens are retained, whether the batch slots are duplicate-free, whether all-retained is equivalent to every requested non-future token having no later same-slot write up to `current`, and whether a trace-fresh duplicate-free batch maps to duplicate-free slots.
 - `live_window_certificate`: the generated retained-token interval, its slot list, and whether the full-window coverage contract applies.
 - `full_coverage_contract`: true when the live window is full, the generated slot list is duplicate-free, its length equals `cache_size`, and every emitted slot is inside the cache range.
 
@@ -61,6 +61,7 @@ The main theorem spine is:
 - `AIM-T0076`: stale-token same-slot overwrite witness at `token + cache_size`.
 - `AIM-T0077`: retained iff no later same-slot write appears in the finite trace up to `current`.
 - `AIM-T0078`: batch all-retained iff every requested non-future token has no later same-slot write up to `current`.
+- `AIM-T0079`: trace-fresh duplicate-free non-future read batches map to duplicate-free ring-buffer slots.
 
 ## Boundary
 

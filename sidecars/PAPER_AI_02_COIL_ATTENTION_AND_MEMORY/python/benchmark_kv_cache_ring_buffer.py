@@ -101,6 +101,7 @@ def text_results(payload: dict[str, Any]) -> str:
             f"slots_distinct={batch['slots_distinct']} "
             "retained_iff_no_same_slot_overwrite_trace="
             f"{batch['retained_iff_no_same_slot_overwrite_trace']} "
+            f"trace_fresh_slots_distinct={batch['trace_fresh_slots_distinct']} "
             f"theorem_ids={','.join(batch['theorem_ids'])}"
         ),
         batch["note"],
@@ -153,14 +154,15 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{', '.join(certificate['theorem_ids'])} |"
             ),
             "",
-            "| Batch tokens | Batch slots | All retained | Tokens distinct | Slots distinct | Retained iff no later same-slot writes | Theorem ids |",
-            "| --- | --- | --- | --- | --- | --- | --- |",
+            "| Batch tokens | Batch slots | All retained | Tokens distinct | Slots distinct | Retained iff no later same-slot writes | Trace-fresh slots distinct | Theorem ids |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- |",
             (
                 f"| {', '.join(str(token) for token in batch['tokens'])} | "
                 f"{', '.join(str(slot) for slot in batch['slots'])} | "
                 f"{batch['all_retained']} | {batch['tokens_distinct']} | "
                 f"{batch['slots_distinct']} | "
                 f"{batch['retained_iff_no_same_slot_overwrite_trace']} | "
+                f"{batch['trace_fresh_slots_distinct']} | "
                 f"{', '.join(batch['theorem_ids'])} |"
             ),
             "",

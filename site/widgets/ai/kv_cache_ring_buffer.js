@@ -23,6 +23,7 @@ const THEOREM_IDS = [
   "AIM-T0076",
   "AIM-T0077",
   "AIM-T0078",
+  "AIM-T0079",
 ];
 const DICTIONARY_IDS = ["COMMON-0028", "COMMON-0081"];
 
@@ -41,6 +42,41 @@ function liveTokens(cacheSize, current) {
 
 function allDistinct(values) {
   return new Set(values).size === values.length;
+}
+
+function noSameSlotOverwriteBeforeCurrent(cacheSize, current, token) {
+  if (token > current) {
+    return false;
+  }
+  const slot = kvSlot(cacheSize, token);
+  return Array.from(
+    { length: Math.max(0, current - token) },
+    (_, index) => token + index + 1,
+  ).every((overwrite) => kvSlot(cacheSize, overwrite) !== slot);
+}
+
+function readBatch(cacheSize, current, token) {
+  const candidates = [
+    token,
+    Math.min(current, token + Math.max(1, Math.floor(cacheSize / 4))),
+    Math.max(0, current - 2),
+    current,
+  ];
+  return Array.from(new Set(candidates.filter((candidate) => candidate <= current)))
+    .sort((left, right) => left - right);
+}
+
+function traceFreshBatchSlotsDistinct(cacheSize, current, tokens) {
+  if (!allDistinct(tokens)) {
+    return false;
+  }
+  if (!tokens.every((token) => token <= current)) {
+    return false;
+  }
+  if (!tokens.every((token) => noSameSlotOverwriteBeforeCurrent(cacheSize, current, token))) {
+    return false;
+  }
+  return allDistinct(tokens.map((token) => kvSlot(cacheSize, token)));
 }
 
 function makeLink(id, page) {
@@ -91,13 +127,17 @@ function appendRecord(output, values, theoremById) {
   const overwriteAfterCurrent = values.current < nextOverwrite;
   const staleByOverwriteBoundary = !isFuture && !isRetained && nextOverwrite <= values.current;
   const staleOverwriteWitness = staleByOverwriteBoundary && values.token < nextOverwrite && nextOverwrite <= values.current && slot === kvSlot(values.cacheSize, nextOverwrite);
-  const noSameSlotOverwrite = !isFuture && Array.from(
-    { length: Math.max(0, values.current - values.token) },
-    (_, index) => values.token + index + 1,
-  ).every((overwrite) => kvSlot(values.cacheSize, overwrite) !== slot);
+  const noSameSlotOverwrite = noSameSlotOverwriteBeforeCurrent(values.cacheSize, values.current, values.token);
   const retainedIffNoSameSlotOverwrite = !isFuture && isRetained === noSameSlotOverwrite;
   const collisionWithCurrent = slot === currentSlot;
   const distinctFromCurrent = isRetained && values.token < values.current && !collisionWithCurrent;
+  const batchTokens = readBatch(values.cacheSize, values.current, values.token);
+  const batchSlots = batchTokens.map((token) => kvSlot(values.cacheSize, token));
+  const traceFreshSlotsDistinct = traceFreshBatchSlotsDistinct(
+    values.cacheSize,
+    values.current,
+    batchTokens,
+  );
   const tokens = liveTokens(values.cacheSize, values.current);
   const slots = tokens.map((token) => kvSlot(values.cacheSize, token));
 
@@ -123,6 +163,9 @@ function appendRecord(output, values, theoremById) {
     `no later same-slot write up to current: ${noSameSlotOverwrite}`,
     `stale same-slot overwrite witness token + cache_size: ${staleOverwriteWitness}`,
     `retained iff no later same-slot write trace: ${retainedIffNoSameSlotOverwrite}`,
+    `read batch tokens: ${batchTokens.join(", ")}`,
+    `read batch slots: ${batchSlots.join(", ")}`,
+    `trace-fresh read-batch slots distinct: ${traceFreshSlotsDistinct}`,
     `collision with current slot: ${collisionWithCurrent}`,
     `retained older token distinct from current slot: ${distinctFromCurrent}`,
     `live window tokens: ${tokens.join(", ")}`,

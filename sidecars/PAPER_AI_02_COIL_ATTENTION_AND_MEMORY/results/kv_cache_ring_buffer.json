@@ -9,7 +9,8 @@
       "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_ne",
       "Circle.Applications.kvCacheWindow_retainedBatchSlots_pairwise_ne",
       "Circle.Applications.kvCacheWindow_retainedBatchSlotMap_nodup",
-      "Circle.Applications.kvCacheWindow_retainedBatch_iff_noSameSlotOverwriteTrace_of_forall_le"
+      "Circle.Applications.kvCacheWindow_retainedBatch_iff_noSameSlotOverwriteTrace_of_forall_le",
+      "Circle.Applications.kvCacheWindow_traceFreshBatchSlotMap_nodup"
     ],
     "note": "KV-cache retained-batch slot certificate only; this proves finite ring-buffer indexing facts for a declared live token batch, not paging policy quality, throughput, memory savings, retrieval quality, or deployment safety.",
     "retained_iff_no_same_slot_overwrite_trace": true,
@@ -26,7 +27,8 @@
       "AIM-T0066",
       "AIM-T0067",
       "AIM-T0068",
-      "AIM-T0078"
+      "AIM-T0078",
+      "AIM-T0079"
     ],
     "tokens": [
       20,
@@ -34,7 +36,8 @@
       29,
       31
     ],
-    "tokens_distinct": true
+    "tokens_distinct": true,
+    "trace_fresh_slots_distinct": true
   },
   "claim_boundary": "These are proof-carrying finite ring-buffer indexing certificates for a declared KV-cache window and retained token batch. They are not model-quality, throughput, memory-saving, retrieval-quality, paging-policy, implementation, or deployment-safety claims.",
   "live_window_certificate": {

@@ -127,6 +127,7 @@ from .circle_ai import (
     kv_cache_batch_retained_iff_no_same_slot_overwrite_trace,
     kv_cache_retained_batch_slots_distinct,
     kv_cache_retained_iff_no_same_slot_overwrite_trace,
+    kv_cache_trace_fresh_batch_slots_distinct,
     kv_cache_distinct_retained_slots_distinct,
     kv_cache_no_same_slot_overwrite_before_current,
     kv_cache_retained_slots_distinct,

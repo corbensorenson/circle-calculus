@@ -42,6 +42,7 @@ from circle_math.applications import (
     kv_cache_retained_iff_no_same_slot_overwrite_trace,
     kv_cache_same_slot_overwrite_witness_when_stale,
     kv_cache_slot,
+    kv_cache_trace_fresh_batch_slots_distinct,
     kv_cache_window_contains,
     local_window_indices,
     loop_block_indices,
@@ -1339,6 +1340,24 @@ def js_kv_cache_batch_retained_iff_no_same_slot_overwrite_trace(
         for token in tokens
     )
     return all_retained == all_trace_fresh
+
+
+def js_kv_cache_trace_fresh_batch_slots_distinct(
+    cache_size: int,
+    current: int,
+    tokens: tuple[int, ...],
+) -> bool:
+    if any(token > current for token in tokens):
+        return False
+    if len(set(tokens)) != len(tokens):
+        return False
+    if not all(
+        js_kv_cache_no_same_slot_overwrite_before_current(cache_size, current, token)
+        for token in tokens
+    ):
+        return False
+    slots = tuple(js_kv_cache_slot(cache_size, token) for token in tokens)
+    return len(set(slots)) == len(slots)
 
 
 def js_dense_adapter_parameter_count(channel_count: int, parameters_per_channel: int) -> int:
@@ -3230,12 +3249,20 @@ def main() -> int:
                 batch_tokens,
             )
         )
+        assert batch.trace_fresh_slots_distinct == (
+            js_kv_cache_trace_fresh_batch_slots_distinct(cache_size, current, batch_tokens)
+        )
         assert kv_cache_retained_batch_slots_distinct(cache_size, current, batch_tokens) == batch.slots_distinct
         assert kv_cache_batch_retained_iff_no_same_slot_overwrite_trace(
             cache_size,
             current,
             batch_tokens,
         ) == batch.retained_iff_no_same_slot_overwrite_trace
+        assert kv_cache_trace_fresh_batch_slots_distinct(
+            cache_size,
+            current,
+            batch_tokens,
+        ) == batch.trace_fresh_slots_distinct
 
     retrieval_cases = [
         (64, tuple(range(64)), 21, 7, 3, 8, 5, 3),

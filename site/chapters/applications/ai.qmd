@@ -77,6 +77,7 @@ that finite address arithmetic can and cannot certify:
 - a stale non-future token has an explicit later same-slot overwrite witness at `token + cache_size` (`AIM-T0076`);
 - a non-future token is retained iff there is no later same-slot writer in the finite trace up to current (`AIM-T0077`);
 - a non-future read batch is retained iff every requested token has no later same-slot writer in that finite trace (`AIM-T0078`);
+- a duplicate-free non-future read batch with no later same-slot writer for each token maps to duplicate-free ring-buffer slots (`AIM-T0079`);
 - the generated live-token list exactly matches retained-window membership, maps to duplicate-free slots, and gives a full-window finite slot-coverage contract (`AIM-T0071` through `AIM-T0074`).
 
 This is an implementation-facing safety contract for finite indexing and freshness
@@ -205,6 +206,7 @@ proved:
 <div class="theorem-box" data-theorem-id="AIM-T0076"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0077"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0078"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0079"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0021"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0022"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0023"></div>
@@ -326,7 +328,7 @@ The widget below shows that finite layer. It is not a retrieval-quality result a
 
 <div class="widget-panel" data-widget="cyclic_memory_slots" data-theorem-id="AIM-T0001" data-dictionary-ids="COMMON-0028 COMMON-0029"></div>
 
-The second memory contract is a KV-cache ring-buffer window certificate. Given `cache_size`, `current`, and `token`, the CLI and sidecar report the token slot, current slot, lag from current, whether the token is retained, whether a retained older token is distinct from the current slot, whether the next same-slot overwrite occurs after the current read point, whether the token is stale by the overwrite boundary, whether any later token up to current has reused the same slot, whether a stale token has the explicit same-slot overwrite witness `token + cache_size`, and whether retention is equivalent to no later same-slot write in the finite trace. They also check ordered, unordered, and batch slot distinctness for retained tokens in the same live window, the batch-level trace iff for declared non-future reads, plus a full-window finite slot-coverage flag for the generated live-token list. The Lean theorems `AIM-T0059` through `AIM-T0078` certify the finite slot and overwrite-window facts, including the iff that retained-window membership is exactly the non-future plus next-overwrite-after-current boundary, the stale converse where the next same-slot overwrite is at or before the current token, the retained-token no-same-slot-overwrite-before-current guard, the stale-token same-slot witness, the single-token and batch trace iffs, and the full-window slot coverage contract; the certificate is not a paging policy, deployment-safety proof, throughput result, memory-saving result, or retrieval-quality claim.
+The second memory contract is a KV-cache ring-buffer window certificate. Given `cache_size`, `current`, and `token`, the CLI and sidecar report the token slot, current slot, lag from current, whether the token is retained, whether a retained older token is distinct from the current slot, whether the next same-slot overwrite occurs after the current read point, whether the token is stale by the overwrite boundary, whether any later token up to current has reused the same slot, whether a stale token has the explicit same-slot overwrite witness `token + cache_size`, and whether retention is equivalent to no later same-slot write in the finite trace. They also check ordered, unordered, and batch slot distinctness for retained tokens in the same live window, the batch-level trace iff for declared non-future reads, trace-fresh duplicate-free read-batch slot distinctness, plus a full-window finite slot-coverage flag for the generated live-token list. The Lean theorems `AIM-T0059` through `AIM-T0079` certify the finite slot and overwrite-window facts, including the iff that retained-window membership is exactly the non-future plus next-overwrite-after-current boundary, the stale converse where the next same-slot overwrite is at or before the current token, the retained-token no-same-slot-overwrite-before-current guard, the stale-token same-slot witness, the single-token and batch trace iffs, trace-fresh batch slot distinctness, and the full-window slot coverage contract; the certificate is not a paging policy, deployment-safety proof, throughput result, memory-saving result, or retrieval-quality claim.
 
 [Open the guided KV-cache ring-buffer lesson](kv_cache_ring_buffer.qmd).
 
@@ -363,6 +365,7 @@ Committed result fixtures:
 <div class="theorem-box" data-theorem-id="AIM-T0076"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0077"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0078"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0079"></div>
 <div class="dictionary-box" data-dictionary-id="COMMON-0081"></div>
 
 ## Coil Retrieval Reachability Path
@@ -647,6 +650,7 @@ Why is the nonperiodic control in `AIA-B0002` important before making any AI-imp
 <div class="theorem-box" data-theorem-id="AIM-T0076"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0077"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0078"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0079"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0049"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0050"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0051"></div>

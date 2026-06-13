@@ -485,6 +485,29 @@ theorem kvCacheWindow_retainedBatch_iff_noSameSlotOverwriteTrace_of_forall_le
       (kvCacheWindowContains_iff_noSameSlotOverwrite_between_of_le
         hcache (hnotFuture token htoken)).2 (htrace token htoken)
 
+/-- A duplicate-free non-future read batch with per-token trace freshness maps
+to duplicate-free KV-cache slots.
+
+This is the implementation-facing consequence of the batch trace iff: a caller
+can certify the trace side and still obtain the slot-level distinctness needed
+for a read batch. -/
+theorem kvCacheWindow_traceFreshBatchSlotMap_nodup
+    {cacheSize current : Nat} {tokens : List Nat} (hcache : 0 < cacheSize)
+    (hnotFuture : ∀ token ∈ tokens, token ≤ current)
+    (htrace :
+      ∀ token ∈ tokens,
+        ∀ overwrite,
+          token < overwrite →
+          overwrite ≤ current →
+          kvCacheSlot cacheSize token ≠ kvCacheSlot cacheSize overwrite)
+    (hnodup : tokens.Nodup) :
+    (tokens.map (kvCacheSlot cacheSize)).Nodup := by
+  have hwindow :
+      ∀ token ∈ tokens, kvCacheWindowContains cacheSize current token :=
+    (kvCacheWindow_retainedBatch_iff_noSameSlotOverwriteTrace_of_forall_le
+      hcache hnotFuture).2 htrace
+  exact kvCacheWindow_retainedBatchSlotMap_nodup hwindow hnodup
+
 /-- The explicit live KV-cache window maps to duplicate-free ring-buffer slots.
 
 This is the end-to-end live-window version of the retained-batch theorem: the

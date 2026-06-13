@@ -227,6 +227,31 @@ def kv_cache_batch_retained_iff_no_same_slot_overwrite_trace(
     return all_retained == all_trace_fresh
 
 
+def kv_cache_trace_fresh_batch_slots_distinct(
+    cache_size: int,
+    current: int,
+    tokens: Sequence[int],
+) -> bool:
+    """Return whether a trace-fresh duplicate-free batch maps to distinct slots."""
+    _require_positive(cache_size, "cache_size")
+    if current < 0:
+        raise ValueError("current must be nonnegative")
+    token_tuple = tuple(tokens)
+    if any(token < 0 for token in token_tuple):
+        raise ValueError("tokens must be nonnegative")
+    if any(token > current for token in token_tuple):
+        return False
+    if len(set(token_tuple)) != len(token_tuple):
+        return False
+    if not all(
+        kv_cache_no_same_slot_overwrite_before_current(cache_size, current, token)
+        for token in token_tuple
+    ):
+        return False
+    slots = tuple(kv_cache_slot(cache_size, token) for token in token_tuple)
+    return len(set(slots)) == len(slots)
+
+
 def kv_cache_live_window_slots_distinct(cache_size: int, current: int) -> bool:
     """Return whether the generated live-window tokens occupy distinct slots."""
     tokens = kv_cache_live_window_tokens(cache_size, current)
@@ -528,6 +553,7 @@ class KVCacheBatchCertificate:
     tokens_distinct: bool
     slots_distinct: bool
     retained_iff_no_same_slot_overwrite_trace: bool
+    trace_fresh_slots_distinct: bool
     theorem_ids: tuple[str, ...] = (
         "AIM-T0059",
         "AIM-T0065",
@@ -535,6 +561,7 @@ class KVCacheBatchCertificate:
         "AIM-T0067",
         "AIM-T0068",
         "AIM-T0078",
+        "AIM-T0079",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheSlot_lt_cacheSize",
@@ -543,6 +570,7 @@ class KVCacheBatchCertificate:
         "Circle.Applications.kvCacheWindow_retainedBatchSlots_pairwise_ne",
         "Circle.Applications.kvCacheWindow_retainedBatchSlotMap_nodup",
         "Circle.Applications.kvCacheWindow_retainedBatch_iff_noSameSlotOverwriteTrace_of_forall_le",
+        "Circle.Applications.kvCacheWindow_traceFreshBatchSlotMap_nodup",
     )
     note: str = (
         "KV-cache retained-batch slot certificate only; this proves finite "
@@ -1762,6 +1790,9 @@ def certify_kv_cache_batch(
                 current,
                 token_tuple,
             )
+        ),
+        trace_fresh_slots_distinct=(
+            kv_cache_trace_fresh_batch_slots_distinct(cache_size, current, token_tuple)
         ),
     )
 
