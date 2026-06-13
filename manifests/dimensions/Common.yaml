@@ -3501,6 +3501,20 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_standard_channel0_interval_seed_is_theorem_backed
     blocker: ""
+  - id: AIRA-T0117
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons
+    informal_statement: "Any finite real-phase bank whose first channel is the standard channel-0 frequency inherits the D11 no-near-turn certificate for requested contexts and margins below the proved seed."
+    formal_statement: "forall {extraFrequencies : List Real} {fullTurn requestedMargin tolerance : Real} {requestedContext left right : Nat}, requestedContext <= Circle.Applications.ropeStandardChannel0D11SeedContext -> requestedMargin <= Circle.Applications.ropeStandardChannel0D11SeedMargin -> left < right -> right < requestedContext -> 0 < fullTurn -> tolerance < fullTurn * requestedMargin -> not (Circle.Applications.ropeRealPhaseBankNearTurn ((Circle.Applications.ropeStandardChannel0TurnRatio * fullTurn) :: extraFrequencies) fullTurn tolerance left right)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_interval_seed_is_theorem_backed
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

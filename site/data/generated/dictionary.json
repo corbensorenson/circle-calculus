@@ -11735,6 +11735,12 @@
           "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710",
           "name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0117",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -12340,6 +12346,12 @@
           "id": "AIRA-T0116",
           "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710",
           "name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0117",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons",
           "status": "proved"
         }
       ],
@@ -13342,6 +13354,12 @@
           "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710",
           "name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0117",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -13962,6 +13980,12 @@
           "id": "AIRA-T0116",
           "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710",
           "name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0117",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons",
           "status": "proved"
         }
       ],
@@ -14651,6 +14675,12 @@
           "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710",
           "name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0117",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -15106,6 +15136,12 @@
           "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710",
           "name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0117",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -15490,6 +15526,12 @@
           "id": "AIRA-T0116",
           "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710",
           "name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0117",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons",
           "status": "proved"
         }
       ],

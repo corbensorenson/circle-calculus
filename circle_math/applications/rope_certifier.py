@@ -187,6 +187,7 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS: tuple[str, ...] = (
     "AIRA-T0114",
     "AIRA-T0115",
     "AIRA-T0116",
+    "AIRA-T0117",
 )
 
 ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -244,6 +245,7 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed",
     "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_104218",
     "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710",
+    "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -1311,7 +1313,8 @@ def certify_standard_channel0_interval_seed() -> IntervalBackedTurnRatioCertific
             "margin stops at gap 710, and that margins 1/65536, 1/104000, and 1/104218 "
             "are already impossible for any context containing that gap. The theorem trail also includes a "
             "conditional bank-level bridge for banks containing the standard "
-            "channel-0 angular frequency."
+            "channel-0 angular frequency, plus a concrete bridge for banks whose "
+            "first channel is that standard frequency."
         ),
         claim_boundary=(
             "This is a theorem-backed interval certificate for the genuine standard "
