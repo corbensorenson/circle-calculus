@@ -167,7 +167,7 @@ def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
             ).to_dict(),
             plan_standard_channel0_interval_bands(
                 pi_bound_preset="d20",
-                margin=Fraction(1, 105000),
+                margin=Fraction(1, 104219),
                 max_context_length=4096,
             ).to_dict(),
         ),

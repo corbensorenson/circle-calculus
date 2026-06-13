@@ -43,11 +43,12 @@ This repository does not claim to have rebuilt all of mathematics from circles. 
 3. `dictionary/circle_dictionary.yaml` for fixed vocabulary.
 4. `manifests/theorem_manifest.yaml` for theorem status.
 5. `docs/COMPLETION_ROADMAP.md` and `docs/DIMENSIONAL_LADDER.md` for where it is going.
-6. `docs/ROPE_CERTIFIER_QUICKSTART.md`, `docs/ROPE_CERTIFIER_REVIEW_PACKET.md`, `papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md`, and `scripts/rope_certify.py` for the first externally usable AI contract.
-7. The Living Book [KV-cache ring-buffer lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/kv_cache_ring_buffer.html), `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py` for the second standalone AI contract.
-8. The Living Book [sparse-attention coverage lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/sparse_attention_contract.html), `scripts/stride_family_certify.py`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py` for the third standalone AI contract.
-9. `docs/PHASE8_DEPTH_VALIDATION.md` for the current depth-and-validation push: RoPE real-phase theorem work, sparse coverage iffs, collision counting, KV-cache safety, external review, and proof-depth guardrails.
-10. `docs/THESEUS_HIVE_AI_TRANSFER.md` for the optional private-transfer lane; it is not the public proof standard.
+6. The Living Book [AI contract ladder](https://corbensorenson.github.io/circle-calculus/chapters/applications/ai_contract_ladder.html) for the guided sequence through proof-carrying RoPE, KV-cache, sparse-attention, recurrence, and mixer contracts.
+7. `docs/ROPE_CERTIFIER_QUICKSTART.md`, `docs/ROPE_CERTIFIER_REVIEW_PACKET.md`, `papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md`, and `scripts/rope_certify.py` for the first externally usable AI contract.
+8. The Living Book [KV-cache ring-buffer lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/kv_cache_ring_buffer.html), `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py` for the second standalone AI contract.
+9. The Living Book [sparse-attention coverage lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/sparse_attention_contract.html), `scripts/stride_family_certify.py`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py` for the third standalone AI contract.
+10. `docs/PHASE8_DEPTH_VALIDATION.md` for the current depth-and-validation push: RoPE real-phase theorem work, sparse coverage iffs, collision counting, KV-cache safety, external review, and proof-depth guardrails.
+11. `docs/THESEUS_HIVE_AI_TRANSFER.md` for the optional private-transfer lane; it is not the public proof standard.
 
 The Living Book's [What "Proved" Means Here](https://corbensorenson.github.io/circle-calculus/what_proved_means.html) page is the one-paragraph contract the whole project lives by.
 
@@ -106,7 +107,7 @@ python scripts/rope_certify.py --preset llama_style_500000_128k
 python scripts/phase_bank_certify.py --preset interpolated_x4_boundary_fail_961
 ```
 
-The certifier emits theorem ids, Lean declaration names, exact discrete pass/fail, sample colliding pairs when present, a proof-layer inventory, and a separate numerical real-phase margin report. Exact pass/fail is for the declared integer-period phase-bank model; it is not a language-model quality, context-length, speed, or memory claim. The exact phase-bank CLI includes quantized and interpolation-style boundary diagnostics. The real-phase proof program now reduces finite margin checks to generated gaps, floor/ceiling witnesses, and rational interval certificates; it includes one theorem-backed rational/discretized `1/4099` context-4096 certificate plus a genuine standard-RoPE channel-0 interval seed for `1 / (2π)`, context `4096`, margin `1/105000`, while separately proving that the older `1/1024`, doubled D9 `1/65536`, and nearby D10 `1/104000` margins cannot extend once gap `710` is in scope.
+The certifier emits theorem ids, Lean declaration names, exact discrete pass/fail, sample colliding pairs when present, a proof-layer inventory, and a separate numerical real-phase margin report. Exact pass/fail is for the declared integer-period phase-bank model; it is not a language-model quality, context-length, speed, or memory claim. The exact phase-bank CLI includes quantized and interpolation-style boundary diagnostics. The real-phase proof program now reduces finite margin checks to generated gaps, floor/ceiling witnesses, and rational interval certificates; it includes one theorem-backed rational/discretized `1/4099` context-4096 certificate plus a genuine standard-RoPE channel-0 interval seed for `1 / (2π)`, context `4096`, margin `1/104219`, while separately proving that the older `1/1024`, doubled D9 `1/65536`, nearby D10 `1/104000`, and adjacent D11 `1/104218` margins cannot extend once gap `710` is in scope.
 
 For the proof-carrying KV-cache ring-buffer certificate, run:
 

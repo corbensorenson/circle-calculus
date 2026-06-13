@@ -328,7 +328,7 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert certificate.name == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME
     assert certificate.turn_ratio_expression == "1/(2*pi)"
     assert certificate.context_length == 4096
-    assert certificate.certified_margin == "1/105000"
+    assert certificate.certified_margin == "1/104219"
     assert certificate.pass_certificate
     assert "3.14159265358979323846 < pi" in certificate.pi_bounds
     assert "pi < 3.14159265358979323847" in certificate.pi_bounds
@@ -381,6 +381,12 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert "AIRA-T0108" in certificate.theorem_ids
     assert "AIRA-T0109" in certificate.theorem_ids
     assert "AIRA-T0110" in certificate.theorem_ids
+    assert "AIRA-T0111" in certificate.theorem_ids
+    assert "AIRA-T0112" in certificate.theorem_ids
+    assert "AIRA-T0113" in certificate.theorem_ids
+    assert "AIRA-T0114" in certificate.theorem_ids
+    assert "AIRA-T0115" in certificate.theorem_ids
+    assert "AIRA-T0116" in certificate.theorem_ids
     assert (
         "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed"
         in certificate.lean_declarations
@@ -417,6 +423,30 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
         "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104000_of_context_gt_710"
         in certificate.lean_declarations
     )
+    assert (
+        "Circle.Applications.ropeStandardChannel0D11Seed_intervalCertificate"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.ropeStandardChannel0D11Seed_turnRatioFiniteMargin"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.not_ropeStandardChannel0D11Seed_nearTurn"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_104218"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710"
+        in certificate.lean_declarations
+    )
     assert tuple(witness.gap for witness in certificate.interval_witnesses) == tuple(
         range(1, 4096)
     )
@@ -447,6 +477,13 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     )
     assert d20_tight_plan.theorem_status == "lean_proved_interval_seed_AIRA-T0105_to_AIRA-T0108"
     assert d20_tight_plan.planned_margin == "1/105000"
+    d20_sharp_plan = plan_standard_channel0_interval_bands(
+        pi_bound_preset="d20",
+        margin=Fraction(1, 104219),
+        max_context_length=4096,
+    )
+    assert d20_sharp_plan.theorem_status == "lean_proved_interval_seed_AIRA-T0111_to_AIRA-T0114"
+    assert d20_sharp_plan.planned_margin == "1/104219"
     assert d20_plan.context_length == 4096
     assert d20_plan.first_uncovered_gap is None
     assert d20_plan.band_count == 652
@@ -455,7 +492,8 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert d20_plan.bands[-1].end_gap == 4095
     assert d20_plan.bands[-1].cell == 651
     assert d20_tight_plan.bands == d20_plan.bands
-    for band in d20_tight_plan.bands:
+    assert d20_sharp_plan.bands == d20_plan.bands
+    for band in d20_sharp_plan.bands:
         assert all(
             witness.cell == band.cell
             for witness in certificate.interval_witnesses[
@@ -465,6 +503,7 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert "gap 710" in certificate.explanation
     assert "1/1024 margin stops" in certificate.explanation
     assert "1/104000" in certificate.explanation
+    assert "1/104218" in certificate.explanation
     scanned_margin, scanned_gap, scanned_turns = scan_turn_ratio_finite_margin(
         turn_ratio=1 / (2 * math.pi),
         context_length=711,
@@ -473,6 +512,7 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert scanned_turns == 113
     assert scanned_margin < 1 / 1024
     assert scanned_margin < 1 / 104000
+    assert scanned_margin < 1 / 104218
     assert "context 4096 only" in certificate.claim_boundary
 
 
@@ -536,22 +576,22 @@ def test_standard_channel0_interval_plan_finds_next_exact_rational_targets() -> 
 
     d20_plan = plan_standard_channel0_interval_bands(
         pi_bound_preset="d20",
-        margin=Fraction(1, 105000),
+        margin=Fraction(1, 104219),
         max_context_length=4096,
     )
     assert d20_plan.context_length == 4096
     assert d20_plan.first_uncovered_gap is None
-    assert d20_plan.planned_margin == "1/105000"
+    assert d20_plan.planned_margin == "1/104219"
     assert d20_plan.band_count == 652
     assert d20_plan.bands[0] == d4_plan.bands[0]
     assert d20_plan.bands[-1].start_gap == 4091
     assert d20_plan.bands[-1].end_gap == 4095
     assert d20_plan.bands[-1].cell == 651
-    assert d20_plan.theorem_status == "lean_proved_interval_seed_AIRA-T0105_to_AIRA-T0108"
+    assert d20_plan.theorem_status == "lean_proved_interval_seed_AIRA-T0111_to_AIRA-T0114"
 
     d20_too_large_plan = plan_standard_channel0_interval_bands(
         pi_bound_preset="d20",
-        margin=Fraction(1, 104000),
+        margin=Fraction(1, 104218),
         max_context_length=4096,
     )
     assert d20_too_large_plan.context_length == 710
@@ -903,9 +943,9 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     )
     assert payload["standard_interval_candidate_plans"][2]["context_length"] == 4096
     assert payload["standard_interval_candidate_plans"][2]["band_count"] == 652
-    assert payload["standard_interval_candidate_plans"][2]["planned_margin"] == "1/105000"
+    assert payload["standard_interval_candidate_plans"][2]["planned_margin"] == "1/104219"
     assert payload["standard_interval_candidate_plans"][2]["theorem_status"] == (
-        "lean_proved_interval_seed_AIRA-T0105_to_AIRA-T0108"
+        "lean_proved_interval_seed_AIRA-T0111_to_AIRA-T0114"
     )
     assert payload["presets"][0]["preset"] == "llama_style_10000_4k"
     assert payload["presets"][0]["certificate"]["exact_discrete_summary"]["pass_exact"] is True
@@ -938,7 +978,7 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert "Named Standard RoPE Interval Seed" in markdown_result.stdout
     assert "Standard RoPE Candidate Interval Plans" in markdown_result.stdout
     assert "lean_proved_interval_seed_AIRA-T0090_to_AIRA-T0094" in markdown_result.stdout
-    assert "lean_proved_interval_seed_AIRA-T0105_to_AIRA-T0108" in markdown_result.stdout
+    assert "lean_proved_interval_seed_AIRA-T0111_to_AIRA-T0114" in markdown_result.stdout
     assert "Exact Phase-Bank Diagnostics" in markdown_result.stdout
     assert ROPE_RATIONAL_PRESET_4099_NAME in markdown_result.stdout
     assert ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME in markdown_result.stdout
