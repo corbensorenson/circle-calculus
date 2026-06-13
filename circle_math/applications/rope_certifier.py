@@ -129,7 +129,7 @@ ROPE_RATIONAL_PRESET_4099_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
 )
 
-ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME = "standard_rope_channel0_interval_context_7"
+ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME = "standard_rope_channel0_interval_context_8"
 
 ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS: tuple[str, ...] = (
     "AIRA-T0063",
@@ -137,6 +137,9 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS: tuple[str, ...] = (
     "AIRA-T0068",
     "AIRA-T0069",
     "AIRA-T0070",
+    "AIRA-T0071",
+    "AIRA-T0072",
+    "AIRA-T0073",
 )
 
 ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -145,6 +148,9 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeStandardChannel0D2Seed_intervalCertificate",
     "Circle.Applications.ropeStandardChannel0D2Seed_turnRatioFiniteMargin",
     "Circle.Applications.not_ropeStandardChannel0D2Seed_nearTurn",
+    "Circle.Applications.ropeStandardChannel0D3Seed_intervalCertificate",
+    "Circle.Applications.ropeStandardChannel0D3Seed_turnRatioFiniteMargin",
+    "Circle.Applications.not_ropeStandardChannel0D3Seed_nearTurn",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -925,18 +931,26 @@ def certify_standard_channel0_interval_seed() -> IntervalBackedTurnRatioCertific
 
     The Lean theorem proves the same finite witness table for the genuine
     channel-0 turn ratio ``1 / (2π)`` over the tiny context containing gaps
-    1 through 6. The certificate is intentionally small; it uses ``π <= 4`` for
-    the lower enclosure and the sharper mathlib bound ``3.14 < π`` for the
-    sixth-gap upper enclosure.
+    1 through 7. The certificate is intentionally small; it uses ``π <= 4`` for
+    the cell-0 lower enclosure, ``3.14 < π`` for upper enclosures, and the
+    sharper bound ``π < 3.15`` to place gap 7 in integer cell 1.
     """
-    context_length = 7
+    context_length = 8
     margin = Fraction(1, 32)
     witnesses: list[RationalIntervalWitnessReport] = []
     for gap in range(1, context_length):
-        lower = Fraction(gap, 8)
-        upper = Fraction(25 * gap, 157)
-        cell = 0
-        if not (margin <= lower and upper <= Fraction(cell + 1, 1) - margin):
+        if gap == 7:
+            lower = Fraction(10, 9)
+            upper = Fraction(175, 157)
+            cell = 1
+        else:
+            lower = Fraction(gap, 8)
+            upper = Fraction(25 * gap, 157)
+            cell = 0
+        if not (
+            Fraction(cell, 1) + margin <= lower
+            and upper <= Fraction(cell + 1, 1) - margin
+        ):
             raise AssertionError("standard channel-0 seed witness table is invalid")
         witnesses.append(
             RationalIntervalWitnessReport(
@@ -954,19 +968,21 @@ def certify_standard_channel0_interval_seed() -> IntervalBackedTurnRatioCertific
         context_length=context_length,
         certified_margin=format_fraction(margin),
         pass_certificate=True,
-        pi_bounds="pi <= 4 and 3.14 < pi",
+        pi_bounds="pi <= 4, 3.14 < pi, and pi < 3.15",
         interval_witnesses=tuple(witnesses),
         theorem_ids=ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS,
         lean_declarations=ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS,
         explanation=(
             "Lean proves that standard RoPE channel 0, with turn ratio 1/(2*pi), "
-            "has finite nearest-integer margin 1/32 for gaps 1 through 6 by enclosing "
-            "gap/(2*pi) between gap/8 and 25*gap/157. Larger contexts need generated "
-            "rational interval data and sharper pi or continued-fraction bounds."
+            "has finite nearest-integer margin 1/32 for gaps 1 through 7. Gaps 1 "
+            "through 6 use the cell-0 enclosure gap/8 <= gap/(2*pi) <= 25*gap/157; "
+            "gap 7 is certified in integer cell 1 by 10/9 <= 7/(2*pi) <= 175/157. "
+            "Larger contexts need generated rational interval data and sharper pi "
+            "or continued-fraction bounds."
         ),
         claim_boundary=(
             "This is a theorem-backed interval certificate for the genuine standard "
-            "RoPE channel-0 turn ratio over context 7 only. It is not a full standard "
+            "RoPE channel-0 turn ratio over context 8 only. It is not a full standard "
             "RoPE bank certificate and does not certify 512, 4096, or larger contexts."
         ),
     )
@@ -1269,7 +1285,7 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
         RoPEProofLayerReport(
             layer="interval_backed_standard_rope",
             status=(
-                "AVAILABLE_SEED_CONTEXT_7"
+                "AVAILABLE_SEED_CONTEXT_8"
                 if standard_interval_seed.pass_certificate
                 else "UNAVAILABLE"
             ),
@@ -1278,7 +1294,7 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
             lean_declarations=standard_interval_seed.lean_declarations,
             explanation=(
                 "The first strengthened genuine standard-RoPE interval seed certifies channel 0 "
-                "with turn ratio 1/(2*pi), margin 1/32, and context 7 only."
+                "with turn ratio 1/(2*pi), margin 1/32, and context 8 only."
             ),
         ),
         RoPEProofLayerReport(

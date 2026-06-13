@@ -1060,6 +1060,14 @@ def ropeStandardChannel0D2SeedContext : Nat := 7
 /-- The advertised margin for the second standard channel-0 interval seed. -/
 noncomputable def ropeStandardChannel0D2SeedMargin : ℝ := 1 / 32
 
+/-- A third tiny inspected context for the standard-RoPE interval certificate.
+This includes the first positive gap whose turn ratio has crossed one full
+turn, so the interval witness must use integer cell `1` rather than `0`. -/
+def ropeStandardChannel0D3SeedContext : Nat := 8
+
+/-- The advertised margin for the third standard channel-0 interval seed. -/
+noncomputable def ropeStandardChannel0D3SeedMargin : ℝ := 1 / 32
+
 private theorem ropeStandardChannel0_base_lower :
     (1 : ℝ) / 8 ≤ ropeStandardChannel0TurnRatio := by
   have htwo_pi_pos : 0 < 2 * Real.pi := Real.two_pi_pos
@@ -1092,6 +1100,20 @@ private theorem ropeStandardChannel0_d2_base_upper :
     rw [← hrecip]
     exact le_of_lt hupper
   simpa [ropeStandardChannel0TurnRatio, one_div] using hupper_le
+
+private theorem ropeStandardChannel0_d3_base_lower :
+    (10 : ℝ) / 63 ≤ ropeStandardChannel0TurnRatio := by
+  have htwo_pi_pos : 0 < 2 * Real.pi := Real.two_pi_pos
+  have htwo_pi_lt : 2 * Real.pi < (63 : ℝ) / 10 := by
+    nlinarith [Real.pi_lt_d2]
+  have hrecip : ((63 : ℝ) / 10)⁻¹ = (10 : ℝ) / 63 := by norm_num
+  have hlower : ((63 : ℝ) / 10)⁻¹ < (2 * Real.pi)⁻¹ :=
+    (inv_lt_inv₀ (by norm_num : (0 : ℝ) < (63 : ℝ) / 10) htwo_pi_pos).2
+      htwo_pi_lt
+  have hlower_le : (10 : ℝ) / 63 ≤ (2 * Real.pi)⁻¹ := by
+    rw [← hrecip]
+    exact le_of_lt hlower
+  simpa [ropeStandardChannel0TurnRatio, one_div] using hlower_le
 
 private theorem ropeStandardChannel0_intervalWitness_of_gap_le_five
     {gap : Nat} (hgap_pos : 0 < gap) (hgap_le_five : gap ≤ 5) :
@@ -1222,6 +1244,65 @@ theorem ropeStandardChannel0D2Seed_turnRatioFiniteMargin :
   ropeTurnRatioFiniteMargin_of_intervalCertificate
     ropeStandardChannel0D2Seed_intervalCertificate
 
+private theorem ropeStandardChannel0_d3IntervalWitness_gap_eq_seven
+    {gap : Nat} (hgap_eq : gap = 7) :
+    ropeTurnRatioIntervalWitness ropeStandardChannel0TurnRatio
+      ropeStandardChannel0D3SeedMargin gap ((10 : ℚ) / 9) ((175 : ℚ) / 157) 1 := by
+  unfold ropeTurnRatioIntervalWitness ropeStandardChannel0D3SeedMargin
+  have hgap_real : (gap : ℝ) = 7 := by exact_mod_cast hgap_eq
+  constructor
+  · calc
+      (((10 : ℚ) / 9 : ℚ) : ℝ) = (7 : ℝ) * ((10 : ℝ) / 63) := by norm_num
+      _ = (gap : ℝ) * ((10 : ℝ) / 63) := by rw [hgap_real]
+      _ ≤ (gap : ℝ) * ropeStandardChannel0TurnRatio :=
+        mul_le_mul_of_nonneg_left ropeStandardChannel0_d3_base_lower (by positivity)
+  constructor
+  · calc
+      (gap : ℝ) * ropeStandardChannel0TurnRatio ≤ (gap : ℝ) * ((25 : ℝ) / 157) :=
+        mul_le_mul_of_nonneg_left ropeStandardChannel0_d2_base_upper (by positivity)
+      _ = (7 : ℝ) * ((25 : ℝ) / 157) := by rw [hgap_real]
+      _ = (((175 : ℚ) / 157 : ℚ) : ℝ) := by norm_num
+  constructor
+  · calc
+      ((1 : Int) : ℝ) + (1 : ℝ) / 32 = (33 : ℝ) / 32 := by norm_num
+      _ ≤ ((10 : ℚ) / 9 : ℚ) := by norm_num
+  · calc
+      (((175 : ℚ) / 157 : ℚ) : ℝ) ≤ (63 : ℝ) / 32 := by norm_num
+      _ = ((1 : Int) : ℝ) + 1 - (1 : ℝ) / 32 := by norm_num
+
+/-- A third standard-RoPE interval seed: channel 0 has margin `1/32` over
+the tiny context containing gaps `1` through `7`.
+
+The new gap is the first one whose standard turn ratio lies between one and two
+turns. The proof therefore combines the earlier cell-0 witnesses for gaps up
+to `6` with a separate cell-1 witness for gap `7`, using the sharper
+`π < 3.15` lower enclosure for `1 / (2π)`. -/
+theorem ropeStandardChannel0D3Seed_intervalCertificate :
+    ropeTurnRatioIntervalCertificate ropeStandardChannel0TurnRatio
+      ropeStandardChannel0D3SeedMargin ropeStandardChannel0D3SeedContext := by
+  refine ⟨by dsimp [ropeStandardChannel0D3SeedMargin]; norm_num, ?_⟩
+  intro gap hgap_range hgap_pos
+  have hgap_lt_eight : gap < 8 := by
+    simpa [ropeStandardChannel0D3SeedContext] using List.mem_range.mp hgap_range
+  by_cases hgap_le_six : gap ≤ 6
+  · exact
+      ⟨(gap : ℚ) / 8, (((25 * gap : Nat) : ℚ) / 157), 0,
+        by
+          simpa [ropeStandardChannel0D3SeedMargin, ropeStandardChannel0D2SeedMargin]
+            using ropeStandardChannel0_d2IntervalWitness_of_gap_le_six hgap_pos hgap_le_six⟩
+  · have hgap_eq_seven : gap = 7 := by omega
+    exact
+      ⟨(10 : ℚ) / 9, (175 : ℚ) / 157, 1,
+        ropeStandardChannel0_d3IntervalWitness_gap_eq_seven hgap_eq_seven⟩
+
+/-- The third named standard-RoPE channel-0 seed has a proved finite
+turn-ratio margin over context `8`. -/
+theorem ropeStandardChannel0D3Seed_turnRatioFiniteMargin :
+    ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio
+      ropeStandardChannel0D3SeedMargin ropeStandardChannel0D3SeedContext :=
+  ropeTurnRatioFiniteMargin_of_intervalCertificate
+    ropeStandardChannel0D3Seed_intervalCertificate
+
 /-- Finite-context turn-ratio margins are monotone in the inspected context.
 
 A margin certificate proved for a larger context automatically applies to any
@@ -1341,6 +1422,26 @@ theorem not_ropeStandardChannel0D2Seed_nearTurn
       (by norm_num)
       (by simpa using ropeStandardChannel0D2Seed_turnRatioFiniteMargin)
       (by simpa [ropeStandardChannel0D2SeedMargin] using htolerance)
+
+/-- The next sharper standard-RoPE channel-0 interval seed rules out
+one-channel near-turn collisions below its certified margin over context `8`. -/
+theorem not_ropeStandardChannel0D3Seed_nearTurn
+    {tolerance : ℝ} {left right : Nat}
+    (hleft : left < right) (hright : right < ropeStandardChannel0D3SeedContext)
+    (htolerance : tolerance < ropeStandardChannel0D3SeedMargin) :
+    ¬ ropeRealPhaseNearTurn ropeStandardChannel0TurnRatio 1 tolerance left right := by
+  exact
+    not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin
+      (frequency := ropeStandardChannel0TurnRatio) (fullTurn := 1)
+      (margin := ropeStandardChannel0D3SeedMargin) (tolerance := tolerance)
+      (context := ropeStandardChannel0D3SeedContext) (left := left) (right := right)
+      hleft hright
+      (by
+        dsimp [ropeStandardChannel0TurnRatio]
+        positivity)
+      (by norm_num)
+      (by simpa using ropeStandardChannel0D3Seed_turnRatioFiniteMargin)
+      (by simpa [ropeStandardChannel0D3SeedMargin] using htolerance)
 
 /-- A finite-context turn-ratio margin for one channel rules out all-channel
 real near-turn collision in a finite bank.
