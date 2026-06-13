@@ -45,7 +45,7 @@ This repository does not claim to have rebuilt all of mathematics from circles. 
 5. `docs/COMPLETION_ROADMAP.md` and `docs/DIMENSIONAL_LADDER.md` for where it is going.
 6. The Living Book [AI contract ladder](https://corbensorenson.github.io/circle-calculus/chapters/applications/ai_contract_ladder.html) for the guided sequence through proof-carrying RoPE, KV-cache, sparse-attention, recurrence, and mixer contracts.
 7. `docs/ROPE_CERTIFIER_QUICKSTART.md`, `docs/ROPE_CERTIFIER_REVIEW_PACKET.md`, `papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md`, and `scripts/rope_certify.py` for the first externally usable AI contract.
-8. The Living Book [KV-cache ring-buffer lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/kv_cache_ring_buffer.html), `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py` for the second standalone AI contract.
+8. The Living Book [KV-cache ring-buffer lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/kv_cache_ring_buffer.html), `docs/KV_CACHE_CERTIFIER_QUICKSTART.md`, `scripts/kv_cache_certify.py`, `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py` for the second standalone AI contract.
 9. The Living Book [sparse-attention coverage lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/sparse_attention_contract.html), `scripts/stride_family_certify.py`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py` for the third standalone AI contract.
 10. `docs/PHASE8_DEPTH_VALIDATION.md` for the current depth-and-validation push: RoPE real-phase theorem work, sparse coverage iffs, collision counting, KV-cache safety, external review, and proof-depth guardrails.
 11. `docs/THESEUS_HIVE_AI_TRANSFER.md` for the optional private-transfer lane; it is not the public proof standard.
@@ -112,10 +112,11 @@ The certifier emits theorem ids, Lean declaration names, exact discrete pass/fai
 For the proof-carrying KV-cache ring-buffer certificate, run:
 
 ```bash
+python scripts/kv_cache_certify.py --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31
 python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py --format markdown
 ```
 
-The sidecar emits theorem ids, Lean declaration names, a finite slot/window certificate, and a retained-batch distinctness certificate. It proves finite ring-buffer indexing and overwrite-window facts only; it is not a paging-policy, throughput, memory-saving, retrieval-quality, implementation-correctness, deployment-safety, or model-quality claim.
+The certifier emits theorem ids, Lean declaration names, a finite slot/window certificate, retained-batch distinctness, and a full generated live-window coverage flag. It proves finite ring-buffer indexing and overwrite-window facts only; it is not a paging-policy, throughput, memory-saving, retrieval-quality, implementation-correctness, deployment-safety, or model-quality claim.
 
 For the proof-carrying sparse-attention coverage certificate, run:
 

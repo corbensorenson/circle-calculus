@@ -58,12 +58,14 @@ The widget output is an explanation and executable check. It is not proof by its
 Use the public sidecar from the repository root:
 
 ```bash
+python scripts/kv_cache_certify.py --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31
+python scripts/kv_cache_certify.py --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --format json
 python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py
 python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py --format json
 python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py --format markdown
 ```
 
-The sidecar emits one single-token window certificate, one retained-batch certificate, and one generated live-window certificate. The default window case is:
+The CLI emits one single-token window certificate, one retained-batch certificate, and one generated live-window certificate as text or JSON. The sidecar additionally emits the committed Markdown fixture. The default window case is:
 
 ```text
 cache_size = 16
@@ -78,7 +80,7 @@ overwrite after current = true
 stale by overwrite boundary = false
 ```
 
-The default retained batch `(20, 24, 29, 31)` maps to slots `(4, 8, 13, 15)`, all distinct inside the live window. The generated live window is tokens `16` through `31`, length `16`, mapping to slots `0` through `15`; the sidecar marks `full_coverage_contract = true` for that full-window case.
+The default retained batch `(20, 24, 29, 31)` maps to slots `(4, 8, 13, 15)`, all distinct inside the live window. The generated live window is tokens `16` through `31`, length `16`, mapping to slots `0` through `15`; the CLI and sidecar mark `full_coverage_contract = true` for that full-window case.
 
 ## Reproducible Results
 
@@ -160,6 +162,10 @@ The important point is that freshness is not only a residue fact. Slot `4` repea
 <p>Lean source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/Circle/Applications/CircleAI.lean">Circle/Applications/CircleAI.lean</a></p>
 
 <p>Python source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/circle_math/applications/circle_ai.py">circle_math/applications/circle_ai.py</a></p>
+
+<p>CLI source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/scripts/kv_cache_certify.py">scripts/kv_cache_certify.py</a></p>
+
+<p>Quickstart: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/docs/KV_CACHE_CERTIFIER_QUICKSTART.md">KV-cache Certifier Quickstart</a></p>
 
 <p>Sidecar source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py">benchmark_kv_cache_ring_buffer.py</a></p>
 

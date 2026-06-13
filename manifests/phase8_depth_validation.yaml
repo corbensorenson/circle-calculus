@@ -134,10 +134,12 @@ targets:
       - "docs/PHASE8_DEPTH_VALIDATION.md"
       - "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md"
       - "Circle/Applications/CircleAI.lean"
+      - "scripts/kv_cache_certify.py"
+      - "docs/KV_CACHE_CERTIFIER_QUICKSTART.md"
       - "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py"
       - "site/chapters/applications/ai.qmd"
     dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0081"]
-    next_action: "The KV-cache ring-buffer slot/window certificate is now landed through AIM-T0059 through AIM-T0074 and AIM-B0018, including current-slot distinctness, ordered/unordered retained-token slot distinctness, duplicate-free retained-batch slot maps, the retained-window/next-overwrite-boundary iff, the stale-token next-overwrite-boundary iff, generated live-window membership exactness, duplicate-free generated live-window slots, full live-window finite slot coverage, and JSON/Markdown result fixtures with freshness and full-window tests; next extend from retained-batch/live-window certificates to implementation-level read/write adapters."
+    next_action: "The KV-cache ring-buffer slot/window certificate is now landed through AIM-T0059 through AIM-T0074 and AIM-B0018, including current-slot distinctness, ordered/unordered retained-token slot distinctness, duplicate-free retained-batch slot maps, the retained-window/next-overwrite-boundary iff, the stale-token next-overwrite-boundary iff, generated live-window membership exactness, duplicate-free generated live-window slots, full live-window finite slot coverage, an ML-engineer-facing CLI/quickstart, and JSON/Markdown result fixtures with freshness and full-window tests; next extend from retained-batch/live-window certificates to implementation-level read/write adapters."
     guardrail: "Do not claim the contract proves an implementation language, GPU kernel, or deployed cache unless that implementation is modeled."
 
   - id: P8-ENG-001

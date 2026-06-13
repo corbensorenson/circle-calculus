@@ -18,6 +18,9 @@ sidecars:
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/results/kv_cache_ring_buffer.json
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/results/kv_cache_ring_buffer.md
+  - scripts/kv_cache_certify.py
+  - tests/test_kv_cache_certifier_cli.py
+  - docs/KV_CACHE_CERTIFIER_QUICKSTART.md
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_coil_retrieval.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_content_gated_retrieval.py
   - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_hybrid_sparse_attention.py
