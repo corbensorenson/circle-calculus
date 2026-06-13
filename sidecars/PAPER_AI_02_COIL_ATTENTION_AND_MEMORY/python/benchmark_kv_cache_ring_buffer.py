@@ -82,6 +82,8 @@ def text_results(payload: dict[str, Any]) -> str:
             f"stale_by_next_overwrite_boundary={certificate['stale_by_next_overwrite_boundary']} "
             "no_same_slot_overwrite_before_current="
             f"{certificate['no_same_slot_overwrite_before_current']} "
+            "same_slot_overwrite_witness_when_stale="
+            f"{certificate['same_slot_overwrite_witness_when_stale']} "
             f"collision_with_next_overwrite={certificate['collision_with_next_overwrite']} "
             f"theorem_ids={','.join(certificate['theorem_ids'])}"
         ),
@@ -130,8 +132,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             payload["claim_boundary"],
             "",
-            "| Cache size | Current | Token | Slot | Current slot | Lag | Retained | Distinct from current | Next overwrite | Overwrite after current | Stale by overwrite boundary | No same-slot overwrite before current | Theorem ids |",
-            "| ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- |",
+            "| Cache size | Current | Token | Slot | Current slot | Lag | Retained | Distinct from current | Next overwrite | Overwrite after current | Stale by overwrite boundary | No same-slot overwrite before current | Stale same-slot overwrite witness | Theorem ids |",
+            "| ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- |",
             (
                 f"| {certificate['cache_size']} | {certificate['current']} | "
                 f"{certificate['token']} | {certificate['slot']} | "
@@ -142,6 +144,7 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{certificate['next_overwrite_after_current']} | "
                 f"{certificate['stale_by_next_overwrite_boundary']} | "
                 f"{certificate['no_same_slot_overwrite_before_current']} | "
+                f"{certificate['same_slot_overwrite_witness_when_stale']} | "
                 f"{', '.join(certificate['theorem_ids'])} |"
             ),
             "",

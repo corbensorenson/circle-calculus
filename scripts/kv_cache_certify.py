@@ -119,7 +119,9 @@ def summary_lines(payload: dict[str, Any]) -> list[str]:
             f"after_current={window['next_overwrite_after_current']} "
             f"stale_by_boundary={window['stale_by_next_overwrite_boundary']} "
             "no_same_slot_overwrite_before_current="
-            f"{window['no_same_slot_overwrite_before_current']}"
+            f"{window['no_same_slot_overwrite_before_current']} "
+            "same_slot_overwrite_witness_when_stale="
+            f"{window['same_slot_overwrite_witness_when_stale']}"
         ),
         (
             "batch_contract="

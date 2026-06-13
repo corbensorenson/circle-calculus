@@ -234,6 +234,26 @@ theorem not_kvCacheWindowContains_iff_nextOverwrite_le_current_of_le
   · intro hoverwritten hwindow
     exact (not_lt_of_ge hoverwritten) (kvCacheWindow_nextOverwrite_after_current hwindow)
 
+/-- A stale non-future token has an explicit later same-slot overwrite witness.
+
+When a token is no longer retained, `token + cacheSize` is a strictly later
+write to the same slot and it occurs at or before the current read point. -/
+theorem kvCacheWindow_sameSlotOverwrite_witness_of_not_contains
+    {cacheSize current token : Nat} (hcache : 0 < cacheSize)
+    (htoken_current : token ≤ current)
+    (hstale : ¬ kvCacheWindowContains cacheSize current token) :
+    token < token + cacheSize ∧
+      token + cacheSize ≤ current ∧
+      kvCacheSlot cacheSize token = kvCacheSlot cacheSize (token + cacheSize) := by
+  have hoverwrite_le :
+      token + cacheSize ≤ current :=
+    (not_kvCacheWindowContains_iff_nextOverwrite_le_current_of_le
+      htoken_current).1 hstale
+  exact
+    ⟨Nat.lt_add_of_pos_right hcache,
+      hoverwrite_le,
+      (kvCacheSlot_add_cacheSize hcache token).symm⟩
+
 /-- The explicit live-window list ends exactly one past `current`. -/
 theorem kvCacheLiveWindowStart_add_length (cacheSize current : Nat) :
     kvCacheLiveWindowStart cacheSize current +

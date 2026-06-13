@@ -4615,6 +4615,12 @@
           "status": "proved"
         },
         {
+          "id": "AIM-T0076",
+          "lean_name": "Circle.Applications.kvCacheWindow_sameSlotOverwrite_witness_of_not_contains",
+          "name": "Circle.Applications.kvCacheWindow_sameSlotOverwrite_witness_of_not_contains",
+          "status": "proved"
+        },
+        {
           "id": "AIT-T0001",
           "lean_name": "Circle.Applications.attentionReach_eq_div_gcd",
           "name": "Circle.Applications.attentionReach_eq_div_gcd",
@@ -5023,7 +5029,7 @@
         {
           "id": "kv_cache_ring_buffer",
           "path": "site/widgets/ai/kv_cache_ring_buffer.js",
-          "python_reference": "circle_math.applications.circle_ai.kv_cache_slot; circle_math.applications.circle_ai.kv_cache_window_contains; circle_math.applications.circle_ai.kv_cache_next_overwrite_token; circle_math.applications.circle_ai.kv_cache_stale_by_next_overwrite_boundary; circle_math.applications.circle_ai.kv_cache_retained_batch_slots_distinct"
+          "python_reference": "circle_math.applications.circle_ai.kv_cache_slot; circle_math.applications.circle_ai.kv_cache_window_contains; circle_math.applications.circle_ai.kv_cache_next_overwrite_token; circle_math.applications.circle_ai.kv_cache_stale_by_next_overwrite_boundary; circle_math.applications.circle_ai.kv_cache_same_slot_overwrite_witness_when_stale; circle_math.applications.circle_ai.kv_cache_retained_batch_slots_distinct; circle_math.applications.circle_ai.certify_kv_cache_live_window"
         },
         {
           "id": "learned_content_gate_retrieval",
@@ -13782,10 +13788,10 @@
         "A proof that cyclic memory replaces attention.",
         "A throughput, memory-saving, paging-policy, or deployment-safety guarantee."
       ],
-      "formal_definition": "`circle_math.applications.circle_ai.certify_kv_cache_window`, `certify_kv_cache_batch`, `certify_kv_cache_live_window`, `kv_cache_retained_slots_distinct`, `kv_cache_distinct_retained_slots_distinct`, `kv_cache_retained_batch_slots_distinct`, `kv_cache_no_same_slot_overwrite_before_current`, and `kv_cache_live_window_slots_distinct`, finite certificates for KV-cache ring-buffer slots `token % cache_size`, current-token slots, retained-window membership, same-slot overwrite timing, current-slot distinctness, ordered pairwise slot distinctness, unordered distinct-token slot distinctness, retained-batch slot distinctness for live token batches, generated live-window slot distinctness, full live-window finite slot coverage, and no later same-slot overwrite before the current read point. Lean theorems `kvCacheSlotCollision_iff_gap_dvd`, `kvCacheSlot_ne_of_positive_gap_lt_cache`, `kvCacheWindow_nextOverwrite_after_current`, `kvCacheWindow_retainedSlot_ne_current_of_lt`, `kvCacheWindow_retainedSlots_ne_of_lt`, `kvCacheWindow_retainedSlots_ne_of_ne`, `kvCacheWindow_noSameSlotOverwrite_between`, `kvCacheWindow_retainedBatchSlots_pairwise_ne`, `kvCacheWindow_retainedBatchSlotMap_nodup`, `kvCacheLiveWindowStart_add_length`, `kvCacheWindowContains_iff_mem_liveWindowTokens`, `kvCacheLiveWindowTokens_slotMap_nodup`, and `kvCacheLiveWindowTokens_slotMap_fullCoverageContract` certify the finite slot and window facts.",
+      "formal_definition": "`circle_math.applications.circle_ai.certify_kv_cache_window`, `certify_kv_cache_batch`, `certify_kv_cache_live_window`, `kv_cache_retained_slots_distinct`, `kv_cache_distinct_retained_slots_distinct`, `kv_cache_retained_batch_slots_distinct`, `kv_cache_no_same_slot_overwrite_before_current`, `kv_cache_same_slot_overwrite_witness_when_stale`, and `kv_cache_live_window_slots_distinct`, finite certificates for KV-cache ring-buffer slots `token % cache_size`, current-token slots, retained-window membership, same-slot overwrite timing, current-slot distinctness, ordered pairwise slot distinctness, unordered distinct-token slot distinctness, retained-batch slot distinctness for live token batches, generated live-window slot distinctness, full live-window finite slot coverage, no later same-slot overwrite before the current read point, and explicit same-slot overwrite witnesses for stale tokens. Lean theorems `kvCacheSlotCollision_iff_gap_dvd`, `kvCacheSlot_ne_of_positive_gap_lt_cache`, `kvCacheWindow_nextOverwrite_after_current`, `not_kvCacheWindowContains_iff_nextOverwrite_le_current_of_le`, `kvCacheWindow_sameSlotOverwrite_witness_of_not_contains`, `kvCacheWindow_retainedSlot_ne_current_of_lt`, `kvCacheWindow_retainedSlots_ne_of_lt`, `kvCacheWindow_retainedSlots_ne_of_ne`, `kvCacheWindow_noSameSlotOverwrite_between`, `kvCacheWindow_retainedBatchSlots_pairwise_ne`, `kvCacheWindow_retainedBatchSlotMap_nodup`, `kvCacheLiveWindowStart_add_length`, `kvCacheWindowContains_iff_mem_liveWindowTokens`, `kvCacheLiveWindowTokens_slotMap_nodup`, and `kvCacheLiveWindowTokens_slotMap_fullCoverageContract` certify the finite slot and window facts.",
       "id": "COMMON-0081",
       "introduced_in": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
-      "intuition": "A non-Lean engineer can ask whether tokens are still inside a declared ring-buffer cache window, whether retained tokens or retained batches are slot-distinct while live, whether a retained token has avoided later same-slot overwrites up to the read point, whether the generated live-token list exactly matches the retention predicate, whether a full live window covers the finite slot universe, and whether the next overwrite is after the current read point.",
+      "intuition": "A non-Lean engineer can ask whether tokens are still inside a declared ring-buffer cache window, whether retained tokens or retained batches are slot-distinct while live, whether a retained token has avoided later same-slot overwrites up to the read point, whether a stale token has a concrete same-slot overwrite witness, whether the generated live-token list exactly matches the retention predicate, whether a full live window covers the finite slot universe, and whether the next overwrite is after the current read point.",
       "kind": "interface",
       "name": "KV-cache ring-buffer window certificate",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
@@ -13901,13 +13907,19 @@
           "lean_name": "Circle.Applications.kvCacheWindow_noSameSlotOverwrite_between",
           "name": "Circle.Applications.kvCacheWindow_noSameSlotOverwrite_between",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0076",
+          "lean_name": "Circle.Applications.kvCacheWindow_sameSlotOverwrite_witness_of_not_contains",
+          "name": "Circle.Applications.kvCacheWindow_sameSlotOverwrite_witness_of_not_contains",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
         {
           "id": "kv_cache_ring_buffer",
           "path": "site/widgets/ai/kv_cache_ring_buffer.js",
-          "python_reference": "circle_math.applications.circle_ai.kv_cache_slot; circle_math.applications.circle_ai.kv_cache_window_contains; circle_math.applications.circle_ai.kv_cache_next_overwrite_token; circle_math.applications.circle_ai.kv_cache_stale_by_next_overwrite_boundary; circle_math.applications.circle_ai.kv_cache_retained_batch_slots_distinct"
+          "python_reference": "circle_math.applications.circle_ai.kv_cache_slot; circle_math.applications.circle_ai.kv_cache_window_contains; circle_math.applications.circle_ai.kv_cache_next_overwrite_token; circle_math.applications.circle_ai.kv_cache_stale_by_next_overwrite_boundary; circle_math.applications.circle_ai.kv_cache_same_slot_overwrite_witness_when_stale; circle_math.applications.circle_ai.kv_cache_retained_batch_slots_distinct; circle_math.applications.circle_ai.certify_kv_cache_live_window"
         }
       ]
     },
