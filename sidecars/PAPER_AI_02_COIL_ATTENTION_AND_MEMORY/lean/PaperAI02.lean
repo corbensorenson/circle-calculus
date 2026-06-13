@@ -134,6 +134,7 @@ namespace Circle.PaperAI02
 #check Circle.Applications.coilStrideFamilyLagResidueList
 #check Circle.Applications.hybridFamilyLagCandidateList
 #check Circle.Applications.hybridFamilyUncoveredLagList
+#check Circle.Applications.hybridFamilyCoveredLagList
 #check Circle.Applications.hybridFamilyUniqueLagCandidateCount
 #check Circle.Applications.predecessorIndex
 #check Circle.Applications.hybridFamilyQueryCandidateList
@@ -154,6 +155,7 @@ namespace Circle.PaperAI02
 #check Circle.Applications.mem_coilLagResidueList_iff
 #check Circle.Applications.mem_coilStrideFamilyLagResidueList_iff
 #check Circle.Applications.mem_hybridFamilyLagCandidateList_iff
+#check Circle.Applications.mem_hybridFamilyCoveredLagList_iff
 #check Circle.Applications.mem_hybridFamilyUncoveredLagList_iff
 #check Circle.Applications.hybridFamilyCoversContext_iff_uncoveredLagList_eq_nil
 #check Circle.Applications.hybridFamilyCoversContext_iff_uncoveredLagList_length_eq_zero
@@ -188,6 +190,7 @@ namespace Circle.PaperAI02
 #check Circle.Applications.localWindowCoversContext_iff_context_sub_one_le
 #check Circle.Applications.mem_hybridFamilyUncoveredLagList_default_120_4_3_7_13_lag5
 #check Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length
+#check Circle.Applications.hybridFamilyCoveredLagList_default_120_4_3_7_13_length
 #check Circle.Applications.hybridFamilyUncoveredLagList_complete_9_2_2_3_4_7_eq_nil
 #check Circle.Applications.hybridFamilyCoversContext_complete_9_2_2_3_4_7
 #check Circle.Applications.hybridFamilyUniqueLagCandidateCount_complete_9_2_2_3_4_7_eq_raw

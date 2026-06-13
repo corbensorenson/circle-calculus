@@ -695,7 +695,11 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     assert result.coverage_certificate.candidate_budget_per_query <= (
         result.coverage_certificate.deduplicated_candidate_budget_upper_bound
     )
-    assert result.coverage_certificate.fixture_theorem_ids == ("AIT-T0084", "AIT-T0085")
+    assert result.coverage_certificate.fixture_theorem_ids == (
+        "AIT-T0084",
+        "AIT-T0085",
+        "AIT-T0091",
+    )
     assert result.coverage_certificate.full_attention_budget == 120
     assert result.coverage_certificate.deduplicated_candidate_budget_upper_bound <= (
         result.coverage_certificate.raw_candidate_budget_upper_bound
@@ -770,6 +774,7 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0083",
         "AIT-T0084",
         "AIT-T0085",
+        "AIT-T0090",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -800,10 +805,15 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert certificate["covered_lag_count"] == 10
     assert certificate["uncovered_lag_count"] == 109
     assert certificate["coverage_complete"] is False
-    assert certificate["fixture_theorem_ids"] == ["AIT-T0084", "AIT-T0085"]
+    assert certificate["fixture_theorem_ids"] == [
+        "AIT-T0084",
+        "AIT-T0085",
+        "AIT-T0091",
+    ]
     assert certificate["theorem_side_lag_candidates_no_collision"] is True
     assert "AIT-T0021" in certificate["theorem_ids"]
     assert "AIT-T0077" in certificate["theorem_ids"]
+    assert "AIT-T0090" in certificate["theorem_ids"]
     complete = payload["complete_fixture_certificate"]
     assert complete["sequence_length"] == 9
     assert complete["strides"] == [3, 4, 7]
@@ -837,6 +847,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
         "| 9 | 2 | 2 | 3, 4, 7 | True | 0 | 8 | 8 | 8 | "
         "AIT-T0086, AIT-T0087, AIT-T0088, AIT-T0089 |"
     ) in markdown_result.stdout
+    assert "AIT-T0091" in markdown_result.stdout
     assert "First uncovered lags" in markdown_result.stdout
 
 

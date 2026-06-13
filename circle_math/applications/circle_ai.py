@@ -828,6 +828,7 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0083",
         "AIT-T0084",
         "AIT-T0085",
+        "AIT-T0090",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -2460,7 +2461,7 @@ def stride_family_fixture_theorem_ids(
         and path_length == 3
         and normalized_strides == (7, 13)
     ):
-        return ("AIT-T0084", "AIT-T0085")
+        return ("AIT-T0084", "AIT-T0085", "AIT-T0091")
     if (
         sequence_length == 9
         and local_window == 2

@@ -75,6 +75,8 @@ Pick one application page and name its finite circular address space before read
 <div class="theorem-box" data-theorem-id="AIRA-T0005"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0024"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0078"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0090"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0091"></div>
 
 <div class="book-navigation">
 <a href="../phase2/proof_carrying_glyphs.qmd">Previous: Proof-Carrying Glyphs</a>

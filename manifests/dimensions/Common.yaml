@@ -4876,6 +4876,36 @@ theorems:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_complete_sparse_family_fixture_has_empty_gap_list
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
     blocker: ""
+  - id: AIT-T0090
+    status: lean_proved
+    lean_name: Circle.Applications.mem_hybridFamilyCoveredLagList_iff
+    informal_statement: "A lag appears in the finite covered-lag list for a local-window plus stride-family sparse plan if and only if it is a positive in-context lag reached by the semantic reachability predicate."
+    formal_statement: "forall {n window pathLength lag : Nat} {strides : List Nat}, lag in Circle.Applications.hybridFamilyCoveredLagList n window pathLength strides <-> 1 <= lag and lag < n and Circle.Applications.hybridFamilyLagReach n window pathLength lag strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
+  - id: AIT-T0091
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyCoveredLagList_default_120_4_3_7_13_length
+    informal_statement: "For the default C_120 sparse-attention plan with local window 4, path length 3, and strides [7,13], the finite covered-lag list has length 10."
+    formal_statement: "(Circle.Applications.hybridFamilyCoveredLagList 120 4 3 [7, 13]).length = 10"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

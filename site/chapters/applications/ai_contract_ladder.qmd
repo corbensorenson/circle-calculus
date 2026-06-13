@@ -38,7 +38,7 @@ The browser widgets, Python CLIs, benchmarks, and fixtures on this page are exec
 | 1 | RoPE phase-bank certifier | residues modulo declared periods | exact discrete position collision and distinguishability | proof-carrying phase contracts |
 | 2 | Real-phase RoPE seed | turn ratio below a finite context | theorem-backed one-channel finite margin examples | numerical diagnostics need proof-backed bounds |
 | 3 | KV-cache ring buffer | token slots modulo cache size | slot collision, retained-window membership, trace-fresh batch slot distinctness, live-window duplicate freedom | freshness is residue plus time boundary |
-| 4 | Sparse attention | local windows plus stride-family lag candidates | covered lags, gap witnesses, budget caps, no-duplicate candidate survival | sparse plans need gap certificates, not just examples |
+| 4 | Sparse attention | local windows plus stride-family lag candidates | covered lags, gap witnesses, hit/gap list iffs, budget caps, no-duplicate candidate survival | sparse plans need hit and gap certificates, not just examples |
 | 5 | Looped recurrence | loop phase and finite recurrence budgets | budget closure, exit certificates, active-token boundaries, route bounds | recursive-transformer ideas need schedule contracts before quality claims |
 | 6 | Circulant mixers | cyclic shift on token indices | shift equivariance, convolution laws, linearity | structure can be guaranteed before benchmarking |
 
@@ -151,6 +151,8 @@ The sparse contract now has both sides of the story: the default `C_120` fixture
 <div class="theorem-box" data-theorem-id="AIT-T0087"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0088"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0089"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0090"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0091"></div>
 
 ## 5. Looped Recurrence
 

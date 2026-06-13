@@ -169,6 +169,17 @@ def hybridFamilyUncoveredLagList
   (List.range' 1 (n - 1)).filter fun lag =>
     lag ∉ hybridFamilyLagCandidateList n window pathLength strides
 
+/-- Finite list of positive in-context lags covered by a local+stride-family
+sparse-attention plan.
+
+This is the positive counterpart to `hybridFamilyUncoveredLagList`: executable
+certifiers can report both covered and uncovered lags against theorem-side list
+objects instead of treating the covered count as merely a Python filter. -/
+def hybridFamilyCoveredLagList
+    (n window pathLength : Nat) (strides : List Nat) : List Nat :=
+  (List.range' 1 (n - 1)).filter fun lag =>
+    lag ∈ hybridFamilyLagCandidateList n window pathLength strides
+
 /-- Exact deduplicated lag-candidate count for the theorem-side candidate list. -/
 def hybridFamilyUniqueLagCandidateCount
     (n window pathLength : Nat) (strides : List Nat) : Nat :=
@@ -791,6 +802,33 @@ theorem hybridFamilyCoversContext_iff_range_lags_mem_candidate_list
     exact (mem_hybridFamilyLagCandidateList_iff hcontext).1
       (hmem lag hlag_mem)
 
+/-- Membership in the finite covered-lag list is exactly positive in-context
+semantic reachability.
+
+This is the positive side of the sparse-attention certifier contract: every
+listed covered lag is really reachable by the local+stride-family plan, and
+every reachable positive in-context lag appears in the list. -/
+theorem mem_hybridFamilyCoveredLagList_iff
+    {n window pathLength lag : Nat} {strides : List Nat} :
+    lag ∈ hybridFamilyCoveredLagList n window pathLength strides ↔
+      1 ≤ lag ∧ lag < n ∧
+        hybridFamilyLagReach n window pathLength lag strides := by
+  unfold hybridFamilyCoveredLagList
+  simp only [List.mem_filter, decide_eq_true_eq]
+  constructor
+  · rintro ⟨hrange, hmem⟩
+    rw [List.mem_range'] at hrange
+    rcases hrange with ⟨i, hi, hlag⟩
+    subst lag
+    have hpos : 1 ≤ 1 + 1 * i := by omega
+    have hcontext : 1 + 1 * i < n := by omega
+    exact ⟨hpos, hcontext, (mem_hybridFamilyLagCandidateList_iff hcontext).1 hmem⟩
+  · rintro ⟨hpos, hcontext, hreach⟩
+    constructor
+    · rw [List.mem_range']
+      refine ⟨lag - 1, ?_, ?_⟩ <;> omega
+    · exact (mem_hybridFamilyLagCandidateList_iff hcontext).2 hreach
+
 /-- Membership in the finite uncovered-lag list is exactly a positive
 in-context semantic gap.
 
@@ -1412,6 +1450,12 @@ theorem mem_hybridFamilyUncoveredLagList_default_120_4_3_7_13_lag5 :
 uncovered lags. This is the finite count reported by the executable sidecar. -/
 theorem hybridFamilyUncoveredLagList_default_120_4_3_7_13_length :
     (hybridFamilyUncoveredLagList 120 4 3 [7, 13]).length = 109 := by
+  native_decide
+
+/-- The default `C_120`, local-window `4`, path-length `3`, strides `[7,13]`
+sparse plan has exactly ten theorem-side covered positive lags. -/
+theorem hybridFamilyCoveredLagList_default_120_4_3_7_13_length :
+    (hybridFamilyCoveredLagList 120 4 3 [7, 13]).length = 10 := by
   native_decide
 
 /-- A compact complete sparse-family fixture has no uncovered positive lags.
