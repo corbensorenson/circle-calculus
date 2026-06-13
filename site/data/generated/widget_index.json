@@ -469,7 +469,7 @@
       ],
       "id": "kv_cache_ring_buffer",
       "path": "site/widgets/ai/kv_cache_ring_buffer.js",
-      "python_reference": "circle_math.applications.circle_ai.kv_cache_slot; circle_math.applications.circle_ai.kv_cache_window_contains; circle_math.applications.circle_ai.kv_cache_next_overwrite_token; circle_math.applications.circle_ai.kv_cache_retained_batch_slots_distinct",
+      "python_reference": "circle_math.applications.circle_ai.kv_cache_slot; circle_math.applications.circle_ai.kv_cache_window_contains; circle_math.applications.circle_ai.kv_cache_next_overwrite_token; circle_math.applications.circle_ai.kv_cache_stale_by_next_overwrite_boundary; circle_math.applications.circle_ai.kv_cache_retained_batch_slots_distinct",
       "theorem_ids": [
         "AIM-T0059",
         "AIM-T0060",
@@ -481,7 +481,8 @@
         "AIM-T0066",
         "AIM-T0067",
         "AIM-T0068",
-        "AIM-T0069"
+        "AIM-T0069",
+        "AIM-T0070"
       ]
     },
     {

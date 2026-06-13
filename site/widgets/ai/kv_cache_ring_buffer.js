@@ -14,6 +14,7 @@ const THEOREM_IDS = [
   "AIM-T0067",
   "AIM-T0068",
   "AIM-T0069",
+  "AIM-T0070",
 ];
 const DICTIONARY_IDS = ["COMMON-0028", "COMMON-0081"];
 
@@ -80,6 +81,7 @@ function appendRecord(output, values, theoremById) {
   const isRetained = retained(values.cacheSize, values.current, values.token);
   const nextOverwrite = values.token + values.cacheSize;
   const overwriteAfterCurrent = values.current < nextOverwrite;
+  const staleByOverwriteBoundary = !isFuture && !isRetained && nextOverwrite <= values.current;
   const collisionWithCurrent = slot === currentSlot;
   const distinctFromCurrent = isRetained && values.token < values.current && !collisionWithCurrent;
   const tokens = liveTokens(values.cacheSize, values.current);
@@ -103,6 +105,7 @@ function appendRecord(output, values, theoremById) {
     `retained window token <= current < token + cache_size: ${isRetained}`,
     `next same-slot overwrite token + cache_size: ${nextOverwrite}`,
     `overwrite after current: ${overwriteAfterCurrent}`,
+    `stale by overwrite boundary: ${staleByOverwriteBoundary}`,
     `collision with current slot: ${collisionWithCurrent}`,
     `retained older token distinct from current slot: ${distinctFromCurrent}`,
     `live window tokens: ${tokens.join(", ")}`,

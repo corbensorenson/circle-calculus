@@ -48,6 +48,18 @@ def kv_cache_next_overwrite_token(cache_size: int, token: int) -> int:
     return token + cache_size
 
 
+def kv_cache_stale_by_next_overwrite_boundary(
+    cache_size: int,
+    current: int,
+    token: int,
+) -> bool:
+    """Return whether a non-future token has already been overwritten."""
+    _require_positive(cache_size, "cache_size")
+    if token > current:
+        return False
+    return kv_cache_next_overwrite_token(cache_size, token) <= current
+
+
 def kv_cache_slots_collide(cache_size: int, left: int, right: int) -> bool:
     """Return whether two token positions write the same KV-cache ring slot."""
     return kv_cache_slot(cache_size, left) == kv_cache_slot(cache_size, right)
@@ -351,6 +363,7 @@ class KVCacheWindowCertificate:
     retained_noncurrent_slot_distinct_from_current: bool
     next_overwrite_token: int
     next_overwrite_after_current: bool
+    stale_by_next_overwrite_boundary: bool
     collision_with_next_overwrite: bool
     theorem_ids: tuple[str, ...] = (
         "AIM-T0059",
@@ -362,6 +375,7 @@ class KVCacheWindowCertificate:
         "AIM-T0065",
         "AIM-T0066",
         "AIM-T0069",
+        "AIM-T0070",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheSlot_lt_cacheSize",
@@ -1525,6 +1539,11 @@ def certify_kv_cache_window(
         ),
         next_overwrite_token=next_overwrite,
         next_overwrite_after_current=current < next_overwrite,
+        stale_by_next_overwrite_boundary=kv_cache_stale_by_next_overwrite_boundary(
+            cache_size,
+            current,
+            token,
+        ),
         collision_with_next_overwrite=kv_cache_slots_collide(cache_size, token, next_overwrite),
     )
 

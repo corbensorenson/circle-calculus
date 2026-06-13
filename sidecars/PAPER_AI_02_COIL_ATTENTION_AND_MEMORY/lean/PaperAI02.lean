@@ -24,6 +24,8 @@ namespace Circle.PaperAI02
 #check Circle.Applications.kvCacheSlotCollision_iff_gap_dvd
 #check Circle.Applications.kvCacheSlot_ne_of_positive_gap_lt_cache
 #check Circle.Applications.kvCacheWindow_nextOverwrite_after_current
+#check Circle.Applications.kvCacheWindowContains_iff_current_lt_nextOverwrite
+#check Circle.Applications.not_kvCacheWindowContains_iff_nextOverwrite_le_current_of_le
 #check Circle.Applications.kvCacheWindow_retainedSlot_ne_current_of_lt
 #check Circle.Applications.kvCacheWindow_retainedSlots_ne_of_lt
 #check Circle.Applications.kvCacheWindow_retainedSlots_ne_of_ne

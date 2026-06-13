@@ -510,9 +510,10 @@ def export_widget_index() -> dict:
                 "AIM-T0067",
                 "AIM-T0068",
                 "AIM-T0069",
+                "AIM-T0070",
             ],
             "dictionary_ids": ["COMMON-0028", "COMMON-0081"],
-            "python_reference": "circle_math.applications.circle_ai.kv_cache_slot; circle_math.applications.circle_ai.kv_cache_window_contains; circle_math.applications.circle_ai.kv_cache_next_overwrite_token; circle_math.applications.circle_ai.kv_cache_retained_batch_slots_distinct",
+            "python_reference": "circle_math.applications.circle_ai.kv_cache_slot; circle_math.applications.circle_ai.kv_cache_window_contains; circle_math.applications.circle_ai.kv_cache_next_overwrite_token; circle_math.applications.circle_ai.kv_cache_stale_by_next_overwrite_boundary; circle_math.applications.circle_ai.kv_cache_retained_batch_slots_distinct",
         },
         {
             "id": "coil_retrieval_reachability",

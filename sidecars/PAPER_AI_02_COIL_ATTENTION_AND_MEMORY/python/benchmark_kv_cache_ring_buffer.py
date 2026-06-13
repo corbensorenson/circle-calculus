@@ -69,6 +69,7 @@ def text_results(payload: dict[str, Any]) -> str:
             f"{certificate['retained_noncurrent_slot_distinct_from_current']} "
             f"next_overwrite_token={certificate['next_overwrite_token']} "
             f"next_overwrite_after_current={certificate['next_overwrite_after_current']} "
+            f"stale_by_next_overwrite_boundary={certificate['stale_by_next_overwrite_boundary']} "
             f"collision_with_next_overwrite={certificate['collision_with_next_overwrite']} "
             f"theorem_ids={','.join(certificate['theorem_ids'])}"
         ),
@@ -98,8 +99,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             payload["claim_boundary"],
             "",
-            "| Cache size | Current | Token | Slot | Current slot | Lag | Retained | Distinct from current | Next overwrite | Overwrite after current | Theorem ids |",
-            "| ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | ---: | --- | --- |",
+            "| Cache size | Current | Token | Slot | Current slot | Lag | Retained | Distinct from current | Next overwrite | Overwrite after current | Stale by overwrite boundary | Theorem ids |",
+            "| ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- |",
             (
                 f"| {certificate['cache_size']} | {certificate['current']} | "
                 f"{certificate['token']} | {certificate['slot']} | "
@@ -108,6 +109,7 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{certificate['retained_noncurrent_slot_distinct_from_current']} | "
                 f"{certificate['next_overwrite_token']} | "
                 f"{certificate['next_overwrite_after_current']} | "
+                f"{certificate['stale_by_next_overwrite_boundary']} | "
                 f"{', '.join(certificate['theorem_ids'])} |"
             ),
             "",

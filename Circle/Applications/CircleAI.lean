@@ -198,6 +198,23 @@ theorem kvCacheWindowContains_iff_current_lt_nextOverwrite
       simpa [Nat.add_comm] using hcurrent_next
     exact (Nat.sub_lt_iff_lt_add htoken_current).2 hcurrent_next'
 
+/-- For a non-future token, being stale is exactly the next same-slot overwrite
+having occurred at or before the current token.
+
+This is the implementation-facing read guard: if the token is not retained and
+is not in the future, the cache slot has already been reused by the time
+`current` is read. -/
+theorem not_kvCacheWindowContains_iff_nextOverwrite_le_current_of_le
+    {cacheSize current token : Nat} (htoken_current : token ≤ current) :
+    ¬ kvCacheWindowContains cacheSize current token ↔ token + cacheSize ≤ current := by
+  constructor
+  · intro hnot
+    exact le_of_not_gt (fun hcurrent_next =>
+      hnot ((kvCacheWindowContains_iff_current_lt_nextOverwrite).2
+        ⟨htoken_current, hcurrent_next⟩))
+  · intro hoverwritten hwindow
+    exact (not_lt_of_ge hoverwritten) (kvCacheWindow_nextOverwrite_after_current hwindow)
+
 /-- If an older token is still inside the retained KV-cache window, it cannot
 share the current token's ring-buffer slot.
 

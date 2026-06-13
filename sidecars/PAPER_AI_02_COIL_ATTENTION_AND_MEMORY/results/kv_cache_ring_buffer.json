@@ -59,6 +59,7 @@
     "retained": true,
     "retained_noncurrent_slot_distinct_from_current": true,
     "slot": 4,
+    "stale_by_next_overwrite_boundary": false,
     "theorem_ids": [
       "AIM-T0059",
       "AIM-T0060",
@@ -68,7 +69,8 @@
       "AIM-T0064",
       "AIM-T0065",
       "AIM-T0066",
-      "AIM-T0069"
+      "AIM-T0069",
+      "AIM-T0070"
     ],
     "token": 20
   }

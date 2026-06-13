@@ -23,6 +23,7 @@ from circle_math.applications.circle_ai import (
     kv_cache_retained_slots_distinct,
     kv_cache_slot,
     kv_cache_slots_collide,
+    kv_cache_stale_by_next_overwrite_boundary,
     kv_cache_window_contains,
     local_window_indices,
     loop_exit_certificate,
@@ -117,6 +118,8 @@ def test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read() -> None
     assert certificate.retained_noncurrent_slot_distinct_from_current
     assert certificate.next_overwrite_token == kv_cache_next_overwrite_token(16, 20) == 36
     assert certificate.next_overwrite_after_current
+    assert not certificate.stale_by_next_overwrite_boundary
+    assert not kv_cache_stale_by_next_overwrite_boundary(16, 31, 20)
     assert certificate.collision_with_next_overwrite
     assert kv_cache_slots_collide(16, 20, 36)
     assert not kv_cache_slots_collide(16, 20, 31)
@@ -125,6 +128,7 @@ def test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read() -> None
     assert "AIM-T0065" in certificate.theorem_ids
     assert "AIM-T0066" in certificate.theorem_ids
     assert "AIM-T0069" in certificate.theorem_ids
+    assert "AIM-T0070" in certificate.theorem_ids
     assert certificate.note.endswith("deployment safety.")
 
 
@@ -161,6 +165,8 @@ def test_kv_cache_ring_buffer_certificate_marks_stale_token() -> None:
     assert not certificate.retained
     assert not kv_cache_window_contains(16, 40, 20)
     assert not certificate.next_overwrite_after_current
+    assert certificate.stale_by_next_overwrite_boundary
+    assert kv_cache_stale_by_next_overwrite_boundary(16, 40, 20)
     assert certificate.next_overwrite_token == 36
     assert not certificate.retained_noncurrent_slot_distinct_from_current
 
@@ -207,7 +213,7 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
         capture_output=True,
     )
     assert "KV-Cache Ring-Buffer Certificate Results" in markdown_result.stdout
-    assert "| 16 | 31 | 20 | 4 | 15 | 11 | True | True | 36 | True |" in markdown_result.stdout
+    assert "| 16 | 31 | 20 | 4 | 15 | 11 | True | True | 36 | True | False |" in markdown_result.stdout
     assert "Batch tokens" in markdown_result.stdout
 
 

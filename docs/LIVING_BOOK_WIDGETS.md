@@ -265,8 +265,8 @@ Companion non-widget prototype: `AIM-B0015` uses `circle_math.applications.circl
 ### kv_cache_ring_buffer
 
 - Inputs: cache size, current token, and inspected token.
-- Outputs: selected token slot, current slot, retained-window status, next same-slot overwrite, overwrite-after-current flag, current-slot collision flag, retained-older-token distinctness flag, live-window token list, live-window slot list, theorem-status badges, and dictionary links.
-- Theorem ids: `AIM-T0059` through `AIM-T0069`.
+- Outputs: selected token slot, current slot, retained-window status, next same-slot overwrite, overwrite-after-current flag, stale-by-overwrite-boundary flag, current-slot collision flag, retained-older-token distinctness flag, live-window token list, live-window slot list, theorem-status badges, and dictionary links.
+- Theorem ids: `AIM-T0059` through `AIM-T0070`.
 - Dictionary ids: `COMMON-0028` and `COMMON-0081`.
 - Python references: `circle_math.applications.circle_ai.kv_cache_slot`, `circle_math.applications.circle_ai.kv_cache_window_contains`, `circle_math.applications.circle_ai.kv_cache_next_overwrite_token`, `circle_math.applications.circle_ai.certify_kv_cache_window`, and `circle_math.applications.circle_ai.certify_kv_cache_batch`.
 - Guardrail: the widget is finite KV-cache ring-buffer indexing and overwrite-window bookkeeping only. It does not prove paging-policy quality, throughput, memory savings, retrieval quality, implementation correctness, deployment safety, or model-quality improvement.

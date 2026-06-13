@@ -4579,6 +4579,12 @@
           "status": "proved"
         },
         {
+          "id": "AIM-T0070",
+          "lean_name": "Circle.Applications.not_kvCacheWindowContains_iff_nextOverwrite_le_current_of_le",
+          "name": "Circle.Applications.not_kvCacheWindowContains_iff_nextOverwrite_le_current_of_le",
+          "status": "proved"
+        },
+        {
           "id": "AIT-T0001",
           "lean_name": "Circle.Applications.attentionReach_eq_div_gcd",
           "name": "Circle.Applications.attentionReach_eq_div_gcd",
@@ -4921,7 +4927,7 @@
         {
           "id": "kv_cache_ring_buffer",
           "path": "site/widgets/ai/kv_cache_ring_buffer.js",
-          "python_reference": "circle_math.applications.circle_ai.kv_cache_slot; circle_math.applications.circle_ai.kv_cache_window_contains; circle_math.applications.circle_ai.kv_cache_next_overwrite_token; circle_math.applications.circle_ai.kv_cache_retained_batch_slots_distinct"
+          "python_reference": "circle_math.applications.circle_ai.kv_cache_slot; circle_math.applications.circle_ai.kv_cache_window_contains; circle_math.applications.circle_ai.kv_cache_next_overwrite_token; circle_math.applications.circle_ai.kv_cache_stale_by_next_overwrite_boundary; circle_math.applications.circle_ai.kv_cache_retained_batch_slots_distinct"
         },
         {
           "id": "learned_content_gate_retrieval",
@@ -12815,13 +12821,19 @@
           "lean_name": "Circle.Applications.kvCacheWindowContains_iff_current_lt_nextOverwrite",
           "name": "Circle.Applications.kvCacheWindowContains_iff_current_lt_nextOverwrite",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0070",
+          "lean_name": "Circle.Applications.not_kvCacheWindowContains_iff_nextOverwrite_le_current_of_le",
+          "name": "Circle.Applications.not_kvCacheWindowContains_iff_nextOverwrite_le_current_of_le",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
         {
           "id": "kv_cache_ring_buffer",
           "path": "site/widgets/ai/kv_cache_ring_buffer.js",
-          "python_reference": "circle_math.applications.circle_ai.kv_cache_slot; circle_math.applications.circle_ai.kv_cache_window_contains; circle_math.applications.circle_ai.kv_cache_next_overwrite_token; circle_math.applications.circle_ai.kv_cache_retained_batch_slots_distinct"
+          "python_reference": "circle_math.applications.circle_ai.kv_cache_slot; circle_math.applications.circle_ai.kv_cache_window_contains; circle_math.applications.circle_ai.kv_cache_next_overwrite_token; circle_math.applications.circle_ai.kv_cache_stale_by_next_overwrite_boundary; circle_math.applications.circle_ai.kv_cache_retained_batch_slots_distinct"
         }
       ]
     },
