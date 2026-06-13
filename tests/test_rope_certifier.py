@@ -556,6 +556,11 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert d20_8k_plan.context_length == 8192
     assert d20_8k_plan.first_uncovered_gap is None
     assert d20_8k_plan.planned_margin == "1/104220"
+    assert d20_8k_plan.band_count == 1304
+    assert d20_8k_plan.bands[-1].start_gap == 8187
+    assert d20_8k_plan.bands[-1].end_gap == 8191
+    assert d20_8k_plan.bands[-1].bridge_theorem_id == "AIRA-T0126"
+    assert all(band.endpoint_cell_margin_ok for band in d20_8k_plan.bands)
     d20_8k_too_large_plan = plan_standard_channel0_interval_bands(
         pi_bound_preset="d20",
         margin=Fraction(1, 104218),
@@ -567,7 +572,9 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert d20_plan.context_length == 4096
     assert d20_plan.first_uncovered_gap is None
     assert d20_plan.band_count == 652
-    assert d20_plan.bands[0] == d6_plan.bands[0]
+    assert d20_plan.bands[0].start_gap == d6_plan.bands[0].start_gap
+    assert d20_plan.bands[0].end_gap == d6_plan.bands[0].end_gap
+    assert d20_plan.bands[0].cell == d6_plan.bands[0].cell
     assert d20_plan.bands[-1].start_gap == 4091
     assert d20_plan.bands[-1].end_gap == 4095
     assert d20_plan.bands[-1].cell == 651
@@ -621,9 +628,14 @@ def test_standard_channel0_interval_plan_finds_next_exact_rational_targets() -> 
     assert d4_plan.bands[0].start_gap == 1
     assert d4_plan.bands[0].end_gap == 6
     assert d4_plan.bands[0].cell == 0
+    assert d4_plan.bands[0].start_lower_value == "625/3927"
+    assert d4_plan.bands[0].end_upper_value == "6000/6283"
+    assert d4_plan.bands[0].endpoint_cell_margin_ok
+    assert d4_plan.bands[0].bridge_theorem_id == "AIRA-T0126"
     assert d4_plan.bands[-1].start_gap == 327
     assert d4_plan.bands[-1].end_gap == 332
     assert d4_plan.bands[-1].cell == 52
+    assert all(band.endpoint_cell_margin_ok for band in d4_plan.bands)
     assert d4_plan.theorem_status == "lean_proved_interval_seed_AIRA-T0087_to_AIRA-T0089"
     assert "compiled Lean seed" in d4_plan.claim_boundary
 
@@ -643,10 +655,14 @@ def test_standard_channel0_interval_plan_finds_next_exact_rational_targets() -> 
     assert d6_plan.first_uncovered_gap == 710
     assert d6_plan.planned_margin == "1/1024"
     assert d6_plan.band_count == 113
-    assert d6_plan.bands[0] == d4_plan.bands[0]
+    assert d6_plan.bands[0].start_gap == d4_plan.bands[0].start_gap
+    assert d6_plan.bands[0].end_gap == d4_plan.bands[0].end_gap
+    assert d6_plan.bands[0].cell == d4_plan.bands[0].cell
     assert d6_plan.bands[-1].start_gap == 704
     assert d6_plan.bands[-1].end_gap == 709
     assert d6_plan.bands[-1].cell == 112
+    assert all(band.bridge_theorem_id == "AIRA-T0126" for band in d6_plan.bands)
+    assert all(band.endpoint_cell_margin_ok for band in d6_plan.bands)
     assert d6_plan.theorem_status == "lean_proved_interval_seed_AIRA-T0090_to_AIRA-T0094"
 
     d20_lower, d20_upper, d20_label = standard_channel0_turn_ratio_bounds(
@@ -665,10 +681,14 @@ def test_standard_channel0_interval_plan_finds_next_exact_rational_targets() -> 
     assert d20_plan.first_uncovered_gap is None
     assert d20_plan.planned_margin == "1/104219"
     assert d20_plan.band_count == 652
-    assert d20_plan.bands[0] == d4_plan.bands[0]
+    assert d20_plan.bands[0].start_gap == d4_plan.bands[0].start_gap
+    assert d20_plan.bands[0].end_gap == d4_plan.bands[0].end_gap
+    assert d20_plan.bands[0].cell == d4_plan.bands[0].cell
     assert d20_plan.bands[-1].start_gap == 4091
     assert d20_plan.bands[-1].end_gap == 4095
     assert d20_plan.bands[-1].cell == 651
+    assert d20_plan.bands[-1].bridge_theorem_id == "AIRA-T0126"
+    assert all(band.endpoint_cell_margin_ok for band in d20_plan.bands)
     assert d20_plan.theorem_status == "lean_proved_interval_seed_AIRA-T0111_to_AIRA-T0114"
 
     d20_too_large_plan = plan_standard_channel0_interval_bands(

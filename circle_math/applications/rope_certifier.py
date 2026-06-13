@@ -445,6 +445,10 @@ class StandardRoPEIntervalBandReport:
     start_gap: int
     end_gap: int
     cell: int
+    start_lower_value: str
+    end_upper_value: str
+    endpoint_cell_margin_ok: bool
+    bridge_theorem_id: str = "AIRA-T0126"
 
 
 @dataclass(frozen=True)
@@ -1176,6 +1180,31 @@ def _standard_channel0_interval_cell(
     return None
 
 
+def _standard_channel0_interval_band_report(
+    *,
+    start_gap: int,
+    end_gap: int,
+    cell: int,
+    margin: Fraction,
+    lower_turn_ratio_bound: Fraction,
+    upper_turn_ratio_bound: Fraction,
+) -> StandardRoPEIntervalBandReport:
+    start_lower = start_gap * lower_turn_ratio_bound
+    end_upper = end_gap * upper_turn_ratio_bound
+    endpoint_cell_margin_ok = (
+        Fraction(cell, 1) + margin <= start_lower
+        and end_upper <= Fraction(cell + 1, 1) - margin
+    )
+    return StandardRoPEIntervalBandReport(
+        start_gap=start_gap,
+        end_gap=end_gap,
+        cell=cell,
+        start_lower_value=format_fraction(start_lower),
+        end_upper_value=format_fraction(end_upper),
+        endpoint_cell_margin_ok=endpoint_cell_margin_ok,
+    )
+
+
 def plan_standard_channel0_interval_bands(
     *,
     pi_bound_preset: PiBoundPreset = "d6",
@@ -1220,20 +1249,26 @@ def plan_standard_channel0_interval_bands(
         elif cell == active_cell and active_end == gap - 1:
             active_end = gap
         else:
-            bands.append(StandardRoPEIntervalBandReport(
+            bands.append(_standard_channel0_interval_band_report(
                 start_gap=active_start or gap,
                 end_gap=active_end or gap,
                 cell=active_cell,
+                margin=margin,
+                lower_turn_ratio_bound=lower,
+                upper_turn_ratio_bound=upper,
             ))
             active_start = gap
             active_end = gap
             active_cell = cell
 
     if active_cell is not None:
-        bands.append(StandardRoPEIntervalBandReport(
+        bands.append(_standard_channel0_interval_band_report(
             start_gap=active_start or 1,
             end_gap=active_end or 1,
             cell=active_cell,
+            margin=margin,
+            lower_turn_ratio_bound=lower,
+            upper_turn_ratio_bound=upper,
         ))
 
     context_length = first_uncovered_gap or max_context_length
