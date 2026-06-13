@@ -126,6 +126,8 @@ A strided sparse-attention path is a coil orbit on a finite context. The basic t
 
 This is why the sparse lane now emphasizes iffs and gap certificates. A sparse plan is more useful when it can tell you what it misses.
 
+The sparse contract now has both sides of the story: the default `C_120` fixture reports `109` uncovered positive lags, while the compact `C_9` fixture with local window `2`, path length `2`, and strides `(3,4,7)` has an empty uncovered-lag list and preserves the raw lag/query candidate budget.
+
 [Open the guided sparse-attention coverage lesson](sparse_attention_contract.qmd).
 
 <div class="theorem-box" data-theorem-id="AIT-T0002"></div>
@@ -137,6 +139,10 @@ This is why the sparse lane now emphasizes iffs and gap certificates. A sparse p
 <div class="theorem-box" data-theorem-id="AIT-T0083"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0084"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0085"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0086"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0087"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0088"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0089"></div>
 
 ## 5. Looped Recurrence
 

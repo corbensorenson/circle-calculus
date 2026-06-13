@@ -122,6 +122,7 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             "window_lt_context="
             f"{payload['theorem_side_predecessor_injective_window_context_condition']}"
         ),
+        f"fixture_theorem_ids={tuple(payload['fixture_theorem_ids'])}",
         f"covered_lag_sample={sample(tuple(payload['covered_lags']), sample_limit)}",
         f"uncovered_lag_sample={sample(tuple(payload['uncovered_lags']), sample_limit)}",
         f"theorem_ids={tuple(payload['theorem_ids'])}",

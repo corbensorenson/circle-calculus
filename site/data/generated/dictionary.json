@@ -4961,6 +4961,30 @@
           "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
           "name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0086",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_complete_9_2_2_3_4_7_eq_nil",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_complete_9_2_2_3_4_7_eq_nil",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0087",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_complete_9_2_2_3_4_7",
+          "name": "Circle.Applications.hybridFamilyCoversContext_complete_9_2_2_3_4_7",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0088",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_complete_9_2_2_3_4_7_eq_raw",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_complete_9_2_2_3_4_7_eq_raw",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0089",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_complete_9_2_2_3_4_7_eq_raw",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_complete_9_2_2_3_4_7_eq_raw",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5446,6 +5470,30 @@
           "id": "AIT-T0085",
           "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
           "name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0086",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_complete_9_2_2_3_4_7_eq_nil",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_complete_9_2_2_3_4_7_eq_nil",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0087",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_complete_9_2_2_3_4_7",
+          "name": "Circle.Applications.hybridFamilyCoversContext_complete_9_2_2_3_4_7",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0088",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_complete_9_2_2_3_4_7_eq_raw",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_complete_9_2_2_3_4_7_eq_raw",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0089",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_complete_9_2_2_3_4_7_eq_raw",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_complete_9_2_2_3_4_7_eq_raw",
           "status": "proved"
         }
       ],
@@ -6801,6 +6849,30 @@
           "id": "AIT-T0085",
           "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
           "name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0086",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_complete_9_2_2_3_4_7_eq_nil",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_complete_9_2_2_3_4_7_eq_nil",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0087",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_complete_9_2_2_3_4_7",
+          "name": "Circle.Applications.hybridFamilyCoversContext_complete_9_2_2_3_4_7",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0088",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_complete_9_2_2_3_4_7_eq_raw",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_complete_9_2_2_3_4_7_eq_raw",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0089",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_complete_9_2_2_3_4_7_eq_raw",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_complete_9_2_2_3_4_7_eq_raw",
           "status": "proved"
         }
       ],
@@ -11241,6 +11313,30 @@
           "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
           "name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0086",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_complete_9_2_2_3_4_7_eq_nil",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_complete_9_2_2_3_4_7_eq_nil",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0087",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_complete_9_2_2_3_4_7",
+          "name": "Circle.Applications.hybridFamilyCoversContext_complete_9_2_2_3_4_7",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0088",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_complete_9_2_2_3_4_7_eq_raw",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_complete_9_2_2_3_4_7_eq_raw",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0089",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_complete_9_2_2_3_4_7_eq_raw",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_complete_9_2_2_3_4_7_eq_raw",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -13058,6 +13154,30 @@
           "id": "AIT-T0085",
           "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
           "name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0086",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_complete_9_2_2_3_4_7_eq_nil",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_complete_9_2_2_3_4_7_eq_nil",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0087",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_complete_9_2_2_3_4_7",
+          "name": "Circle.Applications.hybridFamilyCoversContext_complete_9_2_2_3_4_7",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0088",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_complete_9_2_2_3_4_7_eq_raw",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_complete_9_2_2_3_4_7_eq_raw",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0089",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_complete_9_2_2_3_4_7_eq_raw",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_complete_9_2_2_3_4_7_eq_raw",
           "status": "proved"
         }
       ],

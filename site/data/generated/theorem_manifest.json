@@ -6391,7 +6391,7 @@
       "informal_statement": "RoPE relative-position property: shifting both the query and key positions by the same amount leaves the relative rotary phase unchanged, so the interaction depends only on the relative position query - key.",
       "lean_name": "Circle.Applications.rope_relative_shift_invariant",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1432,
+      "lean_source_line": 1462,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"
@@ -6427,7 +6427,7 @@
       "informal_statement": "RoPE phase additivity: rotary position rotations compose by adding strides, the algebraic basis of RoPE's relative-position behaviour.",
       "lean_name": "Circle.Applications.rope_compose",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1441,
+      "lean_source_line": 1471,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"
@@ -9743,6 +9743,178 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0028",
+        "COMMON-0029",
+        "COMMON-0047",
+        "COMMON-0075",
+        "COMMON-0079"
+      ],
+      "formal_statement": "Circle.Applications.hybridFamilyUncoveredLagList 9 2 2 [3, 4, 7] = []",
+      "id": "AIT-T0086",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "For the compact C_9 sparse-attention plan with local window 2, path length 2, and strides [3,4,7], the finite uncovered-lag list is empty.",
+      "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_complete_9_2_2_3_4_7_eq_nil",
+      "lean_source": "Circle/Applications/CircleTransformer.lean",
+      "lean_source_line": 1422,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_complete_sparse_family_fixture_has_empty_gap_list",
+          "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0028",
+        "COMMON-0029",
+        "COMMON-0047",
+        "COMMON-0075",
+        "COMMON-0079"
+      ],
+      "formal_statement": "Circle.Applications.hybridFamilyCoversContext 9 2 2 [3, 4, 7]",
+      "id": "AIT-T0087",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "The compact C_9 sparse-attention plan with local window 2, path length 2, and strides [3,4,7] covers every positive in-context lag.",
+      "lean_name": "Circle.Applications.hybridFamilyCoversContext_complete_9_2_2_3_4_7",
+      "lean_source": "Circle/Applications/CircleTransformer.lean",
+      "lean_source_line": 1428,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_complete_sparse_family_fixture_has_empty_gap_list",
+          "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0028",
+        "COMMON-0029",
+        "COMMON-0047",
+        "COMMON-0075",
+        "COMMON-0079"
+      ],
+      "formal_statement": "Circle.Applications.hybridFamilyUniqueLagCandidateCount 9 2 2 [3, 4, 7] = Circle.Applications.hybridFamilyRawCandidateBudget 2 2 [3, 4, 7]",
+      "id": "AIT-T0088",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "For the compact C_9 sparse-attention plan, the exact deduplicated lag-candidate count equals the raw candidate budget.",
+      "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_complete_9_2_2_3_4_7_eq_raw",
+      "lean_source": "Circle/Applications/CircleTransformer.lean",
+      "lean_source_line": 1435,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_complete_sparse_family_fixture_has_empty_gap_list",
+          "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0028",
+        "COMMON-0029",
+        "COMMON-0047",
+        "COMMON-0075",
+        "COMMON-0079"
+      ],
+      "formal_statement": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount 9 0 2 2 [3, 4, 7] = Circle.Applications.hybridFamilyRawCandidateBudget 2 2 [3, 4, 7]",
+      "id": "AIT-T0089",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "For the compact C_9 sparse-attention plan, the exact deduplicated query-candidate count equals the raw candidate budget.",
+      "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_complete_9_2_2_3_4_7_eq_raw",
+      "lean_source": "Circle/Applications/CircleTransformer.lean",
+      "lean_source_line": 1442,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_complete_sparse_family_fixture_has_empty_gap_list",
+          "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown"
         ]
       }
     },

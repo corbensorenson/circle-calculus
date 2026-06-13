@@ -625,6 +625,7 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     assert result.coverage_certificate.candidate_budget_per_query <= (
         result.coverage_certificate.deduplicated_candidate_budget_upper_bound
     )
+    assert result.coverage_certificate.fixture_theorem_ids == ("AIT-T0084", "AIT-T0085")
     assert result.coverage_certificate.full_attention_budget == 120
     assert result.coverage_certificate.deduplicated_candidate_budget_upper_bound <= (
         result.coverage_certificate.raw_candidate_budget_upper_bound
@@ -729,9 +730,25 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert certificate["covered_lag_count"] == 10
     assert certificate["uncovered_lag_count"] == 109
     assert certificate["coverage_complete"] is False
+    assert certificate["fixture_theorem_ids"] == ["AIT-T0084", "AIT-T0085"]
     assert certificate["theorem_side_lag_candidates_no_collision"] is True
     assert "AIT-T0021" in certificate["theorem_ids"]
     assert "AIT-T0077" in certificate["theorem_ids"]
+    complete = payload["complete_fixture_certificate"]
+    assert complete["sequence_length"] == 9
+    assert complete["strides"] == [3, 4, 7]
+    assert complete["covered_lags"] == [1, 2, 3, 6, 4, 8, 7, 5]
+    assert complete["uncovered_lags"] == []
+    assert complete["coverage_complete"] is True
+    assert complete["raw_candidate_budget_upper_bound"] == 8
+    assert complete["theorem_side_unique_lag_candidate_count"] == 8
+    assert complete["theorem_side_unique_query_candidate_count"] == 8
+    assert complete["fixture_theorem_ids"] == [
+        "AIT-T0086",
+        "AIT-T0087",
+        "AIT-T0088",
+        "AIT-T0089",
+    ]
 
     markdown_result = subprocess.run(
         [
@@ -746,6 +763,10 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     )
     assert "Stride-Family Sparse-Attention Certificate Results" in markdown_result.stdout
     assert "| 120 | 120 | 4 | 3 | 7, 13 | 5, 9 | False | 0.084 |" in markdown_result.stdout
+    assert (
+        "| 9 | 2 | 2 | 3, 4, 7 | True | 0 | 8 | 8 | 8 | "
+        "AIT-T0086, AIT-T0087, AIT-T0088, AIT-T0089 |"
+    ) in markdown_result.stdout
     assert "First uncovered lags" in markdown_result.stdout
 
 
@@ -901,6 +922,42 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert "AIT-T0074" in certificate.theorem_ids
     assert "AIT-T0075" in certificate.theorem_ids
     assert "AIT-T0025" in certificate.theorem_ids
+
+
+def test_stride_family_complete_sparse_family_fixture_has_empty_gap_list() -> None:
+    certificate = certify_stride_family_coverage(
+        sequence_length=9,
+        strides=(3, 4, 7),
+        path_length=2,
+        local_window=2,
+    )
+
+    assert certificate.covered_lags == (1, 2, 3, 6, 4, 8, 7, 5)
+    assert certificate.uncovered_lags == ()
+    assert certificate.covered_lag_count == 8
+    assert certificate.uncovered_lag_count == 0
+    assert certificate.coverage_complete
+    assert certificate.coverage_ratio == 1.0
+    assert certificate.candidate_budget_per_query == 8
+    assert certificate.raw_candidate_budget_upper_bound == 8
+    assert certificate.deduplicated_candidate_budget_upper_bound == 8
+    assert certificate.theorem_side_lag_candidates == (1, 2, 3, 6, 4, 8, 7, 5)
+    assert certificate.theorem_side_unique_lag_candidate_count == 8
+    assert certificate.theorem_side_coil_residues_no_collision
+    assert certificate.theorem_side_local_coil_disjoint
+    assert certificate.theorem_side_lag_candidates_no_collision
+    assert certificate.theorem_side_query_candidates == (8, 7, 6, 3, 5, 1, 2, 4)
+    assert certificate.theorem_side_unique_query_candidate_count == 8
+    assert certificate.theorem_side_predecessor_injective_on_lag_candidates
+    assert certificate.theorem_side_predecessor_injective_window_context_condition
+    assert certificate.theorem_side_query_candidates_no_collision
+    assert certificate.full_attention_budget == 9
+    assert certificate.fixture_theorem_ids == (
+        "AIT-T0086",
+        "AIT-T0087",
+        "AIT-T0088",
+        "AIT-T0089",
+    )
 
 
 def test_stride_family_single_stride_no_wrap_condition_certifies_no_collision() -> None:

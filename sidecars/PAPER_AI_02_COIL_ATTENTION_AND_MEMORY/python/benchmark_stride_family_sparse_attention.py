@@ -15,7 +15,10 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
-from circle_math.applications.circle_ai import run_stride_family_sparse_attention_benchmark
+from circle_math.applications.circle_ai import (
+    certify_stride_family_coverage,
+    run_stride_family_sparse_attention_benchmark,
+)
 
 CLAIM_BOUNDARY = (
     "This is a proof-carrying finite sparse-attention candidate-set certificate "
@@ -47,12 +50,21 @@ def build_payload(
         "schema_id": "circle_calculus.stride_family_sparse_attention_certificate.v0",
         "claim_boundary": CLAIM_BOUNDARY,
         "benchmark_result": asdict(result),
+        "complete_fixture_certificate": asdict(
+            certify_stride_family_coverage(
+                sequence_length=9,
+                strides=(3, 4, 7),
+                path_length=2,
+                local_window=2,
+            )
+        ),
     }
 
 
 def text_results(payload: dict[str, Any]) -> str:
     result = payload["benchmark_result"]
     certificate = result["coverage_certificate"]
+    complete = payload["complete_fixture_certificate"]
     return (
         "stride_family_sparse_attention "
         f"sequence_length={result['sequence_length']} "
@@ -97,7 +109,22 @@ def text_results(payload: dict[str, Any]) -> str:
         f"raw_candidate_budget_upper_bound={certificate['raw_candidate_budget_upper_bound']} "
         f"coverage_complete={certificate['coverage_complete']} "
         f"coverage_ratio={certificate['coverage_ratio']:.3f} "
+        f"fixture_theorem_ids={','.join(certificate['fixture_theorem_ids'])} "
         f"theorem_ids={','.join(certificate['theorem_ids'])}\n"
+        "stride_family_sparse_attention_complete_fixture "
+        f"sequence_length={complete['sequence_length']} "
+        f"strides={complete['strides']} "
+        f"path_length={complete['path_length']} "
+        f"local_window={complete['local_window']} "
+        f"covered_lags={complete['covered_lags']} "
+        f"uncovered_lag_count={complete['uncovered_lag_count']} "
+        f"coverage_complete={complete['coverage_complete']} "
+        "theorem_side_unique_lag_candidate_count="
+        f"{complete['theorem_side_unique_lag_candidate_count']} "
+        "theorem_side_unique_query_candidate_count="
+        f"{complete['theorem_side_unique_query_candidate_count']} "
+        f"raw_candidate_budget_upper_bound={complete['raw_candidate_budget_upper_bound']} "
+        f"fixture_theorem_ids={','.join(complete['fixture_theorem_ids'])}\n"
         f"{payload['claim_boundary']}\n"
     )
 
@@ -105,6 +132,7 @@ def text_results(payload: dict[str, Any]) -> str:
 def markdown_results(payload: dict[str, Any]) -> str:
     result = payload["benchmark_result"]
     certificate = result["coverage_certificate"]
+    complete = payload["complete_fixture_certificate"]
     return "\n".join(
         [
             "# Stride-Family Sparse-Attention Certificate Results",
@@ -173,6 +201,28 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "```text",
             ", ".join(str(lag) for lag in certificate["uncovered_lags"][:24]),
+            "```",
+            "",
+            "Complete sparse-family fixture:",
+            "",
+            "| Context | Local window | Path length | Strides | Coverage complete | Uncovered lags | Raw budget | Unique lag candidates | Unique query candidates | Fixture theorem ids |",
+            "| ---: | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | --- |",
+            (
+                f"| {complete['sequence_length']} | {complete['local_window']} | "
+                f"{complete['path_length']} | "
+                f"{', '.join(str(stride) for stride in complete['strides'])} | "
+                f"{complete['coverage_complete']} | "
+                f"{complete['uncovered_lag_count']} | "
+                f"{complete['raw_candidate_budget_upper_bound']} | "
+                f"{complete['theorem_side_unique_lag_candidate_count']} | "
+                f"{complete['theorem_side_unique_query_candidate_count']} | "
+                f"{', '.join(complete['fixture_theorem_ids'])} |"
+            ),
+            "",
+            "Complete fixture covered lags:",
+            "",
+            "```text",
+            ", ".join(str(lag) for lag in complete["covered_lags"]),
             "```",
             "",
             "Theorem ids:",

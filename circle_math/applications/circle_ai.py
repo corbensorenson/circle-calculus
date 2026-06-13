@@ -630,6 +630,7 @@ class StrideFamilyCoverageCertificate:
     full_attention_budget: int
     coverage_complete: bool
     coverage_ratio: float
+    fixture_theorem_ids: tuple[str, ...] = ()
     theorem_ids: tuple[str, ...] = (
         "AIT-T0016",
         "AIT-T0017",
@@ -2283,6 +2284,31 @@ def stride_family_deduplicated_candidate_budget_bound(
     )
 
 
+def stride_family_fixture_theorem_ids(
+    sequence_length: int,
+    strides: Sequence[int],
+    path_length: int,
+    local_window: int,
+) -> tuple[str, ...]:
+    """Return concrete Lean theorem ids for public sparse-attention fixtures."""
+    normalized_strides = tuple(strides)
+    if (
+        sequence_length == 120
+        and local_window == 4
+        and path_length == 3
+        and normalized_strides == (7, 13)
+    ):
+        return ("AIT-T0084", "AIT-T0085")
+    if (
+        sequence_length == 9
+        and local_window == 2
+        and path_length == 2
+        and normalized_strides == (3, 4, 7)
+    ):
+        return ("AIT-T0086", "AIT-T0087", "AIT-T0088", "AIT-T0089")
+    return ()
+
+
 def certify_stride_family_coverage(
     sequence_length: int,
     strides: Sequence[int],
@@ -2290,7 +2316,13 @@ def certify_stride_family_coverage(
     local_window: int,
 ) -> StrideFamilyCoverageCertificate:
     """Emit an exact finite lag coverage/gap certificate for a stride family."""
-    covered = stride_family_covered_lags(sequence_length, strides, path_length, local_window)
+    normalized_strides = normalize_stride_family(strides)
+    covered = stride_family_covered_lags(
+        sequence_length,
+        normalized_strides,
+        path_length,
+        local_window,
+    )
     covered_set = set(covered)
     uncovered = tuple(lag for lag in range(1, sequence_length) if lag not in covered_set)
     theorem_side_lag_candidates = stride_family_lag_candidate_list(
@@ -2316,7 +2348,7 @@ def certify_stride_family_coverage(
     positive_lag_count = max(0, sequence_length - 1)
     return StrideFamilyCoverageCertificate(
         sequence_length=sequence_length,
-        strides=normalize_stride_family(strides),
+        strides=normalized_strides,
         path_length=path_length,
         local_window=local_window,
         covered_lags=covered,
@@ -2374,6 +2406,12 @@ def certify_stride_family_coverage(
         full_attention_budget=sequence_length,
         coverage_complete=len(uncovered) == 0,
         coverage_ratio=1.0 if positive_lag_count == 0 else len(covered) / positive_lag_count,
+        fixture_theorem_ids=stride_family_fixture_theorem_ids(
+            sequence_length,
+            normalized_strides,
+            path_length,
+            local_window,
+        ),
     )
 
 

@@ -34,6 +34,18 @@ First uncovered lags:
 5, 6, 8, 9, 10, 11, 12, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 27, 28, 29, 30, 31, 32, 33
 ```
 
+Complete sparse-family fixture:
+
+| Context | Local window | Path length | Strides | Coverage complete | Uncovered lags | Raw budget | Unique lag candidates | Unique query candidates | Fixture theorem ids |
+| ---: | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | --- |
+| 9 | 2 | 2 | 3, 4, 7 | True | 0 | 8 | 8 | 8 | AIT-T0086, AIT-T0087, AIT-T0088, AIT-T0089 |
+
+Complete fixture covered lags:
+
+```text
+1, 2, 3, 6, 4, 8, 7, 5
+```
+
 Theorem ids:
 
 ```text

@@ -108,6 +108,20 @@ The default sidecar is intentionally incomplete so the gap certificates are visi
 
 The key upgrade is the finite uncovered-lag list. `AIT-T0081` says membership in that list is exactly a positive in-context semantic miss. `AIT-T0082` and `AIT-T0083` say complete coverage is exactly an empty list, equivalently zero uncovered lags. `AIT-T0084` proves that the default fixture's lag `5` is one of those listed misses, and `AIT-T0085` proves the default list has exactly `109` entries.
 
+The sidecar also includes a checked passing fixture:
+
+| Field | Complete Fixture | What It Means |
+| --- | --- | --- |
+| Context | `9` | positive in-context lags are `1` through `8` |
+| Local window | `2` | lags `1` and `2` are local |
+| Path length | `2` | each admitted stride contributes two coil steps |
+| Strides | `3, 4, 7` | generated lags are `3,6`, `4,8`, and `7,5` |
+| Covered lags | `1, 2, 3, 6, 4, 8, 7, 5` | every positive lag below `9` appears exactly once |
+| Uncovered lag count | `0` | the finite uncovered-lag list is empty |
+| Raw budget | `8` | the lag-side and query-side deduplicated counts both preserve the raw budget |
+
+`AIT-T0086` proves the complete fixture's uncovered list is empty. `AIT-T0087` turns that into complete context coverage. `AIT-T0088` and `AIT-T0089` prove that the lag-candidate and query-candidate counts both equal the raw budget.
+
 That is the proof-carrying contract shape: a sparse plan should show what it covers, what it misses, and which budget assumptions justify the count. The structured-family score in the sidecar is a fixture diagnostic, not a learned attention-quality result.
 
 ::: {.checkpoint-box}
@@ -159,6 +173,10 @@ That is the proof-carrying contract shape: a sparse plan should show what it cov
 <div class="theorem-box" data-theorem-id="AIT-T0083"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0084"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0085"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0086"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0087"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0088"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0089"></div>
 
 </details>
 

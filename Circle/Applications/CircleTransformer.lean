@@ -1414,6 +1414,36 @@ theorem hybridFamilyUncoveredLagList_default_120_4_3_7_13_length :
     (hybridFamilyUncoveredLagList 120 4 3 [7, 13]).length = 109 := by
   native_decide
 
+/-- A compact complete sparse-family fixture has no uncovered positive lags.
+
+For `C_9`, local window `2`, path length `2`, and strides `[3,4,7]`,
+the generated lag candidates are exactly `1,2,3,6,4,8,7,5`, covering every
+positive in-context lag once. -/
+theorem hybridFamilyUncoveredLagList_complete_9_2_2_3_4_7_eq_nil :
+    hybridFamilyUncoveredLagList 9 2 2 [3, 4, 7] = [] := by
+  native_decide
+
+/-- The compact `C_9` sparse-family fixture is a positive complete-coverage
+certificate. -/
+theorem hybridFamilyCoversContext_complete_9_2_2_3_4_7 :
+    hybridFamilyCoversContext 9 2 2 [3, 4, 7] := by
+  exact (hybridFamilyCoversContext_iff_uncoveredLagList_eq_nil).2
+    hybridFamilyUncoveredLagList_complete_9_2_2_3_4_7_eq_nil
+
+/-- The compact `C_9` sparse-family fixture preserves the raw lag-candidate
+budget after deduplication. -/
+theorem hybridFamilyUniqueLagCandidateCount_complete_9_2_2_3_4_7_eq_raw :
+    hybridFamilyUniqueLagCandidateCount 9 2 2 [3, 4, 7] =
+      hybridFamilyRawCandidateBudget 2 2 [3, 4, 7] := by
+  native_decide
+
+/-- The compact `C_9` sparse-family fixture preserves the raw query-candidate
+budget after deduplication. -/
+theorem hybridFamilyUniqueQueryCandidateCount_complete_9_2_2_3_4_7_eq_raw :
+    hybridFamilyUniqueQueryCandidateCount 9 0 2 2 [3, 4, 7] =
+      hybridFamilyRawCandidateBudget 2 2 [3, 4, 7] := by
+  native_decide
+
 /-! ### RoPE relative position -/
 
 /-- The RoPE phase of a token at position `pos`: rotation by `pos` from the base node. -/
