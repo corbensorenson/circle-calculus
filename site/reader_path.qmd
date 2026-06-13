@@ -132,6 +132,7 @@ Application chapters are case studies, not hype pages. They reuse S1 language: a
 - [RoPE Certifier](chapters/applications/rope_certifier.qmd): exact phase-bank distinguishability plus bounded real-phase proof seeds.
 - [KV-Cache Ring Buffer](chapters/applications/kv_cache_ring_buffer.qmd): finite slot, freshness, and live-window certificates.
 - [Sparse Attention Coverage](chapters/applications/sparse_attention_contract.qmd): finite local-window plus stride-family coverage, gap-witness, and candidate-budget certificates.
+- [Looped Recurrence Contracts](chapters/applications/looped_recurrence_contracts.qmd): finite recurrence budgets, exit certificates, active-token boundaries, selected block routes, and schedule controls.
 - [Physics](chapters/applications/physics.qmd): finite gauge links, path holonomy, and Wilson-loop certificates.
 - [Generative Structures](chapters/applications/generative.qmd): seed-rule provenance and exact regeneration fixtures.
 - [Rendering](chapters/applications/rendering.qmd): direction bins and visual-compute scaffolds.

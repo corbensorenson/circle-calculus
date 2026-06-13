@@ -458,163 +458,21 @@ position = winding * period + residue
 
 Looped and recursive transformers reuse model blocks across multiple computation passes. The Circle Calculus version should make each pass explicit: loop phase, recurrence budget, state provenance, exit decision, and overthinking boundary. That is a possible interface contribution, not a proved model improvement.
 
-The benchmark lane is `P5-EDGE-010`, seeded by `AIM-B0003`, `AIM-B0011`, `AIM-B0005`, `AIM-B0012`, `AIM-B0006`, `AIM-B0007`, `AIM-B0013`, `AIM-B0008`, `AIM-B0014`, `AIM-B0009`, and `AIM-B0015`, with `AIM-B0010` covering the adjacent learned coil/local route-gating story. It should expand toward ordinary dense transformer depth, Universal Transformer recurrence, fixed looped transformers, adaptive early-exit models, recurrent-memory transformers, token-level Mixture-of-Recursions, sparse/MoE looped models, learned attention gates, full/sparse attention baselines, RWKV/Mamba-style recurrent or state-space models, and nonrecursive transformer baselines.
+[Open the guided looped recurrence contracts lesson](looped_recurrence_contracts.qmd).
 
-The first lesson goal is to make recurrence readable:
-
-```text
-shared block
-  -> loop phase
-  -> active token set / resolution level
-  -> state update
-  -> exit or continue
-  -> score trace
-  -> overthinking boundary
-```
-
-The proof boundary stays strict: Lean can certify finite schedule and indexing facts; Python or MLX benchmarks must carry model-quality, runtime, memory, and parameter claims.
-
-The widget below is the smallest interactive version of that boundary. It computes the same finite schedule quantities used by the current Lean/Python layer: phase, required loop depth, token recurrence budget, capped training-free budget, exit availability, overthinking boundary, one-period closure, and whole-loop-pass closure. It is not a proof and it is not evidence of model quality.
-
-<div class="widget-panel" data-widget="loop_recurrence_budget" data-theorem-id="AIM-T0018" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0054 COMMON-0059 COMMON-0067"></div>
-
-`AIM-B0011` turns the exit decision into a small certificate: required depth, score trace, first exit step, budget status, and guardrail status. Lean now proves that a certificate implies exit availability, that the training-free wrapper budget selects the certified exit step, and that certified exit steps and guardrail boundaries stay unchanged after whole loop-period passes. The control keeps the same finite logic but uses a deliberately insufficient fixed budget, so the no-exit case is visible.
-
-<div class="widget-panel" data-widget="loop_exit_certificate" data-theorem-id="AIM-T0033" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0054 COMMON-0059 COMMON-0067"></div>
-
-`AIM-B0005` turns that lesson into token-level bookkeeping:
+The dedicated lesson now carries the widgets and theorem-card shelf for:
 
 ```text
-token
-  -> routed loop budget
-  -> selected middle block
-  -> active or halted at each loop step
-  -> coarse/fine resolution label
-  -> wrong-loop and over-loop controls
+loop budget timeline
+exit certificate
+token-level recurrence
+training-free loop wrapper
+learned phase tables
+middle-block and multi-resolution routes
+tiny recurrent-state prototype
 ```
 
-This is the Circle Calculus contribution to the interface: recurrence provenance should be visible before it is sold as reasoning or throughput.
-
-Lean now pins down the active-step boundary used by that fixture: every token is active at step one, active-step membership is invariant under whole loop-period token shifts, active steps stay inside the positive loop period, and steps beyond that period are inactive. The widget below exposes the deterministic `AIM-B0005` fixture: each token gets a finite recurrence budget, loop steps show how many tokens remain active, resolution labels alternate by step, and fixed/wrong/over-loop controls remain visible. It is not a learned-router result or a model-quality claim.
-
-<div class="widget-panel" data-widget="token_level_recurrence" data-theorem-id="AIM-T0035" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0059 COMMON-0068 COMMON-0069"></div>
-
-`AIM-B0012` turns learned token-level routing into auditable bookkeeping:
-
-```text
-training tokens
-  -> learned phase-to-budget table
-  -> held-out token budgets
-  -> fixed, wrong-period, shifted-budget, and over-loop controls
-  -> nonperiodic scalar-threshold control
-```
-
-This is useful only as a learned-router harness. It is not evidence that token-level recursive transformers improve a real model.
-
-The widget below exposes the deterministic `AIM-B0012` fixture: a phase-to-budget lookup is fit on training tokens, applied to held-out tokens, and compared with wrong-period, shifted-budget, fixed-budget, over-loop, and nonperiodic scalar controls.
-
-<div class="widget-panel" data-widget="learned_token_recurrence" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0059 COMMON-0068 COMMON-0069"></div>
-
-`AIM-B0006` turns the training-free wrapper idea into an auditable fixture:
-
-```text
-sample
-  -> circular phase budget
-  -> run this many loop passes
-  -> compare fixed, wrong-period, and over-loop controls
-  -> compare nonperiodic scalar-threshold baseline
-```
-
-This is useful only as a schedule interface. It is not a claim that a reused block improves a real model.
-
-The widget below exposes the deterministic `AIM-B0006` fixture. It compares a fixed phase-derived loop budget against single-pass, fixed-budget, wrong-period, over-loop, and nonperiodic scalar-threshold controls.
-
-<div class="widget-panel" data-widget="training_free_loop_wrapper" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0054 COMMON-0067"></div>
-
-`AIM-B0007` turns middle-block recurrence into auditable bookkeeping:
-
-```text
-selected loop block
-  -> required block and budget
-  -> full/fixed/wrong/over-loop controls
-  -> block-pass accounting
-```
-
-Lean now pins down the contiguous selected-block route used by this fixture: the route stays inside the selected block range, closes after one selected-width shift, closes after any whole number of selected-width shifts, and selects the range start at sample zero. The combined route/budget facts additionally prove that the selected block and recurrence budget stay bounded together, initialize at `(start, 1)` for sample zero, and close after one product common cycle `width * loopPeriod` or any whole number of such cycles.
-
-This is useful only as a schedule interface. It is not a claim that looping a middle block improves a real model.
-
-`AIM-B0013` turns learned middle-block recurrence into auditable bookkeeping:
-
-```text
-training samples
-  -> learned phase-to-block table
-  -> learned phase-to-budget table
-  -> held-out block and budget route
-  -> selected-band, full-block, fixed-budget, wrong-period, wrong-block, and over-loop controls
-```
-
-This is useful only as a learned-router harness. It is not evidence that a learned middle-block recursive transformer improves quality, speed, memory, context length, perplexity, or reasoning.
-
-The widget below exposes the deterministic `AIM-B0013` fixture. It fits one phase table for required model block and another phase table for loop budget, then compares the held-out route with selected-band, full-block, fixed-budget, wrong-period, wrong-block, and over-loop controls.
-
-<div class="widget-panel" data-widget="learned_middle_block_recurrence" data-theorem-id="AIM-T0039" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0059 COMMON-0068 COMMON-0070"></div>
-
-`AIM-B0008` turns multi-resolution recurrence into auditable bookkeeping:
-
-```text
-sample
-  -> required loop budget
-  -> required coarse/fine resolution
-  -> single-resolution and wrong-resolution controls
-  -> active-sample accounting
-```
-
-This is useful only as a schedule interface. It is not a claim that alternating compressed and full-resolution passes improves a real model.
-
-`AIM-B0014` turns learned multi-resolution recurrence into auditable bookkeeping:
-
-```text
-training sample
-  -> learned phase-to-budget table
-  -> learned phase-to-resolution table
-  -> held-out budget and coarse/fine route
-  -> single-resolution, fixed-budget, wrong-period, and over-loop controls
-```
-
-This is useful only as a learned-router harness. It is not evidence that a learned compressed/full-resolution recursive transformer improves quality, speed, memory, context length, perplexity, or reasoning.
-
-The widget below exposes the deterministic `AIM-B0014` fixture. It fits phase-to-budget and phase-to-resolution tables, then compares the held-out route with single-resolution, fixed-budget, wrong-period, and over-loop controls.
-
-<div class="widget-panel" data-widget="learned_multi_resolution_recurrence" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0059 COMMON-0069 COMMON-0070"></div>
-
-`AIM-B0009` turns learned recurrence schedules into auditable bookkeeping:
-
-```text
-training sample
-  -> phase-to-budget lookup
-  -> predicted loop budget
-  -> fixed-budget, wrong-period, and over-loop controls
-  -> schedule accuracy
-```
-
-This is useful only as a learned-schedule harness. It is not evidence that a learned recursive transformer improves quality, speed, memory, context length, perplexity, or reasoning.
-
-The widget below exposes the deterministic `AIM-B0009` fixture. It is the baseline learned schedule case: fit a phase-to-budget table, then compare held-out budgets with fixed-budget, wrong-period, and over-loop controls.
-
-<div class="widget-panel" data-widget="learned_recurrence_schedule" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0070"></div>
-
-`AIM-B0015` adds the first tiny looped recurrent-state prototype:
-
-```text
-sample
-  -> certified token recurrence budget
-  -> finite hidden state after that many loop passes
-  -> state-to-label lookup
-  -> one-step, wrong-period, scalar, and nonperiodic controls
-```
-
-The Lean facts `AIM-T0049` through `AIM-T0055` certify only the finite state arithmetic: the state is bounded, one loop starts at zero, the certified budget recovers the sample phase, whole-period token shifts do not change the certified state read, and positive raw budgets close after one or many whole recurrent periods. This is useful as a prototype harness boundary. It is not evidence that a learned recursive transformer improves quality, speed, memory, context length, perplexity, or reasoning.
+The benchmark lane is `P5-EDGE-010`, seeded by `AIM-B0003`, `AIM-B0011`, `AIM-B0005`, `AIM-B0012`, `AIM-B0006`, `AIM-B0007`, `AIM-B0013`, `AIM-B0008`, `AIM-B0014`, `AIM-B0009`, and `AIM-B0015`. It should expand only with ordinary baselines and controls: dense transformer depth, Universal Transformer recurrence, fixed looped transformers, adaptive early-exit models, recurrent-memory transformers, token-level Mixture-of-Recursions, sparse/MoE looped models, RWKV/Mamba-style recurrent or state-space models, and nonrecursive transformer baselines. The proof boundary stays strict: Lean can certify finite schedule and indexing facts; Python or MLX benchmarks must carry model-quality, runtime, memory, and parameter claims.
 
 ## Learning Path
 
@@ -888,14 +746,6 @@ Python and optional MLX benchmark fixtures are executable references only. They 
 <script type="module" src="../../widgets/ai/multicoil_phase_explorer.js"></script>
 <script type="module" src="../../widgets/ai/rope_relative_phase.js"></script>
 <script type="module" src="../../widgets/ai/winding_aware_position.js"></script>
-<script type="module" src="../../widgets/ai/loop_recurrence_budget.js"></script>
-<script type="module" src="../../widgets/ai/loop_exit_certificate.js"></script>
-<script type="module" src="../../widgets/ai/training_free_loop_wrapper.js"></script>
-<script type="module" src="../../widgets/ai/token_level_recurrence.js"></script>
-<script type="module" src="../../widgets/ai/learned_token_recurrence.js"></script>
-<script type="module" src="../../widgets/ai/learned_middle_block_recurrence.js"></script>
-<script type="module" src="../../widgets/ai/learned_multi_resolution_recurrence.js"></script>
-<script type="module" src="../../widgets/ai/learned_recurrence_schedule.js"></script>
 <div class="book-navigation">
 <a href="erdos_bridges.qmd">Previous: Classical Bridges</a>
 <a href="ai_contract_ladder.qmd">Next: AI Contract Ladder</a>

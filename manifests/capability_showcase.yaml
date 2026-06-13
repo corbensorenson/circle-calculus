@@ -283,7 +283,9 @@ capabilities:
       - "sidecars/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE/python/test_adapter_block_examples.py"
     living_book_refs:
       - page: "site/chapters/applications/ai.qmd"
-        widget_ids: ["cyclic_memory_slots", "loop_recurrence_budget", "loop_exit_certificate", "token_level_recurrence", "learned_middle_block_recurrence", "training_free_loop_wrapper", "stride_family_attention", "adapter_parameter_budget", "circulant_mixer_validation", "block_cyclic_mixer_validation", "multicoil_phase_explorer", "winding_aware_position"]
+        widget_ids: ["cyclic_memory_slots", "stride_family_attention", "adapter_parameter_budget", "circulant_mixer_validation", "block_cyclic_mixer_validation", "multicoil_phase_explorer", "winding_aware_position"]
+      - page: "site/chapters/applications/looped_recurrence_contracts.qmd"
+        widget_ids: ["loop_recurrence_budget", "loop_exit_certificate", "token_level_recurrence", "training_free_loop_wrapper", "learned_token_recurrence", "learned_middle_block_recurrence", "learned_multi_resolution_recurrence", "learned_recurrence_schedule"]
     source_refs:
       - "Circle/Applications/CircleAI.lean"
       - "Circle/Applications/CircleTransformer.lean"

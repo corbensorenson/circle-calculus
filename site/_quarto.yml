@@ -142,6 +142,8 @@ website:
             text: KV-Cache Ring Buffer
           - href: chapters/applications/sparse_attention_contract.qmd
             text: Sparse Attention Coverage
+          - href: chapters/applications/looped_recurrence_contracts.qmd
+            text: Looped Recurrence Contracts
           - href: chapters/applications/physics.qmd
             text: Physics
           - href: chapters/applications/generative.qmd

@@ -5681,7 +5681,7 @@
             "passed": true
           },
           {
-            "evidence": "pages 1/1; widgets 12/12",
+            "evidence": "pages 2/2; widgets 15/15",
             "id": "living_book_presentation",
             "label": "Living Book presentation",
             "passed": true
@@ -5693,7 +5693,7 @@
             "passed": true
           },
           {
-            "evidence": "standard_math_parity theorems 126/126; circle_native_value sources 11/11; Living Book pages 1/1; application_guardrail language clean",
+            "evidence": "standard_math_parity theorems 126/126; circle_native_value sources 11/11; Living Book pages 2/2; application_guardrail language clean",
             "id": "value_proposition",
             "label": "role-backed value proposition",
             "passed": true
@@ -5762,8 +5762,8 @@
       "evidence_counts": {
         "dictionary_count": 14,
         "executable_count": 2,
-        "living_book_page_count": 1,
-        "living_book_widget_count": 12,
+        "living_book_page_count": 2,
+        "living_book_widget_count": 15,
         "paper_count": 2,
         "source_count": 11,
         "theorem_count": 126
@@ -5774,8 +5774,8 @@
       ],
       "id": "SHOW-010",
       "living_book_ref_contract": {
-        "backed_page_count": 1,
-        "backed_widget_count": 12,
+        "backed_page_count": 2,
+        "backed_widget_count": 15,
         "pages": [
           {
             "backed": true,
@@ -5787,36 +5787,6 @@
               {
                 "backed": true,
                 "id": "cyclic_memory_slots",
-                "known": true,
-                "mounted": true
-              },
-              {
-                "backed": true,
-                "id": "loop_recurrence_budget",
-                "known": true,
-                "mounted": true
-              },
-              {
-                "backed": true,
-                "id": "loop_exit_certificate",
-                "known": true,
-                "mounted": true
-              },
-              {
-                "backed": true,
-                "id": "token_level_recurrence",
-                "known": true,
-                "mounted": true
-              },
-              {
-                "backed": true,
-                "id": "learned_middle_block_recurrence",
-                "known": true,
-                "mounted": true
-              },
-              {
-                "backed": true,
-                "id": "training_free_loop_wrapper",
                 "known": true,
                 "mounted": true
               },
@@ -5857,10 +5827,67 @@
                 "mounted": true
               }
             ]
+          },
+          {
+            "backed": true,
+            "carries_advertised_theorem": true,
+            "carries_showcase_ref": true,
+            "exists": true,
+            "page": "site/chapters/applications/looped_recurrence_contracts.qmd",
+            "widgets": [
+              {
+                "backed": true,
+                "id": "loop_recurrence_budget",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "loop_exit_certificate",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "token_level_recurrence",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "training_free_loop_wrapper",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "learned_token_recurrence",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "learned_middle_block_recurrence",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "learned_multi_resolution_recurrence",
+                "known": true,
+                "mounted": true
+              },
+              {
+                "backed": true,
+                "id": "learned_recurrence_schedule",
+                "known": true,
+                "mounted": true
+              }
+            ]
           }
         ],
-        "total_page_count": 1,
-        "total_widget_count": 12,
+        "total_page_count": 2,
+        "total_widget_count": 15,
         "unbacked_pages": [],
         "unbacked_widgets": []
       },
@@ -5869,17 +5896,25 @@
           "page": "site/chapters/applications/ai.qmd",
           "widget_ids": [
             "cyclic_memory_slots",
-            "loop_recurrence_budget",
-            "loop_exit_certificate",
-            "token_level_recurrence",
-            "learned_middle_block_recurrence",
-            "training_free_loop_wrapper",
             "stride_family_attention",
             "adapter_parameter_budget",
             "circulant_mixer_validation",
             "block_cyclic_mixer_validation",
             "multicoil_phase_explorer",
             "winding_aware_position"
+          ]
+        },
+        {
+          "page": "site/chapters/applications/looped_recurrence_contracts.qmd",
+          "widget_ids": [
+            "loop_recurrence_budget",
+            "loop_exit_certificate",
+            "token_level_recurrence",
+            "training_free_loop_wrapper",
+            "learned_token_recurrence",
+            "learned_middle_block_recurrence",
+            "learned_multi_resolution_recurrence",
+            "learned_recurrence_schedule"
           ]
         }
       ],
@@ -6059,11 +6094,6 @@
                 "page": "site/chapters/applications/ai.qmd",
                 "widget_ids": [
                   "cyclic_memory_slots",
-                  "loop_recurrence_budget",
-                  "loop_exit_certificate",
-                  "token_level_recurrence",
-                  "learned_middle_block_recurrence",
-                  "training_free_loop_wrapper",
                   "stride_family_attention",
                   "adapter_parameter_budget",
                   "circulant_mixer_validation",
@@ -6071,11 +6101,24 @@
                   "multicoil_phase_explorer",
                   "winding_aware_position"
                 ]
+              },
+              {
+                "page": "site/chapters/applications/looped_recurrence_contracts.qmd",
+                "widget_ids": [
+                  "loop_recurrence_budget",
+                  "loop_exit_certificate",
+                  "token_level_recurrence",
+                  "training_free_loop_wrapper",
+                  "learned_token_recurrence",
+                  "learned_middle_block_recurrence",
+                  "learned_multi_resolution_recurrence",
+                  "learned_recurrence_schedule"
+                ]
               }
             ]
           },
           {
-            "evidence": "papers 2; theorem refs 126/126; sources 11/11; executables 2; Living Book pages 1/1",
+            "evidence": "papers 2; theorem refs 126/126; sources 11/11; executables 2; Living Book pages 2/2",
             "id": "proof_backing",
             "label": "paper, theorem, source, executable, and Living Book backing",
             "ready": true,
@@ -6101,7 +6144,7 @@
           "Standard reference: Finite cyclic buffers, schedule normalization, recurrence budgets, sparse strided attention, RoPE relative phase, MultiCoil phase-pair closure, residue/winding position bookkeeping, circular convolution, and modular adapter indexing.",
           "Circle expression: AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, strided, hybrid, and stride-family sparse-attention reachability, RoPE relative phase, MultiCoil phase-pair product-cycle closure, residue-plus-winding position records, circulant mixer laws, block-cyclic mixer cells, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
           "Circle-native value: Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made.",
-          "Proof backing: 2 paper ids, 126/126 theorem refs, 11/11 source refs, 2 executable refs, and 1/1 Living Book page refs.",
+          "Proof backing: 2 paper ids, 126/126 theorem refs, 11/11 source refs, 2 executable refs, and 2/2 Living Book page refs.",
           "Boundary: No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence."
         ],
         "total_section_count": 6
@@ -6143,7 +6186,7 @@
             "ready": true
           },
           {
-            "evidence": "pages 1/1; widgets 12/12",
+            "evidence": "pages 2/2; widgets 15/15",
             "id": "living_book_refs",
             "label": "backed Living Book presentation",
             "ready": true
@@ -6350,7 +6393,7 @@
             ]
           },
           {
-            "evidence": "pages 1/1; widgets 12/12",
+            "evidence": "pages 2/2; widgets 15/15",
             "id": "living_book_route",
             "label": "Living Book route",
             "ready": true,
@@ -6359,17 +6402,25 @@
                 "page": "site/chapters/applications/ai.qmd",
                 "widget_ids": [
                   "cyclic_memory_slots",
-                  "loop_recurrence_budget",
-                  "loop_exit_certificate",
-                  "token_level_recurrence",
-                  "learned_middle_block_recurrence",
-                  "training_free_loop_wrapper",
                   "stride_family_attention",
                   "adapter_parameter_budget",
                   "circulant_mixer_validation",
                   "block_cyclic_mixer_validation",
                   "multicoil_phase_explorer",
                   "winding_aware_position"
+                ]
+              },
+              {
+                "page": "site/chapters/applications/looped_recurrence_contracts.qmd",
+                "widget_ids": [
+                  "loop_recurrence_budget",
+                  "loop_exit_certificate",
+                  "token_level_recurrence",
+                  "training_free_loop_wrapper",
+                  "learned_token_recurrence",
+                  "learned_middle_block_recurrence",
+                  "learned_multi_resolution_recurrence",
+                  "learned_recurrence_schedule"
                 ]
               }
             ]
@@ -7996,7 +8047,7 @@
             "required": true
           },
           "circle_native_value": {
-            "evidence": "sources 11/11; Living Book pages 1/1",
+            "evidence": "sources 11/11; Living Book pages 2/2",
             "ready": true,
             "required": true
           },
@@ -9411,10 +9462,10 @@
         ],
         "incomplete_capability_ids": [],
         "living_book_refs": {
-          "backed_page_count": 3,
-          "backed_widget_count": 16,
-          "total_page_count": 3,
-          "total_widget_count": 16,
+          "backed_page_count": 4,
+          "backed_widget_count": 19,
+          "total_page_count": 4,
+          "total_widget_count": 19,
           "unbacked_pages": [],
           "unbacked_widgets": []
         },
@@ -9441,8 +9492,8 @@
         "unique_evidence_counts": {
           "dictionary_count": 22,
           "executable_count": 7,
-          "living_book_page_count": 3,
-          "living_book_widget_count": 16,
+          "living_book_page_count": 4,
+          "living_book_widget_count": 19,
           "paper_count": 7,
           "source_count": 20,
           "theorem_count": 158
@@ -9506,7 +9557,7 @@
             ]
           },
           {
-            "evidence": "papers 7; theorem refs 158; source refs 20; executables 7; Living Book pages 3",
+            "evidence": "papers 7; theorem refs 158; source refs 20; executables 7; Living Book pages 4",
             "id": "proof_backing_counts",
             "label": "proof-backed evidence counts",
             "ready": true,
@@ -9554,7 +9605,7 @@
         "summary_lines": [
           "Audience: Builders who want generated artifacts, cyclic AI schedules, and compute layouts to carry checkable provenance before performance or quality claims.",
           "Capability surface: 3 route lanes across AI systems, Computation, Generation and compression interfaces.",
-          "Proof backing: 158 proved theorem refs, 7 paper ids, 20 source refs, 7 executable refs, and 3 Living Book page refs.",
+          "Proof backing: 158 proved theorem refs, 7 paper ids, 20 source refs, 7 executable refs, and 4 Living Book page refs.",
           "Circle-native value: 3 lanes state explicit Circle expression/value statements with role-backed checks.",
           "Boundary: This route does not claim universal compression, model-quality improvement, speedup, or context-length improvement without benchmark evidence."
         ],
@@ -9663,10 +9714,10 @@
   "portfolio_summary": {
     "backing_contract_summary": {
       "living_book_refs": {
-        "backed_page_count": 13,
-        "backed_widget_count": 24,
-        "total_page_count": 13,
-        "total_widget_count": 24,
+        "backed_page_count": 14,
+        "backed_widget_count": 27,
+        "total_page_count": 14,
+        "total_widget_count": 27,
         "unbacked_pages": [],
         "unbacked_widgets": []
       },
@@ -9701,8 +9752,8 @@
     "evidence_totals": {
       "dictionary_count": 47,
       "executable_count": 17,
-      "living_book_page_count": 13,
-      "living_book_widget_count": 24,
+      "living_book_page_count": 14,
+      "living_book_widget_count": 27,
       "paper_count": 18,
       "source_count": 41,
       "theorem_count": 214
@@ -9729,8 +9780,8 @@
     "unique_evidence_counts": {
       "dictionary_count": 39,
       "executable_count": 17,
-      "living_book_page_count": 8,
-      "living_book_widget_count": 24,
+      "living_book_page_count": 9,
+      "living_book_widget_count": 27,
       "paper_count": 18,
       "source_count": 41,
       "theorem_count": 214
@@ -9743,6 +9794,7 @@
       "site/chapters/applications/compute.qmd",
       "site/chapters/applications/erdos_bridges.qmd",
       "site/chapters/applications/generative.qmd",
+      "site/chapters/applications/looped_recurrence_contracts.qmd",
       "site/chapters/applications/physics.qmd"
     ]
   }

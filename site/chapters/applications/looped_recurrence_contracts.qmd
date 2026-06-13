@@ -1,0 +1,251 @@
+---
+title: "Looped Recurrence Contracts"
+---
+
+Looped and recursive transformer ideas reuse computation: the same block, or a selected band of blocks, runs more than once. Circle Calculus should not treat that as a vague metaphor. The useful contract is a finite schedule record:
+
+```text
+sample or token
+  -> loop phase
+  -> recurrence budget
+  -> active step set
+  -> optional exit certificate
+  -> optional block or resolution route
+  -> explicit control cases
+```
+
+This page is a guided lesson for that record. It is not a claim that recurrence improves reasoning, perplexity, context length, speed, memory, or model quality.
+
+<span class="showcase-backlink" data-showcase-ref="SHOW-010"></span>
+
+::: {.lesson-goal}
+
+## Goal
+
+Learn how Circle Calculus represents looped transformer work as finite recurrence-budget and routing contracts, then separate the theorem-backed schedule facts from the exploratory benchmark fixtures.
+
+:::
+
+::: {.warning-box}
+The widgets and Python fixtures on this page are executable references, not proofs. The theorem cards report finite schedule, index, closure, and route facts only. They do not certify semantic convergence, adaptive-exit quality, recursive reasoning, throughput, memory savings, or language-model performance.
+:::
+
+## Why This Belongs In Circle Math
+
+A looped model has a repeated action:
+
+```text
+apply block again
+```
+
+That repeated action naturally has a phase:
+
+```text
+loop step modulo loop period
+```
+
+The contract asks finite questions that can be checked before any model-quality experiment:
+
+- Is the required loop count bounded by the declared loop period?
+- Does the schedule repeat after a whole loop-period shift?
+- Which tokens are still active at each step?
+- Does a declared budget reach the first valid exit?
+- Does a selected middle-block route stay inside its block band?
+- Does a learned phase table have ordinary wrong-period and fixed-budget controls?
+
+This is the right altitude for the current project. The proof layer can certify the finite bookkeeping. Benchmark fixtures can compare routing assumptions. Real model usefulness remains separate evidence.
+
+## 1. Recurrence Budget Timeline
+
+The first contract turns a sample or token index into a required loop count. In the current finite fixture, the required count is:
+
+```text
+required_loops = sample mod loop_period + 1
+```
+
+That gives a positive budget, an upper bound by the loop period, and closure after whole loop-period shifts. The widget shows the schedule record, the capped training-free budget, exit availability, and overthinking guardrail boundary.
+
+<div class="widget-panel" data-widget="loop_recurrence_budget" data-theorem-id="AIM-T0018" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0054 COMMON-0059 COMMON-0067"></div>
+
+<div class="theorem-box" data-theorem-id="AIM-T0018"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0019"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0020"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0026"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0027"></div>
+
+## 2. Exit Certificate
+
+Adaptive recurrence needs an audit trail. The current loop-exit certificate records:
+
+```text
+required step
+score trace
+first exit step
+whether the exit is inside budget
+whether the exit stays inside the guardrail boundary
+```
+
+The useful failure mode is visible too: a fixed budget can be insufficient, which produces a no-exit control. That is more honest than reporting only successful examples.
+
+<div class="widget-panel" data-widget="loop_exit_certificate" data-theorem-id="AIM-T0033" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0054 COMMON-0059 COMMON-0067"></div>
+
+<div class="theorem-box" data-theorem-id="AIM-T0031"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0032"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0033"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0034"></div>
+
+## 3. Token-Level Recurrence
+
+Token-level recurrence changes the question from "how many loops for the whole sample?" to "which tokens are still active at this loop step?"
+
+```text
+token
+  -> recurrence budget
+  -> active or halted at step s
+  -> selected middle-block range
+  -> coarse/fine resolution label
+```
+
+The widget exposes active-token counts, resolution labels, selected middle-block bookkeeping, and fixed, wrong-budget, over-loop, and nonperiodic controls.
+
+<div class="widget-panel" data-widget="token_level_recurrence" data-theorem-id="AIM-T0035" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0059 COMMON-0068 COMMON-0069"></div>
+
+<div class="theorem-box" data-theorem-id="AIM-T0035"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0036"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0037"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0038"></div>
+
+## 4. Training-Free Wrapper
+
+A training-free wrapper uses phase as a fixed loop-budget prior. This is attractive because it can be tested without changing model weights, but the claim boundary has to stay strict: the fixture only checks schedule behavior and synthetic controls.
+
+The widget compares the phase-derived budget against single-pass, fixed-loop, wrong-period, over-loop, and scalar-threshold controls.
+
+<div class="widget-panel" data-widget="training_free_loop_wrapper" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0054 COMMON-0067"></div>
+
+## 5. Learned Phase Tables
+
+The learned recurrence fixtures fit tiny lookup tables from phase to schedule choices. That makes the router auditable before any neural claim:
+
+```text
+training examples
+  -> phase-to-budget table
+  -> held-out schedule prediction
+  -> fixed, wrong-period, shifted, and over-loop controls
+```
+
+The widgets below are still small synthetic fixtures. Their purpose is to force controls and provenance into the workflow.
+
+<div class="widget-panel" data-widget="learned_token_recurrence" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0059 COMMON-0068 COMMON-0069"></div>
+
+<div class="widget-panel" data-widget="learned_recurrence_schedule" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0070"></div>
+
+## 6. Middle-Block And Multi-Resolution Routes
+
+Two useful recurrence variants are now represented as finite routing fixtures:
+
+- **Middle-block recurrence:** run only a selected band of blocks more than once.
+- **Multi-resolution recurrence:** alternate coarse and fine passes by phase.
+
+The theorem cards for middle-block recurrence certify route bounds and closure for the selected block band and the combined block/budget route. The widgets show learned block and budget tables, wrong-block and wrong-period controls, single-resolution controls, and active-sample accounting.
+
+<div class="widget-panel" data-widget="learned_middle_block_recurrence" data-theorem-id="AIM-T0039" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0059 COMMON-0068 COMMON-0070"></div>
+
+<div class="widget-panel" data-widget="learned_multi_resolution_recurrence" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0059 COMMON-0069 COMMON-0070"></div>
+
+<div class="theorem-box" data-theorem-id="AIM-T0039"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0040"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0041"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0042"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0043"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0044"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0045"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0046"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0047"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0048"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0056"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0057"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0058"></div>
+
+## 7. Tiny Recurrent-State Prototype
+
+The current prototype gives a finite hidden-state register to the loop:
+
+```text
+sample
+  -> certified recurrence budget
+  -> finite state after that many loop passes
+  -> state-to-label lookup
+  -> one-step, wrong-period, scalar, and nonperiodic controls
+```
+
+The formal facts here are state-index facts: bounded state, sample-zero behavior, phase recovery when read at the certified budget, and closure after whole periods. They are not evidence that a recursive transformer learns better representations.
+
+<div class="theorem-box" data-theorem-id="AIM-T0049"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0050"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0051"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0052"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0053"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0054"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0055"></div>
+
+## What To Notice
+
+- The loop phase is a finite address, not a model-quality guarantee.
+- Exit certificates expose no-exit and over-budget controls instead of hiding them.
+- Token-level recurrence needs active-set accounting, not just an average loop count.
+- Learned phase tables are useful only with wrong-period, fixed-budget, shifted-budget, and over-loop controls.
+- Middle-block and multi-resolution routes are finite routing contracts until real model baselines exist.
+- The next deep target should be stronger contract statements: iffs, coverage boundaries, or counterexample witnesses for recurrence schedules, not more names for the same bookkeeping.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+For a proposed recursive-transformer experiment, name the finite circular address space, the repeated action, one failure mode the certificate should expose, and one ordinary baseline that must be reported.
+
+:::
+
+## Source Trail
+
+Run the deterministic sidecars from the repository root:
+
+```bash
+python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_loop_exit_certificate.py
+python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_token_level_recurrence.py
+python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_training_free_loop_wrapper.py
+python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_middle_block_recurrence.py
+```
+
+<p data-paper-ref="papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Coil Attention And Memory</a></p>
+
+<p>Lean source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/Circle/Applications/CircleAI.lean">Circle/Applications/CircleAI.lean</a></p>
+
+<p>Python source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/circle_math/applications/circle_ai.py">circle_math/applications/circle_ai.py</a></p>
+
+## Dictionary
+
+<div class="dictionary-box" data-dictionary-id="COMMON-0052"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0053"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0054"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0055"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0059"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0067"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0068"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0069"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0070"></div>
+
+<div class="book-navigation">
+<a href="sparse_attention_contract.qmd">Previous: Sparse Attention Coverage</a>
+<a href="physics.qmd">Next: Physics</a>
+</div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>
+<script type="module" src="../../widgets/ai/loop_recurrence_budget.js"></script>
+<script type="module" src="../../widgets/ai/loop_exit_certificate.js"></script>
+<script type="module" src="../../widgets/ai/token_level_recurrence.js"></script>
+<script type="module" src="../../widgets/ai/training_free_loop_wrapper.js"></script>
+<script type="module" src="../../widgets/ai/learned_token_recurrence.js"></script>
+<script type="module" src="../../widgets/ai/learned_middle_block_recurrence.js"></script>
+<script type="module" src="../../widgets/ai/learned_multi_resolution_recurrence.js"></script>
+<script type="module" src="../../widgets/ai/learned_recurrence_schedule.js"></script>
