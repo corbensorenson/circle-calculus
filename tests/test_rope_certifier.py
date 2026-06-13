@@ -373,8 +373,18 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert "AIRA-T0100" in certificate.theorem_ids
     assert "AIRA-T0101" in certificate.theorem_ids
     assert "AIRA-T0102" in certificate.theorem_ids
+    assert "AIRA-T0103" in certificate.theorem_ids
+    assert "AIRA-T0104" in certificate.theorem_ids
     assert (
         "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_65536"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710"
         in certificate.lean_declarations
     )
     assert tuple(witness.gap for witness in certificate.interval_witnesses) == tuple(

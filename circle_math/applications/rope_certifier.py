@@ -173,6 +173,8 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS: tuple[str, ...] = (
     "AIRA-T0100",
     "AIRA-T0101",
     "AIRA-T0102",
+    "AIRA-T0103",
+    "AIRA-T0104",
 )
 
 ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -216,6 +218,8 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeStandardChannel0D9Seed_turnRatioFiniteMargin",
     "Circle.Applications.not_ropeStandardChannel0D9Seed_nearTurn",
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
+    "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_65536",
+    "Circle.Applications.not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -1205,8 +1209,9 @@ def certify_standard_channel0_interval_seed() -> IntervalBackedTurnRatioCertific
     The Lean theorem proves a finite witness table for the genuine channel-0
     turn ratio ``1 / (2π)`` over the context containing gaps 1 through 4095.
     The certificate uses 20-decimal bounds on ``π`` and a computed integer
-    cell table. The earlier d6 seed also proves why the larger context needs a
-    smaller margin: gap 710 obstructs margin 1/1024.
+    cell table. The earlier d6 seed proves why context 710 cannot keep margin
+    1/1024, and the D9 trail also proves that gap 710 obstructs the doubled
+    D9 margin 1/65536.
     """
     context_length = 4096
     margin = Fraction(1, 131072)
@@ -1262,7 +1267,8 @@ def certify_standard_channel0_interval_seed() -> IntervalBackedTurnRatioCertific
             "10^20*gap/628318530717958647692, split across computed integer "
             "cells 0 through 651. Lean also proves that the earlier 1/1024 "
             "margin stops at gap 710, so this 4k seed deliberately uses a "
-            "smaller advertised margin. The theorem trail also includes a "
+            "smaller advertised margin, and that the doubled D9 margin 1/65536 "
+            "is already impossible for any context containing gap 710. The theorem trail also includes a "
             "conditional bank-level bridge for banks containing the standard "
             "channel-0 angular frequency."
         ),

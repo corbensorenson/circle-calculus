@@ -11651,6 +11651,18 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0103",
+          "lean_name": "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_65536",
+          "name": "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_65536",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0104",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710",
+          "name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -12172,6 +12184,18 @@
           "id": "AIRA-T0102",
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0103",
+          "lean_name": "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_65536",
+          "name": "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_65536",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0104",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710",
+          "name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710",
           "status": "proved"
         }
       ],
@@ -13090,6 +13114,18 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0103",
+          "lean_name": "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_65536",
+          "name": "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_65536",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0104",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710",
+          "name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -13626,6 +13662,18 @@
           "id": "AIRA-T0102",
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0103",
+          "lean_name": "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_65536",
+          "name": "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_65536",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0104",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710",
+          "name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710",
           "status": "proved"
         }
       ],
@@ -14231,6 +14279,18 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0103",
+          "lean_name": "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_65536",
+          "name": "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_65536",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0104",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710",
+          "name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -14602,6 +14662,18 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0103",
+          "lean_name": "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_65536",
+          "name": "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_65536",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0104",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710",
+          "name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -14902,6 +14974,18 @@
           "id": "AIRA-T0102",
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0103",
+          "lean_name": "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_65536",
+          "name": "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_65536",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0104",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710",
+          "name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710",
           "status": "proved"
         }
       ],

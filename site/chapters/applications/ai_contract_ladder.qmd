@@ -68,11 +68,13 @@ context    = 4096
 margin     = 1 / 131072
 ```
 
-The conditional bank bridge says that if a finite real-phase bank contains that channel and the inspected context and margin are within the seed, then the all-channel near-turn condition is ruled out under the stated tolerance scaling.
+The conditional bank bridge says that if a finite real-phase bank contains that channel and the inspected context and margin are within the seed, then the all-channel near-turn condition is ruled out under the stated tolerance scaling. The theorem trail also proves a useful negative companion: gap `710` blocks the doubled D9 margin `1/65536`, so the seed cannot be strengthened by only changing the advertised margin.
 
 <div class="theorem-box" data-theorem-id="AIRA-T0061"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0101"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0102"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0103"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0104"></div>
 
 ::: {.warning-box}
 This is not a full real-RoPE bank theorem. It is a theorem-backed one-channel seed plus a conditional bank transfer. The remaining hard work is broader channel-wise certification or sharper Diophantine machinery.

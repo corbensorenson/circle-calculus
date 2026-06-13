@@ -53,14 +53,14 @@ AIRA-T0027, AIRA-T0028, AIRA-T0034, AIRA-T0035, AIRA-T0036, AIRA-T0046, AIRA-T00
 Real-phase theorem program and finite-margin certificates:
 
 ```text
-AIRA-T0029 through AIRA-T0033, AIRA-T0037 through AIRA-T0045, AIRA-T0047, AIRA-T0050, AIRA-T0053 through AIRA-T0102
+AIRA-T0029 through AIRA-T0033, AIRA-T0037 through AIRA-T0045, AIRA-T0047, AIRA-T0050, AIRA-T0053 through AIRA-T0104
 ```
 
 ## Known Boundaries
 
 - The exact proof object is the integer-period phase bank, not raw floating-point RoPE.
 - The real-phase scan is numerical evidence only.
-- The real-phase Lean work has conditional one-turn-window, turn-separation, finite bank no-near-turn, turn-ratio scaling, one-channel plus bank-level finite-context margin consequence, context-plus-margin transfer, integer/rational-turn-ratio guardrails, generated-gap finite-enumeration, floor/ceiling nearest-integer witness bridge precursors, one named theorem-backed rational/discretized `1/4099` context-4096 certificate, a generic rational interval-certificate bridge, interval-certificate margin monotonicity, standard-RoPE channel-0 seeds for `1 / (2π)`, a proved gap-`710` obstruction for margin `1/1024`, and a current context-`4096`, margin-`1/131072` channel-0 seed.
+- The real-phase Lean work has conditional one-turn-window, turn-separation, finite bank no-near-turn, turn-ratio scaling, one-channel plus bank-level finite-context margin consequence, context-plus-margin transfer, integer/rational-turn-ratio guardrails, generated-gap finite-enumeration, floor/ceiling nearest-integer witness bridge precursors, one named theorem-backed rational/discretized `1/4099` context-4096 certificate, a generic rational interval-certificate bridge, interval-certificate margin monotonicity, standard-RoPE channel-0 seeds for `1 / (2π)`, proved gap-`710` obstructions for margins `1/1024` and `1/65536`, and a current context-`4096`, margin-`1/131072` channel-0 seed.
 - The standard-RoPE interval seed is a real theorem for that bounded one-channel context only. It still does not have the continued-fraction, generated-interval, or Diophantine theorem needed to certify arbitrary standard irrational RoPE ratios at large contexts or a full RoPE bank.
 - Diagnostic presets are intentionally small failure cases; they are not vendor checkpoint claims.
 
