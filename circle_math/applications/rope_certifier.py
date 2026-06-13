@@ -195,6 +195,7 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS: tuple[str, ...] = (
     "AIRA-T0122",
     "AIRA-T0123",
     "AIRA-T0124",
+    "AIRA-T0125",
 )
 
 ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -260,6 +261,7 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.not_ropeStandardChannel0D12Seed_nearTurn",
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed",
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed_cons",
+    "Circle.Applications.ropeStandardChannel0D12_context8192_margin_bracket",
 )
 
 ROPE_STANDARD_CHANNEL0_D12_BANK_BRIDGE_THEOREMS: tuple[str, ...] = (
@@ -498,6 +500,23 @@ class StandardChannel0D12BankBridgeCertificate:
     lean_declarations: tuple[str, ...]
     assumptions: tuple[str, ...]
     tolerance_rule: str
+    explanation: str
+    claim_boundary: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class StandardChannel0D12MarginBracketCertificate:
+    schema_id: str
+    name: str
+    context_length: int
+    proved_margin: str
+    impossible_margin_floor: str
+    pass_certificate: bool
+    theorem_ids: tuple[str, ...]
+    lean_declarations: tuple[str, ...]
     explanation: str
     claim_boundary: str
 
@@ -1369,9 +1388,10 @@ def certify_standard_channel0_interval_seed() -> IntervalBackedTurnRatioCertific
             "are already impossible for any context containing that gap. Lean further packages the D11 "
             "result as a 4k bracket: 1/104219 is proved, while every margin at or above "
             "1/104218 is impossible for context 4096. The theorem trail also includes an "
-            "8k one-channel seed at margin 1/104220, plus D12 bank-level bridges "
-            "for banks containing the standard channel-0 angular frequency and for "
-            "banks whose first channel is that standard frequency."
+            "8k one-channel seed at margin 1/104220 for context 8192, packages it as "
+            "a D12 bracket against the same at-or-above 1/104218 obstruction, and adds "
+            "D12 bank-level bridges for banks containing the standard channel-0 angular "
+            "frequency and for banks whose first channel is that standard frequency."
         ),
         claim_boundary=(
             "This is a theorem-backed interval certificate for the genuine standard "
@@ -1544,6 +1564,45 @@ def certify_standard_channel0_d12_bank_request(
             "This is a conditional one-separating-channel bank certificate based on "
             "standard channel 0. It is not a full all-channel standard-RoPE margin "
             "theorem, not a 128k certificate, and not a model-quality claim."
+        ),
+    )
+
+
+def certify_standard_channel0_d12_margin_bracket() -> StandardChannel0D12MarginBracketCertificate:
+    """Return the theorem-backed 8k standard-channel margin bracket.
+
+    This packages the positive D12 seed together with the existing gap-710
+    obstruction. It says exactly what Lean proves for the standard channel-0
+    turn ratio: margin ``1/104220`` holds through context 8192, while every
+    advertised margin at or above ``1/104218`` is impossible for that same
+    context. The tiny gap between those rationals is intentionally left as a
+    claim boundary unless a sharper proof is added.
+    """
+
+    return StandardChannel0D12MarginBracketCertificate(
+        schema_id="circle_calculus.standard_rope_channel0_d12_margin_bracket.v0",
+        name="standard_rope_channel0_d12_context8192_margin_bracket",
+        context_length=8192,
+        proved_margin="1/104220",
+        impossible_margin_floor="1/104218",
+        pass_certificate=True,
+        theorem_ids=("AIRA-T0120", "AIRA-T0121", "AIRA-T0118", "AIRA-T0125"),
+        lean_declarations=(
+            "Circle.Applications.ropeStandardChannel0D12Seed_intervalCertificate",
+            "Circle.Applications.ropeStandardChannel0D12Seed_turnRatioFiniteMargin",
+            "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_104218_of_context_gt_710",
+            "Circle.Applications.ropeStandardChannel0D12_context8192_margin_bracket",
+        ),
+        explanation=(
+            "Lean proves that standard RoPE channel 0 has finite-context "
+            "nearest-integer margin 1/104220 through context 8192. Lean also "
+            "proves that any margin at or above 1/104218 is impossible for "
+            "that context because gap 710 is already too close to integer turn 113."
+        ),
+        claim_boundary=(
+            "This is an 8k one-channel standard-RoPE bracket. It is not a full "
+            "all-channel bank margin theorem, not a 128k certificate, and it "
+            "does not decide margins strictly between 1/104220 and 1/104218."
         ),
     )
 

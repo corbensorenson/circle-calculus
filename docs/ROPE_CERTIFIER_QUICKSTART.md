@@ -145,10 +145,10 @@ Expected meaning:
 standard_rope_channel0_interval_context_4096
 True
 1/104219
-AIRA-T0063,AIRA-T0064,AIRA-T0065,...,AIRA-T0124
+AIRA-T0063,AIRA-T0064,AIRA-T0065,...,AIRA-T0125
 ```
 
-Lean proves that channel 0 with standard turn ratio `1 / (2π)` has finite-context nearest-integer margin `1/104219` for gaps `1` through `4095`. The sharp 4k seed uses the 20-decimal enclosure `10^20*gap/628318530717958647694 <= gap/(2π) <= 10^20*gap/628318530717958647692`, split across computed integer cells `0` through `651`. Lean also proves that the earlier `1/1024` margin stops at gap `710`, that the doubled D9 margin `1/65536` is impossible for any context containing gap `710`, that the nearby larger D10 margin `1/104000` is impossible once that gap is in scope, and that the adjacent larger D11 margin `1/104218` is also impossible there. `AIRA-T0118` generalizes the last obstruction to every advertised margin at or above `1/104218`; `AIRA-T0119` packages the 4k bracket: `1/104219` is proved, while `1/104218` and larger margins are impossible. `AIRA-T0120` through `AIRA-T0122` then lower the margin to `1/104220` and extend the same one-channel interval-certificate method to context `8192`. `AIRA-T0102`, `AIRA-T0108`, `AIRA-T0114`, and `AIRA-T0123` add conditional bank-level bridges when a finite real-phase bank contains the standard channel-0 angular frequency. `AIRA-T0117` and `AIRA-T0124` package the first-channel bank shape for D11 and D12. This is real standard-RoPE theorem content, but still channel-0 based; it is not a proof for 128k or every channel in the whole multi-channel bank.
+Lean proves that channel 0 with standard turn ratio `1 / (2π)` has finite-context nearest-integer margin `1/104219` for gaps `1` through `4095`. The sharp 4k seed uses the 20-decimal enclosure `10^20*gap/628318530717958647694 <= gap/(2π) <= 10^20*gap/628318530717958647692`, split across computed integer cells `0` through `651`. Lean also proves that the earlier `1/1024` margin stops at gap `710`, that the doubled D9 margin `1/65536` is impossible for any context containing gap `710`, that the nearby larger D10 margin `1/104000` is impossible once that gap is in scope, and that the adjacent larger D11 margin `1/104218` is also impossible there. `AIRA-T0118` generalizes the last obstruction to every advertised margin at or above `1/104218`; `AIRA-T0119` packages the 4k bracket: `1/104219` is proved, while `1/104218` and larger margins are impossible. `AIRA-T0120` through `AIRA-T0122` then lower the margin to `1/104220` and extend the same one-channel interval-certificate method to context `8192`. `AIRA-T0125` packages the 8k bracket: `1/104220` is proved, while every margin at or above `1/104218` is impossible. `AIRA-T0102`, `AIRA-T0108`, `AIRA-T0114`, and `AIRA-T0123` add conditional bank-level bridges when a finite real-phase bank contains the standard channel-0 angular frequency. `AIRA-T0117` and `AIRA-T0124` package the first-channel bank shape for D11 and D12. This is real standard-RoPE theorem content, but still channel-0 based; it is not a proof for 128k or every channel in the whole multi-channel bank.
 
 To ask the concrete D12 bank-bridge request directly:
 
@@ -166,6 +166,20 @@ request.tolerance_rule    # tolerance < fullTurn * requestedMargin
 ```
 
 This request certificate checks only that the requested context and margin fit inside the D12 seed and that the bank has the stated standard-channel-0 shape. It does not prove every channel has an independent margin.
+
+To read the D12 margin bracket directly:
+
+```python
+from circle_math.applications import certify_standard_channel0_d12_margin_bracket
+
+bracket = certify_standard_channel0_d12_margin_bracket()
+bracket.context_length             # 8192
+bracket.proved_margin              # 1/104220
+bracket.impossible_margin_floor    # 1/104218
+bracket.theorem_ids                # AIRA-T0120,AIRA-T0121,AIRA-T0118,AIRA-T0125
+```
+
+The bracket leaves margins strictly between `1/104220` and `1/104218` unresolved.
 
 For audit and future Lean work, the sidecar also exposes interval plans:
 
