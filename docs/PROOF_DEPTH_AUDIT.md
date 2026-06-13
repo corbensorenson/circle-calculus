@@ -23,6 +23,12 @@ Useful commands:
 ```bash
 python scripts/check_proof_depth_audit.py
 python scripts/check_proof_depth_audit.py --json-out /tmp/proof_depth_audit.json
+python scripts/check_proof_depth_audit.py --fail-on-review-required
 ```
+
+`make sourcecheck` uses `--fail-on-review-required`. Known wrapper, scaffold,
+metadata, contract, and normalization categories remain review-only, but a new
+low-depth theorem that the heuristic cannot classify must be categorized or
+rewritten before the project check passes.
 
 Do not use this audit to downgrade Lean proof status. Lean still decides whether the theorem is formally proved; this audit helps decide whether the theorem is meaningful enough for the project's research narrative.

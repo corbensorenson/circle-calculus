@@ -74,4 +74,10 @@ The machine-readable target registry is `manifests/phase8_depth_validation.yaml`
 
 `scripts/check_proof_depth_audit.py` scans Lean theorem and lemma declarations for short proof bodies that start with patterns such as `rfl`, `simp`, `constructor`, `Or.inl`, `Or.inr`, simple existential packaging, or projections. The output is review triage only. It can identify places where the repo may be accumulating contract vocabulary instead of theorem content, but it cannot decide whether a theorem is mathematically meaningful. The category guide is `docs/PROOF_DEPTH_AUDIT.md`.
 
-The default mode is intentionally non-failing. A future Phase VIII pass can add allowlists, proof-kind metadata, or `--strict` use once the emitted review categories have been inspected and the `review_required` cases have been triaged.
+The default standalone mode is still non-failing, because known wrappers and
+normalization lemmas are useful review signals rather than proof failures.
+`make sourcecheck` runs the audit with `--fail-on-review-required`: the current
+corpus has no unclassified low-depth candidates, and future low-depth
+declarations must either fit a documented category or be rewritten before the
+project check passes. This keeps the guardrail focused on dilution without
+pretending that a syntactic heuristic measures mathematical depth.

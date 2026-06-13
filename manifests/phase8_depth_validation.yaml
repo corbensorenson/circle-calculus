@@ -189,7 +189,7 @@ targets:
       - "manifests/dimensions/Common.yaml"
       - "Circle/Applications/CircleTransformer.lean"
     dictionary_dependencies: []
-    next_action: "The non-failing proof-depth audit now emits suggested review categories and docs/PROOF_DEPTH_AUDIT.md documents the false-positive classes; next inspect review_required cases and decide whether any category should become strict."
+    next_action: "The proof-depth audit now emits suggested review categories, reports a review_required_count, documents false-positive classes, and runs in make sourcecheck with --fail-on-review-required; next use the JSON output during theorem reviews to watch wrapper-heavy lanes without treating known wrappers as proof failures."
     guardrail: "A proof-depth heuristic is a review aid, not a formal soundness theorem."
 
   - id: P8-COMM-001

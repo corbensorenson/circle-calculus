@@ -153,10 +153,14 @@ def scan(root: Path) -> tuple[int, list[ProofDepthCandidate]]:
 
 
 def build_payload(scanned: int, candidates: list[ProofDepthCandidate]) -> dict[str, object]:
+    review_required_count = sum(
+        1 for candidate in candidates if candidate.review_category == "review_required"
+    )
     return {
         "schema_id": "circle_calculus.proof_depth_audit.v0",
         "scanned_theorem_count": scanned,
         "candidate_count": len(candidates),
+        "review_required_count": review_required_count,
         "heuristic_boundary": (
             "This is a syntactic audit for review triage, not a sound mathematical "
             "depth measure and not part of the formal proof standard."
@@ -176,10 +180,19 @@ def main() -> int:
         action="store_true",
         help="Return nonzero if low-depth candidates are found.",
     )
+    parser.add_argument(
+        "--fail-on-review-required",
+        action="store_true",
+        help=(
+            "Return nonzero only if low-depth candidates remain in the unclassified "
+            "review_required category."
+        ),
+    )
     args = parser.parse_args()
 
     scanned, candidates = scan(args.root)
     payload = build_payload(scanned, candidates)
+    review_required_count = int(payload["review_required_count"])
 
     if args.json_out is not None:
         args.json_out.parent.mkdir(parents=True, exist_ok=True)
@@ -187,7 +200,8 @@ def main() -> int:
 
     print(
         f"proof depth audit: {scanned} theorem/lemma declarations scanned; "
-        f"{len(candidates)} low-depth candidates"
+        f"{len(candidates)} low-depth candidates; "
+        f"{review_required_count} require category review"
     )
     for candidate in candidates[:25]:
         preview = " | ".join(candidate.first_proof_lines)
@@ -199,6 +213,8 @@ def main() -> int:
         print(f"... {len(candidates) - 25} more candidates omitted")
 
     if args.strict and candidates:
+        return 1
+    if args.fail_on_review_required and review_required_count:
         return 1
     return 0
 

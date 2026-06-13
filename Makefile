@@ -82,7 +82,7 @@ nofake:
 	python scripts/check_no_fake_proofs.py
 
 proofdepthaudit:
-	python scripts/check_proof_depth_audit.py
+	python scripts/check_proof_depth_audit.py --fail-on-review-required
 
 examples:
 	python scripts/render_examples.py
