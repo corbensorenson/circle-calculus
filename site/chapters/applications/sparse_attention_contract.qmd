@@ -94,6 +94,30 @@ Committed fixtures:
 
 The sidecar compares structured-family reachability with single-stride, local-only, wrong-family, full-attention, and nonstructured controls. Those controls are benchmark scaffolding, not proof artifacts.
 
+### Reading The Current Results
+
+The default sidecar is intentionally incomplete so the gap certificates are visible:
+
+| Field | Current Fixture | What It Means |
+| --- | --- | --- |
+| Covered lags | `1, 2, 3, 4, 7, 14, 21, 13, 26, 39` | local lags plus three steps of each admitted stride |
+| Uncovered lag count | `109` | most positive in-context lags are not covered by this small sparse plan |
+| Candidate budget | `10` | four local candidates plus six stride-family candidates before full attention's `120` candidates |
+| No-collision predicates | all true in the default fixture | the raw candidate budget survives deduplication for this plan |
+| Concrete gap theorem | lag `5` is uncovered | the sidecar has a theorem-backed example of incompleteness, not only a coverage ratio |
+
+That is the proof-carrying contract shape: a sparse plan should show what it covers, what it misses, and which budget assumptions justify the count. The structured-family score in the sidecar is a fixture diagnostic, not a learned attention-quality result.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+1. Which lags come from the local window, and which come from stride steps?
+2. Why is lag `5` a useful gap witness for the default plan?
+3. What extra predicate is needed before the raw candidate budget can be treated as the exact deduplicated budget?
+
+:::
+
 ## What To Notice
 
 - A single coprime stride can eventually cover a full circle, but finite path length still matters.

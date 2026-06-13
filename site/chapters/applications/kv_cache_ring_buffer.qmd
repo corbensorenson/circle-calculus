@@ -90,6 +90,28 @@ Committed fixtures:
 
 The Python tests regenerate those fixtures and compare them with the committed outputs, so the book, sidecar, and result files stay aligned.
 
+### Reading The Current Results
+
+The default sidecar result has three layers:
+
+| Layer | Current Fixture | What It Certifies |
+| --- | --- | --- |
+| Single token | cache size `16`, current token `31`, inspected token `20` | token `20` writes slot `4`, is retained at current `31`, and its next same-slot overwrite is token `36` |
+| Retained batch | tokens `20, 24, 29, 31` | all four tokens are retained, pairwise distinct, and mapped to pairwise distinct slots `4, 8, 13, 15` |
+| Generated live window | tokens `16` through `31` | the generated list is exactly the retained window and maps to every slot `0` through `15` without duplicates |
+
+The important point is that freshness is not only a residue fact. Slot `4` repeats every `16` tokens; the theorem-backed contract combines the residue with the overwrite boundary `current < token + cache_size`.
+
+::: {.checkpoint-box}
+
+## Checkpoint
+
+1. Why does token `20` remain live at current token `31` when the cache size is `16`?
+2. Which theorem-backed condition distinguishes a stale same-slot token from a retained one?
+3. Why does the generated live window have duplicate-free slots even though the ring buffer will reuse those slots later?
+
+:::
+
 ## What To Notice
 
 - The cache is a finite circle of slots.

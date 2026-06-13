@@ -44,10 +44,11 @@ The circular address spaces are phase channels, memory slots, adapter blocks, sp
 
 ## What Circle Math Actually Proves Here
 
-Most of this page is exploratory benchmark scaffolding. But two real transformer components
-are finite-circle structures whose **structural** guarantees are now Lean-proved — not
-relabeled modular arithmetic, and not model-quality claims, but exact facts about
-*architecture* that practitioners actually reason about:
+Most of this page is exploratory benchmark scaffolding. But several real transformer
+or transformer-adjacent components are finite-circle structures whose **structural**
+guarantees are now Lean-proved — not relabeled modular arithmetic, and not
+model-quality claims, but exact facts about *architecture* that practitioners
+actually reason about:
 
 **Strided ("coil") attention coverage.** A strided head lets each token attend to
 `i, i±k, i±2k, …` — a coil orbit on `C_n`. So the orbit/period theory *is* the
@@ -56,7 +57,7 @@ reachability theory:
 - a stride-`k` head reaches exactly `n / gcd(n,k)` distinct positions (`AIT-T0001`);
 - it reaches **every** position iff `gcd(n,k) = 1` (`AIT-T0002`, `AIT-T0003`);
 - a local+coil hybrid reaches any dependency lag reached by either the local window or the admitted coil path (`AIT-T0010` through `AIT-T0014`);
-- a finite family of admitted coil strides has exact reach/miss conditions, local-window thresholds, complete-coverage iff no positive uncovered-lag witness, raw and clipped candidate-budget bounds, theorem-side candidate-list semantics, and no-duplicate budget-survival criteria (`AIT-T0015` through `AIT-T0078`).
+- a finite family of admitted coil strides has exact reach/miss conditions, local-window thresholds, complete-coverage iff no positive uncovered-lag witness, raw and clipped candidate-budget bounds, theorem-side candidate-list semantics, no-duplicate budget-survival criteria, finite positive-lag coverage iff, and concrete default-plan gap witnesses (`AIT-T0015` through `AIT-T0080`).
 
 That is a proved design rule for sparse/dilated attention: *pick strides coprime to the
 context length and every token provably reaches every other; combine local and coil
@@ -92,6 +93,8 @@ property — interaction depends only on relative position — is the rotation l
 - all-channel bank collision is equivalent to every declared period dividing the same gap (`AIRA-T0024`);
 - bank distinguishability is equivalent to at least one declared period not dividing the gap (`AIRA-T0025`);
 - if the bank contains a period at least the context length, every unequal pair in context is distinguished (`AIRA-T0026`).
+
+The real-phase RoPE program is separate from that exact integer-period contract. It now has theorem-backed finite-margin seeds, including the rational/discretized `1/4099` context-4096 certificate and the standard channel-0 context-4096 interval seed at margin `1/105000` (`AIRA-T0060` through `AIRA-T0110`). Those are one-channel or conditional bank-level real-phase certificates, not a full 128k standard-RoPE bank theorem.
 
 **Circulant ("CoilLinear") token mixing.** A circulant mixer `(c ⋆ x)ᵢ = ∑ⱼ cⱼ·x(i−j)` is
 the `C_n` group algebra — the math behind FNet / long-convolution mixing. Its structure is
