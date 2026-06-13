@@ -69,6 +69,7 @@ Pick one application page and name its finite circular address space before read
 <div class="theorem-box" data-theorem-id="AIM-T0075"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0076"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0077"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0078"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0033"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0005"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0024"></div>

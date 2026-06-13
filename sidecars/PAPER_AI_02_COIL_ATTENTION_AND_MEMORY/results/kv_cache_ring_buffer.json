@@ -8,9 +8,11 @@
       "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_lt",
       "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_ne",
       "Circle.Applications.kvCacheWindow_retainedBatchSlots_pairwise_ne",
-      "Circle.Applications.kvCacheWindow_retainedBatchSlotMap_nodup"
+      "Circle.Applications.kvCacheWindow_retainedBatchSlotMap_nodup",
+      "Circle.Applications.kvCacheWindow_retainedBatch_iff_noSameSlotOverwriteTrace_of_forall_le"
     ],
     "note": "KV-cache retained-batch slot certificate only; this proves finite ring-buffer indexing facts for a declared live token batch, not paging policy quality, throughput, memory savings, retrieval quality, or deployment safety.",
+    "retained_iff_no_same_slot_overwrite_trace": true,
     "slots": [
       4,
       8,
@@ -23,7 +25,8 @@
       "AIM-T0065",
       "AIM-T0066",
       "AIM-T0067",
-      "AIM-T0068"
+      "AIM-T0068",
+      "AIM-T0078"
     ],
     "tokens": [
       20,

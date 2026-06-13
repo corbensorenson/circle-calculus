@@ -130,7 +130,9 @@ def summary_lines(payload: dict[str, Any]) -> list[str]:
             f"tokens={tuple(batch['tokens'])} slots={tuple(batch['slots'])} "
             f"all_retained={batch['all_retained']} "
             f"tokens_distinct={batch['tokens_distinct']} "
-            f"slots_distinct={batch['slots_distinct']}"
+            f"slots_distinct={batch['slots_distinct']} "
+            "retained_iff_no_same_slot_overwrite_trace="
+            f"{batch['retained_iff_no_same_slot_overwrite_trace']}"
         ),
         (
             "live_window_contract="

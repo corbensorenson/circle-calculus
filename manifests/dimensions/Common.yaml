@@ -1194,6 +1194,22 @@ theorems:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_marks_stale_token
         - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_and_json_out
     blocker: ""
+  - id: AIM-T0078
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheWindow_retainedBatch_iff_noSameSlotOverwriteTrace_of_forall_le
+    informal_statement: "For a batch of non-future KV-cache tokens and positive cache size, all requested tokens are retained if and only if every requested token has no later same-slot writer up to the current read point."
+    formal_statement: "forall {cacheSize current : Nat} {tokens : List Nat}, 0 < cacheSize -> (forall token, token in tokens -> token <= current) -> ((forall token, token in tokens -> Circle.Applications.kvCacheWindowContains cacheSize current token) <-> forall token, token in tokens -> forall overwrite, token < overwrite -> overwrite <= current -> Circle.Applications.kvCacheSlot cacheSize token != Circle.Applications.kvCacheSlot cacheSize overwrite)"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_retained_batch_slots_are_distinct
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_and_json_out
+    blocker: ""
   - id: AIM-T0006
     status: lean_proved
     lean_name: Circle.Applications.loopRequiredSteps_pos

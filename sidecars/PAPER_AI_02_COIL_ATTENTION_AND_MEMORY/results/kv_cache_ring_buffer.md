@@ -6,9 +6,9 @@ These are proof-carrying finite ring-buffer indexing certificates for a declared
 | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- | --- |
 | 16 | 31 | 20 | 4 | 15 | 11 | True | True | 36 | True | False | True | False | True | AIM-T0059, AIM-T0060, AIM-T0061, AIM-T0062, AIM-T0063, AIM-T0064, AIM-T0065, AIM-T0066, AIM-T0069, AIM-T0070, AIM-T0075, AIM-T0076, AIM-T0077 |
 
-| Batch tokens | Batch slots | All retained | Tokens distinct | Slots distinct | Theorem ids |
-| --- | --- | --- | --- | --- | --- |
-| 20, 24, 29, 31 | 4, 8, 13, 15 | True | True | True | AIM-T0059, AIM-T0065, AIM-T0066, AIM-T0067, AIM-T0068 |
+| Batch tokens | Batch slots | All retained | Tokens distinct | Slots distinct | Retained iff no later same-slot writes | Theorem ids |
+| --- | --- | --- | --- | --- | --- | --- |
+| 20, 24, 29, 31 | 4, 8, 13, 15 | True | True | True | True | AIM-T0059, AIM-T0065, AIM-T0066, AIM-T0067, AIM-T0068, AIM-T0078 |
 
 | Live start | Live length | Live tokens | Live slots | All retained | Slots distinct | Full window | Slot count matches cache | Slots within cache | Full coverage contract | Theorem ids |
 | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- |
