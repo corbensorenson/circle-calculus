@@ -732,6 +732,28 @@ theorem ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses
         (x := (gap : ℝ) * turnRatio) (margin := margin)).1
         (hwitness gap hgap_range hgap_pos) turns
 
+/-- A proof-carrying finite turn-ratio margin certificate.
+
+The payload is the finite floor/ceiling nearest-integer witness predicate from
+`ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses`. Keeping this as a
+named certificate object gives downstream tools a stable declaration to cite:
+the finite witnesses are the proof payload, and the theorem below turns that
+payload into the abstract `ropeTurnRatioFiniteMargin` contract. -/
+structure RopeTurnRatioFiniteMarginCertificate
+    (turnRatio margin : ℝ) (context : Nat) : Prop where
+  nearestIntegerWitnesses : ropeTurnRatioNearestIntegerWitnesses turnRatio margin context
+
+/-- A finite nearest-integer witness certificate proves the corresponding
+finite-context turn-ratio margin. -/
+theorem RopeTurnRatioFiniteMarginCertificate.certifies
+    {turnRatio margin : ℝ} {context : Nat}
+    (certificate :
+      RopeTurnRatioFiniteMarginCertificate turnRatio margin context) :
+    ropeTurnRatioFiniteMargin turnRatio margin context :=
+  (ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses
+    (turnRatio := turnRatio) (margin := margin) (context := context)).2
+    certificate.nearestIntegerWitnesses
+
 /-- Integer turn ratios have no positive finite-context margin once the
 context contains the unit gap.
 
@@ -889,6 +911,47 @@ theorem ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den
       (numerator := numerator) (denominator := denominator)
       hdenominator hcoprime hcontext
 
+/-! ### Named rational/discretized finite-margin preset -/
+
+/-- A small theorem-backed rational turn-ratio preset used by the public
+certifier as the first end-to-end finite-margin certificate example.
+
+This is deliberately rational/discretized: it is not the irrational standard
+RoPE `1 / (2π)` channel. Its purpose is to exercise the complete certificate
+path over a real-shaped 4k context with no remaining hypotheses. -/
+noncomputable def ropeRationalPreset4099TurnRatio : ℝ :=
+  ((1 : Nat) : ℝ) / ((4099 : Nat) : ℝ)
+
+/-- The advertised margin for `ropeRationalPreset4099TurnRatio`. -/
+noncomputable def ropeRationalPreset4099Margin : ℝ :=
+  1 / ((4099 : Nat) : ℝ)
+
+/-- The inspected context length for the named rational/discretized preset. -/
+def ropeRationalPreset4099Context : Nat := 4096
+
+/-- The named rational/discretized preset has a proved finite turn-ratio
+margin over its 4k context. -/
+theorem ropeRationalPreset4099_turnRatioFiniteMargin :
+    ropeTurnRatioFiniteMargin ropeRationalPreset4099TurnRatio
+      ropeRationalPreset4099Margin ropeRationalPreset4099Context := by
+  dsimp [ropeRationalPreset4099TurnRatio, ropeRationalPreset4099Margin,
+    ropeRationalPreset4099Context]
+  exact
+    ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den
+      (numerator := 1) (denominator := 4099) (context := 4096)
+      (by norm_num) (by norm_num) (by norm_num)
+
+/-- The named rational/discretized preset packaged as a proof-carrying
+finite-margin certificate. -/
+def ropeRationalPreset4099_certificate :
+    RopeTurnRatioFiniteMarginCertificate ropeRationalPreset4099TurnRatio
+      ropeRationalPreset4099Margin ropeRationalPreset4099Context :=
+  ⟨(ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses
+    (turnRatio := ropeRationalPreset4099TurnRatio)
+    (margin := ropeRationalPreset4099Margin)
+    (context := ropeRationalPreset4099Context)).1
+    ropeRationalPreset4099_turnRatioFiniteMargin⟩
+
 /-- Finite-context turn-ratio margins are monotone in the inspected context.
 
 A margin certificate proved for a larger context automatically applies to any
@@ -945,6 +1008,29 @@ theorem not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin
       (turns := turns) hleft_le hfrequency_nonneg hfull_pos]
     exact mul_le_mul_of_nonneg_left hratio (le_of_lt hfull_pos)
   linarith
+
+/-- The named rational/discretized preset certificate rules out one-channel
+near-turn collisions below its certified margin. -/
+theorem not_ropeRationalPreset4099_nearTurn
+    {tolerance : ℝ} {left right : Nat}
+    (hleft : left < right) (hright : right < ropeRationalPreset4099Context)
+    (htolerance : tolerance < ropeRationalPreset4099Margin) :
+    ¬ ropeRealPhaseNearTurn ropeRationalPreset4099TurnRatio 1 tolerance left right := by
+  exact
+    not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin
+      (frequency := ropeRationalPreset4099TurnRatio) (fullTurn := 1)
+      (margin := ropeRationalPreset4099Margin) (tolerance := tolerance)
+      (context := ropeRationalPreset4099Context) (left := left) (right := right)
+      hleft hright
+      (by
+        dsimp [ropeRationalPreset4099TurnRatio]
+        positivity)
+      (by norm_num)
+      (by
+        simpa using
+          RopeTurnRatioFiniteMarginCertificate.certifies
+            ropeRationalPreset4099_certificate)
+      (by simpa [ropeRationalPreset4099Margin] using htolerance)
 
 /-- A finite-context turn-ratio margin for one channel rules out all-channel
 real near-turn collision in a finite bank.

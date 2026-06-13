@@ -110,6 +110,24 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses",
 )
 
+ROPE_RATIONAL_PRESET_4099_NAME = "rational_turn_ratio_1_4099_context_4096"
+
+ROPE_RATIONAL_PRESET_4099_THEOREMS: tuple[str, ...] = (
+    "AIRA-T0056",
+    "AIRA-T0059",
+    "AIRA-T0060",
+    "AIRA-T0061",
+    "AIRA-T0062",
+)
+
+ROPE_RATIONAL_PRESET_4099_LEAN_DECLARATIONS: tuple[str, ...] = (
+    "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
+    "Circle.Applications.ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses",
+    "Circle.Applications.RopeTurnRatioFiniteMarginCertificate.certifies",
+    "Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin",
+    "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
+)
+
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
     "Exact pass/fail is for the declared integer-period discretized RoPE model. "
     "The real-phase margin scan is numerical evidence only. This is not a model-quality, "
@@ -228,6 +246,26 @@ class PhaseBankPositionCertificate:
     theorem_ids: tuple[str, ...]
     lean_declarations: tuple[str, ...]
     claim_boundary: str = PHASE_BANK_CERTIFIER_CLAIM_BOUNDARY
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class TurnRatioFiniteMarginCertificate:
+    schema_id: str
+    name: str
+    numerator: int
+    denominator: int
+    context_length: int
+    turn_ratio: float
+    certified_margin: float | None
+    pass_certificate: bool
+    zero_margin_witness: tuple[int, int] | None
+    theorem_ids: tuple[str, ...]
+    lean_declarations: tuple[str, ...]
+    explanation: str
+    claim_boundary: str
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -679,6 +717,106 @@ def turn_ratio_nat_ratio_coprime_margin_certificate(
     if gcd(numerator, denominator) == 1 and context_length <= denominator:
         return 1.0 / denominator
     return None
+
+
+def certify_rational_turn_ratio_finite_margin(
+    *,
+    numerator: int,
+    denominator: int,
+    context_length: int,
+    name: str | None = None,
+) -> TurnRatioFiniteMarginCertificate:
+    """Build a theorem-backed rational/discretized turn-ratio certificate.
+
+    This is the first end-to-end finite-margin certificate lane: Lean proves
+    the reduced rational boundary, while Python records the concrete values an
+    engineer can inspect. It does not certify the ordinary irrational RoPE
+    schedule unless that schedule has first been replaced by this declared
+    rational turn ratio.
+    """
+    if numerator < 0:
+        raise ValueError("numerator must be nonnegative")
+    if denominator <= 0:
+        raise ValueError("denominator must be positive")
+    if context_length <= 0:
+        raise ValueError("context_length must be positive")
+
+    certified_margin = turn_ratio_nat_ratio_coprime_margin_certificate(
+        numerator=numerator,
+        denominator=denominator,
+        context_length=context_length,
+    )
+    zero_margin_witness = turn_ratio_nat_ratio_zero_margin_witness(
+        numerator=numerator,
+        denominator=denominator,
+        context_length=context_length,
+    )
+    pass_certificate = certified_margin is not None
+    certificate_name = (
+        name
+        if name is not None
+        else f"rational_turn_ratio_{numerator}_{denominator}_context_{context_length}"
+    )
+    theorem_ids: tuple[str, ...]
+    lean_declarations: tuple[str, ...]
+    if certificate_name == ROPE_RATIONAL_PRESET_4099_NAME and pass_certificate:
+        theorem_ids = ROPE_RATIONAL_PRESET_4099_THEOREMS
+        lean_declarations = ROPE_RATIONAL_PRESET_4099_LEAN_DECLARATIONS
+    elif pass_certificate:
+        theorem_ids = ("AIRA-T0056", "AIRA-T0057")
+        lean_declarations = (
+            "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
+            "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
+        )
+    else:
+        theorem_ids = ("AIRA-T0055", "AIRA-T0057")
+        lean_declarations = (
+            "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_iff_nonpos_of_den_lt_context",
+            "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
+        )
+
+    if pass_certificate:
+        explanation = (
+            "Lean proves this reduced rational turn ratio has finite-context "
+            "nearest-integer margin 1/denominator because the inspected context "
+            "does not reach the denominator return gap."
+        )
+    else:
+        explanation = (
+            "No positive rational finite-margin certificate is emitted: either "
+            "the ratio is not reduced or the inspected context reaches the "
+            "denominator return gap."
+        )
+
+    return TurnRatioFiniteMarginCertificate(
+        schema_id="circle_calculus.rational_turn_ratio_finite_margin.v0",
+        name=certificate_name,
+        numerator=numerator,
+        denominator=denominator,
+        context_length=context_length,
+        turn_ratio=numerator / denominator,
+        certified_margin=certified_margin,
+        pass_certificate=pass_certificate,
+        zero_margin_witness=zero_margin_witness,
+        theorem_ids=theorem_ids,
+        lean_declarations=lean_declarations,
+        explanation=explanation,
+        claim_boundary=(
+            "This is a theorem-backed rational/discretized turn-ratio certificate. "
+            "It is not a proof of the standard irrational real RoPE schedule unless "
+            "that schedule is explicitly replaced by the declared rational ratio."
+        ),
+    )
+
+
+def certify_rational_preset_4099() -> TurnRatioFiniteMarginCertificate:
+    """Return the named 4k rational/discretized finite-margin certificate."""
+    return certify_rational_turn_ratio_finite_margin(
+        numerator=1,
+        denominator=4099,
+        context_length=4096,
+        name=ROPE_RATIONAL_PRESET_4099_NAME,
+    )
 
 
 def scan_turn_ratio_finite_margin(

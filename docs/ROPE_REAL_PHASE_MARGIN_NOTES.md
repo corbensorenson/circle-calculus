@@ -4,7 +4,7 @@ This note is a durable audit trail for the real-valued RoPE phase-margin theorem
 
 ## Current Proved Bridge
 
-The real-phase theorem spine currently runs from `AIRA-T0029` through `AIRA-T0033`, then `AIRA-T0037` through `AIRA-T0045`, plus `AIRA-T0047`, `AIRA-T0050`, and `AIRA-T0053` through `AIRA-T0059`.
+The real-phase theorem spine currently runs from `AIRA-T0029` through `AIRA-T0033`, then `AIRA-T0037` through `AIRA-T0045`, plus `AIRA-T0047`, `AIRA-T0050`, and `AIRA-T0053` through `AIRA-T0062`.
 
 `AIRA-T0041` is the Diophantine-scaling bridge:
 
@@ -37,6 +37,8 @@ This is not a lower-bound theorem. It is the normalization step that makes the n
 `AIRA-T0054` proves the generated-gap bridge: the finite-context margin predicate is equivalent to checking the same lower bound for every positive gap in `List.range context`.
 
 `AIRA-T0058` and `AIRA-T0059` prove the finite nearest-integer witness bridge. For a fixed real value, checking a lower bound against the integer floor and integer ceiling is equivalent to checking it against every integer. Applied to every generated positive gap, this makes `ropeTurnRatioFiniteMargin alpha margin context` equivalent to two floor/ceiling checks per gap. This is a bounded integer-turn search theorem, not yet a lower-bound theorem for a concrete irrational or nonperiodic RoPE turn ratio.
+
+`AIRA-T0060` introduces the proof-carrying certificate interface: a `RopeTurnRatioFiniteMarginCertificate` whose payload is the nearest-integer witness predicate proves the corresponding `ropeTurnRatioFiniteMargin`. `AIRA-T0061` is the first named end-to-end finite-margin certificate: the rational/discretized turn ratio `1/4099` has margin `1/4099` over context `4096`. `AIRA-T0062` applies that certificate to rule out one-channel near-turn collisions below the certified margin. This is a complete theorem-backed certificate for a declared rational/discretized turn ratio, not a proof for the standard irrational `1 / (2π)` RoPE channel.
 
 ## Local Mathlib Anchors
 
@@ -81,7 +83,9 @@ The important warning is `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irratio
 12. Use `AIRA-T0057` for the exact reduced-rational boundary: the `1 / denominator` certificate is available exactly up to the denominator horizon.
 13. Use `AIRA-T0054` to connect generated gap lists to the abstract finite-context margin predicate.
 14. Use `AIRA-T0058` and `AIRA-T0059` to reduce the integer-turn obligation for each generated gap to the floor and ceiling witnesses of `gap * alpha`.
-15. Add a continued-fraction, Diophantine, or externally checked exact-arithmetic certificate that proves those floor/ceiling witness inequalities for the concrete turn ratios under study.
+15. Use `AIRA-T0060` to package a finite nearest-integer witness payload as a proof-carrying certificate.
+16. Use `AIRA-T0061` and `AIRA-T0062` as the first fully proved rational/discretized named preset: `1/4099`, context `4096`, margin `1/4099`, and no near-turn collision below that margin.
+17. Add a continued-fraction, Diophantine, or exact-arithmetic interval certificate that proves the floor/ceiling witness inequalities for standard nonperiodic RoPE turn ratios such as `1 / (2π)`.
 
 ## Guardrails
 
@@ -93,4 +97,5 @@ The important warning is `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irratio
 - A reduced natural rational turn ratio has a positive `1 / denominator` finite-context margin only before that denominator gap enters scope.
 - A generated gap list only handles the finite `gap` domain; it does not by itself discharge the integer-turn lower-bound obligation.
 - The floor/ceiling witness bridge discharges the infinite integer-turn quantifier for each fixed gap, but it does not prove that a concrete irrational or nonperiodic RoPE turn ratio has a positive lower bound.
-- A full real RoPE bank certificate needs channel-wise finite-context lower bounds before the Living Book or certifier can mark the real-phase scan as formally certified.
+- The `1/4099` preset certificate is theorem-backed, but it is a rational/discretized turn-ratio certificate, not a standard irrational RoPE certificate.
+- A full standard real RoPE bank certificate needs channel-wise finite-context lower bounds before the Living Book or certifier can mark the ordinary real-phase scan as formally certified.

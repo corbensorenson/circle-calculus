@@ -7,11 +7,15 @@ from pathlib import Path
 
 from circle_math.applications import (
     ROPE_CERTIFIER_THEOREMS,
+    ROPE_RATIONAL_PRESET_4099_NAME,
+    ROPE_RATIONAL_PRESET_4099_THEOREMS,
     ROPE_REAL_PHASE_PRECURSOR_THEOREMS,
     PhaseBankConfig,
     RoPEConfig,
     brute_force_single_period_collision_pair_count,
     capped_lcm,
+    certify_rational_preset_4099,
+    certify_rational_turn_ratio_finite_margin,
     certify_rope_positions,
     certify_phase_bank_positions,
     collision_pair_count_at_gap,
@@ -285,6 +289,42 @@ def test_coprime_rational_turn_ratio_certifies_margin_before_denominator_gap() -
     assert "AIRA-T0057" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
+def test_named_rational_turn_ratio_certificate_is_theorem_backed() -> None:
+    certificate = certify_rational_preset_4099()
+    assert certificate.schema_id == "circle_calculus.rational_turn_ratio_finite_margin.v0"
+    assert certificate.name == ROPE_RATIONAL_PRESET_4099_NAME
+    assert certificate.numerator == 1
+    assert certificate.denominator == 4099
+    assert certificate.context_length == 4096
+    assert certificate.pass_certificate
+    assert certificate.zero_margin_witness is None
+    assert certificate.certified_margin == 1.0 / 4099.0
+    assert certificate.theorem_ids == ROPE_RATIONAL_PRESET_4099_THEOREMS
+    assert "AIRA-T0060" in certificate.theorem_ids
+    assert "AIRA-T0061" in certificate.theorem_ids
+    assert "AIRA-T0062" in certificate.theorem_ids
+    scanned_margin, gap, turns = scan_turn_ratio_finite_margin(
+        turn_ratio=certificate.turn_ratio,
+        context_length=certificate.context_length,
+    )
+    assert abs(scanned_margin - certificate.certified_margin) < 1e-12
+    assert gap == 1
+    assert turns == 0
+    assert "not a proof of the standard irrational real RoPE" in certificate.claim_boundary
+
+
+def test_rational_turn_ratio_certificate_reports_denominator_boundary() -> None:
+    certificate = certify_rational_turn_ratio_finite_margin(
+        numerator=3,
+        denominator=7,
+        context_length=8,
+    )
+    assert not certificate.pass_certificate
+    assert certificate.certified_margin is None
+    assert certificate.zero_margin_witness == (7, 3)
+    assert certificate.theorem_ids == ("AIRA-T0055", "AIRA-T0057")
+
+
 def test_turn_ratio_finite_margin_gap_candidates_match_range_bridge() -> None:
     assert turn_ratio_finite_margin_gap_candidates(context_length=0) == ()
     assert turn_ratio_finite_margin_gap_candidates(context_length=1) == ()
@@ -526,6 +566,8 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     )
     payload = json.loads(json_result.stdout)
     assert payload["schema_id"] == "circle_calculus.rope_certifier_preset_results.v0"
+    assert payload["rational_margin_certificate"]["name"] == ROPE_RATIONAL_PRESET_4099_NAME
+    assert payload["rational_margin_certificate"]["pass_certificate"] is True
     assert payload["presets"][0]["preset"] == "llama_style_10000_4k"
     assert payload["presets"][0]["certificate"]["exact_discrete"]["pass_exact"] is True
     assert "not model-quality" in payload["claim_boundary"]
@@ -544,6 +586,8 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
         capture_output=True,
     )
     assert "| llama_style_10000_4k |" in markdown_result.stdout
+    assert "Named Rational Margin Certificate" in markdown_result.stdout
+    assert ROPE_RATIONAL_PRESET_4099_NAME in markdown_result.stdout
     assert "Total bank pairs" in markdown_result.stdout
     assert "First pass prefix" in markdown_result.stdout
     assert "Smallest pass subfamily" in markdown_result.stdout

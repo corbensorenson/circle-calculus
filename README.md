@@ -103,7 +103,7 @@ python scripts/rope_certify.py --preset llama_style_10000_128k
 python scripts/rope_certify.py --preset llama_style_500000_128k
 ```
 
-The certifier emits theorem ids, Lean declaration names, exact discrete pass/fail, sample colliding pairs when present, and a separate numerical real-phase margin report. Exact pass/fail is for the declared integer-period phase-bank model; it is not a language-model quality, context-length, speed, or memory claim. The real-phase proof program now reduces finite margin checks to generated gaps and floor/ceiling witnesses, but concrete nonperiodic RoPE lower bounds remain future theorem work.
+The certifier emits theorem ids, Lean declaration names, exact discrete pass/fail, sample colliding pairs when present, and a separate numerical real-phase margin report. Exact pass/fail is for the declared integer-period phase-bank model; it is not a language-model quality, context-length, speed, or memory claim. The real-phase proof program now reduces finite margin checks to generated gaps and floor/ceiling witnesses, and includes one theorem-backed rational/discretized `1/4099` context-4096 certificate; concrete standard nonperiodic RoPE lower bounds remain future theorem work.
 
 For the optional Theseus-Hive AI transfer lane, run:
 

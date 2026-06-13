@@ -3471,5 +3471,32 @@
       ]
     }
   ],
+  "rational_margin_certificate": {
+    "certified_margin": 0.00024396194193705782,
+    "claim_boundary": "This is a theorem-backed rational/discretized turn-ratio certificate. It is not a proof of the standard irrational real RoPE schedule unless that schedule is explicitly replaced by the declared rational ratio.",
+    "context_length": 4096,
+    "denominator": 4099,
+    "explanation": "Lean proves this reduced rational turn ratio has finite-context nearest-integer margin 1/denominator because the inspected context does not reach the denominator return gap.",
+    "lean_declarations": [
+      "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
+      "Circle.Applications.ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses",
+      "Circle.Applications.RopeTurnRatioFiniteMarginCertificate.certifies",
+      "Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin",
+      "Circle.Applications.not_ropeRationalPreset4099_nearTurn"
+    ],
+    "name": "rational_turn_ratio_1_4099_context_4096",
+    "numerator": 1,
+    "pass_certificate": true,
+    "schema_id": "circle_calculus.rational_turn_ratio_finite_margin.v0",
+    "theorem_ids": [
+      "AIRA-T0056",
+      "AIRA-T0059",
+      "AIRA-T0060",
+      "AIRA-T0061",
+      "AIRA-T0062"
+    ],
+    "turn_ratio": 0.00024396194193705782,
+    "zero_margin_witness": null
+  },
   "schema_id": "circle_calculus.rope_certifier_preset_results.v0"
 }

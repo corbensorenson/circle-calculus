@@ -2645,6 +2645,48 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_turn_ratio_floor_ceil_witness_bridge_matches_scan
     blocker: ""
+  - id: AIRA-T0060
+    status: lean_proved
+    lean_name: Circle.Applications.RopeTurnRatioFiniteMarginCertificate.certifies
+    informal_statement: "A proof-carrying finite nearest-integer witness certificate proves the corresponding finite-context turn-ratio margin."
+    formal_statement: "forall {turnRatio margin : Real} {context : Nat}, Circle.Applications.RopeTurnRatioFiniteMarginCertificate turnRatio margin context -> Circle.Applications.ropeTurnRatioFiniteMargin turnRatio margin context"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
+    blocker: ""
+  - id: AIRA-T0061
+    status: lean_proved
+    lean_name: Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin
+    informal_statement: "The named rational/discretized preset turn ratio 1/4099 has a proved finite-context nearest-integer margin 1/4099 over context 4096."
+    formal_statement: "Circle.Applications.ropeTurnRatioFiniteMargin Circle.Applications.ropeRationalPreset4099TurnRatio Circle.Applications.ropeRationalPreset4099Margin Circle.Applications.ropeRationalPreset4099Context"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
+    blocker: ""
+  - id: AIRA-T0062
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropeRationalPreset4099_nearTurn
+    informal_statement: "The named rational/discretized preset certificate rules out one-channel near-turn collisions below margin 1/4099 throughout the 4096-token context."
+    formal_statement: "forall {tolerance : Real} {left right : Nat}, left < right -> right < Circle.Applications.ropeRationalPreset4099Context -> tolerance < Circle.Applications.ropeRationalPreset4099Margin -> not (Circle.Applications.ropeRealPhaseNearTurn Circle.Applications.ropeRationalPreset4099TurnRatio 1 tolerance left right)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

@@ -16,6 +16,7 @@ from typing import Any
 from circle_math.applications import (
     ROPE_CERTIFIER_PRESETS,
     certificate_summary_lines,
+    certify_rational_preset_4099,
     certify_rope_positions,
 )
 
@@ -58,11 +59,13 @@ def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
             "They are not model-quality, context-length, speed, memory, "
             "perplexity, or deployment claims."
         ),
+        "rational_margin_certificate": certify_rational_preset_4099().to_dict(),
         "presets": certificates,
     }
 
 
 def markdown_results(payload: dict[str, Any]) -> str:
+    rational = payload["rational_margin_certificate"]
     rows = [
         "| Preset | Head dim | Base | Context | Exact discrete | Common collision gap | Common-gap pairs | Total bank pairs | First pass prefix | Smallest pass subfamily | Real margin | Worst gap | Theorem ids |",
         "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | --- | --- | --- | --- | --- |",
@@ -116,6 +119,24 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             payload["claim_boundary"],
             "",
+            "## Named Rational Margin Certificate",
+            "",
+            "| Name | Ratio | Context | Certified margin | Status | Theorem ids |",
+            "| --- | --- | ---: | ---: | --- | --- |",
+            "| {name} | {numerator}/{denominator} | {context} | {margin:.12g} | {status} | {theorems} |".format(
+                name=rational["name"],
+                numerator=rational["numerator"],
+                denominator=rational["denominator"],
+                context=rational["context_length"],
+                margin=rational["certified_margin"],
+                status="PASS" if rational["pass_certificate"] else "FAIL",
+                theorems=", ".join(rational["theorem_ids"]),
+            ),
+            "",
+            rational["claim_boundary"],
+            "",
+            "## RoPE Preset Diagnostics",
+            "",
             *rows,
             "",
             "Reproduce with:",
@@ -149,6 +170,13 @@ def main() -> None:
         print(markdown_text, end="")
     else:
         for index, item in enumerate(payload["presets"]):
+            if index == 0:
+                rational = payload["rational_margin_certificate"]
+                print(f"rational_margin_certificate={rational['name']}")
+                print(f"pass_certificate={rational['pass_certificate']}")
+                print(f"certified_margin={rational['certified_margin']}")
+                print(f"theorem_ids={','.join(rational['theorem_ids'])}")
+                print()
             if index:
                 print()
             print(f"preset={item['preset']}")

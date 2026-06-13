@@ -2,6 +2,16 @@
 
 These are proof-carrying position-contract reports for declared integer-period phase banks plus numerical real-phase margin scans. They are not model-quality, context-length, speed, memory, perplexity, or deployment claims.
 
+## Named Rational Margin Certificate
+
+| Name | Ratio | Context | Certified margin | Status | Theorem ids |
+| --- | --- | ---: | ---: | --- | --- |
+| rational_turn_ratio_1_4099_context_4096 | 1/4099 | 4096 | 0.000243961941937 | PASS | AIRA-T0056, AIRA-T0059, AIRA-T0060, AIRA-T0061, AIRA-T0062 |
+
+This is a theorem-backed rational/discretized turn-ratio certificate. It is not a proof of the standard irrational real RoPE schedule unless that schedule is explicitly replaced by the declared rational ratio.
+
+## RoPE Preset Diagnostics
+
 | Preset | Head dim | Base | Context | Exact discrete | Common collision gap | Common-gap pairs | Total bank pairs | First pass prefix | Smallest pass subfamily | Real margin | Worst gap | Theorem ids |
 | --- | ---: | ---: | ---: | --- | --- | ---: | ---: | --- | --- | --- | --- | --- |
 | llama_style_10000_4k | 128 | 10000 | 4096 | PASS | >= context | 0 | 0 | 5 | 1 | PASS (1 rad) | 1 | AIRA-T0021, AIRA-T0022, AIRA-T0023, AIRA-T0024, AIRA-T0025, AIRA-T0026, AIRA-T0027, AIRA-T0028, AIRA-T0034, AIRA-T0035, AIRA-T0036, AIRA-T0046, AIRA-T0048, AIRA-T0049, AIRA-T0051, AIRA-T0052 |

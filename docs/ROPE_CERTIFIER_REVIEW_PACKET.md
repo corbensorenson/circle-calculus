@@ -59,7 +59,7 @@ AIRA-T0029 through AIRA-T0033, AIRA-T0037 through AIRA-T0045, AIRA-T0047, AIRA-T
 
 - The exact proof object is the integer-period phase bank, not raw floating-point RoPE.
 - The real-phase scan is numerical evidence only.
-- The real-phase Lean work has conditional one-turn-window, turn-separation, finite bank no-near-turn, turn-ratio scaling, one-channel plus bank-level finite-context margin consequence, context-plus-margin transfer, integer/rational-turn-ratio guardrails, generated-gap finite-enumeration, and floor/ceiling nearest-integer witness bridge precursors, not the continued-fraction or Diophantine theorem needed to certify arbitrary concrete RoPE ratios.
+- The real-phase Lean work has conditional one-turn-window, turn-separation, finite bank no-near-turn, turn-ratio scaling, one-channel plus bank-level finite-context margin consequence, context-plus-margin transfer, integer/rational-turn-ratio guardrails, generated-gap finite-enumeration, floor/ceiling nearest-integer witness bridge precursors, and one named theorem-backed rational/discretized `1/4099` context-4096 certificate. It still does not have the continued-fraction or Diophantine theorem needed to certify arbitrary standard irrational RoPE ratios.
 - Diagnostic presets are intentionally small failure cases; they are not vendor checkpoint claims.
 
 ## Review Questions
