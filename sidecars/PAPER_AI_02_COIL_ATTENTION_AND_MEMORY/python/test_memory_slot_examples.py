@@ -20,6 +20,7 @@ from circle_math.applications.circle_ai import (
     fit_memory_slot_lookup,
     fit_recurrence_resolution_lookup,
     hybrid_attention_candidates,
+    kv_cache_adapter_request_trace_pass_compact,
     kv_cache_distinct_retained_slots_distinct,
     kv_cache_live_window_length,
     kv_cache_live_window_slot_range_covered,
@@ -216,8 +217,10 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     assert certificate.retained_iff_no_same_slot_overwrite_trace
     assert certificate.trace_fresh_slots_distinct
     assert certificate.pass_certificate
+    assert kv_cache_adapter_request_trace_pass_compact(16, 31, (20, 24, 29, 31))
     assert "AIM-T0078" in certificate.theorem_ids
     assert "AIM-T0079" in certificate.theorem_ids
+    assert "AIM-T0086" in certificate.theorem_ids
     assert "Modeled adapter request-trace certificate only" in certificate.note
 
     future_request = certify_kv_cache_adapter_request_trace(
@@ -228,6 +231,7 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     assert not future_request.all_non_future
     assert not future_request.all_retained
     assert not future_request.pass_certificate
+    assert not kv_cache_adapter_request_trace_pass_compact(16, 31, (20, 32))
 
     duplicate_request = certify_kv_cache_adapter_request_trace(
         cache_size=16,
@@ -239,6 +243,7 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     assert not duplicate_request.tokens_distinct
     assert not duplicate_request.slots_distinct
     assert not duplicate_request.pass_certificate
+    assert not kv_cache_adapter_request_trace_pass_compact(16, 31, (20, 20))
 
 
 def test_kv_cache_live_window_tokens_are_exact_and_slot_distinct() -> None:
@@ -369,6 +374,7 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert payload["adapter_request_trace_certificate"]["pass_certificate"] is True
     assert "AIM-T0078" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert "AIM-T0079" in payload["adapter_request_trace_certificate"]["theorem_ids"]
+    assert "AIM-T0086" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert payload["live_window_certificate"]["start"] == 16
     assert payload["live_window_certificate"]["length"] == 16
     assert payload["live_window_certificate"]["slots_distinct"] is True

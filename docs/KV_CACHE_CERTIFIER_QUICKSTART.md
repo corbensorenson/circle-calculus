@@ -72,11 +72,14 @@ The main theorem spine is:
 - `AIM-T0080`: the generated live-window slot-map count equals `cache_size` if and only if the window is full.
 - `AIM-T0081`: the full generated live-window slot coverage contract holds if and only if the window is full.
 - `AIM-T0082`: in a full generated live window, a slot appears in the generated slot map if and only if it is less than `cache_size`.
+- `AIM-T0083`: the generated live-window slot map covers every declared cache slot exactly when the live window is full.
+- `AIM-T0086`: the modeled adapter request pass predicate is equivalent to non-future, duplicate-free, trace-fresh requested tokens under positive cache size.
 
 ## Boundary
 
 This certifier checks finite arithmetic over a declared ring-buffer cache and
-a modeled read request. It does not model a GPU kernel, memory allocator,
+a modeled read request. The adapter request pass bit is a proof-carrying finite
+checklist, not an implementation proof. It does not model a GPU kernel, memory allocator,
 paging system, serving stack, retrieval policy, attention quality, or
 language-model behavior. Use it as a proof-carrying indexing/freshness check
 before implementation and experiments, not as experimental evidence.

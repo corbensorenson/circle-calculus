@@ -252,6 +252,34 @@ def kv_cache_trace_fresh_batch_slots_distinct(
     return len(set(slots)) == len(slots)
 
 
+def kv_cache_adapter_request_trace_pass_compact(
+    cache_size: int,
+    current: int,
+    tokens: Sequence[int],
+) -> bool:
+    """Return the compact adapter request pass predicate backed by ``AIM-T0086``.
+
+    For positive cache size, the expanded modeled request-pass contract is
+    theorem-equivalent to this checklist: requested tokens are non-future,
+    duplicate-free, and each token has no later same-slot write before the
+    current read point.
+    """
+    _require_positive(cache_size, "cache_size")
+    if current < 0:
+        raise ValueError("current must be nonnegative")
+    token_tuple = tuple(tokens)
+    if any(token < 0 for token in token_tuple):
+        raise ValueError("tokens must be nonnegative")
+    return (
+        all(token <= current for token in token_tuple)
+        and len(set(token_tuple)) == len(token_tuple)
+        and all(
+            kv_cache_no_same_slot_overwrite_before_current(cache_size, current, token)
+            for token in token_tuple
+        )
+    )
+
+
 def kv_cache_live_window_slots_distinct(cache_size: int, current: int) -> bool:
     """Return whether the generated live-window tokens occupy distinct slots."""
     tokens = kv_cache_live_window_tokens(cache_size, current)
@@ -630,6 +658,7 @@ class KVCacheAdapterRequestTraceCertificate:
         "AIM-T0068",
         "AIM-T0078",
         "AIM-T0079",
+        "AIM-T0086",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheSlot_lt_cacheSize",
@@ -637,6 +666,7 @@ class KVCacheAdapterRequestTraceCertificate:
         "Circle.Applications.kvCacheWindow_retainedBatchSlotMap_nodup",
         "Circle.Applications.kvCacheWindow_retainedBatch_iff_noSameSlotOverwriteTrace_of_forall_le",
         "Circle.Applications.kvCacheWindow_traceFreshBatchSlotMap_nodup",
+        "Circle.Applications.kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_traceFresh",
     )
     note: str = (
         "Modeled adapter request-trace certificate only; this packages the "
@@ -1946,13 +1976,10 @@ def certify_kv_cache_adapter_request_trace(
         tokens=token_tuple,
     )
     all_non_future = all(token <= current for token in token_tuple)
-    pass_certificate = (
-        all_non_future
-        and batch.all_retained
-        and batch.tokens_distinct
-        and batch.slots_distinct
-        and batch.retained_iff_no_same_slot_overwrite_trace
-        and batch.trace_fresh_slots_distinct
+    pass_certificate = kv_cache_adapter_request_trace_pass_compact(
+        cache_size,
+        current,
+        token_tuple,
     )
     return KVCacheAdapterRequestTraceCertificate(
         request_id=normalized_request_id,

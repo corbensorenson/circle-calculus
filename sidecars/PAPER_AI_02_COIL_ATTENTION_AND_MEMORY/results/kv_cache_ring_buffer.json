@@ -9,7 +9,8 @@
       "Circle.Applications.kvCacheWindow_retainedBatchSlots_pairwise_ne",
       "Circle.Applications.kvCacheWindow_retainedBatchSlotMap_nodup",
       "Circle.Applications.kvCacheWindow_retainedBatch_iff_noSameSlotOverwriteTrace_of_forall_le",
-      "Circle.Applications.kvCacheWindow_traceFreshBatchSlotMap_nodup"
+      "Circle.Applications.kvCacheWindow_traceFreshBatchSlotMap_nodup",
+      "Circle.Applications.kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_traceFresh"
     ],
     "note": "Modeled adapter request-trace certificate only; this packages the finite retained-batch KV-cache theorem spine for a declared set of read-token positions. It does not prove a GPU kernel, serving stack, paging policy, deployment behavior, retrieval quality, or model quality.",
     "pass_certificate": true,
@@ -34,7 +35,8 @@
       "AIM-T0067",
       "AIM-T0068",
       "AIM-T0078",
-      "AIM-T0079"
+      "AIM-T0079",
+      "AIM-T0086"
     ],
     "tokens_distinct": true,
     "trace_fresh_slots_distinct": true

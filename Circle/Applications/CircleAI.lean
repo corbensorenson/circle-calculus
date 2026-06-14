@@ -529,6 +529,64 @@ theorem kvCacheWindow_traceFreshBatchSlotMap_nodup
       hcache hnotFuture).2 htrace
   exact kvCacheWindow_retainedBatchSlotMap_nodup hwindow hnodup
 
+/-- Per-token finite trace freshness for a KV-cache read request. -/
+def kvCacheNoSameSlotOverwriteTrace
+    (cacheSize current token : Nat) : Prop :=
+  ∀ overwrite,
+    token < overwrite →
+    overwrite ≤ current →
+    kvCacheSlot cacheSize token ≠ kvCacheSlot cacheSize overwrite
+
+/-- The modeled adapter-request pass predicate used by executable KV-cache
+certificates.
+
+This is still a finite arithmetic contract: it says the requested tokens are
+not in the future, are retained, are duplicate-free, map to duplicate-free
+slots, and are trace-fresh. It does not model a concrete kernel, allocator, or
+serving stack. -/
+def kvCacheAdapterRequestTracePass
+    (cacheSize current : Nat) (tokens : List Nat) : Prop :=
+  (∀ token ∈ tokens, token ≤ current) ∧
+    (∀ token ∈ tokens, kvCacheWindowContains cacheSize current token) ∧
+    tokens.Nodup ∧
+    (tokens.map (kvCacheSlot cacheSize)).Nodup ∧
+    (∀ token ∈ tokens,
+      kvCacheNoSameSlotOverwriteTrace cacheSize current token)
+
+/-- The modeled adapter-request pass condition is exactly the compact
+engineer-facing checklist: non-future requested tokens, no duplicate token
+requests, and per-token trace freshness.
+
+The retained-window and slot-distinct fields in the executable report are not
+extra assumptions. For positive cache size they follow from the trace
+freshness batch theorem and the trace-fresh slot-map theorem. -/
+theorem kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_traceFresh
+    {cacheSize current : Nat} {tokens : List Nat} (hcache : 0 < cacheSize) :
+    kvCacheAdapterRequestTracePass cacheSize current tokens ↔
+      (∀ token ∈ tokens, token ≤ current) ∧
+        tokens.Nodup ∧
+        (∀ token ∈ tokens,
+          kvCacheNoSameSlotOverwriteTrace cacheSize current token) := by
+  constructor
+  · intro hpass
+    exact ⟨hpass.1, hpass.2.2.1, hpass.2.2.2.2⟩
+  · rintro ⟨hnotFuture, hnodup, htrace⟩
+    have hretained :
+        ∀ token ∈ tokens, kvCacheWindowContains cacheSize current token :=
+      (kvCacheWindow_retainedBatch_iff_noSameSlotOverwriteTrace_of_forall_le
+        hcache hnotFuture).2 (by
+          intro token htoken overwrite htoken_overwrite hoverwrite_current
+          exact htrace token htoken overwrite htoken_overwrite hoverwrite_current)
+    have hslotNodup :
+        (tokens.map (kvCacheSlot cacheSize)).Nodup :=
+      kvCacheWindow_traceFreshBatchSlotMap_nodup
+        hcache hnotFuture
+        (by
+          intro token htoken overwrite htoken_overwrite hoverwrite_current
+          exact htrace token htoken overwrite htoken_overwrite hoverwrite_current)
+        hnodup
+    exact ⟨hnotFuture, hretained, hnodup, hslotNodup, htrace⟩
+
 /-- The explicit live KV-cache window maps to duplicate-free ring-buffer slots.
 
 This is the end-to-end live-window version of the retained-batch theorem: the

@@ -37,6 +37,7 @@ from circle_math.applications import (
     certify_kv_cache_adapter_request_trace,
     certify_kv_cache_batch,
     certify_kv_cache_window,
+    kv_cache_adapter_request_trace_pass_compact,
     kv_cache_batch_retained_iff_no_same_slot_overwrite_trace,
     kv_cache_next_overwrite_token,
     kv_cache_no_same_slot_overwrite_before_current,
@@ -3313,6 +3314,11 @@ def main() -> int:
             and batch.slots_distinct
             and batch.retained_iff_no_same_slot_overwrite_trace
             and batch.trace_fresh_slots_distinct
+        )
+        assert adapter_request.pass_certificate == kv_cache_adapter_request_trace_pass_compact(
+            cache_size,
+            current,
+            batch_tokens,
         )
 
     retrieval_cases = [

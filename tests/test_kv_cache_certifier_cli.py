@@ -55,6 +55,7 @@ def test_kv_cache_certifier_cli_text_and_json_out(tmp_path: Path) -> None:
     assert "AIM-T0081" in result.stdout
     assert "AIM-T0082" in result.stdout
     assert "AIM-T0083" in result.stdout
+    assert "AIM-T0086" in result.stdout
     assert "not a paging-policy" in result.stdout
 
     payload = json.loads(json_out.read_text())
@@ -72,6 +73,7 @@ def test_kv_cache_certifier_cli_text_and_json_out(tmp_path: Path) -> None:
     assert payload["adapter_request_trace_certificate"]["pass_certificate"] is True
     assert "AIM-T0078" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert "AIM-T0079" in payload["adapter_request_trace_certificate"]["theorem_ids"]
+    assert "AIM-T0086" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert payload["live_window_certificate"]["full_coverage_contract"] is True
     assert payload["live_window_certificate"]["slot_count_matches_full_window"] is True
     assert payload["live_window_certificate"]["slot_range_covered"] is True
@@ -114,6 +116,7 @@ def test_kv_cache_certifier_cli_json_stdout_prefix_window() -> None:
     assert "AIM-T0079" in payload["batch_certificate"]["theorem_ids"]
     assert payload["adapter_request_trace_certificate"]["requested_tokens"] == [2]
     assert payload["adapter_request_trace_certificate"]["pass_certificate"] is True
+    assert "AIM-T0086" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert payload["live_window_certificate"]["start"] == 0
     assert payload["live_window_certificate"]["length"] == 6
     assert payload["live_window_certificate"]["full_window"] is False
