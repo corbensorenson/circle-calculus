@@ -12569,6 +12569,12 @@
           "lean_name": "Circle.Applications.ropePeriodBankLCM_pos_of_forall_mem_pos",
           "name": "Circle.Applications.ropePeriodBankLCM_pos_of_forall_mem_pos",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0180",
+          "lean_name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcm_ge_context_of_forall_mem_pos",
+          "name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcm_ge_context_of_forall_mem_pos",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -13553,6 +13559,12 @@
           "lean_name": "Circle.Applications.ropePeriodBankLCM_pos_of_forall_mem_pos",
           "name": "Circle.Applications.ropePeriodBankLCM_pos_of_forall_mem_pos",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0180",
+          "lean_name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcm_ge_context_of_forall_mem_pos",
+          "name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcm_ge_context_of_forall_mem_pos",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -13673,6 +13685,12 @@
           "id": "AIRA-T0179",
           "lean_name": "Circle.Applications.ropePeriodBankLCM_pos_of_forall_mem_pos",
           "name": "Circle.Applications.ropePeriodBankLCM_pos_of_forall_mem_pos",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0180",
+          "lean_name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcm_ge_context_of_forall_mem_pos",
+          "name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcm_ge_context_of_forall_mem_pos",
           "status": "proved"
         }
       ],
@@ -16193,6 +16211,12 @@
           "id": "AIRA-T0179",
           "lean_name": "Circle.Applications.ropePeriodBankLCM_pos_of_forall_mem_pos",
           "name": "Circle.Applications.ropePeriodBankLCM_pos_of_forall_mem_pos",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0180",
+          "lean_name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcm_ge_context_of_forall_mem_pos",
+          "name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcm_ge_context_of_forall_mem_pos",
           "status": "proved"
         }
       ],

@@ -428,6 +428,35 @@ theorem not_ropePhaseBankCollision_of_lcm_ge_context
     lt_of_le_of_lt (Nat.sub_le right left) hright
   exact (not_lt_of_ge (le_trans hlcm_context hlcm_le_gap)) hgap_lt_context
 
+/-- For a positive-period phase bank, exact context distinguishability is
+equivalent to the period-bank LCM reaching the context.
+
+This is the end-to-end exact discrete pass/fail contract behind
+`exact_discrete_contract`: if the LCM reaches the context, every unequal
+in-context pair is separated by at least one declared period; if the LCM falls
+inside the context, the LCM itself supplies an unequal all-channel collision
+witness. -/
+theorem ropePhaseBankNoCollisionOnContext_iff_lcm_ge_context_of_forall_mem_pos
+    {periods : List Nat} {context : Nat}
+    (hperiods : ∀ period, period ∈ periods → 0 < period) :
+    (∀ left right,
+        left < right → right < context → ¬ ropePhaseBankCollision periods left right) ↔
+      context ≤ ropePeriodBankLCM periods := by
+  constructor
+  · intro hnoCollision
+    by_contra hnot
+    have hlcm_lt_context : ropePeriodBankLCM periods < context := lt_of_not_ge hnot
+    have hlcm_pos : 0 < ropePeriodBankLCM periods :=
+      ropePeriodBankLCM_pos_of_forall_mem_pos hperiods
+    rcases ropePhaseBankCollision_exists_of_lcm_pos_lt_context
+        (periods := periods) (context := context) hlcm_pos hlcm_lt_context with
+      ⟨left, right, hleft, hright, hcollision⟩
+    exact hnoCollision left right hleft hright hcollision
+  · intro hlcm_context left right hleft hright
+    exact not_ropePhaseBankCollision_of_lcm_ge_context
+      (periods := periods) (context := context) (left := left) (right := right)
+      hlcm_context hleft hright
+
 /-- If a prefix subbank already has LCM at least the inspected context, then
 adding more channels cannot create an unequal all-channel collision.
 

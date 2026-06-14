@@ -2452,6 +2452,21 @@ theorems:
         - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
         - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context
     blocker: ""
+  - id: AIRA-T0180
+    status: lean_proved
+    lean_name: Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcm_ge_context_of_forall_mem_pos
+    informal_statement: "For a positive-period RoPE phase bank, exact no-collision over a finite context holds exactly when the period-bank LCM reaches the context."
+    formal_statement: "forall {periods : List Nat} {context : Nat}, (forall period, period in periods -> 0 < period) -> ((forall left right, left < right -> right < context -> not (Circle.Applications.ropePhaseBankCollision periods left right)) <-> context <= Circle.Applications.ropePeriodBankLCM periods)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context
+    blocker: ""
   - id: AIRA-T0046
     status: lean_proved
     lean_name: Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context

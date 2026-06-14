@@ -1861,6 +1861,7 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     assert "AIRA-T0051" in certificate.theorem_ids
     assert "AIRA-T0052" in certificate.theorem_ids
     assert "AIRA-T0179" in certificate.theorem_ids
+    assert "AIRA-T0180" in certificate.theorem_ids
     assert "AIRA-T0174" in certificate.theorem_ids
     assert "AIRA-T0175" in certificate.theorem_ids
     assert "AIRA-T0176" in certificate.theorem_ids
@@ -1891,6 +1892,7 @@ def test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context() 
     assert "AIRA-T0051" in certificate.theorem_ids
     assert "AIRA-T0052" in certificate.theorem_ids
     assert "AIRA-T0179" in certificate.theorem_ids
+    assert "AIRA-T0180" in certificate.theorem_ids
     assert "AIRA-T0174" in certificate.theorem_ids
     assert "AIRA-T0175" in certificate.theorem_ids
     assert "AIRA-T0176" in certificate.theorem_ids
