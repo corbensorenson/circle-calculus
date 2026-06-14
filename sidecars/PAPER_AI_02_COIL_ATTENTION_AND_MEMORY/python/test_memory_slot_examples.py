@@ -9,6 +9,7 @@ from circle_math.applications.circle_ai import (
     certify_kv_cache_adapter_request_trace,
     certify_kv_cache_batch,
     certify_kv_cache_live_window,
+    certify_kv_cache_live_window_request,
     certify_kv_cache_window,
     certify_stride_family_coverage,
     consecutive_integer_intervals,
@@ -313,6 +314,42 @@ def test_kv_cache_live_window_tokens_are_exact_and_slot_distinct() -> None:
     assert not kv_cache_live_window_slot_range_covered(16, 5)
 
 
+def test_kv_cache_live_window_request_is_exact_and_passes() -> None:
+    certificate = certify_kv_cache_live_window_request(cache_size=16, current=31)
+    assert certificate.request_id == "generated_live_window_read"
+    assert certificate.requested_tokens == tuple(range(16, 32))
+    assert certificate.live_window_tokens == tuple(range(16, 32))
+    assert certificate.requested_slots == tuple(range(16))
+    assert certificate.exact_live_window_request
+    assert certificate.request_token_count == 16
+    assert certificate.all_non_future
+    assert certificate.all_retained
+    assert certificate.tokens_distinct
+    assert certificate.slots_distinct
+    assert certificate.pass_certificate
+    assert certificate.live_window_request_contract
+    assert "AIM-T0087" in certificate.theorem_ids
+    assert "AIM-T0088" in certificate.theorem_ids
+    assert "AIM-T0089" in certificate.fixture_theorem_ids
+    assert (
+        "Circle.Applications.kvCacheLiveWindowTokens_adapterRequestTracePass"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.kvCacheLiveWindowRequestTraceContract_iff_tokens_eq_liveWindow"
+        in certificate.lean_declarations
+    )
+
+    prefix = certify_kv_cache_live_window_request(cache_size=16, current=5)
+    assert prefix.requested_tokens == tuple(range(6))
+    assert prefix.live_window_tokens == tuple(range(6))
+    assert prefix.requested_slots == tuple(range(6))
+    assert prefix.exact_live_window_request
+    assert prefix.pass_certificate
+    assert prefix.live_window_request_contract
+    assert prefix.fixture_theorem_ids == ()
+
+
 def test_kv_cache_ring_buffer_certificate_marks_stale_token() -> None:
     certificate = certify_kv_cache_window(cache_size=16, current=40, token=20)
     assert certificate.lag == 20
@@ -389,6 +426,15 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert "AIM-T0081" in payload["live_window_certificate"]["theorem_ids"]
     assert "AIM-T0082" in payload["live_window_certificate"]["theorem_ids"]
     assert "AIM-T0083" in payload["live_window_certificate"]["theorem_ids"]
+    assert payload["live_window_request_certificate"]["request_id"] == "generated_live_window_read"
+    assert payload["live_window_request_certificate"]["requested_tokens"] == list(range(16, 32))
+    assert payload["live_window_request_certificate"]["requested_slots"] == list(range(16))
+    assert payload["live_window_request_certificate"]["exact_live_window_request"] is True
+    assert payload["live_window_request_certificate"]["pass_certificate"] is True
+    assert payload["live_window_request_certificate"]["live_window_request_contract"] is True
+    assert "AIM-T0087" in payload["live_window_request_certificate"]["theorem_ids"]
+    assert "AIM-T0088" in payload["live_window_request_certificate"]["theorem_ids"]
+    assert "AIM-T0089" in payload["live_window_request_certificate"]["fixture_theorem_ids"]
     assert "not model-quality" in payload["claim_boundary"]
 
     markdown_result = subprocess.run(
@@ -411,6 +457,8 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert "Retained iff no later same-slot writes" in markdown_result.stdout
     assert "Trace-fresh slots distinct" in markdown_result.stdout
     assert "Live start" in markdown_result.stdout
+    assert "Exact live-window request" in markdown_result.stdout
+    assert "generated_live_window_read" in markdown_result.stdout
     assert "AIM-T0073" in markdown_result.stdout
     assert "AIM-T0074" in markdown_result.stdout
     assert "AIM-T0075" in markdown_result.stdout
@@ -418,6 +466,9 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert "AIM-T0077" in markdown_result.stdout
     assert "AIM-T0078" in markdown_result.stdout
     assert "AIM-T0079" in markdown_result.stdout
+    assert "AIM-T0087" in markdown_result.stdout
+    assert "AIM-T0088" in markdown_result.stdout
+    assert "AIM-T0089" in markdown_result.stdout
 
 
 def test_committed_kv_cache_ring_buffer_results_match_generator(tmp_path: Path) -> None:

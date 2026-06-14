@@ -4669,6 +4669,24 @@
           "status": "proved"
         },
         {
+          "id": "AIM-T0087",
+          "lean_name": "Circle.Applications.kvCacheLiveWindowTokens_adapterRequestTracePass",
+          "name": "Circle.Applications.kvCacheLiveWindowTokens_adapterRequestTracePass",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0088",
+          "lean_name": "Circle.Applications.kvCacheLiveWindowRequestTraceContract_iff_tokens_eq_liveWindow",
+          "name": "Circle.Applications.kvCacheLiveWindowRequestTraceContract_iff_tokens_eq_liveWindow",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0089",
+          "lean_name": "Circle.Applications.kvCacheLiveWindowRequestTraceContract_default_16_31",
+          "name": "Circle.Applications.kvCacheLiveWindowRequestTraceContract_default_16_31",
+          "status": "proved"
+        },
+        {
           "id": "AIT-T0001",
           "lean_name": "Circle.Applications.attentionReach_eq_div_gcd",
           "name": "Circle.Applications.attentionReach_eq_div_gcd",
@@ -15922,6 +15940,24 @@
           "id": "AIM-T0086",
           "lean_name": "Circle.Applications.kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_traceFresh",
           "name": "Circle.Applications.kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_traceFresh",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0087",
+          "lean_name": "Circle.Applications.kvCacheLiveWindowTokens_adapterRequestTracePass",
+          "name": "Circle.Applications.kvCacheLiveWindowTokens_adapterRequestTracePass",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0088",
+          "lean_name": "Circle.Applications.kvCacheLiveWindowRequestTraceContract_iff_tokens_eq_liveWindow",
+          "name": "Circle.Applications.kvCacheLiveWindowRequestTraceContract_iff_tokens_eq_liveWindow",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0089",
+          "lean_name": "Circle.Applications.kvCacheLiveWindowRequestTraceContract_default_16_31",
+          "name": "Circle.Applications.kvCacheLiveWindowRequestTraceContract_default_16_31",
           "status": "proved"
         }
       ],

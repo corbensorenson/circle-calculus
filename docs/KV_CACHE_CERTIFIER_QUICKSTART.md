@@ -74,6 +74,9 @@ The main theorem spine is:
 - `AIM-T0082`: in a full generated live window, a slot appears in the generated slot map if and only if it is less than `cache_size`.
 - `AIM-T0083`: the generated live-window slot map covers every declared cache slot exactly when the live window is full.
 - `AIM-T0086`: the modeled adapter request pass predicate is equivalent to non-future, duplicate-free, trace-fresh requested tokens under positive cache size.
+- `AIM-T0087`: the generated live-window token list passes the modeled adapter request-trace contract under positive cache size.
+- `AIM-T0088`: the generated-live-window request contract is equivalent to the requested token list being exactly the generated live window.
+- `AIM-T0089`: the public `cache_size = 16`, `current = 31` fixture realizes the exact generated-live-window request with tokens `16..31`.
 
 ## Boundary
 

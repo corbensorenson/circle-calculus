@@ -1305,6 +1305,51 @@ theorems:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown
         - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_and_json_out
     blocker: ""
+  - id: AIM-T0087
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheLiveWindowTokens_adapterRequestTracePass
+    informal_statement: "For a positive KV-cache size, the generated live-window token list passes the modeled adapter request-trace contract."
+    formal_statement: "forall {cacheSize current : Nat}, 0 < cacheSize -> Circle.Applications.kvCacheAdapterRequestTracePass cacheSize current (Circle.Applications.kvCacheLiveWindowTokens cacheSize current)"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_live_window_request_is_exact_and_passes
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_and_json_out
+    blocker: ""
+  - id: AIM-T0088
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheLiveWindowRequestTraceContract_iff_tokens_eq_liveWindow
+    informal_statement: "For a positive KV-cache size, the generated-live-window request contract is equivalent to the requested token list being exactly the generated live window."
+    formal_statement: "forall {cacheSize current : Nat} {tokens : List Nat}, 0 < cacheSize -> (Circle.Applications.kvCacheLiveWindowRequestTraceContract cacheSize current tokens <-> tokens = Circle.Applications.kvCacheLiveWindowTokens cacheSize current)"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_live_window_request_is_exact_and_passes
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_and_json_out
+    blocker: ""
+  - id: AIM-T0089
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheLiveWindowRequestTraceContract_default_16_31
+    informal_statement: "For the public cache-size 16, current-token 31 fixture, tokens 16 through 31 are exactly the generated live-window request and satisfy the modeled adapter request-trace contract."
+    formal_statement: "Circle.Applications.kvCacheLiveWindowRequestTraceContract 16 31 (List.range' 16 16)"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_live_window_request_is_exact_and_passes
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_and_json_out
+    blocker: ""
   - id: AIM-T0006
     status: lean_proved
     lean_name: Circle.Applications.loopRequiredSteps_pos

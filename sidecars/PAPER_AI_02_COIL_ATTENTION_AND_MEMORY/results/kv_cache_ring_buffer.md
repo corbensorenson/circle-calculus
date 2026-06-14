@@ -18,6 +18,10 @@ These are proof-carrying finite ring-buffer indexing certificates for a declared
 | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 16 | 16 | 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 | 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 | True | True | True | True | True | True | True | True | True | AIM-T0071, AIM-T0072, AIM-T0073, AIM-T0074, AIM-T0080, AIM-T0081, AIM-T0082, AIM-T0083 |
 
+| Request id | Requested tokens | Requested slots | Exact live-window request | Request count | All retained | Tokens distinct | Slots distinct | Pass certificate | Live-window request contract | Fixture theorem ids | Theorem ids |
+| --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- |
+| generated_live_window_read | 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 | 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 | True | 16 | True | True | True | True | True | AIM-T0089 | AIM-T0087, AIM-T0088 |
+
 Reproduce with:
 
 ```bash

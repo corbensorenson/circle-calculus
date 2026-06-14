@@ -757,6 +757,64 @@ theorem kvCacheLiveWindowTokens_slotMap_fullCoverageContract_iff_full
   · intro hfull
     exact kvCacheLiveWindowTokens_slotMap_fullCoverageContract hcache hfull
 
+/-- A generated live-window token request passes the modeled adapter-request
+trace contract.
+
+This is the exact generated-window version of the request-trace checker: the
+request contains precisely the tokens still retained at `current`, so every
+requested token is non-future, duplicate-free, and trace-fresh. -/
+theorem kvCacheLiveWindowTokens_adapterRequestTracePass
+    {cacheSize current : Nat} (hcache : 0 < cacheSize) :
+    kvCacheAdapterRequestTracePass cacheSize current
+      (kvCacheLiveWindowTokens cacheSize current) := by
+  apply (kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_traceFresh
+    (cacheSize := cacheSize) (current := current)
+    (tokens := kvCacheLiveWindowTokens cacheSize current) hcache).2
+  refine ⟨?_, ?_, ?_⟩
+  · intro token htoken
+    exact ((kvCacheWindowContains_iff_mem_liveWindowTokens).2 htoken).1
+  · unfold kvCacheLiveWindowTokens
+    exact List.nodup_range'
+  · intro token htoken overwrite htoken_overwrite hoverwrite_current
+    exact kvCacheWindow_noSameSlotOverwrite_between
+      ((kvCacheWindowContains_iff_mem_liveWindowTokens).2 htoken)
+      htoken_overwrite hoverwrite_current
+
+/-- A modeled request is the exact generated-live-window request when it uses
+the generated live-token list and passes the adapter trace contract. -/
+def kvCacheLiveWindowRequestTraceContract
+    (cacheSize current : Nat) (tokens : List Nat) : Prop :=
+  tokens = kvCacheLiveWindowTokens cacheSize current ∧
+    kvCacheAdapterRequestTracePass cacheSize current tokens
+
+/-- For positive cache size, the generated-live-window request contract is
+equivalent to the request token list being exactly the generated live window.
+
+The pass bit is therefore not an extra assumption for this request shape: once
+the list is exactly the generated live window, the adapter request-trace
+contract follows from the retained-window theorems. -/
+theorem kvCacheLiveWindowRequestTraceContract_iff_tokens_eq_liveWindow
+    {cacheSize current : Nat} {tokens : List Nat} (hcache : 0 < cacheSize) :
+    kvCacheLiveWindowRequestTraceContract cacheSize current tokens ↔
+      tokens = kvCacheLiveWindowTokens cacheSize current := by
+  constructor
+  · intro hcontract
+    exact hcontract.1
+  · intro htokens
+    refine ⟨htokens, ?_⟩
+    rw [htokens]
+    exact kvCacheLiveWindowTokens_adapterRequestTracePass hcache
+
+/-- Public fixture: with cache size `16` and current token `31`, the generated
+live-window request is exactly tokens `16..31` and satisfies the modeled
+adapter request-trace contract. -/
+theorem kvCacheLiveWindowRequestTraceContract_default_16_31 :
+    kvCacheLiveWindowRequestTraceContract 16 31 (List.range' 16 16) := by
+  apply (kvCacheLiveWindowRequestTraceContract_iff_tokens_eq_liveWindow
+    (cacheSize := 16) (current := 31) (tokens := List.range' 16 16)
+    (by decide)).2
+  native_decide
+
 def loopRequiredSteps (loopPeriod sample : Nat) : Nat :=
   phaseChannel loopPeriod sample + 1
 

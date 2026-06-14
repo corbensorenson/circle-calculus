@@ -722,6 +722,40 @@ class KVCacheLiveWindowCertificate:
 
 
 @dataclass(frozen=True)
+class KVCacheLiveWindowRequestCertificate:
+    request_id: str
+    cache_size: int
+    current: int
+    requested_tokens: tuple[int, ...]
+    requested_slots: tuple[int, ...]
+    live_window_tokens: tuple[int, ...]
+    exact_live_window_request: bool
+    request_token_count: int
+    all_non_future: bool
+    all_retained: bool
+    tokens_distinct: bool
+    slots_distinct: bool
+    pass_certificate: bool
+    live_window_request_contract: bool
+    fixture_theorem_ids: tuple[str, ...] = ()
+    theorem_ids: tuple[str, ...] = (
+        "AIM-T0087",
+        "AIM-T0088",
+    )
+    lean_declarations: tuple[str, ...] = (
+        "Circle.Applications.kvCacheLiveWindowTokens_adapterRequestTracePass",
+        "Circle.Applications.kvCacheLiveWindowRequestTraceContract_iff_tokens_eq_liveWindow",
+    )
+    note: str = (
+        "Generated-live-window request certificate only; this proves that the "
+        "request token list exactly matches the modeled retained live window "
+        "and therefore passes the finite adapter request-trace contract. It is "
+        "not a concrete kernel, serving stack, paging policy, deployment, "
+        "throughput, memory-saving, retrieval-quality, or model-quality claim."
+    )
+
+
+@dataclass(frozen=True)
 class CoilRetrievalBenchmarkResult:
     sequence_length: int
     query_count: int
@@ -2045,6 +2079,52 @@ def certify_kv_cache_live_window(
         full_coverage_contract_matches_full_window=(
             full_coverage_contract == full_window
         ),
+    )
+
+
+def certify_kv_cache_live_window_request(
+    *,
+    cache_size: int,
+    current: int,
+    request_id: str = "generated_live_window_read",
+) -> KVCacheLiveWindowRequestCertificate:
+    """Emit a modeled request that exactly reads the generated live window."""
+    _require_positive(cache_size, "cache_size")
+    if current < 0:
+        raise ValueError("current must be nonnegative")
+    normalized_request_id = request_id.strip()
+    if not normalized_request_id:
+        raise ValueError("request_id must be nonempty")
+    live_window = certify_kv_cache_live_window(cache_size=cache_size, current=current)
+    adapter_request = certify_kv_cache_adapter_request_trace(
+        cache_size=cache_size,
+        current=current,
+        requested_tokens=live_window.tokens,
+        request_id=normalized_request_id,
+    )
+    exact_live_window_request = adapter_request.requested_tokens == live_window.tokens
+    live_window_request_contract = exact_live_window_request and adapter_request.pass_certificate
+    fixture_theorem_ids = (
+        ("AIM-T0089",)
+        if cache_size == 16 and current == 31 and live_window.tokens == tuple(range(16, 32))
+        else ()
+    )
+    return KVCacheLiveWindowRequestCertificate(
+        request_id=normalized_request_id,
+        cache_size=cache_size,
+        current=current,
+        requested_tokens=adapter_request.requested_tokens,
+        requested_slots=adapter_request.requested_slots,
+        live_window_tokens=live_window.tokens,
+        exact_live_window_request=exact_live_window_request,
+        request_token_count=adapter_request.request_token_count,
+        all_non_future=adapter_request.all_non_future,
+        all_retained=adapter_request.all_retained,
+        tokens_distinct=adapter_request.tokens_distinct,
+        slots_distinct=adapter_request.slots_distinct,
+        pass_certificate=adapter_request.pass_certificate,
+        live_window_request_contract=live_window_request_contract,
+        fixture_theorem_ids=fixture_theorem_ids,
     )
 
 

@@ -20,6 +20,7 @@ from circle_math.applications.circle_ai import (
     certify_kv_cache_adapter_request_trace,
     certify_kv_cache_batch,
     certify_kv_cache_live_window,
+    certify_kv_cache_live_window_request,
     certify_kv_cache_window,
 )
 
@@ -58,6 +59,11 @@ def build_payload(*, cache_size: int, current: int, token: int, batch_tokens: st
         cache_size=cache_size,
         current=current,
     )
+    live_window_request = certify_kv_cache_live_window_request(
+        cache_size=cache_size,
+        current=current,
+        request_id="generated_live_window_read",
+    )
     return {
         "schema_id": "circle_calculus.kv_cache_ring_buffer_certificate.v0",
         "claim_boundary": CLAIM_BOUNDARY,
@@ -65,6 +71,7 @@ def build_payload(*, cache_size: int, current: int, token: int, batch_tokens: st
         "batch_certificate": asdict(batch),
         "adapter_request_trace_certificate": asdict(adapter_request),
         "live_window_certificate": asdict(live_window),
+        "live_window_request_certificate": asdict(live_window_request),
     }
 
 
@@ -73,6 +80,7 @@ def text_results(payload: dict[str, Any]) -> str:
     batch = payload["batch_certificate"]
     adapter_request = payload["adapter_request_trace_certificate"]
     live_window = payload["live_window_certificate"]
+    live_window_request = payload["live_window_request_certificate"]
     lines = [
         (
             "kv_cache_ring_buffer "
@@ -156,6 +164,27 @@ def text_results(payload: dict[str, Any]) -> str:
             f"theorem_ids={','.join(live_window['theorem_ids'])}"
         ),
         live_window["note"],
+        (
+            "kv_cache_live_window_request "
+            f"request_id={live_window_request['request_id']} "
+            f"cache_size={live_window_request['cache_size']} "
+            f"current={live_window_request['current']} "
+            f"tokens={','.join(str(token) for token in live_window_request['requested_tokens'])} "
+            f"slots={','.join(str(slot) for slot in live_window_request['requested_slots'])} "
+            "exact_live_window_request="
+            f"{live_window_request['exact_live_window_request']} "
+            f"request_token_count={live_window_request['request_token_count']} "
+            f"all_non_future={live_window_request['all_non_future']} "
+            f"all_retained={live_window_request['all_retained']} "
+            f"tokens_distinct={live_window_request['tokens_distinct']} "
+            f"slots_distinct={live_window_request['slots_distinct']} "
+            f"pass_certificate={live_window_request['pass_certificate']} "
+            "live_window_request_contract="
+            f"{live_window_request['live_window_request_contract']} "
+            f"fixture_theorem_ids={','.join(live_window_request['fixture_theorem_ids'])} "
+            f"theorem_ids={','.join(live_window_request['theorem_ids'])}"
+        ),
+        live_window_request["note"],
     ]
     return "\n".join(lines) + "\n"
 
@@ -165,6 +194,7 @@ def markdown_results(payload: dict[str, Any]) -> str:
     batch = payload["batch_certificate"]
     adapter_request = payload["adapter_request_trace_certificate"]
     live_window = payload["live_window_certificate"]
+    live_window_request = payload["live_window_request_certificate"]
     return "\n".join(
         [
             "# KV-Cache Ring-Buffer Certificate Results",
@@ -231,6 +261,23 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{live_window['full_coverage_contract']} | "
                 f"{live_window['full_coverage_contract_matches_full_window']} | "
                 f"{', '.join(live_window['theorem_ids'])} |"
+            ),
+            "",
+            "| Request id | Requested tokens | Requested slots | Exact live-window request | Request count | All retained | Tokens distinct | Slots distinct | Pass certificate | Live-window request contract | Fixture theorem ids | Theorem ids |",
+            "| --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- |",
+            (
+                f"| {live_window_request['request_id']} | "
+                f"{', '.join(str(token) for token in live_window_request['requested_tokens'])} | "
+                f"{', '.join(str(slot) for slot in live_window_request['requested_slots'])} | "
+                f"{live_window_request['exact_live_window_request']} | "
+                f"{live_window_request['request_token_count']} | "
+                f"{live_window_request['all_retained']} | "
+                f"{live_window_request['tokens_distinct']} | "
+                f"{live_window_request['slots_distinct']} | "
+                f"{live_window_request['pass_certificate']} | "
+                f"{live_window_request['live_window_request_contract']} | "
+                f"{', '.join(live_window_request['fixture_theorem_ids'])} | "
+                f"{', '.join(live_window_request['theorem_ids'])} |"
             ),
             "",
             "Reproduce with:",

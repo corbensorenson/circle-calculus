@@ -13,6 +13,7 @@ from circle_math.applications import (
     certify_kv_cache_adapter_request_trace,
     certify_kv_cache_batch,
     certify_kv_cache_live_window,
+    certify_kv_cache_live_window_request,
     certify_kv_cache_window,
 )
 
@@ -87,6 +88,11 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
         cache_size=args.cache_size,
         current=args.current,
     )
+    live_window_request = certify_kv_cache_live_window_request(
+        cache_size=args.cache_size,
+        current=args.current,
+        request_id=f"{args.request_id}_generated_live_window",
+    )
     return {
         "schema_id": "circle_calculus.kv_cache_ring_buffer_certificate.v0",
         "claim_boundary": CLAIM_BOUNDARY,
@@ -94,6 +100,7 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
         "batch_certificate": asdict(batch),
         "adapter_request_trace_certificate": asdict(adapter_request),
         "live_window_certificate": asdict(live_window),
+        "live_window_request_certificate": asdict(live_window_request),
     }
 
 
@@ -118,6 +125,7 @@ def summary_lines(payload: dict[str, Any]) -> list[str]:
     batch = payload["batch_certificate"]
     adapter_request = payload["adapter_request_trace_certificate"]
     live_window = payload["live_window_certificate"]
+    live_window_request = payload["live_window_request_certificate"]
     freshness = "LIVE" if window["retained"] else "STALE_OR_FUTURE"
     coverage = "FULL" if live_window["full_coverage_contract"] else "PREFIX"
     return [
@@ -176,8 +184,18 @@ def summary_lines(payload: dict[str, Any]) -> list[str]:
             f"{live_window['full_coverage_contract_matches_full_window']}"
         ),
         (
+            "live_window_request_trace="
+            f"{'PASS' if live_window_request['pass_certificate'] else 'FAIL'} "
+            f"request_id={live_window_request['request_id']} "
+            f"tokens={tuple(live_window_request['requested_tokens'])} "
+            f"slots={tuple(live_window_request['requested_slots'])} "
+            f"exact_live_window_request={live_window_request['exact_live_window_request']} "
+            f"live_window_request_contract={live_window_request['live_window_request_contract']} "
+            f"fixture_theorem_ids={tuple(live_window_request['fixture_theorem_ids'])}"
+        ),
+        (
             "theorem_ids="
-            f"{unique_theorem_ids(window['theorem_ids'], batch['theorem_ids'], adapter_request['theorem_ids'], live_window['theorem_ids'])}"
+            f"{unique_theorem_ids(window['theorem_ids'], batch['theorem_ids'], adapter_request['theorem_ids'], live_window['theorem_ids'], live_window_request['theorem_ids'], live_window_request['fixture_theorem_ids'])}"
         ),
         f"boundary={payload['claim_boundary']}",
     ]

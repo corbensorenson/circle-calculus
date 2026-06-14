@@ -50,12 +50,18 @@ def test_kv_cache_certifier_cli_text_and_json_out(tmp_path: Path) -> None:
     assert "slot_range_covered=True" in result.stdout
     assert "full_coverage_contract=True" in result.stdout
     assert "full_coverage_contract_matches_full_window=True" in result.stdout
+    assert "live_window_request_trace=PASS request_id=prefill_read_generated_live_window" in result.stdout
+    assert "exact_live_window_request=True" in result.stdout
+    assert "live_window_request_contract=True" in result.stdout
     assert "AIM-T0074" in result.stdout
     assert "AIM-T0080" in result.stdout
     assert "AIM-T0081" in result.stdout
     assert "AIM-T0082" in result.stdout
     assert "AIM-T0083" in result.stdout
     assert "AIM-T0086" in result.stdout
+    assert "AIM-T0087" in result.stdout
+    assert "AIM-T0088" in result.stdout
+    assert "AIM-T0089" in result.stdout
     assert "not a paging-policy" in result.stdout
 
     payload = json.loads(json_out.read_text())
@@ -83,6 +89,17 @@ def test_kv_cache_certifier_cli_text_and_json_out(tmp_path: Path) -> None:
     assert "AIM-T0081" in payload["live_window_certificate"]["theorem_ids"]
     assert "AIM-T0082" in payload["live_window_certificate"]["theorem_ids"]
     assert "AIM-T0083" in payload["live_window_certificate"]["theorem_ids"]
+    assert payload["live_window_request_certificate"]["request_id"] == (
+        "prefill_read_generated_live_window"
+    )
+    assert payload["live_window_request_certificate"]["requested_tokens"] == list(range(16, 32))
+    assert payload["live_window_request_certificate"]["requested_slots"] == list(range(16))
+    assert payload["live_window_request_certificate"]["exact_live_window_request"] is True
+    assert payload["live_window_request_certificate"]["pass_certificate"] is True
+    assert payload["live_window_request_certificate"]["live_window_request_contract"] is True
+    assert "AIM-T0087" in payload["live_window_request_certificate"]["theorem_ids"]
+    assert "AIM-T0088" in payload["live_window_request_certificate"]["theorem_ids"]
+    assert "AIM-T0089" in payload["live_window_request_certificate"]["fixture_theorem_ids"]
 
 
 def test_kv_cache_certifier_cli_json_stdout_prefix_window() -> None:
@@ -129,3 +146,11 @@ def test_kv_cache_certifier_cli_json_stdout_prefix_window() -> None:
     assert "AIM-T0081" in payload["live_window_certificate"]["theorem_ids"]
     assert "AIM-T0082" in payload["live_window_certificate"]["theorem_ids"]
     assert "AIM-T0083" in payload["live_window_certificate"]["theorem_ids"]
+    assert payload["live_window_request_certificate"]["requested_tokens"] == list(range(6))
+    assert payload["live_window_request_certificate"]["requested_slots"] == list(range(6))
+    assert payload["live_window_request_certificate"]["exact_live_window_request"] is True
+    assert payload["live_window_request_certificate"]["pass_certificate"] is True
+    assert payload["live_window_request_certificate"]["live_window_request_contract"] is True
+    assert payload["live_window_request_certificate"]["fixture_theorem_ids"] == []
+    assert "AIM-T0087" in payload["live_window_request_certificate"]["theorem_ids"]
+    assert "AIM-T0088" in payload["live_window_request_certificate"]["theorem_ids"]

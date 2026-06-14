@@ -154,6 +154,85 @@
       31
     ]
   },
+  "live_window_request_certificate": {
+    "all_non_future": true,
+    "all_retained": true,
+    "cache_size": 16,
+    "current": 31,
+    "exact_live_window_request": true,
+    "fixture_theorem_ids": [
+      "AIM-T0089"
+    ],
+    "lean_declarations": [
+      "Circle.Applications.kvCacheLiveWindowTokens_adapterRequestTracePass",
+      "Circle.Applications.kvCacheLiveWindowRequestTraceContract_iff_tokens_eq_liveWindow"
+    ],
+    "live_window_request_contract": true,
+    "live_window_tokens": [
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31
+    ],
+    "note": "Generated-live-window request certificate only; this proves that the request token list exactly matches the modeled retained live window and therefore passes the finite adapter request-trace contract. It is not a concrete kernel, serving stack, paging policy, deployment, throughput, memory-saving, retrieval-quality, or model-quality claim.",
+    "pass_certificate": true,
+    "request_id": "generated_live_window_read",
+    "request_token_count": 16,
+    "requested_slots": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "requested_tokens": [
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31
+    ],
+    "slots_distinct": true,
+    "theorem_ids": [
+      "AIM-T0087",
+      "AIM-T0088"
+    ],
+    "tokens_distinct": true
+  },
   "schema_id": "circle_calculus.kv_cache_ring_buffer_certificate.v0",
   "window_certificate": {
     "cache_size": 16,
