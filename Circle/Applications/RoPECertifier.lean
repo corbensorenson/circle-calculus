@@ -352,6 +352,42 @@ theorem ropeLCMCollisionPairCountMultiples_eq_zero_iff
         (context := context) (commonGap := ropePeriodBankLCM periods) hlcm_pos).1 hpos
     exact (not_lt_of_ge hcontext_le_lcm) hlcm_lt_context
 
+/-- The exact positive-multiple LCM collision count is positive iff an unequal
+all-channel collision witness exists inside the inspected context.
+
+This gives the public certificate count a direct semantic interpretation: for
+a positive period-bank LCM, a nonzero `total_bank_collision_pair_count` is
+equivalent to an actual pair of distinct in-context positions colliding in
+every declared integer-period channel. -/
+theorem ropeLCMCollisionPairCountMultiples_pos_iff_exists_collision
+    {periods : List Nat} {context : Nat}
+    (hlcm_pos : 0 < ropePeriodBankLCM periods) :
+    0 < ropeCollisionPairCountAtGapMultiples context (ropePeriodBankLCM periods) ↔
+      ∃ left right,
+        left < right ∧ right < context ∧ ropePhaseBankCollision periods left right := by
+  constructor
+  · intro hcount_pos
+    have hlcm_lt_context : ropePeriodBankLCM periods < context :=
+      (ropeCollisionPairCountAtGapMultiples_pos_iff
+        (context := context) (commonGap := ropePeriodBankLCM periods) hlcm_pos).1
+        hcount_pos
+    exact ropePhaseBankCollision_exists_of_lcm_pos_lt_context hlcm_pos hlcm_lt_context
+  · intro hwitness
+    rcases hwitness with ⟨left, right, hleft, hright, hcollision⟩
+    have hle : left ≤ right := Nat.le_of_lt hleft
+    have hdvd : ropePeriodBankLCM periods ∣ right - left :=
+      (ropePhaseBankCollision_iff_lcm_dvd_gap (periods := periods) hle).1 hcollision
+    have hgap_pos : 0 < right - left := Nat.sub_pos_of_lt hleft
+    have hlcm_le_gap : ropePeriodBankLCM periods ≤ right - left :=
+      Nat.le_of_dvd hgap_pos hdvd
+    have hgap_lt_context : right - left < context :=
+      lt_of_le_of_lt (Nat.sub_le right left) hright
+    have hlcm_lt_context : ropePeriodBankLCM periods < context :=
+      lt_of_le_of_lt hlcm_le_gap hgap_lt_context
+    exact (ropeCollisionPairCountAtGapMultiples_pos_iff
+      (context := context) (commonGap := ropePeriodBankLCM periods) hlcm_pos).2
+      hlcm_lt_context
+
 /-- If the period-bank LCM reaches the inspected context, no unequal ordered
 in-context pair can collide in every declared channel.
 

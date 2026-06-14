@@ -2521,6 +2521,21 @@ theorems:
         - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
         - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context
     blocker: ""
+  - id: AIRA-T0176
+    status: lean_proved
+    lean_name: Circle.Applications.ropeLCMCollisionPairCountMultiples_pos_iff_exists_collision
+    informal_statement: "For a positive period-bank LCM, the total positive-multiple integer-bank collision count is positive exactly when an unequal all-channel collision witness exists inside the inspected context."
+    formal_statement: "forall {periods : List Nat} {context : Nat}, 0 < Circle.Applications.ropePeriodBankLCM periods -> 0 < Circle.Applications.ropeCollisionPairCountAtGapMultiples context (Circle.Applications.ropePeriodBankLCM periods) <-> exists left right, left < right and right < context and Circle.Applications.ropePhaseBankCollision periods left right"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context
+    blocker: ""
   - id: AIRA-T0029
     status: lean_proved
     lean_name: Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs

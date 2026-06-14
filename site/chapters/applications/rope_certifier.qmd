@@ -105,7 +105,7 @@ Read those fields in this order:
 
 1. `exact_discrete_contract` says whether the declared integer-period bank distinguishes every unequal ordered position pair in the inspected context.
 2. `common_collision_gap` is the least all-channel repeated gap implied by the period-bank LCM. If it is `>= context`, no repeated all-channel gap fits inside the inspected range.
-3. `total_bank_collision_pair_count` counts all ordered all-channel colliding pairs for the declared integer-period bank. `AIRA-T0174` and `AIRA-T0175` prove the zero boundary: under a positive LCM, this count is zero exactly in the LCM-reaches-context pass case.
+3. `total_bank_collision_pair_count` counts all ordered all-channel colliding pairs for the declared integer-period bank. `AIRA-T0174` and `AIRA-T0175` prove the zero boundary: under a positive LCM, this count is zero exactly in the LCM-reaches-context pass case. `AIRA-T0176` proves the nonzero case is equivalent to the existence of an unequal all-channel collision witness.
 4. `theorem_ids` tells you which manifest entries and Lean declarations justify the exact layer. The browser theorem cards below resolve those ids to proof status and source links.
 
 If the exact layer fails, the same fields become a debugging guide:
@@ -416,7 +416,7 @@ The generated sidecar Markdown and JSON have `Band Endpoint Audit` summaries tha
 
 - Exact collision is not guessed by scanning every pair. The theorem reduces it to divisibility of the position gap.
 - If the common exact collision gap is inside the context, the report lists sample colliding position pairs.
-- The guaranteed common-gap count is `context - gap`: every counted start gives an all-channel collision at that gap. The LCM theorem upgrades the positive common-gap-multiple sum into the exact total bank collision count for the declared integer-period model. The LCM pass theorem proves no unequal in-context all-channel collision when the LCM reaches the inspected context, the LCM fail-witness theorem proves an explicit unequal collision exists when the positive LCM is below the context, and the count-zero theorem proves the positive-multiple total is zero exactly in the pass case.
+- The guaranteed common-gap count is `context - gap`: every counted start gives an all-channel collision at that gap. The LCM theorem upgrades the positive common-gap-multiple sum into the exact total bank collision count for the declared integer-period model. The LCM pass theorem proves no unequal in-context all-channel collision when the LCM reaches the inspected context, the LCM fail-witness theorem proves an explicit unequal collision exists when the positive LCM is below the context, the count-zero theorem proves the positive-multiple total is zero exactly in the pass case, and the count-positive theorem proves the nonzero total is equivalent to an unequal all-channel collision witness.
 - Bounded prefix reports apply the same LCM theorem spine to early channel prefixes, so `first_exact_pass_prefix_length` identifies the first reported prefix whose integer-bank LCM already reaches the inspected context. `AIRA-T0051` proves that appending suffix channels cannot create an unequal full-bank collision after such a prefix already passes.
 - Bounded subfamily reports search small selected subbanks; `AIRA-T0052` proves the same no-collision bridge when any contained subbank's LCM reaches the inspected context.
 - The per-channel single-period counts are exact for each individual integer period; they are not all-channel bank counts.
@@ -444,6 +444,7 @@ The generated sidecar Markdown and JSON have `Band Endpoint Audit` summaries tha
 <div class="theorem-box" data-theorem-id="AIRA-T0052"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0174"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0175"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0176"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0029"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0030"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0031"></div>

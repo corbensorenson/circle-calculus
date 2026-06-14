@@ -12491,6 +12491,12 @@
           "lean_name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_eq_zero_iff",
           "name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_eq_zero_iff",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0176",
+          "lean_name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_pos_iff_exists_collision",
+          "name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_pos_iff_exists_collision",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -13451,6 +13457,12 @@
           "lean_name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_eq_zero_iff",
           "name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_eq_zero_iff",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0176",
+          "lean_name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_pos_iff_exists_collision",
+          "name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_pos_iff_exists_collision",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -13559,6 +13571,12 @@
           "id": "AIRA-T0175",
           "lean_name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_eq_zero_iff",
           "name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_eq_zero_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0176",
+          "lean_name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_pos_iff_exists_collision",
+          "name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_pos_iff_exists_collision",
           "status": "proved"
         }
       ],
@@ -16025,6 +16043,12 @@
           "id": "AIRA-T0175",
           "lean_name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_eq_zero_iff",
           "name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_eq_zero_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0176",
+          "lean_name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_pos_iff_exists_collision",
+          "name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_pos_iff_exists_collision",
           "status": "proved"
         }
       ],
