@@ -498,6 +498,10 @@ def js_loop_exit_certificate(
     trace = js_loop_score_trace(required, max_loops, overthink_tolerance)
     exit_step = js_loop_exit_step(required, max_loops, overthink_tolerance)
     first_active_step = required if required <= max_loops else None
+    no_active_within_budget = all(
+        not js_loop_score_active(loop_period, sample_index, step, overthink_tolerance)
+        for step in range(1, max_loops + 1)
+    )
     return {
         "required_steps": required,
         "overthinking_boundary": boundary,
@@ -510,6 +514,7 @@ def js_loop_exit_certificate(
         "first_active_step_matches_exit": first_active_step == exit_step,
         "exit_available_iff_first_active_within_budget": (exit_step is not None)
         == (first_active_step is not None),
+        "no_exit_iff_no_active_within_budget": (exit_step is None) == no_active_within_budget,
     }
 
 
@@ -2442,10 +2447,14 @@ def main() -> int:
         assert certificate.exit_available_iff_first_active_within_budget == js_certificate[
             "exit_available_iff_first_active_within_budget"
         ]
+        assert certificate.no_exit_iff_no_active_within_budget == js_certificate[
+            "no_exit_iff_no_active_within_budget"
+        ]
         assert certificate.within_budget == js_certificate["within_budget"]
         assert certificate.within_guardrail == js_certificate["within_guardrail"]
         assert "AIM-T0084" in certificate.theorem_ids
         assert "AIM-T0085" in certificate.theorem_ids
+        assert "AIM-T0090" in certificate.theorem_ids
         assert token_recurrence_budget(loop_period, sample_index) == js_token_recurrence_budget(
             loop_period,
             sample_index,

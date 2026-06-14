@@ -1042,6 +1042,7 @@ class LoopExitCertificateResult:
     first_active_step: Optional[int]
     first_active_step_matches_exit: bool
     exit_available_iff_first_active_within_budget: bool
+    no_exit_iff_no_active_within_budget: bool
     theorem_ids: tuple[str, ...] = (
         "AIM-T0012",
         "AIM-T0013",
@@ -1058,6 +1059,7 @@ class LoopExitCertificateResult:
         "AIM-T0034",
         "AIM-T0084",
         "AIM-T0085",
+        "AIM-T0090",
     )
     note: str = "Synthetic loop-exit certificate fixture only; not a model-quality claim."
 
@@ -3699,6 +3701,15 @@ def loop_exit_certificate(
     trace = loop_score_trace(required, max_loops, overthink_tolerance=overthink_tolerance)
     exit_step = loop_exit_step(required, max_loops, overthink_tolerance=overthink_tolerance)
     first_active_step = required if required <= max_loops else None
+    no_active_within_budget = all(
+        not loop_score_active(
+            loop_period,
+            sample_index,
+            step,
+            overthink_tolerance=overthink_tolerance,
+        )
+        for step in range(1, max_loops + 1)
+    )
     return LoopExitCertificateResult(
         loop_period=loop_period,
         sample_index=sample_index,
@@ -3714,6 +3725,7 @@ def loop_exit_certificate(
         first_active_step=first_active_step,
         first_active_step_matches_exit=first_active_step == exit_step,
         exit_available_iff_first_active_within_budget=(exit_step is not None) == (first_active_step is not None),
+        no_exit_iff_no_active_within_budget=(exit_step is None) == no_active_within_budget,
     )
 
 

@@ -369,6 +369,7 @@ def export_widget_index() -> dict:
                 "AIM-T0034",
                 "AIM-T0084",
                 "AIM-T0085",
+                "AIM-T0090",
             ],
             "dictionary_ids": [
                 "COMMON-0052",

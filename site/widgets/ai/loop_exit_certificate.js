@@ -18,6 +18,7 @@ const THEOREM_IDS = [
   "AIM-T0034",
   "AIM-T0084",
   "AIM-T0085",
+  "AIM-T0090",
 ];
 const DICTIONARY_IDS = ["COMMON-0052", "COMMON-0053", "COMMON-0054", "COMMON-0059", "COMMON-0067"];
 
@@ -55,6 +56,8 @@ function loopExitCertificate(loopPeriod, sampleIndex, maxLoops, tolerance) {
   const scoreTrace = loopScoreTrace(requiredSteps, maxLoops, tolerance);
   const exitStep = loopExitStep(requiredSteps, maxLoops, tolerance);
   const firstActiveStep = requiredSteps <= maxLoops ? requiredSteps : null;
+  const noActiveWithinBudget = Array.from({ length: maxLoops }, (_, index) => index + 1)
+    .every((step) => !loopScoreActive(loopPeriod, sampleIndex, step, tolerance));
   return {
     loopPeriod,
     sampleIndex,
@@ -70,6 +73,7 @@ function loopExitCertificate(loopPeriod, sampleIndex, maxLoops, tolerance) {
     firstActiveStep,
     firstActiveStepMatchesExit: firstActiveStep === exitStep,
     exitAvailableIffFirstActiveWithinBudget: (exitStep !== null) === (firstActiveStep !== null),
+    noExitIffNoActiveWithinBudget: (exitStep === null) === noActiveWithinBudget,
   };
 }
 
@@ -216,6 +220,11 @@ function appendCertificateTable(section, primary, control) {
       yesNo(primary.exitAvailableIffFirstActiveWithinBudget),
       yesNo(control.exitAvailableIffFirstActiveWithinBudget),
     ],
+    [
+      "no exit iff no active step within budget",
+      yesNo(primary.noExitIffNoActiveWithinBudget),
+      yesNo(control.noExitIffNoActiveWithinBudget),
+    ],
     ["exit available", yesNo(primary.exitAvailable), yesNo(control.exitAvailable)],
     ["within budget", yesNo(primary.withinBudget), yesNo(control.withinBudget)],
     ["within guardrail", yesNo(primary.withinGuardrail), yesNo(control.withinGuardrail)],
@@ -296,6 +305,7 @@ function appendRecord(output, values, theoremById) {
     `first active step: ${primary.firstActiveStep ?? "none"}`,
     `first active theorem check: ${yesNo(primary.firstActiveStepMatchesExit)}`,
     `exit availability theorem check: ${yesNo(primary.exitAvailableIffFirstActiveWithinBudget)}`,
+    `no-exit theorem check: ${yesNo(control.noExitIffNoActiveWithinBudget)}`,
     `required step active: ${yesNo(loopScoreActive(values.loopPeriod, values.sampleIndex, primary.requiredSteps, values.tolerance))}`,
     `one-period shifted sample: ${values.sampleIndex + values.loopPeriod}`,
     `shifted required steps: ${shifted.requiredSteps}`,

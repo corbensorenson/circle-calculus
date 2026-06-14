@@ -335,6 +335,7 @@ The AI lane proves finite schedule/index facts that can support experiments with
 <div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0034"></div>
 <div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0084"></div>
 <div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0085"></div>
+<div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0090"></div>
 <div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0086"></div>
 <div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0087"></div>
 <div class="theorem-box" data-capability-id="SHOW-010" data-theorem-id="AIM-T0088"></div>

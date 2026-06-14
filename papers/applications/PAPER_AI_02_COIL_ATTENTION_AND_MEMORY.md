@@ -140,6 +140,7 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `AIM-T0034`: `Circle.Applications.loopExitCertificate_boundary_add_mul_loopPeriod`
 - `AIM-T0084`: `Circle.Applications.loopScoreActive_firstActive_iff`
 - `AIM-T0085`: `Circle.Applications.loopExitAvailable_iff_exists_firstActiveWithinBudget`
+- `AIM-T0090`: `Circle.Applications.not_loopExitAvailable_iff_forall_not_loopScoreActive_withinBudget`
 - `AIM-T0035`: `Circle.Applications.tokenActiveAtStep_one`
 - `AIM-T0036`: `Circle.Applications.tokenActiveAtStep_add_mul_loopPeriod`
 - `AIM-T0037`: `Circle.Applications.tokenActiveAtStep_step_le_loopPeriod`
@@ -360,7 +361,7 @@ This fixture checks whether the benchmark harness can learn a constructed finite
 
 This fixture checks schedule bookkeeping only. It is not evidence that looped transformers improve reasoning, language-model quality, context length, runtime, memory use, or parameter efficiency.
 
-`AIM-B0011` adds a deterministic loop-exit certificate fixture for one synthetic sample plus a fixed-budget no-exit control. It records required depth, score trace, exit availability, whether the exit is within budget, whether the exit stays within the overthinking guardrail, the first active trace step, and whether exit availability matches existence of that first active step inside the budget. `AIM-T0084` proves the trace-side first-active iff: the first active score step is exactly the required loop depth. `AIM-T0085` proves the budgeted bridge: loop-exit availability is equivalent to existence of that first active step within `maxLoops`.
+`AIM-B0011` adds a deterministic loop-exit certificate fixture for one synthetic sample plus a fixed-budget no-exit control. It records required depth, score trace, exit availability, whether the exit is within budget, whether the exit stays within the overthinking guardrail, the first active trace step, whether exit availability matches existence of that first active step inside the budget, and whether no exit is equivalent to no active in-budget step. `AIM-T0084` proves the trace-side first-active iff: the first active score step is exactly the required loop depth. `AIM-T0085` proves the budgeted bridge: loop-exit availability is equivalent to existence of that first active step within `maxLoops`. `AIM-T0090` proves the failure-side bridge: no loop exit is available exactly when every step inside the max-loop budget is outside the active score band.
 
 This fixture checks certificate bookkeeping only. It is not evidence that adaptive exit improves reasoning, language-model quality, context length, runtime, memory use, or parameter efficiency.
 

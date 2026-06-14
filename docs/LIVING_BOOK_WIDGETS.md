@@ -188,7 +188,7 @@ Implemented shared JavaScript:
 - Dictionary ids: `COMMON-0052`, `COMMON-0053`, `COMMON-0054`, `COMMON-0059`, and `COMMON-0067`.
 - Python references: `circle_math.applications.circle_ai.loop_required_steps`, `circle_math.applications.circle_ai.loop_score_trace`, `circle_math.applications.circle_ai.loop_exit_step`, and `circle_math.applications.circle_ai.loop_exit_certificate`.
 - Guardrail: the widget is deterministic finite loop-schedule certificate bookkeeping only. It does not prove trained early-exit quality, recursive reasoning, speed, memory improvement, context-length improvement, or overthinking behavior in real transformers.
-- Validation: deterministic JavaScript-equivalent score traces, exit steps, availability flags, budget flags, guardrail flags, and one-period-shift checks are parity-checked against the Python loop-exit certificate helper.
+- Validation: deterministic JavaScript-equivalent score traces, exit steps, availability flags, no-exit/no-active flags, budget flags, guardrail flags, and one-period-shift checks are parity-checked against the Python loop-exit certificate helper.
 
 ### token_level_recurrence
 

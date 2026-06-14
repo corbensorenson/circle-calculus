@@ -1556,6 +1556,7 @@ def test_loop_exit_certificate_records_budget_and_guardrail() -> None:
     assert certificate.first_active_step == 3
     assert certificate.first_active_step_matches_exit
     assert certificate.exit_available_iff_first_active_within_budget
+    assert certificate.no_exit_iff_no_active_within_budget
     assert certificate.exit_step > 0
     assert certificate.exit_available
     assert training_free_loop_budget(
@@ -1575,11 +1576,13 @@ def test_loop_exit_certificate_records_budget_and_guardrail() -> None:
     assert blocked.first_active_step is None
     assert blocked.first_active_step_matches_exit
     assert blocked.exit_available_iff_first_active_within_budget
+    assert blocked.no_exit_iff_no_active_within_budget
     assert not blocked.exit_available
     assert not blocked.within_budget
     assert not blocked.within_guardrail
     assert "AIM-T0084" in certificate.theorem_ids
     assert "AIM-T0085" in certificate.theorem_ids
+    assert "AIM-T0090" in certificate.theorem_ids
 
 
 def test_loop_required_steps_are_positive_bounded_and_periodic() -> None:

@@ -7775,6 +7775,12 @@
           "lean_name": "Circle.Applications.loopExitAvailable_iff_exists_firstActiveWithinBudget",
           "name": "Circle.Applications.loopExitAvailable_iff_exists_firstActiveWithinBudget",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0090",
+          "lean_name": "Circle.Applications.not_loopExitAvailable_iff_forall_not_loopScoreActive_withinBudget",
+          "name": "Circle.Applications.not_loopExitAvailable_iff_forall_not_loopScoreActive_withinBudget",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -8152,6 +8158,12 @@
           "lean_name": "Circle.Applications.loopExitAvailable_iff_exists_firstActiveWithinBudget",
           "name": "Circle.Applications.loopExitAvailable_iff_exists_firstActiveWithinBudget",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0090",
+          "lean_name": "Circle.Applications.not_loopExitAvailable_iff_forall_not_loopScoreActive_withinBudget",
+          "name": "Circle.Applications.not_loopExitAvailable_iff_forall_not_loopScoreActive_withinBudget",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -8277,6 +8289,12 @@
           "id": "AIM-T0085",
           "lean_name": "Circle.Applications.loopExitAvailable_iff_exists_firstActiveWithinBudget",
           "name": "Circle.Applications.loopExitAvailable_iff_exists_firstActiveWithinBudget",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0090",
+          "lean_name": "Circle.Applications.not_loopExitAvailable_iff_forall_not_loopScoreActive_withinBudget",
+          "name": "Circle.Applications.not_loopExitAvailable_iff_forall_not_loopScoreActive_withinBudget",
           "status": "proved"
         }
       ],

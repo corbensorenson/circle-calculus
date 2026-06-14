@@ -1193,6 +1193,23 @@ theorem loopExitAvailable_iff_exists_firstActiveWithinBudget
     unfold loopExitAvailable
     exact Nat.le_trans hactive.1 hstepMax
 
+/-- The failure side of the loop-exit contract: no exit is available exactly
+when every in-budget step is outside the active score band. -/
+theorem not_loopExitAvailable_iff_forall_not_loopScoreActive_withinBudget
+    (loopPeriod sample maxLoops tolerance : Nat) :
+    ¬ loopExitAvailable loopPeriod sample maxLoops ↔
+      ∀ step : Nat,
+        step ≤ maxLoops →
+          ¬ loopScoreActive loopPeriod sample tolerance step := by
+  constructor
+  · intro hunavailable step hstepMax hactive
+    exact hunavailable (Nat.le_trans hactive.1 hstepMax)
+  · intro hnoActive havailable
+    exact hnoActive
+      (loopRequiredSteps loopPeriod sample)
+      havailable
+      ⟨le_rfl, loopOverthinkingBoundary_ge_required loopPeriod sample tolerance⟩
+
 theorem loopOverthinkingBoundary_add_loopPeriod
     {loopPeriod : Nat} (hpositive : 0 < loopPeriod)
     (sample tolerance : Nat) :

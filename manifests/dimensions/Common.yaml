@@ -1787,6 +1787,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
     blocker: ""
+  - id: AIM-T0090
+    status: lean_proved
+    lean_name: Circle.Applications.not_loopExitAvailable_iff_forall_not_loopScoreActive_withinBudget
+    informal_statement: "A finite loop-exit budget is unavailable exactly when every in-budget step is outside the active score band."
+    formal_statement: "For loopPeriod sample maxLoops tolerance, not loopExitAvailable loopPeriod sample maxLoops iff every step <= maxLoops is not loopScoreActive."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
+    blocker: ""
   - id: AIM-T0035
     status: lean_proved
     lean_name: Circle.Applications.tokenActiveAtStep_one
