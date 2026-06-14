@@ -96,6 +96,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0059",
     "AIRA-T0177",
     "AIRA-T0178",
+    "AIRA-T0181",
     "AIRA-T0126",
     "AIRA-T0139",
     "AIRA-T0140",
@@ -128,6 +129,7 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses",
     "Circle.Applications.ropeTurnRatioFiniteMarginCertificate_iff_finiteMargin",
     "Circle.Applications.not_ropeTurnRatioFiniteMargin_iff_exists_error_lt_margin",
+    "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_band_bounds",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
     "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
@@ -3292,9 +3294,9 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         "(unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, "
         "turn-ratio scaling, finite-context margin consequence, context-plus-margin transfer, "
         "integer/rational-turn-ratio guardrails, positive rational finite-context "
-        "certificate and exact rational boundary, generated-gap enumeration, and "
+        "certificate and exact rational boundary, generated-gap enumeration, "
         "floor/ceiling nearest-integer, finite certificate iff, negative obstruction iff, "
-        "plus band-endpoint and band-list compression "
+        "scaled no-near-turn iff, plus band-endpoint and band-list compression "
         "bridge precursors only; not a Diophantine proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,

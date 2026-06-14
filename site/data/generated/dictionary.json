@@ -12575,6 +12575,12 @@
           "lean_name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcm_ge_context_of_forall_mem_pos",
           "name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcm_ge_context_of_forall_mem_pos",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0181",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -13564,6 +13570,12 @@
           "id": "AIRA-T0180",
           "lean_name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcm_ge_context_of_forall_mem_pos",
           "name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcm_ge_context_of_forall_mem_pos",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0181",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
           "status": "proved"
         }
       ],
@@ -15058,6 +15070,12 @@
           "lean_name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_iff_exists_error_lt_margin",
           "name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_iff_exists_error_lt_margin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0181",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -16080,6 +16098,12 @@
           "id": "AIRA-T0178",
           "lean_name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_iff_exists_error_lt_margin",
           "name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_iff_exists_error_lt_margin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0181",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
           "status": "proved"
         }
       ],
@@ -17153,6 +17177,12 @@
           "lean_name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_iff_exists_error_lt_margin",
           "name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_iff_exists_error_lt_margin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0181",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -17961,6 +17991,12 @@
           "id": "AIRA-T0178",
           "lean_name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_iff_exists_error_lt_margin",
           "name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_iff_exists_error_lt_margin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0181",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
           "status": "proved"
         }
       ],

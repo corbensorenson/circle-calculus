@@ -3404,6 +3404,54 @@ theorem not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin
     exact mul_le_mul_of_nonneg_left hratio (le_of_lt hfull_pos)
   linarith
 
+/-- A one-channel finite turn-ratio margin is equivalent to ruling out every
+in-context real near-turn event below the corresponding scaled tolerance.
+
+The forward direction is the certifier consequence theorem. The reverse
+direction says the contract is not merely sufficient: if some positive
+in-context gap is below the advertised turn-ratio margin, that same gap gives a
+real near-turn witness at a tolerance strictly below `fullTurn * margin`. -/
+theorem ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin
+    {frequency fullTurn margin : ℝ} {context : Nat}
+    (hfrequency_nonneg : 0 ≤ frequency) (hfull_pos : 0 < fullTurn) :
+    ropeTurnRatioFiniteMargin (frequency / fullTurn) margin context ↔
+      ∀ tolerance : ℝ, tolerance < fullTurn * margin →
+        ∀ left right : Nat, left < right → right < context →
+          ¬ ropeRealPhaseNearTurn frequency fullTurn tolerance left right := by
+  constructor
+  · intro hmargin tolerance htolerance left right hleft hright
+    exact
+      not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin
+        (frequency := frequency) (fullTurn := fullTurn) (margin := margin)
+        (tolerance := tolerance) (context := context) (left := left) (right := right)
+        hleft hright hfrequency_nonneg hfull_pos hmargin htolerance
+  · intro hnoNear
+    by_contra hnotMargin
+    rcases
+        (not_ropeTurnRatioFiniteMargin_iff_exists_error_lt_margin
+          (turnRatio := frequency / fullTurn) (margin := margin) (context := context)).1
+          hnotMargin with
+      ⟨gap, hgap_pos, hgap_context, turns, herror_lt_margin⟩
+    let tolerance : ℝ := fullTurn * ropeTurnRatioError (frequency / fullTurn) gap turns
+    have htolerance : tolerance < fullTurn * margin := by
+      dsimp [tolerance]
+      exact mul_lt_mul_of_pos_left herror_lt_margin hfull_pos
+    have hscaled :
+        ropeRealPhaseIntTurnError frequency fullTurn 0 gap turns =
+          fullTurn * ropeTurnRatioError (frequency / fullTurn) gap turns := by
+      simpa [ropeTurnRatioError] using
+        (ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError
+          (frequency := frequency) (fullTurn := fullTurn)
+          (left := 0) (right := gap) (turns := turns)
+          (Nat.zero_le gap) hfrequency_nonneg hfull_pos)
+    have hnear :
+        ropeRealPhaseNearTurn frequency fullTurn tolerance 0 gap := by
+      refine ⟨turns, ?_⟩
+      dsimp [tolerance]
+      rw [hscaled]
+    exact
+      (hnoNear tolerance htolerance 0 gap hgap_pos hgap_context) hnear
+
 /-- The named rational/discretized preset certificate rules out one-channel
 near-turn collisions below its certified margin. -/
 theorem not_ropeRationalPreset4099_nearTurn
