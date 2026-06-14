@@ -120,7 +120,8 @@
         "AIT-T0085",
         "AIT-T0090",
         "AIT-T0092",
-        "AIT-T0093"
+        "AIT-T0093",
+        "AIT-T0094"
       ],
       "theorem_side_coil_residues_no_collision": true,
       "theorem_side_lag_candidates": [
@@ -432,7 +433,8 @@
       "AIT-T0085",
       "AIT-T0090",
       "AIT-T0092",
-      "AIT-T0093"
+      "AIT-T0093",
+      "AIT-T0094"
     ],
     "theorem_side_coil_residues_no_collision": true,
     "theorem_side_lag_candidates": [
@@ -479,7 +481,8 @@
         "AIT-T0083",
         "AIT-T0090",
         "AIT-T0092",
-        "AIT-T0093"
+        "AIT-T0093",
+        "AIT-T0094"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.08403361344537816,
@@ -584,7 +587,8 @@
         "AIT-T0083",
         "AIT-T0090",
         "AIT-T0092",
-        "AIT-T0093"
+        "AIT-T0093",
+        "AIT-T0094"
       ],
       "coverage_complete": true,
       "coverage_ratio": 1.0,
@@ -639,7 +643,8 @@
         "AIT-T0083",
         "AIT-T0090",
         "AIT-T0092",
-        "AIT-T0093"
+        "AIT-T0093",
+        "AIT-T0094"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.010744810744810745,
@@ -779,7 +784,8 @@
         "AIT-T0083",
         "AIT-T0090",
         "AIT-T0092",
-        "AIT-T0093"
+        "AIT-T0093",
+        "AIT-T0094"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.011720180686118912,

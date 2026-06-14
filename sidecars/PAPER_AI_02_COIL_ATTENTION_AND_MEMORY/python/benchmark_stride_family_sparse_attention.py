@@ -36,6 +36,7 @@ CORE_COVERAGE_THEOREM_IDS = (
     "AIT-T0090",
     "AIT-T0092",
     "AIT-T0093",
+    "AIT-T0094",
 )
 
 PLANNER_STYLE_SPECS: tuple[dict[str, Any], ...] = (

@@ -891,6 +891,23 @@ theorem mem_hybridFamilyCoveredLagList_or_mem_hybridFamilyUncoveredLagList_of_po
   · exact Or.inr ((mem_hybridFamilyUncoveredLagList_iff).2
       ⟨hpos, hcontext, hreach⟩)
 
+/-- The covered and uncovered finite lag-list lengths add up to the number of
+positive in-context lags.
+
+This is the count side of the sparse-attention partition certificate: every
+positive lag below the context contributes to exactly one of the reported
+finite lists, so the two report counts add to `n - 1`. -/
+theorem hybridFamilyCoveredUncoveredLagList_length_add
+    {n window pathLength : Nat} {strides : List Nat} :
+    (hybridFamilyCoveredLagList n window pathLength strides).length +
+      (hybridFamilyUncoveredLagList n window pathLength strides).length = n - 1 := by
+  unfold hybridFamilyCoveredLagList hybridFamilyUncoveredLagList
+  simpa [List.length_range'] using
+    (List.length_eq_length_filter_add
+      (l := List.range' 1 (n - 1))
+      (f := fun lag =>
+        decide (lag ∈ hybridFamilyLagCandidateList n window pathLength strides))).symm
+
 /-- Complete sparse-attention coverage is equivalent to an empty finite
 uncovered-lag list. -/
 theorem hybridFamilyCoversContext_iff_uncoveredLagList_eq_nil

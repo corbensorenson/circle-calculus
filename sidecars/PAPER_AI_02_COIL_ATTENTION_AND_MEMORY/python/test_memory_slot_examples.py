@@ -844,6 +844,7 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0090",
         "AIT-T0092",
         "AIT-T0093",
+        "AIT-T0094",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -960,6 +961,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0081" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0092" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0093" in long_coprime["core_coverage_theorem_ids"]
+    assert "AIT-T0094" in long_coprime["core_coverage_theorem_ids"]
     assert "scripts/stride_family_certify.py --context 8192" in (
         long_coprime["reproduce_command"]
     )

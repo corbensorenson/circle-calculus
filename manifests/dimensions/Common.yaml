@@ -5504,6 +5504,20 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
     blocker: ""
+  - id: AIT-T0094
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyCoveredUncoveredLagList_length_add
+    informal_statement: "For any declared local-window plus stride-family sparse-attention plan, the finite covered-lag count plus uncovered-lag count equals n - 1, the number of positive in-context lags."
+    formal_statement: "forall {n window pathLength : Nat} {strides : List Nat}, length(Circle.Applications.hybridFamilyCoveredLagList n window pathLength strides) + length(Circle.Applications.hybridFamilyUncoveredLagList n window pathLength strides) = n - 1"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant
