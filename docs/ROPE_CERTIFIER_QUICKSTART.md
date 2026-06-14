@@ -82,7 +82,7 @@ The `quantized_*` presets exercise shared-factor and one-token-past-boundary fai
 The text output has two different evidence layers:
 
 ```text
-proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_16384,numerical_real_phase_scan:PASS
+proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_65536,numerical_real_phase_scan:PASS
 exact_discrete_contract=PASS common_collision_gap=>= context
 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0
 prefix_collision_reports=... first_exact_pass_prefix_length=...
@@ -96,7 +96,7 @@ theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AI
 
 `real_phase_margin=PASS` means the numerical scan did not find a real-valued near-collision below the chosen tolerance. This is not a Lean proof over real trigonometric RoPE.
 
-`proof_layers=...` separates the evidence types. The exact integer-period layer is theorem-backed for the declared discretized phase-bank model. The rational/discretized finite-margin layer points to the named `1/4099` preset. The interval-backed standard-RoPE layer points to the bounded channel-0 context-16384 seed. The numerical scan remains diagnostic even when it passes.
+`proof_layers=...` separates the evidence types. The exact integer-period layer is theorem-backed for the declared discretized phase-bank model. The rational/discretized finite-margin layer points to the named `1/4099` preset. The interval-backed standard-RoPE layer points to the bounded channel-0 context-65536 seed. The numerical scan remains diagnostic even when it passes.
 
 `real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050,AIRA-T0053,AIRA-T0054,AIRA-T0055,AIRA-T0056,AIRA-T0057,AIRA-T0058,AIRA-T0059,AIRA-T0126` means Lean has proved the unwrapped one-channel real phase-gap arithmetic, signed full-turn-multiple window precursors, the bank-level theorem shape that one proved separating channel rules out an all-channel near-turn collision at smaller tolerance, the turn-ratio scaling bridge into nearest-integer Diophantine error, the one-channel and bank-level consequences of a finite-context turn-ratio margin certificate, conservative context/margin/context-plus-margin transfer laws, the guardrails that integer and natural-rational turn ratios cannot provide a positive finite-context margin once their exact-return gap is in scope, the positive `1 / denominator` finite-context certificate for reduced natural rational ratios before the denominator gap enters scope, the exact boundary saying that certificate holds iff the inspected context stays at or below the denominator, the bridge from the abstract finite-context predicate to generated positive gaps in `List.range context`, the floor/ceiling witness bridge reducing each fixed-gap integer-turn check to two nearest-integer witnesses, and the band-endpoint bridge for compressing generated interval certificates. It is not a Diophantine proof that arbitrary RoPE gaps satisfy the margin predicate and does not certify the numerical scan.
 
@@ -142,41 +142,41 @@ print(certificate.theorem_ids)
 Expected meaning:
 
 ```text
-standard_rope_channel0_interval_context_16384
+standard_rope_channel0_interval_context_65536
 True
 1/104219
-AIRA-T0063,AIRA-T0064,AIRA-T0065,...,AIRA-T0141
+AIRA-T0063,AIRA-T0064,AIRA-T0065,...,AIRA-T0153
 ```
 
-Lean proves that channel 0 with standard turn ratio `1 / (2π)` has finite-context nearest-integer margin `1/104219` for gaps `1` through `16383`. The sharp 16k seed uses the 20-decimal enclosure `10^20*gap/628318530717958647694 <= gap/(2π) <= 10^20*gap/628318530717958647692`, split across computed integer cells `0` through `2607`. Lean also proves that the earlier `1/1024` margin stops at gap `710`, that the doubled D9 margin `1/65536` is impossible for any context containing gap `710`, that the nearby larger D10 margin `1/104000` is impossible once that gap is in scope, and that the adjacent larger D11 margin `1/104218` is also impossible there. `AIRA-T0118` generalizes the last obstruction to every advertised margin at or above `1/104218`; `AIRA-T0119` packages the 4k bracket, `AIRA-T0132` packages the sharper 8k bracket, and `AIRA-T0138` packages the 16k bracket: `1/104219` is proved, while `1/104218` and larger margins are impossible. `AIRA-T0120` through `AIRA-T0125` remain the weaker D12 8k seed and bank bridge at margin `1/104220`. `AIRA-T0127` through `AIRA-T0132` are the sharper D13 8k seed, one-channel no-near-turn theorem, conditional bank bridges, and margin bracket at `1/104219`. `AIRA-T0133` through `AIRA-T0138` are the D14 16k seed, one-channel no-near-turn theorem, conditional bank bridges, and margin bracket at the same margin. `AIRA-T0126` is the reusable band-endpoint bridge used by the generated interval certificate family. `AIRA-T0139` through `AIRA-T0141` are the rational-band compression and rational-endpoint reflection bridges for future larger generated certificates: if valid rational bands cover every generated positive gap, Lean derives the original interval-certificate predicate without a per-gap `interval_cases` expansion. This is real standard-RoPE theorem content, but still channel-0 based; it is not a proof for 128k or every channel in the whole multi-channel bank.
+Lean proves that channel 0 with standard turn ratio `1 / (2π)` has finite-context nearest-integer margin `1/104219` for gaps `1` through `65535`. The sharp 64k seed uses the 20-decimal enclosure `10^20*gap/628318530717958647694 <= gap/(2π) <= 10^20*gap/628318530717958647692`, split across computed integer cells `0` through `10430`. Lean also proves that the earlier `1/1024` margin stops at gap `710`, that the doubled D9 margin `1/65536` is impossible for any context containing gap `710`, that the nearby larger D10 margin `1/104000` is impossible once that gap is in scope, and that the adjacent larger D11 margin `1/104218` is also impossible there. `AIRA-T0118` generalizes the last obstruction to every advertised margin at or above `1/104218`; `AIRA-T0119` packages the 4k bracket, `AIRA-T0132` packages the sharper 8k bracket, `AIRA-T0138` packages the 16k bracket, `AIRA-T0147` packages the 32k bracket, and `AIRA-T0153` packages the 64k bracket: `1/104219` is proved, while `1/104218` and larger margins are impossible. `AIRA-T0120` through `AIRA-T0125` remain the weaker D12 8k seed and bank bridge at margin `1/104220`. `AIRA-T0127` through `AIRA-T0132` are the sharper D13 8k seed, one-channel no-near-turn theorem, conditional bank bridges, and margin bracket at `1/104219`. `AIRA-T0133` through `AIRA-T0138` are the D14 16k seed, one-channel no-near-turn theorem, conditional bank bridges, and margin bracket at the same margin. `AIRA-T0139` through `AIRA-T0141` are the rational-band compression and rational-endpoint reflection bridges, and `AIRA-T0142` through `AIRA-T0153` are the generated D15/D16 32k/64k certificates and conditional bank bridges built on that route. This is real standard-RoPE theorem content, but still channel-0 based; it is not a proof for 128k or every channel in the whole multi-channel bank.
 
-To ask the concrete D14 bank-bridge request directly:
+To ask the strongest concrete D16 bank-bridge request directly:
 
 ```python
 from fractions import Fraction
-from circle_math.applications import certify_standard_channel0_d14_bank_request
+from circle_math.applications import certify_standard_channel0_d16_bank_request
 
-request = certify_standard_channel0_d14_bank_request(
-    requested_context=16384,
+request = certify_standard_channel0_d16_bank_request(
+    requested_context=65536,
     requested_margin=Fraction(1, 104219),
 )
 request.pass_certificate  # True
-request.theorem_ids       # AIRA-T0136,AIRA-T0137
+request.theorem_ids       # AIRA-T0151,AIRA-T0152
 request.tolerance_rule    # tolerance < fullTurn * requestedMargin
 ```
 
-This request certificate checks only that the requested context and margin fit inside the D14 seed and that the bank has the stated standard-channel-0 shape. It does not prove every channel has an independent margin.
+This request certificate checks only that the requested context and margin fit inside the D16 seed and that the bank has the stated standard-channel-0 shape. It does not prove every channel has an independent margin.
 
-To read the D14 margin bracket directly:
+To read the D16 margin bracket directly:
 
 ```python
-from circle_math.applications import certify_standard_channel0_d14_margin_bracket
+from circle_math.applications import certify_standard_channel0_d16_margin_bracket
 
-bracket = certify_standard_channel0_d14_margin_bracket()
-bracket.context_length             # 16384
+bracket = certify_standard_channel0_d16_margin_bracket()
+bracket.context_length             # 65536
 bracket.proved_margin              # 1/104219
 bracket.impossible_margin_floor    # 1/104218
-bracket.theorem_ids                # AIRA-T0133,AIRA-T0134,AIRA-T0118,AIRA-T0138
+bracket.theorem_ids                # AIRA-T0148,AIRA-T0149,AIRA-T0118,AIRA-T0153
 ```
 
 The bracket leaves margins strictly between `1/104219` and `1/104218` unresolved.
@@ -227,13 +227,13 @@ plan_standard_channel0_interval_bands(
     pi_bound_preset="d20",
     margin=Fraction(1, 104219),
     max_context_length=32768,
-).theorem_status  # candidate_plan_not_lean_proved
+).theorem_status  # lean_proved_interval_seed_AIRA-T0142_to_AIRA-T0144
 
 plan_standard_channel0_interval_bands(
     pi_bound_preset="d20",
     margin=Fraction(1, 104219),
     max_context_length=65536,
-).theorem_status  # candidate_plan_not_lean_proved
+).theorem_status  # lean_proved_interval_seed_AIRA-T0148_to_AIRA-T0150
 
 plan_standard_channel0_interval_bands(
     pi_bound_preset="d20",
@@ -268,7 +268,7 @@ For example, the first d4 band records `start_gap=1`, `end_gap=6`, `cell=0`, `st
 
 The generated Markdown and JSON sidecars include `Rational-Band Certificate Audits`, which check whether each generated band list is positive, contiguous from gap `1`, endpoint-valid, and sufficient for the requested context. They also include `Band Endpoint Audit` summaries with the first and last band of each standard interval plan. Rerun `plan_standard_channel0_interval_bands(...)` for the complete deterministic band list.
 
-The d4, d6, conservative d20 `1/131072`, tighter d20 `1/105000`, sharp 4k d20 `1/104219`, weaker 8k d20 `1/104220`, sharp 8k d20 `1/104219`, and sharp 16k d20 `1/104219` plans have been converted into Lean proof. The same exact-rational planner currently covers 32k and 64k at margin `1/104219`; the rational-band audits mark those requests as source-data passes. The 128k request reaches first uncovered gap `103993`, so its audit fails coverage even though its emitted bands are endpoint-valid through the certified frontier. All three frontier rows remain planning data only until generated rational-band certificates are checked with `AIRA-T0139` through `AIRA-T0141` and manifest ids are marked proved.
+The d4, d6, conservative d20 `1/131072`, tighter d20 `1/105000`, sharp 4k d20 `1/104219`, weaker 8k d20 `1/104220`, sharp 8k d20 `1/104219`, sharp 16k d20 `1/104219`, sharp 32k d20 `1/104219`, and sharp 64k d20 `1/104219` plans have been converted into Lean proof. The 128k request reaches first uncovered gap `103993`, so its audit fails coverage even though its emitted bands are endpoint-valid through the certified frontier. The 128k frontier row remains planning data only until a generated rational-band certificate is checked and manifest ids are marked proved.
 
 If the exact discrete contract fails, the output includes a common collision gap and sample colliding pairs.
 It also reports `guaranteed_common_gap_collision_pair_count`, the number of starts whose paired position is exactly the common collision gap ahead, and `guaranteed_common_gap_multiple_pair_count`, the corresponding guaranteed family summed over every positive in-context multiple of that gap. `total_bank_collision_pair_count` is the exact all-channel count for the declared integer-period bank, backed by the period-bank LCM theorem. `AIRA-T0048` proves the LCM-gap collision family, and `AIRA-T0049` proves that a positive LCM below the context gives an explicit unequal collision witness. It is not a real-valued RoPE collision count.

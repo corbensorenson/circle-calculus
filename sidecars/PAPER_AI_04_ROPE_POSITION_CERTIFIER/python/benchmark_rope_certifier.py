@@ -31,6 +31,8 @@ from circle_math.applications import (
     certify_standard_channel0_d13_margin_bracket,
     certify_standard_channel0_d14_bank_request,
     certify_standard_channel0_d14_margin_bracket,
+    certify_standard_channel0_d16_bank_request,
+    certify_standard_channel0_d16_margin_bracket,
     certify_standard_channel0_interval_seed,
     plan_standard_channel0_interval_bands,
     phase_bank_certificate_summary_lines,
@@ -219,13 +221,11 @@ def standard_channel0_frontier_summary(standard_plans: tuple[dict[str, Any], ...
         "frontier_status": "candidate_plan_not_lean_proved",
         "summary": (
             "Lean currently proves standard channel-0 margin 1/104219 through "
-            f"context {proved_context}. The exact-rational planner also covers "
-            f"contexts {full_candidate_contexts} at the same margin and first "
-            f"fails at gaps {frontier_gaps}, but those rows are not Lean proofs. "
-            "AIRA-T0139 through AIRA-T0141 are the proved rational-band "
-            "compression and rational-endpoint reflection bridges intended for "
-            "converting those planner rows without another large interval-case "
-            "expansion."
+            f"context {proved_context}. The exact-rational planner first fails "
+            f"at gaps {frontier_gaps}; any remaining full-context candidate rows "
+            f"are {full_candidate_contexts}. AIRA-T0139 through AIRA-T0141 are "
+            "the proved rational-band compression and rational-endpoint "
+            "reflection bridges used by the generated 32k/64k certificates."
         ),
         "claim_boundary": (
             "This is a derived sidecar summary of proved and candidate interval "
@@ -346,6 +346,11 @@ def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
             requested_margin=Fraction(1, 104219),
         ).to_dict(),
         "standard_d14_margin_bracket": certify_standard_channel0_d14_margin_bracket().to_dict(),
+        "standard_d16_bank_bridge_request": certify_standard_channel0_d16_bank_request(
+            requested_context=65536,
+            requested_margin=Fraction(1, 104219),
+        ).to_dict(),
+        "standard_d16_margin_bracket": certify_standard_channel0_d16_margin_bracket().to_dict(),
         "standard_channel0_frontier_summary": standard_channel0_frontier_summary(standard_plans),
         "standard_band_certificate_audits": standard_band_audits,
         "standard_interval_candidate_plans": standard_plans,
@@ -398,6 +403,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
     standard_d13_bracket = payload["standard_d13_margin_bracket"]
     standard_d14_bank = payload["standard_d14_bank_bridge_request"]
     standard_d14_bracket = payload["standard_d14_margin_bracket"]
+    standard_d16_bank = payload["standard_d16_bank_bridge_request"]
+    standard_d16_bracket = payload["standard_d16_margin_bracket"]
     frontier = payload["standard_channel0_frontier_summary"]
     standard_plans = payload["standard_interval_candidate_plans"]
     standard_band_audits = payload["standard_band_certificate_audits"]
@@ -642,6 +649,38 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             standard_d14_bracket["claim_boundary"],
             "",
+            "## Standard RoPE D16 Bank Bridge Request",
+            "",
+            "| Name | Bank shape | Requested context | Requested margin | Certified context | Certified margin | Status | Theorem ids |",
+            "| --- | --- | ---: | ---: | ---: | ---: | --- | --- |",
+            "| {name} | {bank_shape} | {requested_context} | {requested_margin} | {certified_context} | {certified_margin} | {status} | {theorems} |".format(
+                name=standard_d16_bank["name"],
+                bank_shape=standard_d16_bank["bank_shape"],
+                requested_context=standard_d16_bank["requested_context"],
+                requested_margin=standard_d16_bank["requested_margin"],
+                certified_context=standard_d16_bank["certified_context"],
+                certified_margin=standard_d16_bank["certified_margin"],
+                status="PASS" if standard_d16_bank["pass_certificate"] else "FAIL",
+                theorems=", ".join(standard_d16_bank["theorem_ids"]),
+            ),
+            "",
+            standard_d16_bank["claim_boundary"],
+            "",
+            "## Standard RoPE D16 Margin Bracket",
+            "",
+            "| Name | Context | Proved margin | Impossible margin floor | Status | Theorem ids |",
+            "| --- | ---: | ---: | ---: | --- | --- |",
+            "| {name} | {context} | {proved_margin} | {impossible_margin_floor} | {status} | {theorems} |".format(
+                name=standard_d16_bracket["name"],
+                context=standard_d16_bracket["context_length"],
+                proved_margin=standard_d16_bracket["proved_margin"],
+                impossible_margin_floor=standard_d16_bracket["impossible_margin_floor"],
+                status="PASS" if standard_d16_bracket["pass_certificate"] else "FAIL",
+                theorems=", ".join(standard_d16_bracket["theorem_ids"]),
+            ),
+            "",
+            standard_d16_bracket["claim_boundary"],
+            "",
             "## Standard Channel-0 Frontier Summary",
             "",
         "| Proved margin | Proved context | Proved status | Candidate full contexts | Candidate first uncovered gaps | Compression bridge | Frontier status |",
@@ -660,7 +699,7 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "## Standard RoPE Candidate Interval Plans",
             "",
-            "These exact-rational plans are generated source data for Lean interval certificates. The d4 context-333, d6 context-710, d20 context-4096, d20 context-8192, and d20 context-16384 plans listed here are now matched by compiled Lean declarations; the 32k, 64k, and 128k-frontier rows are candidate-only until matching declarations compile and manifest ids exist.",
+            "These exact-rational plans are generated source data for Lean interval certificates. The d4 context-333, d6 context-710, d20 context-4096, d20 context-8192, d20 context-16384, d20 context-32768, and d20 context-65536 plans listed here are now matched by compiled Lean declarations; the 128k-frontier row remains candidate-only until a matching declaration compiles and manifest ids exist.",
             "",
             *plan_rows,
             "",
@@ -801,6 +840,30 @@ def main() -> None:
                     )
                 )
                 print(f"theorem_ids={','.join(standard_d14_bracket['theorem_ids'])}")
+                standard_d16_bank = payload["standard_d16_bank_bridge_request"]
+                print()
+                print(f"standard_d16_bank_bridge_request={standard_d16_bank['name']}")
+                print(f"pass_certificate={standard_d16_bank['pass_certificate']}")
+                print(
+                    "requested_context={requested_context} requested_margin={requested_margin}".format(
+                        requested_context=standard_d16_bank["requested_context"],
+                        requested_margin=standard_d16_bank["requested_margin"],
+                    )
+                )
+                print(f"theorem_ids={','.join(standard_d16_bank['theorem_ids'])}")
+                standard_d16_bracket = payload["standard_d16_margin_bracket"]
+                print()
+                print(f"standard_d16_margin_bracket={standard_d16_bracket['name']}")
+                print(f"pass_certificate={standard_d16_bracket['pass_certificate']}")
+                print(
+                    "context={context} proved_margin={proved_margin} "
+                    "impossible_margin_floor={impossible_margin_floor}".format(
+                        context=standard_d16_bracket["context_length"],
+                        proved_margin=standard_d16_bracket["proved_margin"],
+                        impossible_margin_floor=standard_d16_bracket["impossible_margin_floor"],
+                    )
+                )
+                print(f"theorem_ids={','.join(standard_d16_bracket['theorem_ids'])}")
                 frontier = payload["standard_channel0_frontier_summary"]
                 print()
                 print("standard_channel0_frontier_summary")

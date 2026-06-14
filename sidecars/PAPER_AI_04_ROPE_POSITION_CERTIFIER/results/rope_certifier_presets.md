@@ -14,9 +14,9 @@ This is a theorem-backed rational/discretized turn-ratio certificate. It is not 
 
 | Name | Turn ratio | Context | Certified margin | Pi bounds | Status | Theorem ids |
 | --- | --- | ---: | --- | --- | --- | --- |
-| standard_rope_channel0_interval_context_16384 | 1/(2*pi) | 16384 | 1/104219 | pi <= 4, 3.14 < pi, pi < 3.15, 3.1415 < pi, pi < 3.1416, 3.141592 < pi, pi < 3.141593, 3.14159265358979323846 < pi, and pi < 3.14159265358979323847 | PASS | AIRA-T0063, AIRA-T0064, AIRA-T0065, AIRA-T0066, AIRA-T0067, AIRA-T0068, AIRA-T0069, AIRA-T0070, AIRA-T0071, AIRA-T0072, AIRA-T0073, AIRA-T0074, AIRA-T0075, AIRA-T0076, AIRA-T0077, AIRA-T0078, AIRA-T0079, AIRA-T0080, AIRA-T0081, AIRA-T0082, AIRA-T0083, AIRA-T0084, AIRA-T0085, AIRA-T0086, AIRA-T0087, AIRA-T0088, AIRA-T0089, AIRA-T0090, AIRA-T0091, AIRA-T0092, AIRA-T0093, AIRA-T0094, AIRA-T0095, AIRA-T0096, AIRA-T0097, AIRA-T0098, AIRA-T0099, AIRA-T0100, AIRA-T0101, AIRA-T0102, AIRA-T0103, AIRA-T0104, AIRA-T0105, AIRA-T0106, AIRA-T0107, AIRA-T0108, AIRA-T0109, AIRA-T0110, AIRA-T0111, AIRA-T0112, AIRA-T0113, AIRA-T0114, AIRA-T0115, AIRA-T0116, AIRA-T0117, AIRA-T0118, AIRA-T0119, AIRA-T0120, AIRA-T0121, AIRA-T0122, AIRA-T0123, AIRA-T0124, AIRA-T0125, AIRA-T0126, AIRA-T0127, AIRA-T0128, AIRA-T0129, AIRA-T0130, AIRA-T0131, AIRA-T0132, AIRA-T0133, AIRA-T0134, AIRA-T0135, AIRA-T0136, AIRA-T0137, AIRA-T0138, AIRA-T0139, AIRA-T0140, AIRA-T0141 |
+| standard_rope_channel0_interval_context_65536 | 1/(2*pi) | 65536 | 1/104219 | pi <= 4, 3.14 < pi, pi < 3.15, 3.1415 < pi, pi < 3.1416, 3.141592 < pi, pi < 3.141593, 3.14159265358979323846 < pi, and pi < 3.14159265358979323847 | PASS | AIRA-T0063, AIRA-T0064, AIRA-T0065, AIRA-T0066, AIRA-T0067, AIRA-T0068, AIRA-T0069, AIRA-T0070, AIRA-T0071, AIRA-T0072, AIRA-T0073, AIRA-T0074, AIRA-T0075, AIRA-T0076, AIRA-T0077, AIRA-T0078, AIRA-T0079, AIRA-T0080, AIRA-T0081, AIRA-T0082, AIRA-T0083, AIRA-T0084, AIRA-T0085, AIRA-T0086, AIRA-T0087, AIRA-T0088, AIRA-T0089, AIRA-T0090, AIRA-T0091, AIRA-T0092, AIRA-T0093, AIRA-T0094, AIRA-T0095, AIRA-T0096, AIRA-T0097, AIRA-T0098, AIRA-T0099, AIRA-T0100, AIRA-T0101, AIRA-T0102, AIRA-T0103, AIRA-T0104, AIRA-T0105, AIRA-T0106, AIRA-T0107, AIRA-T0108, AIRA-T0109, AIRA-T0110, AIRA-T0111, AIRA-T0112, AIRA-T0113, AIRA-T0114, AIRA-T0115, AIRA-T0116, AIRA-T0117, AIRA-T0118, AIRA-T0119, AIRA-T0120, AIRA-T0121, AIRA-T0122, AIRA-T0123, AIRA-T0124, AIRA-T0125, AIRA-T0126, AIRA-T0127, AIRA-T0128, AIRA-T0129, AIRA-T0130, AIRA-T0131, AIRA-T0132, AIRA-T0133, AIRA-T0134, AIRA-T0135, AIRA-T0136, AIRA-T0137, AIRA-T0138, AIRA-T0139, AIRA-T0140, AIRA-T0141, AIRA-T0142, AIRA-T0143, AIRA-T0144, AIRA-T0145, AIRA-T0146, AIRA-T0147, AIRA-T0148, AIRA-T0149, AIRA-T0150, AIRA-T0151, AIRA-T0152, AIRA-T0153 |
 
-This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 16384, plus conditional one-separating-channel bank bridges. It is not a proof that every standard RoPE channel has a large-context margin, and it does not certify 128k contexts.
+This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 65536, plus conditional one-separating-channel bank bridges. It is not a proof that every standard RoPE channel has a large-context margin, and it does not certify 128k contexts.
 
 ## Standard RoPE D12 Bank Bridge Request
 
@@ -66,17 +66,33 @@ This is a conditional one-separating-channel bank certificate based on standard 
 
 This is a 16k one-channel standard-RoPE bracket. It is not a full all-channel bank margin theorem, not a 128k certificate, and it does not decide margins strictly between 1/104219 and 1/104218.
 
+## Standard RoPE D16 Bank Bridge Request
+
+| Name | Bank shape | Requested context | Requested margin | Certified context | Certified margin | Status | Theorem ids |
+| --- | --- | ---: | ---: | ---: | ---: | --- | --- |
+| standard_rope_channel0_d16_bank_bridge_request | standard_channel0_first | 65536 | 1/104219 | 65536 | 1/104219 | PASS | AIRA-T0151, AIRA-T0152 |
+
+This is a conditional one-separating-channel bank certificate based on standard channel 0. It is not a full all-channel standard-RoPE margin theorem, not a 128k certificate, and not a model-quality claim.
+
+## Standard RoPE D16 Margin Bracket
+
+| Name | Context | Proved margin | Impossible margin floor | Status | Theorem ids |
+| --- | ---: | ---: | ---: | --- | --- |
+| standard_rope_channel0_d16_context65536_margin_bracket | 65536 | 1/104219 | 1/104218 | PASS | AIRA-T0148, AIRA-T0149, AIRA-T0118, AIRA-T0153 |
+
+This is a 64k one-channel standard-RoPE bracket. It is not a full all-channel bank margin theorem, not a 128k certificate, and it does not decide margins strictly between 1/104219 and 1/104218.
+
 ## Standard Channel-0 Frontier Summary
 
 | Proved margin | Proved context | Proved status | Candidate full contexts | Candidate first uncovered gaps | Compression bridge | Frontier status |
 | ---: | ---: | --- | --- | --- | --- | --- |
-| 1/104219 | 16384 | lean_proved_interval_seed_AIRA-T0133_to_AIRA-T0135 | 32768, 65536 | 103993 | AIRA-T0139, AIRA-T0140, AIRA-T0141 | candidate_plan_not_lean_proved |
+| 1/104219 | 65536 | lean_proved_interval_seed_AIRA-T0148_to_AIRA-T0150 |  | 103993 | AIRA-T0139, AIRA-T0140, AIRA-T0141 | candidate_plan_not_lean_proved |
 
 This is a derived sidecar summary of proved and candidate interval plans. It does not upgrade candidate rows to theorem-backed status.
 
 ## Standard RoPE Candidate Interval Plans
 
-These exact-rational plans are generated source data for Lean interval certificates. The d4 context-333, d6 context-710, d20 context-4096, d20 context-8192, and d20 context-16384 plans listed here are now matched by compiled Lean declarations; the 32k, 64k, and 128k-frontier rows are candidate-only until matching declarations compile and manifest ids exist.
+These exact-rational plans are generated source data for Lean interval certificates. The d4 context-333, d6 context-710, d20 context-4096, d20 context-8192, d20 context-16384, d20 context-32768, and d20 context-65536 plans listed here are now matched by compiled Lean declarations; the 128k-frontier row remains candidate-only until a matching declaration compiles and manifest ids exist.
 
 | Plan | Pi bounds | Planned margin | Covered context | First uncovered gap | Bands | Status |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
@@ -86,8 +102,8 @@ These exact-rational plans are generated source data for Lean interval certifica
 | standard_rope_channel0_interval_plan_d20_margin_1_104220_context_8192 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/104220 | 8192 | none | 1304 | lean_proved_interval_seed_AIRA-T0120_to_AIRA-T0122 |
 | standard_rope_channel0_interval_plan_d20_margin_1_104219_context_8192 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/104219 | 8192 | none | 1304 | lean_proved_interval_seed_AIRA-T0127_to_AIRA-T0129 |
 | standard_rope_channel0_interval_plan_d20_margin_1_104219_context_16384 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/104219 | 16384 | none | 2608 | lean_proved_interval_seed_AIRA-T0133_to_AIRA-T0135 |
-| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_32768 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/104219 | 32768 | none | 5216 | candidate_plan_not_lean_proved |
-| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_65536 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/104219 | 65536 | none | 10431 | candidate_plan_not_lean_proved |
+| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_32768 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/104219 | 32768 | none | 5216 | lean_proved_interval_seed_AIRA-T0142_to_AIRA-T0144 |
+| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_65536 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/104219 | 65536 | none | 10431 | lean_proved_interval_seed_AIRA-T0148_to_AIRA-T0150 |
 | standard_rope_channel0_interval_plan_d20_margin_1_104219_context_103993 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/104219 | 103993 | 103993 | 16551 | candidate_plan_not_lean_proved |
 
 ### Rational-Band Certificate Audits

@@ -74,11 +74,11 @@ The longest current proved standard seed is a one-channel statement for the stan
 
 ```text
 turn ratio = 1 / (2*pi)
-context    = 16384
+context    = 65536
 margin     = 1 / 104219
 ```
 
-The conditional bank bridge says that if a finite real-phase bank contains that channel and the inspected context and margin are within a seed, then the all-channel near-turn condition is ruled out under the stated tolerance scaling. The concrete D12, D13, and D14 bridges package the common bank shape where standard channel 0 is first and additional frequencies follow. The theorem trail also proves useful negative companions: gap `710` blocks the doubled D9 margin `1/65536`, the nearby D10 margin `1/104000`, and every advertised margin at or above `1/104218`. The bracket theorems package the useful engineering reading: at contexts `4096`, `8192`, and `16384`, a nearby positive margin is proved, while `1/104218` and larger advertised margins are impossible for this channel. The sidecar now emits a `standard_channel0_frontier_summary` and `standard_band_certificate_audits`: 16k is theorem-backed, 32k and 64k exact-rational candidate rows pass the executable band audit, and the larger 128k request first fails audit coverage at gap `103993`. Those candidate rows are not theorem boxes until generated rational-band certificates are checked by Lean and manifest ids are marked proved. `AIRA-T0139` through `AIRA-T0141` are the proved compression and endpoint-reflection bridge for that next certificate route.
+The conditional bank bridge says that if a finite real-phase bank contains that channel and the inspected context and margin are within a seed, then the all-channel near-turn condition is ruled out under the stated tolerance scaling. The concrete D12, D13, D14, D15, and D16 bridges package the common bank shape where standard channel 0 is first and additional frequencies follow. The theorem trail also proves useful negative companions: gap `710` blocks the doubled D9 margin `1/65536`, the nearby D10 margin `1/104000`, and every advertised margin at or above `1/104218`. The bracket theorems package the useful engineering reading: at contexts `4096`, `8192`, `16384`, `32768`, and `65536`, a nearby positive margin is proved, while `1/104218` and larger advertised margins are impossible for this channel. The sidecar now emits a `standard_channel0_frontier_summary` and `standard_band_certificate_audits`: 64k is theorem-backed, and the larger 128k request first fails audit coverage at gap `103993`. `AIRA-T0139` through `AIRA-T0141` are the proved compression and endpoint-reflection bridge used by the generated D15/D16 certificates.
 
 <div class="theorem-box" data-theorem-id="AIRA-T0061"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0101"></div>
@@ -118,6 +118,18 @@ The conditional bank bridge says that if a finite real-phase bank contains that 
 <div class="theorem-box" data-theorem-id="AIRA-T0139"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0140"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0141"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0142"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0143"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0144"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0145"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0146"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0147"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0148"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0149"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0150"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0151"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0152"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0153"></div>
 
 ::: {.warning-box}
 This is not a full real-RoPE bank theorem. It is a theorem-backed channel-0 seed plus a one-separating-channel conditional bank transfer. The remaining hard work is broader channel-wise certification or sharper Diophantine machinery.

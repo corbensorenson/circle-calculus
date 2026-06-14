@@ -850,7 +850,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_16384",
+            "status": "AVAILABLE_SEED_CONTEXT_65536",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -931,7 +931,19 @@
               "AIRA-T0138",
               "AIRA-T0139",
               "AIRA-T0140",
-              "AIRA-T0141"
+              "AIRA-T0141",
+              "AIRA-T0142",
+              "AIRA-T0143",
+              "AIRA-T0144",
+              "AIRA-T0145",
+              "AIRA-T0146",
+              "AIRA-T0147",
+              "AIRA-T0148",
+              "AIRA-T0149",
+              "AIRA-T0150",
+              "AIRA-T0151",
+              "AIRA-T0152",
+              "AIRA-T0153"
             ]
           },
           {
@@ -1031,7 +1043,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=128 base=10000 context=4096 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_16384,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_65536,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=8 first_exact_pass_prefix_length=5",
         "subfamily_pass_reports=8 smallest_pass_subfamily_size=1",
@@ -1443,7 +1455,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_16384",
+            "status": "AVAILABLE_SEED_CONTEXT_65536",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -1524,7 +1536,19 @@
               "AIRA-T0138",
               "AIRA-T0139",
               "AIRA-T0140",
-              "AIRA-T0141"
+              "AIRA-T0141",
+              "AIRA-T0142",
+              "AIRA-T0143",
+              "AIRA-T0144",
+              "AIRA-T0145",
+              "AIRA-T0146",
+              "AIRA-T0147",
+              "AIRA-T0148",
+              "AIRA-T0149",
+              "AIRA-T0150",
+              "AIRA-T0151",
+              "AIRA-T0152",
+              "AIRA-T0153"
             ]
           },
           {
@@ -1624,7 +1648,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=128 base=10000 context=131072 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_16384,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_65536,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=8 first_exact_pass_prefix_length=8",
         "subfamily_pass_reports=8 smallest_pass_subfamily_size=2",
@@ -2020,7 +2044,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_16384",
+            "status": "AVAILABLE_SEED_CONTEXT_65536",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -2101,7 +2125,19 @@
               "AIRA-T0138",
               "AIRA-T0139",
               "AIRA-T0140",
-              "AIRA-T0141"
+              "AIRA-T0141",
+              "AIRA-T0142",
+              "AIRA-T0143",
+              "AIRA-T0144",
+              "AIRA-T0145",
+              "AIRA-T0146",
+              "AIRA-T0147",
+              "AIRA-T0148",
+              "AIRA-T0149",
+              "AIRA-T0150",
+              "AIRA-T0151",
+              "AIRA-T0152",
+              "AIRA-T0153"
             ]
           },
           {
@@ -2201,7 +2237,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=128 base=500000 context=131072 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_16384,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_65536,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=64 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=8 first_exact_pass_prefix_length=none",
         "subfamily_pass_reports=8 smallest_pass_subfamily_size=1",
@@ -2328,7 +2364,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_16384",
+            "status": "AVAILABLE_SEED_CONTEXT_65536",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -2409,7 +2445,19 @@
               "AIRA-T0138",
               "AIRA-T0139",
               "AIRA-T0140",
-              "AIRA-T0141"
+              "AIRA-T0141",
+              "AIRA-T0142",
+              "AIRA-T0143",
+              "AIRA-T0144",
+              "AIRA-T0145",
+              "AIRA-T0146",
+              "AIRA-T0147",
+              "AIRA-T0148",
+              "AIRA-T0149",
+              "AIRA-T0150",
+              "AIRA-T0151",
+              "AIRA-T0152",
+              "AIRA-T0153"
             ]
           },
           {
@@ -2509,7 +2557,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=2 base=10000 context=20 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_16384,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_65536,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=FAIL common_collision_gap=6 period_count=1 guaranteed_common_gap_collision_pair_count=14 guaranteed_common_gap_multiple_pair_count=24 total_bank_collision_pair_count=24",
         "prefix_collision_reports=1 first_exact_pass_prefix_length=none",
         "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
@@ -2648,7 +2696,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_16384",
+            "status": "AVAILABLE_SEED_CONTEXT_65536",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -2729,7 +2777,19 @@
               "AIRA-T0138",
               "AIRA-T0139",
               "AIRA-T0140",
-              "AIRA-T0141"
+              "AIRA-T0141",
+              "AIRA-T0142",
+              "AIRA-T0143",
+              "AIRA-T0144",
+              "AIRA-T0145",
+              "AIRA-T0146",
+              "AIRA-T0147",
+              "AIRA-T0148",
+              "AIRA-T0149",
+              "AIRA-T0150",
+              "AIRA-T0151",
+              "AIRA-T0152",
+              "AIRA-T0153"
             ]
           },
           {
@@ -2829,7 +2889,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=4 base=36 context=128 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_16384,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_65536,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=FAIL common_collision_gap=114 period_count=2 guaranteed_common_gap_collision_pair_count=14 guaranteed_common_gap_multiple_pair_count=14 total_bank_collision_pair_count=14",
         "prefix_collision_reports=2 first_exact_pass_prefix_length=none",
         "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
@@ -3025,7 +3085,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_16384",
+            "status": "AVAILABLE_SEED_CONTEXT_65536",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -3106,7 +3166,19 @@
               "AIRA-T0138",
               "AIRA-T0139",
               "AIRA-T0140",
-              "AIRA-T0141"
+              "AIRA-T0141",
+              "AIRA-T0142",
+              "AIRA-T0143",
+              "AIRA-T0144",
+              "AIRA-T0145",
+              "AIRA-T0146",
+              "AIRA-T0147",
+              "AIRA-T0148",
+              "AIRA-T0149",
+              "AIRA-T0150",
+              "AIRA-T0151",
+              "AIRA-T0152",
+              "AIRA-T0153"
             ]
           },
           {
@@ -3206,7 +3278,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=8 base=4 context=128 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_16384,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:PASS,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_65536,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=4 guaranteed_common_gap_collision_pair_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=4 first_exact_pass_prefix_length=3",
         "subfamily_pass_reports=4 smallest_pass_subfamily_size=2",
@@ -3358,7 +3430,7 @@
           },
           {
             "layer": "interval_backed_standard_rope",
-            "status": "AVAILABLE_SEED_CONTEXT_16384",
+            "status": "AVAILABLE_SEED_CONTEXT_65536",
             "theorem_backed": true,
             "theorem_ids": [
               "AIRA-T0063",
@@ -3439,7 +3511,19 @@
               "AIRA-T0138",
               "AIRA-T0139",
               "AIRA-T0140",
-              "AIRA-T0141"
+              "AIRA-T0141",
+              "AIRA-T0142",
+              "AIRA-T0143",
+              "AIRA-T0144",
+              "AIRA-T0145",
+              "AIRA-T0146",
+              "AIRA-T0147",
+              "AIRA-T0148",
+              "AIRA-T0149",
+              "AIRA-T0150",
+              "AIRA-T0151",
+              "AIRA-T0152",
+              "AIRA-T0153"
             ]
           },
           {
@@ -3539,7 +3623,7 @@
       "summary_lines": [
         "RoPE position distinguishability certificate",
         "config: head_dim=6 base=25 context=64 tolerance=1e-06 discretization=round",
-        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_16384,numerical_real_phase_scan:PASS",
+        "proof_layers=exact_integer_period_phase_bank:FAIL,rational_discretized_finite_margin:AVAILABLE_NAMED_PRESET,interval_backed_standard_rope:AVAILABLE_SEED_CONTEXT_65536,numerical_real_phase_scan:PASS",
         "exact_discrete_contract=FAIL common_collision_gap=54 period_count=3 guaranteed_common_gap_collision_pair_count=10 guaranteed_common_gap_multiple_pair_count=10 total_bank_collision_pair_count=10",
         "prefix_collision_reports=3 first_exact_pass_prefix_length=none",
         "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
@@ -3890,10 +3974,7 @@
     "candidate_first_uncovered_gaps": [
       103993
     ],
-    "candidate_full_contexts": [
-      32768,
-      65536
-    ],
+    "candidate_full_contexts": [],
     "claim_boundary": "This is a derived sidecar summary of proved and candidate interval plans. It does not upgrade candidate rows to theorem-backed status.",
     "compression_bridge_lean_declarations": [
       "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
@@ -3906,11 +3987,11 @@
       "AIRA-T0141"
     ],
     "frontier_status": "candidate_plan_not_lean_proved",
-    "proved_context": 16384,
+    "proved_context": 65536,
     "proved_margin": "1/104219",
-    "proved_theorem_status": "lean_proved_interval_seed_AIRA-T0133_to_AIRA-T0135",
+    "proved_theorem_status": "lean_proved_interval_seed_AIRA-T0148_to_AIRA-T0150",
     "schema_id": "circle_calculus.standard_rope_channel0_frontier_summary.v0",
-    "summary": "Lean currently proves standard channel-0 margin 1/104219 through context 16384. The exact-rational planner also covers contexts (32768, 65536) at the same margin and first fails at gaps (103993,), but those rows are not Lean proofs. AIRA-T0139 through AIRA-T0141 are the proved rational-band compression and rational-endpoint reflection bridges intended for converting those planner rows without another large interval-case expansion."
+    "summary": "Lean currently proves standard channel-0 margin 1/104219 through context 65536. The exact-rational planner first fails at gaps (103993,); any remaining full-context candidate rows are (). AIRA-T0139 through AIRA-T0141 are the proved rational-band compression and rational-endpoint reflection bridges used by the generated 32k/64k certificates."
   },
   "standard_d12_bank_bridge_request": {
     "assumptions": [
@@ -4059,12 +4140,61 @@
       "AIRA-T0138"
     ]
   },
+  "standard_d16_bank_bridge_request": {
+    "assumptions": [
+      "The finite real-phase bank has standard channel 0 as its first channel.",
+      "The requested context is at most 65536.",
+      "The requested margin is at most 1/104219."
+    ],
+    "bank_shape": "standard_channel0_first",
+    "certified_context": 65536,
+    "certified_margin": "1/104219",
+    "claim_boundary": "This is a conditional one-separating-channel bank certificate based on standard channel 0. It is not a full all-channel standard-RoPE margin theorem, not a 128k certificate, and not a model-quality claim.",
+    "explanation": "This request is inside the D16 standard-channel bank bridge.",
+    "failure_reason": null,
+    "lean_declarations": [
+      "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D16Seed",
+      "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D16Seed_cons"
+    ],
+    "name": "standard_rope_channel0_d16_bank_bridge_request",
+    "pass_certificate": true,
+    "requested_context": 65536,
+    "requested_margin": "1/104219",
+    "schema_id": "circle_calculus.standard_rope_channel0_d16_bank_bridge.v0",
+    "theorem_ids": [
+      "AIRA-T0151",
+      "AIRA-T0152"
+    ],
+    "tolerance_rule": "Lean conclusion applies when tolerance < fullTurn * requestedMargin."
+  },
+  "standard_d16_margin_bracket": {
+    "claim_boundary": "This is a 64k one-channel standard-RoPE bracket. It is not a full all-channel bank margin theorem, not a 128k certificate, and it does not decide margins strictly between 1/104219 and 1/104218.",
+    "context_length": 65536,
+    "explanation": "Lean proves that standard RoPE channel 0 has finite-context nearest-integer margin 1/104219 through context 65536. Lean also proves that any margin at or above 1/104218 is impossible for that context because gap 710 is already too close to integer turn 113.",
+    "impossible_margin_floor": "1/104218",
+    "lean_declarations": [
+      "Circle.Applications.ropeStandardChannel0D16Seed_intervalCertificate",
+      "Circle.Applications.ropeStandardChannel0D16Seed_turnRatioFiniteMargin",
+      "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_104218_of_context_gt_710",
+      "Circle.Applications.ropeStandardChannel0D16_context65536_margin_bracket"
+    ],
+    "name": "standard_rope_channel0_d16_context65536_margin_bracket",
+    "pass_certificate": true,
+    "proved_margin": "1/104219",
+    "schema_id": "circle_calculus.standard_rope_channel0_d16_margin_bracket.v0",
+    "theorem_ids": [
+      "AIRA-T0148",
+      "AIRA-T0149",
+      "AIRA-T0118",
+      "AIRA-T0153"
+    ]
+  },
   "standard_interval_candidate_plans": [
     {
       "band_count": 53,
       "claim_boundary": "Interval-plan data only unless theorem_status names a compiled Lean seed. Even the proved seed is not a model-quality claim, large-context bank claim, speed claim, or deployment claim.",
       "context_length": 333,
-      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384 plan have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
+      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384, context-32768, and context-65536 plans have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
       "first_band": {
         "bridge_theorem_id": "AIRA-T0126",
         "cell": 0,
@@ -4099,7 +4229,7 @@
       "band_count": 113,
       "claim_boundary": "Interval-plan data only unless theorem_status names a compiled Lean seed. Even the proved seed is not a model-quality claim, large-context bank claim, speed claim, or deployment claim.",
       "context_length": 710,
-      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384 plan have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
+      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384, context-32768, and context-65536 plans have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
       "first_band": {
         "bridge_theorem_id": "AIRA-T0126",
         "cell": 0,
@@ -4134,7 +4264,7 @@
       "band_count": 652,
       "claim_boundary": "Interval-plan data only unless theorem_status names a compiled Lean seed. Even the proved seed is not a model-quality claim, large-context bank claim, speed claim, or deployment claim.",
       "context_length": 4096,
-      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384 plan have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
+      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384, context-32768, and context-65536 plans have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
       "first_band": {
         "bridge_theorem_id": "AIRA-T0126",
         "cell": 0,
@@ -4169,7 +4299,7 @@
       "band_count": 1304,
       "claim_boundary": "Interval-plan data only unless theorem_status names a compiled Lean seed. Even the proved seed is not a model-quality claim, large-context bank claim, speed claim, or deployment claim.",
       "context_length": 8192,
-      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384 plan have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
+      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384, context-32768, and context-65536 plans have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
       "first_band": {
         "bridge_theorem_id": "AIRA-T0126",
         "cell": 0,
@@ -4204,7 +4334,7 @@
       "band_count": 1304,
       "claim_boundary": "Interval-plan data only unless theorem_status names a compiled Lean seed. Even the proved seed is not a model-quality claim, large-context bank claim, speed claim, or deployment claim.",
       "context_length": 8192,
-      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384 plan have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
+      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384, context-32768, and context-65536 plans have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
       "first_band": {
         "bridge_theorem_id": "AIRA-T0126",
         "cell": 0,
@@ -4239,7 +4369,7 @@
       "band_count": 2608,
       "claim_boundary": "Interval-plan data only unless theorem_status names a compiled Lean seed. Even the proved seed is not a model-quality claim, large-context bank claim, speed claim, or deployment claim.",
       "context_length": 16384,
-      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384 plan have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
+      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384, context-32768, and context-65536 plans have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
       "first_band": {
         "bridge_theorem_id": "AIRA-T0126",
         "cell": 0,
@@ -4274,7 +4404,7 @@
       "band_count": 5216,
       "claim_boundary": "Interval-plan data only unless theorem_status names a compiled Lean seed. Even the proved seed is not a model-quality claim, large-context bank claim, speed claim, or deployment claim.",
       "context_length": 32768,
-      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384 plan have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
+      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384, context-32768, and context-65536 plans have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
       "first_band": {
         "bridge_theorem_id": "AIRA-T0126",
         "cell": 0,
@@ -4301,7 +4431,7 @@
       "pi_bounds": "3.14159265358979323846 < pi and pi < 3.14159265358979323847",
       "planned_margin": "1/104219",
       "schema_id": "circle_calculus.standard_rope_interval_plan.v0",
-      "theorem_status": "candidate_plan_not_lean_proved",
+      "theorem_status": "lean_proved_interval_seed_AIRA-T0142_to_AIRA-T0144",
       "turn_ratio_expression": "1/(2*pi)",
       "upper_turn_ratio_bound": "25000000000000000000/157079632679489661923"
     },
@@ -4309,7 +4439,7 @@
       "band_count": 10431,
       "claim_boundary": "Interval-plan data only unless theorem_status names a compiled Lean seed. Even the proved seed is not a model-quality claim, large-context bank claim, speed claim, or deployment claim.",
       "context_length": 65536,
-      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384 plan have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
+      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384, context-32768, and context-65536 plans have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
       "first_band": {
         "bridge_theorem_id": "AIRA-T0126",
         "cell": 0,
@@ -4336,7 +4466,7 @@
       "pi_bounds": "3.14159265358979323846 < pi and pi < 3.14159265358979323847",
       "planned_margin": "1/104219",
       "schema_id": "circle_calculus.standard_rope_interval_plan.v0",
-      "theorem_status": "candidate_plan_not_lean_proved",
+      "theorem_status": "lean_proved_interval_seed_AIRA-T0148_to_AIRA-T0150",
       "turn_ratio_expression": "1/(2*pi)",
       "upper_turn_ratio_bound": "25000000000000000000/157079632679489661923"
     },
@@ -4344,7 +4474,7 @@
       "band_count": 16551,
       "claim_boundary": "Interval-plan data only unless theorem_status names a compiled Lean seed. Even the proved seed is not a model-quality claim, large-context bank claim, speed claim, or deployment claim.",
       "context_length": 103993,
-      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384 plan have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
+      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384, context-32768, and context-65536 plans have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
       "first_band": {
         "bridge_theorem_id": "AIRA-T0126",
         "cell": 0,
@@ -4378,9 +4508,9 @@
   ],
   "standard_interval_certificate": {
     "certified_margin": "1/104219",
-    "claim_boundary": "This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 16384, plus conditional one-separating-channel bank bridges. It is not a proof that every standard RoPE channel has a large-context margin, and it does not certify 128k contexts.",
-    "context_length": 16384,
-    "explanation": "Lean proves that standard RoPE channel 0, with turn ratio 1/(2*pi), has finite nearest-integer margin 1/104219 for gaps 1 through 16383. Every gap uses the 20-decimal enclosure 10^20*gap/628318530717958647694 <= gap/(2*pi) <= 10^20*gap/628318530717958647692, split across computed integer cells 0 through 2607. Lean also proves that the earlier 1/1024 margin stops at gap 710, and that margins 1/65536, 1/104000, and 1/104218 are already impossible for any context containing that gap. Lean further packages the D11 result as a 4k bracket: 1/104219 is proved, while every margin at or above 1/104218 is impossible for context 4096. The theorem trail includes the weaker D12 8k one-channel seed at margin 1/104220, the sharper D13 8k seed at margin 1/104219, and the D14 16k seed at the same margin. D14 packages the same 16k bracket and adds bank-level bridges for banks containing the standard channel-0 angular frequency and for banks whose first channel is that standard frequency. The newest bridge turns valid rational interval-band lists that cover a generated gap range into the original interval-certificate predicate, which is the intended route for larger planner rows.",
+    "claim_boundary": "This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 65536, plus conditional one-separating-channel bank bridges. It is not a proof that every standard RoPE channel has a large-context margin, and it does not certify 128k contexts.",
+    "context_length": 65536,
+    "explanation": "Lean proves that standard RoPE channel 0, with turn ratio 1/(2*pi), has finite nearest-integer margin 1/104219 for gaps 1 through 65535. The generated D16 compressed certificate uses the 20-decimal enclosure 10^20*gap/628318530717958647694 <= gap/(2*pi) <= 10^20*gap/628318530717958647692, split across computed integer cells 0 through 10430. Lean also proves that the earlier 1/1024 margin stops at gap 710, and that margins 1/65536, 1/104000, and 1/104218 are already impossible for any context containing that gap. Lean further packages the D11 result as a 4k bracket: 1/104219 is proved, while every margin at or above 1/104218 is impossible for context 4096. The theorem trail includes the weaker D12 8k one-channel seed at margin 1/104220, the sharper D13 8k seed at margin 1/104219, the D14 16k seed, and generated D15/D16 32k and 64k seeds at the same margin. D16 packages the same 64k bracket and adds bank-level bridges for banks containing the standard channel-0 angular frequency and for banks whose first channel is that standard frequency. The newest compressed certificates use the rational-band and endpoint-reflection bridges to avoid per-gap interval-case expansions.",
     "first_interval_witness": {
       "cell": 0,
       "gap": 1,
@@ -4388,10 +4518,10 @@
       "upper": "25000000000000000000/157079632679489661923"
     },
     "last_interval_witness": {
-      "cell": 2607,
-      "gap": 16383,
-      "lower": "819150000000000000000000/314159265358979323847",
-      "upper": "409575000000000000000000/157079632679489661923"
+      "cell": 10430,
+      "gap": 65535,
+      "lower": "3276750000000000000000000/314159265358979323847",
+      "upper": "1638375000000000000000000/157079632679489661923"
     },
     "lean_declarations": [
       "Circle.Applications.ropeTurnRatioIntervalWitness_forall_int",
@@ -4472,9 +4602,21 @@
       "Circle.Applications.ropeStandardChannel0D14_context16384_margin_bracket",
       "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
       "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
-      "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid"
+      "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid",
+      "Circle.Applications.ropeStandardChannel0D15Seed_intervalCertificate",
+      "Circle.Applications.ropeStandardChannel0D15Seed_turnRatioFiniteMargin",
+      "Circle.Applications.not_ropeStandardChannel0D15Seed_nearTurn",
+      "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D15Seed",
+      "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D15Seed_cons",
+      "Circle.Applications.ropeStandardChannel0D15_context32768_margin_bracket",
+      "Circle.Applications.ropeStandardChannel0D16Seed_intervalCertificate",
+      "Circle.Applications.ropeStandardChannel0D16Seed_turnRatioFiniteMargin",
+      "Circle.Applications.not_ropeStandardChannel0D16Seed_nearTurn",
+      "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D16Seed",
+      "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D16Seed_cons",
+      "Circle.Applications.ropeStandardChannel0D16_context65536_margin_bracket"
     ],
-    "name": "standard_rope_channel0_interval_context_16384",
+    "name": "standard_rope_channel0_interval_context_65536",
     "pass_certificate": true,
     "pi_bounds": "pi <= 4, 3.14 < pi, pi < 3.15, 3.1415 < pi, pi < 3.1416, 3.141592 < pi, pi < 3.141593, 3.14159265358979323846 < pi, and pi < 3.14159265358979323847",
     "schema_id": "circle_calculus.standard_rope_interval_margin.v0",
@@ -4557,9 +4699,21 @@
       "AIRA-T0138",
       "AIRA-T0139",
       "AIRA-T0140",
-      "AIRA-T0141"
+      "AIRA-T0141",
+      "AIRA-T0142",
+      "AIRA-T0143",
+      "AIRA-T0144",
+      "AIRA-T0145",
+      "AIRA-T0146",
+      "AIRA-T0147",
+      "AIRA-T0148",
+      "AIRA-T0149",
+      "AIRA-T0150",
+      "AIRA-T0151",
+      "AIRA-T0152",
+      "AIRA-T0153"
     ],
     "turn_ratio_expression": "1/(2*pi)",
-    "witness_count": 16383
+    "witness_count": 65535
   }
 }
