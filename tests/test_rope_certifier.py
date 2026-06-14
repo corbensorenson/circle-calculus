@@ -1521,6 +1521,24 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert payload["standard_interval_candidate_plans"][5]["theorem_status"] == (
         "lean_proved_interval_seed_AIRA-T0133_to_AIRA-T0135"
     )
+    assert payload["standard_interval_candidate_plans"][6]["context_length"] == 32768
+    assert payload["standard_interval_candidate_plans"][6]["band_count"] == 5216
+    assert payload["standard_interval_candidate_plans"][6]["first_uncovered_gap"] is None
+    assert payload["standard_interval_candidate_plans"][6]["theorem_status"] == (
+        "candidate_plan_not_lean_proved"
+    )
+    assert payload["standard_interval_candidate_plans"][7]["context_length"] == 65536
+    assert payload["standard_interval_candidate_plans"][7]["band_count"] == 10431
+    assert payload["standard_interval_candidate_plans"][7]["first_uncovered_gap"] is None
+    assert payload["standard_interval_candidate_plans"][7]["theorem_status"] == (
+        "candidate_plan_not_lean_proved"
+    )
+    assert payload["standard_interval_candidate_plans"][8]["context_length"] == 103993
+    assert payload["standard_interval_candidate_plans"][8]["band_count"] == 16551
+    assert payload["standard_interval_candidate_plans"][8]["first_uncovered_gap"] == 103993
+    assert payload["standard_interval_candidate_plans"][8]["theorem_status"] == (
+        "candidate_plan_not_lean_proved"
+    )
     assert payload["presets"][0]["preset"] == "llama_style_10000_4k"
     assert payload["presets"][0]["certificate"]["exact_discrete_summary"]["pass_exact"] is True
     assert "lean_declarations" not in payload["presets"][0]["certificate"]
@@ -1568,6 +1586,10 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert "lean_proved_interval_seed_AIRA-T0120_to_AIRA-T0122" in markdown_result.stdout
     assert "lean_proved_interval_seed_AIRA-T0127_to_AIRA-T0129" in markdown_result.stdout
     assert "lean_proved_interval_seed_AIRA-T0133_to_AIRA-T0135" in markdown_result.stdout
+    assert "candidate_plan_not_lean_proved" in markdown_result.stdout
+    assert "context_32768" in markdown_result.stdout
+    assert "context_65536" in markdown_result.stdout
+    assert "| 103993 | 16551 | candidate_plan_not_lean_proved |" in markdown_result.stdout
     assert "Band Endpoint Audit" in markdown_result.stdout
     assert (
         "| standard_rope_channel0_interval_plan_d20_margin_1_104220_context_8192 "

@@ -70,15 +70,15 @@ This is exact for the declared integer-period phase-bank model. It is not a clai
 
 Real RoPE moves from divisibility to distance from an integer turn. The current theorem program proves finite-margin certificates for named ratios and a bounded standard channel-0 seed. That is the important shift: the question becomes quantitative, and the proof has to account for every inspected positive gap.
 
-The longest current standard seed is a one-channel statement for the standard channel-0 turn ratio:
+The longest current proved standard seed is a one-channel statement for the standard channel-0 turn ratio:
 
 ```text
 turn ratio = 1 / (2*pi)
-context    = 8192
-margin     = 1 / 104220
+context    = 16384
+margin     = 1 / 104219
 ```
 
-The conditional bank bridge says that if a finite real-phase bank contains that channel and the inspected context and margin are within a seed, then the all-channel near-turn condition is ruled out under the stated tolerance scaling. The concrete D11 and D12 bridges package the common bank shape where standard channel 0 is first and additional frequencies follow. The theorem trail also proves useful negative companions: gap `710` blocks the doubled D9 margin `1/65536`, the nearby D10 margin `1/104000`, and the adjacent D11 margin `1/104218`. The bracket theorem packages the useful engineering reading: at context `4096`, `1/104219` is proved, while every advertised margin at or above `1/104218` is impossible for this channel. D12 then lowers the margin to `1/104220`, extends the channel-0 seed to context `8192`, and carries it through the same one-separating-channel bank transfer.
+The conditional bank bridge says that if a finite real-phase bank contains that channel and the inspected context and margin are within a seed, then the all-channel near-turn condition is ruled out under the stated tolerance scaling. The concrete D12, D13, and D14 bridges package the common bank shape where standard channel 0 is first and additional frequencies follow. The theorem trail also proves useful negative companions: gap `710` blocks the doubled D9 margin `1/65536`, the nearby D10 margin `1/104000`, and every advertised margin at or above `1/104218`. The bracket theorems package the useful engineering reading: at contexts `4096`, `8192`, and `16384`, a nearby positive margin is proved, while `1/104218` and larger advertised margins are impossible for this channel. Python now records exact-rational 32k and 64k candidate rows at margin `1/104219`, plus a 128k-frontier first uncovered gap at `103993`; those rows are not theorem boxes until Lean declarations compile.
 
 <div class="theorem-box" data-theorem-id="AIRA-T0061"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0101"></div>
@@ -103,6 +103,18 @@ The conditional bank bridge says that if a finite real-phase bank contains that 
 <div class="theorem-box" data-theorem-id="AIRA-T0124"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0125"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0126"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0127"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0128"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0129"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0130"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0131"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0132"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0133"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0134"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0135"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0136"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0137"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0138"></div>
 
 ::: {.warning-box}
 This is not a full real-RoPE bank theorem. It is a theorem-backed channel-0 seed plus a one-separating-channel conditional bank transfer. The remaining hard work is broader channel-wise certification or sharper Diophantine machinery.

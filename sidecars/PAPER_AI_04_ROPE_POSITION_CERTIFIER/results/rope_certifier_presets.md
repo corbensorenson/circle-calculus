@@ -68,7 +68,7 @@ This is a 16k one-channel standard-RoPE bracket. It is not a full all-channel ba
 
 ## Standard RoPE Candidate Interval Plans
 
-These exact-rational plans are generated source data for Lean interval certificates. The d4 context-333, d6 context-710, d20 context-4096, d20 context-8192, and d20 context-16384 plans listed here are now matched by compiled Lean declarations; candidate-only rows remain unproved until matching declarations and manifest ids exist.
+These exact-rational plans are generated source data for Lean interval certificates. The d4 context-333, d6 context-710, d20 context-4096, d20 context-8192, and d20 context-16384 plans listed here are now matched by compiled Lean declarations; the 32k, 64k, and 128k-frontier rows are candidate-only until matching declarations compile and manifest ids exist.
 
 | Plan | Pi bounds | Planned margin | Covered context | First uncovered gap | Bands | Status |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
@@ -78,6 +78,9 @@ These exact-rational plans are generated source data for Lean interval certifica
 | standard_rope_channel0_interval_plan_d20_margin_1_104220_context_8192 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/104220 | 8192 | none | 1304 | lean_proved_interval_seed_AIRA-T0120_to_AIRA-T0122 |
 | standard_rope_channel0_interval_plan_d20_margin_1_104219_context_8192 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/104219 | 8192 | none | 1304 | lean_proved_interval_seed_AIRA-T0127_to_AIRA-T0129 |
 | standard_rope_channel0_interval_plan_d20_margin_1_104219_context_16384 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/104219 | 16384 | none | 2608 | lean_proved_interval_seed_AIRA-T0133_to_AIRA-T0135 |
+| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_32768 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/104219 | 32768 | none | 5216 | candidate_plan_not_lean_proved |
+| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_65536 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/104219 | 65536 | none | 10431 | candidate_plan_not_lean_proved |
+| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_103993 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/104219 | 103993 | 103993 | 16551 | candidate_plan_not_lean_proved |
 
 ### Band Endpoint Audit
 
@@ -97,6 +100,12 @@ Each row shows the endpoint inequalities a generator must justify before the Lea
 | standard_rope_channel0_interval_plan_d20_margin_1_104219_context_8192 | last | 8187-8191 | 1303 | 409350000000000000000000/314159265358979323847 | 204775000000000000000000/157079632679489661923 | PASS | AIRA-T0126 |
 | standard_rope_channel0_interval_plan_d20_margin_1_104219_context_16384 | first | 1-6 | 0 | 50000000000000000000/314159265358979323847 | 150000000000000000000/157079632679489661923 | PASS | AIRA-T0126 |
 | standard_rope_channel0_interval_plan_d20_margin_1_104219_context_16384 | last | 16381-16383 | 2607 | 819050000000000000000000/314159265358979323847 | 409575000000000000000000/157079632679489661923 | PASS | AIRA-T0126 |
+| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_32768 | first | 1-6 | 0 | 50000000000000000000/314159265358979323847 | 150000000000000000000/157079632679489661923 | PASS | AIRA-T0126 |
+| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_32768 | last | 32767-32767 | 5215 | 1638350000000000000000000/314159265358979323847 | 819175000000000000000000/157079632679489661923 | PASS | AIRA-T0126 |
+| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_65536 | first | 1-6 | 0 | 50000000000000000000/314159265358979323847 | 150000000000000000000/157079632679489661923 | PASS | AIRA-T0126 |
+| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_65536 | last | 65534-65535 | 10430 | 3276700000000000000000000/314159265358979323847 | 1638375000000000000000000/157079632679489661923 | PASS | AIRA-T0126 |
+| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_103993 | first | 1-6 | 0 | 50000000000000000000/314159265358979323847 | 150000000000000000000/157079632679489661923 | PASS | AIRA-T0126 |
+| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_103993 | last | 103987-103992 | 16550 | 5199350000000000000000000/314159265358979323847 | 2599800000000000000000000/157079632679489661923 | PASS | AIRA-T0126 |
 
 ## RoPE Preset Diagnostics
 

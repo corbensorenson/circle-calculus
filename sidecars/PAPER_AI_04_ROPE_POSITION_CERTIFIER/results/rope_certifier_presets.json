@@ -3872,6 +3872,111 @@
       "theorem_status": "lean_proved_interval_seed_AIRA-T0133_to_AIRA-T0135",
       "turn_ratio_expression": "1/(2*pi)",
       "upper_turn_ratio_bound": "25000000000000000000/157079632679489661923"
+    },
+    {
+      "band_count": 5216,
+      "claim_boundary": "Interval-plan data only unless theorem_status names a compiled Lean seed. Even the proved seed is not a model-quality claim, large-context bank claim, speed claim, or deployment claim.",
+      "context_length": 32768,
+      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384 plan have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
+      "first_band": {
+        "bridge_theorem_id": "AIRA-T0126",
+        "cell": 0,
+        "end_gap": 6,
+        "end_upper_value": "150000000000000000000/157079632679489661923",
+        "endpoint_cell_margin_ok": true,
+        "start_gap": 1,
+        "start_lower_value": "50000000000000000000/314159265358979323847"
+      },
+      "first_uncovered_gap": null,
+      "last_band": {
+        "bridge_theorem_id": "AIRA-T0126",
+        "cell": 5215,
+        "end_gap": 32767,
+        "end_upper_value": "819175000000000000000000/157079632679489661923",
+        "endpoint_cell_margin_ok": true,
+        "start_gap": 32767,
+        "start_lower_value": "1638350000000000000000000/314159265358979323847"
+      },
+      "lower_turn_ratio_bound": "50000000000000000000/314159265358979323847",
+      "name": "standard_rope_channel0_interval_plan_d20_margin_1_104219_context_32768",
+      "pass_plan": true,
+      "pi_bound_preset": "d20",
+      "pi_bounds": "3.14159265358979323846 < pi and pi < 3.14159265358979323847",
+      "planned_margin": "1/104219",
+      "schema_id": "circle_calculus.standard_rope_interval_plan.v0",
+      "theorem_status": "candidate_plan_not_lean_proved",
+      "turn_ratio_expression": "1/(2*pi)",
+      "upper_turn_ratio_bound": "25000000000000000000/157079632679489661923"
+    },
+    {
+      "band_count": 10431,
+      "claim_boundary": "Interval-plan data only unless theorem_status names a compiled Lean seed. Even the proved seed is not a model-quality claim, large-context bank claim, speed claim, or deployment claim.",
+      "context_length": 65536,
+      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384 plan have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
+      "first_band": {
+        "bridge_theorem_id": "AIRA-T0126",
+        "cell": 0,
+        "end_gap": 6,
+        "end_upper_value": "150000000000000000000/157079632679489661923",
+        "endpoint_cell_margin_ok": true,
+        "start_gap": 1,
+        "start_lower_value": "50000000000000000000/314159265358979323847"
+      },
+      "first_uncovered_gap": null,
+      "last_band": {
+        "bridge_theorem_id": "AIRA-T0126",
+        "cell": 10430,
+        "end_gap": 65535,
+        "end_upper_value": "1638375000000000000000000/157079632679489661923",
+        "endpoint_cell_margin_ok": true,
+        "start_gap": 65534,
+        "start_lower_value": "3276700000000000000000000/314159265358979323847"
+      },
+      "lower_turn_ratio_bound": "50000000000000000000/314159265358979323847",
+      "name": "standard_rope_channel0_interval_plan_d20_margin_1_104219_context_65536",
+      "pass_plan": true,
+      "pi_bound_preset": "d20",
+      "pi_bounds": "3.14159265358979323846 < pi and pi < 3.14159265358979323847",
+      "planned_margin": "1/104219",
+      "schema_id": "circle_calculus.standard_rope_interval_plan.v0",
+      "theorem_status": "candidate_plan_not_lean_proved",
+      "turn_ratio_expression": "1/(2*pi)",
+      "upper_turn_ratio_bound": "25000000000000000000/157079632679489661923"
+    },
+    {
+      "band_count": 16551,
+      "claim_boundary": "Interval-plan data only unless theorem_status names a compiled Lean seed. Even the proved seed is not a model-quality claim, large-context bank claim, speed claim, or deployment claim.",
+      "context_length": 103993,
+      "explanation": "This exact-rational plan groups positive gaps into integer-cell bands for a Lean interval certificate. The d4 margin-1/512 context-333 plan, d6 margin-1/1024 context-710 plan, and d20 margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans and the margin-1/104219 context-16384 plan have now been converted into compiled Lean declarations; other generated plans remain source data until matching declarations compile and manifest ids are marked proved.",
+      "first_band": {
+        "bridge_theorem_id": "AIRA-T0126",
+        "cell": 0,
+        "end_gap": 6,
+        "end_upper_value": "150000000000000000000/157079632679489661923",
+        "endpoint_cell_margin_ok": true,
+        "start_gap": 1,
+        "start_lower_value": "50000000000000000000/314159265358979323847"
+      },
+      "first_uncovered_gap": 103993,
+      "last_band": {
+        "bridge_theorem_id": "AIRA-T0126",
+        "cell": 16550,
+        "end_gap": 103992,
+        "end_upper_value": "2599800000000000000000000/157079632679489661923",
+        "endpoint_cell_margin_ok": true,
+        "start_gap": 103987,
+        "start_lower_value": "5199350000000000000000000/314159265358979323847"
+      },
+      "lower_turn_ratio_bound": "50000000000000000000/314159265358979323847",
+      "name": "standard_rope_channel0_interval_plan_d20_margin_1_104219_context_103993",
+      "pass_plan": true,
+      "pi_bound_preset": "d20",
+      "pi_bounds": "3.14159265358979323846 < pi and pi < 3.14159265358979323847",
+      "planned_margin": "1/104219",
+      "schema_id": "circle_calculus.standard_rope_interval_plan.v0",
+      "theorem_status": "candidate_plan_not_lean_proved",
+      "turn_ratio_expression": "1/(2*pi)",
+      "upper_turn_ratio_bound": "25000000000000000000/157079632679489661923"
     }
   ],
   "standard_interval_certificate": {
