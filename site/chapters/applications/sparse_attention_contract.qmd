@@ -102,11 +102,12 @@ The default sidecar is intentionally incomplete so the gap certificates are visi
 | --- | --- | --- |
 | Covered lags | `1, 2, 3, 4, 7, 14, 21, 13, 26, 39` | local lags plus three steps of each admitted stride |
 | Uncovered lag count | `109` | most positive in-context lags are not covered by this small sparse plan |
+| Uncovered intervals | `5..6`, `8..12`, `15..20`, `22..25`, `27..38`, `40..119` | the same finite gap list compressed into consecutive runs for reading |
 | Candidate budget | `10` | four local candidates plus six stride-family candidates before full attention's `120` candidates |
 | No-collision predicates | all true in the default fixture | the raw candidate budget survives deduplication for this plan |
 | Uncovered-list theorem | lag `5` appears in a finite uncovered-lag list of length `109` | the sidecar's gap list is linked to semantic reachability, not only to Python filtering |
 
-The key upgrade is the finite covered/uncovered lag pair. `AIT-T0090` says membership in the covered list is exactly a positive in-context semantic hit. `AIT-T0081` says membership in the uncovered list is exactly a positive in-context semantic miss. `AIT-T0082` and `AIT-T0083` say complete coverage is exactly an empty uncovered list, equivalently zero uncovered lags. `AIT-T0084` proves that the default fixture's lag `5` is one of those listed misses, `AIT-T0085` proves the default uncovered list has exactly `109` entries, and `AIT-T0091` proves the default covered list has exactly `10` entries.
+The key upgrade is the finite covered/uncovered lag pair. `AIT-T0090` says membership in the covered list is exactly a positive in-context semantic hit. `AIT-T0081` says membership in the uncovered list is exactly a positive in-context semantic miss. The interval summary is a Python/widget readability layer over that proved list: it does not add a new theorem, but it makes large gap regions visible. `AIT-T0082` and `AIT-T0083` say complete coverage is exactly an empty uncovered list, equivalently zero uncovered lags. `AIT-T0084` proves that the default fixture's lag `5` is one of those listed misses, `AIT-T0085` proves the default uncovered list has exactly `109` entries, and `AIT-T0091` proves the default covered list has exactly `10` entries.
 
 The sidecar also includes a checked passing fixture:
 
@@ -140,6 +141,7 @@ That is the proof-carrying contract shape: a sparse plan should show what it cov
 - A local window gives predictable near-lag coverage.
 - A stride family can cover selected long lags cheaply, but arbitrary lags remain gaps unless the plan certifies otherwise.
 - Complete coverage is equivalent to the absence of positive uncovered-lag witnesses.
+- Consecutive uncovered-lag intervals are a compact way to inspect where the gaps are.
 - Candidate budget has both raw and deduplicated forms; no-collision hypotheses tell when the raw count survives exactly.
 - The sparse contract certifies candidate-set coverage and budget arithmetic, not learned attention quality.
 

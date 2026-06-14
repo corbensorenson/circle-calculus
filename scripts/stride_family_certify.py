@@ -92,6 +92,7 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
         (
             f"covered_lags={payload['covered_lag_count']} "
             f"uncovered_lags={payload['uncovered_lag_count']} "
+            f"uncovered_intervals={payload['uncovered_lag_interval_count']} "
             f"coverage_ratio={payload['coverage_ratio']:.6f}"
         ),
         (
@@ -125,6 +126,7 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
         f"fixture_theorem_ids={tuple(payload['fixture_theorem_ids'])}",
         f"covered_lag_sample={sample(tuple(payload['covered_lags']), sample_limit)}",
         f"uncovered_lag_sample={sample(tuple(payload['uncovered_lags']), sample_limit)}",
+        f"uncovered_lag_intervals={sample(tuple(tuple(interval) for interval in payload['uncovered_lag_intervals']), sample_limit)}",
         f"theorem_ids={tuple(payload['theorem_ids'])}",
         f"boundary={payload['note']}",
     ]

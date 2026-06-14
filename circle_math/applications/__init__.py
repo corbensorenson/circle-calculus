@@ -98,6 +98,7 @@ from .circle_ai import (
     certify_stride_family_coverage,
     content_route_label,
     circulant_mixer_output,
+    consecutive_integer_intervals,
     block_cyclic_adapter_parameter_count,
     average_candidate_count,
     certify_kv_cache_adapter_request_trace,

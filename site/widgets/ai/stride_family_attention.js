@@ -99,6 +99,24 @@ function uniquePreservingOrder(values) {
   return result;
 }
 
+function consecutiveIntegerIntervals(values) {
+  if (values.length === 0) return [];
+  const intervals = [];
+  let start = values[0];
+  let previous = start;
+  for (const value of values.slice(1)) {
+    if (value === previous + 1) {
+      previous = value;
+      continue;
+    }
+    intervals.push([start, previous]);
+    start = value;
+    previous = value;
+  }
+  intervals.push([start, previous]);
+  return intervals;
+}
+
 function strideFamilyCandidates(sequenceLength, queryIndex, strides, pathLength, localWindow) {
   const candidates = [...localWindowIndices(sequenceLength, queryIndex, localWindow)];
   for (const stride of strides) {
@@ -163,6 +181,7 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
   for (let lag = 1; lag < sequenceLength; lag += 1) {
     if (!covered.has(lag)) uncoveredLags.push(lag);
   }
+  const uncoveredLagIntervals = consecutiveIntegerIntervals(uncoveredLags);
   const candidateBudget = strideFamilyCandidates(sequenceLength, 0, strides, pathLength, localWindow).length;
   const rawCandidateBudgetUpperBound = localWindow + pathLength * strides.length;
   const deduplicatedCandidateBudgetUpperBound = Math.min(sequenceLength, rawCandidateBudgetUpperBound);
@@ -184,8 +203,10 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
   return {
     coveredLags,
     uncoveredLags,
+    uncoveredLagIntervals,
     coveredLagCount: coveredLags.length,
     uncoveredLagCount: uncoveredLags.length,
+    uncoveredLagIntervalCount: uncoveredLagIntervals.length,
     candidateBudgetPerQuery: candidateBudget,
     rawCandidateBudgetUpperBound,
     deduplicatedCandidateBudgetUpperBound,
@@ -406,8 +427,10 @@ function appendRecord(output, values, theoremById) {
     `control lag sample: ${Array.from({ length: 8 }, (_, index) => controlLagForQuery(index)).join(", ")}`,
     `covered positive lags: ${formatCandidates(coverage.coveredLags, 18)}`,
     `uncovered lag sample: ${formatCandidates(coverage.uncoveredLags, 18)}`,
+    `uncovered lag intervals: ${coverage.uncoveredLagIntervals.map(([start, stop]) => start === stop ? `${start}` : `${start}..${stop}`).join(", ")}`,
     `covered lag count: ${coverage.coveredLagCount}`,
     `uncovered lag count: ${coverage.uncoveredLagCount}`,
+    `uncovered lag interval count: ${coverage.uncoveredLagIntervalCount}`,
     `coverage complete: ${coverage.coverageComplete}`,
     `coverage ratio: ${formatNumber(coverage.coverageRatio)}`,
     `deduplicated candidate budget per query: ${coverage.candidateBudgetPerQuery}`,

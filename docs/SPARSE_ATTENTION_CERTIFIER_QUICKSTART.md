@@ -28,7 +28,8 @@ Expected shape:
 
 ```text
 stride_family_contract=GAPS context=120 strides=(7, 13) path_length=3 local_window=4
-covered_lags=10 uncovered_lags=109 coverage_ratio=0.084034
+covered_lags=10 uncovered_lags=109 uncovered_intervals=6 coverage_ratio=0.084034
+uncovered_lag_intervals=((5, 6), (8, 12), (15, 20), (22, 25), (27, 38), (40, 119))
 candidate_budget_per_query=10 raw_upper_bound=10 deduplicated_bound=10 full_attention_budget=120
 lag_budget_status=exact-raw-budget unique_lag_candidates=10 lag_no_collision=True
 query_budget_status=exact-raw-budget unique_query_candidates=10 query_no_collision=True
@@ -51,6 +52,7 @@ python scripts/stride_family_certify.py \
 - `coverage_complete`: true only when every positive lag below the context is covered.
 - `covered_lags`: positive lags reached by the local window or one admitted stride step.
 - `uncovered_lags`: finite gap certificates for this declared sparse plan.
+- `uncovered_lag_intervals`: consecutive runs of those uncovered lags, for reading large gap lists compactly.
 - `raw_candidate_budget_upper_bound`: `local_window + path_length * number_of_strides`.
 - `theorem_side_unique_lag_candidate_count`: deduplicated lag count from the theorem-side list.
 - `theorem_side_unique_query_candidate_count`: deduplicated query-indexed predecessor count.

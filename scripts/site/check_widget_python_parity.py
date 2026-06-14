@@ -16,6 +16,7 @@ from circle_math.applications import (
     block_cyclic_mixer_output,
     coil_attention_path,
     circulant_mixer_output,
+    consecutive_integer_intervals,
     content_route_label,
     default_block_cyclic_input,
     default_block_cyclic_kernel,
@@ -3650,6 +3651,12 @@ def main() -> int:
         )
         assert coverage_certificate.uncovered_lags == tuple(
             lag for lag in range(1, sequence_length) if lag not in set(js_covered_lags)
+        )
+        assert coverage_certificate.uncovered_lag_intervals == consecutive_integer_intervals(
+            coverage_certificate.uncovered_lags,
+        )
+        assert coverage_certificate.uncovered_lag_interval_count == len(
+            coverage_certificate.uncovered_lag_intervals,
         )
         assert coverage_certificate.covered_lag_count == len(js_covered_lags)
         assert coverage_certificate.uncovered_lag_count == sequence_length - 1 - len(js_covered_lags)

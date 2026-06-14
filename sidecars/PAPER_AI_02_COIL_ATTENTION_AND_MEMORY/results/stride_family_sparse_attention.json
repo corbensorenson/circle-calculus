@@ -153,6 +153,33 @@
       "theorem_side_unique_lag_candidate_count": 10,
       "theorem_side_unique_query_candidate_count": 10,
       "uncovered_lag_count": 109,
+      "uncovered_lag_interval_count": 6,
+      "uncovered_lag_intervals": [
+        [
+          5,
+          6
+        ],
+        [
+          8,
+          12
+        ],
+        [
+          15,
+          20
+        ],
+        [
+          22,
+          25
+        ],
+        [
+          27,
+          38
+        ],
+        [
+          40,
+          119
+        ]
+      ],
       "uncovered_lags": [
         5,
         6,
@@ -432,6 +459,8 @@
     "theorem_side_unique_lag_candidate_count": 8,
     "theorem_side_unique_query_candidate_count": 8,
     "uncovered_lag_count": 0,
+    "uncovered_lag_interval_count": 0,
+    "uncovered_lag_intervals": [],
     "uncovered_lags": []
   },
   "schema_id": "circle_calculus.stride_family_sparse_attention_certificate.v0"

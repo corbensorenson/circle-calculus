@@ -259,6 +259,25 @@ def kv_cache_live_window_slots_distinct(cache_size: int, current: int) -> bool:
     return len(set(slots)) == len(slots)
 
 
+def consecutive_integer_intervals(values: Sequence[int]) -> tuple[tuple[int, int], ...]:
+    """Compress a sorted integer sequence into inclusive consecutive intervals."""
+    value_tuple = tuple(values)
+    if not value_tuple:
+        return ()
+    intervals: list[tuple[int, int]] = []
+    start = value_tuple[0]
+    previous = start
+    for value in value_tuple[1:]:
+        if value == previous + 1:
+            previous = value
+            continue
+        intervals.append((start, previous))
+        start = value
+        previous = value
+    intervals.append((start, previous))
+    return tuple(intervals)
+
+
 def adapter_block(block_size: int, channel: int) -> int:
     """Return the adapter block index ``channel mod block_size``."""
     _require_positive(block_size, "block_size")
@@ -779,8 +798,10 @@ class StrideFamilyCoverageCertificate:
     local_window: int
     covered_lags: tuple[int, ...]
     uncovered_lags: tuple[int, ...]
+    uncovered_lag_intervals: tuple[tuple[int, int], ...]
     covered_lag_count: int
     uncovered_lag_count: int
+    uncovered_lag_interval_count: int
     candidate_budget_per_query: int
     raw_candidate_budget_upper_bound: int
     deduplicated_candidate_budget_upper_bound: int
@@ -2596,6 +2617,7 @@ def certify_stride_family_coverage(
         local_window,
     ))
     positive_lag_count = max(0, sequence_length - 1)
+    uncovered_intervals = consecutive_integer_intervals(uncovered)
     return StrideFamilyCoverageCertificate(
         sequence_length=sequence_length,
         strides=normalized_strides,
@@ -2603,8 +2625,10 @@ def certify_stride_family_coverage(
         local_window=local_window,
         covered_lags=covered,
         uncovered_lags=uncovered,
+        uncovered_lag_intervals=uncovered_intervals,
         covered_lag_count=len(covered),
         uncovered_lag_count=len(uncovered),
+        uncovered_lag_interval_count=len(uncovered_intervals),
         candidate_budget_per_query=candidate_budget,
         raw_candidate_budget_upper_bound=stride_family_raw_candidate_budget(
             strides=strides,

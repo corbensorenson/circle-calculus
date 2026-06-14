@@ -34,7 +34,8 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     )
 
     assert "stride_family_contract=GAPS context=120 strides=(7, 13)" in result.stdout
-    assert "covered_lags=10 uncovered_lags=109" in result.stdout
+    assert "covered_lags=10 uncovered_lags=109 uncovered_intervals=6" in result.stdout
+    assert "uncovered_lag_intervals=((5, 6), (8, 12), (15, 20), (22, 25), (27, 38), (40, 119))" in result.stdout
     assert "lag_budget_status=exact-raw-budget" in result.stdout
     assert "query_budget_status=exact-raw-budget" in result.stdout
     assert "AIT-T0076" in result.stdout
@@ -47,6 +48,15 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     assert payload["coverage_complete"] is False
     assert payload["covered_lags"] == [1, 2, 3, 4, 7, 14, 21, 13, 26, 39]
     assert payload["uncovered_lags"][:5] == [5, 6, 8, 9, 10]
+    assert payload["uncovered_lag_intervals"] == [
+        [5, 6],
+        [8, 12],
+        [15, 20],
+        [22, 25],
+        [27, 38],
+        [40, 119],
+    ]
+    assert payload["uncovered_lag_interval_count"] == 6
     assert payload["theorem_side_lag_candidates_no_collision"] is True
     assert payload["theorem_side_query_candidates_no_collision"] is True
     assert "AIT-T0076" in payload["theorem_ids"]

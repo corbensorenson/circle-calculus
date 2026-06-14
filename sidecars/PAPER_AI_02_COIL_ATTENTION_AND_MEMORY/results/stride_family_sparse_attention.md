@@ -14,9 +14,9 @@ This is a proof-carrying finite sparse-attention candidate-set certificate for a
 | ---: | ---: | ---: | ---: |
 | 10.000 | 7.000 | 4.000 | 120.000 |
 
-| Covered lag count | Uncovered lag count | Candidate budget | Raw budget bound | Deduplicated bound | Full-attention budget |
-| ---: | ---: | ---: | ---: | ---: | ---: |
-| 10 | 109 | 10 | 10 | 10 | 120 |
+| Covered lag count | Uncovered lag count | Uncovered intervals | Candidate budget | Raw budget bound | Deduplicated bound | Full-attention budget |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 10 | 109 | 6 | 10 | 10 | 10 | 120 |
 
 | Coil residues no collision | Local/coil disjoint | Lag candidates no collision | Predecessor injective | Query candidates no collision |
 | --- | --- | --- | --- | --- |
@@ -38,6 +38,12 @@ First uncovered lags:
 
 ```text
 5, 6, 8, 9, 10, 11, 12, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 27, 28, 29, 30, 31, 32, 33
+```
+
+Uncovered lag intervals:
+
+```text
+5..6, 8..12, 15..20, 22..25, 27..38, 40..119
 ```
 
 Complete sparse-family fixture:

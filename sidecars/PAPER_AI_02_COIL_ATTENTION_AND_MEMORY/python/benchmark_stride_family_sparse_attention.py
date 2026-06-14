@@ -88,6 +88,8 @@ def text_results(payload: dict[str, Any]) -> str:
         f"avg_full_candidates={result['average_full_candidate_count']:.3f} "
         f"covered_lag_count={certificate['covered_lag_count']} "
         f"uncovered_lag_count={certificate['uncovered_lag_count']} "
+        f"uncovered_lag_interval_count={certificate['uncovered_lag_interval_count']} "
+        f"uncovered_lag_intervals={certificate['uncovered_lag_intervals']} "
         f"covered_lag_sample={certificate['covered_lags'][:12]} "
         f"uncovered_lag_sample={certificate['uncovered_lags'][:12]} "
         f"dedup_candidate_budget={certificate['candidate_budget_per_query']} "
@@ -170,11 +172,12 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{result['average_full_candidate_count']:.3f} |"
             ),
             "",
-            "| Covered lag count | Uncovered lag count | Candidate budget | Raw budget bound | Deduplicated bound | Full-attention budget |",
-            "| ---: | ---: | ---: | ---: | ---: | ---: |",
+            "| Covered lag count | Uncovered lag count | Uncovered intervals | Candidate budget | Raw budget bound | Deduplicated bound | Full-attention budget |",
+            "| ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
             (
                 f"| {certificate['covered_lag_count']} | "
                 f"{certificate['uncovered_lag_count']} | "
+                f"{certificate['uncovered_lag_interval_count']} | "
                 f"{certificate['candidate_budget_per_query']} | "
                 f"{certificate['raw_candidate_budget_upper_bound']} | "
                 f"{certificate['deduplicated_candidate_budget_upper_bound']} | "
@@ -207,6 +210,15 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "```text",
             ", ".join(str(lag) for lag in certificate["uncovered_lags"][:24]),
+            "```",
+            "",
+            "Uncovered lag intervals:",
+            "",
+            "```text",
+            ", ".join(
+                f"{start}..{stop}" if start != stop else str(start)
+                for start, stop in certificate["uncovered_lag_intervals"]
+            ),
             "```",
             "",
             "Complete sparse-family fixture:",

@@ -11,6 +11,7 @@ from circle_math.applications.circle_ai import (
     certify_kv_cache_live_window,
     certify_kv_cache_window,
     certify_stride_family_coverage,
+    consecutive_integer_intervals,
     coil_attention_path,
     content_route_label,
     fit_loop_budget_lookup,
@@ -618,6 +619,11 @@ def test_stride_family_attention_candidates_union_multiple_coils() -> None:
     assert stride_family_covered_lags(120, (7, 13), 3, 4) == (1, 2, 3, 4, 7, 14, 21, 13, 26, 39)
 
 
+def test_consecutive_integer_intervals_compress_gap_lists() -> None:
+    assert consecutive_integer_intervals(()) == ()
+    assert consecutive_integer_intervals((5, 6, 8, 9, 10, 12)) == ((5, 6), (8, 10), (12, 12))
+
+
 def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control() -> None:
     queries = tuple(range(8))
     assert structured_stride_family_target_lags(
@@ -658,6 +664,15 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     assert result.coverage_certificate.covered_lag_count == 10
     assert result.coverage_certificate.uncovered_lag_count == 109
     assert result.coverage_certificate.uncovered_lags[:5] == (5, 6, 8, 9, 10)
+    assert result.coverage_certificate.uncovered_lag_intervals == (
+        (5, 6),
+        (8, 12),
+        (15, 20),
+        (22, 25),
+        (27, 38),
+        (40, 119),
+    )
+    assert result.coverage_certificate.uncovered_lag_interval_count == 6
     assert not result.coverage_certificate.coverage_complete
     assert result.coverage_certificate.candidate_budget_per_query == 10
     assert result.coverage_certificate.raw_candidate_budget_upper_bound == 10
@@ -856,6 +871,15 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert result["wrong_family_accuracy"] == 0.25
     assert certificate["covered_lag_count"] == 10
     assert certificate["uncovered_lag_count"] == 109
+    assert certificate["uncovered_lag_intervals"] == [
+        [5, 6],
+        [8, 12],
+        [15, 20],
+        [22, 25],
+        [27, 38],
+        [40, 119],
+    ]
+    assert certificate["uncovered_lag_interval_count"] == 6
     assert certificate["coverage_complete"] is False
     assert certificate["fixture_theorem_ids"] == [
         "AIT-T0084",
@@ -871,6 +895,8 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert complete["strides"] == [3, 4, 7]
     assert complete["covered_lags"] == [1, 2, 3, 6, 4, 8, 7, 5]
     assert complete["uncovered_lags"] == []
+    assert complete["uncovered_lag_intervals"] == []
+    assert complete["uncovered_lag_interval_count"] == 0
     assert complete["coverage_complete"] is True
     assert complete["raw_candidate_budget_upper_bound"] == 8
     assert complete["theorem_side_unique_lag_candidate_count"] == 8
