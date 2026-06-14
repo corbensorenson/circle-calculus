@@ -801,6 +801,9 @@ class StrideFamilyCoverageCertificate:
     uncovered_lag_intervals: tuple[tuple[int, int], ...]
     covered_lag_count: int
     uncovered_lag_count: int
+    positive_lag_count: int
+    covered_uncovered_count_sum: int
+    covered_uncovered_count_partition: bool
     uncovered_lag_interval_count: int
     candidate_budget_per_query: int
     raw_candidate_budget_upper_bound: int
@@ -2631,6 +2634,11 @@ def certify_stride_family_coverage(
         uncovered_lag_intervals=uncovered_intervals,
         covered_lag_count=len(covered),
         uncovered_lag_count=len(uncovered),
+        positive_lag_count=positive_lag_count,
+        covered_uncovered_count_sum=len(covered) + len(uncovered),
+        covered_uncovered_count_partition=(
+            len(covered) + len(uncovered) == positive_lag_count
+        ),
         uncovered_lag_interval_count=len(uncovered_intervals),
         candidate_budget_per_query=candidate_budget,
         raw_candidate_budget_upper_bound=stride_family_raw_candidate_budget(

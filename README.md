@@ -46,7 +46,7 @@ This repository does not claim to have rebuilt all of mathematics from circles. 
 6. The Living Book [AI contract ladder](https://corbensorenson.github.io/circle-calculus/chapters/applications/ai_contract_ladder.html) for the guided sequence through proof-carrying RoPE, KV-cache, sparse-attention, recurrence, and mixer contracts.
 7. `docs/ROPE_CERTIFIER_QUICKSTART.md`, `docs/ROPE_CERTIFIER_REVIEW_PACKET.md`, `papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md`, and `scripts/rope_certify.py` for the first externally usable AI contract.
 8. The Living Book [KV-cache ring-buffer lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/kv_cache_ring_buffer.html), `docs/KV_CACHE_CERTIFIER_QUICKSTART.md`, `scripts/kv_cache_certify.py`, `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py` for the second standalone AI contract.
-9. The Living Book [sparse-attention coverage lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/sparse_attention_contract.html), `scripts/stride_family_certify.py`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py` for the third standalone AI contract.
+9. The Living Book [sparse-attention coverage lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/sparse_attention_contract.html), `docs/SPARSE_ATTENTION_CERTIFIER_QUICKSTART.md`, `scripts/stride_family_certify.py`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py` for the third standalone AI contract.
 10. `docs/PHASE8_DEPTH_VALIDATION.md` for the current depth-and-validation push: RoPE real-phase theorem work, sparse coverage iffs, collision counting, KV-cache safety, external review, and proof-depth guardrails.
 11. `docs/THESEUS_HIVE_AI_TRANSFER.md` for the optional private-transfer lane; it is not the public proof standard.
 
@@ -125,7 +125,7 @@ python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-leng
 python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py --format markdown
 ```
 
-The sparse certificate emits theorem ids, covered lags, theorem-side covered/uncovered-lag lists, no-collision budget predicates, candidate-count fields, a default hit/gap fixture, a compact complete-coverage fixture, and compact planner-style rows for larger declared sparse layouts. It proves finite candidate-set coverage, hit/gap-list membership and counting, and budget facts only; it is not an attention-quality, long-context, throughput, runtime, memory-use, or model-quality claim.
+The sparse certificate emits theorem ids, covered lags, theorem-side covered/uncovered-lag lists, a covered-plus-uncovered count partition, no-collision budget predicates, candidate-count fields, a default hit/gap fixture, a compact complete-coverage fixture, and compact planner-style rows for larger declared sparse layouts. It proves finite candidate-set coverage, hit/gap-list membership and counting, and budget facts only; it is not an attention-quality, long-context, throughput, runtime, memory-use, or model-quality claim.
 
 For the optional Theseus-Hive AI transfer lane, run:
 

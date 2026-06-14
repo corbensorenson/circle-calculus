@@ -35,6 +35,8 @@
         26,
         39
       ],
+      "covered_uncovered_count_partition": true,
+      "covered_uncovered_count_sum": 119,
       "deduplicated_candidate_budget_upper_bound": 10,
       "fixture_theorem_ids": [
         "AIT-T0084",
@@ -45,6 +47,7 @@
       "local_window": 4,
       "note": "Finite lag-coverage certificate only; uncovered_lags are gap certificates for the declared local-window plus stride-family plan, not model-quality evidence.",
       "path_length": 3,
+      "positive_lag_count": 119,
       "raw_candidate_budget_upper_bound": 10,
       "sequence_length": 120,
       "strides": [
@@ -346,6 +349,8 @@
       7,
       5
     ],
+    "covered_uncovered_count_partition": true,
+    "covered_uncovered_count_sum": 8,
     "deduplicated_candidate_budget_upper_bound": 8,
     "fixture_theorem_ids": [
       "AIT-T0086",
@@ -357,6 +362,7 @@
     "local_window": 2,
     "note": "Finite lag-coverage certificate only; uncovered_lags are gap certificates for the declared local-window plus stride-family plan, not model-quality evidence.",
     "path_length": 2,
+    "positive_lag_count": 8,
     "raw_candidate_budget_upper_bound": 8,
     "sequence_length": 9,
     "strides": [
@@ -499,6 +505,8 @@
         26,
         39
       ],
+      "covered_uncovered_count_partition": true,
+      "covered_uncovered_count_sum": 119,
       "deduplicated_candidate_budget_upper_bound": 10,
       "description": "Small public gappy fixture used by the theorem-side gap witnesses.",
       "fixture_theorem_ids": [
@@ -512,6 +520,7 @@
       "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
       "path_length": 3,
       "plan_id": "default_gap_fixture_120",
+      "positive_lag_count": 119,
       "raw_budget_survives_lag_dedup": true,
       "raw_budget_survives_query_dedup": true,
       "raw_candidate_budget_upper_bound": 10,
@@ -603,6 +612,8 @@
         7,
         5
       ],
+      "covered_uncovered_count_partition": true,
+      "covered_uncovered_count_sum": 8,
       "deduplicated_candidate_budget_upper_bound": 8,
       "description": "Compact complete-coverage fixture with an empty uncovered-lag list.",
       "fixture_theorem_ids": [
@@ -617,6 +628,7 @@
       "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
       "path_length": 2,
       "plan_id": "complete_toy_fixture_9",
+      "positive_lag_count": 8,
       "raw_budget_survives_lag_dedup": true,
       "raw_budget_survives_query_dedup": true,
       "raw_candidate_budget_upper_bound": 8,
@@ -675,6 +687,8 @@
         23,
         24
       ],
+      "covered_uncovered_count_partition": true,
+      "covered_uncovered_count_sum": 4095,
       "deduplicated_candidate_budget_upper_bound": 44,
       "description": "4096-token probe with separated strides; useful for inspecting exact raw-budget preservation without implying broad coverage.",
       "fixture_theorem_ids": [],
@@ -684,6 +698,7 @@
       "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
       "path_length": 4,
       "plan_id": "long_context_no_wrap_probe_4096",
+      "positive_lag_count": 4095,
       "raw_budget_survives_lag_dedup": true,
       "raw_budget_survives_query_dedup": true,
       "raw_candidate_budget_upper_bound": 44,
@@ -816,6 +831,8 @@
         23,
         24
       ],
+      "covered_uncovered_count_partition": true,
+      "covered_uncovered_count_sum": 8191,
       "deduplicated_candidate_budget_upper_bound": 96,
       "description": "8192-token probe with coprime-style separated long strides; useful for budget and gap inspection on a larger declared context.",
       "fixture_theorem_ids": [],
@@ -825,6 +842,7 @@
       "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
       "path_length": 8,
       "plan_id": "long_context_coprime_probe_8192",
+      "positive_lag_count": 8191,
       "raw_budget_survives_lag_dedup": true,
       "raw_budget_survives_query_dedup": true,
       "raw_candidate_budget_upper_bound": 96,

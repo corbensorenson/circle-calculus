@@ -14,9 +14,9 @@ This is a proof-carrying finite sparse-attention candidate-set certificate for a
 | ---: | ---: | ---: | ---: |
 | 10.000 | 7.000 | 4.000 | 120.000 |
 
-| Covered lag count | Uncovered lag count | Uncovered intervals | Candidate budget | Raw budget bound | Deduplicated bound | Full-attention budget |
-| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 10 | 109 | 6 | 10 | 10 | 10 | 120 |
+| Covered lag count | Uncovered lag count | Positive lags | Partition complete | Uncovered intervals | Candidate budget | Raw budget bound | Deduplicated bound | Full-attention budget |
+| ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: |
+| 10 | 109 | 119 | True | 6 | 10 | 10 | 10 | 120 |
 
 | Coil residues no collision | Local/coil disjoint | Lag candidates no collision | Predecessor injective | Query candidates no collision |
 | --- | --- | --- | --- | --- |
@@ -60,12 +60,12 @@ Complete fixture covered lags:
 
 Planner-style declared plans:
 
-| Plan | Context | Local window | Path length | Strides | Complete | Coverage | Candidate budget | Budget ratio | Uncovered lags | Gap intervals | Raw budget survives dedup |
-| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| default_gap_fixture_120 | 120 | 4 | 3 | 7, 13 | False | 0.084 | 10 | 0.083 | 109 | 6 | lag=True, query=True |
-| complete_toy_fixture_9 | 9 | 2 | 2 | 3, 4, 7 | True | 1.000 | 8 | 0.889 | 0 | 0 | lag=True, query=True |
-| long_context_no_wrap_probe_4096 | 4096 | 32 | 4 | 64, 320, 1500 | False | 0.011 | 44 | 0.011 | 4051 | 13 | lag=True, query=True |
-| long_context_coprime_probe_8192 | 8192 | 64 | 8 | 127, 509, 1021, 2039 | False | 0.012 | 96 | 0.012 | 8095 | 32 | lag=True, query=True |
+| Plan | Context | Local window | Path length | Strides | Complete | Coverage | Candidate budget | Budget ratio | Covered+uncovered | Positive lags | Uncovered lags | Gap intervals | Raw budget survives dedup |
+| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| default_gap_fixture_120 | 120 | 4 | 3 | 7, 13 | False | 0.084 | 10 | 0.083 | 119 | 119 | 109 | 6 | lag=True, query=True |
+| complete_toy_fixture_9 | 9 | 2 | 2 | 3, 4, 7 | True | 1.000 | 8 | 0.889 | 8 | 8 | 0 | 0 | lag=True, query=True |
+| long_context_no_wrap_probe_4096 | 4096 | 32 | 4 | 64, 320, 1500 | False | 0.011 | 44 | 0.011 | 4095 | 4095 | 4051 | 13 | lag=True, query=True |
+| long_context_coprime_probe_8192 | 8192 | 64 | 8 | 127, 509, 1021, 2039 | False | 0.012 | 96 | 0.012 | 8191 | 8191 | 8095 | 32 | lag=True, query=True |
 
 Planner rows are compact reports over declared sparse layouts. Re-run the
 `reproduce_command` in the JSON for the full covered/uncovered-lag certificate.

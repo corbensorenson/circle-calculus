@@ -109,6 +109,9 @@ def compact_planner_certificate(spec: dict[str, Any]) -> dict[str, Any]:
         "coverage_ratio": certificate.coverage_ratio,
         "covered_lag_count": certificate.covered_lag_count,
         "uncovered_lag_count": certificate.uncovered_lag_count,
+        "positive_lag_count": certificate.positive_lag_count,
+        "covered_uncovered_count_sum": certificate.covered_uncovered_count_sum,
+        "covered_uncovered_count_partition": certificate.covered_uncovered_count_partition,
         "uncovered_lag_interval_count": certificate.uncovered_lag_interval_count,
         "candidate_budget_per_query": certificate.candidate_budget_per_query,
         "raw_candidate_budget_upper_bound": certificate.raw_candidate_budget_upper_bound,
@@ -205,6 +208,9 @@ def text_results(payload: dict[str, Any]) -> str:
             f"full_attention_budget={row['full_attention_budget']} "
             f"budget_ratio={row['candidate_budget_ratio']:.6f} "
             f"uncovered_lag_count={row['uncovered_lag_count']} "
+            f"lag_partition={row['covered_uncovered_count_sum']}/"
+            f"{row['positive_lag_count']} "
+            f"partition_complete={row['covered_uncovered_count_partition']} "
             f"gap_interval_count={row['uncovered_lag_interval_count']} "
             f"raw_budget_survives_lag_dedup={row['raw_budget_survives_lag_dedup']} "
             f"raw_budget_survives_query_dedup={row['raw_budget_survives_query_dedup']} "
@@ -236,6 +242,11 @@ def text_results(payload: dict[str, Any]) -> str:
         f"avg_full_candidates={result['average_full_candidate_count']:.3f} "
         f"covered_lag_count={certificate['covered_lag_count']} "
         f"uncovered_lag_count={certificate['uncovered_lag_count']} "
+        "lag_partition="
+        f"{certificate['covered_uncovered_count_sum']}/"
+        f"{certificate['positive_lag_count']} "
+        "partition_complete="
+        f"{certificate['covered_uncovered_count_partition']} "
         f"uncovered_lag_interval_count={certificate['uncovered_lag_interval_count']} "
         f"uncovered_lag_intervals={certificate['uncovered_lag_intervals']} "
         f"covered_lag_sample={certificate['covered_lags'][:12]} "
@@ -322,11 +333,13 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{result['average_full_candidate_count']:.3f} |"
             ),
             "",
-            "| Covered lag count | Uncovered lag count | Uncovered intervals | Candidate budget | Raw budget bound | Deduplicated bound | Full-attention budget |",
-            "| ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+            "| Covered lag count | Uncovered lag count | Positive lags | Partition complete | Uncovered intervals | Candidate budget | Raw budget bound | Deduplicated bound | Full-attention budget |",
+            "| ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: |",
             (
                 f"| {certificate['covered_lag_count']} | "
                 f"{certificate['uncovered_lag_count']} | "
+                f"{certificate['positive_lag_count']} | "
+                f"{certificate['covered_uncovered_count_partition']} | "
                 f"{certificate['uncovered_lag_interval_count']} | "
                 f"{certificate['candidate_budget_per_query']} | "
                 f"{certificate['raw_candidate_budget_upper_bound']} | "
@@ -395,8 +408,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "Planner-style declared plans:",
             "",
-            "| Plan | Context | Local window | Path length | Strides | Complete | Coverage | Candidate budget | Budget ratio | Uncovered lags | Gap intervals | Raw budget survives dedup |",
-            "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |",
+            "| Plan | Context | Local window | Path length | Strides | Complete | Coverage | Candidate budget | Budget ratio | Covered+uncovered | Positive lags | Uncovered lags | Gap intervals | Raw budget survives dedup |",
+            "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |",
             *(
                 (
                     f"| {row['plan_id']} | {row['sequence_length']} | "
@@ -406,6 +419,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
                     f"{row['coverage_ratio']:.3f} | "
                     f"{row['candidate_budget_per_query']} | "
                     f"{row['candidate_budget_ratio']:.3f} | "
+                    f"{row['covered_uncovered_count_sum']} | "
+                    f"{row['positive_lag_count']} | "
                     f"{row['uncovered_lag_count']} | "
                     f"{row['uncovered_lag_interval_count']} | "
                     f"lag={row['raw_budget_survives_lag_dedup']}, "

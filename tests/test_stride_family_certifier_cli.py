@@ -35,7 +35,14 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
 
     assert "stride_family_contract=GAPS context=120 strides=(7, 13)" in result.stdout
     assert "covered_lags=10 uncovered_lags=109 uncovered_intervals=6" in result.stdout
-    assert "uncovered_lag_intervals=((5, 6), (8, 12), (15, 20), (22, 25), (27, 38), (40, 119))" in result.stdout
+    assert (
+        "lag_partition=covered_plus_uncovered=119 positive_lags=119 "
+        "partition_complete=True theorem=AIT-T0094"
+    ) in result.stdout
+    assert (
+        "uncovered_lag_intervals=((5, 6), (8, 12), (15, 20), "
+        "(22, 25), (27, 38), (40, 119))"
+    ) in result.stdout
     assert "lag_budget_status=exact-raw-budget" in result.stdout
     assert "query_budget_status=exact-raw-budget" in result.stdout
     assert "AIT-T0076" in result.stdout
@@ -47,6 +54,9 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     payload = json.loads(json_out.read_text())
     assert payload["coverage_complete"] is False
     assert payload["covered_lags"] == [1, 2, 3, 4, 7, 14, 21, 13, 26, 39]
+    assert payload["positive_lag_count"] == 119
+    assert payload["covered_uncovered_count_sum"] == 119
+    assert payload["covered_uncovered_count_partition"] is True
     assert payload["uncovered_lags"][:5] == [5, 6, 8, 9, 10]
     assert payload["uncovered_lag_intervals"] == [
         [5, 6],
@@ -62,4 +72,7 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     assert "AIT-T0076" in payload["theorem_ids"]
     assert "AIT-T0077" in payload["theorem_ids"]
     assert "AIT-T0090" in payload["theorem_ids"]
+    assert "AIT-T0092" in payload["theorem_ids"]
+    assert "AIT-T0093" in payload["theorem_ids"]
+    assert "AIT-T0094" in payload["theorem_ids"]
     assert payload["fixture_theorem_ids"] == ["AIT-T0084", "AIT-T0085", "AIT-T0091"]

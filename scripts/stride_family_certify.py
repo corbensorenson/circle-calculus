@@ -96,6 +96,13 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             f"coverage_ratio={payload['coverage_ratio']:.6f}"
         ),
         (
+            "lag_partition="
+            f"covered_plus_uncovered={payload['covered_uncovered_count_sum']} "
+            f"positive_lags={payload['positive_lag_count']} "
+            f"partition_complete={payload['covered_uncovered_count_partition']} "
+            "theorem=AIT-T0094"
+        ),
+        (
             "candidate_budget_per_query="
             f"{payload['candidate_budget_per_query']} "
             f"raw_upper_bound={payload['raw_candidate_budget_upper_bound']} "
