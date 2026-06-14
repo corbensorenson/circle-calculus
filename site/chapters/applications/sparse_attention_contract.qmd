@@ -107,7 +107,7 @@ The default sidecar is intentionally incomplete so the gap certificates are visi
 | No-collision predicates | all true in the default fixture | the raw candidate budget survives deduplication for this plan |
 | Uncovered-list theorem | lag `5` appears in a finite uncovered-lag list of length `109` | the sidecar's gap list is linked to semantic reachability, not only to Python filtering |
 
-The key upgrade is the finite covered/uncovered lag pair. `AIT-T0090` says membership in the covered list is exactly a positive in-context semantic hit. `AIT-T0081` says membership in the uncovered list is exactly a positive in-context semantic miss. The interval summary is a Python/widget readability layer over that proved list: it does not add a new theorem, but it makes large gap regions visible. `AIT-T0082` and `AIT-T0083` say complete coverage is exactly an empty uncovered list, equivalently zero uncovered lags. `AIT-T0084` proves that the default fixture's lag `5` is one of those listed misses, `AIT-T0085` proves the default uncovered list has exactly `109` entries, and `AIT-T0091` proves the default covered list has exactly `10` entries.
+The key upgrade is the finite covered/uncovered lag pair. `AIT-T0090` says membership in the covered list is exactly a positive in-context semantic hit. `AIT-T0081` says membership in the uncovered list is exactly a positive in-context semantic miss. `AIT-T0092` proves those two lists are disjoint, and `AIT-T0093` proves every positive in-context lag appears in one of them. The interval summary is a Python/widget readability layer over that proved partition: it does not add a new theorem, but it makes large gap regions visible. `AIT-T0082` and `AIT-T0083` say complete coverage is exactly an empty uncovered list, equivalently zero uncovered lags. `AIT-T0084` proves that the default fixture's lag `5` is one of those listed misses, `AIT-T0085` proves the default uncovered list has exactly `109` entries, and `AIT-T0091` proves the default covered list has exactly `10` entries.
 
 The sidecar also includes a checked passing fixture:
 
@@ -122,6 +122,17 @@ The sidecar also includes a checked passing fixture:
 | Raw budget | `8` | the lag-side and query-side deduplicated counts both preserve the raw budget |
 
 `AIT-T0086` proves the complete fixture's uncovered list is empty. `AIT-T0087` turns that into complete context coverage. `AIT-T0088` and `AIT-T0089` prove that the lag-candidate and query-candidate counts both equal the raw budget.
+
+### Planner-Style Rows
+
+The committed sidecar also includes compact rows for declared sparse layouts larger than the toy fixtures:
+
+| Plan | Context | Local window | Path length | Strides | Candidate budget | Coverage | Uncovered lags | Gap intervals | Raw budget survives dedup |
+| --- | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: | --- |
+| `long_context_no_wrap_probe_4096` | `4096` | `32` | `4` | `64, 320, 1500` | `44` | `0.011` | `4051` | `13` | lag and query |
+| `long_context_coprime_probe_8192` | `8192` | `64` | `8` | `127, 509, 1021, 2039` | `96` | `0.012` | `8095` | `32` | lag and query |
+
+These rows are not new theorem claims. They are larger declared inputs passed through the same finite coverage and budget certifier. Their main lesson is that exact raw-budget preservation and broad coverage are different questions: both rows preserve the raw candidate budget after deduplication, but both leave most lags uncovered. The JSON result stores a `reproduce_command` for each row; running that command emits the full covered/uncovered-lag certificate.
 
 That is the proof-carrying contract shape: a sparse plan should show what it covers, what it misses, and which budget assumptions justify the count. The structured-family score in the sidecar is a fixture diagnostic, not a learned attention-quality result.
 
@@ -181,6 +192,8 @@ That is the proof-carrying contract shape: a sparse plan should show what it cov
 <div class="theorem-box" data-theorem-id="AIT-T0089"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0090"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0091"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0092"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0093"></div>
 
 </details>
 

@@ -58,10 +58,22 @@ Complete fixture covered lags:
 1, 2, 3, 6, 4, 8, 7, 5
 ```
 
+Planner-style declared plans:
+
+| Plan | Context | Local window | Path length | Strides | Complete | Coverage | Candidate budget | Budget ratio | Uncovered lags | Gap intervals | Raw budget survives dedup |
+| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
+| default_gap_fixture_120 | 120 | 4 | 3 | 7, 13 | False | 0.084 | 10 | 0.083 | 109 | 6 | lag=True, query=True |
+| complete_toy_fixture_9 | 9 | 2 | 2 | 3, 4, 7 | True | 1.000 | 8 | 0.889 | 0 | 0 | lag=True, query=True |
+| long_context_no_wrap_probe_4096 | 4096 | 32 | 4 | 64, 320, 1500 | False | 0.011 | 44 | 0.011 | 4051 | 13 | lag=True, query=True |
+| long_context_coprime_probe_8192 | 8192 | 64 | 8 | 127, 509, 1021, 2039 | False | 0.012 | 96 | 0.012 | 8095 | 32 | lag=True, query=True |
+
+Planner rows are compact reports over declared sparse layouts. Re-run the
+`reproduce_command` in the JSON for the full covered/uncovered-lag certificate.
+
 Theorem ids:
 
 ```text
-AIT-T0016, AIT-T0017, AIT-T0020, AIT-T0021, AIT-T0022, AIT-T0023, AIT-T0024, AIT-T0025, AIT-T0028, AIT-T0029, AIT-T0030, AIT-T0031, AIT-T0032, AIT-T0033, AIT-T0034, AIT-T0035, AIT-T0036, AIT-T0037, AIT-T0038, AIT-T0039, AIT-T0040, AIT-T0041, AIT-T0042, AIT-T0043, AIT-T0044, AIT-T0045, AIT-T0046, AIT-T0047, AIT-T0048, AIT-T0049, AIT-T0050, AIT-T0051, AIT-T0052, AIT-T0053, AIT-T0054, AIT-T0055, AIT-T0056, AIT-T0057, AIT-T0058, AIT-T0059, AIT-T0060, AIT-T0061, AIT-T0062, AIT-T0063, AIT-T0064, AIT-T0065, AIT-T0066, AIT-T0067, AIT-T0068, AIT-T0069, AIT-T0070, AIT-T0071, AIT-T0072, AIT-T0073, AIT-T0074, AIT-T0075, AIT-T0076, AIT-T0077, AIT-T0078, AIT-T0079, AIT-T0080, AIT-T0081, AIT-T0082, AIT-T0083, AIT-T0084, AIT-T0085, AIT-T0090
+AIT-T0016, AIT-T0017, AIT-T0020, AIT-T0021, AIT-T0022, AIT-T0023, AIT-T0024, AIT-T0025, AIT-T0028, AIT-T0029, AIT-T0030, AIT-T0031, AIT-T0032, AIT-T0033, AIT-T0034, AIT-T0035, AIT-T0036, AIT-T0037, AIT-T0038, AIT-T0039, AIT-T0040, AIT-T0041, AIT-T0042, AIT-T0043, AIT-T0044, AIT-T0045, AIT-T0046, AIT-T0047, AIT-T0048, AIT-T0049, AIT-T0050, AIT-T0051, AIT-T0052, AIT-T0053, AIT-T0054, AIT-T0055, AIT-T0056, AIT-T0057, AIT-T0058, AIT-T0059, AIT-T0060, AIT-T0061, AIT-T0062, AIT-T0063, AIT-T0064, AIT-T0065, AIT-T0066, AIT-T0067, AIT-T0068, AIT-T0069, AIT-T0070, AIT-T0071, AIT-T0072, AIT-T0073, AIT-T0074, AIT-T0075, AIT-T0076, AIT-T0077, AIT-T0078, AIT-T0079, AIT-T0080, AIT-T0081, AIT-T0082, AIT-T0083, AIT-T0084, AIT-T0085, AIT-T0090, AIT-T0092, AIT-T0093
 ```
 
 Reproduce with:

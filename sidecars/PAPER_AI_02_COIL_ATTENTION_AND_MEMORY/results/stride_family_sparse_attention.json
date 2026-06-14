@@ -118,7 +118,9 @@
         "AIT-T0083",
         "AIT-T0084",
         "AIT-T0085",
-        "AIT-T0090"
+        "AIT-T0090",
+        "AIT-T0092",
+        "AIT-T0093"
       ],
       "theorem_side_coil_residues_no_collision": true,
       "theorem_side_lag_candidates": [
@@ -428,7 +430,9 @@
       "AIT-T0083",
       "AIT-T0084",
       "AIT-T0085",
-      "AIT-T0090"
+      "AIT-T0090",
+      "AIT-T0092",
+      "AIT-T0093"
     ],
     "theorem_side_coil_residues_no_collision": true,
     "theorem_side_lag_candidates": [
@@ -463,5 +467,448 @@
     "uncovered_lag_intervals": [],
     "uncovered_lags": []
   },
+  "planner_style_certificates": [
+    {
+      "candidate_budget_per_query": 10,
+      "candidate_budget_ratio": 0.08333333333333333,
+      "coil_residues_no_collision": true,
+      "core_coverage_theorem_ids": [
+        "AIT-T0080",
+        "AIT-T0081",
+        "AIT-T0082",
+        "AIT-T0083",
+        "AIT-T0090",
+        "AIT-T0092",
+        "AIT-T0093"
+      ],
+      "coverage_complete": false,
+      "coverage_ratio": 0.08403361344537816,
+      "covered_lag_count": 10,
+      "covered_lag_sample": [
+        1,
+        2,
+        3,
+        4,
+        7,
+        14,
+        21,
+        13,
+        26,
+        39
+      ],
+      "deduplicated_candidate_budget_upper_bound": 10,
+      "description": "Small public gappy fixture used by the theorem-side gap witnesses.",
+      "fixture_theorem_ids": [
+        "AIT-T0084",
+        "AIT-T0085",
+        "AIT-T0091"
+      ],
+      "full_attention_budget": 120,
+      "local_coil_disjoint": true,
+      "local_window": 4,
+      "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
+      "path_length": 3,
+      "plan_id": "default_gap_fixture_120",
+      "raw_budget_survives_lag_dedup": true,
+      "raw_budget_survives_query_dedup": true,
+      "raw_candidate_budget_upper_bound": 10,
+      "reproduce_command": "python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4",
+      "sequence_length": 120,
+      "strides": [
+        7,
+        13
+      ],
+      "uncovered_lag_count": 109,
+      "uncovered_lag_interval_count": 6,
+      "uncovered_lag_interval_sample": [
+        [
+          5,
+          6
+        ],
+        [
+          8,
+          12
+        ],
+        [
+          15,
+          20
+        ],
+        [
+          22,
+          25
+        ],
+        [
+          27,
+          38
+        ],
+        [
+          40,
+          119
+        ]
+      ],
+      "uncovered_lag_sample": [
+        5,
+        6,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        22,
+        23,
+        24,
+        25,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33
+      ]
+    },
+    {
+      "candidate_budget_per_query": 8,
+      "candidate_budget_ratio": 0.8888888888888888,
+      "coil_residues_no_collision": true,
+      "core_coverage_theorem_ids": [
+        "AIT-T0080",
+        "AIT-T0081",
+        "AIT-T0082",
+        "AIT-T0083",
+        "AIT-T0090",
+        "AIT-T0092",
+        "AIT-T0093"
+      ],
+      "coverage_complete": true,
+      "coverage_ratio": 1.0,
+      "covered_lag_count": 8,
+      "covered_lag_sample": [
+        1,
+        2,
+        3,
+        6,
+        4,
+        8,
+        7,
+        5
+      ],
+      "deduplicated_candidate_budget_upper_bound": 8,
+      "description": "Compact complete-coverage fixture with an empty uncovered-lag list.",
+      "fixture_theorem_ids": [
+        "AIT-T0086",
+        "AIT-T0087",
+        "AIT-T0088",
+        "AIT-T0089"
+      ],
+      "full_attention_budget": 9,
+      "local_coil_disjoint": true,
+      "local_window": 2,
+      "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
+      "path_length": 2,
+      "plan_id": "complete_toy_fixture_9",
+      "raw_budget_survives_lag_dedup": true,
+      "raw_budget_survives_query_dedup": true,
+      "raw_candidate_budget_upper_bound": 8,
+      "reproduce_command": "python scripts/stride_family_certify.py --context 9 --strides 3,4,7 --path-length 2 --local-window 2",
+      "sequence_length": 9,
+      "strides": [
+        3,
+        4,
+        7
+      ],
+      "uncovered_lag_count": 0,
+      "uncovered_lag_interval_count": 0,
+      "uncovered_lag_interval_sample": [],
+      "uncovered_lag_sample": []
+    },
+    {
+      "candidate_budget_per_query": 44,
+      "candidate_budget_ratio": 0.0107421875,
+      "coil_residues_no_collision": true,
+      "core_coverage_theorem_ids": [
+        "AIT-T0080",
+        "AIT-T0081",
+        "AIT-T0082",
+        "AIT-T0083",
+        "AIT-T0090",
+        "AIT-T0092",
+        "AIT-T0093"
+      ],
+      "coverage_complete": false,
+      "coverage_ratio": 0.010744810744810745,
+      "covered_lag_count": 44,
+      "covered_lag_sample": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "deduplicated_candidate_budget_upper_bound": 44,
+      "description": "4096-token probe with separated strides; useful for inspecting exact raw-budget preservation without implying broad coverage.",
+      "fixture_theorem_ids": [],
+      "full_attention_budget": 4096,
+      "local_coil_disjoint": true,
+      "local_window": 32,
+      "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
+      "path_length": 4,
+      "plan_id": "long_context_no_wrap_probe_4096",
+      "raw_budget_survives_lag_dedup": true,
+      "raw_budget_survives_query_dedup": true,
+      "raw_candidate_budget_upper_bound": 44,
+      "reproduce_command": "python scripts/stride_family_certify.py --context 4096 --strides 64,320,1500 --path-length 4 --local-window 32",
+      "sequence_length": 4096,
+      "strides": [
+        64,
+        320,
+        1500
+      ],
+      "uncovered_lag_count": 4051,
+      "uncovered_lag_interval_count": 13,
+      "uncovered_lag_interval_sample": [
+        [
+          33,
+          63
+        ],
+        [
+          65,
+          127
+        ],
+        [
+          129,
+          191
+        ],
+        [
+          193,
+          255
+        ],
+        [
+          257,
+          319
+        ],
+        [
+          321,
+          403
+        ],
+        [
+          405,
+          639
+        ],
+        [
+          641,
+          959
+        ],
+        [
+          961,
+          1279
+        ],
+        [
+          1281,
+          1499
+        ],
+        [
+          1501,
+          1903
+        ],
+        [
+          1905,
+          2999
+        ]
+      ],
+      "uncovered_lag_sample": [
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56
+      ]
+    },
+    {
+      "candidate_budget_per_query": 96,
+      "candidate_budget_ratio": 0.01171875,
+      "coil_residues_no_collision": true,
+      "core_coverage_theorem_ids": [
+        "AIT-T0080",
+        "AIT-T0081",
+        "AIT-T0082",
+        "AIT-T0083",
+        "AIT-T0090",
+        "AIT-T0092",
+        "AIT-T0093"
+      ],
+      "coverage_complete": false,
+      "coverage_ratio": 0.011720180686118912,
+      "covered_lag_count": 96,
+      "covered_lag_sample": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "deduplicated_candidate_budget_upper_bound": 96,
+      "description": "8192-token probe with coprime-style separated long strides; useful for budget and gap inspection on a larger declared context.",
+      "fixture_theorem_ids": [],
+      "full_attention_budget": 8192,
+      "local_coil_disjoint": true,
+      "local_window": 64,
+      "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
+      "path_length": 8,
+      "plan_id": "long_context_coprime_probe_8192",
+      "raw_budget_survives_lag_dedup": true,
+      "raw_budget_survives_query_dedup": true,
+      "raw_candidate_budget_upper_bound": 96,
+      "reproduce_command": "python scripts/stride_family_certify.py --context 8192 --strides 127,509,1021,2039 --path-length 8 --local-window 64",
+      "sequence_length": 8192,
+      "strides": [
+        127,
+        509,
+        1021,
+        2039
+      ],
+      "uncovered_lag_count": 8095,
+      "uncovered_lag_interval_count": 32,
+      "uncovered_lag_interval_sample": [
+        [
+          65,
+          126
+        ],
+        [
+          128,
+          253
+        ],
+        [
+          255,
+          380
+        ],
+        [
+          382,
+          507
+        ],
+        [
+          510,
+          634
+        ],
+        [
+          636,
+          761
+        ],
+        [
+          763,
+          888
+        ],
+        [
+          890,
+          1015
+        ],
+        [
+          1017,
+          1017
+        ],
+        [
+          1019,
+          1020
+        ],
+        [
+          1022,
+          1526
+        ],
+        [
+          1528,
+          2002
+        ]
+      ],
+      "uncovered_lag_sample": [
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88
+      ]
+    }
+  ],
   "schema_id": "circle_calculus.stride_family_sparse_attention_certificate.v0"
 }

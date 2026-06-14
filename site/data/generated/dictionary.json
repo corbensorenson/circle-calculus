@@ -5033,6 +5033,18 @@
           "lean_name": "Circle.Applications.hybridFamilyCoveredLagList_default_120_4_3_7_13_length",
           "name": "Circle.Applications.hybridFamilyCoveredLagList_default_120_4_3_7_13_length",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0092",
+          "lean_name": "Circle.Applications.hybridFamilyCoveredLagList_disjoint_uncoveredLagList",
+          "name": "Circle.Applications.hybridFamilyCoveredLagList_disjoint_uncoveredLagList",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0093",
+          "lean_name": "Circle.Applications.mem_hybridFamilyCoveredLagList_or_mem_hybridFamilyUncoveredLagList_of_pos_lt_context",
+          "name": "Circle.Applications.mem_hybridFamilyCoveredLagList_or_mem_hybridFamilyUncoveredLagList_of_pos_lt_context",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5554,6 +5566,18 @@
           "id": "AIT-T0091",
           "lean_name": "Circle.Applications.hybridFamilyCoveredLagList_default_120_4_3_7_13_length",
           "name": "Circle.Applications.hybridFamilyCoveredLagList_default_120_4_3_7_13_length",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0092",
+          "lean_name": "Circle.Applications.hybridFamilyCoveredLagList_disjoint_uncoveredLagList",
+          "name": "Circle.Applications.hybridFamilyCoveredLagList_disjoint_uncoveredLagList",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0093",
+          "lean_name": "Circle.Applications.mem_hybridFamilyCoveredLagList_or_mem_hybridFamilyUncoveredLagList_of_pos_lt_context",
+          "name": "Circle.Applications.mem_hybridFamilyCoveredLagList_or_mem_hybridFamilyUncoveredLagList_of_pos_lt_context",
           "status": "proved"
         }
       ],
@@ -6945,6 +6969,18 @@
           "id": "AIT-T0091",
           "lean_name": "Circle.Applications.hybridFamilyCoveredLagList_default_120_4_3_7_13_length",
           "name": "Circle.Applications.hybridFamilyCoveredLagList_default_120_4_3_7_13_length",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0092",
+          "lean_name": "Circle.Applications.hybridFamilyCoveredLagList_disjoint_uncoveredLagList",
+          "name": "Circle.Applications.hybridFamilyCoveredLagList_disjoint_uncoveredLagList",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0093",
+          "lean_name": "Circle.Applications.mem_hybridFamilyCoveredLagList_or_mem_hybridFamilyUncoveredLagList_of_pos_lt_context",
+          "name": "Circle.Applications.mem_hybridFamilyCoveredLagList_or_mem_hybridFamilyUncoveredLagList_of_pos_lt_context",
           "status": "proved"
         }
       ],
@@ -11421,6 +11457,18 @@
           "lean_name": "Circle.Applications.hybridFamilyCoveredLagList_default_120_4_3_7_13_length",
           "name": "Circle.Applications.hybridFamilyCoveredLagList_default_120_4_3_7_13_length",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0092",
+          "lean_name": "Circle.Applications.hybridFamilyCoveredLagList_disjoint_uncoveredLagList",
+          "name": "Circle.Applications.hybridFamilyCoveredLagList_disjoint_uncoveredLagList",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0093",
+          "lean_name": "Circle.Applications.mem_hybridFamilyCoveredLagList_or_mem_hybridFamilyUncoveredLagList_of_pos_lt_context",
+          "name": "Circle.Applications.mem_hybridFamilyCoveredLagList_or_mem_hybridFamilyUncoveredLagList_of_pos_lt_context",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -13814,6 +13862,18 @@
           "id": "AIT-T0091",
           "lean_name": "Circle.Applications.hybridFamilyCoveredLagList_default_120_4_3_7_13_length",
           "name": "Circle.Applications.hybridFamilyCoveredLagList_default_120_4_3_7_13_length",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0092",
+          "lean_name": "Circle.Applications.hybridFamilyCoveredLagList_disjoint_uncoveredLagList",
+          "name": "Circle.Applications.hybridFamilyCoveredLagList_disjoint_uncoveredLagList",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0093",
+          "lean_name": "Circle.Applications.mem_hybridFamilyCoveredLagList_or_mem_hybridFamilyUncoveredLagList_of_pos_lt_context",
+          "name": "Circle.Applications.mem_hybridFamilyCoveredLagList_or_mem_hybridFamilyUncoveredLagList_of_pos_lt_context",
           "status": "proved"
         }
       ],

@@ -859,6 +859,38 @@ theorem mem_hybridFamilyUncoveredLagList_iff
     · intro hmem
       exact hgap ((mem_hybridFamilyLagCandidateList_iff hcontext).1 hmem)
 
+/-- Covered and uncovered finite lag lists are disjoint.
+
+This is the partition-safety side of the sparse-attention report: a positive
+in-context lag cannot be simultaneously listed as a semantic hit and a
+semantic gap for the same declared sparse plan. -/
+theorem hybridFamilyCoveredLagList_disjoint_uncoveredLagList
+    {n window pathLength : Nat} {strides : List Nat} :
+    (hybridFamilyCoveredLagList n window pathLength strides).Disjoint
+      (hybridFamilyUncoveredLagList n window pathLength strides) := by
+  rw [List.disjoint_left]
+  intro lag hcovered huncovered
+  have hhit := (mem_hybridFamilyCoveredLagList_iff).1 hcovered
+  have hgap := (mem_hybridFamilyUncoveredLagList_iff).1 huncovered
+  exact hgap.2.2 hhit.2.2
+
+/-- Every positive in-context lag appears in either the covered or uncovered
+finite lag list.
+
+Together with `hybridFamilyCoveredLagList_disjoint_uncoveredLagList`, this says
+the two theorem-side lists form an exact finite partition of the positive lag
+range for the declared sparse-attention plan. -/
+theorem mem_hybridFamilyCoveredLagList_or_mem_hybridFamilyUncoveredLagList_of_pos_lt_context
+    {n window pathLength lag : Nat} {strides : List Nat}
+    (hpos : 1 ≤ lag) (hcontext : lag < n) :
+    lag ∈ hybridFamilyCoveredLagList n window pathLength strides ∨
+      lag ∈ hybridFamilyUncoveredLagList n window pathLength strides := by
+  by_cases hreach : hybridFamilyLagReach n window pathLength lag strides
+  · exact Or.inl ((mem_hybridFamilyCoveredLagList_iff).2
+      ⟨hpos, hcontext, hreach⟩)
+  · exact Or.inr ((mem_hybridFamilyUncoveredLagList_iff).2
+      ⟨hpos, hcontext, hreach⟩)
+
 /-- Complete sparse-attention coverage is equivalent to an empty finite
 uncovered-lag list. -/
 theorem hybridFamilyCoversContext_iff_uncoveredLagList_eq_nil

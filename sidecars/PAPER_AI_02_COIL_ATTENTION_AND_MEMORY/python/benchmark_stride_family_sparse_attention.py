@@ -13,7 +13,7 @@ import argparse
 import json
 from dataclasses import asdict
 from pathlib import Path
-from typing import Any
+from typing import Any, Sequence
 
 from circle_math.applications.circle_ai import (
     certify_stride_family_coverage,
@@ -27,6 +27,127 @@ CLAIM_BOUNDARY = (
     "structured controls. It is not a neural attention-quality, long-context, "
     "throughput, runtime, memory-use, or model-quality claim."
 )
+
+CORE_COVERAGE_THEOREM_IDS = (
+    "AIT-T0080",
+    "AIT-T0081",
+    "AIT-T0082",
+    "AIT-T0083",
+    "AIT-T0090",
+    "AIT-T0092",
+    "AIT-T0093",
+)
+
+PLANNER_STYLE_SPECS: tuple[dict[str, Any], ...] = (
+    {
+        "plan_id": "default_gap_fixture_120",
+        "description": "Small public gappy fixture used by the theorem-side gap witnesses.",
+        "sequence_length": 120,
+        "strides": (7, 13),
+        "path_length": 3,
+        "local_window": 4,
+    },
+    {
+        "plan_id": "complete_toy_fixture_9",
+        "description": "Compact complete-coverage fixture with an empty uncovered-lag list.",
+        "sequence_length": 9,
+        "strides": (3, 4, 7),
+        "path_length": 2,
+        "local_window": 2,
+    },
+    {
+        "plan_id": "long_context_no_wrap_probe_4096",
+        "description": (
+            "4096-token probe with separated strides; useful for inspecting exact "
+            "raw-budget preservation without implying broad coverage."
+        ),
+        "sequence_length": 4096,
+        "strides": (64, 320, 1500),
+        "path_length": 4,
+        "local_window": 32,
+    },
+    {
+        "plan_id": "long_context_coprime_probe_8192",
+        "description": (
+            "8192-token probe with coprime-style separated long strides; useful "
+            "for budget and gap inspection on a larger declared context."
+        ),
+        "sequence_length": 8192,
+        "strides": (127, 509, 1021, 2039),
+        "path_length": 8,
+        "local_window": 64,
+    },
+)
+
+
+def _sample(values: Sequence[Any], limit: int) -> tuple[Any, ...]:
+    return tuple(values[:limit])
+
+
+def compact_planner_certificate(spec: dict[str, Any]) -> dict[str, Any]:
+    """Return a compact report row for a declared sparse-attention plan.
+
+    The full exact certificate for any row can be reproduced through
+    ``scripts/stride_family_certify.py`` using the same fields. The compact row
+    is kept short enough for committed sidecar results and the Living Book.
+    """
+    certificate = certify_stride_family_coverage(
+        sequence_length=spec["sequence_length"],
+        strides=spec["strides"],
+        path_length=spec["path_length"],
+        local_window=spec["local_window"],
+    )
+    return {
+        "plan_id": spec["plan_id"],
+        "description": spec["description"],
+        "sequence_length": certificate.sequence_length,
+        "strides": certificate.strides,
+        "path_length": certificate.path_length,
+        "local_window": certificate.local_window,
+        "coverage_complete": certificate.coverage_complete,
+        "coverage_ratio": certificate.coverage_ratio,
+        "covered_lag_count": certificate.covered_lag_count,
+        "uncovered_lag_count": certificate.uncovered_lag_count,
+        "uncovered_lag_interval_count": certificate.uncovered_lag_interval_count,
+        "candidate_budget_per_query": certificate.candidate_budget_per_query,
+        "raw_candidate_budget_upper_bound": certificate.raw_candidate_budget_upper_bound,
+        "deduplicated_candidate_budget_upper_bound": (
+            certificate.deduplicated_candidate_budget_upper_bound
+        ),
+        "full_attention_budget": certificate.full_attention_budget,
+        "candidate_budget_ratio": (
+            certificate.candidate_budget_per_query / certificate.full_attention_budget
+        ),
+        "raw_budget_survives_lag_dedup": (
+            certificate.theorem_side_lag_candidates_no_collision
+            and certificate.theorem_side_unique_lag_candidate_count
+            == certificate.raw_candidate_budget_upper_bound
+        ),
+        "raw_budget_survives_query_dedup": (
+            certificate.theorem_side_query_candidates_no_collision
+            and certificate.theorem_side_unique_query_candidate_count
+            == certificate.raw_candidate_budget_upper_bound
+        ),
+        "coil_residues_no_collision": certificate.theorem_side_coil_residues_no_collision,
+        "local_coil_disjoint": certificate.theorem_side_local_coil_disjoint,
+        "covered_lag_sample": _sample(certificate.covered_lags, 24),
+        "uncovered_lag_sample": _sample(certificate.uncovered_lags, 24),
+        "uncovered_lag_interval_sample": _sample(certificate.uncovered_lag_intervals, 12),
+        "fixture_theorem_ids": certificate.fixture_theorem_ids,
+        "core_coverage_theorem_ids": CORE_COVERAGE_THEOREM_IDS,
+        "reproduce_command": (
+            "python scripts/stride_family_certify.py "
+            f"--context {certificate.sequence_length} "
+            f"--strides {','.join(str(stride) for stride in certificate.strides)} "
+            f"--path-length {certificate.path_length} "
+            f"--local-window {certificate.local_window}"
+        ),
+        "note": (
+            "Compact planner row only; rerun the reproduce_command for the full "
+            "finite covered/uncovered-lag certificate. This is not an attention-quality, "
+            "runtime, memory-use, or long-context performance claim."
+        ),
+    }
 
 
 def build_payload(
@@ -58,6 +179,9 @@ def build_payload(
                 local_window=2,
             )
         ),
+        "planner_style_certificates": tuple(
+            compact_planner_certificate(spec) for spec in PLANNER_STYLE_SPECS
+        ),
     }
 
 
@@ -65,6 +189,29 @@ def text_results(payload: dict[str, Any]) -> str:
     result = payload["benchmark_result"]
     certificate = result["coverage_certificate"]
     complete = payload["complete_fixture_certificate"]
+    planner = payload["planner_style_certificates"]
+    planner_text = "\n".join(
+        (
+            "stride_family_sparse_attention_plan "
+            f"plan_id={row['plan_id']} "
+            f"context={row['sequence_length']} "
+            f"local_window={row['local_window']} "
+            f"path_length={row['path_length']} "
+            f"strides={row['strides']} "
+            f"coverage_complete={row['coverage_complete']} "
+            f"coverage_ratio={row['coverage_ratio']:.6f} "
+            f"candidate_budget={row['candidate_budget_per_query']} "
+            f"full_attention_budget={row['full_attention_budget']} "
+            f"budget_ratio={row['candidate_budget_ratio']:.6f} "
+            f"uncovered_lag_count={row['uncovered_lag_count']} "
+            f"gap_interval_count={row['uncovered_lag_interval_count']} "
+            f"raw_budget_survives_lag_dedup={row['raw_budget_survives_lag_dedup']} "
+            f"raw_budget_survives_query_dedup={row['raw_budget_survives_query_dedup']} "
+            f"fixture_theorem_ids={','.join(row['fixture_theorem_ids'])} "
+            f"core_theorem_ids={','.join(row['core_coverage_theorem_ids'])}"
+        )
+        for row in planner
+    )
     return (
         "stride_family_sparse_attention "
         f"sequence_length={result['sequence_length']} "
@@ -127,6 +274,7 @@ def text_results(payload: dict[str, Any]) -> str:
         f"{complete['theorem_side_unique_query_candidate_count']} "
         f"raw_candidate_budget_upper_bound={complete['raw_candidate_budget_upper_bound']} "
         f"fixture_theorem_ids={','.join(complete['fixture_theorem_ids'])}\n"
+        f"{planner_text}\n"
         f"{payload['claim_boundary']}\n"
     )
 
@@ -135,6 +283,7 @@ def markdown_results(payload: dict[str, Any]) -> str:
     result = payload["benchmark_result"]
     certificate = result["coverage_certificate"]
     complete = payload["complete_fixture_certificate"]
+    planner = payload["planner_style_certificates"]
     return "\n".join(
         [
             "# Stride-Family Sparse-Attention Certificate Results",
@@ -242,6 +391,30 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "```text",
             ", ".join(str(lag) for lag in complete["covered_lags"]),
             "```",
+            "",
+            "Planner-style declared plans:",
+            "",
+            "| Plan | Context | Local window | Path length | Strides | Complete | Coverage | Candidate budget | Budget ratio | Uncovered lags | Gap intervals | Raw budget survives dedup |",
+            "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |",
+            *(
+                (
+                    f"| {row['plan_id']} | {row['sequence_length']} | "
+                    f"{row['local_window']} | {row['path_length']} | "
+                    f"{', '.join(str(stride) for stride in row['strides'])} | "
+                    f"{row['coverage_complete']} | "
+                    f"{row['coverage_ratio']:.3f} | "
+                    f"{row['candidate_budget_per_query']} | "
+                    f"{row['candidate_budget_ratio']:.3f} | "
+                    f"{row['uncovered_lag_count']} | "
+                    f"{row['uncovered_lag_interval_count']} | "
+                    f"lag={row['raw_budget_survives_lag_dedup']}, "
+                    f"query={row['raw_budget_survives_query_dedup']} |"
+                )
+                for row in planner
+            ),
+            "",
+            "Planner rows are compact reports over declared sparse layouts. Re-run the",
+            "`reproduce_command` in the JSON for the full covered/uncovered-lag certificate.",
             "",
             "Theorem ids:",
             "",
