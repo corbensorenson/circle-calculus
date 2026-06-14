@@ -90,6 +90,22 @@ These exact-rational plans are generated source data for Lean interval certifica
 | standard_rope_channel0_interval_plan_d20_margin_1_104219_context_65536 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/104219 | 65536 | none | 10431 | candidate_plan_not_lean_proved |
 | standard_rope_channel0_interval_plan_d20_margin_1_104219_context_103993 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/104219 | 103993 | 103993 | 16551 | candidate_plan_not_lean_proved |
 
+### Rational-Band Certificate Audits
+
+These executable audits check whether each generated band list has the finite shape needed by the generic compression bridge. They are source-data checks for the next Lean certificate route, not proof-status upgrades for candidate rows.
+
+| Audit | Requested context | Certified context | Bands | Valid bands | Covered gaps | First uncovered gap | Coverage | Endpoint validity | Status | Bridge ids |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| standard_rope_channel0_interval_plan_d4_margin_1_512_context_333 | 333 | 333 | 53 | 53 | 332 | none | PASS | PASS | executable_band_audit_not_lean_proved | AIRA-T0139, AIRA-T0140 |
+| standard_rope_channel0_interval_plan_d6_margin_1_1024_context_710 | 710 | 710 | 113 | 113 | 709 | none | PASS | PASS | executable_band_audit_not_lean_proved | AIRA-T0139, AIRA-T0140 |
+| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_4096 | 4096 | 4096 | 652 | 652 | 4095 | none | PASS | PASS | executable_band_audit_not_lean_proved | AIRA-T0139, AIRA-T0140 |
+| standard_rope_channel0_interval_plan_d20_margin_1_104220_context_8192 | 8192 | 8192 | 1304 | 1304 | 8191 | none | PASS | PASS | executable_band_audit_not_lean_proved | AIRA-T0139, AIRA-T0140 |
+| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_8192 | 8192 | 8192 | 1304 | 1304 | 8191 | none | PASS | PASS | executable_band_audit_not_lean_proved | AIRA-T0139, AIRA-T0140 |
+| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_16384 | 16384 | 16384 | 2608 | 2608 | 16383 | none | PASS | PASS | executable_band_audit_not_lean_proved | AIRA-T0139, AIRA-T0140 |
+| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_32768 | 32768 | 32768 | 5216 | 5216 | 32767 | none | PASS | PASS | executable_band_audit_not_lean_proved | AIRA-T0139, AIRA-T0140 |
+| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_65536 | 65536 | 65536 | 10431 | 10431 | 65535 | none | PASS | PASS | executable_band_audit_not_lean_proved | AIRA-T0139, AIRA-T0140 |
+| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_103993 | 131072 | 103993 | 16551 | 16551 | 103992 | 103993 | FAIL | PASS | executable_band_audit_not_lean_proved | AIRA-T0139, AIRA-T0140 |
+
 ### Band Endpoint Audit
 
 Each row shows the endpoint inequalities a generator must justify before the Lean bridge `AIRA-T0126` can fill in the intermediate gaps for that band. This table samples the first and last band for each generated plan; rerun the Python planner for the complete deterministic band list.

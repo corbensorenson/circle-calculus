@@ -181,11 +181,14 @@ bracket.theorem_ids                # AIRA-T0133,AIRA-T0134,AIRA-T0118,AIRA-T0138
 
 The bracket leaves margins strictly between `1/104219` and `1/104218` unresolved.
 
-For audit and future Lean work, the sidecar also exposes interval plans:
+For audit and future Lean work, the sidecar also exposes interval plans and rational-band audits:
 
 ```python
 from fractions import Fraction
-from circle_math.applications import plan_standard_channel0_interval_bands
+from circle_math.applications import (
+    audit_standard_channel0_rational_band_certificate,
+    plan_standard_channel0_interval_bands,
+)
 
 plan_standard_channel0_interval_bands(
     pi_bound_preset="d4",
@@ -237,15 +240,35 @@ plan_standard_channel0_interval_bands(
     margin=Fraction(1, 104219),
     max_context_length=131072,
 ).first_uncovered_gap  # 103993
+
+d20_64k = plan_standard_channel0_interval_bands(
+    pi_bound_preset="d20",
+    margin=Fraction(1, 104219),
+    max_context_length=65536,
+)
+audit_standard_channel0_rational_band_certificate(
+    d20_64k,
+    requested_context_length=65536,
+).pass_audit  # True
+
+d20_128k_frontier = plan_standard_channel0_interval_bands(
+    pi_bound_preset="d20",
+    margin=Fraction(1, 104219),
+    max_context_length=131072,
+)
+audit_standard_channel0_rational_band_certificate(
+    d20_128k_frontier,
+    requested_context_length=131072,
+).first_uncovered_gap  # 103993
 ```
 
 Each emitted band also records `start_lower_value`, `end_upper_value`, `endpoint_cell_margin_ok`, and `bridge_theorem_id=AIRA-T0126`. Those fields are the executable sidecar version of the Lean band-endpoint bridge: a generator can prove the band endpoints stay inside one integer cell, then use `AIRA-T0126` to justify every intermediate gap in that band.
 
 For example, the first d4 band records `start_gap=1`, `end_gap=6`, `cell=0`, `start_lower_value=625/3927`, `end_upper_value=6000/6283`, and `endpoint_cell_margin_ok=true`. That means the band endpoints fit safely inside the integer cell from `0` to `1` with the advertised margin, so the monotone band theorem covers gaps `1` through `6`.
 
-The generated Markdown and JSON sidecars include `Band Endpoint Audit` summaries with the first and last band of each standard interval plan. Rerun `plan_standard_channel0_interval_bands(...)` for the complete deterministic band list.
+The generated Markdown and JSON sidecars include `Rational-Band Certificate Audits`, which check whether each generated band list is positive, contiguous from gap `1`, endpoint-valid, and sufficient for the requested context. They also include `Band Endpoint Audit` summaries with the first and last band of each standard interval plan. Rerun `plan_standard_channel0_interval_bands(...)` for the complete deterministic band list.
 
-The d4, d6, conservative d20 `1/131072`, tighter d20 `1/105000`, sharp 4k d20 `1/104219`, weaker 8k d20 `1/104220`, sharp 8k d20 `1/104219`, and sharp 16k d20 `1/104219` plans have been converted into Lean proof. The same exact-rational planner currently covers 32k and 64k at margin `1/104219`, then reaches a 128k-frontier first uncovered gap at `103993`; those rows are planning data only until a generated rational-band certificate is checked with `AIRA-T0139` and `AIRA-T0140` and manifest ids are marked proved.
+The d4, d6, conservative d20 `1/131072`, tighter d20 `1/105000`, sharp 4k d20 `1/104219`, weaker 8k d20 `1/104220`, sharp 8k d20 `1/104219`, and sharp 16k d20 `1/104219` plans have been converted into Lean proof. The same exact-rational planner currently covers 32k and 64k at margin `1/104219`; the rational-band audits mark those requests as source-data passes. The 128k request reaches first uncovered gap `103993`, so its audit fails coverage even though its emitted bands are endpoint-valid through the certified frontier. All three frontier rows remain planning data only until generated rational-band certificates are checked with `AIRA-T0139` and `AIRA-T0140` and manifest ids are marked proved.
 
 If the exact discrete contract fails, the output includes a common collision gap and sample colliding pairs.
 It also reports `guaranteed_common_gap_collision_pair_count`, the number of starts whose paired position is exactly the common collision gap ahead, and `guaranteed_common_gap_multiple_pair_count`, the corresponding guaranteed family summed over every positive in-context multiple of that gap. `total_bank_collision_pair_count` is the exact all-channel count for the declared integer-period bank, backed by the period-bank LCM theorem. `AIRA-T0048` proves the LCM-gap collision family, and `AIRA-T0049` proves that a positive LCM below the context gives an explicit unequal collision witness. It is not a real-valued RoPE collision count.
@@ -281,6 +304,7 @@ The JSON includes:
 - bounded prefix collision reports and the first prefix that already passes, when one appears in the reported bound;
 - bounded selected-subfamily pass reports for small declared subbanks;
 - a proof-layer inventory distinguishing exact integer-period, rational/discretized, interval-backed standard-RoPE, and numerical diagnostic layers;
+- rational-band audit rows for standard channel-0 frontier plans;
 - exact discrete pass/fail;
 - sample exact collisions when present;
 - numerical real-phase margin data;

@@ -537,6 +537,37 @@ class StandardRoPEIntervalPlan:
 
 
 @dataclass(frozen=True)
+class StandardRoPERationalBandCertificateAudit:
+    schema_id: str
+    name: str
+    source_plan_name: str
+    requested_context_length: int
+    certified_context_length: int
+    planned_margin: str
+    pi_bound_preset: PiBoundPreset
+    lower_turn_ratio_bound: str
+    upper_turn_ratio_bound: str
+    band_count: int
+    valid_band_count: int
+    covered_gap_count: int
+    first_covered_gap: int | None
+    last_covered_gap: int | None
+    first_uncovered_gap: int | None
+    contiguous_from_one: bool
+    endpoint_validity_pass: bool
+    coverage_pass: bool
+    pass_audit: bool
+    theorem_ids: tuple[str, ...]
+    lean_declarations: tuple[str, ...]
+    theorem_status: str
+    explanation: str
+    claim_boundary: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
 class IntervalBackedTurnRatioCertificate:
     schema_id: str
     name: str
@@ -1512,6 +1543,106 @@ def plan_standard_channel0_interval_bands(
             "Interval-plan data only unless theorem_status names a compiled Lean "
             "seed. Even the proved seed is not a model-quality claim, large-context "
             "bank claim, speed claim, or deployment claim."
+        ),
+    )
+
+
+def audit_standard_channel0_rational_band_certificate(
+    plan: StandardRoPEIntervalPlan,
+    *,
+    requested_context_length: int | None = None,
+) -> StandardRoPERationalBandCertificateAudit:
+    """Audit whether a generated rational-band plan covers a request.
+
+    This is an executable source-data check for the generic Lean compression
+    bridge. It checks the finite band list shape and endpoint inequalities; it
+    does not turn a generated list into a theorem-backed certificate by itself.
+    """
+    requested_context = (
+        plan.context_length
+        if requested_context_length is None
+        else requested_context_length
+    )
+    if requested_context <= 1:
+        raise ValueError("requested_context_length must be greater than 1")
+
+    bands = plan.bands
+    first_covered_gap = bands[0].start_gap if bands else None
+    last_covered_gap = bands[-1].end_gap if bands else None
+    valid_band_count = 0
+    expected_start = 1
+    contiguous_from_one = bool(bands) and first_covered_gap == 1
+    bridge_ids = {band.bridge_theorem_id for band in bands}
+
+    for band in bands:
+        range_ok = 0 < band.start_gap <= band.end_gap
+        contiguous_from_one = (
+            contiguous_from_one and band.start_gap == expected_start
+        )
+        if range_ok and band.endpoint_cell_margin_ok:
+            valid_band_count += 1
+        expected_start = band.end_gap + 1
+
+    endpoint_validity_pass = bool(bands) and valid_band_count == len(bands)
+    certified_context_length = (
+        (last_covered_gap or 0) + 1 if contiguous_from_one else 1
+    )
+    covered_gap_count = (
+        last_covered_gap or 0
+        if contiguous_from_one
+        else sum(max(0, band.end_gap - band.start_gap + 1) for band in bands)
+    )
+    coverage_pass = requested_context <= certified_context_length
+    first_uncovered_gap = None if coverage_pass else certified_context_length
+    pass_audit = endpoint_validity_pass and coverage_pass
+    bridge_text = ", ".join(
+        tuple(sorted(bridge_ids)) + ROPE_STANDARD_CHANNEL0_INTERVAL_COMPRESSION_THEOREMS
+    )
+
+    if coverage_pass:
+        coverage_sentence = (
+            f"covers every positive gap below requested context {requested_context}"
+        )
+    else:
+        coverage_sentence = (
+            f"stops before requested context {requested_context}; first uncovered "
+            f"gap is {first_uncovered_gap}"
+        )
+
+    return StandardRoPERationalBandCertificateAudit(
+        schema_id="circle_calculus.standard_rope_rational_band_certificate_audit.v0",
+        name=f"{plan.name}_requested_context_{requested_context}_band_audit",
+        source_plan_name=plan.name,
+        requested_context_length=requested_context,
+        certified_context_length=certified_context_length,
+        planned_margin=plan.planned_margin,
+        pi_bound_preset=plan.pi_bound_preset,
+        lower_turn_ratio_bound=plan.lower_turn_ratio_bound,
+        upper_turn_ratio_bound=plan.upper_turn_ratio_bound,
+        band_count=len(bands),
+        valid_band_count=valid_band_count,
+        covered_gap_count=covered_gap_count,
+        first_covered_gap=first_covered_gap,
+        last_covered_gap=last_covered_gap,
+        first_uncovered_gap=first_uncovered_gap,
+        contiguous_from_one=contiguous_from_one,
+        endpoint_validity_pass=endpoint_validity_pass,
+        coverage_pass=coverage_pass,
+        pass_audit=pass_audit,
+        theorem_ids=ROPE_STANDARD_CHANNEL0_INTERVAL_COMPRESSION_THEOREMS,
+        lean_declarations=ROPE_STANDARD_CHANNEL0_INTERVAL_COMPRESSION_LEAN_DECLARATIONS,
+        theorem_status="executable_band_audit_not_lean_proved",
+        explanation=(
+            f"The audit checks {len(bands)} generated rational interval bands "
+            "for positive ordered gap ranges, contiguity from gap 1, endpoint-cell "
+            f"margin inequalities, and requested-context coverage. It {coverage_sentence}. "
+            f"The relevant generic bridge ids are {bridge_text}."
+        ),
+        claim_boundary=(
+            "Executable source-data audit only. The listed Lean declarations are "
+            "generic compression bridges; this row is not a generated Lean "
+            "certificate for the band list unless a matching theorem id is added "
+            "to the manifest and compiled by lake build."
         ),
     )
 

@@ -14,6 +14,7 @@ from circle_math.applications import (
     ROPE_RATIONAL_PRESET_4099_NAME,
     ROPE_RATIONAL_PRESET_4099_THEOREMS,
     ROPE_REAL_PHASE_PRECURSOR_THEOREMS,
+    ROPE_STANDARD_CHANNEL0_INTERVAL_COMPRESSION_THEOREMS,
     ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME,
     ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS,
     PHASE_BANK_CERTIFIER_PRESETS,
@@ -32,6 +33,7 @@ from circle_math.applications import (
     certify_standard_channel0_d13_margin_bracket,
     certify_standard_channel0_d14_bank_request,
     certify_standard_channel0_d14_margin_bracket,
+    audit_standard_channel0_rational_band_certificate,
     collision_pair_count_at_gap,
     collision_pair_count_at_gap_multiples,
     discretize_rope_periods,
@@ -830,6 +832,74 @@ def test_standard_channel0_interval_plan_finds_next_exact_rational_targets() -> 
     assert d20_too_large_plan.theorem_status == "candidate_plan_not_lean_proved"
 
 
+def test_standard_channel0_rational_band_audit_marks_frontier_candidates() -> None:
+    d20_32k_plan = plan_standard_channel0_interval_bands(
+        pi_bound_preset="d20",
+        margin=Fraction(1, 104219),
+        max_context_length=32768,
+    )
+    d20_32k_audit = audit_standard_channel0_rational_band_certificate(
+        d20_32k_plan,
+        requested_context_length=32768,
+    )
+    assert d20_32k_audit.schema_id == (
+        "circle_calculus.standard_rope_rational_band_certificate_audit.v0"
+    )
+    assert d20_32k_audit.requested_context_length == 32768
+    assert d20_32k_audit.certified_context_length == 32768
+    assert d20_32k_audit.band_count == 5216
+    assert d20_32k_audit.valid_band_count == 5216
+    assert d20_32k_audit.covered_gap_count == 32767
+    assert d20_32k_audit.first_covered_gap == 1
+    assert d20_32k_audit.last_covered_gap == 32767
+    assert d20_32k_audit.first_uncovered_gap is None
+    assert d20_32k_audit.contiguous_from_one
+    assert d20_32k_audit.endpoint_validity_pass
+    assert d20_32k_audit.coverage_pass
+    assert d20_32k_audit.pass_audit
+    assert d20_32k_audit.theorem_ids == ROPE_STANDARD_CHANNEL0_INTERVAL_COMPRESSION_THEOREMS
+    assert d20_32k_audit.theorem_status == "executable_band_audit_not_lean_proved"
+    assert "not a generated Lean certificate" in d20_32k_audit.claim_boundary
+
+    d20_64k_plan = plan_standard_channel0_interval_bands(
+        pi_bound_preset="d20",
+        margin=Fraction(1, 104219),
+        max_context_length=65536,
+    )
+    d20_64k_audit = audit_standard_channel0_rational_band_certificate(
+        d20_64k_plan,
+        requested_context_length=65536,
+    )
+    assert d20_64k_audit.requested_context_length == 65536
+    assert d20_64k_audit.certified_context_length == 65536
+    assert d20_64k_audit.band_count == 10431
+    assert d20_64k_audit.valid_band_count == 10431
+    assert d20_64k_audit.first_uncovered_gap is None
+    assert d20_64k_audit.pass_audit
+
+    d20_128k_plan = plan_standard_channel0_interval_bands(
+        pi_bound_preset="d20",
+        margin=Fraction(1, 104219),
+        max_context_length=131072,
+    )
+    d20_128k_audit = audit_standard_channel0_rational_band_certificate(
+        d20_128k_plan,
+        requested_context_length=131072,
+    )
+    assert d20_128k_plan.context_length == 103993
+    assert d20_128k_audit.requested_context_length == 131072
+    assert d20_128k_audit.certified_context_length == 103993
+    assert d20_128k_audit.band_count == 16551
+    assert d20_128k_audit.valid_band_count == 16551
+    assert d20_128k_audit.covered_gap_count == 103992
+    assert d20_128k_audit.first_uncovered_gap == 103993
+    assert d20_128k_audit.contiguous_from_one
+    assert d20_128k_audit.endpoint_validity_pass
+    assert not d20_128k_audit.coverage_pass
+    assert not d20_128k_audit.pass_audit
+    assert "first uncovered gap is 103993" in d20_128k_audit.explanation
+
+
 def test_standard_channel0_d12_margin_bracket_is_theorem_backed() -> None:
     bracket = certify_standard_channel0_d12_margin_bracket()
     assert bracket.schema_id == (
@@ -1510,6 +1580,33 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert "does not upgrade candidate rows" in (
         payload["standard_channel0_frontier_summary"]["claim_boundary"]
     )
+    assert payload["standard_band_certificate_audits"][6]["requested_context_length"] == 32768
+    assert payload["standard_band_certificate_audits"][6]["certified_context_length"] == 32768
+    assert payload["standard_band_certificate_audits"][6]["band_count"] == 5216
+    assert payload["standard_band_certificate_audits"][6]["valid_band_count"] == 5216
+    assert payload["standard_band_certificate_audits"][6]["coverage_pass"] is True
+    assert payload["standard_band_certificate_audits"][6]["pass_audit"] is True
+    assert payload["standard_band_certificate_audits"][6]["theorem_status"] == (
+        "executable_band_audit_not_lean_proved"
+    )
+    assert payload["standard_band_certificate_audits"][7]["requested_context_length"] == 65536
+    assert payload["standard_band_certificate_audits"][7]["certified_context_length"] == 65536
+    assert payload["standard_band_certificate_audits"][7]["band_count"] == 10431
+    assert payload["standard_band_certificate_audits"][7]["coverage_pass"] is True
+    assert payload["standard_band_certificate_audits"][8]["requested_context_length"] == 131072
+    assert payload["standard_band_certificate_audits"][8]["certified_context_length"] == 103993
+    assert payload["standard_band_certificate_audits"][8]["band_count"] == 16551
+    assert payload["standard_band_certificate_audits"][8]["first_uncovered_gap"] == 103993
+    assert payload["standard_band_certificate_audits"][8]["endpoint_validity_pass"] is True
+    assert payload["standard_band_certificate_audits"][8]["coverage_pass"] is False
+    assert payload["standard_band_certificate_audits"][8]["pass_audit"] is False
+    assert payload["standard_band_certificate_audits"][8]["theorem_ids"] == [
+        "AIRA-T0139",
+        "AIRA-T0140",
+    ]
+    assert "Executable source-data audit only" in (
+        payload["standard_band_certificate_audits"][8]["claim_boundary"]
+    )
     assert payload["standard_interval_candidate_plans"][0]["context_length"] == 333
     assert "bands" not in payload["standard_interval_candidate_plans"][0]
     assert payload["standard_interval_candidate_plans"][0]["first_band"]["start_gap"] == 1
@@ -1622,6 +1719,19 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert "context_32768" in markdown_result.stdout
     assert "context_65536" in markdown_result.stdout
     assert "| 103993 | 16551 | candidate_plan_not_lean_proved |" in markdown_result.stdout
+    assert "Rational-Band Certificate Audits" in markdown_result.stdout
+    assert (
+        "| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_32768 "
+        "| 32768 | 32768 | 5216 | 5216 | 32767 | none | PASS | PASS |"
+    ) in markdown_result.stdout
+    assert (
+        "| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_65536 "
+        "| 65536 | 65536 | 10431 | 10431 | 65535 | none | PASS | PASS |"
+    ) in markdown_result.stdout
+    assert (
+        "| standard_rope_channel0_interval_plan_d20_margin_1_104219_context_103993 "
+        "| 131072 | 103993 | 16551 | 16551 | 103992 | 103993 | FAIL | PASS |"
+    ) in markdown_result.stdout
     assert "Band Endpoint Audit" in markdown_result.stdout
     assert (
         "| standard_rope_channel0_interval_plan_d20_margin_1_104220_context_8192 "

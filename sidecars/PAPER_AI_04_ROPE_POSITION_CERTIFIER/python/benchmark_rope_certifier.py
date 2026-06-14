@@ -20,6 +20,7 @@ from circle_math.applications import (
     ROPE_CERTIFIER_PRESETS,
     ROPE_STANDARD_CHANNEL0_INTERVAL_COMPRESSION_LEAN_DECLARATIONS,
     ROPE_STANDARD_CHANNEL0_INTERVAL_COMPRESSION_THEOREMS,
+    audit_standard_channel0_rational_band_certificate,
     certificate_summary_lines,
     certify_phase_bank_positions,
     certify_rational_preset_4099,
@@ -232,6 +233,37 @@ def standard_channel0_frontier_summary(standard_plans: tuple[dict[str, Any], ...
     }
 
 
+def rational_band_audit_rows(audits: tuple[dict[str, Any], ...]) -> list[str]:
+    rows = [
+        "| Audit | Requested context | Certified context | Bands | Valid bands | Covered gaps | First uncovered gap | Coverage | Endpoint validity | Status | Bridge ids |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |",
+    ]
+    for audit in audits:
+        first_uncovered = (
+            "none"
+            if audit["first_uncovered_gap"] is None
+            else str(audit["first_uncovered_gap"])
+        )
+        rows.append(
+            "| {name} | {requested} | {certified} | {bands} | {valid_bands} | "
+            "{covered_gaps} | {first_uncovered} | {coverage} | {validity} | "
+            "{status} | {theorems} |".format(
+                name=audit["source_plan_name"],
+                requested=audit["requested_context_length"],
+                certified=audit["certified_context_length"],
+                bands=audit["band_count"],
+                valid_bands=audit["valid_band_count"],
+                covered_gaps=audit["covered_gap_count"],
+                first_uncovered=first_uncovered,
+                coverage="PASS" if audit["coverage_pass"] else "FAIL",
+                validity="PASS" if audit["endpoint_validity_pass"] else "FAIL",
+                status=audit["theorem_status"],
+                theorems=", ".join(audit["theorem_ids"]),
+            )
+        )
+    return rows
+
+
 def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
     certificates = []
     for preset in presets:
@@ -253,52 +285,38 @@ def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
                 "certificate": compact_phase_bank_certificate(certificate),
             }
         )
-    standard_plans = (
-        compact_interval_plan(plan_standard_channel0_interval_bands(
-            pi_bound_preset="d4",
-            margin=Fraction(1, 512),
-            max_context_length=4096,
-        )),
-        compact_interval_plan(plan_standard_channel0_interval_bands(
-            pi_bound_preset="d6",
-            margin=Fraction(1, 1024),
-            max_context_length=4096,
-        )),
-        compact_interval_plan(plan_standard_channel0_interval_bands(
-            pi_bound_preset="d20",
-            margin=Fraction(1, 104219),
-            max_context_length=4096,
-        )),
-        compact_interval_plan(plan_standard_channel0_interval_bands(
-            pi_bound_preset="d20",
-            margin=Fraction(1, 104220),
-            max_context_length=8192,
-        )),
-        compact_interval_plan(plan_standard_channel0_interval_bands(
-            pi_bound_preset="d20",
-            margin=Fraction(1, 104219),
-            max_context_length=8192,
-        )),
-        compact_interval_plan(plan_standard_channel0_interval_bands(
-            pi_bound_preset="d20",
-            margin=Fraction(1, 104219),
-            max_context_length=16384,
-        )),
-        compact_interval_plan(plan_standard_channel0_interval_bands(
-            pi_bound_preset="d20",
-            margin=Fraction(1, 104219),
-            max_context_length=32768,
-        )),
-        compact_interval_plan(plan_standard_channel0_interval_bands(
-            pi_bound_preset="d20",
-            margin=Fraction(1, 104219),
-            max_context_length=65536,
-        )),
-        compact_interval_plan(plan_standard_channel0_interval_bands(
-            pi_bound_preset="d20",
-            margin=Fraction(1, 104219),
-            max_context_length=131072,
-        )),
+    standard_plan_specs = (
+        ("d4", Fraction(1, 512), 4096, 333),
+        ("d6", Fraction(1, 1024), 4096, 710),
+        ("d20", Fraction(1, 104219), 4096, 4096),
+        ("d20", Fraction(1, 104220), 8192, 8192),
+        ("d20", Fraction(1, 104219), 8192, 8192),
+        ("d20", Fraction(1, 104219), 16384, 16384),
+        ("d20", Fraction(1, 104219), 32768, 32768),
+        ("d20", Fraction(1, 104219), 65536, 65536),
+        ("d20", Fraction(1, 104219), 131072, 131072),
+    )
+    standard_plan_objects = tuple(
+        (
+            requested_context,
+            plan_standard_channel0_interval_bands(
+                pi_bound_preset=pi_bound_preset,
+                margin=margin,
+                max_context_length=max_context_length,
+            ),
+        )
+        for pi_bound_preset, margin, max_context_length, requested_context
+        in standard_plan_specs
+    )
+    standard_plans = tuple(
+        compact_interval_plan(plan) for _requested_context, plan in standard_plan_objects
+    )
+    standard_band_audits = tuple(
+        audit_standard_channel0_rational_band_certificate(
+            plan,
+            requested_context_length=requested_context,
+        ).to_dict()
+        for requested_context, plan in standard_plan_objects
     )
     return {
         "schema_id": "circle_calculus.rope_certifier_preset_results.v0",
@@ -328,6 +346,7 @@ def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
         ).to_dict(),
         "standard_d14_margin_bracket": certify_standard_channel0_d14_margin_bracket().to_dict(),
         "standard_channel0_frontier_summary": standard_channel0_frontier_summary(standard_plans),
+        "standard_band_certificate_audits": standard_band_audits,
         "standard_interval_candidate_plans": standard_plans,
         "presets": certificates,
         "phase_bank_diagnostics": phase_bank_diagnostics,
@@ -380,6 +399,7 @@ def markdown_results(payload: dict[str, Any]) -> str:
     standard_d14_bracket = payload["standard_d14_margin_bracket"]
     frontier = payload["standard_channel0_frontier_summary"]
     standard_plans = payload["standard_interval_candidate_plans"]
+    standard_band_audits = payload["standard_band_certificate_audits"]
     rows = [
         "| Preset | Head dim | Base | Context | Exact discrete | Common collision gap | Common-gap pairs | Total bank pairs | First pass prefix | Smallest pass subfamily | Real margin | Worst gap | Theorem ids |",
         "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | --- | --- | --- | --- | --- |",
@@ -643,6 +663,12 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             *plan_rows,
             "",
+            "### Rational-Band Certificate Audits",
+            "",
+            "These executable audits check whether each generated band list has the finite shape needed by the generic compression bridge. They are source-data checks for the next Lean certificate route, not proof-status upgrades for candidate rows.",
+            "",
+            *rational_band_audit_rows(standard_band_audits),
+            "",
             "### Band Endpoint Audit",
             "",
             "Each row shows the endpoint inequalities a generator must justify before the Lean bridge `AIRA-T0126` can fill in the intermediate gaps for that band. This table samples the first and last band for each generated plan; rerun the Python planner for the complete deterministic band list.",
@@ -801,6 +827,22 @@ def main() -> None:
                             first_uncovered=plan["first_uncovered_gap"],
                             bands=plan["band_count"],
                             status=plan["theorem_status"],
+                        )
+                    )
+                for audit in payload["standard_band_certificate_audits"]:
+                    print(
+                        "rational_band_audit={name} requested_context={requested} "
+                        "certified_context={certified} bands={bands} "
+                        "valid_bands={valid_bands} coverage={coverage} "
+                        "endpoint_validity={validity} status={status}".format(
+                            name=audit["source_plan_name"],
+                            requested=audit["requested_context_length"],
+                            certified=audit["certified_context_length"],
+                            bands=audit["band_count"],
+                            valid_bands=audit["valid_band_count"],
+                            coverage=audit["coverage_pass"],
+                            validity=audit["endpoint_validity_pass"],
+                            status=audit["theorem_status"],
                         )
                     )
                 print()

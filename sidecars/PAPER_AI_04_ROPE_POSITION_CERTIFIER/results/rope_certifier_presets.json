@@ -3557,6 +3557,296 @@
     "zero_margin_witness": null
   },
   "schema_id": "circle_calculus.rope_certifier_preset_results.v0",
+  "standard_band_certificate_audits": [
+    {
+      "band_count": 53,
+      "certified_context_length": 333,
+      "claim_boundary": "Executable source-data audit only. The listed Lean declarations are generic compression bridges; this row is not a generated Lean certificate for the band list unless a matching theorem id is added to the manifest and compiled by lake build.",
+      "contiguous_from_one": true,
+      "coverage_pass": true,
+      "covered_gap_count": 332,
+      "endpoint_validity_pass": true,
+      "explanation": "The audit checks 53 generated rational interval bands for positive ordered gap ranges, contiguity from gap 1, endpoint-cell margin inequalities, and requested-context coverage. It covers every positive gap below requested context 333. The relevant generic bridge ids are AIRA-T0126, AIRA-T0139, AIRA-T0140.",
+      "first_covered_gap": 1,
+      "first_uncovered_gap": null,
+      "last_covered_gap": 332,
+      "lean_declarations": [
+        "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+        "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands"
+      ],
+      "lower_turn_ratio_bound": "625/3927",
+      "name": "standard_rope_channel0_interval_plan_d4_margin_1_512_context_333_requested_context_333_band_audit",
+      "pass_audit": true,
+      "pi_bound_preset": "d4",
+      "planned_margin": "1/512",
+      "requested_context_length": 333,
+      "schema_id": "circle_calculus.standard_rope_rational_band_certificate_audit.v0",
+      "source_plan_name": "standard_rope_channel0_interval_plan_d4_margin_1_512_context_333",
+      "theorem_ids": [
+        "AIRA-T0139",
+        "AIRA-T0140"
+      ],
+      "theorem_status": "executable_band_audit_not_lean_proved",
+      "upper_turn_ratio_bound": "1000/6283",
+      "valid_band_count": 53
+    },
+    {
+      "band_count": 113,
+      "certified_context_length": 710,
+      "claim_boundary": "Executable source-data audit only. The listed Lean declarations are generic compression bridges; this row is not a generated Lean certificate for the band list unless a matching theorem id is added to the manifest and compiled by lake build.",
+      "contiguous_from_one": true,
+      "coverage_pass": true,
+      "covered_gap_count": 709,
+      "endpoint_validity_pass": true,
+      "explanation": "The audit checks 113 generated rational interval bands for positive ordered gap ranges, contiguity from gap 1, endpoint-cell margin inequalities, and requested-context coverage. It covers every positive gap below requested context 710. The relevant generic bridge ids are AIRA-T0126, AIRA-T0139, AIRA-T0140.",
+      "first_covered_gap": 1,
+      "first_uncovered_gap": null,
+      "last_covered_gap": 709,
+      "lean_declarations": [
+        "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+        "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands"
+      ],
+      "lower_turn_ratio_bound": "500000/3141593",
+      "name": "standard_rope_channel0_interval_plan_d6_margin_1_1024_context_710_requested_context_710_band_audit",
+      "pass_audit": true,
+      "pi_bound_preset": "d6",
+      "planned_margin": "1/1024",
+      "requested_context_length": 710,
+      "schema_id": "circle_calculus.standard_rope_rational_band_certificate_audit.v0",
+      "source_plan_name": "standard_rope_channel0_interval_plan_d6_margin_1_1024_context_710",
+      "theorem_ids": [
+        "AIRA-T0139",
+        "AIRA-T0140"
+      ],
+      "theorem_status": "executable_band_audit_not_lean_proved",
+      "upper_turn_ratio_bound": "62500/392699",
+      "valid_band_count": 113
+    },
+    {
+      "band_count": 652,
+      "certified_context_length": 4096,
+      "claim_boundary": "Executable source-data audit only. The listed Lean declarations are generic compression bridges; this row is not a generated Lean certificate for the band list unless a matching theorem id is added to the manifest and compiled by lake build.",
+      "contiguous_from_one": true,
+      "coverage_pass": true,
+      "covered_gap_count": 4095,
+      "endpoint_validity_pass": true,
+      "explanation": "The audit checks 652 generated rational interval bands for positive ordered gap ranges, contiguity from gap 1, endpoint-cell margin inequalities, and requested-context coverage. It covers every positive gap below requested context 4096. The relevant generic bridge ids are AIRA-T0126, AIRA-T0139, AIRA-T0140.",
+      "first_covered_gap": 1,
+      "first_uncovered_gap": null,
+      "last_covered_gap": 4095,
+      "lean_declarations": [
+        "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+        "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands"
+      ],
+      "lower_turn_ratio_bound": "50000000000000000000/314159265358979323847",
+      "name": "standard_rope_channel0_interval_plan_d20_margin_1_104219_context_4096_requested_context_4096_band_audit",
+      "pass_audit": true,
+      "pi_bound_preset": "d20",
+      "planned_margin": "1/104219",
+      "requested_context_length": 4096,
+      "schema_id": "circle_calculus.standard_rope_rational_band_certificate_audit.v0",
+      "source_plan_name": "standard_rope_channel0_interval_plan_d20_margin_1_104219_context_4096",
+      "theorem_ids": [
+        "AIRA-T0139",
+        "AIRA-T0140"
+      ],
+      "theorem_status": "executable_band_audit_not_lean_proved",
+      "upper_turn_ratio_bound": "25000000000000000000/157079632679489661923",
+      "valid_band_count": 652
+    },
+    {
+      "band_count": 1304,
+      "certified_context_length": 8192,
+      "claim_boundary": "Executable source-data audit only. The listed Lean declarations are generic compression bridges; this row is not a generated Lean certificate for the band list unless a matching theorem id is added to the manifest and compiled by lake build.",
+      "contiguous_from_one": true,
+      "coverage_pass": true,
+      "covered_gap_count": 8191,
+      "endpoint_validity_pass": true,
+      "explanation": "The audit checks 1304 generated rational interval bands for positive ordered gap ranges, contiguity from gap 1, endpoint-cell margin inequalities, and requested-context coverage. It covers every positive gap below requested context 8192. The relevant generic bridge ids are AIRA-T0126, AIRA-T0139, AIRA-T0140.",
+      "first_covered_gap": 1,
+      "first_uncovered_gap": null,
+      "last_covered_gap": 8191,
+      "lean_declarations": [
+        "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+        "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands"
+      ],
+      "lower_turn_ratio_bound": "50000000000000000000/314159265358979323847",
+      "name": "standard_rope_channel0_interval_plan_d20_margin_1_104220_context_8192_requested_context_8192_band_audit",
+      "pass_audit": true,
+      "pi_bound_preset": "d20",
+      "planned_margin": "1/104220",
+      "requested_context_length": 8192,
+      "schema_id": "circle_calculus.standard_rope_rational_band_certificate_audit.v0",
+      "source_plan_name": "standard_rope_channel0_interval_plan_d20_margin_1_104220_context_8192",
+      "theorem_ids": [
+        "AIRA-T0139",
+        "AIRA-T0140"
+      ],
+      "theorem_status": "executable_band_audit_not_lean_proved",
+      "upper_turn_ratio_bound": "25000000000000000000/157079632679489661923",
+      "valid_band_count": 1304
+    },
+    {
+      "band_count": 1304,
+      "certified_context_length": 8192,
+      "claim_boundary": "Executable source-data audit only. The listed Lean declarations are generic compression bridges; this row is not a generated Lean certificate for the band list unless a matching theorem id is added to the manifest and compiled by lake build.",
+      "contiguous_from_one": true,
+      "coverage_pass": true,
+      "covered_gap_count": 8191,
+      "endpoint_validity_pass": true,
+      "explanation": "The audit checks 1304 generated rational interval bands for positive ordered gap ranges, contiguity from gap 1, endpoint-cell margin inequalities, and requested-context coverage. It covers every positive gap below requested context 8192. The relevant generic bridge ids are AIRA-T0126, AIRA-T0139, AIRA-T0140.",
+      "first_covered_gap": 1,
+      "first_uncovered_gap": null,
+      "last_covered_gap": 8191,
+      "lean_declarations": [
+        "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+        "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands"
+      ],
+      "lower_turn_ratio_bound": "50000000000000000000/314159265358979323847",
+      "name": "standard_rope_channel0_interval_plan_d20_margin_1_104219_context_8192_requested_context_8192_band_audit",
+      "pass_audit": true,
+      "pi_bound_preset": "d20",
+      "planned_margin": "1/104219",
+      "requested_context_length": 8192,
+      "schema_id": "circle_calculus.standard_rope_rational_band_certificate_audit.v0",
+      "source_plan_name": "standard_rope_channel0_interval_plan_d20_margin_1_104219_context_8192",
+      "theorem_ids": [
+        "AIRA-T0139",
+        "AIRA-T0140"
+      ],
+      "theorem_status": "executable_band_audit_not_lean_proved",
+      "upper_turn_ratio_bound": "25000000000000000000/157079632679489661923",
+      "valid_band_count": 1304
+    },
+    {
+      "band_count": 2608,
+      "certified_context_length": 16384,
+      "claim_boundary": "Executable source-data audit only. The listed Lean declarations are generic compression bridges; this row is not a generated Lean certificate for the band list unless a matching theorem id is added to the manifest and compiled by lake build.",
+      "contiguous_from_one": true,
+      "coverage_pass": true,
+      "covered_gap_count": 16383,
+      "endpoint_validity_pass": true,
+      "explanation": "The audit checks 2608 generated rational interval bands for positive ordered gap ranges, contiguity from gap 1, endpoint-cell margin inequalities, and requested-context coverage. It covers every positive gap below requested context 16384. The relevant generic bridge ids are AIRA-T0126, AIRA-T0139, AIRA-T0140.",
+      "first_covered_gap": 1,
+      "first_uncovered_gap": null,
+      "last_covered_gap": 16383,
+      "lean_declarations": [
+        "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+        "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands"
+      ],
+      "lower_turn_ratio_bound": "50000000000000000000/314159265358979323847",
+      "name": "standard_rope_channel0_interval_plan_d20_margin_1_104219_context_16384_requested_context_16384_band_audit",
+      "pass_audit": true,
+      "pi_bound_preset": "d20",
+      "planned_margin": "1/104219",
+      "requested_context_length": 16384,
+      "schema_id": "circle_calculus.standard_rope_rational_band_certificate_audit.v0",
+      "source_plan_name": "standard_rope_channel0_interval_plan_d20_margin_1_104219_context_16384",
+      "theorem_ids": [
+        "AIRA-T0139",
+        "AIRA-T0140"
+      ],
+      "theorem_status": "executable_band_audit_not_lean_proved",
+      "upper_turn_ratio_bound": "25000000000000000000/157079632679489661923",
+      "valid_band_count": 2608
+    },
+    {
+      "band_count": 5216,
+      "certified_context_length": 32768,
+      "claim_boundary": "Executable source-data audit only. The listed Lean declarations are generic compression bridges; this row is not a generated Lean certificate for the band list unless a matching theorem id is added to the manifest and compiled by lake build.",
+      "contiguous_from_one": true,
+      "coverage_pass": true,
+      "covered_gap_count": 32767,
+      "endpoint_validity_pass": true,
+      "explanation": "The audit checks 5216 generated rational interval bands for positive ordered gap ranges, contiguity from gap 1, endpoint-cell margin inequalities, and requested-context coverage. It covers every positive gap below requested context 32768. The relevant generic bridge ids are AIRA-T0126, AIRA-T0139, AIRA-T0140.",
+      "first_covered_gap": 1,
+      "first_uncovered_gap": null,
+      "last_covered_gap": 32767,
+      "lean_declarations": [
+        "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+        "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands"
+      ],
+      "lower_turn_ratio_bound": "50000000000000000000/314159265358979323847",
+      "name": "standard_rope_channel0_interval_plan_d20_margin_1_104219_context_32768_requested_context_32768_band_audit",
+      "pass_audit": true,
+      "pi_bound_preset": "d20",
+      "planned_margin": "1/104219",
+      "requested_context_length": 32768,
+      "schema_id": "circle_calculus.standard_rope_rational_band_certificate_audit.v0",
+      "source_plan_name": "standard_rope_channel0_interval_plan_d20_margin_1_104219_context_32768",
+      "theorem_ids": [
+        "AIRA-T0139",
+        "AIRA-T0140"
+      ],
+      "theorem_status": "executable_band_audit_not_lean_proved",
+      "upper_turn_ratio_bound": "25000000000000000000/157079632679489661923",
+      "valid_band_count": 5216
+    },
+    {
+      "band_count": 10431,
+      "certified_context_length": 65536,
+      "claim_boundary": "Executable source-data audit only. The listed Lean declarations are generic compression bridges; this row is not a generated Lean certificate for the band list unless a matching theorem id is added to the manifest and compiled by lake build.",
+      "contiguous_from_one": true,
+      "coverage_pass": true,
+      "covered_gap_count": 65535,
+      "endpoint_validity_pass": true,
+      "explanation": "The audit checks 10431 generated rational interval bands for positive ordered gap ranges, contiguity from gap 1, endpoint-cell margin inequalities, and requested-context coverage. It covers every positive gap below requested context 65536. The relevant generic bridge ids are AIRA-T0126, AIRA-T0139, AIRA-T0140.",
+      "first_covered_gap": 1,
+      "first_uncovered_gap": null,
+      "last_covered_gap": 65535,
+      "lean_declarations": [
+        "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+        "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands"
+      ],
+      "lower_turn_ratio_bound": "50000000000000000000/314159265358979323847",
+      "name": "standard_rope_channel0_interval_plan_d20_margin_1_104219_context_65536_requested_context_65536_band_audit",
+      "pass_audit": true,
+      "pi_bound_preset": "d20",
+      "planned_margin": "1/104219",
+      "requested_context_length": 65536,
+      "schema_id": "circle_calculus.standard_rope_rational_band_certificate_audit.v0",
+      "source_plan_name": "standard_rope_channel0_interval_plan_d20_margin_1_104219_context_65536",
+      "theorem_ids": [
+        "AIRA-T0139",
+        "AIRA-T0140"
+      ],
+      "theorem_status": "executable_band_audit_not_lean_proved",
+      "upper_turn_ratio_bound": "25000000000000000000/157079632679489661923",
+      "valid_band_count": 10431
+    },
+    {
+      "band_count": 16551,
+      "certified_context_length": 103993,
+      "claim_boundary": "Executable source-data audit only. The listed Lean declarations are generic compression bridges; this row is not a generated Lean certificate for the band list unless a matching theorem id is added to the manifest and compiled by lake build.",
+      "contiguous_from_one": true,
+      "coverage_pass": false,
+      "covered_gap_count": 103992,
+      "endpoint_validity_pass": true,
+      "explanation": "The audit checks 16551 generated rational interval bands for positive ordered gap ranges, contiguity from gap 1, endpoint-cell margin inequalities, and requested-context coverage. It stops before requested context 131072; first uncovered gap is 103993. The relevant generic bridge ids are AIRA-T0126, AIRA-T0139, AIRA-T0140.",
+      "first_covered_gap": 1,
+      "first_uncovered_gap": 103993,
+      "last_covered_gap": 103992,
+      "lean_declarations": [
+        "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+        "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands"
+      ],
+      "lower_turn_ratio_bound": "50000000000000000000/314159265358979323847",
+      "name": "standard_rope_channel0_interval_plan_d20_margin_1_104219_context_103993_requested_context_131072_band_audit",
+      "pass_audit": false,
+      "pi_bound_preset": "d20",
+      "planned_margin": "1/104219",
+      "requested_context_length": 131072,
+      "schema_id": "circle_calculus.standard_rope_rational_band_certificate_audit.v0",
+      "source_plan_name": "standard_rope_channel0_interval_plan_d20_margin_1_104219_context_103993",
+      "theorem_ids": [
+        "AIRA-T0139",
+        "AIRA-T0140"
+      ],
+      "theorem_status": "executable_band_audit_not_lean_proved",
+      "upper_turn_ratio_bound": "25000000000000000000/157079632679489661923",
+      "valid_band_count": 16551
+    }
+  ],
   "standard_channel0_frontier_summary": {
     "candidate_first_uncovered_gaps": [
       103993
