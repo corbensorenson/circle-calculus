@@ -16,29 +16,6 @@ set_option maxHeartbeats 40000000
 set_option maxRecDepth 400000
 set_option linter.unnecessarySeqFocus false
 
-private theorem ropeStandardChannel0D20Band_valid_of_ratEndpointValid
-    {margin : ℚ} {band : RopeTurnRatioRationalIntervalBand}
-    (hlower : band.lowerBound =
-      (50000000000000000000 / 314159265358979323847 : ℚ))
-    (hupper : band.upperBound =
-      (25000000000000000000 / 157079632679489661923 : ℚ))
-    (hrat : band.RatEndpointValid margin) :
-    band.Valid ropeStandardChannel0TurnRatio (margin : ℝ) := by
-  exact
-    ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid
-      (turnRatio := ropeStandardChannel0TurnRatio)
-      (margin := margin)
-      (band := band)
-      (by
-        rw [hlower]
-        convert ropeStandardChannel0_piD20_base_lower using 1
-        norm_num)
-      (by
-        rw [hupper]
-        convert ropeStandardChannel0_piD20_base_upper using 1
-        norm_num)
-      hrat
-
 /-- The generated standard channel-0 32k context. -/
 def ropeStandardChannel0D15SeedContext : Nat := 32768
 
@@ -5272,16 +5249,19 @@ private def ropeStandardChannel0D15Bands : List RopeTurnRatioRationalIntervalBan
     (25000000000000000000/157079632679489661923 : ℚ)
     ropeStandardChannel0D15UniformBands
 
-private theorem ropeStandardChannel0D15Bands_bounds :
-    ∀ band, band ∈ ropeStandardChannel0D15Bands ->
-      band.lowerBound = (50000000000000000000/314159265358979323847 : ℚ) ∧ band.upperBound = (25000000000000000000/157079632679489661923 : ℚ) := by
-  simp [ropeStandardChannel0D15Bands, ropeTurnRatioUniformRationalIntervalBands,
-    RopeTurnRatioUniformRationalIntervalBand.toRationalIntervalBand ]
+private theorem ropeStandardChannel0D15UniformBands_lowerBound_nonneg :
+    0 <= (50000000000000000000/314159265358979323847 : ℚ) := by
+  norm_num
 
-private theorem ropeStandardChannel0D15Bands_ratEndpointValid :
-    ∀ band, band ∈ ropeStandardChannel0D15Bands ->
-      band.RatEndpointValid (1 / 104219 : ℚ) := by
-  unfold RopeTurnRatioRationalIntervalBand.RatEndpointValid
+private theorem ropeStandardChannel0D15UniformBands_upperBound_nonneg :
+    0 <= (25000000000000000000/157079632679489661923 : ℚ) := by
+  norm_num
+
+private theorem ropeStandardChannel0D15UniformBands_ratEndpointValid :
+    ∀ band, band ∈ ropeStandardChannel0D15UniformBands ->
+      band.RatEndpointValid (50000000000000000000/314159265358979323847 : ℚ) (25000000000000000000/157079632679489661923 : ℚ)
+        (1 / 104219 : ℚ) := by
+  unfold RopeTurnRatioUniformRationalIntervalBand.RatEndpointValid
   native_decide
 
 private theorem ropeStandardChannel0D15Bands_contiguousCover :
@@ -5311,14 +5291,22 @@ theorem ropeStandardChannel0D15Seed_intervalCertificate :
       (bands := ropeStandardChannel0D15Bands)
       (by norm_num)
       (by
-        intro band hmem
-        have hbounds := ropeStandardChannel0D15Bands_bounds band hmem
-        have hrat := ropeStandardChannel0D15Bands_ratEndpointValid band hmem
-        rcases hbounds with ⟨hlower, hupper⟩
-        exact
-          ropeStandardChannel0D20Band_valid_of_ratEndpointValid
+        simpa [ropeStandardChannel0D15Bands] using
+          ropeTurnRatioUniformRationalIntervalBands_valid_of_ratEndpointValid
+            (turnRatio := ropeStandardChannel0TurnRatio)
+            (lowerBound := (50000000000000000000/314159265358979323847 : ℚ))
+            (upperBound := (25000000000000000000/157079632679489661923 : ℚ))
             (margin := (1 / 104219 : ℚ))
-            (band := band) hlower hupper hrat)
+            (compactBands := ropeStandardChannel0D15UniformBands)
+            (by
+              convert ropeStandardChannel0_piD20_base_lower using 1
+              norm_num)
+            (by
+              convert ropeStandardChannel0_piD20_base_upper using 1
+              norm_num)
+            ropeStandardChannel0D15UniformBands_lowerBound_nonneg
+            ropeStandardChannel0D15UniformBands_upperBound_nonneg
+            ropeStandardChannel0D15UniformBands_ratEndpointValid)
       ropeStandardChannel0D15Bands_cover
 
 /-- AIRA-T0143: the generated 32k
@@ -15873,16 +15861,19 @@ private def ropeStandardChannel0D16Bands : List RopeTurnRatioRationalIntervalBan
     (25000000000000000000/157079632679489661923 : ℚ)
     ropeStandardChannel0D16UniformBands
 
-private theorem ropeStandardChannel0D16Bands_bounds :
-    ∀ band, band ∈ ropeStandardChannel0D16Bands ->
-      band.lowerBound = (50000000000000000000/314159265358979323847 : ℚ) ∧ band.upperBound = (25000000000000000000/157079632679489661923 : ℚ) := by
-  simp [ropeStandardChannel0D16Bands, ropeTurnRatioUniformRationalIntervalBands,
-    RopeTurnRatioUniformRationalIntervalBand.toRationalIntervalBand ]
+private theorem ropeStandardChannel0D16UniformBands_lowerBound_nonneg :
+    0 <= (50000000000000000000/314159265358979323847 : ℚ) := by
+  norm_num
 
-private theorem ropeStandardChannel0D16Bands_ratEndpointValid :
-    ∀ band, band ∈ ropeStandardChannel0D16Bands ->
-      band.RatEndpointValid (1 / 104219 : ℚ) := by
-  unfold RopeTurnRatioRationalIntervalBand.RatEndpointValid
+private theorem ropeStandardChannel0D16UniformBands_upperBound_nonneg :
+    0 <= (25000000000000000000/157079632679489661923 : ℚ) := by
+  norm_num
+
+private theorem ropeStandardChannel0D16UniformBands_ratEndpointValid :
+    ∀ band, band ∈ ropeStandardChannel0D16UniformBands ->
+      band.RatEndpointValid (50000000000000000000/314159265358979323847 : ℚ) (25000000000000000000/157079632679489661923 : ℚ)
+        (1 / 104219 : ℚ) := by
+  unfold RopeTurnRatioUniformRationalIntervalBand.RatEndpointValid
   native_decide
 
 private theorem ropeStandardChannel0D16Bands_contiguousCover :
@@ -15912,14 +15903,22 @@ theorem ropeStandardChannel0D16Seed_intervalCertificate :
       (bands := ropeStandardChannel0D16Bands)
       (by norm_num)
       (by
-        intro band hmem
-        have hbounds := ropeStandardChannel0D16Bands_bounds band hmem
-        have hrat := ropeStandardChannel0D16Bands_ratEndpointValid band hmem
-        rcases hbounds with ⟨hlower, hupper⟩
-        exact
-          ropeStandardChannel0D20Band_valid_of_ratEndpointValid
+        simpa [ropeStandardChannel0D16Bands] using
+          ropeTurnRatioUniformRationalIntervalBands_valid_of_ratEndpointValid
+            (turnRatio := ropeStandardChannel0TurnRatio)
+            (lowerBound := (50000000000000000000/314159265358979323847 : ℚ))
+            (upperBound := (25000000000000000000/157079632679489661923 : ℚ))
             (margin := (1 / 104219 : ℚ))
-            (band := band) hlower hupper hrat)
+            (compactBands := ropeStandardChannel0D16UniformBands)
+            (by
+              convert ropeStandardChannel0_piD20_base_lower using 1
+              norm_num)
+            (by
+              convert ropeStandardChannel0_piD20_base_upper using 1
+              norm_num)
+            ropeStandardChannel0D16UniformBands_lowerBound_nonneg
+            ropeStandardChannel0D16UniformBands_upperBound_nonneg
+            ropeStandardChannel0D16UniformBands_ratEndpointValid)
       ropeStandardChannel0D16Bands_cover
 
 /-- AIRA-T0149: the generated 64k
@@ -36904,16 +36903,19 @@ private def ropeStandardChannel0D17Bands : List RopeTurnRatioRationalIntervalBan
     (25000000000000000000/157079632679489661923 : ℚ)
     ropeStandardChannel0D17UniformBands
 
-private theorem ropeStandardChannel0D17Bands_bounds :
-    ∀ band, band ∈ ropeStandardChannel0D17Bands ->
-      band.lowerBound = (50000000000000000000/314159265358979323847 : ℚ) ∧ band.upperBound = (25000000000000000000/157079632679489661923 : ℚ) := by
-  simp [ropeStandardChannel0D17Bands, ropeTurnRatioUniformRationalIntervalBands,
-    RopeTurnRatioUniformRationalIntervalBand.toRationalIntervalBand ]
+private theorem ropeStandardChannel0D17UniformBands_lowerBound_nonneg :
+    0 <= (50000000000000000000/314159265358979323847 : ℚ) := by
+  norm_num
 
-private theorem ropeStandardChannel0D17Bands_ratEndpointValid :
-    ∀ band, band ∈ ropeStandardChannel0D17Bands ->
-      band.RatEndpointValid (1 / 328459 : ℚ) := by
-  unfold RopeTurnRatioRationalIntervalBand.RatEndpointValid
+private theorem ropeStandardChannel0D17UniformBands_upperBound_nonneg :
+    0 <= (25000000000000000000/157079632679489661923 : ℚ) := by
+  norm_num
+
+private theorem ropeStandardChannel0D17UniformBands_ratEndpointValid :
+    ∀ band, band ∈ ropeStandardChannel0D17UniformBands ->
+      band.RatEndpointValid (50000000000000000000/314159265358979323847 : ℚ) (25000000000000000000/157079632679489661923 : ℚ)
+        (1 / 328459 : ℚ) := by
+  unfold RopeTurnRatioUniformRationalIntervalBand.RatEndpointValid
   native_decide
 
 private theorem ropeStandardChannel0D17Bands_contiguousCover :
@@ -36943,14 +36945,22 @@ theorem ropeStandardChannel0D17Seed_intervalCertificate :
       (bands := ropeStandardChannel0D17Bands)
       (by norm_num)
       (by
-        intro band hmem
-        have hbounds := ropeStandardChannel0D17Bands_bounds band hmem
-        have hrat := ropeStandardChannel0D17Bands_ratEndpointValid band hmem
-        rcases hbounds with ⟨hlower, hupper⟩
-        exact
-          ropeStandardChannel0D20Band_valid_of_ratEndpointValid
+        simpa [ropeStandardChannel0D17Bands] using
+          ropeTurnRatioUniformRationalIntervalBands_valid_of_ratEndpointValid
+            (turnRatio := ropeStandardChannel0TurnRatio)
+            (lowerBound := (50000000000000000000/314159265358979323847 : ℚ))
+            (upperBound := (25000000000000000000/157079632679489661923 : ℚ))
             (margin := (1 / 328459 : ℚ))
-            (band := band) hlower hupper hrat)
+            (compactBands := ropeStandardChannel0D17UniformBands)
+            (by
+              convert ropeStandardChannel0_piD20_base_lower using 1
+              norm_num)
+            (by
+              convert ropeStandardChannel0_piD20_base_upper using 1
+              norm_num)
+            ropeStandardChannel0D17UniformBands_lowerBound_nonneg
+            ropeStandardChannel0D17UniformBands_upperBound_nonneg
+            ropeStandardChannel0D17UniformBands_ratEndpointValid)
       ropeStandardChannel0D17Bands_cover
 
 /-- AIRA-T0157: the generated 128k

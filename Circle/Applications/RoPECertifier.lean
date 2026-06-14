@@ -871,6 +871,19 @@ def ropeTurnRatioUniformRationalIntervalBands
     List RopeTurnRatioRationalIntervalBand :=
   bands.map (fun band => band.toRationalIntervalBand lowerBound upperBound)
 
+/-- The compact endpoint-validity predicate for a uniform rational band.
+
+The shared lower and upper turn-ratio bounds are parameters instead of fields
+on every generated row. The global nonnegativity checks for those bounds are
+handled once by the reflection bridge below. -/
+def RopeTurnRatioUniformRationalIntervalBand.RatEndpointValid
+    (band : RopeTurnRatioUniformRationalIntervalBand)
+    (lowerBound upperBound margin : ℚ) : Prop :=
+  (band.cell : ℚ) + margin ≤
+    (band.startGap : ℚ) * lowerBound ∧
+    (band.endGap : ℚ) * upperBound ≤
+      (band.cell : ℚ) + 1 - margin
+
 /-- A rational interval band covers a gap when the gap lies between its
 declared endpoints. -/
 def RopeTurnRatioRationalIntervalBand.CoversGap
@@ -927,6 +940,63 @@ theorem ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid
   · exact_mod_cast hupper_nonneg
   · exact_mod_cast hcell_lower
   · exact_mod_cast hcell_upper
+
+/-- Compact uniform endpoint checks reflect to ordinary rational-band endpoint
+checks after attaching the shared lower and upper turn-ratio bounds. -/
+theorem RopeTurnRatioUniformRationalIntervalBand.ratEndpointValid_toRationalIntervalBand
+    {lowerBound upperBound margin : ℚ}
+    {band : RopeTurnRatioUniformRationalIntervalBand}
+    (hlower_nonneg : 0 ≤ lowerBound)
+    (hupper_nonneg : 0 ≤ upperBound)
+    (hvalid : band.RatEndpointValid lowerBound upperBound margin) :
+    (band.toRationalIntervalBand lowerBound upperBound).RatEndpointValid margin := by
+  rcases hvalid with ⟨hcell_lower, hcell_upper⟩
+  exact ⟨hlower_nonneg, hupper_nonneg, hcell_lower, hcell_upper⟩
+
+/-- A compact uniform-band endpoint audit proves endpoint validity for the
+expanded rational bands consumed by the interval-certificate bridge. -/
+theorem ropeTurnRatioUniformRationalIntervalBands_ratEndpointValid
+    {lowerBound upperBound margin : ℚ}
+    {compactBands : List RopeTurnRatioUniformRationalIntervalBand}
+    (hlower_nonneg : 0 ≤ lowerBound)
+    (hupper_nonneg : 0 ≤ upperBound)
+    (hvalid :
+      ∀ band, band ∈ compactBands →
+        band.RatEndpointValid lowerBound upperBound margin) :
+    ∀ band, band ∈
+      ropeTurnRatioUniformRationalIntervalBands lowerBound upperBound compactBands →
+      band.RatEndpointValid margin := by
+  intro band hmem
+  rcases List.mem_map.mp hmem with ⟨compactBand, hcompact_mem, hband_eq⟩
+  rw [← hband_eq]
+  exact
+    RopeTurnRatioUniformRationalIntervalBand.ratEndpointValid_toRationalIntervalBand
+      hlower_nonneg hupper_nonneg (hvalid compactBand hcompact_mem)
+
+/-- A compact uniform-band endpoint audit proves real-valued validity for the
+expanded rational bands after attaching a shared turn-ratio enclosure. -/
+theorem ropeTurnRatioUniformRationalIntervalBands_valid_of_ratEndpointValid
+    {turnRatio : ℝ} {lowerBound upperBound margin : ℚ}
+    {compactBands : List RopeTurnRatioUniformRationalIntervalBand}
+    (hlower_turn : (lowerBound : ℝ) ≤ turnRatio)
+    (hupper_turn : turnRatio ≤ (upperBound : ℝ))
+    (hlower_nonneg : 0 ≤ lowerBound)
+    (hupper_nonneg : 0 ≤ upperBound)
+    (hvalid :
+      ∀ band, band ∈ compactBands →
+        band.RatEndpointValid lowerBound upperBound margin) :
+    ∀ band, band ∈
+      ropeTurnRatioUniformRationalIntervalBands lowerBound upperBound compactBands →
+      band.Valid turnRatio (margin : ℝ) := by
+  intro band hmem
+  rcases List.mem_map.mp hmem with ⟨compactBand, hcompact_mem, hband_eq⟩
+  rw [← hband_eq]
+  exact
+    ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid
+      hlower_turn
+      hupper_turn
+      (RopeTurnRatioUniformRationalIntervalBand.ratEndpointValid_toRationalIntervalBand
+        hlower_nonneg hupper_nonneg (hvalid compactBand hcompact_mem))
 
 /-- One valid rational interval band produces an interval witness for every
 gap it covers.

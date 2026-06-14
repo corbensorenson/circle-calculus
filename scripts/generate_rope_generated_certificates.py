@@ -105,16 +105,19 @@ def render_plan(plan_spec: GeneratedPlan) -> str:
             f"    ({upper} : ℚ)",
             f"    {compact_name}",
             "",
-            f"private theorem {lower_name}_bounds :",
-            f"    ∀ band, band ∈ {lower_name} ->",
-            f"      band.lowerBound = ({lower} : ℚ) ∧ band.upperBound = ({upper} : ℚ) := by",
-            f"  simp [{lower_name}, ropeTurnRatioUniformRationalIntervalBands,",
-            "    RopeTurnRatioUniformRationalIntervalBand.toRationalIntervalBand ]",
+            f"private theorem {compact_name}_lowerBound_nonneg :",
+            f"    0 <= ({lower} : ℚ) := by",
+            "  norm_num",
             "",
-            f"private theorem {lower_name}_ratEndpointValid :",
-            f"    ∀ band, band ∈ {lower_name} ->",
-            f"      band.RatEndpointValid (1 / {plan_spec.margin_denominator} : ℚ) := by",
-            "  unfold RopeTurnRatioRationalIntervalBand.RatEndpointValid",
+            f"private theorem {compact_name}_upperBound_nonneg :",
+            f"    0 <= ({upper} : ℚ) := by",
+            "  norm_num",
+            "",
+            f"private theorem {compact_name}_ratEndpointValid :",
+            f"    ∀ band, band ∈ {compact_name} ->",
+            f"      band.RatEndpointValid ({lower} : ℚ) ({upper} : ℚ)",
+            f"        (1 / {plan_spec.margin_denominator} : ℚ) := by",
+            "  unfold RopeTurnRatioUniformRationalIntervalBand.RatEndpointValid",
             "  native_decide",
             "",
             f"private theorem {lower_name}_contiguousCover :",
@@ -144,14 +147,22 @@ def render_plan(plan_spec: GeneratedPlan) -> str:
             f"      (bands := {lower_name})",
             "      (by norm_num)",
             "      (by",
-            "        intro band hmem",
-            f"        have hbounds := {lower_name}_bounds band hmem",
-            f"        have hrat := {lower_name}_ratEndpointValid band hmem",
-            "        rcases hbounds with ⟨hlower, hupper⟩",
-            "        exact",
-            "          ropeStandardChannel0D20Band_valid_of_ratEndpointValid",
+            f"        simpa [{lower_name}] using",
+            "          ropeTurnRatioUniformRationalIntervalBands_valid_of_ratEndpointValid",
+            "            (turnRatio := ropeStandardChannel0TurnRatio)",
+            f"            (lowerBound := ({lower} : ℚ))",
+            f"            (upperBound := ({upper} : ℚ))",
             f"            (margin := (1 / {plan_spec.margin_denominator} : ℚ))",
-            "            (band := band) hlower hupper hrat)",
+            f"            (compactBands := {compact_name})",
+            "            (by",
+            "              convert ropeStandardChannel0_piD20_base_lower using 1",
+            "              norm_num)",
+            "            (by",
+            "              convert ropeStandardChannel0_piD20_base_upper using 1",
+            "              norm_num)",
+            f"            {compact_name}_lowerBound_nonneg",
+            f"            {compact_name}_upperBound_nonneg",
+            f"            {compact_name}_ratEndpointValid)",
             f"      {lower_name}_cover",
             "",
             f"/-- {theorem_id(plan_spec.theorem_start + 1)}: the generated {plan_spec.description}",
@@ -281,29 +292,6 @@ namespace Circle.Applications
 set_option maxHeartbeats 40000000
 set_option maxRecDepth 400000
 set_option linter.unnecessarySeqFocus false
-
-private theorem ropeStandardChannel0D20Band_valid_of_ratEndpointValid
-    {margin : ℚ} {band : RopeTurnRatioRationalIntervalBand}
-    (hlower : band.lowerBound =
-      (50000000000000000000 / 314159265358979323847 : ℚ))
-    (hupper : band.upperBound =
-      (25000000000000000000 / 157079632679489661923 : ℚ))
-    (hrat : band.RatEndpointValid margin) :
-    band.Valid ropeStandardChannel0TurnRatio (margin : ℝ) := by
-  exact
-    ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid
-      (turnRatio := ropeStandardChannel0TurnRatio)
-      (margin := margin)
-      (band := band)
-      (by
-        rw [hlower]
-        convert ropeStandardChannel0_piD20_base_lower using 1
-        norm_num)
-      (by
-        rw [hupper]
-        convert ropeStandardChannel0_piD20_base_upper using 1
-        norm_num)
-      hrat
 """
     body = "\n".join(render_plan(plan) for plan in PLANS)
     OUT.write_text(f"{header}\n{body}\nend Circle.Applications\n", encoding="utf-8")
