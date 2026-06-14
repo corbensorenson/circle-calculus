@@ -87,6 +87,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0126",
     "AIRA-T0139",
     "AIRA-T0140",
+    "AIRA-T0141",
 )
 
 ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -116,6 +117,7 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_band_bounds",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
     "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
+    "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid",
 )
 
 ROPE_RATIONAL_PRESET_4099_NAME = "rational_turn_ratio_1_4099_context_4096"
@@ -139,11 +141,13 @@ ROPE_RATIONAL_PRESET_4099_LEAN_DECLARATIONS: tuple[str, ...] = (
 ROPE_STANDARD_CHANNEL0_INTERVAL_COMPRESSION_THEOREMS: tuple[str, ...] = (
     "AIRA-T0139",
     "AIRA-T0140",
+    "AIRA-T0141",
 )
 
 ROPE_STANDARD_CHANNEL0_INTERVAL_COMPRESSION_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
     "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
+    "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid",
 )
 
 ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME = "standard_rope_channel0_interval_context_16384"
@@ -227,6 +231,7 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS: tuple[str, ...] = (
     "AIRA-T0138",
     "AIRA-T0139",
     "AIRA-T0140",
+    "AIRA-T0141",
 )
 
 ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -308,6 +313,7 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeStandardChannel0D14_context16384_margin_bracket",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
     "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
+    "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid",
 )
 
 ROPE_STANDARD_CHANNEL0_D12_BANK_BRIDGE_THEOREMS: tuple[str, ...] = (

@@ -222,9 +222,10 @@ def standard_channel0_frontier_summary(standard_plans: tuple[dict[str, Any], ...
             f"context {proved_context}. The exact-rational planner also covers "
             f"contexts {full_candidate_contexts} at the same margin and first "
             f"fails at gaps {frontier_gaps}, but those rows are not Lean proofs. "
-            "AIRA-T0139 and AIRA-T0140 are the proved rational-band compression "
-            "bridges intended for converting those planner rows without another "
-            "large interval-case expansion."
+            "AIRA-T0139 through AIRA-T0141 are the proved rational-band "
+            "compression and rational-endpoint reflection bridges intended for "
+            "converting those planner rows without another large interval-case "
+            "expansion."
         ),
         "claim_boundary": (
             "This is a derived sidecar summary of proved and candidate interval "

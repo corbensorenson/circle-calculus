@@ -3935,6 +3935,20 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_rope_certifier_sidecar_outputs_compact_results
     blocker: ""
+  - id: AIRA-T0141
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid
+    informal_statement: "A generated band's purely rational endpoint-validity checks reflect into the real-valued band-validity predicate once the rational turn-ratio enclosure bounds the real turn ratio."
+    formal_statement: "forall {turnRatio : Real} {margin : Rat} {band : Circle.Applications.RopeTurnRatioRationalIntervalBand}, (band.lowerBound : Real) <= turnRatio -> turnRatio <= (band.upperBound : Real) -> Circle.Applications.RopeTurnRatioRationalIntervalBand.RatEndpointValid band margin -> Circle.Applications.RopeTurnRatioRationalIntervalBand.Valid band turnRatio (margin : Real)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_certifier_sidecar_outputs_compact_results
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

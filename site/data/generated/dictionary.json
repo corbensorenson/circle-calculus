@@ -12179,6 +12179,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
           "name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0141",
+          "lean_name": "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid",
+          "name": "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -12928,6 +12934,12 @@
           "id": "AIRA-T0140",
           "lean_name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
           "name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0141",
+          "lean_name": "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid",
+          "name": "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid",
           "status": "proved"
         }
       ],
@@ -14146,6 +14158,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
           "name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0141",
+          "lean_name": "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid",
+          "name": "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -14946,6 +14964,12 @@
           "id": "AIRA-T0140",
           "lean_name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
           "name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0141",
+          "lean_name": "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid",
+          "name": "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid",
           "status": "proved"
         }
       ],
@@ -15779,6 +15803,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
           "name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0141",
+          "lean_name": "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid",
+          "name": "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -16378,6 +16408,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
           "name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0141",
+          "lean_name": "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid",
+          "name": "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -16906,6 +16942,12 @@
           "id": "AIRA-T0140",
           "lean_name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
           "name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0141",
+          "lean_name": "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid",
+          "name": "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid",
           "status": "proved"
         }
       ],

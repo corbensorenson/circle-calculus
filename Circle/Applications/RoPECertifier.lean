@@ -857,6 +857,43 @@ def RopeTurnRatioRationalIntervalBand.Valid
             (band.endGap : ℝ) * (band.upperBound : ℝ) ≤
               (band.cell : ℝ) + 1 - margin
 
+/-- The purely rational endpoint-validity predicate for a generated interval
+band.
+
+This is the executable side of the generated-band proof route: Python can
+check these rational inequalities exactly, and the reflection theorem below
+casts them into the real-valued `Valid` predicate used by the Lean interval
+certificate bridge. -/
+def RopeTurnRatioRationalIntervalBand.RatEndpointValid
+    (band : RopeTurnRatioRationalIntervalBand) (margin : ℚ) : Prop :=
+  0 ≤ band.lowerBound ∧
+    0 ≤ band.upperBound ∧
+      (band.cell : ℚ) + margin ≤
+        (band.startGap : ℚ) * band.lowerBound ∧
+        (band.endGap : ℚ) * band.upperBound ≤
+          (band.cell : ℚ) + 1 - margin
+
+/-- Rational endpoint-validity reflects into the real-valued band-validity
+predicate.
+
+Generated certificates can keep endpoint checks over `ℚ`; after supplying the
+global real turn-ratio enclosure, this theorem produces the `Valid` hypothesis
+required by the rational-band compression bridge. -/
+theorem ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid
+    {turnRatio : ℝ} {margin : ℚ}
+    {band : RopeTurnRatioRationalIntervalBand}
+    (hlower_turn : (band.lowerBound : ℝ) ≤ turnRatio)
+    (hupper_turn : turnRatio ≤ (band.upperBound : ℝ))
+    (hvalid : band.RatEndpointValid margin) :
+    band.Valid turnRatio (margin : ℝ) := by
+  rcases hvalid with
+    ⟨hlower_nonneg, hupper_nonneg, hcell_lower, hcell_upper⟩
+  refine ⟨hlower_turn, hupper_turn, ?_, ?_, ?_, ?_⟩
+  · exact_mod_cast hlower_nonneg
+  · exact_mod_cast hupper_nonneg
+  · exact_mod_cast hcell_lower
+  · exact_mod_cast hcell_upper
+
 /-- One valid rational interval band produces an interval witness for every
 gap it covers.
 
