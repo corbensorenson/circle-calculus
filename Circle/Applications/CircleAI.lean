@@ -579,6 +579,29 @@ theorem kvCacheLiveWindowTokens_slotMap_fullCoverageContract
       kvCacheLiveWindowTokens_slotMap_length_eq_cacheSize_of_full hfull,
       kvCacheLiveWindowTokens_slotMap_lt_cacheSize hcache⟩
 
+/-- The generated live-window slot map satisfies the full coverage contract
+exactly when the current token has advanced far enough to fill the cache.
+
+This packages the implementation-facing contract as an iff: `Nodup`, exact
+slot-count, and in-range slots are available for every generated live window,
+but the exact `cacheSize` count appears precisely at and after the full-window
+boundary. -/
+theorem kvCacheLiveWindowTokens_slotMap_fullCoverageContract_iff_full
+    {cacheSize current : Nat} (hcache : 0 < cacheSize) :
+    (((kvCacheLiveWindowTokens cacheSize current).map
+        (kvCacheSlot cacheSize)).Nodup ∧
+      ((kvCacheLiveWindowTokens cacheSize current).map
+        (kvCacheSlot cacheSize)).length = cacheSize ∧
+      ∀ slot ∈ ((kvCacheLiveWindowTokens cacheSize current).map
+        (kvCacheSlot cacheSize)), slot < cacheSize) ↔
+      cacheSize ≤ current + 1 := by
+  constructor
+  · intro hcontract
+    exact (kvCacheLiveWindowTokens_slotMap_length_eq_cacheSize_iff_full
+      (cacheSize := cacheSize) (current := current)).1 hcontract.2.1
+  · intro hfull
+    exact kvCacheLiveWindowTokens_slotMap_fullCoverageContract hcache hfull
+
 def loopRequiredSteps (loopPeriod sample : Nat) : Nat :=
   phaseChannel loopPeriod sample + 1
 

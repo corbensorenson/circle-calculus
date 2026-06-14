@@ -170,7 +170,9 @@ def summary_lines(payload: dict[str, Any]) -> list[str]:
             f"slot_count_matches_cache_size={live_window['slot_count_matches_cache_size']} "
             "slot_count_matches_full_window="
             f"{live_window['slot_count_matches_full_window']} "
-            f"full_coverage_contract={live_window['full_coverage_contract']}"
+            f"full_coverage_contract={live_window['full_coverage_contract']} "
+            "full_coverage_contract_matches_full_window="
+            f"{live_window['full_coverage_contract_matches_full_window']}"
         ),
         (
             "theorem_ids="

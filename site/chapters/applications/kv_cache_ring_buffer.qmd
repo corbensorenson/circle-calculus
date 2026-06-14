@@ -48,7 +48,7 @@ live_length(cache_size,current) = min(cache_size, current + 1)
 live_tokens = live_start .. live_start + live_length - 1
 ```
 
-`AIM-T0071` proves that this interval ends exactly one past the current token. `AIM-T0072` proves that membership in `live_tokens` is equivalent to retained-window membership. `AIM-T0073` proves that the generated live window maps to duplicate-free ring-buffer slots. `AIM-T0074` packages the full-window coverage contract: after at least one full cache of tokens has been seen, the generated slot list is duplicate-free, has exactly `cache_size` entries, and every emitted slot is inside the declared slot range. `AIM-T0080` adds the count iff: the generated slot-list length equals `cache_size` exactly when the live window is full.
+`AIM-T0071` proves that this interval ends exactly one past the current token. `AIM-T0072` proves that membership in `live_tokens` is equivalent to retained-window membership. `AIM-T0073` proves that the generated live window maps to duplicate-free ring-buffer slots. `AIM-T0074` packages the full-window coverage contract: after at least one full cache of tokens has been seen, the generated slot list is duplicate-free, has exactly `cache_size` entries, and every emitted slot is inside the declared slot range. `AIM-T0080` adds the count iff: the generated slot-list length equals `cache_size` exactly when the live window is full. `AIM-T0081` packages the whole coverage contract as an iff: duplicate-free slots, exact slot count, and in-range slots hold as the full-coverage contract exactly at the full-window boundary.
 
 <div class="widget-panel" data-widget="kv_cache_ring_buffer" data-theorem-id="AIM-T0069" data-dictionary-ids="COMMON-0028 COMMON-0081"></div>
 
@@ -86,7 +86,7 @@ stale same-slot overwrite witness = false
 retained iff no later same-slot write trace = true
 ```
 
-The default retained batch `(20, 24, 29, 31)` maps to slots `(4, 8, 13, 15)`, all distinct inside the live window. `AIM-T0078` lifts the trace iff to the whole declared read batch: all requested non-future tokens are retained exactly when every requested token has no later same-slot writer up to `current`. `AIM-T0079` packages the implementation-facing batch consequence: if the requested non-future batch is duplicate-free and trace-fresh pointwise, its ring-buffer slots are duplicate-free. The adapter request-trace certificate gives that same theorem-backed batch a request id and a pass/fail field: it passes only when the requested tokens are non-future, retained, duplicate-free, mapped to duplicate-free slots, and trace-fresh pointwise. The generated live window is tokens `16` through `31`, length `16`, mapping to slots `0` through `15`; the CLI and sidecar mark `no_same_slot_overwrite_before_current = true`, `same_slot_overwrite_witness_when_stale = false`, `retained_iff_no_same_slot_overwrite_trace = true`, batch `retained_iff_no_same_slot_overwrite_trace = true`, adapter request `pass_certificate = true`, `trace_fresh_slots_distinct = true`, `slot_count_matches_full_window = true`, and `full_coverage_contract = true` for that full-window case.
+The default retained batch `(20, 24, 29, 31)` maps to slots `(4, 8, 13, 15)`, all distinct inside the live window. `AIM-T0078` lifts the trace iff to the whole declared read batch: all requested non-future tokens are retained exactly when every requested token has no later same-slot writer up to `current`. `AIM-T0079` packages the implementation-facing batch consequence: if the requested non-future batch is duplicate-free and trace-fresh pointwise, its ring-buffer slots are duplicate-free. The adapter request-trace certificate gives that same theorem-backed batch a request id and a pass/fail field: it passes only when the requested tokens are non-future, retained, duplicate-free, mapped to duplicate-free slots, and trace-fresh pointwise. The generated live window is tokens `16` through `31`, length `16`, mapping to slots `0` through `15`; the CLI and sidecar mark `no_same_slot_overwrite_before_current = true`, `same_slot_overwrite_witness_when_stale = false`, `retained_iff_no_same_slot_overwrite_trace = true`, batch `retained_iff_no_same_slot_overwrite_trace = true`, adapter request `pass_certificate = true`, `trace_fresh_slots_distinct = true`, `slot_count_matches_full_window = true`, `full_coverage_contract = true`, and `full_coverage_contract_matches_full_window = true` for that full-window case.
 
 ## Reproducible Results
 
@@ -113,6 +113,7 @@ The default sidecar result has three layers:
 | Adapter request trace | request `default_read_request` passes | the retained-batch theorem spine is packaged as a named modeled read request; this is still a finite arithmetic certificate, not an implementation proof |
 | Generated live window | tokens `16` through `31` | the generated list is exactly the retained window and maps to every slot `0` through `15` without duplicates |
 | Slot-count iff | `slot_count_matches_full_window = true` | the generated slot-list count equals `cache_size` exactly when the live window is full |
+| Coverage iff | `full_coverage_contract_matches_full_window = true` | the full generated slot coverage contract is equivalent to the live window being full |
 | Full-window coverage | `full_coverage_contract = true` | once the live window is full, the generated slot list has `cache_size` in-range duplicate-free entries |
 
 The important point is that freshness is not only a residue fact. Slot `4` repeats every `16` tokens; the theorem-backed contract combines the residue with the overwrite boundary `current < token + cache_size`.
@@ -171,6 +172,7 @@ The important point is that freshness is not only a residue fact. Slot `4` repea
 <div class="theorem-box" data-theorem-id="AIM-T0078"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0079"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0080"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0081"></div>
 
 </details>
 
