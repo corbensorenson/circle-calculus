@@ -22,6 +22,7 @@ from circle_math.applications.circle_ai import (
     hybrid_attention_candidates,
     kv_cache_distinct_retained_slots_distinct,
     kv_cache_live_window_length,
+    kv_cache_live_window_slot_range_covered,
     kv_cache_live_window_slots_distinct,
     kv_cache_live_window_start,
     kv_cache_live_window_tokens,
@@ -251,15 +252,18 @@ def test_kv_cache_live_window_tokens_are_exact_and_slot_distinct() -> None:
     assert certificate.slots_within_cache
     assert certificate.slot_count_matches_cache_size
     assert certificate.slot_count_matches_full_window
+    assert certificate.slot_range_covered
     assert certificate.full_coverage_contract
     assert certificate.full_coverage_contract_matches_full_window
     assert kv_cache_live_window_slots_distinct(16, 31)
+    assert kv_cache_live_window_slot_range_covered(16, 31)
     assert "AIM-T0071" in certificate.theorem_ids
     assert "AIM-T0072" in certificate.theorem_ids
     assert "AIM-T0073" in certificate.theorem_ids
     assert "AIM-T0074" in certificate.theorem_ids
     assert "AIM-T0080" in certificate.theorem_ids
     assert "AIM-T0081" in certificate.theorem_ids
+    assert "AIM-T0082" in certificate.theorem_ids
     assert (
         "Circle.Applications.kvCacheLiveWindowTokens_slotMap_nodup"
         in certificate.lean_declarations
@@ -276,6 +280,10 @@ def test_kv_cache_live_window_tokens_are_exact_and_slot_distinct() -> None:
         "Circle.Applications.kvCacheLiveWindowTokens_slotMap_fullCoverageContract_iff_full"
         in certificate.lean_declarations
     )
+    assert (
+        "Circle.Applications.kvCacheLiveWindowTokens_slotMap_mem_iff_lt_cacheSize_of_full"
+        in certificate.lean_declarations
+    )
 
     prefix = certify_kv_cache_live_window(cache_size=16, current=5)
     assert prefix.start == 0
@@ -288,8 +296,10 @@ def test_kv_cache_live_window_tokens_are_exact_and_slot_distinct() -> None:
     assert prefix.slots_within_cache
     assert not prefix.slot_count_matches_cache_size
     assert prefix.slot_count_matches_full_window
+    assert not prefix.slot_range_covered
     assert not prefix.full_coverage_contract
     assert prefix.full_coverage_contract_matches_full_window
+    assert not kv_cache_live_window_slot_range_covered(16, 5)
 
 
 def test_kv_cache_ring_buffer_certificate_marks_stale_token() -> None:
@@ -358,12 +368,14 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert payload["live_window_certificate"]["slots_distinct"] is True
     assert payload["live_window_certificate"]["full_window"] is True
     assert payload["live_window_certificate"]["slot_count_matches_full_window"] is True
+    assert payload["live_window_certificate"]["slot_range_covered"] is True
     assert payload["live_window_certificate"]["full_coverage_contract"] is True
     assert payload["live_window_certificate"]["full_coverage_contract_matches_full_window"] is True
     assert "AIM-T0073" in payload["live_window_certificate"]["theorem_ids"]
     assert "AIM-T0074" in payload["live_window_certificate"]["theorem_ids"]
     assert "AIM-T0080" in payload["live_window_certificate"]["theorem_ids"]
     assert "AIM-T0081" in payload["live_window_certificate"]["theorem_ids"]
+    assert "AIM-T0082" in payload["live_window_certificate"]["theorem_ids"]
     assert "not model-quality" in payload["claim_boundary"]
 
     markdown_result = subprocess.run(

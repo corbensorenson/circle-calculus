@@ -24,6 +24,9 @@ const THEOREM_IDS = [
   "AIM-T0077",
   "AIM-T0078",
   "AIM-T0079",
+  "AIM-T0080",
+  "AIM-T0081",
+  "AIM-T0082",
 ];
 const DICTIONARY_IDS = ["COMMON-0028", "COMMON-0081"];
 
@@ -42,6 +45,12 @@ function liveTokens(cacheSize, current) {
 
 function allDistinct(values) {
   return new Set(values).size === values.length;
+}
+
+function coversSlotRange(slots, cacheSize) {
+  const seen = new Set(slots);
+  return seen.size === cacheSize
+    && Array.from({ length: cacheSize }, (_, index) => index).every((slot) => seen.has(slot));
 }
 
 function noSameSlotOverwriteBeforeCurrent(cacheSize, current, token) {
@@ -151,6 +160,15 @@ function appendRecord(output, values, theoremById) {
   );
   const tokens = liveTokens(values.cacheSize, values.current);
   const slots = tokens.map((token) => kvSlot(values.cacheSize, token));
+  const fullWindow = values.cacheSize <= values.current + 1;
+  const slotsDistinct = allDistinct(slots);
+  const slotsWithinCache = slots.every((slot) => 0 <= slot && slot < values.cacheSize);
+  const slotCountMatchesCacheSize = slots.length === values.cacheSize;
+  const slotCountMatchesFullWindow = slotCountMatchesCacheSize === fullWindow;
+  const slotRangeCovered = coversSlotRange(slots, values.cacheSize);
+  const fullCoverageContract =
+    fullWindow && slotsDistinct && slotCountMatchesCacheSize && slotsWithinCache;
+  const fullCoverageContractMatchesFullWindow = fullCoverageContract === fullWindow;
 
   const record = document.createElement("section");
   record.className = "seed-rule-record";
@@ -183,7 +201,14 @@ function appendRecord(output, values, theoremById) {
     `live window tokens: ${tokens.join(", ")}`,
     `live window slots: ${slots.join(", ")}`,
     `live tokens distinct: ${allDistinct(tokens)}`,
-    `live slots distinct: ${allDistinct(slots)}`,
+    `live slots distinct: ${slotsDistinct}`,
+    `live window full: ${fullWindow}`,
+    `live slots within cache: ${slotsWithinCache}`,
+    `live slot count equals cache size: ${slotCountMatchesCacheSize}`,
+    `slot count iff full window: ${slotCountMatchesFullWindow}`,
+    `slot range covered: ${slotRangeCovered}`,
+    `full coverage contract: ${fullCoverageContract}`,
+    `full coverage iff full window: ${fullCoverageContractMatchesFullWindow}`,
     "boundary: widget output is finite indexing and overwrite-window bookkeeping, not a paging-policy, throughput, memory-saving, retrieval-quality, or deployment-safety claim.",
   ].join("\n");
   record.appendChild(data);

@@ -259,6 +259,16 @@ def kv_cache_live_window_slots_distinct(cache_size: int, current: int) -> bool:
     return len(set(slots)) == len(slots)
 
 
+def kv_cache_live_window_slot_range_covered(cache_size: int, current: int) -> bool:
+    """Return whether the generated live-window slot map covers every cache slot."""
+    _require_positive(cache_size, "cache_size")
+    slots = {
+        kv_cache_slot(cache_size, token)
+        for token in kv_cache_live_window_tokens(cache_size, current)
+    }
+    return slots == set(range(cache_size))
+
+
 def consecutive_integer_intervals(values: Sequence[int]) -> tuple[tuple[int, int], ...]:
     """Compress a sorted integer sequence into inclusive consecutive intervals."""
     value_tuple = tuple(values)
@@ -648,6 +658,7 @@ class KVCacheLiveWindowCertificate:
     slots_distinct: bool
     full_window: bool
     slots_within_cache: bool
+    slot_range_covered: bool
     slot_count_matches_cache_size: bool
     slot_count_matches_full_window: bool
     full_coverage_contract: bool
@@ -659,6 +670,7 @@ class KVCacheLiveWindowCertificate:
         "AIM-T0074",
         "AIM-T0080",
         "AIM-T0081",
+        "AIM-T0082",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheLiveWindowStart_add_length",
@@ -667,6 +679,7 @@ class KVCacheLiveWindowCertificate:
         "Circle.Applications.kvCacheLiveWindowTokens_slotMap_fullCoverageContract",
         "Circle.Applications.kvCacheLiveWindowTokens_slotMap_length_eq_cacheSize_iff_full",
         "Circle.Applications.kvCacheLiveWindowTokens_slotMap_fullCoverageContract_iff_full",
+        "Circle.Applications.kvCacheLiveWindowTokens_slotMap_mem_iff_lt_cacheSize_of_full",
     )
     note: str = (
         "KV-cache generated-live-window certificate only; this proves finite "
@@ -1942,6 +1955,7 @@ def certify_kv_cache_live_window(
     slots = tuple(kv_cache_slot(cache_size, token) for token in tokens)
     full_window = cache_size <= current + 1
     slots_within_cache = all(0 <= slot < cache_size for slot in slots)
+    slot_range_covered = kv_cache_live_window_slot_range_covered(cache_size, current)
     slot_count_matches_cache_size = len(slots) == cache_size
     slots_distinct = kv_cache_live_window_slots_distinct(cache_size, current)
     slot_count_matches_full_window = slot_count_matches_cache_size == full_window
@@ -1964,6 +1978,7 @@ def certify_kv_cache_live_window(
         slots_distinct=slots_distinct,
         full_window=full_window,
         slots_within_cache=slots_within_cache,
+        slot_range_covered=slot_range_covered,
         slot_count_matches_cache_size=slot_count_matches_cache_size,
         slot_count_matches_full_window=slot_count_matches_full_window,
         full_coverage_contract=full_coverage_contract,

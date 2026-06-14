@@ -4651,6 +4651,12 @@
           "status": "proved"
         },
         {
+          "id": "AIM-T0082",
+          "lean_name": "Circle.Applications.kvCacheLiveWindowTokens_slotMap_mem_iff_lt_cacheSize_of_full",
+          "name": "Circle.Applications.kvCacheLiveWindowTokens_slotMap_mem_iff_lt_cacheSize_of_full",
+          "status": "proved"
+        },
+        {
           "id": "AIT-T0001",
           "lean_name": "Circle.Applications.attentionReach_eq_div_gcd",
           "name": "Circle.Applications.attentionReach_eq_div_gcd",
@@ -5107,7 +5113,7 @@
         {
           "id": "kv_cache_ring_buffer",
           "path": "site/widgets/ai/kv_cache_ring_buffer.js",
-          "python_reference": "circle_math.applications.circle_ai.kv_cache_slot; circle_math.applications.circle_ai.kv_cache_window_contains; circle_math.applications.circle_ai.kv_cache_next_overwrite_token; circle_math.applications.circle_ai.kv_cache_stale_by_next_overwrite_boundary; circle_math.applications.circle_ai.kv_cache_same_slot_overwrite_witness_when_stale; circle_math.applications.circle_ai.kv_cache_retained_iff_no_same_slot_overwrite_trace; circle_math.applications.circle_ai.kv_cache_batch_retained_iff_no_same_slot_overwrite_trace; circle_math.applications.circle_ai.kv_cache_trace_fresh_batch_slots_distinct; circle_math.applications.circle_ai.kv_cache_retained_batch_slots_distinct; circle_math.applications.circle_ai.certify_kv_cache_adapter_request_trace; circle_math.applications.circle_ai.certify_kv_cache_live_window"
+          "python_reference": "circle_math.applications.circle_ai.kv_cache_slot; circle_math.applications.circle_ai.kv_cache_window_contains; circle_math.applications.circle_ai.kv_cache_next_overwrite_token; circle_math.applications.circle_ai.kv_cache_stale_by_next_overwrite_boundary; circle_math.applications.circle_ai.kv_cache_same_slot_overwrite_witness_when_stale; circle_math.applications.circle_ai.kv_cache_retained_iff_no_same_slot_overwrite_trace; circle_math.applications.circle_ai.kv_cache_batch_retained_iff_no_same_slot_overwrite_trace; circle_math.applications.circle_ai.kv_cache_trace_fresh_batch_slots_distinct; circle_math.applications.circle_ai.kv_cache_retained_batch_slots_distinct; circle_math.applications.circle_ai.kv_cache_live_window_slot_range_covered; circle_math.applications.circle_ai.certify_kv_cache_adapter_request_trace; circle_math.applications.circle_ai.certify_kv_cache_live_window"
         },
         {
           "id": "learned_content_gate_retrieval",
@@ -15245,13 +15251,19 @@
           "lean_name": "Circle.Applications.kvCacheLiveWindowTokens_slotMap_fullCoverageContract_iff_full",
           "name": "Circle.Applications.kvCacheLiveWindowTokens_slotMap_fullCoverageContract_iff_full",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0082",
+          "lean_name": "Circle.Applications.kvCacheLiveWindowTokens_slotMap_mem_iff_lt_cacheSize_of_full",
+          "name": "Circle.Applications.kvCacheLiveWindowTokens_slotMap_mem_iff_lt_cacheSize_of_full",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
         {
           "id": "kv_cache_ring_buffer",
           "path": "site/widgets/ai/kv_cache_ring_buffer.js",
-          "python_reference": "circle_math.applications.circle_ai.kv_cache_slot; circle_math.applications.circle_ai.kv_cache_window_contains; circle_math.applications.circle_ai.kv_cache_next_overwrite_token; circle_math.applications.circle_ai.kv_cache_stale_by_next_overwrite_boundary; circle_math.applications.circle_ai.kv_cache_same_slot_overwrite_witness_when_stale; circle_math.applications.circle_ai.kv_cache_retained_iff_no_same_slot_overwrite_trace; circle_math.applications.circle_ai.kv_cache_batch_retained_iff_no_same_slot_overwrite_trace; circle_math.applications.circle_ai.kv_cache_trace_fresh_batch_slots_distinct; circle_math.applications.circle_ai.kv_cache_retained_batch_slots_distinct; circle_math.applications.circle_ai.certify_kv_cache_adapter_request_trace; circle_math.applications.circle_ai.certify_kv_cache_live_window"
+          "python_reference": "circle_math.applications.circle_ai.kv_cache_slot; circle_math.applications.circle_ai.kv_cache_window_contains; circle_math.applications.circle_ai.kv_cache_next_overwrite_token; circle_math.applications.circle_ai.kv_cache_stale_by_next_overwrite_boundary; circle_math.applications.circle_ai.kv_cache_same_slot_overwrite_witness_when_stale; circle_math.applications.circle_ai.kv_cache_retained_iff_no_same_slot_overwrite_trace; circle_math.applications.circle_ai.kv_cache_batch_retained_iff_no_same_slot_overwrite_trace; circle_math.applications.circle_ai.kv_cache_trace_fresh_batch_slots_distinct; circle_math.applications.circle_ai.kv_cache_retained_batch_slots_distinct; circle_math.applications.circle_ai.kv_cache_live_window_slot_range_covered; circle_math.applications.circle_ai.certify_kv_cache_adapter_request_trace; circle_math.applications.circle_ai.certify_kv_cache_live_window"
         }
       ]
     },

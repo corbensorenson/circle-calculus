@@ -32,7 +32,7 @@ kv_cache_contract=LIVE cache_size=16 current=31 token=20 slot=4 current_slot=15 
 overwrite_boundary=next_overwrite=36 after_current=True stale_by_boundary=False no_same_slot_overwrite_before_current=True same_slot_overwrite_witness_when_stale=False retained_iff_no_same_slot_overwrite_trace=True
 batch_contract=tokens=(20, 24, 29, 31) slots=(4, 8, 13, 15) all_retained=True tokens_distinct=True slots_distinct=True
 adapter_request_trace=PASS request_id=prefill_read tokens=(20, 24, 29, 31) slots=(4, 8, 13, 15) all_non_future=True all_retained=True tokens_distinct=True slots_distinct=True
-live_window_contract=FULL start=16 length=16 slots_distinct=True slot_count_matches_cache_size=True slot_count_matches_full_window=True full_coverage_contract=True full_coverage_contract_matches_full_window=True
+live_window_contract=FULL start=16 length=16 slots_distinct=True slot_count_matches_cache_size=True slot_count_matches_full_window=True slot_range_covered=True full_coverage_contract=True full_coverage_contract_matches_full_window=True
 ```
 
 Machine-readable output:
@@ -55,6 +55,7 @@ python scripts/kv_cache_certify.py \
 - `live_window_certificate`: the generated retained-token interval, its slot list, and whether the full-window coverage contract applies.
 - `full_coverage_contract`: true when the live window is full, the generated slot list is duplicate-free, its length equals `cache_size`, and every emitted slot is inside the cache range.
 - `slot_count_matches_full_window`: true when the generated slot-list count matches `cache_size` exactly when the live window is full.
+- `slot_range_covered`: true when the generated live-window slot list contains every declared cache slot.
 - `full_coverage_contract_matches_full_window`: true when the full generated live-window coverage contract is equivalent to the live window being full.
 
 The main theorem spine is:
@@ -70,6 +71,7 @@ The main theorem spine is:
 - `AIM-T0079`: trace-fresh duplicate-free non-future read batches map to duplicate-free ring-buffer slots.
 - `AIM-T0080`: the generated live-window slot-map count equals `cache_size` if and only if the window is full.
 - `AIM-T0081`: the full generated live-window slot coverage contract holds if and only if the window is full.
+- `AIM-T0082`: in a full generated live window, a slot appears in the generated slot map if and only if it is less than `cache_size`.
 
 ## Boundary
 

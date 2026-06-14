@@ -1,4 +1,6 @@
 import Mathlib.Data.Nat.ModEq
+import Mathlib.Data.Finset.Card
+import Mathlib.Data.Finset.Range
 import Mathlib.Tactic.Ring
 
 /-!
@@ -10,6 +12,25 @@ improvement.
 -/
 
 namespace Circle.Applications
+
+private theorem list_mem_of_nodup_length_eq_of_forall_mem_lt
+    {xs : List Nat} {n slot : Nat}
+    (hnodup : xs.Nodup) (hlen : xs.length = n)
+    (hbounded : ∀ x, x ∈ xs → x < n) (hslot : slot < n) :
+    slot ∈ xs := by
+  classical
+  have hsubset : xs.toFinset ⊆ Finset.range n := by
+    intro x hx
+    exact Finset.mem_range.mpr (hbounded x (by simpa using hx))
+  have hcard_xs : xs.toFinset.card = n := by
+    rw [List.toFinset_card_of_nodup hnodup, hlen]
+  have hfinset_eq : xs.toFinset = Finset.range n := by
+    apply Finset.eq_of_subset_of_card_le hsubset
+    rw [Finset.card_range, hcard_xs]
+  have hslot_finset : slot ∈ xs.toFinset := by
+    rw [hfinset_eq]
+    exact Finset.mem_range.mpr hslot
+  simpa using hslot_finset
 
 def phaseChannel (period position : Nat) : Nat :=
   position % period
@@ -578,6 +599,33 @@ theorem kvCacheLiveWindowTokens_slotMap_fullCoverageContract
     ⟨kvCacheLiveWindowTokens_slotMap_nodup cacheSize current,
       kvCacheLiveWindowTokens_slotMap_length_eq_cacheSize_of_full hfull,
       kvCacheLiveWindowTokens_slotMap_lt_cacheSize hcache⟩
+
+/-- A full generated live-window slot map contains exactly the declared slot
+range.
+
+This strengthens the full-coverage contract from "duplicate-free, in range,
+and the right length" to the implementation-facing membership statement:
+after the window is full, a slot appears in the generated live-window slot map
+if and only if it is a valid cache slot. -/
+theorem kvCacheLiveWindowTokens_slotMap_mem_iff_lt_cacheSize_of_full
+    {cacheSize current slot : Nat} (hcache : 0 < cacheSize)
+    (hfull : cacheSize ≤ current + 1) :
+    slot ∈ ((kvCacheLiveWindowTokens cacheSize current).map
+      (kvCacheSlot cacheSize)) ↔ slot < cacheSize := by
+  constructor
+  · intro hslot
+    exact kvCacheLiveWindowTokens_slotMap_lt_cacheSize hcache slot hslot
+  · intro hslot
+    rcases
+      kvCacheLiveWindowTokens_slotMap_fullCoverageContract
+        (cacheSize := cacheSize) (current := current) hcache hfull with
+      ⟨hnodup, hlength, hbounded⟩
+    exact
+      list_mem_of_nodup_length_eq_of_forall_mem_lt
+        (xs := (kvCacheLiveWindowTokens cacheSize current).map
+          (kvCacheSlot cacheSize))
+        (n := cacheSize)
+        hnodup hlength hbounded hslot
 
 /-- The generated live-window slot map satisfies the full coverage contract
 exactly when the current token has advanced far enough to fill the cache.

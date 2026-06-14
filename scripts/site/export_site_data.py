@@ -520,9 +520,12 @@ def export_widget_index() -> dict:
                 "AIM-T0077",
                 "AIM-T0078",
                 "AIM-T0079",
+                "AIM-T0080",
+                "AIM-T0081",
+                "AIM-T0082",
             ],
             "dictionary_ids": ["COMMON-0028", "COMMON-0081"],
-            "python_reference": "circle_math.applications.circle_ai.kv_cache_slot; circle_math.applications.circle_ai.kv_cache_window_contains; circle_math.applications.circle_ai.kv_cache_next_overwrite_token; circle_math.applications.circle_ai.kv_cache_stale_by_next_overwrite_boundary; circle_math.applications.circle_ai.kv_cache_same_slot_overwrite_witness_when_stale; circle_math.applications.circle_ai.kv_cache_retained_iff_no_same_slot_overwrite_trace; circle_math.applications.circle_ai.kv_cache_batch_retained_iff_no_same_slot_overwrite_trace; circle_math.applications.circle_ai.kv_cache_trace_fresh_batch_slots_distinct; circle_math.applications.circle_ai.kv_cache_retained_batch_slots_distinct; circle_math.applications.circle_ai.certify_kv_cache_adapter_request_trace; circle_math.applications.circle_ai.certify_kv_cache_live_window",
+            "python_reference": "circle_math.applications.circle_ai.kv_cache_slot; circle_math.applications.circle_ai.kv_cache_window_contains; circle_math.applications.circle_ai.kv_cache_next_overwrite_token; circle_math.applications.circle_ai.kv_cache_stale_by_next_overwrite_boundary; circle_math.applications.circle_ai.kv_cache_same_slot_overwrite_witness_when_stale; circle_math.applications.circle_ai.kv_cache_retained_iff_no_same_slot_overwrite_trace; circle_math.applications.circle_ai.kv_cache_batch_retained_iff_no_same_slot_overwrite_trace; circle_math.applications.circle_ai.kv_cache_trace_fresh_batch_slots_distinct; circle_math.applications.circle_ai.kv_cache_retained_batch_slots_distinct; circle_math.applications.circle_ai.kv_cache_live_window_slot_range_covered; circle_math.applications.circle_ai.certify_kv_cache_adapter_request_trace; circle_math.applications.circle_ai.certify_kv_cache_live_window",
         },
         {
             "id": "coil_retrieval_reachability",
