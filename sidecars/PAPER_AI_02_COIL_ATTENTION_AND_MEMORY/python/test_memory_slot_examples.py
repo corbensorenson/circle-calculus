@@ -666,6 +666,7 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     assert result.coverage_certificate.positive_lag_count == 119
     assert result.coverage_certificate.covered_uncovered_count_sum == 119
     assert result.coverage_certificate.covered_uncovered_count_partition
+    assert not result.coverage_certificate.covered_count_certifies_complete
     assert result.coverage_certificate.uncovered_lags[:5] == (5, 6, 8, 9, 10)
     assert result.coverage_certificate.uncovered_lag_intervals == (
         (5, 6),
@@ -848,6 +849,7 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0092",
         "AIT-T0093",
         "AIT-T0094",
+        "AIT-T0095",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -880,6 +882,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert certificate["positive_lag_count"] == 119
     assert certificate["covered_uncovered_count_sum"] == 119
     assert certificate["covered_uncovered_count_partition"] is True
+    assert certificate["covered_count_certifies_complete"] is False
     assert certificate["uncovered_lag_intervals"] == [
         [5, 6],
         [8, 12],
@@ -902,6 +905,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0092" in certificate["theorem_ids"]
     assert "AIT-T0093" in certificate["theorem_ids"]
     assert "AIT-T0094" in certificate["theorem_ids"]
+    assert "AIT-T0095" in certificate["theorem_ids"]
     complete = payload["complete_fixture_certificate"]
     assert complete["sequence_length"] == 9
     assert complete["strides"] == [3, 4, 7]
@@ -910,6 +914,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert complete["positive_lag_count"] == 8
     assert complete["covered_uncovered_count_sum"] == 8
     assert complete["covered_uncovered_count_partition"] is True
+    assert complete["covered_count_certifies_complete"] is True
     assert complete["uncovered_lag_intervals"] == []
     assert complete["uncovered_lag_interval_count"] == 0
     assert complete["coverage_complete"] is True
@@ -938,6 +943,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     ]
     assert planner_rows["complete_toy_fixture_9"]["coverage_complete"] is True
     assert planner_rows["complete_toy_fixture_9"]["uncovered_lag_count"] == 0
+    assert planner_rows["complete_toy_fixture_9"]["covered_count_certifies_complete"] is True
     assert planner_rows["complete_toy_fixture_9"]["fixture_theorem_ids"] == [
         "AIT-T0086",
         "AIT-T0087",
@@ -953,6 +959,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert long_no_wrap["positive_lag_count"] == 4095
     assert long_no_wrap["covered_uncovered_count_sum"] == 4095
     assert long_no_wrap["covered_uncovered_count_partition"] is True
+    assert long_no_wrap["covered_count_certifies_complete"] is False
     assert long_no_wrap["uncovered_lag_interval_count"] == 13
     assert long_no_wrap["raw_budget_survives_lag_dedup"] is True
     assert long_no_wrap["raw_budget_survives_query_dedup"] is True
@@ -971,6 +978,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert long_coprime["positive_lag_count"] == 8191
     assert long_coprime["covered_uncovered_count_sum"] == 8191
     assert long_coprime["covered_uncovered_count_partition"] is True
+    assert long_coprime["covered_count_certifies_complete"] is False
     assert long_coprime["uncovered_lag_interval_count"] == 32
     assert long_coprime["raw_budget_survives_lag_dedup"] is True
     assert long_coprime["raw_budget_survives_query_dedup"] is True
@@ -978,6 +986,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0092" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0093" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0094" in long_coprime["core_coverage_theorem_ids"]
+    assert "AIT-T0095" in long_coprime["core_coverage_theorem_ids"]
     assert "scripts/stride_family_certify.py --context 8192" in (
         long_coprime["reproduce_command"]
     )
@@ -1054,6 +1063,7 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert certificate.positive_lag_count == 9
     assert certificate.covered_uncovered_count_sum == 9
     assert certificate.covered_uncovered_count_partition
+    assert certificate.covered_count_certifies_complete
     assert certificate.coverage_ratio == 1.0
     assert certificate.raw_candidate_budget_upper_bound == stride_family_raw_candidate_budget(
         strides=(3,),
@@ -1186,6 +1196,7 @@ def test_stride_family_complete_sparse_family_fixture_has_empty_gap_list() -> No
     assert certificate.positive_lag_count == 8
     assert certificate.covered_uncovered_count_sum == 8
     assert certificate.covered_uncovered_count_partition
+    assert certificate.covered_count_certifies_complete
     assert certificate.coverage_complete
     assert certificate.coverage_ratio == 1.0
     assert certificate.candidate_budget_per_query == 8

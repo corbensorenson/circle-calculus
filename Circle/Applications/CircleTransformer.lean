@@ -936,6 +936,33 @@ theorem hybridFamilyCoversContext_iff_uncoveredLagList_length_eq_zero
   rw [hybridFamilyCoversContext_iff_uncoveredLagList_eq_nil,
     List.length_eq_zero_iff]
 
+/-- Complete sparse-attention coverage is equivalent to the finite covered-lag
+count reaching the full positive-lag count `n - 1`.
+
+This is the quantitative counterpart to the empty-uncovered-list criterion: the
+covered and uncovered lag lists partition the positive in-context lags, so
+covering all positive lags is exactly the same as reporting `n - 1` covered
+lags. -/
+theorem hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one
+    {n window pathLength : Nat} {strides : List Nat} :
+    hybridFamilyCoversContext n window pathLength strides ↔
+      (hybridFamilyCoveredLagList n window pathLength strides).length = n - 1 := by
+  constructor
+  · intro hcover
+    have huncovered :
+        (hybridFamilyUncoveredLagList n window pathLength strides).length = 0 :=
+      (hybridFamilyCoversContext_iff_uncoveredLagList_length_eq_zero).1 hcover
+    have hpartition :=
+      hybridFamilyCoveredUncoveredLagList_length_add
+        (n := n) (window := window) (pathLength := pathLength) (strides := strides)
+    omega
+  · intro hcovered
+    rw [hybridFamilyCoversContext_iff_uncoveredLagList_length_eq_zero]
+    have hpartition :=
+      hybridFamilyCoveredUncoveredLagList_length_add
+        (n := n) (window := window) (pathLength := pathLength) (strides := strides)
+    omega
+
 /-- If the local window is below the context length, then every theorem-side
 lag candidate is a strict in-context representative. -/
 theorem mem_hybridFamilyLagCandidateList_lt_context_of_window_lt_context

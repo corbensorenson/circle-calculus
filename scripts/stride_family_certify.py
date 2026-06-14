@@ -103,6 +103,11 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             "theorem=AIT-T0094"
         ),
         (
+            "covered_count_complete="
+            f"{payload['covered_count_certifies_complete']} "
+            "theorem=AIT-T0095"
+        ),
+        (
             "candidate_budget_per_query="
             f"{payload['candidate_budget_per_query']} "
             f"raw_upper_bound={payload['raw_candidate_budget_upper_bound']} "

@@ -125,7 +125,7 @@ python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-leng
 python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py --format markdown
 ```
 
-The sparse certificate emits theorem ids, covered lags, theorem-side covered/uncovered-lag lists, a covered-plus-uncovered count partition, no-collision budget predicates, candidate-count fields, a default hit/gap fixture, a compact complete-coverage fixture, and compact planner-style rows for larger declared sparse layouts. It proves finite candidate-set coverage, hit/gap-list membership and counting, and budget facts only; it is not an attention-quality, long-context, throughput, runtime, memory-use, or model-quality claim.
+The sparse certificate emits theorem ids, covered lags, theorem-side covered/uncovered-lag lists, a covered-plus-uncovered count partition, a covered-count complete-coverage criterion, no-collision budget predicates, candidate-count fields, a default hit/gap fixture, a compact complete-coverage fixture, and compact planner-style rows for larger declared sparse layouts. It proves finite candidate-set coverage, hit/gap-list membership and counting, and budget facts only; it is not an attention-quality, long-context, throughput, runtime, memory-use, or model-quality claim.
 
 For the optional Theseus-Hive AI transfer lane, run:
 

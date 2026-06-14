@@ -5051,6 +5051,12 @@
           "lean_name": "Circle.Applications.hybridFamilyCoveredUncoveredLagList_length_add",
           "name": "Circle.Applications.hybridFamilyCoveredUncoveredLagList_length_add",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0095",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
+          "name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5590,6 +5596,12 @@
           "id": "AIT-T0094",
           "lean_name": "Circle.Applications.hybridFamilyCoveredUncoveredLagList_length_add",
           "name": "Circle.Applications.hybridFamilyCoveredUncoveredLagList_length_add",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0095",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
+          "name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
           "status": "proved"
         }
       ],
@@ -6999,6 +7011,12 @@
           "id": "AIT-T0094",
           "lean_name": "Circle.Applications.hybridFamilyCoveredUncoveredLagList_length_add",
           "name": "Circle.Applications.hybridFamilyCoveredUncoveredLagList_length_add",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0095",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
+          "name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
           "status": "proved"
         }
       ],
@@ -11493,6 +11511,12 @@
           "lean_name": "Circle.Applications.hybridFamilyCoveredUncoveredLagList_length_add",
           "name": "Circle.Applications.hybridFamilyCoveredUncoveredLagList_length_add",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0095",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
+          "name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -13976,6 +14000,12 @@
           "id": "AIT-T0094",
           "lean_name": "Circle.Applications.hybridFamilyCoveredUncoveredLagList_length_add",
           "name": "Circle.Applications.hybridFamilyCoveredUncoveredLagList_length_add",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0095",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
+          "name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
           "status": "proved"
         }
       ],

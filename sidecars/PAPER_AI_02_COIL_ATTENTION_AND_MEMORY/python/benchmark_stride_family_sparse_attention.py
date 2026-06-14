@@ -37,6 +37,7 @@ CORE_COVERAGE_THEOREM_IDS = (
     "AIT-T0092",
     "AIT-T0093",
     "AIT-T0094",
+    "AIT-T0095",
 )
 
 PLANNER_STYLE_SPECS: tuple[dict[str, Any], ...] = (
@@ -112,6 +113,7 @@ def compact_planner_certificate(spec: dict[str, Any]) -> dict[str, Any]:
         "positive_lag_count": certificate.positive_lag_count,
         "covered_uncovered_count_sum": certificate.covered_uncovered_count_sum,
         "covered_uncovered_count_partition": certificate.covered_uncovered_count_partition,
+        "covered_count_certifies_complete": certificate.covered_count_certifies_complete,
         "uncovered_lag_interval_count": certificate.uncovered_lag_interval_count,
         "candidate_budget_per_query": certificate.candidate_budget_per_query,
         "raw_candidate_budget_upper_bound": certificate.raw_candidate_budget_upper_bound,

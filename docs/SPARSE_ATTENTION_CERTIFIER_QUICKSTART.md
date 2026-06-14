@@ -30,6 +30,7 @@ Expected shape:
 stride_family_contract=GAPS context=120 strides=(7, 13) path_length=3 local_window=4
 covered_lags=10 uncovered_lags=109 uncovered_intervals=6 coverage_ratio=0.084034
 lag_partition=covered_plus_uncovered=119 positive_lags=119 partition_complete=True theorem=AIT-T0094
+covered_count_complete=False theorem=AIT-T0095
 uncovered_lag_intervals=((5, 6), (8, 12), (15, 20), (22, 25), (27, 38), (40, 119))
 candidate_budget_per_query=10 raw_upper_bound=10 deduplicated_bound=10 full_attention_budget=120
 lag_budget_status=exact-raw-budget unique_lag_candidates=10 lag_no_collision=True
@@ -56,6 +57,7 @@ python scripts/stride_family_certify.py \
 - `positive_lag_count`: the number of positive in-context lags, namely `context - 1`.
 - `covered_uncovered_count_sum`: the covered count plus uncovered count.
 - `covered_uncovered_count_partition`: true when the covered and uncovered lists partition the positive lags.
+- `covered_count_certifies_complete`: true exactly when the covered-lag count reaches `context - 1`.
 - `uncovered_lag_intervals`: consecutive runs of those uncovered lags, for reading large gap lists compactly.
 - `raw_candidate_budget_upper_bound`: `local_window + path_length * number_of_strides`.
 - `theorem_side_unique_lag_candidate_count`: deduplicated lag count from the theorem-side list.
@@ -78,10 +80,11 @@ The finite-list endpoints are:
 - `AIT-T0092`: the finite covered-lag and uncovered-lag lists are disjoint.
 - `AIT-T0093`: every positive in-context lag appears in one of the two lists.
 - `AIT-T0094`: the covered-lag count plus uncovered-lag count equals `n - 1`.
+- `AIT-T0095`: complete coverage is equivalent to the covered-lag count equaling `n - 1`.
 
 The gap/coverage spine is `AIT-T0020` through `AIT-T0035`. The theorem-side candidate-list,
 budget, no-collision, and predecessor-indexing spine is `AIT-T0036` through `AIT-T0077`.
-The finite uncovered/covered list and count-partition spine is `AIT-T0078` through `AIT-T0094`.
+The finite uncovered/covered list and count-partition spine is `AIT-T0078` through `AIT-T0095`.
 
 ## Boundary
 
