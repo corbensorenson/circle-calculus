@@ -1042,6 +1042,24 @@ theorem ropeTurnRatioFiniteMarginCertificate_iff_finiteMargin
         (turnRatio := turnRatio) (margin := margin) (context := context)).1
         hmargin⟩
 
+/-- A positive finite-margin certificate rules out exact integer-turn hits.
+
+This is the generic semantic bridge behind `zero_margin_witness = none` fields:
+if a turn-ratio margin is strictly positive over a finite context, then no
+positive generated gap in that context can have zero error against any integer
+turn count. -/
+theorem ropeTurnRatioFiniteMargin_pos_no_zero_error
+    {turnRatio margin : ℝ} {context : Nat}
+    (hmargin_pos : 0 < margin)
+    (hfinite : ropeTurnRatioFiniteMargin turnRatio margin context) :
+    ∀ gap : Nat, gap ∈ List.range context → 0 < gap →
+      ∀ turns : Int, ropeTurnRatioError turnRatio gap turns ≠ 0 := by
+  intro gap hgap_range hgap_pos turns hzero
+  have hbound : margin ≤ ropeTurnRatioError turnRatio gap turns :=
+    hfinite gap hgap_pos (List.mem_range.mp hgap_range) turns
+  rw [hzero] at hbound
+  linarith
+
 /-- One rational interval witness for a turn-ratio gap.
 
 The rational interval `[lower, upper]` encloses `gap * turnRatio` and sits
@@ -1718,6 +1736,27 @@ theorem ropeRationalPreset4099_exactWeakestGapMargin :
         (margin := ropeRationalPreset4099Margin)
         (context := ropeRationalPreset4099Context)).1
         ropeRationalPreset4099_turnRatioFiniteMargin gap hgap_range hgap_pos
+
+/-- The named rational/discretized preset has no zero-margin witness inside
+the inspected context.
+
+The Python certifier reports `zero_margin_witness = none` for the `1/4099`,
+context-4096 preset. This theorem gives that field its Lean meaning: every
+positive generated gap below `4096` has nonzero error against every integer
+turn count. -/
+theorem ropeRationalPreset4099_noZeroTurnRatioError :
+    ∀ gap : Nat, gap ∈ List.range ropeRationalPreset4099Context → 0 < gap →
+      ∀ turns : Int,
+        ropeTurnRatioError ropeRationalPreset4099TurnRatio gap turns ≠ 0 := by
+  exact
+    ropeTurnRatioFiniteMargin_pos_no_zero_error
+      (turnRatio := ropeRationalPreset4099TurnRatio)
+      (margin := ropeRationalPreset4099Margin)
+      (context := ropeRationalPreset4099Context)
+      (by
+        dsimp [ropeRationalPreset4099Margin]
+        norm_num)
+      ropeRationalPreset4099_turnRatioFiniteMargin
 
 /-- The named rational/discretized preset packaged as a proof-carrying
 finite-margin certificate. -/

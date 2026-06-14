@@ -3009,6 +3009,20 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
     blocker: ""
+  - id: AIRA-T0186
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioFiniteMargin_pos_no_zero_error
+    informal_statement: "Any positive finite-context turn-ratio margin certificate rules out exact zero error against every integer turn count for every positive generated gap in the certified context."
+    formal_statement: "forall {turnRatio margin : Real} {context : Nat}, 0 < margin -> Circle.Applications.ropeTurnRatioFiniteMargin turnRatio margin context -> forall gap : Nat, gap in List.range context -> 0 < gap -> forall turns : Int, Circle.Applications.ropeTurnRatioError turnRatio gap turns != 0"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
+    blocker: ""
   - id: AIRA-T0178
     status: lean_proved
     lean_name: Circle.Applications.not_ropeTurnRatioFiniteMargin_iff_exists_error_lt_margin
@@ -3057,6 +3071,20 @@ theorems:
     lean_name: Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin
     informal_statement: "For the named rational/discretized 1/4099 RoPE preset, gap 1 realizes the exact scalar nearest-integer margin 1/4099, and every positive generated gap in context 4096 has margin at least that value."
     formal_statement: "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin Circle.Applications.ropeRationalPreset4099TurnRatio 1 = Circle.Applications.ropeRationalPreset4099Margin and forall gap : Nat, gap in List.range Circle.Applications.ropeRationalPreset4099Context -> 0 < gap -> Circle.Applications.ropeRationalPreset4099Margin <= Circle.Applications.ropeTurnRatioGapNearestIntegerMargin Circle.Applications.ropeRationalPreset4099TurnRatio gap"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
+    blocker: ""
+  - id: AIRA-T0187
+    status: lean_proved
+    lean_name: Circle.Applications.ropeRationalPreset4099_noZeroTurnRatioError
+    informal_statement: "For the named rational/discretized 1/4099 RoPE preset, every positive generated gap below context 4096 has nonzero nearest-integer turn error against every integer turn count."
+    formal_statement: "forall gap : Nat, gap in List.range Circle.Applications.ropeRationalPreset4099Context -> 0 < gap -> forall turns : Int, Circle.Applications.ropeTurnRatioError Circle.Applications.ropeRationalPreset4099TurnRatio gap turns != 0"
     dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
     paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
     imports_allowed: ["Common"]

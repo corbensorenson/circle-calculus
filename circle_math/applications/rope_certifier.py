@@ -99,6 +99,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0182",
     "AIRA-T0183",
     "AIRA-T0177",
+    "AIRA-T0186",
     "AIRA-T0178",
     "AIRA-T0181",
     "AIRA-T0126",
@@ -134,6 +135,7 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_ge_iff_floor_ceil",
     "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
     "Circle.Applications.ropeTurnRatioFiniteMarginCertificate_iff_finiteMargin",
+    "Circle.Applications.ropeTurnRatioFiniteMargin_pos_no_zero_error",
     "Circle.Applications.not_ropeTurnRatioFiniteMargin_iff_exists_error_lt_margin",
     "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_band_bounds",
@@ -151,8 +153,10 @@ ROPE_RATIONAL_PRESET_4099_THEOREMS: tuple[str, ...] = (
     "AIRA-T0183",
     "AIRA-T0060",
     "AIRA-T0177",
+    "AIRA-T0186",
     "AIRA-T0061",
     "AIRA-T0185",
+    "AIRA-T0187",
     "AIRA-T0062",
 )
 
@@ -163,8 +167,10 @@ ROPE_RATIONAL_PRESET_4099_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
     "Circle.Applications.RopeTurnRatioFiniteMarginCertificate.certifies",
     "Circle.Applications.ropeTurnRatioFiniteMarginCertificate_iff_finiteMargin",
+    "Circle.Applications.ropeTurnRatioFiniteMargin_pos_no_zero_error",
     "Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin",
     "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
+    "Circle.Applications.ropeRationalPreset4099_noZeroTurnRatioError",
     "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
 )
 
