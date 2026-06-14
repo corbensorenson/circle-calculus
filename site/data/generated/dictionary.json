@@ -12875,6 +12875,36 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_finiteMarginCertificate_le_context_margin",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_finiteMarginCertificate_le_context_margin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0198",
+          "lean_name": "Circle.Applications.ropeDiagnosticSharedFactor_context64_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeDiagnosticSharedFactor_context64_totalCollisionPairCount",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0199",
+          "lean_name": "Circle.Applications.ropeQuantizedSharedFactor_context256_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeQuantizedSharedFactor_context256_totalCollisionPairCount",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0200",
+          "lean_name": "Circle.Applications.ropeQuantizedBoundary_context241_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeQuantizedBoundary_context241_totalCollisionPairCount",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0201",
+          "lean_name": "Circle.Applications.ropeInterpolatedX4_context960_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeInterpolatedX4_context960_totalCollisionPairCount",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0202",
+          "lean_name": "Circle.Applications.ropeInterpolatedX4_context961_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeInterpolatedX4_context961_totalCollisionPairCount",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -13961,6 +13991,36 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_finiteMarginCertificate_le_context_margin",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_finiteMarginCertificate_le_context_margin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0198",
+          "lean_name": "Circle.Applications.ropeDiagnosticSharedFactor_context64_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeDiagnosticSharedFactor_context64_totalCollisionPairCount",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0199",
+          "lean_name": "Circle.Applications.ropeQuantizedSharedFactor_context256_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeQuantizedSharedFactor_context256_totalCollisionPairCount",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0200",
+          "lean_name": "Circle.Applications.ropeQuantizedBoundary_context241_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeQuantizedBoundary_context241_totalCollisionPairCount",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0201",
+          "lean_name": "Circle.Applications.ropeInterpolatedX4_context960_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeInterpolatedX4_context960_totalCollisionPairCount",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0202",
+          "lean_name": "Circle.Applications.ropeInterpolatedX4_context961_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeInterpolatedX4_context961_totalCollisionPairCount",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -14141,6 +14201,36 @@
           "id": "AIRA-T0195",
           "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamilyPasses_13_18",
           "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamilyPasses_13_18",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0198",
+          "lean_name": "Circle.Applications.ropeDiagnosticSharedFactor_context64_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeDiagnosticSharedFactor_context64_totalCollisionPairCount",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0199",
+          "lean_name": "Circle.Applications.ropeQuantizedSharedFactor_context256_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeQuantizedSharedFactor_context256_totalCollisionPairCount",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0200",
+          "lean_name": "Circle.Applications.ropeQuantizedBoundary_context241_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeQuantizedBoundary_context241_totalCollisionPairCount",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0201",
+          "lean_name": "Circle.Applications.ropeInterpolatedX4_context960_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeInterpolatedX4_context960_totalCollisionPairCount",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0202",
+          "lean_name": "Circle.Applications.ropeInterpolatedX4_context961_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeInterpolatedX4_context961_totalCollisionPairCount",
           "status": "proved"
         }
       ],
@@ -16859,6 +16949,36 @@
           "id": "AIRA-T0195",
           "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamilyPasses_13_18",
           "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamilyPasses_13_18",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0198",
+          "lean_name": "Circle.Applications.ropeDiagnosticSharedFactor_context64_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeDiagnosticSharedFactor_context64_totalCollisionPairCount",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0199",
+          "lean_name": "Circle.Applications.ropeQuantizedSharedFactor_context256_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeQuantizedSharedFactor_context256_totalCollisionPairCount",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0200",
+          "lean_name": "Circle.Applications.ropeQuantizedBoundary_context241_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeQuantizedBoundary_context241_totalCollisionPairCount",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0201",
+          "lean_name": "Circle.Applications.ropeInterpolatedX4_context960_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeInterpolatedX4_context960_totalCollisionPairCount",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0202",
+          "lean_name": "Circle.Applications.ropeInterpolatedX4_context961_totalCollisionPairCount",
+          "name": "Circle.Applications.ropeInterpolatedX4_context961_totalCollisionPairCount",
           "status": "proved"
         }
       ],

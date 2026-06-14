@@ -683,6 +683,60 @@ theorem ropeDiagnosticPrefixPass_context128_smallestSubfamilyPasses_13_18 :
       | cons _ tail =>
           simp at hlt
 
+/-! ### Named finite diagnostic count certificates -/
+
+/-- The public diagnostic shared-factor RoPE row has exact integer-bank
+collision count `10`.
+
+The rounded diagnostic periods are `[6, 18, 54]`, their period-bank LCM is
+`54`, and the only positive in-context LCM multiple inside context `64` is
+gap `54`, giving starts `0` through `9`. -/
+theorem ropeDiagnosticSharedFactor_context64_totalCollisionPairCount :
+    ropeCollisionPairCountAtGapMultiples 64
+      (ropePeriodBankLCM [6, 18, 54]) = 10 := by
+  native_decide
+
+/-- The public quantized shared-factor phase-bank row has exact integer-bank
+collision count `224`.
+
+For periods `[32, 48, 96]` and context `256`, the LCM is `96`; the positive
+in-context multiples are gaps `96` and `192`, contributing `160 + 64`
+ordered starts. -/
+theorem ropeQuantizedSharedFactor_context256_totalCollisionPairCount :
+    ropeCollisionPairCountAtGapMultiples 256
+      (ropePeriodBankLCM [32, 48, 96]) = 224 := by
+  native_decide
+
+/-- The public quantized boundary-fail phase-bank row has exact integer-bank
+collision count `1`.
+
+For periods `[15, 16]` and context `241`, the LCM gap is `240`, so exactly one
+ordered start, `0`, has a paired position at `240` inside the context. -/
+theorem ropeQuantizedBoundary_context241_totalCollisionPairCount :
+    ropeCollisionPairCountAtGapMultiples 241
+      (ropePeriodBankLCM [15, 16]) = 1 := by
+  native_decide
+
+/-- The public scaled-period boundary-pass phase-bank row has exact
+integer-bank collision count `0`.
+
+For periods `[60, 64]` and context `960`, the LCM is exactly the context
+length, so no positive LCM-multiple gap has a positive number of starts. -/
+theorem ropeInterpolatedX4_context960_totalCollisionPairCount :
+    ropeCollisionPairCountAtGapMultiples 960
+      (ropePeriodBankLCM [60, 64]) = 0 := by
+  native_decide
+
+/-- The public scaled-period one-token-past-boundary phase-bank row has exact
+integer-bank collision count `1`.
+
+For periods `[60, 64]` and context `961`, the LCM gap is `960`, so exactly one
+ordered start, `0`, has a paired position at `960` inside the context. -/
+theorem ropeInterpolatedX4_context961_totalCollisionPairCount :
+    ropeCollisionPairCountAtGapMultiples 961
+      (ropePeriodBankLCM [60, 64]) = 1 := by
+  native_decide
+
 /-- In a single positive-period channel, every in-context collision between
 unequal ordered positions has a positive period-multiple gap.
 

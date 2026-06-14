@@ -75,7 +75,7 @@ python scripts/phase_bank_certify.py --preset interpolated_x4_boundary_pass_960
 python scripts/phase_bank_certify.py --preset interpolated_x4_boundary_fail_961
 ```
 
-The `quantized_*` presets exercise shared-factor and one-token-past-boundary failures for declared integer periods. The `interpolated_x4_*` presets use the exact integer-period analogue of slowing phase advance by multiplying declared periods by `4`; they show the pass/fail boundary at LCM `960`. These are exact phase-bank contracts, not real-valued interpolation proofs.
+The `quantized_*` presets exercise shared-factor and one-token-past-boundary failures for declared integer periods. The `interpolated_x4_*` presets use the exact integer-period analogue of slowing phase advance by multiplying declared periods by `4`; they show the pass/fail boundary at LCM `960`. `AIRA-T0199` through `AIRA-T0202` certify the concrete count values for those exact phase-bank diagnostic rows, while `AIRA-T0198` certifies the shared-factor RoPE diagnostic count. These are exact phase-bank contracts, not real-valued interpolation proofs.
 
 ## Read The Output
 

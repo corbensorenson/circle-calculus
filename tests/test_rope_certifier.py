@@ -1910,9 +1910,10 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     assert "AIRA-T0175" in certificate.theorem_ids
     assert "AIRA-T0176" in certificate.theorem_ids
     assert "AIRA-T0024" in certificate.exact_discrete.assumptions[3]
-    assert "AIRA-T0184" in certificate.exact_discrete.assumptions[-3]
-    assert "AIRA-T0175" in certificate.exact_discrete.assumptions[-2]
-    assert "AIRA-T0176" in certificate.exact_discrete.assumptions[-2]
+    exact_assumptions = "\n".join(certificate.exact_discrete.assumptions)
+    assert "AIRA-T0184" in exact_assumptions
+    assert "AIRA-T0175" in exact_assumptions
+    assert "AIRA-T0176" in exact_assumptions
     assert "not a model-quality" in certificate.claim_boundary
 
 
@@ -2061,6 +2062,7 @@ def test_rope_diagnostic_prefix_and_shared_factor_presets_are_stable() -> None:
     assert shared_payload["exact_discrete"]["discretized_periods"] == [6, 18, 54]
     assert shared_payload["exact_discrete"]["common_collision_gap"] == 54
     assert shared_payload["exact_discrete"]["total_bank_collision_pair_count"] == 10
+    assert "AIRA-T0198" in shared_payload["exact_discrete"]["theorem_ids"]
     assert shared_payload["exact_discrete"]["prefix_collision_reports"][2]["total_bank_collision_pair_count"] == 10
 
 
@@ -2101,6 +2103,7 @@ def test_exact_phase_bank_diagnostic_presets_cover_quantized_and_scaled_boundari
     assert shared.exact_discrete.discretized_periods == (32, 48, 96)
     assert shared.exact_discrete.common_collision_gap == 96
     assert shared.exact_discrete.total_bank_collision_pair_count == 224
+    assert "AIRA-T0199" in shared.exact_discrete.theorem_ids
 
     boundary_fail = certify_phase_bank_positions(
         PHASE_BANK_CERTIFIER_PRESETS["quantized_lcm_boundary_fail_241"],
@@ -2110,6 +2113,7 @@ def test_exact_phase_bank_diagnostic_presets_cover_quantized_and_scaled_boundari
     assert boundary_fail.exact_discrete.guaranteed_common_gap_collision_pair_count == 1
     assert boundary_fail.exact_discrete.total_bank_collision_pair_count == 1
     assert boundary_fail.exact_discrete.sample_collision_pairs == ((0, 240),)
+    assert "AIRA-T0200" in boundary_fail.exact_discrete.theorem_ids
 
     scaled_pass = certify_phase_bank_positions(
         PHASE_BANK_CERTIFIER_PRESETS["interpolated_x4_boundary_pass_960"],
@@ -2117,6 +2121,8 @@ def test_exact_phase_bank_diagnostic_presets_cover_quantized_and_scaled_boundari
     assert scaled_pass.exact_discrete.pass_exact
     assert scaled_pass.exact_discrete.discretized_periods == (60, 64)
     assert scaled_pass.exact_discrete.common_collision_gap is None
+    assert scaled_pass.exact_discrete.total_bank_collision_pair_count == 0
+    assert "AIRA-T0201" in scaled_pass.exact_discrete.theorem_ids
 
     scaled_fail = certify_phase_bank_positions(
         PHASE_BANK_CERTIFIER_PRESETS["interpolated_x4_boundary_fail_961"],
@@ -2125,6 +2131,7 @@ def test_exact_phase_bank_diagnostic_presets_cover_quantized_and_scaled_boundari
     assert scaled_fail.exact_discrete.common_collision_gap == 960
     assert scaled_fail.exact_discrete.total_bank_collision_pair_count == 1
     assert scaled_fail.exact_discrete.sample_collision_pairs == ((0, 960),)
+    assert "AIRA-T0202" in scaled_fail.exact_discrete.theorem_ids
 
 
 def test_phase_bank_certify_cli_emits_json_certificate() -> None:
@@ -2607,6 +2614,8 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME in markdown_result.stdout
     assert "quantized_shared_factor_256" in markdown_result.stdout
     assert "interpolated_x4_boundary_fail_961" in markdown_result.stdout
+    assert "AIRA-T0199" in markdown_result.stdout
+    assert "AIRA-T0202" in markdown_result.stdout
     assert "Total bank pairs" in markdown_result.stdout
     assert "First pass prefix" in markdown_result.stdout
     assert "Smallest pass subfamily" in markdown_result.stdout
