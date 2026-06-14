@@ -890,6 +890,27 @@ theorem RopeTurnRatioFiniteMarginCertificate.certifies
     (turnRatio := turnRatio) (margin := margin) (context := context)).2
     certificate.nearestIntegerWitnesses
 
+/-- The finite nearest-integer certificate object is equivalent to the abstract
+finite-context turn-ratio margin contract.
+
+The forward direction is `RopeTurnRatioFiniteMarginCertificate.certifies`; the
+reverse direction packages the nearest-integer witnesses supplied by
+`ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses`. This gives Python and
+Living Book certificate objects a bidirectional Lean statement to cite instead
+of treating the named certificate as only a one-way proof payload. -/
+theorem ropeTurnRatioFiniteMarginCertificate_iff_finiteMargin
+    {turnRatio margin : ℝ} {context : Nat} :
+    RopeTurnRatioFiniteMarginCertificate turnRatio margin context ↔
+      ropeTurnRatioFiniteMargin turnRatio margin context := by
+  constructor
+  · intro certificate
+    exact certificate.certifies
+  · intro hmargin
+    exact
+      ⟨(ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses
+        (turnRatio := turnRatio) (margin := margin) (context := context)).1
+        hmargin⟩
+
 /-- One rational interval witness for a turn-ratio gap.
 
 The rational interval `[lower, upper]` encloses `gap * turnRatio` and sits
