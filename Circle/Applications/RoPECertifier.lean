@@ -516,6 +516,31 @@ theorem not_ropePhaseBankCollision_of_subbank_lcm_ge_context
     (periods := subbank) (context := context) (left := left) (right := right)
     hlcm_context hleft hright hsubbank
 
+/-- The diagnostic prefix preset `[6, 9, 13, 18]` first reaches context `128`
+at prefix length `3`.
+
+This theorem backs the public `first_exact_pass_prefix_length = 3` report for
+the bounded diagnostic prefix fixture. It is a concrete finite certificate, not
+a general theorem about all RoPE period banks. -/
+theorem ropeDiagnosticPrefixPass_context128_firstPrefix_length_three :
+    ropePeriodBankLCM [6] < 128 ∧
+      ropePeriodBankLCM [6, 9] < 128 ∧
+        128 ≤ ropePeriodBankLCM [6, 9, 13] := by
+  native_decide
+
+/-- The diagnostic prefix preset `[6, 9, 13, 18]` has no singleton subbank
+whose LCM reaches context `128`, while the subbank `[13, 18]` does.
+
+This theorem backs the public `smallest_pass_subfamily_size = 2` report for
+the bounded diagnostic prefix fixture. The bounded Python report still records
+which subfamily was found; this Lean fact certifies the size boundary for the
+named finite case. -/
+theorem ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two :
+    (∀ period, period ∈ ([6, 9, 13, 18] : List Nat) →
+      ropePeriodBankLCM [period] < 128) ∧
+      128 ≤ ropePeriodBankLCM [13, 18] := by
+  native_decide
+
 /-- In a single positive-period channel, every in-context collision between
 unequal ordered positions has a positive period-multiple gap.
 

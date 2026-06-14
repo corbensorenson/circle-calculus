@@ -2613,6 +2613,36 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_explicit_phase_bank_certifier_reports_exact_only_contract
     blocker: ""
+  - id: AIRA-T0188
+    status: lean_proved
+    lean_name: Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefix_length_three
+    informal_statement: "For the diagnostic RoPE phase bank [6, 9, 13, 18] at context 128, prefixes of length 1 and 2 do not reach the context, while the prefix of length 3 does."
+    formal_statement: "Circle.Applications.ropePeriodBankLCM [6] < 128 and Circle.Applications.ropePeriodBankLCM [6, 9] < 128 and 128 <= Circle.Applications.ropePeriodBankLCM [6, 9, 13]"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_diagnostic_prefix_and_shared_factor_presets_are_stable
+        - tests/test_rope_certifier.py::test_explicit_phase_bank_certifier_reports_exact_only_contract
+    blocker: ""
+  - id: AIRA-T0189
+    status: lean_proved
+    lean_name: Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two
+    informal_statement: "For the diagnostic RoPE phase bank [6, 9, 13, 18] at context 128, no singleton subbank reaches the context, while the subbank [13, 18] does."
+    formal_statement: "For every period in [6, 9, 13, 18], Circle.Applications.ropePeriodBankLCM [period] < 128, and 128 <= Circle.Applications.ropePeriodBankLCM [13, 18]."
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_diagnostic_prefix_and_shared_factor_presets_are_stable
+        - tests/test_rope_certifier.py::test_explicit_phase_bank_certifier_reports_exact_only_contract
+    blocker: ""
   - id: AIRA-T0174
     status: lean_proved
     lean_name: Circle.Applications.ropeCollisionPairCountAtGapMultiples_pos_iff

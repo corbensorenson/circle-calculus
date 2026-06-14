@@ -12809,6 +12809,18 @@
           "lean_name": "Circle.Applications.ropeRationalPreset4099_noZeroTurnRatioError",
           "name": "Circle.Applications.ropeRationalPreset4099_noZeroTurnRatioError",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0188",
+          "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefix_length_three",
+          "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefix_length_three",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0189",
+          "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two",
+          "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -13835,6 +13847,18 @@
           "lean_name": "Circle.Applications.ropeRationalPreset4099_noZeroTurnRatioError",
           "name": "Circle.Applications.ropeRationalPreset4099_noZeroTurnRatioError",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0188",
+          "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefix_length_three",
+          "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefix_length_three",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0189",
+          "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two",
+          "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -13967,6 +13991,18 @@
           "id": "AIRA-T0184",
           "lean_name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcmCollisionPairCount_eq_zero_of_forall_mem_pos",
           "name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcmCollisionPairCount_eq_zero_of_forall_mem_pos",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0188",
+          "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefix_length_three",
+          "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefix_length_three",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0189",
+          "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two",
+          "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two",
           "status": "proved"
         }
       ],
@@ -16607,6 +16643,18 @@
           "id": "AIRA-T0184",
           "lean_name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcmCollisionPairCount_eq_zero_of_forall_mem_pos",
           "name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcmCollisionPairCount_eq_zero_of_forall_mem_pos",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0188",
+          "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefix_length_three",
+          "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefix_length_three",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0189",
+          "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two",
+          "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two",
           "status": "proved"
         }
       ],

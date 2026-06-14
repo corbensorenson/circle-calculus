@@ -72,6 +72,28 @@ ROPE_CERTIFIER_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeLCMCollisionPairCountMultiples_pos_iff_exists_collision",
 )
 
+DIAGNOSTIC_PREFIX_PERIODS: tuple[int, ...] = (6, 9, 13, 18)
+DIAGNOSTIC_PREFIX_CONTEXT = 128
+DIAGNOSTIC_FIRST_PASS_PREFIX: tuple[int, ...] = (6, 9, 13)
+DIAGNOSTIC_SMALLEST_PASS_SUBFAMILY: tuple[int, ...] = (13, 18)
+
+PHASE_BANK_PREFIX_THEOREMS: tuple[str, ...] = (
+    "AIRA-T0036",
+    "AIRA-T0046",
+    "AIRA-T0048",
+    "AIRA-T0049",
+    "AIRA-T0051",
+    "AIRA-T0174",
+    "AIRA-T0175",
+    "AIRA-T0176",
+)
+
+PHASE_BANK_SUBFAMILY_THEOREMS: tuple[str, ...] = (
+    "AIRA-T0036",
+    "AIRA-T0046",
+    "AIRA-T0052",
+)
+
 ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0029",
     "AIRA-T0030",
@@ -522,16 +544,7 @@ class PhaseBankPrefixCollisionReport:
     lcm_reaches_context: bool
     total_bank_collision_pair_count: int
     sample_collision_pairs: tuple[tuple[int, int], ...]
-    theorem_ids: tuple[str, ...] = (
-        "AIRA-T0036",
-        "AIRA-T0046",
-        "AIRA-T0048",
-        "AIRA-T0049",
-        "AIRA-T0051",
-        "AIRA-T0174",
-        "AIRA-T0175",
-        "AIRA-T0176",
-    )
+    theorem_ids: tuple[str, ...] = PHASE_BANK_PREFIX_THEOREMS
 
 
 @dataclass(frozen=True)
@@ -539,11 +552,7 @@ class PhaseBankSubfamilyPassReport:
     subfamily_indices: tuple[int, ...]
     periods: tuple[int, ...]
     lcm_value: int
-    theorem_ids: tuple[str, ...] = (
-        "AIRA-T0036",
-        "AIRA-T0046",
-        "AIRA-T0052",
-    )
+    theorem_ids: tuple[str, ...] = PHASE_BANK_SUBFAMILY_THEOREMS
 
 
 @dataclass(frozen=True)
@@ -1202,6 +1211,38 @@ def single_period_collision_pair_count(context_length: int, period: int) -> int:
     return collision_pair_count_at_gap_multiples(context_length, period)
 
 
+def _prefix_report_theorem_ids(
+    context_length: int,
+    full_bank_periods: Sequence[int],
+    prefix_periods: Sequence[int],
+) -> tuple[str, ...]:
+    """Return theorem ids for one bounded prefix report."""
+    theorem_ids = list(PHASE_BANK_PREFIX_THEOREMS)
+    if (
+        context_length == DIAGNOSTIC_PREFIX_CONTEXT
+        and tuple(full_bank_periods) == DIAGNOSTIC_PREFIX_PERIODS
+        and tuple(prefix_periods) == DIAGNOSTIC_FIRST_PASS_PREFIX
+    ):
+        theorem_ids.append("AIRA-T0188")
+    return tuple(theorem_ids)
+
+
+def _subfamily_report_theorem_ids(
+    context_length: int,
+    full_bank_periods: Sequence[int],
+    subfamily_periods: Sequence[int],
+) -> tuple[str, ...]:
+    """Return theorem ids for one bounded subfamily report."""
+    theorem_ids = list(PHASE_BANK_SUBFAMILY_THEOREMS)
+    if (
+        context_length == DIAGNOSTIC_PREFIX_CONTEXT
+        and tuple(full_bank_periods) == DIAGNOSTIC_PREFIX_PERIODS
+        and tuple(subfamily_periods) == DIAGNOSTIC_SMALLEST_PASS_SUBFAMILY
+    ):
+        theorem_ids.append("AIRA-T0189")
+    return tuple(theorem_ids)
+
+
 def phase_bank_prefix_collision_reports(
     context_length: int,
     periods: Sequence[int],
@@ -1247,6 +1288,11 @@ def phase_bank_prefix_collision_reports(
                 collision_gap,
                 limit=sample_limit,
             ),
+            theorem_ids=_prefix_report_theorem_ids(
+                context_length,
+                normalized_periods,
+                prefix,
+            ),
         ))
     return tuple(reports)
 
@@ -1285,6 +1331,11 @@ def phase_bank_subfamily_pass_reports(
                     subfamily_indices=indices,
                     periods=subfamily,
                     lcm_value=lcm_value,
+                    theorem_ids=_subfamily_report_theorem_ids(
+                        context_length,
+                        normalized_periods,
+                        subfamily,
+                    ),
                 ))
                 if len(reports) >= limit:
                     return tuple(reports)

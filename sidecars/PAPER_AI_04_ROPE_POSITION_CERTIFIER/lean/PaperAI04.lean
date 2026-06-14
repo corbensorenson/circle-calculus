@@ -34,6 +34,8 @@ namespace Circle.PaperAI04
 #check Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context
 #check Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context
 #check Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context
+#check Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefix_length_three
+#check Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two
 #check Circle.Applications.ropeRealPhaseGap
 #check Circle.Applications.ropeRealPhaseGapAbs
 #check Circle.Applications.ropeRealPhaseNatTurnError
