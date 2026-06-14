@@ -14,9 +14,9 @@ This is a theorem-backed rational/discretized turn-ratio certificate. It is not 
 
 | Name | Turn ratio | Context | Certified margin | Pi bounds | Status | Theorem ids |
 | --- | --- | ---: | --- | --- | --- | --- |
-| standard_rope_channel0_interval_context_163840 | 1/(2*pi) | 163840 | 1/328459 | pi <= 4, 3.14 < pi, pi < 3.15, 3.1415 < pi, pi < 3.1416, 3.141592 < pi, pi < 3.141593, 3.14159265358979323846 < pi, and pi < 3.14159265358979323847 | PASS | AIRA-T0063, AIRA-T0064, AIRA-T0065, AIRA-T0066, AIRA-T0067, AIRA-T0068, AIRA-T0069, AIRA-T0070, AIRA-T0071, AIRA-T0072, AIRA-T0073, AIRA-T0074, AIRA-T0075, AIRA-T0076, AIRA-T0077, AIRA-T0078, AIRA-T0079, AIRA-T0080, AIRA-T0081, AIRA-T0082, AIRA-T0083, AIRA-T0084, AIRA-T0085, AIRA-T0086, AIRA-T0087, AIRA-T0088, AIRA-T0089, AIRA-T0090, AIRA-T0091, AIRA-T0092, AIRA-T0093, AIRA-T0094, AIRA-T0095, AIRA-T0096, AIRA-T0097, AIRA-T0098, AIRA-T0099, AIRA-T0100, AIRA-T0101, AIRA-T0102, AIRA-T0103, AIRA-T0104, AIRA-T0105, AIRA-T0106, AIRA-T0107, AIRA-T0108, AIRA-T0109, AIRA-T0110, AIRA-T0111, AIRA-T0112, AIRA-T0113, AIRA-T0114, AIRA-T0115, AIRA-T0116, AIRA-T0117, AIRA-T0118, AIRA-T0119, AIRA-T0120, AIRA-T0121, AIRA-T0122, AIRA-T0123, AIRA-T0124, AIRA-T0125, AIRA-T0126, AIRA-T0127, AIRA-T0128, AIRA-T0129, AIRA-T0130, AIRA-T0131, AIRA-T0132, AIRA-T0133, AIRA-T0134, AIRA-T0135, AIRA-T0136, AIRA-T0137, AIRA-T0138, AIRA-T0139, AIRA-T0140, AIRA-T0141, AIRA-T0142, AIRA-T0143, AIRA-T0144, AIRA-T0145, AIRA-T0146, AIRA-T0147, AIRA-T0148, AIRA-T0149, AIRA-T0150, AIRA-T0151, AIRA-T0152, AIRA-T0153, AIRA-T0154, AIRA-T0155, AIRA-T0156, AIRA-T0157, AIRA-T0158, AIRA-T0159, AIRA-T0160, AIRA-T0161, AIRA-T0162, AIRA-T0163, AIRA-T0164, AIRA-T0165, AIRA-T0166, AIRA-T0167 |
+| standard_rope_channel0_interval_context_196608 | 1/(2*pi) | 196608 | 1/328459 | pi <= 4, 3.14 < pi, pi < 3.15, 3.1415 < pi, pi < 3.1416, 3.141592 < pi, pi < 3.141593, 3.14159265358979323846 < pi, and pi < 3.14159265358979323847 | PASS | AIRA-T0063, AIRA-T0064, AIRA-T0065, AIRA-T0066, AIRA-T0067, AIRA-T0068, AIRA-T0069, AIRA-T0070, AIRA-T0071, AIRA-T0072, AIRA-T0073, AIRA-T0074, AIRA-T0075, AIRA-T0076, AIRA-T0077, AIRA-T0078, AIRA-T0079, AIRA-T0080, AIRA-T0081, AIRA-T0082, AIRA-T0083, AIRA-T0084, AIRA-T0085, AIRA-T0086, AIRA-T0087, AIRA-T0088, AIRA-T0089, AIRA-T0090, AIRA-T0091, AIRA-T0092, AIRA-T0093, AIRA-T0094, AIRA-T0095, AIRA-T0096, AIRA-T0097, AIRA-T0098, AIRA-T0099, AIRA-T0100, AIRA-T0101, AIRA-T0102, AIRA-T0103, AIRA-T0104, AIRA-T0105, AIRA-T0106, AIRA-T0107, AIRA-T0108, AIRA-T0109, AIRA-T0110, AIRA-T0111, AIRA-T0112, AIRA-T0113, AIRA-T0114, AIRA-T0115, AIRA-T0116, AIRA-T0117, AIRA-T0118, AIRA-T0119, AIRA-T0120, AIRA-T0121, AIRA-T0122, AIRA-T0123, AIRA-T0124, AIRA-T0125, AIRA-T0126, AIRA-T0127, AIRA-T0128, AIRA-T0129, AIRA-T0130, AIRA-T0131, AIRA-T0132, AIRA-T0133, AIRA-T0134, AIRA-T0135, AIRA-T0136, AIRA-T0137, AIRA-T0138, AIRA-T0139, AIRA-T0140, AIRA-T0141, AIRA-T0142, AIRA-T0143, AIRA-T0144, AIRA-T0145, AIRA-T0146, AIRA-T0147, AIRA-T0148, AIRA-T0149, AIRA-T0150, AIRA-T0151, AIRA-T0152, AIRA-T0153, AIRA-T0154, AIRA-T0155, AIRA-T0156, AIRA-T0157, AIRA-T0158, AIRA-T0159, AIRA-T0160, AIRA-T0161, AIRA-T0162, AIRA-T0163, AIRA-T0164, AIRA-T0165, AIRA-T0166, AIRA-T0167, AIRA-T0168, AIRA-T0169, AIRA-T0170, AIRA-T0171, AIRA-T0172, AIRA-T0173 |
 
-This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 163840, plus conditional one-separating-channel bank bridges. It is not a proof that every standard RoPE channel has a large-context margin, and it does not certify a full all-channel standard-RoPE bank.
+This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 196608, plus conditional one-separating-channel bank bridges. It is not a proof that every standard RoPE channel has a large-context margin, and it does not certify a full all-channel standard-RoPE bank.
 
 ## Standard RoPE D12 Bank Bridge Request
 
@@ -114,17 +114,33 @@ This is a conditional one-separating-channel bank certificate based on standard 
 
 This is a 160k one-channel standard-RoPE bracket. It is not a full all-channel bank margin theorem, and it does not decide margins strictly between 1/328459 and 1/328458.
 
+## Standard RoPE D19 Bank Bridge Request
+
+| Name | Bank shape | Requested context | Requested margin | Certified context | Certified margin | Status | Theorem ids |
+| --- | --- | ---: | ---: | ---: | ---: | --- | --- |
+| standard_rope_channel0_d19_bank_bridge_request | standard_channel0_first | 196608 | 1/328459 | 196608 | 1/328459 | PASS | AIRA-T0171, AIRA-T0172 |
+
+This is a conditional one-separating-channel bank certificate based on standard channel 0. It is not a full all-channel standard-RoPE margin theorem and not a model-quality claim.
+
+## Standard RoPE D19 Margin Bracket
+
+| Name | Context | Proved margin | Impossible margin floor | Status | Theorem ids |
+| --- | ---: | ---: | ---: | --- | --- |
+| standard_rope_channel0_d19_context196608_margin_bracket | 196608 | 1/328459 | 1/328458 | PASS | AIRA-T0168, AIRA-T0169, AIRA-T0155, AIRA-T0173 |
+
+This is a 192k one-channel standard-RoPE bracket. It is not a full all-channel bank margin theorem, and it does not decide margins strictly between 1/328459 and 1/328458.
+
 ## Standard Channel-0 Frontier Summary
 
 | Proved margin | Proved context | Proved status | Candidate full contexts | Candidate first uncovered gaps | Compression bridge | Frontier status |
 | ---: | ---: | --- | --- | --- | --- | --- |
-| 1/328459 | 163840 | lean_proved_interval_seed_AIRA-T0162_to_AIRA-T0164 |  | 103993 | AIRA-T0139, AIRA-T0140, AIRA-T0141 | candidate_plan_not_lean_proved |
+| 1/328459 | 196608 | lean_proved_interval_seed_AIRA-T0168_to_AIRA-T0170 |  | 103993 | AIRA-T0139, AIRA-T0140, AIRA-T0141 | lean_proved_interval_seed_AIRA-T0168_to_AIRA-T0170 |
 
 This is a derived sidecar summary of proved and candidate interval plans. It does not upgrade candidate rows to theorem-backed status.
 
 ## Standard RoPE Candidate Interval Plans
 
-These exact-rational plans are generated source data for Lean interval certificates. The d4 context-333, d6 context-710, d20 context-4096, d20 context-8192, d20 context-16384, d20 context-32768, d20 context-65536, and d20 margin-1/328459 context-131072/context-163840 plans listed here are now matched by compiled Lean declarations; the stronger 128k margin-1/104219 row remains a failed frontier comparison at gap 103993.
+These exact-rational plans are generated source data for Lean interval certificates. The d4 context-333, d6 context-710, d20 context-4096, d20 context-8192, d20 context-16384, d20 context-32768, d20 context-65536, and d20 margin-1/328459 context-131072/context-163840/context-196608 plans listed here are now matched by compiled Lean declarations; the stronger 128k margin-1/104219 row remains a failed frontier comparison at gap 103993.
 
 | Plan | Pi bounds | Planned margin | Covered context | First uncovered gap | Bands | Status |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
@@ -139,6 +155,7 @@ These exact-rational plans are generated source data for Lean interval certifica
 | standard_rope_channel0_interval_plan_d20_margin_1_104219_context_103993 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/104219 | 103993 | 103993 | 16551 | candidate_plan_not_lean_proved |
 | standard_rope_channel0_interval_plan_d20_margin_1_328459_context_131072 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/328459 | 131072 | none | 20861 | lean_proved_interval_seed_AIRA-T0156_to_AIRA-T0158 |
 | standard_rope_channel0_interval_plan_d20_margin_1_328459_context_163840 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/328459 | 163840 | none | 26076 | lean_proved_interval_seed_AIRA-T0162_to_AIRA-T0164 |
+| standard_rope_channel0_interval_plan_d20_margin_1_328459_context_196608 | 3.14159265358979323846 < pi and pi < 3.14159265358979323847 | 1/328459 | 196608 | none | 31291 | lean_proved_interval_seed_AIRA-T0168_to_AIRA-T0170 |
 
 ### Rational-Band Certificate Audits
 
@@ -157,6 +174,7 @@ These executable audits check whether each generated band list has the finite sh
 | standard_rope_channel0_interval_plan_d20_margin_1_104219_context_103993 | 131072 | 103993 | 16551 | 16551 | 103992 | 103993 | FAIL | PASS | executable_band_audit_not_lean_proved | AIRA-T0139, AIRA-T0140, AIRA-T0141 |
 | standard_rope_channel0_interval_plan_d20_margin_1_328459_context_131072 | 131072 | 131072 | 20861 | 20861 | 131071 | none | PASS | PASS | executable_band_audit_not_lean_proved | AIRA-T0139, AIRA-T0140, AIRA-T0141 |
 | standard_rope_channel0_interval_plan_d20_margin_1_328459_context_163840 | 163840 | 163840 | 26076 | 26076 | 163839 | none | PASS | PASS | executable_band_audit_not_lean_proved | AIRA-T0139, AIRA-T0140, AIRA-T0141 |
+| standard_rope_channel0_interval_plan_d20_margin_1_328459_context_196608 | 196608 | 196608 | 31291 | 31291 | 196607 | none | PASS | PASS | executable_band_audit_not_lean_proved | AIRA-T0139, AIRA-T0140, AIRA-T0141 |
 
 ### Band Endpoint Audit
 
@@ -186,6 +204,8 @@ Each row shows the endpoint inequalities a generator must justify before the Lea
 | standard_rope_channel0_interval_plan_d20_margin_1_328459_context_131072 | last | 131068-131071 | 20860 | 6553400000000000000000000/314159265358979323847 | 3276775000000000000000000/157079632679489661923 | PASS | AIRA-T0126 |
 | standard_rope_channel0_interval_plan_d20_margin_1_328459_context_163840 | first | 1-6 | 0 | 50000000000000000000/314159265358979323847 | 150000000000000000000/157079632679489661923 | PASS | AIRA-T0126 |
 | standard_rope_channel0_interval_plan_d20_margin_1_328459_context_163840 | last | 163835-163839 | 26075 | 8191750000000000000000000/314159265358979323847 | 4095975000000000000000000/157079632679489661923 | PASS | AIRA-T0126 |
+| standard_rope_channel0_interval_plan_d20_margin_1_328459_context_196608 | first | 1-6 | 0 | 50000000000000000000/314159265358979323847 | 150000000000000000000/157079632679489661923 | PASS | AIRA-T0126 |
+| standard_rope_channel0_interval_plan_d20_margin_1_328459_context_196608 | last | 196601-196607 | 31290 | 9830050000000000000000000/314159265358979323847 | 4915175000000000000000000/157079632679489661923 | PASS | AIRA-T0126 |
 
 ## RoPE Preset Diagnostics
 

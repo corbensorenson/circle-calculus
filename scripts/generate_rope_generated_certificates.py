@@ -62,6 +62,15 @@ PLANS = (
         theorem_start=162,
         description="160k",
     ),
+    GeneratedPlan(
+        level="D19",
+        context=196608,
+        margin_denominator=328459,
+        impossible_margin_denominator=328458,
+        obstruction_gap=103993,
+        theorem_start=168,
+        description="192k",
+    ),
 )
 
 

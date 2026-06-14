@@ -12413,6 +12413,42 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D18_context163840_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D18_context163840_margin_bracket",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0168",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0D19Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0169",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0D19Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0170",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0D19Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0D19Seed_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0171",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0172",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0173",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -13324,6 +13360,42 @@
           "id": "AIRA-T0167",
           "lean_name": "Circle.Applications.ropeStandardChannel0D18_context163840_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D18_context163840_margin_bracket",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0168",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0D19Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0169",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0D19Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0170",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0D19Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0D19Seed_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0171",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0172",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0173",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
           "status": "proved"
         }
       ],
@@ -14722,6 +14794,42 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D18_context163840_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D18_context163840_margin_bracket",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0168",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0D19Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0169",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0D19Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0170",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0D19Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0D19Seed_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0171",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0172",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0173",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -15684,6 +15792,42 @@
           "id": "AIRA-T0167",
           "lean_name": "Circle.Applications.ropeStandardChannel0D18_context163840_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D18_context163840_margin_bracket",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0168",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0D19Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0169",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0D19Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0170",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0D19Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0D19Seed_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0171",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0172",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0173",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
           "status": "proved"
         }
       ],
@@ -16679,6 +16823,42 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D18_context163840_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D18_context163840_margin_bracket",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0168",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0D19Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0169",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0D19Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0170",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0D19Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0D19Seed_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0171",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0172",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0173",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -17440,6 +17620,42 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D18_context163840_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D18_context163840_margin_bracket",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0168",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0D19Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0169",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0D19Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0170",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0D19Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0D19Seed_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0171",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0172",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0173",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -18130,6 +18346,42 @@
           "id": "AIRA-T0167",
           "lean_name": "Circle.Applications.ropeStandardChannel0D18_context163840_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D18_context163840_margin_bracket",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0168",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0D19Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0169",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0D19Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0170",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0D19Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0D19Seed_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0171",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0172",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0173",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
           "status": "proved"
         }
       ],
