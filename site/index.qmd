@@ -76,6 +76,8 @@ If you came to audit rather than to learn, three pages are built for you:
 - [How To Verify A Claim](verify_claim.qmd) — trace any theorem, term, paper line, or widget to its source.
 - The [Guided Learning Path](reader_path.qmd), [Theorem Index](theorems.qmd), [Dictionary](dictionary.qmd), [Paper Index](papers.qmd), [Targets](targets.qmd), and [Roadmap](roadmap.qmd) reference shelves.
 
+If you are here specifically for proof-carrying AI contracts, start with the [AI contract ladder](chapters/applications/ai_contract_ladder.qmd), then open the [RoPE certifier](chapters/applications/rope_certifier.qmd). That path shows the flagship position-distinguishability contract first, then points to the exact Python CLI, Lean declarations, theorem ids, paper trail, and limitations.
+
 #### Proof-Backed Portfolio
 
 <div class="portfolio-entrypoint" data-entrypoint-ref="showcase.qmd" data-verify-ref="verify_claim.qmd" data-manifest-ref="manifests/capability_showcase.yaml" data-validator-ref="scripts/check_capability_showcase.py"></div>
