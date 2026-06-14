@@ -69,7 +69,7 @@ targets:
       - "circle_math/applications/rope_certifier.py"
       - "tests/test_rope_certifier.py"
     dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078"]
-    next_action: "The theorem-backed common-gap, common-gap-multiple, exact single-period, exact integer-bank collision-pair counts, LCM pass/fail witnesses, bounded prefix and selected-subfamily reports, representative prefix-pass/shared-factor/quantized/interpolation-style boundary diagnostic cases, prefix/subbank-to-full-bank no-collision bridges, and exact-only explicit period-bank CLI are now landed through AIRA-T0027, AIRA-T0028, AIRA-T0034, AIRA-T0035, AIRA-T0036, AIRA-T0046, AIRA-T0048, AIRA-T0049, AIRA-T0051, and AIRA-T0052; next consider richer subfamily-selection formulas, with brute-force Python parity for small contexts."
+    next_action: "The theorem-backed common-gap, common-gap-multiple, exact single-period, exact integer-bank collision-pair counts, LCM pass/fail witnesses, count-zero boundary, count-positive iff collision-witness theorem, bounded prefix and selected-subfamily reports, representative prefix-pass/shared-factor/quantized/interpolation-style boundary diagnostic cases, prefix/subbank-to-full-bank no-collision bridges, and exact-only explicit period-bank CLI are now landed through AIRA-T0027, AIRA-T0028, AIRA-T0034, AIRA-T0035, AIRA-T0036, AIRA-T0046, AIRA-T0048, AIRA-T0049, AIRA-T0051, AIRA-T0052, and AIRA-T0174 through AIRA-T0176; next consider richer subfamily-selection formulas, with brute-force Python parity for small contexts."
     guardrail: "Do not imply the finite integer-period count is a count of real-valued RoPE collisions unless the real model is separately formalized."
 
   - id: P8-VALID-001
