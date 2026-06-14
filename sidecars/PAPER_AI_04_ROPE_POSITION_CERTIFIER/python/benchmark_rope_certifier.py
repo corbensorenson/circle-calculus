@@ -581,14 +581,16 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "## Named Rational Margin Certificate",
             "",
-            "| Name | Ratio | Context | Certified margin | Status | Theorem ids |",
-            "| --- | --- | ---: | ---: | --- | --- |",
-            "| {name} | {numerator}/{denominator} | {context} | {margin:.12g} | {status} | {theorems} |".format(
+            "| Name | Ratio | Context | Certified margin | Exact weakest gap margin | Weakest gap | Status | Theorem ids |",
+            "| --- | --- | ---: | ---: | ---: | ---: | --- | --- |",
+            "| {name} | {numerator}/{denominator} | {context} | {margin:.12g} | {exact_margin} | {exact_gap} | {status} | {theorems} |".format(
                 name=rational["name"],
                 numerator=rational["numerator"],
                 denominator=rational["denominator"],
                 context=rational["context_length"],
                 margin=rational["certified_margin"],
+                exact_margin=rational["exact_nearest_gap_margin"],
+                exact_gap=rational["exact_nearest_gap"],
                 status="PASS" if rational["pass_certificate"] else "FAIL",
                 theorems=", ".join(rational["theorem_ids"]),
             ),
@@ -916,6 +918,8 @@ def main() -> None:
                 print(f"rational_margin_certificate={rational['name']}")
                 print(f"pass_certificate={rational['pass_certificate']}")
                 print(f"certified_margin={rational['certified_margin']}")
+                print(f"exact_nearest_gap_margin={rational['exact_nearest_gap_margin']}")
+                print(f"exact_nearest_gap={rational['exact_nearest_gap']}")
                 print(f"theorem_ids={','.join(rational['theorem_ids'])}")
                 print()
                 print(f"standard_interval_certificate={standard_interval['name']}")

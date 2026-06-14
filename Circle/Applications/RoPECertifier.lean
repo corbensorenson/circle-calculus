@@ -865,6 +865,31 @@ def ropeTurnRatioNearestIntegerWitnesses
     margin ≤ |(gap : ℝ) * turnRatio - ((⌊(gap : ℝ) * turnRatio⌋ : ℤ) : ℝ)| ∧
       margin ≤ |(gap : ℝ) * turnRatio - ((⌈(gap : ℝ) * turnRatio⌉ : ℤ) : ℝ)|
 
+/-- The scalar nearest-integer margin for one turn-ratio gap.
+
+This is the quantitative version of the floor/ceiling witness pair: it is the
+smaller of the two endpoint errors that determine the distance from
+`gap * turnRatio` to the nearest integer. -/
+noncomputable def ropeTurnRatioGapNearestIntegerMargin
+    (turnRatio : ℝ) (gap : Nat) : ℝ :=
+  min
+    |(gap : ℝ) * turnRatio - ((⌊(gap : ℝ) * turnRatio⌋ : ℤ) : ℝ)|
+    |(gap : ℝ) * turnRatio - ((⌈(gap : ℝ) * turnRatio⌉ : ℤ) : ℝ)|
+
+/-- Bounding the scalar nearest-integer margin for one gap is equivalent to
+bounding both floor and ceiling endpoint errors.
+
+This is the formal bridge behind certifier fields that report a single
+`nearest_gap_margin` number while still citing the two-witness Lean proof
+shape. -/
+theorem ropeTurnRatioGapNearestIntegerMargin_ge_iff_floor_ceil
+    {turnRatio margin : ℝ} {gap : Nat} :
+    margin ≤ ropeTurnRatioGapNearestIntegerMargin turnRatio gap ↔
+      margin ≤ |(gap : ℝ) * turnRatio - ((⌊(gap : ℝ) * turnRatio⌋ : ℤ) : ℝ)| ∧
+        margin ≤ |(gap : ℝ) * turnRatio - ((⌈(gap : ℝ) * turnRatio⌉ : ℤ) : ℝ)| := by
+  unfold ropeTurnRatioGapNearestIntegerMargin
+  exact le_min_iff
+
 /-- Checking a lower bound against the floor and ceiling of a real value is
 equivalent to checking the same lower bound against every integer.
 
@@ -930,6 +955,31 @@ theorem ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses
       (ropeNearestIntegerWitnesses_iff_forall_int
         (x := (gap : ℝ) * turnRatio) (margin := margin)).1
         (hwitness gap hgap_range hgap_pos) turns
+
+/-- Finite-context turn-ratio margins are equivalent to lower-bounding the
+scalar nearest-integer margin for every generated positive gap.
+
+This packages the floor/ceiling witness bridge as a quantitative contract: a
+certifier may report the weakest gap margin as a single scalar, and this
+theorem states exactly how that scalar condition relates to the abstract
+finite-context margin predicate. -/
+theorem ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin
+    {turnRatio margin : ℝ} {context : Nat} :
+    ropeTurnRatioFiniteMargin turnRatio margin context ↔
+      ∀ gap : Nat, gap ∈ List.range context → 0 < gap →
+        margin ≤ ropeTurnRatioGapNearestIntegerMargin turnRatio gap := by
+  rw [ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses]
+  constructor
+  · intro hwitnesses gap hgap_range hgap_pos
+    exact
+      (ropeTurnRatioGapNearestIntegerMargin_ge_iff_floor_ceil
+        (turnRatio := turnRatio) (margin := margin) (gap := gap)).2
+        (hwitnesses gap hgap_range hgap_pos)
+  · intro hmargin gap hgap_range hgap_pos
+    exact
+      (ropeTurnRatioGapNearestIntegerMargin_ge_iff_floor_ceil
+        (turnRatio := turnRatio) (margin := margin) (gap := gap)).1
+        (hmargin gap hgap_range hgap_pos)
 
 /-- A proof-carrying finite turn-ratio margin certificate.
 

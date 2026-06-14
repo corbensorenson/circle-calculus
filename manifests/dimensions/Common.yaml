@@ -2920,6 +2920,36 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_turn_ratio_floor_ceil_witness_bridge_matches_scan
     blocker: ""
+  - id: AIRA-T0182
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_ge_iff_floor_ceil
+    informal_statement: "For one turn-ratio gap, bounding the scalar nearest-integer margin is equivalent to bounding both floor and ceiling endpoint errors."
+    formal_statement: "forall {turnRatio margin : Real} {gap : Nat}, margin <= Circle.Applications.ropeTurnRatioGapNearestIntegerMargin turnRatio gap <-> margin <= abs ((gap : Real) * turnRatio - ((floor ((gap : Real) * turnRatio) : Int) : Real)) and margin <= abs ((gap : Real) * turnRatio - ((ceil ((gap : Real) * turnRatio) : Int) : Real))"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_turn_ratio_floor_ceil_witness_bridge_matches_scan
+        - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
+    blocker: ""
+  - id: AIRA-T0183
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin
+    informal_statement: "A finite-context turn-ratio margin is equivalent to lower-bounding the scalar nearest-integer margin for every positive generated gap below the inspected context."
+    formal_statement: "forall {turnRatio margin : Real} {context : Nat}, Circle.Applications.ropeTurnRatioFiniteMargin turnRatio margin context <-> forall gap : Nat, gap in List.range context -> 0 < gap -> margin <= Circle.Applications.ropeTurnRatioGapNearestIntegerMargin turnRatio gap"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_turn_ratio_floor_ceil_witness_bridge_matches_scan
+        - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
+    blocker: ""
   - id: AIRA-T0060
     status: lean_proved
     lean_name: Circle.Applications.RopeTurnRatioFiniteMarginCertificate.certifies

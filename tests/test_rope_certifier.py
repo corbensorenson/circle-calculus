@@ -61,6 +61,9 @@ from circle_math.applications import (
     scan_turn_ratio_finite_margin,
     single_period_collision_pair_count,
     standard_channel0_turn_ratio_bounds,
+    turn_ratio_exact_context_nearest_margin,
+    turn_ratio_exact_floor_ceil_witness_errors,
+    turn_ratio_exact_floor_ceil_witness_margin,
     turn_ratio_finite_margin_gap_candidates,
     turn_ratio_floor_ceil_witness_errors,
     turn_ratio_floor_ceil_witness_margin,
@@ -224,6 +227,24 @@ def test_turn_ratio_floor_ceil_witness_bridge_matches_scan() -> None:
         )
         - 1.0 / 7.0
     ) < 1e-12
+    exact_floor_error, exact_ceil_error = turn_ratio_exact_floor_ceil_witness_errors(
+        turn_ratio=Fraction(3, 7),
+        gap=2,
+    )
+    assert exact_floor_error == Fraction(6, 7)
+    assert exact_ceil_error == Fraction(1, 7)
+    assert turn_ratio_exact_floor_ceil_witness_margin(
+        turn_ratio=Fraction(3, 7),
+        gap=2,
+    ) == Fraction(1, 7)
+    assert turn_ratio_exact_context_nearest_margin(
+        turn_ratio=Fraction(3, 7),
+        context_length=7,
+    ) == (Fraction(1, 7), 2)
+    assert turn_ratio_exact_context_nearest_margin(
+        turn_ratio=Fraction(3, 7),
+        context_length=8,
+    ) == (Fraction(0, 1), 7)
 
     for turn_ratio in (1.0 / 8.0, 3.0 / 7.0, 0.123456789):
         for context_length in (2, 5, 10):
@@ -254,6 +275,8 @@ def test_turn_ratio_floor_ceil_witness_bridge_matches_scan() -> None:
 
     assert "AIRA-T0058" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0059" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0182" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0183" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
 def test_real_phase_band_witness_bridge_is_listed() -> None:
@@ -332,7 +355,11 @@ def test_named_rational_turn_ratio_certificate_is_theorem_backed() -> None:
     assert certificate.pass_certificate
     assert certificate.zero_margin_witness is None
     assert certificate.certified_margin == 1.0 / 4099.0
+    assert certificate.exact_nearest_gap_margin == "1/4099"
+    assert certificate.exact_nearest_gap == 1
     assert certificate.theorem_ids == ROPE_RATIONAL_PRESET_4099_THEOREMS
+    assert "AIRA-T0182" in certificate.theorem_ids
+    assert "AIRA-T0183" in certificate.theorem_ids
     assert "AIRA-T0060" in certificate.theorem_ids
     assert "AIRA-T0177" in certificate.theorem_ids
     assert "AIRA-T0061" in certificate.theorem_ids
@@ -1340,8 +1367,15 @@ def test_rational_turn_ratio_certificate_reports_denominator_boundary() -> None:
     )
     assert not certificate.pass_certificate
     assert certificate.certified_margin is None
+    assert certificate.exact_nearest_gap_margin == "0"
+    assert certificate.exact_nearest_gap == 7
     assert certificate.zero_margin_witness == (7, 3)
-    assert certificate.theorem_ids == ("AIRA-T0055", "AIRA-T0057")
+    assert certificate.theorem_ids == (
+        "AIRA-T0055",
+        "AIRA-T0057",
+        "AIRA-T0182",
+        "AIRA-T0183",
+    )
 
 
 def test_turn_ratio_finite_margin_gap_candidates_match_range_bridge() -> None:
@@ -2125,6 +2159,11 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert payload["schema_id"] == "circle_calculus.rope_certifier_preset_results.v0"
     assert payload["rational_margin_certificate"]["name"] == ROPE_RATIONAL_PRESET_4099_NAME
     assert payload["rational_margin_certificate"]["pass_certificate"] is True
+    assert payload["rational_margin_certificate"]["exact_nearest_gap_margin"] == "1/4099"
+    assert payload["rational_margin_certificate"]["exact_nearest_gap"] == 1
+    assert payload["rational_margin_certificate"]["theorem_ids"] == list(
+        ROPE_RATIONAL_PRESET_4099_THEOREMS
+    )
     assert payload["standard_interval_certificate"]["name"] == ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME
     assert payload["standard_interval_certificate"]["pass_certificate"] is True
     assert payload["standard_interval_certificate"]["witness_count"] == 196607
@@ -2440,6 +2479,9 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     )
     assert "| llama_style_10000_4k |" in markdown_result.stdout
     assert "Named Rational Margin Certificate" in markdown_result.stdout
+    assert "Exact weakest gap margin" in markdown_result.stdout
+    assert "1/4099" in markdown_result.stdout
+    assert "AIRA-T0182, AIRA-T0183" in markdown_result.stdout
     assert "Named Standard RoPE Interval Seed" in markdown_result.stdout
     assert "Standard RoPE D12 Bank Bridge Request" in markdown_result.stdout
     assert "AIRA-T0123, AIRA-T0124" in markdown_result.stdout

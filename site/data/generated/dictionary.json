@@ -12587,6 +12587,18 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0182",
+          "lean_name": "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_ge_iff_floor_ceil",
+          "name": "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_ge_iff_floor_ceil",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0183",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -13582,6 +13594,12 @@
           "id": "AIRA-T0181",
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0183",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
           "status": "proved"
         }
       ],
@@ -15082,6 +15100,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0183",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -16116,6 +16140,12 @@
           "id": "AIRA-T0181",
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0183",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
           "status": "proved"
         }
       ],
@@ -17195,6 +17225,18 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0182",
+          "lean_name": "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_ge_iff_floor_ceil",
+          "name": "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_ge_iff_floor_ceil",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0183",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -18009,6 +18051,18 @@
           "id": "AIRA-T0181",
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0182",
+          "lean_name": "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_ge_iff_floor_ceil",
+          "name": "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_ge_iff_floor_ceil",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0183",
+          "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
+          "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
           "status": "proved"
         }
       ],

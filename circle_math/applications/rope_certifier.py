@@ -94,6 +94,8 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0057",
     "AIRA-T0058",
     "AIRA-T0059",
+    "AIRA-T0182",
+    "AIRA-T0183",
     "AIRA-T0177",
     "AIRA-T0178",
     "AIRA-T0181",
@@ -127,6 +129,8 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
     "Circle.Applications.ropeNearestIntegerWitnesses_iff_forall_int",
     "Circle.Applications.ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses",
+    "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_ge_iff_floor_ceil",
+    "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
     "Circle.Applications.ropeTurnRatioFiniteMarginCertificate_iff_finiteMargin",
     "Circle.Applications.not_ropeTurnRatioFiniteMargin_iff_exists_error_lt_margin",
     "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
@@ -141,6 +145,8 @@ ROPE_RATIONAL_PRESET_4099_NAME = "rational_turn_ratio_1_4099_context_4096"
 ROPE_RATIONAL_PRESET_4099_THEOREMS: tuple[str, ...] = (
     "AIRA-T0056",
     "AIRA-T0059",
+    "AIRA-T0182",
+    "AIRA-T0183",
     "AIRA-T0060",
     "AIRA-T0177",
     "AIRA-T0061",
@@ -150,6 +156,8 @@ ROPE_RATIONAL_PRESET_4099_THEOREMS: tuple[str, ...] = (
 ROPE_RATIONAL_PRESET_4099_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
     "Circle.Applications.ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses",
+    "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_ge_iff_floor_ceil",
+    "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
     "Circle.Applications.RopeTurnRatioFiniteMarginCertificate.certifies",
     "Circle.Applications.ropeTurnRatioFiniteMarginCertificate_iff_finiteMargin",
     "Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin",
@@ -614,6 +622,8 @@ class TurnRatioFiniteMarginCertificate:
     context_length: int
     turn_ratio: float
     certified_margin: float | None
+    exact_nearest_gap_margin: str | None
+    exact_nearest_gap: int | None
     pass_certificate: bool
     zero_margin_witness: tuple[int, int] | None
     theorem_ids: tuple[str, ...]
@@ -1392,6 +1402,57 @@ def turn_ratio_floor_ceil_witness_margin(*, turn_ratio: float, gap: int) -> floa
     return min(floor_error, ceil_error)
 
 
+def turn_ratio_exact_floor_ceil_witness_errors(
+    *,
+    turn_ratio: Fraction,
+    gap: int,
+) -> tuple[Fraction, Fraction]:
+    """Return exact floor/ceiling witness errors for one rational gap."""
+    if gap < 0:
+        raise ValueError("gap must be nonnegative")
+    value = gap * turn_ratio
+    floor_turn = floor(value)
+    ceil_turn = ceil(value)
+    return (
+        abs(value - floor_turn),
+        abs(value - ceil_turn),
+    )
+
+
+def turn_ratio_exact_floor_ceil_witness_margin(
+    *,
+    turn_ratio: Fraction,
+    gap: int,
+) -> Fraction:
+    """Return the exact scalar nearest-integer margin for one rational gap."""
+    floor_error, ceil_error = turn_ratio_exact_floor_ceil_witness_errors(
+        turn_ratio=turn_ratio,
+        gap=gap,
+    )
+    return min(floor_error, ceil_error)
+
+
+def turn_ratio_exact_context_nearest_margin(
+    *,
+    turn_ratio: Fraction,
+    context_length: int,
+) -> tuple[Fraction | None, int | None]:
+    """Return the weakest exact nearest-integer gap margin in a finite context."""
+    if context_length < 0:
+        raise ValueError("context_length must be nonnegative")
+    best_margin: Fraction | None = None
+    best_gap: int | None = None
+    for gap in turn_ratio_finite_margin_gap_candidates(context_length=context_length):
+        margin = turn_ratio_exact_floor_ceil_witness_margin(
+            turn_ratio=turn_ratio,
+            gap=gap,
+        )
+        if best_margin is None or margin < best_margin:
+            best_margin = margin
+            best_gap = gap
+    return best_margin, best_gap
+
+
 def turn_ratio_floor_ceil_witnesses_certify_margin(
     *,
     turn_ratio: float,
@@ -1497,6 +1558,10 @@ def certify_rational_turn_ratio_finite_margin(
     if context_length <= 0:
         raise ValueError("context_length must be positive")
 
+    exact_nearest_gap_margin, exact_nearest_gap = turn_ratio_exact_context_nearest_margin(
+        turn_ratio=Fraction(numerator, denominator),
+        context_length=context_length,
+    )
     certified_margin = turn_ratio_nat_ratio_coprime_margin_certificate(
         numerator=numerator,
         denominator=denominator,
@@ -1519,16 +1584,20 @@ def certify_rational_turn_ratio_finite_margin(
         theorem_ids = ROPE_RATIONAL_PRESET_4099_THEOREMS
         lean_declarations = ROPE_RATIONAL_PRESET_4099_LEAN_DECLARATIONS
     elif pass_certificate:
-        theorem_ids = ("AIRA-T0056", "AIRA-T0057")
+        theorem_ids = ("AIRA-T0056", "AIRA-T0057", "AIRA-T0182", "AIRA-T0183")
         lean_declarations = (
             "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
             "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
+            "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_ge_iff_floor_ceil",
+            "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
         )
     else:
-        theorem_ids = ("AIRA-T0055", "AIRA-T0057")
+        theorem_ids = ("AIRA-T0055", "AIRA-T0057", "AIRA-T0182", "AIRA-T0183")
         lean_declarations = (
             "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_iff_nonpos_of_den_lt_context",
             "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
+            "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_ge_iff_floor_ceil",
+            "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
         )
 
     if pass_certificate:
@@ -1552,6 +1621,11 @@ def certify_rational_turn_ratio_finite_margin(
         context_length=context_length,
         turn_ratio=numerator / denominator,
         certified_margin=certified_margin,
+        exact_nearest_gap_margin=(
+            None if exact_nearest_gap_margin is None
+            else format_fraction(exact_nearest_gap_margin)
+        ),
+        exact_nearest_gap=exact_nearest_gap,
         pass_certificate=pass_certificate,
         zero_margin_witness=zero_margin_witness,
         theorem_ids=theorem_ids,
@@ -3295,9 +3369,9 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         "turn-ratio scaling, finite-context margin consequence, context-plus-margin transfer, "
         "integer/rational-turn-ratio guardrails, positive rational finite-context "
         "certificate and exact rational boundary, generated-gap enumeration, "
-        "floor/ceiling nearest-integer, finite certificate iff, negative obstruction iff, "
-        "scaled no-near-turn iff, plus band-endpoint and band-list compression "
-        "bridge precursors only; not a Diophantine proof)",
+        "floor/ceiling nearest-integer, scalar nearest-gap margin, finite certificate "
+        "iff, negative obstruction iff, scaled no-near-turn iff, plus band-endpoint "
+        "and band-list compression bridge precursors only; not a Diophantine proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,
     )
