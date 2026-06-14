@@ -671,6 +671,7 @@ class KVCacheLiveWindowCertificate:
         "AIM-T0080",
         "AIM-T0081",
         "AIM-T0082",
+        "AIM-T0083",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheLiveWindowStart_add_length",
@@ -680,6 +681,7 @@ class KVCacheLiveWindowCertificate:
         "Circle.Applications.kvCacheLiveWindowTokens_slotMap_length_eq_cacheSize_iff_full",
         "Circle.Applications.kvCacheLiveWindowTokens_slotMap_fullCoverageContract_iff_full",
         "Circle.Applications.kvCacheLiveWindowTokens_slotMap_mem_iff_lt_cacheSize_of_full",
+        "Circle.Applications.kvCacheLiveWindowTokens_slotRangeCovered_iff_full",
     )
     note: str = (
         "KV-cache generated-live-window certificate only; this proves finite "

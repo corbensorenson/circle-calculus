@@ -48,7 +48,7 @@ live_length(cache_size,current) = min(cache_size, current + 1)
 live_tokens = live_start .. live_start + live_length - 1
 ```
 
-`AIM-T0071` proves that this interval ends exactly one past the current token. `AIM-T0072` proves that membership in `live_tokens` is equivalent to retained-window membership. `AIM-T0073` proves that the generated live window maps to duplicate-free ring-buffer slots. `AIM-T0074` packages the full-window coverage contract: after at least one full cache of tokens has been seen, the generated slot list is duplicate-free, has exactly `cache_size` entries, and every emitted slot is inside the declared slot range. `AIM-T0080` adds the count iff: the generated slot-list length equals `cache_size` exactly when the live window is full. `AIM-T0081` packages the whole coverage contract as an iff: duplicate-free slots, exact slot count, and in-range slots hold as the full-coverage contract exactly at the full-window boundary. `AIM-T0082` gives the membership form: in a full generated live window, a slot appears in the generated slot map exactly when it is less than `cache_size`.
+`AIM-T0071` proves that this interval ends exactly one past the current token. `AIM-T0072` proves that membership in `live_tokens` is equivalent to retained-window membership. `AIM-T0073` proves that the generated live window maps to duplicate-free ring-buffer slots. `AIM-T0074` packages the full-window coverage contract: after at least one full cache of tokens has been seen, the generated slot list is duplicate-free, has exactly `cache_size` entries, and every emitted slot is inside the declared slot range. `AIM-T0080` adds the count iff: the generated slot-list length equals `cache_size` exactly when the live window is full. `AIM-T0081` packages the whole coverage contract as an iff: duplicate-free slots, exact slot count, and in-range slots hold as the full-coverage contract exactly at the full-window boundary. `AIM-T0082` gives the membership form: in a full generated live window, a slot appears in the generated slot map exactly when it is less than `cache_size`. `AIM-T0083` is the direct `slot_range_covered` bridge: every valid slot appears in the generated slot map exactly when the live window is full.
 
 <div class="widget-panel" data-widget="kv_cache_ring_buffer" data-theorem-id="AIM-T0069" data-dictionary-ids="COMMON-0028 COMMON-0081"></div>
 
@@ -175,6 +175,7 @@ The important point is that freshness is not only a residue fact. Slot `4` repea
 <div class="theorem-box" data-theorem-id="AIM-T0080"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0081"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0082"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0083"></div>
 
 </details>
 

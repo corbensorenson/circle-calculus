@@ -16,7 +16,7 @@ These are proof-carrying finite ring-buffer indexing certificates for a declared
 
 | Live start | Live length | Live tokens | Live slots | All retained | Slots distinct | Full window | Slot count matches cache | Slot range covered | Slot count iff full window | Slots within cache | Full coverage contract | Full coverage iff full window | Theorem ids |
 | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 16 | 16 | 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 | 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 | True | True | True | True | True | True | True | True | True | AIM-T0071, AIM-T0072, AIM-T0073, AIM-T0074, AIM-T0080, AIM-T0081, AIM-T0082 |
+| 16 | 16 | 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 | 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 | True | True | True | True | True | True | True | True | True | AIM-T0071, AIM-T0072, AIM-T0073, AIM-T0074, AIM-T0080, AIM-T0081, AIM-T0082, AIM-T0083 |
 
 Reproduce with:
 

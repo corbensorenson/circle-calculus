@@ -4657,6 +4657,12 @@
           "status": "proved"
         },
         {
+          "id": "AIM-T0083",
+          "lean_name": "Circle.Applications.kvCacheLiveWindowTokens_slotRangeCovered_iff_full",
+          "name": "Circle.Applications.kvCacheLiveWindowTokens_slotRangeCovered_iff_full",
+          "status": "proved"
+        },
+        {
           "id": "AIT-T0001",
           "lean_name": "Circle.Applications.attentionReach_eq_div_gcd",
           "name": "Circle.Applications.attentionReach_eq_div_gcd",
@@ -15466,6 +15472,12 @@
           "id": "AIM-T0082",
           "lean_name": "Circle.Applications.kvCacheLiveWindowTokens_slotMap_mem_iff_lt_cacheSize_of_full",
           "name": "Circle.Applications.kvCacheLiveWindowTokens_slotMap_mem_iff_lt_cacheSize_of_full",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0083",
+          "lean_name": "Circle.Applications.kvCacheLiveWindowTokens_slotRangeCovered_iff_full",
+          "name": "Circle.Applications.kvCacheLiveWindowTokens_slotRangeCovered_iff_full",
           "status": "proved"
         }
       ],

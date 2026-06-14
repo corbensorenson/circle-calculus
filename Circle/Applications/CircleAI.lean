@@ -627,6 +627,55 @@ theorem kvCacheLiveWindowTokens_slotMap_mem_iff_lt_cacheSize_of_full
         (n := cacheSize)
         hnodup hlength hbounded hslot
 
+/-- The generated live-window slot map covers every declared cache slot exactly
+when the live window is full.
+
+This is the direct theorem-side form of the Python `slot_range_covered` field:
+every valid slot appears in the generated slot list if and only if the current
+prefix has reached at least one full cache window. -/
+def kvCacheLiveWindowTokens_slotRangeCovered
+    (cacheSize current : Nat) : Prop :=
+  ∀ slot : Nat, slot < cacheSize →
+    slot ∈ ((kvCacheLiveWindowTokens cacheSize current).map
+      (kvCacheSlot cacheSize))
+
+theorem kvCacheLiveWindowTokens_slotRangeCovered_iff_full
+    {cacheSize current : Nat} :
+    kvCacheLiveWindowTokens_slotRangeCovered cacheSize current ↔
+      cacheSize ≤ current + 1 := by
+  constructor
+  · intro hcovered
+    have hcard_le :
+        cacheSize ≤ ((kvCacheLiveWindowTokens cacheSize current).map
+          (kvCacheSlot cacheSize)).toFinset.card := by
+      have hsubset :
+          Finset.range cacheSize ⊆ ((kvCacheLiveWindowTokens cacheSize current).map
+            (kvCacheSlot cacheSize)).toFinset := by
+        intro slot hslot
+        exact by
+          simpa using hcovered slot (Finset.mem_range.mp hslot)
+      have h := Finset.card_le_card hsubset
+      simpa [Finset.card_range] using h
+    have hcard_len :
+        ((kvCacheLiveWindowTokens cacheSize current).map
+          (kvCacheSlot cacheSize)).toFinset.card ≤
+        ((kvCacheLiveWindowTokens cacheSize current).map
+          (kvCacheSlot cacheSize)).length :=
+      List.toFinset_card_le _
+    have hcache_le_len :
+        cacheSize ≤ ((kvCacheLiveWindowTokens cacheSize current).map
+          (kvCacheSlot cacheSize)).length :=
+      le_trans hcard_le hcard_len
+    unfold kvCacheLiveWindowTokens kvCacheLiveWindowLength at hcache_le_len
+    rw [List.length_map, List.length_range'] at hcache_le_len
+    exact le_trans hcache_le_len (Nat.min_le_right cacheSize (current + 1))
+  · intro hfull slot hslot
+    have hcache : 0 < cacheSize := Nat.lt_of_le_of_lt (Nat.zero_le slot) hslot
+    exact
+      (kvCacheLiveWindowTokens_slotMap_mem_iff_lt_cacheSize_of_full
+        (cacheSize := cacheSize) (current := current) (slot := slot)
+        hcache hfull).2 hslot
+
 /-- The generated live-window slot map satisfies the full coverage contract
 exactly when the current token has advanced far enough to fill the cache.
 

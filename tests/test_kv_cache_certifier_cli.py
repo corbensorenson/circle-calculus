@@ -54,6 +54,7 @@ def test_kv_cache_certifier_cli_text_and_json_out(tmp_path: Path) -> None:
     assert "AIM-T0080" in result.stdout
     assert "AIM-T0081" in result.stdout
     assert "AIM-T0082" in result.stdout
+    assert "AIM-T0083" in result.stdout
     assert "not a paging-policy" in result.stdout
 
     payload = json.loads(json_out.read_text())
@@ -79,6 +80,7 @@ def test_kv_cache_certifier_cli_text_and_json_out(tmp_path: Path) -> None:
     assert "AIM-T0080" in payload["live_window_certificate"]["theorem_ids"]
     assert "AIM-T0081" in payload["live_window_certificate"]["theorem_ids"]
     assert "AIM-T0082" in payload["live_window_certificate"]["theorem_ids"]
+    assert "AIM-T0083" in payload["live_window_certificate"]["theorem_ids"]
 
 
 def test_kv_cache_certifier_cli_json_stdout_prefix_window() -> None:
@@ -123,3 +125,4 @@ def test_kv_cache_certifier_cli_json_stdout_prefix_window() -> None:
     assert "AIM-T0080" in payload["live_window_certificate"]["theorem_ids"]
     assert "AIM-T0081" in payload["live_window_certificate"]["theorem_ids"]
     assert "AIM-T0082" in payload["live_window_certificate"]["theorem_ids"]
+    assert "AIM-T0083" in payload["live_window_certificate"]["theorem_ids"]

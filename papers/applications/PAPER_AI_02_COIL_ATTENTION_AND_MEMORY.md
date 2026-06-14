@@ -104,6 +104,7 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `AIM-T0080`: `Circle.Applications.kvCacheLiveWindowTokens_slotMap_length_eq_cacheSize_iff_full`
 - `AIM-T0081`: `Circle.Applications.kvCacheLiveWindowTokens_slotMap_fullCoverageContract_iff_full`
 - `AIM-T0082`: `Circle.Applications.kvCacheLiveWindowTokens_slotMap_mem_iff_lt_cacheSize_of_full`
+- `AIM-T0083`: `Circle.Applications.kvCacheLiveWindowTokens_slotRangeCovered_iff_full`
 - `AIM-T0006`: `Circle.Applications.loopRequiredSteps_pos`
 - `AIM-T0007`: `Circle.Applications.loopRequiredSteps_le_loopPeriod`
 - `AIM-T0008`: `Circle.Applications.loopRequiredSteps_add_loopPeriod`

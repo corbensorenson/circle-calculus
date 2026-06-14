@@ -264,6 +264,7 @@ def test_kv_cache_live_window_tokens_are_exact_and_slot_distinct() -> None:
     assert "AIM-T0080" in certificate.theorem_ids
     assert "AIM-T0081" in certificate.theorem_ids
     assert "AIM-T0082" in certificate.theorem_ids
+    assert "AIM-T0083" in certificate.theorem_ids
     assert (
         "Circle.Applications.kvCacheLiveWindowTokens_slotMap_nodup"
         in certificate.lean_declarations
@@ -282,6 +283,10 @@ def test_kv_cache_live_window_tokens_are_exact_and_slot_distinct() -> None:
     )
     assert (
         "Circle.Applications.kvCacheLiveWindowTokens_slotMap_mem_iff_lt_cacheSize_of_full"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.kvCacheLiveWindowTokens_slotRangeCovered_iff_full"
         in certificate.lean_declarations
     )
 
@@ -376,6 +381,7 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert "AIM-T0080" in payload["live_window_certificate"]["theorem_ids"]
     assert "AIM-T0081" in payload["live_window_certificate"]["theorem_ids"]
     assert "AIM-T0082" in payload["live_window_certificate"]["theorem_ids"]
+    assert "AIM-T0083" in payload["live_window_certificate"]["theorem_ids"]
     assert "not model-quality" in payload["claim_boundary"]
 
     markdown_result = subprocess.run(
