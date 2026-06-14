@@ -23,6 +23,8 @@
       "coverage_complete": false,
       "coverage_ratio": 0.08403361344537816,
       "covered_count_certifies_complete": false,
+      "covered_count_shortfall": true,
+      "covered_count_shortfall_matches_gap_witness": true,
       "covered_lag_count": 10,
       "covered_lags": [
         1,
@@ -128,7 +130,8 @@
         "AIT-T0093",
         "AIT-T0094",
         "AIT-T0095",
-        "AIT-T0096"
+        "AIT-T0096",
+        "AIT-T0097"
       ],
       "theorem_side_coil_residues_no_collision": true,
       "theorem_side_lag_candidates": [
@@ -345,6 +348,8 @@
     "coverage_complete": true,
     "coverage_ratio": 1.0,
     "covered_count_certifies_complete": true,
+    "covered_count_shortfall": false,
+    "covered_count_shortfall_matches_gap_witness": true,
     "covered_lag_count": 8,
     "covered_lags": [
       1,
@@ -450,7 +455,8 @@
       "AIT-T0093",
       "AIT-T0094",
       "AIT-T0095",
-      "AIT-T0096"
+      "AIT-T0096",
+      "AIT-T0097"
     ],
     "theorem_side_coil_residues_no_collision": true,
     "theorem_side_lag_candidates": [
@@ -502,11 +508,14 @@
         "AIT-T0093",
         "AIT-T0094",
         "AIT-T0095",
-        "AIT-T0096"
+        "AIT-T0096",
+        "AIT-T0097"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.08403361344537816,
       "covered_count_certifies_complete": false,
+      "covered_count_shortfall": true,
+      "covered_count_shortfall_matches_gap_witness": true,
       "covered_lag_count": 10,
       "covered_lag_sample": [
         1,
@@ -617,11 +626,14 @@
         "AIT-T0093",
         "AIT-T0094",
         "AIT-T0095",
-        "AIT-T0096"
+        "AIT-T0096",
+        "AIT-T0097"
       ],
       "coverage_complete": true,
       "coverage_ratio": 1.0,
       "covered_count_certifies_complete": true,
+      "covered_count_shortfall": false,
+      "covered_count_shortfall_matches_gap_witness": true,
       "covered_lag_count": 8,
       "covered_lag_sample": [
         1,
@@ -682,11 +694,14 @@
         "AIT-T0093",
         "AIT-T0094",
         "AIT-T0095",
-        "AIT-T0096"
+        "AIT-T0096",
+        "AIT-T0097"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.010744810744810745,
       "covered_count_certifies_complete": false,
+      "covered_count_shortfall": true,
+      "covered_count_shortfall_matches_gap_witness": true,
       "covered_lag_count": 44,
       "covered_lag_sample": [
         1,
@@ -832,11 +847,14 @@
         "AIT-T0093",
         "AIT-T0094",
         "AIT-T0095",
-        "AIT-T0096"
+        "AIT-T0096",
+        "AIT-T0097"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.011720180686118912,
       "covered_count_certifies_complete": false,
+      "covered_count_shortfall": true,
+      "covered_count_shortfall_matches_gap_witness": true,
       "covered_lag_count": 96,
       "covered_lag_sample": [
         1,

@@ -109,9 +109,10 @@ The default sidecar is intentionally incomplete so the gap certificates are visi
 | No-collision predicates | all true in the default fixture | the raw candidate budget survives deduplication for this plan |
 | Uncovered-list theorem | lag `5` appears in a finite uncovered-lag list of length `109` | the sidecar's gap list is linked to semantic reachability, not only to Python filtering |
 | Count witness | uncovered count is positive and first gap is `5` | a positive uncovered count is backed by a concrete semantic gap witness |
+| Shortfall witness | covered count is below `119` and first gap is `5` | a covered-count failure is backed by a concrete semantic gap witness |
 | Count partition | `10 + 109 = 119 = 120 - 1` | the covered and uncovered lists account for every positive in-context lag |
 
-The key upgrade is the finite covered/uncovered lag pair. `AIT-T0090` says membership in the covered list is exactly a positive in-context semantic hit. `AIT-T0081` says membership in the uncovered list is exactly a positive in-context semantic miss. `AIT-T0092` proves those two lists are disjoint, `AIT-T0093` proves every positive in-context lag appears in one of them, and `AIT-T0094` proves the two list lengths add to `n - 1`. The interval summary is a Python/widget readability layer over that proved partition: it does not add a new theorem, but it makes large gap regions visible. `AIT-T0082` and `AIT-T0083` say complete coverage is exactly an empty uncovered list, equivalently zero uncovered lags. `AIT-T0095` says complete coverage is exactly the covered-list count reaching `n - 1`, and `AIT-T0096` says a positive uncovered count is exactly the existence of a concrete uncovered positive lag. `AIT-T0084` proves that the default fixture's lag `5` is one of those listed misses, `AIT-T0085` proves the default uncovered list has exactly `109` entries, and `AIT-T0091` proves the default covered list has exactly `10` entries.
+The key upgrade is the finite covered/uncovered lag pair. `AIT-T0090` says membership in the covered list is exactly a positive in-context semantic hit. `AIT-T0081` says membership in the uncovered list is exactly a positive in-context semantic miss. `AIT-T0092` proves those two lists are disjoint, `AIT-T0093` proves every positive in-context lag appears in one of them, and `AIT-T0094` proves the two list lengths add to `n - 1`. The interval summary is a Python/widget readability layer over that proved partition: it does not add a new theorem, but it makes large gap regions visible. `AIT-T0082` and `AIT-T0083` say complete coverage is exactly an empty uncovered list, equivalently zero uncovered lags. `AIT-T0095` says complete coverage is exactly the covered-list count reaching `n - 1`, `AIT-T0096` says a positive uncovered count is exactly the existence of a concrete uncovered positive lag, and `AIT-T0097` says a covered-count shortfall is exactly the existence of such a lag. `AIT-T0084` proves that the default fixture's lag `5` is one of those listed misses, `AIT-T0085` proves the default uncovered list has exactly `109` entries, and `AIT-T0091` proves the default covered list has exactly `10` entries.
 
 The sidecar also includes a checked passing fixture:
 
@@ -201,6 +202,7 @@ That is the proof-carrying contract shape: a sparse plan should show what it cov
 <div class="theorem-box" data-theorem-id="AIT-T0094"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0095"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0096"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0097"></div>
 
 </details>
 

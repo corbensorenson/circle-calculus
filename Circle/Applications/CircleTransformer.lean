@@ -955,6 +955,36 @@ theorem hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag
   · rintro ⟨lag, hgap⟩
     exact ⟨lag, (mem_hybridFamilyUncoveredLagList_iff).2 hgap⟩
 
+/-- The covered-lag count falls short of the full positive-lag range exactly
+when there is a semantic uncovered positive in-context lag.
+
+This packages the failure side of the sparse-attention count certificate:
+reporting fewer than `n - 1` covered lags is equivalent to having a concrete
+gap witness, not merely a smaller numeric count. -/
+theorem hybridFamilyCoveredLagList_length_lt_context_sub_one_iff_exists_uncovered_lag
+    {n window pathLength : Nat} {strides : List Nat} :
+    (hybridFamilyCoveredLagList n window pathLength strides).length < n - 1 ↔
+      ∃ lag, 1 ≤ lag ∧ lag < n ∧
+        ¬ hybridFamilyLagReach n window pathLength lag strides := by
+  constructor
+  · intro hshort
+    have hpartition :=
+      hybridFamilyCoveredUncoveredLagList_length_add
+        (n := n) (window := window) (pathLength := pathLength) (strides := strides)
+    have huncovered_pos :
+        0 < (hybridFamilyUncoveredLagList n window pathLength strides).length := by
+      omega
+    exact (hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag).1
+      huncovered_pos
+  · intro hgap
+    have huncovered_pos :
+        0 < (hybridFamilyUncoveredLagList n window pathLength strides).length :=
+      (hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag).2 hgap
+    have hpartition :=
+      hybridFamilyCoveredUncoveredLagList_length_add
+        (n := n) (window := window) (pathLength := pathLength) (strides := strides)
+    omega
+
 /-- Complete sparse-attention coverage is equivalent to the finite covered-lag
 count reaching the full positive-lag count `n - 1`.
 

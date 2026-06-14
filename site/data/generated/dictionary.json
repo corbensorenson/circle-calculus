@@ -5075,6 +5075,12 @@
           "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
           "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0097",
+          "lean_name": "Circle.Applications.hybridFamilyCoveredLagList_length_lt_context_sub_one_iff_exists_uncovered_lag",
+          "name": "Circle.Applications.hybridFamilyCoveredLagList_length_lt_context_sub_one_iff_exists_uncovered_lag",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5626,6 +5632,12 @@
           "id": "AIT-T0096",
           "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
           "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0097",
+          "lean_name": "Circle.Applications.hybridFamilyCoveredLagList_length_lt_context_sub_one_iff_exists_uncovered_lag",
+          "name": "Circle.Applications.hybridFamilyCoveredLagList_length_lt_context_sub_one_iff_exists_uncovered_lag",
           "status": "proved"
         }
       ],
@@ -7047,6 +7059,12 @@
           "id": "AIT-T0096",
           "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
           "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0097",
+          "lean_name": "Circle.Applications.hybridFamilyCoveredLagList_length_lt_context_sub_one_iff_exists_uncovered_lag",
+          "name": "Circle.Applications.hybridFamilyCoveredLagList_length_lt_context_sub_one_iff_exists_uncovered_lag",
           "status": "proved"
         }
       ],
@@ -11553,6 +11571,12 @@
           "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
           "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0097",
+          "lean_name": "Circle.Applications.hybridFamilyCoveredLagList_length_lt_context_sub_one_iff_exists_uncovered_lag",
+          "name": "Circle.Applications.hybridFamilyCoveredLagList_length_lt_context_sub_one_iff_exists_uncovered_lag",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -14102,6 +14126,12 @@
           "id": "AIT-T0096",
           "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
           "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0097",
+          "lean_name": "Circle.Applications.hybridFamilyCoveredLagList_length_lt_context_sub_one_iff_exists_uncovered_lag",
+          "name": "Circle.Applications.hybridFamilyCoveredLagList_length_lt_context_sub_one_iff_exists_uncovered_lag",
           "status": "proved"
         }
       ],

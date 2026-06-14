@@ -32,6 +32,7 @@ covered_lags=10 uncovered_lags=109 uncovered_intervals=6 coverage_ratio=0.084034
 lag_partition=covered_plus_uncovered=119 positive_lags=119 partition_complete=True theorem=AIT-T0094
 covered_count_complete=False theorem=AIT-T0095
 uncovered_count_witness=True positive=True first_gap=5 theorem=AIT-T0096
+covered_count_shortfall=True gap_witness_equiv=True theorem=AIT-T0097
 uncovered_lag_intervals=((5, 6), (8, 12), (15, 20), (22, 25), (27, 38), (40, 119))
 candidate_budget_per_query=10 raw_upper_bound=10 deduplicated_bound=10 full_attention_budget=120
 lag_budget_status=exact-raw-budget unique_lag_candidates=10 lag_no_collision=True
@@ -59,6 +60,8 @@ python scripts/stride_family_certify.py \
 - `covered_uncovered_count_sum`: the covered count plus uncovered count.
 - `covered_uncovered_count_partition`: true when the covered and uncovered lists partition the positive lags.
 - `covered_count_certifies_complete`: true exactly when the covered-lag count reaches `context - 1`.
+- `covered_count_shortfall`: true when the covered-lag count is below `context - 1`.
+- `covered_count_shortfall_matches_gap_witness`: true when that count shortfall agrees with the existence of a gap witness.
 - `first_uncovered_lag`: a concrete uncovered lag when the uncovered count is positive.
 - `uncovered_count_positive_matches_gap_witness`: true when the positive uncovered-count flag and the existence of a first gap agree.
 - `uncovered_lag_intervals`: consecutive runs of those uncovered lags, for reading large gap lists compactly.
@@ -85,10 +88,11 @@ The finite-list endpoints are:
 - `AIT-T0094`: the covered-lag count plus uncovered-lag count equals `n - 1`.
 - `AIT-T0095`: complete coverage is equivalent to the covered-lag count equaling `n - 1`.
 - `AIT-T0096`: a positive uncovered-lag count is equivalent to the existence of a concrete uncovered positive lag.
+- `AIT-T0097`: covered-lag count below `n - 1` is equivalent to the existence of a concrete uncovered positive lag.
 
 The gap/coverage spine is `AIT-T0020` through `AIT-T0035`. The theorem-side candidate-list,
 budget, no-collision, and predecessor-indexing spine is `AIT-T0036` through `AIT-T0077`.
-The finite uncovered/covered list and count-partition spine is `AIT-T0078` through `AIT-T0096`.
+The finite uncovered/covered list and count-partition spine is `AIT-T0078` through `AIT-T0097`.
 
 ## Boundary
 

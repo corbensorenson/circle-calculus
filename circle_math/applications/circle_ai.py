@@ -814,6 +814,8 @@ class StrideFamilyCoverageCertificate:
     covered_uncovered_count_sum: int
     covered_uncovered_count_partition: bool
     covered_count_certifies_complete: bool
+    covered_count_shortfall: bool
+    covered_count_shortfall_matches_gap_witness: bool
     uncovered_lag_interval_count: int
     candidate_budget_per_query: int
     raw_candidate_budget_upper_bound: int
@@ -905,6 +907,7 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0094",
         "AIT-T0095",
         "AIT-T0096",
+        "AIT-T0097",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -2664,6 +2667,10 @@ def certify_stride_family_coverage(
             len(covered) + len(uncovered) == positive_lag_count
         ),
         covered_count_certifies_complete=(len(covered) == positive_lag_count),
+        covered_count_shortfall=(len(covered) < positive_lag_count),
+        covered_count_shortfall_matches_gap_witness=(
+            (len(covered) < positive_lag_count) == (first_uncovered_lag is not None)
+        ),
         uncovered_lag_interval_count=len(uncovered_intervals),
         candidate_budget_per_query=candidate_budget,
         raw_candidate_budget_upper_bound=stride_family_raw_candidate_budget(

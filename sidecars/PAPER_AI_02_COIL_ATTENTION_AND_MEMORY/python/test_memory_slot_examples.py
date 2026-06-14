@@ -869,6 +869,7 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0094",
         "AIT-T0095",
         "AIT-T0096",
+        "AIT-T0097",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -905,6 +906,8 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert certificate["covered_uncovered_count_sum"] == 119
     assert certificate["covered_uncovered_count_partition"] is True
     assert certificate["covered_count_certifies_complete"] is False
+    assert certificate["covered_count_shortfall"] is True
+    assert certificate["covered_count_shortfall_matches_gap_witness"] is True
     assert certificate["uncovered_lag_intervals"] == [
         [5, 6],
         [8, 12],
@@ -929,6 +932,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0094" in certificate["theorem_ids"]
     assert "AIT-T0095" in certificate["theorem_ids"]
     assert "AIT-T0096" in certificate["theorem_ids"]
+    assert "AIT-T0097" in certificate["theorem_ids"]
     complete = payload["complete_fixture_certificate"]
     assert complete["sequence_length"] == 9
     assert complete["strides"] == [3, 4, 7]
@@ -941,6 +945,8 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert complete["covered_uncovered_count_sum"] == 8
     assert complete["covered_uncovered_count_partition"] is True
     assert complete["covered_count_certifies_complete"] is True
+    assert complete["covered_count_shortfall"] is False
+    assert complete["covered_count_shortfall_matches_gap_witness"] is True
     assert complete["uncovered_lag_intervals"] == []
     assert complete["uncovered_lag_interval_count"] == 0
     assert complete["coverage_complete"] is True
@@ -1008,6 +1014,8 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert long_coprime["covered_uncovered_count_sum"] == 8191
     assert long_coprime["covered_uncovered_count_partition"] is True
     assert long_coprime["covered_count_certifies_complete"] is False
+    assert long_coprime["covered_count_shortfall"] is True
+    assert long_coprime["covered_count_shortfall_matches_gap_witness"] is True
     assert long_coprime["uncovered_lag_interval_count"] == 32
     assert long_coprime["raw_budget_survives_lag_dedup"] is True
     assert long_coprime["raw_budget_survives_query_dedup"] is True
@@ -1017,6 +1025,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0094" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0095" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0096" in long_coprime["core_coverage_theorem_ids"]
+    assert "AIT-T0097" in long_coprime["core_coverage_theorem_ids"]
     assert "scripts/stride_family_certify.py --context 8192" in (
         long_coprime["reproduce_command"]
     )
@@ -1035,19 +1044,19 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "Stride-Family Sparse-Attention Certificate Results" in markdown_result.stdout
     assert "| 120 | 120 | 4 | 3 | 7, 13 | 5, 9 | False | 0.084 |" in markdown_result.stdout
     assert (
-        "| 9 | 2 | 2 | 3, 4, 7 | True | 0 | None | True | 8 | 8 | 8 | "
+        "| 9 | 2 | 2 | 3, 4, 7 | True | 0 | None | True | False | True | 8 | 8 | 8 | "
         "AIT-T0086, AIT-T0087, AIT-T0088, AIT-T0089 |"
     ) in markdown_result.stdout
     assert "Planner-style declared plans" in markdown_result.stdout
     assert (
         "| long_context_no_wrap_probe_4096 | 4096 | 32 | 4 | "
         "64, 320, 1500 | False | 0.011 | 44 | 0.011 | 4095 | 4095 | 4051 | "
-        "33 | True | 13 | lag=True, query=True |"
+        "33 | True | True | True | 13 | lag=True, query=True |"
     ) in markdown_result.stdout
     assert (
         "| long_context_coprime_probe_8192 | 8192 | 64 | 8 | "
         "127, 509, 1021, 2039 | False | 0.012 | 96 | 0.012 | 8191 | 8191 | "
-        "8095 | 65 | True | 32 | lag=True, query=True |"
+        "8095 | 65 | True | True | True | 32 | lag=True, query=True |"
     ) in markdown_result.stdout
     assert "AIT-T0091" in markdown_result.stdout
     assert "First uncovered lags" in markdown_result.stdout

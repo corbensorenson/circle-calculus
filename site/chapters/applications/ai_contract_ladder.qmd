@@ -185,7 +185,7 @@ A strided sparse-attention path is a coil orbit on a finite context. The basic t
 
 This is why the sparse lane now emphasizes iffs and gap certificates. A sparse plan is more useful when it can tell you what it misses.
 
-The sparse contract now has both sides of the story: the default `C_120` fixture reports `109` uncovered positive lags, while the compact `C_9` fixture with local window `2`, path length `2`, and strides `(3,4,7)` has an empty uncovered-lag list and preserves the raw lag/query candidate budget. The current partition theorem says the finite covered and uncovered lists account for all `n - 1` positive lags, the covered-count theorem says complete coverage is exactly the case where the covered list itself has length `n - 1`, and the uncovered-count witness theorem says a positive uncovered count is exactly the existence of an actual uncovered positive lag.
+The sparse contract now has both sides of the story: the default `C_120` fixture reports `109` uncovered positive lags, while the compact `C_9` fixture with local window `2`, path length `2`, and strides `(3,4,7)` has an empty uncovered-lag list and preserves the raw lag/query candidate budget. The current partition theorem says the finite covered and uncovered lists account for all `n - 1` positive lags, the covered-count theorem says complete coverage is exactly the case where the covered list itself has length `n - 1`, the uncovered-count witness theorem says a positive uncovered count is exactly the existence of an actual uncovered positive lag, and the covered-count shortfall theorem says falling below `n - 1` is exactly the same gap-witness condition.
 
 [Open the guided sparse-attention coverage lesson](sparse_attention_contract.qmd).
 
@@ -209,6 +209,7 @@ The sparse contract now has both sides of the story: the default `C_120` fixture
 <div class="theorem-box" data-theorem-id="AIT-T0094"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0095"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0096"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0097"></div>
 
 ## 5. Looped Recurrence
 
