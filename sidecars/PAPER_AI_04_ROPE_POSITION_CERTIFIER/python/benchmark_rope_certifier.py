@@ -139,6 +139,29 @@ def compact_interval_certificate(certificate: Any) -> dict[str, Any]:
     }
 
 
+def compact_interval_plan(plan: Any) -> dict[str, Any]:
+    bands = plan.bands
+    return {
+        "schema_id": plan.schema_id,
+        "name": plan.name,
+        "turn_ratio_expression": plan.turn_ratio_expression,
+        "context_length": plan.context_length,
+        "planned_margin": plan.planned_margin,
+        "pi_bound_preset": plan.pi_bound_preset,
+        "pi_bounds": plan.pi_bounds,
+        "lower_turn_ratio_bound": plan.lower_turn_ratio_bound,
+        "upper_turn_ratio_bound": plan.upper_turn_ratio_bound,
+        "pass_plan": plan.pass_plan,
+        "first_uncovered_gap": plan.first_uncovered_gap,
+        "band_count": len(bands),
+        "first_band": asdict(bands[0]) if bands else None,
+        "last_band": asdict(bands[-1]) if bands else None,
+        "theorem_status": plan.theorem_status,
+        "explanation": plan.explanation,
+        "claim_boundary": plan.claim_boundary,
+    }
+
+
 def compact_phase_bank_certificate(certificate: Any) -> dict[str, Any]:
     return {
         "schema_id": certificate.schema_id,
@@ -198,36 +221,36 @@ def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
         ).to_dict(),
         "standard_d14_margin_bracket": certify_standard_channel0_d14_margin_bracket().to_dict(),
         "standard_interval_candidate_plans": (
-            plan_standard_channel0_interval_bands(
+            compact_interval_plan(plan_standard_channel0_interval_bands(
                 pi_bound_preset="d4",
                 margin=Fraction(1, 512),
                 max_context_length=4096,
-            ).to_dict(),
-            plan_standard_channel0_interval_bands(
+            )),
+            compact_interval_plan(plan_standard_channel0_interval_bands(
                 pi_bound_preset="d6",
                 margin=Fraction(1, 1024),
                 max_context_length=4096,
-            ).to_dict(),
-            plan_standard_channel0_interval_bands(
+            )),
+            compact_interval_plan(plan_standard_channel0_interval_bands(
                 pi_bound_preset="d20",
                 margin=Fraction(1, 104219),
                 max_context_length=4096,
-            ).to_dict(),
-            plan_standard_channel0_interval_bands(
+            )),
+            compact_interval_plan(plan_standard_channel0_interval_bands(
                 pi_bound_preset="d20",
                 margin=Fraction(1, 104220),
                 max_context_length=8192,
-            ).to_dict(),
-            plan_standard_channel0_interval_bands(
+            )),
+            compact_interval_plan(plan_standard_channel0_interval_bands(
                 pi_bound_preset="d20",
                 margin=Fraction(1, 104219),
                 max_context_length=8192,
-            ).to_dict(),
-            plan_standard_channel0_interval_bands(
+            )),
+            compact_interval_plan(plan_standard_channel0_interval_bands(
                 pi_bound_preset="d20",
                 margin=Fraction(1, 104219),
                 max_context_length=16384,
-            ).to_dict(),
+            )),
         ),
         "presets": certificates,
         "phase_bank_diagnostics": phase_bank_diagnostics,
@@ -240,17 +263,18 @@ def band_endpoint_audit_rows(standard_plans: tuple[dict[str, Any], ...]) -> list
         "| --- | --- | --- | ---: | ---: | ---: | --- | --- |",
     ]
     for plan in standard_plans:
-        bands = plan["bands"]
-        if not bands:
+        first_band = plan.get("first_band")
+        last_band = plan.get("last_band")
+        if first_band is None:
             rows.append(
                 "| {name} | none | none | n/a | n/a | n/a | FAIL | n/a |".format(
                     name=plan["name"],
                 )
             )
             continue
-        selected_bands = (("first", bands[0]),)
-        if len(bands) > 1:
-            selected_bands = selected_bands + (("last", bands[-1]),)
+        selected_bands = (("first", first_band),)
+        if last_band is not None and last_band != first_band:
+            selected_bands = selected_bands + (("last", last_band),)
         for label, band in selected_bands:
             rows.append(
                 "| {name} | {label} | {start}-{end} | {cell} | {lower} | {upper} | {status} | {bridge} |".format(
@@ -527,7 +551,7 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "### Band Endpoint Audit",
             "",
-            "Each row shows the endpoint inequalities a generator must justify before the Lean bridge `AIRA-T0126` can fill in the intermediate gaps for that band. This table samples the first and last band for each generated plan; the full deterministic band list is in the JSON sidecar.",
+            "Each row shows the endpoint inequalities a generator must justify before the Lean bridge `AIRA-T0126` can fill in the intermediate gaps for that band. This table samples the first and last band for each generated plan; rerun the Python planner for the complete deterministic band list.",
             "",
             *band_endpoint_audit_rows(standard_plans),
             "",

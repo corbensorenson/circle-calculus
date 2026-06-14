@@ -225,7 +225,7 @@ Each emitted band also records `start_lower_value`, `end_upper_value`, `endpoint
 
 For example, the first d4 band records `start_gap=1`, `end_gap=6`, `cell=0`, `start_lower_value=625/3927`, `end_upper_value=6000/6283`, and `endpoint_cell_margin_ok=true`. That means the band endpoints fit safely inside the integer cell from `0` to `1` with the advertised margin, so the monotone band theorem covers gaps `1` through `6`.
 
-The generated Markdown sidecar includes a `Band Endpoint Audit` table sampling the first and last band of each standard interval plan. Use the JSON sidecar for the complete deterministic band list.
+The generated Markdown and JSON sidecars include `Band Endpoint Audit` summaries with the first and last band of each standard interval plan. Rerun `plan_standard_channel0_interval_bands(...)` for the complete deterministic band list.
 
 The d4, d6, conservative d20 `1/131072`, tighter d20 `1/105000`, sharp 4k d20 `1/104219`, weaker 8k d20 `1/104220`, sharp 8k d20 `1/104219`, and sharp 16k d20 `1/104219` plans have been converted into Lean proof. Future plans are exact-rational source data only until matching declarations compile and manifest ids are marked proved.
 

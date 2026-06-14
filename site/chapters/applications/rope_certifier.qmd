@@ -320,7 +320,7 @@ endpoint_cell_margin_ok = true
 
 This says the generator has one cell band covering gaps `1` through `6`. The lower endpoint already lies at least the requested margin after integer cell `0`, and the upper endpoint still lies at least the requested margin before integer cell `1`. Because multiplication by the rational lower and upper turn-ratio bounds is monotone over nonnegative gaps, `AIRA-T0126` fills in every gap between those endpoints. Future exact-rational plans remain planning artifacts until matching declarations compile and manifest ids are marked proved.
 
-The generated sidecar Markdown has a `Band Endpoint Audit` table that samples the first and last band for each standard interval plan. The JSON sidecar remains the source for the complete deterministic band list.
+The generated sidecar Markdown and JSON have `Band Endpoint Audit` summaries that sample the first and last band for each standard interval plan. Rerun the Python planner for the complete deterministic band list.
 
 ## What To Notice
 

@@ -81,7 +81,7 @@ These exact-rational plans are generated source data for Lean interval certifica
 
 ### Band Endpoint Audit
 
-Each row shows the endpoint inequalities a generator must justify before the Lean bridge `AIRA-T0126` can fill in the intermediate gaps for that band. This table samples the first and last band for each generated plan; the full deterministic band list is in the JSON sidecar.
+Each row shows the endpoint inequalities a generator must justify before the Lean bridge `AIRA-T0126` can fill in the intermediate gaps for that band. This table samples the first and last band for each generated plan; rerun the Python planner for the complete deterministic band list.
 
 | Plan | Band | Gap range | Cell | Start lower endpoint | End upper endpoint | Endpoint check | Bridge |
 | --- | --- | --- | ---: | ---: | ---: | --- | --- |

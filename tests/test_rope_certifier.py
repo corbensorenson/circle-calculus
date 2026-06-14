@@ -1481,6 +1481,9 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
         "AIRA-T0138",
     ]
     assert payload["standard_interval_candidate_plans"][0]["context_length"] == 333
+    assert "bands" not in payload["standard_interval_candidate_plans"][0]
+    assert payload["standard_interval_candidate_plans"][0]["first_band"]["start_gap"] == 1
+    assert payload["standard_interval_candidate_plans"][0]["last_band"]["end_gap"] == 332
     assert payload["standard_interval_candidate_plans"][0]["theorem_status"] == (
         "lean_proved_interval_seed_AIRA-T0087_to_AIRA-T0089"
     )
@@ -1510,6 +1513,11 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert payload["standard_interval_candidate_plans"][5]["context_length"] == 16384
     assert payload["standard_interval_candidate_plans"][5]["band_count"] == 2608
     assert payload["standard_interval_candidate_plans"][5]["planned_margin"] == "1/104219"
+    assert "bands" not in payload["standard_interval_candidate_plans"][5]
+    assert payload["standard_interval_candidate_plans"][5]["first_band"]["start_gap"] == 1
+    assert payload["standard_interval_candidate_plans"][5]["last_band"]["start_gap"] == 16381
+    assert payload["standard_interval_candidate_plans"][5]["last_band"]["end_gap"] == 16383
+    assert payload["standard_interval_candidate_plans"][5]["last_band"]["cell"] == 2607
     assert payload["standard_interval_candidate_plans"][5]["theorem_status"] == (
         "lean_proved_interval_seed_AIRA-T0133_to_AIRA-T0135"
     )
