@@ -43,6 +43,7 @@ from circle_math.applications.circle_ai import (
     loop_exit_step,
     loop_block_indices,
     loop_required_steps,
+    loop_score_active,
     loop_score_trace,
     looped_recurrent_state,
     looped_recurrent_states,
@@ -1469,6 +1470,10 @@ def test_learned_content_gate_retrieval_benchmark_has_baselines_and_controls() -
 def test_looped_recurrence_schedule_traces_overthinking_boundary() -> None:
     assert tuple(loop_required_steps(4, sample) for sample in range(8)) == (1, 2, 3, 4, 1, 2, 3, 4)
     assert loop_score_trace(3, 6, overthink_tolerance=1) == (0, 0, 1, 1, 0, 0)
+    assert not loop_score_active(4, 6, 2, overthink_tolerance=1)
+    assert loop_score_active(4, 6, 3, overthink_tolerance=1)
+    assert loop_score_active(4, 6, 4, overthink_tolerance=1)
+    assert not loop_score_active(4, 6, 5, overthink_tolerance=1)
     assert loop_exit_step(3, 6, overthink_tolerance=1) == 3
     assert loop_exit_step(7, 4, overthink_tolerance=1) is None
 
@@ -1481,6 +1486,9 @@ def test_loop_exit_certificate_records_budget_and_guardrail() -> None:
     assert certificate.overthinking_boundary == 4
     assert certificate.score_trace == (0, 0, 1, 1)
     assert certificate.exit_step == 3
+    assert certificate.first_active_step == 3
+    assert certificate.first_active_step_matches_exit
+    assert certificate.exit_available_iff_first_active_within_budget
     assert certificate.exit_step > 0
     assert certificate.exit_available
     assert training_free_loop_budget(
@@ -1497,9 +1505,14 @@ def test_loop_exit_certificate_records_budget_and_guardrail() -> None:
     assert blocked.required_steps == 4
     assert blocked.score_trace == (0, 0)
     assert blocked.exit_step is None
+    assert blocked.first_active_step is None
+    assert blocked.first_active_step_matches_exit
+    assert blocked.exit_available_iff_first_active_within_budget
     assert not blocked.exit_available
     assert not blocked.within_budget
     assert not blocked.within_guardrail
+    assert "AIM-T0084" in certificate.theorem_ids
+    assert "AIM-T0085" in certificate.theorem_ids
 
 
 def test_loop_required_steps_are_positive_bounded_and_periodic() -> None:

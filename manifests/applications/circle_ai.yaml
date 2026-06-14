@@ -239,6 +239,14 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.loopExitCertificate_boundary_add_mul_loopPeriod
     dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054"]
+  - id: AIM-T0084
+    status: lean_proved
+    lean_name: Circle.Applications.loopScoreActive_firstActive_iff
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054"]
+  - id: AIM-T0085
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitAvailable_iff_exists_firstActiveWithinBudget
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054"]
   - id: AIM-T0035
     status: lean_proved
     lean_name: Circle.Applications.tokenActiveAtStep_one

@@ -996,6 +996,10 @@ theorem trainingFreeLoopBudget_eq_max_of_unavailable
 def loopOverthinkingBoundary (loopPeriod sample tolerance : Nat) : Nat :=
   loopRequiredSteps loopPeriod sample + tolerance
 
+def loopScoreActive (loopPeriod sample tolerance step : Nat) : Prop :=
+  loopRequiredSteps loopPeriod sample ≤ step ∧
+    step ≤ loopOverthinkingBoundary loopPeriod sample tolerance
+
 structure LoopExitCertificate where
   loopPeriod : Nat
   sample : Nat
@@ -1027,6 +1031,51 @@ theorem loopOverthinkingBoundary_ge_required
       loopOverthinkingBoundary loopPeriod sample tolerance := by
   unfold loopOverthinkingBoundary
   exact Nat.le_add_right _ _
+
+theorem loopScoreActive_firstActive_iff
+    (loopPeriod sample tolerance step : Nat) :
+    (loopScoreActive loopPeriod sample tolerance step ∧
+      ∀ prior : Nat,
+        prior < step →
+          ¬ loopScoreActive loopPeriod sample tolerance prior) ↔
+      step = loopRequiredSteps loopPeriod sample := by
+  constructor
+  · intro h
+    rcases h with ⟨hactive, hfirst⟩
+    apply Nat.le_antisymm
+    · exact Nat.le_of_not_gt (by
+        intro hlt
+        exact hfirst
+          (loopRequiredSteps loopPeriod sample)
+          hlt
+          ⟨le_rfl, loopOverthinkingBoundary_ge_required loopPeriod sample tolerance⟩)
+    · exact hactive.1
+  · intro hstep
+    subst step
+    constructor
+    · exact ⟨le_rfl, loopOverthinkingBoundary_ge_required loopPeriod sample tolerance⟩
+    · intro prior hprior hactive
+      exact Nat.not_lt_of_ge hactive.1 hprior
+
+theorem loopExitAvailable_iff_exists_firstActiveWithinBudget
+    (loopPeriod sample maxLoops tolerance : Nat) :
+    loopExitAvailable loopPeriod sample maxLoops ↔
+      ∃ step : Nat,
+        step ≤ maxLoops ∧
+          loopScoreActive loopPeriod sample tolerance step ∧
+            ∀ prior : Nat,
+              prior < step →
+                ¬ loopScoreActive loopPeriod sample tolerance prior := by
+  constructor
+  · intro hbudget
+    refine ⟨loopRequiredSteps loopPeriod sample, hbudget, ?_, ?_⟩
+    · exact ⟨le_rfl, loopOverthinkingBoundary_ge_required loopPeriod sample tolerance⟩
+    · intro prior hprior hactive
+      exact Nat.not_lt_of_ge hactive.1 hprior
+  · intro h
+    rcases h with ⟨step, hstepMax, hactive, _hfirst⟩
+    unfold loopExitAvailable
+    exact Nat.le_trans hactive.1 hstepMax
 
 theorem loopOverthinkingBoundary_add_loopPeriod
     {loopPeriod : Nat} (hpositive : 0 < loopPeriod)

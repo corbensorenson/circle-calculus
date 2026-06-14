@@ -230,7 +230,7 @@
       ],
       "id": "loop_exit_certificate",
       "path": "site/widgets/ai/loop_exit_certificate.js",
-      "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate",
+      "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_active; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate",
       "theorem_ids": [
         "AIM-T0012",
         "AIM-T0013",
@@ -244,7 +244,9 @@
         "AIM-T0031",
         "AIM-T0032",
         "AIM-T0033",
-        "AIM-T0034"
+        "AIM-T0034",
+        "AIM-T0084",
+        "AIM-T0085"
       ]
     },
     {

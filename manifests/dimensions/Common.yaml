@@ -1698,6 +1698,35 @@ theorems:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_required_steps_are_positive_bounded_and_periodic
     blocker: ""
+  - id: AIM-T0084
+    status: lean_proved
+    lean_name: Circle.Applications.loopScoreActive_firstActive_iff
+    informal_statement: "In the finite loop-exit trace, the first active score step is exactly the required loop depth."
+    formal_statement: "For loopPeriod sample tolerance step, loopScoreActive at step and no prior active step iff step = loopRequiredSteps loopPeriod sample."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_looped_recurrence_schedule_traces_overthinking_boundary
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
+    blocker: ""
+  - id: AIM-T0085
+    status: lean_proved
+    lean_name: Circle.Applications.loopExitAvailable_iff_exists_firstActiveWithinBudget
+    informal_statement: "A finite loop-exit budget is available exactly when the first active score-trace step exists within maxLoops."
+    formal_statement: "For loopPeriod sample maxLoops tolerance, loopExitAvailable loopPeriod sample maxLoops iff there exists a first loopScoreActive step bounded by maxLoops."
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0054"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_loop_exit_certificate_records_budget_and_guardrail
+    blocker: ""
   - id: AIM-T0035
     status: lean_proved
     lean_name: Circle.Applications.tokenActiveAtStep_one

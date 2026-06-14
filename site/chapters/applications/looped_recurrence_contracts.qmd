@@ -89,10 +89,14 @@ The useful failure mode is visible too: a fixed budget can be insufficient, whic
 
 <div class="widget-panel" data-widget="loop_exit_certificate" data-theorem-id="AIM-T0033" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0054 COMMON-0059 COMMON-0067"></div>
 
+The score trace has its own formal contract. A step is active exactly when it lies between the required loop depth and the overthinking boundary. The first active trace step is the required loop depth, and a budgeted exit exists exactly when that first active step is inside `maxLoops`.
+
 <div class="theorem-box" data-theorem-id="AIM-T0031"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0032"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0033"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0034"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0084"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0085"></div>
 
 ## 3. Token-Level Recurrence
 

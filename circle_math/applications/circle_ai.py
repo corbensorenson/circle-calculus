@@ -973,6 +973,26 @@ class LoopExitCertificateResult:
     exit_available: bool
     within_budget: bool
     within_guardrail: bool
+    first_active_step: Optional[int]
+    first_active_step_matches_exit: bool
+    exit_available_iff_first_active_within_budget: bool
+    theorem_ids: tuple[str, ...] = (
+        "AIM-T0012",
+        "AIM-T0013",
+        "AIM-T0014",
+        "AIM-T0015",
+        "AIM-T0016",
+        "AIM-T0017",
+        "AIM-T0024",
+        "AIM-T0029",
+        "AIM-T0030",
+        "AIM-T0031",
+        "AIM-T0032",
+        "AIM-T0033",
+        "AIM-T0034",
+        "AIM-T0084",
+        "AIM-T0085",
+    )
     note: str = "Synthetic loop-exit certificate fixture only; not a model-quality claim."
 
 
@@ -3528,6 +3548,22 @@ def loop_score_trace(required_steps: int, max_loops: int, *, overthink_tolerance
     )
 
 
+def loop_score_active(
+    loop_period: int,
+    sample_index: int,
+    step: int,
+    *,
+    overthink_tolerance: int = 1,
+) -> bool:
+    """Return whether a one-indexed loop step is inside the synthetic active band."""
+    _require_positive(loop_period, "loop_period")
+    _require_positive(step, "step")
+    if overthink_tolerance < 0:
+        raise ValueError("overthink_tolerance must be nonnegative")
+    required = loop_required_steps(loop_period, sample_index)
+    return required <= step <= required + overthink_tolerance
+
+
 def loop_exit_step(required_steps: int, max_loops: int, *, overthink_tolerance: int = 1) -> Optional[int]:
     """Return the first successful loop step, if one exists."""
     trace = loop_score_trace(required_steps, max_loops, overthink_tolerance=overthink_tolerance)
@@ -3553,6 +3589,7 @@ def loop_exit_certificate(
     boundary = required + overthink_tolerance
     trace = loop_score_trace(required, max_loops, overthink_tolerance=overthink_tolerance)
     exit_step = loop_exit_step(required, max_loops, overthink_tolerance=overthink_tolerance)
+    first_active_step = required if required <= max_loops else None
     return LoopExitCertificateResult(
         loop_period=loop_period,
         sample_index=sample_index,
@@ -3565,6 +3602,9 @@ def loop_exit_certificate(
         exit_available=exit_step is not None,
         within_budget=exit_step is not None and exit_step <= max_loops,
         within_guardrail=exit_step is not None and exit_step <= boundary,
+        first_active_step=first_active_step,
+        first_active_step_matches_exit=first_active_step == exit_step,
+        exit_available_iff_first_active_within_budget=(exit_step is not None) == (first_active_step is not None),
     )
 
 

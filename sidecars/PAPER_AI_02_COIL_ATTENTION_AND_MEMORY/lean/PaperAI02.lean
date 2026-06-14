@@ -89,6 +89,8 @@ namespace Circle.PaperAI02
 #check Circle.Applications.loopExitCertificate_budget_eq_exitStep
 #check Circle.Applications.loopExitCertificate_exitStep_add_mul_loopPeriod
 #check Circle.Applications.loopExitCertificate_boundary_add_mul_loopPeriod
+#check Circle.Applications.loopScoreActive_firstActive_iff
+#check Circle.Applications.loopExitAvailable_iff_exists_firstActiveWithinBudget
 #check Circle.Applications.localLagReach
 #check Circle.Applications.coilLagReach
 #check Circle.Applications.hybridLagReach

@@ -367,6 +367,8 @@ def export_widget_index() -> dict:
                 "AIM-T0032",
                 "AIM-T0033",
                 "AIM-T0034",
+                "AIM-T0084",
+                "AIM-T0085",
             ],
             "dictionary_ids": [
                 "COMMON-0052",
@@ -375,7 +377,7 @@ def export_widget_index() -> dict:
                 "COMMON-0059",
                 "COMMON-0067",
             ],
-            "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate",
+            "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_active; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate",
         },
         {
             "id": "training_free_loop_wrapper",

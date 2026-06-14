@@ -16,6 +16,8 @@ const THEOREM_IDS = [
   "AIM-T0032",
   "AIM-T0033",
   "AIM-T0034",
+  "AIM-T0084",
+  "AIM-T0085",
 ];
 const DICTIONARY_IDS = ["COMMON-0052", "COMMON-0053", "COMMON-0054", "COMMON-0059", "COMMON-0067"];
 
@@ -36,6 +38,11 @@ function loopScoreTrace(requiredSteps, maxLoops, tolerance) {
   });
 }
 
+function loopScoreActive(loopPeriod, sampleIndex, step, tolerance) {
+  const requiredSteps = loopRequiredSteps(loopPeriod, sampleIndex);
+  return requiredSteps <= step && step <= requiredSteps + tolerance;
+}
+
 function loopExitStep(requiredSteps, maxLoops, tolerance) {
   const trace = loopScoreTrace(requiredSteps, maxLoops, tolerance);
   const index = trace.findIndex((score) => score === 1);
@@ -47,6 +54,7 @@ function loopExitCertificate(loopPeriod, sampleIndex, maxLoops, tolerance) {
   const overthinkingBoundary = requiredSteps + tolerance;
   const scoreTrace = loopScoreTrace(requiredSteps, maxLoops, tolerance);
   const exitStep = loopExitStep(requiredSteps, maxLoops, tolerance);
+  const firstActiveStep = requiredSteps <= maxLoops ? requiredSteps : null;
   return {
     loopPeriod,
     sampleIndex,
@@ -59,6 +67,9 @@ function loopExitCertificate(loopPeriod, sampleIndex, maxLoops, tolerance) {
     exitAvailable: exitStep !== null,
     withinBudget: exitStep !== null && exitStep <= maxLoops,
     withinGuardrail: exitStep !== null && exitStep <= overthinkingBoundary,
+    firstActiveStep,
+    firstActiveStepMatchesExit: firstActiveStep === exitStep,
+    exitAvailableIffFirstActiveWithinBudget: (exitStep !== null) === (firstActiveStep !== null),
   };
 }
 
@@ -198,6 +209,13 @@ function appendCertificateTable(section, primary, control) {
     ["required steps", primary.requiredSteps, control.requiredSteps],
     ["score trace", primary.scoreTrace.join(", "), control.scoreTrace.join(", ")],
     ["exit step", primary.exitStep ?? "none", control.exitStep ?? "none"],
+    ["first active step", primary.firstActiveStep ?? "none", control.firstActiveStep ?? "none"],
+    ["first active matches exit", yesNo(primary.firstActiveStepMatchesExit), yesNo(control.firstActiveStepMatchesExit)],
+    [
+      "exit iff first active within budget",
+      yesNo(primary.exitAvailableIffFirstActiveWithinBudget),
+      yesNo(control.exitAvailableIffFirstActiveWithinBudget),
+    ],
     ["exit available", yesNo(primary.exitAvailable), yesNo(control.exitAvailable)],
     ["within budget", yesNo(primary.withinBudget), yesNo(control.withinBudget)],
     ["within guardrail", yesNo(primary.withinGuardrail), yesNo(control.withinGuardrail)],
@@ -275,6 +293,10 @@ function appendRecord(output, values, theoremById) {
     `overthinking tolerance: ${values.tolerance}`,
     `primary selected wrapper budget: ${primaryBudget}`,
     `certified budget equals exit step: ${primary.exitStep !== null && primaryBudget === primary.exitStep}`,
+    `first active step: ${primary.firstActiveStep ?? "none"}`,
+    `first active theorem check: ${yesNo(primary.firstActiveStepMatchesExit)}`,
+    `exit availability theorem check: ${yesNo(primary.exitAvailableIffFirstActiveWithinBudget)}`,
+    `required step active: ${yesNo(loopScoreActive(values.loopPeriod, values.sampleIndex, primary.requiredSteps, values.tolerance))}`,
     `one-period shifted sample: ${values.sampleIndex + values.loopPeriod}`,
     `shifted required steps: ${shifted.requiredSteps}`,
     `shifted exit available: ${yesNo(shifted.exitAvailable)}`,

@@ -50,6 +50,7 @@ from circle_math.applications import (
     loop_block_indices,
     loop_exit_certificate,
     loop_exit_step,
+    loop_score_active,
     loop_score_trace,
     loop_required_steps,
     looped_recurrent_state,
@@ -465,6 +466,16 @@ def js_loop_score_trace(required_steps: int, max_loops: int, overthink_tolerance
     )
 
 
+def js_loop_score_active(
+    loop_period: int,
+    sample_index: int,
+    step: int,
+    overthink_tolerance: int,
+) -> bool:
+    required = js_loop_required_steps(loop_period, sample_index)
+    return required <= step <= required + overthink_tolerance
+
+
 def js_loop_exit_step(required_steps: int, max_loops: int, overthink_tolerance: int) -> int | None:
     for index, score in enumerate(
         js_loop_score_trace(required_steps, max_loops, overthink_tolerance),
@@ -485,6 +496,7 @@ def js_loop_exit_certificate(
     boundary = required + overthink_tolerance
     trace = js_loop_score_trace(required, max_loops, overthink_tolerance)
     exit_step = js_loop_exit_step(required, max_loops, overthink_tolerance)
+    first_active_step = required if required <= max_loops else None
     return {
         "required_steps": required,
         "overthinking_boundary": boundary,
@@ -493,6 +505,10 @@ def js_loop_exit_certificate(
         "exit_available": exit_step is not None,
         "within_budget": exit_step is not None and exit_step <= max_loops,
         "within_guardrail": exit_step is not None and exit_step <= boundary,
+        "first_active_step": first_active_step,
+        "first_active_step_matches_exit": first_active_step == exit_step,
+        "exit_available_iff_first_active_within_budget": (exit_step is not None)
+        == (first_active_step is not None),
     }
 
 
@@ -2410,11 +2426,25 @@ def main() -> int:
             max_loops,
             tolerance,
         )
+        for step in range(1, max_loops + 1):
+            assert loop_score_active(
+                loop_period,
+                sample_index,
+                step,
+                overthink_tolerance=tolerance,
+            ) == js_loop_score_active(loop_period, sample_index, step, tolerance)
         assert certificate.required_steps == js_certificate["required_steps"]
         assert certificate.score_trace == js_certificate["score_trace"]
         assert certificate.exit_step == js_certificate["exit_step"]
+        assert certificate.first_active_step == js_certificate["first_active_step"]
+        assert certificate.first_active_step_matches_exit == js_certificate["first_active_step_matches_exit"]
+        assert certificate.exit_available_iff_first_active_within_budget == js_certificate[
+            "exit_available_iff_first_active_within_budget"
+        ]
         assert certificate.within_budget == js_certificate["within_budget"]
         assert certificate.within_guardrail == js_certificate["within_guardrail"]
+        assert "AIM-T0084" in certificate.theorem_ids
+        assert "AIM-T0085" in certificate.theorem_ids
         assert token_recurrence_budget(loop_period, sample_index) == js_token_recurrence_budget(
             loop_period,
             sample_index,

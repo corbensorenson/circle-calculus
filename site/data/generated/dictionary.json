@@ -7703,6 +7703,18 @@
           "lean_name": "Circle.Applications.middleBlockBudgetRoute_zero",
           "name": "Circle.Applications.middleBlockBudgetRoute_zero",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0084",
+          "lean_name": "Circle.Applications.loopScoreActive_firstActive_iff",
+          "name": "Circle.Applications.loopScoreActive_firstActive_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0085",
+          "lean_name": "Circle.Applications.loopExitAvailable_iff_exists_firstActiveWithinBudget",
+          "name": "Circle.Applications.loopExitAvailable_iff_exists_firstActiveWithinBudget",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -7734,7 +7746,7 @@
         {
           "id": "loop_exit_certificate",
           "path": "site/widgets/ai/loop_exit_certificate.js",
-          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate"
+          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_active; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate"
         },
         {
           "id": "loop_recurrence_budget",
@@ -8068,6 +8080,18 @@
           "lean_name": "Circle.Applications.middleBlockBudgetRoute_zero",
           "name": "Circle.Applications.middleBlockBudgetRoute_zero",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0084",
+          "lean_name": "Circle.Applications.loopScoreActive_firstActive_iff",
+          "name": "Circle.Applications.loopScoreActive_firstActive_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0085",
+          "lean_name": "Circle.Applications.loopExitAvailable_iff_exists_firstActiveWithinBudget",
+          "name": "Circle.Applications.loopExitAvailable_iff_exists_firstActiveWithinBudget",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -8094,7 +8118,7 @@
         {
           "id": "loop_exit_certificate",
           "path": "site/widgets/ai/loop_exit_certificate.js",
-          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate"
+          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_active; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate"
         },
         {
           "id": "loop_recurrence_budget",
@@ -8182,13 +8206,25 @@
           "lean_name": "Circle.Applications.loopExitCertificate_boundary_add_mul_loopPeriod",
           "name": "Circle.Applications.loopExitCertificate_boundary_add_mul_loopPeriod",
           "status": "proved"
+        },
+        {
+          "id": "AIM-T0084",
+          "lean_name": "Circle.Applications.loopScoreActive_firstActive_iff",
+          "name": "Circle.Applications.loopScoreActive_firstActive_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0085",
+          "lean_name": "Circle.Applications.loopExitAvailable_iff_exists_firstActiveWithinBudget",
+          "name": "Circle.Applications.loopExitAvailable_iff_exists_firstActiveWithinBudget",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
         {
           "id": "loop_exit_certificate",
           "path": "site/widgets/ai/loop_exit_certificate.js",
-          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate"
+          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_active; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate"
         },
         {
           "id": "loop_recurrence_budget",
@@ -8549,7 +8585,7 @@
         {
           "id": "loop_exit_certificate",
           "path": "site/widgets/ai/loop_exit_certificate.js",
-          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate"
+          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_active; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate"
         },
         {
           "id": "loop_recurrence_budget",
@@ -10704,7 +10740,7 @@
         {
           "id": "loop_exit_certificate",
           "path": "site/widgets/ai/loop_exit_certificate.js",
-          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate"
+          "python_reference": "circle_math.applications.circle_ai.loop_required_steps; circle_math.applications.circle_ai.loop_score_active; circle_math.applications.circle_ai.loop_score_trace; circle_math.applications.circle_ai.loop_exit_step; circle_math.applications.circle_ai.loop_exit_certificate"
         },
         {
           "id": "loop_recurrence_budget",
