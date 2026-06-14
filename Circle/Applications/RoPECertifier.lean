@@ -973,6 +973,72 @@ def ropeTurnRatioRationalIntervalBandsCover
   ∀ gap : Nat, gap ∈ List.range context → 0 < gap →
     ∃ band, band ∈ bands ∧ band.CoversGap gap
 
+/-- A generated rational-band list is contiguous over the half-open gap range
+`[next, stop)` when every row starts exactly where the previous row ended and
+the final row reaches `stop - 1`.
+
+This is a compact proof-build certificate for generated RoPE interval tables.
+It avoids checking coverage by searching every gap against every band. -/
+def ropeTurnRatioRationalIntervalBandsContiguousCover :
+    List RopeTurnRatioRationalIntervalBand → Nat → Nat → Prop
+  | [], next, stop => stop ≤ next
+  | band :: tail, next, stop =>
+      band.startGap = next ∧
+        next ≤ band.endGap ∧
+          band.endGap < stop ∧
+            ropeTurnRatioRationalIntervalBandsContiguousCover
+              tail (band.endGap + 1) stop
+
+instance ropeTurnRatioRationalIntervalBandsContiguousCover_decidable
+    (bands : List RopeTurnRatioRationalIntervalBand) (next stop : Nat) :
+    Decidable (ropeTurnRatioRationalIntervalBandsContiguousCover bands next stop) := by
+  induction bands generalizing next stop with
+  | nil =>
+      dsimp [ropeTurnRatioRationalIntervalBandsContiguousCover]
+      infer_instance
+  | cons _band _tail _ih =>
+      dsimp [ropeTurnRatioRationalIntervalBandsContiguousCover]
+      infer_instance
+
+private theorem ropeTurnRatioRationalIntervalBandsCover_of_contiguous_aux
+    {bands : List RopeTurnRatioRationalIntervalBand} {start stop gap : Nat}
+    (hchain :
+      ropeTurnRatioRationalIntervalBandsContiguousCover bands start stop)
+    (hstart : start ≤ gap) (hgap_stop : gap < stop) :
+    ∃ band, band ∈ bands ∧ band.CoversGap gap := by
+  induction bands generalizing start stop gap with
+  | nil =>
+      dsimp [ropeTurnRatioRationalIntervalBandsContiguousCover] at hchain
+      have hstop_le_gap : stop ≤ gap := le_trans hchain hstart
+      exact False.elim ((Nat.not_lt_of_ge hstop_le_gap) hgap_stop)
+  | cons band tail ih =>
+      dsimp [ropeTurnRatioRationalIntervalBandsContiguousCover] at hchain
+      rcases hchain with ⟨hband_start, _hstart_end, _hend_stop, htail⟩
+      by_cases hgap_le_end : gap ≤ band.endGap
+      · refine ⟨band, by simp, ?_⟩
+        dsimp [RopeTurnRatioRationalIntervalBand.CoversGap]
+        exact ⟨by simpa [hband_start] using hstart, hgap_le_end⟩
+      · have hend_lt_gap : band.endGap < gap := Nat.lt_of_not_ge hgap_le_end
+        rcases ih (start := band.endGap + 1) htail
+            (Nat.succ_le_of_lt hend_lt_gap) hgap_stop with
+          ⟨coveredBand, hmem, hcover⟩
+        exact ⟨coveredBand, by simp [hmem], hcover⟩
+
+/-- A contiguous generated band list covers every positive gap in
+`List.range context`.
+
+Generated RoPE certificates can now prove this linear contiguity predicate
+instead of running a nested existential coverage search. -/
+theorem ropeTurnRatioRationalIntervalBandsCover_of_contiguous
+    {bands : List RopeTurnRatioRationalIntervalBand} {context : Nat}
+    (hchain :
+      ropeTurnRatioRationalIntervalBandsContiguousCover bands 1 context) :
+    ropeTurnRatioRationalIntervalBandsCover bands context := by
+  intro gap hgap_range hgap_pos
+  exact
+    ropeTurnRatioRationalIntervalBandsCover_of_contiguous_aux hchain
+      (Nat.succ_le_of_lt hgap_pos) (List.mem_range.mp hgap_range)
+
 /-- A rational interval witness proves the nearest-integer lower bound for
 all integer turns at one generated gap. -/
 theorem ropeTurnRatioIntervalWitness_forall_int

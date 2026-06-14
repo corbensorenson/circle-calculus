@@ -5284,12 +5284,18 @@ private theorem ropeStandardChannel0D15Bands_ratEndpointValid :
   unfold RopeTurnRatioRationalIntervalBand.RatEndpointValid
   native_decide
 
-private theorem ropeStandardChannel0D15Bands_cover :
-    ropeTurnRatioRationalIntervalBandsCover ropeStandardChannel0D15Bands
+private theorem ropeStandardChannel0D15Bands_contiguousCover :
+    ropeTurnRatioRationalIntervalBandsContiguousCover ropeStandardChannel0D15Bands 1
       ropeStandardChannel0D15SeedContext := by
   unfold ropeStandardChannel0D15SeedContext
-  unfold ropeTurnRatioRationalIntervalBandsCover RopeTurnRatioRationalIntervalBand.CoversGap
+  unfold ropeStandardChannel0D15Bands ropeTurnRatioUniformRationalIntervalBands
+  unfold RopeTurnRatioUniformRationalIntervalBand.toRationalIntervalBand
   native_decide
+
+private theorem ropeStandardChannel0D15Bands_cover :
+    ropeTurnRatioRationalIntervalBandsCover ropeStandardChannel0D15Bands
+      ropeStandardChannel0D15SeedContext :=
+  ropeTurnRatioRationalIntervalBandsCover_of_contiguous ropeStandardChannel0D15Bands_contiguousCover
 
 /-- AIRA-T0142: a generated compressed interval certificate for
 standard channel 0 through context `32768`
@@ -15879,12 +15885,18 @@ private theorem ropeStandardChannel0D16Bands_ratEndpointValid :
   unfold RopeTurnRatioRationalIntervalBand.RatEndpointValid
   native_decide
 
-private theorem ropeStandardChannel0D16Bands_cover :
-    ropeTurnRatioRationalIntervalBandsCover ropeStandardChannel0D16Bands
+private theorem ropeStandardChannel0D16Bands_contiguousCover :
+    ropeTurnRatioRationalIntervalBandsContiguousCover ropeStandardChannel0D16Bands 1
       ropeStandardChannel0D16SeedContext := by
   unfold ropeStandardChannel0D16SeedContext
-  unfold ropeTurnRatioRationalIntervalBandsCover RopeTurnRatioRationalIntervalBand.CoversGap
+  unfold ropeStandardChannel0D16Bands ropeTurnRatioUniformRationalIntervalBands
+  unfold RopeTurnRatioUniformRationalIntervalBand.toRationalIntervalBand
   native_decide
+
+private theorem ropeStandardChannel0D16Bands_cover :
+    ropeTurnRatioRationalIntervalBandsCover ropeStandardChannel0D16Bands
+      ropeStandardChannel0D16SeedContext :=
+  ropeTurnRatioRationalIntervalBandsCover_of_contiguous ropeStandardChannel0D16Bands_contiguousCover
 
 /-- AIRA-T0148: a generated compressed interval certificate for
 standard channel 0 through context `65536`
@@ -36904,12 +36916,18 @@ private theorem ropeStandardChannel0D17Bands_ratEndpointValid :
   unfold RopeTurnRatioRationalIntervalBand.RatEndpointValid
   native_decide
 
-private theorem ropeStandardChannel0D17Bands_cover :
-    ropeTurnRatioRationalIntervalBandsCover ropeStandardChannel0D17Bands
+private theorem ropeStandardChannel0D17Bands_contiguousCover :
+    ropeTurnRatioRationalIntervalBandsContiguousCover ropeStandardChannel0D17Bands 1
       ropeStandardChannel0D17SeedContext := by
   unfold ropeStandardChannel0D17SeedContext
-  unfold ropeTurnRatioRationalIntervalBandsCover RopeTurnRatioRationalIntervalBand.CoversGap
+  unfold ropeStandardChannel0D17Bands ropeTurnRatioUniformRationalIntervalBands
+  unfold RopeTurnRatioUniformRationalIntervalBand.toRationalIntervalBand
   native_decide
+
+private theorem ropeStandardChannel0D17Bands_cover :
+    ropeTurnRatioRationalIntervalBandsCover ropeStandardChannel0D17Bands
+      ropeStandardChannel0D17SeedContext :=
+  ropeTurnRatioRationalIntervalBandsCover_of_contiguous ropeStandardChannel0D17Bands_contiguousCover
 
 /-- AIRA-T0156: a generated compressed interval certificate for
 standard channel 0 through context `131072`
