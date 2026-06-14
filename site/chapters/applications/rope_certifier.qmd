@@ -90,6 +90,37 @@ python scripts/phase_bank_certify.py --preset interpolated_x4_boundary_fail_961
 
 That exact-only path emits theorem-linked discrete certificate fields without a real-phase margin section.
 
+## How To Read One Report
+
+Start with the exact discrete layer. It is the part whose pass/fail result is backed by Lean for the declared integer-period phase bank.
+
+```text
+exact_discrete_contract=PASS
+common_collision_gap=>= context
+total_bank_collision_pair_count=0
+theorem_ids=...
+```
+
+Read those fields in this order:
+
+1. `exact_discrete_contract` says whether the declared integer-period bank distinguishes every unequal ordered position pair in the inspected context.
+2. `common_collision_gap` is the least all-channel repeated gap implied by the period-bank LCM. If it is `>= context`, no repeated all-channel gap fits inside the inspected range.
+3. `total_bank_collision_pair_count` counts all ordered all-channel colliding pairs for the declared integer-period bank. `AIRA-T0174` and `AIRA-T0175` prove the zero boundary: under a positive LCM, this count is zero exactly in the LCM-reaches-context pass case.
+4. `theorem_ids` tells you which manifest entries and Lean declarations justify the exact layer. The browser theorem cards below resolve those ids to proof status and source links.
+
+If the exact layer fails, the same fields become a debugging guide:
+
+```text
+exact_discrete_contract=FAIL
+common_collision_gap=96
+total_bank_collision_pair_count=224
+sample_collision_pairs=(0,96),(1,97),...
+```
+
+That says the declared bank repeats after gap `96`, and the report lists actual position pairs that collide in every declared discrete channel. It still does not say the real-valued model fails; it says the exact integer-period contract for the declared bank fails.
+
+The real-phase row is separate. It is useful evidence about the floating-point RoPE schedule, but this page only treats it as a theorem-backed result when it points to a named finite-margin certificate or standard channel-0 interval seed.
+
 ## ML-Engineer Quickstart
 
 The short non-Lean entrypoint is [RoPE Certifier Quickstart](https://github.com/corbensorenson/circle-calculus/blob/main/docs/ROPE_CERTIFIER_QUICKSTART.md). It covers installation, presets, custom configs, text and JSON output, theorem ids, and limitations.
