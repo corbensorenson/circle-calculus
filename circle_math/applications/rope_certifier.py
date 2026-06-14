@@ -132,7 +132,7 @@ ROPE_RATIONAL_PRESET_4099_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
 )
 
-ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME = "standard_rope_channel0_interval_context_8192"
+ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME = "standard_rope_channel0_interval_context_16384"
 
 ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS: tuple[str, ...] = (
     "AIRA-T0063",
@@ -205,6 +205,12 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_THEOREMS: tuple[str, ...] = (
     "AIRA-T0130",
     "AIRA-T0131",
     "AIRA-T0132",
+    "AIRA-T0133",
+    "AIRA-T0134",
+    "AIRA-T0135",
+    "AIRA-T0136",
+    "AIRA-T0137",
+    "AIRA-T0138",
 )
 
 ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -278,6 +284,12 @@ ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D13Seed",
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D13Seed_cons",
     "Circle.Applications.ropeStandardChannel0D13_context8192_margin_bracket",
+    "Circle.Applications.ropeStandardChannel0D14Seed_intervalCertificate",
+    "Circle.Applications.ropeStandardChannel0D14Seed_turnRatioFiniteMargin",
+    "Circle.Applications.not_ropeStandardChannel0D14Seed_nearTurn",
+    "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D14Seed",
+    "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D14Seed_cons",
+    "Circle.Applications.ropeStandardChannel0D14_context16384_margin_bracket",
 )
 
 ROPE_STANDARD_CHANNEL0_D12_BANK_BRIDGE_THEOREMS: tuple[str, ...] = (
@@ -298,6 +310,16 @@ ROPE_STANDARD_CHANNEL0_D13_BANK_BRIDGE_THEOREMS: tuple[str, ...] = (
 ROPE_STANDARD_CHANNEL0_D13_BANK_BRIDGE_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D13Seed",
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D13Seed_cons",
+)
+
+ROPE_STANDARD_CHANNEL0_D14_BANK_BRIDGE_THEOREMS: tuple[str, ...] = (
+    "AIRA-T0136",
+    "AIRA-T0137",
+)
+
+ROPE_STANDARD_CHANNEL0_D14_BANK_BRIDGE_LEAN_DECLARATIONS: tuple[str, ...] = (
+    "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D14Seed",
+    "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D14Seed_cons",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -578,6 +600,45 @@ class StandardChannel0D13BankBridgeCertificate:
 
 @dataclass(frozen=True)
 class StandardChannel0D13MarginBracketCertificate:
+    schema_id: str
+    name: str
+    context_length: int
+    proved_margin: str
+    impossible_margin_floor: str
+    pass_certificate: bool
+    theorem_ids: tuple[str, ...]
+    lean_declarations: tuple[str, ...]
+    explanation: str
+    claim_boundary: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class StandardChannel0D14BankBridgeCertificate:
+    schema_id: str
+    name: str
+    requested_context: int
+    requested_margin: str
+    certified_context: int
+    certified_margin: str
+    pass_certificate: bool
+    failure_reason: str | None
+    bank_shape: str
+    theorem_ids: tuple[str, ...]
+    lean_declarations: tuple[str, ...]
+    assumptions: tuple[str, ...]
+    tolerance_rule: str
+    explanation: str
+    claim_boundary: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class StandardChannel0D14MarginBracketCertificate:
     schema_id: str
     name: str
     context_length: int
@@ -1376,6 +1437,12 @@ def plan_standard_channel0_interval_bands(
         and context_length == 8192
         and first_uncovered_gap is None
     )
+    proven_d20_16k_sharp_seed = (
+        pi_bound_preset == "d20"
+        and margin == Fraction(1, 104219)
+        and context_length == 16384
+        and first_uncovered_gap is None
+    )
     return StandardRoPEIntervalPlan(
         schema_id="circle_calculus.standard_rope_interval_plan.v0",
         name=(
@@ -1408,6 +1475,8 @@ def plan_standard_channel0_interval_bands(
             if proven_d20_8k_seed
             else "lean_proved_interval_seed_AIRA-T0127_to_AIRA-T0129"
             if proven_d20_8k_sharp_seed
+            else "lean_proved_interval_seed_AIRA-T0133_to_AIRA-T0135"
+            if proven_d20_16k_sharp_seed
             else "candidate_plan_not_lean_proved"
         ),
         explanation=(
@@ -1415,7 +1484,8 @@ def plan_standard_channel0_interval_bands(
             "bands for a Lean interval certificate. The d4 margin-1/512 "
             "context-333 plan, d6 margin-1/1024 context-710 plan, and d20 "
             "margin-1/131072, margin-1/105000, and margin-1/104219 context-4096 "
-            "plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 plans have now "
+            "plans plus the d20 margin-1/104220 and margin-1/104219 context-8192 "
+            "plans and the margin-1/104219 context-16384 plan have now "
             "been converted into compiled Lean declarations; other generated "
             "plans remain source data until matching declarations compile and "
             "manifest ids are marked proved."
@@ -1432,15 +1502,15 @@ def certify_standard_channel0_interval_seed() -> IntervalBackedTurnRatioCertific
     """Return the strongest named theorem-backed interval seed for standard RoPE.
 
     The Lean theorem proves a finite witness table for the genuine channel-0
-    turn ratio ``1 / (2π)`` over the context containing gaps 1 through 8191.
+    turn ratio ``1 / (2π)`` over the context containing gaps 1 through 16383.
     The certificate uses 20-decimal bounds on ``π`` and a computed integer
     cell table. The earlier d6 seed proves why context 710 cannot keep margin
     1/1024. The D9/D10/D11 trail also proves that gap 710 obstructs the
     doubled D9 margin 1/65536, the nearby larger D10 margin 1/104000, and the
     adjacent larger D11 margin 1/104218. D13 extends the sharp margin
-    1/104219 to context 8192.
+    1/104219 to context 8192, and D14 extends it to context 16384.
     """
-    context_length = 8192
+    context_length = 16384
     margin = Fraction(1, 104219)
     lower_turn_ratio_bound, upper_turn_ratio_bound, _pi_bounds = (
         standard_channel0_turn_ratio_bounds(pi_bound_preset="d20")
@@ -1488,23 +1558,24 @@ def certify_standard_channel0_interval_seed() -> IntervalBackedTurnRatioCertific
         lean_declarations=ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_LEAN_DECLARATIONS,
         explanation=(
             "Lean proves that standard RoPE channel 0, with turn ratio 1/(2*pi), "
-            "has finite nearest-integer margin 1/104219 for gaps 1 through 8191. "
+            "has finite nearest-integer margin 1/104219 for gaps 1 through 16383. "
             "Every gap uses the 20-decimal enclosure "
             "10^20*gap/628318530717958647694 <= gap/(2*pi) <= "
             "10^20*gap/628318530717958647692, split across computed integer "
-            "cells 0 through 1303. Lean also proves that the earlier 1/1024 "
+            "cells 0 through 2607. Lean also proves that the earlier 1/1024 "
             "margin stops at gap 710, and that margins 1/65536, 1/104000, and 1/104218 "
             "are already impossible for any context containing that gap. Lean further packages the D11 "
             "result as a 4k bracket: 1/104219 is proved, while every margin at or above "
             "1/104218 is impossible for context 4096. The theorem trail includes the "
-            "weaker D12 8k one-channel seed at margin 1/104220, then the sharper D13 "
-            "8k seed at margin 1/104219. D13 packages the same 8k bracket and adds "
+            "weaker D12 8k one-channel seed at margin 1/104220, the sharper D13 "
+            "8k seed at margin 1/104219, and the D14 16k seed at the same margin. "
+            "D14 packages the same 16k bracket and adds "
             "bank-level bridges for banks containing the standard channel-0 angular "
             "frequency and for banks whose first channel is that standard frequency."
         ),
         claim_boundary=(
             "This is a theorem-backed interval certificate for the genuine standard "
-            "RoPE channel-0 turn ratio over context 8192, plus conditional "
+            "RoPE channel-0 turn ratio over context 16384, plus conditional "
             "one-separating-channel bank bridges. It is not a proof that every "
             "standard RoPE channel has a large-context margin, and it does not "
             "certify 128k contexts."
@@ -1826,6 +1897,109 @@ def certify_standard_channel0_d13_margin_bracket() -> StandardChannel0D13MarginB
     )
 
 
+def certify_standard_channel0_d14_bank_request(
+    *,
+    requested_context: int,
+    requested_margin: Fraction = Fraction(1, 104219),
+    first_channel_shape: bool = True,
+) -> StandardChannel0D14BankBridgeCertificate:
+    """Certify whether a request is inside the D14 standard-channel bank bridge."""
+    if requested_context <= 0:
+        raise ValueError("requested_context must be positive")
+    if requested_margin < 0:
+        raise ValueError("requested_margin must be nonnegative")
+
+    certified_context = 16384
+    certified_margin = Fraction(1, 104219)
+    context_ok = requested_context <= certified_context
+    margin_ok = requested_margin <= certified_margin
+    pass_certificate = context_ok and margin_ok
+    if not context_ok:
+        failure_reason = "requested_context_exceeds_d14_seed"
+    elif not margin_ok:
+        failure_reason = "requested_margin_exceeds_d14_seed"
+    else:
+        failure_reason = None
+
+    if first_channel_shape:
+        theorem_ids = ROPE_STANDARD_CHANNEL0_D14_BANK_BRIDGE_THEOREMS
+        lean_declarations = ROPE_STANDARD_CHANNEL0_D14_BANK_BRIDGE_LEAN_DECLARATIONS
+        bank_shape = "standard_channel0_first"
+        assumptions = (
+            "The finite real-phase bank has standard channel 0 as its first channel.",
+            "The requested context is at most 16384.",
+            "The requested margin is at most 1/104219.",
+        )
+    else:
+        theorem_ids = ("AIRA-T0136",)
+        lean_declarations = (
+            "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D14Seed",
+        )
+        bank_shape = "contains_standard_channel0"
+        assumptions = (
+            "The finite real-phase bank contains the standard channel-0 angular frequency.",
+            "The requested context is at most 16384.",
+            "The requested margin is at most 1/104219.",
+        )
+
+    return StandardChannel0D14BankBridgeCertificate(
+        schema_id="circle_calculus.standard_rope_channel0_d14_bank_bridge.v0",
+        name="standard_rope_channel0_d14_bank_bridge_request",
+        requested_context=requested_context,
+        requested_margin=format_fraction(requested_margin),
+        certified_context=certified_context,
+        certified_margin=format_fraction(certified_margin),
+        pass_certificate=pass_certificate,
+        failure_reason=failure_reason,
+        bank_shape=bank_shape,
+        theorem_ids=theorem_ids,
+        lean_declarations=lean_declarations,
+        assumptions=assumptions,
+        tolerance_rule="Lean conclusion applies when tolerance < fullTurn * requestedMargin.",
+        explanation=(
+            "This request is inside the D14 standard-channel bank bridge."
+            if pass_certificate
+            else "This request is outside the D14 standard-channel bank bridge."
+        ),
+        claim_boundary=(
+            "This is a conditional one-separating-channel bank certificate based on "
+            "standard channel 0. It is not a full all-channel standard-RoPE margin "
+            "theorem, not a 128k certificate, and not a model-quality claim."
+        ),
+    )
+
+
+def certify_standard_channel0_d14_margin_bracket() -> StandardChannel0D14MarginBracketCertificate:
+    """Return the theorem-backed sharp 16k standard-channel margin bracket."""
+
+    return StandardChannel0D14MarginBracketCertificate(
+        schema_id="circle_calculus.standard_rope_channel0_d14_margin_bracket.v0",
+        name="standard_rope_channel0_d14_context16384_margin_bracket",
+        context_length=16384,
+        proved_margin="1/104219",
+        impossible_margin_floor="1/104218",
+        pass_certificate=True,
+        theorem_ids=("AIRA-T0133", "AIRA-T0134", "AIRA-T0118", "AIRA-T0138"),
+        lean_declarations=(
+            "Circle.Applications.ropeStandardChannel0D14Seed_intervalCertificate",
+            "Circle.Applications.ropeStandardChannel0D14Seed_turnRatioFiniteMargin",
+            "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_104218_of_context_gt_710",
+            "Circle.Applications.ropeStandardChannel0D14_context16384_margin_bracket",
+        ),
+        explanation=(
+            "Lean proves that standard RoPE channel 0 has finite-context "
+            "nearest-integer margin 1/104219 through context 16384. Lean also "
+            "proves that any margin at or above 1/104218 is impossible for "
+            "that context because gap 710 is already too close to integer turn 113."
+        ),
+        claim_boundary=(
+            "This is a 16k one-channel standard-RoPE bracket. It is not a full "
+            "all-channel bank margin theorem, not a 128k certificate, and it "
+            "does not decide margins strictly between 1/104219 and 1/104218."
+        ),
+    )
+
+
 def real_phase_turn_separated(
     *,
     frequency: float,
@@ -2038,7 +2212,7 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
         RoPEProofLayerReport(
             layer="interval_backed_standard_rope",
             status=(
-                "AVAILABLE_SEED_CONTEXT_8192"
+                "AVAILABLE_SEED_CONTEXT_16384"
                 if standard_interval_seed.pass_certificate
                 else "UNAVAILABLE"
             ),
@@ -2046,10 +2220,10 @@ def certify_rope_positions(config: RoPEConfig) -> RoPEPositionCertificate:
             theorem_ids=standard_interval_seed.theorem_ids,
             lean_declarations=standard_interval_seed.lean_declarations,
             explanation=(
-                "The bracketed 8k genuine standard-RoPE interval seed certifies channel 0 "
-                "with turn ratio 1/(2*pi), margin 1/104219, and context 8192; "
+                "The bracketed 16k genuine standard-RoPE interval seed certifies channel 0 "
+                "with turn ratio 1/(2*pi), margin 1/104219, and context 16384; "
                 "the same theorem trail refutes every advertised margin at or above "
-                "1/104218 for that channel, and D13 one-separating-channel bank bridges "
+                "1/104218 for that channel, and D14 one-separating-channel bank bridges "
                 "carry the one-channel separator into finite banks that contain standard channel 0."
             ),
         ),
