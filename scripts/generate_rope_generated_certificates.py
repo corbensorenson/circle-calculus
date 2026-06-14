@@ -53,6 +53,15 @@ PLANS = (
         theorem_start=156,
         description="128k",
     ),
+    GeneratedPlan(
+        level="D18",
+        context=163840,
+        margin_denominator=328459,
+        impossible_margin_denominator=328458,
+        obstruction_gap=103993,
+        theorem_start=162,
+        description="160k",
+    ),
 )
 
 
@@ -290,7 +299,7 @@ bridges; they are not full all-channel standard RoPE bank theorems.
 namespace Circle.Applications
 
 set_option maxHeartbeats 40000000
-set_option maxRecDepth 400000
+set_option maxRecDepth 1200000
 set_option linter.unnecessarySeqFocus false
 """
     body = "\n".join(render_plan(plan) for plan in PLANS)
