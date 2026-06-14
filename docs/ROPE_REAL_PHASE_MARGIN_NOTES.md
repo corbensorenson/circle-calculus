@@ -46,6 +46,8 @@ This is not a lower-bound theorem. It is the normalization step that makes the n
 
 The Python sidecar still emits exact-rational interval plans for audit and future work. The four-decimal `π` plan through context `333`, the six-decimal `π` plan through context `710`, the 20-decimal context-4096 plans through margin `1/104219`, the 20-decimal context-8192 plans at margins `1/104220` and `1/104219`, and the 20-decimal context-16384 plan at margin `1/104219` have now been converted into Lean declarations. The sidecar also emits `standard_channel0_frontier_summary` and `standard_band_certificate_audits`: theorem-backed context `16384` at margin `1/104219`, source-data pass audits for candidate full-context rows at `32768` and `65536`, and a failed 128k request audit whose first uncovered gap is `103993`. The frontier rows are deterministic source data only until matching declarations compile and manifest ids are marked proved.
 
+The next generated-proof route was probed with temporary 4k and 32k Lean files after the rational-band audit landed. A direct list-of-bands proof exposed two implementation issues: band-list membership needed decidable equality for `RopeTurnRatioRationalIntervalBand`, and the naive per-band `interval_cases` validity proof remains too expensive even for the 4k/652-band shape. The decidable-equality support is now available on the band structure. The remaining proof-engineering target is a less case-heavy validity/coverage bridge, likely by checking an executable rational endpoint predicate and proving one generic reflection theorem, rather than generating thousands of `interval_cases` branches.
+
 ## Local Mathlib Anchors
 
 The following names exist in the local mathlib checkout and look relevant.
@@ -120,8 +122,10 @@ The important warning is `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irratio
 43. Use `AIRA-T0133` through `AIRA-T0138` as the 16k standard-channel seed, one-channel consequence, D14 bank bridge, and 16k bracket at margin `1/104219`.
 44. Use `AIRA-T0139` and `AIRA-T0140` as the rational-band compression bridge for future 32k/64k generated certificates.
 45. Use `standard_band_certificate_audits` to check that generated band lists are positive, contiguous from gap `1`, endpoint-valid, and sufficient for the requested context before attempting a generated Lean certificate.
-46. Treat the Python 32k and 64k interval plans as proof-frontier source data, not proved theorem ids.
-46. Scale from one channel to broader channel-wise/full-bank statements, or add sharper generated/continued-fraction machinery for larger contexts.
+46. Use the new decidable band equality support for generated list-membership and coverage proofs.
+47. Replace the naive generated `interval_cases` validity proof with a compact rational endpoint-check reflection theorem before retrying 32k/64k Lean certificates.
+48. Treat the Python 32k and 64k interval plans as proof-frontier source data, not proved theorem ids.
+49. Scale from one channel to broader channel-wise/full-bank statements, or add sharper generated/continued-fraction machinery for larger contexts.
 
 ## Guardrails
 

@@ -835,6 +835,7 @@ structure RopeTurnRatioRationalIntervalBand where
   cell : Int
   lowerBound : ℚ
   upperBound : ℚ
+  deriving DecidableEq
 
 /-- A rational interval band covers a gap when the gap lies between its
 declared endpoints. -/
