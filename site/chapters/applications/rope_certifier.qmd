@@ -240,10 +240,10 @@ certificate.pass_certificate      # True
 certificate.certified_margin      # 1 / 4099 as a Python float
 certificate.exact_nearest_gap_margin  # "1/4099"
 certificate.exact_nearest_gap         # 1
-certificate.theorem_ids           # AIRA-T0056,AIRA-T0059,AIRA-T0182,AIRA-T0183,AIRA-T0060,AIRA-T0177,AIRA-T0061,AIRA-T0062
+certificate.theorem_ids           # AIRA-T0056,AIRA-T0059,AIRA-T0182,AIRA-T0183,AIRA-T0060,AIRA-T0177,AIRA-T0061,AIRA-T0185,AIRA-T0062
 ```
 
-`AIRA-T0182` and `AIRA-T0183` justify the exact weakest-gap scalar reported by Python: the scalar is the minimum of the floor and ceiling nearest-integer errors, and lower-bounding that scalar over every generated gap is equivalent to the finite-context margin predicate. `AIRA-T0060` is the generic proof-carrying certificate interface. `AIRA-T0177` proves that this finite nearest-integer certificate object is equivalent to the abstract finite-context margin predicate. `AIRA-T0061` is the named `1/4099` context-4096 finite-margin theorem. `AIRA-T0062` is the one-channel no-near-turn consequence below that certified margin.
+`AIRA-T0182` and `AIRA-T0183` justify the exact weakest-gap scalar reported by Python: the scalar is the minimum of the floor and ceiling nearest-integer errors, and lower-bounding that scalar over every generated gap is equivalent to the finite-context margin predicate. `AIRA-T0060` is the generic proof-carrying certificate interface. `AIRA-T0177` proves that this finite nearest-integer certificate object is equivalent to the abstract finite-context margin predicate. `AIRA-T0061` is the named `1/4099` context-4096 finite-margin theorem. `AIRA-T0185` proves that the public exact weakest-gap fields are exact for the named preset: gap `1` realizes margin `1/4099`, and no positive generated gap has smaller scalar nearest-integer margin. `AIRA-T0062` is the one-channel no-near-turn consequence below that certified margin.
 
 This is the first end-to-end theorem-backed certificate shape. It does not certify the standard irrational `1 / (2π)` RoPE channel.
 
@@ -514,6 +514,7 @@ The generated sidecar Markdown and JSON have `Band Endpoint Audit` summaries tha
 <div class="theorem-box" data-theorem-id="AIRA-T0178"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0181"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0061"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0185"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0062"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0063"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0064"></div>

@@ -6,7 +6,7 @@ These are proof-carrying position-contract reports for declared integer-period p
 
 | Name | Ratio | Context | Certified margin | Exact weakest gap margin | Weakest gap | Status | Theorem ids |
 | --- | --- | ---: | ---: | ---: | ---: | --- | --- |
-| rational_turn_ratio_1_4099_context_4096 | 1/4099 | 4096 | 0.000243961941937 | 1/4099 | 1 | PASS | AIRA-T0056, AIRA-T0059, AIRA-T0182, AIRA-T0183, AIRA-T0060, AIRA-T0177, AIRA-T0061, AIRA-T0062 |
+| rational_turn_ratio_1_4099_context_4096 | 1/4099 | 4096 | 0.000243961941937 | 1/4099 | 1 | PASS | AIRA-T0056, AIRA-T0059, AIRA-T0182, AIRA-T0183, AIRA-T0060, AIRA-T0177, AIRA-T0061, AIRA-T0185, AIRA-T0062 |
 
 This is a theorem-backed rational/discretized turn-ratio certificate. It is not a proof of the standard irrational real RoPE schedule unless that schedule is explicitly replaced by the declared rational ratio.
 

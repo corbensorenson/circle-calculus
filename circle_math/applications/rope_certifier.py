@@ -152,6 +152,7 @@ ROPE_RATIONAL_PRESET_4099_THEOREMS: tuple[str, ...] = (
     "AIRA-T0060",
     "AIRA-T0177",
     "AIRA-T0061",
+    "AIRA-T0185",
     "AIRA-T0062",
 )
 
@@ -163,6 +164,7 @@ ROPE_RATIONAL_PRESET_4099_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.RopeTurnRatioFiniteMarginCertificate.certifies",
     "Circle.Applications.ropeTurnRatioFiniteMarginCertificate_iff_finiteMargin",
     "Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin",
+    "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
     "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
 )
 

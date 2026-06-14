@@ -363,6 +363,7 @@ def test_named_rational_turn_ratio_certificate_is_theorem_backed() -> None:
     assert "AIRA-T0060" in certificate.theorem_ids
     assert "AIRA-T0177" in certificate.theorem_ids
     assert "AIRA-T0061" in certificate.theorem_ids
+    assert "AIRA-T0185" in certificate.theorem_ids
     assert "AIRA-T0062" in certificate.theorem_ids
     scanned_margin, gap, turns = scan_turn_ratio_finite_margin(
         turn_ratio=certificate.turn_ratio,

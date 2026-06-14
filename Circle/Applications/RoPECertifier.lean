@@ -1695,6 +1695,30 @@ theorem ropeRationalPreset4099_turnRatioFiniteMargin :
       (numerator := 1) (denominator := 4099) (context := 4096)
       (by norm_num) (by norm_num) (by norm_num)
 
+/-- The named rational/discretized preset's public weakest-gap report is exact.
+
+Gap `1` realizes scalar nearest-integer margin `1 / 4099`, and every positive
+generated gap in the inspected context has scalar nearest-integer margin at
+least that value. This is the Lean bridge behind the Python fields
+`exact_nearest_gap_margin = "1/4099"` and `exact_nearest_gap = 1`. -/
+theorem ropeRationalPreset4099_exactWeakestGapMargin :
+    ropeTurnRatioGapNearestIntegerMargin ropeRationalPreset4099TurnRatio 1 =
+        ropeRationalPreset4099Margin ∧
+      ∀ gap : Nat, gap ∈ List.range ropeRationalPreset4099Context → 0 < gap →
+        ropeRationalPreset4099Margin ≤
+          ropeTurnRatioGapNearestIntegerMargin ropeRationalPreset4099TurnRatio gap := by
+  constructor
+  · dsimp [ropeTurnRatioGapNearestIntegerMargin, ropeRationalPreset4099TurnRatio,
+      ropeRationalPreset4099Margin]
+    norm_num
+  · intro gap hgap_range hgap_pos
+    exact
+      (ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin
+        (turnRatio := ropeRationalPreset4099TurnRatio)
+        (margin := ropeRationalPreset4099Margin)
+        (context := ropeRationalPreset4099Context)).1
+        ropeRationalPreset4099_turnRatioFiniteMargin gap hgap_range hgap_pos
+
 /-- The named rational/discretized preset packaged as a proof-carrying
 finite-margin certificate. -/
 def ropeRationalPreset4099_certificate :

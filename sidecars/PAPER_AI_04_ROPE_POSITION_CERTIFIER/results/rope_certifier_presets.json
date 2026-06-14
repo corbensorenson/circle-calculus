@@ -908,6 +908,7 @@
               "AIRA-T0060",
               "AIRA-T0177",
               "AIRA-T0061",
+              "AIRA-T0185",
               "AIRA-T0062"
             ]
           },
@@ -1564,6 +1565,7 @@
               "AIRA-T0060",
               "AIRA-T0177",
               "AIRA-T0061",
+              "AIRA-T0185",
               "AIRA-T0062"
             ]
           },
@@ -2204,6 +2206,7 @@
               "AIRA-T0060",
               "AIRA-T0177",
               "AIRA-T0061",
+              "AIRA-T0185",
               "AIRA-T0062"
             ]
           },
@@ -2575,6 +2578,7 @@
               "AIRA-T0060",
               "AIRA-T0177",
               "AIRA-T0061",
+              "AIRA-T0185",
               "AIRA-T0062"
             ]
           },
@@ -2958,6 +2962,7 @@
               "AIRA-T0060",
               "AIRA-T0177",
               "AIRA-T0061",
+              "AIRA-T0185",
               "AIRA-T0062"
             ]
           },
@@ -3398,6 +3403,7 @@
               "AIRA-T0060",
               "AIRA-T0177",
               "AIRA-T0061",
+              "AIRA-T0185",
               "AIRA-T0062"
             ]
           },
@@ -3794,6 +3800,7 @@
               "AIRA-T0060",
               "AIRA-T0177",
               "AIRA-T0061",
+              "AIRA-T0185",
               "AIRA-T0062"
             ]
           },
@@ -4055,6 +4062,7 @@
       "Circle.Applications.RopeTurnRatioFiniteMarginCertificate.certifies",
       "Circle.Applications.ropeTurnRatioFiniteMarginCertificate_iff_finiteMargin",
       "Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin",
+      "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
       "Circle.Applications.not_ropeRationalPreset4099_nearTurn"
     ],
     "name": "rational_turn_ratio_1_4099_context_4096",
@@ -4069,6 +4077,7 @@
       "AIRA-T0060",
       "AIRA-T0177",
       "AIRA-T0061",
+      "AIRA-T0185",
       "AIRA-T0062"
     ],
     "turn_ratio": 0.00024396194193705782,

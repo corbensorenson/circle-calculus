@@ -12725,6 +12725,12 @@
           "lean_name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcmCollisionPairCount_eq_zero_of_forall_mem_pos",
           "name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcmCollisionPairCount_eq_zero_of_forall_mem_pos",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0185",
+          "lean_name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
+          "name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -13732,6 +13738,12 @@
           "id": "AIRA-T0184",
           "lean_name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcmCollisionPairCount_eq_zero_of_forall_mem_pos",
           "name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcmCollisionPairCount_eq_zero_of_forall_mem_pos",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0185",
+          "lean_name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
+          "name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
           "status": "proved"
         }
       ],
@@ -15274,6 +15286,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0185",
+          "lean_name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
+          "name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -16314,6 +16332,12 @@
           "id": "AIRA-T0183",
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0185",
+          "lean_name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
+          "name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
           "status": "proved"
         }
       ],
@@ -17411,6 +17435,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0185",
+          "lean_name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
+          "name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -18237,6 +18267,12 @@
           "id": "AIRA-T0183",
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0185",
+          "lean_name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
+          "name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
           "status": "proved"
         }
       ],
