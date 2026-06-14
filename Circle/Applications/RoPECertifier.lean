@@ -573,6 +573,59 @@ theorem not_ropePhaseBankCollision_of_firstPrefixPassesContext
       hfirst.1.2.2 hleft hright
   simpa [List.take_append_drop] using hprefix_no_collision
 
+/-- A selected subfamily passes an integer-period RoPE context when it is
+contained in the declared bank and its LCM reaches the inspected context. -/
+def ropeSubfamilyPassesContext
+    (context : Nat) (bank subbank : List Nat) : Prop :=
+  (∀ period, period ∈ subbank → period ∈ bank) ∧
+    context ≤ ropePeriodBankLCM subbank
+
+/-- A selected subfamily has smallest passing size when it passes and every
+strictly smaller contained subfamily has LCM below the inspected context. -/
+def ropeSmallestSubfamilyPassesContext
+    (context : Nat) (bank subbank : List Nat) : Prop :=
+  ropeSubfamilyPassesContext context bank subbank ∧
+    ∀ smaller,
+      (∀ period, period ∈ smaller → period ∈ bank) →
+        smaller.length < subbank.length →
+          ropePeriodBankLCM smaller < context
+
+/-- The size of a smallest passing subfamily, when certified, is unique.
+
+The actual subfamily need not be unique: several different selected channel
+sets can have the same minimal size. The report field
+`smallest_pass_subfamily_size` is therefore the stable theorem-backed object,
+not a claim that Python found the only sufficient subfamily. -/
+theorem ropeSmallestSubfamilyPassesContext_size_unique
+    {context : Nat} {bank leftSubbank rightSubbank : List Nat}
+    (hleft : ropeSmallestSubfamilyPassesContext context bank leftSubbank)
+    (hright : ropeSmallestSubfamilyPassesContext context bank rightSubbank) :
+    leftSubbank.length = rightSubbank.length := by
+  by_cases hlt : leftSubbank.length < rightSubbank.length
+  · have hfail := hright.2 leftSubbank hleft.1.1 hlt
+    exact False.elim ((not_le_of_gt hfail) hleft.1.2)
+  · by_cases hgt : rightSubbank.length < leftSubbank.length
+    · have hfail := hleft.2 rightSubbank hright.1.1 hgt
+      exact False.elim ((not_le_of_gt hfail) hright.1.2)
+    · omega
+
+/-- A smallest passing subfamily certificate forbids unequal all-channel
+collisions in the full declared bank.
+
+This packages a minimal-size subfamily report into the same no-collision
+contract as the unordered subbank bridge. The minimality part is not needed for
+no-collision, but it ties the public `smallest_pass_subfamily_size` field to a
+semantic guarantee about the full bank. -/
+theorem not_ropePhaseBankCollision_of_smallestSubfamilyPassesContext
+    {bank subbank : List Nat} {context left right : Nat}
+    (hsmallest : ropeSmallestSubfamilyPassesContext context bank subbank)
+    (hleft : left < right) (hright : right < context) :
+    ¬ ropePhaseBankCollision bank left right :=
+  not_ropePhaseBankCollision_of_subbank_lcm_ge_context
+    (subbank := subbank) (bank := bank) (context := context)
+    (left := left) (right := right)
+    hsmallest.1.1 hsmallest.1.2 hleft hright
+
 /-- The diagnostic prefix preset `[6, 9, 13, 18]` first reaches context `128`
 at prefix length `3`.
 
@@ -609,6 +662,26 @@ theorem ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two :
       ropePeriodBankLCM [period] < 128) ∧
       128 ≤ ropePeriodBankLCM [13, 18] := by
   native_decide
+
+/-- The diagnostic prefix preset satisfies the generic smallest-subfamily
+contract for the selected subfamily `[13, 18]`.
+
+This upgrades the public `smallest_pass_subfamily_size = 2` diagnostic field
+from a pair of concrete LCM facts to the reusable minimal-size predicate. -/
+theorem ropeDiagnosticPrefixPass_context128_smallestSubfamilyPasses_13_18 :
+    ropeSmallestSubfamilyPassesContext 128 [6, 9, 13, 18] [13, 18] := by
+  refine ⟨⟨by native_decide, by native_decide⟩, ?_⟩
+  intro smaller hsubset hlt
+  cases smaller with
+  | nil =>
+      native_decide
+  | cons period rest =>
+      cases rest with
+      | nil =>
+          exact (ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two).1
+            period (hsubset period (by simp))
+      | cons _ tail =>
+          simp at hlt
 
 /-- In a single positive-period channel, every in-context collision between
 unequal ordered positions has a positive period-multiple gap.

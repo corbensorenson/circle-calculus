@@ -2032,7 +2032,10 @@ def test_rope_diagnostic_prefix_and_shared_factor_presets_are_stable() -> None:
     assert "AIRA-T0191" in prefix_payload["exact_discrete"]["prefix_collision_reports"][2]["theorem_ids"]
     assert "AIRA-T0188" in prefix_payload["exact_discrete"]["prefix_collision_reports"][2]["theorem_ids"]
     assert "AIRA-T0192" in prefix_payload["exact_discrete"]["prefix_collision_reports"][2]["theorem_ids"]
+    assert "AIRA-T0193" in prefix_payload["exact_discrete"]["subfamily_pass_reports"][0]["theorem_ids"]
+    assert "AIRA-T0194" in prefix_payload["exact_discrete"]["subfamily_pass_reports"][0]["theorem_ids"]
     assert "AIRA-T0189" in prefix_payload["exact_discrete"]["subfamily_pass_reports"][0]["theorem_ids"]
+    assert "AIRA-T0195" in prefix_payload["exact_discrete"]["subfamily_pass_reports"][0]["theorem_ids"]
     assert prefix_payload["exact_discrete"]["subfamily_pass_reports"][0]["subfamily_indices"] == [2, 3]
     assert prefix_payload["exact_discrete"]["prefix_collision_reports"][1]["lcm_collision_gap"] == 18
     assert prefix_payload["exact_discrete"]["prefix_collision_reports"][2]["lcm_reaches_context"]
@@ -2073,7 +2076,10 @@ def test_explicit_phase_bank_certifier_reports_exact_only_contract() -> None:
     assert "AIRA-T0191" in certificate.exact_discrete.prefix_collision_reports[2].theorem_ids
     assert "AIRA-T0188" in certificate.exact_discrete.prefix_collision_reports[2].theorem_ids
     assert "AIRA-T0192" in certificate.exact_discrete.prefix_collision_reports[2].theorem_ids
+    assert "AIRA-T0193" in certificate.exact_discrete.subfamily_pass_reports[0].theorem_ids
+    assert "AIRA-T0194" in certificate.exact_discrete.subfamily_pass_reports[0].theorem_ids
     assert "AIRA-T0189" in certificate.exact_discrete.subfamily_pass_reports[0].theorem_ids
+    assert "AIRA-T0195" in certificate.exact_discrete.subfamily_pass_reports[0].theorem_ids
     assert certificate.exact_discrete.prefix_collision_reports[1].lcm_collision_gap == 18
     assert "No real-valued RoPE" in certificate.claim_boundary
     summary = "\n".join(phase_bank_certificate_summary_lines(certificate))

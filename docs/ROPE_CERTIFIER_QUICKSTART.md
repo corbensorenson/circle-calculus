@@ -299,7 +299,7 @@ For each declared integer period, the JSON certificate includes `single_period_c
 
 The JSON certificate also includes `prefix_collision_reports`, bounded summaries for the first few channel prefixes. Each prefix report reuses the same `AIRA-T0036`/`AIRA-T0046`/`AIRA-T0048`/`AIRA-T0049`/`AIRA-T0174`/`AIRA-T0175`/`AIRA-T0176` LCM theorem spine as the full bank, and `AIRA-T0051` proves that adding suffix channels cannot create an unequal collision once a prefix LCM reaches the inspected context. `first_exact_pass_prefix_length` tells you the first declared prefix whose integer-bank LCM already reaches the inspected context; `AIRA-T0190` proves a certified first passing prefix length is unique, and `AIRA-T0191` turns such a first-prefix certificate into a full-bank no-collision bridge.
 
-The certificate also includes bounded `subfamily_pass_reports` for small selected subbanks whose LCM reaches the context. `AIRA-T0052` proves the unordered selected-subbank bridge. These are still integer-period sub-bank reports, not real-valued RoPE collision proofs.
+The certificate also includes bounded `subfamily_pass_reports` for small selected subbanks whose LCM reaches the context. `AIRA-T0052` proves the unordered selected-subbank bridge. When a report carries an explicit smallest-subfamily certificate, `AIRA-T0193` proves the minimal size is unique and `AIRA-T0194` turns that minimal-size certificate into a full-bank no-collision bridge. These are still integer-period sub-bank reports, not real-valued RoPE collision proofs.
 
 ## Machine-Readable Output
 

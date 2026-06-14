@@ -2673,11 +2673,56 @@ theorems:
         - tests/test_rope_certifier.py::test_rope_diagnostic_prefix_and_shared_factor_presets_are_stable
         - tests/test_rope_certifier.py::test_explicit_phase_bank_certifier_reports_exact_only_contract
     blocker: ""
+  - id: AIRA-T0193
+    status: lean_proved
+    lean_name: Circle.Applications.ropeSmallestSubfamilyPassesContext_size_unique
+    informal_statement: "The minimal sufficient subfamily size for an integer-period RoPE phase bank is unique when certified, even if more than one subfamily has that size."
+    formal_statement: "forall {context : Nat} {bank leftSubbank rightSubbank : List Nat}, Circle.Applications.ropeSmallestSubfamilyPassesContext context bank leftSubbank -> Circle.Applications.ropeSmallestSubfamilyPassesContext context bank rightSubbank -> leftSubbank.length = rightSubbank.length"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_diagnostic_prefix_and_shared_factor_presets_are_stable
+        - tests/test_rope_certifier.py::test_explicit_phase_bank_certifier_reports_exact_only_contract
+    blocker: ""
+  - id: AIRA-T0194
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropePhaseBankCollision_of_smallestSubfamilyPassesContext
+    informal_statement: "A certified smallest sufficient subfamily whose LCM reaches the inspected context forbids unequal all-channel collisions in the full declared bank."
+    formal_statement: "forall {bank subbank : List Nat} {context left right : Nat}, Circle.Applications.ropeSmallestSubfamilyPassesContext context bank subbank -> left < right -> right < context -> not Circle.Applications.ropePhaseBankCollision bank left right"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_diagnostic_prefix_and_shared_factor_presets_are_stable
+        - tests/test_rope_certifier.py::test_explicit_phase_bank_certifier_reports_exact_only_contract
+    blocker: ""
   - id: AIRA-T0189
     status: lean_proved
     lean_name: Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two
     informal_statement: "For the diagnostic RoPE phase bank [6, 9, 13, 18] at context 128, no singleton subbank reaches the context, while the subbank [13, 18] does."
     formal_statement: "For every period in [6, 9, 13, 18], Circle.Applications.ropePeriodBankLCM [period] < 128, and 128 <= Circle.Applications.ropePeriodBankLCM [13, 18]."
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_diagnostic_prefix_and_shared_factor_presets_are_stable
+        - tests/test_rope_certifier.py::test_explicit_phase_bank_certifier_reports_exact_only_contract
+    blocker: ""
+  - id: AIRA-T0195
+    status: lean_proved
+    lean_name: Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamilyPasses_13_18
+    informal_statement: "The diagnostic RoPE phase bank [6, 9, 13, 18] at context 128 satisfies the generic smallest-subfamily contract for the selected subfamily [13, 18]."
+    formal_statement: "Circle.Applications.ropeSmallestSubfamilyPassesContext 128 [6, 9, 13, 18] [13, 18]"
     dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0084"]
     paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
     imports_allowed: ["Common"]

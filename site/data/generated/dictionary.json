@@ -12839,6 +12839,24 @@
           "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three",
           "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0193",
+          "lean_name": "Circle.Applications.ropeSmallestSubfamilyPassesContext_size_unique",
+          "name": "Circle.Applications.ropeSmallestSubfamilyPassesContext_size_unique",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0194",
+          "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_smallestSubfamilyPassesContext",
+          "name": "Circle.Applications.not_ropePhaseBankCollision_of_smallestSubfamilyPassesContext",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0195",
+          "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamilyPasses_13_18",
+          "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamilyPasses_13_18",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -13895,6 +13913,24 @@
           "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three",
           "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0193",
+          "lean_name": "Circle.Applications.ropeSmallestSubfamilyPassesContext_size_unique",
+          "name": "Circle.Applications.ropeSmallestSubfamilyPassesContext_size_unique",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0194",
+          "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_smallestSubfamilyPassesContext",
+          "name": "Circle.Applications.not_ropePhaseBankCollision_of_smallestSubfamilyPassesContext",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0195",
+          "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamilyPasses_13_18",
+          "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamilyPasses_13_18",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -14057,6 +14093,24 @@
           "id": "AIRA-T0192",
           "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three",
           "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0193",
+          "lean_name": "Circle.Applications.ropeSmallestSubfamilyPassesContext_size_unique",
+          "name": "Circle.Applications.ropeSmallestSubfamilyPassesContext_size_unique",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0194",
+          "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_smallestSubfamilyPassesContext",
+          "name": "Circle.Applications.not_ropePhaseBankCollision_of_smallestSubfamilyPassesContext",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0195",
+          "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamilyPasses_13_18",
+          "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamilyPasses_13_18",
           "status": "proved"
         }
       ],
@@ -16727,6 +16781,24 @@
           "id": "AIRA-T0192",
           "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three",
           "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0193",
+          "lean_name": "Circle.Applications.ropeSmallestSubfamilyPassesContext_size_unique",
+          "name": "Circle.Applications.ropeSmallestSubfamilyPassesContext_size_unique",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0194",
+          "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_smallestSubfamilyPassesContext",
+          "name": "Circle.Applications.not_ropePhaseBankCollision_of_smallestSubfamilyPassesContext",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0195",
+          "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamilyPasses_13_18",
+          "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamilyPasses_13_18",
           "status": "proved"
         }
       ],

@@ -454,8 +454,8 @@ The generated sidecar Markdown and JSON have `Band Endpoint Audit` summaries tha
 - If the common exact collision gap is inside the context, the report lists sample colliding position pairs.
 - The guaranteed common-gap count is `context - gap`: every counted start gives an all-channel collision at that gap. The LCM theorem upgrades the positive common-gap-multiple sum into the exact total bank collision count for the declared integer-period model. The positive-period-bank theorem proves the LCM is positive under the certifier's input policy. The exact pass/fail iff says the whole context is collision-free exactly when that LCM reaches the context. The fail-witness theorem proves an explicit unequal collision exists when the positive LCM is below the context, the count-zero theorem proves the positive-multiple total is zero exactly in the pass case, and the count-positive theorem proves the nonzero total is equivalent to an unequal all-channel collision witness.
 - Bounded prefix reports apply the same LCM theorem spine to early channel prefixes, so `first_exact_pass_prefix_length` identifies the first reported prefix whose integer-bank LCM already reaches the inspected context. `AIRA-T0051` proves that appending suffix channels cannot create an unequal full-bank collision after such a prefix already passes. `AIRA-T0190` proves that a certified first passing prefix length is unique, and `AIRA-T0191` turns that first-prefix certificate into a full-bank no-collision bridge.
-- Bounded subfamily reports search small selected subbanks; `AIRA-T0052` proves the same no-collision bridge when any contained subbank's LCM reaches the inspected context.
-- For the diagnostic prefix preset `[6, 9, 13, 18]` at context `128`, `AIRA-T0188` proves that the first passing prefix has length `3`, `AIRA-T0192` proves that this satisfies the reusable first-prefix predicate, and `AIRA-T0189` proves that singleton subbanks are insufficient while `[13, 18]` is sufficient. These are named finite report certificates, not a global subfamily-minimization theorem.
+- Bounded subfamily reports search small selected subbanks; `AIRA-T0052` proves the same no-collision bridge when any contained subbank's LCM reaches the inspected context. `AIRA-T0193` proves that a certified smallest sufficient subfamily size is unique, and `AIRA-T0194` turns that smallest-subfamily certificate into a full-bank no-collision bridge.
+- For the diagnostic prefix preset `[6, 9, 13, 18]` at context `128`, `AIRA-T0188` proves that the first passing prefix has length `3`, `AIRA-T0192` proves that this satisfies the reusable first-prefix predicate, `AIRA-T0189` proves that singleton subbanks are insufficient while `[13, 18]` is sufficient, and `AIRA-T0195` proves that `[13, 18]` satisfies the reusable smallest-subfamily predicate. These are named finite report certificates, not global optimization theorems for arbitrary period banks.
 - The per-channel single-period counts are exact for each individual integer period; they are not all-channel bank counts.
 - If the exact discrete contract passes, the report still does not claim real model quality or long-context success.
 - The real-phase margin scan is useful engineering evidence, but it is not a Lean proof over real-valued trigonometric RoPE.
@@ -483,7 +483,10 @@ The generated sidecar Markdown and JSON have `Band Endpoint Audit` summaries tha
 <div class="theorem-box" data-theorem-id="AIRA-T0191"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0188"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0192"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0193"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0194"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0189"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0195"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0179"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0180"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0184"></div>
