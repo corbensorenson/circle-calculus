@@ -138,7 +138,7 @@ Read those fields in this order:
 
 1. `exact_discrete_contract` says whether the declared integer-period bank distinguishes every unequal ordered position pair in the inspected context.
 2. `common_collision_gap` is the least all-channel repeated gap implied by the period-bank LCM. If it is `>= context`, no repeated all-channel gap fits inside the inspected range.
-3. `total_bank_collision_pair_count` counts all ordered all-channel colliding pairs for the declared integer-period bank. `AIRA-T0179` proves that the positive-period input policy gives the positive LCM required by these count theorems. `AIRA-T0180` proves the exact pass/fail iff: no unequal all-channel collision in the inspected context exactly when that LCM reaches the context. `AIRA-T0174` and `AIRA-T0175` prove the zero boundary: under a positive LCM, this count is zero exactly in the LCM-reaches-context pass case. `AIRA-T0176` proves the nonzero case is equivalent to the existence of an unequal all-channel collision witness.
+3. `total_bank_collision_pair_count` counts all ordered all-channel colliding pairs for the declared integer-period bank. `AIRA-T0179` proves that the positive-period input policy gives the positive LCM required by these count theorems. `AIRA-T0180` proves the exact pass/fail iff: no unequal all-channel collision in the inspected context exactly when that LCM reaches the context. `AIRA-T0184` proves that this boolean no-collision contract is equivalent to `total_bank_collision_pair_count = 0`. `AIRA-T0174` and `AIRA-T0175` prove the zero boundary: under a positive LCM, this count is zero exactly in the LCM-reaches-context pass case. `AIRA-T0176` proves the nonzero case is equivalent to the existence of an unequal all-channel collision witness.
 4. `theorem_ids` tells you which manifest entries and Lean declarations justify the exact layer. The browser theorem cards below resolve those ids to proof status and source links.
 
 If the exact layer fails, the same fields become a debugging guide:
@@ -479,6 +479,7 @@ The generated sidecar Markdown and JSON have `Band Endpoint Audit` summaries tha
 <div class="theorem-box" data-theorem-id="AIRA-T0052"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0179"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0180"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0184"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0174"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0175"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0176"></div>

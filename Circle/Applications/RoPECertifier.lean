@@ -457,6 +457,24 @@ theorem ropePhaseBankNoCollisionOnContext_iff_lcm_ge_context_of_forall_mem_pos
       (periods := periods) (context := context) (left := left) (right := right)
       hlcm_context hleft hright
 
+/-- For a positive-period phase bank, exact no-collision over a finite context
+is equivalent to the reported total integer-bank collision count being zero.
+
+This is the direct public-certificate bridge between the boolean
+`exact_discrete_contract` field and the numeric `total_bank_collision_pair_count`
+field: both are just two views of the same LCM criterion. -/
+theorem ropePhaseBankNoCollisionOnContext_iff_lcmCollisionPairCount_eq_zero_of_forall_mem_pos
+    {periods : List Nat} {context : Nat}
+    (hperiods : ∀ period, period ∈ periods → 0 < period) :
+    (∀ left right,
+        left < right → right < context → ¬ ropePhaseBankCollision periods left right) ↔
+      ropeCollisionPairCountAtGapMultiples context (ropePeriodBankLCM periods) = 0 := by
+  rw [ropePhaseBankNoCollisionOnContext_iff_lcm_ge_context_of_forall_mem_pos
+    (periods := periods) (context := context) hperiods]
+  rw [ropeLCMCollisionPairCountMultiples_eq_zero_iff
+    (periods := periods) (context := context)
+    (ropePeriodBankLCM_pos_of_forall_mem_pos hperiods)]
+
 /-- If a prefix subbank already has LCM at least the inspected context, then
 adding more channels cannot create an unequal all-channel collision.
 
