@@ -45,6 +45,39 @@ That is the main theorem-backed contract. The Python and browser certifiers comp
 The widget output is an explanation and executable check. It is not proof by itself. The proof source is the Lean declaration named by the theorem card.
 :::
 
+## A Tiny Hand Check
+
+Before reading a full report, do the smallest version by hand. Suppose the declared phase bank has periods:
+
+```text
+6, 9, 13, 18
+```
+
+The first all-channel repeat gap is the least common multiple:
+
+```text
+lcm(6, 9, 13, 18) = 234
+```
+
+If the inspected context is `128`, then no unequal positions inside `0..127` can be exactly `234` apart. So the exact discrete contract passes for that context.
+
+Now change the bank to:
+
+```text
+32, 48, 96
+```
+
+The least common multiple is `96`. In context `256`, the repeat gaps `96` and `192` both fit. That creates theorem-backed collisions:
+
+```text
+0 and 96
+1 and 97
+...
+159 and 255
+```
+
+for the first gap, plus the shorter list at gap `192`. The certifier reports `224` total ordered all-channel collision pairs for this declared integer-period bank. The theorem content is the reason this scales: Lean proves that checking every pair is equivalent to checking whether the LCM gap fits in the context.
+
 ## Python CLI
 
 Use the public certifier from the repository root:
