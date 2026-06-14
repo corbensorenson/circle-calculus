@@ -108,9 +108,12 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     assert "AIT-T0101" in payload["theorem_ids"]
     assert "AIT-T0102" in payload["theorem_ids"]
     assert "AIT-T0103" in payload["theorem_ids"]
+    assert "AIT-T0104" in payload["theorem_ids"]
+    assert "AIT-T0105" in payload["theorem_ids"]
     assert payload["fixture_theorem_ids"] == [
         "AIT-T0084",
         "AIT-T0085",
         "AIT-T0091",
         "AIT-T0102",
+        "AIT-T0104",
     ]

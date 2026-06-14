@@ -95,10 +95,12 @@ The finite-list endpoints are:
 - `AIT-T0100`: a reported first uncovered lag is exactly the head of the uncovered-lag list.
 - `AIT-T0101`: a reported first uncovered lag is a genuine positive in-context miss.
 - `AIT-T0102`: the default `C_120`, local window `4`, path length `3`, strides `[7,13]` fixture has first uncovered lag `5`.
+- `AIT-T0104`: the default fixture's uncovered-lag interval summary is exactly `5..6`, `8..12`, `15..20`, `22..25`, `27..38`, `40..119`.
+- `AIT-T0105`: the compact complete fixture's uncovered-lag interval summary is empty.
 
 The gap/coverage spine is `AIT-T0020` through `AIT-T0035`. The theorem-side candidate-list,
 budget, no-collision, and predecessor-indexing spine is `AIT-T0036` through `AIT-T0077`.
-The finite uncovered/covered list, count-partition, and first-gap spine is `AIT-T0078` through `AIT-T0102`.
+The finite uncovered/covered list, count-partition, first-gap, and public interval-summary spine is `AIT-T0078` through `AIT-T0105`.
 
 ## Boundary
 

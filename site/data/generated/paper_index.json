@@ -1018,7 +1018,9 @@
         "AIT-T0100",
         "AIT-T0101",
         "AIT-T0102",
-        "AIT-T0103"
+        "AIT-T0103",
+        "AIT-T0104",
+        "AIT-T0105"
       ],
       "title": "Circle Calculus AI 2: Coil Attention and Memory"
     },

@@ -6262,6 +6262,36 @@ theorems:
         - tests/test_stride_family_certifier_cli.py
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
     blocker: ""
+  - id: AIT-T0104
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyUncoveredLagIntervalList_default_120_4_3_7_13
+    informal_statement: "For the default C_120 sparse-attention plan with local window 4, path length 3, and strides [7,13], the uncovered-lag interval summary is exactly [(5,6), (8,12), (15,20), (22,25), (27,38), (40,119)]."
+    formal_statement: "Circle.Applications.hybridFamilyUncoveredLagIntervalList 120 4 3 [7, 13] = [(5, 6), (8, 12), (15, 20), (22, 25), (27, 38), (40, 119)]"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
+  - id: AIT-T0105
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyUncoveredLagIntervalList_complete_9_2_2_3_4_7_eq_nil
+    informal_statement: "For the compact complete C_9 sparse-attention fixture with local window 2, path length 2, and strides [3,4,7], the uncovered-lag interval summary is empty."
+    formal_statement: "Circle.Applications.hybridFamilyUncoveredLagIntervalList 9 2 2 [3, 4, 7] = []"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

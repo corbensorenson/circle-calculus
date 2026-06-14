@@ -814,6 +814,7 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0085",
         "AIT-T0091",
         "AIT-T0102",
+        "AIT-T0104",
     )
     assert result.coverage_certificate.full_attention_budget == 120
     assert result.coverage_certificate.deduplicated_candidate_budget_upper_bound <= (
@@ -902,6 +903,8 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0101",
         "AIT-T0102",
         "AIT-T0103",
+        "AIT-T0104",
+        "AIT-T0105",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -958,6 +961,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
         "AIT-T0085",
         "AIT-T0091",
         "AIT-T0102",
+        "AIT-T0104",
     ]
     assert certificate["theorem_side_lag_candidates_no_collision"] is True
     assert "AIT-T0021" in certificate["theorem_ids"]
@@ -974,6 +978,8 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0100" in certificate["theorem_ids"]
     assert "AIT-T0101" in certificate["theorem_ids"]
     assert "AIT-T0103" in certificate["theorem_ids"]
+    assert "AIT-T0104" in certificate["theorem_ids"]
+    assert "AIT-T0105" in certificate["theorem_ids"]
     complete = payload["complete_fixture_certificate"]
     assert complete["sequence_length"] == 9
     assert complete["strides"] == [3, 4, 7]
@@ -1002,6 +1008,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
         "AIT-T0087",
         "AIT-T0088",
         "AIT-T0089",
+        "AIT-T0105",
     ]
     planner_rows = {
         row["plan_id"]: row for row in payload["planner_style_certificates"]
@@ -1017,6 +1024,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
         "AIT-T0085",
         "AIT-T0091",
         "AIT-T0102",
+        "AIT-T0104",
     ]
     assert planner_rows["complete_toy_fixture_9"]["coverage_complete"] is True
     assert planner_rows["complete_toy_fixture_9"]["uncovered_lag_count"] == 0
@@ -1026,6 +1034,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
         "AIT-T0087",
         "AIT-T0088",
         "AIT-T0089",
+        "AIT-T0105",
     ]
     long_no_wrap = planner_rows["long_context_no_wrap_probe_4096"]
     assert long_no_wrap["sequence_length"] == 4096
@@ -1096,7 +1105,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert (
         "| 9 | 2 | 2 | 3, 4, 7 | True | 0 | None | True | True | True | "
         "True | False | True | 8 | 8 | 8 | "
-        "AIT-T0086, AIT-T0087, AIT-T0088, AIT-T0089 |"
+        "AIT-T0086, AIT-T0087, AIT-T0088, AIT-T0089, AIT-T0105 |"
     ) in markdown_result.stdout
     assert "Planner-style declared plans" in markdown_result.stdout
     assert (
@@ -1308,6 +1317,7 @@ def test_stride_family_complete_sparse_family_fixture_has_empty_gap_list() -> No
         "AIT-T0087",
         "AIT-T0088",
         "AIT-T0089",
+        "AIT-T0105",
     )
 
 

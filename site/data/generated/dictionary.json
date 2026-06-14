@@ -5135,6 +5135,18 @@
           "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
           "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0104",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_default_120_4_3_7_13",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_default_120_4_3_7_13",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0105",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_complete_9_2_2_3_4_7_eq_nil",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_complete_9_2_2_3_4_7_eq_nil",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5728,6 +5740,18 @@
           "id": "AIT-T0103",
           "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
           "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0104",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_default_120_4_3_7_13",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_default_120_4_3_7_13",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0105",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_complete_9_2_2_3_4_7_eq_nil",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_complete_9_2_2_3_4_7_eq_nil",
           "status": "proved"
         }
       ],
@@ -7191,6 +7215,18 @@
           "id": "AIT-T0103",
           "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
           "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0104",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_default_120_4_3_7_13",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_default_120_4_3_7_13",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0105",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_complete_9_2_2_3_4_7_eq_nil",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_complete_9_2_2_3_4_7_eq_nil",
           "status": "proved"
         }
       ],
@@ -11775,6 +11811,18 @@
           "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
           "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0104",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_default_120_4_3_7_13",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_default_120_4_3_7_13",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0105",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_complete_9_2_2_3_4_7_eq_nil",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_complete_9_2_2_3_4_7_eq_nil",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -14768,6 +14816,18 @@
           "id": "AIT-T0103",
           "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
           "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0104",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_default_120_4_3_7_13",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_default_120_4_3_7_13",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0105",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_complete_9_2_2_3_4_7_eq_nil",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_complete_9_2_2_3_4_7_eq_nil",
           "status": "proved"
         }
       ],

@@ -169,6 +169,32 @@ def hybridFamilyUncoveredLagList
   (List.range' 1 (n - 1)).filter fun lag =>
     lag ∉ hybridFamilyLagCandidateList n window pathLength strides
 
+/-- Extend a reversed list of consecutive lag intervals with one new lag.
+
+The interval list is stored newest-first so `List.foldl` can update the current
+run without traversing the accumulated prefix. -/
+def extendConsecutiveLagIntervals :
+    List (Nat × Nat) → Nat → List (Nat × Nat)
+  | [], lag => [(lag, lag)]
+  | (start, stop) :: rest, lag =>
+      if lag = stop + 1 then (start, lag) :: rest
+      else (lag, lag) :: (start, stop) :: rest
+
+/-- Compress an ascending finite lag list into inclusive consecutive intervals. -/
+def consecutiveLagIntervals (lags : List Nat) : List (Nat × Nat) :=
+  (lags.foldl extendConsecutiveLagIntervals []).reverse
+
+/-- Consecutive interval summary for the theorem-side uncovered-lag list.
+
+This mirrors the compact interval field exposed by the executable sparse
+attention certifier. The underlying semantic object remains
+`hybridFamilyUncoveredLagList`; intervals are a readability layer over that
+checked finite gap list. -/
+def hybridFamilyUncoveredLagIntervalList
+    (n window pathLength : Nat) (strides : List Nat) : List (Nat × Nat) :=
+  consecutiveLagIntervals
+    (hybridFamilyUncoveredLagList n window pathLength strides)
+
 /-- First positive in-context lag missed by a local+stride-family sparse plan,
 when the finite uncovered-lag list is nonempty.
 
@@ -1675,6 +1701,13 @@ theorem hybridFamilyUncoveredLagList_default_120_4_3_7_13_length :
     (hybridFamilyUncoveredLagList 120 4 3 [7, 13]).length = 109 := by
   native_decide
 
+/-- The default sparse-attention plan's uncovered-lag interval summary has the
+six exact ranges reported by the executable sidecar. -/
+theorem hybridFamilyUncoveredLagIntervalList_default_120_4_3_7_13 :
+    hybridFamilyUncoveredLagIntervalList 120 4 3 [7, 13] =
+      [(5, 6), (8, 12), (15, 20), (22, 25), (27, 38), (40, 119)] := by
+  native_decide
+
 /-- The default `C_120`, local-window `4`, path-length `3`, strides `[7,13]`
 sparse plan has exactly ten theorem-side covered positive lags. -/
 theorem hybridFamilyCoveredLagList_default_120_4_3_7_13_length :
@@ -1696,6 +1729,12 @@ theorem hybridFamilyCoversContext_complete_9_2_2_3_4_7 :
     hybridFamilyCoversContext 9 2 2 [3, 4, 7] := by
   exact (hybridFamilyCoversContext_iff_uncoveredLagList_eq_nil).2
     hybridFamilyUncoveredLagList_complete_9_2_2_3_4_7_eq_nil
+
+/-- The compact complete sparse-family fixture has an empty uncovered-interval
+summary, matching its empty uncovered-lag list. -/
+theorem hybridFamilyUncoveredLagIntervalList_complete_9_2_2_3_4_7_eq_nil :
+    hybridFamilyUncoveredLagIntervalList 9 2 2 [3, 4, 7] = [] := by
+  native_decide
 
 /-- The compact `C_9` sparse-family fixture preserves the raw lag-candidate
 budget after deduplication. -/

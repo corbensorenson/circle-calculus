@@ -48,7 +48,8 @@
         "AIT-T0084",
         "AIT-T0085",
         "AIT-T0091",
-        "AIT-T0102"
+        "AIT-T0102",
+        "AIT-T0104"
       ],
       "full_attention_budget": 120,
       "local_window": 4,
@@ -141,7 +142,9 @@
         "AIT-T0100",
         "AIT-T0101",
         "AIT-T0102",
-        "AIT-T0103"
+        "AIT-T0103",
+        "AIT-T0104",
+        "AIT-T0105"
       ],
       "theorem_side_coil_residues_no_collision": true,
       "theorem_side_lag_candidates": [
@@ -381,7 +384,8 @@
       "AIT-T0086",
       "AIT-T0087",
       "AIT-T0088",
-      "AIT-T0089"
+      "AIT-T0089",
+      "AIT-T0105"
     ],
     "full_attention_budget": 9,
     "local_window": 2,
@@ -475,7 +479,9 @@
       "AIT-T0100",
       "AIT-T0101",
       "AIT-T0102",
-      "AIT-T0103"
+      "AIT-T0103",
+      "AIT-T0104",
+      "AIT-T0105"
     ],
     "theorem_side_coil_residues_no_collision": true,
     "theorem_side_lag_candidates": [
@@ -564,7 +570,8 @@
         "AIT-T0084",
         "AIT-T0085",
         "AIT-T0091",
-        "AIT-T0102"
+        "AIT-T0102",
+        "AIT-T0104"
       ],
       "full_attention_budget": 120,
       "local_coil_disjoint": true,
@@ -689,7 +696,8 @@
         "AIT-T0086",
         "AIT-T0087",
         "AIT-T0088",
-        "AIT-T0089"
+        "AIT-T0089",
+        "AIT-T0105"
       ],
       "full_attention_budget": 9,
       "local_coil_disjoint": true,
