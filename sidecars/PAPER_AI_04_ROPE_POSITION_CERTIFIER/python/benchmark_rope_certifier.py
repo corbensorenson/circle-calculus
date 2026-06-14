@@ -18,6 +18,8 @@ from typing import Any
 from circle_math.applications import (
     PHASE_BANK_CERTIFIER_PRESETS,
     ROPE_CERTIFIER_PRESETS,
+    ROPE_STANDARD_CHANNEL0_INTERVAL_COMPRESSION_LEAN_DECLARATIONS,
+    ROPE_STANDARD_CHANNEL0_INTERVAL_COMPRESSION_THEOREMS,
     certificate_summary_lines,
     certify_phase_bank_positions,
     certify_rational_preset_4099,
@@ -209,12 +211,19 @@ def standard_channel0_frontier_summary(standard_plans: tuple[dict[str, Any], ...
         ),
         "candidate_full_contexts": full_candidate_contexts,
         "candidate_first_uncovered_gaps": frontier_gaps,
+        "compression_bridge_theorem_ids": ROPE_STANDARD_CHANNEL0_INTERVAL_COMPRESSION_THEOREMS,
+        "compression_bridge_lean_declarations": (
+            ROPE_STANDARD_CHANNEL0_INTERVAL_COMPRESSION_LEAN_DECLARATIONS
+        ),
         "frontier_status": "candidate_plan_not_lean_proved",
         "summary": (
             "Lean currently proves standard channel-0 margin 1/104219 through "
             f"context {proved_context}. The exact-rational planner also covers "
             f"contexts {full_candidate_contexts} at the same margin and first "
-            f"fails at gaps {frontier_gaps}, but those rows are not Lean proofs."
+            f"fails at gaps {frontier_gaps}, but those rows are not Lean proofs. "
+            "AIRA-T0139 and AIRA-T0140 are the proved rational-band compression "
+            "bridges intended for converting those planner rows without another "
+            "large interval-case expansion."
         ),
         "claim_boundary": (
             "This is a derived sidecar summary of proved and candidate interval "
@@ -614,16 +623,17 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "## Standard Channel-0 Frontier Summary",
             "",
-            "| Proved margin | Proved context | Proved status | Candidate full contexts | Candidate first uncovered gaps | Frontier status |",
-            "| ---: | ---: | --- | --- | --- | --- |",
-            "| {proved_margin} | {proved_context} | {proved_status} | {candidate_contexts} | {frontier_gaps} | {frontier_status} |".format(
-                proved_margin=frontier["proved_margin"],
-                proved_context=frontier["proved_context"],
-                proved_status=frontier["proved_theorem_status"],
-                candidate_contexts=", ".join(str(context) for context in frontier["candidate_full_contexts"]),
-                frontier_gaps=", ".join(str(gap) for gap in frontier["candidate_first_uncovered_gaps"]),
-                frontier_status=frontier["frontier_status"],
-            ),
+        "| Proved margin | Proved context | Proved status | Candidate full contexts | Candidate first uncovered gaps | Compression bridge | Frontier status |",
+        "| ---: | ---: | --- | --- | --- | --- | --- |",
+        "| {proved_margin} | {proved_context} | {proved_status} | {candidate_contexts} | {frontier_gaps} | {compression} | {frontier_status} |".format(
+            proved_margin=frontier["proved_margin"],
+            proved_context=frontier["proved_context"],
+            proved_status=frontier["proved_theorem_status"],
+            candidate_contexts=", ".join(str(context) for context in frontier["candidate_full_contexts"]),
+            frontier_gaps=", ".join(str(gap) for gap in frontier["candidate_first_uncovered_gaps"]),
+            compression=", ".join(frontier["compression_bridge_theorem_ids"]),
+            frontier_status=frontier["frontier_status"],
+        ),
             "",
             frontier["claim_boundary"],
             "",
@@ -771,11 +781,13 @@ def main() -> None:
                     "proved_margin={proved_margin} proved_context={proved_context} "
                     "candidate_full_contexts={candidate_contexts} "
                     "candidate_first_uncovered_gaps={frontier_gaps} "
+                    "compression_bridge={compression_bridge} "
                     "status={status}".format(
                         proved_margin=frontier["proved_margin"],
                         proved_context=frontier["proved_context"],
                         candidate_contexts=tuple(frontier["candidate_full_contexts"]),
                         frontier_gaps=tuple(frontier["candidate_first_uncovered_gaps"]),
+                        compression_bridge=tuple(frontier["compression_bridge_theorem_ids"]),
                         status=frontier["frontier_status"],
                     )
                 )

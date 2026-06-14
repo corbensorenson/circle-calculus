@@ -4,7 +4,7 @@ This note is a durable audit trail for the real-valued RoPE phase-margin theorem
 
 ## Current Proved Bridge
 
-The real-phase theorem spine currently runs from `AIRA-T0029` through `AIRA-T0033`, then `AIRA-T0037` through `AIRA-T0045`, plus `AIRA-T0047`, `AIRA-T0050`, and `AIRA-T0053` through `AIRA-T0138`.
+The real-phase theorem spine currently runs from `AIRA-T0029` through `AIRA-T0033`, then `AIRA-T0037` through `AIRA-T0045`, plus `AIRA-T0047`, `AIRA-T0050`, and `AIRA-T0053` through `AIRA-T0140`.
 
 `AIRA-T0041` is the Diophantine-scaling bridge:
 
@@ -42,7 +42,7 @@ This is not a lower-bound theorem. It is the normalization step that makes the n
 
 `AIRA-T0063` and `AIRA-T0064` introduce the interval-certificate route for genuine nonperiodic turn ratios. A single rational interval witness proves all integer-turn lower bounds for one generated gap when the enclosure lies inside one integer cell and stays at least `margin` from both endpoints. A finite table of those witnesses proves `ropeTurnRatioFiniteMargin alpha margin context`.
 
-`AIRA-T0065` through `AIRA-T0067` are the first named standard-RoPE interval seed. For channel 0, where `alpha = 1 / (2π)`, Lean proves a context-6 margin `1/8` using the elementary bounds `3 < π <= 4`. `AIRA-T0068` through `AIRA-T0126` build the interval-certificate route through four-decimal, six-decimal, and 20-decimal rational `π` enclosures, the gap-`710` obstruction family, margin monotonicity, bank transfer, and reusable endpoint-band bridge. `AIRA-T0127` through `AIRA-T0132` certify the sharper 8k standard-channel seed and bracket at margin `1/104219`. `AIRA-T0133` through `AIRA-T0138` extend the same margin to context `16384`, add the D14 one-channel no-near-turn theorem, add D14 conditional bank transfers, and package the 16k bracket: margin `1/104219` is proved, while any margin at or above `1/104218` is impossible for context `16384`; margins strictly between those two rationals remain unresolved. This is theorem-backed standard-RoPE infrastructure, but still channel-0 based. It does not certify 128k or prove margins for every channel in a multi-channel standard-RoPE bank.
+`AIRA-T0065` through `AIRA-T0067` are the first named standard-RoPE interval seed. For channel 0, where `alpha = 1 / (2π)`, Lean proves a context-6 margin `1/8` using the elementary bounds `3 < π <= 4`. `AIRA-T0068` through `AIRA-T0126` build the interval-certificate route through four-decimal, six-decimal, and 20-decimal rational `π` enclosures, the gap-`710` obstruction family, margin monotonicity, bank transfer, and reusable endpoint-band bridge. `AIRA-T0127` through `AIRA-T0132` certify the sharper 8k standard-channel seed and bracket at margin `1/104219`. `AIRA-T0133` through `AIRA-T0138` extend the same margin to context `16384`, add the D14 one-channel no-near-turn theorem, add D14 conditional bank transfers, and package the 16k bracket: margin `1/104219` is proved, while any margin at or above `1/104218` is impossible for context `16384`; margins strictly between those two rationals remain unresolved. `AIRA-T0139` and `AIRA-T0140` add a rational-band compression bridge for larger generated plans: a valid band list covering the generated gap range proves the original interval-certificate predicate without expanding every gap into a separate Lean interval case. This is theorem-backed standard-RoPE infrastructure, but still channel-0 based. It does not certify 128k or prove margins for every channel in a multi-channel standard-RoPE bank.
 
 The Python sidecar still emits exact-rational interval plans for audit and future work. The four-decimal `π` plan through context `333`, the six-decimal `π` plan through context `710`, the 20-decimal context-4096 plans through margin `1/104219`, the 20-decimal context-8192 plans at margins `1/104220` and `1/104219`, and the 20-decimal context-16384 plan at margin `1/104219` have now been converted into Lean declarations. The sidecar also emits `standard_channel0_frontier_summary`: theorem-backed context `16384` at margin `1/104219`, candidate full-context rows at `32768` and `65536`, and first uncovered gap `103993` for the larger request. The frontier rows are deterministic source data only until matching declarations compile and manifest ids are marked proved.
 
@@ -118,8 +118,9 @@ The important warning is `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irratio
 41. Use `AIRA-T0126` to compress future generated interval certificates: prove the band endpoints stay inside one integer cell, then Lean fills in every intermediate gap by monotonicity.
 42. Use `AIRA-T0127` through `AIRA-T0132` as the sharper 8k standard-channel seed, one-channel consequence, D13 bank bridge, and 8k bracket at margin `1/104219`.
 43. Use `AIRA-T0133` through `AIRA-T0138` as the 16k standard-channel seed, one-channel consequence, D14 bank bridge, and 16k bracket at margin `1/104219`.
-44. Treat the Python 32k and 64k interval plans as proof-frontier source data, not proved theorem ids.
-45. Scale from one channel to broader channel-wise/full-bank statements, or add sharper generated/continued-fraction machinery for larger contexts.
+44. Use `AIRA-T0139` and `AIRA-T0140` as the rational-band compression bridge for future 32k/64k generated certificates.
+45. Treat the Python 32k and 64k interval plans as proof-frontier source data, not proved theorem ids.
+46. Scale from one channel to broader channel-wise/full-bank statements, or add sharper generated/continued-fraction machinery for larger contexts.
 
 ## Guardrails
 

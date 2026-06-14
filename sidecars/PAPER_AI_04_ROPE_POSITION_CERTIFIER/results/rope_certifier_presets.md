@@ -14,7 +14,7 @@ This is a theorem-backed rational/discretized turn-ratio certificate. It is not 
 
 | Name | Turn ratio | Context | Certified margin | Pi bounds | Status | Theorem ids |
 | --- | --- | ---: | --- | --- | --- | --- |
-| standard_rope_channel0_interval_context_16384 | 1/(2*pi) | 16384 | 1/104219 | pi <= 4, 3.14 < pi, pi < 3.15, 3.1415 < pi, pi < 3.1416, 3.141592 < pi, pi < 3.141593, 3.14159265358979323846 < pi, and pi < 3.14159265358979323847 | PASS | AIRA-T0063, AIRA-T0064, AIRA-T0065, AIRA-T0066, AIRA-T0067, AIRA-T0068, AIRA-T0069, AIRA-T0070, AIRA-T0071, AIRA-T0072, AIRA-T0073, AIRA-T0074, AIRA-T0075, AIRA-T0076, AIRA-T0077, AIRA-T0078, AIRA-T0079, AIRA-T0080, AIRA-T0081, AIRA-T0082, AIRA-T0083, AIRA-T0084, AIRA-T0085, AIRA-T0086, AIRA-T0087, AIRA-T0088, AIRA-T0089, AIRA-T0090, AIRA-T0091, AIRA-T0092, AIRA-T0093, AIRA-T0094, AIRA-T0095, AIRA-T0096, AIRA-T0097, AIRA-T0098, AIRA-T0099, AIRA-T0100, AIRA-T0101, AIRA-T0102, AIRA-T0103, AIRA-T0104, AIRA-T0105, AIRA-T0106, AIRA-T0107, AIRA-T0108, AIRA-T0109, AIRA-T0110, AIRA-T0111, AIRA-T0112, AIRA-T0113, AIRA-T0114, AIRA-T0115, AIRA-T0116, AIRA-T0117, AIRA-T0118, AIRA-T0119, AIRA-T0120, AIRA-T0121, AIRA-T0122, AIRA-T0123, AIRA-T0124, AIRA-T0125, AIRA-T0126, AIRA-T0127, AIRA-T0128, AIRA-T0129, AIRA-T0130, AIRA-T0131, AIRA-T0132, AIRA-T0133, AIRA-T0134, AIRA-T0135, AIRA-T0136, AIRA-T0137, AIRA-T0138 |
+| standard_rope_channel0_interval_context_16384 | 1/(2*pi) | 16384 | 1/104219 | pi <= 4, 3.14 < pi, pi < 3.15, 3.1415 < pi, pi < 3.1416, 3.141592 < pi, pi < 3.141593, 3.14159265358979323846 < pi, and pi < 3.14159265358979323847 | PASS | AIRA-T0063, AIRA-T0064, AIRA-T0065, AIRA-T0066, AIRA-T0067, AIRA-T0068, AIRA-T0069, AIRA-T0070, AIRA-T0071, AIRA-T0072, AIRA-T0073, AIRA-T0074, AIRA-T0075, AIRA-T0076, AIRA-T0077, AIRA-T0078, AIRA-T0079, AIRA-T0080, AIRA-T0081, AIRA-T0082, AIRA-T0083, AIRA-T0084, AIRA-T0085, AIRA-T0086, AIRA-T0087, AIRA-T0088, AIRA-T0089, AIRA-T0090, AIRA-T0091, AIRA-T0092, AIRA-T0093, AIRA-T0094, AIRA-T0095, AIRA-T0096, AIRA-T0097, AIRA-T0098, AIRA-T0099, AIRA-T0100, AIRA-T0101, AIRA-T0102, AIRA-T0103, AIRA-T0104, AIRA-T0105, AIRA-T0106, AIRA-T0107, AIRA-T0108, AIRA-T0109, AIRA-T0110, AIRA-T0111, AIRA-T0112, AIRA-T0113, AIRA-T0114, AIRA-T0115, AIRA-T0116, AIRA-T0117, AIRA-T0118, AIRA-T0119, AIRA-T0120, AIRA-T0121, AIRA-T0122, AIRA-T0123, AIRA-T0124, AIRA-T0125, AIRA-T0126, AIRA-T0127, AIRA-T0128, AIRA-T0129, AIRA-T0130, AIRA-T0131, AIRA-T0132, AIRA-T0133, AIRA-T0134, AIRA-T0135, AIRA-T0136, AIRA-T0137, AIRA-T0138, AIRA-T0139, AIRA-T0140 |
 
 This is a theorem-backed interval certificate for the genuine standard RoPE channel-0 turn ratio over context 16384, plus conditional one-separating-channel bank bridges. It is not a proof that every standard RoPE channel has a large-context margin, and it does not certify 128k contexts.
 
@@ -68,9 +68,9 @@ This is a 16k one-channel standard-RoPE bracket. It is not a full all-channel ba
 
 ## Standard Channel-0 Frontier Summary
 
-| Proved margin | Proved context | Proved status | Candidate full contexts | Candidate first uncovered gaps | Frontier status |
-| ---: | ---: | --- | --- | --- | --- |
-| 1/104219 | 16384 | lean_proved_interval_seed_AIRA-T0133_to_AIRA-T0135 | 32768, 65536 | 103993 | candidate_plan_not_lean_proved |
+| Proved margin | Proved context | Proved status | Candidate full contexts | Candidate first uncovered gaps | Compression bridge | Frontier status |
+| ---: | ---: | --- | --- | --- | --- | --- |
+| 1/104219 | 16384 | lean_proved_interval_seed_AIRA-T0133_to_AIRA-T0135 | 32768, 65536 | 103993 | AIRA-T0139, AIRA-T0140 | candidate_plan_not_lean_proved |
 
 This is a derived sidecar summary of proved and candidate interval plans. It does not upgrade candidate rows to theorem-backed status.
 

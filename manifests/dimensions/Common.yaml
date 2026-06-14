@@ -3907,6 +3907,34 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_standard_channel0_d14_margin_bracket_is_theorem_backed
     blocker: ""
+  - id: AIRA-T0139
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand
+    informal_statement: "One valid rational interval band proves the per-gap interval witness for every gap covered by that band, using rational lower and upper turn-ratio bounds and endpoint cell-margin inequalities."
+    formal_statement: "forall {turnRatio margin : Real} {gap : Nat} {band : Circle.Applications.RopeTurnRatioRationalIntervalBand}, Circle.Applications.RopeTurnRatioRationalIntervalBand.Valid band turnRatio margin -> Circle.Applications.RopeTurnRatioRationalIntervalBand.CoversGap band gap -> Circle.Applications.ropeTurnRatioIntervalWitness turnRatio margin gap ((gap : Rat) * band.lowerBound) ((gap : Rat) * band.upperBound) band.cell"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_interval_seed_is_theorem_backed
+    blocker: ""
+  - id: AIRA-T0140
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands
+    informal_statement: "A finite list of valid rational interval bands that covers every positive generated gap below a context proves the full interval certificate for that context."
+    formal_statement: "forall {turnRatio margin : Real} {context : Nat} {bands : List Circle.Applications.RopeTurnRatioRationalIntervalBand}, 0 <= margin -> (forall band, band in bands -> Circle.Applications.RopeTurnRatioRationalIntervalBand.Valid band turnRatio margin) -> Circle.Applications.ropeTurnRatioRationalIntervalBandsCover bands context -> Circle.Applications.ropeTurnRatioIntervalCertificate turnRatio margin context"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_certifier_sidecar_outputs_compact_results
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

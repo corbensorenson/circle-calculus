@@ -12167,6 +12167,18 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D14_context16384_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D14_context16384_margin_bracket",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0139",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+          "name": "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0140",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
+          "name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -12904,6 +12916,18 @@
           "id": "AIRA-T0138",
           "lean_name": "Circle.Applications.ropeStandardChannel0D14_context16384_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D14_context16384_margin_bracket",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0139",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+          "name": "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0140",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
+          "name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
           "status": "proved"
         }
       ],
@@ -14110,6 +14134,18 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D14_context16384_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D14_context16384_margin_bracket",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0139",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+          "name": "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0140",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
+          "name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -14898,6 +14934,18 @@
           "id": "AIRA-T0138",
           "lean_name": "Circle.Applications.ropeStandardChannel0D14_context16384_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D14_context16384_margin_bracket",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0139",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+          "name": "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0140",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
+          "name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
           "status": "proved"
         }
       ],
@@ -15719,6 +15767,18 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D14_context16384_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D14_context16384_margin_bracket",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0139",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+          "name": "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0140",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
+          "name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -16306,6 +16366,18 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D14_context16384_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D14_context16384_margin_bracket",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0139",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+          "name": "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0140",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
+          "name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -16822,6 +16894,18 @@
           "id": "AIRA-T0138",
           "lean_name": "Circle.Applications.ropeStandardChannel0D14_context16384_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D14_context16384_margin_bracket",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0139",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+          "name": "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0140",
+          "lean_name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
+          "name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
           "status": "proved"
         }
       ],

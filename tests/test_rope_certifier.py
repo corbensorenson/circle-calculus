@@ -421,6 +421,8 @@ def test_standard_channel0_interval_seed_is_theorem_backed() -> None:
     assert "AIRA-T0136" in certificate.theorem_ids
     assert "AIRA-T0137" in certificate.theorem_ids
     assert "AIRA-T0138" in certificate.theorem_ids
+    assert "AIRA-T0139" in certificate.theorem_ids
+    assert "AIRA-T0140" in certificate.theorem_ids
     assert (
         "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed"
         in certificate.lean_declarations
@@ -1492,6 +1494,16 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert payload["standard_channel0_frontier_summary"]["candidate_first_uncovered_gaps"] == [
         103993,
     ]
+    assert payload["standard_channel0_frontier_summary"]["compression_bridge_theorem_ids"] == [
+        "AIRA-T0139",
+        "AIRA-T0140",
+    ]
+    assert payload["standard_channel0_frontier_summary"][
+        "compression_bridge_lean_declarations"
+    ] == [
+        "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
+        "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
+    ]
     assert payload["standard_channel0_frontier_summary"]["frontier_status"] == (
         "candidate_plan_not_lean_proved"
     )
@@ -1599,7 +1611,7 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert "Standard RoPE D14 Margin Bracket" in markdown_result.stdout
     assert "AIRA-T0133, AIRA-T0134, AIRA-T0118, AIRA-T0138" in markdown_result.stdout
     assert "Standard Channel-0 Frontier Summary" in markdown_result.stdout
-    assert "| 1/104219 | 16384 | lean_proved_interval_seed_AIRA-T0133_to_AIRA-T0135 | 32768, 65536 | 103993 | candidate_plan_not_lean_proved |" in markdown_result.stdout
+    assert "| 1/104219 | 16384 | lean_proved_interval_seed_AIRA-T0133_to_AIRA-T0135 | 32768, 65536 | 103993 | AIRA-T0139, AIRA-T0140 | candidate_plan_not_lean_proved |" in markdown_result.stdout
     assert "Standard RoPE Candidate Interval Plans" in markdown_result.stdout
     assert "lean_proved_interval_seed_AIRA-T0090_to_AIRA-T0094" in markdown_result.stdout
     assert "lean_proved_interval_seed_AIRA-T0111_to_AIRA-T0114" in markdown_result.stdout

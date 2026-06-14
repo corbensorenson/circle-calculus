@@ -824,6 +824,83 @@ theorem ropeTurnRatioIntervalWitness_of_band_bounds
         (mul_le_mul_of_nonneg_right hgap_le_stop_real hupper_nonneg)
         hcell_upper
 
+/-- A first-class rational interval band for generated turn-ratio certificates.
+
+The band stores a range of natural gaps, one integer cell, and rational lower
+and upper bounds for the turn ratio. Generated certificates can emit a list of
+these bands rather than expanding every gap as a separate Lean case. -/
+structure RopeTurnRatioRationalIntervalBand where
+  startGap : Nat
+  endGap : Nat
+  cell : Int
+  lowerBound : ℚ
+  upperBound : ℚ
+
+/-- A rational interval band covers a gap when the gap lies between its
+declared endpoints. -/
+def RopeTurnRatioRationalIntervalBand.CoversGap
+    (band : RopeTurnRatioRationalIntervalBand) (gap : Nat) : Prop :=
+  band.startGap ≤ gap ∧ gap ≤ band.endGap
+
+/-- A rational interval band is valid for a turn ratio and margin when its
+global rational bounds enclose the turn ratio and its endpoint inequalities
+place the whole covered band inside the declared integer cell with that
+margin. -/
+def RopeTurnRatioRationalIntervalBand.Valid
+    (band : RopeTurnRatioRationalIntervalBand) (turnRatio margin : ℝ) : Prop :=
+  (band.lowerBound : ℝ) ≤ turnRatio ∧
+    turnRatio ≤ (band.upperBound : ℝ) ∧
+      0 ≤ (band.lowerBound : ℝ) ∧
+        0 ≤ (band.upperBound : ℝ) ∧
+          (band.cell : ℝ) + margin ≤ (band.startGap : ℝ) * (band.lowerBound : ℝ) ∧
+            (band.endGap : ℝ) * (band.upperBound : ℝ) ≤
+              (band.cell : ℝ) + 1 - margin
+
+/-- One valid rational interval band produces an interval witness for every
+gap it covers.
+
+This packages the endpoint monotonicity bridge in the exact shape needed by
+generated RoPE interval plans: the lower and upper witnesses for a covered gap
+are just `gap * lowerBound` and `gap * upperBound` in rational arithmetic. -/
+theorem ropeTurnRatioIntervalWitness_of_rationalIntervalBand
+    {turnRatio margin : ℝ} {gap : Nat}
+    {band : RopeTurnRatioRationalIntervalBand}
+    (hvalid : band.Valid turnRatio margin)
+    (hcover : band.CoversGap gap) :
+    ropeTurnRatioIntervalWitness turnRatio margin gap
+      ((gap : ℚ) * band.lowerBound) ((gap : ℚ) * band.upperBound) band.cell := by
+  rcases hvalid with
+    ⟨hlower_turn, hupper_turn, hlower_nonneg, hupper_nonneg, hcell_lower,
+      hcell_upper⟩
+  rcases hcover with ⟨hstart, hstop⟩
+  exact
+    ropeTurnRatioIntervalWitness_of_band_bounds
+      (turnRatio := turnRatio)
+      (margin := margin)
+      (lowerBound := (band.lowerBound : ℝ))
+      (upperBound := (band.upperBound : ℝ))
+      (gap := gap) (start := band.startGap) (stop := band.endGap)
+      (lower := (gap : ℚ) * band.lowerBound)
+      (upper := (gap : ℚ) * band.upperBound)
+      (cell := band.cell)
+      (by norm_num)
+      (by norm_num)
+      hlower_turn
+      hupper_turn
+      hlower_nonneg
+      hupper_nonneg
+      hstart
+      hstop
+      hcell_lower
+      hcell_upper
+
+/-- A finite rational band list covers a generated context when every positive
+gap in `List.range context` lies in one of the listed bands. -/
+def ropeTurnRatioRationalIntervalBandsCover
+    (bands : List RopeTurnRatioRationalIntervalBand) (context : Nat) : Prop :=
+  ∀ gap : Nat, gap ∈ List.range context → 0 < gap →
+    ∃ band, band ∈ bands ∧ band.CoversGap gap
+
 /-- A rational interval witness proves the nearest-integer lower bound for
 all integer turns at one generated gap. -/
 theorem ropeTurnRatioIntervalWitness_forall_int
@@ -878,6 +955,29 @@ def ropeTurnRatioIntervalCertificate
     ∀ gap : Nat, gap ∈ List.range context → 0 < gap →
       ∃ lower upper : ℚ, ∃ cell : Int,
         ropeTurnRatioIntervalWitness turnRatio margin gap lower upper cell
+
+/-- A valid rational band list covering the generated gap range gives a finite
+interval certificate.
+
+This is the compressed proof route for larger standard-RoPE channel-0 planner
+frontiers: Lean only needs to check band validity and range coverage, then this
+theorem expands the contract to the original per-gap interval-certificate
+predicate. -/
+theorem ropeTurnRatioIntervalCertificate_of_rationalIntervalBands
+    {turnRatio margin : ℝ} {context : Nat}
+    {bands : List RopeTurnRatioRationalIntervalBand}
+    (hmargin_nonneg : 0 ≤ margin)
+    (hvalid : ∀ band, band ∈ bands → band.Valid turnRatio margin)
+    (hcover : ropeTurnRatioRationalIntervalBandsCover bands context) :
+    ropeTurnRatioIntervalCertificate turnRatio margin context := by
+  refine ⟨hmargin_nonneg, ?_⟩
+  intro gap hgap_range hgap_pos
+  rcases hcover gap hgap_range hgap_pos with ⟨band, hmem, hband_cover⟩
+  exact
+    ⟨(gap : ℚ) * band.lowerBound, (gap : ℚ) * band.upperBound, band.cell,
+      ropeTurnRatioIntervalWitness_of_rationalIntervalBand
+        (turnRatio := turnRatio) (margin := margin) (gap := gap)
+        (band := band) (hvalid band hmem) hband_cover⟩
 
 /-- A rational interval witness remains valid when the advertised margin is
 decreased. -/
