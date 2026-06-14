@@ -46,7 +46,8 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
         in result.stdout
     )
     assert (
-        "uncovered_count_witness=True positive=True first_gap=5 theorem=AIT-T0096"
+        "uncovered_count_witness=True positive=True first_gap=5 "
+        "theorems=AIT-T0096,AIT-T0103"
         in result.stdout
     )
     assert (
@@ -106,6 +107,7 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     assert "AIT-T0100" in payload["theorem_ids"]
     assert "AIT-T0101" in payload["theorem_ids"]
     assert "AIT-T0102" in payload["theorem_ids"]
+    assert "AIT-T0103" in payload["theorem_ids"]
     assert payload["fixture_theorem_ids"] == [
         "AIT-T0084",
         "AIT-T0085",

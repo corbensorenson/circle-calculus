@@ -5123,6 +5123,12 @@
           "lean_name": "Circle.Applications.hybridFamilyFirstUncoveredLag_default_120_4_3_7_13_eq_some5",
           "name": "Circle.Applications.hybridFamilyFirstUncoveredLag_default_120_4_3_7_13_eq_some5",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0103",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5710,6 +5716,12 @@
           "id": "AIT-T0102",
           "lean_name": "Circle.Applications.hybridFamilyFirstUncoveredLag_default_120_4_3_7_13_eq_some5",
           "name": "Circle.Applications.hybridFamilyFirstUncoveredLag_default_120_4_3_7_13_eq_some5",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0103",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
           "status": "proved"
         }
       ],
@@ -7167,6 +7179,12 @@
           "id": "AIT-T0102",
           "lean_name": "Circle.Applications.hybridFamilyFirstUncoveredLag_default_120_4_3_7_13_eq_some5",
           "name": "Circle.Applications.hybridFamilyFirstUncoveredLag_default_120_4_3_7_13_eq_some5",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0103",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
           "status": "proved"
         }
       ],
@@ -11709,6 +11727,12 @@
           "lean_name": "Circle.Applications.hybridFamilyFirstUncoveredLag_default_120_4_3_7_13_eq_some5",
           "name": "Circle.Applications.hybridFamilyFirstUncoveredLag_default_120_4_3_7_13_eq_some5",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0103",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -14414,6 +14438,12 @@
           "id": "AIT-T0102",
           "lean_name": "Circle.Applications.hybridFamilyFirstUncoveredLag_default_120_4_3_7_13_eq_some5",
           "name": "Circle.Applications.hybridFamilyFirstUncoveredLag_default_120_4_3_7_13_eq_some5",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0103",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
           "status": "proved"
         }
       ],

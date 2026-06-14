@@ -121,7 +121,7 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             f"{payload['uncovered_count_positive_matches_gap_witness']} "
             f"positive={payload['uncovered_count_positive']} "
             f"first_gap={payload['first_uncovered_lag']} "
-            "theorem=AIT-T0096"
+            "theorems=AIT-T0096,AIT-T0103"
         ),
         (
             "covered_count_shortfall="

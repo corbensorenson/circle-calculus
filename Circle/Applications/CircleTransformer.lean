@@ -1029,6 +1029,25 @@ theorem hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag
   · rintro ⟨lag, hgap⟩
     exact ⟨lag, (mem_hybridFamilyUncoveredLagList_iff).2 hgap⟩
 
+/-- A positive uncovered-lag count is equivalent to the first-uncovered-lag
+field being populated.
+
+This bridges two executable sparse-attention report fields: the numeric
+`uncovered_lag_count > 0` status and the optional first-gap witness carry the
+same theorem-side information. -/
+theorem hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none
+    {n window pathLength : Nat} {strides : List Nat} :
+    0 < (hybridFamilyUncoveredLagList n window pathLength strides).length ↔
+      hybridFamilyFirstUncoveredLag n window pathLength strides ≠ none := by
+  unfold hybridFamilyFirstUncoveredLag
+  generalize hlist :
+    hybridFamilyUncoveredLagList n window pathLength strides = xs
+  cases xs with
+  | nil =>
+      simp
+  | cons head tail =>
+      simp
+
 /-- The covered-lag count falls short of the full positive-lag range exactly
 when there is a semantic uncovered positive in-context lag.
 

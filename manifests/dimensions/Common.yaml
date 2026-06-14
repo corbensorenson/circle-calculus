@@ -5955,6 +5955,21 @@ theorems:
         - tests/test_stride_family_certifier_cli.py
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
     blocker: ""
+  - id: AIT-T0103
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none
+    informal_statement: "For any declared local-window plus stride-family sparse-attention plan, having a positive uncovered-lag count is equivalent to the first-uncovered-lag field being populated."
+    formal_statement: "forall {n window pathLength : Nat} {strides : List Nat}, 0 < length(Circle.Applications.hybridFamilyUncoveredLagList n window pathLength strides) <-> Circle.Applications.hybridFamilyFirstUncoveredLag n window pathLength strides != none"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant
