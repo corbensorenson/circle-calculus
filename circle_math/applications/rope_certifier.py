@@ -134,6 +134,8 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0186",
     "AIRA-T0178",
     "AIRA-T0181",
+    "AIRA-T0196",
+    "AIRA-T0197",
     "AIRA-T0126",
     "AIRA-T0139",
     "AIRA-T0140",
@@ -170,6 +172,8 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioFiniteMargin_pos_no_zero_error",
     "Circle.Applications.not_ropeTurnRatioFiniteMargin_iff_exists_error_lt_margin",
     "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
+    "Circle.Applications.ropeTurnRatioFiniteMarginCertificate_iff_no_nearTurn_below_scaled_margin",
+    "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_finiteMarginCertificate_le_context_margin",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_band_bounds",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
     "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
@@ -189,6 +193,7 @@ ROPE_RATIONAL_PRESET_4099_THEOREMS: tuple[str, ...] = (
     "AIRA-T0061",
     "AIRA-T0185",
     "AIRA-T0187",
+    "AIRA-T0196",
     "AIRA-T0062",
 )
 
@@ -203,6 +208,7 @@ ROPE_RATIONAL_PRESET_4099_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin",
     "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
     "Circle.Applications.ropeRationalPreset4099_noZeroTurnRatioError",
+    "Circle.Applications.ropeTurnRatioFiniteMarginCertificate_iff_no_nearTurn_below_scaled_margin",
     "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
 )
 
@@ -3452,8 +3458,9 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         "integer/rational-turn-ratio guardrails, positive rational finite-context "
         "certificate and exact rational boundary, generated-gap enumeration, "
         "floor/ceiling nearest-integer, scalar nearest-gap margin, finite certificate "
-        "iff, negative obstruction iff, scaled no-near-turn iff, plus band-endpoint "
-        "and band-list compression bridge precursors only; not a Diophantine proof)",
+        "iff, negative obstruction iff, scaled no-near-turn iff, certificate-object "
+        "no-near-turn iff, finite-certificate bank bridge, plus band-endpoint and "
+        "band-list compression bridge precursors only; not a Diophantine proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,
     )

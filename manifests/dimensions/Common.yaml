@@ -3216,6 +3216,36 @@ theorems:
         - tests/test_rope_certifier.py::test_real_phase_nat_turn_error_matches_endpoint_precursor_shape
         - tests/test_rope_certifier.py::test_standard_channel0_interval_seed_reports_frontier
     blocker: ""
+  - id: AIRA-T0196
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioFiniteMarginCertificate_iff_no_nearTurn_below_scaled_margin
+    informal_statement: "For a nonnegative one-channel frequency and positive full turn, a finite nearest-integer certificate object is equivalent to ruling out every in-context real near-turn event below the corresponding scaled tolerance."
+    formal_statement: "forall {frequency fullTurn margin : Real} {context : Nat}, 0 <= frequency -> 0 < fullTurn -> (Circle.Applications.RopeTurnRatioFiniteMarginCertificate (frequency / fullTurn) margin context <-> forall tolerance : Real, tolerance < fullTurn * margin -> forall left right : Nat, left < right -> right < context -> not (Circle.Applications.ropeRealPhaseNearTurn frequency fullTurn tolerance left right))"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_real_phase_nat_turn_error_matches_endpoint_precursor_shape
+        - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
+    blocker: ""
+  - id: AIRA-T0197
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_finiteMarginCertificate_le_context_margin
+    informal_statement: "A finite nearest-integer certificate for one channel rules out all-channel real near-turn events for any frequency bank containing that channel, after downgrading to a smaller requested context and margin."
+    formal_statement: "forall {frequencies : List Real} {frequency fullTurn requestedMargin certifiedMargin tolerance : Real} {requestedContext certifiedContext left right : Nat}, requestedContext <= certifiedContext -> requestedMargin <= certifiedMargin -> frequency in frequencies -> left < right -> right < requestedContext -> 0 <= frequency -> 0 < fullTurn -> Circle.Applications.RopeTurnRatioFiniteMarginCertificate (frequency / fullTurn) certifiedMargin certifiedContext -> tolerance < fullTurn * requestedMargin -> not (Circle.Applications.ropeRealPhaseBankNearTurn frequencies fullTurn tolerance left right)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_real_phase_nat_turn_error_matches_endpoint_precursor_shape
+        - tests/test_rope_certifier.py::test_standard_channel0_interval_seed_reports_frontier
+    blocker: ""
   - id: AIRA-T0061
     status: lean_proved
     lean_name: Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin

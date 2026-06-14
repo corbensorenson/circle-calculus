@@ -3750,6 +3750,25 @@ theorem ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin
     exact
       (hnoNear tolerance htolerance 0 gap hgap_pos hgap_context) hnear
 
+/-- A finite nearest-integer certificate is equivalent to the one-channel
+no-near-turn contract below the corresponding scaled margin.
+
+This is the report-facing certificate bridge: a Python or Living Book report
+can cite a finite nearest-integer certificate object, and this theorem states
+exactly the real-phase no-near-turn property that the object certifies. -/
+theorem ropeTurnRatioFiniteMarginCertificate_iff_no_nearTurn_below_scaled_margin
+    {frequency fullTurn margin : ℝ} {context : Nat}
+    (hfrequency_nonneg : 0 ≤ frequency) (hfull_pos : 0 < fullTurn) :
+    RopeTurnRatioFiniteMarginCertificate (frequency / fullTurn) margin context ↔
+      ∀ tolerance : ℝ, tolerance < fullTurn * margin →
+        ∀ left right : Nat, left < right → right < context →
+          ¬ ropeRealPhaseNearTurn frequency fullTurn tolerance left right := by
+  rw [ropeTurnRatioFiniteMarginCertificate_iff_finiteMargin]
+  exact
+    ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin
+      (frequency := frequency) (fullTurn := fullTurn) (margin := margin)
+      (context := context) hfrequency_nonneg hfull_pos
+
 /-- The named rational/discretized preset certificate rules out one-channel
 near-turn collisions below its certified margin. -/
 theorem not_ropeRationalPreset4099_nearTurn
@@ -4130,6 +4149,35 @@ theorem not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_co
     (ropeTurnRatioFiniteMargin_mono_context hcontext
       (ropeTurnRatioFiniteMargin_mono_margin hmargin_le hmargin))
     htolerance
+
+/-- A finite nearest-integer certificate for one channel can be reused as a
+bank-level no-near-turn certificate for any smaller requested context and
+advertised margin.
+
+This is the finite-certificate version of the one-separating-channel bank
+bridge: if a frequency bank contains a channel with a proof-carrying
+nearest-integer certificate, then an all-channel near-turn event is impossible
+below the scaled requested margin. -/
+theorem not_ropeRealPhaseBankNearTurn_of_one_channel_finiteMarginCertificate_le_context_margin
+    {frequencies : List ℝ} {frequency fullTurn requestedMargin certifiedMargin tolerance : ℝ}
+    {requestedContext certifiedContext left right : Nat}
+    (hcontext : requestedContext ≤ certifiedContext)
+    (hmargin_le : requestedMargin ≤ certifiedMargin)
+    (hmem : frequency ∈ frequencies)
+    (hleft : left < right) (hright : right < requestedContext)
+    (hfrequency_nonneg : 0 ≤ frequency) (hfull_pos : 0 < fullTurn)
+    (certificate :
+      RopeTurnRatioFiniteMarginCertificate
+        (frequency / fullTurn) certifiedMargin certifiedContext)
+    (htolerance : tolerance < fullTurn * requestedMargin) :
+    ¬ ropeRealPhaseBankNearTurn frequencies fullTurn tolerance left right :=
+  not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin
+    (frequencies := frequencies) (frequency := frequency) (fullTurn := fullTurn)
+    (requestedMargin := requestedMargin) (certifiedMargin := certifiedMargin)
+    (tolerance := tolerance) (requestedContext := requestedContext)
+    (certifiedContext := certifiedContext) (left := left) (right := right)
+    hcontext hmargin_le hmem hleft hright hfrequency_nonneg hfull_pos
+    certificate.certifies htolerance
 
 /-- The context-`4096` standard channel-0 interval seed can be used as a
 bank-level no-near-turn certificate whenever that channel frequency is present.

@@ -152,6 +152,8 @@ def test_real_phase_nat_turn_error_matches_endpoint_precursor_shape() -> None:
     assert "AIRA-T0057" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0178" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0181" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0196" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0197" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
 def test_real_phase_turn_separation_rules_out_smaller_near_turn() -> None:
@@ -366,6 +368,7 @@ def test_named_rational_turn_ratio_certificate_is_theorem_backed() -> None:
     assert "AIRA-T0061" in certificate.theorem_ids
     assert "AIRA-T0185" in certificate.theorem_ids
     assert "AIRA-T0187" in certificate.theorem_ids
+    assert "AIRA-T0196" in certificate.theorem_ids
     assert "AIRA-T0062" in certificate.theorem_ids
     scanned_margin, gap, turns = scan_turn_ratio_finite_margin(
         turn_ratio=certificate.turn_ratio,
@@ -2510,6 +2513,7 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert "Exact weakest gap margin" in markdown_result.stdout
     assert "1/4099" in markdown_result.stdout
     assert "AIRA-T0182, AIRA-T0183" in markdown_result.stdout
+    assert "AIRA-T0196" in markdown_result.stdout
     assert "Named Standard RoPE Interval Seed" in markdown_result.stdout
     assert "Standard RoPE D12 Bank Bridge Request" in markdown_result.stdout
     assert "AIRA-T0123, AIRA-T0124" in markdown_result.stdout
