@@ -149,6 +149,24 @@ def ropePeriodBankLCM : List Nat → Nat
   | [] => 1
   | period :: rest => Nat.lcm period (ropePeriodBankLCM rest)
 
+/-- A declared positive-period bank has a positive least common multiple.
+
+The Python certifier rejects zero periods. This theorem is the Lean-side guard
+that turns that input validation into the positive-LCM precondition required by
+the exact collision-witness and collision-count theorems. -/
+theorem ropePeriodBankLCM_pos_of_forall_mem_pos
+    {periods : List Nat} (hperiods : ∀ period, period ∈ periods → 0 < period) :
+    0 < ropePeriodBankLCM periods := by
+  induction periods with
+  | nil =>
+      simp [ropePeriodBankLCM]
+  | cons period rest ih =>
+      apply Nat.lcm_pos
+      · exact hperiods period (by simp)
+      · exact ih (by
+          intro p hp
+          exact hperiods p (by simp [hp]))
+
 /-- There is at least one ordered pair separated by `gap` inside a context iff
 the gap is strictly smaller than the context. -/
 theorem ropeCollisionPairCountAtGap_pos_iff {context gap : Nat} :

@@ -2437,6 +2437,21 @@ theorems:
         - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
         - tests/test_rope_certifier.py::test_rope_certify_cli_emits_json_certificate
     blocker: ""
+  - id: AIRA-T0179
+    status: lean_proved
+    lean_name: Circle.Applications.ropePeriodBankLCM_pos_of_forall_mem_pos
+    informal_statement: "If every declared integer period in a RoPE phase bank is positive, then the period-bank LCM is positive."
+    formal_statement: "forall {periods : List Nat}, (forall period, period in periods -> 0 < period) -> 0 < Circle.Applications.ropePeriodBankLCM periods"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context
+    blocker: ""
   - id: AIRA-T0046
     status: lean_proved
     lean_name: Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context
