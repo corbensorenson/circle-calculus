@@ -172,6 +172,57 @@ def compact_phase_bank_certificate(certificate: Any) -> dict[str, Any]:
     }
 
 
+def standard_channel0_frontier_summary(standard_plans: tuple[dict[str, Any], ...]) -> dict[str, Any]:
+    proved_same_margin = [
+        plan
+        for plan in standard_plans
+        if plan["planned_margin"] == "1/104219"
+        and plan["theorem_status"].startswith("lean_proved_interval_seed")
+    ]
+    candidate_same_margin = [
+        plan
+        for plan in standard_plans
+        if plan["planned_margin"] == "1/104219"
+        and plan["theorem_status"] == "candidate_plan_not_lean_proved"
+    ]
+    full_candidate_contexts = tuple(
+        plan["context_length"]
+        for plan in candidate_same_margin
+        if plan["first_uncovered_gap"] is None
+    )
+    frontier_gaps = tuple(
+        plan["first_uncovered_gap"]
+        for plan in candidate_same_margin
+        if plan["first_uncovered_gap"] is not None
+    )
+    proved_context = max((plan["context_length"] for plan in proved_same_margin), default=0)
+    proved_plan = next(
+        (plan for plan in proved_same_margin if plan["context_length"] == proved_context),
+        None,
+    )
+    return {
+        "schema_id": "circle_calculus.standard_rope_channel0_frontier_summary.v0",
+        "proved_margin": "1/104219",
+        "proved_context": proved_context,
+        "proved_theorem_status": (
+            None if proved_plan is None else proved_plan["theorem_status"]
+        ),
+        "candidate_full_contexts": full_candidate_contexts,
+        "candidate_first_uncovered_gaps": frontier_gaps,
+        "frontier_status": "candidate_plan_not_lean_proved",
+        "summary": (
+            "Lean currently proves standard channel-0 margin 1/104219 through "
+            f"context {proved_context}. The exact-rational planner also covers "
+            f"contexts {full_candidate_contexts} at the same margin and first "
+            f"fails at gaps {frontier_gaps}, but those rows are not Lean proofs."
+        ),
+        "claim_boundary": (
+            "This is a derived sidecar summary of proved and candidate interval "
+            "plans. It does not upgrade candidate rows to theorem-backed status."
+        ),
+    }
+
+
 def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
     certificates = []
     for preset in presets:
@@ -193,6 +244,53 @@ def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
                 "certificate": compact_phase_bank_certificate(certificate),
             }
         )
+    standard_plans = (
+        compact_interval_plan(plan_standard_channel0_interval_bands(
+            pi_bound_preset="d4",
+            margin=Fraction(1, 512),
+            max_context_length=4096,
+        )),
+        compact_interval_plan(plan_standard_channel0_interval_bands(
+            pi_bound_preset="d6",
+            margin=Fraction(1, 1024),
+            max_context_length=4096,
+        )),
+        compact_interval_plan(plan_standard_channel0_interval_bands(
+            pi_bound_preset="d20",
+            margin=Fraction(1, 104219),
+            max_context_length=4096,
+        )),
+        compact_interval_plan(plan_standard_channel0_interval_bands(
+            pi_bound_preset="d20",
+            margin=Fraction(1, 104220),
+            max_context_length=8192,
+        )),
+        compact_interval_plan(plan_standard_channel0_interval_bands(
+            pi_bound_preset="d20",
+            margin=Fraction(1, 104219),
+            max_context_length=8192,
+        )),
+        compact_interval_plan(plan_standard_channel0_interval_bands(
+            pi_bound_preset="d20",
+            margin=Fraction(1, 104219),
+            max_context_length=16384,
+        )),
+        compact_interval_plan(plan_standard_channel0_interval_bands(
+            pi_bound_preset="d20",
+            margin=Fraction(1, 104219),
+            max_context_length=32768,
+        )),
+        compact_interval_plan(plan_standard_channel0_interval_bands(
+            pi_bound_preset="d20",
+            margin=Fraction(1, 104219),
+            max_context_length=65536,
+        )),
+        compact_interval_plan(plan_standard_channel0_interval_bands(
+            pi_bound_preset="d20",
+            margin=Fraction(1, 104219),
+            max_context_length=131072,
+        )),
+    )
     return {
         "schema_id": "circle_calculus.rope_certifier_preset_results.v0",
         "claim_boundary": (
@@ -220,53 +318,8 @@ def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
             requested_margin=Fraction(1, 104219),
         ).to_dict(),
         "standard_d14_margin_bracket": certify_standard_channel0_d14_margin_bracket().to_dict(),
-        "standard_interval_candidate_plans": (
-            compact_interval_plan(plan_standard_channel0_interval_bands(
-                pi_bound_preset="d4",
-                margin=Fraction(1, 512),
-                max_context_length=4096,
-            )),
-            compact_interval_plan(plan_standard_channel0_interval_bands(
-                pi_bound_preset="d6",
-                margin=Fraction(1, 1024),
-                max_context_length=4096,
-            )),
-            compact_interval_plan(plan_standard_channel0_interval_bands(
-                pi_bound_preset="d20",
-                margin=Fraction(1, 104219),
-                max_context_length=4096,
-            )),
-            compact_interval_plan(plan_standard_channel0_interval_bands(
-                pi_bound_preset="d20",
-                margin=Fraction(1, 104220),
-                max_context_length=8192,
-            )),
-            compact_interval_plan(plan_standard_channel0_interval_bands(
-                pi_bound_preset="d20",
-                margin=Fraction(1, 104219),
-                max_context_length=8192,
-            )),
-            compact_interval_plan(plan_standard_channel0_interval_bands(
-                pi_bound_preset="d20",
-                margin=Fraction(1, 104219),
-                max_context_length=16384,
-            )),
-            compact_interval_plan(plan_standard_channel0_interval_bands(
-                pi_bound_preset="d20",
-                margin=Fraction(1, 104219),
-                max_context_length=32768,
-            )),
-            compact_interval_plan(plan_standard_channel0_interval_bands(
-                pi_bound_preset="d20",
-                margin=Fraction(1, 104219),
-                max_context_length=65536,
-            )),
-            compact_interval_plan(plan_standard_channel0_interval_bands(
-                pi_bound_preset="d20",
-                margin=Fraction(1, 104219),
-                max_context_length=131072,
-            )),
-        ),
+        "standard_channel0_frontier_summary": standard_channel0_frontier_summary(standard_plans),
+        "standard_interval_candidate_plans": standard_plans,
         "presets": certificates,
         "phase_bank_diagnostics": phase_bank_diagnostics,
     }
@@ -316,6 +369,7 @@ def markdown_results(payload: dict[str, Any]) -> str:
     standard_d13_bracket = payload["standard_d13_margin_bracket"]
     standard_d14_bank = payload["standard_d14_bank_bridge_request"]
     standard_d14_bracket = payload["standard_d14_margin_bracket"]
+    frontier = payload["standard_channel0_frontier_summary"]
     standard_plans = payload["standard_interval_candidate_plans"]
     rows = [
         "| Preset | Head dim | Base | Context | Exact discrete | Common collision gap | Common-gap pairs | Total bank pairs | First pass prefix | Smallest pass subfamily | Real margin | Worst gap | Theorem ids |",
@@ -558,6 +612,21 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             standard_d14_bracket["claim_boundary"],
             "",
+            "## Standard Channel-0 Frontier Summary",
+            "",
+            "| Proved margin | Proved context | Proved status | Candidate full contexts | Candidate first uncovered gaps | Frontier status |",
+            "| ---: | ---: | --- | --- | --- | --- |",
+            "| {proved_margin} | {proved_context} | {proved_status} | {candidate_contexts} | {frontier_gaps} | {frontier_status} |".format(
+                proved_margin=frontier["proved_margin"],
+                proved_context=frontier["proved_context"],
+                proved_status=frontier["proved_theorem_status"],
+                candidate_contexts=", ".join(str(context) for context in frontier["candidate_full_contexts"]),
+                frontier_gaps=", ".join(str(gap) for gap in frontier["candidate_first_uncovered_gaps"]),
+                frontier_status=frontier["frontier_status"],
+            ),
+            "",
+            frontier["claim_boundary"],
+            "",
             "## Standard RoPE Candidate Interval Plans",
             "",
             "These exact-rational plans are generated source data for Lean interval certificates. The d4 context-333, d6 context-710, d20 context-4096, d20 context-8192, and d20 context-16384 plans listed here are now matched by compiled Lean declarations; the 32k, 64k, and 128k-frontier rows are candidate-only until matching declarations compile and manifest ids exist.",
@@ -695,6 +764,21 @@ def main() -> None:
                     )
                 )
                 print(f"theorem_ids={','.join(standard_d14_bracket['theorem_ids'])}")
+                frontier = payload["standard_channel0_frontier_summary"]
+                print()
+                print("standard_channel0_frontier_summary")
+                print(
+                    "proved_margin={proved_margin} proved_context={proved_context} "
+                    "candidate_full_contexts={candidate_contexts} "
+                    "candidate_first_uncovered_gaps={frontier_gaps} "
+                    "status={status}".format(
+                        proved_margin=frontier["proved_margin"],
+                        proved_context=frontier["proved_context"],
+                        candidate_contexts=tuple(frontier["candidate_full_contexts"]),
+                        frontier_gaps=tuple(frontier["candidate_first_uncovered_gaps"]),
+                        status=frontier["frontier_status"],
+                    )
+                )
                 for plan in payload["standard_interval_candidate_plans"]:
                     print(
                         "candidate_interval_plan={name} context={context} "

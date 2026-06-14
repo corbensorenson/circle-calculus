@@ -1480,6 +1480,24 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
         "AIRA-T0118",
         "AIRA-T0138",
     ]
+    assert payload["standard_channel0_frontier_summary"]["proved_margin"] == "1/104219"
+    assert payload["standard_channel0_frontier_summary"]["proved_context"] == 16384
+    assert payload["standard_channel0_frontier_summary"]["proved_theorem_status"] == (
+        "lean_proved_interval_seed_AIRA-T0133_to_AIRA-T0135"
+    )
+    assert payload["standard_channel0_frontier_summary"]["candidate_full_contexts"] == [
+        32768,
+        65536,
+    ]
+    assert payload["standard_channel0_frontier_summary"]["candidate_first_uncovered_gaps"] == [
+        103993,
+    ]
+    assert payload["standard_channel0_frontier_summary"]["frontier_status"] == (
+        "candidate_plan_not_lean_proved"
+    )
+    assert "does not upgrade candidate rows" in (
+        payload["standard_channel0_frontier_summary"]["claim_boundary"]
+    )
     assert payload["standard_interval_candidate_plans"][0]["context_length"] == 333
     assert "bands" not in payload["standard_interval_candidate_plans"][0]
     assert payload["standard_interval_candidate_plans"][0]["first_band"]["start_gap"] == 1
@@ -1580,6 +1598,8 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert "AIRA-T0136, AIRA-T0137" in markdown_result.stdout
     assert "Standard RoPE D14 Margin Bracket" in markdown_result.stdout
     assert "AIRA-T0133, AIRA-T0134, AIRA-T0118, AIRA-T0138" in markdown_result.stdout
+    assert "Standard Channel-0 Frontier Summary" in markdown_result.stdout
+    assert "| 1/104219 | 16384 | lean_proved_interval_seed_AIRA-T0133_to_AIRA-T0135 | 32768, 65536 | 103993 | candidate_plan_not_lean_proved |" in markdown_result.stdout
     assert "Standard RoPE Candidate Interval Plans" in markdown_result.stdout
     assert "lean_proved_interval_seed_AIRA-T0090_to_AIRA-T0094" in markdown_result.stdout
     assert "lean_proved_interval_seed_AIRA-T0111_to_AIRA-T0114" in markdown_result.stdout

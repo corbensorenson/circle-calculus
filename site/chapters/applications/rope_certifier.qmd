@@ -327,7 +327,7 @@ d20_64k_plan.theorem_status # candidate_plan_not_lean_proved
 d20_128k_frontier_plan.first_uncovered_gap # 103993
 ```
 
-The d4, d6, conservative d20, tighter d20, sharp 4k d20, weaker 8k d20, sharp 8k d20, and sharp 16k d20 plans are now source tables for compiled Lean declarations. The 32k and 64k rows are exact-rational candidate plans at the same margin, while the 128k request reaches first uncovered gap `103993`; none of those frontier rows is a proof until matching Lean declarations compile and manifest ids are marked proved. Each emitted band also records the lower endpoint value, upper endpoint value, whether the endpoint cell-margin check passes, and `bridge_theorem_id = AIRA-T0126`.
+The d4, d6, conservative d20, tighter d20, sharp 4k d20, weaker 8k d20, sharp 8k d20, and sharp 16k d20 plans are now source tables for compiled Lean declarations. The sidecar now emits a `standard_channel0_frontier_summary`: Lean-proved standard channel-0 margin `1/104219` reaches context `16384`; the exact-rational planner covers `32768` and `65536` at the same margin; and the larger request first fails at gap `103993`. The latter frontier rows are not proofs until matching Lean declarations compile and manifest ids are marked proved. Each emitted band also records the lower endpoint value, upper endpoint value, whether the endpoint cell-margin check passes, and `bridge_theorem_id = AIRA-T0126`.
 
 Read one band like this:
 

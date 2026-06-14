@@ -3515,6 +3515,22 @@
     "zero_margin_witness": null
   },
   "schema_id": "circle_calculus.rope_certifier_preset_results.v0",
+  "standard_channel0_frontier_summary": {
+    "candidate_first_uncovered_gaps": [
+      103993
+    ],
+    "candidate_full_contexts": [
+      32768,
+      65536
+    ],
+    "claim_boundary": "This is a derived sidecar summary of proved and candidate interval plans. It does not upgrade candidate rows to theorem-backed status.",
+    "frontier_status": "candidate_plan_not_lean_proved",
+    "proved_context": 16384,
+    "proved_margin": "1/104219",
+    "proved_theorem_status": "lean_proved_interval_seed_AIRA-T0133_to_AIRA-T0135",
+    "schema_id": "circle_calculus.standard_rope_channel0_frontier_summary.v0",
+    "summary": "Lean currently proves standard channel-0 margin 1/104219 through context 16384. The exact-rational planner also covers contexts (32768, 65536) at the same margin and first fails at gaps (103993,), but those rows are not Lean proofs."
+  },
   "standard_d12_bank_bridge_request": {
     "assumptions": [
       "The finite real-phase bank has standard channel 0 as its first channel.",

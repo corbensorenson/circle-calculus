@@ -66,6 +66,14 @@ This is a conditional one-separating-channel bank certificate based on standard 
 
 This is a 16k one-channel standard-RoPE bracket. It is not a full all-channel bank margin theorem, not a 128k certificate, and it does not decide margins strictly between 1/104219 and 1/104218.
 
+## Standard Channel-0 Frontier Summary
+
+| Proved margin | Proved context | Proved status | Candidate full contexts | Candidate first uncovered gaps | Frontier status |
+| ---: | ---: | --- | --- | --- | --- |
+| 1/104219 | 16384 | lean_proved_interval_seed_AIRA-T0133_to_AIRA-T0135 | 32768, 65536 | 103993 | candidate_plan_not_lean_proved |
+
+This is a derived sidecar summary of proved and candidate interval plans. It does not upgrade candidate rows to theorem-backed status.
+
 ## Standard RoPE Candidate Interval Plans
 
 These exact-rational plans are generated source data for Lean interval certificates. The d4 context-333, d6 context-710, d20 context-4096, d20 context-8192, and d20 context-16384 plans listed here are now matched by compiled Lean declarations; the 32k, 64k, and 128k-frontier rows are candidate-only until matching declarations compile and manifest ids exist.
