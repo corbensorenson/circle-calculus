@@ -39,6 +39,7 @@
       "covered_uncovered_count_partition": true,
       "covered_uncovered_count_sum": 119,
       "deduplicated_candidate_budget_upper_bound": 10,
+      "first_uncovered_lag": 5,
       "fixture_theorem_ids": [
         "AIT-T0084",
         "AIT-T0085",
@@ -126,7 +127,8 @@
         "AIT-T0092",
         "AIT-T0093",
         "AIT-T0094",
-        "AIT-T0095"
+        "AIT-T0095",
+        "AIT-T0096"
       ],
       "theorem_side_coil_residues_no_collision": true,
       "theorem_side_lag_candidates": [
@@ -160,6 +162,8 @@
       "theorem_side_query_candidates_no_collision": true,
       "theorem_side_unique_lag_candidate_count": 10,
       "theorem_side_unique_query_candidate_count": 10,
+      "uncovered_count_positive": true,
+      "uncovered_count_positive_matches_gap_witness": true,
       "uncovered_lag_count": 109,
       "uncovered_lag_interval_count": 6,
       "uncovered_lag_intervals": [
@@ -355,6 +359,7 @@
     "covered_uncovered_count_partition": true,
     "covered_uncovered_count_sum": 8,
     "deduplicated_candidate_budget_upper_bound": 8,
+    "first_uncovered_lag": null,
     "fixture_theorem_ids": [
       "AIT-T0086",
       "AIT-T0087",
@@ -444,7 +449,8 @@
       "AIT-T0092",
       "AIT-T0093",
       "AIT-T0094",
-      "AIT-T0095"
+      "AIT-T0095",
+      "AIT-T0096"
     ],
     "theorem_side_coil_residues_no_collision": true,
     "theorem_side_lag_candidates": [
@@ -474,6 +480,8 @@
     "theorem_side_query_candidates_no_collision": true,
     "theorem_side_unique_lag_candidate_count": 8,
     "theorem_side_unique_query_candidate_count": 8,
+    "uncovered_count_positive": false,
+    "uncovered_count_positive_matches_gap_witness": true,
     "uncovered_lag_count": 0,
     "uncovered_lag_interval_count": 0,
     "uncovered_lag_intervals": [],
@@ -493,7 +501,8 @@
         "AIT-T0092",
         "AIT-T0093",
         "AIT-T0094",
-        "AIT-T0095"
+        "AIT-T0095",
+        "AIT-T0096"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.08403361344537816,
@@ -515,6 +524,7 @@
       "covered_uncovered_count_sum": 119,
       "deduplicated_candidate_budget_upper_bound": 10,
       "description": "Small public gappy fixture used by the theorem-side gap witnesses.",
+      "first_uncovered_lag": 5,
       "fixture_theorem_ids": [
         "AIT-T0084",
         "AIT-T0085",
@@ -536,6 +546,8 @@
         7,
         13
       ],
+      "uncovered_count_positive": true,
+      "uncovered_count_positive_matches_gap_witness": true,
       "uncovered_lag_count": 109,
       "uncovered_lag_interval_count": 6,
       "uncovered_lag_interval_sample": [
@@ -604,7 +616,8 @@
         "AIT-T0092",
         "AIT-T0093",
         "AIT-T0094",
-        "AIT-T0095"
+        "AIT-T0095",
+        "AIT-T0096"
       ],
       "coverage_complete": true,
       "coverage_ratio": 1.0,
@@ -624,6 +637,7 @@
       "covered_uncovered_count_sum": 8,
       "deduplicated_candidate_budget_upper_bound": 8,
       "description": "Compact complete-coverage fixture with an empty uncovered-lag list.",
+      "first_uncovered_lag": null,
       "fixture_theorem_ids": [
         "AIT-T0086",
         "AIT-T0087",
@@ -647,6 +661,8 @@
         4,
         7
       ],
+      "uncovered_count_positive": false,
+      "uncovered_count_positive_matches_gap_witness": true,
       "uncovered_lag_count": 0,
       "uncovered_lag_interval_count": 0,
       "uncovered_lag_interval_sample": [],
@@ -665,7 +681,8 @@
         "AIT-T0092",
         "AIT-T0093",
         "AIT-T0094",
-        "AIT-T0095"
+        "AIT-T0095",
+        "AIT-T0096"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.010744810744810745,
@@ -701,6 +718,7 @@
       "covered_uncovered_count_sum": 4095,
       "deduplicated_candidate_budget_upper_bound": 44,
       "description": "4096-token probe with separated strides; useful for inspecting exact raw-budget preservation without implying broad coverage.",
+      "first_uncovered_lag": 33,
       "fixture_theorem_ids": [],
       "full_attention_budget": 4096,
       "local_coil_disjoint": true,
@@ -719,6 +737,8 @@
         320,
         1500
       ],
+      "uncovered_count_positive": true,
+      "uncovered_count_positive_matches_gap_witness": true,
       "uncovered_lag_count": 4051,
       "uncovered_lag_interval_count": 13,
       "uncovered_lag_interval_sample": [
@@ -811,7 +831,8 @@
         "AIT-T0092",
         "AIT-T0093",
         "AIT-T0094",
-        "AIT-T0095"
+        "AIT-T0095",
+        "AIT-T0096"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.011720180686118912,
@@ -847,6 +868,7 @@
       "covered_uncovered_count_sum": 8191,
       "deduplicated_candidate_budget_upper_bound": 96,
       "description": "8192-token probe with coprime-style separated long strides; useful for budget and gap inspection on a larger declared context.",
+      "first_uncovered_lag": 65,
       "fixture_theorem_ids": [],
       "full_attention_budget": 8192,
       "local_coil_disjoint": true,
@@ -866,6 +888,8 @@
         1021,
         2039
       ],
+      "uncovered_count_positive": true,
+      "uncovered_count_positive_matches_gap_witness": true,
       "uncovered_lag_count": 8095,
       "uncovered_lag_interval_count": 32,
       "uncovered_lag_interval_sample": [

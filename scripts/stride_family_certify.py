@@ -108,6 +108,13 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             "theorem=AIT-T0095"
         ),
         (
+            "uncovered_count_witness="
+            f"{payload['uncovered_count_positive_matches_gap_witness']} "
+            f"positive={payload['uncovered_count_positive']} "
+            f"first_gap={payload['first_uncovered_lag']} "
+            "theorem=AIT-T0096"
+        ),
+        (
             "candidate_budget_per_query="
             f"{payload['candidate_budget_per_query']} "
             f"raw_upper_bound={payload['raw_candidate_budget_upper_bound']} "

@@ -41,6 +41,10 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     ) in result.stdout
     assert "covered_count_complete=False theorem=AIT-T0095" in result.stdout
     assert (
+        "uncovered_count_witness=True positive=True first_gap=5 theorem=AIT-T0096"
+        in result.stdout
+    )
+    assert (
         "uncovered_lag_intervals=((5, 6), (8, 12), (15, 20), "
         "(22, 25), (27, 38), (40, 119))"
     ) in result.stdout
@@ -56,6 +60,9 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     assert payload["coverage_complete"] is False
     assert payload["covered_lags"] == [1, 2, 3, 4, 7, 14, 21, 13, 26, 39]
     assert payload["positive_lag_count"] == 119
+    assert payload["uncovered_count_positive"] is True
+    assert payload["first_uncovered_lag"] == 5
+    assert payload["uncovered_count_positive_matches_gap_witness"] is True
     assert payload["covered_uncovered_count_sum"] == 119
     assert payload["covered_uncovered_count_partition"] is True
     assert payload["covered_count_certifies_complete"] is False
@@ -78,4 +85,5 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     assert "AIT-T0093" in payload["theorem_ids"]
     assert "AIT-T0094" in payload["theorem_ids"]
     assert "AIT-T0095" in payload["theorem_ids"]
+    assert "AIT-T0096" in payload["theorem_ids"]
     assert payload["fixture_theorem_ids"] == ["AIT-T0084", "AIT-T0085", "AIT-T0091"]

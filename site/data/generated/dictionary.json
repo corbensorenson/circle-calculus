@@ -5069,6 +5069,12 @@
           "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
           "name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0096",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5614,6 +5620,12 @@
           "id": "AIT-T0095",
           "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
           "name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0096",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
           "status": "proved"
         }
       ],
@@ -7029,6 +7041,12 @@
           "id": "AIT-T0095",
           "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
           "name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0096",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
           "status": "proved"
         }
       ],
@@ -11529,6 +11547,12 @@
           "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
           "name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0096",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -14072,6 +14096,12 @@
           "id": "AIT-T0095",
           "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
           "name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0096",
+          "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
+          "name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
           "status": "proved"
         }
       ],

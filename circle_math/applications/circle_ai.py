@@ -807,6 +807,9 @@ class StrideFamilyCoverageCertificate:
     uncovered_lag_intervals: tuple[tuple[int, int], ...]
     covered_lag_count: int
     uncovered_lag_count: int
+    uncovered_count_positive: bool
+    first_uncovered_lag: Optional[int]
+    uncovered_count_positive_matches_gap_witness: bool
     positive_lag_count: int
     covered_uncovered_count_sum: int
     covered_uncovered_count_partition: bool
@@ -901,6 +904,7 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0093",
         "AIT-T0094",
         "AIT-T0095",
+        "AIT-T0096",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -2638,6 +2642,7 @@ def certify_stride_family_coverage(
     ))
     positive_lag_count = max(0, sequence_length - 1)
     uncovered_intervals = consecutive_integer_intervals(uncovered)
+    first_uncovered_lag = uncovered[0] if uncovered else None
     return StrideFamilyCoverageCertificate(
         sequence_length=sequence_length,
         strides=normalized_strides,
@@ -2648,6 +2653,11 @@ def certify_stride_family_coverage(
         uncovered_lag_intervals=uncovered_intervals,
         covered_lag_count=len(covered),
         uncovered_lag_count=len(uncovered),
+        uncovered_count_positive=len(uncovered) > 0,
+        first_uncovered_lag=first_uncovered_lag,
+        uncovered_count_positive_matches_gap_witness=(
+            (len(uncovered) > 0) == (first_uncovered_lag is not None)
+        ),
         positive_lag_count=positive_lag_count,
         covered_uncovered_count_sum=len(covered) + len(uncovered),
         covered_uncovered_count_partition=(

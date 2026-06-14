@@ -936,6 +936,25 @@ theorem hybridFamilyCoversContext_iff_uncoveredLagList_length_eq_zero
   rw [hybridFamilyCoversContext_iff_uncoveredLagList_eq_nil,
     List.length_eq_zero_iff]
 
+/-- A positive uncovered-lag count is equivalent to the existence of a semantic
+uncovered positive in-context lag.
+
+This is the witness side of the sparse-attention gap-count certificate: a
+nonzero uncovered count is not just a reporting artifact; it exists exactly
+when there is a concrete positive lag below the context length that the
+declared local-window plus stride-family plan cannot reach. -/
+theorem hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag
+    {n window pathLength : Nat} {strides : List Nat} :
+    0 < (hybridFamilyUncoveredLagList n window pathLength strides).length ↔
+      ∃ lag, 1 ≤ lag ∧ lag < n ∧
+        ¬ hybridFamilyLagReach n window pathLength lag strides := by
+  rw [List.length_pos_iff_exists_mem]
+  constructor
+  · rintro ⟨lag, hmem⟩
+    exact ⟨lag, (mem_hybridFamilyUncoveredLagList_iff).1 hmem⟩
+  · rintro ⟨lag, hgap⟩
+    exact ⟨lag, (mem_hybridFamilyUncoveredLagList_iff).2 hgap⟩
+
 /-- Complete sparse-attention coverage is equivalent to the finite covered-lag
 count reaching the full positive-lag count `n - 1`.
 
