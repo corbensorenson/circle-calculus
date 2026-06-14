@@ -771,6 +771,22 @@ theorem not_ropeTurnRatioFiniteMargin_of_error_lt_margin
   have hcertifies_gap := hmargin gap hgap_pos hgap_context turns
   linarith
 
+/-- Failing a finite-context turn-ratio margin is exactly the existence of one
+positive in-context gap and integer-turn witness whose error is below the
+advertised margin.
+
+This is the bidirectional negative-certificate contract behind obstruction
+reports: an executable witness is not merely suggestive, and every failure of
+the abstract finite-margin predicate has such a witness. -/
+theorem not_ropeTurnRatioFiniteMargin_iff_exists_error_lt_margin
+    {turnRatio margin : ℝ} {context : Nat} :
+    ¬ ropeTurnRatioFiniteMargin turnRatio margin context ↔
+      ∃ gap : Nat, 0 < gap ∧ gap < context ∧
+        ∃ turns : Int, ropeTurnRatioError turnRatio gap turns < margin := by
+  rw [ropeTurnRatioFiniteMargin]
+  push Not
+  rfl
+
 /-- The finite-context margin predicate is exactly the same as checking every
 positive gap in the generated context range.
 

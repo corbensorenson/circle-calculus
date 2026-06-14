@@ -2902,6 +2902,20 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
     blocker: ""
+  - id: AIRA-T0178
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropeTurnRatioFiniteMargin_iff_exists_error_lt_margin
+    informal_statement: "A finite-context turn-ratio margin fails exactly when some positive in-context gap and integer-turn witness has error below the advertised margin."
+    formal_statement: "forall {turnRatio margin : Real} {context : Nat}, not (Circle.Applications.ropeTurnRatioFiniteMargin turnRatio margin context) <-> exists gap : Nat, 0 < gap and gap < context and exists turns : Int, Circle.Applications.ropeTurnRatioError turnRatio gap turns < margin"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_interval_seed_reports_frontier
+    blocker: ""
   - id: AIRA-T0061
     status: lean_proved
     lean_name: Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin
