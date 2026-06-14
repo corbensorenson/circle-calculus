@@ -31,6 +31,7 @@ stride_family_contract=GAPS context=120 strides=(7, 13) path_length=3 local_wind
 covered_lags=10 uncovered_lags=109 uncovered_intervals=6 coverage_ratio=0.084034
 lag_partition=covered_plus_uncovered=119 positive_lags=119 partition_complete=True theorem=AIT-T0094
 covered_count_complete=False theorem=AIT-T0095
+first_uncovered_lag_bridge=list_head=True none_iff_complete=True semantic_miss=True theorems=AIT-T0098,AIT-T0099,AIT-T0100,AIT-T0101
 uncovered_count_witness=True positive=True first_gap=5 theorem=AIT-T0096
 covered_count_shortfall=True gap_witness_equiv=True theorem=AIT-T0097
 uncovered_lag_intervals=((5, 6), (8, 12), (15, 20), (22, 25), (27, 38), (40, 119))
@@ -89,10 +90,15 @@ The finite-list endpoints are:
 - `AIT-T0095`: complete coverage is equivalent to the covered-lag count equaling `n - 1`.
 - `AIT-T0096`: a positive uncovered-lag count is equivalent to the existence of a concrete uncovered positive lag.
 - `AIT-T0097`: covered-lag count below `n - 1` is equivalent to the existence of a concrete uncovered positive lag.
+- `AIT-T0098`: no first uncovered lag is equivalent to an empty uncovered-lag list.
+- `AIT-T0099`: complete coverage is equivalent to no first uncovered lag.
+- `AIT-T0100`: a reported first uncovered lag is exactly the head of the uncovered-lag list.
+- `AIT-T0101`: a reported first uncovered lag is a genuine positive in-context miss.
+- `AIT-T0102`: the default `C_120`, local window `4`, path length `3`, strides `[7,13]` fixture has first uncovered lag `5`.
 
 The gap/coverage spine is `AIT-T0020` through `AIT-T0035`. The theorem-side candidate-list,
 budget, no-collision, and predecessor-indexing spine is `AIT-T0036` through `AIT-T0077`.
-The finite uncovered/covered list and count-partition spine is `AIT-T0078` through `AIT-T0097`.
+The finite uncovered/covered list, count-partition, and first-gap spine is `AIT-T0078` through `AIT-T0102`.
 
 ## Boundary
 

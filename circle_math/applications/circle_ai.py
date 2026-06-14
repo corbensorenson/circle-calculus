@@ -822,6 +822,9 @@ class StrideFamilyCoverageCertificate:
     uncovered_lag_count: int
     uncovered_count_positive: bool
     first_uncovered_lag: Optional[int]
+    first_uncovered_lag_matches_uncovered_list_head: bool
+    no_first_uncovered_lag_matches_coverage_complete: bool
+    first_uncovered_lag_gap_witness: bool
     uncovered_count_positive_matches_gap_witness: bool
     positive_lag_count: int
     covered_uncovered_count_sum: int
@@ -921,6 +924,11 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0095",
         "AIT-T0096",
         "AIT-T0097",
+        "AIT-T0098",
+        "AIT-T0099",
+        "AIT-T0100",
+        "AIT-T0101",
+        "AIT-T0102",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -2611,7 +2619,7 @@ def stride_family_fixture_theorem_ids(
         and path_length == 3
         and normalized_strides == (7, 13)
     ):
-        return ("AIT-T0084", "AIT-T0085", "AIT-T0091")
+        return ("AIT-T0084", "AIT-T0085", "AIT-T0091", "AIT-T0102")
     if (
         sequence_length == 9
         and local_window == 2
@@ -2661,6 +2669,7 @@ def certify_stride_family_coverage(
     positive_lag_count = max(0, sequence_length - 1)
     uncovered_intervals = consecutive_integer_intervals(uncovered)
     first_uncovered_lag = uncovered[0] if uncovered else None
+    coverage_complete = len(uncovered) == 0
     return StrideFamilyCoverageCertificate(
         sequence_length=sequence_length,
         strides=normalized_strides,
@@ -2673,6 +2682,21 @@ def certify_stride_family_coverage(
         uncovered_lag_count=len(uncovered),
         uncovered_count_positive=len(uncovered) > 0,
         first_uncovered_lag=first_uncovered_lag,
+        first_uncovered_lag_matches_uncovered_list_head=(
+            (first_uncovered_lag is None and not uncovered)
+            or (first_uncovered_lag is not None and uncovered[0] == first_uncovered_lag)
+        ),
+        no_first_uncovered_lag_matches_coverage_complete=(
+            (first_uncovered_lag is None) == coverage_complete
+        ),
+        first_uncovered_lag_gap_witness=(
+            first_uncovered_lag is None
+            or (
+                1 <= first_uncovered_lag < sequence_length
+                and first_uncovered_lag in uncovered
+                and first_uncovered_lag not in covered_set
+            )
+        ),
         uncovered_count_positive_matches_gap_witness=(
             (len(uncovered) > 0) == (first_uncovered_lag is not None)
         ),
@@ -2736,7 +2760,7 @@ def certify_stride_family_coverage(
             len(set(theorem_side_query_candidates)) == len(theorem_side_query_candidates)
         ),
         full_attention_budget=sequence_length,
-        coverage_complete=len(uncovered) == 0,
+        coverage_complete=coverage_complete,
         coverage_ratio=1.0 if positive_lag_count == 0 else len(covered) / positive_lag_count,
         fixture_theorem_ids=stride_family_fixture_theorem_ids(
             sequence_length,

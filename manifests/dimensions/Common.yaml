@@ -5835,6 +5835,81 @@ theorems:
         - tests/test_stride_family_certifier_cli.py
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
     blocker: ""
+  - id: AIT-T0098
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyFirstUncoveredLag_eq_none_iff_uncoveredLagList_eq_nil
+    informal_statement: "For any declared local-window plus stride-family sparse-attention plan, the first-uncovered-lag field is empty exactly when the theorem-side uncovered-lag list is empty."
+    formal_statement: "forall {n window pathLength : Nat} {strides : List Nat}, Circle.Applications.hybridFamilyFirstUncoveredLag n window pathLength strides = none <-> Circle.Applications.hybridFamilyUncoveredLagList n window pathLength strides = []"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
+  - id: AIT-T0099
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyCoversContext_iff_firstUncoveredLag_eq_none
+    informal_statement: "For any declared local-window plus stride-family sparse-attention plan, complete context coverage is equivalent to having no first uncovered lag."
+    formal_statement: "forall {n window pathLength : Nat} {strides : List Nat}, Circle.Applications.hybridFamilyCoversContext n window pathLength strides <-> Circle.Applications.hybridFamilyFirstUncoveredLag n window pathLength strides = none"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
+  - id: AIT-T0100
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyFirstUncoveredLag_eq_some_iff_uncoveredLagList_eq_cons
+    informal_statement: "For any declared local-window plus stride-family sparse-attention plan, reporting a first uncovered lag is exactly reporting the head of the theorem-side uncovered-lag list."
+    formal_statement: "forall {n window pathLength lag : Nat} {strides : List Nat}, Circle.Applications.hybridFamilyFirstUncoveredLag n window pathLength strides = some lag <-> exists tail, Circle.Applications.hybridFamilyUncoveredLagList n window pathLength strides = lag :: tail"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
+  - id: AIT-T0101
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyFirstUncoveredLag_eq_some_gap
+    informal_statement: "For any declared local-window plus stride-family sparse-attention plan, any reported first uncovered lag is a positive in-context lag that the plan does not reach."
+    formal_statement: "forall {n window pathLength lag : Nat} {strides : List Nat}, Circle.Applications.hybridFamilyFirstUncoveredLag n window pathLength strides = some lag -> 1 <= lag and lag < n and not Circle.Applications.hybridFamilyLagReach n window pathLength lag strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
+  - id: AIT-T0102
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyFirstUncoveredLag_default_120_4_3_7_13_eq_some5
+    informal_statement: "For the default C_120 sparse-attention plan with local window 4, path length 3, and strides [7,13], the first uncovered lag is exactly 5."
+    formal_statement: "Circle.Applications.hybridFamilyFirstUncoveredLag 120 4 3 [7, 13] = some 5"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

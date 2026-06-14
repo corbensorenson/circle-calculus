@@ -5651,7 +5651,7 @@
             "passed": true
           },
           {
-            "evidence": "148",
+            "evidence": "153",
             "id": "proved_theorem_ids",
             "label": "proved paper-carried theorem ids",
             "passed": true
@@ -5693,7 +5693,7 @@
             "passed": true
           },
           {
-            "evidence": "standard_math_parity theorems 148/148; circle_native_value sources 11/11; Living Book pages 2/2; application_guardrail language clean",
+            "evidence": "standard_math_parity theorems 153/153; circle_native_value sources 11/11; Living Book pages 2/2; application_guardrail language clean",
             "id": "value_proposition",
             "label": "role-backed value proposition",
             "passed": true
@@ -5766,7 +5766,7 @@
         "living_book_widget_count": 15,
         "paper_count": 2,
         "source_count": 11,
-        "theorem_count": 148
+        "theorem_count": 153
       },
       "executable_refs": [
         "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
@@ -6077,6 +6077,11 @@
               "AIT-T0095",
               "AIT-T0096",
               "AIT-T0097",
+              "AIT-T0098",
+              "AIT-T0099",
+              "AIT-T0100",
+              "AIT-T0101",
+              "AIT-T0102",
               "AIT-T0004",
               "AIT-T0005",
               "AIT-T0006",
@@ -6140,7 +6145,7 @@
             ]
           },
           {
-            "evidence": "papers 2; theorem refs 148/148; sources 11/11; executables 2; Living Book pages 2/2",
+            "evidence": "papers 2; theorem refs 153/153; sources 11/11; executables 2; Living Book pages 2/2",
             "id": "proof_backing",
             "label": "paper, theorem, source, executable, and Living Book backing",
             "ready": true,
@@ -6166,7 +6171,7 @@
           "Standard reference: Finite cyclic buffers, schedule normalization, recurrence budgets, sparse strided attention, RoPE relative phase, MultiCoil phase-pair closure, residue/winding position bookkeeping, circular convolution, and modular adapter indexing.",
           "Circle expression: AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, strided, hybrid, and stride-family sparse-attention reachability, RoPE relative phase, MultiCoil phase-pair product-cycle closure, residue-plus-winding position records, circulant mixer laws, block-cyclic mixer cells, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
           "Circle-native value: Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made.",
-          "Proof backing: 2 paper ids, 148/148 theorem refs, 11/11 source refs, 2 executable refs, and 2/2 Living Book page refs.",
+          "Proof backing: 2 paper ids, 153/153 theorem refs, 11/11 source refs, 2 executable refs, and 2/2 Living Book page refs.",
           "Boundary: No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence."
         ],
         "total_section_count": 6
@@ -6190,7 +6195,7 @@
             "ready": true
           },
           {
-            "evidence": "148/148 theorem refs",
+            "evidence": "153/153 theorem refs",
             "id": "theorem_refs",
             "label": "proved paper-carried theorem refs",
             "ready": true
@@ -6251,7 +6256,7 @@
             ]
           },
           {
-            "evidence": "148/148 theorem refs",
+            "evidence": "153/153 theorem refs",
             "id": "theorem_trail",
             "label": "proved theorem trail",
             "ready": true,
@@ -6398,6 +6403,11 @@
               "AIT-T0095",
               "AIT-T0096",
               "AIT-T0097",
+              "AIT-T0098",
+              "AIT-T0099",
+              "AIT-T0100",
+              "AIT-T0101",
+              "AIT-T0102",
               "AIT-T0004",
               "AIT-T0005",
               "AIT-T0006",
@@ -6703,6 +6713,11 @@
         "AIT-T0095",
         "AIT-T0096",
         "AIT-T0097",
+        "AIT-T0098",
+        "AIT-T0099",
+        "AIT-T0100",
+        "AIT-T0101",
+        "AIT-T0102",
         "AIT-T0004",
         "AIT-T0005",
         "AIT-T0006",
@@ -6711,7 +6726,7 @@
         "AIT-T0009"
       ],
       "theorem_ref_contract": {
-        "proved_and_paper_backed_count": 148,
+        "proved_and_paper_backed_count": 153,
         "refs": [
           {
             "canonical_status": "proved",
@@ -8278,6 +8293,61 @@
           {
             "canonical_status": "proved",
             "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIT-T0098",
+            "lean_name": "Circle.Applications.hybridFamilyFirstUncoveredLag_eq_none_iff_uncoveredLagList_eq_nil",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIT-T0099",
+            "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_firstUncoveredLag_eq_none",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIT-T0100",
+            "lean_name": "Circle.Applications.hybridFamilyFirstUncoveredLag_eq_some_iff_uncoveredLagList_eq_cons",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIT-T0101",
+            "lean_name": "Circle.Applications.hybridFamilyFirstUncoveredLag_eq_some_gap",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIT-T0102",
+            "lean_name": "Circle.Applications.hybridFamilyFirstUncoveredLag_default_120_4_3_7_13_eq_some5",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
               "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
             ],
             "id": "AIT-T0004",
@@ -8342,7 +8412,7 @@
             "status": "lean_proved"
           }
         ],
-        "total_count": 148,
+        "total_count": 153,
         "unproved_or_unbacked_ids": []
       },
       "title": "AI memory, loop, and adapter schedules",
@@ -8360,7 +8430,7 @@
             "required": true
           },
           "standard_math_parity": {
-            "evidence": "theorems 148/148",
+            "evidence": "theorems 153/153",
             "ready": true,
             "required": true
           }
@@ -9793,8 +9863,8 @@
           "unbacked_refs": []
         },
         "theorem_refs": {
-          "proved_and_paper_backed_count": 180,
-          "total_count": 180,
+          "proved_and_paper_backed_count": 185,
+          "total_count": 185,
           "unproved_or_unbacked_refs": []
         },
         "unique_evidence_counts": {
@@ -9804,7 +9874,7 @@
           "living_book_widget_count": 19,
           "paper_count": 7,
           "source_count": 20,
-          "theorem_count": 180
+          "theorem_count": 185
         },
         "unknown_capability_ids": []
       },
@@ -9865,7 +9935,7 @@
             ]
           },
           {
-            "evidence": "papers 7; theorem refs 180; source refs 20; executables 7; Living Book pages 4",
+            "evidence": "papers 7; theorem refs 185; source refs 20; executables 7; Living Book pages 4",
             "id": "proof_backing_counts",
             "label": "proof-backed evidence counts",
             "ready": true,
@@ -9913,7 +9983,7 @@
         "summary_lines": [
           "Audience: Builders who want generated artifacts, cyclic AI schedules, and compute layouts to carry checkable provenance before performance or quality claims.",
           "Capability surface: 3 route lanes across AI systems, Computation, Generation and compression interfaces.",
-          "Proof backing: 180 proved theorem refs, 7 paper ids, 20 source refs, 7 executable refs, and 4 Living Book page refs.",
+          "Proof backing: 185 proved theorem refs, 7 paper ids, 20 source refs, 7 executable refs, and 4 Living Book page refs.",
           "Circle-native value: 3 lanes state explicit Circle expression/value statements with role-backed checks.",
           "Boundary: This route does not claim universal compression, model-quality improvement, speedup, or context-length improvement without benchmark evidence."
         ],
@@ -9978,7 +10048,7 @@
             ]
           },
           {
-            "evidence": "provenance project_native; theorems 180/180; sources 20/20",
+            "evidence": "provenance project_native; theorems 185/185; sources 20/20",
             "id": "proof_provenance_surface",
             "label": "proof provenance and backing surface",
             "ready": true,
@@ -10046,8 +10116,8 @@
         "unbacked_refs": []
       },
       "theorem_refs": {
-        "proved_and_paper_backed_count": 236,
-        "total_count": 236,
+        "proved_and_paper_backed_count": 241,
+        "total_count": 241,
         "unproved_or_unbacked_refs": []
       }
     },
@@ -10064,7 +10134,7 @@
       "living_book_widget_count": 27,
       "paper_count": 18,
       "source_count": 41,
-      "theorem_count": 236
+      "theorem_count": 241
     },
     "proof_provenance_counts": {
       "mathlib_bridge": 4,
@@ -10092,7 +10162,7 @@
       "living_book_widget_count": 27,
       "paper_count": 18,
       "source_count": 41,
-      "theorem_count": 236
+      "theorem_count": 241
     },
     "unique_living_book_pages": [
       "site/chapters/S1/03_coils_orbits_closure.qmd",

@@ -169,6 +169,15 @@ def hybridFamilyUncoveredLagList
   (List.range' 1 (n - 1)).filter fun lag =>
     lag ∉ hybridFamilyLagCandidateList n window pathLength strides
 
+/-- First positive in-context lag missed by a local+stride-family sparse plan,
+when the finite uncovered-lag list is nonempty.
+
+Executable certifiers expose this as a compact witness field; the theorem-side
+definition keeps that field tied to the checked uncovered-list object. -/
+def hybridFamilyFirstUncoveredLag
+    (n window pathLength : Nat) (strides : List Nat) : Option Nat :=
+  (hybridFamilyUncoveredLagList n window pathLength strides).head?
+
 /-- Finite list of positive in-context lags covered by a local+stride-family
 sparse-attention plan.
 
@@ -928,6 +937,71 @@ theorem hybridFamilyCoversContext_iff_uncoveredLagList_eq_nil
       rw [hempty] at hmem
       exact List.not_mem_nil hmem)
 
+/-- The first-uncovered-lag field is empty exactly when the finite uncovered
+lag list is empty. -/
+theorem hybridFamilyFirstUncoveredLag_eq_none_iff_uncoveredLagList_eq_nil
+    {n window pathLength : Nat} {strides : List Nat} :
+    hybridFamilyFirstUncoveredLag n window pathLength strides = none ↔
+      hybridFamilyUncoveredLagList n window pathLength strides = [] := by
+  unfold hybridFamilyFirstUncoveredLag
+  generalize hlist :
+    hybridFamilyUncoveredLagList n window pathLength strides = xs
+  cases xs with
+  | nil =>
+      simp
+  | cons head tail =>
+      simp
+
+/-- Complete sparse-attention coverage is equivalent to having no first
+uncovered lag.
+
+This is the proof-carrying status bit behind certifier fields such as
+`coverage_complete` and `first_uncovered_lag`: a missing first gap is not a
+Python convention, but the theorem-side empty uncovered-list criterion. -/
+theorem hybridFamilyCoversContext_iff_firstUncoveredLag_eq_none
+    {n window pathLength : Nat} {strides : List Nat} :
+    hybridFamilyCoversContext n window pathLength strides ↔
+      hybridFamilyFirstUncoveredLag n window pathLength strides = none := by
+  rw [hybridFamilyCoversContext_iff_uncoveredLagList_eq_nil,
+    hybridFamilyFirstUncoveredLag_eq_none_iff_uncoveredLagList_eq_nil]
+
+/-- Reporting a first uncovered lag is exactly reporting the head of the
+finite uncovered-lag list. -/
+theorem hybridFamilyFirstUncoveredLag_eq_some_iff_uncoveredLagList_eq_cons
+    {n window pathLength lag : Nat} {strides : List Nat} :
+    hybridFamilyFirstUncoveredLag n window pathLength strides = some lag ↔
+      ∃ tail,
+        hybridFamilyUncoveredLagList n window pathLength strides = lag :: tail := by
+  unfold hybridFamilyFirstUncoveredLag
+  generalize hlist :
+    hybridFamilyUncoveredLagList n window pathLength strides = xs
+  cases xs with
+  | nil =>
+      simp
+  | cons head tail =>
+      constructor
+      · intro hfirst
+        simp at hfirst
+        subst lag
+        exact ⟨tail, rfl⟩
+      · rintro ⟨tail', htail'⟩
+        cases htail'
+        simp
+
+/-- Any reported first uncovered lag is a genuine positive in-context
+semantic miss for the declared sparse-attention plan. -/
+theorem hybridFamilyFirstUncoveredLag_eq_some_gap
+    {n window pathLength lag : Nat} {strides : List Nat}
+    (hfirst :
+      hybridFamilyFirstUncoveredLag n window pathLength strides = some lag) :
+    1 ≤ lag ∧ lag < n ∧
+      ¬ hybridFamilyLagReach n window pathLength lag strides := by
+  rcases
+    (hybridFamilyFirstUncoveredLag_eq_some_iff_uncoveredLagList_eq_cons).1
+      hfirst with
+    ⟨tail, hlist⟩
+  exact (mem_hybridFamilyUncoveredLagList_iff).1 (by rw [hlist]; simp)
+
 /-- Complete sparse-attention coverage is equivalent to zero uncovered lags. -/
 theorem hybridFamilyCoversContext_iff_uncoveredLagList_length_eq_zero
     {n window pathLength : Nat} {strides : List Nat} :
@@ -1570,6 +1644,11 @@ theorem mem_hybridFamilyUncoveredLagList_default_120_4_3_7_13_lag5 :
     5 ∈ hybridFamilyUncoveredLagList 120 4 3 [7, 13] := by
   exact (mem_hybridFamilyUncoveredLagList_iff).2
     ⟨by omega, by omega, hybridFamilyLagGap_default_120_4_3_7_13_lag5⟩
+
+/-- The default sparse-attention plan's first uncovered lag is exactly `5`. -/
+theorem hybridFamilyFirstUncoveredLag_default_120_4_3_7_13_eq_some5 :
+    hybridFamilyFirstUncoveredLag 120 4 3 [7, 13] = some 5 := by
+  native_decide
 
 /-- The default sparse-attention plan has exactly `109` positive in-context
 uncovered lags. This is the finite count reported by the executable sidecar. -/

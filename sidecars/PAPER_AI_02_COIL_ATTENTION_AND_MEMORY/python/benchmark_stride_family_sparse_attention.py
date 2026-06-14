@@ -40,6 +40,10 @@ CORE_COVERAGE_THEOREM_IDS = (
     "AIT-T0095",
     "AIT-T0096",
     "AIT-T0097",
+    "AIT-T0098",
+    "AIT-T0099",
+    "AIT-T0100",
+    "AIT-T0101",
 )
 
 PLANNER_STYLE_SPECS: tuple[dict[str, Any], ...] = (
@@ -117,6 +121,13 @@ def compact_planner_certificate(spec: dict[str, Any]) -> dict[str, Any]:
         "uncovered_count_positive_matches_gap_witness": (
             certificate.uncovered_count_positive_matches_gap_witness
         ),
+        "first_uncovered_lag_matches_uncovered_list_head": (
+            certificate.first_uncovered_lag_matches_uncovered_list_head
+        ),
+        "no_first_uncovered_lag_matches_coverage_complete": (
+            certificate.no_first_uncovered_lag_matches_coverage_complete
+        ),
+        "first_uncovered_lag_gap_witness": certificate.first_uncovered_lag_gap_witness,
         "positive_lag_count": certificate.positive_lag_count,
         "covered_uncovered_count_sum": certificate.covered_uncovered_count_sum,
         "covered_uncovered_count_partition": certificate.covered_uncovered_count_partition,
@@ -222,6 +233,12 @@ def text_results(payload: dict[str, Any]) -> str:
             f"budget_ratio={row['candidate_budget_ratio']:.6f} "
             f"uncovered_lag_count={row['uncovered_lag_count']} "
             f"first_uncovered_lag={row['first_uncovered_lag']} "
+            "first_gap_is_list_head="
+            f"{row['first_uncovered_lag_matches_uncovered_list_head']} "
+            "no_first_gap_matches_complete="
+            f"{row['no_first_uncovered_lag_matches_coverage_complete']} "
+            "first_gap_semantic_miss="
+            f"{row['first_uncovered_lag_gap_witness']} "
             "uncovered_count_witness="
             f"{row['uncovered_count_positive_matches_gap_witness']} "
             f"covered_count_shortfall={row['covered_count_shortfall']} "
@@ -262,6 +279,12 @@ def text_results(payload: dict[str, Any]) -> str:
         f"covered_lag_count={certificate['covered_lag_count']} "
         f"uncovered_lag_count={certificate['uncovered_lag_count']} "
         f"first_uncovered_lag={certificate['first_uncovered_lag']} "
+        "first_gap_is_list_head="
+        f"{certificate['first_uncovered_lag_matches_uncovered_list_head']} "
+        "no_first_gap_matches_complete="
+        f"{certificate['no_first_uncovered_lag_matches_coverage_complete']} "
+        "first_gap_semantic_miss="
+        f"{certificate['first_uncovered_lag_gap_witness']} "
         "uncovered_count_witness="
         f"{certificate['uncovered_count_positive_matches_gap_witness']} "
         f"covered_count_shortfall={certificate['covered_count_shortfall']} "
@@ -305,6 +328,12 @@ def text_results(payload: dict[str, Any]) -> str:
         f"covered_lags={complete['covered_lags']} "
         f"uncovered_lag_count={complete['uncovered_lag_count']} "
         f"first_uncovered_lag={complete['first_uncovered_lag']} "
+        "first_gap_is_list_head="
+        f"{complete['first_uncovered_lag_matches_uncovered_list_head']} "
+        "no_first_gap_matches_complete="
+        f"{complete['no_first_uncovered_lag_matches_coverage_complete']} "
+        "first_gap_semantic_miss="
+        f"{complete['first_uncovered_lag_gap_witness']} "
         "uncovered_count_witness="
         f"{complete['uncovered_count_positive_matches_gap_witness']} "
         f"covered_count_shortfall={complete['covered_count_shortfall']} "
@@ -364,12 +393,15 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{result['average_full_candidate_count']:.3f} |"
             ),
             "",
-            "| Covered lag count | Uncovered lag count | First gap | Count witness | Covered shortfall | Shortfall witness | Positive lags | Partition complete | Uncovered intervals | Candidate budget | Raw budget bound | Deduplicated bound | Full-attention budget |",
-            "| ---: | ---: | ---: | --- | --- | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: |",
+            "| Covered lag count | Uncovered lag count | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Positive lags | Partition complete | Uncovered intervals | Candidate budget | Raw budget bound | Deduplicated bound | Full-attention budget |",
+            "| ---: | ---: | ---: | --- | --- | --- | --- | --- | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: |",
             (
                 f"| {certificate['covered_lag_count']} | "
                 f"{certificate['uncovered_lag_count']} | "
                 f"{certificate['first_uncovered_lag']} | "
+                f"{certificate['first_uncovered_lag_matches_uncovered_list_head']} | "
+                f"{certificate['no_first_uncovered_lag_matches_coverage_complete']} | "
+                f"{certificate['first_uncovered_lag_gap_witness']} | "
                 f"{certificate['uncovered_count_positive_matches_gap_witness']} | "
                 f"{certificate['covered_count_shortfall']} | "
                 f"{certificate['covered_count_shortfall_matches_gap_witness']} | "
@@ -421,8 +453,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "Complete sparse-family fixture:",
             "",
-            "| Context | Local window | Path length | Strides | Coverage complete | Uncovered lags | First gap | Count witness | Covered shortfall | Shortfall witness | Raw budget | Unique lag candidates | Unique query candidates | Fixture theorem ids |",
-            "| ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | ---: | ---: | ---: | --- |",
+            "| Context | Local window | Path length | Strides | Coverage complete | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Raw budget | Unique lag candidates | Unique query candidates | Fixture theorem ids |",
+            "| ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- |",
             (
                 f"| {complete['sequence_length']} | {complete['local_window']} | "
                 f"{complete['path_length']} | "
@@ -430,6 +462,9 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{complete['coverage_complete']} | "
                 f"{complete['uncovered_lag_count']} | "
                 f"{complete['first_uncovered_lag']} | "
+                f"{complete['first_uncovered_lag_matches_uncovered_list_head']} | "
+                f"{complete['no_first_uncovered_lag_matches_coverage_complete']} | "
+                f"{complete['first_uncovered_lag_gap_witness']} | "
                 f"{complete['uncovered_count_positive_matches_gap_witness']} | "
                 f"{complete['covered_count_shortfall']} | "
                 f"{complete['covered_count_shortfall_matches_gap_witness']} | "
@@ -447,8 +482,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "Planner-style declared plans:",
             "",
-            "| Plan | Context | Local window | Path length | Strides | Complete | Coverage | Candidate budget | Budget ratio | Covered+uncovered | Positive lags | Uncovered lags | First gap | Count witness | Covered shortfall | Shortfall witness | Gap intervals | Raw budget survives dedup |",
-            "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- | ---: | --- |",
+            "| Plan | Context | Local window | Path length | Strides | Complete | Coverage | Candidate budget | Budget ratio | Covered+uncovered | Positive lags | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Gap intervals | Raw budget survives dedup |",
+            "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | --- |",
             *(
                 (
                     f"| {row['plan_id']} | {row['sequence_length']} | "
@@ -462,6 +497,9 @@ def markdown_results(payload: dict[str, Any]) -> str:
                     f"{row['positive_lag_count']} | "
                     f"{row['uncovered_lag_count']} | "
                     f"{row['first_uncovered_lag']} | "
+                    f"{row['first_uncovered_lag_matches_uncovered_list_head']} | "
+                    f"{row['no_first_uncovered_lag_matches_coverage_complete']} | "
+                    f"{row['first_uncovered_lag_gap_witness']} | "
                     f"{row['uncovered_count_positive_matches_gap_witness']} | "
                     f"{row['covered_count_shortfall']} | "
                     f"{row['covered_count_shortfall_matches_gap_witness']} | "

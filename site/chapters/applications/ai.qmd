@@ -57,7 +57,7 @@ reachability theory:
 - a stride-`k` head reaches exactly `n / gcd(n,k)` distinct positions (`AIT-T0001`);
 - it reaches **every** position iff `gcd(n,k) = 1` (`AIT-T0002`, `AIT-T0003`);
 - a local+coil hybrid reaches any dependency lag reached by either the local window or the admitted coil path (`AIT-T0010` through `AIT-T0014`);
-- a finite family of admitted coil strides has exact reach/miss conditions, local-window thresholds, complete-coverage iff no positive uncovered-lag witness, raw and clipped candidate-budget bounds, theorem-side candidate-list semantics, no-duplicate budget-survival criteria, finite positive-lag coverage iff, finite covered/uncovered-list iffs/counts, concrete default-plan hit/gap witnesses, and a compact complete-coverage PASS fixture (`AIT-T0015` through `AIT-T0091`).
+- a finite family of admitted coil strides has exact reach/miss conditions, local-window thresholds, complete-coverage iff no positive uncovered-lag witness, raw and clipped candidate-budget bounds, theorem-side candidate-list semantics, no-duplicate budget-survival criteria, finite positive-lag coverage iff, finite covered/uncovered-list iffs/counts, first-gap field semantics, concrete default-plan hit/gap witnesses, and a compact complete-coverage PASS fixture (`AIT-T0015` through `AIT-T0102`).
 
 That is a proved design rule for sparse/dilated attention: *pick strides coprime to the
 context length and every token provably reaches every other; combine local and coil

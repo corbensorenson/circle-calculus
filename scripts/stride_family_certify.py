@@ -108,6 +108,15 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             "theorem=AIT-T0095"
         ),
         (
+            "first_uncovered_lag_bridge="
+            f"list_head={payload['first_uncovered_lag_matches_uncovered_list_head']} "
+            "none_iff_complete="
+            f"{payload['no_first_uncovered_lag_matches_coverage_complete']} "
+            "semantic_miss="
+            f"{payload['first_uncovered_lag_gap_witness']} "
+            "theorems=AIT-T0098,AIT-T0099,AIT-T0100,AIT-T0101"
+        ),
+        (
             "uncovered_count_witness="
             f"{payload['uncovered_count_positive_matches_gap_witness']} "
             f"positive={payload['uncovered_count_positive']} "
