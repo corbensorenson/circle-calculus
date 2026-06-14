@@ -2613,11 +2613,56 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_explicit_phase_bank_certifier_reports_exact_only_contract
     blocker: ""
+  - id: AIRA-T0190
+    status: lean_proved
+    lean_name: Circle.Applications.ropeFirstPrefixPassesContext_unique
+    informal_statement: "A certified first passing prefix length for an integer-period RoPE phase bank is unique."
+    formal_statement: "forall {context : Nat} {periods : List Nat} {leftPrefix rightPrefix : Nat}, Circle.Applications.ropeFirstPrefixPassesContext context periods leftPrefix -> Circle.Applications.ropeFirstPrefixPassesContext context periods rightPrefix -> leftPrefix = rightPrefix"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_diagnostic_prefix_and_shared_factor_presets_are_stable
+        - tests/test_rope_certifier.py::test_explicit_phase_bank_certifier_reports_exact_only_contract
+    blocker: ""
+  - id: AIRA-T0191
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropePhaseBankCollision_of_firstPrefixPassesContext
+    informal_statement: "A certified first passing prefix whose LCM reaches the inspected context forbids unequal all-channel collisions in the full declared bank."
+    formal_statement: "forall {periods : List Nat} {context prefixLength left right : Nat}, Circle.Applications.ropeFirstPrefixPassesContext context periods prefixLength -> left < right -> right < context -> not Circle.Applications.ropePhaseBankCollision periods left right"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_diagnostic_prefix_and_shared_factor_presets_are_stable
+        - tests/test_rope_certifier.py::test_explicit_phase_bank_certifier_reports_exact_only_contract
+    blocker: ""
   - id: AIRA-T0188
     status: lean_proved
     lean_name: Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefix_length_three
     informal_statement: "For the diagnostic RoPE phase bank [6, 9, 13, 18] at context 128, prefixes of length 1 and 2 do not reach the context, while the prefix of length 3 does."
     formal_statement: "Circle.Applications.ropePeriodBankLCM [6] < 128 and Circle.Applications.ropePeriodBankLCM [6, 9] < 128 and 128 <= Circle.Applications.ropePeriodBankLCM [6, 9, 13]"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_diagnostic_prefix_and_shared_factor_presets_are_stable
+        - tests/test_rope_certifier.py::test_explicit_phase_bank_certifier_reports_exact_only_contract
+    blocker: ""
+  - id: AIRA-T0192
+    status: lean_proved
+    lean_name: Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three
+    informal_statement: "The diagnostic RoPE phase bank [6, 9, 13, 18] at context 128 satisfies the generic first-prefix-pass contract at prefix length 3."
+    formal_statement: "Circle.Applications.ropeFirstPrefixPassesContext 128 [6, 9, 13, 18] 3"
     dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0084"]
     paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
     imports_allowed: ["Common"]

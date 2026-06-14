@@ -88,6 +88,11 @@ PHASE_BANK_PREFIX_THEOREMS: tuple[str, ...] = (
     "AIRA-T0176",
 )
 
+PHASE_BANK_FIRST_PREFIX_THEOREMS: tuple[str, ...] = (
+    "AIRA-T0190",
+    "AIRA-T0191",
+)
+
 PHASE_BANK_SUBFAMILY_THEOREMS: tuple[str, ...] = (
     "AIRA-T0036",
     "AIRA-T0046",
@@ -1215,15 +1220,20 @@ def _prefix_report_theorem_ids(
     context_length: int,
     full_bank_periods: Sequence[int],
     prefix_periods: Sequence[int],
+    *,
+    is_first_pass_prefix: bool,
 ) -> tuple[str, ...]:
     """Return theorem ids for one bounded prefix report."""
     theorem_ids = list(PHASE_BANK_PREFIX_THEOREMS)
+    if is_first_pass_prefix:
+        theorem_ids.extend(PHASE_BANK_FIRST_PREFIX_THEOREMS)
     if (
         context_length == DIAGNOSTIC_PREFIX_CONTEXT
         and tuple(full_bank_periods) == DIAGNOSTIC_PREFIX_PERIODS
         and tuple(prefix_periods) == DIAGNOSTIC_FIRST_PASS_PREFIX
     ):
         theorem_ids.append("AIRA-T0188")
+        theorem_ids.append("AIRA-T0192")
     return tuple(theorem_ids)
 
 
@@ -1270,9 +1280,11 @@ def phase_bank_prefix_collision_reports(
         if period <= 0:
             raise ValueError("periods must be positive")
     reports: list[PhaseBankPrefixCollisionReport] = []
+    found_first_pass_prefix = False
     for prefix_length in range(1, min(len(normalized_periods), limit) + 1):
         prefix = normalized_periods[:prefix_length]
         collision_gap, reaches_context = capped_lcm(prefix, context_length)
+        is_first_pass_prefix = reaches_context and not found_first_pass_prefix
         pair_count = 0 if reaches_context else collision_pair_count_at_gap_multiples(
             context_length,
             collision_gap,
@@ -1292,8 +1304,10 @@ def phase_bank_prefix_collision_reports(
                 context_length,
                 normalized_periods,
                 prefix,
+                is_first_pass_prefix=is_first_pass_prefix,
             ),
         ))
+        found_first_pass_prefix = found_first_pass_prefix or reaches_context
     return tuple(reports)
 
 
@@ -3358,7 +3372,7 @@ def certify_exact_discrete_phase_bank(
             "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
             "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0179 proves that positive declared periods give the positive LCM required by the witness/count theorems. AIRA-T0180 proves the end-to-end exact pass/fail contract: no unequal in-context all-channel collision iff the LCM reaches the context. AIRA-T0184 proves the public report bridge: exact no-collision over the inspected context iff total_bank_collision_pair_count is zero. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness.",
             "Lean theorems AIRA-T0174 and AIRA-T0175 connect the positive-multiple count used for total_bank_collision_pair_count to the LCM pass/fail boundary: under a positive LCM, that total count is zero exactly when the LCM reaches the inspected context. AIRA-T0176 proves the positive-count case is equivalent to the existence of an unequal all-channel collision witness.",
-            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049/AIRA-T0174/AIRA-T0175/AIRA-T0176 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context. Subfamily reports use AIRA-T0052 for the unordered selected-subbank version.",
+            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049/AIRA-T0174/AIRA-T0175/AIRA-T0176 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context. AIRA-T0190 proves a certified first passing prefix is unique, and AIRA-T0191 packages such a first-prefix certificate into a full-bank no-collision bridge. Subfamily reports use AIRA-T0052 for the unordered selected-subbank version.",
         ),
         explanation=(
             "PASS: the common exact collision gap is at least the context length, so no two unequal "

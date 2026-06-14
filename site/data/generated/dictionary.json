@@ -12821,6 +12821,24 @@
           "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two",
           "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0190",
+          "lean_name": "Circle.Applications.ropeFirstPrefixPassesContext_unique",
+          "name": "Circle.Applications.ropeFirstPrefixPassesContext_unique",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0191",
+          "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_firstPrefixPassesContext",
+          "name": "Circle.Applications.not_ropePhaseBankCollision_of_firstPrefixPassesContext",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0192",
+          "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three",
+          "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -13859,6 +13877,24 @@
           "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two",
           "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0190",
+          "lean_name": "Circle.Applications.ropeFirstPrefixPassesContext_unique",
+          "name": "Circle.Applications.ropeFirstPrefixPassesContext_unique",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0191",
+          "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_firstPrefixPassesContext",
+          "name": "Circle.Applications.not_ropePhaseBankCollision_of_firstPrefixPassesContext",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0192",
+          "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three",
+          "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -14003,6 +14039,24 @@
           "id": "AIRA-T0189",
           "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two",
           "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0190",
+          "lean_name": "Circle.Applications.ropeFirstPrefixPassesContext_unique",
+          "name": "Circle.Applications.ropeFirstPrefixPassesContext_unique",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0191",
+          "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_firstPrefixPassesContext",
+          "name": "Circle.Applications.not_ropePhaseBankCollision_of_firstPrefixPassesContext",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0192",
+          "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three",
+          "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three",
           "status": "proved"
         }
       ],
@@ -16655,6 +16709,24 @@
           "id": "AIRA-T0189",
           "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two",
           "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0190",
+          "lean_name": "Circle.Applications.ropeFirstPrefixPassesContext_unique",
+          "name": "Circle.Applications.ropeFirstPrefixPassesContext_unique",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0191",
+          "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_firstPrefixPassesContext",
+          "name": "Circle.Applications.not_ropePhaseBankCollision_of_firstPrefixPassesContext",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0192",
+          "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three",
+          "name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three",
           "status": "proved"
         }
       ],

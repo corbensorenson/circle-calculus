@@ -516,6 +516,63 @@ theorem not_ropePhaseBankCollision_of_subbank_lcm_ge_context
     (periods := subbank) (context := context) (left := left) (right := right)
     hlcm_context hleft hright hsubbank
 
+/-- A prefix length is a passing integer-period RoPE prefix when it is a
+nonempty prefix of the declared bank and its LCM reaches the inspected
+context. -/
+def ropePrefixPassesContext
+    (context : Nat) (periods : List Nat) (prefixLength : Nat) : Prop :=
+  0 < prefixLength ∧
+    prefixLength ≤ periods.length ∧
+      context ≤ ropePeriodBankLCM (periods.take prefixLength)
+
+/-- A prefix length is the first passing prefix when it passes and every
+shorter nonempty prefix has LCM below the inspected context. -/
+def ropeFirstPrefixPassesContext
+    (context : Nat) (periods : List Nat) (prefixLength : Nat) : Prop :=
+  ropePrefixPassesContext context periods prefixLength ∧
+    ∀ shorter,
+      0 < shorter → shorter < prefixLength →
+        ropePeriodBankLCM (periods.take shorter) < context
+
+/-- The first passing prefix length, when certified, is unique.
+
+This is the theorem-side contract behind the public
+`first_exact_pass_prefix_length` field: two prefix lengths cannot both be the
+first prefix whose LCM reaches the inspected context. -/
+theorem ropeFirstPrefixPassesContext_unique
+    {context : Nat} {periods : List Nat} {leftPrefix rightPrefix : Nat}
+    (hleft : ropeFirstPrefixPassesContext context periods leftPrefix)
+    (hright : ropeFirstPrefixPassesContext context periods rightPrefix) :
+    leftPrefix = rightPrefix := by
+  by_cases hlt : leftPrefix < rightPrefix
+  · have hfail := hright.2 leftPrefix hleft.1.1 hlt
+    exact False.elim ((not_le_of_gt hfail) hleft.1.2.2)
+  · by_cases hgt : rightPrefix < leftPrefix
+    · have hfail := hleft.2 rightPrefix hright.1.1 hgt
+      exact False.elim ((not_le_of_gt hfail) hright.1.2.2)
+    · omega
+
+/-- A certified first passing prefix forbids unequal all-channel collisions in
+the full declared bank.
+
+This packages the prefix report into the same no-collision contract as the
+full-bank LCM theorem: once the first passing prefix has LCM reaching the
+context, adding the remaining suffix channels cannot create a new unequal
+all-channel collision. -/
+theorem not_ropePhaseBankCollision_of_firstPrefixPassesContext
+    {periods : List Nat} {context prefixLength left right : Nat}
+    (hfirst : ropeFirstPrefixPassesContext context periods prefixLength)
+    (hleft : left < right) (hright : right < context) :
+    ¬ ropePhaseBankCollision periods left right := by
+  have hprefix_no_collision :
+      ¬ ropePhaseBankCollision
+        (periods.take prefixLength ++ periods.drop prefixLength) left right :=
+    not_ropePhaseBankCollision_of_prefix_lcm_ge_context
+      (pref := periods.take prefixLength) (suffix := periods.drop prefixLength)
+      (context := context) (left := left) (right := right)
+      hfirst.1.2.2 hleft hright
+  simpa [List.take_append_drop] using hprefix_no_collision
+
 /-- The diagnostic prefix preset `[6, 9, 13, 18]` first reaches context `128`
 at prefix length `3`.
 
@@ -527,6 +584,18 @@ theorem ropeDiagnosticPrefixPass_context128_firstPrefix_length_three :
       ropePeriodBankLCM [6, 9] < 128 ∧
         128 ≤ ropePeriodBankLCM [6, 9, 13] := by
   native_decide
+
+/-- The diagnostic prefix preset satisfies the generic first-prefix contract at
+length `3`.
+
+This connects the public diagnostic report to the reusable
+`ropeFirstPrefixPassesContext` predicate rather than only to a hand-written
+triple of LCM inequalities. -/
+theorem ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three :
+    ropeFirstPrefixPassesContext 128 [6, 9, 13, 18] 3 := by
+  refine ⟨⟨by native_decide, by native_decide, by native_decide⟩, ?_⟩
+  intro shorter hpos hlt
+  interval_cases shorter <;> native_decide
 
 /-- The diagnostic prefix preset `[6, 9, 13, 18]` has no singleton subbank
 whose LCM reaches context `128`, while the subbank `[13, 18]` does.

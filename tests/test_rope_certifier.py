@@ -2026,7 +2026,12 @@ def test_rope_diagnostic_prefix_and_shared_factor_presets_are_stable() -> None:
     assert prefix_payload["exact_discrete"]["discretized_periods"] == [6, 9, 13, 18]
     assert prefix_payload["exact_discrete"]["first_exact_pass_prefix_length"] == 3
     assert prefix_payload["exact_discrete"]["smallest_pass_subfamily_size"] == 2
+    assert "AIRA-T0190" not in prefix_payload["exact_discrete"]["prefix_collision_reports"][1]["theorem_ids"]
+    assert "AIRA-T0191" not in prefix_payload["exact_discrete"]["prefix_collision_reports"][1]["theorem_ids"]
+    assert "AIRA-T0190" in prefix_payload["exact_discrete"]["prefix_collision_reports"][2]["theorem_ids"]
+    assert "AIRA-T0191" in prefix_payload["exact_discrete"]["prefix_collision_reports"][2]["theorem_ids"]
     assert "AIRA-T0188" in prefix_payload["exact_discrete"]["prefix_collision_reports"][2]["theorem_ids"]
+    assert "AIRA-T0192" in prefix_payload["exact_discrete"]["prefix_collision_reports"][2]["theorem_ids"]
     assert "AIRA-T0189" in prefix_payload["exact_discrete"]["subfamily_pass_reports"][0]["theorem_ids"]
     assert prefix_payload["exact_discrete"]["subfamily_pass_reports"][0]["subfamily_indices"] == [2, 3]
     assert prefix_payload["exact_discrete"]["prefix_collision_reports"][1]["lcm_collision_gap"] == 18
@@ -2062,7 +2067,12 @@ def test_explicit_phase_bank_certifier_reports_exact_only_contract() -> None:
     assert certificate.exact_discrete.first_exact_pass_prefix_length == 3
     assert certificate.exact_discrete.smallest_pass_subfamily_size == 2
     assert certificate.exact_discrete.subfamily_pass_reports[0].periods == (13, 18)
+    assert "AIRA-T0190" not in certificate.exact_discrete.prefix_collision_reports[1].theorem_ids
+    assert "AIRA-T0191" not in certificate.exact_discrete.prefix_collision_reports[1].theorem_ids
+    assert "AIRA-T0190" in certificate.exact_discrete.prefix_collision_reports[2].theorem_ids
+    assert "AIRA-T0191" in certificate.exact_discrete.prefix_collision_reports[2].theorem_ids
     assert "AIRA-T0188" in certificate.exact_discrete.prefix_collision_reports[2].theorem_ids
+    assert "AIRA-T0192" in certificate.exact_discrete.prefix_collision_reports[2].theorem_ids
     assert "AIRA-T0189" in certificate.exact_discrete.subfamily_pass_reports[0].theorem_ids
     assert certificate.exact_discrete.prefix_collision_reports[1].lcm_collision_gap == 18
     assert "No real-valued RoPE" in certificate.claim_boundary
