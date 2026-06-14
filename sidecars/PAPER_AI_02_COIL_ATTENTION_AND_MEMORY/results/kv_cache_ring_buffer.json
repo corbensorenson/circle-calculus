@@ -1,4 +1,44 @@
 {
+  "adapter_request_trace_certificate": {
+    "all_non_future": true,
+    "all_retained": true,
+    "cache_size": 16,
+    "current": 31,
+    "lean_declarations": [
+      "Circle.Applications.kvCacheSlot_lt_cacheSize",
+      "Circle.Applications.kvCacheWindow_retainedBatchSlots_pairwise_ne",
+      "Circle.Applications.kvCacheWindow_retainedBatchSlotMap_nodup",
+      "Circle.Applications.kvCacheWindow_retainedBatch_iff_noSameSlotOverwriteTrace_of_forall_le",
+      "Circle.Applications.kvCacheWindow_traceFreshBatchSlotMap_nodup"
+    ],
+    "note": "Modeled adapter request-trace certificate only; this packages the finite retained-batch KV-cache theorem spine for a declared set of read-token positions. It does not prove a GPU kernel, serving stack, paging policy, deployment behavior, retrieval quality, or model quality.",
+    "pass_certificate": true,
+    "request_id": "default_read_request",
+    "request_token_count": 4,
+    "requested_slots": [
+      4,
+      8,
+      13,
+      15
+    ],
+    "requested_tokens": [
+      20,
+      24,
+      29,
+      31
+    ],
+    "retained_iff_no_same_slot_overwrite_trace": true,
+    "slots_distinct": true,
+    "theorem_ids": [
+      "AIM-T0059",
+      "AIM-T0067",
+      "AIM-T0068",
+      "AIM-T0078",
+      "AIM-T0079"
+    ],
+    "tokens_distinct": true,
+    "trace_fresh_slots_distinct": true
+  },
   "batch_certificate": {
     "all_retained": true,
     "cache_size": 16,
@@ -39,7 +79,7 @@
     "tokens_distinct": true,
     "trace_fresh_slots_distinct": true
   },
-  "claim_boundary": "These are proof-carrying finite ring-buffer indexing certificates for a declared KV-cache window and retained token batch. They are not model-quality, throughput, memory-saving, retrieval-quality, paging-policy, implementation, or deployment-safety claims.",
+  "claim_boundary": "These are proof-carrying finite ring-buffer indexing certificates for a declared KV-cache window, retained token batch, and modeled adapter request trace. They are not model-quality, throughput, memory-saving, retrieval-quality, paging-policy, implementation, or deployment-safety claims.",
   "live_window_certificate": {
     "all_tokens_retained": true,
     "cache_size": 16,

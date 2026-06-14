@@ -1,6 +1,6 @@
 # KV-Cache Ring-Buffer Certificate Results
 
-These are proof-carrying finite ring-buffer indexing certificates for a declared KV-cache window and retained token batch. They are not model-quality, throughput, memory-saving, retrieval-quality, paging-policy, implementation, or deployment-safety claims.
+These are proof-carrying finite ring-buffer indexing certificates for a declared KV-cache window, retained token batch, and modeled adapter request trace. They are not model-quality, throughput, memory-saving, retrieval-quality, paging-policy, implementation, or deployment-safety claims.
 
 | Cache size | Current | Token | Slot | Current slot | Lag | Retained | Distinct from current | Next overwrite | Overwrite after current | Stale by overwrite boundary | No same-slot overwrite before current | Stale same-slot overwrite witness | Retained iff no later same-slot write | Theorem ids |
 | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- | --- |
@@ -9,6 +9,10 @@ These are proof-carrying finite ring-buffer indexing certificates for a declared
 | Batch tokens | Batch slots | All retained | Tokens distinct | Slots distinct | Retained iff no later same-slot writes | Trace-fresh slots distinct | Theorem ids |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 20, 24, 29, 31 | 4, 8, 13, 15 | True | True | True | True | True | AIM-T0059, AIM-T0065, AIM-T0066, AIM-T0067, AIM-T0068, AIM-T0078, AIM-T0079 |
+
+| Request id | Requested tokens | Requested slots | All non-future | All retained | Tokens distinct | Slots distinct | Trace iff | Trace-fresh slots distinct | Pass certificate | Theorem ids |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| default_read_request | 20, 24, 29, 31 | 4, 8, 13, 15 | True | True | True | True | True | True | True | AIM-T0059, AIM-T0067, AIM-T0068, AIM-T0078, AIM-T0079 |
 
 | Live start | Live length | Live tokens | Live slots | All retained | Slots distinct | Full window | Slot count matches cache | Slots within cache | Full coverage contract | Theorem ids |
 | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- |

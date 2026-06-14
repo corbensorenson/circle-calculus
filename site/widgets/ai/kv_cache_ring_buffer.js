@@ -133,10 +133,21 @@ function appendRecord(output, values, theoremById) {
   const distinctFromCurrent = isRetained && values.token < values.current && !collisionWithCurrent;
   const batchTokens = readBatch(values.cacheSize, values.current, values.token);
   const batchSlots = batchTokens.map((token) => kvSlot(values.cacheSize, token));
+  const batchAllNonFuture = batchTokens.every((token) => token <= values.current);
+  const batchAllRetained = batchTokens.every((token) => retained(values.cacheSize, values.current, token));
+  const batchTokensDistinct = allDistinct(batchTokens);
+  const batchSlotsDistinct = allDistinct(batchSlots);
   const traceFreshSlotsDistinct = traceFreshBatchSlotsDistinct(
     values.cacheSize,
     values.current,
     batchTokens,
+  );
+  const adapterRequestPass = (
+    batchAllNonFuture
+    && batchAllRetained
+    && batchTokensDistinct
+    && batchSlotsDistinct
+    && traceFreshSlotsDistinct
   );
   const tokens = liveTokens(values.cacheSize, values.current);
   const slots = tokens.map((token) => kvSlot(values.cacheSize, token));
@@ -166,6 +177,7 @@ function appendRecord(output, values, theoremById) {
     `read batch tokens: ${batchTokens.join(", ")}`,
     `read batch slots: ${batchSlots.join(", ")}`,
     `trace-fresh read-batch slots distinct: ${traceFreshSlotsDistinct}`,
+    `adapter request trace pass: ${adapterRequestPass}`,
     `collision with current slot: ${collisionWithCurrent}`,
     `retained older token distinct from current slot: ${distinctFromCurrent}`,
     `live window tokens: ${tokens.join(", ")}`,

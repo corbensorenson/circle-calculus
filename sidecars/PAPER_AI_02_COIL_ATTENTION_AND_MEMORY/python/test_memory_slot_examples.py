@@ -6,6 +6,7 @@ from pathlib import Path
 from circle_math.applications.circle_ai import (
     active_token_counts_by_budget,
     average_candidate_count,
+    certify_kv_cache_adapter_request_trace,
     certify_kv_cache_batch,
     certify_kv_cache_live_window,
     certify_kv_cache_window,
@@ -194,6 +195,49 @@ def test_kv_cache_retained_batch_slots_are_distinct() -> None:
     assert not kv_cache_trace_fresh_batch_slots_distinct(16, 40, (20, 24, 29))
 
 
+def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
+    certificate = certify_kv_cache_adapter_request_trace(
+        cache_size=16,
+        current=31,
+        requested_tokens=(20, 24, 29, 31),
+        request_id="prefill_read",
+    )
+    assert certificate.request_id == "prefill_read"
+    assert certificate.requested_tokens == (20, 24, 29, 31)
+    assert certificate.requested_slots == (4, 8, 13, 15)
+    assert certificate.request_token_count == 4
+    assert certificate.all_non_future
+    assert certificate.all_retained
+    assert certificate.tokens_distinct
+    assert certificate.slots_distinct
+    assert certificate.retained_iff_no_same_slot_overwrite_trace
+    assert certificate.trace_fresh_slots_distinct
+    assert certificate.pass_certificate
+    assert "AIM-T0078" in certificate.theorem_ids
+    assert "AIM-T0079" in certificate.theorem_ids
+    assert "Modeled adapter request-trace certificate only" in certificate.note
+
+    future_request = certify_kv_cache_adapter_request_trace(
+        cache_size=16,
+        current=31,
+        requested_tokens=(20, 32),
+    )
+    assert not future_request.all_non_future
+    assert not future_request.all_retained
+    assert not future_request.pass_certificate
+
+    duplicate_request = certify_kv_cache_adapter_request_trace(
+        cache_size=16,
+        current=31,
+        requested_tokens=(20, 20),
+    )
+    assert duplicate_request.all_non_future
+    assert duplicate_request.all_retained
+    assert not duplicate_request.tokens_distinct
+    assert not duplicate_request.slots_distinct
+    assert not duplicate_request.pass_certificate
+
+
 def test_kv_cache_live_window_tokens_are_exact_and_slot_distinct() -> None:
     certificate = certify_kv_cache_live_window(cache_size=16, current=31)
     assert certificate.start == kv_cache_live_window_start(16, 31) == 16
@@ -289,6 +333,11 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert "AIM-T0068" in payload["batch_certificate"]["theorem_ids"]
     assert "AIM-T0078" in payload["batch_certificate"]["theorem_ids"]
     assert "AIM-T0079" in payload["batch_certificate"]["theorem_ids"]
+    assert payload["adapter_request_trace_certificate"]["request_id"] == "default_read_request"
+    assert payload["adapter_request_trace_certificate"]["requested_slots"] == [4, 8, 13, 15]
+    assert payload["adapter_request_trace_certificate"]["pass_certificate"] is True
+    assert "AIM-T0078" in payload["adapter_request_trace_certificate"]["theorem_ids"]
+    assert "AIM-T0079" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert payload["live_window_certificate"]["start"] == 16
     assert payload["live_window_certificate"]["length"] == 16
     assert payload["live_window_certificate"]["slots_distinct"] is True
@@ -312,6 +361,9 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert "KV-Cache Ring-Buffer Certificate Results" in markdown_result.stdout
     assert "| 16 | 31 | 20 | 4 | 15 | 11 | True | True | 36 | True | False | True | False | True |" in markdown_result.stdout
     assert "Batch tokens" in markdown_result.stdout
+    assert "Request id" in markdown_result.stdout
+    assert "default_read_request" in markdown_result.stdout
+    assert "Pass certificate" in markdown_result.stdout
     assert "Retained iff no later same-slot writes" in markdown_result.stdout
     assert "Trace-fresh slots distinct" in markdown_result.stdout
     assert "Live start" in markdown_result.stdout

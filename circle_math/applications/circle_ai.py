@@ -581,6 +581,43 @@ class KVCacheBatchCertificate:
 
 
 @dataclass(frozen=True)
+class KVCacheAdapterRequestTraceCertificate:
+    request_id: str
+    cache_size: int
+    current: int
+    requested_tokens: tuple[int, ...]
+    requested_slots: tuple[int, ...]
+    request_token_count: int
+    all_non_future: bool
+    all_retained: bool
+    tokens_distinct: bool
+    slots_distinct: bool
+    retained_iff_no_same_slot_overwrite_trace: bool
+    trace_fresh_slots_distinct: bool
+    pass_certificate: bool
+    theorem_ids: tuple[str, ...] = (
+        "AIM-T0059",
+        "AIM-T0067",
+        "AIM-T0068",
+        "AIM-T0078",
+        "AIM-T0079",
+    )
+    lean_declarations: tuple[str, ...] = (
+        "Circle.Applications.kvCacheSlot_lt_cacheSize",
+        "Circle.Applications.kvCacheWindow_retainedBatchSlots_pairwise_ne",
+        "Circle.Applications.kvCacheWindow_retainedBatchSlotMap_nodup",
+        "Circle.Applications.kvCacheWindow_retainedBatch_iff_noSameSlotOverwriteTrace_of_forall_le",
+        "Circle.Applications.kvCacheWindow_traceFreshBatchSlotMap_nodup",
+    )
+    note: str = (
+        "Modeled adapter request-trace certificate only; this packages the "
+        "finite retained-batch KV-cache theorem spine for a declared set of "
+        "read-token positions. It does not prove a GPU kernel, serving stack, "
+        "paging policy, deployment behavior, retrieval quality, or model quality."
+    )
+
+
+@dataclass(frozen=True)
 class KVCacheLiveWindowCertificate:
     cache_size: int
     current: int
@@ -1795,6 +1832,56 @@ def certify_kv_cache_batch(
         trace_fresh_slots_distinct=(
             kv_cache_trace_fresh_batch_slots_distinct(cache_size, current, token_tuple)
         ),
+    )
+
+
+def certify_kv_cache_adapter_request_trace(
+    *,
+    cache_size: int,
+    current: int,
+    requested_tokens: Sequence[int],
+    request_id: str = "read_request",
+) -> KVCacheAdapterRequestTraceCertificate:
+    """Package a retained-batch KV-cache certificate as a modeled read request."""
+    _require_positive(cache_size, "cache_size")
+    if current < 0:
+        raise ValueError("current must be nonnegative")
+    normalized_request_id = request_id.strip()
+    if not normalized_request_id:
+        raise ValueError("request_id must be nonempty")
+    token_tuple = tuple(requested_tokens)
+    if not token_tuple:
+        raise ValueError("requested_tokens must be nonempty")
+    if any(token < 0 for token in token_tuple):
+        raise ValueError("requested_tokens must be nonnegative")
+    batch = certify_kv_cache_batch(
+        cache_size=cache_size,
+        current=current,
+        tokens=token_tuple,
+    )
+    all_non_future = all(token <= current for token in token_tuple)
+    pass_certificate = (
+        all_non_future
+        and batch.all_retained
+        and batch.tokens_distinct
+        and batch.slots_distinct
+        and batch.retained_iff_no_same_slot_overwrite_trace
+        and batch.trace_fresh_slots_distinct
+    )
+    return KVCacheAdapterRequestTraceCertificate(
+        request_id=normalized_request_id,
+        cache_size=cache_size,
+        current=current,
+        requested_tokens=token_tuple,
+        requested_slots=batch.slots,
+        request_token_count=len(token_tuple),
+        all_non_future=all_non_future,
+        all_retained=batch.all_retained,
+        tokens_distinct=batch.tokens_distinct,
+        slots_distinct=batch.slots_distinct,
+        retained_iff_no_same_slot_overwrite_trace=batch.retained_iff_no_same_slot_overwrite_trace,
+        trace_fresh_slots_distinct=batch.trace_fresh_slots_distinct,
+        pass_certificate=pass_certificate,
     )
 
 

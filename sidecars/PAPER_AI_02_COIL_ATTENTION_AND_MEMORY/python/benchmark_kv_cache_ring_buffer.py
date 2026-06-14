@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any
 
 from circle_math.applications.circle_ai import (
+    certify_kv_cache_adapter_request_trace,
     certify_kv_cache_batch,
     certify_kv_cache_live_window,
     certify_kv_cache_window,
@@ -24,9 +25,9 @@ from circle_math.applications.circle_ai import (
 
 CLAIM_BOUNDARY = (
     "These are proof-carrying finite ring-buffer indexing certificates for a "
-    "declared KV-cache window and retained token batch. They are not model-quality, "
-    "throughput, memory-saving, retrieval-quality, paging-policy, implementation, "
-    "or deployment-safety claims."
+    "declared KV-cache window, retained token batch, and modeled adapter "
+    "request trace. They are not model-quality, throughput, memory-saving, "
+    "retrieval-quality, paging-policy, implementation, or deployment-safety claims."
 )
 
 
@@ -47,6 +48,12 @@ def build_payload(*, cache_size: int, current: int, token: int, batch_tokens: st
         current=current,
         tokens=parse_tokens(batch_tokens),
     )
+    adapter_request = certify_kv_cache_adapter_request_trace(
+        cache_size=cache_size,
+        current=current,
+        requested_tokens=parse_tokens(batch_tokens),
+        request_id="default_read_request",
+    )
     live_window = certify_kv_cache_live_window(
         cache_size=cache_size,
         current=current,
@@ -56,6 +63,7 @@ def build_payload(*, cache_size: int, current: int, token: int, batch_tokens: st
         "claim_boundary": CLAIM_BOUNDARY,
         "window_certificate": asdict(certificate),
         "batch_certificate": asdict(batch),
+        "adapter_request_trace_certificate": asdict(adapter_request),
         "live_window_certificate": asdict(live_window),
     }
 
@@ -63,6 +71,7 @@ def build_payload(*, cache_size: int, current: int, token: int, batch_tokens: st
 def text_results(payload: dict[str, Any]) -> str:
     certificate = payload["window_certificate"]
     batch = payload["batch_certificate"]
+    adapter_request = payload["adapter_request_trace_certificate"]
     live_window = payload["live_window_certificate"]
     lines = [
         (
@@ -106,6 +115,25 @@ def text_results(payload: dict[str, Any]) -> str:
         ),
         batch["note"],
         (
+            "kv_cache_adapter_request_trace "
+            f"request_id={adapter_request['request_id']} "
+            f"cache_size={adapter_request['cache_size']} "
+            f"current={adapter_request['current']} "
+            f"tokens={','.join(str(token) for token in adapter_request['requested_tokens'])} "
+            f"slots={','.join(str(slot) for slot in adapter_request['requested_slots'])} "
+            f"request_token_count={adapter_request['request_token_count']} "
+            f"all_non_future={adapter_request['all_non_future']} "
+            f"all_retained={adapter_request['all_retained']} "
+            f"tokens_distinct={adapter_request['tokens_distinct']} "
+            f"slots_distinct={adapter_request['slots_distinct']} "
+            "retained_iff_no_same_slot_overwrite_trace="
+            f"{adapter_request['retained_iff_no_same_slot_overwrite_trace']} "
+            f"trace_fresh_slots_distinct={adapter_request['trace_fresh_slots_distinct']} "
+            f"pass_certificate={adapter_request['pass_certificate']} "
+            f"theorem_ids={','.join(adapter_request['theorem_ids'])}"
+        ),
+        adapter_request["note"],
+        (
             "kv_cache_live_window "
             f"cache_size={live_window['cache_size']} "
             f"current={live_window['current']} "
@@ -130,6 +158,7 @@ def text_results(payload: dict[str, Any]) -> str:
 def markdown_results(payload: dict[str, Any]) -> str:
     certificate = payload["window_certificate"]
     batch = payload["batch_certificate"]
+    adapter_request = payload["adapter_request_trace_certificate"]
     live_window = payload["live_window_certificate"]
     return "\n".join(
         [
@@ -164,6 +193,22 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{batch['retained_iff_no_same_slot_overwrite_trace']} | "
                 f"{batch['trace_fresh_slots_distinct']} | "
                 f"{', '.join(batch['theorem_ids'])} |"
+            ),
+            "",
+            "| Request id | Requested tokens | Requested slots | All non-future | All retained | Tokens distinct | Slots distinct | Trace iff | Trace-fresh slots distinct | Pass certificate | Theorem ids |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+            (
+                f"| {adapter_request['request_id']} | "
+                f"{', '.join(str(token) for token in adapter_request['requested_tokens'])} | "
+                f"{', '.join(str(slot) for slot in adapter_request['requested_slots'])} | "
+                f"{adapter_request['all_non_future']} | "
+                f"{adapter_request['all_retained']} | "
+                f"{adapter_request['tokens_distinct']} | "
+                f"{adapter_request['slots_distinct']} | "
+                f"{adapter_request['retained_iff_no_same_slot_overwrite_trace']} | "
+                f"{adapter_request['trace_fresh_slots_distinct']} | "
+                f"{adapter_request['pass_certificate']} | "
+                f"{', '.join(adapter_request['theorem_ids'])} |"
             ),
             "",
             "| Live start | Live length | Live tokens | Live slots | All retained | Slots distinct | Full window | Slot count matches cache | Slots within cache | Full coverage contract | Theorem ids |",

@@ -33,6 +33,7 @@ from circle_math.applications import (
     fit_winding_position_lookup,
     fit_recurrence_resolution_lookup,
     harmonic_feature,
+    certify_kv_cache_adapter_request_trace,
     certify_kv_cache_batch,
     certify_kv_cache_window,
     kv_cache_batch_retained_iff_no_same_slot_overwrite_trace,
@@ -3196,6 +3197,11 @@ def main() -> int:
     for cache_size, current, token, batch_tokens in kv_cache_cases:
         window = certify_kv_cache_window(cache_size=cache_size, current=current, token=token)
         batch = certify_kv_cache_batch(cache_size=cache_size, current=current, tokens=batch_tokens)
+        adapter_request = certify_kv_cache_adapter_request_trace(
+            cache_size=cache_size,
+            current=current,
+            requested_tokens=batch_tokens,
+        )
         slot = js_kv_cache_slot(cache_size, token)
         current_slot = js_kv_cache_slot(cache_size, current)
         retained = js_kv_cache_window_contains(cache_size, current, token)
@@ -3263,6 +3269,20 @@ def main() -> int:
             current,
             batch_tokens,
         ) == batch.trace_fresh_slots_distinct
+        assert adapter_request.requested_slots == batch.slots
+        assert adapter_request.all_non_future == all(token <= current for token in batch_tokens)
+        assert adapter_request.all_retained == batch.all_retained
+        assert adapter_request.tokens_distinct == batch.tokens_distinct
+        assert adapter_request.slots_distinct == batch.slots_distinct
+        assert adapter_request.trace_fresh_slots_distinct == batch.trace_fresh_slots_distinct
+        assert adapter_request.pass_certificate == (
+            adapter_request.all_non_future
+            and batch.all_retained
+            and batch.tokens_distinct
+            and batch.slots_distinct
+            and batch.retained_iff_no_same_slot_overwrite_trace
+            and batch.trace_fresh_slots_distinct
+        )
 
     retrieval_cases = [
         (64, tuple(range(64)), 21, 7, 3, 8, 5, 3),

@@ -10,16 +10,17 @@ from pathlib import Path
 from typing import Any
 
 from circle_math.applications import (
+    certify_kv_cache_adapter_request_trace,
     certify_kv_cache_batch,
     certify_kv_cache_live_window,
     certify_kv_cache_window,
 )
 
 CLAIM_BOUNDARY = (
-    "This is a proof-carrying finite ring-buffer indexing and retained-window "
-    "certificate. It is not a paging-policy, throughput, memory-saving, "
-    "retrieval-quality, implementation-correctness, deployment-safety, or "
-    "model-quality claim."
+    "This is a proof-carrying finite ring-buffer indexing, retained-window, "
+    "and modeled adapter request-trace certificate. It is not a paging-policy, "
+    "throughput, memory-saving, retrieval-quality, implementation-correctness, "
+    "deployment-safety, or model-quality claim."
 )
 
 
@@ -44,6 +45,11 @@ def parse_args() -> argparse.Namespace:
         type=parse_tokens,
         default=(),
         help="Optional comma-separated retained batch to certify, for example 20,24,29,31.",
+    )
+    parser.add_argument(
+        "--request-id",
+        default="read_request",
+        help="Label for the modeled adapter read request in the certificate.",
     )
     parser.add_argument(
         "--json-out",
@@ -71,6 +77,12 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
         current=args.current,
         tokens=batch_tokens,
     )
+    adapter_request = certify_kv_cache_adapter_request_trace(
+        cache_size=args.cache_size,
+        current=args.current,
+        requested_tokens=batch_tokens,
+        request_id=args.request_id,
+    )
     live_window = certify_kv_cache_live_window(
         cache_size=args.cache_size,
         current=args.current,
@@ -80,6 +92,7 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
         "claim_boundary": CLAIM_BOUNDARY,
         "window_certificate": asdict(window),
         "batch_certificate": asdict(batch),
+        "adapter_request_trace_certificate": asdict(adapter_request),
         "live_window_certificate": asdict(live_window),
     }
 
@@ -103,6 +116,7 @@ def unique_theorem_ids(*groups: tuple[str, ...]) -> tuple[str, ...]:
 def summary_lines(payload: dict[str, Any]) -> list[str]:
     window = payload["window_certificate"]
     batch = payload["batch_certificate"]
+    adapter_request = payload["adapter_request_trace_certificate"]
     live_window = payload["live_window_certificate"]
     freshness = "LIVE" if window["retained"] else "STALE_OR_FUTURE"
     coverage = "FULL" if live_window["full_coverage_contract"] else "PREFIX"
@@ -136,6 +150,20 @@ def summary_lines(payload: dict[str, Any]) -> list[str]:
             f"trace_fresh_slots_distinct={batch['trace_fresh_slots_distinct']}"
         ),
         (
+            "adapter_request_trace="
+            f"{'PASS' if adapter_request['pass_certificate'] else 'FAIL'} "
+            f"request_id={adapter_request['request_id']} "
+            f"tokens={tuple(adapter_request['requested_tokens'])} "
+            f"slots={tuple(adapter_request['requested_slots'])} "
+            f"all_non_future={adapter_request['all_non_future']} "
+            f"all_retained={adapter_request['all_retained']} "
+            f"tokens_distinct={adapter_request['tokens_distinct']} "
+            f"slots_distinct={adapter_request['slots_distinct']} "
+            "retained_iff_no_same_slot_overwrite_trace="
+            f"{adapter_request['retained_iff_no_same_slot_overwrite_trace']} "
+            f"trace_fresh_slots_distinct={adapter_request['trace_fresh_slots_distinct']}"
+        ),
+        (
             "live_window_contract="
             f"{coverage} start={live_window['start']} length={live_window['length']} "
             f"slots_distinct={live_window['slots_distinct']} "
@@ -144,7 +172,7 @@ def summary_lines(payload: dict[str, Any]) -> list[str]:
         ),
         (
             "theorem_ids="
-            f"{unique_theorem_ids(window['theorem_ids'], batch['theorem_ids'], live_window['theorem_ids'])}"
+            f"{unique_theorem_ids(window['theorem_ids'], batch['theorem_ids'], adapter_request['theorem_ids'], live_window['theorem_ids'])}"
         ),
         f"boundary={payload['claim_boundary']}",
     ]
