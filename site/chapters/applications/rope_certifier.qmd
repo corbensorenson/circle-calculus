@@ -116,14 +116,16 @@ The committed sidecar results are meant to be read as contract evidence, not as 
 
 | Preset | Context | Exact Discrete Contract | Main Evidence | Real-Phase Row |
 | --- | ---: | --- | --- | --- |
-| `llama_style_10000_4k` | 4096 | PASS | common gap is outside context; first reported prefix already passes at length `5`; a one-channel standard seed is available through context `4096` | numerical scan PASS |
-| `llama_style_10000_128k` | 131072 | PASS | common gap is outside context; first reported prefix already passes at length `8`; exact result is still the rounded integer-period model | numerical scan PASS |
-| `llama_style_500000_128k` | 131072 | PASS | common gap is outside context; bounded subfamily report finds a sufficient subbank; prefix search does not find a passing prefix in the bounded report | numerical scan PASS |
+| `llama_style_10000_4k` | 4096 | PASS | common gap is outside context; first reported prefix already passes at length `5`; the D14 one-channel standard seed covers this request through the 16k proved horizon | numerical scan PASS |
+| `llama_style_10000_128k` | 131072 | PASS | common gap is outside context; first reported prefix already passes at length `8`; exact result is still the rounded integer-period model, not a real-valued 128k proof | numerical scan PASS |
+| `llama_style_500000_128k` | 131072 | PASS | common gap is outside context; bounded subfamily report finds a sufficient subbank; prefix search does not find a passing prefix in the bounded report; exact result is still the rounded integer-period model | numerical scan PASS |
 | `diagnostic_single_channel_10000_20` | 20 | FAIL | common gap `6`; exact integer-bank collision-pair count `24` | numerical scan PASS |
 | `diagnostic_two_channel_36_128` | 128 | FAIL | common gap `114`; exact integer-bank collision-pair count `14` | numerical scan PASS |
 | `diagnostic_shared_factor_25_64` | 64 | FAIL | common gap `54`; exact integer-bank collision-pair count `10` | numerical scan PASS |
 
 The most important distinction is that the first three rows are exact only after the real-valued RoPE schedule has been converted into the declared integer periods used by the certifier. The numerical real-phase scan is reported beside the proof-carrying discrete contract because it is useful engineering evidence, but this page does not call it a proof.
+
+For genuine standard channel 0, the Lean-proved margin currently stops at context `16384`. The exact-rational planner now reports candidate 32k and 64k rows at the same `1/104219` margin and a 128k-frontier first uncovered gap `103993`; those frontier rows are deliberately not theorem cards.
 
 ::: {.checkpoint-box}
 

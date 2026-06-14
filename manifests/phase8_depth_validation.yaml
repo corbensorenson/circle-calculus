@@ -92,7 +92,7 @@ targets:
       - "sidecars/PAPER_AI_04_ROPE_POSITION_CERTIFIER/results/rope_certifier_presets.md"
       - "site/chapters/applications/rope_certifier.qmd"
     dictionary_dependencies: ["COMMON-0077"]
-    next_action: "The compact preset JSON/Markdown fixtures, prefix-collision table field, Living Book links, named diagnostic prefix-pass/shared-factor cases, and explicit exact-only quantized plus interpolation-style scaled-period phase-bank boundary cases are in place; next add richer public-safe configurations only when they expose a new theorem-backed contract field, and keep model-quality claims out."
+    next_action: "The compact preset JSON/Markdown fixtures, prefix-collision table field, Living Book results note, named diagnostic prefix-pass/shared-factor cases, exact-only quantized plus interpolation-style scaled-period phase-bank boundary cases, and standard-channel 32k/64k/128k-frontier planner rows are in place; next add richer public-safe configurations only when they expose a new theorem-backed contract field, and keep model-quality claims out."
     guardrail: "A pass/fail certificate is not evidence of perplexity, long-context ability, runtime, or memory behavior."
 
   - id: P8-VALID-002
