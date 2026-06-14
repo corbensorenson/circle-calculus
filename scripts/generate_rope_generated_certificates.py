@@ -72,6 +72,7 @@ def render_plan(plan_spec: GeneratedPlan) -> str:
     lower = plan.lower_turn_ratio_bound
     upper = plan.upper_turn_ratio_bound
     level = plan_spec.level
+    compact_name = f"ropeStandardChannel0{level}UniformBands"
     lower_name = f"ropeStandardChannel0{level}Bands"
 
     lines: list[str] = [
@@ -81,8 +82,8 @@ def render_plan(plan_spec: GeneratedPlan) -> str:
         f"/-- The advertised margin for the generated standard channel-0 {plan_spec.description} seed. -/",
         f"noncomputable def ropeStandardChannel0{level}SeedMargin : ℝ := 1 / {plan_spec.margin_denominator}",
         "",
-        f"/-- Generated d20 rational bands for the standard channel-0 {plan_spec.description} seed. -/",
-        f"private def {lower_name} : List RopeTurnRatioRationalIntervalBand := [",
+        f"/-- Generated d20 compact gap/cell bands for the standard channel-0 {plan_spec.description} seed. -/",
+        f"private def {compact_name} : List RopeTurnRatioUniformRationalIntervalBand := [",
     ]
     for band in plan.bands:
         lines.append(
@@ -90,19 +91,25 @@ def render_plan(plan_spec: GeneratedPlan) -> str:
             "{ "
             f"startGap := {band.start_gap}, "
             f"endGap := {band.end_gap}, "
-            f"cell := {band.cell}, "
-            f"lowerBound := ({lower} : ℚ), "
-            f"upperBound := ({upper} : ℚ) "
+            f"cell := {band.cell} "
             "},"
         )
     lines.extend(
         [
             "]",
             "",
+            f"/-- Expanded rational bands for the standard channel-0 {plan_spec.description} seed. -/",
+            f"private def {lower_name} : List RopeTurnRatioRationalIntervalBand :=",
+            "  ropeTurnRatioUniformRationalIntervalBands",
+            f"    ({lower} : ℚ)",
+            f"    ({upper} : ℚ)",
+            f"    {compact_name}",
+            "",
             f"private theorem {lower_name}_bounds :",
             f"    ∀ band, band ∈ {lower_name} ->",
             f"      band.lowerBound = ({lower} : ℚ) ∧ band.upperBound = ({upper} : ℚ) := by",
-            "  native_decide",
+            f"  simp [{lower_name}, ropeTurnRatioUniformRationalIntervalBands,",
+            "    RopeTurnRatioUniformRationalIntervalBand.toRationalIntervalBand ]",
             "",
             f"private theorem {lower_name}_ratEndpointValid :",
             f"    ∀ band, band ∈ {lower_name} ->",

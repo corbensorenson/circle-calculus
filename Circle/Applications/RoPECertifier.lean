@@ -837,6 +837,40 @@ structure RopeTurnRatioRationalIntervalBand where
   upperBound : ℚ
   deriving DecidableEq
 
+/-- A compact generated interval band when every band in a certificate shares
+the same rational turn-ratio enclosure.
+
+Large standard-channel certificates use one global lower/upper bound for
+`1/(2*pi)` and many integer-cell gap bands. Keeping only the gap range and cell
+in each generated row avoids repeating the same large rational constants in
+every table entry; `toRationalIntervalBand` restores the ordinary band object
+used by the proof bridge. -/
+structure RopeTurnRatioUniformRationalIntervalBand where
+  startGap : Nat
+  endGap : Nat
+  cell : Int
+  deriving DecidableEq
+
+/-- Restore a compact uniform band to the ordinary rational interval-band
+record by attaching the shared lower and upper turn-ratio bounds. -/
+def RopeTurnRatioUniformRationalIntervalBand.toRationalIntervalBand
+    (lowerBound upperBound : ℚ)
+    (band : RopeTurnRatioUniformRationalIntervalBand) :
+    RopeTurnRatioRationalIntervalBand :=
+  { startGap := band.startGap
+    endGap := band.endGap
+    cell := band.cell
+    lowerBound := lowerBound
+    upperBound := upperBound }
+
+/-- Expand a compact uniform-band list into the ordinary band list consumed by
+the rational-band interval-certificate theorem. -/
+def ropeTurnRatioUniformRationalIntervalBands
+    (lowerBound upperBound : ℚ)
+    (bands : List RopeTurnRatioUniformRationalIntervalBand) :
+    List RopeTurnRatioRationalIntervalBand :=
+  bands.map (fun band => band.toRationalIntervalBand lowerBound upperBound)
+
 /-- A rational interval band covers a gap when the gap lies between its
 declared endpoints. -/
 def RopeTurnRatioRationalIntervalBand.CoversGap
