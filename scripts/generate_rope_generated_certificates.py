@@ -18,6 +18,9 @@ OUT = ROOT / "Circle" / "Applications" / "RoPEGeneratedCertificates.lean"
 class GeneratedPlan:
     level: str
     context: int
+    margin_denominator: int
+    impossible_margin_denominator: int
+    obstruction_gap: int
     theorem_start: int
     description: str
 
@@ -26,14 +29,29 @@ PLANS = (
     GeneratedPlan(
         level="D15",
         context=32768,
+        margin_denominator=104219,
+        impossible_margin_denominator=104218,
+        obstruction_gap=710,
         theorem_start=142,
         description="32k",
     ),
     GeneratedPlan(
         level="D16",
         context=65536,
+        margin_denominator=104219,
+        impossible_margin_denominator=104218,
+        obstruction_gap=710,
         theorem_start=148,
         description="64k",
+    ),
+    GeneratedPlan(
+        level="D17",
+        context=131072,
+        margin_denominator=328459,
+        impossible_margin_denominator=328458,
+        obstruction_gap=103993,
+        theorem_start=156,
+        description="128k",
     ),
 )
 
@@ -45,7 +63,7 @@ def theorem_id(number: int) -> str:
 def render_plan(plan_spec: GeneratedPlan) -> str:
     plan = plan_standard_channel0_interval_bands(
         pi_bound_preset="d20",
-        margin=Fraction(1, 104219),
+        margin=Fraction(1, plan_spec.margin_denominator),
         max_context_length=plan_spec.context,
     )
     if plan.first_uncovered_gap is not None:
@@ -61,7 +79,7 @@ def render_plan(plan_spec: GeneratedPlan) -> str:
         f"def ropeStandardChannel0{level}SeedContext : Nat := {plan_spec.context}",
         "",
         f"/-- The advertised margin for the generated standard channel-0 {plan_spec.description} seed. -/",
-        f"noncomputable def ropeStandardChannel0{level}SeedMargin : ℝ := 1 / 104219",
+        f"noncomputable def ropeStandardChannel0{level}SeedMargin : ℝ := 1 / {plan_spec.margin_denominator}",
         "",
         f"/-- Generated d20 rational bands for the standard channel-0 {plan_spec.description} seed. -/",
         f"private def {lower_name} : List RopeTurnRatioRationalIntervalBand := [",
@@ -87,7 +105,8 @@ def render_plan(plan_spec: GeneratedPlan) -> str:
             "  native_decide",
             "",
             f"private theorem {lower_name}_ratEndpointValid :",
-            f"    ∀ band, band ∈ {lower_name} -> band.RatEndpointValid (1 / 104219 : ℚ) := by",
+            f"    ∀ band, band ∈ {lower_name} ->",
+            f"      band.RatEndpointValid (1 / {plan_spec.margin_denominator} : ℚ) := by",
             "  unfold RopeTurnRatioRationalIntervalBand.RatEndpointValid",
             "  native_decide",
             "",
@@ -99,14 +118,15 @@ def render_plan(plan_spec: GeneratedPlan) -> str:
             "  native_decide",
             "",
             f"/-- {theorem_id(plan_spec.theorem_start)}: a generated compressed interval certificate for",
-            f"standard channel 0 through context `{plan_spec.context}` at margin `1/104219`. -/",
+            f"standard channel 0 through context `{plan_spec.context}`",
+            f"at margin `1/{plan_spec.margin_denominator}`. -/",
             f"theorem ropeStandardChannel0{level}Seed_intervalCertificate :",
             "    ropeTurnRatioIntervalCertificate ropeStandardChannel0TurnRatio",
             f"      ropeStandardChannel0{level}SeedMargin ropeStandardChannel0{level}SeedContext := by",
             f"  simpa [ropeStandardChannel0{level}SeedMargin, ropeStandardChannel0{level}SeedContext] using",
             "    ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
             "      (turnRatio := ropeStandardChannel0TurnRatio)",
-            "      (margin := ((1 / 104219 : ℚ) : ℝ))",
+            f"      (margin := ((1 / {plan_spec.margin_denominator} : ℚ) : ℝ))",
             f"      (context := {plan_spec.context})",
             f"      (bands := {lower_name})",
             "      (by norm_num)",
@@ -117,7 +137,7 @@ def render_plan(plan_spec: GeneratedPlan) -> str:
             "        rcases hbounds with ⟨hlower, hupper⟩",
             "        exact",
             "          ropeStandardChannel0D20Band_valid_of_ratEndpointValid",
-            "            (margin := (1 / 104219 : ℚ))",
+            f"            (margin := (1 / {plan_spec.margin_denominator} : ℚ))",
             "            (band := band) hlower hupper hrat)",
             f"      {lower_name}_cover",
             "",
@@ -214,15 +234,15 @@ def render_plan(plan_spec: GeneratedPlan) -> str:
             f"standard channel-0 {plan_spec.description} seed brackets the advertised margin. -/",
             f"theorem ropeStandardChannel0{level}_context{plan_spec.context}_margin_bracket :",
             "    ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio",
-            f"      ((1 : ℝ) / 104219) {plan_spec.context} ∧",
-            "    ∀ margin : ℝ, (1 : ℝ) / 104218 ≤ margin →",
+            f"      ((1 : ℝ) / {plan_spec.margin_denominator}) {plan_spec.context} ∧",
+            f"    ∀ margin : ℝ, (1 : ℝ) / {plan_spec.impossible_margin_denominator} ≤ margin →",
             f"      ¬ ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio margin {plan_spec.context} := by",
             "  constructor",
             f"  · simpa [ropeStandardChannel0{level}SeedMargin, ropeStandardChannel0{level}SeedContext]",
             f"      using ropeStandardChannel0{level}Seed_turnRatioFiniteMargin",
             "  · intro margin hmargin",
             "    exact",
-            "      not_ropeStandardChannel0_margin_ge_one_over_104218_of_context_gt_710",
+            f"      not_ropeStandardChannel0_margin_ge_one_over_{plan_spec.impossible_margin_denominator}_of_context_gt_{plan_spec.obstruction_gap}",
             f"        (context := {plan_spec.context}) (margin := margin) (by norm_num) hmargin",
             "",
         ]

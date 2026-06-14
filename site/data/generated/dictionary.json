@@ -12257,6 +12257,54 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D16_context65536_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D16_context65536_margin_bracket",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0154",
+          "lean_name": "Circle.Applications.ropeStandardChannel0_gap103993_error_lt_one_over_328458",
+          "name": "Circle.Applications.ropeStandardChannel0_gap103993_error_lt_one_over_328458",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0155",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993",
+          "name": "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0156",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0D17Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0157",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0D17Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0158",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0D17Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0D17Seed_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0159",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0160",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed_cons",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0161",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17_context131072_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D17_context131072_margin_bracket",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -13084,6 +13132,54 @@
           "id": "AIRA-T0153",
           "lean_name": "Circle.Applications.ropeStandardChannel0D16_context65536_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D16_context65536_margin_bracket",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0154",
+          "lean_name": "Circle.Applications.ropeStandardChannel0_gap103993_error_lt_one_over_328458",
+          "name": "Circle.Applications.ropeStandardChannel0_gap103993_error_lt_one_over_328458",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0155",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993",
+          "name": "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0156",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0D17Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0157",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0D17Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0158",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0D17Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0D17Seed_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0159",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0160",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed_cons",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0161",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17_context131072_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D17_context131072_margin_bracket",
           "status": "proved"
         }
       ],
@@ -14380,6 +14476,54 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D16_context65536_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D16_context65536_margin_bracket",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0154",
+          "lean_name": "Circle.Applications.ropeStandardChannel0_gap103993_error_lt_one_over_328458",
+          "name": "Circle.Applications.ropeStandardChannel0_gap103993_error_lt_one_over_328458",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0155",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993",
+          "name": "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0156",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0D17Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0157",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0D17Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0158",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0D17Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0D17Seed_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0159",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0160",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed_cons",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0161",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17_context131072_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D17_context131072_margin_bracket",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -15258,6 +15402,54 @@
           "id": "AIRA-T0153",
           "lean_name": "Circle.Applications.ropeStandardChannel0D16_context65536_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D16_context65536_margin_bracket",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0154",
+          "lean_name": "Circle.Applications.ropeStandardChannel0_gap103993_error_lt_one_over_328458",
+          "name": "Circle.Applications.ropeStandardChannel0_gap103993_error_lt_one_over_328458",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0155",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993",
+          "name": "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0156",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0D17Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0157",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0D17Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0158",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0D17Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0D17Seed_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0159",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0160",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed_cons",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0161",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17_context131072_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D17_context131072_margin_bracket",
           "status": "proved"
         }
       ],
@@ -16169,6 +16361,54 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D16_context65536_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D16_context65536_margin_bracket",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0154",
+          "lean_name": "Circle.Applications.ropeStandardChannel0_gap103993_error_lt_one_over_328458",
+          "name": "Circle.Applications.ropeStandardChannel0_gap103993_error_lt_one_over_328458",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0155",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993",
+          "name": "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0156",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0D17Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0157",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0D17Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0158",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0D17Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0D17Seed_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0159",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0160",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed_cons",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0161",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17_context131072_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D17_context131072_margin_bracket",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -16187,10 +16427,10 @@
         "A formal proof of the current numerical floating-point scan.",
         "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
       ],
-      "formal_definition": "In Lean, `Circle.Applications.ropeTurnRatioFiniteMargin alpha margin context` means every positive natural gap below `context` is at least `margin` away from every integer turn under `Circle.Applications.ropeTurnRatioError alpha gap turns`. Theorem `Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds` reduces the gap side to generated positive members of `List.range context`; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses` reduces the integer-turn side for each generated gap to floor and ceiling witnesses. Theorem `Circle.Applications.RopeTurnRatioFiniteMarginCertificate.certifies` packages those witnesses as a proof-carrying certificate object. Theorem `Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate` packages a finite table of rational interval witnesses as the same margin predicate. Theorem `Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin` proves the named rational/discretized preset `1/4099` has margin `1/4099` over context `4096`; theorem `Circle.Applications.ropeStandardChannel0D11Seed_turnRatioFiniteMargin` proves the sharp context-4096 standard channel-0 seed for `1 / (2*pi)` at margin `1/104219`; theorem `Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_104218_of_context_gt_710` proves any advertised margin at or above `1/104218` is impossible once gap `710` is in scope; theorem `Circle.Applications.ropeStandardChannel0D11_context4096_margin_bracket` packages that 4k bracket; and theorem `Circle.Applications.ropeStandardChannel0D12Seed_turnRatioFiniteMargin` proves the longer context-8192 standard channel-0 seed at margin `1/104220`. Theorem `Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin` proves that any such margin rules out one-channel real near-turn collision below the scaled tolerance `fullTurn * margin`; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_context` proves the same margin transfers from a larger certified context to any smaller requested context; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin` proves a larger certified margin also proves any smaller advertised margin over the same context; theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin` packages both downgrades at the bank level; and the D9, D10, D11, and D12 specialized bank transfers are `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed`, `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D10Seed`, `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed`, and `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed`.",
+      "formal_definition": "In Lean, `Circle.Applications.ropeTurnRatioFiniteMargin alpha margin context` means every positive natural gap below `context` is at least `margin` away from every integer turn under `Circle.Applications.ropeTurnRatioError alpha gap turns`. Theorem `Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds` reduces the gap side to generated positive members of `List.range context`; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses` reduces the integer-turn side for each generated gap to floor and ceiling witnesses. Theorem `Circle.Applications.RopeTurnRatioFiniteMarginCertificate.certifies` packages those witnesses as a proof-carrying certificate object. Theorem `Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate` packages a finite table of rational interval witnesses as the same margin predicate, and the rational-band bridge theorems `Circle.Applications.ropeTurnRatioIntervalCertificateOfRationalBands` plus `Circle.Applications.ropeTurnRatioIntervalCertificateOfRationalBands_from_ratEndpointValid` let generated rational band lists compile into interval certificates. Theorem `Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin` proves the named rational/discretized preset `1/4099` has margin `1/4099` over context `4096`. The standard channel-0 seed family now includes compiled `1 / (2*pi)` interval certificates through D17: `Circle.Applications.ropeStandardChannel0D16Seed_turnRatioFiniteMargin` proves margin `1/104219` through context `65536`, `Circle.Applications.ropeStandardChannel0D17Seed_turnRatioFiniteMargin` proves margin `1/328459` through context `131072`, and `Circle.Applications.ropeStandardChannel0D17_context131072_margin_bracket` packages that 128k positive seed with the obstruction showing every margin at or above `1/328458` is impossible once gap `103993` is in scope. Theorem `Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin` proves that any such margin rules out one-channel real near-turn collision below the scaled tolerance `fullTurn * margin`; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_context` proves the same margin transfers from a larger certified context to any smaller requested context; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin` proves a larger certified margin also proves any smaller advertised margin over the same context; theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin` packages both downgrades at the bank level; and the D9 through D17 specialized bank transfers package the standard-channel-first bank shape.",
       "id": "COMMON-0088",
       "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
-      "intuition": "This is the shape a real RoPE certifier ultimately needs: a finite-context lower bound on nearest-integer returns for a channel's turn ratio. The formal spine now has one complete rational/discretized 4k certificate, a generic interval-certificate route, theorem-backed standard-RoPE channel-0 seeds through context 65536 at margin 1/104219, conditional bank bridges when that channel is present, first-channel bank bridges through D16, and proof-backed brackets showing every margin at or above 1/104218 fails once gap 710 is in scope. The remaining hard work is scaling channel-wise interval witnesses or continued-fraction arguments to full standard-RoPE banks and larger contexts such as 128k.",
+      "intuition": "This is the shape a real RoPE certifier ultimately needs: a finite-context lower bound on nearest-integer returns for a channel's turn ratio. The formal spine now has one complete rational/discretized 4k certificate, a generic interval-certificate route, theorem-backed standard-RoPE channel-0 seeds through context 65536 at margin 1/104219 and through context 131072 at margin 1/328459, conditional bank bridges when that channel is present, first-channel bank bridges through D17, and proof-backed brackets showing every margin at or above 1/104218 fails once gap 710 is in scope and every margin at or above 1/328458 fails once gap 103993 is in scope. The remaining hard work is scaling channel-wise interval witnesses or continued-fraction arguments to full standard-RoPE banks.",
       "kind": "relation",
       "name": "RoPE finite-context turn-ratio margin",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
@@ -16846,6 +17086,54 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D16_context65536_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D16_context65536_margin_bracket",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0154",
+          "lean_name": "Circle.Applications.ropeStandardChannel0_gap103993_error_lt_one_over_328458",
+          "name": "Circle.Applications.ropeStandardChannel0_gap103993_error_lt_one_over_328458",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0155",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993",
+          "name": "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0156",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0D17Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0157",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0D17Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0158",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0D17Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0D17Seed_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0159",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0160",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed_cons",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0161",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17_context131072_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D17_context131072_margin_bracket",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -16866,7 +17154,7 @@
         "A completed continued-fraction or three-distance theorem.",
         "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
       ],
-      "formal_definition": "In Lean, theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin` proves that if a frequency belongs to a finite real-phase bank and has a `ropeTurnRatioFiniteMargin` for the inspected context, then the whole bank cannot satisfy `ropeRealPhaseBankNearTurn` below the scaled tolerance. Theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context` transfers that bank-level consequence from a larger certified context to any smaller requested context. Theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin` transfers both a larger context and a larger certified margin to a smaller requested context and smaller advertised margin. The specialized D12 bridge `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed` applies that transfer to any finite bank containing the standard channel-0 angular frequency, and `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed_cons` packages the common first-channel bank shape.",
+      "formal_definition": "In Lean, theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin` proves that if a frequency belongs to a finite real-phase bank and has a `ropeTurnRatioFiniteMargin` for the inspected context, then the whole bank cannot satisfy `ropeRealPhaseBankNearTurn` below the scaled tolerance. Theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context` transfers that bank-level consequence from a larger certified context to any smaller requested context. Theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin` transfers both a larger context and a larger certified margin to a smaller requested context and smaller advertised margin. The specialized D12 through D17 bridges apply that transfer to any finite bank containing the standard channel-0 angular frequency, and the corresponding `_cons` theorems package the common first-channel bank shape. The current longest generated bridge is `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed`, with `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed_cons` for the first-channel list form.",
       "id": "COMMON-0089",
       "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
       "intuition": "A bank-wide real RoPE certificate does not need every channel to be separated for a given gap; one proved separating channel is enough to rule out an all-channel near-turn collision, and a stronger channel certificate can safely cover smaller requested horizons and conservative reported margins.",
@@ -17452,6 +17740,54 @@
           "id": "AIRA-T0153",
           "lean_name": "Circle.Applications.ropeStandardChannel0D16_context65536_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D16_context65536_margin_bracket",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0154",
+          "lean_name": "Circle.Applications.ropeStandardChannel0_gap103993_error_lt_one_over_328458",
+          "name": "Circle.Applications.ropeStandardChannel0_gap103993_error_lt_one_over_328458",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0155",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993",
+          "name": "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0156",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17Seed_intervalCertificate",
+          "name": "Circle.Applications.ropeStandardChannel0D17Seed_intervalCertificate",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0157",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17Seed_turnRatioFiniteMargin",
+          "name": "Circle.Applications.ropeStandardChannel0D17Seed_turnRatioFiniteMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0158",
+          "lean_name": "Circle.Applications.not_ropeStandardChannel0D17Seed_nearTurn",
+          "name": "Circle.Applications.not_ropeStandardChannel0D17Seed_nearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0159",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0160",
+          "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed_cons",
+          "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed_cons",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0161",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D17_context131072_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D17_context131072_margin_bracket",
           "status": "proved"
         }
       ],

@@ -2861,6 +2861,54 @@ theorem not_ropeStandardChannel0_margin_ge_one_over_104218_of_context_gt_710
       (lt_of_lt_of_le
         ropeStandardChannel0_gap710_error_lt_one_over_104218 hmargin)
 
+/-- Gap `103993` is already within margin `1/328458` of integer turn `16551`
+for the genuine standard channel-0 turn ratio.
+
+This is the 128k frontier obstruction for the generated D17 seed: the D17
+certificate proves margin `1/328459`, while this concrete near-return prevents
+the adjacent larger margin `1/328458` for every context containing this gap. -/
+theorem ropeStandardChannel0_gap103993_error_lt_one_over_328458 :
+    ropeTurnRatioError ropeStandardChannel0TurnRatio 103993 (16551 : Int) <
+      (1 : ℝ) / 328458 := by
+  unfold ropeTurnRatioError
+  have hlower :
+      (103993 : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647694) ≤
+        (103993 : ℝ) * ropeStandardChannel0TurnRatio :=
+    mul_le_mul_of_nonneg_left ropeStandardChannel0_piD20_base_lower (by norm_num)
+  have hupper :
+      (103993 : ℝ) * ropeStandardChannel0TurnRatio ≤
+        (103993 : ℝ) * ((100000000000000000000 : ℝ) / 628318530717958647692) :=
+    mul_le_mul_of_nonneg_left ropeStandardChannel0_piD20_base_upper (by norm_num)
+  rw [abs_lt]
+  constructor
+  · have hgap_lower :
+        (16551 : ℝ) - (1 : ℝ) / 328458 <
+          (103993 : ℝ) *
+            ((100000000000000000000 : ℝ) / 628318530717958647694) := by
+      norm_num
+    linarith
+  · have hgap_upper :
+        (103993 : ℝ) *
+            ((100000000000000000000 : ℝ) / 628318530717958647692) <
+          (16551 : ℝ) + (1 : ℝ) / 328458 := by
+      norm_num
+    linarith
+
+/-- No standard channel-0 finite-context margin at or above `1/328458` is
+possible once the inspected context contains gap `103993`. -/
+theorem not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993
+    {context : Nat} {margin : ℝ} (hcontext : 103993 < context)
+    (hmargin : (1 : ℝ) / 328458 ≤ margin) :
+    ¬ ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio margin context := by
+  exact
+    not_ropeTurnRatioFiniteMargin_of_error_lt_margin
+      (turnRatio := ropeStandardChannel0TurnRatio)
+      (margin := margin)
+      (context := context) (gap := 103993) (turns := 16551)
+      (by norm_num) hcontext
+      (lt_of_lt_of_le
+        ropeStandardChannel0_gap103993_error_lt_one_over_328458 hmargin)
+
 /-- The current standard channel-0 4k seed brackets the advertised finite margin:
 `1/104219` is proved, while every margin at or above `1/104218` is impossible. -/
 theorem ropeStandardChannel0D11_context4096_margin_bracket :

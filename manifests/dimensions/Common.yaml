@@ -4101,6 +4101,106 @@ theorems:
       lean_build_required: true
       no_sorry_required: true
     blocker: ""
+  - id: AIRA-T0154
+    status: lean_proved
+    lean_name: Circle.Applications.ropeStandardChannel0_gap103993_error_lt_one_over_328458
+    informal_statement: "Gap 103993 is within 1/328458 of integer turn 16551 for standard RoPE channel 0."
+    formal_statement: "Circle.Applications.ropeTurnRatioError Circle.Applications.ropeStandardChannel0TurnRatio 103993 (16551 : Int) < ((1 : Real) / 328458)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: AIRA-T0155
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993
+    informal_statement: "No standard channel-0 finite-context margin at or above 1/328458 is possible once the context contains gap 103993."
+    formal_statement: "forall {context : Nat} {margin : Real}, 103993 < context -> ((1 : Real) / 328458) <= margin -> not (Circle.Applications.ropeTurnRatioFiniteMargin Circle.Applications.ropeStandardChannel0TurnRatio margin context)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: AIRA-T0156
+    status: lean_proved
+    lean_name: Circle.Applications.ropeStandardChannel0D17Seed_intervalCertificate
+    informal_statement: "The generated D17 compressed rational-band certificate proves the standard channel-0 interval certificate for context 131072 at margin 1/328459."
+    formal_statement: "Circle.Applications.ropeTurnRatioIntervalCertificate Circle.Applications.ropeStandardChannel0TurnRatio Circle.Applications.ropeStandardChannel0D17SeedMargin Circle.Applications.ropeStandardChannel0D17SeedContext"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_interval_seed_is_theorem_backed
+    blocker: ""
+  - id: AIRA-T0157
+    status: lean_proved
+    lean_name: Circle.Applications.ropeStandardChannel0D17Seed_turnRatioFiniteMargin
+    informal_statement: "The generated D17 standard channel-0 seed has finite nearest-integer margin 1/328459 through context 131072."
+    formal_statement: "Circle.Applications.ropeTurnRatioFiniteMargin Circle.Applications.ropeStandardChannel0TurnRatio Circle.Applications.ropeStandardChannel0D17SeedMargin Circle.Applications.ropeStandardChannel0D17SeedContext"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_interval_seed_is_theorem_backed
+    blocker: ""
+  - id: AIRA-T0158
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropeStandardChannel0D17Seed_nearTurn
+    informal_statement: "Within the D17 context, the standard channel-0 turn ratio has no one-channel near-turn collision below the certified margin."
+    formal_statement: "forall {tolerance : Real} {left right : Nat}, left < right -> right < Circle.Applications.ropeStandardChannel0D17SeedContext -> tolerance < Circle.Applications.ropeStandardChannel0D17SeedMargin -> not (Circle.Applications.ropeRealPhaseNearTurn Circle.Applications.ropeStandardChannel0TurnRatio 1 tolerance left right)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: AIRA-T0159
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed
+    informal_statement: "A finite real-phase bank containing standard channel 0 inherits the D17 no-near-turn consequence when the requested context and margin fit inside the D17 seed."
+    formal_statement: "forall {frequencies : List Real} {fullTurn requestedMargin tolerance : Real} {requestedContext left right : Nat}, requestedContext <= Circle.Applications.ropeStandardChannel0D17SeedContext -> requestedMargin <= Circle.Applications.ropeStandardChannel0D17SeedMargin -> Circle.Applications.ropeStandardChannel0TurnRatio * fullTurn ∈ frequencies -> left < right -> right < requestedContext -> 0 < fullTurn -> tolerance < fullTurn * requestedMargin -> not (Circle.Applications.ropeRealPhaseBankNearTurn frequencies fullTurn tolerance left right)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: AIRA-T0160
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D17Seed_cons
+    informal_statement: "A finite real-phase bank whose first channel is standard channel 0 inherits the D17 no-near-turn consequence."
+    formal_statement: "forall {extraFrequencies : List Real} {fullTurn requestedMargin tolerance : Real} {requestedContext left right : Nat}, requestedContext <= Circle.Applications.ropeStandardChannel0D17SeedContext -> requestedMargin <= Circle.Applications.ropeStandardChannel0D17SeedMargin -> left < right -> right < requestedContext -> 0 < fullTurn -> tolerance < fullTurn * requestedMargin -> not (Circle.Applications.ropeRealPhaseBankNearTurn (Circle.Applications.ropeStandardChannel0TurnRatio * fullTurn :: extraFrequencies) fullTurn tolerance left right)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
+  - id: AIRA-T0161
+    status: lean_proved
+    lean_name: Circle.Applications.ropeStandardChannel0D17_context131072_margin_bracket
+    informal_statement: "At context 131072, standard channel 0 has proved margin 1/328459, while every advertised margin at or above 1/328458 is impossible."
+    formal_statement: "Circle.Applications.ropeTurnRatioFiniteMargin Circle.Applications.ropeStandardChannel0TurnRatio ((1 : Real) / 328459) 131072 and forall margin : Real, ((1 : Real) / 328458) <= margin -> not (Circle.Applications.ropeTurnRatioFiniteMargin Circle.Applications.ropeStandardChannel0TurnRatio margin 131072)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd
