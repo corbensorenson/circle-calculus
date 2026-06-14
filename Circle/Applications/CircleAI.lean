@@ -540,8 +540,27 @@ theorem kvCacheLiveWindowTokens_slotMap_length_eq_cacheSize_of_full
     ((kvCacheLiveWindowTokens cacheSize current).map
       (kvCacheSlot cacheSize)).length = cacheSize := by
   unfold kvCacheLiveWindowTokens kvCacheLiveWindowLength
-  rw [List.length_map]
+  rw [List.length_map, List.length_range']
   simpa using Nat.min_eq_left hfull
+
+/-- The generated live-window slot map has one entry per declared cache slot
+exactly when the seen prefix is at least one full cache window. -/
+theorem kvCacheLiveWindowTokens_slotMap_length_eq_cacheSize_iff_full
+    {cacheSize current : Nat} :
+    ((kvCacheLiveWindowTokens cacheSize current).map
+      (kvCacheSlot cacheSize)).length = cacheSize ↔ cacheSize ≤ current + 1 := by
+  unfold kvCacheLiveWindowTokens kvCacheLiveWindowLength
+  rw [List.length_map, List.length_range']
+  constructor
+  · intro hlength
+    by_contra hnot
+    have hprefix : current + 1 < cacheSize := Nat.lt_of_not_ge hnot
+    have hmin : min cacheSize (current + 1) = current + 1 :=
+      Nat.min_eq_right (Nat.le_of_lt hprefix)
+    rw [hmin] at hlength
+    omega
+  · intro hfull
+    exact Nat.min_eq_left hfull
 
 /-- Full generated live windows give a finite slot-coverage contract: the slot
 list is duplicate-free, has one entry for each declared slot, and every emitted

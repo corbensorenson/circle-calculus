@@ -168,6 +168,8 @@ def summary_lines(payload: dict[str, Any]) -> list[str]:
             f"{coverage} start={live_window['start']} length={live_window['length']} "
             f"slots_distinct={live_window['slots_distinct']} "
             f"slot_count_matches_cache_size={live_window['slot_count_matches_cache_size']} "
+            "slot_count_matches_full_window="
+            f"{live_window['slot_count_matches_full_window']} "
             f"full_coverage_contract={live_window['full_coverage_contract']}"
         ),
         (

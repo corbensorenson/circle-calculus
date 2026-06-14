@@ -649,18 +649,21 @@ class KVCacheLiveWindowCertificate:
     full_window: bool
     slots_within_cache: bool
     slot_count_matches_cache_size: bool
+    slot_count_matches_full_window: bool
     full_coverage_contract: bool
     theorem_ids: tuple[str, ...] = (
         "AIM-T0071",
         "AIM-T0072",
         "AIM-T0073",
         "AIM-T0074",
+        "AIM-T0080",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheLiveWindowStart_add_length",
         "Circle.Applications.kvCacheWindowContains_iff_mem_liveWindowTokens",
         "Circle.Applications.kvCacheLiveWindowTokens_slotMap_nodup",
         "Circle.Applications.kvCacheLiveWindowTokens_slotMap_fullCoverageContract",
+        "Circle.Applications.kvCacheLiveWindowTokens_slotMap_length_eq_cacheSize_iff_full",
     )
     note: str = (
         "KV-cache generated-live-window certificate only; this proves finite "
@@ -1931,6 +1934,7 @@ def certify_kv_cache_live_window(
     slots_within_cache = all(0 <= slot < cache_size for slot in slots)
     slot_count_matches_cache_size = len(slots) == cache_size
     slots_distinct = kv_cache_live_window_slots_distinct(cache_size, current)
+    slot_count_matches_full_window = slot_count_matches_cache_size == full_window
     return KVCacheLiveWindowCertificate(
         cache_size=cache_size,
         current=current,
@@ -1945,6 +1949,7 @@ def certify_kv_cache_live_window(
         full_window=full_window,
         slots_within_cache=slots_within_cache,
         slot_count_matches_cache_size=slot_count_matches_cache_size,
+        slot_count_matches_full_window=slot_count_matches_full_window,
         full_coverage_contract=(
             full_window
             and slots_distinct

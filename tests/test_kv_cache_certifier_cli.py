@@ -46,8 +46,10 @@ def test_kv_cache_certifier_cli_text_and_json_out(tmp_path: Path) -> None:
     assert "adapter_request_trace=PASS request_id=prefill_read" in result.stdout
     assert "all_non_future=True all_retained=True tokens_distinct=True slots_distinct=True" in result.stdout
     assert "live_window_contract=FULL start=16 length=16" in result.stdout
+    assert "slot_count_matches_full_window=True" in result.stdout
     assert "full_coverage_contract=True" in result.stdout
     assert "AIM-T0074" in result.stdout
+    assert "AIM-T0080" in result.stdout
     assert "not a paging-policy" in result.stdout
 
     payload = json.loads(json_out.read_text())
@@ -66,7 +68,9 @@ def test_kv_cache_certifier_cli_text_and_json_out(tmp_path: Path) -> None:
     assert "AIM-T0078" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert "AIM-T0079" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert payload["live_window_certificate"]["full_coverage_contract"] is True
+    assert payload["live_window_certificate"]["slot_count_matches_full_window"] is True
     assert "AIM-T0074" in payload["live_window_certificate"]["theorem_ids"]
+    assert "AIM-T0080" in payload["live_window_certificate"]["theorem_ids"]
 
 
 def test_kv_cache_certifier_cli_json_stdout_prefix_window() -> None:
@@ -104,4 +108,6 @@ def test_kv_cache_certifier_cli_json_stdout_prefix_window() -> None:
     assert payload["live_window_certificate"]["length"] == 6
     assert payload["live_window_certificate"]["full_window"] is False
     assert payload["live_window_certificate"]["slot_count_matches_cache_size"] is False
+    assert payload["live_window_certificate"]["slot_count_matches_full_window"] is True
     assert payload["live_window_certificate"]["full_coverage_contract"] is False
+    assert "AIM-T0080" in payload["live_window_certificate"]["theorem_ids"]

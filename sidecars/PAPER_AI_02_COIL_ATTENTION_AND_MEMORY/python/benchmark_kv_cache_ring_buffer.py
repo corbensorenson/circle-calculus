@@ -147,6 +147,8 @@ def text_results(payload: dict[str, Any]) -> str:
             f"slots_within_cache={live_window['slots_within_cache']} "
             "slot_count_matches_cache_size="
             f"{live_window['slot_count_matches_cache_size']} "
+            "slot_count_matches_full_window="
+            f"{live_window['slot_count_matches_full_window']} "
             f"full_coverage_contract={live_window['full_coverage_contract']} "
             f"theorem_ids={','.join(live_window['theorem_ids'])}"
         ),
@@ -211,8 +213,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{', '.join(adapter_request['theorem_ids'])} |"
             ),
             "",
-            "| Live start | Live length | Live tokens | Live slots | All retained | Slots distinct | Full window | Slot count matches cache | Slots within cache | Full coverage contract | Theorem ids |",
-            "| ---: | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+            "| Live start | Live length | Live tokens | Live slots | All retained | Slots distinct | Full window | Slot count matches cache | Slot count iff full window | Slots within cache | Full coverage contract | Theorem ids |",
+            "| ---: | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
             (
                 f"| {live_window['start']} | {live_window['length']} | "
                 f"{', '.join(str(token) for token in live_window['tokens'])} | "
@@ -220,6 +222,7 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{live_window['all_tokens_retained']} | {live_window['slots_distinct']} | "
                 f"{live_window['full_window']} | "
                 f"{live_window['slot_count_matches_cache_size']} | "
+                f"{live_window['slot_count_matches_full_window']} | "
                 f"{live_window['slots_within_cache']} | "
                 f"{live_window['full_coverage_contract']} | "
                 f"{', '.join(live_window['theorem_ids'])} |"

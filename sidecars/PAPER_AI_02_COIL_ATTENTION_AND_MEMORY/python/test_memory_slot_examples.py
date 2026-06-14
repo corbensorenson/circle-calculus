@@ -250,18 +250,24 @@ def test_kv_cache_live_window_tokens_are_exact_and_slot_distinct() -> None:
     assert certificate.full_window
     assert certificate.slots_within_cache
     assert certificate.slot_count_matches_cache_size
+    assert certificate.slot_count_matches_full_window
     assert certificate.full_coverage_contract
     assert kv_cache_live_window_slots_distinct(16, 31)
     assert "AIM-T0071" in certificate.theorem_ids
     assert "AIM-T0072" in certificate.theorem_ids
     assert "AIM-T0073" in certificate.theorem_ids
     assert "AIM-T0074" in certificate.theorem_ids
+    assert "AIM-T0080" in certificate.theorem_ids
     assert (
         "Circle.Applications.kvCacheLiveWindowTokens_slotMap_nodup"
         in certificate.lean_declarations
     )
     assert (
         "Circle.Applications.kvCacheLiveWindowTokens_slotMap_fullCoverageContract"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.kvCacheLiveWindowTokens_slotMap_length_eq_cacheSize_iff_full"
         in certificate.lean_declarations
     )
 
@@ -275,6 +281,7 @@ def test_kv_cache_live_window_tokens_are_exact_and_slot_distinct() -> None:
     assert not prefix.full_window
     assert prefix.slots_within_cache
     assert not prefix.slot_count_matches_cache_size
+    assert prefix.slot_count_matches_full_window
     assert not prefix.full_coverage_contract
 
 
@@ -343,9 +350,11 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert payload["live_window_certificate"]["length"] == 16
     assert payload["live_window_certificate"]["slots_distinct"] is True
     assert payload["live_window_certificate"]["full_window"] is True
+    assert payload["live_window_certificate"]["slot_count_matches_full_window"] is True
     assert payload["live_window_certificate"]["full_coverage_contract"] is True
     assert "AIM-T0073" in payload["live_window_certificate"]["theorem_ids"]
     assert "AIM-T0074" in payload["live_window_certificate"]["theorem_ids"]
+    assert "AIM-T0080" in payload["live_window_certificate"]["theorem_ids"]
     assert "not model-quality" in payload["claim_boundary"]
 
     markdown_result = subprocess.run(
