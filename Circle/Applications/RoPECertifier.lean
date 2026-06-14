@@ -3,6 +3,8 @@ import Mathlib.Data.Int.Cast.Basic
 import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Data.Real.Basic
+import Mathlib.Algebra.Order.BigOperators.Group.Finset
+import Mathlib.Data.Finset.Range
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.IntervalCases
 import Mathlib.Tactic.Linarith
@@ -129,6 +131,16 @@ theorem ropePhaseBankDistinguishable_of_period_ge_context
 def ropeCollisionPairCountAtGap (context gap : Nat) : Nat :=
   context - gap
 
+/-- Total ordered pair count over all positive in-context multiples of a common
+collision gap.
+
+For a period-bank LCM `g`, this is the exact all-channel integer-bank collision
+pair count: the LCM theorem says exactly the positive multiples of `g` collide,
+and this sum counts the starts available at each such positive gap. -/
+def ropeCollisionPairCountAtGapMultiples (context commonGap : Nat) : Nat :=
+  ∑ multiple ∈ (Finset.range context).filter (fun multiple => 0 < multiple),
+    ropeCollisionPairCountAtGap context (multiple * commonGap)
+
 /-- The least common multiple of a finite integer-period RoPE bank.
 
 For the empty bank this is `1`, matching the vacuous all-channel collision
@@ -143,6 +155,45 @@ theorem ropeCollisionPairCountAtGap_pos_iff {context gap : Nat} :
     0 < ropeCollisionPairCountAtGap context gap ↔ gap < context := by
   unfold ropeCollisionPairCountAtGap
   exact Nat.sub_pos_iff_lt
+
+/-- The positive-multiple collision count is positive exactly when the common
+gap itself fits inside the inspected context.
+
+This is the count-level bridge used by the certifier's
+`total_bank_collision_pair_count`: if the least common collision gap reaches
+the context, no positive multiple can contribute; if it is inside the context,
+the first multiple already contributes a positive family. -/
+theorem ropeCollisionPairCountAtGapMultiples_pos_iff
+    {context commonGap : Nat} (hgap_pos : 0 < commonGap) :
+    0 < ropeCollisionPairCountAtGapMultiples context commonGap ↔ commonGap < context := by
+  constructor
+  · intro hsum_pos
+    by_contra hnot
+    have hcontext_le_gap : context ≤ commonGap := le_of_not_gt hnot
+    have hsum_zero : ropeCollisionPairCountAtGapMultiples context commonGap = 0 := by
+      unfold ropeCollisionPairCountAtGapMultiples
+      rw [Finset.sum_eq_zero_iff_of_nonneg]
+      · intro multiple hmem
+        rw [Finset.mem_filter] at hmem
+        have hmultiple_pos : 0 < multiple := hmem.2
+        have hgap_le_multiple : commonGap ≤ multiple * commonGap := by
+          simpa [Nat.mul_comm] using Nat.le_mul_of_pos_left commonGap hmultiple_pos
+        exact Nat.sub_eq_zero_iff_le.mpr (le_trans hcontext_le_gap hgap_le_multiple)
+      · intro multiple _hmem
+        exact Nat.zero_le _
+    exact (Nat.ne_of_gt hsum_pos) hsum_zero
+  · intro hgap_lt_context
+    unfold ropeCollisionPairCountAtGapMultiples
+    refine Finset.sum_pos' (fun multiple _hmem => Nat.zero_le _) ?_
+    refine ⟨1, ?_, ?_⟩
+    · rw [Finset.mem_filter]
+      constructor
+      · rw [Finset.mem_range]
+        exact lt_of_le_of_lt (Nat.succ_le_of_lt hgap_pos) hgap_lt_context
+      · exact Nat.zero_lt_one
+    · simpa [Nat.one_mul] using
+        (ropeCollisionPairCountAtGap_pos_iff
+          (context := context) (gap := commonGap)).2 hgap_lt_context
 
 /-- If every declared period divides a gap, then every start counted by
 `ropeCollisionPairCountAtGap context gap` gives a colliding pair in the phase
@@ -268,6 +319,38 @@ theorem ropePhaseBankCollision_exists_of_lcm_pos_lt_context
   · simpa using hlcm_pos
   · simpa using hfamily.2
   · simpa using hfamily.1
+
+/-- The exact positive-multiple LCM collision count is zero iff the period-bank
+LCM reaches the inspected context.
+
+The Python certifier's `total_bank_collision_pair_count` uses the same
+positive-multiple sum for the declared integer-period bank. This theorem is the
+count-level pass/fail companion to the LCM collision iff: under a positive LCM,
+the total all-channel integer-bank collision count is zero exactly when the
+least common collision gap is outside the context. -/
+theorem ropeLCMCollisionPairCountMultiples_eq_zero_iff
+    {periods : List Nat} {context : Nat}
+    (hlcm_pos : 0 < ropePeriodBankLCM periods) :
+    ropeCollisionPairCountAtGapMultiples context (ropePeriodBankLCM periods) = 0 ↔
+      context ≤ ropePeriodBankLCM periods := by
+  constructor
+  · intro hzero
+    by_contra hnot
+    have hlcm_lt_context : ropePeriodBankLCM periods < context := lt_of_not_ge hnot
+    have hpos : 0 < ropeCollisionPairCountAtGapMultiples context (ropePeriodBankLCM periods) :=
+      (ropeCollisionPairCountAtGapMultiples_pos_iff
+        (context := context) (commonGap := ropePeriodBankLCM periods) hlcm_pos).2
+        hlcm_lt_context
+    rw [hzero] at hpos
+    exact Nat.lt_irrefl 0 hpos
+  · intro hcontext_le_lcm
+    by_contra hne
+    have hpos : 0 < ropeCollisionPairCountAtGapMultiples context (ropePeriodBankLCM periods) :=
+      Nat.pos_of_ne_zero hne
+    have hlcm_lt_context : ropePeriodBankLCM periods < context :=
+      (ropeCollisionPairCountAtGapMultiples_pos_iff
+        (context := context) (commonGap := ropePeriodBankLCM periods) hlcm_pos).1 hpos
+    exact (not_lt_of_ge hcontext_le_lcm) hlcm_lt_context
 
 /-- If the period-bank LCM reaches the inspected context, no unequal ordered
 in-context pair can collide in every declared channel.

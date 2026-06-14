@@ -12479,6 +12479,18 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0174",
+          "lean_name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_pos_iff",
+          "name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_pos_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0175",
+          "lean_name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_eq_zero_iff",
+          "name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_eq_zero_iff",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -13427,6 +13439,18 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0174",
+          "lean_name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_pos_iff",
+          "name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_pos_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0175",
+          "lean_name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_eq_zero_iff",
+          "name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_eq_zero_iff",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -13523,6 +13547,18 @@
           "id": "AIRA-T0052",
           "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context",
           "name": "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0174",
+          "lean_name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_pos_iff",
+          "name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_pos_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0175",
+          "lean_name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_eq_zero_iff",
+          "name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_eq_zero_iff",
           "status": "proved"
         }
       ],
@@ -15977,6 +16013,18 @@
           "id": "AIRA-T0052",
           "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context",
           "name": "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0174",
+          "lean_name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_pos_iff",
+          "name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_pos_iff",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0175",
+          "lean_name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_eq_zero_iff",
+          "name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_eq_zero_iff",
           "status": "proved"
         }
       ],

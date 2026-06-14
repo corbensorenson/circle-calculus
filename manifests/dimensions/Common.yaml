@@ -2491,6 +2491,36 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_explicit_phase_bank_certifier_reports_exact_only_contract
     blocker: ""
+  - id: AIRA-T0174
+    status: lean_proved
+    lean_name: Circle.Applications.ropeCollisionPairCountAtGapMultiples_pos_iff
+    informal_statement: "For a positive common collision gap, the positive-multiple collision-pair count is positive exactly when that gap is inside the inspected context."
+    formal_statement: "forall {context commonGap : Nat}, 0 < commonGap -> 0 < Circle.Applications.ropeCollisionPairCountAtGapMultiples context commonGap <-> commonGap < context"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context
+    blocker: ""
+  - id: AIRA-T0175
+    status: lean_proved
+    lean_name: Circle.Applications.ropeLCMCollisionPairCountMultiples_eq_zero_iff
+    informal_statement: "For a positive period-bank LCM, the total positive-multiple integer-bank collision count is zero exactly when the LCM reaches the inspected context."
+    formal_statement: "forall {periods : List Nat} {context : Nat}, 0 < Circle.Applications.ropePeriodBankLCM periods -> Circle.Applications.ropeCollisionPairCountAtGapMultiples context (Circle.Applications.ropePeriodBankLCM periods) = 0 <-> context <= Circle.Applications.ropePeriodBankLCM periods"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context
+    blocker: ""
   - id: AIRA-T0029
     status: lean_proved
     lean_name: Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs

@@ -1858,8 +1858,10 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     assert "AIRA-T0049" in certificate.theorem_ids
     assert "AIRA-T0051" in certificate.theorem_ids
     assert "AIRA-T0052" in certificate.theorem_ids
+    assert "AIRA-T0174" in certificate.theorem_ids
+    assert "AIRA-T0175" in certificate.theorem_ids
     assert "AIRA-T0024" in certificate.exact_discrete.assumptions[3]
-    assert "AIRA-T0049" in certificate.exact_discrete.assumptions[-1]
+    assert "AIRA-T0175" in certificate.exact_discrete.assumptions[-2]
     assert "not a model-quality" in certificate.claim_boundary
 
 
@@ -1883,6 +1885,8 @@ def test_rope_certifier_exact_contract_passes_when_common_gap_exceeds_context() 
     assert "AIRA-T0049" in certificate.theorem_ids
     assert "AIRA-T0051" in certificate.theorem_ids
     assert "AIRA-T0052" in certificate.theorem_ids
+    assert "AIRA-T0174" in certificate.theorem_ids
+    assert "AIRA-T0175" in certificate.theorem_ids
     assert certificate.real_phase_margin.scanned_gap_count == 7
     assert certificate.real_phase_margin.formal_precursor_theorem_ids == ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
