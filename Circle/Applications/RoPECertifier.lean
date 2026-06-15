@@ -141,6 +141,15 @@ def ropeCollisionPairCountAtGapMultiples (context commonGap : Nat) : Nat :=
   ∑ multiple ∈ (Finset.range context).filter (fun multiple => 0 < multiple),
     ropeCollisionPairCountAtGap context (multiple * commonGap)
 
+/-- The number of positive common-gap multiples that can still fit inside the
+inspected context.
+
+For a common collision gap `g`, the contributing positive multiples are exactly
+`1, 2, ..., (context - 1) / g`. The accompanying theorem makes that executable
+quotient a checked bound rather than an informal loop limit. -/
+def ropeCollisionPairCountFittingMultipleCount (context commonGap : Nat) : Nat :=
+  (context - 1) / commonGap
+
 /-- The least common multiple of a finite integer-period RoPE bank.
 
 For the empty bank this is `1`, matching the vacuous all-channel collision
@@ -212,6 +221,36 @@ theorem ropeCollisionPairCountAtGapMultiples_pos_iff
     · simpa [Nat.one_mul] using
         (ropeCollisionPairCountAtGap_pos_iff
           (context := context) (gap := commonGap)).2 hgap_lt_context
+
+/-- The quotient `(context - 1) / commonGap` is exactly the upper bound for the
+positive common-gap multiples that fit inside the inspected context.
+
+This is the theorem-backed loop bound used by the public certifier when it
+reports how many positive LCM multiples contribute to the exact integer-bank
+collision count. -/
+theorem ropeCollisionPairCountFittingMultipleCount_spec
+    {context commonGap multiple : Nat}
+    (hgap_pos : 0 < commonGap) (hmultiple_pos : 0 < multiple) :
+    multiple ≤ ropeCollisionPairCountFittingMultipleCount context commonGap ↔
+      multiple * commonGap < context := by
+  unfold ropeCollisionPairCountFittingMultipleCount
+  constructor
+  · intro hle
+    have hmul_le :
+        multiple * commonGap ≤ ((context - 1) / commonGap) * commonGap :=
+      Nat.mul_le_mul_right commonGap hle
+    have hdiv_mul_le :
+        ((context - 1) / commonGap) * commonGap ≤ context - 1 :=
+      Nat.div_mul_le_self (context - 1) commonGap
+    have hprod_le_pred : multiple * commonGap ≤ context - 1 :=
+      le_trans hmul_le hdiv_mul_le
+    have hprod_pos : 0 < multiple * commonGap :=
+      Nat.mul_pos hmultiple_pos hgap_pos
+    omega
+  · intro hlt
+    have hprod_le_pred : multiple * commonGap ≤ context - 1 := by
+      omega
+    exact (Nat.le_div_iff_mul_le hgap_pos).2 hprod_le_pred
 
 /-- When exactly the first positive multiple of a common collision gap can fit
 inside the inspected context, the total positive-multiple collision-pair count

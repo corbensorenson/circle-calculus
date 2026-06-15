@@ -35,8 +35,8 @@ The commands should show contract behavior, not benchmark claims:
 | `llama_style_10000_4k` | exact discrete PASS | the rounded integer-period bank has no unequal all-channel collision inside context `4096`; the first bounded prefix pass appears at length `5` |
 | `llama_style_10000_128k` | exact discrete PASS | the rounded integer-period bank still has its common gap outside context; the real-phase proof layer now separately has a one-channel D19 192k standard-channel certificate |
 | `llama_style_500000_128k` | exact discrete PASS | a larger-base rounded bank also passes the declared exact model; the bounded subfamily report finds a sufficient subbank |
-| `diagnostic_single_channel_10000_20` | exact discrete FAIL | common gap `6` and exact integer-bank collision-pair count `24` |
-| `diagnostic_two_channel_36_128` | exact discrete FAIL | common gap `114` and exact integer-bank collision-pair count `14` |
+| `diagnostic_single_channel_10000_20` | exact discrete FAIL | common gap `6`, fitting multiple count `3`, and exact integer-bank collision-pair count `24` |
+| `diagnostic_two_channel_36_128` | exact discrete FAIL | common gap `114`, fitting multiple count `1`, and exact integer-bank collision-pair count `14` |
 | `interpolated_x4_boundary_fail_961` | exact discrete FAIL | the scaled-period integer analogue fails one token past its LCM boundary |
 
 The real-phase rows are numerical diagnostics unless the output is specifically citing the theorem-backed rational or interval seed layers.
@@ -63,13 +63,13 @@ AIRA-T0021 through AIRA-T0026
 Collision counting:
 
 ```text
-AIRA-T0027, AIRA-T0028, AIRA-T0034, AIRA-T0035, AIRA-T0036, AIRA-T0046, AIRA-T0048, AIRA-T0049, AIRA-T0051, AIRA-T0052
+AIRA-T0027, AIRA-T0028, AIRA-T0034, AIRA-T0035, AIRA-T0036, AIRA-T0046, AIRA-T0048, AIRA-T0049, AIRA-T0051, AIRA-T0052, AIRA-T0174 through AIRA-T0176, AIRA-T0203 through AIRA-T0207, and AIRA-T0210
 ```
 
 Real-phase theorem program and finite-margin certificates:
 
 ```text
-AIRA-T0029 through AIRA-T0033, AIRA-T0037 through AIRA-T0045, AIRA-T0047, AIRA-T0050, AIRA-T0053 through AIRA-T0173, and AIRA-T0208
+AIRA-T0029 through AIRA-T0033, AIRA-T0037 through AIRA-T0045, AIRA-T0047, AIRA-T0050, AIRA-T0053 through AIRA-T0173, AIRA-T0208, and AIRA-T0209
 ```
 
 ## Known Boundaries

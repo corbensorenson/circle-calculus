@@ -132,6 +132,7 @@ from circle_math.applications import (
     capped_lcm,
     certify_rope_positions,
     collision_pair_count_at_gap,
+    collision_pair_count_fitting_multiple_count,
     collision_pair_count_at_gap_multiples,
     discretize_rope_periods,
     phase_bank_prefix_collision_reports,
@@ -982,6 +983,12 @@ def js_collision_pair_count_at_gap_multiples(context: int, gap: int) -> int:
     return total
 
 
+def js_collision_pair_count_fitting_multiple_count(context: int, gap: int) -> int:
+    if gap <= 0 or gap >= context:
+        return 0
+    return (context - 1) // gap
+
+
 def js_phase_bank_prefix_collision_reports(
     context: int,
     periods: tuple[int, ...],
@@ -995,6 +1002,7 @@ def js_phase_bank_prefix_collision_reports(
                 prefix_length,
                 None if reaches_context else lcm_value,
                 reaches_context,
+                0 if reaches_context else js_collision_pair_count_fitting_multiple_count(context, lcm_value),
                 0 if reaches_context else js_collision_pair_count_at_gap_multiples(context, lcm_value),
             )
         )
@@ -4156,6 +4164,12 @@ def main() -> int:
             certificate.exact_discrete.guaranteed_common_gap_multiple_pair_count
             == js_multiple_count
         )
+        js_fitting_count = 0 if lcm_reaches else js_collision_pair_count_fitting_multiple_count(
+            config.context_length,
+            lcm_value,
+        )
+        assert certificate.exact_discrete.common_gap_fitting_multiple_count == js_fitting_count
+        assert collision_pair_count_fitting_multiple_count(config.context_length, lcm_value) == js_fitting_count
         assert collision_pair_count_at_gap_multiples(config.context_length, lcm_value) == js_multiple_count
         python_prefix_reports = phase_bank_prefix_collision_reports(config.context_length, discrete)
         js_prefix_reports = js_phase_bank_prefix_collision_reports(config.context_length, js_discrete)
@@ -4164,6 +4178,7 @@ def main() -> int:
                 report.prefix_length,
                 report.lcm_collision_gap,
                 report.lcm_reaches_context,
+                report.fitting_collision_multiple_count,
                 report.total_bank_collision_pair_count,
             )
             for report in python_prefix_reports

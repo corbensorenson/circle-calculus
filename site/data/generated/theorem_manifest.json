@@ -3196,7 +3196,7 @@
       "id": "AIRA-T0027",
       "lean_name": "Circle.Applications.ropeCollisionPairCountAtGap_pos_iff",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 172,
+      "lean_source_line": 181,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3219,7 +3219,7 @@
       "id": "AIRA-T0028",
       "lean_name": "Circle.Applications.ropePhaseBankCollision_at_gap_of_forall_dvd",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 280,
+      "lean_source_line": 319,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3242,7 +3242,7 @@
       "id": "AIRA-T0029",
       "lean_name": "Circle.Applications.ropeRealPhaseGapAbs_eq_natGap_mul_abs",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1010,
+      "lean_source_line": 1049,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3265,7 +3265,7 @@
       "id": "AIRA-T0030",
       "lean_name": "Circle.Applications.ropeRealPhaseGapAbs_ge_minGap_mul_lower",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1023,
+      "lean_source_line": 1062,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3289,7 +3289,7 @@
       "id": "AIRA-T0031",
       "lean_name": "Circle.Applications.ropeRealPhaseNatTurnEndpointErrors_ge_margin_of_one_turn_window",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1040,
+      "lean_source_line": 1079,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3313,7 +3313,7 @@
       "id": "AIRA-T0032",
       "lean_name": "Circle.Applications.ropeRealPhaseNatTurnError_ge_margin_of_one_turn_window",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1064,
+      "lean_source_line": 1103,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3337,7 +3337,7 @@
       "id": "AIRA-T0033",
       "lean_name": "Circle.Applications.ropeRealPhaseIntTurnError_ge_margin_of_one_turn_window",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1108,
+      "lean_source_line": 1147,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3360,7 +3360,7 @@
       "id": "AIRA-T0034",
       "lean_name": "Circle.Applications.ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 300,
+      "lean_source_line": 339,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3384,7 +3384,7 @@
       "id": "AIRA-T0035",
       "lean_name": "Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 805,
+      "lean_source_line": 844,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3408,7 +3408,7 @@
       "id": "AIRA-T0036",
       "lean_name": "Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 349,
+      "lean_source_line": 388,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3433,7 +3433,7 @@
       "id": "AIRA-T0037",
       "lean_name": "Circle.Applications.ropeRealPhaseTurnSeparated_of_one_turn_window",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1142,
+      "lean_source_line": 1181,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3458,7 +3458,7 @@
       "id": "AIRA-T0038",
       "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnSeparated_lt",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1161,
+      "lean_source_line": 1200,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3484,7 +3484,7 @@
       "id": "AIRA-T0039",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4801,
+      "lean_source_line": 4840,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3510,7 +3510,7 @@
       "id": "AIRA-T0040",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4822,
+      "lean_source_line": 4861,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3535,7 +3535,7 @@
       "id": "AIRA-T0041",
       "lean_name": "Circle.Applications.ropeRealPhaseIntTurnError_eq_fullTurn_mul_turnRatioError",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1177,
+      "lean_source_line": 1216,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3561,7 +3561,7 @@
       "id": "AIRA-T0042",
       "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3932,
+      "lean_source_line": 3971,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3589,7 +3589,7 @@
       "id": "AIRA-T0043",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4338,
+      "lean_source_line": 4377,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3621,7 +3621,7 @@
       "informal_statement": "A finite-context turn-ratio margin certified for a larger context automatically applies to any smaller requested context.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_mono_context",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3873,
+      "lean_source_line": 3912,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -3665,7 +3665,7 @@
       "informal_statement": "If one channel has a finite-context turn-ratio margin certified for a larger context, then every smaller requested context inherits the bank-level no-near-turn consequence.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4362,
+      "lean_source_line": 4401,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -3705,7 +3705,7 @@
       "informal_statement": "If the period-bank LCM reaches the inspected context, no unequal ordered in-context pair can collide in every declared integer-period RoPE channel.",
       "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 474,
+      "lean_source_line": 513,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -3747,7 +3747,7 @@
       "informal_statement": "A finite-context turn-ratio margin certified for a larger lower bound automatically proves any smaller advertised margin over the same context.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3886,
+      "lean_source_line": 3925,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -3787,7 +3787,7 @@
       "informal_statement": "Every in-context start paired with the period-bank LCM gap gives an all-channel collision in the declared integer-period RoPE bank.",
       "lean_name": "Circle.Applications.ropePhaseBankCollision_at_lcm_gap",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 367,
+      "lean_source_line": 406,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -3827,7 +3827,7 @@
       "informal_statement": "If the period-bank LCM is positive and below the inspected context, the declared integer-period RoPE bank has an explicit unequal all-channel collision witness inside the context.",
       "lean_name": "Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 384,
+      "lean_source_line": 423,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -3871,7 +3871,7 @@
       "informal_statement": "If one channel has a finite-context turn-ratio margin certified for a larger context and a larger lower bound, then every smaller requested context and smaller advertised margin inherits the bank-level no-near-turn consequence.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4385,
+      "lean_source_line": 4424,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -3911,7 +3911,7 @@
       "informal_statement": "If a prefix subbank's LCM reaches the inspected context, then adding more integer-period RoPE channels cannot create an unequal all-channel collision.",
       "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_prefix_lcm_ge_context",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 544,
+      "lean_source_line": 583,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -3951,7 +3951,7 @@
       "informal_statement": "If any selected subbank contained in a larger integer-period RoPE bank has LCM reaching the inspected context, then the larger bank cannot have an unequal all-channel collision.",
       "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_subbank_lcm_ge_context",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 564,
+      "lean_source_line": 603,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -3993,7 +3993,7 @@
       "informal_statement": "If a real RoPE turn ratio is an integer number of full turns per position and the inspected context contains the unit gap, then its finite-context turn-ratio margin is equivalent to a nonpositive margin; such a channel cannot certify positive real-phase separation.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_int_iff_nonpos_of_one_lt_context",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1923,
+      "lean_source_line": 1962,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4035,7 +4035,7 @@
       "informal_statement": "A finite-context turn-ratio margin is equivalent to checking the same error lower bound on every positive gap contained in List.range context, giving the real RoPE margin program a theorem-backed finite gap-enumeration bridge.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1249,
+      "lean_source_line": 1288,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4077,7 +4077,7 @@
       "informal_statement": "If a RoPE turn ratio is a natural rational numerator/denominator and the inspected context contains the denominator gap, then its finite-context turn-ratio margin is equivalent to a nonpositive margin; the denominator gap lands exactly on an integer turn.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_iff_nonpos_of_den_lt_context",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1945,
+      "lean_source_line": 1984,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4119,7 +4119,7 @@
       "informal_statement": "If a natural rational turn ratio numerator/denominator is reduced and the inspected context stays at or below the denominator, then the finite-context nearest-integer margin is at least 1/denominator.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2008,
+      "lean_source_line": 2047,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4161,7 +4161,7 @@
       "informal_statement": "For a reduced natural rational turn ratio numerator/denominator, the 1/denominator finite-context margin holds exactly when the inspected context stays at or below the denominator.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2050,
+      "lean_source_line": 2089,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4200,7 +4200,7 @@
       "informal_statement": "For a fixed real turn-ratio value, a lower bound against the integer floor and integer ceiling is equivalent to the same lower bound against every integer turn.",
       "lean_name": "Circle.Applications.ropeNearestIntegerWitnesses_iff_forall_int",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1304,
+      "lean_source_line": 1343,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4242,7 +4242,7 @@
       "informal_statement": "A finite-context turn-ratio margin is equivalent to checking floor and ceiling nearest-integer witnesses for every positive generated gap below the inspected context.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1348,
+      "lean_source_line": 1387,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4284,7 +4284,7 @@
       "informal_statement": "A proof-carrying finite nearest-integer witness certificate proves the corresponding finite-context turn-ratio margin.",
       "lean_name": "Circle.Applications.RopeTurnRatioFiniteMarginCertificate.certifies",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1402,
+      "lean_source_line": 1441,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4326,7 +4326,7 @@
       "informal_statement": "The named rational/discretized preset turn ratio 1/4099 has a proved finite-context nearest-integer margin 1/4099 over context 4096.",
       "lean_name": "Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2093,
+      "lean_source_line": 2132,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4369,7 +4369,7 @@
       "informal_statement": "The named rational/discretized preset certificate rules out one-channel near-turn collisions below margin 1/4099 throughout the 4096-token context.",
       "lean_name": "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4025,
+      "lean_source_line": 4064,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4412,7 +4412,7 @@
       "informal_statement": "A rational enclosure for one generated gap proves that every integer-turn witness is at least the advertised margin away when the whole enclosure lies inside one integer cell away from both endpoints.",
       "lean_name": "Circle.Applications.ropeTurnRatioIntervalWitness_forall_int",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1790,
+      "lean_source_line": 1829,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4455,7 +4455,7 @@
       "informal_statement": "A finite table of rational interval witnesses, one for every positive generated gap below the context, proves the finite-context turn-ratio margin.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1901,
+      "lean_source_line": 1940,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4498,7 +4498,7 @@
       "informal_statement": "For the genuine standard RoPE channel-0 turn ratio 1/(2*pi), the tiny context containing gaps 1 through 5 has a rational interval certificate with margin 1/8, using the bounds 3 < pi <= 4.",
       "lean_name": "Circle.Applications.ropeStandardChannel0Seed_intervalCertificate",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2535,
+      "lean_source_line": 2574,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4541,7 +4541,7 @@
       "informal_statement": "The standard RoPE channel-0 interval seed proves a finite-context nearest-integer margin 1/8 over context 6.",
       "lean_name": "Circle.Applications.ropeStandardChannel0Seed_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2550,
+      "lean_source_line": 2589,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4584,7 +4584,7 @@
       "informal_statement": "The standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/8 throughout the tiny context 6.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4048,
+      "lean_source_line": 4087,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4627,7 +4627,7 @@
       "informal_statement": "For the genuine standard RoPE channel-0 turn ratio 1/(2*pi), the tiny context containing gaps 1 through 6 has a rational interval certificate with margin 1/32, using the sharper bound 3.14 < pi.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D2Seed_intervalCertificate",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2589,
+      "lean_source_line": 2628,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4670,7 +4670,7 @@
       "informal_statement": "The sharper standard RoPE channel-0 interval seed proves a finite-context nearest-integer margin 1/32 over context 7.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D2Seed_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2604,
+      "lean_source_line": 2643,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4713,7 +4713,7 @@
       "informal_statement": "The sharper standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/32 throughout the tiny context 7.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D2Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4068,
+      "lean_source_line": 4107,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4756,7 +4756,7 @@
       "informal_statement": "For the genuine standard RoPE channel-0 turn ratio 1/(2*pi), the next tiny context containing gaps 1 through 7 has a rational interval certificate with margin 1/32; gap 7 is certified inside integer cell 1 using pi < 3.15.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D3Seed_intervalCertificate",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2641,
+      "lean_source_line": 2680,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4799,7 +4799,7 @@
       "informal_statement": "The context-8 standard RoPE channel-0 interval seed proves a finite-context nearest-integer margin 1/32.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D3Seed_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2661,
+      "lean_source_line": 2700,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4842,7 +4842,7 @@
       "informal_statement": "The context-8 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/32 throughout that tiny context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D3Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4088,
+      "lean_source_line": 4127,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4885,7 +4885,7 @@
       "informal_statement": "For the genuine standard RoPE channel-0 turn ratio 1/(2*pi), the larger tiny context containing gaps 1 through 18 has a rational interval certificate with margin 1/32; gaps 7 through 12 are certified in integer cell 1 and gaps 13 through 18 in cell 2.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D4Seed_intervalCertificate",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2731,
+      "lean_source_line": 2770,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4928,7 +4928,7 @@
       "informal_statement": "The context-19 standard RoPE channel-0 interval seed proves a finite-context nearest-integer margin 1/32.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D4Seed_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2759,
+      "lean_source_line": 2798,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4971,7 +4971,7 @@
       "informal_statement": "The context-19 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/32 throughout that tiny context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D4Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4108,
+      "lean_source_line": 4147,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5014,7 +5014,7 @@
       "informal_statement": "A rational interval witness remains valid when the advertised margin is decreased.",
       "lean_name": "Circle.Applications.ropeTurnRatioIntervalWitness_mono_margin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1868,
+      "lean_source_line": 1907,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5057,7 +5057,7 @@
       "informal_statement": "A rational interval certificate remains valid when the advertised margin is decreased to a nonnegative value.",
       "lean_name": "Circle.Applications.ropeTurnRatioIntervalCertificate_mono_margin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1880,
+      "lean_source_line": 1919,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5100,7 +5100,7 @@
       "informal_statement": "For the genuine standard RoPE channel-0 turn ratio 1/(2*pi), the context containing gaps 1 through 43 has a rational interval certificate with margin 1/64; gaps 19 through 43 are split across integer cells 3 through 6.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D5Seed_intervalCertificate",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2804,
+      "lean_source_line": 2843,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5143,7 +5143,7 @@
       "informal_statement": "The context-44 standard RoPE channel-0 interval seed proves a finite-context nearest-integer margin 1/64.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D5Seed_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2886,
+      "lean_source_line": 2925,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5186,7 +5186,7 @@
       "informal_statement": "The context-44 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/64 throughout that tiny context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D5Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4128,
+      "lean_source_line": 4167,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5229,7 +5229,7 @@
       "informal_statement": "The genuine standard RoPE channel-0 turn ratio 1/(2*pi) is at least 5000/31416, using mathlib's four-decimal upper bound on pi.",
       "lean_name": "Circle.Applications.ropeStandardChannel0_piD4_base_lower",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2386,
+      "lean_source_line": 2425,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5272,7 +5272,7 @@
       "informal_statement": "The genuine standard RoPE channel-0 turn ratio 1/(2*pi) is at most 5000/31415, using mathlib's four-decimal lower bound on pi.",
       "lean_name": "Circle.Applications.ropeStandardChannel0_piD4_base_upper",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2402,
+      "lean_source_line": 2441,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5315,7 +5315,7 @@
       "informal_statement": "For the genuine standard RoPE channel-0 turn ratio 1/(2*pi), the context containing gaps 1 through 56 has a rational interval certificate with margin 1/512; gaps 44 through 56 use four-decimal pi bounds and cells 7 through 8.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D6Seed_intervalCertificate",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2932,
+      "lean_source_line": 2971,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5358,7 +5358,7 @@
       "informal_statement": "The context-57 standard RoPE channel-0 interval seed proves a finite-context nearest-integer margin 1/512.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D6Seed_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2992,
+      "lean_source_line": 3031,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5401,7 +5401,7 @@
       "informal_statement": "The context-57 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/512 throughout that tiny context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D6Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4148,
+      "lean_source_line": 4187,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5444,7 +5444,7 @@
       "informal_statement": "For the genuine standard RoPE channel-0 turn ratio 1/(2*pi), the context containing gaps 1 through 332 has a rational interval certificate with margin 1/512; all gaps use four-decimal pi bounds and generated cells 0 through 52.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D7Seed_intervalCertificate",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3018,
+      "lean_source_line": 3057,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5487,7 +5487,7 @@
       "informal_statement": "The context-333 standard RoPE channel-0 interval seed proves a finite-context nearest-integer margin 1/512.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D7Seed_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3033,
+      "lean_source_line": 3072,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5530,7 +5530,7 @@
       "informal_statement": "The context-333 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/512 throughout that seed context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D7Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4168,
+      "lean_source_line": 4207,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5573,7 +5573,7 @@
       "informal_statement": "The genuine standard RoPE channel-0 turn ratio 1/(2*pi) is at least 500000/3141593, using mathlib's six-decimal upper bound on pi.",
       "lean_name": "Circle.Applications.ropeStandardChannel0_piD6_base_lower",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2418,
+      "lean_source_line": 2457,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5616,7 +5616,7 @@
       "informal_statement": "The genuine standard RoPE channel-0 turn ratio 1/(2*pi) is at most 500000/3141592, using mathlib's six-decimal lower bound on pi.",
       "lean_name": "Circle.Applications.ropeStandardChannel0_piD6_base_upper",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2435,
+      "lean_source_line": 2474,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5659,7 +5659,7 @@
       "informal_statement": "For the genuine standard RoPE channel-0 turn ratio 1/(2*pi), the context containing gaps 1 through 709 has a rational interval certificate with margin 1/1024; all gaps use six-decimal pi bounds and computed cells 0 through 112.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D8Seed_intervalCertificate",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3092,
+      "lean_source_line": 3131,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5702,7 +5702,7 @@
       "informal_statement": "The context-710 standard RoPE channel-0 interval seed proves a finite-context nearest-integer margin 1/1024.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D8Seed_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3107,
+      "lean_source_line": 3146,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5745,7 +5745,7 @@
       "informal_statement": "The context-710 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/1024 throughout that seed context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D8Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4188,
+      "lean_source_line": 4227,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5788,7 +5788,7 @@
       "informal_statement": "For genuine standard RoPE channel 0, gap 710 is within margin 1/1024 of integer turn 113.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D8_gap710_error_lt_margin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3119,
+      "lean_source_line": 3158,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5831,7 +5831,7 @@
       "informal_statement": "The context-710 standard RoPE channel-0 margin 1/1024 cannot be extended to any strictly larger context, because gap 710 is already too close to integer turn 113.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D8SeedMargin_of_context_gt_seed",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3149,
+      "lean_source_line": 3188,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5874,7 +5874,7 @@
       "informal_statement": "The genuine standard RoPE channel-0 turn ratio 1/(2*pi) is at least 10^20/628318530717958647694, using mathlib's 20-decimal upper bound on pi.",
       "lean_name": "Circle.Applications.ropeStandardChannel0_piD20_base_lower",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2452,
+      "lean_source_line": 2491,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5917,7 +5917,7 @@
       "informal_statement": "The genuine standard RoPE channel-0 turn ratio 1/(2*pi) is at most 10^20/628318530717958647692, using mathlib's 20-decimal lower bound on pi.",
       "lean_name": "Circle.Applications.ropeStandardChannel0_piD20_base_upper",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2480,
+      "lean_source_line": 2519,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5960,7 +5960,7 @@
       "informal_statement": "For the genuine standard RoPE channel-0 turn ratio 1/(2*pi), the 4k context containing gaps 1 through 4095 has a rational interval certificate with margin 1/131072; all gaps use 20-decimal pi bounds and computed cells 0 through 651.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D9Seed_intervalCertificate",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3224,
+      "lean_source_line": 3263,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6003,7 +6003,7 @@
       "informal_statement": "The context-4096 standard RoPE channel-0 interval seed proves a finite-context nearest-integer margin 1/131072.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D9Seed_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3239,
+      "lean_source_line": 3278,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6046,7 +6046,7 @@
       "informal_statement": "The context-4096 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/131072 throughout that seed context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D9Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4209,
+      "lean_source_line": 4248,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6089,7 +6089,7 @@
       "informal_statement": "If a finite real-phase bank contains the standard channel-0 frequency, the context-4096 D9 seed rules out all-channel near-turn events for any requested context and margin below the proved seed.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4440,
+      "lean_source_line": 4479,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6132,7 +6132,7 @@
       "informal_statement": "For genuine standard RoPE channel 0, gap 710 is within margin 1/65536 of integer turn 113.",
       "lean_name": "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_65536",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3601,
+      "lean_source_line": 3640,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6175,7 +6175,7 @@
       "informal_statement": "The standard RoPE channel-0 margin 1/65536 cannot hold for any context containing gap 710.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_65536_of_context_gt_710",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3634,
+      "lean_source_line": 3673,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6218,7 +6218,7 @@
       "informal_statement": "For the genuine standard RoPE channel-0 turn ratio 1/(2*pi), the 4k context containing gaps 1 through 4095 has a tighter rational interval certificate with margin 1/105000.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D10Seed_intervalCertificate",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3306,
+      "lean_source_line": 3345,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6261,7 +6261,7 @@
       "informal_statement": "The tighter context-4096 standard RoPE channel-0 interval seed proves a finite-context nearest-integer margin 1/105000.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D10Seed_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3321,
+      "lean_source_line": 3360,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6304,7 +6304,7 @@
       "informal_statement": "The tighter context-4096 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/105000 throughout that seed context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D10Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4230,
+      "lean_source_line": 4269,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6347,7 +6347,7 @@
       "informal_statement": "If a finite real-phase bank contains the standard channel-0 frequency, the tighter context-4096 D10 seed rules out all-channel near-turn events for any requested context and margin below the proved seed.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D10Seed",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4483,
+      "lean_source_line": 4522,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6390,7 +6390,7 @@
       "informal_statement": "For genuine standard RoPE channel 0, gap 710 is within margin 1/104000 of integer turn 113.",
       "lean_name": "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_104000",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3652,
+      "lean_source_line": 3691,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6433,7 +6433,7 @@
       "informal_statement": "The standard RoPE channel-0 margin 1/104000 cannot hold for any context containing gap 710.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104000_of_context_gt_710",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3681,
+      "lean_source_line": 3720,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6476,7 +6476,7 @@
       "informal_statement": "For the genuine standard RoPE channel-0 turn ratio 1/(2*pi), the 4k context containing gaps 1 through 4095 has the current sharpest d20 rational interval certificate with margin 1/104219.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D11Seed_intervalCertificate",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3388,
+      "lean_source_line": 3427,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6519,7 +6519,7 @@
       "informal_statement": "The current sharpest context-4096 standard RoPE channel-0 interval seed proves a finite-context nearest-integer margin 1/104219.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D11Seed_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3403,
+      "lean_source_line": 3442,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6562,7 +6562,7 @@
       "informal_statement": "The current sharpest context-4096 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/104219 throughout that seed context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D11Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4251,
+      "lean_source_line": 4290,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6605,7 +6605,7 @@
       "informal_statement": "If a finite real-phase bank contains the standard channel-0 frequency, the current sharpest context-4096 D11 seed rules out all-channel near-turn events for any requested context and margin below the proved seed.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4526,
+      "lean_source_line": 4565,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6648,7 +6648,7 @@
       "informal_statement": "For genuine standard RoPE channel 0, gap 710 is within margin 1/104218 of integer turn 113.",
       "lean_name": "Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_104218",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3699,
+      "lean_source_line": 3738,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6691,7 +6691,7 @@
       "informal_statement": "The standard RoPE channel-0 margin 1/104218 cannot hold for any context containing gap 710.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3728,
+      "lean_source_line": 3767,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6734,7 +6734,7 @@
       "informal_statement": "Any finite real-phase bank whose first channel is the standard channel-0 frequency inherits the D11 no-near-turn certificate for requested contexts and margins below the proved seed.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4570,
+      "lean_source_line": 4609,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6777,7 +6777,7 @@
       "informal_statement": "For genuine standard RoPE channel 0, no finite-context margin at or above 1/104218 can hold once the inspected context contains gap 710.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_104218_of_context_gt_710",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3742,
+      "lean_source_line": 3781,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6820,7 +6820,7 @@
       "informal_statement": "The context-4096 standard RoPE channel-0 D11 seed brackets the finite margin: 1/104219 is proved, while every margin at or above 1/104218 is impossible.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D11_context4096_margin_bracket",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3805,
+      "lean_source_line": 3844,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6863,7 +6863,7 @@
       "informal_statement": "For the genuine standard RoPE channel-0 turn ratio 1/(2*pi), the 8k context containing gaps 1 through 8191 has a d20 rational interval certificate with margin 1/104220.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D12Seed_intervalCertificate",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3483,
+      "lean_source_line": 3522,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6906,7 +6906,7 @@
       "informal_statement": "The context-8192 standard RoPE channel-0 interval seed proves a finite-context nearest-integer margin 1/104220.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D12Seed_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3498,
+      "lean_source_line": 3537,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6949,7 +6949,7 @@
       "informal_statement": "The context-8192 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/104220 throughout that seed context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D12Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4272,
+      "lean_source_line": 4311,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6992,7 +6992,7 @@
       "informal_statement": "The context-8192 standard RoPE channel-0 seed gives a conditional bank-level no-near-turn certificate for any finite real-phase bank containing the standard channel-0 angular frequency, after downgrading to a requested context and margin within the certified bounds.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4599,
+      "lean_source_line": 4638,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7035,7 +7035,7 @@
       "informal_statement": "Any finite real-phase bank whose first channel is the standard channel-0 angular frequency inherits the D12 context-8192 no-near-turn certificate below any downgraded requested margin.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed_cons",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4641,
+      "lean_source_line": 4680,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7078,7 +7078,7 @@
       "informal_statement": "The context-8192 standard RoPE channel-0 D12 seed brackets the finite margin: 1/104220 is proved, while every margin at or above 1/104218 is impossible.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D12_context8192_margin_bracket",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3824,
+      "lean_source_line": 3863,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7121,7 +7121,7 @@
       "informal_statement": "Endpoint inequalities for a generated gap band imply a valid rational interval witness for every gap in that band.",
       "lean_name": "Circle.Applications.ropeTurnRatioIntervalWitness_of_band_bounds",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1470,
+      "lean_source_line": 1509,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7164,7 +7164,7 @@
       "informal_statement": "For the genuine standard RoPE channel-0 turn ratio 1/(2*pi), the 8k context containing gaps 1 through 8191 has a d20 rational interval certificate with margin 1/104219.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D13Seed_intervalCertificate",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3528,
+      "lean_source_line": 3567,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7208,7 +7208,7 @@
       "informal_statement": "The context-8192 standard RoPE channel-0 D13 interval seed proves a finite-context nearest-integer margin 1/104219.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D13Seed_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3543,
+      "lean_source_line": 3582,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7252,7 +7252,7 @@
       "informal_statement": "The context-8192 standard RoPE channel-0 D13 interval seed rules out one-channel near-turn collisions below margin 1/104219 throughout that seed context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D13Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4293,
+      "lean_source_line": 4332,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7295,7 +7295,7 @@
       "informal_statement": "The context-8192 standard RoPE channel-0 D13 seed gives a conditional bank-level no-near-turn certificate for any finite real-phase bank containing the standard channel-0 angular frequency, after downgrading to a requested context and margin within the certified bounds.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D13Seed",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4670,
+      "lean_source_line": 4709,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7338,7 +7338,7 @@
       "informal_statement": "Any finite real-phase bank whose first channel is the standard channel-0 angular frequency inherits the D13 context-8192 no-near-turn certificate below any downgraded requested margin.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D13Seed_cons",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4708,
+      "lean_source_line": 4747,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7381,7 +7381,7 @@
       "informal_statement": "The context-8192 standard RoPE channel-0 D13 seed brackets the finite margin: 1/104219 is proved, while every margin at or above 1/104218 is impossible.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D13_context8192_margin_bracket",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3840,
+      "lean_source_line": 3879,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7424,7 +7424,7 @@
       "informal_statement": "For the genuine standard RoPE channel-0 turn ratio 1/(2*pi), the context-16384 D14 interval seed has a rational interval certificate with margin 1/104219 for gaps 1 through 16383.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D14Seed_intervalCertificate",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3573,
+      "lean_source_line": 3612,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7468,7 +7468,7 @@
       "informal_statement": "The context-16384 standard RoPE channel-0 D14 interval seed proves a finite-context nearest-integer margin 1/104219.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D14Seed_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3588,
+      "lean_source_line": 3627,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7512,7 +7512,7 @@
       "informal_statement": "The context-16384 standard RoPE channel-0 D14 interval seed rules out one-channel near-turn collisions below margin 1/104219 throughout that seed context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D14Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4313,
+      "lean_source_line": 4352,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7555,7 +7555,7 @@
       "informal_statement": "The context-16384 standard RoPE channel-0 D14 seed gives a conditional bank-level no-near-turn certificate for any finite real-phase bank containing the standard channel-0 angular frequency, after downgrading to a requested context and margin within the certified bounds.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D14Seed",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4735,
+      "lean_source_line": 4774,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7598,7 +7598,7 @@
       "informal_statement": "Any finite real-phase bank whose first channel is the standard channel-0 angular frequency inherits the D14 context-16384 no-near-turn certificate below any downgraded requested margin.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D14Seed_cons",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4773,
+      "lean_source_line": 4812,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7641,7 +7641,7 @@
       "informal_statement": "The context-16384 standard RoPE channel-0 D14 seed brackets the finite margin: 1/104219 is proved, while every margin at or above 1/104218 is impossible.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D14_context16384_margin_bracket",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3855,
+      "lean_source_line": 3894,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7684,7 +7684,7 @@
       "informal_statement": "One valid rational interval band proves the per-gap interval witness for every gap covered by that band, using rational lower and upper turn-ratio bounds and endpoint cell-margin inequalities.",
       "lean_name": "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1683,
+      "lean_source_line": 1722,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7727,7 +7727,7 @@
       "informal_statement": "A finite list of valid rational interval bands that covers every positive generated gap below a context proves the full interval certificate for that context.",
       "lean_name": "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1850,
+      "lean_source_line": 1889,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7770,7 +7770,7 @@
       "informal_statement": "A generated band's purely rational endpoint-validity checks reflect into the real-valued band-validity predicate once the rational turn-ratio enclosure bounds the real turn ratio.",
       "lean_name": "Circle.Applications.ropeTurnRatioRationalIntervalBand_valid_of_ratEndpointValid",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1605,
+      "lean_source_line": 1644,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -8305,7 +8305,7 @@
       "informal_statement": "Gap 103993 is within 1/328458 of integer turn 16551 for standard RoPE channel 0.",
       "lean_name": "Circle.Applications.ropeStandardChannel0_gap103993_error_lt_one_over_328458",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3761,
+      "lean_source_line": 3800,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -8345,7 +8345,7 @@
       "informal_statement": "No standard channel-0 finite-context margin at or above 1/328458 is possible once the context contains gap 103993.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3790,
+      "lean_source_line": 3829,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -9120,7 +9120,7 @@
       "informal_statement": "For a positive common collision gap, the positive-multiple collision-pair count is positive exactly when that gap is inside the inspected context.",
       "lean_name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_pos_iff",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 184,
+      "lean_source_line": 193,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -9161,7 +9161,7 @@
       "informal_statement": "For a positive period-bank LCM, the total positive-multiple integer-bank collision count is zero exactly when the LCM reaches the inspected context.",
       "lean_name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_eq_zero_iff",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 408,
+      "lean_source_line": 447,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -9202,7 +9202,7 @@
       "informal_statement": "For a positive period-bank LCM, the total positive-multiple integer-bank collision count is positive exactly when an unequal all-channel collision witness exists inside the inspected context.",
       "lean_name": "Circle.Applications.ropeLCMCollisionPairCountMultiples_pos_iff_exists_collision",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 439,
+      "lean_source_line": 478,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -9245,7 +9245,7 @@
       "informal_statement": "The finite nearest-integer witness certificate object is equivalent to the corresponding abstract finite-context turn-ratio margin predicate.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMarginCertificate_iff_finiteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1419,
+      "lean_source_line": 1458,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -9287,7 +9287,7 @@
       "informal_statement": "A finite-context turn-ratio margin fails exactly when some positive in-context gap and integer-turn witness has error below the advertised margin.",
       "lean_name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_iff_exists_error_lt_margin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1233,
+      "lean_source_line": 1272,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -9327,7 +9327,7 @@
       "informal_statement": "If every declared integer period in a RoPE phase bank is positive, then the period-bank LCM is positive.",
       "lean_name": "Circle.Applications.ropePeriodBankLCM_pos_of_forall_mem_pos",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 157,
+      "lean_source_line": 166,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -9368,7 +9368,7 @@
       "informal_statement": "For a positive-period RoPE phase bank, exact no-collision over a finite context holds exactly when the period-bank LCM reaches the context.",
       "lean_name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcm_ge_context_of_forall_mem_pos",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 498,
+      "lean_source_line": 537,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -9411,7 +9411,7 @@
       "informal_statement": "For a nonnegative one-channel frequency and positive full turn, a finite turn-ratio margin is equivalent to ruling out every in-context real near-turn event below the corresponding scaled tolerance.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3963,
+      "lean_source_line": 4002,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -9451,7 +9451,7 @@
       "informal_statement": "For one turn-ratio gap, bounding the scalar nearest-integer margin is equivalent to bounding both floor and ceiling endpoint errors.",
       "lean_name": "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_ge_iff_floor_ceil",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1290,
+      "lean_source_line": 1329,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -9494,7 +9494,7 @@
       "informal_statement": "A finite-context turn-ratio margin is equivalent to lower-bounding the scalar nearest-integer margin for every positive generated gap below the inspected context.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1371,
+      "lean_source_line": 1410,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -9535,7 +9535,7 @@
       "informal_statement": "For a positive-period RoPE phase bank, exact no-collision over a finite context holds exactly when the reported total integer-bank collision count is zero.",
       "lean_name": "Circle.Applications.ropePhaseBankNoCollisionOnContext_iff_lcmCollisionPairCount_eq_zero_of_forall_mem_pos",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 525,
+      "lean_source_line": 564,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -9578,7 +9578,7 @@
       "informal_statement": "For the named rational/discretized 1/4099 RoPE preset, gap 1 realizes the exact scalar nearest-integer margin 1/4099, and every positive generated gap in context 4096 has margin at least that value.",
       "lean_name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2109,
+      "lean_source_line": 2148,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -9620,7 +9620,7 @@
       "informal_statement": "Any positive finite-context turn-ratio margin certificate rules out exact zero error against every integer turn count for every positive generated gap in the certified context.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_pos_no_zero_error",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 1438,
+      "lean_source_line": 1477,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -9662,7 +9662,7 @@
       "informal_statement": "For the named rational/discretized 1/4099 RoPE preset, every positive generated gap below context 4096 has nonzero nearest-integer turn error against every integer turn count.",
       "lean_name": "Circle.Applications.ropeRationalPreset4099_noZeroTurnRatioError",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 2134,
+      "lean_source_line": 2173,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -9702,7 +9702,7 @@
       "informal_statement": "For the diagnostic RoPE phase bank [6, 9, 13, 18] at context 128, prefixes of length 1 and 2 do not reach the context, while the prefix of length 3 does.",
       "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefix_length_three",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 694,
+      "lean_source_line": 733,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -9743,7 +9743,7 @@
       "informal_statement": "For the diagnostic RoPE phase bank [6, 9, 13, 18] at context 128, no singleton subbank reaches the context, while the subbank [13, 18] does.",
       "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 719,
+      "lean_source_line": 758,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -9784,7 +9784,7 @@
       "informal_statement": "A certified first passing prefix length for an integer-period RoPE phase bank is unique.",
       "lean_name": "Circle.Applications.ropeFirstPrefixPassesContext_unique",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 601,
+      "lean_source_line": 640,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -9825,7 +9825,7 @@
       "informal_statement": "A certified first passing prefix whose LCM reaches the inspected context forbids unequal all-channel collisions in the full declared bank.",
       "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_firstPrefixPassesContext",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 621,
+      "lean_source_line": 660,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -9866,7 +9866,7 @@
       "informal_statement": "The diagnostic RoPE phase bank [6, 9, 13, 18] at context 128 satisfies the generic first-prefix-pass contract at prefix length 3.",
       "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 706,
+      "lean_source_line": 745,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -9907,7 +9907,7 @@
       "informal_statement": "The minimal sufficient subfamily size for an integer-period RoPE phase bank is unique when certified, even if more than one subfamily has that size.",
       "lean_name": "Circle.Applications.ropeSmallestSubfamilyPassesContext_size_unique",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 658,
+      "lean_source_line": 697,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -9948,7 +9948,7 @@
       "informal_statement": "A certified smallest sufficient subfamily whose LCM reaches the inspected context forbids unequal all-channel collisions in the full declared bank.",
       "lean_name": "Circle.Applications.not_ropePhaseBankCollision_of_smallestSubfamilyPassesContext",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 678,
+      "lean_source_line": 717,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -9989,7 +9989,7 @@
       "informal_statement": "The diagnostic RoPE phase bank [6, 9, 13, 18] at context 128 satisfies the generic smallest-subfamily contract for the selected subfamily [13, 18].",
       "lean_name": "Circle.Applications.ropeDiagnosticPrefixPass_context128_smallestSubfamilyPasses_13_18",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 730,
+      "lean_source_line": 769,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -10032,7 +10032,7 @@
       "informal_statement": "For a nonnegative one-channel frequency and positive full turn, a finite nearest-integer certificate object is equivalent to ruling out every in-context real near-turn event below the corresponding scaled tolerance.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMarginCertificate_iff_no_nearTurn_below_scaled_margin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4010,
+      "lean_source_line": 4049,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -10075,7 +10075,7 @@
       "informal_statement": "A finite nearest-integer certificate for one channel rules out all-channel real near-turn events for any frequency bank containing that channel, after downgrading to a smaller requested context and margin.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_finiteMarginCertificate_le_context_margin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4412,
+      "lean_source_line": 4451,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -10116,7 +10116,7 @@
       "informal_statement": "The public diagnostic shared-factor RoPE row with rounded periods [6, 18, 54] at context 64 has exact integer-bank collision count 10.",
       "lean_name": "Circle.Applications.ropeDiagnosticSharedFactor_context64_totalCollisionPairCount",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 753,
+      "lean_source_line": 792,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -10156,7 +10156,7 @@
       "informal_statement": "The public quantized shared-factor phase-bank row with periods [32, 48, 96] at context 256 has exact integer-bank collision count 224.",
       "lean_name": "Circle.Applications.ropeQuantizedSharedFactor_context256_totalCollisionPairCount",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 764,
+      "lean_source_line": 803,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -10196,7 +10196,7 @@
       "informal_statement": "The public quantized one-token-past-boundary phase-bank row with periods [15, 16] at context 241 has exact integer-bank collision count 1.",
       "lean_name": "Circle.Applications.ropeQuantizedBoundary_context241_totalCollisionPairCount",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 774,
+      "lean_source_line": 813,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -10236,7 +10236,7 @@
       "informal_statement": "The public scaled-period boundary-pass phase-bank row with periods [60, 64] at context 960 has exact integer-bank collision count 0.",
       "lean_name": "Circle.Applications.ropeInterpolatedX4_context960_totalCollisionPairCount",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 784,
+      "lean_source_line": 823,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -10276,7 +10276,7 @@
       "informal_statement": "The public scaled-period one-token-past-boundary phase-bank row with periods [60, 64] at context 961 has exact integer-bank collision count 1.",
       "lean_name": "Circle.Applications.ropeInterpolatedX4_context961_totalCollisionPairCount",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 794,
+      "lean_source_line": 833,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -10315,7 +10315,7 @@
       "informal_statement": "For a positive single integer-period RoPE channel, the per-channel positive-multiple collision count is zero exactly when no unequal in-context positions collide in that channel.",
       "lean_name": "Circle.Applications.ropeDiscreteNoCollisionOnContext_iff_collisionPairCount_eq_zero",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 912,
+      "lean_source_line": 951,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -10354,7 +10354,7 @@
       "informal_statement": "For a positive single integer-period RoPE channel, no unequal in-context collision exists exactly when the inspected context length is at most the channel period.",
       "lean_name": "Circle.Applications.ropeDiscreteNoCollisionOnContext_iff_context_le_period",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 840,
+      "lean_source_line": 879,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -10393,7 +10393,7 @@
       "informal_statement": "For a positive single integer-period RoPE channel, the per-channel positive-multiple collision count is positive exactly when an unequal in-context collision witness exists.",
       "lean_name": "Circle.Applications.ropeDiscreteCollisionPairCount_pos_iff_exists_collision",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 871,
+      "lean_source_line": 910,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -10433,7 +10433,7 @@
       "informal_statement": "For any positive common collision gap, if the inspected context is past the first repeat but does not reach the second repeat, then the positive-multiple collision-pair count is exactly the single-gap count context - commonGap.",
       "lean_name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_single_gap_count",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 223,
+      "lean_source_line": 262,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -10474,7 +10474,7 @@
       "informal_statement": "For any positive common collision gap, inspecting exactly one token past that gap gives positive-multiple collision-pair count 1.",
       "lean_name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_period_succ_eq_one",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 267,
+      "lean_source_line": 306,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
@@ -10561,7 +10561,7 @@
       "informal_statement": "A finite-context turn-ratio margin proved at a certified horizon plus one positive obstruction gap gives a full context-range bracket: smaller requested contexts inherit the proved margin, while every context containing the obstruction gap rejects any advertised margin at or above the obstruction threshold.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_bracket_of_obstruction",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3903,
+      "lean_source_line": 3942,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -10581,6 +10581,49 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "tests/test_rope_certifier.py::test_standard_channel0_d19_margin_bracket_is_theorem_backed"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0078",
+        "COMMON-0083",
+        "COMMON-0084"
+      ],
+      "formal_statement": "forall {context commonGap multiple : Nat}, 0 < commonGap -> 0 < multiple -> (multiple <= Circle.Applications.ropeCollisionPairCountFittingMultipleCount context commonGap <-> multiple * commonGap < context)",
+      "id": "AIRA-T0210",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "For a positive common collision gap and positive multiple, the executable quotient bound `(context - 1) / commonGap` includes exactly the multiples whose induced gap remains inside the inspected context.",
+      "lean_name": "Circle.Applications.ropeCollisionPairCountFittingMultipleCount_spec",
+      "lean_source": "Circle/Applications/RoPECertifier.lean",
+      "lean_source_line": 231,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "tests/test_rope_certifier.py::test_discretized_period_helpers_are_deterministic",
+          "tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap",
+          "tests/test_rope_certifier.py::test_rope_certify_cli_emits_json_certificate"
         ]
       }
     },

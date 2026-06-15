@@ -40,6 +40,7 @@ const THEOREM_GROUPS = [
       "AIRA-T0205",
       "AIRA-T0206",
       "AIRA-T0207",
+      "AIRA-T0210",
     ],
   },
   {
@@ -125,6 +126,11 @@ function collisionPairCountAtGapMultiples(context, gap) {
   return total;
 }
 
+function fittingCollisionMultipleCount(context, gap) {
+  if (gap <= 0 || gap >= context) return 0;
+  return Math.floor((context - 1) / gap);
+}
+
 function phaseBankPrefixReports(context, periods, limit = 8) {
   const reports = [];
   const prefixLimit = Math.min(periods.length, limit);
@@ -135,6 +141,7 @@ function phaseBankPrefixReports(context, periods, limit = 8) {
       prefixLength,
       reachesContext: exact.reachesContext,
       gap: exact.reachesContext ? null : exact.value,
+      fittingMultiples: exact.reachesContext ? 0 : fittingCollisionMultipleCount(context, exact.value),
       totalPairs: exact.reachesContext ? 0 : collisionPairCountAtGapMultiples(context, exact.value),
     });
   }
@@ -278,6 +285,7 @@ function appendRecord(output, values, theoremById) {
   const guaranteedMultiplePairCount = exact.reachesContext
     ? 0
     : collisionPairCountAtGapMultiples(values.context, exact.value);
+  const fittingMultiples = exact.reachesContext ? 0 : fittingCollisionMultipleCount(values.context, exact.value);
   const prefixReports = phaseBankPrefixReports(values.context, periods);
   const firstPassPrefix = prefixReports.find((report) => report.reachesContext);
   const margin = realMargin(values.headDim, values.base, values.context, values.tolerance);
@@ -300,6 +308,7 @@ function appendRecord(output, values, theoremById) {
     `exact discrete contract: ${exact.reachesContext ? "PASS" : "FAIL"}`,
     `common collision gap: ${exact.reachesContext ? ">= context" : exact.value}`,
     `guaranteed common-gap collision pairs: ${guaranteedPairCount}`,
+    `fitting common-gap multiples: ${fittingMultiples}`,
     `guaranteed common-gap multiple pairs: ${guaranteedMultiplePairCount}`,
     `bounded prefix reports: ${prefixReports.length}`,
     `first exact pass prefix length: ${firstPassPrefix ? firstPassPrefix.prefixLength : "none"}`,
@@ -320,7 +329,7 @@ function appendRecord(output, values, theoremById) {
     prefixes.textContent = `Prefix reports: ${prefixReports
       .map((report) => {
         const gap = report.reachesContext ? ">= context" : report.gap;
-        return `first ${report.prefixLength}: gap ${gap}, pairs ${report.totalPairs}`;
+        return `first ${report.prefixLength}: gap ${gap}, fitting multiples ${report.fittingMultiples}, pairs ${report.totalPairs}`;
       })
       .join("; ")}.`;
     record.appendChild(prefixes);
