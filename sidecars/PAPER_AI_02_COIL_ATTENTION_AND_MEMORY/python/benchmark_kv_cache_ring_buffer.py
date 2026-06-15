@@ -147,6 +147,10 @@ def text_results(payload: dict[str, Any]) -> str:
             "trace_fresh_iff_next_overwrite_boundary="
             f"{adapter_request['trace_fresh_iff_next_overwrite_boundary']} "
             f"trace_fresh_slots_distinct={adapter_request['trace_fresh_slots_distinct']} "
+            f"first_stale_token={adapter_request['first_stale_token']} "
+            "first_stale_next_overwrite="
+            f"{adapter_request['first_stale_next_overwrite_token']} "
+            f"stale_member_blocks_pass={adapter_request['stale_member_blocks_pass']} "
             "ordered_live_window_subrequest="
             f"{adapter_request['ordered_live_window_subrequest']} "
             "duplicate_free_live_window_subrequest="
@@ -156,6 +160,8 @@ def text_results(payload: dict[str, Any]) -> str:
             f"pass_certificate={adapter_request['pass_certificate']} "
             "pass_iff_next_overwrite_boundary="
             f"{adapter_request['pass_iff_next_overwrite_boundary']} "
+            "pass_iff_no_stale_member_under_nonfuture_nodup="
+            f"{adapter_request['pass_iff_no_stale_member_under_nonfuture_nodup']} "
             f"theorem_ids={','.join(adapter_request['theorem_ids'])}"
         ),
         adapter_request["note"],
@@ -251,8 +257,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{', '.join(batch['theorem_ids'])} |"
             ),
             "",
-            "| Request id | Requested tokens | Requested slots | All non-future | All retained | Tokens distinct | Slots distinct | Trace iff | Next overwrites after current | Trace iff boundary | Trace-fresh slots distinct | Ordered live-window subrequest | Duplicate-free live-window subrequest | Subrequest pass contract | Pass certificate | Pass iff boundary | Theorem ids |",
-            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+            "| Request id | Requested tokens | Requested slots | All non-future | All retained | Tokens distinct | Slots distinct | First stale token | First stale next overwrite | Stale member blocks pass | Trace iff | Next overwrites after current | Trace iff boundary | Trace-fresh slots distinct | Ordered live-window subrequest | Duplicate-free live-window subrequest | Subrequest pass contract | Pass certificate | Pass iff boundary | Pass iff no stale member | Theorem ids |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
             (
                 f"| {adapter_request['request_id']} | "
                 f"{', '.join(str(token) for token in adapter_request['requested_tokens'])} | "
@@ -261,6 +267,9 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{adapter_request['all_retained']} | "
                 f"{adapter_request['tokens_distinct']} | "
                 f"{adapter_request['slots_distinct']} | "
+                f"{adapter_request['first_stale_token']} | "
+                f"{adapter_request['first_stale_next_overwrite_token']} | "
+                f"{adapter_request['stale_member_blocks_pass']} | "
                 f"{adapter_request['retained_iff_no_same_slot_overwrite_trace']} | "
                 f"{adapter_request['next_overwrites_after_current']} | "
                 f"{adapter_request['trace_fresh_iff_next_overwrite_boundary']} | "
@@ -270,6 +279,7 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{adapter_request['live_window_subrequest_pass_contract']} | "
                 f"{adapter_request['pass_certificate']} | "
                 f"{adapter_request['pass_iff_next_overwrite_boundary']} | "
+                f"{adapter_request['pass_iff_no_stale_member_under_nonfuture_nodup']} | "
                 f"{', '.join(adapter_request['theorem_ids'])} |"
             ),
             "",

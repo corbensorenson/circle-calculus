@@ -4723,6 +4723,18 @@
           "status": "proved"
         },
         {
+          "id": "AIM-T0097",
+          "lean_name": "Circle.Applications.not_kvCacheAdapterRequestTracePass_of_stale_member",
+          "name": "Circle.Applications.not_kvCacheAdapterRequestTracePass_of_stale_member",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0098",
+          "lean_name": "Circle.Applications.kvCacheAdapterRequestTracePass_iff_no_stale_member_of_nonFuture_nodup",
+          "name": "Circle.Applications.kvCacheAdapterRequestTracePass_iff_no_stale_member_of_nonFuture_nodup",
+          "status": "proved"
+        },
+        {
           "id": "AIT-T0001",
           "lean_name": "Circle.Applications.attentionReach_eq_div_gcd",
           "name": "Circle.Applications.attentionReach_eq_div_gcd",
@@ -16636,6 +16648,18 @@
           "id": "AIM-T0096",
           "lean_name": "Circle.Applications.kvCacheAdapterRequestBoundary_slotMap_nodup",
           "name": "Circle.Applications.kvCacheAdapterRequestBoundary_slotMap_nodup",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0097",
+          "lean_name": "Circle.Applications.not_kvCacheAdapterRequestTracePass_of_stale_member",
+          "name": "Circle.Applications.not_kvCacheAdapterRequestTracePass_of_stale_member",
+          "status": "proved"
+        },
+        {
+          "id": "AIM-T0098",
+          "lean_name": "Circle.Applications.kvCacheAdapterRequestTracePass_iff_no_stale_member_of_nonFuture_nodup",
+          "name": "Circle.Applications.kvCacheAdapterRequestTracePass_iff_no_stale_member_of_nonFuture_nodup",
           "status": "proved"
         }
       ],

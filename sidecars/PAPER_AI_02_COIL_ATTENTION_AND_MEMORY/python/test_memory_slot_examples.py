@@ -235,6 +235,9 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     assert certificate.all_retained
     assert certificate.tokens_distinct
     assert certificate.slots_distinct
+    assert certificate.first_stale_token is None
+    assert certificate.first_stale_next_overwrite_token is None
+    assert not certificate.stale_member_blocks_pass
     assert certificate.retained_iff_no_same_slot_overwrite_trace
     assert certificate.next_overwrites_after_current
     assert certificate.trace_fresh_iff_next_overwrite_boundary
@@ -244,6 +247,7 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     assert certificate.live_window_subrequest_pass_contract
     assert certificate.pass_certificate
     assert certificate.pass_iff_next_overwrite_boundary
+    assert certificate.pass_iff_no_stale_member_under_nonfuture_nodup
     assert kv_cache_adapter_request_trace_pass_compact(16, 31, (20, 24, 29, 31))
     assert kv_cache_ordered_live_window_subrequest(16, 31, (20, 24, 29, 31))
     assert "AIM-T0078" in certificate.theorem_ids
@@ -255,6 +259,8 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     assert "AIM-T0094" in certificate.theorem_ids
     assert "AIM-T0095" in certificate.theorem_ids
     assert "AIM-T0096" in certificate.theorem_ids
+    assert "AIM-T0097" in certificate.theorem_ids
+    assert "AIM-T0098" in certificate.theorem_ids
     assert (
         "Circle.Applications.kvCacheLiveWindowSubrequest_adapterRequestTracePass"
         in certificate.lean_declarations
@@ -265,6 +271,14 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     )
     assert (
         "Circle.Applications.kvCacheAdapterRequestBoundary_slotMap_nodup"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.not_kvCacheAdapterRequestTracePass_of_stale_member"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.kvCacheAdapterRequestTracePass_iff_no_stale_member_of_nonFuture_nodup"
         in certificate.lean_declarations
     )
     assert "Modeled adapter request-trace certificate only" in certificate.note
@@ -283,7 +297,36 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     assert not future_request.live_window_subrequest_pass_contract
     assert not future_request.pass_certificate
     assert future_request.pass_iff_next_overwrite_boundary
+    assert not future_request.pass_iff_no_stale_member_under_nonfuture_nodup
+    assert future_request.first_stale_token is None
+    assert future_request.first_stale_next_overwrite_token is None
+    assert not future_request.stale_member_blocks_pass
     assert not kv_cache_adapter_request_trace_pass_compact(16, 31, (20, 32))
+
+    stale_request = certify_kv_cache_adapter_request_trace(
+        cache_size=16,
+        current=31,
+        requested_tokens=(12, 20),
+        request_id="stale_read",
+    )
+    assert stale_request.request_id == "stale_read"
+    assert stale_request.all_non_future
+    assert not stale_request.all_retained
+    assert stale_request.tokens_distinct
+    assert not stale_request.slots_distinct
+    assert stale_request.first_stale_token == 12
+    assert stale_request.first_stale_next_overwrite_token == 28
+    assert stale_request.stale_member_blocks_pass
+    assert not stale_request.next_overwrites_after_current
+    assert stale_request.trace_fresh_iff_next_overwrite_boundary
+    assert not stale_request.trace_fresh_slots_distinct
+    assert not stale_request.ordered_live_window_subrequest
+    assert not stale_request.duplicate_free_live_window_subrequest
+    assert not stale_request.live_window_subrequest_pass_contract
+    assert not stale_request.pass_certificate
+    assert stale_request.pass_iff_next_overwrite_boundary
+    assert stale_request.pass_iff_no_stale_member_under_nonfuture_nodup
+    assert not kv_cache_adapter_request_trace_pass_compact(16, 31, (12, 20))
 
     duplicate_request = certify_kv_cache_adapter_request_trace(
         cache_size=16,
@@ -301,6 +344,10 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     assert not duplicate_request.live_window_subrequest_pass_contract
     assert not duplicate_request.pass_certificate
     assert duplicate_request.pass_iff_next_overwrite_boundary
+    assert not duplicate_request.pass_iff_no_stale_member_under_nonfuture_nodup
+    assert duplicate_request.first_stale_token is None
+    assert duplicate_request.first_stale_next_overwrite_token is None
+    assert not duplicate_request.stale_member_blocks_pass
     assert not kv_cache_adapter_request_trace_pass_compact(16, 31, (20, 20))
 
 

@@ -710,6 +710,59 @@ theorem kvCacheAdapterRequestBoundary_slotMap_nodup
   exact kvCacheWindow_traceFreshBatchSlotMap_nodup
     hcache hnotFuture htrace hnodup
 
+/-- A stale requested token blocks the modeled adapter request-trace pass bit.
+
+This is the negative certificate form used by executable KV-cache certifiers:
+if a requested token is non-future and its next same-slot overwrite has already
+occurred at or before the current read point, then the modeled request cannot
+pass. -/
+theorem not_kvCacheAdapterRequestTracePass_of_stale_member
+    {cacheSize current token : Nat} {tokens : List Nat} (hcache : 0 < cacheSize)
+    (hmem : token ∈ tokens)
+    (_htoken_current : token ≤ current)
+    (hoverwritten : token + cacheSize ≤ current) :
+    ¬ kvCacheAdapterRequestTracePass cacheSize current tokens := by
+  intro hpass
+  have hcompact :
+      (∀ token ∈ tokens, token ≤ current) ∧
+        tokens.Nodup ∧
+        (∀ token ∈ tokens, current < token + cacheSize) :=
+    (kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_nextOverwriteAfterCurrent
+      (cacheSize := cacheSize) (current := current) (tokens := tokens) hcache).1 hpass
+  exact (not_le_of_gt (hcompact.2.2 token hmem)) hoverwritten
+
+/-- For non-future duplicate-free read requests, passing is equivalent to
+having no stale requested member.
+
+The compact pass checklist says every requested token's next same-slot
+overwrite must be after the current read point. This theorem repackages that
+check as the exact absence of a requested token whose next overwrite has
+already occurred. -/
+theorem kvCacheAdapterRequestTracePass_iff_no_stale_member_of_nonFuture_nodup
+    {cacheSize current : Nat} {tokens : List Nat} (hcache : 0 < cacheSize)
+    (hnotFuture : ∀ token ∈ tokens, token ≤ current)
+    (hnodup : tokens.Nodup) :
+    kvCacheAdapterRequestTracePass cacheSize current tokens ↔
+      ¬ ∃ token, token ∈ tokens ∧ token + cacheSize ≤ current := by
+  constructor
+  · intro hpass
+    have hcompact :
+        (∀ token ∈ tokens, token ≤ current) ∧
+          tokens.Nodup ∧
+          (∀ token ∈ tokens, current < token + cacheSize) :=
+      (kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_nextOverwriteAfterCurrent
+        (cacheSize := cacheSize) (current := current) (tokens := tokens) hcache).1 hpass
+    rintro ⟨token, hmem, hoverwritten⟩
+    exact (not_le_of_gt (hcompact.2.2 token hmem)) hoverwritten
+  · intro hnoStale
+    apply
+      (kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_nextOverwriteAfterCurrent
+        (cacheSize := cacheSize) (current := current) (tokens := tokens) hcache).2
+    refine ⟨hnotFuture, hnodup, ?_⟩
+    intro token hmem
+    exact lt_of_not_ge (fun hoverwritten =>
+      hnoStale ⟨token, hmem, hoverwritten⟩)
+
 /-- The explicit live KV-cache window maps to duplicate-free ring-buffer slots.
 
 This is the end-to-end live-window version of the retained-batch theorem: the

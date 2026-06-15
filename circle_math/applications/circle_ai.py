@@ -757,6 +757,9 @@ class KVCacheAdapterRequestTraceCertificate:
     all_retained: bool
     tokens_distinct: bool
     slots_distinct: bool
+    first_stale_token: Optional[int]
+    first_stale_next_overwrite_token: Optional[int]
+    stale_member_blocks_pass: bool
     retained_iff_no_same_slot_overwrite_trace: bool
     next_overwrites_after_current: bool
     trace_fresh_iff_next_overwrite_boundary: bool
@@ -766,6 +769,7 @@ class KVCacheAdapterRequestTraceCertificate:
     live_window_subrequest_pass_contract: bool
     pass_certificate: bool
     pass_iff_next_overwrite_boundary: bool
+    pass_iff_no_stale_member_under_nonfuture_nodup: bool
     theorem_ids: tuple[str, ...] = (
         "AIM-T0059",
         "AIM-T0067",
@@ -779,6 +783,8 @@ class KVCacheAdapterRequestTraceCertificate:
         "AIM-T0094",
         "AIM-T0095",
         "AIM-T0096",
+        "AIM-T0097",
+        "AIM-T0098",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheSlot_lt_cacheSize",
@@ -793,6 +799,8 @@ class KVCacheAdapterRequestTraceCertificate:
         "Circle.Applications.kvCacheLiveWindowSubrequest_adapterRequestTracePass",
         "Circle.Applications.kvCacheAdapterRequestBoundary_allRetained",
         "Circle.Applications.kvCacheAdapterRequestBoundary_slotMap_nodup",
+        "Circle.Applications.not_kvCacheAdapterRequestTracePass_of_stale_member",
+        "Circle.Applications.kvCacheAdapterRequestTracePass_iff_no_stale_member_of_nonFuture_nodup",
     )
     note: str = (
         "Modeled adapter request-trace certificate only; this packages the "
@@ -2179,6 +2187,19 @@ def certify_kv_cache_adapter_request_trace(
         kv_cache_next_overwrite_after_current(cache_size, current, token)
         for token in token_tuple
     )
+    first_stale_token = next(
+        (
+            token
+            for token in token_tuple
+            if token <= current and token + cache_size <= current
+        ),
+        None,
+    )
+    first_stale_next_overwrite = (
+        None
+        if first_stale_token is None
+        else kv_cache_next_overwrite_token(cache_size, first_stale_token)
+    )
     pass_certificate = kv_cache_adapter_request_trace_pass_compact(
         cache_size,
         current,
@@ -2203,6 +2224,11 @@ def certify_kv_cache_adapter_request_trace(
         all_retained=batch.all_retained,
         tokens_distinct=batch.tokens_distinct,
         slots_distinct=batch.slots_distinct,
+        first_stale_token=first_stale_token,
+        first_stale_next_overwrite_token=first_stale_next_overwrite,
+        stale_member_blocks_pass=(
+            first_stale_token is not None and not pass_certificate
+        ),
         retained_iff_no_same_slot_overwrite_trace=batch.retained_iff_no_same_slot_overwrite_trace,
         next_overwrites_after_current=next_overwrites_after_current,
         trace_fresh_iff_next_overwrite_boundary=(
@@ -2218,6 +2244,11 @@ def certify_kv_cache_adapter_request_trace(
         pass_iff_next_overwrite_boundary=(
             pass_certificate
             == (all_non_future and batch.tokens_distinct and next_overwrites_after_current)
+        ),
+        pass_iff_no_stale_member_under_nonfuture_nodup=(
+            pass_certificate == (first_stale_token is None)
+            if all_non_future and batch.tokens_distinct
+            else False
         ),
     )
 

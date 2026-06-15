@@ -95,9 +95,18 @@ def test_kv_cache_certifier_cli_text_and_json_out(tmp_path: Path) -> None:
     assert payload["adapter_request_trace_certificate"]["request_id"] == "prefill_read"
     assert payload["adapter_request_trace_certificate"]["requested_slots"] == [4, 8, 13, 15]
     assert payload["adapter_request_trace_certificate"]["pass_certificate"] is True
+    assert payload["adapter_request_trace_certificate"]["first_stale_token"] is None
+    assert payload["adapter_request_trace_certificate"]["first_stale_next_overwrite_token"] is None
+    assert payload["adapter_request_trace_certificate"]["stale_member_blocks_pass"] is False
     assert payload["adapter_request_trace_certificate"]["next_overwrites_after_current"] is True
     assert payload["adapter_request_trace_certificate"]["trace_fresh_iff_next_overwrite_boundary"] is True
     assert payload["adapter_request_trace_certificate"]["pass_iff_next_overwrite_boundary"] is True
+    assert (
+        payload["adapter_request_trace_certificate"][
+            "pass_iff_no_stale_member_under_nonfuture_nodup"
+        ]
+        is True
+    )
     assert payload["adapter_request_trace_certificate"]["ordered_live_window_subrequest"] is True
     assert payload["adapter_request_trace_certificate"]["duplicate_free_live_window_subrequest"] is True
     assert payload["adapter_request_trace_certificate"]["live_window_subrequest_pass_contract"] is True
@@ -110,6 +119,8 @@ def test_kv_cache_certifier_cli_text_and_json_out(tmp_path: Path) -> None:
     assert "AIM-T0094" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert "AIM-T0095" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert "AIM-T0096" in payload["adapter_request_trace_certificate"]["theorem_ids"]
+    assert "AIM-T0097" in payload["adapter_request_trace_certificate"]["theorem_ids"]
+    assert "AIM-T0098" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert payload["live_window_certificate"]["full_coverage_contract"] is True
     assert payload["live_window_certificate"]["slot_count_matches_full_window"] is True
     assert payload["live_window_certificate"]["slot_range_covered"] is True
@@ -168,6 +179,15 @@ def test_kv_cache_certifier_cli_json_stdout_prefix_window() -> None:
     assert payload["adapter_request_trace_certificate"]["requested_tokens"] == [2]
     assert payload["adapter_request_trace_certificate"]["pass_certificate"] is True
     assert payload["adapter_request_trace_certificate"]["pass_iff_next_overwrite_boundary"] is True
+    assert (
+        payload["adapter_request_trace_certificate"][
+            "pass_iff_no_stale_member_under_nonfuture_nodup"
+        ]
+        is True
+    )
+    assert payload["adapter_request_trace_certificate"]["first_stale_token"] is None
+    assert payload["adapter_request_trace_certificate"]["first_stale_next_overwrite_token"] is None
+    assert payload["adapter_request_trace_certificate"]["stale_member_blocks_pass"] is False
     assert payload["adapter_request_trace_certificate"]["ordered_live_window_subrequest"] is True
     assert payload["adapter_request_trace_certificate"]["duplicate_free_live_window_subrequest"] is True
     assert payload["adapter_request_trace_certificate"]["live_window_subrequest_pass_contract"] is True
@@ -196,3 +216,47 @@ def test_kv_cache_certifier_cli_json_stdout_prefix_window() -> None:
     assert payload["live_window_request_certificate"]["fixture_theorem_ids"] == []
     assert "AIM-T0087" in payload["live_window_request_certificate"]["theorem_ids"]
     assert "AIM-T0088" in payload["live_window_request_certificate"]["theorem_ids"]
+
+
+def test_kv_cache_certifier_cli_reports_stale_request_witness() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--cache-size",
+            "16",
+            "--current",
+            "31",
+            "--token",
+            "20",
+            "--batch-tokens",
+            "12,20",
+            "--request-id",
+            "stale_read",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    adapter_request = payload["adapter_request_trace_certificate"]
+    assert adapter_request["request_id"] == "stale_read"
+    assert adapter_request["requested_tokens"] == [12, 20]
+    assert adapter_request["requested_slots"] == [12, 4]
+    assert adapter_request["all_non_future"] is True
+    assert adapter_request["tokens_distinct"] is True
+    assert adapter_request["all_retained"] is False
+    assert adapter_request["slots_distinct"] is False
+    assert adapter_request["first_stale_token"] == 12
+    assert adapter_request["first_stale_next_overwrite_token"] == 28
+    assert adapter_request["stale_member_blocks_pass"] is True
+    assert adapter_request["next_overwrites_after_current"] is False
+    assert adapter_request["pass_certificate"] is False
+    assert adapter_request["pass_iff_next_overwrite_boundary"] is True
+    assert adapter_request["pass_iff_no_stale_member_under_nonfuture_nodup"] is True
+    assert "AIM-T0097" in adapter_request["theorem_ids"]
+    assert "AIM-T0098" in adapter_request["theorem_ids"]
