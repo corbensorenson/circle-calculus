@@ -59,6 +59,7 @@ from circle_math.applications import (
     sample_collision_pairs,
     scale_phase_bank_periods,
     scan_turn_ratio_finite_margin,
+    single_gap_boundary_collision_pair_count,
     single_period_collision_pair_count,
     standard_channel0_turn_ratio_bounds,
     turn_ratio_exact_context_nearest_margin,
@@ -85,6 +86,9 @@ def test_discretized_period_helpers_are_deterministic() -> None:
     assert capped_lcm((4, 6), 30) == (12, False)
     assert collision_pair_count_at_gap(10, 4) == 6
     assert collision_pair_count_at_gap_multiples(20, 6) == 24
+    assert single_gap_boundary_collision_pair_count(13, 7) == 6
+    assert single_gap_boundary_collision_pair_count(15, 7) is None
+    assert single_gap_boundary_collision_pair_count(7, 7) is None
     assert single_period_collision_pair_count(20, 6) == 24
     assert collision_pair_count_at_gap(10, 10) == 0
     assert sample_collision_pairs(10, 4, limit=3) == ((0, 4), (1, 5), (2, 6))
@@ -110,6 +114,8 @@ def test_single_period_collision_count_matches_bruteforce() -> None:
     assert "AIRA-T0203" in ROPE_CERTIFIER_THEOREMS
     assert "AIRA-T0204" in ROPE_CERTIFIER_THEOREMS
     assert "AIRA-T0205" in ROPE_CERTIFIER_THEOREMS
+    assert "AIRA-T0206" in ROPE_CERTIFIER_THEOREMS
+    assert "AIRA-T0207" in ROPE_CERTIFIER_THEOREMS
 
 
 def test_real_phase_nat_turn_error_matches_endpoint_precursor_shape() -> None:
@@ -2138,6 +2144,8 @@ def test_exact_phase_bank_diagnostic_presets_cover_quantized_and_scaled_boundari
     assert scaled_fail.exact_discrete.total_bank_collision_pair_count == 1
     assert scaled_fail.exact_discrete.sample_collision_pairs == ((0, 960),)
     assert "AIRA-T0202" in scaled_fail.exact_discrete.theorem_ids
+    assert "AIRA-T0206" in scaled_fail.exact_discrete.theorem_ids
+    assert "AIRA-T0207" in scaled_fail.exact_discrete.theorem_ids
 
 
 def test_phase_bank_certify_cli_emits_json_certificate() -> None:

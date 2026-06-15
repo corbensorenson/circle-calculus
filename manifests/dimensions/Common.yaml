@@ -2919,6 +2919,36 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_single_period_collision_count_matches_bruteforce
     blocker: ""
+  - id: AIRA-T0206
+    status: lean_proved
+    lean_name: Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_single_gap_count
+    informal_statement: "For any positive common collision gap, if the inspected context is past the first repeat but does not reach the second repeat, then the positive-multiple collision-pair count is exactly the single-gap count context - commonGap."
+    formal_statement: "forall {context commonGap : Nat}, 0 < commonGap -> commonGap < context -> context <= 2 * commonGap -> Circle.Applications.ropeCollisionPairCountAtGapMultiples context commonGap = context - commonGap"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0083", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_discretized_period_helpers_are_deterministic
+        - tests/test_rope_certifier.py::test_exact_phase_bank_diagnostic_presets_cover_quantized_and_scaled_boundaries
+    blocker: ""
+  - id: AIRA-T0207
+    status: lean_proved
+    lean_name: Circle.Applications.ropeCollisionPairCountAtGapMultiples_period_succ_eq_one
+    informal_statement: "For any positive common collision gap, inspecting exactly one token past that gap gives positive-multiple collision-pair count 1."
+    formal_statement: "forall {commonGap : Nat}, 0 < commonGap -> Circle.Applications.ropeCollisionPairCountAtGapMultiples (commonGap + 1) commonGap = 1"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0083", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_discretized_period_helpers_are_deterministic
+        - tests/test_rope_certifier.py::test_exact_phase_bank_diagnostic_presets_cover_quantized_and_scaled_boundaries
+    blocker: ""
   - id: AIRA-T0174
     status: lean_proved
     lean_name: Circle.Applications.ropeCollisionPairCountAtGapMultiples_pos_iff

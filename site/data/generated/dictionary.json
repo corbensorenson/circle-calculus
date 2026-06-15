@@ -13055,6 +13055,18 @@
           "lean_name": "Circle.Applications.ropeDiscreteCollisionPairCount_pos_iff_exists_collision",
           "name": "Circle.Applications.ropeDiscreteCollisionPairCount_pos_iff_exists_collision",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0206",
+          "lean_name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_single_gap_count",
+          "name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_single_gap_count",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0207",
+          "lean_name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_period_succ_eq_one",
+          "name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_period_succ_eq_one",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -14188,6 +14200,18 @@
           "id": "AIRA-T0205",
           "lean_name": "Circle.Applications.ropeDiscreteCollisionPairCount_pos_iff_exists_collision",
           "name": "Circle.Applications.ropeDiscreteCollisionPairCount_pos_iff_exists_collision",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0206",
+          "lean_name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_single_gap_count",
+          "name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_single_gap_count",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0207",
+          "lean_name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_period_succ_eq_one",
+          "name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_period_succ_eq_one",
           "status": "proved"
         }
       ],
@@ -17002,10 +17026,10 @@
         "A real-valued RoPE collision count.",
         "Evidence that any model quality, context length, speed, or memory improves."
       ],
-      "formal_definition": "For one positive integer-period RoPE channel, the ordered unequal pairs in a finite context that collide are exactly those whose positive position gap is a positive multiple of the period. Lean theorem `Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap` proves the converse direction used by the executable formula that sums `context - multiple * period` over positive in-context multiples; `Circle.Applications.ropeDiscreteNoCollisionOnContext_iff_context_le_period`, `Circle.Applications.ropeDiscreteNoCollisionOnContext_iff_collisionPairCount_eq_zero`, and `Circle.Applications.ropeDiscreteCollisionPairCount_pos_iff_exists_collision` give the period/context threshold, zero-count, and positive-count witness semantics.",
+      "formal_definition": "For one positive integer-period RoPE channel, the ordered unequal pairs in a finite context that collide are exactly those whose positive position gap is a positive multiple of the period. Lean theorem `Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap` proves the converse direction used by the executable formula that sums `context - multiple * period` over positive in-context multiples; `Circle.Applications.ropeDiscreteNoCollisionOnContext_iff_context_le_period`, `Circle.Applications.ropeDiscreteNoCollisionOnContext_iff_collisionPairCount_eq_zero`, and `Circle.Applications.ropeDiscreteCollisionPairCount_pos_iff_exists_collision` give the period/context threshold, zero-count, and positive-count witness semantics. `Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_single_gap_count` and `Circle.Applications.ropeCollisionPairCountAtGapMultiples_period_succ_eq_one` prove the first-repeat-only closed form and one-token-past-boundary count.",
       "id": "COMMON-0083",
       "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
-      "intuition": "A single rotary channel repeats every period, so the exact single-channel collision count is the sum of all pairs separated by one period, two periods, three periods, and so on until the context ends. Zero means the context has not reached the repeat period; a positive count means there is a concrete repeated-position witness in that one channel.",
+      "intuition": "A single rotary channel repeats every period, so the exact single-channel collision count is the sum of all pairs separated by one period, two periods, three periods, and so on until the context ends. Zero means the context has not reached the repeat period; a positive count means there is a concrete repeated-position witness in that one channel. When the context reaches the first repeat but not the second, the count collapses to the first-gap count.",
       "kind": "metric",
       "name": "RoPE single-period collision-pair count",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
@@ -17025,6 +17049,18 @@
           "lean_name": "Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap",
           "name": "Circle.Applications.ropeDiscreteCollision_exists_positive_multiple_gap",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0206",
+          "lean_name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_single_gap_count",
+          "name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_single_gap_count",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0207",
+          "lean_name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_period_succ_eq_one",
+          "name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_period_succ_eq_one",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -17041,10 +17077,10 @@
         "A claim about model quality, context length, speed, memory, or perplexity.",
         "A count for undeclared or floating-point channels outside the integer-period bank model."
       ],
-      "formal_definition": "For a finite integer-period RoPE bank, Lean theorem `Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap` proves that all-channel collision for ordered positions is equivalent to the period-bank LCM dividing the position gap. The executable total bank count therefore sums `context - multiple * lcm` over positive in-context multiples of that LCM. Theorem `Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context` proves the pass case: if the LCM reaches the inspected context, no unequal ordered in-context all-channel collision exists. Theorems `Circle.Applications.ropePhaseBankCollision_at_lcm_gap` and `Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context` prove the fail side: every counted start at the LCM gap collides, and a positive LCM below context yields an explicit unequal collision witness.",
+      "formal_definition": "For a finite integer-period RoPE bank, Lean theorem `Circle.Applications.ropePhaseBankCollision_iff_lcm_dvd_gap` proves that all-channel collision for ordered positions is equivalent to the period-bank LCM dividing the position gap. The executable total bank count therefore sums `context - multiple * lcm` over positive in-context multiples of that LCM. Theorem `Circle.Applications.not_ropePhaseBankCollision_of_lcm_ge_context` proves the pass case: if the LCM reaches the inspected context, no unequal ordered in-context all-channel collision exists. Theorems `Circle.Applications.ropePhaseBankCollision_at_lcm_gap` and `Circle.Applications.ropePhaseBankCollision_exists_of_lcm_pos_lt_context` prove the fail side: every counted start at the LCM gap collides, and a positive LCM below context yields an explicit unequal collision witness. `Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_single_gap_count` gives the reusable first-repeat-only count formula for LCM boundary reports.",
       "id": "COMMON-0084",
       "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
-      "intuition": "All channels repeat together exactly at multiples of their shared period-bank LCM. If the first shared repeat is inside the context, the integer-model bank collision count is a finite sum over those repeats and the certifier has a checked sample-collision witness; if it is outside the context, the bank has no unequal in-context all-channel collision.",
+      "intuition": "All channels repeat together exactly at multiples of their shared period-bank LCM. If the first shared repeat is inside the context, the integer-model bank collision count is a finite sum over those repeats and the certifier has a checked sample-collision witness; if it is outside the context, the bank has no unequal in-context all-channel collision. Just past the first shared repeat, the count is exactly the number of starts before the context ends.",
       "kind": "metric",
       "name": "RoPE period-bank LCM collision count",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
@@ -17207,6 +17243,18 @@
           "id": "AIRA-T0202",
           "lean_name": "Circle.Applications.ropeInterpolatedX4_context961_totalCollisionPairCount",
           "name": "Circle.Applications.ropeInterpolatedX4_context961_totalCollisionPairCount",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0206",
+          "lean_name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_single_gap_count",
+          "name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_single_gap_count",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0207",
+          "lean_name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_period_succ_eq_one",
+          "name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_period_succ_eq_one",
           "status": "proved"
         }
       ],

@@ -213,6 +213,65 @@ theorem ropeCollisionPairCountAtGapMultiples_pos_iff
         (ropeCollisionPairCountAtGap_pos_iff
           (context := context) (gap := commonGap)).2 hgap_lt_context
 
+/-- When exactly the first positive multiple of a common collision gap can fit
+inside the inspected context, the total positive-multiple collision-pair count
+collapses to the single-gap count `context - commonGap`.
+
+This is the closed-form boundary used by the public certifier for rows just
+past the first repeat: there are no contributions from `2 * commonGap`,
+`3 * commonGap`, and so on. -/
+theorem ropeCollisionPairCountAtGapMultiples_eq_single_gap_count
+    {context commonGap : Nat} (hgap_pos : 0 < commonGap)
+    (hgap_lt_context : commonGap < context) (hcontext_le_two_gap : context ≤ 2 * commonGap) :
+    ropeCollisionPairCountAtGapMultiples context commonGap = context - commonGap := by
+  unfold ropeCollisionPairCountAtGapMultiples
+  let singleton : Finset Nat := {1}
+  have hsubset : singleton ⊆ (Finset.range context).filter (fun multiple => 0 < multiple) := by
+    intro multiple hmem
+    simp [singleton] at hmem
+    subst multiple
+    rw [Finset.mem_filter]
+    constructor
+    · rw [Finset.mem_range]
+      exact lt_of_le_of_lt (Nat.succ_le_of_lt hgap_pos) hgap_lt_context
+    · exact Nat.zero_lt_one
+  have hsum_singleton :
+      (∑ multiple ∈ singleton, ropeCollisionPairCountAtGap context (multiple * commonGap)) =
+        context - commonGap := by
+    simp [singleton, ropeCollisionPairCountAtGap]
+  have hbig_eq_singleton :
+      (∑ multiple ∈ singleton, ropeCollisionPairCountAtGap context (multiple * commonGap)) =
+      ∑ multiple ∈ (Finset.range context).filter (fun multiple => 0 < multiple),
+        ropeCollisionPairCountAtGap context (multiple * commonGap) := by
+    refine Finset.sum_subset hsubset ?_
+    intro multiple hmem_big hmem_not_singleton
+    rw [Finset.mem_filter] at hmem_big
+    have hmultiple_pos : 0 < multiple := hmem_big.2
+    have hmultiple_ne_one : multiple ≠ 1 := by
+      intro h
+      apply hmem_not_singleton
+      simp [singleton, h]
+    have htwo_le_multiple : 2 ≤ multiple := by omega
+    have htwo_gap_le : 2 * commonGap ≤ multiple * commonGap :=
+      Nat.mul_le_mul_right commonGap htwo_le_multiple
+    unfold ropeCollisionPairCountAtGap
+    exact Nat.sub_eq_zero_iff_le.mpr (le_trans hcontext_le_two_gap htwo_gap_le)
+  exact hbig_eq_singleton ▸ hsum_singleton
+
+/-- At the first-repeat boundary `context = commonGap + 1`, the
+positive-multiple collision-pair count is exactly one.
+
+This is the named theorem behind boundary diagnostics such as a period-`960`
+channel inspected at context `961`: the only colliding pair is separated by the
+period itself. -/
+theorem ropeCollisionPairCountAtGapMultiples_period_succ_eq_one
+    {commonGap : Nat} (hgap_pos : 0 < commonGap) :
+    ropeCollisionPairCountAtGapMultiples (commonGap + 1) commonGap = 1 := by
+  rw [ropeCollisionPairCountAtGapMultiples_eq_single_gap_count
+    (context := commonGap + 1) (commonGap := commonGap)
+    hgap_pos (Nat.lt_succ_self commonGap) (by omega)]
+  omega
+
 /-- If every declared period divides a gap, then every start counted by
 `ropeCollisionPairCountAtGap context gap` gives a colliding pair in the phase
 bank. This is a theorem-backed collision-counting seed: the count is not yet
