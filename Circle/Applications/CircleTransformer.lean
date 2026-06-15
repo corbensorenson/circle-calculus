@@ -1241,6 +1241,59 @@ theorem hybridFamilyUniqueQueryCandidateCount_le_uniqueLagCandidateCount
     le_trans hcardSubset hcardImage
   simpa [xs, f, List.card_toFinset] using hcard
 
+/-- If query predecessor indexing is injective on the generated lag candidates,
+then mapping lags to query-indexed predecessor addresses preserves the exact
+deduplicated candidate count.
+
+Together with `hybridFamilyUniqueQueryCandidateCount_le_uniqueLagCandidateCount`,
+this separates the general image-count cap from the no-merge regime: query
+addressing can only reduce the unique count, and it preserves that count exactly
+when the generated lags are not identified by the predecessor map. -/
+theorem hybridFamilyUniqueQueryCandidateCount_eq_uniqueLagCandidateCount_of_predecessor_injective
+    {n query window pathLength : Nat} {strides : List Nat}
+    (hinjective :
+      hybridFamilyPredecessorInjectiveOnLagCandidates n query window pathLength strides) :
+    hybridFamilyUniqueQueryCandidateCount n query window pathLength strides =
+      hybridFamilyUniqueLagCandidateCount n window pathLength strides := by
+  unfold hybridFamilyUniqueQueryCandidateCount
+    hybridFamilyQueryCandidateList hybridFamilyUniqueLagCandidateCount
+  unfold hybridFamilyPredecessorInjectiveOnLagCandidates at hinjective
+  let xs := hybridFamilyLagCandidateList n window pathLength strides
+  let f := predecessorIndex n query
+  have hquery_le_lag :
+      (xs.map f).toFinset.card ≤ xs.toFinset.card := by
+    have hsubset : (xs.map f).toFinset ⊆ Finset.image f xs.toFinset := by
+      intro candidate hcandidate
+      rw [List.mem_toFinset] at hcandidate
+      rw [List.mem_map] at hcandidate
+      rcases hcandidate with ⟨lag, hlag, rfl⟩
+      rw [Finset.mem_image]
+      exact ⟨lag, by rw [List.mem_toFinset]; exact hlag, rfl⟩
+    have hcardSubset :
+        (xs.map f).toFinset.card ≤ (Finset.image f xs.toFinset).card :=
+      Finset.card_le_card hsubset
+    have hcardImage :
+        (Finset.image f xs.toFinset).card ≤ xs.toFinset.card :=
+      Finset.card_image_le
+    exact le_trans hcardSubset hcardImage
+  have hmaps : Set.MapsTo f ↑xs.toFinset ↑(xs.map f).toFinset := by
+    intro lag hlag
+    have hlagList : lag ∈ xs := by
+      simpa using hlag
+    simpa using (List.mem_map.2 ⟨lag, hlagList, rfl⟩ : f lag ∈ xs.map f)
+  have hinj : Set.InjOn f ↑xs.toFinset := by
+    intro left hleft right hright heq
+    have hleftList : left ∈ xs := by
+      simpa using hleft
+    have hrightList : right ∈ xs := by
+      simpa using hright
+    exact hinjective left hleftList right hrightList heq
+  have hlag_le_query : xs.toFinset.card ≤ (xs.map f).toFinset.card :=
+    Finset.card_le_card_of_injOn f hmaps hinj
+  have hcard : (xs.map f).toFinset.card = xs.toFinset.card :=
+    le_antisymm hquery_le_lag hlag_le_query
+  simpa [xs, f, List.card_toFinset] using hcard
+
 /-- A no-wrap single stride generates duplicate-free residues.
 
 If all admitted multiples `step * stride`, `1 ≤ step ≤ pathLength`, remain

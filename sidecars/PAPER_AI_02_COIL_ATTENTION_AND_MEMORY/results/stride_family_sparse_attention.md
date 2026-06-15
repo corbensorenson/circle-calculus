@@ -18,9 +18,9 @@ This is a proof-carrying finite sparse-attention candidate-set certificate for a
 | ---: | ---: | ---: | --- | --- | --- | --- | --- | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: |
 | 10 | 109 | 5 | True | True | True | True | True | True | 119 | True | 6 | 10 | 10 | 10 | 120 |
 
-| Coil residues no collision | Local/coil disjoint | Lag candidates no collision | Predecessor injective | Query candidates no collision | Query count <= unique lag count |
-| --- | --- | --- | --- | --- | --- |
-| True | True | True | True | True | True |
+| Coil residues no collision | Local/coil disjoint | Lag candidates no collision | Predecessor injective | Query candidates no collision | Query count <= unique lag count | Query count = unique lag count |
+| --- | --- | --- | --- | --- | --- | --- |
+| True | True | True | True | True | True | True |
 
 Covered lags:
 
@@ -48,9 +48,9 @@ Uncovered lag intervals:
 
 Complete sparse-family fixture:
 
-| Context | Local window | Path length | Strides | Coverage complete | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Raw budget | Unique lag candidates | Unique query candidates | Query <= unique lag | Fixture theorem ids |
-| ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- | --- |
-| 9 | 2 | 2 | 3, 4, 7 | True | 0 | None | True | True | True | True | False | True | 8 | 8 | 8 | True | AIT-T0086, AIT-T0087, AIT-T0088, AIT-T0089, AIT-T0105 |
+| Context | Local window | Path length | Strides | Coverage complete | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Raw budget | Unique lag candidates | Unique query candidates | Query <= unique lag | Query = unique lag | Fixture theorem ids |
+| ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- | --- | --- |
+| 9 | 2 | 2 | 3, 4, 7 | True | 0 | None | True | True | True | True | False | True | 8 | 8 | 8 | True | True | AIT-T0086, AIT-T0087, AIT-T0088, AIT-T0089, AIT-T0105 |
 
 Complete fixture covered lags:
 
@@ -73,7 +73,7 @@ Planner rows are compact reports over declared sparse layouts. Re-run the
 Theorem ids:
 
 ```text
-AIT-T0016, AIT-T0017, AIT-T0020, AIT-T0021, AIT-T0022, AIT-T0023, AIT-T0024, AIT-T0025, AIT-T0028, AIT-T0029, AIT-T0030, AIT-T0031, AIT-T0032, AIT-T0033, AIT-T0034, AIT-T0035, AIT-T0036, AIT-T0037, AIT-T0038, AIT-T0039, AIT-T0040, AIT-T0041, AIT-T0042, AIT-T0043, AIT-T0044, AIT-T0045, AIT-T0046, AIT-T0047, AIT-T0048, AIT-T0049, AIT-T0050, AIT-T0051, AIT-T0052, AIT-T0053, AIT-T0054, AIT-T0055, AIT-T0056, AIT-T0057, AIT-T0058, AIT-T0059, AIT-T0060, AIT-T0061, AIT-T0062, AIT-T0063, AIT-T0064, AIT-T0065, AIT-T0066, AIT-T0067, AIT-T0068, AIT-T0069, AIT-T0070, AIT-T0071, AIT-T0072, AIT-T0073, AIT-T0074, AIT-T0075, AIT-T0076, AIT-T0077, AIT-T0078, AIT-T0079, AIT-T0080, AIT-T0081, AIT-T0082, AIT-T0083, AIT-T0084, AIT-T0085, AIT-T0090, AIT-T0092, AIT-T0093, AIT-T0094, AIT-T0095, AIT-T0096, AIT-T0097, AIT-T0098, AIT-T0099, AIT-T0100, AIT-T0101, AIT-T0102, AIT-T0103, AIT-T0104, AIT-T0105, AIT-T0106, AIT-T0107, AIT-T0108
+AIT-T0016, AIT-T0017, AIT-T0020, AIT-T0021, AIT-T0022, AIT-T0023, AIT-T0024, AIT-T0025, AIT-T0028, AIT-T0029, AIT-T0030, AIT-T0031, AIT-T0032, AIT-T0033, AIT-T0034, AIT-T0035, AIT-T0036, AIT-T0037, AIT-T0038, AIT-T0039, AIT-T0040, AIT-T0041, AIT-T0042, AIT-T0043, AIT-T0044, AIT-T0045, AIT-T0046, AIT-T0047, AIT-T0048, AIT-T0049, AIT-T0050, AIT-T0051, AIT-T0052, AIT-T0053, AIT-T0054, AIT-T0055, AIT-T0056, AIT-T0057, AIT-T0058, AIT-T0059, AIT-T0060, AIT-T0061, AIT-T0062, AIT-T0063, AIT-T0064, AIT-T0065, AIT-T0066, AIT-T0067, AIT-T0068, AIT-T0069, AIT-T0070, AIT-T0071, AIT-T0072, AIT-T0073, AIT-T0074, AIT-T0075, AIT-T0076, AIT-T0077, AIT-T0078, AIT-T0079, AIT-T0080, AIT-T0081, AIT-T0082, AIT-T0083, AIT-T0084, AIT-T0085, AIT-T0090, AIT-T0092, AIT-T0093, AIT-T0094, AIT-T0095, AIT-T0096, AIT-T0097, AIT-T0098, AIT-T0099, AIT-T0100, AIT-T0101, AIT-T0102, AIT-T0103, AIT-T0104, AIT-T0105, AIT-T0106, AIT-T0107, AIT-T0108, AIT-T0109
 ```
 
 Reproduce with:

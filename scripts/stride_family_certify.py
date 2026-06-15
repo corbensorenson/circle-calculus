@@ -150,7 +150,10 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             f"query_no_collision={payload['theorem_side_query_candidates_no_collision']} "
             "query_le_unique_lag="
             f"{payload['theorem_side_query_count_le_unique_lag_count']} "
-            "theorem=AIT-T0108"
+            "theorem=AIT-T0108 "
+            "query_matches_unique_lag="
+            f"{payload['theorem_side_query_count_matches_unique_lag_count']} "
+            "when_injective_theorem=AIT-T0109"
         ),
         (
             "structural_checks="

@@ -3698,6 +3698,10 @@ def main() -> int:
         assert coverage_certificate.theorem_side_unique_query_candidate_count <= (
             coverage_certificate.theorem_side_unique_lag_candidate_count
         )
+        assert coverage_certificate.theorem_side_query_count_matches_unique_lag_count == (
+            coverage_certificate.theorem_side_unique_query_candidate_count
+            == coverage_certificate.theorem_side_unique_lag_candidate_count
+        )
         assert coverage_certificate.uncovered_lags == tuple(
             lag for lag in range(1, sequence_length) if lag not in set(js_covered_lags)
         )

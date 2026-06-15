@@ -267,6 +267,7 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `AIT-T0106`: `Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_context_of_pos`
 - `AIT-T0107`: `Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_dedup_bound_of_context_pos`
 - `AIT-T0108`: `Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_uniqueLagCandidateCount`
+- `AIT-T0109`: `Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_uniqueLagCandidateCount_of_predecessor_injective`
 
 ## Strided Attention Coverage (Proved Structural Guarantee)
 
@@ -298,6 +299,9 @@ attention:
 - `AIT-T0108`: mapping theorem-side lag candidates to query-indexed predecessor
   candidates is a finite image operation, so deduplicating the query image cannot
   produce more distinct candidates than deduplicating the lag-candidate source.
+- `AIT-T0109`: when the predecessor map is injective on the generated lag
+  candidates, that finite image preserves the exact deduplicated count instead
+  of only satisfying the one-sided bound.
 
 This is the kind of structural guarantee practitioners reason about informally for
 dilated/strided attention, here made exact and Lean-checked on top of the orbit spine
@@ -346,7 +350,7 @@ This fixture checks candidate-set reachability and budget only. It is not eviden
 
 `AIM-B0017` adds a deterministic stride-family sparse-attention fixture. It compares a local-window plus finite stride family against local-only, single-stride, wrong-family, and full-attention candidate sets. On the default structured task, generated lags are either local or produced by one of the admitted strides `(7,13)`, so the family reaches all structured dependencies with average candidate count `10` versus `120` for full attention. The sidecar emits text, JSON, and Markdown result fixtures whose payloads record covered lags, uncovered gap witnesses, no-collision flags, query/lag candidate counts, the finite-range coverage iff (`AIT-T0078`), the proof-carrying covered-list bridge (`AIT-T0090`), the proof-carrying uncovered-list bridge (`AIT-T0081` through `AIT-T0083`), the covered/uncovered partition and count guardrail, covered-count completion criterion, uncovered-count witness criterion, covered-count shortfall witness criterion (`AIT-T0092` through `AIT-T0097`), first-gap/count-presence field semantics (`AIT-T0098` through `AIT-T0103`), and public fixture interval-summary certificates (`AIT-T0104`, `AIT-T0105`), the concrete default lag-`5` gap witness, incomplete-coverage consequence, uncovered-list membership witness, exact `109`-gap count, exact `10`-covered-lag count, exact first-uncovered-lag value, and exact six-interval gap summary (`AIT-T0079`, `AIT-T0080`, `AIT-T0084`, `AIT-T0085`, `AIT-T0091`, `AIT-T0102`, `AIT-T0104`), plus a compact complete-coverage fixture on `C_9` whose empty uncovered list, complete coverage, raw-budget-preserving lag/query counts, and empty interval summary are checked by `AIT-T0086` through `AIT-T0089` and `AIT-T0105`. The sidecar also emits compact planner-style rows for declared 4096- and 8192-token sparse layouts; these rows report exact candidate budgets, gap counts, first-gap witnesses, covered-count shortfall flags, and no-collision budget predicates while pointing back to `scripts/stride_family_certify.py` for the full covered/uncovered-lag certificate. The iff theorem ids (`AIT-T0076`, `AIT-T0077`) characterize exactly when deduplicated theorem-side counts preserve the raw candidate budget; `AIT-T0106` and `AIT-T0107` separately certify that the exact deduplicated query-candidate count is bounded by the finite context and by the reported context-clipped budget. The single-stride baseline reaches only the local plus first-stride portion, the wrong-family control misses the generated long lags, and the nonstructured control again shows that arbitrary lags are not covered by the sparse pattern.
 
-`AIT-T0108` additionally certifies the report's `query_count_le_unique_lag_count` field: query-indexed predecessor candidates are a finite image of the lag-candidate source, so the unique query count is bounded by the unique lag count.
+`AIT-T0108` additionally certifies the report's `query_count_le_unique_lag_count` field: query-indexed predecessor candidates are a finite image of the lag-candidate source, so the unique query count is bounded by the unique lag count. `AIT-T0109` certifies the companion `query_count_matches_unique_lag_count` field whenever predecessor indexing is injective on the generated lag candidates.
 
 The same fixture now emits an explicit coverage certificate. For the default `sequence_length = 120`, `local_window = 4`, `path_length = 3`, and strides `(7,13)`, the covered positive lags are:
 
