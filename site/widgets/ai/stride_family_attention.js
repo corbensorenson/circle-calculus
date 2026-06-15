@@ -90,6 +90,7 @@ const THEOREM_IDS = [
   "AIT-T0109",
   "AIT-T0110",
   "AIT-T0111",
+  "AIT-T0112",
 ];
 const DICTIONARY_IDS = ["COMMON-0075", "COMMON-0079", "COMMON-0047", "COMMON-0029"];
 
@@ -211,6 +212,12 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
     pathLength,
     localWindow,
   );
+  const theoremSideUniqueLagCandidateCount = new Set(theoremSideLagCandidates).size;
+  const theoremSideLagCandidatesPositiveInContext = theoremSideLagCandidates.every(
+    (lag) => 1 <= lag && lag < sequenceLength,
+  );
+  const positiveLagCount = Math.max(0, sequenceLength - 1);
+  const coverageComplete = uncoveredLags.length === 0;
   const theoremSideCoilResidues = strideFamilyCoilResidueList(sequenceLength, strides, pathLength);
   const localCandidateSet = new Set(Array.from({ length: localWindow }, (_, index) => index + 1));
   const theoremSideQueryCandidates = strideFamilyQueryCandidateList(
@@ -231,7 +238,12 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
     rawCandidateBudgetUpperBound,
     deduplicatedCandidateBudgetUpperBound,
     theoremSideLagCandidates,
-    theoremSideUniqueLagCandidateCount: new Set(theoremSideLagCandidates).size,
+    theoremSideUniqueLagCandidateCount,
+    theoremSideLagCandidatesPositiveInContext,
+    uniqueLagCountMatchesCompleteUnderCandidateRange: (
+      !theoremSideLagCandidatesPositiveInContext
+      || coverageComplete === (theoremSideUniqueLagCandidateCount === positiveLagCount)
+    ),
     theoremSideCoilResiduesNoCollision: new Set(theoremSideCoilResidues).size === theoremSideCoilResidues.length,
     theoremSideLocalCoilDisjoint: theoremSideCoilResidues.every((residue) => !localCandidateSet.has(residue)),
     theoremSideLagCandidatesNoCollision: new Set(theoremSideLagCandidates).size === theoremSideLagCandidates.length,
@@ -247,7 +259,7 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
       new Set(theoremSideQueryCandidates).size === theoremSideQueryCandidates.length
     ),
     fullAttentionBudget: sequenceLength,
-    coverageComplete: uncoveredLags.length === 0,
+    coverageComplete,
     coverageRatio: sequenceLength <= 1 ? 1 : coveredLags.length / (sequenceLength - 1),
   };
 }
@@ -455,6 +467,8 @@ function appendRecord(output, values, theoremById) {
     `coverage ratio: ${formatNumber(coverage.coverageRatio)}`,
     `deduplicated candidate budget per query: ${coverage.candidateBudgetPerQuery}`,
     `theorem-side unique lag-candidate count: ${coverage.theoremSideUniqueLagCandidateCount}`,
+    `lag candidates positive in context: ${coverage.theoremSideLagCandidatesPositiveInContext}`,
+    `unique count iff complete under candidate range: ${coverage.uniqueLagCountMatchesCompleteUnderCandidateRange}`,
     `coil residues no collision: ${coverage.theoremSideCoilResiduesNoCollision}`,
     `local/coil disjoint: ${coverage.theoremSideLocalCoilDisjoint}`,
     `lag candidates no collision: ${coverage.theoremSideLagCandidatesNoCollision}`,

@@ -3812,6 +3812,20 @@ def main() -> int:
                 and coverage_certificate.coverage_complete
             )
         )
+        assert coverage_certificate.theorem_side_lag_candidates_positive_in_context == all(
+            1 <= lag < sequence_length
+            for lag in coverage_certificate.theorem_side_lag_candidates
+        )
+        assert coverage_certificate.unique_lag_count_matches_complete_under_candidate_range == (
+            not coverage_certificate.theorem_side_lag_candidates_positive_in_context
+            or (
+                coverage_certificate.coverage_complete
+                == (
+                    coverage_certificate.theorem_side_unique_lag_candidate_count
+                    == coverage_certificate.positive_lag_count
+                )
+            )
+        )
         assert coverage_certificate.deduplicated_candidate_budget_upper_bound == min(
             sequence_length,
             local_window + path_length * len(strides),

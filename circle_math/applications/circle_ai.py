@@ -982,7 +982,9 @@ class StrideFamilyCoverageCertificate:
     deduplicated_candidate_budget_upper_bound: int
     theorem_side_lag_candidates: tuple[int, ...]
     theorem_side_unique_lag_candidate_count: int
+    theorem_side_lag_candidates_positive_in_context: bool
     unique_lag_count_shortfall_certifies_incomplete: bool
+    unique_lag_count_matches_complete_under_candidate_range: bool
     theorem_side_coil_residues_no_collision: bool
     theorem_side_local_coil_disjoint: bool
     theorem_side_lag_candidates_no_collision: bool
@@ -1085,6 +1087,7 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0109",
         "AIT-T0110",
         "AIT-T0111",
+        "AIT-T0112",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -2922,6 +2925,9 @@ def certify_stride_family_coverage(
     )
     unique_lag_candidate_count = len(set(theorem_side_lag_candidates))
     unique_query_candidate_count = len(set(theorem_side_query_candidates))
+    lag_candidates_positive_in_context = all(
+        1 <= lag < sequence_length for lag in theorem_side_lag_candidates
+    )
     uncovered_intervals = consecutive_integer_intervals(uncovered)
     first_uncovered_lag = uncovered[0] if uncovered else None
     coverage_complete = len(uncovered) == 0
@@ -2979,8 +2985,13 @@ def certify_stride_family_coverage(
         ),
         theorem_side_lag_candidates=theorem_side_lag_candidates,
         theorem_side_unique_lag_candidate_count=unique_lag_candidate_count,
+        theorem_side_lag_candidates_positive_in_context=lag_candidates_positive_in_context,
         unique_lag_count_shortfall_certifies_incomplete=(
             not (unique_lag_candidate_count < positive_lag_count and coverage_complete)
+        ),
+        unique_lag_count_matches_complete_under_candidate_range=(
+            not lag_candidates_positive_in_context
+            or (coverage_complete == (unique_lag_candidate_count == positive_lag_count))
         ),
         theorem_side_coil_residues_no_collision=stride_family_coil_residues_no_collision(
             sequence_length,

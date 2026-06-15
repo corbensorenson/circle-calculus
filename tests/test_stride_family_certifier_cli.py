@@ -70,6 +70,7 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     assert "query_matches_unique_lag=True when_injective_theorem=AIT-T0109" in result.stdout
     assert "raw_budget_shortfall=True certifies_incomplete=True theorem=AIT-T0110" in result.stdout
     assert "unique_lag_shortfall=True certifies_incomplete=True theorem=AIT-T0111" in result.stdout
+    assert "candidate_range=True unique_count_complete_iff=True theorem=AIT-T0112" in result.stdout
     assert "not model-quality evidence" in result.stdout
 
     payload = json.loads(json_out.read_text())
@@ -124,8 +125,11 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     assert payload["theorem_side_query_count_matches_unique_lag_count"] is True
     assert payload["raw_budget_shortfall_certifies_incomplete"] is True
     assert payload["unique_lag_count_shortfall_certifies_incomplete"] is True
+    assert payload["theorem_side_lag_candidates_positive_in_context"] is True
+    assert payload["unique_lag_count_matches_complete_under_candidate_range"] is True
     assert "AIT-T0110" in payload["theorem_ids"]
     assert "AIT-T0111" in payload["theorem_ids"]
+    assert "AIT-T0112" in payload["theorem_ids"]
     assert payload["fixture_theorem_ids"] == [
         "AIT-T0084",
         "AIT-T0085",

@@ -152,6 +152,13 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             "theorem=AIT-T0111"
         ),
         (
+            "candidate_range="
+            f"{payload['theorem_side_lag_candidates_positive_in_context']} "
+            "unique_count_complete_iff="
+            f"{payload['unique_lag_count_matches_complete_under_candidate_range']} "
+            "theorem=AIT-T0112"
+        ),
+        (
             "lag_budget_status="
             f"{lag_budget_status} unique_lag_candidates="
             f"{payload['theorem_side_unique_lag_candidate_count']} "

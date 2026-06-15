@@ -918,6 +918,69 @@ theorem hybridFamilyUniqueLagCandidateCount_ge_context_sub_one_of_covers
     simp [candidates, hybridFamilyUniqueLagCandidateCount, List.card_toFinset]
   exact hpositive_card ▸ (hcandidates_card ▸ hcard_subset)
 
+/-- If every generated lag candidate is already a positive in-context lag,
+complete coverage is equivalent to the deduplicated lag-candidate count reaching
+the full positive-lag count `n - 1`.
+
+This turns the one-sided unique-count lower bound into an iff when the candidate
+generator cannot waste entries on zero or out-of-context residues. -/
+theorem hybridFamilyCoversContext_iff_uniqueLagCandidateCount_eq_context_sub_one_of_candidate_range
+    {n window pathLength : Nat} {strides : List Nat}
+    (hcandidate_range :
+      ∀ lag, lag ∈ hybridFamilyLagCandidateList n window pathLength strides →
+        1 ≤ lag ∧ lag < n) :
+    hybridFamilyCoversContext n window pathLength strides ↔
+      hybridFamilyUniqueLagCandidateCount n window pathLength strides = n - 1 := by
+  let positiveLags := List.range' 1 (n - 1)
+  let candidates := hybridFamilyLagCandidateList n window pathLength strides
+  have hpositive_card : positiveLags.toFinset.card = n - 1 := by
+    have hnodup : positiveLags.Nodup := by
+      simp [positiveLags, List.nodup_range']
+    rw [List.card_toFinset, List.Nodup.dedup hnodup]
+    simp [positiveLags, List.length_range']
+  have hcandidates_card :
+      candidates.toFinset.card =
+        hybridFamilyUniqueLagCandidateCount n window pathLength strides := by
+    simp [candidates, hybridFamilyUniqueLagCandidateCount, List.card_toFinset]
+  have hcandidate_subset_positive : candidates.toFinset ⊆ positiveLags.toFinset := by
+    intro lag hlag
+    rw [List.mem_toFinset] at hlag ⊢
+    have hrange := hcandidate_range lag hlag
+    rw [List.mem_range']
+    refine ⟨lag - 1, ?_, ?_⟩ <;> omega
+  constructor
+  · intro hcover
+    have hpositive_subset_candidates : positiveLags.toFinset ⊆ candidates.toFinset := by
+      intro lag hlag
+      rw [List.mem_toFinset] at hlag ⊢
+      exact
+        (hybridFamilyCoversContext_iff_range_lags_mem_candidate_list
+          (n := n) (window := window) (pathLength := pathLength)
+          (strides := strides)).1 hcover lag hlag
+    have hle :
+        candidates.toFinset.card ≤ positiveLags.toFinset.card :=
+      Finset.card_le_card hcandidate_subset_positive
+    have hge :
+        positiveLags.toFinset.card ≤ candidates.toFinset.card :=
+      Finset.card_le_card hpositive_subset_candidates
+    omega
+  · intro hcount
+    rw [hybridFamilyCoversContext_iff_range_lags_mem_candidate_list]
+    intro lag hlag
+    have hcard_ge :
+        positiveLags.toFinset.card ≤ candidates.toFinset.card := by
+      rw [hcandidates_card, hcount, hpositive_card]
+    have hset_eq : candidates.toFinset = positiveLags.toFinset :=
+      Finset.eq_of_subset_of_card_le hcandidate_subset_positive hcard_ge
+    have hlag_fin : lag ∈ positiveLags.toFinset := by
+      rw [List.mem_toFinset]
+      exact hlag
+    have hcandidate_fin : lag ∈ candidates.toFinset := by
+      rw [hset_eq]
+      exact hlag_fin
+    rw [List.mem_toFinset] at hcandidate_fin
+    exact hcandidate_fin
+
 /-- Membership in the finite covered-lag list is exactly positive in-context
 semantic reachability.
 
