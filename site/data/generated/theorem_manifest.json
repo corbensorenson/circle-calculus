@@ -11076,6 +11076,97 @@
       "blocker": "",
       "canonical_status": "proved",
       "dictionary_dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0080",
+        "COMMON-0082",
+        "COMMON-0087",
+        "COMMON-0088",
+        "COMMON-0089"
+      ],
+      "formal_statement": "Circle.Applications.ropeStandardChannel0D19SeedMargin < ((1 : Real) / 328458)",
+      "id": "AIRA-T0218",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "The standard channel-0 D19 proved request threshold 1/328459 is strictly below the obstruction threshold 1/328458.",
+      "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
+      "lean_source": "Circle/Applications/RoPEFrontier.lean",
+      "lean_source_line": 83,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_proved_request",
+          "tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_impossible_request",
+          "tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_undecided_gap"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0080",
+        "COMMON-0082",
+        "COMMON-0087",
+        "COMMON-0088",
+        "COMMON-0089"
+      ],
+      "formal_statement": "forall {requestedMargin : Real}, not (requestedMargin <= Circle.Applications.ropeStandardChannel0D19SeedMargin and ((1 : Real) / 328458) <= requestedMargin)",
+      "id": "AIRA-T0219",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "No requested margin can simultaneously fall in the standard channel-0 D19 proved branch and impossible branch.",
+      "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
+      "lean_source": "Circle/Applications/RoPEFrontier.lean",
+      "lean_source_line": 93,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_proved_request",
+          "tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_impossible_request",
+          "tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_undecided_gap",
+          "tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_outside_range"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
         "COMMON-0028",
         "COMMON-0029"
       ],

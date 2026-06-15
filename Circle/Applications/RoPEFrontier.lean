@@ -73,4 +73,30 @@ theorem ropeStandardChannel0D19_contextRange_request_margin_bracket
       ropeStandardChannel0_gap103993_error_lt_one_over_328458
       hcontext_min hcontext_max
 
+/-- The D19 proved margin threshold is strictly below the D19 obstruction
+threshold.
+
+This theorem is intentionally small, but it is report-facing: the Python
+request classifier can cite it when explaining that the proved branch
+`requestedMargin ≤ 1/328459` is separated from the impossible branch
+`1/328458 ≤ requestedMargin`. -/
+theorem ropeStandardChannel0D19_request_margin_thresholds_ordered :
+    ropeStandardChannel0D19SeedMargin < (1 : ℝ) / 328458 := by
+  norm_num [ropeStandardChannel0D19SeedMargin]
+
+/-- The D19 request classifier's proved and impossible margin branches are
+disjoint.
+
+This is the consistency guard for the ML-facing certificate: no requested
+margin can be both at most the proved D19 threshold and at least the D19
+obstruction threshold. -/
+theorem ropeStandardChannel0D19_request_margin_branches_disjoint
+    {requestedMargin : ℝ} :
+    ¬ (requestedMargin ≤ ropeStandardChannel0D19SeedMargin ∧
+      (1 : ℝ) / 328458 ≤ requestedMargin) := by
+  intro h
+  exact
+    (not_le_of_gt ropeStandardChannel0D19_request_margin_thresholds_ordered)
+      (le_trans h.2 h.1)
+
 end Circle.Applications

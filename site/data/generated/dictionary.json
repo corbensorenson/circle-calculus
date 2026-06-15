@@ -13463,6 +13463,18 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0218",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0219",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -14668,6 +14680,18 @@
           "id": "AIRA-T0217",
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0218",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0219",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
           "status": "proved"
         }
       ],
@@ -16498,6 +16522,18 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0218",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0219",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -17682,6 +17718,18 @@
           "id": "AIRA-T0217",
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0218",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0219",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
           "status": "proved"
         }
       ],
@@ -18995,6 +19043,18 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0218",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0219",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -19894,6 +19954,18 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0218",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0219",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -20650,6 +20722,18 @@
           "id": "AIRA-T0217",
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0218",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0219",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
           "status": "proved"
         }
       ],

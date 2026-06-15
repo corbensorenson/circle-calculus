@@ -1427,14 +1427,24 @@ def test_standard_channel0_d19_range_request_bracket_classifies_proved_request()
     assert request.theorem_backed_classification
     assert request.proved_margin_applies
     assert not request.impossible_margin_applies
+    assert request.margin_thresholds_ordered
+    assert request.proved_impossible_branches_disjoint
     assert request.failure_reason is None
-    assert request.theorem_ids == ("AIRA-T0216", "AIRA-T0217")
+    assert request.theorem_ids == (
+        "AIRA-T0216",
+        "AIRA-T0217",
+        "AIRA-T0218",
+        "AIRA-T0219",
+    )
     assert request.lean_declarations == (
         "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_request_bracket_of_obstruction",
         "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
+        "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
+        "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
     )
     assert "D19 obstruction range" in request.explanation
     assert "not a full all-channel" in request.claim_boundary
+    assert "threshold branches are disjoint" in request.claim_boundary
 
 
 def test_standard_channel0_d19_range_request_bracket_classifies_impossible_request() -> None:
@@ -1446,6 +1456,8 @@ def test_standard_channel0_d19_range_request_bracket_classifies_impossible_reque
     assert request.theorem_backed_classification
     assert not request.proved_margin_applies
     assert request.impossible_margin_applies
+    assert request.margin_thresholds_ordered
+    assert request.proved_impossible_branches_disjoint
     assert request.failure_reason is None
     assert "obstruction gap 103993" in request.explanation
 
@@ -1462,6 +1474,8 @@ def test_standard_channel0_d19_range_request_bracket_reports_undecided_gap() -> 
     assert not request.theorem_backed_classification
     assert not request.proved_margin_applies
     assert not request.impossible_margin_applies
+    assert request.margin_thresholds_ordered
+    assert request.proved_impossible_branches_disjoint
     assert (
         request.failure_reason
         == "requested_margin_between_proved_and_impossible_thresholds"
@@ -1475,6 +1489,8 @@ def test_standard_channel0_d19_range_request_bracket_reports_outside_range() -> 
     )
     assert request.request_status == "outside_range"
     assert not request.theorem_backed_classification
+    assert request.margin_thresholds_ordered
+    assert request.proved_impossible_branches_disjoint
     assert request.failure_reason == "requested_context_outside_d19_obstruction_range"
 
 
@@ -2497,7 +2513,21 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert payload["standard_d19_range_request_margin_bracket"]["theorem_ids"] == [
         "AIRA-T0216",
         "AIRA-T0217",
+        "AIRA-T0218",
+        "AIRA-T0219",
     ]
+    assert (
+        payload["standard_d19_range_request_margin_bracket"][
+            "margin_thresholds_ordered"
+        ]
+        is True
+    )
+    assert (
+        payload["standard_d19_range_request_margin_bracket"][
+            "proved_impossible_branches_disjoint"
+        ]
+        is True
+    )
     assert payload["standard_channel0_frontier_summary"]["proved_margin"] == "1/328459"
     assert payload["standard_channel0_frontier_summary"]["proved_context"] == 196608
     assert payload["standard_channel0_frontier_summary"]["proved_theorem_status"] == (
@@ -2726,7 +2756,7 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     )
     assert "Standard RoPE D19 Range Request Classifier" in markdown_result.stdout
     assert "AIRA-T0216, AIRA-T0217" in markdown_result.stdout
-    assert "| standard_rope_channel0_d19_range_request_margin_bracket | 131072 | 1/328458 | impossible | True | False | True | AIRA-T0216, AIRA-T0217 |" in markdown_result.stdout
+    assert "| standard_rope_channel0_d19_range_request_margin_bracket | 131072 | 1/328458 | impossible | True | False | True | True | True | AIRA-T0216, AIRA-T0217, AIRA-T0218, AIRA-T0219 |" in markdown_result.stdout
     assert "Standard Channel-0 Frontier Summary" in markdown_result.stdout
     assert "| 1/328459 | 196608 | lean_proved_interval_seed_AIRA-T0168_to_AIRA-T0170 |  | 103993 | AIRA-T0139, AIRA-T0140, AIRA-T0141 | lean_proved_interval_seed_AIRA-T0168_to_AIRA-T0170 |" in markdown_result.stdout
     assert "Standard RoPE Candidate Interval Plans" in markdown_result.stdout

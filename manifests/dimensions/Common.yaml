@@ -5295,6 +5295,39 @@ theorems:
         - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_proved_request
         - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_impossible_request
     blocker: ""
+  - id: AIRA-T0218
+    status: lean_proved
+    lean_name: Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered
+    informal_statement: "The standard channel-0 D19 proved request threshold 1/328459 is strictly below the obstruction threshold 1/328458."
+    formal_statement: "Circle.Applications.ropeStandardChannel0D19SeedMargin < ((1 : Real) / 328458)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_proved_request
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_impossible_request
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_undecided_gap
+    blocker: ""
+  - id: AIRA-T0219
+    status: lean_proved
+    lean_name: Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint
+    informal_statement: "No requested margin can simultaneously fall in the standard channel-0 D19 proved branch and impossible branch."
+    formal_statement: "forall {requestedMargin : Real}, not (requestedMargin <= Circle.Applications.ropeStandardChannel0D19SeedMargin and ((1 : Real) / 328458) <= requestedMargin)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_proved_request
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_impossible_request
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_undecided_gap
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_outside_range
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

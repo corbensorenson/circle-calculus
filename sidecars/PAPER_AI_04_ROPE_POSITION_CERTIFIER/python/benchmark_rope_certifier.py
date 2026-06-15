@@ -847,9 +847,9 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "## Standard RoPE D19 Range Request Classifier",
             "",
-            "| Name | Requested context | Requested margin | Status | Theorem-backed | Proved applies | Impossible applies | Theorem ids |",
-            "| --- | ---: | ---: | --- | --- | --- | --- | --- |",
-            "| {name} | {requested_context} | {requested_margin} | {status} | {theorem_backed} | {proved} | {impossible} | {theorems} |".format(
+            "| Name | Requested context | Requested margin | Status | Theorem-backed | Proved applies | Impossible applies | Thresholds ordered | Branches disjoint | Theorem ids |",
+            "| --- | ---: | ---: | --- | --- | --- | --- | --- | --- | --- |",
+            "| {name} | {requested_context} | {requested_margin} | {status} | {theorem_backed} | {proved} | {impossible} | {ordered} | {disjoint} | {theorems} |".format(
                 name=standard_d19_range_request["name"],
                 requested_context=standard_d19_range_request["requested_context"],
                 requested_margin=standard_d19_range_request["requested_margin"],
@@ -857,6 +857,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 theorem_backed=standard_d19_range_request["theorem_backed_classification"],
                 proved=standard_d19_range_request["proved_margin_applies"],
                 impossible=standard_d19_range_request["impossible_margin_applies"],
+                ordered=standard_d19_range_request["margin_thresholds_ordered"],
+                disjoint=standard_d19_range_request["proved_impossible_branches_disjoint"],
                 theorems=", ".join(standard_d19_range_request["theorem_ids"]),
             ),
             "",

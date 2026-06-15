@@ -193,6 +193,8 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0209",
     "AIRA-T0216",
     "AIRA-T0217",
+    "AIRA-T0218",
+    "AIRA-T0219",
     "AIRA-T0126",
     "AIRA-T0139",
     "AIRA-T0140",
@@ -235,6 +237,8 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_bracket_of_obstruction",
     "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_request_bracket_of_obstruction",
     "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
+    "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
+    "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_band_bounds",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
     "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
@@ -1120,6 +1124,8 @@ class StandardChannel0D19RangeRequestBracketCertificate:
     theorem_backed_classification: bool
     proved_margin_applies: bool
     impossible_margin_applies: bool
+    margin_thresholds_ordered: bool
+    proved_impossible_branches_disjoint: bool
     failure_reason: str | None
     theorem_ids: tuple[str, ...]
     lean_declarations: tuple[str, ...]
@@ -3256,6 +3262,11 @@ def certify_standard_channel0_d19_range_request_margin_bracket(
     impossible_margin_applies = (
         in_context_range and impossible_margin_floor <= requested_margin
     )
+    margin_thresholds_ordered = proved_margin < impossible_margin_floor
+    proved_impossible_branches_disjoint = not (
+        requested_margin <= proved_margin
+        and impossible_margin_floor <= requested_margin
+    )
     theorem_backed_classification = (
         proved_margin_applies or impossible_margin_applies
     )
@@ -3309,18 +3320,23 @@ def certify_standard_channel0_d19_range_request_margin_bracket(
         theorem_backed_classification=theorem_backed_classification,
         proved_margin_applies=proved_margin_applies,
         impossible_margin_applies=impossible_margin_applies,
+        margin_thresholds_ordered=margin_thresholds_ordered,
+        proved_impossible_branches_disjoint=proved_impossible_branches_disjoint,
         failure_reason=failure_reason,
-        theorem_ids=("AIRA-T0216", "AIRA-T0217"),
+        theorem_ids=("AIRA-T0216", "AIRA-T0217", "AIRA-T0218", "AIRA-T0219"),
         lean_declarations=(
             "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_request_bracket_of_obstruction",
             "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
+            "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
+            "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
         ),
         explanation=explanation,
         claim_boundary=(
             "This is a one-channel standard-RoPE request classifier for the "
             "D19 range 103993 < context <= 196608. It is not a full all-channel "
-            "bank theorem, and it deliberately reports undecided for margins "
-            "strictly between 1/328459 and 1/328458."
+            "bank theorem. Lean proves the proved and impossible threshold "
+            "branches are disjoint, and the classifier deliberately reports "
+            "undecided for margins strictly between 1/328459 and 1/328458."
         ),
     )
 
@@ -3749,7 +3765,8 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         "floor/ceiling nearest-integer, scalar nearest-gap margin, finite certificate "
         "iff, negative obstruction iff, scaled no-near-turn iff, certificate-object "
         "no-near-turn iff, finite-certificate bank bridge, context-range obstruction "
-        "bridge, request-level D19 classifier bridge, plus band-endpoint and "
+        "bridge, request-level D19 classifier bridge, classifier threshold "
+        "ordering and branch-disjointness guards, plus band-endpoint and "
         "band-list compression bridge precursors only; "
         "not a Diophantine proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
