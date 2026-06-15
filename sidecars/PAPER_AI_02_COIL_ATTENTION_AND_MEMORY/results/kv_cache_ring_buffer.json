@@ -5,6 +5,7 @@
     "cache_size": 16,
     "current": 31,
     "duplicate_free_live_window_subrequest": true,
+    "fail_iff_stale_member_under_nonfuture_nodup": true,
     "first_stale_next_overwrite_token": null,
     "first_stale_token": null,
     "lean_declarations": [
@@ -21,7 +22,8 @@
       "Circle.Applications.kvCacheAdapterRequestBoundary_allRetained",
       "Circle.Applications.kvCacheAdapterRequestBoundary_slotMap_nodup",
       "Circle.Applications.not_kvCacheAdapterRequestTracePass_of_stale_member",
-      "Circle.Applications.kvCacheAdapterRequestTracePass_iff_no_stale_member_of_nonFuture_nodup"
+      "Circle.Applications.kvCacheAdapterRequestTracePass_iff_no_stale_member_of_nonFuture_nodup",
+      "Circle.Applications.not_kvCacheAdapterRequestTracePass_iff_exists_stale_member_of_nonFuture_nodup"
     ],
     "live_window_subrequest_pass_contract": true,
     "next_overwrites_after_current": true,
@@ -61,7 +63,8 @@
       "AIM-T0095",
       "AIM-T0096",
       "AIM-T0097",
-      "AIM-T0098"
+      "AIM-T0098",
+      "AIM-T0100"
     ],
     "tokens_distinct": true,
     "trace_fresh_iff_next_overwrite_boundary": true,

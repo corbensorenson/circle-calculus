@@ -794,6 +794,32 @@ theorem kvCacheAdapterRequestTracePass_iff_no_stale_member_of_nonFuture_nodup
     exact lt_of_not_ge (fun hoverwritten =>
       hnoStale ⟨token, hmem, hoverwritten⟩)
 
+/-- For non-future duplicate-free read requests, failing is equivalent to
+having a stale requested member.
+
+This is the negative report contract for executable KV-cache certifiers: under
+the ordinary request-side preconditions, a failed modeled adapter request is
+not merely an opaque false bit; it is exactly evidence that some requested
+token has already reached its next same-slot overwrite boundary. -/
+theorem not_kvCacheAdapterRequestTracePass_iff_exists_stale_member_of_nonFuture_nodup
+    {cacheSize current : Nat} {tokens : List Nat} (hcache : 0 < cacheSize)
+    (hnotFuture : ∀ token ∈ tokens, token ≤ current)
+    (hnodup : tokens.Nodup) :
+    ¬ kvCacheAdapterRequestTracePass cacheSize current tokens ↔
+      ∃ token, token ∈ tokens ∧ token + cacheSize ≤ current := by
+  classical
+  have hpass_iff :
+      kvCacheAdapterRequestTracePass cacheSize current tokens ↔
+        ¬ ∃ token, token ∈ tokens ∧ token + cacheSize ≤ current :=
+    kvCacheAdapterRequestTracePass_iff_no_stale_member_of_nonFuture_nodup
+      hcache hnotFuture hnodup
+  constructor
+  · intro hfail
+    by_contra hnoStale
+    exact hfail (hpass_iff.2 hnoStale)
+  · intro hstale hpass
+    exact (hpass_iff.1 hpass) hstale
+
 /-- The explicit live KV-cache window maps to duplicate-free ring-buffer slots.
 
 This is the end-to-end live-window version of the retained-batch theorem: the

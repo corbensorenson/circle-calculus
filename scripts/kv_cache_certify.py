@@ -197,7 +197,9 @@ def summary_lines(payload: dict[str, Any]) -> list[str]:
             "pass_iff_next_overwrite_boundary="
             f"{adapter_request['pass_iff_next_overwrite_boundary']} "
             "pass_iff_no_stale_member_under_nonfuture_nodup="
-            f"{adapter_request['pass_iff_no_stale_member_under_nonfuture_nodup']}"
+            f"{adapter_request['pass_iff_no_stale_member_under_nonfuture_nodup']} "
+            "fail_iff_stale_member_under_nonfuture_nodup="
+            f"{adapter_request['fail_iff_stale_member_under_nonfuture_nodup']}"
         ),
         (
             "live_window_contract="

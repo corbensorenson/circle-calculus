@@ -159,6 +159,10 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.not_kvCacheWindowContains_iff_exists_sameSlotOverwrite_between_of_le
     dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+  - id: AIM-T0100
+    status: lean_proved
+    lean_name: Circle.Applications.not_kvCacheAdapterRequestTracePass_iff_exists_stale_member_of_nonFuture_nodup
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
   - id: AIM-T0006
     status: lean_proved
     lean_name: Circle.Applications.loopRequiredSteps_pos

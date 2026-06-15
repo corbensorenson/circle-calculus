@@ -165,7 +165,7 @@ iff
 token <= current and current < token + cache_size
 ```
 
-The generated live-window theorem then upgrades a Python-style list of live tokens into a theorem-backed object: membership in the list is equivalent to retention, the whole live window maps to duplicate-free slots, and a full live window has one in-range emitted entry per declared cache slot. The count and coverage iffs say the generated slot list reaches the full `cache_size` contract exactly when the live window is full. The read/write guard says that a retained token has no later same-slot writer before the current read point, the stale-witness theorem gives `token + cache_size` as the concrete later same-slot write for stale non-future tokens, the stale-trace iff says staleness is exactly the existence of a later same-slot writer up to current, the trace iff says those two sides exactly characterize freshness, and the batch trace theorem lifts the same check to a declared read batch. The request-level failure theorem now says a stale requested member blocks the modeled adapter pass bit; under non-future duplicate-free request assumptions, passing is exactly the absence of stale requested members.
+The generated live-window theorem then upgrades a Python-style list of live tokens into a theorem-backed object: membership in the list is equivalent to retention, the whole live window maps to duplicate-free slots, and a full live window has one in-range emitted entry per declared cache slot. The count and coverage iffs say the generated slot list reaches the full `cache_size` contract exactly when the live window is full. The read/write guard says that a retained token has no later same-slot writer before the current read point, the stale-witness theorem gives `token + cache_size` as the concrete later same-slot write for stale non-future tokens, the stale-trace iff says staleness is exactly the existence of a later same-slot writer up to current, the trace iff says those two sides exactly characterize freshness, and the batch trace theorem lifts the same check to a declared read batch. The request-level failure theorem now says a stale requested member blocks the modeled adapter pass bit; under non-future duplicate-free request assumptions, passing is exactly the absence of stale requested members and failing is exactly stale requested-member existence.
 
 <div class="theorem-box" data-theorem-id="AIM-T0069"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0070"></div>
@@ -175,6 +175,7 @@ The generated live-window theorem then upgrades a Python-style list of live toke
 <div class="theorem-box" data-theorem-id="AIM-T0097"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0098"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0099"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0100"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0076"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0077"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0078"></div>

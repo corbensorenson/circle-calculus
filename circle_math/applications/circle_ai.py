@@ -794,6 +794,7 @@ class KVCacheAdapterRequestTraceCertificate:
     pass_certificate: bool
     pass_iff_next_overwrite_boundary: bool
     pass_iff_no_stale_member_under_nonfuture_nodup: bool
+    fail_iff_stale_member_under_nonfuture_nodup: bool
     theorem_ids: tuple[str, ...] = (
         "AIM-T0059",
         "AIM-T0067",
@@ -809,6 +810,7 @@ class KVCacheAdapterRequestTraceCertificate:
         "AIM-T0096",
         "AIM-T0097",
         "AIM-T0098",
+        "AIM-T0100",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheSlot_lt_cacheSize",
@@ -825,6 +827,7 @@ class KVCacheAdapterRequestTraceCertificate:
         "Circle.Applications.kvCacheAdapterRequestBoundary_slotMap_nodup",
         "Circle.Applications.not_kvCacheAdapterRequestTracePass_of_stale_member",
         "Circle.Applications.kvCacheAdapterRequestTracePass_iff_no_stale_member_of_nonFuture_nodup",
+        "Circle.Applications.not_kvCacheAdapterRequestTracePass_iff_exists_stale_member_of_nonFuture_nodup",
     )
     note: str = (
         "Modeled adapter request-trace certificate only; this packages the "
@@ -2282,6 +2285,11 @@ def certify_kv_cache_adapter_request_trace(
         ),
         pass_iff_no_stale_member_under_nonfuture_nodup=(
             pass_certificate == (first_stale_token is None)
+            if all_non_future and batch.tokens_distinct
+            else False
+        ),
+        fail_iff_stale_member_under_nonfuture_nodup=(
+            (not pass_certificate) == (first_stale_token is not None)
             if all_non_future and batch.tokens_distinct
             else False
         ),
