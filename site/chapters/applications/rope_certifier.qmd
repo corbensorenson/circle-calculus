@@ -20,6 +20,15 @@ Learn how the certifier turns RoPE position indistinguishability into a finite d
 
 :::
 
+## Reading Path
+
+Read this chapter in four passes:
+
+1. The discrete contract: learn why integer-period phase-bank collisions reduce to divisibility by a common gap.
+2. The executable report: run the widget or CLI and read `exact_discrete_contract`, `common_collision_gap`, and `total_bank_collision_pair_count` before looking at any other field.
+3. The real-phase boundary: separate theorem-backed finite-margin certificates from numerical scans.
+4. The theorem cards: use the cards as the proof-status index after the ideas and report fields make sense.
+
 ## The Contract
 
 For one integer-period channel:
