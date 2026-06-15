@@ -15,7 +15,9 @@
       "Circle.Applications.kvCacheNoSameSlotOverwriteTrace_iff_current_lt_nextOverwrite_of_le",
       "Circle.Applications.kvCacheBatchNoSameSlotOverwriteTrace_iff_all_nextOverwrite_after_current_of_forall_le",
       "Circle.Applications.kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_nextOverwriteAfterCurrent",
-      "Circle.Applications.kvCacheLiveWindowSubrequest_adapterRequestTracePass"
+      "Circle.Applications.kvCacheLiveWindowSubrequest_adapterRequestTracePass",
+      "Circle.Applications.kvCacheAdapterRequestBoundary_allRetained",
+      "Circle.Applications.kvCacheAdapterRequestBoundary_slotMap_nodup"
     ],
     "live_window_subrequest_pass_contract": true,
     "next_overwrites_after_current": true,
@@ -49,7 +51,9 @@
       "AIM-T0091",
       "AIM-T0092",
       "AIM-T0093",
-      "AIM-T0094"
+      "AIM-T0094",
+      "AIM-T0095",
+      "AIM-T0096"
     ],
     "tokens_distinct": true,
     "trace_fresh_iff_next_overwrite_boundary": true,

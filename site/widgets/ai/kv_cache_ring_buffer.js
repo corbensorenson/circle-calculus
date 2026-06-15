@@ -36,6 +36,8 @@ const THEOREM_IDS = [
   "AIM-T0092",
   "AIM-T0093",
   "AIM-T0094",
+  "AIM-T0095",
+  "AIM-T0096",
 ];
 const DICTIONARY_IDS = ["COMMON-0028", "COMMON-0081"];
 

@@ -82,6 +82,8 @@ The main theorem spine is:
 - `AIM-T0092`: for a non-future batch, pointwise trace freshness is equivalent to every requested token satisfying that next-overwrite-after-current boundary.
 - `AIM-T0093`: the modeled adapter request pass predicate is equivalent to non-future requested tokens, duplicate-free requested tokens, and the next-overwrite-after-current boundary for every requested token.
 - `AIM-T0094`: any duplicate-free ordered subrequest of the generated live-window token list passes the modeled adapter request-trace contract under positive cache size.
+- `AIM-T0095`: the compact non-future plus next-overwrite boundary checklist implies every requested token is retained.
+- `AIM-T0096`: the compact non-future, duplicate-free, next-overwrite boundary checklist implies requested tokens map to duplicate-free ring-buffer slots.
 
 ## Boundary
 

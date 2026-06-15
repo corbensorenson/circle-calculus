@@ -674,6 +674,42 @@ theorem kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_nextOverwriteAfterCur
           (cacheSize := cacheSize) (current := current)
           (tokens := tokens) hcache hnotFuture).2 hnext⟩
 
+/-- The compact next-overwrite adapter-request checklist implies every
+requested token is still retained in the modeled KV-cache window.
+
+This is the theorem-side justification for the executable `all_retained`
+report field when the certifier has already checked non-future requested
+tokens and the boundary `current < token + cacheSize` pointwise. -/
+theorem kvCacheAdapterRequestBoundary_allRetained
+    {cacheSize current : Nat} {tokens : List Nat}
+    (hnotFuture : ∀ token ∈ tokens, token ≤ current)
+    (hnext : ∀ token ∈ tokens, current < token + cacheSize) :
+    ∀ token ∈ tokens, kvCacheWindowContains cacheSize current token := by
+  intro token htoken
+  exact (kvCacheWindowContains_iff_current_lt_nextOverwrite).2
+    ⟨hnotFuture token htoken, hnext token htoken⟩
+
+/-- The compact next-overwrite adapter-request checklist implies requested
+tokens occupy duplicate-free ring-buffer slots when the request tokens
+themselves are duplicate-free.
+
+This is the theorem-side justification for the executable `slots_distinct`
+report field under the same compact boundary check used by the certifier. -/
+theorem kvCacheAdapterRequestBoundary_slotMap_nodup
+    {cacheSize current : Nat} (hcache : 0 < cacheSize) {tokens : List Nat}
+    (hnotFuture : ∀ token ∈ tokens, token ≤ current)
+    (hnodup : tokens.Nodup)
+    (hnext : ∀ token ∈ tokens, current < token + cacheSize) :
+    (tokens.map (kvCacheSlot cacheSize)).Nodup := by
+  have htrace :
+      ∀ token ∈ tokens,
+        kvCacheNoSameSlotOverwriteTrace cacheSize current token :=
+    (kvCacheBatchNoSameSlotOverwriteTrace_iff_all_nextOverwrite_after_current_of_forall_le
+      (cacheSize := cacheSize) (current := current)
+      (tokens := tokens) hcache hnotFuture).2 hnext
+  exact kvCacheWindow_traceFreshBatchSlotMap_nodup
+    hcache hnotFuture htrace hnodup
+
 /-- The explicit live KV-cache window maps to duplicate-free ring-buffer slots.
 
 This is the end-to-end live-window version of the retained-batch theorem: the

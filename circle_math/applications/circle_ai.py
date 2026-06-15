@@ -777,6 +777,8 @@ class KVCacheAdapterRequestTraceCertificate:
         "AIM-T0092",
         "AIM-T0093",
         "AIM-T0094",
+        "AIM-T0095",
+        "AIM-T0096",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheSlot_lt_cacheSize",
@@ -789,6 +791,8 @@ class KVCacheAdapterRequestTraceCertificate:
         "Circle.Applications.kvCacheBatchNoSameSlotOverwriteTrace_iff_all_nextOverwrite_after_current_of_forall_le",
         "Circle.Applications.kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_nextOverwriteAfterCurrent",
         "Circle.Applications.kvCacheLiveWindowSubrequest_adapterRequestTracePass",
+        "Circle.Applications.kvCacheAdapterRequestBoundary_allRetained",
+        "Circle.Applications.kvCacheAdapterRequestBoundary_slotMap_nodup",
     )
     note: str = (
         "Modeled adapter request-trace certificate only; this packages the "

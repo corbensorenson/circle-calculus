@@ -1416,6 +1416,38 @@ theorems:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown
         - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_and_json_out
     blocker: ""
+  - id: AIM-T0095
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheAdapterRequestBoundary_allRetained
+    informal_statement: "For any modeled KV-cache read request, the compact non-future plus next-overwrite boundary checklist implies that every requested token is retained."
+    formal_statement: "forall {cacheSize current : Nat} {tokens : List Nat}, (forall token, token in tokens -> token <= current) -> (forall token, token in tokens -> current < token + cacheSize) -> forall token, token in tokens -> Circle.Applications.kvCacheWindowContains cacheSize current token"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_adapter_request_trace_packages_batch_contract
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_and_json_out
+    blocker: ""
+  - id: AIM-T0096
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheAdapterRequestBoundary_slotMap_nodup
+    informal_statement: "For any modeled KV-cache read request, the compact non-future, duplicate-free, next-overwrite boundary checklist implies that requested tokens map to duplicate-free ring-buffer slots."
+    formal_statement: "forall {cacheSize current : Nat} {tokens : List Nat}, 0 < cacheSize -> (forall token, token in tokens -> token <= current) -> tokens.Nodup -> (forall token, token in tokens -> current < token + cacheSize) -> (tokens.map (Circle.Applications.kvCacheSlot cacheSize)).Nodup"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_adapter_request_trace_packages_batch_contract
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_and_json_out
+    blocker: ""
   - id: AIM-T0006
     status: lean_proved
     lean_name: Circle.Applications.loopRequiredSteps_pos

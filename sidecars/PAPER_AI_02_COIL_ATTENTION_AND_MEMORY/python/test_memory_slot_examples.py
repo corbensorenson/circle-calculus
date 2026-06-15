@@ -253,8 +253,18 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     assert "AIM-T0092" in certificate.theorem_ids
     assert "AIM-T0093" in certificate.theorem_ids
     assert "AIM-T0094" in certificate.theorem_ids
+    assert "AIM-T0095" in certificate.theorem_ids
+    assert "AIM-T0096" in certificate.theorem_ids
     assert (
         "Circle.Applications.kvCacheLiveWindowSubrequest_adapterRequestTracePass"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.kvCacheAdapterRequestBoundary_allRetained"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.kvCacheAdapterRequestBoundary_slotMap_nodup"
         in certificate.lean_declarations
     )
     assert "Modeled adapter request-trace certificate only" in certificate.note
@@ -478,6 +488,8 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert "AIM-T0092" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert "AIM-T0093" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert "AIM-T0094" in payload["adapter_request_trace_certificate"]["theorem_ids"]
+    assert "AIM-T0095" in payload["adapter_request_trace_certificate"]["theorem_ids"]
+    assert "AIM-T0096" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert payload["live_window_certificate"]["start"] == 16
     assert payload["live_window_certificate"]["length"] == 16
     assert payload["live_window_certificate"]["slots_distinct"] is True
@@ -544,6 +556,8 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert "AIM-T0092" in markdown_result.stdout
     assert "AIM-T0093" in markdown_result.stdout
     assert "AIM-T0094" in markdown_result.stdout
+    assert "AIM-T0095" in markdown_result.stdout
+    assert "AIM-T0096" in markdown_result.stdout
 
 
 def test_committed_kv_cache_ring_buffer_results_match_generator(tmp_path: Path) -> None:
