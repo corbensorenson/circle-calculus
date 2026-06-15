@@ -1367,6 +1367,30 @@ theorem hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag
   · rintro ⟨lag, hgap⟩
     exact ⟨lag, (mem_hybridFamilyUncoveredLagList_iff).2 hgap⟩
 
+/-- Under the positive in-context candidate-range hypothesis, a deduplicated
+unique-lag shortfall is exactly the existence of a semantic uncovered lag.
+
+This is the failure-side companion to the unique-count coverage iff: once the
+candidate generator cannot waste entries on zero or out-of-context residues,
+`unique_lag_count < n - 1` is not merely a sufficient warning. It is equivalent
+to having a concrete positive lag below the context that the sparse plan does
+not reach. -/
+theorem hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_candidate_range
+    {n window pathLength : Nat} {strides : List Nat}
+    (hcandidate_range :
+      ∀ lag, lag ∈ hybridFamilyLagCandidateList n window pathLength strides →
+        1 ≤ lag ∧ lag < n) :
+    hybridFamilyUniqueLagCandidateCount n window pathLength strides < n - 1 ↔
+      ∃ lag, 1 ≤ lag ∧ lag < n ∧
+        ¬ hybridFamilyLagReach n window pathLength lag strides := by
+  have huncovered_count :=
+    hybridFamilyUncoveredLagList_length_eq_context_sub_one_sub_uniqueLagCandidateCount_of_candidate_range
+      (n := n) (window := window) (pathLength := pathLength) (strides := strides)
+      hcandidate_range
+  rw [← hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag]
+  rw [huncovered_count]
+  omega
+
 /-- A positive uncovered-lag count is equivalent to the first-uncovered-lag
 field being populated.
 
@@ -1523,6 +1547,19 @@ theorem hybridFamilyCoversContext_iff_uniqueLagCandidateCount_eq_context_sub_one
     (hybridFamilyLagCandidateList_candidate_range_of_window_lt_context_of_noWrapSeparated
       hwindow hseparated)
 
+/-- Under below-context local-window and no-wrap separated stride-family
+conditions, a unique-lag shortfall is exactly a concrete semantic gap. -/
+theorem hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noWrapSeparated
+    {n window pathLength : Nat} {strides : List Nat}
+    (hwindow : window < n)
+    (hseparated : coilStrideFamilyNoWrapSeparated n pathLength strides) :
+    hybridFamilyUniqueLagCandidateCount n window pathLength strides < n - 1 ↔
+      ∃ lag, 1 ≤ lag ∧ lag < n ∧
+        ¬ hybridFamilyLagReach n window pathLength lag strides :=
+  hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_candidate_range
+    (hybridFamilyLagCandidateList_candidate_range_of_window_lt_context_of_noWrapSeparated
+      hwindow hseparated)
+
 /-- Under below-context local-window and no-zero stride-residue conditions,
 complete positive-lag coverage is equivalent to the deduplicated lag-candidate
 count reaching `n - 1`.
@@ -1537,6 +1574,22 @@ theorem hybridFamilyCoversContext_iff_uniqueLagCandidateCount_eq_context_sub_one
     hybridFamilyCoversContext n window pathLength strides ↔
       hybridFamilyUniqueLagCandidateCount n window pathLength strides = n - 1 :=
   hybridFamilyCoversContext_iff_uniqueLagCandidateCount_eq_context_sub_one_of_candidate_range
+    (hybridFamilyLagCandidateList_candidate_range_of_window_lt_context_of_noZeroResidues
+      hwindow hnoZero)
+
+/-- Under below-context local-window and no-zero stride-residue conditions, a
+unique-lag shortfall is exactly a concrete semantic gap.
+
+This is the broader structural form used by reports that allow wrapping or
+overlap but rule out zero residues. -/
+theorem hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues
+    {n window pathLength : Nat} {strides : List Nat}
+    (hwindow : window < n)
+    (hnoZero : coilStrideFamilyNoZeroResidues n pathLength strides) :
+    hybridFamilyUniqueLagCandidateCount n window pathLength strides < n - 1 ↔
+      ∃ lag, 1 ≤ lag ∧ lag < n ∧
+        ¬ hybridFamilyLagReach n window pathLength lag strides :=
+  hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_candidate_range
     (hybridFamilyLagCandidateList_candidate_range_of_window_lt_context_of_noZeroResidues
       hwindow hnoZero)
 

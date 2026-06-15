@@ -5297,6 +5297,24 @@
           "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_uniqueLagCandidateCount_eq_context_sub_one_of_noZeroResidues",
           "name": "Circle.Applications.hybridFamilyCoversContext_iff_uniqueLagCandidateCount_eq_context_sub_one_of_noZeroResidues",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0120",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_candidate_range",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_candidate_range",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0121",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noWrapSeparated",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noWrapSeparated",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0122",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5986,6 +6004,24 @@
           "id": "AIT-T0119",
           "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_uniqueLagCandidateCount_eq_context_sub_one_of_noZeroResidues",
           "name": "Circle.Applications.hybridFamilyCoversContext_iff_uniqueLagCandidateCount_eq_context_sub_one_of_noZeroResidues",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0120",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_candidate_range",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_candidate_range",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0121",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noWrapSeparated",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noWrapSeparated",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0122",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
           "status": "proved"
         }
       ],
@@ -7545,6 +7581,24 @@
           "id": "AIT-T0119",
           "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_uniqueLagCandidateCount_eq_context_sub_one_of_noZeroResidues",
           "name": "Circle.Applications.hybridFamilyCoversContext_iff_uniqueLagCandidateCount_eq_context_sub_one_of_noZeroResidues",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0120",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_candidate_range",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_candidate_range",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0121",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noWrapSeparated",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noWrapSeparated",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0122",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
           "status": "proved"
         }
       ],
@@ -12243,6 +12297,24 @@
           "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_uniqueLagCandidateCount_eq_context_sub_one_of_noZeroResidues",
           "name": "Circle.Applications.hybridFamilyCoversContext_iff_uniqueLagCandidateCount_eq_context_sub_one_of_noZeroResidues",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0120",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_candidate_range",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_candidate_range",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0121",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noWrapSeparated",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noWrapSeparated",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0122",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -15578,6 +15650,24 @@
           "id": "AIT-T0119",
           "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_uniqueLagCandidateCount_eq_context_sub_one_of_noZeroResidues",
           "name": "Circle.Applications.hybridFamilyCoversContext_iff_uniqueLagCandidateCount_eq_context_sub_one_of_noZeroResidues",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0120",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_candidate_range",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_candidate_range",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0121",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noWrapSeparated",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noWrapSeparated",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0122",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
           "status": "proved"
         }
       ],

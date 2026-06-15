@@ -1043,6 +1043,7 @@ class StrideFamilyCoverageCertificate:
     no_wrap_separated_candidate_range_sufficient_condition: bool
     no_zero_residue_candidate_range_sufficient_condition: bool
     unique_lag_count_shortfall_certifies_incomplete: bool
+    unique_lag_count_shortfall_matches_gap_witness_under_candidate_range: bool
     unique_lag_count_matches_complete_under_candidate_range: bool
     covered_count_matches_unique_lag_count_under_candidate_range: bool
     uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range: bool
@@ -1156,6 +1157,9 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0117",
         "AIT-T0118",
         "AIT-T0119",
+        "AIT-T0120",
+        "AIT-T0121",
+        "AIT-T0122",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -3115,6 +3119,13 @@ def certify_stride_family_coverage(
         ),
         unique_lag_count_shortfall_certifies_incomplete=(
             not (unique_lag_candidate_count < positive_lag_count and coverage_complete)
+        ),
+        unique_lag_count_shortfall_matches_gap_witness_under_candidate_range=(
+            not lag_candidates_positive_in_context
+            or (
+                (unique_lag_candidate_count < positive_lag_count)
+                == (len(uncovered) > 0)
+            )
         ),
         unique_lag_count_matches_complete_under_candidate_range=(
             not lag_candidates_positive_in_context

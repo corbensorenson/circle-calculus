@@ -149,7 +149,9 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             f"{payload['theorem_side_unique_lag_candidate_count'] < payload['positive_lag_count']} "
             "certifies_incomplete="
             f"{payload['unique_lag_count_shortfall_certifies_incomplete']} "
-            "theorem=AIT-T0111"
+            "gap_witness_equiv_under_candidate_range="
+            f"{payload['unique_lag_count_shortfall_matches_gap_witness_under_candidate_range']} "
+            "theorems=AIT-T0111,AIT-T0120,AIT-T0121,AIT-T0122"
         ),
         (
             "candidate_range="

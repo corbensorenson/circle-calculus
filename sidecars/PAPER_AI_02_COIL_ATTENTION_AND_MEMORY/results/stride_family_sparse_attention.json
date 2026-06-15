@@ -162,7 +162,10 @@
         "AIT-T0116",
         "AIT-T0117",
         "AIT-T0118",
-        "AIT-T0119"
+        "AIT-T0119",
+        "AIT-T0120",
+        "AIT-T0121",
+        "AIT-T0122"
       ],
       "theorem_side_coil_residues_no_collision": true,
       "theorem_side_lag_candidates": [
@@ -342,7 +345,8 @@
         119
       ],
       "unique_lag_count_matches_complete_under_candidate_range": true,
-      "unique_lag_count_shortfall_certifies_incomplete": true
+      "unique_lag_count_shortfall_certifies_incomplete": true,
+      "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true
     },
     "family_accuracy": 1.0,
     "full_attention_accuracy": 1.0,
@@ -523,7 +527,10 @@
       "AIT-T0116",
       "AIT-T0117",
       "AIT-T0118",
-      "AIT-T0119"
+      "AIT-T0119",
+      "AIT-T0120",
+      "AIT-T0121",
+      "AIT-T0122"
     ],
     "theorem_side_coil_residues_no_collision": true,
     "theorem_side_lag_candidates": [
@@ -564,7 +571,8 @@
     "uncovered_lag_intervals": [],
     "uncovered_lags": [],
     "unique_lag_count_matches_complete_under_candidate_range": true,
-    "unique_lag_count_shortfall_certifies_incomplete": true
+    "unique_lag_count_shortfall_certifies_incomplete": true,
+    "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true
   },
   "planner_style_certificates": [
     {
@@ -597,7 +605,10 @@
         "AIT-T0116",
         "AIT-T0117",
         "AIT-T0118",
-        "AIT-T0119"
+        "AIT-T0119",
+        "AIT-T0120",
+        "AIT-T0121",
+        "AIT-T0122"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.08403361344537816,
@@ -712,7 +723,8 @@
         33
       ],
       "unique_lag_count_matches_complete_under_candidate_range": true,
-      "unique_lag_count_shortfall_certifies_incomplete": true
+      "unique_lag_count_shortfall_certifies_incomplete": true,
+      "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true
     },
     {
       "candidate_budget_per_query": 8,
@@ -744,7 +756,10 @@
         "AIT-T0116",
         "AIT-T0117",
         "AIT-T0118",
-        "AIT-T0119"
+        "AIT-T0119",
+        "AIT-T0120",
+        "AIT-T0121",
+        "AIT-T0122"
       ],
       "coverage_complete": true,
       "coverage_ratio": 1.0,
@@ -808,7 +823,8 @@
       "uncovered_lag_interval_sample": [],
       "uncovered_lag_sample": [],
       "unique_lag_count_matches_complete_under_candidate_range": true,
-      "unique_lag_count_shortfall_certifies_incomplete": true
+      "unique_lag_count_shortfall_certifies_incomplete": true,
+      "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true
     },
     {
       "candidate_budget_per_query": 44,
@@ -840,7 +856,10 @@
         "AIT-T0116",
         "AIT-T0117",
         "AIT-T0118",
-        "AIT-T0119"
+        "AIT-T0119",
+        "AIT-T0120",
+        "AIT-T0121",
+        "AIT-T0122"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.010744810744810745,
@@ -988,7 +1007,8 @@
         57
       ],
       "unique_lag_count_matches_complete_under_candidate_range": true,
-      "unique_lag_count_shortfall_certifies_incomplete": true
+      "unique_lag_count_shortfall_certifies_incomplete": true,
+      "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true
     },
     {
       "candidate_budget_per_query": 96,
@@ -1020,7 +1040,10 @@
         "AIT-T0116",
         "AIT-T0117",
         "AIT-T0118",
-        "AIT-T0119"
+        "AIT-T0119",
+        "AIT-T0120",
+        "AIT-T0121",
+        "AIT-T0122"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.011720180686118912,
@@ -1169,7 +1192,8 @@
         88
       ],
       "unique_lag_count_matches_complete_under_candidate_range": true,
-      "unique_lag_count_shortfall_certifies_incomplete": true
+      "unique_lag_count_shortfall_certifies_incomplete": true,
+      "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true
     }
   ],
   "schema_id": "circle_calculus.stride_family_sparse_attention_certificate.v0"
