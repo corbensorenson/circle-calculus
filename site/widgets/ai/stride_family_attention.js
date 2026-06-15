@@ -95,6 +95,9 @@ const THEOREM_IDS = [
   "AIT-T0114",
   "AIT-T0115",
   "AIT-T0116",
+  "AIT-T0117",
+  "AIT-T0118",
+  "AIT-T0119",
 ];
 const DICTIONARY_IDS = ["COMMON-0075", "COMMON-0079", "COMMON-0047", "COMMON-0029"];
 
@@ -238,6 +241,14 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
   const noWrapSeparatedCandidateRangeSufficientCondition = (
     localWindow < sequenceLength && noWrapSeparatedSufficient(sequenceLength, strides, pathLength)
   );
+  const noZeroResidueCandidateRangeSufficientCondition = (
+    sequenceLength > 0
+    && localWindow < sequenceLength
+    && strides.every((stride) => Array.from(
+      { length: pathLength },
+      (_, index) => (index + 1) * stride,
+    ).every((multiple) => mod(multiple, sequenceLength) !== 0))
+  );
   const theoremSideCoilResidues = strideFamilyCoilResidueList(sequenceLength, strides, pathLength);
   const localCandidateSet = new Set(Array.from({ length: localWindow }, (_, index) => index + 1));
   const theoremSideQueryCandidates = strideFamilyQueryCandidateList(
@@ -261,6 +272,7 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
     theoremSideUniqueLagCandidateCount,
     theoremSideLagCandidatesPositiveInContext,
     noWrapSeparatedCandidateRangeSufficientCondition,
+    noZeroResidueCandidateRangeSufficientCondition,
     uniqueLagCountMatchesCompleteUnderCandidateRange: (
       !theoremSideLagCandidatesPositiveInContext
       || coverageComplete === (theoremSideUniqueLagCandidateCount === positiveLagCount)
@@ -498,6 +510,7 @@ function appendRecord(output, values, theoremById) {
     `theorem-side unique lag-candidate count: ${coverage.theoremSideUniqueLagCandidateCount}`,
     `lag candidates positive in context: ${coverage.theoremSideLagCandidatesPositiveInContext}`,
     `no-wrap separated candidate-range sufficient condition: ${coverage.noWrapSeparatedCandidateRangeSufficientCondition}`,
+    `no-zero residue candidate-range sufficient condition: ${coverage.noZeroResidueCandidateRangeSufficientCondition}`,
     `unique count iff complete under candidate range: ${coverage.uniqueLagCountMatchesCompleteUnderCandidateRange}`,
     `covered count equals unique under candidate range: ${coverage.coveredCountMatchesUniqueLagCountUnderCandidateRange}`,
     `uncovered count formula under candidate range: ${coverage.uncoveredCountMatchesContextMinusUniqueLagCountUnderCandidateRange}`,

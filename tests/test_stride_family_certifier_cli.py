@@ -72,7 +72,8 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     assert "unique_lag_shortfall=True certifies_incomplete=True theorem=AIT-T0111" in result.stdout
     assert (
         "candidate_range=True no_wrap_separated_sufficient=False "
-        "unique_count_complete_iff=True theorems=AIT-T0112,AIT-T0115,AIT-T0116"
+        "no_zero_residue_sufficient=True unique_count_complete_iff=True "
+        "theorems=AIT-T0112,AIT-T0115,AIT-T0116,AIT-T0117,AIT-T0118,AIT-T0119"
     ) in result.stdout
     assert (
         "candidate_range_counts=covered_eq_unique=True "
@@ -134,6 +135,7 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     assert payload["unique_lag_count_shortfall_certifies_incomplete"] is True
     assert payload["theorem_side_lag_candidates_positive_in_context"] is True
     assert payload["no_wrap_separated_candidate_range_sufficient_condition"] is False
+    assert payload["no_zero_residue_candidate_range_sufficient_condition"] is True
     assert payload["unique_lag_count_matches_complete_under_candidate_range"] is True
     assert payload["covered_count_matches_unique_lag_count_under_candidate_range"] is True
     assert (
@@ -149,6 +151,9 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     assert "AIT-T0114" in payload["theorem_ids"]
     assert "AIT-T0115" in payload["theorem_ids"]
     assert "AIT-T0116" in payload["theorem_ids"]
+    assert "AIT-T0117" in payload["theorem_ids"]
+    assert "AIT-T0118" in payload["theorem_ids"]
+    assert "AIT-T0119" in payload["theorem_ids"]
     assert payload["fixture_theorem_ids"] == [
         "AIT-T0084",
         "AIT-T0085",

@@ -9,7 +9,8 @@ It answers one precise question:
 For a declared context length, local window, stride family, and path length,
 which positive dependency lags are covered, which are gaps, when is the
 deduplicated theorem-side candidate count an exact coverage test, and when do
-checkable no-wrap separated stride conditions discharge that range hypothesis?
+checkable no-wrap or no-zero-residue stride conditions discharge that range
+hypothesis?
 ```
 
 It does not claim attention quality, model quality, long-context capability,
@@ -33,13 +34,13 @@ covered_lags=10 uncovered_lags=109 uncovered_intervals=6 coverage_ratio=0.084034
 lag_partition=covered_plus_uncovered=119 positive_lags=119 partition_complete=True theorem=AIT-T0094
 covered_count_complete=False theorem=AIT-T0095
 first_uncovered_lag_bridge=list_head=True none_iff_complete=True semantic_miss=True theorems=AIT-T0098,AIT-T0099,AIT-T0100,AIT-T0101
-uncovered_count_witness=True positive=True first_gap=5 theorem=AIT-T0096
+uncovered_count_witness=True positive=True first_gap=5 theorems=AIT-T0096,AIT-T0103
 covered_count_shortfall=True gap_witness_equiv=True theorem=AIT-T0097
 uncovered_lag_intervals=((5, 6), (8, 12), (15, 20), (22, 25), (27, 38), (40, 119))
 candidate_budget_per_query=10 raw_upper_bound=10 deduplicated_bound=10 full_attention_budget=120
 raw_budget_shortfall=True certifies_incomplete=True theorem=AIT-T0110
 unique_lag_shortfall=True certifies_incomplete=True theorem=AIT-T0111
-candidate_range=True no_wrap_separated_sufficient=False unique_count_complete_iff=True theorems=AIT-T0112,AIT-T0115,AIT-T0116
+candidate_range=True no_wrap_separated_sufficient=False no_zero_residue_sufficient=True unique_count_complete_iff=True theorems=AIT-T0112,AIT-T0115,AIT-T0116,AIT-T0117,AIT-T0118,AIT-T0119
 candidate_range_counts=covered_eq_unique=True uncovered_eq_context_minus_unique=True theorems=AIT-T0113,AIT-T0114
 lag_budget_status=exact-raw-budget unique_lag_candidates=10 lag_no_collision=True
 query_budget_status=exact-raw-budget unique_query_candidates=10 query_no_collision=True
@@ -76,6 +77,7 @@ python scripts/stride_family_certify.py \
 - `theorem_side_unique_lag_candidate_count`: deduplicated lag count from the theorem-side list.
 - `theorem_side_lag_candidates_positive_in_context`: true when every theorem-side lag candidate is between `1` and `context - 1`.
 - `no_wrap_separated_candidate_range_sufficient_condition`: true when `local_window < context` and the ordered stride family satisfies the no-wrap separated numeric condition, which is a Lean-proved sufficient condition for positive in-context lag candidates.
+- `no_zero_residue_candidate_range_sufficient_condition`: true when `local_window < context` and every admitted `step * stride mod context` is nonzero. This is a Lean-proved sufficient condition for positive in-context lag candidates that permits wrapping and overlap.
 - `unique_lag_count_shortfall_certifies_incomplete`: true when the certificate avoids the impossible state where the deduplicated unique lag-candidate count is below `context - 1` but coverage is still reported complete.
 - `unique_lag_count_matches_complete_under_candidate_range`: true when the candidate-range hypothesis is absent or, under that hypothesis, complete coverage matches `theorem_side_unique_lag_candidate_count == context - 1`.
 - `covered_count_matches_unique_lag_count_under_candidate_range`: true when the candidate-range hypothesis is absent or, under that hypothesis, covered count equals the unique lag-candidate count.
@@ -95,6 +97,9 @@ The raw-budget iff endpoints are:
 - `AIT-T0114`: under the same candidate-range hypothesis, uncovered-lag count equals `n - 1 - unique_lag_candidate_count`.
 - `AIT-T0115`: `window < context` plus the ordered no-wrap separated stride-family condition implies every theorem-side lag candidate is positive and in context.
 - `AIT-T0116`: under that same checkable structural condition, complete coverage is equivalent to unique lag-candidate count equaling `n - 1`.
+- `AIT-T0117`: if every admitted stride-step residue avoids zero, every generated stride-family residue candidate is positive.
+- `AIT-T0118`: `window < context` plus the no-zero stride-residue condition implies every theorem-side lag candidate is positive and in context.
+- `AIT-T0119`: under that no-zero residue condition, complete coverage is equivalent to unique lag-candidate count equaling `n - 1`.
 
 The finite-list endpoints are:
 
@@ -119,7 +124,7 @@ The finite-list endpoints are:
 
 The gap/coverage spine is `AIT-T0020` through `AIT-T0035`. The theorem-side candidate-list,
 budget, no-collision, and predecessor-indexing spine is `AIT-T0036` through `AIT-T0077`.
-The finite uncovered/covered list, count-partition, first-gap, public interval-summary, query-count, raw-budget necessary-condition, unique-lag necessary-condition, candidate-range unique-count iff, candidate-range gap-count, and no-wrap separated candidate-range discharge spine is `AIT-T0078` through `AIT-T0116`.
+The finite uncovered/covered list, count-partition, first-gap, public interval-summary, query-count, raw-budget necessary-condition, unique-lag necessary-condition, candidate-range unique-count iff, candidate-range gap-count, no-wrap separated candidate-range discharge, and no-zero residue candidate-range discharge spine is `AIT-T0078` through `AIT-T0119`.
 
 ## Boundary
 
