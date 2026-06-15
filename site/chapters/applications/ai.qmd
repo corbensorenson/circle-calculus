@@ -75,6 +75,7 @@ that finite address arithmetic can and cannot certify:
 - a non-future stale token is exactly one whose next same-slot overwrite has already happened (`AIM-T0070`);
 - a retained token has no later same-slot writer before the current read point (`AIM-T0075`);
 - a stale non-future token has an explicit later same-slot overwrite witness at `token + cache_size` (`AIM-T0076`);
+- a non-future token is stale iff some later write up to current reuses its ring-buffer slot (`AIM-T0099`);
 - a non-future token is retained iff there is no later same-slot writer in the finite trace up to current (`AIM-T0077`);
 - a non-future read batch is retained iff every requested token has no later same-slot writer in that finite trace (`AIM-T0078`);
 - a duplicate-free non-future read batch with no later same-slot writer for each token maps to duplicate-free ring-buffer slots (`AIM-T0079`);
@@ -208,6 +209,7 @@ proved:
 <div class="theorem-box" data-theorem-id="AIM-T0077"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0078"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0079"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0099"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0021"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0022"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0023"></div>

@@ -147,6 +147,18 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.kvCacheAdapterRequestBoundary_slotMap_nodup
     dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+  - id: AIM-T0097
+    status: lean_proved
+    lean_name: Circle.Applications.not_kvCacheAdapterRequestTracePass_of_stale_member
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+  - id: AIM-T0098
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheAdapterRequestTracePass_iff_no_stale_member_of_nonFuture_nodup
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+  - id: AIM-T0099
+    status: lean_proved
+    lean_name: Circle.Applications.not_kvCacheWindowContains_iff_exists_sameSlotOverwrite_between_of_le
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
   - id: AIM-T0006
     status: lean_proved
     lean_name: Circle.Applications.loopRequiredSteps_pos

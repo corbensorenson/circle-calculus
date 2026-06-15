@@ -48,6 +48,7 @@ from circle_math.applications import (
     kv_cache_retained_iff_no_same_slot_overwrite_trace,
     kv_cache_same_slot_overwrite_witness_when_stale,
     kv_cache_slot,
+    kv_cache_stale_iff_same_slot_overwrite_trace,
     kv_cache_trace_fresh_batch_slots_distinct,
     kv_cache_trace_fresh_iff_next_overwrite_boundary,
     kv_cache_window_contains,
@@ -1373,6 +1374,21 @@ def js_kv_cache_retained_iff_no_same_slot_overwrite_trace(
     return js_kv_cache_window_contains(cache_size, current, token) == (
         js_kv_cache_no_same_slot_overwrite_before_current(cache_size, current, token)
     )
+
+
+def js_kv_cache_stale_iff_same_slot_overwrite_trace(
+    cache_size: int,
+    current: int,
+    token: int,
+) -> bool:
+    if token > current:
+        return False
+    slot = js_kv_cache_slot(cache_size, token)
+    later_same_slot = any(
+        js_kv_cache_slot(cache_size, overwrite) == slot
+        for overwrite in range(token + 1, current + 1)
+    )
+    return (not js_kv_cache_window_contains(cache_size, current, token)) == later_same_slot
 
 
 def js_kv_cache_trace_fresh_iff_next_overwrite_boundary(
@@ -3377,6 +3393,11 @@ def main() -> int:
             current,
             token,
         )
+        stale_trace_iff = js_kv_cache_stale_iff_same_slot_overwrite_trace(
+            cache_size,
+            current,
+            token,
+        )
         boundary_iff = js_kv_cache_trace_fresh_iff_next_overwrite_boundary(
             cache_size,
             current,
@@ -3388,6 +3409,7 @@ def main() -> int:
         assert kv_cache_next_overwrite_token(cache_size, token) == next_overwrite
         assert kv_cache_no_same_slot_overwrite_before_current(cache_size, current, token) == no_same_slot_overwrite
         assert kv_cache_same_slot_overwrite_witness_when_stale(cache_size, current, token) == stale_witness
+        assert kv_cache_stale_iff_same_slot_overwrite_trace(cache_size, current, token) == stale_trace_iff
         assert kv_cache_retained_iff_no_same_slot_overwrite_trace(cache_size, current, token) == trace_iff
         assert kv_cache_next_overwrite_after_current(cache_size, current, token) == (
             current < next_overwrite
@@ -3401,6 +3423,7 @@ def main() -> int:
         assert window.next_overwrite_after_current == (current < next_overwrite)
         assert window.no_same_slot_overwrite_before_current == no_same_slot_overwrite
         assert window.same_slot_overwrite_witness_when_stale == stale_witness
+        assert window.stale_iff_same_slot_overwrite_trace == stale_trace_iff
         assert window.retained_iff_no_same_slot_overwrite_trace == trace_iff
         assert window.trace_fresh_iff_next_overwrite_boundary == boundary_iff
         assert batch.slots == tuple(js_kv_cache_slot(cache_size, token) for token in batch_tokens)

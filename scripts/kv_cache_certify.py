@@ -144,6 +144,8 @@ def summary_lines(payload: dict[str, Any]) -> list[str]:
             f"{window['no_same_slot_overwrite_before_current']} "
             "same_slot_overwrite_witness_when_stale="
             f"{window['same_slot_overwrite_witness_when_stale']} "
+            "stale_iff_same_slot_overwrite_trace="
+            f"{window['stale_iff_same_slot_overwrite_trace']} "
             "retained_iff_no_same_slot_overwrite_trace="
             f"{window['retained_iff_no_same_slot_overwrite_trace']} "
             "trace_fresh_iff_next_overwrite_boundary="

@@ -287,7 +287,8 @@
       "Circle.Applications.kvCacheWindow_noSameSlotOverwrite_between",
       "Circle.Applications.kvCacheWindow_sameSlotOverwrite_witness_of_not_contains",
       "Circle.Applications.kvCacheWindowContains_iff_noSameSlotOverwrite_between_of_le",
-      "Circle.Applications.kvCacheNoSameSlotOverwriteTrace_iff_current_lt_nextOverwrite_of_le"
+      "Circle.Applications.kvCacheNoSameSlotOverwriteTrace_iff_current_lt_nextOverwrite_of_le",
+      "Circle.Applications.not_kvCacheWindowContains_iff_exists_sameSlotOverwrite_between_of_le"
     ],
     "next_overwrite_after_current": true,
     "next_overwrite_token": 36,
@@ -299,6 +300,7 @@
     "same_slot_overwrite_witness_when_stale": false,
     "slot": 4,
     "stale_by_next_overwrite_boundary": false,
+    "stale_iff_same_slot_overwrite_trace": true,
     "theorem_ids": [
       "AIM-T0059",
       "AIM-T0060",
@@ -313,7 +315,8 @@
       "AIM-T0075",
       "AIM-T0076",
       "AIM-T0077",
-      "AIM-T0091"
+      "AIM-T0091",
+      "AIM-T0099"
     ],
     "token": 20,
     "trace_fresh_iff_next_overwrite_boundary": true

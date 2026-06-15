@@ -41,6 +41,7 @@ from circle_math.applications.circle_ai import (
     kv_cache_slot,
     kv_cache_slots_collide,
     kv_cache_stale_by_next_overwrite_boundary,
+    kv_cache_stale_iff_same_slot_overwrite_trace,
     kv_cache_trace_fresh_batch_slots_distinct,
     kv_cache_trace_fresh_iff_next_overwrite_boundary,
     kv_cache_window_contains,
@@ -145,6 +146,8 @@ def test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read() -> None
     assert kv_cache_no_same_slot_overwrite_before_current(16, 31, 20)
     assert not certificate.same_slot_overwrite_witness_when_stale
     assert not kv_cache_same_slot_overwrite_witness_when_stale(16, 31, 20)
+    assert certificate.stale_iff_same_slot_overwrite_trace
+    assert kv_cache_stale_iff_same_slot_overwrite_trace(16, 31, 20)
     assert certificate.retained_iff_no_same_slot_overwrite_trace
     assert kv_cache_retained_iff_no_same_slot_overwrite_trace(16, 31, 20)
     assert certificate.trace_fresh_iff_next_overwrite_boundary
@@ -161,6 +164,7 @@ def test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read() -> None
     assert "AIM-T0075" in certificate.theorem_ids
     assert "AIM-T0076" in certificate.theorem_ids
     assert "AIM-T0091" in certificate.theorem_ids
+    assert "AIM-T0099" in certificate.theorem_ids
     assert certificate.note.endswith("deployment safety.")
 
 
@@ -467,6 +471,8 @@ def test_kv_cache_ring_buffer_certificate_marks_stale_token() -> None:
     assert not kv_cache_no_same_slot_overwrite_before_current(16, 40, 20)
     assert certificate.same_slot_overwrite_witness_when_stale
     assert kv_cache_same_slot_overwrite_witness_when_stale(16, 40, 20)
+    assert certificate.stale_iff_same_slot_overwrite_trace
+    assert kv_cache_stale_iff_same_slot_overwrite_trace(16, 40, 20)
     assert certificate.retained_iff_no_same_slot_overwrite_trace
     assert kv_cache_retained_iff_no_same_slot_overwrite_trace(16, 40, 20)
     assert certificate.trace_fresh_iff_next_overwrite_boundary
@@ -502,12 +508,14 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert payload["window_certificate"]["next_overwrite_after_current"] is True
     assert payload["window_certificate"]["no_same_slot_overwrite_before_current"] is True
     assert payload["window_certificate"]["same_slot_overwrite_witness_when_stale"] is False
+    assert payload["window_certificate"]["stale_iff_same_slot_overwrite_trace"] is True
     assert payload["window_certificate"]["retained_iff_no_same_slot_overwrite_trace"] is True
     assert payload["window_certificate"]["trace_fresh_iff_next_overwrite_boundary"] is True
     assert "AIM-T0069" in payload["window_certificate"]["theorem_ids"]
     assert "AIM-T0075" in payload["window_certificate"]["theorem_ids"]
     assert "AIM-T0076" in payload["window_certificate"]["theorem_ids"]
     assert "AIM-T0077" in payload["window_certificate"]["theorem_ids"]
+    assert "AIM-T0099" in payload["window_certificate"]["theorem_ids"]
     assert "AIM-T0091" in payload["window_certificate"]["theorem_ids"]
     assert payload["batch_certificate"]["slots_distinct"] is True
     assert payload["batch_certificate"]["retained_iff_no_same_slot_overwrite_trace"] is True
@@ -579,6 +587,7 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert "Request id" in markdown_result.stdout
     assert "default_read_request" in markdown_result.stdout
     assert "Pass certificate" in markdown_result.stdout
+    assert "Stale iff later same-slot write" in markdown_result.stdout
     assert "Retained iff no later same-slot writes" in markdown_result.stdout
     assert "Trace iff boundary" in markdown_result.stdout
     assert "Next overwrites after current" in markdown_result.stdout

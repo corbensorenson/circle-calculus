@@ -146,6 +146,7 @@ from .circle_ai import (
     kv_cache_slot,
     kv_cache_slots_collide,
     kv_cache_stale_by_next_overwrite_boundary,
+    kv_cache_stale_iff_same_slot_overwrite_trace,
     kv_cache_window_contains,
     harmonic_feature,
     dense_adapter_parameter_count,

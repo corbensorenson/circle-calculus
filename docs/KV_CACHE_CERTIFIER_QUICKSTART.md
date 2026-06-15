@@ -30,7 +30,7 @@ Expected shape:
 
 ```text
 kv_cache_contract=LIVE cache_size=16 current=31 token=20 slot=4 current_slot=15 lag=11
-overwrite_boundary=next_overwrite=36 after_current=True stale_by_boundary=False no_same_slot_overwrite_before_current=True same_slot_overwrite_witness_when_stale=False retained_iff_no_same_slot_overwrite_trace=True
+overwrite_boundary=next_overwrite=36 after_current=True stale_by_boundary=False no_same_slot_overwrite_before_current=True same_slot_overwrite_witness_when_stale=False stale_iff_same_slot_overwrite_trace=True retained_iff_no_same_slot_overwrite_trace=True
 batch_contract=tokens=(20, 24, 29, 31) slots=(4, 8, 13, 15) all_retained=True tokens_distinct=True slots_distinct=True
 adapter_request_trace=PASS request_id=prefill_read tokens=(20, 24, 29, 31) slots=(4, 8, 13, 15) all_non_future=True all_retained=True tokens_distinct=True slots_distinct=True first_stale_token=None first_stale_next_overwrite=None stale_member_blocks_pass=False ordered_live_window_subrequest=True duplicate_free_live_window_subrequest=True live_window_subrequest_pass_contract=True
 adapter_request_boundary=pass_iff_next_overwrite_boundary=True pass_iff_no_stale_member_under_nonfuture_nodup=True
@@ -68,7 +68,7 @@ python scripts/kv_cache_certify.py \
 
 ## Reading The Certificate
 
-- `window_certificate`: the inspected token's slot, current slot, lag, retained-window status, next same-slot overwrite boundary, whether any later token up to the current read point reused the same slot, whether a stale token has the explicit same-slot overwrite witness `token + cache_size`, and whether retained-window membership is equivalent to no later same-slot write in the trace up to `current`.
+- `window_certificate`: the inspected token's slot, current slot, lag, retained-window status, next same-slot overwrite boundary, whether any later token up to the current read point reused the same slot, whether a stale token has the explicit same-slot overwrite witness `token + cache_size`, whether stale status is equivalent to the existence of a later same-slot write in the trace, and whether retained-window membership is equivalent to no later same-slot write in the trace up to `current`.
 - `batch_certificate`: the optional retained batch, its slots, whether all batch tokens are retained, whether the batch slots are duplicate-free, whether all-retained is equivalent to every requested non-future token having no later same-slot write up to `current`, and whether a trace-fresh duplicate-free batch maps to duplicate-free slots.
 - `adapter_request_trace_certificate`: the same retained-batch theorem spine packaged as a named modeled adapter read request. It passes only when the requested tokens are non-future, retained, duplicate-free, mapped to duplicate-free slots, and trace-fresh pointwise. It reports the first stale requested token when one exists, the stale token's next same-slot overwrite, and whether that stale member theorem-blocks the pass bit. It also reports whether the requested tokens are a duplicate-free ordered subrequest of the generated live-window list, which is the direct hypothesis shape for `AIM-T0094`.
 - `live_window_certificate`: the generated retained-token interval, its slot list, and whether the full-window coverage contract applies.
@@ -104,6 +104,7 @@ The main theorem spine is:
 - `AIM-T0096`: the compact non-future, duplicate-free, next-overwrite boundary checklist implies requested tokens map to duplicate-free ring-buffer slots.
 - `AIM-T0097`: a stale requested member blocks the modeled adapter request pass bit.
 - `AIM-T0098`: for non-future duplicate-free requests, the modeled adapter pass bit is equivalent to having no stale requested member.
+- `AIM-T0099`: for a non-future token, stale status is equivalent to the existence of a later same-slot write up to `current`.
 
 ## Boundary
 

@@ -38,6 +38,9 @@ const THEOREM_IDS = [
   "AIM-T0094",
   "AIM-T0095",
   "AIM-T0096",
+  "AIM-T0097",
+  "AIM-T0098",
+  "AIM-T0099",
 ];
 const DICTIONARY_IDS = ["COMMON-0028", "COMMON-0081"];
 
@@ -162,6 +165,7 @@ function appendRecord(output, values, theoremById) {
   const staleByOverwriteBoundary = !isFuture && !isRetained && nextOverwrite <= values.current;
   const staleOverwriteWitness = staleByOverwriteBoundary && values.token < nextOverwrite && nextOverwrite <= values.current && slot === kvSlot(values.cacheSize, nextOverwrite);
   const noSameSlotOverwrite = noSameSlotOverwriteBeforeCurrent(values.cacheSize, values.current, values.token);
+  const staleIffSameSlotOverwrite = !isFuture && (!isRetained) === (!noSameSlotOverwrite);
   const retainedIffNoSameSlotOverwrite = !isFuture && isRetained === noSameSlotOverwrite;
   const traceFreshIffNextOverwriteBoundary = !isFuture && noSameSlotOverwrite === overwriteAfterCurrent;
   const collisionWithCurrent = slot === currentSlot;
@@ -234,6 +238,7 @@ function appendRecord(output, values, theoremById) {
     `stale by overwrite boundary: ${staleByOverwriteBoundary}`,
     `no later same-slot write up to current: ${noSameSlotOverwrite}`,
     `stale same-slot overwrite witness token + cache_size: ${staleOverwriteWitness}`,
+    `stale iff later same-slot write trace: ${staleIffSameSlotOverwrite}`,
     `retained iff no later same-slot write trace: ${retainedIffNoSameSlotOverwrite}`,
     `trace fresh iff next overwrite boundary: ${traceFreshIffNextOverwriteBoundary}`,
     `read batch tokens: ${batchTokens.join(", ")}`,

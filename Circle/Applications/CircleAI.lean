@@ -422,6 +422,37 @@ theorem kvCacheWindowContains_iff_noSameSlotOverwrite_between_of_le
       (hnoOverwrite (token + cacheSize)
         hoverwrite_after_token hoverwrite_current) hoverwrite_slot
 
+/-- For a non-future token, being stale is exactly the existence of a later
+write up to `current` that reuses the token's KV-cache ring-buffer slot.
+
+This is the direct stale-trace iff behind executable stale-witness fields:
+the forward direction gives the concrete overwrite `token + cacheSize`, while
+the reverse direction says any later same-slot write contradicts retention. -/
+theorem not_kvCacheWindowContains_iff_exists_sameSlotOverwrite_between_of_le
+    {cacheSize current token : Nat} (hcache : 0 < cacheSize)
+    (htoken_current : token ≤ current) :
+    ¬ kvCacheWindowContains cacheSize current token ↔
+      ∃ overwrite,
+        token < overwrite ∧
+          overwrite ≤ current ∧
+            kvCacheSlot cacheSize token = kvCacheSlot cacheSize overwrite := by
+  constructor
+  · intro hstale
+    rcases
+      kvCacheWindow_sameSlotOverwrite_witness_of_not_contains
+        hcache htoken_current hstale with
+      ⟨hoverwrite_after_token, hoverwrite_current, hoverwrite_slot⟩
+    exact
+      ⟨token + cacheSize, hoverwrite_after_token, hoverwrite_current,
+        hoverwrite_slot⟩
+  · rintro ⟨overwrite, hoverwrite_after_token, hoverwrite_current,
+      hoverwrite_slot⟩ hwindow
+    exact
+      (kvCacheWindow_noSameSlotOverwrite_between
+        (cacheSize := cacheSize) (current := current) (token := token)
+        (overwrite := overwrite) hwindow hoverwrite_after_token
+        hoverwrite_current) hoverwrite_slot
+
 /-- Any two distinct tokens retained in the same KV-cache window occupy
 distinct ring-buffer slots.
 

@@ -101,6 +101,8 @@ def text_results(payload: dict[str, Any]) -> str:
             f"{certificate['no_same_slot_overwrite_before_current']} "
             "same_slot_overwrite_witness_when_stale="
             f"{certificate['same_slot_overwrite_witness_when_stale']} "
+            "stale_iff_same_slot_overwrite_trace="
+            f"{certificate['stale_iff_same_slot_overwrite_trace']} "
             "retained_iff_no_same_slot_overwrite_trace="
             f"{certificate['retained_iff_no_same_slot_overwrite_trace']} "
             "trace_fresh_iff_next_overwrite_boundary="
@@ -225,8 +227,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             payload["claim_boundary"],
             "",
-            "| Cache size | Current | Token | Slot | Current slot | Lag | Retained | Distinct from current | Next overwrite | Overwrite after current | Stale by overwrite boundary | No same-slot overwrite before current | Stale same-slot overwrite witness | Retained iff no later same-slot write | Trace iff boundary | Theorem ids |",
-            "| ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- |",
+            "| Cache size | Current | Token | Slot | Current slot | Lag | Retained | Distinct from current | Next overwrite | Overwrite after current | Stale by overwrite boundary | No same-slot overwrite before current | Stale same-slot overwrite witness | Stale iff later same-slot write | Retained iff no later same-slot write | Trace iff boundary | Theorem ids |",
+            "| ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- |",
             (
                 f"| {certificate['cache_size']} | {certificate['current']} | "
                 f"{certificate['token']} | {certificate['slot']} | "
@@ -238,6 +240,7 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{certificate['stale_by_next_overwrite_boundary']} | "
                 f"{certificate['no_same_slot_overwrite_before_current']} | "
                 f"{certificate['same_slot_overwrite_witness_when_stale']} | "
+                f"{certificate['stale_iff_same_slot_overwrite_trace']} | "
                 f"{certificate['retained_iff_no_same_slot_overwrite_trace']} | "
                 f"{certificate['trace_fresh_iff_next_overwrite_boundary']} | "
                 f"{', '.join(certificate['theorem_ids'])} |"
