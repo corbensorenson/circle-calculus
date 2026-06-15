@@ -3015,6 +3015,22 @@ theorems:
         - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
         - tests/test_rope_certifier.py::test_rope_certify_cli_emits_json_certificate
     blocker: ""
+  - id: AIRA-T0211
+    status: lean_proved
+    lean_name: Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_fittingRange
+    informal_statement: "For a positive common collision gap, the positive-multiple collision-pair count equals the finite sum over the quotient-bounded fitting range; every larger positive multiple contributes zero."
+    formal_statement: "forall {context commonGap : Nat}, 0 < commonGap -> Circle.Applications.ropeCollisionPairCountAtGapMultiples context commonGap = Circle.Applications.ropeCollisionPairCountAtGapMultiplesFittingRange context commonGap"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0083", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_discretized_period_helpers_are_deterministic
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
+        - tests/test_rope_certifier.py::test_rope_certify_cli_emits_json_certificate
+    blocker: ""
   - id: AIRA-T0174
     status: lean_proved
     lean_name: Circle.Applications.ropeCollisionPairCountAtGapMultiples_pos_iff

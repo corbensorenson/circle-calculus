@@ -150,6 +150,14 @@ quotient a checked bound rather than an informal loop limit. -/
 def ropeCollisionPairCountFittingMultipleCount (context commonGap : Nat) : Nat :=
   (context - 1) / commonGap
 
+/-- The same positive-multiple collision count, restricted to the exact
+quotient-bounded range of fitting positive multiples. -/
+def ropeCollisionPairCountAtGapMultiplesFittingRange (context commonGap : Nat) : Nat :=
+  ∑ multiple ∈
+      (Finset.range (ropeCollisionPairCountFittingMultipleCount context commonGap + 1)).filter
+        (fun multiple => 0 < multiple),
+    ropeCollisionPairCountAtGap context (multiple * commonGap)
+
 /-- The least common multiple of a finite integer-period RoPE bank.
 
 For the empty bank this is `1`, matching the vacuous all-channel collision
@@ -251,6 +259,61 @@ theorem ropeCollisionPairCountFittingMultipleCount_spec
     have hprod_le_pred : multiple * commonGap ≤ context - 1 := by
       omega
     exact (Nat.le_div_iff_mul_le hgap_pos).2 hprod_le_pred
+
+/-- The positive-multiple collision count can be computed by summing only over
+the exact quotient-bounded fitting range.
+
+The original definition ranges over all positive multiples below `context`;
+this theorem proves that every multiple beyond `(context - 1) / commonGap`
+contributes zero, and every multiple up to that bound is already in the
+original range. -/
+theorem ropeCollisionPairCountAtGapMultiples_eq_fittingRange
+    {context commonGap : Nat} (hgap_pos : 0 < commonGap) :
+    ropeCollisionPairCountAtGapMultiples context commonGap =
+      ropeCollisionPairCountAtGapMultiplesFittingRange context commonGap := by
+  unfold ropeCollisionPairCountAtGapMultiples
+    ropeCollisionPairCountAtGapMultiplesFittingRange
+  let q := ropeCollisionPairCountFittingMultipleCount context commonGap
+  let small : Finset Nat := (Finset.range (q + 1)).filter (fun multiple => 0 < multiple)
+  let big : Finset Nat := (Finset.range context).filter (fun multiple => 0 < multiple)
+  have hsubset : small ⊆ big := by
+    intro multiple hmem
+    rw [Finset.mem_filter] at hmem ⊢
+    rcases hmem with ⟨hmultiple_range, hmultiple_pos⟩
+    rw [Finset.mem_range] at hmultiple_range
+    have hmultiple_le_q : multiple ≤ q := Nat.lt_succ_iff.mp hmultiple_range
+    have hmultiple_gap_lt_context : multiple * commonGap < context :=
+      (ropeCollisionPairCountFittingMultipleCount_spec
+        (context := context) (commonGap := commonGap) (multiple := multiple)
+        hgap_pos hmultiple_pos).1 hmultiple_le_q
+    have hmultiple_le_gap : multiple ≤ multiple * commonGap := by
+      simpa [Nat.mul_comm] using Nat.le_mul_of_pos_left multiple hgap_pos
+    exact ⟨by
+      rw [Finset.mem_range]
+      exact lt_of_le_of_lt hmultiple_le_gap hmultiple_gap_lt_context, hmultiple_pos⟩
+  have hsmall_eq_big :
+      (∑ multiple ∈ small, ropeCollisionPairCountAtGap context (multiple * commonGap)) =
+        ∑ multiple ∈ big, ropeCollisionPairCountAtGap context (multiple * commonGap) := by
+    refine Finset.sum_subset hsubset ?_
+    intro multiple hmem_big hmem_not_small
+    rw [Finset.mem_filter] at hmem_big
+    have hmultiple_pos : 0 < multiple := hmem_big.2
+    have hnot_le_q : ¬ multiple ≤ q := by
+      intro hle
+      apply hmem_not_small
+      rw [Finset.mem_filter]
+      exact ⟨by
+        rw [Finset.mem_range]
+        exact Nat.lt_succ_iff.mpr hle, hmultiple_pos⟩
+    have hnot_gap_lt_context : ¬ multiple * commonGap < context := by
+      intro hlt
+      exact hnot_le_q
+        ((ropeCollisionPairCountFittingMultipleCount_spec
+          (context := context) (commonGap := commonGap) (multiple := multiple)
+          hgap_pos hmultiple_pos).2 hlt)
+    unfold ropeCollisionPairCountAtGap
+    exact Nat.sub_eq_zero_iff_le.mpr (le_of_not_gt hnot_gap_lt_context)
+  exact hsmall_eq_big.symm
 
 /-- When exactly the first positive multiple of a common collision gap can fit
 inside the inspected context, the total positive-multiple collision-pair count

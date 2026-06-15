@@ -133,6 +133,7 @@ from circle_math.applications import (
     certify_rope_positions,
     collision_pair_count_at_gap,
     collision_pair_count_fitting_multiple_count,
+    collision_pair_count_at_gap_multiples_fitting_range,
     collision_pair_count_at_gap_multiples,
     discretize_rope_periods,
     phase_bank_prefix_collision_reports,
@@ -975,11 +976,10 @@ def js_capped_lcm(values: tuple[int, ...], cap: int) -> tuple[int, bool]:
 def js_collision_pair_count_at_gap_multiples(context: int, gap: int) -> int:
     if gap <= 0 or gap >= context:
         return 0
+    fitting_count = js_collision_pair_count_fitting_multiple_count(context, gap)
     total = 0
-    multiple = 1
-    while multiple * gap < context:
+    for multiple in range(1, fitting_count + 1):
         total += context - multiple * gap
-        multiple += 1
     return total
 
 
@@ -4171,6 +4171,10 @@ def main() -> int:
         assert certificate.exact_discrete.common_gap_fitting_multiple_count == js_fitting_count
         assert collision_pair_count_fitting_multiple_count(config.context_length, lcm_value) == js_fitting_count
         assert collision_pair_count_at_gap_multiples(config.context_length, lcm_value) == js_multiple_count
+        assert (
+            collision_pair_count_at_gap_multiples_fitting_range(config.context_length, lcm_value)
+            == js_multiple_count
+        )
         python_prefix_reports = phase_bank_prefix_collision_reports(config.context_length, discrete)
         js_prefix_reports = js_phase_bank_prefix_collision_reports(config.context_length, js_discrete)
         assert tuple(

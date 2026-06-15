@@ -115,6 +115,7 @@
             "AIRA-T0206",
             "AIRA-T0207",
             "AIRA-T0210",
+            "AIRA-T0211",
             "AIRA-T0199"
           ],
           "total_bank_collision_pair_count": 224
@@ -149,6 +150,7 @@
           "AIRA-T0206",
           "AIRA-T0207",
           "AIRA-T0210",
+          "AIRA-T0211",
           "AIRA-T0199"
         ]
       },
@@ -159,7 +161,7 @@
         "exact_discrete_contract=FAIL common_collision_gap=96 period_count=3 guaranteed_common_gap_collision_pair_count=160 common_gap_fitting_multiple_count=2 guaranteed_common_gap_multiple_pair_count=224 total_bank_collision_pair_count=224",
         "prefix_collision_reports=3 first_exact_pass_prefix_length=none",
         "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
-        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210,AIRA-T0199",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210,AIRA-T0211,AIRA-T0199",
         "Exact pass/fail is for a declared positive integer-period phase bank. No real-valued RoPE, model-quality, context-length, perplexity, speed, memory, training-stability, or deployment claim is made."
       ]
     },
@@ -247,6 +249,7 @@
             "AIRA-T0206",
             "AIRA-T0207",
             "AIRA-T0210",
+            "AIRA-T0211",
             "AIRA-T0200"
           ],
           "total_bank_collision_pair_count": 1
@@ -281,6 +284,7 @@
           "AIRA-T0206",
           "AIRA-T0207",
           "AIRA-T0210",
+          "AIRA-T0211",
           "AIRA-T0200"
         ]
       },
@@ -291,7 +295,7 @@
         "exact_discrete_contract=FAIL common_collision_gap=240 period_count=2 guaranteed_common_gap_collision_pair_count=1 common_gap_fitting_multiple_count=1 guaranteed_common_gap_multiple_pair_count=1 total_bank_collision_pair_count=1",
         "prefix_collision_reports=2 first_exact_pass_prefix_length=none",
         "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
-        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210,AIRA-T0200",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210,AIRA-T0211,AIRA-T0200",
         "Exact pass/fail is for a declared positive integer-period phase bank. No real-valued RoPE, model-quality, context-length, perplexity, speed, memory, training-stability, or deployment claim is made."
       ]
     },
@@ -386,6 +390,7 @@
             "AIRA-T0206",
             "AIRA-T0207",
             "AIRA-T0210",
+            "AIRA-T0211",
             "AIRA-T0201"
           ],
           "total_bank_collision_pair_count": 0
@@ -420,6 +425,7 @@
           "AIRA-T0206",
           "AIRA-T0207",
           "AIRA-T0210",
+          "AIRA-T0211",
           "AIRA-T0201"
         ]
       },
@@ -430,7 +436,7 @@
         "exact_discrete_contract=PASS common_collision_gap=>= context period_count=2 guaranteed_common_gap_collision_pair_count=0 common_gap_fitting_multiple_count=0 guaranteed_common_gap_multiple_pair_count=0 total_bank_collision_pair_count=0",
         "prefix_collision_reports=2 first_exact_pass_prefix_length=2",
         "subfamily_pass_reports=1 smallest_pass_subfamily_size=2",
-        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210,AIRA-T0201",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210,AIRA-T0211,AIRA-T0201",
         "Exact pass/fail is for a declared positive integer-period phase bank. No real-valued RoPE, model-quality, context-length, perplexity, speed, memory, training-stability, or deployment claim is made."
       ]
     },
@@ -518,6 +524,7 @@
             "AIRA-T0206",
             "AIRA-T0207",
             "AIRA-T0210",
+            "AIRA-T0211",
             "AIRA-T0202"
           ],
           "total_bank_collision_pair_count": 1
@@ -552,6 +559,7 @@
           "AIRA-T0206",
           "AIRA-T0207",
           "AIRA-T0210",
+          "AIRA-T0211",
           "AIRA-T0202"
         ]
       },
@@ -562,7 +570,7 @@
         "exact_discrete_contract=FAIL common_collision_gap=960 period_count=2 guaranteed_common_gap_collision_pair_count=1 common_gap_fitting_multiple_count=1 guaranteed_common_gap_multiple_pair_count=1 total_bank_collision_pair_count=1",
         "prefix_collision_reports=2 first_exact_pass_prefix_length=none",
         "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
-        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210,AIRA-T0202",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210,AIRA-T0211,AIRA-T0202",
         "Exact pass/fail is for a declared positive integer-period phase bank. No real-valued RoPE, model-quality, context-length, perplexity, speed, memory, training-stability, or deployment claim is made."
       ]
     }
@@ -924,7 +932,8 @@
             "AIRA-T0205",
             "AIRA-T0206",
             "AIRA-T0207",
-            "AIRA-T0210"
+            "AIRA-T0210",
+            "AIRA-T0211"
           ],
           "total_bank_collision_pair_count": 0
         },
@@ -961,7 +970,8 @@
               "AIRA-T0205",
               "AIRA-T0206",
               "AIRA-T0207",
-              "AIRA-T0210"
+              "AIRA-T0210",
+              "AIRA-T0211"
             ]
           },
           {
@@ -1221,7 +1231,8 @@
           "AIRA-T0205",
           "AIRA-T0206",
           "AIRA-T0207",
-          "AIRA-T0210"
+          "AIRA-T0210",
+          "AIRA-T0211"
         ]
       },
       "preset": "llama_style_10000_4k",
@@ -1234,7 +1245,7 @@
         "subfamily_pass_reports=8 smallest_pass_subfamily_size=1",
         "real_phase_margin=PASS worst_margin_radians=1 worst_gap=1 scanned_gaps=4095",
         "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050,AIRA-T0053,AIRA-T0054,AIRA-T0055,AIRA-T0056,AIRA-T0057,AIRA-T0058,AIRA-T0059,AIRA-T0182,AIRA-T0183,AIRA-T0177,AIRA-T0186,AIRA-T0178,AIRA-T0181,AIRA-T0196,AIRA-T0197,AIRA-T0209,AIRA-T0126,AIRA-T0139,AIRA-T0140,AIRA-T0141 (unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, turn-ratio scaling, finite-context margin consequence, context-plus-margin transfer, integer/rational-turn-ratio guardrails, positive rational finite-context certificate and exact rational boundary, generated-gap enumeration, floor/ceiling nearest-integer, scalar nearest-gap margin, finite certificate iff, negative obstruction iff, scaled no-near-turn iff, certificate-object no-near-turn iff, finite-certificate bank bridge, context-range obstruction bridge, plus band-endpoint and band-list compression bridge precursors only; not a Diophantine proof)",
-        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210,AIRA-T0211",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]
     },
@@ -1610,7 +1621,8 @@
             "AIRA-T0205",
             "AIRA-T0206",
             "AIRA-T0207",
-            "AIRA-T0210"
+            "AIRA-T0210",
+            "AIRA-T0211"
           ],
           "total_bank_collision_pair_count": 0
         },
@@ -1647,7 +1659,8 @@
               "AIRA-T0205",
               "AIRA-T0206",
               "AIRA-T0207",
-              "AIRA-T0210"
+              "AIRA-T0210",
+              "AIRA-T0211"
             ]
           },
           {
@@ -1907,7 +1920,8 @@
           "AIRA-T0205",
           "AIRA-T0206",
           "AIRA-T0207",
-          "AIRA-T0210"
+          "AIRA-T0210",
+          "AIRA-T0211"
         ]
       },
       "preset": "llama_style_10000_128k",
@@ -1920,7 +1934,7 @@
         "subfamily_pass_reports=8 smallest_pass_subfamily_size=2",
         "real_phase_margin=PASS worst_margin_radians=1 worst_gap=1 scanned_gaps=131071",
         "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050,AIRA-T0053,AIRA-T0054,AIRA-T0055,AIRA-T0056,AIRA-T0057,AIRA-T0058,AIRA-T0059,AIRA-T0182,AIRA-T0183,AIRA-T0177,AIRA-T0186,AIRA-T0178,AIRA-T0181,AIRA-T0196,AIRA-T0197,AIRA-T0209,AIRA-T0126,AIRA-T0139,AIRA-T0140,AIRA-T0141 (unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, turn-ratio scaling, finite-context margin consequence, context-plus-margin transfer, integer/rational-turn-ratio guardrails, positive rational finite-context certificate and exact rational boundary, generated-gap enumeration, floor/ceiling nearest-integer, scalar nearest-gap margin, finite certificate iff, negative obstruction iff, scaled no-near-turn iff, certificate-object no-near-turn iff, finite-certificate bank bridge, context-range obstruction bridge, plus band-endpoint and band-list compression bridge precursors only; not a Diophantine proof)",
-        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210,AIRA-T0211",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]
     },
@@ -2280,7 +2294,8 @@
             "AIRA-T0205",
             "AIRA-T0206",
             "AIRA-T0207",
-            "AIRA-T0210"
+            "AIRA-T0210",
+            "AIRA-T0211"
           ],
           "total_bank_collision_pair_count": 0
         },
@@ -2317,7 +2332,8 @@
               "AIRA-T0205",
               "AIRA-T0206",
               "AIRA-T0207",
-              "AIRA-T0210"
+              "AIRA-T0210",
+              "AIRA-T0211"
             ]
           },
           {
@@ -2577,7 +2593,8 @@
           "AIRA-T0205",
           "AIRA-T0206",
           "AIRA-T0207",
-          "AIRA-T0210"
+          "AIRA-T0210",
+          "AIRA-T0211"
         ]
       },
       "preset": "llama_style_500000_128k",
@@ -2590,7 +2607,7 @@
         "subfamily_pass_reports=8 smallest_pass_subfamily_size=1",
         "real_phase_margin=PASS worst_margin_radians=1 worst_gap=1 scanned_gaps=131071",
         "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050,AIRA-T0053,AIRA-T0054,AIRA-T0055,AIRA-T0056,AIRA-T0057,AIRA-T0058,AIRA-T0059,AIRA-T0182,AIRA-T0183,AIRA-T0177,AIRA-T0186,AIRA-T0178,AIRA-T0181,AIRA-T0196,AIRA-T0197,AIRA-T0209,AIRA-T0126,AIRA-T0139,AIRA-T0140,AIRA-T0141 (unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, turn-ratio scaling, finite-context margin consequence, context-plus-margin transfer, integer/rational-turn-ratio guardrails, positive rational finite-context certificate and exact rational boundary, generated-gap enumeration, floor/ceiling nearest-integer, scalar nearest-gap margin, finite certificate iff, negative obstruction iff, scaled no-near-turn iff, certificate-object no-near-turn iff, finite-certificate bank bridge, context-range obstruction bridge, plus band-endpoint and band-list compression bridge precursors only; not a Diophantine proof)",
-        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210,AIRA-T0211",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]
     },
@@ -2681,7 +2698,8 @@
             "AIRA-T0205",
             "AIRA-T0206",
             "AIRA-T0207",
-            "AIRA-T0210"
+            "AIRA-T0210",
+            "AIRA-T0211"
           ],
           "total_bank_collision_pair_count": 24
         },
@@ -2718,7 +2736,8 @@
               "AIRA-T0205",
               "AIRA-T0206",
               "AIRA-T0207",
-              "AIRA-T0210"
+              "AIRA-T0210",
+              "AIRA-T0211"
             ]
           },
           {
@@ -2978,7 +2997,8 @@
           "AIRA-T0205",
           "AIRA-T0206",
           "AIRA-T0207",
-          "AIRA-T0210"
+          "AIRA-T0210",
+          "AIRA-T0211"
         ]
       },
       "preset": "diagnostic_single_channel_10000_20",
@@ -2991,7 +3011,7 @@
         "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
         "real_phase_margin=PASS worst_margin_radians=0.150444078461 worst_gap=19 scanned_gaps=19",
         "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050,AIRA-T0053,AIRA-T0054,AIRA-T0055,AIRA-T0056,AIRA-T0057,AIRA-T0058,AIRA-T0059,AIRA-T0182,AIRA-T0183,AIRA-T0177,AIRA-T0186,AIRA-T0178,AIRA-T0181,AIRA-T0196,AIRA-T0197,AIRA-T0209,AIRA-T0126,AIRA-T0139,AIRA-T0140,AIRA-T0141 (unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, turn-ratio scaling, finite-context margin consequence, context-plus-margin transfer, integer/rational-turn-ratio guardrails, positive rational finite-context certificate and exact rational boundary, generated-gap enumeration, floor/ceiling nearest-integer, scalar nearest-gap margin, finite certificate iff, negative obstruction iff, scaled no-near-turn iff, certificate-object no-near-turn iff, finite-certificate bank bridge, context-range obstruction bridge, plus band-endpoint and band-list compression bridge precursors only; not a Diophantine proof)",
-        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210,AIRA-T0211",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]
     },
@@ -3094,7 +3114,8 @@
             "AIRA-T0205",
             "AIRA-T0206",
             "AIRA-T0207",
-            "AIRA-T0210"
+            "AIRA-T0210",
+            "AIRA-T0211"
           ],
           "total_bank_collision_pair_count": 14
         },
@@ -3131,7 +3152,8 @@
               "AIRA-T0205",
               "AIRA-T0206",
               "AIRA-T0207",
-              "AIRA-T0210"
+              "AIRA-T0210",
+              "AIRA-T0211"
             ]
           },
           {
@@ -3391,7 +3413,8 @@
           "AIRA-T0205",
           "AIRA-T0206",
           "AIRA-T0207",
-          "AIRA-T0210"
+          "AIRA-T0210",
+          "AIRA-T0211"
         ]
       },
       "preset": "diagnostic_two_channel_36_128",
@@ -3404,7 +3427,7 @@
         "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
         "real_phase_margin=PASS worst_margin_radians=0.0973355292325 worst_gap=113 scanned_gaps=127",
         "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050,AIRA-T0053,AIRA-T0054,AIRA-T0055,AIRA-T0056,AIRA-T0057,AIRA-T0058,AIRA-T0059,AIRA-T0182,AIRA-T0183,AIRA-T0177,AIRA-T0186,AIRA-T0178,AIRA-T0181,AIRA-T0196,AIRA-T0197,AIRA-T0209,AIRA-T0126,AIRA-T0139,AIRA-T0140,AIRA-T0141 (unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, turn-ratio scaling, finite-context margin consequence, context-plus-margin transfer, integer/rational-turn-ratio guardrails, positive rational finite-context certificate and exact rational boundary, generated-gap enumeration, floor/ceiling nearest-integer, scalar nearest-gap margin, finite certificate iff, negative obstruction iff, scaled no-near-turn iff, certificate-object no-near-turn iff, finite-certificate bank bridge, context-range obstruction bridge, plus band-endpoint and band-list compression bridge precursors only; not a Diophantine proof)",
-        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210,AIRA-T0211",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]
     },
@@ -3564,7 +3587,8 @@
             "AIRA-T0205",
             "AIRA-T0206",
             "AIRA-T0207",
-            "AIRA-T0210"
+            "AIRA-T0210",
+            "AIRA-T0211"
           ],
           "total_bank_collision_pair_count": 0
         },
@@ -3601,7 +3625,8 @@
               "AIRA-T0205",
               "AIRA-T0206",
               "AIRA-T0207",
-              "AIRA-T0210"
+              "AIRA-T0210",
+              "AIRA-T0211"
             ]
           },
           {
@@ -3861,7 +3886,8 @@
           "AIRA-T0205",
           "AIRA-T0206",
           "AIRA-T0207",
-          "AIRA-T0210"
+          "AIRA-T0210",
+          "AIRA-T0211"
         ]
       },
       "preset": "diagnostic_prefix_pass_4_128",
@@ -3874,7 +3900,7 @@
         "subfamily_pass_reports=4 smallest_pass_subfamily_size=2",
         "real_phase_margin=PASS worst_margin_radians=0.60645632738 worst_gap=88 scanned_gaps=127",
         "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050,AIRA-T0053,AIRA-T0054,AIRA-T0055,AIRA-T0056,AIRA-T0057,AIRA-T0058,AIRA-T0059,AIRA-T0182,AIRA-T0183,AIRA-T0177,AIRA-T0186,AIRA-T0178,AIRA-T0181,AIRA-T0196,AIRA-T0197,AIRA-T0209,AIRA-T0126,AIRA-T0139,AIRA-T0140,AIRA-T0141 (unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, turn-ratio scaling, finite-context margin consequence, context-plus-margin transfer, integer/rational-turn-ratio guardrails, positive rational finite-context certificate and exact rational boundary, generated-gap enumeration, floor/ceiling nearest-integer, scalar nearest-gap margin, finite certificate iff, negative obstruction iff, scaled no-near-turn iff, certificate-object no-near-turn iff, finite-certificate bank bridge, context-range obstruction bridge, plus band-endpoint and band-list compression bridge precursors only; not a Diophantine proof)",
-        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210,AIRA-T0211",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]
     },
@@ -3991,6 +4017,7 @@
             "AIRA-T0206",
             "AIRA-T0207",
             "AIRA-T0210",
+            "AIRA-T0211",
             "AIRA-T0198"
           ],
           "total_bank_collision_pair_count": 10
@@ -4028,7 +4055,8 @@
               "AIRA-T0205",
               "AIRA-T0206",
               "AIRA-T0207",
-              "AIRA-T0210"
+              "AIRA-T0210",
+              "AIRA-T0211"
             ]
           },
           {
@@ -4289,6 +4317,7 @@
           "AIRA-T0206",
           "AIRA-T0207",
           "AIRA-T0210",
+          "AIRA-T0211",
           "AIRA-T0198"
         ]
       },
@@ -4302,7 +4331,7 @@
         "subfamily_pass_reports=0 smallest_pass_subfamily_size=none",
         "real_phase_margin=PASS worst_margin_radians=0.548667764616 worst_gap=56 scanned_gaps=63",
         "real_phase_formal_precursors=AIRA-T0029,AIRA-T0030,AIRA-T0031,AIRA-T0032,AIRA-T0033,AIRA-T0037,AIRA-T0038,AIRA-T0039,AIRA-T0040,AIRA-T0041,AIRA-T0042,AIRA-T0043,AIRA-T0044,AIRA-T0045,AIRA-T0047,AIRA-T0050,AIRA-T0053,AIRA-T0054,AIRA-T0055,AIRA-T0056,AIRA-T0057,AIRA-T0058,AIRA-T0059,AIRA-T0182,AIRA-T0183,AIRA-T0177,AIRA-T0186,AIRA-T0178,AIRA-T0181,AIRA-T0196,AIRA-T0197,AIRA-T0209,AIRA-T0126,AIRA-T0139,AIRA-T0140,AIRA-T0141 (unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, turn-ratio scaling, finite-context margin consequence, context-plus-margin transfer, integer/rational-turn-ratio guardrails, positive rational finite-context certificate and exact rational boundary, generated-gap enumeration, floor/ceiling nearest-integer, scalar nearest-gap margin, finite certificate iff, negative obstruction iff, scaled no-near-turn iff, certificate-object no-near-turn iff, finite-certificate bank bridge, context-range obstruction bridge, plus band-endpoint and band-list compression bridge precursors only; not a Diophantine proof)",
-        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210,AIRA-T0198",
+        "theorem_ids=AIRA-T0021,AIRA-T0022,AIRA-T0023,AIRA-T0024,AIRA-T0025,AIRA-T0026,AIRA-T0027,AIRA-T0028,AIRA-T0034,AIRA-T0035,AIRA-T0036,AIRA-T0179,AIRA-T0180,AIRA-T0184,AIRA-T0046,AIRA-T0048,AIRA-T0049,AIRA-T0051,AIRA-T0052,AIRA-T0174,AIRA-T0175,AIRA-T0176,AIRA-T0203,AIRA-T0204,AIRA-T0205,AIRA-T0206,AIRA-T0207,AIRA-T0210,AIRA-T0211,AIRA-T0198",
         "Exact pass/fail is for the declared integer-period discretized RoPE model. The real-phase margin scan is numerical evidence only. This is not a model-quality, context-length, perplexity, training-stability, speed, memory, or deployment claim."
       ]
     }

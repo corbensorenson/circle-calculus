@@ -44,6 +44,7 @@ from circle_math.applications import (
     audit_standard_channel0_rational_band_certificate,
     collision_pair_count_at_gap,
     collision_pair_count_fitting_multiple_count,
+    collision_pair_count_at_gap_multiples_fitting_range,
     collision_pair_count_at_gap_multiples,
     discretize_rope_periods,
     phase_bank_prefix_collision_reports,
@@ -87,6 +88,8 @@ def test_discretized_period_helpers_are_deterministic() -> None:
     assert capped_lcm((4, 6), 30) == (12, False)
     assert collision_pair_count_at_gap(10, 4) == 6
     assert collision_pair_count_at_gap_multiples(20, 6) == 24
+    assert collision_pair_count_at_gap_multiples_fitting_range(20, 6) == 24
+    assert collision_pair_count_at_gap_multiples_fitting_range(6, 6) == 0
     assert collision_pair_count_fitting_multiple_count(20, 6) == 3
     assert collision_pair_count_fitting_multiple_count(6, 6) == 0
     assert collision_pair_count_fitting_multiple_count(6, 0) == 0
@@ -123,6 +126,7 @@ def test_single_period_collision_count_matches_bruteforce() -> None:
     assert "AIRA-T0206" in ROPE_CERTIFIER_THEOREMS
     assert "AIRA-T0207" in ROPE_CERTIFIER_THEOREMS
     assert "AIRA-T0210" in ROPE_CERTIFIER_THEOREMS
+    assert "AIRA-T0211" in ROPE_CERTIFIER_THEOREMS
 
 
 def test_real_phase_nat_turn_error_matches_endpoint_precursor_shape() -> None:
@@ -1943,6 +1947,7 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     assert "AIRA-T0175" in certificate.theorem_ids
     assert "AIRA-T0176" in certificate.theorem_ids
     assert "AIRA-T0210" in certificate.theorem_ids
+    assert "AIRA-T0211" in certificate.theorem_ids
     assert "AIRA-T0024" in certificate.exact_discrete.assumptions[3]
     exact_assumptions = "\n".join(certificate.exact_discrete.assumptions)
     assert "AIRA-T0184" in exact_assumptions
@@ -2177,6 +2182,7 @@ def test_exact_phase_bank_diagnostic_presets_cover_quantized_and_scaled_boundari
     assert "AIRA-T0206" in scaled_fail.exact_discrete.theorem_ids
     assert "AIRA-T0207" in scaled_fail.exact_discrete.theorem_ids
     assert "AIRA-T0210" in scaled_fail.exact_discrete.theorem_ids
+    assert "AIRA-T0211" in scaled_fail.exact_discrete.theorem_ids
 
 
 def test_phase_bank_certify_cli_emits_json_certificate() -> None:

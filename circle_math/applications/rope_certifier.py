@@ -51,6 +51,7 @@ ROPE_CERTIFIER_THEOREMS: tuple[str, ...] = (
     "AIRA-T0206",
     "AIRA-T0207",
     "AIRA-T0210",
+    "AIRA-T0211",
 )
 
 ROPE_CERTIFIER_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -82,6 +83,7 @@ ROPE_CERTIFIER_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_single_gap_count",
     "Circle.Applications.ropeCollisionPairCountAtGapMultiples_period_succ_eq_one",
     "Circle.Applications.ropeCollisionPairCountFittingMultipleCount_spec",
+    "Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_fittingRange",
 )
 
 DIAGNOSTIC_PREFIX_PERIODS: tuple[int, ...] = (6, 9, 13, 18)
@@ -115,6 +117,7 @@ PHASE_BANK_PREFIX_THEOREMS: tuple[str, ...] = (
     "AIRA-T0175",
     "AIRA-T0176",
     "AIRA-T0210",
+    "AIRA-T0211",
 )
 
 PHASE_BANK_FIRST_PREFIX_THEOREMS: tuple[str, ...] = (
@@ -1260,23 +1263,27 @@ def collision_pair_count_at_gap(context_length: int, gap: int) -> int:
     return context_length - gap
 
 
-def collision_pair_count_at_gap_multiples(context_length: int, common_gap: int) -> int:
-    """Count guaranteed starts over all positive in-context multiples of a common gap."""
-    if common_gap <= 0 or common_gap >= context_length:
-        return 0
-    total = 0
-    multiple = 1
-    while multiple * common_gap < context_length:
-        total += collision_pair_count_at_gap(context_length, multiple * common_gap)
-        multiple += 1
-    return total
-
-
 def collision_pair_count_fitting_multiple_count(context_length: int, common_gap: int) -> int:
     """Count positive common-gap multiples whose gap remains inside the context."""
     if common_gap <= 0 or common_gap >= context_length:
         return 0
     return (context_length - 1) // common_gap
+
+
+def collision_pair_count_at_gap_multiples_fitting_range(context_length: int, common_gap: int) -> int:
+    """Count guaranteed starts over the quotient-bounded fitting multiple range."""
+    if common_gap <= 0 or common_gap >= context_length:
+        return 0
+    fitting_count = collision_pair_count_fitting_multiple_count(context_length, common_gap)
+    return sum(
+        collision_pair_count_at_gap(context_length, multiple * common_gap)
+        for multiple in range(1, fitting_count + 1)
+    )
+
+
+def collision_pair_count_at_gap_multiples(context_length: int, common_gap: int) -> int:
+    """Count guaranteed starts over all positive in-context multiples of a common gap."""
+    return collision_pair_count_at_gap_multiples_fitting_range(context_length, common_gap)
 
 
 def single_gap_boundary_collision_pair_count(context_length: int, common_gap: int) -> int | None:
@@ -3484,11 +3491,12 @@ def certify_exact_discrete_phase_bank(
             "Lean theorem AIRA-T0028 certifies every counted start at the common collision gap as an all-channel collision.",
             "Lean theorem AIRA-T0034 extends that guarantee to every positive in-context multiple of the common collision gap.",
             "Lean theorem AIRA-T0210 proves the executable quotient bound for those positive in-context multiples: for a positive common gap and positive multiple, multiple <= (context_length - 1) // common_gap exactly when multiple * common_gap is still inside the context.",
+            "Lean theorem AIRA-T0211 proves the positive-multiple count equals the finite sum over that quotient-bounded fitting range, so the executable loop does not depend on scanning noncontributing multiples.",
             "Lean theorem AIRA-T0035 proves that every unequal single-channel collision has a positive period-multiple gap.",
             "Lean theorem AIRA-T0036 proves all-channel bank collision is equivalent to divisibility by the period-bank LCM, making the bank collision count total for the integer-period model. AIRA-T0179 proves that positive declared periods give the positive LCM required by the witness/count theorems. AIRA-T0180 proves the end-to-end exact pass/fail contract: no unequal in-context all-channel collision iff the LCM reaches the context. AIRA-T0184 proves the public report bridge: exact no-collision over the inspected context iff total_bank_collision_pair_count is zero. AIRA-T0048 and AIRA-T0049 prove the fail side: starts at the LCM gap collide, and a positive LCM below context yields an explicit unequal collision witness.",
             "Lean theorems AIRA-T0174 and AIRA-T0175 connect the positive-multiple count used for total_bank_collision_pair_count to the LCM pass/fail boundary: under a positive LCM, that total count is zero exactly when the LCM reaches the inspected context. AIRA-T0176 proves the positive-count case is equivalent to the existence of an unequal all-channel collision witness.",
-            "For named public diagnostic rows, AIRA-T0198 through AIRA-T0202 certify the concrete total_bank_collision_pair_count values reported for the shared-factor, quantized-boundary, and scaled-period boundary examples. AIRA-T0206 gives the reusable first-repeat-only count formula, and AIRA-T0207 specializes it to the one-token-past-boundary count of 1. AIRA-T0210 gives the reusable quotient bound for the number of positive fitting multiples. AIRA-T0204 gives the single-channel threshold: no unequal in-context collision iff the context does not exceed that period. AIRA-T0203 and AIRA-T0205 give the count semantics for each single_period_collision_pair_counts entry: for a positive declared period, count zero is equivalent to no unequal in-context collision, and positive count is equivalent to an actual unequal collision witness in that channel.",
-            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049/AIRA-T0174/AIRA-T0175/AIRA-T0176/AIRA-T0210 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context. AIRA-T0190 proves a certified first passing prefix is unique, and AIRA-T0191 packages such a first-prefix certificate into a full-bank no-collision bridge. Subfamily reports use AIRA-T0052 for the unordered selected-subbank version; AIRA-T0193 and AIRA-T0194 are the reusable smallest-subfamily size uniqueness and no-collision bridges when a report has a Lean certificate for the minimal-size predicate.",
+            "For named public diagnostic rows, AIRA-T0198 through AIRA-T0202 certify the concrete total_bank_collision_pair_count values reported for the shared-factor, quantized-boundary, and scaled-period boundary examples. AIRA-T0206 gives the reusable first-repeat-only count formula, and AIRA-T0207 specializes it to the one-token-past-boundary count of 1. AIRA-T0210 gives the reusable quotient bound for the number of positive fitting multiples, and AIRA-T0211 proves the sum can be restricted to that fitting range. AIRA-T0204 gives the single-channel threshold: no unequal in-context collision iff the context does not exceed that period. AIRA-T0203 and AIRA-T0205 give the count semantics for each single_period_collision_pair_counts entry: for a positive declared period, count zero is equivalent to no unequal in-context collision, and positive count is equivalent to an actual unequal collision witness in that channel.",
+            "Prefix collision reports apply the same AIRA-T0036/AIRA-T0046/AIRA-T0048/AIRA-T0049/AIRA-T0174/AIRA-T0175/AIRA-T0176/AIRA-T0210/AIRA-T0211 LCM theorem spine to bounded channel prefixes so engineers can see when a smaller declared sub-bank already distinguishes the inspected context; AIRA-T0051 proves that adding suffix channels cannot create an unequal collision once the prefix LCM reaches the context. AIRA-T0190 proves a certified first passing prefix is unique, and AIRA-T0191 packages such a first-prefix certificate into a full-bank no-collision bridge. Subfamily reports use AIRA-T0052 for the unordered selected-subbank version; AIRA-T0193 and AIRA-T0194 are the reusable smallest-subfamily size uniqueness and no-collision bridges when a report has a Lean certificate for the minimal-size predicate.",
         ),
         explanation=(
             "PASS: the common exact collision gap is at least the context length, so no two unequal "

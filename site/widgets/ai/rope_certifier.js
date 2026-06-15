@@ -41,6 +41,7 @@ const THEOREM_GROUPS = [
       "AIRA-T0206",
       "AIRA-T0207",
       "AIRA-T0210",
+      "AIRA-T0211",
     ],
   },
   {
@@ -119,8 +120,9 @@ function cappedLcm(values, cap) {
 
 function collisionPairCountAtGapMultiples(context, gap) {
   if (gap <= 0 || gap >= context) return 0;
+  const fittingCount = fittingCollisionMultipleCount(context, gap);
   let total = 0;
-  for (let multiple = 1; multiple * gap < context; multiple += 1) {
+  for (let multiple = 1; multiple <= fittingCount; multiple += 1) {
     total += context - multiple * gap;
   }
   return total;
