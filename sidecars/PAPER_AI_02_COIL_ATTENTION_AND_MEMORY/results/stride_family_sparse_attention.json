@@ -146,7 +146,8 @@
         "AIT-T0104",
         "AIT-T0105",
         "AIT-T0106",
-        "AIT-T0107"
+        "AIT-T0107",
+        "AIT-T0108"
       ],
       "theorem_side_coil_residues_no_collision": true,
       "theorem_side_lag_candidates": [
@@ -178,6 +179,7 @@
         81
       ],
       "theorem_side_query_candidates_no_collision": true,
+      "theorem_side_query_count_le_unique_lag_count": true,
       "theorem_side_unique_lag_candidate_count": 10,
       "theorem_side_unique_query_candidate_count": 10,
       "uncovered_count_positive": true,
@@ -485,7 +487,8 @@
       "AIT-T0104",
       "AIT-T0105",
       "AIT-T0106",
-      "AIT-T0107"
+      "AIT-T0107",
+      "AIT-T0108"
     ],
     "theorem_side_coil_residues_no_collision": true,
     "theorem_side_lag_candidates": [
@@ -513,6 +516,7 @@
       4
     ],
     "theorem_side_query_candidates_no_collision": true,
+    "theorem_side_query_count_le_unique_lag_count": true,
     "theorem_side_unique_lag_candidate_count": 8,
     "theorem_side_unique_query_candidate_count": 8,
     "uncovered_count_positive": false,

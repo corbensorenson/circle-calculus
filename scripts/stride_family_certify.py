@@ -147,7 +147,10 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             "query_budget_status="
             f"{query_budget_status} unique_query_candidates="
             f"{payload['theorem_side_unique_query_candidate_count']} "
-            f"query_no_collision={payload['theorem_side_query_candidates_no_collision']}"
+            f"query_no_collision={payload['theorem_side_query_candidates_no_collision']} "
+            "query_le_unique_lag="
+            f"{payload['theorem_side_query_count_le_unique_lag_count']} "
+            "theorem=AIT-T0108"
         ),
         (
             "structural_checks="

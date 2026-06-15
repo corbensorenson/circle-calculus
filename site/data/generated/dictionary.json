@@ -5177,6 +5177,12 @@
           "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_dedup_bound_of_context_pos",
           "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_dedup_bound_of_context_pos",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0108",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_uniqueLagCandidateCount",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_uniqueLagCandidateCount",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -5794,6 +5800,12 @@
           "id": "AIT-T0107",
           "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_dedup_bound_of_context_pos",
           "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_dedup_bound_of_context_pos",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0108",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_uniqueLagCandidateCount",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_uniqueLagCandidateCount",
           "status": "proved"
         }
       ],
@@ -7281,6 +7293,12 @@
           "id": "AIT-T0107",
           "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_dedup_bound_of_context_pos",
           "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_dedup_bound_of_context_pos",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0108",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_uniqueLagCandidateCount",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_uniqueLagCandidateCount",
           "status": "proved"
         }
       ],
@@ -11907,6 +11925,12 @@
           "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_dedup_bound_of_context_pos",
           "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_dedup_bound_of_context_pos",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0108",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_uniqueLagCandidateCount",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_uniqueLagCandidateCount",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -15002,6 +15026,12 @@
           "id": "AIT-T0107",
           "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_dedup_bound_of_context_pos",
           "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_dedup_bound_of_context_pos",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0108",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_uniqueLagCandidateCount",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_uniqueLagCandidateCount",
           "status": "proved"
         }
       ],

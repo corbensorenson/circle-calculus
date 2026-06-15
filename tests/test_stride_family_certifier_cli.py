@@ -66,6 +66,7 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     assert "AIT-T0091" in result.stdout
     assert "AIT-T0106" in result.stdout
     assert "AIT-T0107" in result.stdout
+    assert "query_le_unique_lag=True theorem=AIT-T0108" in result.stdout
     assert "not model-quality evidence" in result.stdout
 
     payload = json.loads(json_out.read_text())
@@ -114,6 +115,8 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     assert "AIT-T0105" in payload["theorem_ids"]
     assert "AIT-T0106" in payload["theorem_ids"]
     assert "AIT-T0107" in payload["theorem_ids"]
+    assert "AIT-T0108" in payload["theorem_ids"]
+    assert payload["theorem_side_query_count_le_unique_lag_count"] is True
     assert payload["fixture_theorem_ids"] == [
         "AIT-T0084",
         "AIT-T0085",

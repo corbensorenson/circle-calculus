@@ -1209,6 +1209,38 @@ theorem hybridFamilyUniqueQueryCandidateCount_le_dedup_bound_of_context_pos
     (hybridFamilyUniqueQueryCandidateCount_le_raw
       n query window pathLength strides)
 
+/-- Mapping lag candidates to query-indexed predecessor addresses cannot create
+more distinct candidates than the lag-side generator already had.
+
+The query list is the image of the lag list under `predecessorIndex`; finite
+images can identify values but cannot increase cardinality. This lets the
+executable report treat lag-side deduplication as a theorem-backed upper bound
+for the exact query-indexed deduplicated count. -/
+theorem hybridFamilyUniqueQueryCandidateCount_le_uniqueLagCandidateCount
+    (n query window pathLength : Nat) (strides : List Nat) :
+    hybridFamilyUniqueQueryCandidateCount n query window pathLength strides ≤
+      hybridFamilyUniqueLagCandidateCount n window pathLength strides := by
+  unfold hybridFamilyUniqueQueryCandidateCount
+    hybridFamilyQueryCandidateList hybridFamilyUniqueLagCandidateCount
+  let xs := hybridFamilyLagCandidateList n window pathLength strides
+  let f := predecessorIndex n query
+  have hsubset : (xs.map f).toFinset ⊆ Finset.image f xs.toFinset := by
+    intro candidate hcandidate
+    rw [List.mem_toFinset] at hcandidate
+    rw [List.mem_map] at hcandidate
+    rcases hcandidate with ⟨lag, hlag, rfl⟩
+    rw [Finset.mem_image]
+    exact ⟨lag, by rw [List.mem_toFinset]; exact hlag, rfl⟩
+  have hcardSubset :
+      (xs.map f).toFinset.card ≤ (Finset.image f xs.toFinset).card :=
+    Finset.card_le_card hsubset
+  have hcardImage :
+      (Finset.image f xs.toFinset).card ≤ xs.toFinset.card :=
+    Finset.card_image_le
+  have hcard : (xs.map f).toFinset.card ≤ xs.toFinset.card :=
+    le_trans hcardSubset hcardImage
+  simpa [xs, f, List.card_toFinset] using hcard
+
 /-- A no-wrap single stride generates duplicate-free residues.
 
 If all admitted multiples `step * stride`, `1 ≤ step ≤ pathLength`, remain

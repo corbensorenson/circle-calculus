@@ -909,6 +909,7 @@ class StrideFamilyCoverageCertificate:
     theorem_side_lag_candidates_no_collision: bool
     theorem_side_query_candidates: tuple[int, ...]
     theorem_side_unique_query_candidate_count: int
+    theorem_side_query_count_le_unique_lag_count: bool
     theorem_side_predecessor_injective_on_lag_candidates: bool
     theorem_side_predecessor_injective_window_context_condition: bool
     theorem_side_query_candidates_no_collision: bool
@@ -1000,6 +1001,7 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0105",
         "AIT-T0106",
         "AIT-T0107",
+        "AIT-T0108",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -2877,6 +2879,9 @@ def certify_stride_family_coverage(
         ),
         theorem_side_query_candidates=theorem_side_query_candidates,
         theorem_side_unique_query_candidate_count=len(set(theorem_side_query_candidates)),
+        theorem_side_query_count_le_unique_lag_count=(
+            len(set(theorem_side_query_candidates)) <= len(set(theorem_side_lag_candidates))
+        ),
         theorem_side_predecessor_injective_on_lag_candidates=(
             stride_family_predecessor_injective_on_lag_candidates(
                 sequence_length,

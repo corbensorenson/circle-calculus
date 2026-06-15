@@ -6453,6 +6453,21 @@ theorems:
         - tests/test_stride_family_certifier_cli.py
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
     blocker: ""
+  - id: AIT-T0108
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_uniqueLagCandidateCount
+    informal_statement: "For any local-window plus stride-family sparse-attention plan, mapping theorem-side lag candidates to query-indexed predecessor addresses cannot create more distinct query candidates than there were distinct lag candidates."
+    formal_statement: "forall n query window pathLength : Nat, forall strides : List Nat, Circle.Applications.hybridFamilyUniqueQueryCandidateCount n query window pathLength strides <= Circle.Applications.hybridFamilyUniqueLagCandidateCount n window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

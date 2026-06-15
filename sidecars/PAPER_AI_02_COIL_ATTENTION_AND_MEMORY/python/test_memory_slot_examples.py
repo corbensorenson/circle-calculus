@@ -842,6 +842,10 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     assert result.coverage_certificate.theorem_side_unique_query_candidate_count <= (
         result.coverage_certificate.deduplicated_candidate_budget_upper_bound
     )
+    assert result.coverage_certificate.theorem_side_query_count_le_unique_lag_count
+    assert result.coverage_certificate.theorem_side_unique_query_candidate_count <= (
+        result.coverage_certificate.theorem_side_unique_lag_candidate_count
+    )
     assert result.coverage_certificate.theorem_side_query_candidates_no_collision
     assert result.coverage_certificate.theorem_side_query_candidates_no_collision == (
         stride_family_query_candidates_no_collision(120, 0, (7, 13), 3, 4)
@@ -961,6 +965,7 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0105",
         "AIT-T0106",
         "AIT-T0107",
+        "AIT-T0108",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -1038,6 +1043,8 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0105" in certificate["theorem_ids"]
     assert "AIT-T0106" in certificate["theorem_ids"]
     assert "AIT-T0107" in certificate["theorem_ids"]
+    assert "AIT-T0108" in certificate["theorem_ids"]
+    assert certificate["theorem_side_query_count_le_unique_lag_count"] is True
     complete = payload["complete_fixture_certificate"]
     assert complete["sequence_length"] == 9
     assert complete["strides"] == [3, 4, 7]
@@ -1162,7 +1169,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "| 120 | 120 | 4 | 3 | 7, 13 | 5, 9 | False | 0.084 |" in markdown_result.stdout
     assert (
         "| 9 | 2 | 2 | 3, 4, 7 | True | 0 | None | True | True | True | "
-        "True | False | True | 8 | 8 | 8 | "
+        "True | False | True | 8 | 8 | 8 | True | "
         "AIT-T0086, AIT-T0087, AIT-T0088, AIT-T0089, AIT-T0105 |"
     ) in markdown_result.stdout
     assert "Planner-style declared plans" in markdown_result.stdout
@@ -1279,6 +1286,10 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert certificate.theorem_side_unique_query_candidate_count <= (
         certificate.raw_candidate_budget_upper_bound
     )
+    assert certificate.theorem_side_query_count_le_unique_lag_count
+    assert certificate.theorem_side_unique_query_candidate_count <= (
+        certificate.theorem_side_unique_lag_candidate_count
+    )
     assert not certificate.theorem_side_query_candidates_no_collision
     assert certificate.theorem_side_query_candidates_no_collision == (
         stride_family_query_candidates_no_collision(10, 0, (3,), 2, 9)
@@ -1337,6 +1348,7 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert "AIT-T0075" in certificate.theorem_ids
     assert "AIT-T0106" in certificate.theorem_ids
     assert "AIT-T0107" in certificate.theorem_ids
+    assert "AIT-T0108" in certificate.theorem_ids
     assert "AIT-T0025" in certificate.theorem_ids
 
 
