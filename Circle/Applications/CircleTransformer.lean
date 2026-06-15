@@ -1,5 +1,6 @@
 import Circle.Core.Period
 import Circle.Core.Rotation
+import Mathlib.Data.Finset.Card
 import Mathlib.Data.List.Dedup
 import Mathlib.Tactic.Ring
 
@@ -1165,6 +1166,48 @@ theorem hybridFamilyUniqueQueryCandidateCount_le_raw
   unfold hybridFamilyUniqueQueryCandidateCount
   rw [← hybridFamilyQueryCandidateList_length n query window pathLength strides]
   exact List.Sublist.length_le (List.dedup_sublist _)
+
+/-- The exact deduplicated query-indexed candidate count is never larger than
+the finite context when the context is nonempty.
+
+Every theorem-side query candidate is produced by reducing a predecessor index
+modulo `n`, so deduplicating those candidates can never yield more than the
+`n` available residue addresses. -/
+theorem hybridFamilyUniqueQueryCandidateCount_le_context_of_pos
+    {n query window pathLength : Nat} {strides : List Nat}
+    (hn : 0 < n) :
+    hybridFamilyUniqueQueryCandidateCount n query window pathLength strides ≤ n := by
+  let candidates :=
+    hybridFamilyQueryCandidateList n query window pathLength strides
+  have hsubset : candidates.toFinset ⊆ Finset.range n := by
+    intro candidate hcandidate
+    rw [List.mem_toFinset] at hcandidate
+    unfold candidates hybridFamilyQueryCandidateList at hcandidate
+    rw [List.mem_map] at hcandidate
+    rcases hcandidate with ⟨lag, _hlag, rfl⟩
+    unfold predecessorIndex
+    exact Finset.mem_range.2 (Nat.mod_lt _ hn)
+  have hcard := Finset.card_le_card hsubset
+  simpa [hybridFamilyUniqueQueryCandidateCount, candidates, List.card_toFinset] using hcard
+
+/-- The exact deduplicated query-indexed candidate count is bounded by the
+context-clipped sparse-attention budget `min(context, raw_budget)`.
+
+This packages the two independent facts engineers need from the report: the
+deduplicated query candidates cannot exceed either the raw generator budget or
+the finite context size. -/
+theorem hybridFamilyUniqueQueryCandidateCount_le_dedup_bound_of_context_pos
+    {n query window pathLength : Nat} {strides : List Nat}
+    (hn : 0 < n) :
+    hybridFamilyUniqueQueryCandidateCount n query window pathLength strides ≤
+      hybridFamilyDedupCandidateBudgetBound n window pathLength strides := by
+  unfold hybridFamilyDedupCandidateBudgetBound
+  exact le_min
+    (hybridFamilyUniqueQueryCandidateCount_le_context_of_pos
+      (query := query) (window := window) (pathLength := pathLength)
+      (strides := strides) hn)
+    (hybridFamilyUniqueQueryCandidateCount_le_raw
+      n query window pathLength strides)
 
 /-- A no-wrap single stride generates duplicate-free residues.
 

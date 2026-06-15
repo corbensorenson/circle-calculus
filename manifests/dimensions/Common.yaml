@@ -6365,6 +6365,36 @@ theorems:
         - tests/test_stride_family_certifier_cli.py
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
     blocker: ""
+  - id: AIT-T0106
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_context_of_pos
+    informal_statement: "For any nonempty context, the exact deduplicated theorem-side query-indexed candidate count is never larger than the number of available context addresses."
+    formal_statement: "forall {n query window pathLength : Nat} {strides : List Nat}, 0 < n -> Circle.Applications.hybridFamilyUniqueQueryCandidateCount n query window pathLength strides <= n"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
+  - id: AIT-T0107
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_dedup_bound_of_context_pos
+    informal_statement: "For any nonempty context, the exact deduplicated theorem-side query-indexed candidate count is bounded by the context-clipped sparse-attention budget min(context, raw_budget)."
+    formal_statement: "forall {n query window pathLength : Nat} {strides : List Nat}, 0 < n -> Circle.Applications.hybridFamilyUniqueQueryCandidateCount n query window pathLength strides <= Circle.Applications.hybridFamilyDedupCandidateBudgetBound n window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

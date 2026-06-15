@@ -144,7 +144,9 @@
         "AIT-T0102",
         "AIT-T0103",
         "AIT-T0104",
-        "AIT-T0105"
+        "AIT-T0105",
+        "AIT-T0106",
+        "AIT-T0107"
       ],
       "theorem_side_coil_residues_no_collision": true,
       "theorem_side_lag_candidates": [
@@ -481,7 +483,9 @@
       "AIT-T0102",
       "AIT-T0103",
       "AIT-T0104",
-      "AIT-T0105"
+      "AIT-T0105",
+      "AIT-T0106",
+      "AIT-T0107"
     ],
     "theorem_side_coil_residues_no_collision": true,
     "theorem_side_lag_candidates": [
