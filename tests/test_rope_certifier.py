@@ -392,11 +392,13 @@ def test_named_rational_turn_ratio_certificate_is_theorem_backed() -> None:
     assert certificate.theorem_ids == ROPE_RATIONAL_PRESET_4099_THEOREMS
     assert "AIRA-T0182" in certificate.theorem_ids
     assert "AIRA-T0183" in certificate.theorem_ids
+    assert "AIRA-T0214" in certificate.theorem_ids
     assert "AIRA-T0060" in certificate.theorem_ids
     assert "AIRA-T0177" in certificate.theorem_ids
     assert "AIRA-T0186" in certificate.theorem_ids
     assert "AIRA-T0061" in certificate.theorem_ids
     assert "AIRA-T0185" in certificate.theorem_ids
+    assert "AIRA-T0215" in certificate.theorem_ids
     assert "AIRA-T0187" in certificate.theorem_ids
     assert "AIRA-T0196" in certificate.theorem_ids
     assert "AIRA-T0062" in certificate.theorem_ids

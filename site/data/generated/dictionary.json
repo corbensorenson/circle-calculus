@@ -13289,6 +13289,18 @@
           "lean_name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_closedForm",
           "name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_closedForm",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0214",
+          "lean_name": "Circle.Applications.ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized",
+          "name": "Circle.Applications.ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0215",
+          "lean_name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin_report",
+          "name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin_report",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -14470,6 +14482,18 @@
           "id": "AIRA-T0213",
           "lean_name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_closedForm",
           "name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_closedForm",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0214",
+          "lean_name": "Circle.Applications.ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized",
+          "name": "Circle.Applications.ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0215",
+          "lean_name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin_report",
+          "name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin_report",
           "status": "proved"
         }
       ],
@@ -16246,6 +16270,18 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_bracket_of_obstruction",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_bracket_of_obstruction",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0214",
+          "lean_name": "Circle.Applications.ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized",
+          "name": "Circle.Applications.ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0215",
+          "lean_name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin_report",
+          "name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin_report",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -17376,6 +17412,18 @@
           "id": "AIRA-T0209",
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_bracket_of_obstruction",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_bracket_of_obstruction",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0214",
+          "lean_name": "Circle.Applications.ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized",
+          "name": "Circle.Applications.ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0215",
+          "lean_name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin_report",
+          "name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin_report",
           "status": "proved"
         }
       ],
@@ -18665,9 +18713,27 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_bracket_of_obstruction",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_bracket_of_obstruction",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0214",
+          "lean_name": "Circle.Applications.ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized",
+          "name": "Circle.Applications.ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0215",
+          "lean_name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin_report",
+          "name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin_report",
+          "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "rope_certifier",
+          "path": "site/widgets/ai/rope_certifier.js",
+          "python_reference": "circle_math.applications.rope_certifier.certify_rope_positions; scripts/rope_certify.py"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -18683,10 +18749,10 @@
         "A formal proof of the current numerical floating-point scan.",
         "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
       ],
-      "formal_definition": "In Lean, `Circle.Applications.ropeTurnRatioFiniteMargin alpha margin context` means every positive natural gap below `context` is at least `margin` away from every integer turn under `Circle.Applications.ropeTurnRatioError alpha gap turns`. Theorem `Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds` reduces the gap side to generated positive members of `List.range context`; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses` reduces the integer-turn side for each generated gap to floor and ceiling witnesses. Theorem `Circle.Applications.RopeTurnRatioFiniteMarginCertificate.certifies` packages those witnesses as a proof-carrying certificate object. Theorem `Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate` packages a finite table of rational interval witnesses as the same margin predicate, and the rational-band bridge theorems `Circle.Applications.ropeTurnRatioIntervalCertificateOfRationalBands` plus `Circle.Applications.ropeTurnRatioIntervalCertificateOfRationalBands_from_ratEndpointValid` let generated rational band lists compile into interval certificates. Theorem `Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin` proves the named rational/discretized preset `1/4099` has margin `1/4099` over context `4096`. The standard channel-0 seed family now includes compiled `1 / (2*pi)` interval certificates through D18: `Circle.Applications.ropeStandardChannel0D16Seed_turnRatioFiniteMargin` proves margin `1/104219` through context `65536`, `Circle.Applications.ropeStandardChannel0D17Seed_turnRatioFiniteMargin` proves margin `1/328459` through context `131072`, `Circle.Applications.ropeStandardChannel0D18Seed_turnRatioFiniteMargin` extends that margin through context `163840`, and `Circle.Applications.ropeStandardChannel0D18_context163840_margin_bracket` packages that 160k positive seed with the obstruction showing every margin at or above `1/328458` is impossible once gap `103993` is in scope. Theorem `Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin` proves that any such margin rules out one-channel real near-turn collision below the scaled tolerance `fullTurn * margin`; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_context` proves the same margin transfers from a larger certified context to any smaller requested context; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin` proves a larger certified margin also proves any smaller advertised margin over the same context; theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin` packages both downgrades at the bank level; and the D9 through D18 specialized bank transfers package the standard-channel-first bank shape.",
+      "formal_definition": "In Lean, `Circle.Applications.ropeTurnRatioFiniteMargin alpha margin context` means every positive natural gap below `context` is at least `margin` away from every integer turn under `Circle.Applications.ropeTurnRatioError alpha gap turns`. Theorem `Circle.Applications.ropeTurnRatioFiniteMargin_iff_range_gap_bounds` reduces the gap side to generated positive members of `List.range context`; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses` reduces the integer-turn side for each generated gap to floor and ceiling witnesses. Theorems `Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_ge_iff_floor_ceil`, `Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin`, and `Circle.Applications.ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized` package scalar nearest-gap margins and exact weakest-gap report fields. Theorem `Circle.Applications.RopeTurnRatioFiniteMarginCertificate.certifies` packages those witnesses as a proof-carrying certificate object. Theorem `Circle.Applications.ropeTurnRatioFiniteMargin_of_intervalCertificate` packages a finite table of rational interval witnesses as the same margin predicate, and the rational-band bridge theorems `Circle.Applications.ropeTurnRatioIntervalCertificateOfRationalBands` plus `Circle.Applications.ropeTurnRatioIntervalCertificateOfRationalBands_from_ratEndpointValid` let generated rational band lists compile into interval certificates. Theorem `Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin` proves the named rational/discretized preset `1/4099` has margin `1/4099` over context `4096`, and `Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin_report` proves its public exact weakest-gap report. The standard channel-0 seed family now includes compiled `1 / (2*pi)` interval certificates through D19: `Circle.Applications.ropeStandardChannel0D16Seed_turnRatioFiniteMargin` proves margin `1/104219` through context `65536`, `Circle.Applications.ropeStandardChannel0D17Seed_turnRatioFiniteMargin` proves margin `1/328459` through context `131072`, `Circle.Applications.ropeStandardChannel0D18Seed_turnRatioFiniteMargin` extends that margin through context `163840`, `Circle.Applications.ropeStandardChannel0D19Seed_turnRatioFiniteMargin` extends it through context `196608`, and `Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket` packages the range where margin `1/328459` holds while every margin at or above `1/328458` is impossible once gap `103993` is in scope. Theorem `Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin` proves that any such margin rules out one-channel real near-turn collision below the scaled tolerance `fullTurn * margin`; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_context` proves the same margin transfers from a larger certified context to any smaller requested context; theorem `Circle.Applications.ropeTurnRatioFiniteMargin_mono_margin` proves a larger certified margin also proves any smaller advertised margin over the same context; theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin` packages both downgrades at the bank level; and the D9 through D19 specialized bank transfers package the standard-channel-first bank shape.",
       "id": "COMMON-0088",
       "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
-      "intuition": "This is the shape a real RoPE certifier ultimately needs: a finite-context lower bound on nearest-integer returns for a channel's turn ratio. The formal spine now has one complete rational/discretized 4k certificate, a generic interval-certificate route, theorem-backed standard-RoPE channel-0 seeds through context 65536 at margin 1/104219 and through context 163840 at margin 1/328459, conditional bank bridges when that channel is present, first-channel bank bridges through D18, and proof-backed brackets showing every margin at or above 1/104218 fails once gap 710 is in scope and every margin at or above 1/328458 fails once gap 103993 is in scope. The remaining hard work is scaling channel-wise interval witnesses or continued-fraction arguments to full standard-RoPE banks.",
+      "intuition": "This is the shape a real RoPE certifier ultimately needs: a finite-context lower bound on nearest-integer returns for a channel's turn ratio. The formal spine now has one complete rational/discretized 4k certificate, a reusable exact weakest-gap report contract, a generic interval-certificate route, theorem-backed standard-RoPE channel-0 seeds through context 65536 at margin 1/104219 and through context 196608 at margin 1/328459, conditional bank bridges when that channel is present, first-channel bank bridges through D19, and proof-backed brackets showing every margin at or above 1/104218 fails once gap 710 is in scope and every margin at or above 1/328458 fails once gap 103993 is in scope. The remaining hard work is scaling channel-wise interval witnesses or continued-fraction arguments to full standard-RoPE banks.",
       "kind": "relation",
       "name": "RoPE finite-context turn-ratio margin",
       "source_dictionary": "dictionary/dimensions/Common.yaml",
@@ -19534,9 +19600,27 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_bracket_of_obstruction",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_bracket_of_obstruction",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0214",
+          "lean_name": "Circle.Applications.ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized",
+          "name": "Circle.Applications.ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0215",
+          "lean_name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin_report",
+          "name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin_report",
+          "status": "proved"
         }
       ],
-      "used_by_widgets": []
+      "used_by_widgets": [
+        {
+          "id": "rope_certifier",
+          "path": "site/widgets/ai/rope_certifier.js",
+          "python_reference": "circle_math.applications.rope_certifier.certify_rope_positions; scripts/rope_certify.py"
+        }
+      ]
     },
     {
       "dependencies": [
@@ -19554,7 +19638,7 @@
         "A completed continued-fraction or three-distance theorem.",
         "Evidence that a real model has better context length, perplexity, speed, memory, or quality."
       ],
-      "formal_definition": "In Lean, theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin` proves that if a frequency belongs to a finite real-phase bank and has a `ropeTurnRatioFiniteMargin` for the inspected context, then the whole bank cannot satisfy `ropeRealPhaseBankNearTurn` below the scaled tolerance. Theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context` transfers that bank-level consequence from a larger certified context to any smaller requested context. Theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin` transfers both a larger context and a larger certified margin to a smaller requested context and smaller advertised margin. The specialized D12 through D18 bridges apply that transfer to any finite bank containing the standard channel-0 angular frequency, and the corresponding `_cons` theorems package the common first-channel bank shape. The current longest generated bridge is `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D18Seed`, with `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D18Seed_cons` for the first-channel list form.",
+      "formal_definition": "In Lean, theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin` proves that if a frequency belongs to a finite real-phase bank and has a `ropeTurnRatioFiniteMargin` for the inspected context, then the whole bank cannot satisfy `ropeRealPhaseBankNearTurn` below the scaled tolerance. Theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context` transfers that bank-level consequence from a larger certified context to any smaller requested context. Theorem `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin` transfers both a larger context and a larger certified margin to a smaller requested context and smaller advertised margin. The specialized D12 through D19 bridges apply that transfer to any finite bank containing the standard channel-0 angular frequency, and the corresponding `_cons` theorems package the common first-channel bank shape. The current longest generated bridge is `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed`, with `Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons` for the first-channel list form.",
       "id": "COMMON-0089",
       "introduced_in": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
       "intuition": "A bank-wide real RoPE certificate does not need every channel to be separated for a given gap; one proved separating channel is enough to rule out an all-channel near-turn collision, and a stronger channel certificate can safely cover smaller requested horizons and conservative reported margins.",

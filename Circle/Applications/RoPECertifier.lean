@@ -1582,6 +1582,51 @@ theorem ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin
         (turnRatio := turnRatio) (margin := margin) (gap := gap)).1
         (hmargin gap hgap_range hgap_pos)
 
+/-- A report-facing exact weakest-gap margin certificate.
+
+It says that `witnessGap` is an inspected positive gap, that its scalar
+nearest-integer margin is exactly the reported `margin`, and that no inspected
+positive gap has a smaller scalar nearest-integer margin. This is the generic
+Lean contract behind executable fields such as `exact_nearest_gap_margin` and
+`exact_nearest_gap`. -/
+def ropeTurnRatioExactWeakestGapMargin
+    (turnRatio margin : ℝ) (context witnessGap : Nat) : Prop :=
+  witnessGap ∈ List.range context ∧
+    0 < witnessGap ∧
+      ropeTurnRatioGapNearestIntegerMargin turnRatio witnessGap = margin ∧
+        ∀ gap : Nat, gap ∈ List.range context → 0 < gap →
+          margin ≤ ropeTurnRatioGapNearestIntegerMargin turnRatio gap
+
+/-- An exact weakest-gap certificate is equivalent to a finite-margin
+certificate whose lower bound is attained at the reported witness gap.
+
+The forward direction turns the report's global lower-bound claim into the
+abstract finite-margin predicate. The reverse direction is how generated
+certifiers can prove exact weakest-gap fields: prove the finite lower bound and
+then prove the reported witness realizes it. -/
+theorem ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized
+    {turnRatio margin : ℝ} {context witnessGap : Nat} :
+    ropeTurnRatioExactWeakestGapMargin turnRatio margin context witnessGap ↔
+      witnessGap ∈ List.range context ∧
+        0 < witnessGap ∧
+          ropeTurnRatioGapNearestIntegerMargin turnRatio witnessGap = margin ∧
+            ropeTurnRatioFiniteMargin turnRatio margin context := by
+  constructor
+  · intro hcert
+    rcases hcert with ⟨hmem, hpos, hrealized, hlower⟩
+    exact
+      ⟨hmem, hpos, hrealized,
+        (ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin
+          (turnRatio := turnRatio) (margin := margin) (context := context)).2
+          hlower⟩
+  · intro hcert
+    rcases hcert with ⟨hmem, hpos, hrealized, hfinite⟩
+    exact
+      ⟨hmem, hpos, hrealized,
+        (ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin
+          (turnRatio := turnRatio) (margin := margin) (context := context)).1
+          hfinite⟩
+
 /-- A proof-carrying finite turn-ratio margin certificate.
 
 The payload is the finite floor/ceiling nearest-integer witness predicate from
@@ -2319,6 +2364,29 @@ theorem ropeRationalPreset4099_exactWeakestGapMargin :
         (margin := ropeRationalPreset4099Margin)
         (context := ropeRationalPreset4099Context)).1
         ropeRationalPreset4099_turnRatioFiniteMargin gap hgap_range hgap_pos
+
+/-- The named rational/discretized preset satisfies the generic exact
+weakest-gap report contract.
+
+This packages the public `exact_nearest_gap_margin = "1/4099"` and
+`exact_nearest_gap = 1` fields using the reusable report-facing predicate
+instead of a bespoke conjunction. -/
+theorem ropeRationalPreset4099_exactWeakestGapMargin_report :
+    ropeTurnRatioExactWeakestGapMargin ropeRationalPreset4099TurnRatio
+      ropeRationalPreset4099Margin ropeRationalPreset4099Context 1 := by
+  refine
+    (ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized
+      (turnRatio := ropeRationalPreset4099TurnRatio)
+      (margin := ropeRationalPreset4099Margin)
+      (context := ropeRationalPreset4099Context)
+      (witnessGap := 1)).2 ?_
+  exact
+    ⟨by
+      dsimp [ropeRationalPreset4099Context]
+      norm_num,
+    by norm_num,
+    ropeRationalPreset4099_exactWeakestGapMargin.1,
+    ropeRationalPreset4099_turnRatioFiniteMargin⟩
 
 /-- The named rational/discretized preset has no zero-margin witness inside
 the inspected context.

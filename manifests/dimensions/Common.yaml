@@ -3460,6 +3460,20 @@ theorems:
         - tests/test_rope_certifier.py::test_turn_ratio_floor_ceil_witness_bridge_matches_scan
         - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
     blocker: ""
+  - id: AIRA-T0214
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized
+    informal_statement: "A report-facing exact weakest-gap margin certificate is equivalent to a finite-context margin whose lower bound is attained at the reported witness gap."
+    formal_statement: "forall {turnRatio margin : Real} {context witnessGap : Nat}, Circle.Applications.ropeTurnRatioExactWeakestGapMargin turnRatio margin context witnessGap <-> witnessGap in List.range context and 0 < witnessGap and Circle.Applications.ropeTurnRatioGapNearestIntegerMargin turnRatio witnessGap = margin and Circle.Applications.ropeTurnRatioFiniteMargin turnRatio margin context"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
+    blocker: ""
   - id: AIRA-T0060
     status: lean_proved
     lean_name: Circle.Applications.RopeTurnRatioFiniteMarginCertificate.certifies
@@ -3580,6 +3594,20 @@ theorems:
     lean_name: Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin
     informal_statement: "For the named rational/discretized 1/4099 RoPE preset, gap 1 realizes the exact scalar nearest-integer margin 1/4099, and every positive generated gap in context 4096 has margin at least that value."
     formal_statement: "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin Circle.Applications.ropeRationalPreset4099TurnRatio 1 = Circle.Applications.ropeRationalPreset4099Margin and forall gap : Nat, gap in List.range Circle.Applications.ropeRationalPreset4099Context -> 0 < gap -> Circle.Applications.ropeRationalPreset4099Margin <= Circle.Applications.ropeTurnRatioGapNearestIntegerMargin Circle.Applications.ropeRationalPreset4099TurnRatio gap"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
+    blocker: ""
+  - id: AIRA-T0215
+    status: lean_proved
+    lean_name: Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin_report
+    informal_statement: "The named rational/discretized 1/4099 RoPE preset satisfies the reusable exact weakest-gap report contract with witness gap 1."
+    formal_statement: "Circle.Applications.ropeTurnRatioExactWeakestGapMargin Circle.Applications.ropeRationalPreset4099TurnRatio Circle.Applications.ropeRationalPreset4099Margin Circle.Applications.ropeRationalPreset4099Context 1"
     dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
     paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
     imports_allowed: ["Common"]
