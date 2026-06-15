@@ -798,6 +798,56 @@ theorem mem_coilStrideFamilyLagResidueList_lt_context
       · exact mem_coilLagResidueList_lt_context hn hhead
       · exact ih htail
 
+/-- A no-wrap one-stride residue candidate is positive.
+
+If every admitted multiple `step * stride` remains below the context before
+modulo reduction, and the stride itself is positive, then reducing modulo the
+context cannot turn an admitted nonzero step into the zero lag. -/
+theorem mem_coilLagResidueList_pos_of_path_mul_stride_lt_context
+    {n stride pathLength lag : Nat}
+    (hstride : 0 < stride)
+    (hbound : pathLength * stride < n)
+    (hmem : lag ∈ coilLagResidueList n stride pathLength) :
+    1 ≤ lag := by
+  unfold coilLagResidueList at hmem
+  rw [List.mem_map] at hmem
+  rcases hmem with ⟨step, hstepmem, hlag⟩
+  rw [List.mem_range'] at hstepmem
+  rcases hstepmem with ⟨i, hi, hstep⟩
+  subst step
+  have hstep_pos : 0 < 1 + i := by omega
+  have hstep_le : 1 + i ≤ pathLength := by omega
+  have hstep_bound : (1 + i) * stride < n :=
+    lt_of_le_of_lt (Nat.mul_le_mul_right stride hstep_le) hbound
+  have hmul_pos : 0 < (1 + i) * stride :=
+    Nat.mul_pos hstep_pos hstride
+  have hstep_bound' : (1 + 1 * i) * stride < n := by
+    simpa [Nat.one_mul] using hstep_bound
+  have hmul_pos' : 0 < (1 + 1 * i) * stride := by
+    simpa [Nat.one_mul] using hmul_pos
+  rw [← hlag, Nat.mod_eq_of_lt hstep_bound']
+  omega
+
+/-- No-wrap separated stride-family residues are positive lag candidates. -/
+theorem mem_coilStrideFamilyLagResidueList_pos_of_noWrapSeparated
+    {n pathLength lag : Nat} {strides : List Nat}
+    (hseparated : coilStrideFamilyNoWrapSeparated n pathLength strides)
+    (hmem : lag ∈ coilStrideFamilyLagResidueList n pathLength strides) :
+    1 ≤ lag := by
+  induction strides with
+  | nil =>
+      unfold coilStrideFamilyLagResidueList at hmem
+      cases hmem
+  | cons stride strides ih =>
+      simp [coilStrideFamilyNoWrapSeparated] at hseparated
+      rcases hseparated with ⟨hstride, hheadBound, _htailInfo, htailSeparated⟩
+      unfold coilStrideFamilyLagResidueList at hmem
+      rw [List.mem_append] at hmem
+      rcases hmem with hhead | htail
+      · exact mem_coilLagResidueList_pos_of_path_mul_stride_lt_context
+          hstride hheadBound hhead
+      · exact ih htailSeparated htail
+
 /-- For an in-context lag, membership in the theorem-side hybrid candidate list
 is exactly local+stride-family reachability. -/
 theorem mem_hybridFamilyLagCandidateList_iff
@@ -1344,6 +1394,47 @@ theorem mem_hybridFamilyLagCandidateList_lt_context_of_window_lt_context
       exact (mem_localLagCandidateList_iff).1 hlocal
     exact lt_of_le_of_lt hreach.2 hwindow
   · exact mem_coilStrideFamilyLagResidueList_lt_context hn hcoil
+
+/-- A below-context local window plus no-wrap separated stride family makes
+every theorem-side lag candidate a positive in-context lag.
+
+This discharges the candidate-range hypothesis used by the sparse coverage
+iff/count theorems from checkable structural conditions: local lags are
+positive by construction, local candidates stay below `n` when `window < n`,
+and no-wrap separated stride residues are positive strict representatives. -/
+theorem hybridFamilyLagCandidateList_candidate_range_of_window_lt_context_of_noWrapSeparated
+    {n window pathLength : Nat} {strides : List Nat}
+    (hwindow : window < n)
+    (hseparated : coilStrideFamilyNoWrapSeparated n pathLength strides) :
+    ∀ lag, lag ∈ hybridFamilyLagCandidateList n window pathLength strides →
+      1 ≤ lag ∧ lag < n := by
+  intro lag hmem
+  constructor
+  · unfold hybridFamilyLagCandidateList at hmem
+    rw [List.mem_append] at hmem
+    rcases hmem with hlocal | hcoil
+    · exact ((mem_localLagCandidateList_iff).1 hlocal).1
+    · exact mem_coilStrideFamilyLagResidueList_pos_of_noWrapSeparated
+        hseparated hcoil
+  · exact mem_hybridFamilyLagCandidateList_lt_context_of_window_lt_context
+      hwindow hmem
+
+/-- Under below-context local-window and no-wrap separated stride-family
+conditions, complete positive-lag coverage is equivalent to the deduplicated
+lag-candidate count reaching `n - 1`.
+
+This is the structural version of the candidate-range iff: the hypotheses are
+numeric plan checks rather than an arbitrary assumption about every generated
+candidate. -/
+theorem hybridFamilyCoversContext_iff_uniqueLagCandidateCount_eq_context_sub_one_of_noWrapSeparated
+    {n window pathLength : Nat} {strides : List Nat}
+    (hwindow : window < n)
+    (hseparated : coilStrideFamilyNoWrapSeparated n pathLength strides) :
+    hybridFamilyCoversContext n window pathLength strides ↔
+      hybridFamilyUniqueLagCandidateCount n window pathLength strides = n - 1 :=
+  hybridFamilyCoversContext_iff_uniqueLagCandidateCount_eq_context_sub_one_of_candidate_range
+    (hybridFamilyLagCandidateList_candidate_range_of_window_lt_context_of_noWrapSeparated
+      hwindow hseparated)
 
 /-- The query-indexed candidate list has the same raw length as the theorem-side
 lag candidate list, hence the same raw candidate budget. -/

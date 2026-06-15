@@ -6781,6 +6781,38 @@ theorems:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
     blocker: ""
+  - id: AIT-T0115
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyLagCandidateList_candidate_range_of_window_lt_context_of_noWrapSeparated
+    informal_statement: "If the local window is below the context length and the ordered stride family is no-wrap separated, then every generated theorem-side lag candidate is a positive in-context lag."
+    formal_statement: "forall {n window pathLength : Nat} {strides : List Nat}, window < n -> Circle.Applications.coilStrideFamilyNoWrapSeparated n pathLength strides -> forall lag, lag in Circle.Applications.hybridFamilyLagCandidateList n window pathLength strides -> 1 <= lag and lag < n"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
+  - id: AIT-T0116
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyCoversContext_iff_uniqueLagCandidateCount_eq_context_sub_one_of_noWrapSeparated
+    informal_statement: "Under the checkable below-context local-window and no-wrap separated stride-family conditions, complete positive-lag coverage is equivalent to the deduplicated theorem-side unique lag-candidate count equaling n - 1."
+    formal_statement: "forall {n window pathLength : Nat} {strides : List Nat}, window < n -> Circle.Applications.coilStrideFamilyNoWrapSeparated n pathLength strides -> (Circle.Applications.hybridFamilyCoversContext n window pathLength strides <-> Circle.Applications.hybridFamilyUniqueLagCandidateCount n window pathLength strides = n - 1)"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

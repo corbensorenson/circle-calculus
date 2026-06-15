@@ -93,6 +93,8 @@ const THEOREM_IDS = [
   "AIT-T0112",
   "AIT-T0113",
   "AIT-T0114",
+  "AIT-T0115",
+  "AIT-T0116",
 ];
 const DICTIONARY_IDS = ["COMMON-0075", "COMMON-0079", "COMMON-0047", "COMMON-0029"];
 
@@ -187,6 +189,19 @@ function strideFamilyQueryCandidateList(sequenceLength, queryIndex, strides, pat
     .map((lag) => mod(queryIndex - mod(lag, sequenceLength), sequenceLength));
 }
 
+function noWrapSeparatedSufficient(sequenceLength, strides, pathLength) {
+  for (let index = 0; index < strides.length; index += 1) {
+    const headBound = pathLength * strides[index];
+    if (headBound >= sequenceLength) return false;
+    for (let tailIndex = index + 1; tailIndex < strides.length; tailIndex += 1) {
+      const tailStride = strides[tailIndex];
+      if (pathLength * tailStride >= sequenceLength) return false;
+      if (headBound >= tailStride) return false;
+    }
+  }
+  return true;
+}
+
 function predecessorInjectiveOnLagCandidates(sequenceLength, queryIndex, lagCandidates) {
   const predecessor = (lag) => mod(queryIndex - mod(lag, sequenceLength), sequenceLength);
   for (const left of lagCandidates) {
@@ -220,6 +235,9 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
   );
   const positiveLagCount = Math.max(0, sequenceLength - 1);
   const coverageComplete = uncoveredLags.length === 0;
+  const noWrapSeparatedCandidateRangeSufficientCondition = (
+    localWindow < sequenceLength && noWrapSeparatedSufficient(sequenceLength, strides, pathLength)
+  );
   const theoremSideCoilResidues = strideFamilyCoilResidueList(sequenceLength, strides, pathLength);
   const localCandidateSet = new Set(Array.from({ length: localWindow }, (_, index) => index + 1));
   const theoremSideQueryCandidates = strideFamilyQueryCandidateList(
@@ -242,6 +260,7 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
     theoremSideLagCandidates,
     theoremSideUniqueLagCandidateCount,
     theoremSideLagCandidatesPositiveInContext,
+    noWrapSeparatedCandidateRangeSufficientCondition,
     uniqueLagCountMatchesCompleteUnderCandidateRange: (
       !theoremSideLagCandidatesPositiveInContext
       || coverageComplete === (theoremSideUniqueLagCandidateCount === positiveLagCount)
@@ -478,6 +497,7 @@ function appendRecord(output, values, theoremById) {
     `deduplicated candidate budget per query: ${coverage.candidateBudgetPerQuery}`,
     `theorem-side unique lag-candidate count: ${coverage.theoremSideUniqueLagCandidateCount}`,
     `lag candidates positive in context: ${coverage.theoremSideLagCandidatesPositiveInContext}`,
+    `no-wrap separated candidate-range sufficient condition: ${coverage.noWrapSeparatedCandidateRangeSufficientCondition}`,
     `unique count iff complete under candidate range: ${coverage.uniqueLagCountMatchesCompleteUnderCandidateRange}`,
     `covered count equals unique under candidate range: ${coverage.coveredCountMatchesUniqueLagCountUnderCandidateRange}`,
     `uncovered count formula under candidate range: ${coverage.uncoveredCountMatchesContextMinusUniqueLagCountUnderCandidateRange}`,

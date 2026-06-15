@@ -119,6 +119,7 @@ from circle_math.applications import (
     stride_family_covered_lags,
     stride_family_lag_candidate_list,
     stride_family_local_coil_candidates_disjoint,
+    stride_family_no_wrap_separated_sufficient_condition,
     stride_family_predecessor_injective_window_context_sufficient_condition,
     stride_family_predecessor_injective_on_lag_candidates,
     stride_family_query_candidate_list,
@@ -1610,6 +1611,23 @@ def js_stride_family_query_candidate_list(
             local_window,
         )
     )
+
+
+def js_stride_family_no_wrap_separated_sufficient_condition(
+    sequence_length: int,
+    strides: tuple[int, ...],
+    path_length: int,
+) -> bool:
+    for index, head_stride in enumerate(strides):
+        head_bound = path_length * head_stride
+        if head_bound >= sequence_length:
+            return False
+        for tail_stride in strides[index + 1:]:
+            if path_length * tail_stride >= sequence_length:
+                return False
+            if head_bound >= tail_stride:
+                return False
+    return True
 
 
 def js_predecessor_injective_on_lag_candidates(
@@ -3887,6 +3905,19 @@ def main() -> int:
         assert coverage_certificate.theorem_side_lag_candidates_positive_in_context == all(
             1 <= lag < sequence_length
             for lag in coverage_certificate.theorem_side_lag_candidates
+        )
+        js_no_wrap_separated = js_stride_family_no_wrap_separated_sufficient_condition(
+            sequence_length,
+            strides,
+            path_length,
+        )
+        assert js_no_wrap_separated == stride_family_no_wrap_separated_sufficient_condition(
+            sequence_length,
+            strides,
+            path_length,
+        )
+        assert coverage_certificate.no_wrap_separated_candidate_range_sufficient_condition == (
+            local_window < sequence_length and js_no_wrap_separated
         )
         assert coverage_certificate.unique_lag_count_matches_complete_under_candidate_range == (
             not coverage_certificate.theorem_side_lag_candidates_positive_in_context

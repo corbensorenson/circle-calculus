@@ -1074,6 +1074,8 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0112",
         "AIT-T0113",
         "AIT-T0114",
+        "AIT-T0115",
+        "AIT-T0116",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -1170,6 +1172,9 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0112" in certificate["theorem_ids"]
     assert "AIT-T0113" in certificate["theorem_ids"]
     assert "AIT-T0114" in certificate["theorem_ids"]
+    assert "AIT-T0115" in certificate["theorem_ids"]
+    assert "AIT-T0116" in certificate["theorem_ids"]
+    assert certificate["no_wrap_separated_candidate_range_sufficient_condition"] is False
     assert certificate["theorem_side_query_count_le_unique_lag_count"] is True
     assert certificate["theorem_side_query_count_matches_unique_lag_count"] is True
     complete = payload["complete_fixture_certificate"]
@@ -1243,7 +1248,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     ]
     long_no_wrap = planner_rows["long_context_no_wrap_probe_4096"]
     assert long_no_wrap["sequence_length"] == 4096
-    assert long_no_wrap["strides"] == [64, 320, 1500]
+    assert long_no_wrap["strides"] == [33, 160, 800]
     assert long_no_wrap["candidate_budget_per_query"] == 44
     assert long_no_wrap["covered_lag_count"] == 44
     assert long_no_wrap["uncovered_lag_count"] == 4051
@@ -1251,11 +1256,12 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert long_no_wrap["covered_uncovered_count_sum"] == 4095
     assert long_no_wrap["covered_uncovered_count_partition"] is True
     assert long_no_wrap["covered_count_certifies_complete"] is False
-    assert long_no_wrap["uncovered_lag_interval_count"] == 13
+    assert long_no_wrap["uncovered_lag_interval_count"] == 12
     assert long_no_wrap["raw_budget_survives_lag_dedup"] is True
     assert long_no_wrap["raw_budget_survives_query_dedup"] is True
     assert long_no_wrap["raw_budget_shortfall_certifies_incomplete"] is True
     assert long_no_wrap["theorem_side_lag_candidates_positive_in_context"] is True
+    assert long_no_wrap["no_wrap_separated_candidate_range_sufficient_condition"] is True
     assert long_no_wrap["unique_lag_count_shortfall_certifies_incomplete"] is True
     assert long_no_wrap["unique_lag_count_matches_complete_under_candidate_range"] is True
     assert long_no_wrap["covered_count_matches_unique_lag_count_under_candidate_range"] is True
@@ -1267,9 +1273,9 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     )
     assert long_no_wrap["coverage_complete"] is False
     assert long_no_wrap["uncovered_lag_interval_sample"][:3] == [
-        [33, 63],
-        [65, 127],
-        [129, 191],
+        [34, 65],
+        [67, 98],
+        [100, 131],
     ]
     long_coprime = planner_rows["long_context_coprime_probe_8192"]
     assert long_coprime["sequence_length"] == 8192
@@ -1317,6 +1323,9 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0112" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0113" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0114" in long_coprime["core_coverage_theorem_ids"]
+    assert "AIT-T0115" in long_coprime["core_coverage_theorem_ids"]
+    assert "AIT-T0116" in long_coprime["core_coverage_theorem_ids"]
+    assert long_coprime["no_wrap_separated_candidate_range_sufficient_condition"] is False
     assert "scripts/stride_family_certify.py --context 8192" in (
         long_coprime["reproduce_command"]
     )
@@ -1336,20 +1345,20 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "| 120 | 120 | 4 | 3 | 7, 13 | 5, 9 | False | 0.084 |" in markdown_result.stdout
     assert (
         "| 9 | 2 | 2 | 3, 4, 7 | True | 0 | None | True | True | True | "
-        "True | False | True | 8 | True | 8 | True | True | True | True | True | 8 | True | True | "
+        "True | False | True | 8 | True | 8 | True | False | True | True | True | True | 8 | True | True | "
         "AIT-T0086, AIT-T0087, AIT-T0088, AIT-T0089, AIT-T0105 |"
     ) in markdown_result.stdout
     assert "Planner-style declared plans" in markdown_result.stdout
     assert "Raw shortfall certifies incomplete" in markdown_result.stdout
     assert (
         "| long_context_no_wrap_probe_4096 | 4096 | 32 | 4 | "
-        "64, 320, 1500 | False | 0.011 | 44 | 0.011 | 4095 | 4095 | 4051 | "
-        "33 | True | True | True | True | True | True | 13 | True | True | True | True | True | True | lag=True, query=True |"
+        "33, 160, 800 | False | 0.011 | 44 | 0.011 | 4095 | 4095 | 4051 | "
+        "34 | True | True | True | True | True | True | 12 | True | True | True | True | True | True | True | lag=True, query=True |"
     ) in markdown_result.stdout
     assert (
         "| long_context_coprime_probe_8192 | 8192 | 64 | 8 | "
         "127, 509, 1021, 2039 | False | 0.012 | 96 | 0.012 | 8191 | 8191 | "
-        "8095 | 65 | True | True | True | True | True | True | 32 | True | True | True | True | True | True | lag=True, query=True |"
+        "8095 | 65 | True | True | True | True | True | True | 32 | True | True | False | True | True | True | True | lag=True, query=True |"
     ) in markdown_result.stdout
     assert "AIT-T0091" in markdown_result.stdout
     assert "AIT-T0110" in markdown_result.stdout
@@ -1357,6 +1366,8 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0112" in markdown_result.stdout
     assert "AIT-T0113" in markdown_result.stdout
     assert "AIT-T0114" in markdown_result.stdout
+    assert "AIT-T0115" in markdown_result.stdout
+    assert "AIT-T0116" in markdown_result.stdout
     assert "Unique count iff complete" in markdown_result.stdout
     assert "Uncovered count formula" in markdown_result.stdout
     assert "Unique lag shortfall certifies incomplete" in markdown_result.stdout
@@ -1543,6 +1554,8 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert "AIT-T0112" in certificate.theorem_ids
     assert "AIT-T0113" in certificate.theorem_ids
     assert "AIT-T0114" in certificate.theorem_ids
+    assert "AIT-T0115" in certificate.theorem_ids
+    assert "AIT-T0116" in certificate.theorem_ids
     assert "AIT-T0025" in certificate.theorem_ids
 
 
