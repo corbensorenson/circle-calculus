@@ -36,6 +36,7 @@ uncovered_count_witness=True positive=True first_gap=5 theorem=AIT-T0096
 covered_count_shortfall=True gap_witness_equiv=True theorem=AIT-T0097
 uncovered_lag_intervals=((5, 6), (8, 12), (15, 20), (22, 25), (27, 38), (40, 119))
 candidate_budget_per_query=10 raw_upper_bound=10 deduplicated_bound=10 full_attention_budget=120
+raw_budget_shortfall=True certifies_incomplete=True theorem=AIT-T0110
 lag_budget_status=exact-raw-budget unique_lag_candidates=10 lag_no_collision=True
 query_budget_status=exact-raw-budget unique_query_candidates=10 query_no_collision=True
 ```
@@ -67,6 +68,7 @@ python scripts/stride_family_certify.py \
 - `uncovered_count_positive_matches_gap_witness`: true when the positive uncovered-count flag and the existence of a first gap agree.
 - `uncovered_lag_intervals`: consecutive runs of those uncovered lags, for reading large gap lists compactly.
 - `raw_candidate_budget_upper_bound`: `local_window + path_length * number_of_strides`.
+- `raw_budget_shortfall_certifies_incomplete`: true when the certificate avoids the impossible state where raw budget is below `context - 1` but coverage is still reported complete.
 - `theorem_side_unique_lag_candidate_count`: deduplicated lag count from the theorem-side list.
 - `theorem_side_unique_query_candidate_count`: deduplicated query-indexed predecessor count.
 - `theorem_side_lag_candidates_no_collision`: no duplicate lag candidates.
@@ -76,6 +78,7 @@ The raw-budget iff endpoints are:
 
 - `AIT-T0076`: lag-candidate raw-budget equality holds if and only if the lag-candidate list has no duplicates.
 - `AIT-T0077`: query-candidate raw-budget equality holds if and only if the query-indexed candidate list has no duplicates.
+- `AIT-T0110`: complete coverage requires raw sparse generator budget at least `n - 1`, so a raw-budget shortfall certifies incompleteness.
 
 The finite-list endpoints are:
 
@@ -100,7 +103,7 @@ The finite-list endpoints are:
 
 The gap/coverage spine is `AIT-T0020` through `AIT-T0035`. The theorem-side candidate-list,
 budget, no-collision, and predecessor-indexing spine is `AIT-T0036` through `AIT-T0077`.
-The finite uncovered/covered list, count-partition, first-gap, and public interval-summary spine is `AIT-T0078` through `AIT-T0105`.
+The finite uncovered/covered list, count-partition, first-gap, public interval-summary, query-count, and raw-budget necessary-condition spine is `AIT-T0078` through `AIT-T0110`.
 
 ## Boundary
 

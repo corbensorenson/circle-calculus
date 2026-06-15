@@ -978,6 +978,7 @@ class StrideFamilyCoverageCertificate:
     uncovered_lag_interval_count: int
     candidate_budget_per_query: int
     raw_candidate_budget_upper_bound: int
+    raw_budget_shortfall_certifies_incomplete: bool
     deduplicated_candidate_budget_upper_bound: int
     theorem_side_lag_candidates: tuple[int, ...]
     theorem_side_unique_lag_candidate_count: int
@@ -1081,6 +1082,7 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0107",
         "AIT-T0108",
         "AIT-T0109",
+        "AIT-T0110",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -2911,6 +2913,11 @@ def certify_stride_family_coverage(
         local_window,
     ))
     positive_lag_count = max(0, sequence_length - 1)
+    raw_candidate_budget = stride_family_raw_candidate_budget(
+        strides=strides,
+        path_length=path_length,
+        local_window=local_window,
+    )
     uncovered_intervals = consecutive_integer_intervals(uncovered)
     first_uncovered_lag = uncovered[0] if uncovered else None
     coverage_complete = len(uncovered) == 0
@@ -2956,10 +2963,9 @@ def certify_stride_family_coverage(
         ),
         uncovered_lag_interval_count=len(uncovered_intervals),
         candidate_budget_per_query=candidate_budget,
-        raw_candidate_budget_upper_bound=stride_family_raw_candidate_budget(
-            strides=strides,
-            path_length=path_length,
-            local_window=local_window,
+        raw_candidate_budget_upper_bound=raw_candidate_budget,
+        raw_budget_shortfall_certifies_incomplete=(
+            not (raw_candidate_budget < positive_lag_count and coverage_complete)
         ),
         deduplicated_candidate_budget_upper_bound=stride_family_deduplicated_candidate_budget_bound(
             sequence_length=sequence_length,

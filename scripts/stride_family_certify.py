@@ -138,6 +138,13 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             f"full_attention_budget={payload['full_attention_budget']}"
         ),
         (
+            "raw_budget_shortfall="
+            f"{payload['raw_candidate_budget_upper_bound'] < payload['positive_lag_count']} "
+            "certifies_incomplete="
+            f"{payload['raw_budget_shortfall_certifies_incomplete']} "
+            "theorem=AIT-T0110"
+        ),
+        (
             "lag_budget_status="
             f"{lag_budget_status} unique_lag_candidates="
             f"{payload['theorem_side_unique_lag_candidate_count']} "

@@ -57,6 +57,7 @@
       "note": "Finite lag-coverage certificate only; uncovered_lags are gap certificates for the declared local-window plus stride-family plan, not model-quality evidence.",
       "path_length": 3,
       "positive_lag_count": 119,
+      "raw_budget_shortfall_certifies_incomplete": true,
       "raw_candidate_budget_upper_bound": 10,
       "sequence_length": 120,
       "strides": [
@@ -148,7 +149,8 @@
         "AIT-T0106",
         "AIT-T0107",
         "AIT-T0108",
-        "AIT-T0109"
+        "AIT-T0109",
+        "AIT-T0110"
       ],
       "theorem_side_coil_residues_no_collision": true,
       "theorem_side_lag_candidates": [
@@ -399,6 +401,7 @@
     "note": "Finite lag-coverage certificate only; uncovered_lags are gap certificates for the declared local-window plus stride-family plan, not model-quality evidence.",
     "path_length": 2,
     "positive_lag_count": 8,
+    "raw_budget_shortfall_certifies_incomplete": true,
     "raw_candidate_budget_upper_bound": 8,
     "sequence_length": 9,
     "strides": [
@@ -491,7 +494,8 @@
       "AIT-T0106",
       "AIT-T0107",
       "AIT-T0108",
-      "AIT-T0109"
+      "AIT-T0109",
+      "AIT-T0110"
     ],
     "theorem_side_coil_residues_no_collision": true,
     "theorem_side_lag_candidates": [
@@ -551,7 +555,8 @@
         "AIT-T0099",
         "AIT-T0100",
         "AIT-T0101",
-        "AIT-T0103"
+        "AIT-T0103",
+        "AIT-T0110"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.08403361344537816,
@@ -593,6 +598,7 @@
       "path_length": 3,
       "plan_id": "default_gap_fixture_120",
       "positive_lag_count": 119,
+      "raw_budget_shortfall_certifies_incomplete": true,
       "raw_budget_survives_lag_dedup": true,
       "raw_budget_survives_query_dedup": true,
       "raw_candidate_budget_upper_bound": 10,
@@ -679,7 +685,8 @@
         "AIT-T0099",
         "AIT-T0100",
         "AIT-T0101",
-        "AIT-T0103"
+        "AIT-T0103",
+        "AIT-T0110"
       ],
       "coverage_complete": true,
       "coverage_ratio": 1.0,
@@ -719,6 +726,7 @@
       "path_length": 2,
       "plan_id": "complete_toy_fixture_9",
       "positive_lag_count": 8,
+      "raw_budget_shortfall_certifies_incomplete": true,
       "raw_budget_survives_lag_dedup": true,
       "raw_budget_survives_query_dedup": true,
       "raw_candidate_budget_upper_bound": 8,
@@ -756,7 +764,8 @@
         "AIT-T0099",
         "AIT-T0100",
         "AIT-T0101",
-        "AIT-T0103"
+        "AIT-T0103",
+        "AIT-T0110"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.010744810744810745,
@@ -806,6 +815,7 @@
       "path_length": 4,
       "plan_id": "long_context_no_wrap_probe_4096",
       "positive_lag_count": 4095,
+      "raw_budget_shortfall_certifies_incomplete": true,
       "raw_budget_survives_lag_dedup": true,
       "raw_budget_survives_query_dedup": true,
       "raw_candidate_budget_upper_bound": 44,
@@ -917,7 +927,8 @@
         "AIT-T0099",
         "AIT-T0100",
         "AIT-T0101",
-        "AIT-T0103"
+        "AIT-T0103",
+        "AIT-T0110"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.011720180686118912,
@@ -967,6 +978,7 @@
       "path_length": 8,
       "plan_id": "long_context_coprime_probe_8192",
       "positive_lag_count": 8191,
+      "raw_budget_shortfall_certifies_incomplete": true,
       "raw_budget_survives_lag_dedup": true,
       "raw_budget_survives_query_dedup": true,
       "raw_candidate_budget_upper_bound": 96,

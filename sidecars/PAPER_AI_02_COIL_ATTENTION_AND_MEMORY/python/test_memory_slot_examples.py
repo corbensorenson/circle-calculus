@@ -826,6 +826,7 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     assert not result.coverage_certificate.coverage_complete
     assert result.coverage_certificate.candidate_budget_per_query == 10
     assert result.coverage_certificate.raw_candidate_budget_upper_bound == 10
+    assert result.coverage_certificate.raw_budget_shortfall_certifies_incomplete
     assert result.coverage_certificate.deduplicated_candidate_budget_upper_bound == 10
     assert result.coverage_certificate.theorem_side_lag_candidates == (
         1,
@@ -1023,6 +1024,7 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0107",
         "AIT-T0108",
         "AIT-T0109",
+        "AIT-T0110",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -1074,6 +1076,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     ]
     assert certificate["uncovered_lag_interval_count"] == 6
     assert certificate["coverage_complete"] is False
+    assert certificate["raw_budget_shortfall_certifies_incomplete"] is True
     assert certificate["fixture_theorem_ids"] == [
         "AIT-T0084",
         "AIT-T0085",
@@ -1102,6 +1105,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0107" in certificate["theorem_ids"]
     assert "AIT-T0108" in certificate["theorem_ids"]
     assert "AIT-T0109" in certificate["theorem_ids"]
+    assert "AIT-T0110" in certificate["theorem_ids"]
     assert certificate["theorem_side_query_count_le_unique_lag_count"] is True
     assert certificate["theorem_side_query_count_matches_unique_lag_count"] is True
     complete = payload["complete_fixture_certificate"]
@@ -1125,6 +1129,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert complete["uncovered_lag_interval_count"] == 0
     assert complete["coverage_complete"] is True
     assert complete["raw_candidate_budget_upper_bound"] == 8
+    assert complete["raw_budget_shortfall_certifies_incomplete"] is True
     assert complete["theorem_side_unique_lag_candidate_count"] == 8
     assert complete["theorem_side_unique_query_candidate_count"] == 8
     assert complete["theorem_side_query_count_le_unique_lag_count"] is True
@@ -1175,6 +1180,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert long_no_wrap["uncovered_lag_interval_count"] == 13
     assert long_no_wrap["raw_budget_survives_lag_dedup"] is True
     assert long_no_wrap["raw_budget_survives_query_dedup"] is True
+    assert long_no_wrap["raw_budget_shortfall_certifies_incomplete"] is True
     assert long_no_wrap["coverage_complete"] is False
     assert long_no_wrap["uncovered_lag_interval_sample"][:3] == [
         [33, 63],
@@ -1199,6 +1205,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert long_coprime["uncovered_lag_interval_count"] == 32
     assert long_coprime["raw_budget_survives_lag_dedup"] is True
     assert long_coprime["raw_budget_survives_query_dedup"] is True
+    assert long_coprime["raw_budget_shortfall_certifies_incomplete"] is True
     assert "AIT-T0081" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0092" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0093" in long_coprime["core_coverage_theorem_ids"]
@@ -1211,6 +1218,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0100" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0101" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0103" in long_coprime["core_coverage_theorem_ids"]
+    assert "AIT-T0110" in long_coprime["core_coverage_theorem_ids"]
     assert "scripts/stride_family_certify.py --context 8192" in (
         long_coprime["reproduce_command"]
     )
@@ -1230,21 +1238,23 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "| 120 | 120 | 4 | 3 | 7, 13 | 5, 9 | False | 0.084 |" in markdown_result.stdout
     assert (
         "| 9 | 2 | 2 | 3, 4, 7 | True | 0 | None | True | True | True | "
-        "True | False | True | 8 | 8 | 8 | True | True | "
+        "True | False | True | 8 | True | 8 | 8 | True | True | "
         "AIT-T0086, AIT-T0087, AIT-T0088, AIT-T0089, AIT-T0105 |"
     ) in markdown_result.stdout
     assert "Planner-style declared plans" in markdown_result.stdout
+    assert "Raw shortfall certifies incomplete" in markdown_result.stdout
     assert (
         "| long_context_no_wrap_probe_4096 | 4096 | 32 | 4 | "
         "64, 320, 1500 | False | 0.011 | 44 | 0.011 | 4095 | 4095 | 4051 | "
-        "33 | True | True | True | True | True | True | 13 | lag=True, query=True |"
+        "33 | True | True | True | True | True | True | 13 | True | lag=True, query=True |"
     ) in markdown_result.stdout
     assert (
         "| long_context_coprime_probe_8192 | 8192 | 64 | 8 | "
         "127, 509, 1021, 2039 | False | 0.012 | 96 | 0.012 | 8191 | 8191 | "
-        "8095 | 65 | True | True | True | True | True | True | 32 | lag=True, query=True |"
+        "8095 | 65 | True | True | True | True | True | True | 32 | True | lag=True, query=True |"
     ) in markdown_result.stdout
     assert "AIT-T0091" in markdown_result.stdout
+    assert "AIT-T0110" in markdown_result.stdout
     assert "First uncovered lags" in markdown_result.stdout
 
 
@@ -1366,6 +1376,7 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert certificate.candidate_budget_per_query <= (
         certificate.deduplicated_candidate_budget_upper_bound
     )
+    assert certificate.raw_budget_shortfall_certifies_incomplete
     assert "AIT-T0022" in certificate.theorem_ids
     assert "AIT-T0023" in certificate.theorem_ids
     assert "AIT-T0024" in certificate.theorem_ids
@@ -1415,6 +1426,7 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert "AIT-T0107" in certificate.theorem_ids
     assert "AIT-T0108" in certificate.theorem_ids
     assert "AIT-T0109" in certificate.theorem_ids
+    assert "AIT-T0110" in certificate.theorem_ids
     assert "AIT-T0025" in certificate.theorem_ids
 
 

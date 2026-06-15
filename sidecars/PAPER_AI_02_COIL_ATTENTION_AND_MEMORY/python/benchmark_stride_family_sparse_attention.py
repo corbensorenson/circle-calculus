@@ -45,6 +45,7 @@ CORE_COVERAGE_THEOREM_IDS = (
     "AIT-T0100",
     "AIT-T0101",
     "AIT-T0103",
+    "AIT-T0110",
 )
 
 PLANNER_STYLE_SPECS: tuple[dict[str, Any], ...] = (
@@ -140,6 +141,9 @@ def compact_planner_certificate(spec: dict[str, Any]) -> dict[str, Any]:
         "uncovered_lag_interval_count": certificate.uncovered_lag_interval_count,
         "candidate_budget_per_query": certificate.candidate_budget_per_query,
         "raw_candidate_budget_upper_bound": certificate.raw_candidate_budget_upper_bound,
+        "raw_budget_shortfall_certifies_incomplete": (
+            certificate.raw_budget_shortfall_certifies_incomplete
+        ),
         "deduplicated_candidate_budget_upper_bound": (
             certificate.deduplicated_candidate_budget_upper_bound
         ),
@@ -249,6 +253,8 @@ def text_results(payload: dict[str, Any]) -> str:
             f"{row['positive_lag_count']} "
             f"partition_complete={row['covered_uncovered_count_partition']} "
             f"gap_interval_count={row['uncovered_lag_interval_count']} "
+            "raw_budget_shortfall_certifies_incomplete="
+            f"{row['raw_budget_shortfall_certifies_incomplete']} "
             f"raw_budget_survives_lag_dedup={row['raw_budget_survives_lag_dedup']} "
             f"raw_budget_survives_query_dedup={row['raw_budget_survives_query_dedup']} "
             f"fixture_theorem_ids={','.join(row['fixture_theorem_ids'])} "
@@ -321,6 +327,8 @@ def text_results(payload: dict[str, Any]) -> str:
         "dedup_candidate_budget_upper_bound="
         f"{certificate['deduplicated_candidate_budget_upper_bound']} "
         f"raw_candidate_budget_upper_bound={certificate['raw_candidate_budget_upper_bound']} "
+        "raw_budget_shortfall_certifies_incomplete="
+        f"{certificate['raw_budget_shortfall_certifies_incomplete']} "
         f"coverage_complete={certificate['coverage_complete']} "
         f"coverage_ratio={certificate['coverage_ratio']:.3f} "
         f"fixture_theorem_ids={','.join(certificate['fixture_theorem_ids'])} "
@@ -354,6 +362,8 @@ def text_results(payload: dict[str, Any]) -> str:
         "query_count_matches_unique_lag_count="
         f"{complete['theorem_side_query_count_matches_unique_lag_count']} "
         f"raw_candidate_budget_upper_bound={complete['raw_candidate_budget_upper_bound']} "
+        "raw_budget_shortfall_certifies_incomplete="
+        f"{complete['raw_budget_shortfall_certifies_incomplete']} "
         f"fixture_theorem_ids={','.join(complete['fixture_theorem_ids'])}\n"
         f"{planner_text}\n"
         f"{payload['claim_boundary']}\n"
@@ -402,8 +412,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{result['average_full_candidate_count']:.3f} |"
             ),
             "",
-            "| Covered lag count | Uncovered lag count | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Positive lags | Partition complete | Uncovered intervals | Candidate budget | Raw budget bound | Deduplicated bound | Full-attention budget |",
-            "| ---: | ---: | ---: | --- | --- | --- | --- | --- | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: |",
+            "| Covered lag count | Uncovered lag count | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Positive lags | Partition complete | Uncovered intervals | Candidate budget | Raw budget bound | Raw shortfall certifies incomplete | Deduplicated bound | Full-attention budget |",
+            "| ---: | ---: | ---: | --- | --- | --- | --- | --- | --- | ---: | --- | ---: | ---: | ---: | --- | ---: | ---: |",
             (
                 f"| {certificate['covered_lag_count']} | "
                 f"{certificate['uncovered_lag_count']} | "
@@ -419,6 +429,7 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{certificate['uncovered_lag_interval_count']} | "
                 f"{certificate['candidate_budget_per_query']} | "
                 f"{certificate['raw_candidate_budget_upper_bound']} | "
+                f"{certificate['raw_budget_shortfall_certifies_incomplete']} | "
                 f"{certificate['deduplicated_candidate_budget_upper_bound']} | "
                 f"{certificate['full_attention_budget']} |"
             ),
@@ -464,8 +475,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "Complete sparse-family fixture:",
             "",
-            "| Context | Local window | Path length | Strides | Coverage complete | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Raw budget | Unique lag candidates | Unique query candidates | Query <= unique lag | Query = unique lag | Fixture theorem ids |",
-            "| ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- | --- | --- |",
+            "| Context | Local window | Path length | Strides | Coverage complete | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Raw budget | Raw shortfall certifies incomplete | Unique lag candidates | Unique query candidates | Query <= unique lag | Query = unique lag | Fixture theorem ids |",
+            "| ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | --- | ---: | ---: | --- | --- | --- |",
             (
                 f"| {complete['sequence_length']} | {complete['local_window']} | "
                 f"{complete['path_length']} | "
@@ -480,6 +491,7 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{complete['covered_count_shortfall']} | "
                 f"{complete['covered_count_shortfall_matches_gap_witness']} | "
                 f"{complete['raw_candidate_budget_upper_bound']} | "
+                f"{complete['raw_budget_shortfall_certifies_incomplete']} | "
                 f"{complete['theorem_side_unique_lag_candidate_count']} | "
                 f"{complete['theorem_side_unique_query_candidate_count']} | "
                 f"{complete['theorem_side_query_count_le_unique_lag_count']} | "
@@ -495,8 +507,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "Planner-style declared plans:",
             "",
-            "| Plan | Context | Local window | Path length | Strides | Complete | Coverage | Candidate budget | Budget ratio | Covered+uncovered | Positive lags | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Gap intervals | Raw budget survives dedup |",
-            "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | --- |",
+            "| Plan | Context | Local window | Path length | Strides | Complete | Coverage | Candidate budget | Budget ratio | Covered+uncovered | Positive lags | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Gap intervals | Raw shortfall certifies incomplete | Raw budget survives dedup |",
+            "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | --- | --- |",
             *(
                 (
                     f"| {row['plan_id']} | {row['sequence_length']} | "
@@ -517,6 +529,7 @@ def markdown_results(payload: dict[str, Any]) -> str:
                     f"{row['covered_count_shortfall']} | "
                     f"{row['covered_count_shortfall_matches_gap_witness']} | "
                     f"{row['uncovered_lag_interval_count']} | "
+                    f"{row['raw_budget_shortfall_certifies_incomplete']} | "
                     f"lag={row['raw_budget_survives_lag_dedup']}, "
                     f"query={row['raw_budget_survives_query_dedup']} |"
                 )
