@@ -103,6 +103,8 @@ def text_results(payload: dict[str, Any]) -> str:
             f"{certificate['same_slot_overwrite_witness_when_stale']} "
             "retained_iff_no_same_slot_overwrite_trace="
             f"{certificate['retained_iff_no_same_slot_overwrite_trace']} "
+            "trace_fresh_iff_next_overwrite_boundary="
+            f"{certificate['trace_fresh_iff_next_overwrite_boundary']} "
             f"collision_with_next_overwrite={certificate['collision_with_next_overwrite']} "
             f"theorem_ids={','.join(certificate['theorem_ids'])}"
         ),
@@ -118,6 +120,10 @@ def text_results(payload: dict[str, Any]) -> str:
             f"slots_distinct={batch['slots_distinct']} "
             "retained_iff_no_same_slot_overwrite_trace="
             f"{batch['retained_iff_no_same_slot_overwrite_trace']} "
+            "next_overwrites_after_current="
+            f"{batch['next_overwrites_after_current']} "
+            "trace_fresh_iff_next_overwrite_boundary="
+            f"{batch['trace_fresh_iff_next_overwrite_boundary']} "
             f"trace_fresh_slots_distinct={batch['trace_fresh_slots_distinct']} "
             f"theorem_ids={','.join(batch['theorem_ids'])}"
         ),
@@ -136,8 +142,14 @@ def text_results(payload: dict[str, Any]) -> str:
             f"slots_distinct={adapter_request['slots_distinct']} "
             "retained_iff_no_same_slot_overwrite_trace="
             f"{adapter_request['retained_iff_no_same_slot_overwrite_trace']} "
+            "next_overwrites_after_current="
+            f"{adapter_request['next_overwrites_after_current']} "
+            "trace_fresh_iff_next_overwrite_boundary="
+            f"{adapter_request['trace_fresh_iff_next_overwrite_boundary']} "
             f"trace_fresh_slots_distinct={adapter_request['trace_fresh_slots_distinct']} "
             f"pass_certificate={adapter_request['pass_certificate']} "
+            "pass_iff_next_overwrite_boundary="
+            f"{adapter_request['pass_iff_next_overwrite_boundary']} "
             f"theorem_ids={','.join(adapter_request['theorem_ids'])}"
         ),
         adapter_request["note"],
@@ -201,8 +213,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             payload["claim_boundary"],
             "",
-            "| Cache size | Current | Token | Slot | Current slot | Lag | Retained | Distinct from current | Next overwrite | Overwrite after current | Stale by overwrite boundary | No same-slot overwrite before current | Stale same-slot overwrite witness | Retained iff no later same-slot write | Theorem ids |",
-            "| ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- | --- |",
+            "| Cache size | Current | Token | Slot | Current slot | Lag | Retained | Distinct from current | Next overwrite | Overwrite after current | Stale by overwrite boundary | No same-slot overwrite before current | Stale same-slot overwrite witness | Retained iff no later same-slot write | Trace iff boundary | Theorem ids |",
+            "| ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- |",
             (
                 f"| {certificate['cache_size']} | {certificate['current']} | "
                 f"{certificate['token']} | {certificate['slot']} | "
@@ -215,23 +227,26 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{certificate['no_same_slot_overwrite_before_current']} | "
                 f"{certificate['same_slot_overwrite_witness_when_stale']} | "
                 f"{certificate['retained_iff_no_same_slot_overwrite_trace']} | "
+                f"{certificate['trace_fresh_iff_next_overwrite_boundary']} | "
                 f"{', '.join(certificate['theorem_ids'])} |"
             ),
             "",
-            "| Batch tokens | Batch slots | All retained | Tokens distinct | Slots distinct | Retained iff no later same-slot writes | Trace-fresh slots distinct | Theorem ids |",
-            "| --- | --- | --- | --- | --- | --- | --- | --- |",
+            "| Batch tokens | Batch slots | All retained | Tokens distinct | Slots distinct | Retained iff no later same-slot writes | Next overwrites after current | Trace iff boundary | Trace-fresh slots distinct | Theorem ids |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
             (
                 f"| {', '.join(str(token) for token in batch['tokens'])} | "
                 f"{', '.join(str(slot) for slot in batch['slots'])} | "
                 f"{batch['all_retained']} | {batch['tokens_distinct']} | "
                 f"{batch['slots_distinct']} | "
                 f"{batch['retained_iff_no_same_slot_overwrite_trace']} | "
+                f"{batch['next_overwrites_after_current']} | "
+                f"{batch['trace_fresh_iff_next_overwrite_boundary']} | "
                 f"{batch['trace_fresh_slots_distinct']} | "
                 f"{', '.join(batch['theorem_ids'])} |"
             ),
             "",
-            "| Request id | Requested tokens | Requested slots | All non-future | All retained | Tokens distinct | Slots distinct | Trace iff | Trace-fresh slots distinct | Pass certificate | Theorem ids |",
-            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+            "| Request id | Requested tokens | Requested slots | All non-future | All retained | Tokens distinct | Slots distinct | Trace iff | Next overwrites after current | Trace iff boundary | Trace-fresh slots distinct | Pass certificate | Pass iff boundary | Theorem ids |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
             (
                 f"| {adapter_request['request_id']} | "
                 f"{', '.join(str(token) for token in adapter_request['requested_tokens'])} | "
@@ -241,8 +256,11 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{adapter_request['tokens_distinct']} | "
                 f"{adapter_request['slots_distinct']} | "
                 f"{adapter_request['retained_iff_no_same_slot_overwrite_trace']} | "
+                f"{adapter_request['next_overwrites_after_current']} | "
+                f"{adapter_request['trace_fresh_iff_next_overwrite_boundary']} | "
                 f"{adapter_request['trace_fresh_slots_distinct']} | "
                 f"{adapter_request['pass_certificate']} | "
+                f"{adapter_request['pass_iff_next_overwrite_boundary']} | "
                 f"{', '.join(adapter_request['theorem_ids'])} |"
             ),
             "",

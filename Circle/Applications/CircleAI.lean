@@ -537,6 +537,53 @@ def kvCacheNoSameSlotOverwriteTrace
     overwrite ≤ current →
     kvCacheSlot cacheSize token ≠ kvCacheSlot cacheSize overwrite
 
+/-- For a non-future token, finite trace freshness is exactly the
+next-overwrite boundary.
+
+This removes the implementation-facing need to scan every later write in the
+trace: after proving the trace predicate once, the reusable certificate can be
+checked by the arithmetic inequality `current < token + cacheSize`. -/
+theorem kvCacheNoSameSlotOverwriteTrace_iff_current_lt_nextOverwrite_of_le
+    {cacheSize current token : Nat} (hcache : 0 < cacheSize)
+    (htoken_current : token ≤ current) :
+    kvCacheNoSameSlotOverwriteTrace cacheSize current token ↔
+      current < token + cacheSize := by
+  constructor
+  · intro htrace
+    have hwindow :
+        kvCacheWindowContains cacheSize current token :=
+      (kvCacheWindowContains_iff_noSameSlotOverwrite_between_of_le
+        hcache htoken_current).2 htrace
+    exact (kvCacheWindowContains_iff_current_lt_nextOverwrite.1 hwindow).2
+  · intro hnext
+    have hwindow :
+        kvCacheWindowContains cacheSize current token :=
+      (kvCacheWindowContains_iff_current_lt_nextOverwrite).2
+        ⟨htoken_current, hnext⟩
+    exact
+      (kvCacheWindowContains_iff_noSameSlotOverwrite_between_of_le
+        hcache htoken_current).1 hwindow
+
+/-- A non-future read batch is trace-fresh exactly when every requested token's
+next same-slot overwrite is still after the current read point. -/
+theorem kvCacheBatchNoSameSlotOverwriteTrace_iff_all_nextOverwrite_after_current_of_forall_le
+    {cacheSize current : Nat} {tokens : List Nat} (hcache : 0 < cacheSize)
+    (hnotFuture : ∀ token ∈ tokens, token ≤ current) :
+    (∀ token ∈ tokens,
+      kvCacheNoSameSlotOverwriteTrace cacheSize current token) ↔
+      ∀ token ∈ tokens, current < token + cacheSize := by
+  constructor
+  · intro htrace token htoken
+    exact
+      (kvCacheNoSameSlotOverwriteTrace_iff_current_lt_nextOverwrite_of_le
+        hcache (hnotFuture token htoken)).1
+        (htrace token htoken)
+  · intro hnext token htoken
+    exact
+      (kvCacheNoSameSlotOverwriteTrace_iff_current_lt_nextOverwrite_of_le
+        hcache (hnotFuture token htoken)).2
+        (hnext token htoken)
+
 /-- The modeled adapter-request pass predicate used by executable KV-cache
 certificates.
 
@@ -586,6 +633,46 @@ theorem kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_traceFresh
           exact htrace token htoken overwrite htoken_overwrite hoverwrite_current)
         hnodup
     exact ⟨hnotFuture, hretained, hnodup, hslotNodup, htrace⟩
+
+/-- The modeled adapter-request pass predicate can be checked by the compact
+next-overwrite boundary instead of an explicit trace scan.
+
+For positive cache size, the request passes exactly when every requested token
+is non-future, the request has no duplicate token positions, and every
+requested token's next same-slot overwrite is still after the current read
+point. The retained-window and slot-distinct fields remain theorem-derived
+consequences of that compact boundary check. -/
+theorem kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_nextOverwriteAfterCurrent
+    {cacheSize current : Nat} {tokens : List Nat} (hcache : 0 < cacheSize) :
+    kvCacheAdapterRequestTracePass cacheSize current tokens ↔
+      (∀ token ∈ tokens, token ≤ current) ∧
+        tokens.Nodup ∧
+        (∀ token ∈ tokens, current < token + cacheSize) := by
+  constructor
+  · intro hpass
+    have hcompact :
+        (∀ token ∈ tokens, token ≤ current) ∧
+          tokens.Nodup ∧
+          (∀ token ∈ tokens,
+            kvCacheNoSameSlotOverwriteTrace cacheSize current token) :=
+      (kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_traceFresh
+        (cacheSize := cacheSize) (current := current)
+        (tokens := tokens) hcache).1 hpass
+    refine ⟨hcompact.1, hcompact.2.1, ?_⟩
+    exact
+      (kvCacheBatchNoSameSlotOverwriteTrace_iff_all_nextOverwrite_after_current_of_forall_le
+        (cacheSize := cacheSize) (current := current)
+        (tokens := tokens) hcache hcompact.1).1 hcompact.2.2
+  · rintro ⟨hnotFuture, hnodup, hnext⟩
+    apply
+      (kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_traceFresh
+        (cacheSize := cacheSize) (current := current)
+        (tokens := tokens) hcache).2
+    exact
+      ⟨hnotFuture, hnodup,
+        (kvCacheBatchNoSameSlotOverwriteTrace_iff_all_nextOverwrite_after_current_of_forall_le
+          (cacheSize := cacheSize) (current := current)
+          (tokens := tokens) hcache hnotFuture).2 hnext⟩
 
 /-- The explicit live KV-cache window maps to duplicate-free ring-buffer slots.
 

@@ -32,6 +32,9 @@ const THEOREM_IDS = [
   "AIM-T0087",
   "AIM-T0088",
   "AIM-T0089",
+  "AIM-T0091",
+  "AIM-T0092",
+  "AIM-T0093",
 ];
 const DICTIONARY_IDS = ["COMMON-0028", "COMMON-0081"];
 
@@ -143,6 +146,7 @@ function appendRecord(output, values, theoremById) {
   const staleOverwriteWitness = staleByOverwriteBoundary && values.token < nextOverwrite && nextOverwrite <= values.current && slot === kvSlot(values.cacheSize, nextOverwrite);
   const noSameSlotOverwrite = noSameSlotOverwriteBeforeCurrent(values.cacheSize, values.current, values.token);
   const retainedIffNoSameSlotOverwrite = !isFuture && isRetained === noSameSlotOverwrite;
+  const traceFreshIffNextOverwriteBoundary = !isFuture && noSameSlotOverwrite === overwriteAfterCurrent;
   const collisionWithCurrent = slot === currentSlot;
   const distinctFromCurrent = isRetained && values.token < values.current && !collisionWithCurrent;
   const batchTokens = readBatch(values.cacheSize, values.current, values.token);
@@ -151,6 +155,14 @@ function appendRecord(output, values, theoremById) {
   const batchAllRetained = batchTokens.every((token) => retained(values.cacheSize, values.current, token));
   const batchTokensDistinct = allDistinct(batchTokens);
   const batchSlotsDistinct = allDistinct(batchSlots);
+  const batchNextOverwritesAfterCurrent = batchTokens.every(
+    (token) => values.current < token + values.cacheSize,
+  );
+  const batchTraceFresh = batchTokens.every(
+    (token) => noSameSlotOverwriteBeforeCurrent(values.cacheSize, values.current, token),
+  );
+  const batchTraceFreshIffBoundary = batchAllNonFuture
+    && batchTraceFresh === batchNextOverwritesAfterCurrent;
   const traceFreshSlotsDistinct = traceFreshBatchSlotsDistinct(
     values.cacheSize,
     values.current,
@@ -163,6 +175,12 @@ function appendRecord(output, values, theoremById) {
     && batchSlotsDistinct
     && traceFreshSlotsDistinct
   );
+  const adapterRequestBoundaryPass = (
+    batchAllNonFuture
+    && batchTokensDistinct
+    && batchNextOverwritesAfterCurrent
+  );
+  const adapterRequestPassIffBoundary = adapterRequestPass === adapterRequestBoundaryPass;
   const tokens = liveTokens(values.cacheSize, values.current);
   const slots = tokens.map((token) => kvSlot(values.cacheSize, token));
   const fullWindow = values.cacheSize <= values.current + 1;
@@ -197,10 +215,14 @@ function appendRecord(output, values, theoremById) {
     `no later same-slot write up to current: ${noSameSlotOverwrite}`,
     `stale same-slot overwrite witness token + cache_size: ${staleOverwriteWitness}`,
     `retained iff no later same-slot write trace: ${retainedIffNoSameSlotOverwrite}`,
+    `trace fresh iff next overwrite boundary: ${traceFreshIffNextOverwriteBoundary}`,
     `read batch tokens: ${batchTokens.join(", ")}`,
     `read batch slots: ${batchSlots.join(", ")}`,
+    `batch next overwrites after current: ${batchNextOverwritesAfterCurrent}`,
+    `batch trace fresh iff boundary: ${batchTraceFreshIffBoundary}`,
     `trace-fresh read-batch slots distinct: ${traceFreshSlotsDistinct}`,
     `adapter request trace pass: ${adapterRequestPass}`,
+    `adapter request pass iff boundary: ${adapterRequestPassIffBoundary}`,
     `collision with current slot: ${collisionWithCurrent}`,
     `retained older token distinct from current slot: ${distinctFromCurrent}`,
     `live window tokens: ${tokens.join(", ")}`,

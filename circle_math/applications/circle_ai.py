@@ -103,6 +103,40 @@ def kv_cache_no_same_slot_overwrite_before_current(
     )
 
 
+def kv_cache_next_overwrite_after_current(
+    cache_size: int,
+    current: int,
+    token: int,
+) -> bool:
+    """Return the constant-time next-overwrite boundary check."""
+    _require_positive(cache_size, "cache_size")
+    if current < 0:
+        raise ValueError("current must be nonnegative")
+    if token < 0:
+        raise ValueError("token must be nonnegative")
+    return current < kv_cache_next_overwrite_token(cache_size, token)
+
+
+def kv_cache_trace_fresh_iff_next_overwrite_boundary(
+    cache_size: int,
+    current: int,
+    token: int,
+) -> bool:
+    """Return whether trace freshness matches the next-overwrite boundary."""
+    _require_positive(cache_size, "cache_size")
+    if current < 0:
+        raise ValueError("current must be nonnegative")
+    if token < 0:
+        raise ValueError("token must be nonnegative")
+    if token > current:
+        return False
+    return kv_cache_no_same_slot_overwrite_before_current(
+        cache_size,
+        current,
+        token,
+    ) == kv_cache_next_overwrite_after_current(cache_size, current, token)
+
+
 def kv_cache_same_slot_overwrite_witness_when_stale(
     cache_size: int,
     current: int,
@@ -227,6 +261,31 @@ def kv_cache_batch_retained_iff_no_same_slot_overwrite_trace(
     return all_retained == all_trace_fresh
 
 
+def kv_cache_batch_trace_fresh_iff_next_overwrite_boundary(
+    cache_size: int,
+    current: int,
+    tokens: Sequence[int],
+) -> bool:
+    """Return whether batch trace freshness matches next-overwrite boundaries."""
+    _require_positive(cache_size, "cache_size")
+    if current < 0:
+        raise ValueError("current must be nonnegative")
+    token_tuple = tuple(tokens)
+    if any(token < 0 for token in token_tuple):
+        raise ValueError("tokens must be nonnegative")
+    if any(token > current for token in token_tuple):
+        return False
+    all_trace_fresh = all(
+        kv_cache_no_same_slot_overwrite_before_current(cache_size, current, token)
+        for token in token_tuple
+    )
+    all_next_overwrite_after_current = all(
+        kv_cache_next_overwrite_after_current(cache_size, current, token)
+        for token in token_tuple
+    )
+    return all_trace_fresh == all_next_overwrite_after_current
+
+
 def kv_cache_trace_fresh_batch_slots_distinct(
     cache_size: int,
     current: int,
@@ -257,12 +316,12 @@ def kv_cache_adapter_request_trace_pass_compact(
     current: int,
     tokens: Sequence[int],
 ) -> bool:
-    """Return the compact adapter request pass predicate backed by ``AIM-T0086``.
+    """Return the compact adapter request pass predicate.
 
     For positive cache size, the expanded modeled request-pass contract is
     theorem-equivalent to this checklist: requested tokens are non-future,
-    duplicate-free, and each token has no later same-slot write before the
-    current read point.
+    duplicate-free, and each token's next same-slot overwrite is still after
+    the current read point.
     """
     _require_positive(cache_size, "cache_size")
     if current < 0:
@@ -274,7 +333,7 @@ def kv_cache_adapter_request_trace_pass_compact(
         all(token <= current for token in token_tuple)
         and len(set(token_tuple)) == len(token_tuple)
         and all(
-            kv_cache_no_same_slot_overwrite_before_current(cache_size, current, token)
+            kv_cache_next_overwrite_after_current(cache_size, current, token)
             for token in token_tuple
         )
     )
@@ -562,6 +621,7 @@ class KVCacheWindowCertificate:
     no_same_slot_overwrite_before_current: bool
     same_slot_overwrite_witness_when_stale: bool
     retained_iff_no_same_slot_overwrite_trace: bool
+    trace_fresh_iff_next_overwrite_boundary: bool
     collision_with_next_overwrite: bool
     theorem_ids: tuple[str, ...] = (
         "AIM-T0059",
@@ -577,6 +637,7 @@ class KVCacheWindowCertificate:
         "AIM-T0075",
         "AIM-T0076",
         "AIM-T0077",
+        "AIM-T0091",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheSlot_lt_cacheSize",
@@ -592,6 +653,7 @@ class KVCacheWindowCertificate:
         "Circle.Applications.kvCacheWindow_noSameSlotOverwrite_between",
         "Circle.Applications.kvCacheWindow_sameSlotOverwrite_witness_of_not_contains",
         "Circle.Applications.kvCacheWindowContains_iff_noSameSlotOverwrite_between_of_le",
+        "Circle.Applications.kvCacheNoSameSlotOverwriteTrace_iff_current_lt_nextOverwrite_of_le",
     )
     note: str = (
         "KV-cache ring-buffer slot certificate only; this proves finite indexing "
@@ -610,6 +672,8 @@ class KVCacheBatchCertificate:
     tokens_distinct: bool
     slots_distinct: bool
     retained_iff_no_same_slot_overwrite_trace: bool
+    next_overwrites_after_current: bool
+    trace_fresh_iff_next_overwrite_boundary: bool
     trace_fresh_slots_distinct: bool
     theorem_ids: tuple[str, ...] = (
         "AIM-T0059",
@@ -619,6 +683,8 @@ class KVCacheBatchCertificate:
         "AIM-T0068",
         "AIM-T0078",
         "AIM-T0079",
+        "AIM-T0091",
+        "AIM-T0092",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheSlot_lt_cacheSize",
@@ -628,6 +694,8 @@ class KVCacheBatchCertificate:
         "Circle.Applications.kvCacheWindow_retainedBatchSlotMap_nodup",
         "Circle.Applications.kvCacheWindow_retainedBatch_iff_noSameSlotOverwriteTrace_of_forall_le",
         "Circle.Applications.kvCacheWindow_traceFreshBatchSlotMap_nodup",
+        "Circle.Applications.kvCacheNoSameSlotOverwriteTrace_iff_current_lt_nextOverwrite_of_le",
+        "Circle.Applications.kvCacheBatchNoSameSlotOverwriteTrace_iff_all_nextOverwrite_after_current_of_forall_le",
     )
     note: str = (
         "KV-cache retained-batch slot certificate only; this proves finite "
@@ -650,8 +718,11 @@ class KVCacheAdapterRequestTraceCertificate:
     tokens_distinct: bool
     slots_distinct: bool
     retained_iff_no_same_slot_overwrite_trace: bool
+    next_overwrites_after_current: bool
+    trace_fresh_iff_next_overwrite_boundary: bool
     trace_fresh_slots_distinct: bool
     pass_certificate: bool
+    pass_iff_next_overwrite_boundary: bool
     theorem_ids: tuple[str, ...] = (
         "AIM-T0059",
         "AIM-T0067",
@@ -659,6 +730,9 @@ class KVCacheAdapterRequestTraceCertificate:
         "AIM-T0078",
         "AIM-T0079",
         "AIM-T0086",
+        "AIM-T0091",
+        "AIM-T0092",
+        "AIM-T0093",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheSlot_lt_cacheSize",
@@ -667,6 +741,9 @@ class KVCacheAdapterRequestTraceCertificate:
         "Circle.Applications.kvCacheWindow_retainedBatch_iff_noSameSlotOverwriteTrace_of_forall_le",
         "Circle.Applications.kvCacheWindow_traceFreshBatchSlotMap_nodup",
         "Circle.Applications.kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_traceFresh",
+        "Circle.Applications.kvCacheNoSameSlotOverwriteTrace_iff_current_lt_nextOverwrite_of_le",
+        "Circle.Applications.kvCacheBatchNoSameSlotOverwriteTrace_iff_all_nextOverwrite_after_current_of_forall_le",
+        "Circle.Applications.kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_nextOverwriteAfterCurrent",
     )
     note: str = (
         "Modeled adapter request-trace certificate only; this packages the "
@@ -1947,6 +2024,9 @@ def certify_kv_cache_window(
         retained_iff_no_same_slot_overwrite_trace=(
             kv_cache_retained_iff_no_same_slot_overwrite_trace(cache_size, current, token)
         ),
+        trace_fresh_iff_next_overwrite_boundary=(
+            kv_cache_trace_fresh_iff_next_overwrite_boundary(cache_size, current, token)
+        ),
         collision_with_next_overwrite=kv_cache_slots_collide(cache_size, token, next_overwrite),
     )
 
@@ -1968,6 +2048,10 @@ def certify_kv_cache_batch(
     all_retained = all(
         kv_cache_window_contains(cache_size, current, token) for token in token_tuple
     )
+    next_overwrites_after_current = all(
+        kv_cache_next_overwrite_after_current(cache_size, current, token)
+        for token in token_tuple
+    )
     tokens_distinct = len(set(token_tuple)) == len(token_tuple)
     slots_distinct = (
         kv_cache_retained_batch_slots_distinct(cache_size, current, token_tuple)
@@ -1984,6 +2068,14 @@ def certify_kv_cache_batch(
         slots_distinct=slots_distinct,
         retained_iff_no_same_slot_overwrite_trace=(
             kv_cache_batch_retained_iff_no_same_slot_overwrite_trace(
+                cache_size,
+                current,
+                token_tuple,
+            )
+        ),
+        next_overwrites_after_current=next_overwrites_after_current,
+        trace_fresh_iff_next_overwrite_boundary=(
+            kv_cache_batch_trace_fresh_iff_next_overwrite_boundary(
                 cache_size,
                 current,
                 token_tuple,
@@ -2020,6 +2112,10 @@ def certify_kv_cache_adapter_request_trace(
         tokens=token_tuple,
     )
     all_non_future = all(token <= current for token in token_tuple)
+    next_overwrites_after_current = all(
+        kv_cache_next_overwrite_after_current(cache_size, current, token)
+        for token in token_tuple
+    )
     pass_certificate = kv_cache_adapter_request_trace_pass_compact(
         cache_size,
         current,
@@ -2037,8 +2133,16 @@ def certify_kv_cache_adapter_request_trace(
         tokens_distinct=batch.tokens_distinct,
         slots_distinct=batch.slots_distinct,
         retained_iff_no_same_slot_overwrite_trace=batch.retained_iff_no_same_slot_overwrite_trace,
+        next_overwrites_after_current=next_overwrites_after_current,
+        trace_fresh_iff_next_overwrite_boundary=(
+            batch.trace_fresh_iff_next_overwrite_boundary
+        ),
         trace_fresh_slots_distinct=batch.trace_fresh_slots_distinct,
         pass_certificate=pass_certificate,
+        pass_iff_next_overwrite_boundary=(
+            pass_certificate
+            == (all_non_future and batch.tokens_distinct and next_overwrites_after_current)
+        ),
     )
 
 

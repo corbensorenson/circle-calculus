@@ -77,6 +77,9 @@ The main theorem spine is:
 - `AIM-T0087`: the generated live-window token list passes the modeled adapter request-trace contract under positive cache size.
 - `AIM-T0088`: the generated-live-window request contract is equivalent to the requested token list being exactly the generated live window.
 - `AIM-T0089`: the public `cache_size = 16`, `current = 31` fixture realizes the exact generated-live-window request with tokens `16..31`.
+- `AIM-T0091`: for a non-future token, the no-later-same-slot-write trace predicate is equivalent to `current < token + cache_size`.
+- `AIM-T0092`: for a non-future batch, pointwise trace freshness is equivalent to every requested token satisfying that next-overwrite-after-current boundary.
+- `AIM-T0093`: the modeled adapter request pass predicate is equivalent to non-future requested tokens, duplicate-free requested tokens, and the next-overwrite-after-current boundary for every requested token.
 
 ## Boundary
 
@@ -86,3 +89,9 @@ checklist, not an implementation proof. It does not model a GPU kernel, memory a
 paging system, serving stack, retrieval policy, attention quality, or
 language-model behavior. Use it as a proof-carrying indexing/freshness check
 before implementation and experiments, not as experimental evidence.
+
+The most implementation-facing fields are:
+
+- `trace_fresh_iff_next_overwrite_boundary`: the finite trace scan agrees with the constant-time boundary check.
+- `next_overwrites_after_current`: every requested token's next same-slot overwrite is after the current read point.
+- `pass_iff_next_overwrite_boundary`: the adapter request pass bit agrees with the compact checklist of non-future tokens, duplicate-free tokens, and the next-overwrite boundary.

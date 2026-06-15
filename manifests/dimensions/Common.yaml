@@ -1350,6 +1350,56 @@ theorems:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_live_window_request_is_exact_and_passes
         - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_and_json_out
     blocker: ""
+  - id: AIM-T0091
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheNoSameSlotOverwriteTrace_iff_current_lt_nextOverwrite_of_le
+    informal_statement: "For a non-future token and positive KV-cache size, no later same-slot write up to the current read point is equivalent to the constant-time next-overwrite inequality current < token + cacheSize."
+    formal_statement: "forall {cacheSize current token : Nat}, 0 < cacheSize -> token <= current -> (Circle.Applications.kvCacheNoSameSlotOverwriteTrace cacheSize current token <-> current < token + cacheSize)"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_has_no_overwrite_before_read
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_certificate_marks_stale_token
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_and_json_out
+    blocker: ""
+  - id: AIM-T0092
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheBatchNoSameSlotOverwriteTrace_iff_all_nextOverwrite_after_current_of_forall_le
+    informal_statement: "For a non-future requested KV-cache batch and positive cache size, pointwise trace freshness is equivalent to every requested token having its next same-slot overwrite after current."
+    formal_statement: "forall {cacheSize current : Nat} {tokens : List Nat}, 0 < cacheSize -> (forall token, token in tokens -> token <= current) -> ((forall token, token in tokens -> Circle.Applications.kvCacheNoSameSlotOverwriteTrace cacheSize current token) <-> forall token, token in tokens -> current < token + cacheSize)"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_retained_batch_slots_are_distinct
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_adapter_request_trace_packages_batch_contract
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_and_json_out
+    blocker: ""
+  - id: AIM-T0093
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_nextOverwriteAfterCurrent
+    informal_statement: "For a positive KV-cache size, the modeled adapter request pass predicate is equivalent to non-future requested tokens, duplicate-free requested tokens, and the constant-time next-overwrite-after-current boundary for every requested token."
+    formal_statement: "forall {cacheSize current : Nat} {tokens : List Nat}, 0 < cacheSize -> (Circle.Applications.kvCacheAdapterRequestTracePass cacheSize current tokens <-> (forall token, token in tokens -> token <= current) and tokens.Nodup and forall token, token in tokens -> current < token + cacheSize)"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_adapter_request_trace_packages_batch_contract
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_and_json_out
+    blocker: ""
   - id: AIM-T0006
     status: lean_proved
     lean_name: Circle.Applications.loopRequiredSteps_pos

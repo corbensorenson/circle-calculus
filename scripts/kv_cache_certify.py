@@ -145,7 +145,9 @@ def summary_lines(payload: dict[str, Any]) -> list[str]:
             "same_slot_overwrite_witness_when_stale="
             f"{window['same_slot_overwrite_witness_when_stale']} "
             "retained_iff_no_same_slot_overwrite_trace="
-            f"{window['retained_iff_no_same_slot_overwrite_trace']}"
+            f"{window['retained_iff_no_same_slot_overwrite_trace']} "
+            "trace_fresh_iff_next_overwrite_boundary="
+            f"{window['trace_fresh_iff_next_overwrite_boundary']}"
         ),
         (
             "batch_contract="
@@ -155,6 +157,10 @@ def summary_lines(payload: dict[str, Any]) -> list[str]:
             f"slots_distinct={batch['slots_distinct']} "
             "retained_iff_no_same_slot_overwrite_trace="
             f"{batch['retained_iff_no_same_slot_overwrite_trace']} "
+            "next_overwrites_after_current="
+            f"{batch['next_overwrites_after_current']} "
+            "trace_fresh_iff_next_overwrite_boundary="
+            f"{batch['trace_fresh_iff_next_overwrite_boundary']} "
             f"trace_fresh_slots_distinct={batch['trace_fresh_slots_distinct']}"
         ),
         (
@@ -169,7 +175,16 @@ def summary_lines(payload: dict[str, Any]) -> list[str]:
             f"slots_distinct={adapter_request['slots_distinct']} "
             "retained_iff_no_same_slot_overwrite_trace="
             f"{adapter_request['retained_iff_no_same_slot_overwrite_trace']} "
+            "next_overwrites_after_current="
+            f"{adapter_request['next_overwrites_after_current']} "
+            "trace_fresh_iff_next_overwrite_boundary="
+            f"{adapter_request['trace_fresh_iff_next_overwrite_boundary']} "
             f"trace_fresh_slots_distinct={adapter_request['trace_fresh_slots_distinct']}"
+        ),
+        (
+            "adapter_request_boundary="
+            "pass_iff_next_overwrite_boundary="
+            f"{adapter_request['pass_iff_next_overwrite_boundary']}"
         ),
         (
             "live_window_contract="

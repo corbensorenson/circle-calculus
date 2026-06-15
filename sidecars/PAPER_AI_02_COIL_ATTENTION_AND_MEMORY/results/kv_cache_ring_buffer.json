@@ -10,10 +10,15 @@
       "Circle.Applications.kvCacheWindow_retainedBatchSlotMap_nodup",
       "Circle.Applications.kvCacheWindow_retainedBatch_iff_noSameSlotOverwriteTrace_of_forall_le",
       "Circle.Applications.kvCacheWindow_traceFreshBatchSlotMap_nodup",
-      "Circle.Applications.kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_traceFresh"
+      "Circle.Applications.kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_traceFresh",
+      "Circle.Applications.kvCacheNoSameSlotOverwriteTrace_iff_current_lt_nextOverwrite_of_le",
+      "Circle.Applications.kvCacheBatchNoSameSlotOverwriteTrace_iff_all_nextOverwrite_after_current_of_forall_le",
+      "Circle.Applications.kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_nextOverwriteAfterCurrent"
     ],
+    "next_overwrites_after_current": true,
     "note": "Modeled adapter request-trace certificate only; this packages the finite retained-batch KV-cache theorem spine for a declared set of read-token positions. It does not prove a GPU kernel, serving stack, paging policy, deployment behavior, retrieval quality, or model quality.",
     "pass_certificate": true,
+    "pass_iff_next_overwrite_boundary": true,
     "request_id": "default_read_request",
     "request_token_count": 4,
     "requested_slots": [
@@ -36,9 +41,13 @@
       "AIM-T0068",
       "AIM-T0078",
       "AIM-T0079",
-      "AIM-T0086"
+      "AIM-T0086",
+      "AIM-T0091",
+      "AIM-T0092",
+      "AIM-T0093"
     ],
     "tokens_distinct": true,
+    "trace_fresh_iff_next_overwrite_boundary": true,
     "trace_fresh_slots_distinct": true
   },
   "batch_certificate": {
@@ -52,8 +61,11 @@
       "Circle.Applications.kvCacheWindow_retainedBatchSlots_pairwise_ne",
       "Circle.Applications.kvCacheWindow_retainedBatchSlotMap_nodup",
       "Circle.Applications.kvCacheWindow_retainedBatch_iff_noSameSlotOverwriteTrace_of_forall_le",
-      "Circle.Applications.kvCacheWindow_traceFreshBatchSlotMap_nodup"
+      "Circle.Applications.kvCacheWindow_traceFreshBatchSlotMap_nodup",
+      "Circle.Applications.kvCacheNoSameSlotOverwriteTrace_iff_current_lt_nextOverwrite_of_le",
+      "Circle.Applications.kvCacheBatchNoSameSlotOverwriteTrace_iff_all_nextOverwrite_after_current_of_forall_le"
     ],
+    "next_overwrites_after_current": true,
     "note": "KV-cache retained-batch slot certificate only; this proves finite ring-buffer indexing facts for a declared live token batch, not paging policy quality, throughput, memory savings, retrieval quality, or deployment safety.",
     "retained_iff_no_same_slot_overwrite_trace": true,
     "slots": [
@@ -70,7 +82,9 @@
       "AIM-T0067",
       "AIM-T0068",
       "AIM-T0078",
-      "AIM-T0079"
+      "AIM-T0079",
+      "AIM-T0091",
+      "AIM-T0092"
     ],
     "tokens": [
       20,
@@ -79,6 +93,7 @@
       31
     ],
     "tokens_distinct": true,
+    "trace_fresh_iff_next_overwrite_boundary": true,
     "trace_fresh_slots_distinct": true
   },
   "claim_boundary": "These are proof-carrying finite ring-buffer indexing certificates for a declared KV-cache window, retained token batch, and modeled adapter request trace. They are not model-quality, throughput, memory-saving, retrieval-quality, paging-policy, implementation, or deployment-safety claims.",
@@ -254,7 +269,8 @@
       "Circle.Applications.not_kvCacheWindowContains_iff_nextOverwrite_le_current_of_le",
       "Circle.Applications.kvCacheWindow_noSameSlotOverwrite_between",
       "Circle.Applications.kvCacheWindow_sameSlotOverwrite_witness_of_not_contains",
-      "Circle.Applications.kvCacheWindowContains_iff_noSameSlotOverwrite_between_of_le"
+      "Circle.Applications.kvCacheWindowContains_iff_noSameSlotOverwrite_between_of_le",
+      "Circle.Applications.kvCacheNoSameSlotOverwriteTrace_iff_current_lt_nextOverwrite_of_le"
     ],
     "next_overwrite_after_current": true,
     "next_overwrite_token": 36,
@@ -279,8 +295,10 @@
       "AIM-T0070",
       "AIM-T0075",
       "AIM-T0076",
-      "AIM-T0077"
+      "AIM-T0077",
+      "AIM-T0091"
     ],
-    "token": 20
+    "token": 20,
+    "trace_fresh_iff_next_overwrite_boundary": true
   }
 }

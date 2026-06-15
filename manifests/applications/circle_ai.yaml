@@ -123,6 +123,18 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.kvCacheWindow_retainedSlot_ne_current_of_lt
     dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+  - id: AIM-T0091
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheNoSameSlotOverwriteTrace_iff_current_lt_nextOverwrite_of_le
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+  - id: AIM-T0092
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheBatchNoSameSlotOverwriteTrace_iff_all_nextOverwrite_after_current_of_forall_le
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+  - id: AIM-T0093
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_nextOverwriteAfterCurrent
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
   - id: AIM-T0006
     status: lean_proved
     lean_name: Circle.Applications.loopRequiredSteps_pos

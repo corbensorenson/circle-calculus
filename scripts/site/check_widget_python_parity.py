@@ -39,6 +39,8 @@ from circle_math.applications import (
     certify_kv_cache_window,
     kv_cache_adapter_request_trace_pass_compact,
     kv_cache_batch_retained_iff_no_same_slot_overwrite_trace,
+    kv_cache_batch_trace_fresh_iff_next_overwrite_boundary,
+    kv_cache_next_overwrite_after_current,
     kv_cache_next_overwrite_token,
     kv_cache_no_same_slot_overwrite_before_current,
     kv_cache_retained_batch_slots_distinct,
@@ -46,6 +48,7 @@ from circle_math.applications import (
     kv_cache_same_slot_overwrite_witness_when_stale,
     kv_cache_slot,
     kv_cache_trace_fresh_batch_slots_distinct,
+    kv_cache_trace_fresh_iff_next_overwrite_boundary,
     kv_cache_window_contains,
     local_window_indices,
     loop_block_indices,
@@ -1295,6 +1298,14 @@ def js_kv_cache_next_overwrite_token(cache_size: int, token: int) -> int:
     return token + cache_size
 
 
+def js_kv_cache_next_overwrite_after_current(
+    cache_size: int,
+    current: int,
+    token: int,
+) -> bool:
+    return current < js_kv_cache_next_overwrite_token(cache_size, token)
+
+
 def js_kv_cache_no_same_slot_overwrite_before_current(
     cache_size: int,
     current: int,
@@ -1334,6 +1345,20 @@ def js_kv_cache_retained_iff_no_same_slot_overwrite_trace(
     return js_kv_cache_window_contains(cache_size, current, token) == (
         js_kv_cache_no_same_slot_overwrite_before_current(cache_size, current, token)
     )
+
+
+def js_kv_cache_trace_fresh_iff_next_overwrite_boundary(
+    cache_size: int,
+    current: int,
+    token: int,
+) -> bool:
+    if token > current:
+        return False
+    return js_kv_cache_no_same_slot_overwrite_before_current(
+        cache_size,
+        current,
+        token,
+    ) == js_kv_cache_next_overwrite_after_current(cache_size, current, token)
 
 
 def js_kv_cache_retained_batch_slots_distinct(
@@ -1382,6 +1407,24 @@ def js_kv_cache_trace_fresh_batch_slots_distinct(
         return False
     slots = tuple(js_kv_cache_slot(cache_size, token) for token in tokens)
     return len(set(slots)) == len(slots)
+
+
+def js_kv_cache_batch_trace_fresh_iff_next_overwrite_boundary(
+    cache_size: int,
+    current: int,
+    tokens: tuple[int, ...],
+) -> bool:
+    if any(token > current for token in tokens):
+        return False
+    all_trace_fresh = all(
+        js_kv_cache_no_same_slot_overwrite_before_current(cache_size, current, token)
+        for token in tokens
+    )
+    all_next_overwrite_after_current = all(
+        js_kv_cache_next_overwrite_after_current(cache_size, current, token)
+        for token in tokens
+    )
+    return all_trace_fresh == all_next_overwrite_after_current
 
 
 def js_dense_adapter_parameter_count(channel_count: int, parameters_per_channel: int) -> int:
@@ -3262,6 +3305,11 @@ def main() -> int:
             current,
             token,
         )
+        boundary_iff = js_kv_cache_trace_fresh_iff_next_overwrite_boundary(
+            cache_size,
+            current,
+            token,
+        )
 
         assert kv_cache_slot(cache_size, token) == slot
         assert kv_cache_window_contains(cache_size, current, token) == retained
@@ -3269,6 +3317,10 @@ def main() -> int:
         assert kv_cache_no_same_slot_overwrite_before_current(cache_size, current, token) == no_same_slot_overwrite
         assert kv_cache_same_slot_overwrite_witness_when_stale(cache_size, current, token) == stale_witness
         assert kv_cache_retained_iff_no_same_slot_overwrite_trace(cache_size, current, token) == trace_iff
+        assert kv_cache_next_overwrite_after_current(cache_size, current, token) == (
+            current < next_overwrite
+        )
+        assert kv_cache_trace_fresh_iff_next_overwrite_boundary(cache_size, current, token) == boundary_iff
         assert window.slot == slot
         assert window.current_slot == current_slot
         assert window.lag == current - token
@@ -3278,6 +3330,7 @@ def main() -> int:
         assert window.no_same_slot_overwrite_before_current == no_same_slot_overwrite
         assert window.same_slot_overwrite_witness_when_stale == stale_witness
         assert window.retained_iff_no_same_slot_overwrite_trace == trace_iff
+        assert window.trace_fresh_iff_next_overwrite_boundary == boundary_iff
         assert batch.slots == tuple(js_kv_cache_slot(cache_size, token) for token in batch_tokens)
         assert batch.all_retained == all(
             js_kv_cache_window_contains(cache_size, current, token)
@@ -3296,6 +3349,17 @@ def main() -> int:
                 batch_tokens,
             )
         )
+        assert batch.next_overwrites_after_current == all(
+            js_kv_cache_next_overwrite_after_current(cache_size, current, token)
+            for token in batch_tokens
+        )
+        assert batch.trace_fresh_iff_next_overwrite_boundary == (
+            js_kv_cache_batch_trace_fresh_iff_next_overwrite_boundary(
+                cache_size,
+                current,
+                batch_tokens,
+            )
+        )
         assert batch.trace_fresh_slots_distinct == (
             js_kv_cache_trace_fresh_batch_slots_distinct(cache_size, current, batch_tokens)
         )
@@ -3305,6 +3369,11 @@ def main() -> int:
             current,
             batch_tokens,
         ) == batch.retained_iff_no_same_slot_overwrite_trace
+        assert kv_cache_batch_trace_fresh_iff_next_overwrite_boundary(
+            cache_size,
+            current,
+            batch_tokens,
+        ) == batch.trace_fresh_iff_next_overwrite_boundary
         assert kv_cache_trace_fresh_batch_slots_distinct(
             cache_size,
             current,
@@ -3315,6 +3384,10 @@ def main() -> int:
         assert adapter_request.all_retained == batch.all_retained
         assert adapter_request.tokens_distinct == batch.tokens_distinct
         assert adapter_request.slots_distinct == batch.slots_distinct
+        assert adapter_request.next_overwrites_after_current == batch.next_overwrites_after_current
+        assert adapter_request.trace_fresh_iff_next_overwrite_boundary == (
+            batch.trace_fresh_iff_next_overwrite_boundary
+        )
         assert adapter_request.trace_fresh_slots_distinct == batch.trace_fresh_slots_distinct
         assert adapter_request.pass_certificate == (
             adapter_request.all_non_future
@@ -3328,6 +3401,14 @@ def main() -> int:
             cache_size,
             current,
             batch_tokens,
+        )
+        assert adapter_request.pass_iff_next_overwrite_boundary == (
+            adapter_request.pass_certificate
+            == (
+                adapter_request.all_non_future
+                and batch.tokens_distinct
+                and batch.next_overwrites_after_current
+            )
         )
 
     retrieval_cases = [
