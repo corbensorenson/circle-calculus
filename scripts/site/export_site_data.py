@@ -706,6 +706,7 @@ def export_widget_index() -> dict:
                 "AIRA-T0207",
                 "AIRA-T0210",
                 "AIRA-T0211",
+                "AIRA-T0212",
             ],
             "dictionary_ids": ["COMMON-0076", "COMMON-0077"],
             "python_reference": "circle_math.applications.rope_certifier.certify_rope_positions; scripts/rope_certify.py",

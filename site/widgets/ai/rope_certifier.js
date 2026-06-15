@@ -42,6 +42,7 @@ const THEOREM_GROUPS = [
       "AIRA-T0207",
       "AIRA-T0210",
       "AIRA-T0211",
+      "AIRA-T0212",
     ],
   },
   {
@@ -128,6 +129,12 @@ function collisionPairCountAtGapMultiples(context, gap) {
   return total;
 }
 
+function collisionPairCountClosedFormNumerator(context, gap) {
+  if (gap <= 0 || gap >= context) return 0;
+  const fittingCount = fittingCollisionMultipleCount(context, gap);
+  return fittingCount * (2 * context - gap * (fittingCount + 1));
+}
+
 function fittingCollisionMultipleCount(context, gap) {
   if (gap <= 0 || gap >= context) return 0;
   return Math.floor((context - 1) / gap);
@@ -144,6 +151,7 @@ function phaseBankPrefixReports(context, periods, limit = 8) {
       reachesContext: exact.reachesContext,
       gap: exact.reachesContext ? null : exact.value,
       fittingMultiples: exact.reachesContext ? 0 : fittingCollisionMultipleCount(context, exact.value),
+      closedFormNumerator: exact.reachesContext ? 0 : collisionPairCountClosedFormNumerator(context, exact.value),
       totalPairs: exact.reachesContext ? 0 : collisionPairCountAtGapMultiples(context, exact.value),
     });
   }
@@ -288,6 +296,7 @@ function appendRecord(output, values, theoremById) {
     ? 0
     : collisionPairCountAtGapMultiples(values.context, exact.value);
   const fittingMultiples = exact.reachesContext ? 0 : fittingCollisionMultipleCount(values.context, exact.value);
+  const closedFormNumerator = exact.reachesContext ? 0 : collisionPairCountClosedFormNumerator(values.context, exact.value);
   const prefixReports = phaseBankPrefixReports(values.context, periods);
   const firstPassPrefix = prefixReports.find((report) => report.reachesContext);
   const margin = realMargin(values.headDim, values.base, values.context, values.tolerance);
@@ -311,6 +320,7 @@ function appendRecord(output, values, theoremById) {
     `common collision gap: ${exact.reachesContext ? ">= context" : exact.value}`,
     `guaranteed common-gap collision pairs: ${guaranteedPairCount}`,
     `fitting common-gap multiples: ${fittingMultiples}`,
+    `closed-form count numerator: ${closedFormNumerator}`,
     `guaranteed common-gap multiple pairs: ${guaranteedMultiplePairCount}`,
     `bounded prefix reports: ${prefixReports.length}`,
     `first exact pass prefix length: ${firstPassPrefix ? firstPassPrefix.prefixLength : "none"}`,
@@ -331,7 +341,7 @@ function appendRecord(output, values, theoremById) {
     prefixes.textContent = `Prefix reports: ${prefixReports
       .map((report) => {
         const gap = report.reachesContext ? ">= context" : report.gap;
-        return `first ${report.prefixLength}: gap ${gap}, fitting multiples ${report.fittingMultiples}, pairs ${report.totalPairs}`;
+        return `first ${report.prefixLength}: gap ${gap}, fitting multiples ${report.fittingMultiples}, numerator ${report.closedFormNumerator}, pairs ${report.totalPairs}`;
       })
       .join("; ")}.`;
     record.appendChild(prefixes);

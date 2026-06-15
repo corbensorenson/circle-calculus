@@ -3031,6 +3031,22 @@ theorems:
         - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
         - tests/test_rope_certifier.py::test_rope_certify_cli_emits_json_certificate
     blocker: ""
+  - id: AIRA-T0212
+    status: lean_proved
+    lean_name: Circle.Applications.ropeCollisionPairCountAtGapMultiples_twice_eq_closedForm
+    informal_statement: "For a positive common collision gap, twice the positive-multiple collision-pair count equals the quotient-bounded triangular closed-form numerator."
+    formal_statement: "forall {context commonGap : Nat}, 0 < commonGap -> 2 * Circle.Applications.ropeCollisionPairCountAtGapMultiples context commonGap = let q := Circle.Applications.ropeCollisionPairCountFittingMultipleCount context commonGap; q * (2 * context - commonGap * (q + 1))"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078", "COMMON-0083", "COMMON-0084"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_discretized_period_helpers_are_deterministic
+        - tests/test_rope_certifier.py::test_rope_certifier_exact_contract_finds_discrete_collision_gap
+        - tests/test_rope_certifier.py::test_rope_certify_cli_emits_json_certificate
+    blocker: ""
   - id: AIRA-T0174
     status: lean_proved
     lean_name: Circle.Applications.ropeCollisionPairCountAtGapMultiples_pos_iff

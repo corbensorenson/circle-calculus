@@ -44,6 +44,7 @@ from circle_math.applications import (
     audit_standard_channel0_rational_band_certificate,
     collision_pair_count_at_gap,
     collision_pair_count_fitting_multiple_count,
+    collision_pair_count_at_gap_multiples_closed_form_numerator,
     collision_pair_count_at_gap_multiples_fitting_range,
     collision_pair_count_at_gap_multiples,
     discretize_rope_periods,
@@ -88,6 +89,8 @@ def test_discretized_period_helpers_are_deterministic() -> None:
     assert capped_lcm((4, 6), 30) == (12, False)
     assert collision_pair_count_at_gap(10, 4) == 6
     assert collision_pair_count_at_gap_multiples(20, 6) == 24
+    assert collision_pair_count_at_gap_multiples_closed_form_numerator(20, 6) == 48
+    assert collision_pair_count_at_gap_multiples_closed_form_numerator(6, 6) == 0
     assert collision_pair_count_at_gap_multiples_fitting_range(20, 6) == 24
     assert collision_pair_count_at_gap_multiples_fitting_range(6, 6) == 0
     assert collision_pair_count_fitting_multiple_count(20, 6) == 3
@@ -103,9 +106,11 @@ def test_discretized_period_helpers_are_deterministic() -> None:
     assert tuple(report.prefix_length for report in reports) == (1, 2)
     assert reports[0].lcm_collision_gap == 6
     assert reports[0].fitting_collision_multiple_count == 3
+    assert reports[0].collision_pair_count_closed_form_numerator == 48
     assert reports[0].total_bank_collision_pair_count == 24
     assert reports[1].lcm_reaches_context
     assert reports[1].fitting_collision_multiple_count == 0
+    assert reports[1].collision_pair_count_closed_form_numerator == 0
     assert reports[1].total_bank_collision_pair_count == 0
     subfamilies = phase_bank_subfamily_pass_reports(128, (6, 9, 13, 18), max_size=3)
     assert subfamilies[0].subfamily_indices == (2, 3)
@@ -127,6 +132,7 @@ def test_single_period_collision_count_matches_bruteforce() -> None:
     assert "AIRA-T0207" in ROPE_CERTIFIER_THEOREMS
     assert "AIRA-T0210" in ROPE_CERTIFIER_THEOREMS
     assert "AIRA-T0211" in ROPE_CERTIFIER_THEOREMS
+    assert "AIRA-T0212" in ROPE_CERTIFIER_THEOREMS
 
 
 def test_real_phase_nat_turn_error_matches_endpoint_precursor_shape() -> None:
@@ -1909,9 +1915,15 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     assert certificate.exact_discrete.prefix_collision_reports[0].prefix_length == 1
     assert certificate.exact_discrete.prefix_collision_reports[0].lcm_collision_gap == 6
     assert certificate.exact_discrete.prefix_collision_reports[0].fitting_collision_multiple_count == 3
+    assert (
+        certificate.exact_discrete.prefix_collision_reports[0]
+        .collision_pair_count_closed_form_numerator
+        == 48
+    )
     assert certificate.exact_discrete.prefix_collision_reports[0].total_bank_collision_pair_count == 24
     assert certificate.exact_discrete.guaranteed_common_gap_collision_pair_count == 14
     assert certificate.exact_discrete.common_gap_fitting_multiple_count == 3
+    assert certificate.exact_discrete.common_gap_collision_pair_count_closed_form_numerator == 48
     assert certificate.exact_discrete.guaranteed_common_gap_multiple_pair_count == 24
     assert certificate.exact_discrete.total_bank_collision_pair_count == 24
     assert certificate.exact_discrete.sample_collision_pairs[0] == (0, 6)
@@ -1948,11 +1960,13 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     assert "AIRA-T0176" in certificate.theorem_ids
     assert "AIRA-T0210" in certificate.theorem_ids
     assert "AIRA-T0211" in certificate.theorem_ids
+    assert "AIRA-T0212" in certificate.theorem_ids
     assert "AIRA-T0024" in certificate.exact_discrete.assumptions[3]
     exact_assumptions = "\n".join(certificate.exact_discrete.assumptions)
     assert "AIRA-T0184" in exact_assumptions
     assert "AIRA-T0175" in exact_assumptions
     assert "AIRA-T0176" in exact_assumptions
+    assert "AIRA-T0212" in exact_assumptions
     assert "not a model-quality" in certificate.claim_boundary
 
 
@@ -2013,9 +2027,15 @@ def test_rope_certify_cli_emits_json_certificate() -> None:
     assert payload["exact_discrete"]["first_exact_pass_prefix_length"] is None
     assert payload["exact_discrete"]["prefix_collision_reports"][0]["lcm_collision_gap"] == 6
     assert payload["exact_discrete"]["prefix_collision_reports"][0]["fitting_collision_multiple_count"] == 3
+    assert (
+        payload["exact_discrete"]["prefix_collision_reports"][0]
+        ["collision_pair_count_closed_form_numerator"]
+        == 48
+    )
     assert payload["exact_discrete"]["smallest_pass_subfamily_size"] is None
     assert payload["exact_discrete"]["guaranteed_common_gap_collision_pair_count"] == 14
     assert payload["exact_discrete"]["common_gap_fitting_multiple_count"] == 3
+    assert payload["exact_discrete"]["common_gap_collision_pair_count_closed_form_numerator"] == 48
     assert payload["exact_discrete"]["guaranteed_common_gap_multiple_pair_count"] == 24
     assert payload["exact_discrete"]["total_bank_collision_pair_count"] == 24
     assert payload["real_phase_margin"]["formal_precursor_theorem_ids"] == list(ROPE_REAL_PHASE_PRECURSOR_THEOREMS)
@@ -2051,6 +2071,7 @@ def test_rope_diagnostic_preset_reports_exact_failure() -> None:
     assert payload["exact_discrete"]["common_collision_gap"] == 6
     assert payload["exact_discrete"]["guaranteed_common_gap_collision_pair_count"] == 14
     assert payload["exact_discrete"]["common_gap_fitting_multiple_count"] == 3
+    assert payload["exact_discrete"]["common_gap_collision_pair_count_closed_form_numerator"] == 48
     assert payload["exact_discrete"]["total_bank_collision_pair_count"] == 24
 
 
@@ -2148,6 +2169,7 @@ def test_exact_phase_bank_diagnostic_presets_cover_quantized_and_scaled_boundari
     assert not shared.exact_discrete.pass_exact
     assert shared.exact_discrete.discretized_periods == (32, 48, 96)
     assert shared.exact_discrete.common_collision_gap == 96
+    assert shared.exact_discrete.common_gap_collision_pair_count_closed_form_numerator == 448
     assert shared.exact_discrete.total_bank_collision_pair_count == 224
     assert "AIRA-T0199" in shared.exact_discrete.theorem_ids
 
@@ -2157,6 +2179,7 @@ def test_exact_phase_bank_diagnostic_presets_cover_quantized_and_scaled_boundari
     assert not boundary_fail.exact_discrete.pass_exact
     assert boundary_fail.exact_discrete.common_collision_gap == 240
     assert boundary_fail.exact_discrete.guaranteed_common_gap_collision_pair_count == 1
+    assert boundary_fail.exact_discrete.common_gap_collision_pair_count_closed_form_numerator == 2
     assert boundary_fail.exact_discrete.total_bank_collision_pair_count == 1
     assert boundary_fail.exact_discrete.sample_collision_pairs == ((0, 240),)
     assert "AIRA-T0200" in boundary_fail.exact_discrete.theorem_ids
@@ -2167,6 +2190,7 @@ def test_exact_phase_bank_diagnostic_presets_cover_quantized_and_scaled_boundari
     assert scaled_pass.exact_discrete.pass_exact
     assert scaled_pass.exact_discrete.discretized_periods == (60, 64)
     assert scaled_pass.exact_discrete.common_collision_gap is None
+    assert scaled_pass.exact_discrete.common_gap_collision_pair_count_closed_form_numerator == 0
     assert scaled_pass.exact_discrete.total_bank_collision_pair_count == 0
     assert "AIRA-T0201" in scaled_pass.exact_discrete.theorem_ids
 
@@ -2177,12 +2201,14 @@ def test_exact_phase_bank_diagnostic_presets_cover_quantized_and_scaled_boundari
     assert scaled_fail.exact_discrete.common_collision_gap == 960
     assert scaled_fail.exact_discrete.total_bank_collision_pair_count == 1
     assert scaled_fail.exact_discrete.common_gap_fitting_multiple_count == 1
+    assert scaled_fail.exact_discrete.common_gap_collision_pair_count_closed_form_numerator == 2
     assert scaled_fail.exact_discrete.sample_collision_pairs == ((0, 960),)
     assert "AIRA-T0202" in scaled_fail.exact_discrete.theorem_ids
     assert "AIRA-T0206" in scaled_fail.exact_discrete.theorem_ids
     assert "AIRA-T0207" in scaled_fail.exact_discrete.theorem_ids
     assert "AIRA-T0210" in scaled_fail.exact_discrete.theorem_ids
     assert "AIRA-T0211" in scaled_fail.exact_discrete.theorem_ids
+    assert "AIRA-T0212" in scaled_fail.exact_discrete.theorem_ids
 
 
 def test_phase_bank_certify_cli_emits_json_certificate() -> None:

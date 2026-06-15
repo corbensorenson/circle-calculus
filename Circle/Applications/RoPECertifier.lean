@@ -315,6 +315,86 @@ theorem ropeCollisionPairCountAtGapMultiples_eq_fittingRange
     exact Nat.sub_eq_zero_iff_le.mpr (le_of_not_gt hnot_gap_lt_context)
   exact hsmall_eq_big.symm
 
+/-- A closed-form doubled sum for positive multiples that all fit.
+
+The right side is the triangular-number numerator for the collision-pair
+count over the positive multiples `1, ..., q`. The factor `2 *` avoids
+introducing a divisibility side condition into the core arithmetic theorem. -/
+theorem ropePositiveRangeCollisionPairCount_twice_eq_closedForm
+    {context commonGap q : Nat} (hfit : q * commonGap < context) :
+    2 * (∑ multiple ∈ (Finset.range (q + 1)).filter (fun multiple => 0 < multiple),
+      (context - multiple * commonGap)) =
+    q * (2 * context - commonGap * (q + 1)) := by
+  induction q with
+  | zero =>
+      simp
+  | succ q ih =>
+      have hq_fit : q * commonGap < context := by
+        exact lt_of_le_of_lt (Nat.mul_le_mul_right commonGap (Nat.le_succ q)) hfit
+      have ih' := ih hq_fit
+      rw [show Nat.succ q + 1 = q + 1 + 1 by omega]
+      rw [Finset.range_add_one]
+      rw [Finset.filter_insert]
+      simp only [Nat.succ_pos, ↓reduceIte]
+      rw [Finset.sum_insert]
+      · rw [mul_add, ih']
+        have hlast_le : (q + 1) * commonGap ≤ context := le_of_lt hfit
+        have hg_le_context : commonGap ≤ context := by
+          have hle_mul : commonGap ≤ (q + 1) * commonGap := by
+            simpa [Nat.mul_comm] using Nat.le_mul_of_pos_left commonGap (Nat.succ_pos q)
+          exact le_trans hle_mul hlast_le
+        have hprev_inner_le : commonGap * (q + 1) ≤ 2 * context := by
+          rw [Nat.mul_add]
+          rw [Nat.mul_one]
+          rw [Nat.mul_comm commonGap q]
+          omega
+        have hnext_inner_le : commonGap * (q + 1 + 1) ≤ 2 * context := by
+          rw [Nat.mul_add]
+          rw [Nat.mul_one]
+          rw [Nat.mul_comm commonGap (q + 1)]
+          omega
+        apply Int.ofNat.inj
+        norm_num [Nat.cast_sub hlast_le, Nat.cast_sub hprev_inner_le, Nat.cast_sub hnext_inner_le]
+        ring
+      · exact by
+          rw [Finset.mem_filter]
+          exact fun h => Finset.notMem_range_self h.1
+
+/-- The quotient-bounded fitting-range collision count has a checked doubled
+closed form.
+
+For `q = (context - 1) / commonGap`, the executable loop over positive
+contributing multiples satisfies
+`2 * count = q * (2 * context - commonGap * (q + 1))`. -/
+theorem ropeCollisionPairCountAtGapMultiplesFittingRange_twice_eq_closedForm
+    {context commonGap : Nat} (hgap_pos : 0 < commonGap) :
+    2 * ropeCollisionPairCountAtGapMultiplesFittingRange context commonGap =
+      let q := ropeCollisionPairCountFittingMultipleCount context commonGap
+      q * (2 * context - commonGap * (q + 1)) := by
+  unfold ropeCollisionPairCountAtGapMultiplesFittingRange
+  let q := ropeCollisionPairCountFittingMultipleCount context commonGap
+  by_cases hq_pos : 0 < q
+  · have hfit : q * commonGap < context :=
+      (ropeCollisionPairCountFittingMultipleCount_spec
+        (context := context) (commonGap := commonGap) (multiple := q)
+        hgap_pos hq_pos).1 le_rfl
+    simpa [q, ropeCollisionPairCountAtGap] using
+      (ropePositiveRangeCollisionPairCount_twice_eq_closedForm
+        (context := context) (commonGap := commonGap) (q := q) hfit)
+  · have hq_zero : q = 0 := Nat.eq_zero_of_not_pos hq_pos
+    simp [q, hq_zero, ropeCollisionPairCountAtGap]
+
+/-- The full positive-multiple collision count has the same checked doubled
+closed form, because the full count reduces to the exact fitting range. -/
+theorem ropeCollisionPairCountAtGapMultiples_twice_eq_closedForm
+    {context commonGap : Nat} (hgap_pos : 0 < commonGap) :
+    2 * ropeCollisionPairCountAtGapMultiples context commonGap =
+      let q := ropeCollisionPairCountFittingMultipleCount context commonGap
+      q * (2 * context - commonGap * (q + 1)) := by
+  rw [ropeCollisionPairCountAtGapMultiples_eq_fittingRange hgap_pos]
+  exact ropeCollisionPairCountAtGapMultiplesFittingRange_twice_eq_closedForm
+    (context := context) (commonGap := commonGap) hgap_pos
+
 /-- When exactly the first positive multiple of a common collision gap can fit
 inside the inspected context, the total positive-multiple collision-pair count
 collapses to the single-gap count `context - commonGap`.
