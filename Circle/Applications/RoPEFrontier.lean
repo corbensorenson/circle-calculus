@@ -40,4 +40,37 @@ theorem ropeStandardChannel0D19_contextRange_margin_bracket
       ropeStandardChannel0_gap103993_error_lt_one_over_328458
       hcontext_min hcontext_max
 
+/-- The current generated standard channel-0 frontier answers request-level
+margin brackets.
+
+For any requested context in the D19 obstruction range, every requested margin
+at or below the D19 proved margin `1/328459` holds by monotonicity, while every
+advertised margin at or above `1/328458` is impossible. This is the
+ML-facing request contract used by the Python certifier; it is still a
+one-channel standard channel-0 theorem, not a full all-channel standard RoPE
+bank theorem. -/
+theorem ropeStandardChannel0D19_contextRange_request_margin_bracket
+    {context : Nat} {requestedMargin : ℝ}
+    (hcontext_min : 103993 < context)
+    (hcontext_max : context ≤ ropeStandardChannel0D19SeedContext) :
+    (requestedMargin ≤ ropeStandardChannel0D19SeedMargin →
+      ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio
+        requestedMargin context) ∧
+      ((1 : ℝ) / 328458 ≤ requestedMargin →
+        ¬ ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio
+          requestedMargin context) := by
+  exact
+    ropeTurnRatioFiniteMargin_contextRange_request_bracket_of_obstruction
+      (turnRatio := ropeStandardChannel0TurnRatio)
+      (provedMargin := ropeStandardChannel0D19SeedMargin)
+      (obstructionMargin := (1 : ℝ) / 328458)
+      (requestedMargin := requestedMargin)
+      (certifiedContext := ropeStandardChannel0D19SeedContext)
+      (obstructionGap := 103993)
+      (obstructionTurns := 16551)
+      ropeStandardChannel0D19Seed_turnRatioFiniteMargin
+      (by norm_num)
+      ropeStandardChannel0_gap103993_error_lt_one_over_328458
+      hcontext_min hcontext_max
+
 end Circle.Applications

@@ -130,6 +130,14 @@ This is a conditional one-separating-channel bank certificate based on standard 
 
 This is a one-channel standard-RoPE context-range bracket over 103993 < context <= 196608. It is not a full all-channel bank margin theorem, and it does not decide margins strictly between 1/328459 and 1/328458.
 
+## Standard RoPE D19 Range Request Classifier
+
+| Name | Requested context | Requested margin | Status | Theorem-backed | Proved applies | Impossible applies | Theorem ids |
+| --- | ---: | ---: | --- | --- | --- | --- | --- |
+| standard_rope_channel0_d19_range_request_margin_bracket | 131072 | 1/328458 | impossible | True | False | True | AIRA-T0216, AIRA-T0217 |
+
+This is a one-channel standard-RoPE request classifier for the D19 range 103993 < context <= 196608. It is not a full all-channel bank theorem, and it deliberately reports undecided for margins strictly between 1/328459 and 1/328458.
+
 ## Standard Channel-0 Frontier Summary
 
 | Proved margin | Proved context | Proved status | Candidate full contexts | Candidate first uncovered gaps | Compression bridge | Frontier status |

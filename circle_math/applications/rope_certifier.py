@@ -191,6 +191,8 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0196",
     "AIRA-T0197",
     "AIRA-T0209",
+    "AIRA-T0216",
+    "AIRA-T0217",
     "AIRA-T0126",
     "AIRA-T0139",
     "AIRA-T0140",
@@ -231,6 +233,8 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioFiniteMarginCertificate_iff_no_nearTurn_below_scaled_margin",
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_finiteMarginCertificate_le_context_margin",
     "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_bracket_of_obstruction",
+    "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_request_bracket_of_obstruction",
+    "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_band_bounds",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
     "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
@@ -1093,6 +1097,30 @@ class StandardChannel0D19MarginBracketCertificate:
     proved_margin: str
     impossible_margin_floor: str
     pass_certificate: bool
+    theorem_ids: tuple[str, ...]
+    lean_declarations: tuple[str, ...]
+    explanation: str
+    claim_boundary: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class StandardChannel0D19RangeRequestBracketCertificate:
+    schema_id: str
+    name: str
+    requested_context: int
+    requested_margin: str
+    context_range_min_exclusive: int
+    context_range_max_inclusive: int
+    proved_margin: str
+    impossible_margin_floor: str
+    request_status: str
+    theorem_backed_classification: bool
+    proved_margin_applies: bool
+    impossible_margin_applies: bool
+    failure_reason: str | None
     theorem_ids: tuple[str, ...]
     lean_declarations: tuple[str, ...]
     explanation: str
@@ -3199,6 +3227,104 @@ def certify_standard_channel0_d19_margin_bracket() -> StandardChannel0D19MarginB
     )
 
 
+def certify_standard_channel0_d19_range_request_margin_bracket(
+    *,
+    requested_context: int,
+    requested_margin: Fraction = Fraction(1, 328459),
+) -> StandardChannel0D19RangeRequestBracketCertificate:
+    """Classify one requested D19 standard-channel margin bracket.
+
+    The classification is theorem-backed exactly in the obstruction range
+    ``103993 < requested_context <= 196608``. Inside that range, Lean proves
+    margins at or below ``1/328459`` and rejects margins at or above
+    ``1/328458``. The tiny interval between those rationals remains undecided
+    unless a sharper theorem is added.
+    """
+    if requested_context <= 0:
+        raise ValueError("requested_context must be positive")
+    if requested_margin < 0:
+        raise ValueError("requested_margin must be nonnegative")
+
+    context_min_exclusive = 103993
+    context_max_inclusive = 196608
+    proved_margin = Fraction(1, 328459)
+    impossible_margin_floor = Fraction(1, 328458)
+    in_context_range = (
+        context_min_exclusive < requested_context <= context_max_inclusive
+    )
+    proved_margin_applies = in_context_range and requested_margin <= proved_margin
+    impossible_margin_applies = (
+        in_context_range and impossible_margin_floor <= requested_margin
+    )
+    theorem_backed_classification = (
+        proved_margin_applies or impossible_margin_applies
+    )
+
+    if proved_margin_applies:
+        request_status = "proved"
+        failure_reason = None
+        explanation = (
+            "Lean proves the requested one-channel standard RoPE margin: the "
+            "requested context lies in the D19 obstruction range and the "
+            "requested margin is at most 1/328459."
+        )
+    elif impossible_margin_applies:
+        request_status = "impossible"
+        failure_reason = None
+        explanation = (
+            "Lean rejects the requested one-channel standard RoPE margin: the "
+            "requested context contains obstruction gap 103993, and the "
+            "requested margin is at least 1/328458."
+        )
+    elif not in_context_range:
+        request_status = "outside_range"
+        failure_reason = "requested_context_outside_d19_obstruction_range"
+        explanation = (
+            "The D19 request bracket applies only when "
+            "103993 < requested_context <= 196608. This request is outside "
+            "that obstruction range, so this classifier does not decide it."
+        )
+    else:
+        request_status = "undecided_margin_gap"
+        failure_reason = "requested_margin_between_proved_and_impossible_thresholds"
+        explanation = (
+            "The requested context lies in the D19 obstruction range, but the "
+            "requested margin sits strictly between the proved threshold "
+            "1/328459 and the rejected threshold 1/328458. The current theorem "
+            "frontier deliberately leaves that narrow gap undecided."
+        )
+
+    return StandardChannel0D19RangeRequestBracketCertificate(
+        schema_id=(
+            "circle_calculus.standard_rope_channel0_d19_range_request_bracket.v0"
+        ),
+        name="standard_rope_channel0_d19_range_request_margin_bracket",
+        requested_context=requested_context,
+        requested_margin=format_fraction(requested_margin),
+        context_range_min_exclusive=context_min_exclusive,
+        context_range_max_inclusive=context_max_inclusive,
+        proved_margin=format_fraction(proved_margin),
+        impossible_margin_floor=format_fraction(impossible_margin_floor),
+        request_status=request_status,
+        theorem_backed_classification=theorem_backed_classification,
+        proved_margin_applies=proved_margin_applies,
+        impossible_margin_applies=impossible_margin_applies,
+        failure_reason=failure_reason,
+        theorem_ids=("AIRA-T0216", "AIRA-T0217"),
+        lean_declarations=(
+            "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_request_bracket_of_obstruction",
+            "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
+        ),
+        explanation=explanation,
+        claim_boundary=(
+            "This is a one-channel standard-RoPE request classifier for the "
+            "D19 range 103993 < context <= 196608. It is not a full all-channel "
+            "bank theorem, and it deliberately reports undecided for margins "
+            "strictly between 1/328459 and 1/328458."
+        ),
+    )
+
+
 def real_phase_turn_separated(
     *,
     frequency: float,
@@ -3623,7 +3749,8 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         "floor/ceiling nearest-integer, scalar nearest-gap margin, finite certificate "
         "iff, negative obstruction iff, scaled no-near-turn iff, certificate-object "
         "no-near-turn iff, finite-certificate bank bridge, context-range obstruction "
-        "bridge, plus band-endpoint and band-list compression bridge precursors only; "
+        "bridge, request-level D19 classifier bridge, plus band-endpoint and "
+        "band-list compression bridge precursors only; "
         "not a Diophantine proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,

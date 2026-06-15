@@ -41,6 +41,7 @@ from circle_math.applications import (
     certify_standard_channel0_d18_margin_bracket,
     certify_standard_channel0_d19_bank_request,
     certify_standard_channel0_d19_margin_bracket,
+    certify_standard_channel0_d19_range_request_margin_bracket,
     audit_standard_channel0_rational_band_certificate,
     collision_pair_count_at_gap,
     collision_pair_count_fitting_multiple_count,
@@ -184,6 +185,8 @@ def test_real_phase_nat_turn_error_matches_endpoint_precursor_shape() -> None:
     assert "AIRA-T0181" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0196" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0197" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0216" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0217" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
 def test_real_phase_turn_separation_rules_out_smaller_near_turn() -> None:
@@ -1409,6 +1412,72 @@ def test_standard_channel0_d19_margin_bracket_is_theorem_backed() -> None:
     assert "does not decide margins strictly between" in bracket.claim_boundary
 
 
+def test_standard_channel0_d19_range_request_bracket_classifies_proved_request() -> None:
+    request = certify_standard_channel0_d19_range_request_margin_bracket(
+        requested_context=131072,
+        requested_margin=Fraction(1, 328459),
+    )
+    assert request.schema_id == (
+        "circle_calculus.standard_rope_channel0_d19_range_request_bracket.v0"
+    )
+    assert request.name == "standard_rope_channel0_d19_range_request_margin_bracket"
+    assert request.requested_context == 131072
+    assert request.requested_margin == "1/328459"
+    assert request.request_status == "proved"
+    assert request.theorem_backed_classification
+    assert request.proved_margin_applies
+    assert not request.impossible_margin_applies
+    assert request.failure_reason is None
+    assert request.theorem_ids == ("AIRA-T0216", "AIRA-T0217")
+    assert request.lean_declarations == (
+        "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_request_bracket_of_obstruction",
+        "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
+    )
+    assert "D19 obstruction range" in request.explanation
+    assert "not a full all-channel" in request.claim_boundary
+
+
+def test_standard_channel0_d19_range_request_bracket_classifies_impossible_request() -> None:
+    request = certify_standard_channel0_d19_range_request_margin_bracket(
+        requested_context=131072,
+        requested_margin=Fraction(1, 328458),
+    )
+    assert request.request_status == "impossible"
+    assert request.theorem_backed_classification
+    assert not request.proved_margin_applies
+    assert request.impossible_margin_applies
+    assert request.failure_reason is None
+    assert "obstruction gap 103993" in request.explanation
+
+
+def test_standard_channel0_d19_range_request_bracket_reports_undecided_gap() -> None:
+    middle_margin = (Fraction(1, 328459) + Fraction(1, 328458)) / 2
+    request = certify_standard_channel0_d19_range_request_margin_bracket(
+        requested_context=131072,
+        requested_margin=middle_margin,
+    )
+    assert Fraction(1, 328459) < middle_margin
+    assert middle_margin < Fraction(1, 328458)
+    assert request.request_status == "undecided_margin_gap"
+    assert not request.theorem_backed_classification
+    assert not request.proved_margin_applies
+    assert not request.impossible_margin_applies
+    assert (
+        request.failure_reason
+        == "requested_margin_between_proved_and_impossible_thresholds"
+    )
+
+
+def test_standard_channel0_d19_range_request_bracket_reports_outside_range() -> None:
+    request = certify_standard_channel0_d19_range_request_margin_bracket(
+        requested_context=103993,
+        requested_margin=Fraction(1, 328459),
+    )
+    assert request.request_status == "outside_range"
+    assert not request.theorem_backed_classification
+    assert request.failure_reason == "requested_context_outside_d19_obstruction_range"
+
+
 def test_rational_turn_ratio_certificate_reports_denominator_boundary() -> None:
     certificate = certify_rational_turn_ratio_finite_margin(
         numerator=3,
@@ -2415,6 +2484,20 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
         "AIRA-T0209",
         "AIRA-T0208",
     ]
+    assert payload["standard_d19_range_request_margin_bracket"]["request_status"] == (
+        "impossible"
+    )
+    assert payload["standard_d19_range_request_margin_bracket"][
+        "theorem_backed_classification"
+    ] is True
+    assert payload["standard_d19_range_request_margin_bracket"]["requested_context"] == 131072
+    assert payload["standard_d19_range_request_margin_bracket"]["requested_margin"] == (
+        "1/328458"
+    )
+    assert payload["standard_d19_range_request_margin_bracket"]["theorem_ids"] == [
+        "AIRA-T0216",
+        "AIRA-T0217",
+    ]
     assert payload["standard_channel0_frontier_summary"]["proved_margin"] == "1/328459"
     assert payload["standard_channel0_frontier_summary"]["proved_context"] == 196608
     assert payload["standard_channel0_frontier_summary"]["proved_theorem_status"] == (
@@ -2641,6 +2724,9 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
         "AIRA-T0168, AIRA-T0169, AIRA-T0155, AIRA-T0173, AIRA-T0209, AIRA-T0208"
         in markdown_result.stdout
     )
+    assert "Standard RoPE D19 Range Request Classifier" in markdown_result.stdout
+    assert "AIRA-T0216, AIRA-T0217" in markdown_result.stdout
+    assert "| standard_rope_channel0_d19_range_request_margin_bracket | 131072 | 1/328458 | impossible | True | False | True | AIRA-T0216, AIRA-T0217 |" in markdown_result.stdout
     assert "Standard Channel-0 Frontier Summary" in markdown_result.stdout
     assert "| 1/328459 | 196608 | lean_proved_interval_seed_AIRA-T0168_to_AIRA-T0170 |  | 103993 | AIRA-T0139, AIRA-T0140, AIRA-T0141 | lean_proved_interval_seed_AIRA-T0168_to_AIRA-T0170 |" in markdown_result.stdout
     assert "Standard RoPE Candidate Interval Plans" in markdown_result.stdout

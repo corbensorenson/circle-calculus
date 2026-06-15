@@ -4186,6 +4186,42 @@ theorem ropeTurnRatioFiniteMargin_contextRange_bracket_of_obstruction
         hobstruction_gap_pos hcontext_min
         (lt_of_lt_of_le hobstruction_error hmargin)
 
+/-- A finite-context margin certificate plus one obstruction gap gives a
+request-level range bracket.
+
+This is the certifier-facing version of
+`ropeTurnRatioFiniteMargin_contextRange_bracket_of_obstruction`: if the
+requested context is inside the certified horizon and the requested margin is
+no larger than the proved margin, the requested margin holds. If the requested
+context also contains the obstruction gap, every advertised margin at or above
+the obstruction threshold is impossible. -/
+theorem ropeTurnRatioFiniteMargin_contextRange_request_bracket_of_obstruction
+    {turnRatio provedMargin obstructionMargin requestedMargin : ℝ}
+    {certifiedContext obstructionGap context : Nat} {obstructionTurns : Int}
+    (hproved : ropeTurnRatioFiniteMargin turnRatio provedMargin certifiedContext)
+    (hobstruction_gap_pos : 0 < obstructionGap)
+    (hobstruction_error :
+      ropeTurnRatioError turnRatio obstructionGap obstructionTurns < obstructionMargin)
+    (hcontext_min : obstructionGap < context)
+    (hcontext_max : context ≤ certifiedContext) :
+    (requestedMargin ≤ provedMargin →
+      ropeTurnRatioFiniteMargin turnRatio requestedMargin context) ∧
+      (obstructionMargin ≤ requestedMargin →
+        ¬ ropeTurnRatioFiniteMargin turnRatio requestedMargin context) := by
+  have hbracket :=
+    ropeTurnRatioFiniteMargin_contextRange_bracket_of_obstruction
+      (turnRatio := turnRatio) (provedMargin := provedMargin)
+      (obstructionMargin := obstructionMargin)
+      (certifiedContext := certifiedContext)
+      (obstructionGap := obstructionGap)
+      (obstructionTurns := obstructionTurns)
+      hproved hobstruction_gap_pos hobstruction_error hcontext_min hcontext_max
+  constructor
+  · intro hmargin_le
+    exact ropeTurnRatioFiniteMargin_mono_margin hmargin_le hbracket.1
+  · intro hmargin
+    exact hbracket.2 requestedMargin hmargin
+
 /-- A finite-context turn-ratio margin rules out one-channel real near-turn
 collisions at any smaller scaled tolerance.
 

@@ -39,6 +39,7 @@ from circle_math.applications import (
     certify_standard_channel0_d18_margin_bracket,
     certify_standard_channel0_d19_bank_request,
     certify_standard_channel0_d19_margin_bracket,
+    certify_standard_channel0_d19_range_request_margin_bracket,
     certify_standard_channel0_interval_seed,
     plan_standard_channel0_interval_bands,
     phase_bank_certificate_summary_lines,
@@ -403,6 +404,12 @@ def run_presets(presets: tuple[str, ...]) -> dict[str, Any]:
             requested_margin=Fraction(1, 328459),
         ).to_dict(),
         "standard_d19_margin_bracket": certify_standard_channel0_d19_margin_bracket().to_dict(),
+        "standard_d19_range_request_margin_bracket": (
+            certify_standard_channel0_d19_range_request_margin_bracket(
+                requested_context=131072,
+                requested_margin=Fraction(1, 328458),
+            ).to_dict()
+        ),
         "standard_channel0_frontier_summary": standard_channel0_frontier_summary(standard_plans),
         "standard_band_certificate_audits": standard_band_audits,
         "standard_interval_candidate_plans": standard_plans,
@@ -463,6 +470,7 @@ def markdown_results(payload: dict[str, Any]) -> str:
     standard_d18_bracket = payload["standard_d18_margin_bracket"]
     standard_d19_bank = payload["standard_d19_bank_bridge_request"]
     standard_d19_bracket = payload["standard_d19_margin_bracket"]
+    standard_d19_range_request = payload["standard_d19_range_request_margin_bracket"]
     frontier = payload["standard_channel0_frontier_summary"]
     standard_plans = payload["standard_interval_candidate_plans"]
     standard_band_audits = payload["standard_band_certificate_audits"]
@@ -837,6 +845,23 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             standard_d19_bracket["claim_boundary"],
             "",
+            "## Standard RoPE D19 Range Request Classifier",
+            "",
+            "| Name | Requested context | Requested margin | Status | Theorem-backed | Proved applies | Impossible applies | Theorem ids |",
+            "| --- | ---: | ---: | --- | --- | --- | --- | --- |",
+            "| {name} | {requested_context} | {requested_margin} | {status} | {theorem_backed} | {proved} | {impossible} | {theorems} |".format(
+                name=standard_d19_range_request["name"],
+                requested_context=standard_d19_range_request["requested_context"],
+                requested_margin=standard_d19_range_request["requested_margin"],
+                status=standard_d19_range_request["request_status"],
+                theorem_backed=standard_d19_range_request["theorem_backed_classification"],
+                proved=standard_d19_range_request["proved_margin_applies"],
+                impossible=standard_d19_range_request["impossible_margin_applies"],
+                theorems=", ".join(standard_d19_range_request["theorem_ids"]),
+            ),
+            "",
+            standard_d19_range_request["claim_boundary"],
+            "",
             "## Standard Channel-0 Frontier Summary",
             "",
         "| Proved margin | Proved context | Proved status | Candidate full contexts | Candidate first uncovered gaps | Compression bridge | Frontier status |",
@@ -1094,6 +1119,24 @@ def main() -> None:
                     )
                 )
                 print(f"theorem_ids={','.join(standard_d19_bracket['theorem_ids'])}")
+                standard_d19_range_request = payload["standard_d19_range_request_margin_bracket"]
+                print()
+                print(
+                    "standard_d19_range_request_margin_bracket="
+                    f"{standard_d19_range_request['name']}"
+                )
+                print(f"request_status={standard_d19_range_request['request_status']}")
+                print(
+                    "requested_context={requested_context} requested_margin={requested_margin} "
+                    "theorem_backed={theorem_backed}".format(
+                        requested_context=standard_d19_range_request["requested_context"],
+                        requested_margin=standard_d19_range_request["requested_margin"],
+                        theorem_backed=standard_d19_range_request[
+                            "theorem_backed_classification"
+                        ],
+                    )
+                )
+                print(f"theorem_ids={','.join(standard_d19_range_request['theorem_ids'])}")
                 frontier = payload["standard_channel0_frontier_summary"]
                 print()
                 print("standard_channel0_frontier_summary")

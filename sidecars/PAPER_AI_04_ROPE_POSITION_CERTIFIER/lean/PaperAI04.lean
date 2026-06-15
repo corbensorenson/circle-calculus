@@ -1,4 +1,4 @@
-import Circle.Applications.RoPEGeneratedCertificates
+import Circle.Applications.RoPEFrontier
 
 /-!
 AI 4 sidecar: proof-carrying RoPE position distinguishability certifier.
@@ -209,6 +209,8 @@ namespace Circle.PaperAI04
 #check Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed
 #check Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons
 #check Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket
+#check Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_request_bracket_of_obstruction
+#check Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket
 #check Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed
 #check Circle.Applications.ropeStandardChannel0_gap710_error_lt_one_over_104218
 #check Circle.Applications.not_ropeStandardChannel0_margin_one_over_104218_of_context_gt_710
