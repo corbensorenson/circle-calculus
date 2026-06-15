@@ -35,6 +35,7 @@ const THEOREM_IDS = [
   "AIM-T0091",
   "AIM-T0092",
   "AIM-T0093",
+  "AIM-T0094",
 ];
 const DICTIONARY_IDS = ["COMMON-0028", "COMMON-0081"];
 
@@ -53,6 +54,20 @@ function liveTokens(cacheSize, current) {
 
 function allDistinct(values) {
   return new Set(values).size === values.length;
+}
+
+function isOrderedSubsequence(needle, haystack) {
+  let haystackIndex = 0;
+  for (const value of needle) {
+    while (haystackIndex < haystack.length && haystack[haystackIndex] !== value) {
+      haystackIndex += 1;
+    }
+    if (haystackIndex === haystack.length) {
+      return false;
+    }
+    haystackIndex += 1;
+  }
+  return true;
 }
 
 function coversSlotRange(slots, cacheSize) {
@@ -183,6 +198,9 @@ function appendRecord(output, values, theoremById) {
   const adapterRequestPassIffBoundary = adapterRequestPass === adapterRequestBoundaryPass;
   const tokens = liveTokens(values.cacheSize, values.current);
   const slots = tokens.map((token) => kvSlot(values.cacheSize, token));
+  const orderedLiveWindowSubrequest = isOrderedSubsequence(batchTokens, tokens);
+  const duplicateFreeLiveWindowSubrequest = orderedLiveWindowSubrequest && batchTokensDistinct;
+  const liveWindowSubrequestPassContract = duplicateFreeLiveWindowSubrequest && adapterRequestPass;
   const fullWindow = values.cacheSize <= values.current + 1;
   const slotsDistinct = allDistinct(slots);
   const slotsWithinCache = slots.every((slot) => 0 <= slot && slot < values.cacheSize);
@@ -221,6 +239,9 @@ function appendRecord(output, values, theoremById) {
     `batch next overwrites after current: ${batchNextOverwritesAfterCurrent}`,
     `batch trace fresh iff boundary: ${batchTraceFreshIffBoundary}`,
     `trace-fresh read-batch slots distinct: ${traceFreshSlotsDistinct}`,
+    `ordered live-window subrequest: ${orderedLiveWindowSubrequest}`,
+    `duplicate-free live-window subrequest: ${duplicateFreeLiveWindowSubrequest}`,
+    `live-window subrequest pass contract: ${liveWindowSubrequestPassContract}`,
     `adapter request trace pass: ${adapterRequestPass}`,
     `adapter request pass iff boundary: ${adapterRequestPassIffBoundary}`,
     `collision with current slot: ${collisionWithCurrent}`,

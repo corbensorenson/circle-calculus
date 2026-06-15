@@ -25,6 +25,7 @@ from circle_math.applications.circle_ai import (
     kv_cache_batch_trace_fresh_iff_next_overwrite_boundary,
     kv_cache_distinct_retained_slots_distinct,
     kv_cache_live_window_length,
+    kv_cache_ordered_live_window_subrequest,
     kv_cache_live_window_slot_range_covered,
     kv_cache_live_window_slots_distinct,
     kv_cache_live_window_start,
@@ -238,15 +239,24 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     assert certificate.next_overwrites_after_current
     assert certificate.trace_fresh_iff_next_overwrite_boundary
     assert certificate.trace_fresh_slots_distinct
+    assert certificate.ordered_live_window_subrequest
+    assert certificate.duplicate_free_live_window_subrequest
+    assert certificate.live_window_subrequest_pass_contract
     assert certificate.pass_certificate
     assert certificate.pass_iff_next_overwrite_boundary
     assert kv_cache_adapter_request_trace_pass_compact(16, 31, (20, 24, 29, 31))
+    assert kv_cache_ordered_live_window_subrequest(16, 31, (20, 24, 29, 31))
     assert "AIM-T0078" in certificate.theorem_ids
     assert "AIM-T0079" in certificate.theorem_ids
     assert "AIM-T0086" in certificate.theorem_ids
     assert "AIM-T0091" in certificate.theorem_ids
     assert "AIM-T0092" in certificate.theorem_ids
     assert "AIM-T0093" in certificate.theorem_ids
+    assert "AIM-T0094" in certificate.theorem_ids
+    assert (
+        "Circle.Applications.kvCacheLiveWindowSubrequest_adapterRequestTracePass"
+        in certificate.lean_declarations
+    )
     assert "Modeled adapter request-trace certificate only" in certificate.note
 
     future_request = certify_kv_cache_adapter_request_trace(
@@ -258,6 +268,9 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     assert not future_request.all_retained
     assert future_request.next_overwrites_after_current
     assert not future_request.trace_fresh_iff_next_overwrite_boundary
+    assert not future_request.ordered_live_window_subrequest
+    assert not future_request.duplicate_free_live_window_subrequest
+    assert not future_request.live_window_subrequest_pass_contract
     assert not future_request.pass_certificate
     assert future_request.pass_iff_next_overwrite_boundary
     assert not kv_cache_adapter_request_trace_pass_compact(16, 31, (20, 32))
@@ -273,6 +286,9 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     assert not duplicate_request.slots_distinct
     assert duplicate_request.next_overwrites_after_current
     assert duplicate_request.trace_fresh_iff_next_overwrite_boundary
+    assert not duplicate_request.ordered_live_window_subrequest
+    assert not duplicate_request.duplicate_free_live_window_subrequest
+    assert not duplicate_request.live_window_subrequest_pass_contract
     assert not duplicate_request.pass_certificate
     assert duplicate_request.pass_iff_next_overwrite_boundary
     assert not kv_cache_adapter_request_trace_pass_compact(16, 31, (20, 20))
@@ -452,12 +468,16 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert payload["adapter_request_trace_certificate"]["next_overwrites_after_current"] is True
     assert payload["adapter_request_trace_certificate"]["trace_fresh_iff_next_overwrite_boundary"] is True
     assert payload["adapter_request_trace_certificate"]["pass_iff_next_overwrite_boundary"] is True
+    assert payload["adapter_request_trace_certificate"]["ordered_live_window_subrequest"] is True
+    assert payload["adapter_request_trace_certificate"]["duplicate_free_live_window_subrequest"] is True
+    assert payload["adapter_request_trace_certificate"]["live_window_subrequest_pass_contract"] is True
     assert "AIM-T0078" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert "AIM-T0079" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert "AIM-T0086" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert "AIM-T0091" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert "AIM-T0092" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert "AIM-T0093" in payload["adapter_request_trace_certificate"]["theorem_ids"]
+    assert "AIM-T0094" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert payload["live_window_certificate"]["start"] == 16
     assert payload["live_window_certificate"]["length"] == 16
     assert payload["live_window_certificate"]["slots_distinct"] is True
@@ -505,6 +525,8 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert "Next overwrites after current" in markdown_result.stdout
     assert "Pass iff boundary" in markdown_result.stdout
     assert "Trace-fresh slots distinct" in markdown_result.stdout
+    assert "Ordered live-window subrequest" in markdown_result.stdout
+    assert "Subrequest pass contract" in markdown_result.stdout
     assert "Live start" in markdown_result.stdout
     assert "Exact live-window request" in markdown_result.stdout
     assert "generated_live_window_read" in markdown_result.stdout
@@ -521,6 +543,7 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert "AIM-T0091" in markdown_result.stdout
     assert "AIM-T0092" in markdown_result.stdout
     assert "AIM-T0093" in markdown_result.stdout
+    assert "AIM-T0094" in markdown_result.stdout
 
 
 def test_committed_kv_cache_ring_buffer_results_match_generator(tmp_path: Path) -> None:

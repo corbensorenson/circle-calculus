@@ -180,6 +180,11 @@ def summary_lines(payload: dict[str, Any]) -> list[str]:
             "trace_fresh_iff_next_overwrite_boundary="
             f"{adapter_request['trace_fresh_iff_next_overwrite_boundary']} "
             f"trace_fresh_slots_distinct={adapter_request['trace_fresh_slots_distinct']}"
+            f" ordered_live_window_subrequest={adapter_request['ordered_live_window_subrequest']} "
+            "duplicate_free_live_window_subrequest="
+            f"{adapter_request['duplicate_free_live_window_subrequest']} "
+            "live_window_subrequest_pass_contract="
+            f"{adapter_request['live_window_subrequest_pass_contract']}"
         ),
         (
             "adapter_request_boundary="

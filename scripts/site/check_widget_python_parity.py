@@ -43,6 +43,7 @@ from circle_math.applications import (
     kv_cache_next_overwrite_after_current,
     kv_cache_next_overwrite_token,
     kv_cache_no_same_slot_overwrite_before_current,
+    kv_cache_ordered_live_window_subrequest,
     kv_cache_retained_batch_slots_distinct,
     kv_cache_retained_iff_no_same_slot_overwrite_trace,
     kv_cache_same_slot_overwrite_witness_when_stale,
@@ -1451,6 +1452,33 @@ def js_kv_cache_batch_trace_fresh_iff_next_overwrite_boundary(
         for token in tokens
     )
     return all_trace_fresh == all_next_overwrite_after_current
+
+
+def js_is_ordered_subsequence(needle: tuple[int, ...], haystack: tuple[int, ...]) -> bool:
+    haystack_index = 0
+    for value in needle:
+        while haystack_index < len(haystack) and haystack[haystack_index] != value:
+            haystack_index += 1
+        if haystack_index == len(haystack):
+            return False
+        haystack_index += 1
+    return True
+
+
+def js_kv_cache_live_window_tokens(cache_size: int, current: int) -> tuple[int, ...]:
+    start = max(0, current - cache_size + 1)
+    return tuple(range(start, current + 1))
+
+
+def js_kv_cache_ordered_live_window_subrequest(
+    cache_size: int,
+    current: int,
+    tokens: tuple[int, ...],
+) -> bool:
+    return js_is_ordered_subsequence(
+        tokens,
+        js_kv_cache_live_window_tokens(cache_size, current),
+    )
 
 
 def js_dense_adapter_parameter_count(channel_count: int, parameters_per_channel: int) -> int:
@@ -3405,6 +3433,16 @@ def main() -> int:
             current,
             batch_tokens,
         ) == batch.trace_fresh_slots_distinct
+        ordered_live_window_subrequest = js_kv_cache_ordered_live_window_subrequest(
+            cache_size,
+            current,
+            batch_tokens,
+        )
+        assert kv_cache_ordered_live_window_subrequest(
+            cache_size,
+            current,
+            batch_tokens,
+        ) == ordered_live_window_subrequest
         assert adapter_request.requested_slots == batch.slots
         assert adapter_request.all_non_future == all(token <= current for token in batch_tokens)
         assert adapter_request.all_retained == batch.all_retained
@@ -3415,6 +3453,10 @@ def main() -> int:
             batch.trace_fresh_iff_next_overwrite_boundary
         )
         assert adapter_request.trace_fresh_slots_distinct == batch.trace_fresh_slots_distinct
+        assert adapter_request.ordered_live_window_subrequest == ordered_live_window_subrequest
+        assert adapter_request.duplicate_free_live_window_subrequest == (
+            ordered_live_window_subrequest and batch.tokens_distinct
+        )
         assert adapter_request.pass_certificate == (
             adapter_request.all_non_future
             and batch.all_retained
@@ -3427,6 +3469,10 @@ def main() -> int:
             cache_size,
             current,
             batch_tokens,
+        )
+        assert adapter_request.live_window_subrequest_pass_contract == (
+            adapter_request.duplicate_free_live_window_subrequest
+            and adapter_request.pass_certificate
         )
         assert adapter_request.pass_iff_next_overwrite_boundary == (
             adapter_request.pass_certificate

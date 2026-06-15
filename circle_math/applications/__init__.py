@@ -130,6 +130,7 @@ from .circle_ai import (
     kv_cache_live_window_tokens,
     kv_cache_live_window_slots_distinct,
     kv_cache_live_window_slot_range_covered,
+    kv_cache_ordered_live_window_subrequest,
     kv_cache_batch_retained_iff_no_same_slot_overwrite_trace,
     kv_cache_batch_trace_fresh_iff_next_overwrite_boundary,
     kv_cache_adapter_request_trace_pass_compact,

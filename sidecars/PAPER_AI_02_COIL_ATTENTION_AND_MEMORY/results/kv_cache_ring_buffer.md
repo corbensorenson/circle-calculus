@@ -10,9 +10,9 @@ These are proof-carrying finite ring-buffer indexing certificates for a declared
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 20, 24, 29, 31 | 4, 8, 13, 15 | True | True | True | True | True | True | True | AIM-T0059, AIM-T0065, AIM-T0066, AIM-T0067, AIM-T0068, AIM-T0078, AIM-T0079, AIM-T0091, AIM-T0092 |
 
-| Request id | Requested tokens | Requested slots | All non-future | All retained | Tokens distinct | Slots distinct | Trace iff | Next overwrites after current | Trace iff boundary | Trace-fresh slots distinct | Pass certificate | Pass iff boundary | Theorem ids |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| default_read_request | 20, 24, 29, 31 | 4, 8, 13, 15 | True | True | True | True | True | True | True | True | True | True | AIM-T0059, AIM-T0067, AIM-T0068, AIM-T0078, AIM-T0079, AIM-T0086, AIM-T0091, AIM-T0092, AIM-T0093 |
+| Request id | Requested tokens | Requested slots | All non-future | All retained | Tokens distinct | Slots distinct | Trace iff | Next overwrites after current | Trace iff boundary | Trace-fresh slots distinct | Ordered live-window subrequest | Duplicate-free live-window subrequest | Subrequest pass contract | Pass certificate | Pass iff boundary | Theorem ids |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| default_read_request | 20, 24, 29, 31 | 4, 8, 13, 15 | True | True | True | True | True | True | True | True | True | True | True | True | True | AIM-T0059, AIM-T0067, AIM-T0068, AIM-T0078, AIM-T0079, AIM-T0086, AIM-T0091, AIM-T0092, AIM-T0093, AIM-T0094 |
 
 | Live start | Live length | Live tokens | Live slots | All retained | Slots distinct | Full window | Slot count matches cache | Slot range covered | Slot count iff full window | Slots within cache | Full coverage contract | Full coverage iff full window | Theorem ids |
 | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |

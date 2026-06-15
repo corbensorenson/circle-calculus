@@ -7,8 +7,9 @@ It answers one precise question:
 ```text
 For a declared cache size, current token, inspected token, and optional modeled
 adapter read request, what ring-buffer slots are used, which requested tokens
-are still live, and does the generated full live window cover the finite slot
-range without duplicates?
+are still live, does the requested batch form a duplicate-free ordered
+subrequest of the generated live window, and does the generated full live
+window cover the finite slot range without duplicates?
 ```
 
 It does not claim paging-policy quality, throughput, memory savings, retrieval
@@ -31,7 +32,7 @@ Expected shape:
 kv_cache_contract=LIVE cache_size=16 current=31 token=20 slot=4 current_slot=15 lag=11
 overwrite_boundary=next_overwrite=36 after_current=True stale_by_boundary=False no_same_slot_overwrite_before_current=True same_slot_overwrite_witness_when_stale=False retained_iff_no_same_slot_overwrite_trace=True
 batch_contract=tokens=(20, 24, 29, 31) slots=(4, 8, 13, 15) all_retained=True tokens_distinct=True slots_distinct=True
-adapter_request_trace=PASS request_id=prefill_read tokens=(20, 24, 29, 31) slots=(4, 8, 13, 15) all_non_future=True all_retained=True tokens_distinct=True slots_distinct=True
+adapter_request_trace=PASS request_id=prefill_read tokens=(20, 24, 29, 31) slots=(4, 8, 13, 15) all_non_future=True all_retained=True tokens_distinct=True slots_distinct=True ordered_live_window_subrequest=True duplicate_free_live_window_subrequest=True live_window_subrequest_pass_contract=True
 live_window_contract=FULL start=16 length=16 slots_distinct=True slot_count_matches_cache_size=True slot_count_matches_full_window=True slot_range_covered=True full_coverage_contract=True full_coverage_contract_matches_full_window=True
 ```
 
@@ -51,7 +52,7 @@ python scripts/kv_cache_certify.py \
 
 - `window_certificate`: the inspected token's slot, current slot, lag, retained-window status, next same-slot overwrite boundary, whether any later token up to the current read point reused the same slot, whether a stale token has the explicit same-slot overwrite witness `token + cache_size`, and whether retained-window membership is equivalent to no later same-slot write in the trace up to `current`.
 - `batch_certificate`: the optional retained batch, its slots, whether all batch tokens are retained, whether the batch slots are duplicate-free, whether all-retained is equivalent to every requested non-future token having no later same-slot write up to `current`, and whether a trace-fresh duplicate-free batch maps to duplicate-free slots.
-- `adapter_request_trace_certificate`: the same retained-batch theorem spine packaged as a named modeled adapter read request. It passes only when the requested tokens are non-future, retained, duplicate-free, mapped to duplicate-free slots, and trace-fresh pointwise.
+- `adapter_request_trace_certificate`: the same retained-batch theorem spine packaged as a named modeled adapter read request. It passes only when the requested tokens are non-future, retained, duplicate-free, mapped to duplicate-free slots, and trace-fresh pointwise. It also reports whether the requested tokens are a duplicate-free ordered subrequest of the generated live-window list, which is the direct hypothesis shape for `AIM-T0094`.
 - `live_window_certificate`: the generated retained-token interval, its slot list, and whether the full-window coverage contract applies.
 - `full_coverage_contract`: true when the live window is full, the generated slot list is duplicate-free, its length equals `cache_size`, and every emitted slot is inside the cache range.
 - `slot_count_matches_full_window`: true when the generated slot-list count matches `cache_size` exactly when the live window is full.
@@ -80,6 +81,7 @@ The main theorem spine is:
 - `AIM-T0091`: for a non-future token, the no-later-same-slot-write trace predicate is equivalent to `current < token + cache_size`.
 - `AIM-T0092`: for a non-future batch, pointwise trace freshness is equivalent to every requested token satisfying that next-overwrite-after-current boundary.
 - `AIM-T0093`: the modeled adapter request pass predicate is equivalent to non-future requested tokens, duplicate-free requested tokens, and the next-overwrite-after-current boundary for every requested token.
+- `AIM-T0094`: any duplicate-free ordered subrequest of the generated live-window token list passes the modeled adapter request-trace contract under positive cache size.
 
 ## Boundary
 
@@ -94,4 +96,5 @@ The most implementation-facing fields are:
 
 - `trace_fresh_iff_next_overwrite_boundary`: the finite trace scan agrees with the constant-time boundary check.
 - `next_overwrites_after_current`: every requested token's next same-slot overwrite is after the current read point.
+- `live_window_subrequest_pass_contract`: the requested tokens are an ordered duplicate-free subrequest of the generated live window and the modeled adapter request passes.
 - `pass_iff_next_overwrite_boundary`: the adapter request pass bit agrees with the compact checklist of non-future tokens, duplicate-free tokens, and the next-overwrite boundary.

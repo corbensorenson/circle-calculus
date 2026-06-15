@@ -65,6 +65,46 @@ def kv_cache_live_window_tokens(cache_size: int, current: int) -> tuple[int, ...
     return tuple(range(start, start + length))
 
 
+def _is_ordered_subsequence(needle: Sequence[int], haystack: Sequence[int]) -> bool:
+    haystack_iter = iter(haystack)
+    for value in needle:
+        if not any(candidate == value for candidate in haystack_iter):
+            return False
+    return True
+
+
+def kv_cache_ordered_live_window_subrequest(
+    cache_size: int,
+    current: int,
+    tokens: Sequence[int],
+) -> bool:
+    """Return whether ``tokens`` is an ordered subrequest of the live window."""
+    _require_positive(cache_size, "cache_size")
+    if current < 0:
+        raise ValueError("current must be nonnegative")
+    token_tuple = tuple(tokens)
+    if any(token < 0 for token in token_tuple):
+        raise ValueError("tokens must be nonnegative")
+    return _is_ordered_subsequence(
+        token_tuple,
+        kv_cache_live_window_tokens(cache_size, current),
+    )
+
+
+def kv_cache_duplicate_free_live_window_subrequest_contract(
+    cache_size: int,
+    current: int,
+    tokens: Sequence[int],
+) -> bool:
+    """Return whether a request satisfies the live-window subrequest contract."""
+    token_tuple = tuple(tokens)
+    return (
+        kv_cache_ordered_live_window_subrequest(cache_size, current, token_tuple)
+        and len(set(token_tuple)) == len(token_tuple)
+        and kv_cache_adapter_request_trace_pass_compact(cache_size, current, token_tuple)
+    )
+
+
 def kv_cache_next_overwrite_token(cache_size: int, token: int) -> int:
     """Return the next token position that writes the same ring-buffer slot."""
     _require_positive(cache_size, "cache_size")
@@ -721,6 +761,9 @@ class KVCacheAdapterRequestTraceCertificate:
     next_overwrites_after_current: bool
     trace_fresh_iff_next_overwrite_boundary: bool
     trace_fresh_slots_distinct: bool
+    ordered_live_window_subrequest: bool
+    duplicate_free_live_window_subrequest: bool
+    live_window_subrequest_pass_contract: bool
     pass_certificate: bool
     pass_iff_next_overwrite_boundary: bool
     theorem_ids: tuple[str, ...] = (
@@ -733,6 +776,7 @@ class KVCacheAdapterRequestTraceCertificate:
         "AIM-T0091",
         "AIM-T0092",
         "AIM-T0093",
+        "AIM-T0094",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheSlot_lt_cacheSize",
@@ -744,6 +788,7 @@ class KVCacheAdapterRequestTraceCertificate:
         "Circle.Applications.kvCacheNoSameSlotOverwriteTrace_iff_current_lt_nextOverwrite_of_le",
         "Circle.Applications.kvCacheBatchNoSameSlotOverwriteTrace_iff_all_nextOverwrite_after_current_of_forall_le",
         "Circle.Applications.kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_nextOverwriteAfterCurrent",
+        "Circle.Applications.kvCacheLiveWindowSubrequest_adapterRequestTracePass",
     )
     note: str = (
         "Modeled adapter request-trace certificate only; this packages the "
@@ -2132,6 +2177,14 @@ def certify_kv_cache_adapter_request_trace(
         current,
         token_tuple,
     )
+    ordered_live_window_subrequest = kv_cache_ordered_live_window_subrequest(
+        cache_size,
+        current,
+        token_tuple,
+    )
+    duplicate_free_live_window_subrequest = (
+        ordered_live_window_subrequest and batch.tokens_distinct
+    )
     return KVCacheAdapterRequestTraceCertificate(
         request_id=normalized_request_id,
         cache_size=cache_size,
@@ -2149,6 +2202,11 @@ def certify_kv_cache_adapter_request_trace(
             batch.trace_fresh_iff_next_overwrite_boundary
         ),
         trace_fresh_slots_distinct=batch.trace_fresh_slots_distinct,
+        ordered_live_window_subrequest=ordered_live_window_subrequest,
+        duplicate_free_live_window_subrequest=duplicate_free_live_window_subrequest,
+        live_window_subrequest_pass_contract=(
+            duplicate_free_live_window_subrequest and pass_certificate
+        ),
         pass_certificate=pass_certificate,
         pass_iff_next_overwrite_boundary=(
             pass_certificate

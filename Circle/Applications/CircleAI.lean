@@ -867,6 +867,34 @@ theorem kvCacheLiveWindowTokens_adapterRequestTracePass
       ((kvCacheWindowContains_iff_mem_liveWindowTokens).2 htoken)
       htoken_overwrite hoverwrite_current
 
+/-- Any duplicate-free ordered subrequest of the generated live window passes
+the modeled adapter request-trace contract.
+
+This is the practical read-request form: a caller does not need to request the
+entire generated live window. It is enough that the requested tokens occur in
+the live-window list, preserve its order, and contain no duplicates. The proof
+then inherits non-future membership and trace freshness from the retained-window
+theorems. -/
+theorem kvCacheLiveWindowSubrequest_adapterRequestTracePass
+    {cacheSize current : Nat} (hcache : 0 < cacheSize) {tokens : List Nat}
+    (hsub : tokens.Sublist (kvCacheLiveWindowTokens cacheSize current))
+    (hnodup : tokens.Nodup) :
+    kvCacheAdapterRequestTracePass cacheSize current tokens := by
+  apply (kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_traceFresh
+    (cacheSize := cacheSize) (current := current)
+    (tokens := tokens) hcache).2
+  refine ⟨?_, hnodup, ?_⟩
+  · intro token htoken
+    have hlive : token ∈ kvCacheLiveWindowTokens cacheSize current :=
+      hsub.subset htoken
+    exact ((kvCacheWindowContains_iff_mem_liveWindowTokens).2 hlive).1
+  · intro token htoken overwrite htoken_overwrite hoverwrite_current
+    have hlive : token ∈ kvCacheLiveWindowTokens cacheSize current :=
+      hsub.subset htoken
+    exact kvCacheWindow_noSameSlotOverwrite_between
+      ((kvCacheWindowContains_iff_mem_liveWindowTokens).2 hlive)
+      htoken_overwrite hoverwrite_current
+
 /-- A modeled request is the exact generated-live-window request when it uses
 the generated live-token list and passes the adapter trace contract. -/
 def kvCacheLiveWindowRequestTraceContract
