@@ -1030,6 +1030,16 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     assert result.coverage_certificate.theorem_side_unique_query_candidate_count == (
         result.coverage_certificate.theorem_side_unique_lag_candidate_count
     )
+    assert (
+        result.coverage_certificate
+        .unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective
+    )
+    assert (
+        result.coverage_certificate.unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated
+    )
+    assert (
+        result.coverage_certificate.unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue
+    )
     assert result.coverage_certificate.theorem_side_query_candidates_no_collision
     assert result.coverage_certificate.theorem_side_query_candidates_no_collision == (
         stride_family_query_candidates_no_collision(120, 0, (7, 13), 3, 4)
@@ -1164,6 +1174,9 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0120",
         "AIT-T0121",
         "AIT-T0122",
+        "AIT-T0123",
+        "AIT-T0124",
+        "AIT-T0125",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -1274,10 +1287,31 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0120" in certificate["theorem_ids"]
     assert "AIT-T0121" in certificate["theorem_ids"]
     assert "AIT-T0122" in certificate["theorem_ids"]
+    assert "AIT-T0123" in certificate["theorem_ids"]
+    assert "AIT-T0124" in certificate["theorem_ids"]
+    assert "AIT-T0125" in certificate["theorem_ids"]
     assert certificate["no_wrap_separated_candidate_range_sufficient_condition"] is False
     assert certificate["no_zero_residue_candidate_range_sufficient_condition"] is True
     assert certificate["theorem_side_query_count_le_unique_lag_count"] is True
     assert certificate["theorem_side_query_count_matches_unique_lag_count"] is True
+    assert (
+        certificate[
+            "unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective"
+        ]
+        is True
+    )
+    assert (
+        certificate[
+            "unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated"
+        ]
+        is True
+    )
+    assert (
+        certificate[
+            "unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue"
+        ]
+        is True
+    )
     complete = payload["complete_fixture_certificate"]
     assert complete["sequence_length"] == 9
     assert complete["strides"] == [3, 4, 7]
@@ -1319,6 +1353,20 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert complete["theorem_side_unique_query_candidate_count"] == 8
     assert complete["theorem_side_query_count_le_unique_lag_count"] is True
     assert complete["theorem_side_query_count_matches_unique_lag_count"] is True
+    assert (
+        complete[
+            "unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective"
+        ]
+        is True
+    )
+    assert (
+        complete["unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated"]
+        is True
+    )
+    assert (
+        complete["unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue"]
+        is True
+    )
     assert complete["fixture_theorem_ids"] == [
         "AIT-T0086",
         "AIT-T0087",
@@ -1463,6 +1511,9 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0120" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0121" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0122" in long_coprime["core_coverage_theorem_ids"]
+    assert "AIT-T0123" in long_coprime["core_coverage_theorem_ids"]
+    assert "AIT-T0124" in long_coprime["core_coverage_theorem_ids"]
+    assert "AIT-T0125" in long_coprime["core_coverage_theorem_ids"]
     assert long_coprime["no_wrap_separated_candidate_range_sufficient_condition"] is False
     assert "scripts/stride_family_certify.py --context 8192" in (
         long_coprime["reproduce_command"]
@@ -1484,6 +1535,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert (
         "| 9 | 2 | 2 | 3, 4, 7 | True | 0 | None | True | True | True | "
         "True | False | True | 8 | True | 8 | True | False | True | True | True | True | True | True | 8 | True | True | "
+        "True | True | True | "
         "AIT-T0086, AIT-T0087, AIT-T0088, AIT-T0089, AIT-T0105 |"
     ) in markdown_result.stdout
     assert "Planner-style declared plans" in markdown_result.stdout

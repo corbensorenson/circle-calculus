@@ -165,7 +165,10 @@
         "AIT-T0119",
         "AIT-T0120",
         "AIT-T0121",
-        "AIT-T0122"
+        "AIT-T0122",
+        "AIT-T0123",
+        "AIT-T0124",
+        "AIT-T0125"
       ],
       "theorem_side_coil_residues_no_collision": true,
       "theorem_side_lag_candidates": [
@@ -346,7 +349,10 @@
       ],
       "unique_lag_count_matches_complete_under_candidate_range": true,
       "unique_lag_count_shortfall_certifies_incomplete": true,
-      "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true
+      "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
+      "unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective": true,
+      "unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated": true,
+      "unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue": true
     },
     "family_accuracy": 1.0,
     "full_attention_accuracy": 1.0,
@@ -530,7 +536,10 @@
       "AIT-T0119",
       "AIT-T0120",
       "AIT-T0121",
-      "AIT-T0122"
+      "AIT-T0122",
+      "AIT-T0123",
+      "AIT-T0124",
+      "AIT-T0125"
     ],
     "theorem_side_coil_residues_no_collision": true,
     "theorem_side_lag_candidates": [
@@ -572,7 +581,10 @@
     "uncovered_lags": [],
     "unique_lag_count_matches_complete_under_candidate_range": true,
     "unique_lag_count_shortfall_certifies_incomplete": true,
-    "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true
+    "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
+    "unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective": true,
+    "unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated": true,
+    "unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue": true
   },
   "planner_style_certificates": [
     {
@@ -608,7 +620,10 @@
         "AIT-T0119",
         "AIT-T0120",
         "AIT-T0121",
-        "AIT-T0122"
+        "AIT-T0122",
+        "AIT-T0123",
+        "AIT-T0124",
+        "AIT-T0125"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.08403361344537816,
@@ -759,7 +774,10 @@
         "AIT-T0119",
         "AIT-T0120",
         "AIT-T0121",
-        "AIT-T0122"
+        "AIT-T0122",
+        "AIT-T0123",
+        "AIT-T0124",
+        "AIT-T0125"
       ],
       "coverage_complete": true,
       "coverage_ratio": 1.0,
@@ -859,7 +877,10 @@
         "AIT-T0119",
         "AIT-T0120",
         "AIT-T0121",
-        "AIT-T0122"
+        "AIT-T0122",
+        "AIT-T0123",
+        "AIT-T0124",
+        "AIT-T0125"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.010744810744810745,
@@ -1043,7 +1064,10 @@
         "AIT-T0119",
         "AIT-T0120",
         "AIT-T0121",
-        "AIT-T0122"
+        "AIT-T0122",
+        "AIT-T0123",
+        "AIT-T0124",
+        "AIT-T0125"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.011720180686118912,

@@ -83,6 +83,9 @@ python scripts/stride_family_certify.py \
 - `covered_count_matches_unique_lag_count_under_candidate_range`: true when the candidate-range hypothesis is absent or, under that hypothesis, covered count equals the unique lag-candidate count.
 - `uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range`: true when the candidate-range hypothesis is absent or, under that hypothesis, uncovered count equals `context - 1 - theorem_side_unique_lag_candidate_count`.
 - `theorem_side_unique_query_candidate_count`: deduplicated query-indexed predecessor count.
+- `unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective`: true when the candidate-range and predecessor-injectivity hypotheses are absent or, under those hypotheses, query-candidate shortfall is equivalent to an uncovered-lag witness.
+- `unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated`: true when the no-wrap structural condition is absent or, under that checkable condition, query-candidate shortfall is equivalent to an uncovered-lag witness.
+- `unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue`: true when the no-zero structural condition is absent or, under that checkable condition, query-candidate shortfall is equivalent to an uncovered-lag witness.
 - `theorem_side_lag_candidates_no_collision`: no duplicate lag candidates.
 - `theorem_side_query_candidates_no_collision`: no duplicate query-indexed candidates.
 
@@ -100,6 +103,12 @@ The raw-budget iff endpoints are:
 - `AIT-T0117`: if every admitted stride-step residue avoids zero, every generated stride-family residue candidate is positive.
 - `AIT-T0118`: `window < context` plus the no-zero stride-residue condition implies every theorem-side lag candidate is positive and in context.
 - `AIT-T0119`: under that no-zero residue condition, complete coverage is equivalent to unique lag-candidate count equaling `n - 1`.
+- `AIT-T0120`: under the candidate-range hypothesis, unique lag-candidate shortfall is equivalent to an uncovered positive lag.
+- `AIT-T0121`: the no-wrap separated structural version of that lag-side shortfall/gap equivalence.
+- `AIT-T0122`: the no-zero-residue structural version of that lag-side shortfall/gap equivalence.
+- `AIT-T0123`: under candidate range and predecessor injectivity, unique query-candidate shortfall is equivalent to an uncovered positive lag.
+- `AIT-T0124`: the no-wrap separated structural version of that query-side shortfall/gap equivalence.
+- `AIT-T0125`: the no-zero-residue structural version of that query-side shortfall/gap equivalence.
 
 The finite-list endpoints are:
 

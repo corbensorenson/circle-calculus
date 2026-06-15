@@ -58,6 +58,9 @@ CORE_COVERAGE_THEOREM_IDS = (
     "AIT-T0120",
     "AIT-T0121",
     "AIT-T0122",
+    "AIT-T0123",
+    "AIT-T0124",
+    "AIT-T0125",
 )
 
 PLANNER_STYLE_SPECS: tuple[dict[str, Any], ...] = (
@@ -370,6 +373,12 @@ def text_results(payload: dict[str, Any]) -> str:
         f"{certificate['theorem_side_query_count_le_unique_lag_count']} "
         "query_count_matches_unique_lag_count="
         f"{certificate['theorem_side_query_count_matches_unique_lag_count']} "
+        "unique_query_shortfall_matches_gap_witness="
+        f"{certificate['unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective']} "
+        "unique_query_no_wrap_equiv="
+        f"{certificate['unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated']} "
+        "unique_query_no_zero_equiv="
+        f"{certificate['unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue']} "
         "coil_residues_no_collision="
         f"{certificate['theorem_side_coil_residues_no_collision']} "
         f"local_coil_disjoint={certificate['theorem_side_local_coil_disjoint']} "
@@ -432,6 +441,12 @@ def text_results(payload: dict[str, Any]) -> str:
         f"{complete['theorem_side_query_count_le_unique_lag_count']} "
         "query_count_matches_unique_lag_count="
         f"{complete['theorem_side_query_count_matches_unique_lag_count']} "
+        "unique_query_shortfall_matches_gap_witness="
+        f"{complete['unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective']} "
+        "unique_query_no_wrap_equiv="
+        f"{complete['unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated']} "
+        "unique_query_no_zero_equiv="
+        f"{complete['unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue']} "
         f"raw_candidate_budget_upper_bound={complete['raw_candidate_budget_upper_bound']} "
         "raw_budget_shortfall_certifies_incomplete="
         f"{complete['raw_budget_shortfall_certifies_incomplete']} "
@@ -530,8 +545,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{certificate['full_attention_budget']} |"
             ),
             "",
-            "| Coil residues no collision | Local/coil disjoint | Lag candidates no collision | Predecessor injective | Query candidates no collision | Query count <= unique lag count | Query count = unique lag count |",
-            "| --- | --- | --- | --- | --- | --- | --- |",
+            "| Coil residues no collision | Local/coil disjoint | Lag candidates no collision | Predecessor injective | Query candidates no collision | Query count <= unique lag count | Query count = unique lag count | Query shortfall iff gap under candidate-range+injective | Query shortfall iff gap under no-wrap | Query shortfall iff gap under no-zero |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
             (
                 f"| {certificate['theorem_side_coil_residues_no_collision']} | "
                 f"{certificate['theorem_side_local_coil_disjoint']} | "
@@ -539,7 +554,10 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{certificate['theorem_side_predecessor_injective_on_lag_candidates']} | "
                 f"{certificate['theorem_side_query_candidates_no_collision']} | "
                 f"{certificate['theorem_side_query_count_le_unique_lag_count']} | "
-                f"{certificate['theorem_side_query_count_matches_unique_lag_count']} |"
+                f"{certificate['theorem_side_query_count_matches_unique_lag_count']} | "
+                f"{certificate['unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective']} | "
+                f"{certificate['unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated']} | "
+                f"{certificate['unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue']} |"
             ),
             "",
             "Covered lags:",
@@ -571,8 +589,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "Complete sparse-family fixture:",
             "",
-            "| Context | Local window | Path length | Strides | Coverage complete | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Raw budget | Raw shortfall certifies incomplete | Unique lag candidates | Candidate range | No-wrap sufficient | No-zero sufficient | Unique count iff complete | Covered count = unique | Uncovered count formula | Unique lag shortfall certifies incomplete | Unique shortfall iff gap | Unique query candidates | Query <= unique lag | Query = unique lag | Fixture theorem ids |",
-            "| ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | ---: | --- | --- | --- |",
+            "| Context | Local window | Path length | Strides | Coverage complete | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Raw budget | Raw shortfall certifies incomplete | Unique lag candidates | Candidate range | No-wrap sufficient | No-zero sufficient | Unique count iff complete | Covered count = unique | Uncovered count formula | Unique lag shortfall certifies incomplete | Unique shortfall iff gap | Unique query candidates | Query <= unique lag | Query = unique lag | Query shortfall iff gap | Query no-wrap iff | Query no-zero iff | Fixture theorem ids |",
+            "| ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- |",
             (
                 f"| {complete['sequence_length']} | {complete['local_window']} | "
                 f"{complete['path_length']} | "
@@ -600,6 +618,9 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{complete['theorem_side_unique_query_candidate_count']} | "
                 f"{complete['theorem_side_query_count_le_unique_lag_count']} | "
                 f"{complete['theorem_side_query_count_matches_unique_lag_count']} | "
+                f"{complete['unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective']} | "
+                f"{complete['unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated']} | "
+                f"{complete['unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue']} | "
                 f"{', '.join(complete['fixture_theorem_ids'])} |"
             ),
             "",

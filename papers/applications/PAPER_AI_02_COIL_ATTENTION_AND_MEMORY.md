@@ -291,6 +291,9 @@ The theorem and dictionary links are registered in `manifests/paper_manifest.yam
 - `AIT-T0120`: `Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_candidate_range`
 - `AIT-T0121`: `Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noWrapSeparated`
 - `AIT-T0122`: `Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues`
+- `AIT-T0123`: `Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_candidate_range_of_predecessor_injective`
+- `AIT-T0124`: `Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noWrapSeparated`
+- `AIT-T0125`: `Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues`
 
 ## Strided Attention Coverage (Proved Structural Guarantee)
 
@@ -359,6 +362,12 @@ attention:
 - `AIT-T0121` and `AIT-T0122`: the no-wrap separated and no-zero-residue
   structural checks package that shortfall/gap equivalence without making the
   report consumer manually audit every generated lag candidate.
+- `AIT-T0123`: the same shortfall/gap equivalence holds for query-indexed
+  predecessor addresses when every generated lag is positive and in context and
+  predecessor indexing is injective on the generated lags.
+- `AIT-T0124` and `AIT-T0125`: below-context no-wrap and no-zero-residue
+  structural checks package that query-side shortfall/gap equivalence in the
+  same report-facing style.
 
 This is the kind of structural guarantee practitioners reason about informally for
 dilated/strided attention, here made exact and Lean-checked on top of the orbit spine

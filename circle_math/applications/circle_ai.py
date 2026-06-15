@@ -1083,6 +1083,9 @@ class StrideFamilyCoverageCertificate:
     theorem_side_query_count_matches_unique_lag_count: bool
     theorem_side_predecessor_injective_on_lag_candidates: bool
     theorem_side_predecessor_injective_window_context_condition: bool
+    unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective: bool
+    unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated: bool
+    unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue: bool
     theorem_side_query_candidates_no_collision: bool
     full_attention_budget: int
     coverage_complete: bool
@@ -1187,6 +1190,9 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0120",
         "AIT-T0121",
         "AIT-T0122",
+        "AIT-T0123",
+        "AIT-T0124",
+        "AIT-T0125",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -3091,6 +3097,25 @@ def certify_stride_family_coverage(
     uncovered_intervals = consecutive_integer_intervals(uncovered)
     first_uncovered_lag = uncovered[0] if uncovered else None
     coverage_complete = len(uncovered) == 0
+    gap_witness_exists = len(uncovered) > 0
+    predecessor_injective_on_lag_candidates = (
+        stride_family_predecessor_injective_on_lag_candidates(
+            sequence_length,
+            0,
+            strides,
+            path_length,
+            local_window,
+        )
+    )
+    predecessor_injective_window_context_condition = (
+        stride_family_predecessor_injective_window_context_sufficient_condition(
+            sequence_length,
+            local_window,
+        )
+    )
+    query_shortfall_matches_gap = (
+        (unique_query_candidate_count < positive_lag_count) == gap_witness_exists
+    )
     return StrideFamilyCoverageCertificate(
         sequence_length=sequence_length,
         strides=normalized_strides,
@@ -3197,19 +3222,25 @@ def certify_stride_family_coverage(
             unique_query_candidate_count == unique_lag_candidate_count
         ),
         theorem_side_predecessor_injective_on_lag_candidates=(
-            stride_family_predecessor_injective_on_lag_candidates(
-                sequence_length,
-                0,
-                strides,
-                path_length,
-                local_window,
-            )
+            predecessor_injective_on_lag_candidates
         ),
         theorem_side_predecessor_injective_window_context_condition=(
-            stride_family_predecessor_injective_window_context_sufficient_condition(
-                sequence_length,
-                local_window,
+            predecessor_injective_window_context_condition
+        ),
+        unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective=(
+            not (
+                lag_candidates_positive_in_context
+                and predecessor_injective_on_lag_candidates
             )
+            or query_shortfall_matches_gap
+        ),
+        unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated=(
+            not no_wrap_separated_candidate_range_sufficient_condition
+            or query_shortfall_matches_gap
+        ),
+        unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue=(
+            not no_zero_residue_candidate_range_sufficient_condition
+            or query_shortfall_matches_gap
         ),
         theorem_side_query_candidates_no_collision=(
             len(set(theorem_side_query_candidates)) == len(theorem_side_query_candidates)

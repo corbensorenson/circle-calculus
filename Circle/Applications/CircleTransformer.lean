@@ -1739,6 +1739,29 @@ theorem hybridFamilyUniqueQueryCandidateCount_eq_uniqueLagCandidateCount_of_pred
     le_antisymm hquery_le_lag hlag_le_query
   simpa [xs, f, List.card_toFinset] using hcard
 
+/-- Under positive in-context candidate-range and predecessor-injectivity
+hypotheses, a query-side unique-candidate shortfall is exactly a concrete
+semantic sparse-attention gap.
+
+This is the query-indexed counterpart of the lag-side shortfall iff: once the
+predecessor map does not merge generated lag candidates, the deduplicated
+addresses seen by a query preserve the lag-side count, so query shortfall and
+uncovered positive lag witnesses are equivalent. -/
+theorem hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_candidate_range_of_predecessor_injective
+    {n query window pathLength : Nat} {strides : List Nat}
+    (hcandidate_range :
+      ∀ lag, lag ∈ hybridFamilyLagCandidateList n window pathLength strides →
+        1 ≤ lag ∧ lag < n)
+    (hinjective :
+      hybridFamilyPredecessorInjectiveOnLagCandidates n query window pathLength strides) :
+    hybridFamilyUniqueQueryCandidateCount n query window pathLength strides < n - 1 ↔
+      ∃ lag, 1 ≤ lag ∧ lag < n ∧
+        ¬ hybridFamilyLagReach n window pathLength lag strides := by
+  rw [hybridFamilyUniqueQueryCandidateCount_eq_uniqueLagCandidateCount_of_predecessor_injective
+    hinjective]
+  exact hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_candidate_range
+    hcandidate_range
+
 /-- A no-wrap single stride generates duplicate-free residues.
 
 If all admitted multiples `step * stride`, `1 ≤ step ≤ pathLength`, remain
@@ -2060,6 +2083,43 @@ theorem hybridFamilyPredecessorInjectiveOnLagCandidates_of_window_lt_context
     (mem_hybridFamilyLagCandidateList_lt_context_of_window_lt_context hcontext hleft)
     (mem_hybridFamilyLagCandidateList_lt_context_of_window_lt_context hcontext hright)
     heq
+
+/-- Under below-context local-window and no-wrap separated stride-family
+conditions, a query-side unique-candidate shortfall is exactly a concrete
+semantic gap.
+
+The local-window bound both keeps local candidates in context and makes
+predecessor indexing injective on all generated lags; no-wrap separation keeps
+stride residues positive representatives. -/
+theorem hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noWrapSeparated
+    {n query window pathLength : Nat} {strides : List Nat}
+    (hwindow : window < n)
+    (hseparated : coilStrideFamilyNoWrapSeparated n pathLength strides) :
+    hybridFamilyUniqueQueryCandidateCount n query window pathLength strides < n - 1 ↔
+      ∃ lag, 1 ≤ lag ∧ lag < n ∧
+        ¬ hybridFamilyLagReach n window pathLength lag strides :=
+  hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_candidate_range_of_predecessor_injective
+    (hybridFamilyLagCandidateList_candidate_range_of_window_lt_context_of_noWrapSeparated
+      hwindow hseparated)
+    (hybridFamilyPredecessorInjectiveOnLagCandidates_of_window_lt_context hwindow)
+
+/-- Under below-context local-window and no-zero stride-residue conditions, a
+query-side unique-candidate shortfall is exactly a concrete semantic gap.
+
+This is the broader executable-report form: stride blocks may wrap or overlap,
+but if no admitted stride-step collapses to zero then query-count shortfall is
+equivalent to a real uncovered positive lag. -/
+theorem hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues
+    {n query window pathLength : Nat} {strides : List Nat}
+    (hwindow : window < n)
+    (hnoZero : coilStrideFamilyNoZeroResidues n pathLength strides) :
+    hybridFamilyUniqueQueryCandidateCount n query window pathLength strides < n - 1 ↔
+      ∃ lag, 1 ≤ lag ∧ lag < n ∧
+        ¬ hybridFamilyLagReach n window pathLength lag strides :=
+  hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_candidate_range_of_predecessor_injective
+    (hybridFamilyLagCandidateList_candidate_range_of_window_lt_context_of_noZeroResidues
+      hwindow hnoZero)
+    (hybridFamilyPredecessorInjectiveOnLagCandidates_of_window_lt_context hwindow)
 
 /-- Ordered no-wrap separation plus an in-context local window gives
 duplicate-free query-indexed candidates without an abstract injectivity

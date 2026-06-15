@@ -191,6 +191,17 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             "when_injective_theorem=AIT-T0109"
         ),
         (
+            "unique_query_shortfall="
+            f"{payload['theorem_side_unique_query_candidate_count'] < payload['positive_lag_count']} "
+            "gap_witness_equiv_under_candidate_range_and_injective="
+            f"{payload['unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective']} "
+            "no_wrap_structural_equiv="
+            f"{payload['unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated']} "
+            "no_zero_structural_equiv="
+            f"{payload['unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue']} "
+            "theorems=AIT-T0123,AIT-T0124,AIT-T0125"
+        ),
+        (
             "structural_checks="
             f"coil_residues_no_collision={payload['theorem_side_coil_residues_no_collision']} "
             f"local_coil_disjoint={payload['theorem_side_local_coil_disjoint']} "

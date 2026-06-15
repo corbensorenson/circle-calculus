@@ -68,6 +68,12 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     assert "AIT-T0107" in result.stdout
     assert "query_le_unique_lag=True theorem=AIT-T0108" in result.stdout
     assert "query_matches_unique_lag=True when_injective_theorem=AIT-T0109" in result.stdout
+    assert (
+        "unique_query_shortfall=True "
+        "gap_witness_equiv_under_candidate_range_and_injective=True "
+        "no_wrap_structural_equiv=True no_zero_structural_equiv=True "
+        "theorems=AIT-T0123,AIT-T0124,AIT-T0125"
+    ) in result.stdout
     assert "raw_budget_shortfall=True certifies_incomplete=True theorem=AIT-T0110" in result.stdout
     assert (
         "unique_lag_shortfall=True certifies_incomplete=True "
@@ -167,6 +173,23 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     assert "AIT-T0120" in payload["theorem_ids"]
     assert "AIT-T0121" in payload["theorem_ids"]
     assert "AIT-T0122" in payload["theorem_ids"]
+    assert "AIT-T0123" in payload["theorem_ids"]
+    assert "AIT-T0124" in payload["theorem_ids"]
+    assert "AIT-T0125" in payload["theorem_ids"]
+    assert (
+        payload[
+            "unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective"
+        ]
+        is True
+    )
+    assert (
+        payload["unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated"]
+        is True
+    )
+    assert (
+        payload["unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue"]
+        is True
+    )
     assert payload["fixture_theorem_ids"] == [
         "AIT-T0084",
         "AIT-T0085",
