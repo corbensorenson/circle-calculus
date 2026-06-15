@@ -152,7 +152,7 @@ True
 AIRA-T0063,AIRA-T0064,AIRA-T0065,...,AIRA-T0173
 ```
 
-Lean proves that channel 0 with standard turn ratio `1 / (2π)` has finite-context nearest-integer margin `1/328459` for gaps `1` through `196607`. The D19 192k seed uses the 20-decimal enclosure `10^20*gap/628318530717958647694 <= gap/(2π) <= 10^20*gap/628318530717958647692`, split across computed integer cells `0` through `31290`. Lean also proves the sharper 64k bracket at margin `1/104219`, while every advertised margin at or above `1/104218` is impossible there because of gap `710`. `AIRA-T0154` and `AIRA-T0155` add the adjacent obstruction for the lower-margin family: gap `103993` is already within `1/328458` of integer turn `16551`, so `1/328458` and larger margins are impossible once that gap is in scope. `AIRA-T0156` through `AIRA-T0161` are the generated D17 128k interval certificate, bank bridges, and bracket; `AIRA-T0162` through `AIRA-T0167` extend the same margin to the generated D18 160k seed; `AIRA-T0168` through `AIRA-T0173` extend it to the generated D19 192k seed. This is real standard-RoPE theorem content, but still channel-0 based; it is not a proof for every channel in the whole multi-channel bank.
+Lean proves that channel 0 with standard turn ratio `1 / (2π)` has finite-context nearest-integer margin `1/328459` for gaps `1` through `196607`. The D19 192k seed uses the 20-decimal enclosure `10^20*gap/628318530717958647694 <= gap/(2π) <= 10^20*gap/628318530717958647692`, split across computed integer cells `0` through `31290`. Lean also proves the sharper 64k bracket at margin `1/104219`, while every advertised margin at or above `1/104218` is impossible there because of gap `710`. `AIRA-T0154` and `AIRA-T0155` add the adjacent obstruction for the lower-margin family: gap `103993` is already within `1/328458` of integer turn `16551`, so `1/328458` and larger margins are impossible once that gap is in scope. `AIRA-T0156` through `AIRA-T0161` are the generated D17 128k interval certificate, bank bridges, and bracket; `AIRA-T0162` through `AIRA-T0167` extend the same margin to the generated D18 160k seed; `AIRA-T0168` through `AIRA-T0173` extend it to the generated D19 192k seed; `AIRA-T0208` packages the D19 range bracket for every `103993 < context <= 196608`. This is real standard-RoPE theorem content, but still channel-0 based; it is not a proof for every channel in the whole multi-channel bank.
 
 To ask the strongest concrete D19 bank-bridge request directly:
 
@@ -180,10 +180,11 @@ bracket = certify_standard_channel0_d19_margin_bracket()
 bracket.context_length             # 196608
 bracket.proved_margin              # 1/328459
 bracket.impossible_margin_floor    # 1/328458
-bracket.theorem_ids                # AIRA-T0168,AIRA-T0169,AIRA-T0155,AIRA-T0173
+bracket.theorem_ids                # AIRA-T0168,AIRA-T0169,AIRA-T0155,AIRA-T0173,AIRA-T0208
 ```
 
-The bracket leaves margins strictly between `1/328459` and `1/328458` unresolved.
+The range bracket applies to every requested context satisfying `103993 < context <= 196608`.
+It leaves margins strictly between `1/328459` and `1/328458` unresolved.
 
 For audit and future Lean work, the sidecar also exposes interval plans and rational-band audits:
 

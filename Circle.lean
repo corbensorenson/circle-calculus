@@ -26,6 +26,7 @@ import Circle.Applications.CircleTransformer
 import Circle.Applications.Circulant
 import Circle.Applications.RoPECertifier
 import Circle.Applications.RoPEGeneratedCertificates
+import Circle.Applications.RoPEFrontier
 import Circle.Physics.LatticeGauge
 import Circle.Generative.SeedRule
 import Circle.Erdos.EGZ

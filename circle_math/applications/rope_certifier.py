@@ -1064,6 +1064,8 @@ class StandardChannel0D19MarginBracketCertificate:
     schema_id: str
     name: str
     context_length: int
+    context_range_min_exclusive: int
+    context_range_max_inclusive: int
     proved_margin: str
     impossible_margin_floor: str
     pass_certificate: bool
@@ -3094,26 +3096,37 @@ def certify_standard_channel0_d19_margin_bracket() -> StandardChannel0D19MarginB
         schema_id="circle_calculus.standard_rope_channel0_d19_margin_bracket.v0",
         name="standard_rope_channel0_d19_context196608_margin_bracket",
         context_length=196608,
+        context_range_min_exclusive=103993,
+        context_range_max_inclusive=196608,
         proved_margin="1/328459",
         impossible_margin_floor="1/328458",
         pass_certificate=True,
-        theorem_ids=("AIRA-T0168", "AIRA-T0169", "AIRA-T0155", "AIRA-T0173"),
+        theorem_ids=(
+            "AIRA-T0168",
+            "AIRA-T0169",
+            "AIRA-T0155",
+            "AIRA-T0173",
+            "AIRA-T0208",
+        ),
         lean_declarations=(
             "Circle.Applications.ropeStandardChannel0D19Seed_intervalCertificate",
             "Circle.Applications.ropeStandardChannel0D19Seed_turnRatioFiniteMargin",
             "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993",
             "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
+            "Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket",
         ),
         explanation=(
             "Lean proves that standard RoPE channel 0 has finite-context "
             "nearest-integer margin 1/328459 through context 196608. Lean also "
             "proves that any margin at or above 1/328458 is impossible for "
-            "that context because gap 103993 is already too close to integer turn 16551."
+            "every requested context above gap 103993 and at most 196608, because "
+            "gap 103993 is already too close to integer turn 16551."
         ),
         claim_boundary=(
-            "This is a 192k one-channel standard-RoPE bracket. It is not a full "
-            "all-channel bank margin theorem, and it does not decide margins "
-            "strictly between 1/328459 and 1/328458."
+            "This is a one-channel standard-RoPE context-range bracket over "
+            "103993 < context <= 196608. It is not a full all-channel bank "
+            "margin theorem, and it does not decide margins strictly between "
+            "1/328459 and 1/328458."
         ),
     )
 

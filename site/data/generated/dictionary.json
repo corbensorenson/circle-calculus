@@ -13115,6 +13115,12 @@
           "lean_name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_period_succ_eq_one",
           "name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_period_succ_eq_one",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0208",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -14260,6 +14266,12 @@
           "id": "AIRA-T0207",
           "lean_name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_period_succ_eq_one",
           "name": "Circle.Applications.ropeCollisionPairCountAtGapMultiples_period_succ_eq_one",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0208",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket",
           "status": "proved"
         }
       ],
@@ -15970,6 +15982,12 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_finiteMarginCertificate_le_context_margin",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_finiteMarginCertificate_le_context_margin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0208",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -17070,6 +17088,12 @@
           "id": "AIRA-T0197",
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_finiteMarginCertificate_le_context_margin",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_finiteMarginCertificate_le_context_margin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0208",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket",
           "status": "proved"
         }
       ],
@@ -18299,6 +18323,12 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_finiteMarginCertificate_le_context_margin",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_finiteMarginCertificate_le_context_margin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0208",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -19156,6 +19186,12 @@
           "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_finiteMarginCertificate_le_context_margin",
           "name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_finiteMarginCertificate_le_context_margin",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0208",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -19882,6 +19918,12 @@
           "id": "AIRA-T0173",
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
           "name": "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0208",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket",
+          "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket",
           "status": "proved"
         }
       ],

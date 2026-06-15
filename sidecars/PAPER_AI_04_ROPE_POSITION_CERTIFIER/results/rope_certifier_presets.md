@@ -126,9 +126,9 @@ This is a conditional one-separating-channel bank certificate based on standard 
 
 | Name | Context | Proved margin | Impossible margin floor | Status | Theorem ids |
 | --- | ---: | ---: | ---: | --- | --- |
-| standard_rope_channel0_d19_context196608_margin_bracket | 196608 | 1/328459 | 1/328458 | PASS | AIRA-T0168, AIRA-T0169, AIRA-T0155, AIRA-T0173 |
+| standard_rope_channel0_d19_context196608_margin_bracket | 196608 | 1/328459 | 1/328458 | PASS | AIRA-T0168, AIRA-T0169, AIRA-T0155, AIRA-T0173, AIRA-T0208 |
 
-This is a 192k one-channel standard-RoPE bracket. It is not a full all-channel bank margin theorem, and it does not decide margins strictly between 1/328459 and 1/328458.
+This is a one-channel standard-RoPE context-range bracket over 103993 < context <= 196608. It is not a full all-channel bank margin theorem, and it does not decide margins strictly between 1/328459 and 1/328458.
 
 ## Standard Channel-0 Frontier Summary
 

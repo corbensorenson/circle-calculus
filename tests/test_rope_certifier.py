@@ -1358,18 +1358,28 @@ def test_standard_channel0_d19_margin_bracket_is_theorem_backed() -> None:
     )
     assert bracket.name == "standard_rope_channel0_d19_context196608_margin_bracket"
     assert bracket.context_length == 196608
+    assert bracket.context_range_min_exclusive == 103993
+    assert bracket.context_range_max_inclusive == 196608
     assert bracket.proved_margin == "1/328459"
     assert bracket.impossible_margin_floor == "1/328458"
     assert bracket.pass_certificate
-    assert bracket.theorem_ids == ("AIRA-T0168", "AIRA-T0169", "AIRA-T0155", "AIRA-T0173")
+    assert bracket.theorem_ids == (
+        "AIRA-T0168",
+        "AIRA-T0169",
+        "AIRA-T0155",
+        "AIRA-T0173",
+        "AIRA-T0208",
+    )
     assert bracket.lean_declarations == (
         "Circle.Applications.ropeStandardChannel0D19Seed_intervalCertificate",
         "Circle.Applications.ropeStandardChannel0D19Seed_turnRatioFiniteMargin",
         "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993",
         "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
+        "Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket",
     )
     assert "margin 1/328459 through context 196608" in bracket.explanation
     assert "gap 103993" in bracket.explanation
+    assert "103993 < context <= 196608" in bracket.claim_boundary
     assert "not a full all-channel" in bracket.claim_boundary
     assert "does not decide margins strictly between" in bracket.claim_boundary
 
@@ -2340,6 +2350,7 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
         "AIRA-T0169",
         "AIRA-T0155",
         "AIRA-T0173",
+        "AIRA-T0208",
     ]
     assert payload["standard_channel0_frontier_summary"]["proved_margin"] == "1/328459"
     assert payload["standard_channel0_frontier_summary"]["proved_context"] == 196608
@@ -2563,7 +2574,10 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert "Standard RoPE D19 Bank Bridge Request" in markdown_result.stdout
     assert "AIRA-T0171, AIRA-T0172" in markdown_result.stdout
     assert "Standard RoPE D19 Margin Bracket" in markdown_result.stdout
-    assert "AIRA-T0168, AIRA-T0169, AIRA-T0155, AIRA-T0173" in markdown_result.stdout
+    assert (
+        "AIRA-T0168, AIRA-T0169, AIRA-T0155, AIRA-T0173, AIRA-T0208"
+        in markdown_result.stdout
+    )
     assert "Standard Channel-0 Frontier Summary" in markdown_result.stdout
     assert "| 1/328459 | 196608 | lean_proved_interval_seed_AIRA-T0168_to_AIRA-T0170 |  | 103993 | AIRA-T0139, AIRA-T0140, AIRA-T0141 | lean_proved_interval_seed_AIRA-T0168_to_AIRA-T0170 |" in markdown_result.stdout
     assert "Standard RoPE Candidate Interval Plans" in markdown_result.stdout

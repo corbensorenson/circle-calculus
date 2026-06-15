@@ -5017,6 +5017,20 @@ theorems:
       lean_build_required: true
       no_sorry_required: true
     blocker: ""
+  - id: AIRA-T0208
+    status: lean_proved
+    lean_name: Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket
+    informal_statement: "For every requested context above the obstruction gap 103993 and at most the D19 horizon 196608, standard channel 0 has proved margin 1/328459, while every advertised margin at or above 1/328458 is impossible."
+    formal_statement: "forall {context : Nat}, 103993 < context -> context <= Circle.Applications.ropeStandardChannel0D19SeedContext -> Circle.Applications.ropeTurnRatioFiniteMargin Circle.Applications.ropeStandardChannel0TurnRatio Circle.Applications.ropeStandardChannel0D19SeedMargin context and forall margin : Real, ((1 : Real) / 328458) <= margin -> not (Circle.Applications.ropeTurnRatioFiniteMargin Circle.Applications.ropeStandardChannel0TurnRatio margin context)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_margin_bracket_is_theorem_backed
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd
