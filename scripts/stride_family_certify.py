@@ -145,6 +145,13 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             "theorem=AIT-T0110"
         ),
         (
+            "unique_lag_shortfall="
+            f"{payload['theorem_side_unique_lag_candidate_count'] < payload['positive_lag_count']} "
+            "certifies_incomplete="
+            f"{payload['unique_lag_count_shortfall_certifies_incomplete']} "
+            "theorem=AIT-T0111"
+        ),
+        (
             "lag_budget_status="
             f"{lag_budget_status} unique_lag_candidates="
             f"{payload['theorem_side_unique_lag_candidate_count']} "

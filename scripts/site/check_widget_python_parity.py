@@ -3805,6 +3805,13 @@ def main() -> int:
                 and coverage_certificate.coverage_complete
             )
         )
+        assert coverage_certificate.unique_lag_count_shortfall_certifies_incomplete == (
+            not (
+                coverage_certificate.theorem_side_unique_lag_candidate_count
+                < coverage_certificate.positive_lag_count
+                and coverage_certificate.coverage_complete
+            )
+        )
         assert coverage_certificate.deduplicated_candidate_budget_upper_bound == min(
             sequence_length,
             local_window + path_length * len(strides),

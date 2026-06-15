@@ -881,6 +881,43 @@ theorem hybridFamilyRawCandidateBudget_ge_context_sub_one_of_covers
   exact hpositive_card ▸
     le_trans (hcandidates_card ▸ hcard_subset) hunique_le_raw
 
+/-- Complete coverage requires at least as many unique theorem-side lag
+candidates as there are positive in-context lags.
+
+This is the deduplicated counterpart to the raw-budget lower bound: even if the
+declared raw generator budget is large, duplicate lag candidates cannot cover
+every positive lag unless the unique lag-candidate count reaches `n - 1`. -/
+theorem hybridFamilyUniqueLagCandidateCount_ge_context_sub_one_of_covers
+    {n window pathLength : Nat} {strides : List Nat}
+    (hcover : hybridFamilyCoversContext n window pathLength strides) :
+    n - 1 ≤ hybridFamilyUniqueLagCandidateCount n window pathLength strides := by
+  let positiveLags := List.range' 1 (n - 1)
+  let candidates := hybridFamilyLagCandidateList n window pathLength strides
+  have hmem :
+      ∀ lag, lag ∈ positiveLags → lag ∈ candidates := by
+    intro lag hlag
+    exact
+      (hybridFamilyCoversContext_iff_range_lags_mem_candidate_list
+        (n := n) (window := window) (pathLength := pathLength)
+        (strides := strides)).1 hcover lag hlag
+  have hsubset : positiveLags.toFinset ⊆ candidates.toFinset := by
+    intro lag hlag
+    rw [List.mem_toFinset] at hlag ⊢
+    exact hmem lag hlag
+  have hcard_subset :
+      positiveLags.toFinset.card ≤ candidates.toFinset.card :=
+    Finset.card_le_card hsubset
+  have hpositive_card : positiveLags.toFinset.card = n - 1 := by
+    have hnodup : positiveLags.Nodup := by
+      simp [positiveLags, List.nodup_range']
+    rw [List.card_toFinset, List.Nodup.dedup hnodup]
+    simp [positiveLags, List.length_range']
+  have hcandidates_card :
+      candidates.toFinset.card =
+        hybridFamilyUniqueLagCandidateCount n window pathLength strides := by
+    simp [candidates, hybridFamilyUniqueLagCandidateCount, List.card_toFinset]
+  exact hpositive_card ▸ (hcandidates_card ▸ hcard_subset)
+
 /-- Membership in the finite covered-lag list is exactly positive in-context
 semantic reachability.
 

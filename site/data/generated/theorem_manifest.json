@@ -10665,7 +10665,7 @@
       "informal_statement": "RoPE relative-position property: shifting both the query and key positions by the same amount leaves the relative rotary phase unchanged, so the interaction depends only on the relative position query - key.",
       "lean_name": "Circle.Applications.rope_relative_shift_invariant",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1939,
+      "lean_source_line": 1976,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"
@@ -10701,7 +10701,7 @@
       "informal_statement": "RoPE phase additivity: rotary position rotations compose by adding strides, the algebraic basis of RoPE's relative-position behaviour.",
       "lean_name": "Circle.Applications.rope_compose",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1948,
+      "lean_source_line": 1985,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"
@@ -11399,7 +11399,7 @@
       "informal_statement": "The local window covers every positive lag inside a length-n context if and only if the window reaches the largest possible positive lag, n - 1.",
       "lean_name": "Circle.Applications.localWindowCoversContext_iff_context_sub_one_le",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1814,
+      "lean_source_line": 1851,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -12561,7 +12561,7 @@
       "informal_statement": "The theorem-side query-indexed candidate list has exactly the raw sparse-attention candidate budget before duplicate removal.",
       "lean_name": "Circle.Applications.hybridFamilyQueryCandidateList_length",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1196,
+      "lean_source_line": 1233,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -12603,7 +12603,7 @@
       "informal_statement": "The exact deduplicated theorem-side query-indexed candidate count is never larger than the raw candidate-budget upper bound.",
       "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_raw",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1205,
+      "lean_source_line": 1242,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -12645,7 +12645,7 @@
       "informal_statement": "Membership in the theorem-side query-indexed candidate list is exactly membership after mapping some generated lag through the predecessor-index map.",
       "lean_name": "Circle.Applications.mem_hybridFamilyQueryCandidateList_iff_exists_lag",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1790,
+      "lean_source_line": 1827,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -12687,7 +12687,7 @@
       "informal_statement": "Any in-context lag reached by the local plus stride-family plan maps to a query-indexed predecessor candidate.",
       "lean_name": "Circle.Applications.predecessorIndex_mem_hybridFamilyQueryCandidateList_of_reach",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1800,
+      "lean_source_line": 1837,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -12730,7 +12730,7 @@
       "informal_statement": "If the theorem-side lag-candidate list has no duplicate lag candidates, then its exact deduplicated count equals the raw candidate budget.",
       "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1677,
+      "lean_source_line": 1714,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -12773,7 +12773,7 @@
       "informal_statement": "If the theorem-side query-indexed candidate list has no duplicate predecessor candidates, then its exact deduplicated count equals the raw candidate budget.",
       "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1727,
+      "lean_source_line": 1764,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -12816,7 +12816,7 @@
       "informal_statement": "If the stride-family residue block has no duplicates and the local-window lag block is disjoint from it, then the theorem-side lag-candidate list has no duplicates.",
       "lean_name": "Circle.Applications.hybridFamilyLagCandidatesNoCollision_of_coil_noCollision_of_local_coil_disjoint",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1580,
+      "lean_source_line": 1617,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -12859,7 +12859,7 @@
       "informal_statement": "If generated lag candidates have no duplicates and predecessor indexing is injective on those generated lag values, then the theorem-side query-indexed candidate list has no duplicates.",
       "lean_name": "Circle.Applications.hybridFamilyQueryCandidatesNoCollision_of_lag_noCollision_of_predecessor_injective",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1623,
+      "lean_source_line": 1660,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -12902,7 +12902,7 @@
       "informal_statement": "A single stride produces duplicate-free residue candidates when every admitted step multiple stays strictly below the context length.",
       "lean_name": "Circle.Applications.coilLagResidueList_nodup_of_path_mul_stride_lt_context",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1345,
+      "lean_source_line": 1382,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -12944,7 +12944,7 @@
       "informal_statement": "A singleton stride family inherits the no-wrap duplicate-free residue condition.",
       "lean_name": "Circle.Applications.coilStrideFamilyLagResiduesNoCollision_singleton_of_path_mul_stride_lt_context",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1371,
+      "lean_source_line": 1408,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -12986,7 +12986,7 @@
       "informal_statement": "A no-wrap singleton stride above the local-window width is disjoint from the local-window lag block.",
       "lean_name": "Circle.Applications.localCoilLagCandidatesDisjoint_singleton_of_window_lt_stride_of_path_mul_stride_lt_context",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1538,
+      "lean_source_line": 1575,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13028,7 +13028,7 @@
       "informal_statement": "A singleton stride family has duplicate-free lag candidates when the local window is below the stride and all admitted stride multiples fit before context wraparound.",
       "lean_name": "Circle.Applications.hybridFamilyLagCandidatesNoCollision_singleton_of_window_lt_stride_of_path_mul_stride_lt_context",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1605,
+      "lean_source_line": 1642,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13070,7 +13070,7 @@
       "informal_statement": "Adding one stride preserves stride-family residue no-collision when the new stride block is duplicate-free, the tail family is duplicate-free, and the head block is disjoint from the tail block.",
       "lean_name": "Circle.Applications.coilStrideFamilyLagResiduesNoCollision_cons_of_head_tail_disjoint",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1389,
+      "lean_source_line": 1426,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13112,7 +13112,7 @@
       "informal_statement": "A new stride block is disjoint from a tail stride-family block when all involved stride multiples stay below the context length and the head block's largest possible value is strictly below every tail stride.",
       "lean_name": "Circle.Applications.coilLagResiduesDisjointFromFamily_of_path_mul_head_lt_tail_strides",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1406,
+      "lean_source_line": 1443,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13154,7 +13154,7 @@
       "informal_statement": "An ordered no-wrap separated stride family has duplicate-free stride-family residue blocks.",
       "lean_name": "Circle.Applications.coilStrideFamilyLagResiduesNoCollision_of_noWrapSeparated",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1454,
+      "lean_source_line": 1491,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13196,7 +13196,7 @@
       "informal_statement": "An ordered no-wrap separated stride family is disjoint from local-window lag candidates when every stride starts beyond the local window.",
       "lean_name": "Circle.Applications.localCoilLagCandidatesDisjoint_of_noWrapSeparated_of_window_lt_all_strides",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1479,
+      "lean_source_line": 1516,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13238,7 +13238,7 @@
       "informal_statement": "An ordered no-wrap separated stride family whose strides start beyond the local window has duplicate-free theorem-side lag candidates.",
       "lean_name": "Circle.Applications.hybridFamilyLagCandidatesNoCollision_of_noWrapSeparated_of_window_lt_all_strides",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1594,
+      "lean_source_line": 1631,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13280,7 +13280,7 @@
       "informal_statement": "An ordered no-wrap separated stride family whose strides start beyond the local window has duplicate-free query-indexed candidates whenever predecessor indexing is injective on generated lag candidates.",
       "lean_name": "Circle.Applications.hybridFamilyQueryCandidatesNoCollision_of_noWrapSeparated_of_window_lt_all_strides_of_predecessor_injective",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1637,
+      "lean_source_line": 1674,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13322,7 +13322,7 @@
       "informal_statement": "For an ordered no-wrap separated stride family whose strides start beyond the local window, the exact deduplicated theorem-side lag-candidate count equals the raw candidate budget.",
       "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_eq_raw_of_noWrapSeparated_of_window_lt_all_strides",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1714,
+      "lean_source_line": 1751,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13364,7 +13364,7 @@
       "informal_statement": "For an ordered no-wrap separated stride family whose strides start beyond the local window, predecessor injectivity makes the exact deduplicated query-candidate count equal the raw candidate budget.",
       "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noWrapSeparated_of_window_lt_all_strides_of_predecessor_injective",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1763,
+      "lean_source_line": 1800,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13448,7 +13448,7 @@
       "informal_statement": "If the local window is below the context length, every theorem-side local or stride-family lag candidate is a strict in-context representative.",
       "lean_name": "Circle.Applications.mem_hybridFamilyLagCandidateList_lt_context_of_window_lt_context",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1180,
+      "lean_source_line": 1217,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13490,7 +13490,7 @@
       "informal_statement": "A local window below the context length is a numeric sufficient condition for predecessor indexing to be injective on all theorem-side lag candidates.",
       "lean_name": "Circle.Applications.hybridFamilyPredecessorInjectiveOnLagCandidates_of_window_lt_context",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1651,
+      "lean_source_line": 1688,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13532,7 +13532,7 @@
       "informal_statement": "Ordered no-wrap separation, strides beyond the local window, and a local window below the context length imply duplicate-free query-indexed candidates without an abstract injectivity assumption.",
       "lean_name": "Circle.Applications.hybridFamilyQueryCandidatesNoCollision_of_noWrapSeparated_of_window_lt_all_strides_of_window_lt_context",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1665,
+      "lean_source_line": 1702,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13574,7 +13574,7 @@
       "informal_statement": "Under ordered no-wrap separation, strides beyond the local window, and a local window below the context length, the exact deduplicated query-candidate count equals the raw candidate budget.",
       "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noWrapSeparated_of_window_lt_all_strides_of_window_lt_context",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1777,
+      "lean_source_line": 1814,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13616,7 +13616,7 @@
       "informal_statement": "The exact deduplicated theorem-side lag-candidate count equals the raw sparse-attention candidate budget if and only if the lag-candidate list has no duplicate lag candidates.",
       "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_eq_raw_iff_noCollision",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1693,
+      "lean_source_line": 1730,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13659,7 +13659,7 @@
       "informal_statement": "The exact deduplicated theorem-side query-candidate count equals the raw sparse-attention candidate budget if and only if the query-indexed candidate list has no duplicate predecessor candidates.",
       "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_raw_iff_noCollision",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1742,
+      "lean_source_line": 1779,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13745,7 +13745,7 @@
       "informal_statement": "For the default C_120 sparse-attention plan with local window 4, path length 3, and strides [7,13], positive lag 5 is a concrete uncovered gap witness.",
       "lean_name": "Circle.Applications.hybridFamilyLagGap_default_120_4_3_7_13_lag5",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1836,
+      "lean_source_line": 1873,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13787,7 +13787,7 @@
       "informal_statement": "The default C_120 sparse-attention plan with local window 4, path length 3, and strides [7,13] does not cover every positive in-context lag because lag 5 is uncovered.",
       "lean_name": "Circle.Applications.not_hybridFamilyCoversContext_default_120_4_3_7_13",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1851,
+      "lean_source_line": 1888,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13829,7 +13829,7 @@
       "informal_statement": "A lag appears in the finite uncovered-lag list for a local-window plus stride-family sparse plan if and only if it is a positive in-context lag that the semantic reachability predicate misses.",
       "lean_name": "Circle.Applications.mem_hybridFamilyUncoveredLagList_iff",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 917,
+      "lean_source_line": 954,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13871,7 +13871,7 @@
       "informal_statement": "A local-window plus stride-family sparse plan covers every positive in-context lag if and only if its finite uncovered-lag list is empty.",
       "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_uncoveredLagList_eq_nil",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 992,
+      "lean_source_line": 1029,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13913,7 +13913,7 @@
       "informal_statement": "A local-window plus stride-family sparse plan covers every positive in-context lag if and only if the finite uncovered-lag count is zero.",
       "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_uncoveredLagList_length_eq_zero",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1076,
+      "lean_source_line": 1113,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13955,7 +13955,7 @@
       "informal_statement": "For the default C_120 sparse-attention plan with local window 4, path length 3, and strides [7,13], lag 5 appears in the finite uncovered-lag list.",
       "lean_name": "Circle.Applications.mem_hybridFamilyUncoveredLagList_default_120_4_3_7_13_lag5",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1859,
+      "lean_source_line": 1896,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -13997,7 +13997,7 @@
       "informal_statement": "For the default C_120 sparse-attention plan with local window 4, path length 3, and strides [7,13], the finite uncovered-lag list has length 109.",
       "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_default_120_4_3_7_13_length",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1871,
+      "lean_source_line": 1908,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14039,7 +14039,7 @@
       "informal_statement": "For the compact C_9 sparse-attention plan with local window 2, path length 2, and strides [3,4,7], the finite uncovered-lag list is empty.",
       "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_complete_9_2_2_3_4_7_eq_nil",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1893,
+      "lean_source_line": 1930,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14082,7 +14082,7 @@
       "informal_statement": "The compact C_9 sparse-attention plan with local window 2, path length 2, and strides [3,4,7] covers every positive in-context lag.",
       "lean_name": "Circle.Applications.hybridFamilyCoversContext_complete_9_2_2_3_4_7",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1899,
+      "lean_source_line": 1936,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14125,7 +14125,7 @@
       "informal_statement": "For the compact C_9 sparse-attention plan, the exact deduplicated lag-candidate count equals the raw candidate budget.",
       "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_complete_9_2_2_3_4_7_eq_raw",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1912,
+      "lean_source_line": 1949,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14168,7 +14168,7 @@
       "informal_statement": "For the compact C_9 sparse-attention plan, the exact deduplicated query-candidate count equals the raw candidate budget.",
       "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_complete_9_2_2_3_4_7_eq_raw",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1919,
+      "lean_source_line": 1956,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14211,7 +14211,7 @@
       "informal_statement": "A lag appears in the finite covered-lag list for a local-window plus stride-family sparse plan if and only if it is a positive in-context lag reached by the semantic reachability predicate.",
       "lean_name": "Circle.Applications.mem_hybridFamilyCoveredLagList_iff",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 890,
+      "lean_source_line": 927,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14254,7 +14254,7 @@
       "informal_statement": "For the default C_120 sparse-attention plan with local window 4, path length 3, and strides [7,13], the finite covered-lag list has length 10.",
       "lean_name": "Circle.Applications.hybridFamilyCoveredLagList_default_120_4_3_7_13_length",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1884,
+      "lean_source_line": 1921,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14297,7 +14297,7 @@
       "informal_statement": "For any declared local-window plus stride-family sparse-attention plan, the finite covered-lag list and uncovered-lag list are disjoint.",
       "lean_name": "Circle.Applications.hybridFamilyCoveredLagList_disjoint_uncoveredLagList",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 946,
+      "lean_source_line": 983,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14339,7 +14339,7 @@
       "informal_statement": "Every positive in-context lag for a declared sparse-attention plan appears in either the finite covered-lag list or the finite uncovered-lag list.",
       "lean_name": "Circle.Applications.mem_hybridFamilyCoveredLagList_or_mem_hybridFamilyUncoveredLagList_of_pos_lt_context",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 962,
+      "lean_source_line": 999,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14381,7 +14381,7 @@
       "informal_statement": "For any declared local-window plus stride-family sparse-attention plan, the finite covered-lag count plus uncovered-lag count equals n - 1, the number of positive in-context lags.",
       "lean_name": "Circle.Applications.hybridFamilyCoveredUncoveredLagList_length_add",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 979,
+      "lean_source_line": 1016,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14423,7 +14423,7 @@
       "informal_statement": "For any declared local-window plus stride-family sparse-attention plan, complete context coverage is equivalent to the finite covered-lag count equaling n - 1.",
       "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1158,
+      "lean_source_line": 1195,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14466,7 +14466,7 @@
       "informal_statement": "For any declared local-window plus stride-family sparse-attention plan, a positive finite uncovered-lag count is equivalent to the existence of a concrete positive in-context lag that the plan does not reach.",
       "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_exists_uncovered_lag",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1090,
+      "lean_source_line": 1127,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14509,7 +14509,7 @@
       "informal_statement": "For any declared local-window plus stride-family sparse-attention plan, the finite covered-lag count falling short of n - 1 is equivalent to the existence of a concrete uncovered positive in-context lag.",
       "lean_name": "Circle.Applications.hybridFamilyCoveredLagList_length_lt_context_sub_one_iff_exists_uncovered_lag",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1127,
+      "lean_source_line": 1164,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14552,7 +14552,7 @@
       "informal_statement": "For any declared local-window plus stride-family sparse-attention plan, the first-uncovered-lag field is empty exactly when the theorem-side uncovered-lag list is empty.",
       "lean_name": "Circle.Applications.hybridFamilyFirstUncoveredLag_eq_none_iff_uncoveredLagList_eq_nil",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1012,
+      "lean_source_line": 1049,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14595,7 +14595,7 @@
       "informal_statement": "For any declared local-window plus stride-family sparse-attention plan, complete context coverage is equivalent to having no first uncovered lag.",
       "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_firstUncoveredLag_eq_none",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1031,
+      "lean_source_line": 1068,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14638,7 +14638,7 @@
       "informal_statement": "For any declared local-window plus stride-family sparse-attention plan, reporting a first uncovered lag is exactly reporting the head of the theorem-side uncovered-lag list.",
       "lean_name": "Circle.Applications.hybridFamilyFirstUncoveredLag_eq_some_iff_uncoveredLagList_eq_cons",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1040,
+      "lean_source_line": 1077,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14681,7 +14681,7 @@
       "informal_statement": "For any declared local-window plus stride-family sparse-attention plan, any reported first uncovered lag is a positive in-context lag that the plan does not reach.",
       "lean_name": "Circle.Applications.hybridFamilyFirstUncoveredLag_eq_some_gap",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1063,
+      "lean_source_line": 1100,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14724,7 +14724,7 @@
       "informal_statement": "For the default C_120 sparse-attention plan with local window 4, path length 3, and strides [7,13], the first uncovered lag is exactly 5.",
       "lean_name": "Circle.Applications.hybridFamilyFirstUncoveredLag_default_120_4_3_7_13_eq_some5",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1865,
+      "lean_source_line": 1902,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14767,7 +14767,7 @@
       "informal_statement": "For any declared local-window plus stride-family sparse-attention plan, having a positive uncovered-lag count is equivalent to the first-uncovered-lag field being populated.",
       "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_length_pos_iff_firstUncoveredLag_ne_none",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1108,
+      "lean_source_line": 1145,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14810,7 +14810,7 @@
       "informal_statement": "For the default C_120 sparse-attention plan with local window 4, path length 3, and strides [7,13], the uncovered-lag interval summary is exactly [(5,6), (8,12), (15,20), (22,25), (27,38), (40,119)].",
       "lean_name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_default_120_4_3_7_13",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1877,
+      "lean_source_line": 1914,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14853,7 +14853,7 @@
       "informal_statement": "For the compact complete C_9 sparse-attention fixture with local window 2, path length 2, and strides [3,4,7], the uncovered-lag interval summary is empty.",
       "lean_name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_complete_9_2_2_3_4_7_eq_nil",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1906,
+      "lean_source_line": 1943,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14896,7 +14896,7 @@
       "informal_statement": "For any nonempty context, the exact deduplicated theorem-side query-indexed candidate count is never larger than the number of available context addresses.",
       "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_context_of_pos",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1219,
+      "lean_source_line": 1256,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14939,7 +14939,7 @@
       "informal_statement": "For any nonempty context, the exact deduplicated theorem-side query-indexed candidate count is bounded by the context-clipped sparse-attention budget min(context, raw_budget).",
       "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_dedup_bound_of_context_pos",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1242,
+      "lean_source_line": 1279,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14982,7 +14982,7 @@
       "informal_statement": "For any local-window plus stride-family sparse-attention plan, mapping theorem-side lag candidates to query-indexed predecessor addresses cannot create more distinct query candidates than there were distinct lag candidates.",
       "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_le_uniqueLagCandidateCount",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1262,
+      "lean_source_line": 1299,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -15025,7 +15025,7 @@
       "informal_statement": "If query predecessor indexing is injective on a sparse plan's theorem-side lag candidates, then the exact deduplicated query-indexed candidate count equals the exact deduplicated lag-candidate count.",
       "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_eq_uniqueLagCandidateCount_of_predecessor_injective",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 1295,
+      "lean_source_line": 1332,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -15069,6 +15069,50 @@
       "lean_name": "Circle.Applications.hybridFamilyRawCandidateBudget_ge_context_sub_one_of_covers",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
       "lean_source_line": 848,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "tests/test_stride_family_certifier_cli.py",
+          "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control",
+          "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0028",
+        "COMMON-0029",
+        "COMMON-0047",
+        "COMMON-0075",
+        "COMMON-0079"
+      ],
+      "formal_statement": "forall {n window pathLength : Nat} {strides : List Nat}, Circle.Applications.hybridFamilyCoversContext n window pathLength strides -> n - 1 <= Circle.Applications.hybridFamilyUniqueLagCandidateCount n window pathLength strides",
+      "id": "AIT-T0111",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "For any local-window plus stride-family sparse-attention plan, complete positive-lag coverage requires the deduplicated theorem-side unique lag-candidate count to be at least n - 1; therefore a unique-lag-count shortfall certifies that gaps remain even when raw generator budget may look larger.",
+      "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_ge_context_sub_one_of_covers",
+      "lean_source": "Circle/Applications/CircleTransformer.lean",
+      "lean_source_line": 890,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"

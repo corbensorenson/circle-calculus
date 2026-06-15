@@ -982,6 +982,7 @@ class StrideFamilyCoverageCertificate:
     deduplicated_candidate_budget_upper_bound: int
     theorem_side_lag_candidates: tuple[int, ...]
     theorem_side_unique_lag_candidate_count: int
+    unique_lag_count_shortfall_certifies_incomplete: bool
     theorem_side_coil_residues_no_collision: bool
     theorem_side_local_coil_disjoint: bool
     theorem_side_lag_candidates_no_collision: bool
@@ -1083,6 +1084,7 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0108",
         "AIT-T0109",
         "AIT-T0110",
+        "AIT-T0111",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -2918,6 +2920,8 @@ def certify_stride_family_coverage(
         path_length=path_length,
         local_window=local_window,
     )
+    unique_lag_candidate_count = len(set(theorem_side_lag_candidates))
+    unique_query_candidate_count = len(set(theorem_side_query_candidates))
     uncovered_intervals = consecutive_integer_intervals(uncovered)
     first_uncovered_lag = uncovered[0] if uncovered else None
     coverage_complete = len(uncovered) == 0
@@ -2974,7 +2978,10 @@ def certify_stride_family_coverage(
             local_window=local_window,
         ),
         theorem_side_lag_candidates=theorem_side_lag_candidates,
-        theorem_side_unique_lag_candidate_count=len(set(theorem_side_lag_candidates)),
+        theorem_side_unique_lag_candidate_count=unique_lag_candidate_count,
+        unique_lag_count_shortfall_certifies_incomplete=(
+            not (unique_lag_candidate_count < positive_lag_count and coverage_complete)
+        ),
         theorem_side_coil_residues_no_collision=stride_family_coil_residues_no_collision(
             sequence_length,
             strides,
@@ -2990,12 +2997,12 @@ def certify_stride_family_coverage(
             len(set(theorem_side_lag_candidates)) == len(theorem_side_lag_candidates)
         ),
         theorem_side_query_candidates=theorem_side_query_candidates,
-        theorem_side_unique_query_candidate_count=len(set(theorem_side_query_candidates)),
+        theorem_side_unique_query_candidate_count=unique_query_candidate_count,
         theorem_side_query_count_le_unique_lag_count=(
-            len(set(theorem_side_query_candidates)) <= len(set(theorem_side_lag_candidates))
+            unique_query_candidate_count <= unique_lag_candidate_count
         ),
         theorem_side_query_count_matches_unique_lag_count=(
-            len(set(theorem_side_query_candidates)) == len(set(theorem_side_lag_candidates))
+            unique_query_candidate_count == unique_lag_candidate_count
         ),
         theorem_side_predecessor_injective_on_lag_candidates=(
             stride_family_predecessor_injective_on_lag_candidates(

@@ -150,7 +150,8 @@
         "AIT-T0107",
         "AIT-T0108",
         "AIT-T0109",
-        "AIT-T0110"
+        "AIT-T0110",
+        "AIT-T0111"
       ],
       "theorem_side_coil_residues_no_collision": true,
       "theorem_side_lag_candidates": [
@@ -326,7 +327,8 @@
         117,
         118,
         119
-      ]
+      ],
+      "unique_lag_count_shortfall_certifies_incomplete": true
     },
     "family_accuracy": 1.0,
     "full_attention_accuracy": 1.0,
@@ -495,7 +497,8 @@
       "AIT-T0107",
       "AIT-T0108",
       "AIT-T0109",
-      "AIT-T0110"
+      "AIT-T0110",
+      "AIT-T0111"
     ],
     "theorem_side_coil_residues_no_collision": true,
     "theorem_side_lag_candidates": [
@@ -532,7 +535,8 @@
     "uncovered_lag_count": 0,
     "uncovered_lag_interval_count": 0,
     "uncovered_lag_intervals": [],
-    "uncovered_lags": []
+    "uncovered_lags": [],
+    "unique_lag_count_shortfall_certifies_incomplete": true
   },
   "planner_style_certificates": [
     {
@@ -556,7 +560,8 @@
         "AIT-T0100",
         "AIT-T0101",
         "AIT-T0103",
-        "AIT-T0110"
+        "AIT-T0110",
+        "AIT-T0111"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.08403361344537816,
@@ -608,6 +613,7 @@
         7,
         13
       ],
+      "theorem_side_unique_lag_candidate_count": 10,
       "uncovered_count_positive": true,
       "uncovered_count_positive_matches_gap_witness": true,
       "uncovered_lag_count": 109,
@@ -663,7 +669,8 @@
         31,
         32,
         33
-      ]
+      ],
+      "unique_lag_count_shortfall_certifies_incomplete": true
     },
     {
       "candidate_budget_per_query": 8,
@@ -686,7 +693,8 @@
         "AIT-T0100",
         "AIT-T0101",
         "AIT-T0103",
-        "AIT-T0110"
+        "AIT-T0110",
+        "AIT-T0111"
       ],
       "coverage_complete": true,
       "coverage_ratio": 1.0,
@@ -737,12 +745,14 @@
         4,
         7
       ],
+      "theorem_side_unique_lag_candidate_count": 8,
       "uncovered_count_positive": false,
       "uncovered_count_positive_matches_gap_witness": true,
       "uncovered_lag_count": 0,
       "uncovered_lag_interval_count": 0,
       "uncovered_lag_interval_sample": [],
-      "uncovered_lag_sample": []
+      "uncovered_lag_sample": [],
+      "unique_lag_count_shortfall_certifies_incomplete": true
     },
     {
       "candidate_budget_per_query": 44,
@@ -765,7 +775,8 @@
         "AIT-T0100",
         "AIT-T0101",
         "AIT-T0103",
-        "AIT-T0110"
+        "AIT-T0110",
+        "AIT-T0111"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.010744810744810745,
@@ -826,6 +837,7 @@
         320,
         1500
       ],
+      "theorem_side_unique_lag_candidate_count": 44,
       "uncovered_count_positive": true,
       "uncovered_count_positive_matches_gap_witness": true,
       "uncovered_lag_count": 4051,
@@ -905,7 +917,8 @@
         54,
         55,
         56
-      ]
+      ],
+      "unique_lag_count_shortfall_certifies_incomplete": true
     },
     {
       "candidate_budget_per_query": 96,
@@ -928,7 +941,8 @@
         "AIT-T0100",
         "AIT-T0101",
         "AIT-T0103",
-        "AIT-T0110"
+        "AIT-T0110",
+        "AIT-T0111"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.011720180686118912,
@@ -990,6 +1004,7 @@
         1021,
         2039
       ],
+      "theorem_side_unique_lag_candidate_count": 96,
       "uncovered_count_positive": true,
       "uncovered_count_positive_matches_gap_witness": true,
       "uncovered_lag_count": 8095,
@@ -1069,7 +1084,8 @@
         86,
         87,
         88
-      ]
+      ],
+      "unique_lag_count_shortfall_certifies_incomplete": true
     }
   ],
   "schema_id": "circle_calculus.stride_family_sparse_attention_certificate.v0"
