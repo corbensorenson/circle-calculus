@@ -43,6 +43,7 @@ const THEOREM_GROUPS = [
       "AIRA-T0210",
       "AIRA-T0211",
       "AIRA-T0212",
+      "AIRA-T0213",
     ],
   },
   {
@@ -120,6 +121,10 @@ function cappedLcm(values, cap) {
 }
 
 function collisionPairCountAtGapMultiples(context, gap) {
+  return collisionPairCountClosedForm(context, gap);
+}
+
+function collisionPairCountAtGapMultiplesFittingRange(context, gap) {
   if (gap <= 0 || gap >= context) return 0;
   const fittingCount = fittingCollisionMultipleCount(context, gap);
   let total = 0;
@@ -133,6 +138,10 @@ function collisionPairCountClosedFormNumerator(context, gap) {
   if (gap <= 0 || gap >= context) return 0;
   const fittingCount = fittingCollisionMultipleCount(context, gap);
   return fittingCount * (2 * context - gap * (fittingCount + 1));
+}
+
+function collisionPairCountClosedForm(context, gap) {
+  return Math.floor(collisionPairCountClosedFormNumerator(context, gap) / 2);
 }
 
 function fittingCollisionMultipleCount(context, gap) {

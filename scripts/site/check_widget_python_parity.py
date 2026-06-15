@@ -133,6 +133,7 @@ from circle_math.applications import (
     certify_rope_positions,
     collision_pair_count_at_gap,
     collision_pair_count_fitting_multiple_count,
+    collision_pair_count_at_gap_multiples_closed_form,
     collision_pair_count_at_gap_multiples_closed_form_numerator,
     collision_pair_count_at_gap_multiples_fitting_range,
     collision_pair_count_at_gap_multiples,
@@ -975,6 +976,10 @@ def js_capped_lcm(values: tuple[int, ...], cap: int) -> tuple[int, bool]:
 
 
 def js_collision_pair_count_at_gap_multiples(context: int, gap: int) -> int:
+    return js_collision_pair_count_closed_form(context, gap)
+
+
+def js_collision_pair_count_at_gap_multiples_fitting_range(context: int, gap: int) -> int:
     if gap <= 0 or gap >= context:
         return 0
     fitting_count = js_collision_pair_count_fitting_multiple_count(context, gap)
@@ -989,6 +994,10 @@ def js_collision_pair_count_closed_form_numerator(context: int, gap: int) -> int
         return 0
     fitting_count = js_collision_pair_count_fitting_multiple_count(context, gap)
     return fitting_count * (2 * context - gap * (fitting_count + 1))
+
+
+def js_collision_pair_count_closed_form(context: int, gap: int) -> int:
+    return js_collision_pair_count_closed_form_numerator(context, gap) // 2
 
 
 def js_collision_pair_count_fitting_multiple_count(context: int, gap: int) -> int:
@@ -4195,9 +4204,20 @@ def main() -> int:
             == js_closed_form_numerator
         )
         assert 2 * js_multiple_count == js_closed_form_numerator
+        assert (
+            collision_pair_count_at_gap_multiples_closed_form(config.context_length, lcm_value)
+            == js_multiple_count
+        )
         assert collision_pair_count_at_gap_multiples(config.context_length, lcm_value) == js_multiple_count
         assert (
             collision_pair_count_at_gap_multiples_fitting_range(config.context_length, lcm_value)
+            == js_multiple_count
+        )
+        assert (
+            js_collision_pair_count_at_gap_multiples_fitting_range(
+                config.context_length,
+                lcm_value,
+            )
             == js_multiple_count
         )
         python_prefix_reports = phase_bank_prefix_collision_reports(config.context_length, discrete)

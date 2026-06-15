@@ -395,6 +395,20 @@ theorem ropeCollisionPairCountAtGapMultiples_twice_eq_closedForm
   exact ropeCollisionPairCountAtGapMultiplesFittingRange_twice_eq_closedForm
     (context := context) (commonGap := commonGap) hgap_pos
 
+/-- Exact closed form for the positive-multiple collision count.
+
+This divides the checked doubled numerator by two. The previous theorem proves
+that the numerator is exactly twice the count, so this statement is the direct
+formula used by the executable certifier. -/
+theorem ropeCollisionPairCountAtGapMultiples_eq_closedForm
+    {context commonGap : Nat} (hgap_pos : 0 < commonGap) :
+    ropeCollisionPairCountAtGapMultiples context commonGap =
+      (let q := ropeCollisionPairCountFittingMultipleCount context commonGap;
+        q * (2 * context - commonGap * (q + 1))) / 2 := by
+  exact Nat.eq_div_of_mul_eq_right (by decide)
+    (ropeCollisionPairCountAtGapMultiples_twice_eq_closedForm
+      (context := context) (commonGap := commonGap) hgap_pos)
+
 /-- When exactly the first positive multiple of a common collision gap can fit
 inside the inspected context, the total positive-multiple collision-pair count
 collapses to the single-gap count `context - commonGap`.
