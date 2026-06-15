@@ -3891,6 +3891,37 @@ theorem ropeTurnRatioFiniteMargin_mono_margin
   intro gap hgap_pos hgap_context turns
   exact le_trans hmargin_le (hmargin gap hgap_pos hgap_context turns)
 
+/-- A finite-context margin certificate plus one obstruction gap gives a
+range bracket.
+
+The pass side is context monotonicity: a proved margin at `certifiedContext`
+holds for every smaller requested context. The fail side is the obstruction:
+once a requested context contains a positive gap whose turn-ratio error is
+below `obstructionMargin`, no advertised margin at or above that obstruction
+margin can hold. This is the reusable theorem shape behind frontier reports
+such as the standard channel-0 D19 range bracket. -/
+theorem ropeTurnRatioFiniteMargin_contextRange_bracket_of_obstruction
+    {turnRatio provedMargin obstructionMargin : ℝ}
+    {certifiedContext obstructionGap : Nat} {obstructionTurns : Int}
+    (hproved : ropeTurnRatioFiniteMargin turnRatio provedMargin certifiedContext)
+    (hobstruction_gap_pos : 0 < obstructionGap)
+    (hobstruction_error :
+      ropeTurnRatioError turnRatio obstructionGap obstructionTurns < obstructionMargin) :
+    ∀ {context : Nat}, obstructionGap < context → context ≤ certifiedContext →
+      ropeTurnRatioFiniteMargin turnRatio provedMargin context ∧
+        ∀ margin : ℝ, obstructionMargin ≤ margin →
+          ¬ ropeTurnRatioFiniteMargin turnRatio margin context := by
+  intro context hcontext_min hcontext_max
+  constructor
+  · exact ropeTurnRatioFiniteMargin_mono_context hcontext_max hproved
+  · intro margin hmargin
+    exact
+      not_ropeTurnRatioFiniteMargin_of_error_lt_margin
+        (turnRatio := turnRatio) (margin := margin) (context := context)
+        (gap := obstructionGap) (turns := obstructionTurns)
+        hobstruction_gap_pos hcontext_min
+        (lt_of_lt_of_le hobstruction_error hmargin)
+
 /-- A finite-context turn-ratio margin rules out one-channel real near-turn
 collisions at any smaller scaled tolerance.
 

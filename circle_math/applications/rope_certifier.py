@@ -177,6 +177,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0181",
     "AIRA-T0196",
     "AIRA-T0197",
+    "AIRA-T0209",
     "AIRA-T0126",
     "AIRA-T0139",
     "AIRA-T0140",
@@ -215,6 +216,7 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
     "Circle.Applications.ropeTurnRatioFiniteMarginCertificate_iff_no_nearTurn_below_scaled_margin",
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_finiteMarginCertificate_le_context_margin",
+    "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_bracket_of_obstruction",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_band_bounds",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
     "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
@@ -3106,6 +3108,7 @@ def certify_standard_channel0_d19_margin_bracket() -> StandardChannel0D19MarginB
             "AIRA-T0169",
             "AIRA-T0155",
             "AIRA-T0173",
+            "AIRA-T0209",
             "AIRA-T0208",
         ),
         lean_declarations=(
@@ -3113,6 +3116,7 @@ def certify_standard_channel0_d19_margin_bracket() -> StandardChannel0D19MarginB
             "Circle.Applications.ropeStandardChannel0D19Seed_turnRatioFiniteMargin",
             "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993",
             "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
+            "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_bracket_of_obstruction",
             "Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket",
         ),
         explanation=(
@@ -3535,8 +3539,9 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         "certificate and exact rational boundary, generated-gap enumeration, "
         "floor/ceiling nearest-integer, scalar nearest-gap margin, finite certificate "
         "iff, negative obstruction iff, scaled no-near-turn iff, certificate-object "
-        "no-near-turn iff, finite-certificate bank bridge, plus band-endpoint and "
-        "band-list compression bridge precursors only; not a Diophantine proof)",
+        "no-near-turn iff, finite-certificate bank bridge, context-range obstruction "
+        "bridge, plus band-endpoint and band-list compression bridge precursors only; "
+        "not a Diophantine proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,
     )

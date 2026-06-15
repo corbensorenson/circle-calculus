@@ -3484,7 +3484,7 @@
       "id": "AIRA-T0039",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_bankTurnSeparated_lt",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4770,
+      "lean_source_line": 4801,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3510,7 +3510,7 @@
       "id": "AIRA-T0040",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_one_turn_window",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4791,
+      "lean_source_line": 4822,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3561,7 +3561,7 @@
       "id": "AIRA-T0042",
       "lean_name": "Circle.Applications.not_ropeRealPhaseNearTurn_of_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3901,
+      "lean_source_line": 3932,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3589,7 +3589,7 @@
       "id": "AIRA-T0043",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4307,
+      "lean_source_line": 4338,
       "original_status": "lean_proved",
       "source_manifest": "manifests/applications/circle_ai.yaml",
       "status": "lean_proved",
@@ -3665,7 +3665,7 @@
       "informal_statement": "If one channel has a finite-context turn-ratio margin certified for a larger context, then every smaller requested context inherits the bank-level no-near-turn consequence.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4331,
+      "lean_source_line": 4362,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -3871,7 +3871,7 @@
       "informal_statement": "If one channel has a finite-context turn-ratio margin certified for a larger context and a larger lower bound, then every smaller requested context and smaller advertised margin inherits the bank-level no-near-turn consequence.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_turnRatioFiniteMargin_le_context_margin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4354,
+      "lean_source_line": 4385,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4369,7 +4369,7 @@
       "informal_statement": "The named rational/discretized preset certificate rules out one-channel near-turn collisions below margin 1/4099 throughout the 4096-token context.",
       "lean_name": "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3994,
+      "lean_source_line": 4025,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4584,7 +4584,7 @@
       "informal_statement": "The standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/8 throughout the tiny context 6.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4017,
+      "lean_source_line": 4048,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4713,7 +4713,7 @@
       "informal_statement": "The sharper standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/32 throughout the tiny context 7.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D2Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4037,
+      "lean_source_line": 4068,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4842,7 +4842,7 @@
       "informal_statement": "The context-8 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/32 throughout that tiny context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D3Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4057,
+      "lean_source_line": 4088,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -4971,7 +4971,7 @@
       "informal_statement": "The context-19 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/32 throughout that tiny context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D4Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4077,
+      "lean_source_line": 4108,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5186,7 +5186,7 @@
       "informal_statement": "The context-44 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/64 throughout that tiny context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D5Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4097,
+      "lean_source_line": 4128,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5401,7 +5401,7 @@
       "informal_statement": "The context-57 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/512 throughout that tiny context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D6Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4117,
+      "lean_source_line": 4148,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5530,7 +5530,7 @@
       "informal_statement": "The context-333 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/512 throughout that seed context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D7Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4137,
+      "lean_source_line": 4168,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -5745,7 +5745,7 @@
       "informal_statement": "The context-710 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/1024 throughout that seed context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D8Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4157,
+      "lean_source_line": 4188,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6046,7 +6046,7 @@
       "informal_statement": "The context-4096 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/131072 throughout that seed context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D9Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4178,
+      "lean_source_line": 4209,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6089,7 +6089,7 @@
       "informal_statement": "If a finite real-phase bank contains the standard channel-0 frequency, the context-4096 D9 seed rules out all-channel near-turn events for any requested context and margin below the proved seed.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D9Seed",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4409,
+      "lean_source_line": 4440,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6304,7 +6304,7 @@
       "informal_statement": "The tighter context-4096 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/105000 throughout that seed context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D10Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4199,
+      "lean_source_line": 4230,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6347,7 +6347,7 @@
       "informal_statement": "If a finite real-phase bank contains the standard channel-0 frequency, the tighter context-4096 D10 seed rules out all-channel near-turn events for any requested context and margin below the proved seed.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D10Seed",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4452,
+      "lean_source_line": 4483,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6562,7 +6562,7 @@
       "informal_statement": "The current sharpest context-4096 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/104219 throughout that seed context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D11Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4220,
+      "lean_source_line": 4251,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6605,7 +6605,7 @@
       "informal_statement": "If a finite real-phase bank contains the standard channel-0 frequency, the current sharpest context-4096 D11 seed rules out all-channel near-turn events for any requested context and margin below the proved seed.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4495,
+      "lean_source_line": 4526,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6734,7 +6734,7 @@
       "informal_statement": "Any finite real-phase bank whose first channel is the standard channel-0 frequency inherits the D11 no-near-turn certificate for requested contexts and margins below the proved seed.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D11Seed_cons",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4539,
+      "lean_source_line": 4570,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6949,7 +6949,7 @@
       "informal_statement": "The context-8192 standard RoPE channel-0 interval seed rules out one-channel near-turn collisions below margin 1/104220 throughout that seed context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D12Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4241,
+      "lean_source_line": 4272,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -6992,7 +6992,7 @@
       "informal_statement": "The context-8192 standard RoPE channel-0 seed gives a conditional bank-level no-near-turn certificate for any finite real-phase bank containing the standard channel-0 angular frequency, after downgrading to a requested context and margin within the certified bounds.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4568,
+      "lean_source_line": 4599,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7035,7 +7035,7 @@
       "informal_statement": "Any finite real-phase bank whose first channel is the standard channel-0 angular frequency inherits the D12 context-8192 no-near-turn certificate below any downgraded requested margin.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D12Seed_cons",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4610,
+      "lean_source_line": 4641,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7252,7 +7252,7 @@
       "informal_statement": "The context-8192 standard RoPE channel-0 D13 interval seed rules out one-channel near-turn collisions below margin 1/104219 throughout that seed context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D13Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4262,
+      "lean_source_line": 4293,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7295,7 +7295,7 @@
       "informal_statement": "The context-8192 standard RoPE channel-0 D13 seed gives a conditional bank-level no-near-turn certificate for any finite real-phase bank containing the standard channel-0 angular frequency, after downgrading to a requested context and margin within the certified bounds.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D13Seed",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4639,
+      "lean_source_line": 4670,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7338,7 +7338,7 @@
       "informal_statement": "Any finite real-phase bank whose first channel is the standard channel-0 angular frequency inherits the D13 context-8192 no-near-turn certificate below any downgraded requested margin.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D13Seed_cons",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4677,
+      "lean_source_line": 4708,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7512,7 +7512,7 @@
       "informal_statement": "The context-16384 standard RoPE channel-0 D14 interval seed rules out one-channel near-turn collisions below margin 1/104219 throughout that seed context.",
       "lean_name": "Circle.Applications.not_ropeStandardChannel0D14Seed_nearTurn",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4282,
+      "lean_source_line": 4313,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7555,7 +7555,7 @@
       "informal_statement": "The context-16384 standard RoPE channel-0 D14 seed gives a conditional bank-level no-near-turn certificate for any finite real-phase bank containing the standard channel-0 angular frequency, after downgrading to a requested context and margin within the certified bounds.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D14Seed",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4704,
+      "lean_source_line": 4735,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -7598,7 +7598,7 @@
       "informal_statement": "Any finite real-phase bank whose first channel is the standard channel-0 angular frequency inherits the D14 context-16384 no-near-turn certificate below any downgraded requested margin.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D14Seed_cons",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4742,
+      "lean_source_line": 4773,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -9411,7 +9411,7 @@
       "informal_statement": "For a nonnegative one-channel frequency and positive full turn, a finite turn-ratio margin is equivalent to ruling out every in-context real near-turn event below the corresponding scaled tolerance.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_no_nearTurn_below_scaled_margin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3932,
+      "lean_source_line": 3963,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -10032,7 +10032,7 @@
       "informal_statement": "For a nonnegative one-channel frequency and positive full turn, a finite nearest-integer certificate object is equivalent to ruling out every in-context real near-turn event below the corresponding scaled tolerance.",
       "lean_name": "Circle.Applications.ropeTurnRatioFiniteMarginCertificate_iff_no_nearTurn_below_scaled_margin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 3979,
+      "lean_source_line": 4010,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -10075,7 +10075,7 @@
       "informal_statement": "A finite nearest-integer certificate for one channel rules out all-channel real near-turn events for any frequency bank containing that channel, after downgrading to a smaller requested context and margin.",
       "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_one_channel_finiteMarginCertificate_le_context_margin",
       "lean_source": "Circle/Applications/RoPECertifier.lean",
-      "lean_source_line": 4381,
+      "lean_source_line": 4412,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -10519,6 +10519,49 @@
       "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket",
       "lean_source": "Circle/Applications/RoPEFrontier.lean",
       "lean_source_line": 22,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "tests/test_rope_certifier.py::test_standard_channel0_d19_margin_bracket_is_theorem_backed"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0080",
+        "COMMON-0082",
+        "COMMON-0087",
+        "COMMON-0088",
+        "COMMON-0089"
+      ],
+      "formal_statement": "forall {turnRatio provedMargin obstructionMargin : Real} {certifiedContext obstructionGap : Nat} {obstructionTurns : Int}, Circle.Applications.ropeTurnRatioFiniteMargin turnRatio provedMargin certifiedContext -> 0 < obstructionGap -> Circle.Applications.ropeTurnRatioError turnRatio obstructionGap obstructionTurns < obstructionMargin -> forall {context : Nat}, obstructionGap < context -> context <= certifiedContext -> Circle.Applications.ropeTurnRatioFiniteMargin turnRatio provedMargin context and forall margin : Real, obstructionMargin <= margin -> not (Circle.Applications.ropeTurnRatioFiniteMargin turnRatio margin context)",
+      "id": "AIRA-T0209",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "A finite-context turn-ratio margin proved at a certified horizon plus one positive obstruction gap gives a full context-range bracket: smaller requested contexts inherit the proved margin, while every context containing the obstruction gap rejects any advertised margin at or above the obstruction threshold.",
+      "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_bracket_of_obstruction",
+      "lean_source": "Circle/Applications/RoPECertifier.lean",
+      "lean_source_line": 3903,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"

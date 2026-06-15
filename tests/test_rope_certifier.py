@@ -1368,6 +1368,7 @@ def test_standard_channel0_d19_margin_bracket_is_theorem_backed() -> None:
         "AIRA-T0169",
         "AIRA-T0155",
         "AIRA-T0173",
+        "AIRA-T0209",
         "AIRA-T0208",
     )
     assert bracket.lean_declarations == (
@@ -1375,6 +1376,7 @@ def test_standard_channel0_d19_margin_bracket_is_theorem_backed() -> None:
         "Circle.Applications.ropeStandardChannel0D19Seed_turnRatioFiniteMargin",
         "Circle.Applications.not_ropeStandardChannel0_margin_ge_one_over_328458_of_context_gt_103993",
         "Circle.Applications.ropeStandardChannel0D19_context196608_margin_bracket",
+        "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_bracket_of_obstruction",
         "Circle.Applications.ropeStandardChannel0D19_contextRange_margin_bracket",
     )
     assert "margin 1/328459 through context 196608" in bracket.explanation
@@ -2350,6 +2352,7 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
         "AIRA-T0169",
         "AIRA-T0155",
         "AIRA-T0173",
+        "AIRA-T0209",
         "AIRA-T0208",
     ]
     assert payload["standard_channel0_frontier_summary"]["proved_margin"] == "1/328459"
@@ -2575,7 +2578,7 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert "AIRA-T0171, AIRA-T0172" in markdown_result.stdout
     assert "Standard RoPE D19 Margin Bracket" in markdown_result.stdout
     assert (
-        "AIRA-T0168, AIRA-T0169, AIRA-T0155, AIRA-T0173, AIRA-T0208"
+        "AIRA-T0168, AIRA-T0169, AIRA-T0155, AIRA-T0173, AIRA-T0209, AIRA-T0208"
         in markdown_result.stdout
     )
     assert "Standard Channel-0 Frontier Summary" in markdown_result.stdout
