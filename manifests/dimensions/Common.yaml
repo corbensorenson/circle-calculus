@@ -2877,6 +2877,20 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_exact_phase_bank_diagnostic_presets_cover_quantized_and_scaled_boundaries
     blocker: ""
+  - id: AIRA-T0203
+    status: lean_proved
+    lean_name: Circle.Applications.ropeDiscreteNoCollisionOnContext_iff_collisionPairCount_eq_zero
+    informal_statement: "For a positive single integer-period RoPE channel, the per-channel positive-multiple collision count is zero exactly when no unequal in-context positions collide in that channel."
+    formal_statement: "For positive period, no unequal ordered in-context ropeDiscreteCollision period pair exists iff ropeCollisionPairCountAtGapMultiples context period = 0."
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0078"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_single_period_collision_count_matches_bruteforce
+    blocker: ""
   - id: AIRA-T0174
     status: lean_proved
     lean_name: Circle.Applications.ropeCollisionPairCountAtGapMultiples_pos_iff

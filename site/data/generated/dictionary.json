@@ -12989,6 +12989,12 @@
           "lean_name": "Circle.Applications.ropeInterpolatedX4_context961_totalCollisionPairCount",
           "name": "Circle.Applications.ropeInterpolatedX4_context961_totalCollisionPairCount",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0203",
+          "lean_name": "Circle.Applications.ropeDiscreteNoCollisionOnContext_iff_collisionPairCount_eq_zero",
+          "name": "Circle.Applications.ropeDiscreteNoCollisionOnContext_iff_collisionPairCount_eq_zero",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -14105,6 +14111,12 @@
           "lean_name": "Circle.Applications.ropeInterpolatedX4_context961_totalCollisionPairCount",
           "name": "Circle.Applications.ropeInterpolatedX4_context961_totalCollisionPairCount",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0203",
+          "lean_name": "Circle.Applications.ropeDiscreteNoCollisionOnContext_iff_collisionPairCount_eq_zero",
+          "name": "Circle.Applications.ropeDiscreteNoCollisionOnContext_iff_collisionPairCount_eq_zero",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -14315,6 +14327,12 @@
           "id": "AIRA-T0202",
           "lean_name": "Circle.Applications.ropeInterpolatedX4_context961_totalCollisionPairCount",
           "name": "Circle.Applications.ropeInterpolatedX4_context961_totalCollisionPairCount",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0203",
+          "lean_name": "Circle.Applications.ropeDiscreteNoCollisionOnContext_iff_collisionPairCount_eq_zero",
+          "name": "Circle.Applications.ropeDiscreteNoCollisionOnContext_iff_collisionPairCount_eq_zero",
           "status": "proved"
         }
       ],
