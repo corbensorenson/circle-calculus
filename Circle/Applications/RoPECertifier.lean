@@ -772,6 +772,76 @@ theorem ropeDiscreteCollision_exists_positive_multiple_gap
     exact Nat.le_add_left (multiple * period) left
   exact lt_of_le_of_lt hgap_le_right hright
 
+/-- A single positive integer-period channel has no unequal in-context
+collisions exactly when its period reaches the inspected context.
+
+This is the engineer-facing single-channel threshold: a channel with period
+`period` can distinguish all positions in `[0, context)` precisely up to the
+point where the context length exceeds that period. -/
+theorem ropeDiscreteNoCollisionOnContext_iff_context_le_period
+    {period context : Nat} (hperiod : 0 < period) :
+    (∀ left right,
+        left < right → right < context → ¬ ropeDiscreteCollision period left right) ↔
+      context ≤ period := by
+  constructor
+  · intro hno_collision
+    by_contra hnot
+    have hperiod_lt_context : period < context := lt_of_not_ge hnot
+    have hcollision : ropeDiscreteCollision period 0 period :=
+      (ropeDiscreteCollision_iff_gap_dvd
+        (period := period) (left := 0) (right := period)
+        (Nat.zero_le period)).2
+        (dvd_refl period)
+    exact hno_collision 0 period hperiod hperiod_lt_context hcollision
+  · intro hcontext_le left right hleft hright hcollision
+    have hleft_context : left < context := lt_trans hleft hright
+    have heq : left = right :=
+      (ropeDiscreteCollision_iff_eq_on_context
+        (period := period) (context := context) hcontext_le
+        hleft_context hright).1
+        hcollision
+    exact (ne_of_lt hleft) heq
+
+/-- A single positive integer-period channel has a positive collision-pair count
+exactly when there is an unequal in-context collision witness.
+
+This is the fail-side companion to the zero-count theorem: a nonzero
+`single_period_collision_pair_counts` entry is not just a diagnostic number; it
+means there exists a concrete ordered position pair that collides in that
+channel. -/
+theorem ropeDiscreteCollisionPairCount_pos_iff_exists_collision
+    {period context : Nat} (hperiod : 0 < period) :
+    0 < ropeCollisionPairCountAtGapMultiples context period ↔
+      ∃ left right,
+        left < right ∧ right < context ∧ ropeDiscreteCollision period left right := by
+  constructor
+  · intro hcount_pos
+    have hperiod_lt_context : period < context :=
+      (ropeCollisionPairCountAtGapMultiples_pos_iff
+        (context := context) (commonGap := period) hperiod).1
+        hcount_pos
+    have hcollision : ropeDiscreteCollision period 0 period :=
+      (ropeDiscreteCollision_iff_gap_dvd
+        (period := period) (left := 0) (right := period)
+        (Nat.zero_le period)).2
+        (dvd_refl period)
+    exact ⟨0, period, hperiod, hperiod_lt_context, hcollision⟩
+  · intro hwitness
+    rcases hwitness with ⟨left, right, hleft, hright, hcollision⟩
+    have hle : left ≤ right := Nat.le_of_lt hleft
+    have hdvd : period ∣ right - left :=
+      (ropeDiscreteCollision_iff_gap_dvd (period := period) hle).1 hcollision
+    have hgap_pos : 0 < right - left := Nat.sub_pos_of_lt hleft
+    have hperiod_le_gap : period ≤ right - left :=
+      Nat.le_of_dvd hgap_pos hdvd
+    have hgap_lt_context : right - left < context :=
+      lt_of_le_of_lt (Nat.sub_le right left) hright
+    have hperiod_lt_context : period < context :=
+      lt_of_le_of_lt hperiod_le_gap hgap_lt_context
+    exact (ropeCollisionPairCountAtGapMultiples_pos_iff
+      (context := context) (commonGap := period) hperiod).2
+      hperiod_lt_context
+
 /-- For a single positive integer-period channel, the per-channel positive
 multiple collision count is zero exactly when that channel has no unequal
 in-context collision.
@@ -806,29 +876,8 @@ theorem ropeDiscreteNoCollisionOnContext_iff_collisionPairCount_eq_zero
         (ropeCollisionPairCountAtGapMultiples_pos_iff
           (context := context) (commonGap := period) hperiod).1 hpos
       exact (not_lt_of_ge hcontext_le) hperiod_lt_context
-  have hno_collision_iff_context_le :
-      (∀ left right,
-          left < right → right < context → ¬ ropeDiscreteCollision period left right) ↔
-        context ≤ period := by
-    constructor
-    · intro hno_collision
-      by_contra hnot
-      have hperiod_lt_context : period < context := lt_of_not_ge hnot
-      have hcollision : ropeDiscreteCollision period 0 period :=
-        (ropeDiscreteCollision_iff_gap_dvd
-          (period := period) (left := 0) (right := period)
-          (Nat.zero_le period)).2
-          (dvd_refl period)
-      exact hno_collision 0 period hperiod hperiod_lt_context hcollision
-    · intro hcontext_le left right hleft hright hcollision
-      have hleft_context : left < context := lt_trans hleft hright
-      have heq : left = right :=
-        (ropeDiscreteCollision_iff_eq_on_context
-          (period := period) (context := context) hcontext_le
-          hleft_context hright).1
-          hcollision
-      exact (ne_of_lt hleft) heq
-  rw [hno_collision_iff_context_le, hcount_zero_iff_context_le]
+  rw [ropeDiscreteNoCollisionOnContext_iff_context_le_period hperiod,
+    hcount_zero_iff_context_le]
 
 /-! ### Real phase-margin precursor -/
 

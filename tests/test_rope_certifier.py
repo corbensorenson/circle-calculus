@@ -108,6 +108,8 @@ def test_single_period_collision_count_matches_bruteforce() -> None:
                 period,
             ) == brute_force_single_period_collision_pair_count(context_length, period)
     assert "AIRA-T0203" in ROPE_CERTIFIER_THEOREMS
+    assert "AIRA-T0204" in ROPE_CERTIFIER_THEOREMS
+    assert "AIRA-T0205" in ROPE_CERTIFIER_THEOREMS
 
 
 def test_real_phase_nat_turn_error_matches_endpoint_precursor_shape() -> None:
@@ -1884,6 +1886,8 @@ def test_rope_certifier_exact_contract_finds_discrete_collision_gap() -> None:
     assert certificate.exact_discrete.sample_collision_pairs[0] == (0, 6)
     assert certificate.theorem_ids == ROPE_CERTIFIER_THEOREMS
     assert "AIRA-T0203" in certificate.theorem_ids
+    assert "AIRA-T0204" in certificate.theorem_ids
+    assert "AIRA-T0205" in certificate.theorem_ids
     assert tuple(layer.layer for layer in certificate.proof_layers) == (
         "exact_integer_period_phase_bank",
         "rational_discretized_finite_margin",
