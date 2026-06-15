@@ -195,6 +195,8 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0217",
     "AIRA-T0218",
     "AIRA-T0219",
+    "AIRA-T0220",
+    "AIRA-T0221",
     "AIRA-T0126",
     "AIRA-T0139",
     "AIRA-T0140",
@@ -239,6 +241,8 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
     "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
     "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
+    "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
+    "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_band_bounds",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
     "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
@@ -1126,6 +1130,8 @@ class StandardChannel0D19RangeRequestBracketCertificate:
     impossible_margin_applies: bool
     margin_thresholds_ordered: bool
     proved_impossible_branches_disjoint: bool
+    undecided_margin_open_gap: bool
+    margin_status_exhaustive: bool
     failure_reason: str | None
     theorem_ids: tuple[str, ...]
     lean_declarations: tuple[str, ...]
@@ -3267,6 +3273,15 @@ def certify_standard_channel0_d19_range_request_margin_bracket(
         requested_margin <= proved_margin
         and impossible_margin_floor <= requested_margin
     )
+    undecided_margin_open_gap = (
+        in_context_range and proved_margin < requested_margin < impossible_margin_floor
+    )
+    margin_status_exhaustive = (
+        not in_context_range
+        or proved_margin_applies
+        or impossible_margin_applies
+        or undecided_margin_open_gap
+    )
     theorem_backed_classification = (
         proved_margin_applies or impossible_margin_applies
     )
@@ -3322,13 +3337,24 @@ def certify_standard_channel0_d19_range_request_margin_bracket(
         impossible_margin_applies=impossible_margin_applies,
         margin_thresholds_ordered=margin_thresholds_ordered,
         proved_impossible_branches_disjoint=proved_impossible_branches_disjoint,
+        undecided_margin_open_gap=undecided_margin_open_gap,
+        margin_status_exhaustive=margin_status_exhaustive,
         failure_reason=failure_reason,
-        theorem_ids=("AIRA-T0216", "AIRA-T0217", "AIRA-T0218", "AIRA-T0219"),
+        theorem_ids=(
+            "AIRA-T0216",
+            "AIRA-T0217",
+            "AIRA-T0218",
+            "AIRA-T0219",
+            "AIRA-T0220",
+            "AIRA-T0221",
+        ),
         lean_declarations=(
             "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_request_bracket_of_obstruction",
             "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_bracket",
             "Circle.Applications.ropeStandardChannel0D19_request_margin_thresholds_ordered",
             "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
+            "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
+            "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
         ),
         explanation=explanation,
         claim_boundary=(
@@ -3766,8 +3792,8 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         "iff, negative obstruction iff, scaled no-near-turn iff, certificate-object "
         "no-near-turn iff, finite-certificate bank bridge, context-range obstruction "
         "bridge, request-level D19 classifier bridge, classifier threshold "
-        "ordering and branch-disjointness guards, plus band-endpoint and "
-        "band-list compression bridge precursors only; "
+        "ordering, branch-disjointness, open-gap, and exhaustive-status guards, "
+        "plus band-endpoint and band-list compression bridge precursors only; "
         "not a Diophantine proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,

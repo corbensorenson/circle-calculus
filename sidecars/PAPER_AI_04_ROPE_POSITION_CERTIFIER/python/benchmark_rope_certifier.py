@@ -847,9 +847,9 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "## Standard RoPE D19 Range Request Classifier",
             "",
-            "| Name | Requested context | Requested margin | Status | Theorem-backed | Proved applies | Impossible applies | Thresholds ordered | Branches disjoint | Theorem ids |",
-            "| --- | ---: | ---: | --- | --- | --- | --- | --- | --- | --- |",
-            "| {name} | {requested_context} | {requested_margin} | {status} | {theorem_backed} | {proved} | {impossible} | {ordered} | {disjoint} | {theorems} |".format(
+            "| Name | Requested context | Requested margin | Status | Theorem-backed | Proved applies | Impossible applies | Open gap | Exhaustive | Thresholds ordered | Branches disjoint | Theorem ids |",
+            "| --- | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+            "| {name} | {requested_context} | {requested_margin} | {status} | {theorem_backed} | {proved} | {impossible} | {open_gap} | {exhaustive} | {ordered} | {disjoint} | {theorems} |".format(
                 name=standard_d19_range_request["name"],
                 requested_context=standard_d19_range_request["requested_context"],
                 requested_margin=standard_d19_range_request["requested_margin"],
@@ -857,6 +857,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 theorem_backed=standard_d19_range_request["theorem_backed_classification"],
                 proved=standard_d19_range_request["proved_margin_applies"],
                 impossible=standard_d19_range_request["impossible_margin_applies"],
+                open_gap=standard_d19_range_request["undecided_margin_open_gap"],
+                exhaustive=standard_d19_range_request["margin_status_exhaustive"],
                 ordered=standard_d19_range_request["margin_thresholds_ordered"],
                 disjoint=standard_d19_range_request["proved_impossible_branches_disjoint"],
                 theorems=", ".join(standard_d19_range_request["theorem_ids"]),
@@ -1130,12 +1132,14 @@ def main() -> None:
                 print(f"request_status={standard_d19_range_request['request_status']}")
                 print(
                     "requested_context={requested_context} requested_margin={requested_margin} "
-                    "theorem_backed={theorem_backed}".format(
+                    "theorem_backed={theorem_backed} open_gap={open_gap} exhaustive={exhaustive}".format(
                         requested_context=standard_d19_range_request["requested_context"],
                         requested_margin=standard_d19_range_request["requested_margin"],
                         theorem_backed=standard_d19_range_request[
                             "theorem_backed_classification"
                         ],
+                        open_gap=standard_d19_range_request["undecided_margin_open_gap"],
+                        exhaustive=standard_d19_range_request["margin_status_exhaustive"],
                     )
                 )
                 print(f"theorem_ids={','.join(standard_d19_range_request['theorem_ids'])}")

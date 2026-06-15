@@ -13547,6 +13547,18 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
           "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0220",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0221",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -14764,6 +14776,18 @@
           "id": "AIRA-T0219",
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
           "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0220",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0221",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
           "status": "proved"
         }
       ],
@@ -16624,6 +16648,18 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
           "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0220",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0221",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -17820,6 +17856,18 @@
           "id": "AIRA-T0219",
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
           "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0220",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0221",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
           "status": "proved"
         }
       ],
@@ -19145,6 +19193,18 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
           "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0220",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0221",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -20056,6 +20116,18 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
           "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0220",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0221",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -20824,6 +20896,18 @@
           "id": "AIRA-T0219",
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
           "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0220",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0221",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
           "status": "proved"
         }
       ],

@@ -132,9 +132,9 @@ This is a one-channel standard-RoPE context-range bracket over 103993 < context 
 
 ## Standard RoPE D19 Range Request Classifier
 
-| Name | Requested context | Requested margin | Status | Theorem-backed | Proved applies | Impossible applies | Thresholds ordered | Branches disjoint | Theorem ids |
-| --- | ---: | ---: | --- | --- | --- | --- | --- | --- | --- |
-| standard_rope_channel0_d19_range_request_margin_bracket | 131072 | 1/328458 | impossible | True | False | True | True | True | AIRA-T0216, AIRA-T0217, AIRA-T0218, AIRA-T0219 |
+| Name | Requested context | Requested margin | Status | Theorem-backed | Proved applies | Impossible applies | Open gap | Exhaustive | Thresholds ordered | Branches disjoint | Theorem ids |
+| --- | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| standard_rope_channel0_d19_range_request_margin_bracket | 131072 | 1/328458 | impossible | True | False | True | False | True | True | True | AIRA-T0216, AIRA-T0217, AIRA-T0218, AIRA-T0219, AIRA-T0220, AIRA-T0221 |
 
 This is a one-channel standard-RoPE request classifier for the D19 range 103993 < context <= 196608. It is not a full all-channel bank theorem. Lean proves the proved and impossible threshold branches are disjoint, and the classifier deliberately reports undecided for margins strictly between 1/328459 and 1/328458.
 

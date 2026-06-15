@@ -99,4 +99,42 @@ theorem ropeStandardChannel0D19_request_margin_branches_disjoint
     (not_le_of_gt ropeStandardChannel0D19_request_margin_thresholds_ordered)
       (le_trans h.2 h.1)
 
+/-- A requested margin is in the D19 classifier's undecided open interval exactly
+when neither the proved branch nor the impossible branch applies.
+
+This is a report-facing theorem for the `undecided_margin_gap` status: the gap is
+not an arbitrary fallback, but precisely the interval between the proved D19
+threshold and the obstruction threshold. -/
+theorem ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified
+    {requestedMargin : ℝ} :
+    (¬ requestedMargin ≤ ropeStandardChannel0D19SeedMargin ∧
+      ¬ (1 : ℝ) / 328458 ≤ requestedMargin) ↔
+      ropeStandardChannel0D19SeedMargin < requestedMargin ∧
+        requestedMargin < (1 : ℝ) / 328458 := by
+  constructor
+  · intro h
+    exact ⟨lt_of_not_ge h.1, lt_of_not_ge h.2⟩
+  · intro h
+    exact ⟨not_le_of_gt h.1, not_le_of_gt h.2⟩
+
+/-- Every requested margin falls into exactly one of the D19 classifier regions:
+proved threshold, impossible threshold, or the undecided open interval.
+
+The disjointness theorem rules out overlap between the first two branches; this
+theorem supplies the complementary exhaustiveness fact used by the public
+request-status report. -/
+theorem ropeStandardChannel0D19_request_margin_trichotomy
+    (requestedMargin : ℝ) :
+    requestedMargin ≤ ropeStandardChannel0D19SeedMargin ∨
+      (1 : ℝ) / 328458 ≤ requestedMargin ∨
+        (ropeStandardChannel0D19SeedMargin < requestedMargin ∧
+          requestedMargin < (1 : ℝ) / 328458) := by
+  by_cases hproved : requestedMargin ≤ ropeStandardChannel0D19SeedMargin
+  · exact Or.inl hproved
+  · by_cases himpossible : (1 : ℝ) / 328458 ≤ requestedMargin
+    · exact Or.inr (Or.inl himpossible)
+    · exact Or.inr (Or.inr
+        ((ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified).1
+          ⟨hproved, himpossible⟩))
+
 end Circle.Applications

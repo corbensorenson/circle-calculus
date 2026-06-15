@@ -5328,6 +5328,40 @@ theorems:
         - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_undecided_gap
         - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_outside_range
     blocker: ""
+  - id: AIRA-T0220
+    status: lean_proved
+    lean_name: Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified
+    informal_statement: "For the standard channel-0 D19 request classifier, a requested margin lies in the undecided open interval exactly when it is neither at most the proved threshold nor at least the obstruction threshold."
+    formal_statement: "forall {requestedMargin : Real}, (not (requestedMargin <= Circle.Applications.ropeStandardChannel0D19SeedMargin) and not (((1 : Real) / 328458) <= requestedMargin)) <-> Circle.Applications.ropeStandardChannel0D19SeedMargin < requestedMargin and requestedMargin < ((1 : Real) / 328458)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_proved_request
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_impossible_request
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_undecided_gap
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_outside_range
+    blocker: ""
+  - id: AIRA-T0221
+    status: lean_proved
+    lean_name: Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy
+    informal_statement: "Every requested margin falls into one of the standard channel-0 D19 classifier regions: the proved threshold, the impossible threshold, or the undecided open interval between them."
+    formal_statement: "forall requestedMargin : Real, requestedMargin <= Circle.Applications.ropeStandardChannel0D19SeedMargin or ((1 : Real) / 328458) <= requestedMargin or (Circle.Applications.ropeStandardChannel0D19SeedMargin < requestedMargin and requestedMargin < ((1 : Real) / 328458))"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_proved_request
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_impossible_request
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_undecided_gap
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_outside_range
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

@@ -11167,6 +11167,98 @@
       "blocker": "",
       "canonical_status": "proved",
       "dictionary_dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0080",
+        "COMMON-0082",
+        "COMMON-0087",
+        "COMMON-0088",
+        "COMMON-0089"
+      ],
+      "formal_statement": "forall {requestedMargin : Real}, (not (requestedMargin <= Circle.Applications.ropeStandardChannel0D19SeedMargin) and not (((1 : Real) / 328458) <= requestedMargin)) <-> Circle.Applications.ropeStandardChannel0D19SeedMargin < requestedMargin and requestedMargin < ((1 : Real) / 328458)",
+      "id": "AIRA-T0220",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "For the standard channel-0 D19 request classifier, a requested margin lies in the undecided open interval exactly when it is neither at most the proved threshold nor at least the obstruction threshold.",
+      "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
+      "lean_source": "Circle/Applications/RoPEFrontier.lean",
+      "lean_source_line": 108,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_proved_request",
+          "tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_impossible_request",
+          "tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_undecided_gap",
+          "tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_outside_range"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0080",
+        "COMMON-0082",
+        "COMMON-0087",
+        "COMMON-0088",
+        "COMMON-0089"
+      ],
+      "formal_statement": "forall requestedMargin : Real, requestedMargin <= Circle.Applications.ropeStandardChannel0D19SeedMargin or ((1 : Real) / 328458) <= requestedMargin or (Circle.Applications.ropeStandardChannel0D19SeedMargin < requestedMargin and requestedMargin < ((1 : Real) / 328458))",
+      "id": "AIRA-T0221",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "Every requested margin falls into one of the standard channel-0 D19 classifier regions: the proved threshold, the impossible threshold, or the undecided open interval between them.",
+      "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
+      "lean_source": "Circle/Applications/RoPEFrontier.lean",
+      "lean_source_line": 126,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_04_ROPE_POSITION_CERTIFIER",
+          "path": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
+          "status": "draft",
+          "title": "Circle Calculus AI 4: Proof-Carrying RoPE Position Distinguishability"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_proved_request",
+          "tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_impossible_request",
+          "tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_undecided_gap",
+          "tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_outside_range"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
         "COMMON-0028",
         "COMMON-0029"
       ],
