@@ -11,6 +11,7 @@ import pytest
 
 from circle_math.applications import (
     ROPE_CERTIFIER_THEOREMS,
+    ROPE_ONE_OVER_NAT_EXACT_MARGIN_THEOREMS,
     ROPE_RATIONAL_PRESET_4099_NAME,
     ROPE_RATIONAL_PRESET_4099_THEOREMS,
     ROPE_REAL_PHASE_PRECURSOR_THEOREMS,
@@ -380,6 +381,38 @@ def test_coprime_rational_turn_ratio_certifies_margin_before_denominator_gap() -
     ) is None
     assert "AIRA-T0056" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0057" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0222" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0223" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+
+
+def test_one_over_denominator_rational_certificate_uses_generic_exact_margin_theorem() -> None:
+    certificate = certify_rational_turn_ratio_finite_margin(
+        numerator=1,
+        denominator=101,
+        context_length=100,
+    )
+    assert certificate.pass_certificate
+    assert certificate.certified_margin == 1.0 / 101.0
+    assert certificate.exact_nearest_gap_margin == "1/101"
+    assert certificate.exact_nearest_gap == 1
+    assert ROPE_ONE_OVER_NAT_EXACT_MARGIN_THEOREMS == ("AIRA-T0222", "AIRA-T0223")
+    assert "AIRA-T0222" in certificate.theorem_ids
+    assert "AIRA-T0223" in certificate.theorem_ids
+    assert (
+        "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report"
+        in certificate.lean_declarations
+    )
+    scanned_margin, gap, turns = scan_turn_ratio_finite_margin(
+        turn_ratio=certificate.turn_ratio,
+        context_length=certificate.context_length,
+    )
+    assert abs(scanned_margin - certificate.certified_margin) < 1e-12
+    assert gap == 1
+    assert turns == 0
 
 
 def test_named_rational_turn_ratio_certificate_is_theorem_backed() -> None:
@@ -404,6 +437,8 @@ def test_named_rational_turn_ratio_certificate_is_theorem_backed() -> None:
     assert "AIRA-T0061" in certificate.theorem_ids
     assert "AIRA-T0185" in certificate.theorem_ids
     assert "AIRA-T0215" in certificate.theorem_ids
+    assert "AIRA-T0222" in certificate.theorem_ids
+    assert "AIRA-T0223" in certificate.theorem_ids
     assert "AIRA-T0187" in certificate.theorem_ids
     assert "AIRA-T0196" in certificate.theorem_ids
     assert "AIRA-T0062" in certificate.theorem_ids

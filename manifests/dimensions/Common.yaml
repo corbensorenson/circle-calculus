@@ -3695,6 +3695,36 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
     blocker: ""
+  - id: AIRA-T0222
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin
+    informal_statement: "For any natural denominator greater than 1, the first gap of the rational/discretized turn ratio 1/denominator has scalar nearest-integer margin exactly 1/denominator."
+    formal_statement: "forall {denominator : Nat}, 1 < denominator -> Circle.Applications.ropeTurnRatioGapNearestIntegerMargin (((1 : Nat) : Real) / (denominator : Real)) 1 = 1 / (denominator : Real)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_one_over_denominator_rational_certificate_uses_generic_exact_margin_theorem
+        - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
+    blocker: ""
+  - id: AIRA-T0223
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report
+    informal_statement: "For the rational/discretized turn ratio 1/denominator, every nontrivial context that stays before the denominator return gap has exact weakest scalar nearest-integer margin 1/denominator, realized at gap 1."
+    formal_statement: "forall {denominator context : Nat}, 1 < context -> context <= denominator -> Circle.Applications.ropeTurnRatioExactWeakestGapMargin (((1 : Nat) : Real) / (denominator : Real)) (1 / (denominator : Real)) context 1"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_one_over_denominator_rational_certificate_uses_generic_exact_margin_theorem
+        - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
+    blocker: ""
   - id: AIRA-T0187
     status: lean_proved
     lean_name: Circle.Applications.ropeRationalPreset4099_noZeroTurnRatioError

@@ -13559,6 +13559,18 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
           "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0222",
+          "lean_name": "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin",
+          "name": "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0223",
+          "lean_name": "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report",
+          "name": "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -14788,6 +14800,18 @@
           "id": "AIRA-T0221",
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
           "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0222",
+          "lean_name": "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin",
+          "name": "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0223",
+          "lean_name": "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report",
+          "name": "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report",
           "status": "proved"
         }
       ],
@@ -16660,6 +16684,18 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
           "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0222",
+          "lean_name": "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin",
+          "name": "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0223",
+          "lean_name": "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report",
+          "name": "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -17868,6 +17904,18 @@
           "id": "AIRA-T0221",
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
           "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0222",
+          "lean_name": "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin",
+          "name": "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0223",
+          "lean_name": "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report",
+          "name": "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report",
           "status": "proved"
         }
       ],
@@ -19205,6 +19253,18 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
           "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0222",
+          "lean_name": "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin",
+          "name": "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0223",
+          "lean_name": "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report",
+          "name": "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -20127,6 +20187,18 @@
           "id": "AIRA-T0221",
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
           "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0222",
+          "lean_name": "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin",
+          "name": "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0223",
+          "lean_name": "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report",
+          "name": "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report",
           "status": "proved"
         }
       ],

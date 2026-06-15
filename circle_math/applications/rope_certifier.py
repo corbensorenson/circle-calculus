@@ -197,6 +197,8 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0219",
     "AIRA-T0220",
     "AIRA-T0221",
+    "AIRA-T0222",
+    "AIRA-T0223",
     "AIRA-T0126",
     "AIRA-T0139",
     "AIRA-T0140",
@@ -243,6 +245,8 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
     "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
     "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
+    "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin",
+    "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_band_bounds",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
     "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
@@ -250,6 +254,16 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
 )
 
 ROPE_RATIONAL_PRESET_4099_NAME = "rational_turn_ratio_1_4099_context_4096"
+
+ROPE_ONE_OVER_NAT_EXACT_MARGIN_THEOREMS: tuple[str, ...] = (
+    "AIRA-T0222",
+    "AIRA-T0223",
+)
+
+ROPE_ONE_OVER_NAT_EXACT_MARGIN_LEAN_DECLARATIONS: tuple[str, ...] = (
+    "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin",
+    "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report",
+)
 
 ROPE_RATIONAL_PRESET_4099_THEOREMS: tuple[str, ...] = (
     "AIRA-T0056",
@@ -263,6 +277,7 @@ ROPE_RATIONAL_PRESET_4099_THEOREMS: tuple[str, ...] = (
     "AIRA-T0061",
     "AIRA-T0185",
     "AIRA-T0215",
+    *ROPE_ONE_OVER_NAT_EXACT_MARGIN_THEOREMS,
     "AIRA-T0187",
     "AIRA-T0196",
     "AIRA-T0062",
@@ -280,6 +295,7 @@ ROPE_RATIONAL_PRESET_4099_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin",
     "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
     "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin_report",
+    *ROPE_ONE_OVER_NAT_EXACT_MARGIN_LEAN_DECLARATIONS,
     "Circle.Applications.ropeRationalPreset4099_noZeroTurnRatioError",
     "Circle.Applications.ropeTurnRatioFiniteMarginCertificate_iff_no_nearTurn_below_scaled_margin",
     "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
@@ -1841,6 +1857,11 @@ def certify_rational_turn_ratio_finite_margin(
             "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_ge_iff_floor_ceil",
             "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
         )
+        if numerator == 1 and 1 < context_length <= denominator:
+            theorem_ids = theorem_ids + ROPE_ONE_OVER_NAT_EXACT_MARGIN_THEOREMS
+            lean_declarations = (
+                lean_declarations + ROPE_ONE_OVER_NAT_EXACT_MARGIN_LEAN_DECLARATIONS
+            )
     else:
         theorem_ids = ("AIRA-T0055", "AIRA-T0057", "AIRA-T0182", "AIRA-T0183")
         lean_declarations = (
@@ -3787,8 +3808,8 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         "(unwrapped, signed full-turn, turn-separation, bank-level no-near-turn, "
         "turn-ratio scaling, finite-context margin consequence, context-plus-margin transfer, "
         "integer/rational-turn-ratio guardrails, positive rational finite-context "
-        "certificate and exact rational boundary, generated-gap enumeration, "
-        "floor/ceiling nearest-integer, scalar nearest-gap margin, finite certificate "
+        "certificate, exact rational boundary, and one-over-denominator exact "
+        "weakest-gap family, generated-gap enumeration, floor/ceiling nearest-integer, scalar nearest-gap margin, finite certificate "
         "iff, negative obstruction iff, scaled no-near-turn iff, certificate-object "
         "no-near-turn iff, finite-certificate bank bridge, context-range obstruction "
         "bridge, request-level D19 classifier bridge, classifier threshold "

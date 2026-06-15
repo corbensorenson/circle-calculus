@@ -2311,6 +2311,104 @@ theorem ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den
       (numerator := numerator) (denominator := denominator)
       hdenominator hcoprime hcontext
 
+private theorem ropeTurnRatio_one_over_nat_floor_eq_zero
+    {denominator : Nat} (hdenominator : 1 < denominator) :
+    ⌊((1 : ℝ) / (denominator : ℝ))⌋ = (0 : ℤ) := by
+  rw [Int.floor_eq_iff]
+  constructor
+  · norm_num
+  · norm_num
+    have hden_real : (1 : ℝ) < denominator := by exact_mod_cast hdenominator
+    simpa [one_div] using inv_lt_one_of_one_lt₀ hden_real
+
+private theorem ropeTurnRatio_one_over_nat_ceil_eq_one
+    {denominator : Nat} (hdenominator : 1 < denominator) :
+    ⌈((1 : ℝ) / (denominator : ℝ))⌉ = (1 : ℤ) := by
+  rw [Int.ceil_eq_iff]
+  constructor
+  · norm_num
+    exact Nat.zero_lt_of_lt hdenominator
+  · norm_num
+    have hden_real : (1 : ℝ) < denominator := by exact_mod_cast hdenominator
+    exact le_of_lt (by simpa [one_div] using inv_lt_one_of_one_lt₀ hden_real)
+
+/-- The first gap of a `1 / denominator` rational turn ratio has scalar
+nearest-integer margin exactly `1 / denominator`.
+
+This is the reusable version of the public `1/4099` preset's realized-gap
+calculation. It is still a rational/discretized theorem, not a standard
+irrational RoPE channel-0 result. -/
+theorem ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin
+    {denominator : Nat} (hdenominator : 1 < denominator) :
+    ropeTurnRatioGapNearestIntegerMargin
+      (((1 : Nat) : ℝ) / (denominator : ℝ)) 1 =
+        1 / (denominator : ℝ) := by
+  unfold ropeTurnRatioGapNearestIntegerMargin
+  simp only [Nat.cast_one, one_mul]
+  rw [ropeTurnRatio_one_over_nat_floor_eq_zero hdenominator,
+    ropeTurnRatio_one_over_nat_ceil_eq_one hdenominator]
+  have hden_pos : (0 : ℝ) < denominator := by
+    exact_mod_cast (Nat.zero_lt_of_lt hdenominator)
+  have hden_real_gt_one : (1 : ℝ) < denominator := by exact_mod_cast hdenominator
+  have hle_one : (1 : ℝ) / (denominator : ℝ) ≤ 1 := by
+    exact le_of_lt (by simpa [one_div] using inv_lt_one_of_one_lt₀ hden_real_gt_one)
+  have htwo_le_den : (2 : ℝ) ≤ denominator := by exact_mod_cast hdenominator
+  have htwo_div_le_one : (2 : ℝ) / (denominator : ℝ) ≤ 1 := by
+    rw [div_le_iff₀ hden_pos]
+    simpa [one_mul] using htwo_le_den
+  have hhalf_pre :
+      (1 : ℝ) / (denominator : ℝ) ≤
+        1 - (1 : ℝ) / (denominator : ℝ) := by
+    rw [le_sub_iff_add_le]
+    calc
+      (1 : ℝ) / (denominator : ℝ) + (1 : ℝ) / (denominator : ℝ)
+          = (2 : ℝ) / (denominator : ℝ) := by ring
+      _ ≤ 1 := htwo_div_le_one
+  have hhalf :
+      (1 : ℝ) / (denominator : ℝ) ≤
+        |(1 : ℝ) / (denominator : ℝ) - 1| := by
+    rw [abs_of_nonpos (sub_nonpos.mpr hle_one)]
+    simpa [sub_eq_add_neg] using hhalf_pre
+  have hleft :
+      |(1 : ℝ) / (denominator : ℝ) - 0| =
+        1 / (denominator : ℝ) := by
+    rw [sub_zero, abs_of_nonneg]
+    exact le_of_lt (one_div_pos.mpr hden_pos)
+  simpa [hleft] using min_eq_left hhalf
+
+/-- For the rational turn ratio `1 / denominator`, the exact weakest
+finite-context nearest-integer margin is `1 / denominator`, realized at gap
+`1`, throughout every nontrivial context that stays before the denominator
+return gap.
+
+This turns the one-off rational preset report into a family-level contract:
+when `1 < context ≤ denominator`, the public fields
+`exact_nearest_gap_margin = 1/denominator` and `exact_nearest_gap = 1` are
+Lean-backed for the declared rational/discretized ratio. -/
+theorem ropeTurnRatioOneOverNat_exactWeakestGapMargin_report
+    {denominator context : Nat}
+    (hcontext_min : 1 < context) (hcontext_den : context ≤ denominator) :
+    ropeTurnRatioExactWeakestGapMargin
+      (((1 : Nat) : ℝ) / (denominator : ℝ))
+      (1 / (denominator : ℝ)) context 1 := by
+  have hdenominator : 1 < denominator := lt_of_lt_of_le hcontext_min hcontext_den
+  refine
+    (ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized
+      (turnRatio := (((1 : Nat) : ℝ) / (denominator : ℝ)))
+      (margin := 1 / (denominator : ℝ))
+      (context := context)
+      (witnessGap := 1)).2 ?_
+  exact
+    ⟨List.mem_range.mpr hcontext_min,
+      by norm_num,
+      ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin hdenominator,
+      ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den
+        (numerator := 1) (denominator := denominator)
+        (context := context)
+        (Nat.zero_lt_of_lt hdenominator)
+        (by norm_num)
+        hcontext_den⟩
+
 /-! ### Named rational/discretized finite-margin preset -/
 
 /-- A small theorem-backed rational turn-ratio preset used by the public
