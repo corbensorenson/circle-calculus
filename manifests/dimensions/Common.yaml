@@ -3741,6 +3741,48 @@ theorems:
         - tests/test_rope_certifier.py::test_one_over_denominator_rational_certificate_uses_generic_exact_margin_theorem
         - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
     blocker: ""
+  - id: AIRA-T0224
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_le_error
+    informal_statement: "For any turn ratio and gap, the scalar nearest-integer margin is bounded above by the error against any concrete integer-turn witness."
+    formal_statement: "forall {turnRatio : Real} {gap : Nat} {turns : Int}, Circle.Applications.ropeTurnRatioGapNearestIntegerMargin turnRatio gap <= Circle.Applications.ropeTurnRatioError turnRatio gap turns"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_coprime_rational_certificate_uses_modular_inverse_exact_margin_theorem
+    blocker: ""
+  - id: AIRA-T0225
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioError_natRatio_eq_one_over_den_of_modular_inverse_witness
+    informal_statement: "For a natural-rational turn ratio, a gap whose numerator product is one residue away from an integer number of denominators has exact turn-ratio error 1/denominator against the supplied integer turn."
+    formal_statement: "forall {numerator denominator gap turns : Nat}, 0 < denominator -> (gap * numerator = turns * denominator + 1 or gap * numerator + 1 = turns * denominator) -> Circle.Applications.ropeTurnRatioError ((numerator : Real) / (denominator : Real)) gap (Int.ofNat turns) = 1 / (denominator : Real)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_coprime_rational_certificate_uses_modular_inverse_exact_margin_theorem
+    blocker: ""
+  - id: AIRA-T0226
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness
+    informal_statement: "For a reduced natural-rational turn ratio before the denominator return gap, a supplied plus-or-minus-one modular-inverse witness realizes the exact weakest scalar nearest-integer margin 1/denominator."
+    formal_statement: "forall {numerator denominator context witnessGap turns : Nat}, 0 < denominator -> Nat.Coprime numerator denominator -> context <= denominator -> 0 < witnessGap -> witnessGap < context -> (witnessGap * numerator = turns * denominator + 1 or witnessGap * numerator + 1 = turns * denominator) -> Circle.Applications.ropeTurnRatioExactWeakestGapMargin ((numerator : Real) / (denominator : Real)) (1 / (denominator : Real)) context witnessGap"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_coprime_rational_certificate_uses_modular_inverse_exact_margin_theorem
+    blocker: ""
   - id: AIRA-T0187
     status: lean_proved
     lean_name: Circle.Applications.ropeRationalPreset4099_noZeroTurnRatioError

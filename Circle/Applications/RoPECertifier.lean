@@ -2311,6 +2311,179 @@ theorem ropeTurnRatioFiniteMargin_natRatio_one_over_den_iff_context_le_den
       (numerator := numerator) (denominator := denominator)
       hdenominator hcoprime hcontext
 
+/-- The scalar nearest-integer margin for one gap is no larger than the error
+against any chosen integer-turn witness.
+
+This is the generic upper-bound half needed by report contracts: once a
+certifier supplies a concrete integer turn whose error is exactly the claimed
+margin, the scalar nearest-gap margin cannot be larger than that report value.
+-/
+theorem ropeTurnRatioGapNearestIntegerMargin_le_error
+    {turnRatio : ℝ} {gap : Nat} {turns : Int} :
+    ropeTurnRatioGapNearestIntegerMargin turnRatio gap ≤
+      ropeTurnRatioError turnRatio gap turns := by
+  have hfloor_ceil :
+      ropeTurnRatioGapNearestIntegerMargin turnRatio gap ≤
+          |(gap : ℝ) * turnRatio - ((⌊(gap : ℝ) * turnRatio⌋ : ℤ) : ℝ)| ∧
+        ropeTurnRatioGapNearestIntegerMargin turnRatio gap ≤
+          |(gap : ℝ) * turnRatio - ((⌈(gap : ℝ) * turnRatio⌉ : ℤ) : ℝ)| := by
+    unfold ropeTurnRatioGapNearestIntegerMargin
+    exact ⟨min_le_left _ _, min_le_right _ _⟩
+  exact
+    (ropeNearestIntegerWitnesses_iff_forall_int
+      (x := (gap : ℝ) * turnRatio)
+      (margin := ropeTurnRatioGapNearestIntegerMargin turnRatio gap)).1
+      hfloor_ceil turns
+
+/- A natural-rational turn-ratio gap has exact error `1 / denominator` when
+its numerator product is one more than an integer number of denominators.
+
+This is the exact modular-inverse witness form for reduced rational reports:
+Python may find a gap whose residue is `1`, and Lean turns that witness into a
+nearest-integer error equality. -/
+private theorem ropeTurnRatioError_natRatio_eq_one_over_den_of_num_eq_turn_mul_den_add_one
+    {numerator denominator gap turns : Nat} (hdenominator : 0 < denominator)
+    (hproduct : gap * numerator = turns * denominator + 1) :
+    ropeTurnRatioError ((numerator : ℝ) / (denominator : ℝ)) gap
+      (Int.ofNat turns) = 1 / (denominator : ℝ) := by
+  let z : Int := ((gap * numerator : Nat) : Int) -
+    (Int.ofNat turns) * (denominator : Int)
+  have herror :=
+    ropeTurnRatioError_natRatio_eq_abs_int_num_sub_turn_mul_den_div_den
+      (numerator := numerator) (denominator := denominator) (gap := gap)
+      (turns := Int.ofNat turns) hdenominator
+  have hz : z = 1 := by
+    dsimp [z]
+    have hproduct_int :
+        (gap : Int) * (numerator : Int) =
+          (turns : Int) * (denominator : Int) + 1 := by
+      exact_mod_cast hproduct
+    linarith
+  calc
+    ropeTurnRatioError ((numerator : ℝ) / (denominator : ℝ)) gap
+        (Int.ofNat turns) = |(z : ℝ)| / (denominator : ℝ) := by
+      simpa [z] using herror
+    _ = 1 / (denominator : ℝ) := by
+      rw [hz]
+      norm_num
+
+/- A natural-rational turn-ratio gap has exact error `1 / denominator` when
+its numerator product is one less than an integer number of denominators.
+
+This is the companion residue-`-1` modular-inverse witness form. -/
+private theorem ropeTurnRatioError_natRatio_eq_one_over_den_of_num_add_one_eq_turn_mul_den
+    {numerator denominator gap turns : Nat} (hdenominator : 0 < denominator)
+    (hproduct : gap * numerator + 1 = turns * denominator) :
+    ropeTurnRatioError ((numerator : ℝ) / (denominator : ℝ)) gap
+      (Int.ofNat turns) = 1 / (denominator : ℝ) := by
+  let z : Int := ((gap * numerator : Nat) : Int) -
+    (Int.ofNat turns) * (denominator : Int)
+  have herror :=
+    ropeTurnRatioError_natRatio_eq_abs_int_num_sub_turn_mul_den_div_den
+      (numerator := numerator) (denominator := denominator) (gap := gap)
+      (turns := Int.ofNat turns) hdenominator
+  have hz : z = -1 := by
+    dsimp [z]
+    have hproduct_int :
+        (gap : Int) * (numerator : Int) + 1 =
+          (turns : Int) * (denominator : Int) := by
+      exact_mod_cast hproduct
+    linarith
+  calc
+    ropeTurnRatioError ((numerator : ℝ) / (denominator : ℝ)) gap
+        (Int.ofNat turns) = |(z : ℝ)| / (denominator : ℝ) := by
+      simpa [z] using herror
+    _ = 1 / (denominator : ℝ) := by
+      rw [hz]
+      norm_num
+
+/-- A natural-rational turn-ratio gap has exact error `1 / denominator` when
+its numerator product is one away from an integer number of denominators.
+
+This is the modular-inverse witness equality for reduced rational reports:
+the supplied gap may realize residue `+1` or residue `-1` modulo the
+denominator. -/
+theorem ropeTurnRatioError_natRatio_eq_one_over_den_of_modular_inverse_witness
+    {numerator denominator gap turns : Nat} (hdenominator : 0 < denominator)
+    (hwitness :
+      gap * numerator = turns * denominator + 1 ∨
+        gap * numerator + 1 = turns * denominator) :
+    ropeTurnRatioError ((numerator : ℝ) / (denominator : ℝ)) gap
+      (Int.ofNat turns) = 1 / (denominator : ℝ) := by
+  rcases hwitness with hplus | hminus
+  · exact
+      ropeTurnRatioError_natRatio_eq_one_over_den_of_num_eq_turn_mul_den_add_one
+        (numerator := numerator) (denominator := denominator) (gap := gap)
+        (turns := turns) hdenominator hplus
+  · exact
+      ropeTurnRatioError_natRatio_eq_one_over_den_of_num_add_one_eq_turn_mul_den
+        (numerator := numerator) (denominator := denominator) (gap := gap)
+        (turns := turns) hdenominator hminus
+
+/-- A supplied modular-inverse witness makes the exact weakest-gap report
+contract generic for reduced natural rational turn ratios.
+
+If `numerator/denominator` is reduced, the inspected context stays before the
+denominator return gap, and the reported `witnessGap` is one residue away from
+an integer number of denominators, then the exact weakest scalar
+nearest-integer margin is `1 / denominator` and it is realized at
+`witnessGap`. This generalizes the special `1 / denominator` report theorem
+without claiming anything about irrational standard RoPE channels. -/
+theorem ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness
+    {numerator denominator context witnessGap turns : Nat}
+    (hdenominator : 0 < denominator)
+    (hcoprime : Nat.Coprime numerator denominator)
+    (hcontext : context ≤ denominator)
+    (hgap_pos : 0 < witnessGap)
+    (hgap_context : witnessGap < context)
+    (hwitness :
+      witnessGap * numerator = turns * denominator + 1 ∨
+        witnessGap * numerator + 1 = turns * denominator) :
+    ropeTurnRatioExactWeakestGapMargin
+      ((numerator : ℝ) / (denominator : ℝ))
+      (1 / (denominator : ℝ)) context witnessGap := by
+  have hfinite :
+      ropeTurnRatioFiniteMargin ((numerator : ℝ) / (denominator : ℝ))
+        (1 / (denominator : ℝ)) context :=
+    ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den
+      (numerator := numerator) (denominator := denominator)
+      hdenominator hcoprime hcontext
+  have hmem : witnessGap ∈ List.range context := List.mem_range.mpr hgap_context
+  have hlower :
+      (1 / (denominator : ℝ)) ≤
+        ropeTurnRatioGapNearestIntegerMargin
+          ((numerator : ℝ) / (denominator : ℝ)) witnessGap :=
+    (ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin
+      (turnRatio := ((numerator : ℝ) / (denominator : ℝ)))
+      (margin := 1 / (denominator : ℝ)) (context := context)).1
+      hfinite witnessGap hmem hgap_pos
+  have hupper :
+      ropeTurnRatioGapNearestIntegerMargin
+          ((numerator : ℝ) / (denominator : ℝ)) witnessGap ≤
+        1 / (denominator : ℝ) := by
+    have hle_error :
+        ropeTurnRatioGapNearestIntegerMargin
+            ((numerator : ℝ) / (denominator : ℝ)) witnessGap ≤
+          ropeTurnRatioError ((numerator : ℝ) / (denominator : ℝ))
+            witnessGap (Int.ofNat turns) :=
+      ropeTurnRatioGapNearestIntegerMargin_le_error
+        (turnRatio := ((numerator : ℝ) / (denominator : ℝ)))
+        (gap := witnessGap) (turns := Int.ofNat turns)
+    have herror_eq :
+        ropeTurnRatioError ((numerator : ℝ) / (denominator : ℝ))
+          witnessGap (Int.ofNat turns) = 1 / (denominator : ℝ) :=
+      ropeTurnRatioError_natRatio_eq_one_over_den_of_modular_inverse_witness
+        (numerator := numerator) (denominator := denominator)
+        (gap := witnessGap) (turns := turns) hdenominator hwitness
+    exact le_trans hle_error (le_of_eq herror_eq)
+  refine
+    (ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized
+      (turnRatio := ((numerator : ℝ) / (denominator : ℝ)))
+      (margin := 1 / (denominator : ℝ))
+      (context := context)
+      (witnessGap := witnessGap)).2 ?_
+  exact ⟨hmem, hgap_pos, le_antisymm hupper hlower, hfinite⟩
+
 private theorem ropeTurnRatio_one_over_nat_floor_eq_zero
     {denominator : Nat} (hdenominator : 1 < denominator) :
     ⌊((1 : ℝ) / (denominator : ℝ))⌋ = (0 : ℤ) := by

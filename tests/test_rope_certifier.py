@@ -11,6 +11,7 @@ import pytest
 
 from circle_math.applications import (
     ROPE_CERTIFIER_THEOREMS,
+    ROPE_NAT_RATIO_MODULAR_INVERSE_EXACT_MARGIN_THEOREMS,
     ROPE_ONE_OVER_NAT_EXACT_MARGIN_THEOREMS,
     ROPE_RATIONAL_PRESET_4099_NAME,
     ROPE_RATIONAL_PRESET_4099_THEOREMS,
@@ -79,6 +80,7 @@ from circle_math.applications import (
     turn_ratio_margin_covers_margin,
     turn_ratio_margin_covers_request,
     turn_ratio_nat_ratio_coprime_margin_certificate,
+    turn_ratio_nat_ratio_modular_inverse_margin_witness,
     turn_ratio_nat_ratio_zero_margin_witness,
     turn_ratio_nearest_integer_error,
 )
@@ -383,6 +385,9 @@ def test_coprime_rational_turn_ratio_certifies_margin_before_denominator_gap() -
     assert "AIRA-T0057" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0222" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0223" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0224" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0225" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0226" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
 def test_one_over_denominator_rational_certificate_uses_generic_exact_margin_theorem() -> None:
@@ -413,6 +418,54 @@ def test_one_over_denominator_rational_certificate_uses_generic_exact_margin_the
     assert abs(scanned_margin - certificate.certified_margin) < 1e-12
     assert gap == 1
     assert turns == 0
+
+
+def test_coprime_rational_certificate_uses_modular_inverse_exact_margin_theorem() -> None:
+    assert turn_ratio_nat_ratio_modular_inverse_margin_witness(
+        numerator=3,
+        denominator=7,
+        gap=2,
+    ) == (1, "minus_one")
+    assert turn_ratio_nat_ratio_modular_inverse_margin_witness(
+        numerator=3,
+        denominator=7,
+        gap=5,
+    ) == (2, "plus_one")
+    assert turn_ratio_nat_ratio_modular_inverse_margin_witness(
+        numerator=3,
+        denominator=7,
+        gap=1,
+    ) is None
+
+    certificate = certify_rational_turn_ratio_finite_margin(
+        numerator=3,
+        denominator=7,
+        context_length=7,
+    )
+    assert certificate.pass_certificate
+    assert certificate.certified_margin == 1.0 / 7.0
+    assert certificate.exact_nearest_gap_margin == "1/7"
+    assert certificate.exact_nearest_gap in {2, 5}
+    assert ROPE_NAT_RATIO_MODULAR_INVERSE_EXACT_MARGIN_THEOREMS == (
+        "AIRA-T0224",
+        "AIRA-T0225",
+        "AIRA-T0226",
+    )
+    assert "AIRA-T0224" in certificate.theorem_ids
+    assert "AIRA-T0225" in certificate.theorem_ids
+    assert "AIRA-T0226" in certificate.theorem_ids
+    assert (
+        "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_le_error"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.ropeTurnRatioError_natRatio_eq_one_over_den_of_modular_inverse_witness"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness"
+        in certificate.lean_declarations
+    )
 
 
 def test_named_rational_turn_ratio_certificate_is_theorem_backed() -> None:
