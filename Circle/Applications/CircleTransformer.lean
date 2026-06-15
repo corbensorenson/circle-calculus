@@ -981,6 +981,42 @@ theorem hybridFamilyCoversContext_iff_uniqueLagCandidateCount_eq_context_sub_one
     rw [List.mem_toFinset] at hcandidate_fin
     exact hcandidate_fin
 
+/-- If every generated lag candidate is already a positive in-context lag, the
+covered-lag report count equals the exact deduplicated lag-candidate count. -/
+theorem hybridFamilyCoveredLagList_length_eq_uniqueLagCandidateCount_of_candidate_range
+    {n window pathLength : Nat} {strides : List Nat}
+    (hcandidate_range :
+      ∀ lag, lag ∈ hybridFamilyLagCandidateList n window pathLength strides →
+        1 ≤ lag ∧ lag < n) :
+    (hybridFamilyCoveredLagList n window pathLength strides).length =
+      hybridFamilyUniqueLagCandidateCount n window pathLength strides := by
+  let positiveLags := List.range' 1 (n - 1)
+  let candidates := hybridFamilyLagCandidateList n window pathLength strides
+  let covered := hybridFamilyCoveredLagList n window pathLength strides
+  have hpositive_nodup : positiveLags.Nodup := by
+    simp [positiveLags, List.nodup_range']
+  have hcovered_nodup : covered.Nodup := by
+    unfold covered hybridFamilyCoveredLagList
+    exact hpositive_nodup.filter _
+  have hcovered_card : covered.toFinset.card = covered.length := by
+    rw [List.card_toFinset, List.Nodup.dedup hcovered_nodup]
+  have hcovered_toFinset : covered.toFinset = candidates.toFinset := by
+    ext lag
+    rw [List.mem_toFinset, List.mem_toFinset]
+    unfold covered hybridFamilyCoveredLagList
+    simp only [List.mem_filter, decide_eq_true_eq]
+    constructor
+    · intro hcovered_mem
+      exact hcovered_mem.2
+    · intro hcandidate_mem
+      have hrange := hcandidate_range lag hcandidate_mem
+      constructor
+      · rw [List.mem_range']
+        refine ⟨lag - 1, ?_, ?_⟩ <;> omega
+      · exact hcandidate_mem
+  rw [← hcovered_card, hcovered_toFinset]
+  simp [candidates, hybridFamilyUniqueLagCandidateCount, List.card_toFinset]
+
 /-- Membership in the finite covered-lag list is exactly positive in-context
 semantic reachability.
 
@@ -1086,6 +1122,24 @@ theorem hybridFamilyCoveredUncoveredLagList_length_add
       (l := List.range' 1 (n - 1))
       (f := fun lag =>
         decide (lag ∈ hybridFamilyLagCandidateList n window pathLength strides))).symm
+
+/-- Under the positive in-context candidate-range hypothesis, the uncovered-gap
+count is exactly the positive-lag count minus the unique lag-candidate count. -/
+theorem hybridFamilyUncoveredLagList_length_eq_context_sub_one_sub_uniqueLagCandidateCount_of_candidate_range
+    {n window pathLength : Nat} {strides : List Nat}
+    (hcandidate_range :
+      ∀ lag, lag ∈ hybridFamilyLagCandidateList n window pathLength strides →
+        1 ≤ lag ∧ lag < n) :
+    (hybridFamilyUncoveredLagList n window pathLength strides).length =
+      n - 1 - hybridFamilyUniqueLagCandidateCount n window pathLength strides := by
+  have hcovered :=
+    hybridFamilyCoveredLagList_length_eq_uniqueLagCandidateCount_of_candidate_range
+      (n := n) (window := window) (pathLength := pathLength) (strides := strides)
+      hcandidate_range
+  have hpartition :=
+    hybridFamilyCoveredUncoveredLagList_length_add
+      (n := n) (window := window) (pathLength := pathLength) (strides := strides)
+  omega
 
 /-- Complete sparse-attention coverage is equivalent to an empty finite
 uncovered-lag list. -/

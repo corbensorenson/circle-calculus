@@ -91,6 +91,8 @@ const THEOREM_IDS = [
   "AIT-T0110",
   "AIT-T0111",
   "AIT-T0112",
+  "AIT-T0113",
+  "AIT-T0114",
 ];
 const DICTIONARY_IDS = ["COMMON-0075", "COMMON-0079", "COMMON-0047", "COMMON-0029"];
 
@@ -243,6 +245,14 @@ function strideFamilyCoverageCertificate(sequenceLength, strides, pathLength, lo
     uniqueLagCountMatchesCompleteUnderCandidateRange: (
       !theoremSideLagCandidatesPositiveInContext
       || coverageComplete === (theoremSideUniqueLagCandidateCount === positiveLagCount)
+    ),
+    coveredCountMatchesUniqueLagCountUnderCandidateRange: (
+      !theoremSideLagCandidatesPositiveInContext
+      || coveredLags.length === theoremSideUniqueLagCandidateCount
+    ),
+    uncoveredCountMatchesContextMinusUniqueLagCountUnderCandidateRange: (
+      !theoremSideLagCandidatesPositiveInContext
+      || uncoveredLags.length === Math.max(0, positiveLagCount - theoremSideUniqueLagCandidateCount)
     ),
     theoremSideCoilResiduesNoCollision: new Set(theoremSideCoilResidues).size === theoremSideCoilResidues.length,
     theoremSideLocalCoilDisjoint: theoremSideCoilResidues.every((residue) => !localCandidateSet.has(residue)),
@@ -469,6 +479,8 @@ function appendRecord(output, values, theoremById) {
     `theorem-side unique lag-candidate count: ${coverage.theoremSideUniqueLagCandidateCount}`,
     `lag candidates positive in context: ${coverage.theoremSideLagCandidatesPositiveInContext}`,
     `unique count iff complete under candidate range: ${coverage.uniqueLagCountMatchesCompleteUnderCandidateRange}`,
+    `covered count equals unique under candidate range: ${coverage.coveredCountMatchesUniqueLagCountUnderCandidateRange}`,
+    `uncovered count formula under candidate range: ${coverage.uncoveredCountMatchesContextMinusUniqueLagCountUnderCandidateRange}`,
     `coil residues no collision: ${coverage.theoremSideCoilResiduesNoCollision}`,
     `local/coil disjoint: ${coverage.theoremSideLocalCoilDisjoint}`,
     `lag candidates no collision: ${coverage.theoremSideLagCandidatesNoCollision}`,

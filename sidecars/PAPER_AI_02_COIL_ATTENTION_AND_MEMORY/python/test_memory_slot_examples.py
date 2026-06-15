@@ -832,6 +832,10 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     assert result.coverage_certificate.theorem_side_lag_candidates_positive_in_context
     assert result.coverage_certificate.unique_lag_count_shortfall_certifies_incomplete
     assert result.coverage_certificate.unique_lag_count_matches_complete_under_candidate_range
+    assert result.coverage_certificate.covered_count_matches_unique_lag_count_under_candidate_range
+    assert (
+        result.coverage_certificate.uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range
+    )
     assert result.coverage_certificate.theorem_side_lag_candidates == (
         1,
         2,
@@ -1031,6 +1035,8 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0110",
         "AIT-T0111",
         "AIT-T0112",
+        "AIT-T0113",
+        "AIT-T0114",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -1087,6 +1093,13 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert certificate["theorem_side_lag_candidates_positive_in_context"] is True
     assert certificate["unique_lag_count_shortfall_certifies_incomplete"] is True
     assert certificate["unique_lag_count_matches_complete_under_candidate_range"] is True
+    assert certificate["covered_count_matches_unique_lag_count_under_candidate_range"] is True
+    assert (
+        certificate[
+            "uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range"
+        ]
+        is True
+    )
     assert certificate["fixture_theorem_ids"] == [
         "AIT-T0084",
         "AIT-T0085",
@@ -1118,6 +1131,8 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0110" in certificate["theorem_ids"]
     assert "AIT-T0111" in certificate["theorem_ids"]
     assert "AIT-T0112" in certificate["theorem_ids"]
+    assert "AIT-T0113" in certificate["theorem_ids"]
+    assert "AIT-T0114" in certificate["theorem_ids"]
     assert certificate["theorem_side_query_count_le_unique_lag_count"] is True
     assert certificate["theorem_side_query_count_matches_unique_lag_count"] is True
     complete = payload["complete_fixture_certificate"]
@@ -1146,6 +1161,13 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert complete["theorem_side_lag_candidates_positive_in_context"] is True
     assert complete["unique_lag_count_shortfall_certifies_incomplete"] is True
     assert complete["unique_lag_count_matches_complete_under_candidate_range"] is True
+    assert complete["covered_count_matches_unique_lag_count_under_candidate_range"] is True
+    assert (
+        complete[
+            "uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range"
+        ]
+        is True
+    )
     assert complete["theorem_side_unique_query_candidate_count"] == 8
     assert complete["theorem_side_query_count_le_unique_lag_count"] is True
     assert complete["theorem_side_query_count_matches_unique_lag_count"] is True
@@ -1199,6 +1221,13 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert long_no_wrap["theorem_side_lag_candidates_positive_in_context"] is True
     assert long_no_wrap["unique_lag_count_shortfall_certifies_incomplete"] is True
     assert long_no_wrap["unique_lag_count_matches_complete_under_candidate_range"] is True
+    assert long_no_wrap["covered_count_matches_unique_lag_count_under_candidate_range"] is True
+    assert (
+        long_no_wrap[
+            "uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range"
+        ]
+        is True
+    )
     assert long_no_wrap["coverage_complete"] is False
     assert long_no_wrap["uncovered_lag_interval_sample"][:3] == [
         [33, 63],
@@ -1227,6 +1256,13 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert long_coprime["theorem_side_lag_candidates_positive_in_context"] is True
     assert long_coprime["unique_lag_count_shortfall_certifies_incomplete"] is True
     assert long_coprime["unique_lag_count_matches_complete_under_candidate_range"] is True
+    assert long_coprime["covered_count_matches_unique_lag_count_under_candidate_range"] is True
+    assert (
+        long_coprime[
+            "uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range"
+        ]
+        is True
+    )
     assert "AIT-T0081" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0092" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0093" in long_coprime["core_coverage_theorem_ids"]
@@ -1242,6 +1278,8 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0110" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0111" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0112" in long_coprime["core_coverage_theorem_ids"]
+    assert "AIT-T0113" in long_coprime["core_coverage_theorem_ids"]
+    assert "AIT-T0114" in long_coprime["core_coverage_theorem_ids"]
     assert "scripts/stride_family_certify.py --context 8192" in (
         long_coprime["reproduce_command"]
     )
@@ -1261,7 +1299,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "| 120 | 120 | 4 | 3 | 7, 13 | 5, 9 | False | 0.084 |" in markdown_result.stdout
     assert (
         "| 9 | 2 | 2 | 3, 4, 7 | True | 0 | None | True | True | True | "
-        "True | False | True | 8 | True | 8 | True | True | True | 8 | True | True | "
+        "True | False | True | 8 | True | 8 | True | True | True | True | True | 8 | True | True | "
         "AIT-T0086, AIT-T0087, AIT-T0088, AIT-T0089, AIT-T0105 |"
     ) in markdown_result.stdout
     assert "Planner-style declared plans" in markdown_result.stdout
@@ -1269,18 +1307,21 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert (
         "| long_context_no_wrap_probe_4096 | 4096 | 32 | 4 | "
         "64, 320, 1500 | False | 0.011 | 44 | 0.011 | 4095 | 4095 | 4051 | "
-        "33 | True | True | True | True | True | True | 13 | True | True | True | True | lag=True, query=True |"
+        "33 | True | True | True | True | True | True | 13 | True | True | True | True | True | True | lag=True, query=True |"
     ) in markdown_result.stdout
     assert (
         "| long_context_coprime_probe_8192 | 8192 | 64 | 8 | "
         "127, 509, 1021, 2039 | False | 0.012 | 96 | 0.012 | 8191 | 8191 | "
-        "8095 | 65 | True | True | True | True | True | True | 32 | True | True | True | True | lag=True, query=True |"
+        "8095 | 65 | True | True | True | True | True | True | 32 | True | True | True | True | True | True | lag=True, query=True |"
     ) in markdown_result.stdout
     assert "AIT-T0091" in markdown_result.stdout
     assert "AIT-T0110" in markdown_result.stdout
     assert "AIT-T0111" in markdown_result.stdout
     assert "AIT-T0112" in markdown_result.stdout
+    assert "AIT-T0113" in markdown_result.stdout
+    assert "AIT-T0114" in markdown_result.stdout
     assert "Unique count iff complete" in markdown_result.stdout
+    assert "Uncovered count formula" in markdown_result.stdout
     assert "Unique lag shortfall certifies incomplete" in markdown_result.stdout
     assert "First uncovered lags" in markdown_result.stdout
 
@@ -1407,6 +1448,10 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert certificate.theorem_side_lag_candidates_positive_in_context
     assert certificate.unique_lag_count_shortfall_certifies_incomplete
     assert certificate.unique_lag_count_matches_complete_under_candidate_range
+    assert certificate.covered_count_matches_unique_lag_count_under_candidate_range
+    assert (
+        certificate.uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range
+    )
     assert "AIT-T0022" in certificate.theorem_ids
     assert "AIT-T0023" in certificate.theorem_ids
     assert "AIT-T0024" in certificate.theorem_ids
@@ -1459,6 +1504,8 @@ def test_stride_family_coverage_complete_when_local_window_covers_context() -> N
     assert "AIT-T0110" in certificate.theorem_ids
     assert "AIT-T0111" in certificate.theorem_ids
     assert "AIT-T0112" in certificate.theorem_ids
+    assert "AIT-T0113" in certificate.theorem_ids
+    assert "AIT-T0114" in certificate.theorem_ids
     assert "AIT-T0025" in certificate.theorem_ids
 
 
@@ -1493,6 +1540,10 @@ def test_stride_family_complete_sparse_family_fixture_has_empty_gap_list() -> No
     assert certificate.theorem_side_lag_candidates_positive_in_context
     assert certificate.unique_lag_count_shortfall_certifies_incomplete
     assert certificate.unique_lag_count_matches_complete_under_candidate_range
+    assert certificate.covered_count_matches_unique_lag_count_under_candidate_range
+    assert (
+        certificate.uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range
+    )
     assert certificate.theorem_side_predecessor_injective_on_lag_candidates
     assert certificate.theorem_side_predecessor_injective_window_context_condition
     assert certificate.theorem_side_query_candidates_no_collision

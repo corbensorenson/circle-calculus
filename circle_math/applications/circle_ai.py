@@ -985,6 +985,8 @@ class StrideFamilyCoverageCertificate:
     theorem_side_lag_candidates_positive_in_context: bool
     unique_lag_count_shortfall_certifies_incomplete: bool
     unique_lag_count_matches_complete_under_candidate_range: bool
+    covered_count_matches_unique_lag_count_under_candidate_range: bool
+    uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range: bool
     theorem_side_coil_residues_no_collision: bool
     theorem_side_local_coil_disjoint: bool
     theorem_side_lag_candidates_no_collision: bool
@@ -1088,6 +1090,8 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0110",
         "AIT-T0111",
         "AIT-T0112",
+        "AIT-T0113",
+        "AIT-T0114",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -2992,6 +2996,14 @@ def certify_stride_family_coverage(
         unique_lag_count_matches_complete_under_candidate_range=(
             not lag_candidates_positive_in_context
             or (coverage_complete == (unique_lag_candidate_count == positive_lag_count))
+        ),
+        covered_count_matches_unique_lag_count_under_candidate_range=(
+            not lag_candidates_positive_in_context
+            or (len(covered) == unique_lag_candidate_count)
+        ),
+        uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range=(
+            not lag_candidates_positive_in_context
+            or (len(uncovered) == max(0, positive_lag_count - unique_lag_candidate_count))
         ),
         theorem_side_coil_residues_no_collision=stride_family_coil_residues_no_collision(
             sequence_length,

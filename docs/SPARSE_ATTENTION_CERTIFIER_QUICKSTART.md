@@ -39,6 +39,7 @@ candidate_budget_per_query=10 raw_upper_bound=10 deduplicated_bound=10 full_atte
 raw_budget_shortfall=True certifies_incomplete=True theorem=AIT-T0110
 unique_lag_shortfall=True certifies_incomplete=True theorem=AIT-T0111
 candidate_range=True unique_count_complete_iff=True theorem=AIT-T0112
+candidate_range_counts=covered_eq_unique=True uncovered_eq_context_minus_unique=True theorems=AIT-T0113,AIT-T0114
 lag_budget_status=exact-raw-budget unique_lag_candidates=10 lag_no_collision=True
 query_budget_status=exact-raw-budget unique_query_candidates=10 query_no_collision=True
 ```
@@ -75,6 +76,8 @@ python scripts/stride_family_certify.py \
 - `theorem_side_lag_candidates_positive_in_context`: true when every theorem-side lag candidate is between `1` and `context - 1`.
 - `unique_lag_count_shortfall_certifies_incomplete`: true when the certificate avoids the impossible state where the deduplicated unique lag-candidate count is below `context - 1` but coverage is still reported complete.
 - `unique_lag_count_matches_complete_under_candidate_range`: true when the candidate-range hypothesis is absent or, under that hypothesis, complete coverage matches `theorem_side_unique_lag_candidate_count == context - 1`.
+- `covered_count_matches_unique_lag_count_under_candidate_range`: true when the candidate-range hypothesis is absent or, under that hypothesis, covered count equals the unique lag-candidate count.
+- `uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range`: true when the candidate-range hypothesis is absent or, under that hypothesis, uncovered count equals `context - 1 - theorem_side_unique_lag_candidate_count`.
 - `theorem_side_unique_query_candidate_count`: deduplicated query-indexed predecessor count.
 - `theorem_side_lag_candidates_no_collision`: no duplicate lag candidates.
 - `theorem_side_query_candidates_no_collision`: no duplicate query-indexed candidates.
@@ -86,6 +89,8 @@ The raw-budget iff endpoints are:
 - `AIT-T0110`: complete coverage requires raw sparse generator budget at least `n - 1`, so a raw-budget shortfall certifies incompleteness.
 - `AIT-T0111`: complete coverage requires deduplicated unique lag-candidate count at least `n - 1`, so duplicate collapse can certify incompleteness even when raw budget alone is not decisive.
 - `AIT-T0112`: when every generated lag candidate is positive and in context, complete coverage is equivalent to unique lag-candidate count equaling `n - 1`.
+- `AIT-T0113`: under the same candidate-range hypothesis, covered-lag count equals unique lag-candidate count.
+- `AIT-T0114`: under the same candidate-range hypothesis, uncovered-lag count equals `n - 1 - unique_lag_candidate_count`.
 
 The finite-list endpoints are:
 
@@ -110,7 +115,7 @@ The finite-list endpoints are:
 
 The gap/coverage spine is `AIT-T0020` through `AIT-T0035`. The theorem-side candidate-list,
 budget, no-collision, and predecessor-indexing spine is `AIT-T0036` through `AIT-T0077`.
-The finite uncovered/covered list, count-partition, first-gap, public interval-summary, query-count, raw-budget necessary-condition, unique-lag necessary-condition, and candidate-range unique-count iff spine is `AIT-T0078` through `AIT-T0112`.
+The finite uncovered/covered list, count-partition, first-gap, public interval-summary, query-count, raw-budget necessary-condition, unique-lag necessary-condition, candidate-range unique-count iff, and candidate-range gap-count spine is `AIT-T0078` through `AIT-T0114`.
 
 ## Boundary
 

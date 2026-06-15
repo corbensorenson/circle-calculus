@@ -3826,6 +3826,27 @@ def main() -> int:
                 )
             )
         )
+        assert coverage_certificate.covered_count_matches_unique_lag_count_under_candidate_range == (
+            not coverage_certificate.theorem_side_lag_candidates_positive_in_context
+            or (
+                coverage_certificate.covered_lag_count
+                == coverage_certificate.theorem_side_unique_lag_candidate_count
+            )
+        )
+        assert (
+            coverage_certificate.uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range
+            == (
+                not coverage_certificate.theorem_side_lag_candidates_positive_in_context
+                or (
+                    coverage_certificate.uncovered_lag_count
+                    == max(
+                        0,
+                        coverage_certificate.positive_lag_count
+                        - coverage_certificate.theorem_side_unique_lag_candidate_count,
+                    )
+                )
+            )
+        )
         assert coverage_certificate.deduplicated_candidate_budget_upper_bound == min(
             sequence_length,
             local_window + path_length * len(strides),

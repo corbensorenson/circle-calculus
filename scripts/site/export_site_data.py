@@ -644,6 +644,8 @@ def export_widget_index() -> dict:
                 "AIT-T0110",
                 "AIT-T0111",
                 "AIT-T0112",
+                "AIT-T0113",
+                "AIT-T0114",
             ],
             "dictionary_ids": ["COMMON-0075", "COMMON-0079", "COMMON-0047", "COMMON-0029"],
             "python_reference": "circle_math.applications.circle_ai.stride_family_attention_candidates; circle_math.applications.circle_ai.stride_family_lag_candidate_list; circle_math.applications.circle_ai.stride_family_query_candidate_list; circle_math.applications.circle_ai.consecutive_integer_intervals; circle_math.applications.circle_ai.stride_family_predecessor_injective_window_context_sufficient_condition; circle_math.applications.circle_ai.structured_stride_family_target_lags; circle_math.applications.circle_ai.nonstructured_stride_family_control_lags; circle_math.applications.circle_ai.run_stride_family_sparse_attention_benchmark",
