@@ -961,6 +961,10 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     )
     assert result.coverage_certificate.no_zero_period_threshold_matches_condition
     assert result.coverage_certificate.unique_lag_count_shortfall_certifies_incomplete
+    assert (
+        result.coverage_certificate
+        .unique_lag_count_shortfall_matches_gap_witness_under_period_threshold
+    )
     assert result.coverage_certificate.unique_lag_count_matches_complete_under_candidate_range
     assert result.coverage_certificate.covered_count_matches_unique_lag_count_under_candidate_range
     assert (
@@ -1050,6 +1054,10 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     )
     assert (
         result.coverage_certificate.unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue
+    )
+    assert (
+        result.coverage_certificate
+        .unique_query_count_shortfall_matches_gap_witness_under_period_threshold
     )
     assert result.coverage_certificate.theorem_side_query_candidates_no_collision
     assert result.coverage_certificate.theorem_side_query_candidates_no_collision == (
@@ -1191,6 +1199,8 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0126",
         "AIT-T0127",
         "AIT-T0128",
+        "AIT-T0129",
+        "AIT-T0130",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -1307,6 +1317,8 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0126" in certificate["theorem_ids"]
     assert "AIT-T0127" in certificate["theorem_ids"]
     assert "AIT-T0128" in certificate["theorem_ids"]
+    assert "AIT-T0129" in certificate["theorem_ids"]
+    assert "AIT-T0130" in certificate["theorem_ids"]
     assert certificate["no_wrap_separated_candidate_range_sufficient_condition"] is False
     assert certificate["no_zero_residue_candidate_range_sufficient_condition"] is True
     assert certificate["singleton_stride_period"] is None
@@ -1319,6 +1331,12 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
         is True
     )
     assert certificate["no_zero_period_threshold_matches_condition"] is True
+    assert (
+        certificate[
+            "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold"
+        ]
+        is True
+    )
     assert certificate["theorem_side_query_count_le_unique_lag_count"] is True
     assert certificate["theorem_side_query_count_matches_unique_lag_count"] is True
     assert (
@@ -1336,6 +1354,12 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert (
         certificate[
             "unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue"
+        ]
+        is True
+    )
+    assert (
+        certificate[
+            "unique_query_count_shortfall_matches_gap_witness_under_period_threshold"
         ]
         is True
     )
@@ -1379,6 +1403,12 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
         complete["unique_lag_count_shortfall_matches_gap_witness_under_candidate_range"]
         is True
     )
+    assert (
+        complete[
+            "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold"
+        ]
+        is True
+    )
     assert complete["unique_lag_count_matches_complete_under_candidate_range"] is True
     assert complete["covered_count_matches_unique_lag_count_under_candidate_range"] is True
     assert (
@@ -1402,6 +1432,12 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     )
     assert (
         complete["unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue"]
+        is True
+    )
+    assert (
+        complete[
+            "unique_query_count_shortfall_matches_gap_witness_under_period_threshold"
+        ]
         is True
     )
     assert complete["fixture_theorem_ids"] == [
@@ -1493,6 +1529,12 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
         ]
         is True
     )
+    assert (
+        long_no_wrap[
+            "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold"
+        ]
+        is True
+    )
     assert long_no_wrap["unique_lag_count_matches_complete_under_candidate_range"] is True
     assert long_no_wrap["covered_count_matches_unique_lag_count_under_candidate_range"] is True
     assert (
@@ -1535,6 +1577,12 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
         ]
         is True
     )
+    assert (
+        long_coprime[
+            "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold"
+        ]
+        is True
+    )
     assert long_coprime["unique_lag_count_matches_complete_under_candidate_range"] is True
     assert long_coprime["covered_count_matches_unique_lag_count_under_candidate_range"] is True
     assert (
@@ -1574,6 +1622,8 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0126" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0127" in long_coprime["core_coverage_theorem_ids"]
     assert "AIT-T0128" in long_coprime["core_coverage_theorem_ids"]
+    assert "AIT-T0129" in long_coprime["core_coverage_theorem_ids"]
+    assert "AIT-T0130" in long_coprime["core_coverage_theorem_ids"]
     assert long_coprime["no_wrap_separated_candidate_range_sufficient_condition"] is False
     assert "scripts/stride_family_certify.py --context 8192" in (
         long_coprime["reproduce_command"]
@@ -1595,8 +1645,8 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert (
         "| 9 | 2 | 2 | 3, 4, 7 | True | 0 | None | True | True | True | "
         "True | False | True | 8 | True | 8 | True | False | True | None | "
-        "None | True | True | True | True | True | True | 8 | True | True | "
-        "True | True | True | "
+        "None | True | True | True | True | True | True | True | 8 | True | True | "
+        "True | True | True | True | "
         "AIT-T0086, AIT-T0087, AIT-T0088, AIT-T0089, AIT-T0105 |"
     ) in markdown_result.stdout
     assert "Planner-style declared plans" in markdown_result.stdout
@@ -1605,19 +1655,19 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
         "| long_context_no_wrap_probe_4096 | 4096 | 32 | 4 | "
         "33, 160, 800 | False | 0.011 | 44 | 0.011 | 4095 | 4095 | 4051 | "
         "34 | True | True | True | True | True | True | 12 | True | True | True | True | "
-        "None | None | True | True | True | True | True | True | lag=True, query=True |"
+        "None | None | True | True | True | True | True | True | True | lag=True, query=True |"
     ) in markdown_result.stdout
     assert (
         "| singleton_period_probe_12 | 12 | 1 | 2 | 4 | False | 0.273 | 3 | "
         "0.250 | 11 | 11 | 8 | 2 | True | True | True | True | True | True | "
         "3 | True | True | True | True | 3 | True | True | True | True | "
-        "True | True | True | lag=True, query=True |"
+        "True | True | True | True | lag=True, query=True |"
     ) in markdown_result.stdout
     assert (
         "| long_context_coprime_probe_8192 | 8192 | 64 | 8 | "
         "127, 509, 1021, 2039 | False | 0.012 | 96 | 0.012 | 8191 | 8191 | "
         "8095 | 65 | True | True | True | True | True | True | 32 | True | True | False | True | "
-        "None | None | True | True | True | True | True | True | lag=True, query=True |"
+        "None | None | True | True | True | True | True | True | True | lag=True, query=True |"
     ) in markdown_result.stdout
     assert "AIT-T0091" in markdown_result.stdout
     assert "AIT-T0110" in markdown_result.stdout

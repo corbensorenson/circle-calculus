@@ -7250,6 +7250,36 @@ theorems:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_singleton_stride_period_threshold_matches_no_zero_condition
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
     blocker: ""
+  - id: AIT-T0129
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold
+    informal_statement: "Under a below-context local window and per-stride period-threshold checks, a deduplicated unique lag-candidate shortfall is equivalent to a concrete uncovered positive lag."
+    formal_statement: "forall {n window pathLength : Nat} {strides : List Nat}, window < n -> (forall stride, stride in strides -> pathLength < Circle.period n stride) -> (Circle.Applications.hybridFamilyUniqueLagCandidateCount n window pathLength strides < n - 1 <-> exists lag, 1 <= lag and lag < n and not (Circle.Applications.hybridFamilyLagReach n window pathLength lag strides))"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
+  - id: AIT-T0130
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold
+    informal_statement: "Under a below-context local window and per-stride period-threshold checks, a deduplicated query-candidate shortfall is equivalent to a concrete uncovered positive lag."
+    formal_statement: "forall {n query window pathLength : Nat} {strides : List Nat}, window < n -> (forall stride, stride in strides -> pathLength < Circle.period n stride) -> (Circle.Applications.hybridFamilyUniqueQueryCandidateCount n query window pathLength strides < n - 1 <-> exists lag, 1 <= lag and lag < n and not (Circle.Applications.hybridFamilyLagReach n window pathLength lag strides))"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

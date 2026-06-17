@@ -1098,6 +1098,7 @@ class StrideFamilyCoverageCertificate:
     no_zero_period_threshold_matches_condition: bool
     unique_lag_count_shortfall_certifies_incomplete: bool
     unique_lag_count_shortfall_matches_gap_witness_under_candidate_range: bool
+    unique_lag_count_shortfall_matches_gap_witness_under_period_threshold: bool
     unique_lag_count_matches_complete_under_candidate_range: bool
     covered_count_matches_unique_lag_count_under_candidate_range: bool
     uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range: bool
@@ -1113,6 +1114,7 @@ class StrideFamilyCoverageCertificate:
     unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective: bool
     unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated: bool
     unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue: bool
+    unique_query_count_shortfall_matches_gap_witness_under_period_threshold: bool
     theorem_side_query_candidates_no_collision: bool
     full_attention_budget: int
     coverage_complete: bool
@@ -1223,6 +1225,8 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0126",
         "AIT-T0127",
         "AIT-T0128",
+        "AIT-T0129",
+        "AIT-T0130",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -3265,6 +3269,13 @@ def certify_stride_family_coverage(
                 == (len(uncovered) > 0)
             )
         ),
+        unique_lag_count_shortfall_matches_gap_witness_under_period_threshold=(
+            not no_zero_period_threshold_candidate_range_sufficient_condition
+            or (
+                (unique_lag_candidate_count < positive_lag_count)
+                == (len(uncovered) > 0)
+            )
+        ),
         unique_lag_count_matches_complete_under_candidate_range=(
             not lag_candidates_positive_in_context
             or (coverage_complete == (unique_lag_candidate_count == positive_lag_count))
@@ -3318,6 +3329,10 @@ def certify_stride_family_coverage(
         ),
         unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue=(
             not no_zero_residue_candidate_range_sufficient_condition
+            or query_shortfall_matches_gap
+        ),
+        unique_query_count_shortfall_matches_gap_witness_under_period_threshold=(
+            not no_zero_period_threshold_candidate_range_sufficient_condition
             or query_shortfall_matches_gap
         ),
         theorem_side_query_candidates_no_collision=(

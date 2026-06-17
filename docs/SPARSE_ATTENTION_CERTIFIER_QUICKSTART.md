@@ -39,7 +39,7 @@ covered_count_shortfall=True gap_witness_equiv=True theorem=AIT-T0097
 uncovered_lag_intervals=((5, 6), (8, 12), (15, 20), (22, 25), (27, 38), (40, 119))
 candidate_budget_per_query=10 raw_upper_bound=10 deduplicated_bound=10 full_attention_budget=120
 raw_budget_shortfall=True certifies_incomplete=True theorem=AIT-T0110
-unique_lag_shortfall=True certifies_incomplete=True theorem=AIT-T0111
+unique_lag_shortfall=True certifies_incomplete=True gap_witness_equiv_under_candidate_range=True period_threshold_equiv=True theorems=AIT-T0111,AIT-T0120,AIT-T0121,AIT-T0122,AIT-T0129
 candidate_range=True no_wrap_separated_sufficient=False no_zero_residue_sufficient=True unique_count_complete_iff=True theorems=AIT-T0112,AIT-T0115,AIT-T0116,AIT-T0117,AIT-T0118,AIT-T0119
 singleton_no_zero_period_threshold=None period=None matches_no_zero_residue_condition=True theorems=AIT-T0126,AIT-T0127
 family_no_zero_period_thresholds=(True, True) periods=(120, 120) period_threshold_sufficient=True matches_no_zero_residue_condition=True theorem=AIT-T0128
@@ -88,6 +88,7 @@ python scripts/stride_family_certify.py \
 - `no_zero_period_threshold_candidate_range_sufficient_condition`: true when `local_window < context` and every admitted stride passes the period-threshold no-zero check.
 - `no_zero_period_threshold_matches_condition`: true when the period-threshold test agrees with the finite no-zero residue scan.
 - `unique_lag_count_shortfall_certifies_incomplete`: true when the certificate avoids the impossible state where the deduplicated unique lag-candidate count is below `context - 1` but coverage is still reported complete.
+- `unique_lag_count_shortfall_matches_gap_witness_under_period_threshold`: true when the period-threshold hypothesis is absent or, under `local_window < context` plus all `path_length < stride_period` checks, unique lag-candidate shortfall is equivalent to an uncovered-lag witness.
 - `unique_lag_count_matches_complete_under_candidate_range`: true when the candidate-range hypothesis is absent or, under that hypothesis, complete coverage matches `theorem_side_unique_lag_candidate_count == context - 1`.
 - `covered_count_matches_unique_lag_count_under_candidate_range`: true when the candidate-range hypothesis is absent or, under that hypothesis, covered count equals the unique lag-candidate count.
 - `uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range`: true when the candidate-range hypothesis is absent or, under that hypothesis, uncovered count equals `context - 1 - theorem_side_unique_lag_candidate_count`.
@@ -95,6 +96,7 @@ python scripts/stride_family_certify.py \
 - `unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective`: true when the candidate-range and predecessor-injectivity hypotheses are absent or, under those hypotheses, query-candidate shortfall is equivalent to an uncovered-lag witness.
 - `unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated`: true when the no-wrap structural condition is absent or, under that checkable condition, query-candidate shortfall is equivalent to an uncovered-lag witness.
 - `unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue`: true when the no-zero structural condition is absent or, under that checkable condition, query-candidate shortfall is equivalent to an uncovered-lag witness.
+- `unique_query_count_shortfall_matches_gap_witness_under_period_threshold`: true when the period-threshold hypothesis is absent or, under `local_window < context` plus all `path_length < stride_period` checks, query-candidate shortfall is equivalent to an uncovered-lag witness.
 - `theorem_side_lag_candidates_no_collision`: no duplicate lag candidates.
 - `theorem_side_query_candidates_no_collision`: no duplicate query-indexed candidates.
 
@@ -121,6 +123,8 @@ The raw-budget iff endpoints are:
 - `AIT-T0126`: for one stride, a generated residue is zero exactly when the stride period divides the step count.
 - `AIT-T0127`: for a singleton stride family in a nonzero context, the no-zero-residue condition is exactly the threshold `path_length < period`.
 - `AIT-T0128`: for any finite stride family in a nonzero context, the no-zero-residue condition is exactly the requirement that every admitted stride has period greater than `path_length`.
+- `AIT-T0129`: under the period-threshold check and `window < context`, unique lag-candidate shortfall is equivalent to an uncovered positive lag.
+- `AIT-T0130`: under the same period-threshold check and `window < context`, unique query-candidate shortfall is equivalent to an uncovered positive lag.
 
 The finite-list endpoints are:
 

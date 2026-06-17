@@ -1684,6 +1684,25 @@ theorem hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncove
     (hybridFamilyLagCandidateList_candidate_range_of_window_lt_context_of_noZeroResidues
       hwindow hnoZero)
 
+/-- Under below-context local-window and per-stride period-threshold
+conditions, a unique-lag shortfall is exactly a concrete semantic gap.
+
+This is the planner-facing version of the no-zero structural theorem: for a
+nonempty context, every admitted stride block avoids zero residues exactly
+when each finite coil period is larger than the shared path budget. -/
+theorem hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold
+    {n window pathLength : Nat} {strides : List Nat}
+    (hwindow : window < n)
+    (hperiods : ∀ stride, stride ∈ strides → pathLength < Circle.period n stride) :
+    hybridFamilyUniqueLagCandidateCount n window pathLength strides < n - 1 ↔
+      ∃ lag, 1 ≤ lag ∧ lag < n ∧
+        ¬ hybridFamilyLagReach n window pathLength lag strides := by
+  have hn_pos : 0 < n := lt_of_le_of_lt (Nat.zero_le window) hwindow
+  exact
+    hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues
+      hwindow ((coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period
+        (Nat.ne_of_gt hn_pos)).2 hperiods)
+
 /-- The query-indexed candidate list has the same raw length as the theorem-side
 lag candidate list, hence the same raw candidate budget. -/
 theorem hybridFamilyQueryCandidateList_length
@@ -2211,6 +2230,27 @@ theorem hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_unco
     (hybridFamilyLagCandidateList_candidate_range_of_window_lt_context_of_noZeroResidues
       hwindow hnoZero)
     (hybridFamilyPredecessorInjectiveOnLagCandidates_of_window_lt_context hwindow)
+
+/-- Under below-context local-window and per-stride period-threshold
+conditions, a query-side unique-candidate shortfall is exactly a concrete
+semantic gap.
+
+The period-threshold hypothesis is the report-facing finite arithmetic check:
+each stride's finite coil period must exceed the admitted path budget. That
+discharges the no-zero residue condition and keeps the query shortfall
+certificate tied to a concrete uncovered positive lag. -/
+theorem hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold
+    {n query window pathLength : Nat} {strides : List Nat}
+    (hwindow : window < n)
+    (hperiods : ∀ stride, stride ∈ strides → pathLength < Circle.period n stride) :
+    hybridFamilyUniqueQueryCandidateCount n query window pathLength strides < n - 1 ↔
+      ∃ lag, 1 ≤ lag ∧ lag < n ∧
+        ¬ hybridFamilyLagReach n window pathLength lag strides := by
+  have hn_pos : 0 < n := lt_of_le_of_lt (Nat.zero_le window) hwindow
+  exact
+    hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues
+      hwindow ((coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period
+        (Nat.ne_of_gt hn_pos)).2 hperiods)
 
 /-- Ordered no-wrap separation plus an in-context local window gives
 duplicate-free query-indexed candidates without an abstract injectivity

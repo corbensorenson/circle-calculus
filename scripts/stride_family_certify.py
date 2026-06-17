@@ -151,7 +151,9 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             f"{payload['unique_lag_count_shortfall_certifies_incomplete']} "
             "gap_witness_equiv_under_candidate_range="
             f"{payload['unique_lag_count_shortfall_matches_gap_witness_under_candidate_range']} "
-            "theorems=AIT-T0111,AIT-T0120,AIT-T0121,AIT-T0122"
+            "period_threshold_equiv="
+            f"{payload['unique_lag_count_shortfall_matches_gap_witness_under_period_threshold']} "
+            "theorems=AIT-T0111,AIT-T0120,AIT-T0121,AIT-T0122,AIT-T0129"
         ),
         (
             "candidate_range="
@@ -217,7 +219,9 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             f"{payload['unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated']} "
             "no_zero_structural_equiv="
             f"{payload['unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue']} "
-            "theorems=AIT-T0123,AIT-T0124,AIT-T0125"
+            "period_threshold_equiv="
+            f"{payload['unique_query_count_shortfall_matches_gap_witness_under_period_threshold']} "
+            "theorems=AIT-T0123,AIT-T0124,AIT-T0125,AIT-T0130"
         ),
         (
             "structural_checks="

@@ -184,7 +184,9 @@
         "AIT-T0125",
         "AIT-T0126",
         "AIT-T0127",
-        "AIT-T0128"
+        "AIT-T0128",
+        "AIT-T0129",
+        "AIT-T0130"
       ],
       "theorem_side_coil_residues_no_collision": true,
       "theorem_side_lag_candidates": [
@@ -366,9 +368,11 @@
       "unique_lag_count_matches_complete_under_candidate_range": true,
       "unique_lag_count_shortfall_certifies_incomplete": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
+      "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true,
       "unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective": true,
       "unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated": true,
-      "unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue": true
+      "unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue": true,
+      "unique_query_count_shortfall_matches_gap_witness_under_period_threshold": true
     },
     "family_accuracy": 1.0,
     "full_attention_accuracy": 1.0,
@@ -573,7 +577,9 @@
       "AIT-T0125",
       "AIT-T0126",
       "AIT-T0127",
-      "AIT-T0128"
+      "AIT-T0128",
+      "AIT-T0129",
+      "AIT-T0130"
     ],
     "theorem_side_coil_residues_no_collision": true,
     "theorem_side_lag_candidates": [
@@ -616,9 +622,11 @@
     "unique_lag_count_matches_complete_under_candidate_range": true,
     "unique_lag_count_shortfall_certifies_incomplete": true,
     "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
+    "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true,
     "unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective": true,
     "unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated": true,
-    "unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue": true
+    "unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue": true,
+    "unique_query_count_shortfall_matches_gap_witness_under_period_threshold": true
   },
   "planner_style_certificates": [
     {
@@ -660,7 +668,9 @@
         "AIT-T0125",
         "AIT-T0126",
         "AIT-T0127",
-        "AIT-T0128"
+        "AIT-T0128",
+        "AIT-T0129",
+        "AIT-T0130"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.08403361344537816,
@@ -789,7 +799,8 @@
       ],
       "unique_lag_count_matches_complete_under_candidate_range": true,
       "unique_lag_count_shortfall_certifies_incomplete": true,
-      "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true
+      "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
+      "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true
     },
     {
       "candidate_budget_per_query": 8,
@@ -830,7 +841,9 @@
         "AIT-T0125",
         "AIT-T0126",
         "AIT-T0127",
-        "AIT-T0128"
+        "AIT-T0128",
+        "AIT-T0129",
+        "AIT-T0130"
       ],
       "coverage_complete": true,
       "coverage_ratio": 1.0,
@@ -910,7 +923,8 @@
       "uncovered_lag_sample": [],
       "unique_lag_count_matches_complete_under_candidate_range": true,
       "unique_lag_count_shortfall_certifies_incomplete": true,
-      "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true
+      "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
+      "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true
     },
     {
       "candidate_budget_per_query": 3,
@@ -951,7 +965,9 @@
         "AIT-T0125",
         "AIT-T0126",
         "AIT-T0127",
-        "AIT-T0128"
+        "AIT-T0128",
+        "AIT-T0129",
+        "AIT-T0130"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.2727272727272727,
@@ -1036,7 +1052,8 @@
       ],
       "unique_lag_count_matches_complete_under_candidate_range": true,
       "unique_lag_count_shortfall_certifies_incomplete": true,
-      "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true
+      "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
+      "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true
     },
     {
       "candidate_budget_per_query": 44,
@@ -1077,7 +1094,9 @@
         "AIT-T0125",
         "AIT-T0126",
         "AIT-T0127",
-        "AIT-T0128"
+        "AIT-T0128",
+        "AIT-T0129",
+        "AIT-T0130"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.010744810744810745,
@@ -1241,7 +1260,8 @@
       ],
       "unique_lag_count_matches_complete_under_candidate_range": true,
       "unique_lag_count_shortfall_certifies_incomplete": true,
-      "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true
+      "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
+      "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true
     },
     {
       "candidate_budget_per_query": 96,
@@ -1282,7 +1302,9 @@
         "AIT-T0125",
         "AIT-T0126",
         "AIT-T0127",
-        "AIT-T0128"
+        "AIT-T0128",
+        "AIT-T0129",
+        "AIT-T0130"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.011720180686118912,
@@ -1449,7 +1471,8 @@
       ],
       "unique_lag_count_matches_complete_under_candidate_range": true,
       "unique_lag_count_shortfall_certifies_incomplete": true,
-      "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true
+      "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
+      "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true
     }
   ],
   "schema_id": "circle_calculus.stride_family_sparse_attention_certificate.v0"

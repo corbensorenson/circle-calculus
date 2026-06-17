@@ -5363,6 +5363,18 @@
           "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
           "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0129",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0130",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -6106,6 +6118,18 @@
           "id": "AIT-T0128",
           "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
           "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0129",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0130",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
           "status": "proved"
         }
       ],
@@ -7719,6 +7743,18 @@
           "id": "AIT-T0128",
           "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
           "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0129",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0130",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
           "status": "proved"
         }
       ],
@@ -12471,6 +12507,18 @@
           "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
           "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0129",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0130",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -15956,6 +16004,18 @@
           "id": "AIT-T0128",
           "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
           "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0129",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
+          "name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0130",
+          "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
+          "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_periodThreshold",
           "status": "proved"
         }
       ],
