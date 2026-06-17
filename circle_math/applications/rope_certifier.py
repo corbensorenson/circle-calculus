@@ -203,6 +203,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0225",
     "AIRA-T0226",
     "AIRA-T0227",
+    "AIRA-T0228",
     "AIRA-T0126",
     "AIRA-T0139",
     "AIRA-T0140",
@@ -255,6 +256,7 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioError_natRatio_eq_one_over_den_of_modular_inverse_witness",
     "Circle.Applications.ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness",
     "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime",
+    "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_over_den",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_band_bounds",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
     "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
@@ -287,10 +289,12 @@ ROPE_NAT_RATIO_MODULAR_INVERSE_EXACT_MARGIN_LEAN_DECLARATIONS: tuple[str, ...] =
 
 ROPE_NAT_RATIO_COPRIME_FULL_DENOMINATOR_EXACT_MARGIN_THEOREMS: tuple[str, ...] = (
     "AIRA-T0227",
+    "AIRA-T0228",
 )
 
 ROPE_NAT_RATIO_COPRIME_FULL_DENOMINATOR_EXACT_MARGIN_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime",
+    "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_over_den",
 )
 
 ROPE_RATIONAL_PRESET_4099_THEOREMS: tuple[str, ...] = (
@@ -1957,6 +1961,16 @@ def certify_rational_turn_ratio_finite_margin(
             "nearest-integer margin 1/denominator because the inspected context "
             "does not reach the denominator return gap."
         )
+        if (
+            context_length == denominator
+            and denominator > 1
+            and gcd(numerator, denominator) == 1
+        ):
+            explanation = (
+                explanation
+                + " At the full denominator context, Lean also proves this is the "
+                "exact threshold: larger advertised margins fail."
+            )
     else:
         explanation = (
             "No positive rational finite-margin certificate is emitted: either "
@@ -3890,7 +3904,7 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         "integer/rational-turn-ratio guardrails, positive rational finite-context "
         "certificate, exact rational boundary, one-over-denominator exact "
         "weakest-gap family, modular-inverse rational exact-gap reports, "
-        "and full-denominator reduced-rational exact-gap existence, "
+        "and full-denominator reduced-rational exact-gap existence and exact threshold, "
         "generated-gap enumeration, floor/ceiling nearest-integer, scalar nearest-gap margin, finite certificate "
         "iff, negative obstruction iff, scaled no-near-turn iff, certificate-object "
         "no-near-turn iff, finite-certificate bank bridge, context-range obstruction "

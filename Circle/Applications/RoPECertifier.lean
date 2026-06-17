@@ -2537,6 +2537,50 @@ theorem ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime
         (Nat.zero_lt_of_lt hdenominator) hcoprime (le_refl denominator)
         hgap_pos hgap_lt hwitness⟩
 
+/-- At the full denominator context, a reduced natural-rational turn ratio has
+exact finite-margin threshold `1 / denominator`.
+
+This is the report-facing pass/fail boundary for rational/discretized RoPE
+channels: below or at `1 / denominator` the finite margin predicate holds, and
+above it the exact weakest-gap witness rules it out. It is still a rational
+turn-ratio theorem, not an irrational standard RoPE channel theorem. -/
+theorem ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_over_den
+    {numerator denominator : Nat} {margin : ℝ}
+    (hdenominator : 1 < denominator)
+    (hcoprime : Nat.Coprime numerator denominator) :
+    ropeTurnRatioFiniteMargin ((numerator : ℝ) / (denominator : ℝ))
+      margin denominator ↔ margin ≤ 1 / (denominator : ℝ) := by
+  constructor
+  · intro hfinite
+    obtain ⟨witnessGap, _hgap_pos, _hgap_lt, hexact⟩ :=
+      ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime
+        (numerator := numerator) (denominator := denominator)
+        hdenominator hcoprime
+    rcases
+      (ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized
+        (turnRatio := ((numerator : ℝ) / (denominator : ℝ)))
+        (margin := 1 / (denominator : ℝ))
+        (context := denominator)
+        (witnessGap := witnessGap)).1 hexact with
+      ⟨hmem, hgap_pos, hnearest_eq, _hthreshold_finite⟩
+    have hgap_bound :
+        margin ≤ ropeTurnRatioGapNearestIntegerMargin
+          ((numerator : ℝ) / (denominator : ℝ)) witnessGap :=
+      (ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin
+        (turnRatio := ((numerator : ℝ) / (denominator : ℝ)))
+        (margin := margin) (context := denominator)).1
+        hfinite witnessGap hmem hgap_pos
+    rwa [hnearest_eq] at hgap_bound
+  · intro hmargin
+    have hthreshold :
+        ropeTurnRatioFiniteMargin ((numerator : ℝ) / (denominator : ℝ))
+          (1 / (denominator : ℝ)) denominator :=
+      ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den
+        (numerator := numerator) (denominator := denominator)
+        (Nat.zero_lt_of_lt hdenominator) hcoprime (le_refl denominator)
+    intro gap hgap_pos hgap_context turns
+    exact le_trans hmargin (hthreshold gap hgap_pos hgap_context turns)
+
 private theorem ropeTurnRatio_one_over_nat_floor_eq_zero
     {denominator : Nat} (hdenominator : 1 < denominator) :
     ⌊((1 : ℝ) / (denominator : ℝ))⌋ = (0 : ℤ) := by

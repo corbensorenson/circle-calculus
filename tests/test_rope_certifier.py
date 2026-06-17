@@ -390,6 +390,7 @@ def test_coprime_rational_turn_ratio_certifies_margin_before_denominator_gap() -
     assert "AIRA-T0225" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0226" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0227" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0228" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
 def test_one_over_denominator_rational_certificate_uses_generic_exact_margin_theorem() -> None:
@@ -481,12 +482,19 @@ def test_coprime_rational_full_denominator_context_reports_existential_exact_mar
     assert certificate.exact_nearest_gap in {2, 5}
     assert ROPE_NAT_RATIO_COPRIME_FULL_DENOMINATOR_EXACT_MARGIN_THEOREMS == (
         "AIRA-T0227",
+        "AIRA-T0228",
     )
     assert "AIRA-T0227" in certificate.theorem_ids
+    assert "AIRA-T0228" in certificate.theorem_ids
     assert (
         "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime"
         in certificate.lean_declarations
     )
+    assert (
+        "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_over_den"
+        in certificate.lean_declarations
+    )
+    assert "exact threshold" in certificate.explanation
 
     smaller_context_certificate = certify_rational_turn_ratio_finite_margin(
         numerator=3,
@@ -496,6 +504,7 @@ def test_coprime_rational_full_denominator_context_reports_existential_exact_mar
     assert smaller_context_certificate.pass_certificate
     assert "AIRA-T0226" in smaller_context_certificate.theorem_ids
     assert "AIRA-T0227" not in smaller_context_certificate.theorem_ids
+    assert "AIRA-T0228" not in smaller_context_certificate.theorem_ids
 
 
 def test_named_rational_turn_ratio_certificate_is_theorem_backed() -> None:
