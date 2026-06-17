@@ -108,6 +108,46 @@ def kv_cache_duplicate_free_live_window_subrequest_contract(
     )
 
 
+def kv_cache_stale_requested_tokens(
+    cache_size: int,
+    current: int,
+    tokens: Sequence[int],
+) -> tuple[int, ...]:
+    """Return requested non-future tokens already past their same-slot overwrite."""
+    _require_positive(cache_size, "cache_size")
+    if current < 0:
+        raise ValueError("current must be nonnegative")
+    token_tuple = tuple(tokens)
+    if any(token < 0 for token in token_tuple):
+        raise ValueError("tokens must be nonnegative")
+    return tuple(
+        token
+        for token in token_tuple
+        if token <= current and token + cache_size <= current
+    )
+
+
+def kv_cache_stale_requested_count(
+    cache_size: int,
+    current: int,
+    tokens: Sequence[int],
+) -> int:
+    """Count requested tokens already past their same-slot overwrite boundary."""
+    return len(kv_cache_stale_requested_tokens(cache_size, current, tokens))
+
+
+def kv_cache_stale_requested_count_zero_iff_no_stale_member(
+    cache_size: int,
+    current: int,
+    tokens: Sequence[int],
+) -> bool:
+    """Return whether stale-count zero matches absence of stale requested tokens."""
+    token_tuple = tuple(tokens)
+    return (kv_cache_stale_requested_count(cache_size, current, token_tuple) == 0) == (
+        not kv_cache_stale_requested_tokens(cache_size, current, token_tuple)
+    )
+
+
 def kv_cache_next_overwrite_token(cache_size: int, token: int) -> int:
     """Return the next token position that writes the same ring-buffer slot."""
     _require_positive(cache_size, "cache_size")
@@ -803,6 +843,8 @@ class KVCacheAdapterRequestTraceCertificate:
     slots_distinct: bool
     first_stale_token: Optional[int]
     first_stale_next_overwrite_token: Optional[int]
+    stale_requested_count: int
+    stale_requested_count_zero_iff_no_stale_member: bool
     stale_member_blocks_pass: bool
     retained_iff_no_same_slot_overwrite_trace: bool
     next_overwrites_after_current: bool
@@ -815,6 +857,8 @@ class KVCacheAdapterRequestTraceCertificate:
     pass_iff_next_overwrite_boundary: bool
     pass_iff_no_stale_member_under_nonfuture_nodup: bool
     fail_iff_stale_member_under_nonfuture_nodup: bool
+    pass_iff_stale_count_zero_under_nonfuture_nodup: bool
+    fail_iff_stale_count_positive_under_nonfuture_nodup: bool
     theorem_ids: tuple[str, ...] = (
         "AIM-T0059",
         "AIM-T0067",
@@ -831,6 +875,9 @@ class KVCacheAdapterRequestTraceCertificate:
         "AIM-T0097",
         "AIM-T0098",
         "AIM-T0100",
+        "AIM-T0101",
+        "AIM-T0102",
+        "AIM-T0103",
     )
     lean_declarations: tuple[str, ...] = (
         "Circle.Applications.kvCacheSlot_lt_cacheSize",
@@ -848,6 +895,9 @@ class KVCacheAdapterRequestTraceCertificate:
         "Circle.Applications.not_kvCacheAdapterRequestTracePass_of_stale_member",
         "Circle.Applications.kvCacheAdapterRequestTracePass_iff_no_stale_member_of_nonFuture_nodup",
         "Circle.Applications.not_kvCacheAdapterRequestTracePass_iff_exists_stale_member_of_nonFuture_nodup",
+        "Circle.Applications.kvCacheAdapterRequestStaleMemberCount_eq_zero_iff_no_stale_member",
+        "Circle.Applications.kvCacheAdapterRequestTracePass_iff_staleMemberCount_eq_zero_of_nonFuture_nodup",
+        "Circle.Applications.not_kvCacheAdapterRequestTracePass_iff_staleMemberCount_pos_of_nonFuture_nodup",
     )
     note: str = (
         "Modeled adapter request-trace certificate only; this packages the "
@@ -2306,6 +2356,11 @@ def certify_kv_cache_adapter_request_trace(
         if first_stale_token is None
         else kv_cache_next_overwrite_token(cache_size, first_stale_token)
     )
+    stale_requested_count = kv_cache_stale_requested_count(
+        cache_size,
+        current,
+        token_tuple,
+    )
     pass_certificate = kv_cache_adapter_request_trace_pass_compact(
         cache_size,
         current,
@@ -2332,6 +2387,14 @@ def certify_kv_cache_adapter_request_trace(
         slots_distinct=batch.slots_distinct,
         first_stale_token=first_stale_token,
         first_stale_next_overwrite_token=first_stale_next_overwrite,
+        stale_requested_count=stale_requested_count,
+        stale_requested_count_zero_iff_no_stale_member=(
+            kv_cache_stale_requested_count_zero_iff_no_stale_member(
+                cache_size,
+                current,
+                token_tuple,
+            )
+        ),
         stale_member_blocks_pass=(
             first_stale_token is not None and not pass_certificate
         ),
@@ -2358,6 +2421,16 @@ def certify_kv_cache_adapter_request_trace(
         ),
         fail_iff_stale_member_under_nonfuture_nodup=(
             (not pass_certificate) == (first_stale_token is not None)
+            if all_non_future and batch.tokens_distinct
+            else False
+        ),
+        pass_iff_stale_count_zero_under_nonfuture_nodup=(
+            pass_certificate == (stale_requested_count == 0)
+            if all_non_future and batch.tokens_distinct
+            else False
+        ),
+        fail_iff_stale_count_positive_under_nonfuture_nodup=(
+            (not pass_certificate) == (stale_requested_count > 0)
             if all_non_future and batch.tokens_distinct
             else False
         ),

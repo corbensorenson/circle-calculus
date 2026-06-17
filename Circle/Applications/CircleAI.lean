@@ -1,6 +1,7 @@
 import Mathlib.Data.Nat.ModEq
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Range
+import Mathlib.Data.List.Count
 import Mathlib.Tactic.Ring
 
 /-!
@@ -819,6 +820,89 @@ theorem not_kvCacheAdapterRequestTracePass_iff_exists_stale_member_of_nonFuture_
     exact hfail (hpass_iff.2 hnoStale)
   · intro hstale hpass
     exact (hpass_iff.1 hpass) hstale
+
+/-- Count requested tokens whose next same-slot overwrite has already happened. -/
+def kvCacheAdapterRequestStaleMemberCount
+    (cacheSize current : Nat) (tokens : List Nat) : Nat :=
+  (tokens.filter (fun token => decide (token + cacheSize ≤ current))).length
+
+/-- The stale-member count is zero exactly when no requested stale member exists.
+
+This is the counted report-field bridge behind executable KV-cache certifiers:
+the list count adds a quantitative readout, but zero count is still the same
+logical condition used by the pass/fail theorems. -/
+theorem kvCacheAdapterRequestStaleMemberCount_eq_zero_iff_no_stale_member
+    {cacheSize current : Nat} {tokens : List Nat} :
+    kvCacheAdapterRequestStaleMemberCount cacheSize current tokens = 0 ↔
+      ¬ ∃ token, token ∈ tokens ∧ token + cacheSize ≤ current := by
+  unfold kvCacheAdapterRequestStaleMemberCount
+  constructor
+  · intro hzero
+    have hfilter_nil :
+        tokens.filter (fun token => decide (token + cacheSize ≤ current)) = [] :=
+      List.length_eq_zero_iff.mp hzero
+    rintro ⟨token, htoken, hoverwritten⟩
+    have hfiltered :
+        token ∈ tokens.filter (fun token => decide (token + cacheSize ≤ current)) := by
+      simp [htoken, hoverwritten]
+    rw [hfilter_nil] at hfiltered
+    simp at hfiltered
+  · intro hnoStale
+    apply List.length_eq_zero_iff.mpr
+    rw [List.eq_nil_iff_forall_not_mem]
+    intro token hfiltered
+    have htoken : token ∈ tokens := by
+      exact (List.mem_filter.mp hfiltered).1
+    have hoverwritten : token + cacheSize ≤ current := by
+      exact of_decide_eq_true (List.mem_filter.mp hfiltered).2
+    exact hnoStale ⟨token, htoken, hoverwritten⟩
+
+/-- For non-future duplicate-free read requests, passing is equivalent to stale
+requested-member count zero. -/
+theorem kvCacheAdapterRequestTracePass_iff_staleMemberCount_eq_zero_of_nonFuture_nodup
+    {cacheSize current : Nat} {tokens : List Nat} (hcache : 0 < cacheSize)
+    (hnotFuture : ∀ token ∈ tokens, token ≤ current)
+    (hnodup : tokens.Nodup) :
+    kvCacheAdapterRequestTracePass cacheSize current tokens ↔
+      kvCacheAdapterRequestStaleMemberCount cacheSize current tokens = 0 := by
+  rw [kvCacheAdapterRequestTracePass_iff_no_stale_member_of_nonFuture_nodup
+    hcache hnotFuture hnodup]
+  rw [kvCacheAdapterRequestStaleMemberCount_eq_zero_iff_no_stale_member]
+
+/-- For non-future duplicate-free read requests, failure is equivalent to a
+positive stale requested-member count. -/
+theorem not_kvCacheAdapterRequestTracePass_iff_staleMemberCount_pos_of_nonFuture_nodup
+    {cacheSize current : Nat} {tokens : List Nat} (hcache : 0 < cacheSize)
+    (hnotFuture : ∀ token ∈ tokens, token ≤ current)
+    (hnodup : tokens.Nodup) :
+    ¬ kvCacheAdapterRequestTracePass cacheSize current tokens ↔
+      0 < kvCacheAdapterRequestStaleMemberCount cacheSize current tokens := by
+  constructor
+  · intro hfail
+    have hstale :
+        ∃ token, token ∈ tokens ∧ token + cacheSize ≤ current :=
+      (not_kvCacheAdapterRequestTracePass_iff_exists_stale_member_of_nonFuture_nodup
+        hcache hnotFuture hnodup).1 hfail
+    have hcount_ne :
+        kvCacheAdapterRequestStaleMemberCount cacheSize current tokens ≠ 0 := by
+      intro hzero
+      exact
+        (kvCacheAdapterRequestStaleMemberCount_eq_zero_iff_no_stale_member.1
+          hzero) hstale
+    exact Nat.pos_of_ne_zero hcount_ne
+  · intro hcount_pos
+    have hcount_ne :
+        kvCacheAdapterRequestStaleMemberCount cacheSize current tokens ≠ 0 :=
+      Nat.ne_of_gt hcount_pos
+    have hstale :
+        ∃ token, token ∈ tokens ∧ token + cacheSize ≤ current := by
+      by_contra hnoStale
+      exact hcount_ne
+        (kvCacheAdapterRequestStaleMemberCount_eq_zero_iff_no_stale_member.2
+          hnoStale)
+    exact
+      (not_kvCacheAdapterRequestTracePass_iff_exists_stale_member_of_nonFuture_nodup
+        hcache hnotFuture hnodup).2 hstale
 
 /-- The explicit live KV-cache window maps to duplicate-free ring-buffer slots.
 

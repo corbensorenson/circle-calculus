@@ -42,6 +42,9 @@ const THEOREM_IDS = [
   "AIM-T0098",
   "AIM-T0099",
   "AIM-T0100",
+  "AIM-T0101",
+  "AIM-T0102",
+  "AIM-T0103",
 ];
 const DICTIONARY_IDS = ["COMMON-0028", "COMMON-0081"];
 
@@ -203,6 +206,18 @@ function appendRecord(output, values, theoremById) {
     && batchNextOverwritesAfterCurrent
   );
   const adapterRequestPassIffBoundary = adapterRequestPass === adapterRequestBoundaryPass;
+  const staleRequestedTokens = batchTokens.filter(
+    (token) => token <= values.current && token + values.cacheSize <= values.current,
+  );
+  const staleRequestedCount = staleRequestedTokens.length;
+  const staleRequestedCountZeroIffNoStaleMember =
+    (staleRequestedCount === 0) === (staleRequestedTokens.length === 0);
+  const passIffStaleCountZero = batchAllNonFuture && batchTokensDistinct
+    ? adapterRequestPass === (staleRequestedCount === 0)
+    : false;
+  const failIffStaleCountPositive = batchAllNonFuture && batchTokensDistinct
+    ? (!adapterRequestPass) === (staleRequestedCount > 0)
+    : false;
   const tokens = liveTokens(values.cacheSize, values.current);
   const slots = tokens.map((token) => kvSlot(values.cacheSize, token));
   const orderedLiveWindowSubrequest = isOrderedSubsequence(batchTokens, tokens);
@@ -247,11 +262,16 @@ function appendRecord(output, values, theoremById) {
     `batch next overwrites after current: ${batchNextOverwritesAfterCurrent}`,
     `batch trace fresh iff boundary: ${batchTraceFreshIffBoundary}`,
     `trace-fresh read-batch slots distinct: ${traceFreshSlotsDistinct}`,
+    `stale requested tokens: ${staleRequestedTokens.length === 0 ? "none" : staleRequestedTokens.join(", ")}`,
+    `stale requested count: ${staleRequestedCount}`,
+    `stale count zero iff no stale member: ${staleRequestedCountZeroIffNoStaleMember}`,
     `ordered live-window subrequest: ${orderedLiveWindowSubrequest}`,
     `duplicate-free live-window subrequest: ${duplicateFreeLiveWindowSubrequest}`,
     `live-window subrequest pass contract: ${liveWindowSubrequestPassContract}`,
     `adapter request trace pass: ${adapterRequestPass}`,
     `adapter request pass iff boundary: ${adapterRequestPassIffBoundary}`,
+    `adapter request pass iff stale count zero: ${passIffStaleCountZero}`,
+    `adapter request fail iff stale count positive: ${failIffStaleCountPositive}`,
     `collision with current slot: ${collisionWithCurrent}`,
     `retained older token distinct from current slot: ${distinctFromCurrent}`,
     `live window tokens: ${tokens.join(", ")}`,

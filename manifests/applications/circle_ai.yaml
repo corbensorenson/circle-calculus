@@ -163,6 +163,18 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.not_kvCacheAdapterRequestTracePass_iff_exists_stale_member_of_nonFuture_nodup
     dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+  - id: AIM-T0101
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheAdapterRequestStaleMemberCount_eq_zero_iff_no_stale_member
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+  - id: AIM-T0102
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheAdapterRequestTracePass_iff_staleMemberCount_eq_zero_of_nonFuture_nodup
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+  - id: AIM-T0103
+    status: lean_proved
+    lean_name: Circle.Applications.not_kvCacheAdapterRequestTracePass_iff_staleMemberCount_pos_of_nonFuture_nodup
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
   - id: AIM-T0006
     status: lean_proved
     lean_name: Circle.Applications.loopRequiredSteps_pos

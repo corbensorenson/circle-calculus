@@ -5,6 +5,7 @@
     "cache_size": 16,
     "current": 31,
     "duplicate_free_live_window_subrequest": true,
+    "fail_iff_stale_count_positive_under_nonfuture_nodup": true,
     "fail_iff_stale_member_under_nonfuture_nodup": true,
     "first_stale_next_overwrite_token": null,
     "first_stale_token": null,
@@ -23,7 +24,10 @@
       "Circle.Applications.kvCacheAdapterRequestBoundary_slotMap_nodup",
       "Circle.Applications.not_kvCacheAdapterRequestTracePass_of_stale_member",
       "Circle.Applications.kvCacheAdapterRequestTracePass_iff_no_stale_member_of_nonFuture_nodup",
-      "Circle.Applications.not_kvCacheAdapterRequestTracePass_iff_exists_stale_member_of_nonFuture_nodup"
+      "Circle.Applications.not_kvCacheAdapterRequestTracePass_iff_exists_stale_member_of_nonFuture_nodup",
+      "Circle.Applications.kvCacheAdapterRequestStaleMemberCount_eq_zero_iff_no_stale_member",
+      "Circle.Applications.kvCacheAdapterRequestTracePass_iff_staleMemberCount_eq_zero_of_nonFuture_nodup",
+      "Circle.Applications.not_kvCacheAdapterRequestTracePass_iff_staleMemberCount_pos_of_nonFuture_nodup"
     ],
     "live_window_subrequest_pass_contract": true,
     "next_overwrites_after_current": true,
@@ -32,6 +36,7 @@
     "pass_certificate": true,
     "pass_iff_next_overwrite_boundary": true,
     "pass_iff_no_stale_member_under_nonfuture_nodup": true,
+    "pass_iff_stale_count_zero_under_nonfuture_nodup": true,
     "request_id": "default_read_request",
     "request_token_count": 4,
     "requested_slots": [
@@ -49,6 +54,8 @@
     "retained_iff_no_same_slot_overwrite_trace": true,
     "slots_distinct": true,
     "stale_member_blocks_pass": false,
+    "stale_requested_count": 0,
+    "stale_requested_count_zero_iff_no_stale_member": true,
     "theorem_ids": [
       "AIM-T0059",
       "AIM-T0067",
@@ -64,7 +71,10 @@
       "AIM-T0096",
       "AIM-T0097",
       "AIM-T0098",
-      "AIM-T0100"
+      "AIM-T0100",
+      "AIM-T0101",
+      "AIM-T0102",
+      "AIM-T0103"
     ],
     "tokens_distinct": true,
     "trace_fresh_iff_next_overwrite_boundary": true,

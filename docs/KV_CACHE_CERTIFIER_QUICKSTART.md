@@ -70,7 +70,7 @@ python scripts/kv_cache_certify.py \
 
 - `window_certificate`: the inspected token's slot, current slot, lag, retained-window status, next same-slot overwrite boundary, whether any later token up to the current read point reused the same slot, whether a stale token has the explicit same-slot overwrite witness `token + cache_size`, whether stale status is equivalent to the existence of a later same-slot write in the trace, and whether retained-window membership is equivalent to no later same-slot write in the trace up to `current`.
 - `batch_certificate`: the optional retained batch, its slots, whether all batch tokens are retained, whether the batch slots are duplicate-free, whether all-retained is equivalent to every requested non-future token having no later same-slot write up to `current`, and whether a trace-fresh duplicate-free batch maps to duplicate-free slots.
-- `adapter_request_trace_certificate`: the same retained-batch theorem spine packaged as a named modeled adapter read request. It passes only when the requested tokens are non-future, retained, duplicate-free, mapped to duplicate-free slots, and trace-fresh pointwise. It reports the first stale requested token when one exists, the stale token's next same-slot overwrite, and whether that stale member theorem-blocks the pass bit. It also reports whether the requested tokens are a duplicate-free ordered subrequest of the generated live-window list, which is the direct hypothesis shape for `AIM-T0094`.
+- `adapter_request_trace_certificate`: the same retained-batch theorem spine packaged as a named modeled adapter read request. It passes only when the requested tokens are non-future, retained, duplicate-free, mapped to duplicate-free slots, and trace-fresh pointwise. It reports the first stale requested token when one exists, the stale token's next same-slot overwrite, the stale requested-member count, whether count zero is equivalent to no stale member, and whether that stale member theorem-blocks the pass bit. It also reports whether the requested tokens are a duplicate-free ordered subrequest of the generated live-window list, which is the direct hypothesis shape for `AIM-T0094`.
 - `live_window_certificate`: the generated retained-token interval, its slot list, and whether the full-window coverage contract applies.
 - `full_coverage_contract`: true when the live window is full, the generated slot list is duplicate-free, its length equals `cache_size`, and every emitted slot is inside the cache range.
 - `slot_count_matches_full_window`: true when the generated slot-list count matches `cache_size` exactly when the live window is full.
@@ -105,6 +105,10 @@ The main theorem spine is:
 - `AIM-T0097`: a stale requested member blocks the modeled adapter request pass bit.
 - `AIM-T0098`: for non-future duplicate-free requests, the modeled adapter pass bit is equivalent to having no stale requested member.
 - `AIM-T0099`: for a non-future token, stale status is equivalent to the existence of a later same-slot write up to `current`.
+- `AIM-T0100`: for non-future duplicate-free requests, modeled request failure is equivalent to stale requested-member existence.
+- `AIM-T0101`: the counted stale requested-member field is zero exactly when no stale requested member exists.
+- `AIM-T0102`: for non-future duplicate-free requests, modeled request passing is equivalent to stale requested-member count zero.
+- `AIM-T0103`: for non-future duplicate-free requests, modeled request failure is equivalent to positive stale requested-member count.
 
 ## Boundary
 
@@ -120,7 +124,11 @@ The most implementation-facing fields are:
 - `trace_fresh_iff_next_overwrite_boundary`: the finite trace scan agrees with the constant-time boundary check.
 - `next_overwrites_after_current`: every requested token's next same-slot overwrite is after the current read point.
 - `first_stale_token`: the first requested non-future token whose next same-slot overwrite is at or before current, if one exists.
+- `stale_requested_count`: the number of requested non-future tokens whose next same-slot overwrite is at or before current.
+- `stale_requested_count_zero_iff_no_stale_member`: the counted zero field agrees with the no-stale-member predicate.
 - `stale_member_blocks_pass`: true when the request has a theorem-backed stale-member failure witness.
 - `live_window_subrequest_pass_contract`: the requested tokens are an ordered duplicate-free subrequest of the generated live window and the modeled adapter request passes.
 - `pass_iff_next_overwrite_boundary`: the adapter request pass bit agrees with the compact checklist of non-future tokens, duplicate-free tokens, and the next-overwrite boundary.
 - `pass_iff_no_stale_member_under_nonfuture_nodup`: under non-future and duplicate-free request assumptions, the pass bit agrees with the absence of stale requested members.
+- `pass_iff_stale_count_zero_under_nonfuture_nodup`: under the same assumptions, the pass bit agrees with stale requested-member count zero.
+- `fail_iff_stale_count_positive_under_nonfuture_nodup`: under the same assumptions, failure agrees with positive stale requested-member count.

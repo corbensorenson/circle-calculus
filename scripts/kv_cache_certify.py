@@ -185,6 +185,9 @@ def summary_lines(payload: dict[str, Any]) -> list[str]:
             f" first_stale_token={adapter_request['first_stale_token']} "
             "first_stale_next_overwrite="
             f"{adapter_request['first_stale_next_overwrite_token']} "
+            f"stale_requested_count={adapter_request['stale_requested_count']} "
+            "stale_requested_count_zero_iff_no_stale_member="
+            f"{adapter_request['stale_requested_count_zero_iff_no_stale_member']} "
             f"stale_member_blocks_pass={adapter_request['stale_member_blocks_pass']}"
             f" ordered_live_window_subrequest={adapter_request['ordered_live_window_subrequest']} "
             "duplicate_free_live_window_subrequest="
@@ -199,7 +202,11 @@ def summary_lines(payload: dict[str, Any]) -> list[str]:
             "pass_iff_no_stale_member_under_nonfuture_nodup="
             f"{adapter_request['pass_iff_no_stale_member_under_nonfuture_nodup']} "
             "fail_iff_stale_member_under_nonfuture_nodup="
-            f"{adapter_request['fail_iff_stale_member_under_nonfuture_nodup']}"
+            f"{adapter_request['fail_iff_stale_member_under_nonfuture_nodup']} "
+            "pass_iff_stale_count_zero_under_nonfuture_nodup="
+            f"{adapter_request['pass_iff_stale_count_zero_under_nonfuture_nodup']} "
+            "fail_iff_stale_count_positive_under_nonfuture_nodup="
+            f"{adapter_request['fail_iff_stale_count_positive_under_nonfuture_nodup']}"
         ),
         (
             "live_window_contract="

@@ -42,6 +42,9 @@ from circle_math.applications.circle_ai import (
     kv_cache_slots_collide,
     kv_cache_stale_by_next_overwrite_boundary,
     kv_cache_stale_iff_same_slot_overwrite_trace,
+    kv_cache_stale_requested_count,
+    kv_cache_stale_requested_count_zero_iff_no_stale_member,
+    kv_cache_stale_requested_tokens,
     kv_cache_trace_fresh_batch_slots_distinct,
     kv_cache_trace_fresh_iff_next_overwrite_boundary,
     kv_cache_window_contains,
@@ -243,6 +246,8 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     assert certificate.slots_distinct
     assert certificate.first_stale_token is None
     assert certificate.first_stale_next_overwrite_token is None
+    assert certificate.stale_requested_count == 0
+    assert certificate.stale_requested_count_zero_iff_no_stale_member
     assert not certificate.stale_member_blocks_pass
     assert certificate.retained_iff_no_same_slot_overwrite_trace
     assert certificate.next_overwrites_after_current
@@ -255,7 +260,16 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     assert certificate.pass_iff_next_overwrite_boundary
     assert certificate.pass_iff_no_stale_member_under_nonfuture_nodup
     assert certificate.fail_iff_stale_member_under_nonfuture_nodup
+    assert certificate.pass_iff_stale_count_zero_under_nonfuture_nodup
+    assert certificate.fail_iff_stale_count_positive_under_nonfuture_nodup
     assert kv_cache_adapter_request_trace_pass_compact(16, 31, (20, 24, 29, 31))
+    assert kv_cache_stale_requested_tokens(16, 31, (20, 24, 29, 31)) == ()
+    assert kv_cache_stale_requested_count(16, 31, (20, 24, 29, 31)) == 0
+    assert kv_cache_stale_requested_count_zero_iff_no_stale_member(
+        16,
+        31,
+        (20, 24, 29, 31),
+    )
     assert kv_cache_ordered_live_window_subrequest(16, 31, (20, 24, 29, 31))
     assert "AIM-T0078" in certificate.theorem_ids
     assert "AIM-T0079" in certificate.theorem_ids
@@ -269,6 +283,9 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     assert "AIM-T0097" in certificate.theorem_ids
     assert "AIM-T0098" in certificate.theorem_ids
     assert "AIM-T0100" in certificate.theorem_ids
+    assert "AIM-T0101" in certificate.theorem_ids
+    assert "AIM-T0102" in certificate.theorem_ids
+    assert "AIM-T0103" in certificate.theorem_ids
     assert (
         "Circle.Applications.kvCacheLiveWindowSubrequest_adapterRequestTracePass"
         in certificate.lean_declarations
@@ -293,6 +310,18 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
         "Circle.Applications.not_kvCacheAdapterRequestTracePass_iff_exists_stale_member_of_nonFuture_nodup"
         in certificate.lean_declarations
     )
+    assert (
+        "Circle.Applications.kvCacheAdapterRequestStaleMemberCount_eq_zero_iff_no_stale_member"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.kvCacheAdapterRequestTracePass_iff_staleMemberCount_eq_zero_of_nonFuture_nodup"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.not_kvCacheAdapterRequestTracePass_iff_staleMemberCount_pos_of_nonFuture_nodup"
+        in certificate.lean_declarations
+    )
     assert "Modeled adapter request-trace certificate only" in certificate.note
 
     future_request = certify_kv_cache_adapter_request_trace(
@@ -313,6 +342,8 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     assert not future_request.fail_iff_stale_member_under_nonfuture_nodup
     assert future_request.first_stale_token is None
     assert future_request.first_stale_next_overwrite_token is None
+    assert future_request.stale_requested_count == 0
+    assert future_request.stale_requested_count_zero_iff_no_stale_member
     assert not future_request.stale_member_blocks_pass
     assert not kv_cache_adapter_request_trace_pass_compact(16, 31, (20, 32))
 
@@ -329,6 +360,8 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     assert not stale_request.slots_distinct
     assert stale_request.first_stale_token == 12
     assert stale_request.first_stale_next_overwrite_token == 28
+    assert stale_request.stale_requested_count == 1
+    assert stale_request.stale_requested_count_zero_iff_no_stale_member
     assert stale_request.stale_member_blocks_pass
     assert not stale_request.next_overwrites_after_current
     assert stale_request.trace_fresh_iff_next_overwrite_boundary
@@ -340,7 +373,12 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     assert stale_request.pass_iff_next_overwrite_boundary
     assert stale_request.pass_iff_no_stale_member_under_nonfuture_nodup
     assert stale_request.fail_iff_stale_member_under_nonfuture_nodup
+    assert stale_request.pass_iff_stale_count_zero_under_nonfuture_nodup
+    assert stale_request.fail_iff_stale_count_positive_under_nonfuture_nodup
     assert not kv_cache_adapter_request_trace_pass_compact(16, 31, (12, 20))
+    assert kv_cache_stale_requested_tokens(16, 31, (12, 20)) == (12,)
+    assert kv_cache_stale_requested_count(16, 31, (12, 20)) == 1
+    assert kv_cache_stale_requested_count_zero_iff_no_stale_member(16, 31, (12, 20))
 
     duplicate_request = certify_kv_cache_adapter_request_trace(
         cache_size=16,
@@ -362,6 +400,8 @@ def test_kv_cache_adapter_request_trace_packages_batch_contract() -> None:
     assert not duplicate_request.fail_iff_stale_member_under_nonfuture_nodup
     assert duplicate_request.first_stale_token is None
     assert duplicate_request.first_stale_next_overwrite_token is None
+    assert duplicate_request.stale_requested_count == 0
+    assert duplicate_request.stale_requested_count_zero_iff_no_stale_member
     assert not duplicate_request.stale_member_blocks_pass
     assert not kv_cache_adapter_request_trace_pass_compact(16, 31, (20, 20))
 
@@ -541,6 +581,13 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert payload["adapter_request_trace_certificate"]["request_id"] == "default_read_request"
     assert payload["adapter_request_trace_certificate"]["requested_slots"] == [4, 8, 13, 15]
     assert payload["adapter_request_trace_certificate"]["pass_certificate"] is True
+    assert payload["adapter_request_trace_certificate"]["stale_requested_count"] == 0
+    assert (
+        payload["adapter_request_trace_certificate"][
+            "stale_requested_count_zero_iff_no_stale_member"
+        ]
+        is True
+    )
     assert payload["adapter_request_trace_certificate"]["next_overwrites_after_current"] is True
     assert payload["adapter_request_trace_certificate"]["trace_fresh_iff_next_overwrite_boundary"] is True
     assert payload["adapter_request_trace_certificate"]["pass_iff_next_overwrite_boundary"] is True
@@ -556,6 +603,18 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
         ]
         is True
     )
+    assert (
+        payload["adapter_request_trace_certificate"][
+            "pass_iff_stale_count_zero_under_nonfuture_nodup"
+        ]
+        is True
+    )
+    assert (
+        payload["adapter_request_trace_certificate"][
+            "fail_iff_stale_count_positive_under_nonfuture_nodup"
+        ]
+        is True
+    )
     assert payload["adapter_request_trace_certificate"]["ordered_live_window_subrequest"] is True
     assert payload["adapter_request_trace_certificate"]["duplicate_free_live_window_subrequest"] is True
     assert payload["adapter_request_trace_certificate"]["live_window_subrequest_pass_contract"] is True
@@ -568,6 +627,9 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert "AIM-T0094" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert "AIM-T0095" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert "AIM-T0096" in payload["adapter_request_trace_certificate"]["theorem_ids"]
+    assert "AIM-T0101" in payload["adapter_request_trace_certificate"]["theorem_ids"]
+    assert "AIM-T0102" in payload["adapter_request_trace_certificate"]["theorem_ids"]
+    assert "AIM-T0103" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert "AIM-T0100" in payload["adapter_request_trace_certificate"]["theorem_ids"]
     assert payload["live_window_certificate"]["start"] == 16
     assert payload["live_window_certificate"]["length"] == 16
@@ -616,6 +678,9 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert "Trace iff boundary" in markdown_result.stdout
     assert "Next overwrites after current" in markdown_result.stdout
     assert "Pass iff boundary" in markdown_result.stdout
+    assert "Stale count" in markdown_result.stdout
+    assert "Pass iff stale count zero" in markdown_result.stdout
+    assert "Fail iff stale count positive" in markdown_result.stdout
     assert "Trace-fresh slots distinct" in markdown_result.stdout
     assert "Ordered live-window subrequest" in markdown_result.stdout
     assert "Subrequest pass contract" in markdown_result.stdout
@@ -638,6 +703,9 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert "AIM-T0094" in markdown_result.stdout
     assert "AIM-T0095" in markdown_result.stdout
     assert "AIM-T0096" in markdown_result.stdout
+    assert "AIM-T0101" in markdown_result.stdout
+    assert "AIM-T0102" in markdown_result.stdout
+    assert "AIM-T0103" in markdown_result.stdout
 
 
 def test_committed_kv_cache_ring_buffer_results_match_generator(tmp_path: Path) -> None:

@@ -152,6 +152,9 @@ def text_results(payload: dict[str, Any]) -> str:
             f"first_stale_token={adapter_request['first_stale_token']} "
             "first_stale_next_overwrite="
             f"{adapter_request['first_stale_next_overwrite_token']} "
+            f"stale_requested_count={adapter_request['stale_requested_count']} "
+            "stale_requested_count_zero_iff_no_stale_member="
+            f"{adapter_request['stale_requested_count_zero_iff_no_stale_member']} "
             f"stale_member_blocks_pass={adapter_request['stale_member_blocks_pass']} "
             "ordered_live_window_subrequest="
             f"{adapter_request['ordered_live_window_subrequest']} "
@@ -166,6 +169,10 @@ def text_results(payload: dict[str, Any]) -> str:
             f"{adapter_request['pass_iff_no_stale_member_under_nonfuture_nodup']} "
             "fail_iff_stale_member_under_nonfuture_nodup="
             f"{adapter_request['fail_iff_stale_member_under_nonfuture_nodup']} "
+            "pass_iff_stale_count_zero_under_nonfuture_nodup="
+            f"{adapter_request['pass_iff_stale_count_zero_under_nonfuture_nodup']} "
+            "fail_iff_stale_count_positive_under_nonfuture_nodup="
+            f"{adapter_request['fail_iff_stale_count_positive_under_nonfuture_nodup']} "
             f"theorem_ids={','.join(adapter_request['theorem_ids'])}"
         ),
         adapter_request["note"],
@@ -262,8 +269,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{', '.join(batch['theorem_ids'])} |"
             ),
             "",
-            "| Request id | Requested tokens | Requested slots | All non-future | All retained | Tokens distinct | Slots distinct | First stale token | First stale next overwrite | Stale member blocks pass | Trace iff | Next overwrites after current | Trace iff boundary | Trace-fresh slots distinct | Ordered live-window subrequest | Duplicate-free live-window subrequest | Subrequest pass contract | Pass certificate | Pass iff boundary | Pass iff no stale member | Fail iff stale member | Theorem ids |",
-            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+            "| Request id | Requested tokens | Requested slots | All non-future | All retained | Tokens distinct | Slots distinct | First stale token | First stale next overwrite | Stale count | Stale count zero iff no stale member | Stale member blocks pass | Trace iff | Next overwrites after current | Trace iff boundary | Trace-fresh slots distinct | Ordered live-window subrequest | Duplicate-free live-window subrequest | Subrequest pass contract | Pass certificate | Pass iff boundary | Pass iff no stale member | Fail iff stale member | Pass iff stale count zero | Fail iff stale count positive | Theorem ids |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
             (
                 f"| {adapter_request['request_id']} | "
                 f"{', '.join(str(token) for token in adapter_request['requested_tokens'])} | "
@@ -274,6 +281,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{adapter_request['slots_distinct']} | "
                 f"{adapter_request['first_stale_token']} | "
                 f"{adapter_request['first_stale_next_overwrite_token']} | "
+                f"{adapter_request['stale_requested_count']} | "
+                f"{adapter_request['stale_requested_count_zero_iff_no_stale_member']} | "
                 f"{adapter_request['stale_member_blocks_pass']} | "
                 f"{adapter_request['retained_iff_no_same_slot_overwrite_trace']} | "
                 f"{adapter_request['next_overwrites_after_current']} | "
@@ -286,6 +295,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{adapter_request['pass_iff_next_overwrite_boundary']} | "
                 f"{adapter_request['pass_iff_no_stale_member_under_nonfuture_nodup']} | "
                 f"{adapter_request['fail_iff_stale_member_under_nonfuture_nodup']} | "
+                f"{adapter_request['pass_iff_stale_count_zero_under_nonfuture_nodup']} | "
+                f"{adapter_request['fail_iff_stale_count_positive_under_nonfuture_nodup']} | "
                 f"{', '.join(adapter_request['theorem_ids'])} |"
             ),
             "",
