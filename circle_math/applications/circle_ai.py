@@ -1101,6 +1101,8 @@ class StrideFamilyCoverageCertificate:
     no_zero_period_violation_witness_step: Optional[int]
     no_zero_period_violation_witness_residue: Optional[int]
     zero_residue_witness_matches_period_threshold: bool
+    zero_residue_witness_matches_no_zero_failure: bool
+    period_threshold_violation_matches_no_zero_failure: bool
     unique_lag_count_shortfall_certifies_incomplete: bool
     unique_lag_count_shortfall_matches_gap_witness_under_candidate_range: bool
     unique_lag_count_shortfall_matches_gap_witness_under_period_threshold: bool
@@ -1233,6 +1235,8 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0129",
         "AIT-T0130",
         "AIT-T0131",
+        "AIT-T0132",
+        "AIT-T0133",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -3205,6 +3209,12 @@ def certify_stride_family_coverage(
             )
         )
     )
+    zero_residue_witness_matches_no_zero_failure = (
+        zero_residue_witness_exists == (not no_zero_residue_condition)
+    )
+    period_threshold_violation_matches_no_zero_failure = (
+        (no_zero_period_violation is not None) == (not no_zero_residue_condition)
+    )
     singleton_stride_period: Optional[int] = None
     singleton_no_zero_period_threshold: Optional[bool] = None
     singleton_no_zero_period_threshold_matches_condition = True
@@ -3324,6 +3334,12 @@ def certify_stride_family_coverage(
         ),
         zero_residue_witness_matches_period_threshold=(
             zero_residue_witness_matches_period_threshold
+        ),
+        zero_residue_witness_matches_no_zero_failure=(
+            zero_residue_witness_matches_no_zero_failure
+        ),
+        period_threshold_violation_matches_no_zero_failure=(
+            period_threshold_violation_matches_no_zero_failure
         ),
         unique_lag_count_shortfall_certifies_incomplete=(
             not (unique_lag_candidate_count < positive_lag_count and coverage_complete)

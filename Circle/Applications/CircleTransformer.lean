@@ -469,6 +469,39 @@ theorem coilStrideFamilyHasZeroResidue_iff_exists_period_le_pathLength
         (n := n) (stride := stride)
         (step := Circle.period n stride)).2 dvd_rfl⟩
 
+/-- The no-zero-residue structural check fails exactly when a concrete generated
+zero-residue witness exists.
+
+This theorem is deliberately stated without period arithmetic: it connects the
+Boolean-style report predicate directly to the witness predicate. The period
+theorem above then explains how to find such a witness in nonzero contexts. -/
+theorem not_coilStrideFamilyNoZeroResidues_iff_hasZeroResidue
+    {n pathLength : Nat} {strides : List Nat} :
+    ¬ coilStrideFamilyNoZeroResidues n pathLength strides ↔
+      coilStrideFamilyHasZeroResidue n pathLength strides := by
+  constructor
+  · intro hnot
+    by_contra hnoWitness
+    apply hnot
+    intro stride hmem step hstep_pos hstep_le hzero
+    exact hnoWitness ⟨stride, hmem, step, hstep_pos, hstep_le, hzero⟩
+  · rintro ⟨stride, hmem, step, hstep_pos, hstep_le, hzero⟩ hnoZero
+    exact hnoZero stride hmem step hstep_pos hstep_le hzero
+
+/-- In a nonzero context, the no-zero structural check fails exactly when some
+admitted stride period is at most the path budget.
+
+This is the direct report-facing failure form of
+`coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period`: a failed
+threshold is not just a warning; it is equivalent to failure of the structural
+no-zero condition. -/
+theorem not_coilStrideFamilyNoZeroResidues_iff_exists_period_le_pathLength
+    {n pathLength : Nat} (hn : n ≠ 0) {strides : List Nat} :
+    ¬ coilStrideFamilyNoZeroResidues n pathLength strides ↔
+      ∃ stride, stride ∈ strides ∧ Circle.period n stride ≤ pathLength := by
+  rw [not_coilStrideFamilyNoZeroResidues_iff_hasZeroResidue,
+    coilStrideFamilyHasZeroResidue_iff_exists_period_le_pathLength hn]
+
 /-- The query-predecessor map is injective on the generated lag candidates. -/
 def hybridFamilyPredecessorInjectiveOnLagCandidates
     (n query window pathLength : Nat) (strides : List Nat) : Prop :=

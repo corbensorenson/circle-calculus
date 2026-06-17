@@ -965,6 +965,8 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     assert result.coverage_certificate.no_zero_period_violation_witness_step is None
     assert result.coverage_certificate.no_zero_period_violation_witness_residue is None
     assert result.coverage_certificate.zero_residue_witness_matches_period_threshold
+    assert result.coverage_certificate.zero_residue_witness_matches_no_zero_failure
+    assert result.coverage_certificate.period_threshold_violation_matches_no_zero_failure
     assert result.coverage_certificate.unique_lag_count_shortfall_certifies_incomplete
     assert (
         result.coverage_certificate
@@ -1207,6 +1209,8 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0129",
         "AIT-T0130",
         "AIT-T0131",
+        "AIT-T0132",
+        "AIT-T0133",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -1326,6 +1330,8 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0129" in certificate["theorem_ids"]
     assert "AIT-T0130" in certificate["theorem_ids"]
     assert "AIT-T0131" in certificate["theorem_ids"]
+    assert "AIT-T0132" in certificate["theorem_ids"]
+    assert "AIT-T0133" in certificate["theorem_ids"]
     assert certificate["no_wrap_separated_candidate_range_sufficient_condition"] is False
     assert certificate["no_zero_residue_candidate_range_sufficient_condition"] is True
     assert certificate["singleton_stride_period"] is None
@@ -1343,6 +1349,8 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert certificate["no_zero_period_violation_witness_step"] is None
     assert certificate["no_zero_period_violation_witness_residue"] is None
     assert certificate["zero_residue_witness_matches_period_threshold"] is True
+    assert certificate["zero_residue_witness_matches_no_zero_failure"] is True
+    assert certificate["period_threshold_violation_matches_no_zero_failure"] is True
     assert (
         certificate[
             "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold"
@@ -1415,6 +1423,8 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert complete["no_zero_period_violation_witness_step"] is None
     assert complete["no_zero_period_violation_witness_residue"] is None
     assert complete["zero_residue_witness_matches_period_threshold"] is True
+    assert complete["zero_residue_witness_matches_no_zero_failure"] is True
+    assert complete["period_threshold_violation_matches_no_zero_failure"] is True
     assert complete["unique_lag_count_shortfall_certifies_incomplete"] is True
     assert (
         complete["unique_lag_count_shortfall_matches_gap_witness_under_candidate_range"]
@@ -1524,10 +1534,14 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert singleton_probe["no_zero_period_violation_witness_step"] is None
     assert singleton_probe["no_zero_period_violation_witness_residue"] is None
     assert singleton_probe["zero_residue_witness_matches_period_threshold"] is True
+    assert singleton_probe["zero_residue_witness_matches_no_zero_failure"] is True
+    assert singleton_probe["period_threshold_violation_matches_no_zero_failure"] is True
     assert "AIT-T0126" in singleton_probe["core_coverage_theorem_ids"]
     assert "AIT-T0127" in singleton_probe["core_coverage_theorem_ids"]
     assert "AIT-T0128" in singleton_probe["core_coverage_theorem_ids"]
     assert "AIT-T0131" in singleton_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0132" in singleton_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0133" in singleton_probe["core_coverage_theorem_ids"]
     long_no_wrap = planner_rows["long_context_no_wrap_probe_4096"]
     assert long_no_wrap["sequence_length"] == 4096
     assert long_no_wrap["strides"] == [33, 160, 800]
@@ -1942,11 +1956,15 @@ def test_singleton_stride_period_threshold_matches_no_zero_condition() -> None:
     assert "AIT-T0127" in below_period.theorem_ids
     assert "AIT-T0128" in below_period.theorem_ids
     assert "AIT-T0131" in below_period.theorem_ids
+    assert "AIT-T0132" in below_period.theorem_ids
+    assert "AIT-T0133" in below_period.theorem_ids
     assert below_period.no_zero_period_violation_witness_stride is None
     assert below_period.no_zero_period_violation_witness_period is None
     assert below_period.no_zero_period_violation_witness_step is None
     assert below_period.no_zero_period_violation_witness_residue is None
     assert below_period.zero_residue_witness_matches_period_threshold
+    assert below_period.zero_residue_witness_matches_no_zero_failure
+    assert below_period.period_threshold_violation_matches_no_zero_failure
 
     assert at_period.singleton_stride_period == 3
     assert at_period.singleton_no_zero_period_threshold is False
@@ -1961,6 +1979,8 @@ def test_singleton_stride_period_threshold_matches_no_zero_condition() -> None:
     assert at_period.no_zero_period_violation_witness_step == 3
     assert at_period.no_zero_period_violation_witness_residue == 0
     assert at_period.zero_residue_witness_matches_period_threshold
+    assert at_period.zero_residue_witness_matches_no_zero_failure
+    assert at_period.period_threshold_violation_matches_no_zero_failure
 
 
 def test_stride_family_complete_sparse_family_fixture_has_empty_gap_list() -> None:

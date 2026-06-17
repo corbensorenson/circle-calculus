@@ -7296,6 +7296,38 @@ theorems:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_singleton_stride_period_threshold_matches_no_zero_condition
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
     blocker: ""
+  - id: AIT-T0132
+    status: lean_proved
+    lean_name: Circle.Applications.not_coilStrideFamilyNoZeroResidues_iff_hasZeroResidue
+    informal_statement: "A stride family's no-zero-residue structural check fails exactly when a concrete generated zero-residue witness exists."
+    formal_statement: "forall {n pathLength : Nat} {strides : List Nat}, not (Circle.Applications.coilStrideFamilyNoZeroResidues n pathLength strides) <-> Circle.Applications.coilStrideFamilyHasZeroResidue n pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_singleton_stride_period_threshold_matches_no_zero_condition
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
+  - id: AIT-T0133
+    status: lean_proved
+    lean_name: Circle.Applications.not_coilStrideFamilyNoZeroResidues_iff_exists_period_le_pathLength
+    informal_statement: "For a nonzero context, the no-zero-residue structural check fails exactly when some admitted stride has finite coil period at most the shared path length."
+    formal_statement: "forall {n pathLength : Nat} {strides : List Nat}, n != 0 -> (not (Circle.Applications.coilStrideFamilyNoZeroResidues n pathLength strides) <-> exists stride, stride in strides and Circle.period n stride <= pathLength)"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_singleton_stride_period_threshold_matches_no_zero_condition
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

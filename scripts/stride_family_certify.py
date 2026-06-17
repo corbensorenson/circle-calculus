@@ -189,7 +189,11 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             f"{payload['no_zero_period_violation_witness_residue']}) "
             "witness_matches_period_threshold="
             f"{payload['zero_residue_witness_matches_period_threshold']} "
-            "theorems=AIT-T0128,AIT-T0131"
+            "witness_matches_no_zero_failure="
+            f"{payload['zero_residue_witness_matches_no_zero_failure']} "
+            "period_violation_matches_no_zero_failure="
+            f"{payload['period_threshold_violation_matches_no_zero_failure']} "
+            "theorems=AIT-T0128,AIT-T0131,AIT-T0132,AIT-T0133"
         ),
         (
             "candidate_range_counts="

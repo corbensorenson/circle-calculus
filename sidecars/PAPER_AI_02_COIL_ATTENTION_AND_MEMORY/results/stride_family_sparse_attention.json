@@ -69,6 +69,7 @@
       "no_zero_residue_candidate_range_sufficient_condition": true,
       "note": "Finite lag-coverage certificate only; uncovered_lags are gap certificates for the declared local-window plus stride-family plan, not model-quality evidence.",
       "path_length": 3,
+      "period_threshold_violation_matches_no_zero_failure": true,
       "positive_lag_count": 119,
       "raw_budget_shortfall_certifies_incomplete": true,
       "raw_candidate_budget_upper_bound": 10,
@@ -191,7 +192,9 @@
         "AIT-T0128",
         "AIT-T0129",
         "AIT-T0130",
-        "AIT-T0131"
+        "AIT-T0131",
+        "AIT-T0132",
+        "AIT-T0133"
       ],
       "theorem_side_coil_residues_no_collision": true,
       "theorem_side_lag_candidates": [
@@ -378,6 +381,7 @@
       "unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated": true,
       "unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue": true,
       "unique_query_count_shortfall_matches_gap_witness_under_period_threshold": true,
+      "zero_residue_witness_matches_no_zero_failure": true,
       "zero_residue_witness_matches_period_threshold": true
     },
     "family_accuracy": 1.0,
@@ -466,6 +470,7 @@
     "no_zero_residue_candidate_range_sufficient_condition": true,
     "note": "Finite lag-coverage certificate only; uncovered_lags are gap certificates for the declared local-window plus stride-family plan, not model-quality evidence.",
     "path_length": 2,
+    "period_threshold_violation_matches_no_zero_failure": true,
     "positive_lag_count": 8,
     "raw_budget_shortfall_certifies_incomplete": true,
     "raw_candidate_budget_upper_bound": 8,
@@ -590,7 +595,9 @@
       "AIT-T0128",
       "AIT-T0129",
       "AIT-T0130",
-      "AIT-T0131"
+      "AIT-T0131",
+      "AIT-T0132",
+      "AIT-T0133"
     ],
     "theorem_side_coil_residues_no_collision": true,
     "theorem_side_lag_candidates": [
@@ -638,6 +645,7 @@
     "unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated": true,
     "unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue": true,
     "unique_query_count_shortfall_matches_gap_witness_under_period_threshold": true,
+    "zero_residue_witness_matches_no_zero_failure": true,
     "zero_residue_witness_matches_period_threshold": true
   },
   "planner_style_certificates": [
@@ -683,7 +691,9 @@
         "AIT-T0128",
         "AIT-T0129",
         "AIT-T0130",
-        "AIT-T0131"
+        "AIT-T0131",
+        "AIT-T0132",
+        "AIT-T0133"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.08403361344537816,
@@ -736,6 +746,7 @@
       "no_zero_residue_candidate_range_sufficient_condition": true,
       "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
       "path_length": 3,
+      "period_threshold_violation_matches_no_zero_failure": true,
       "plan_id": "default_gap_fixture_120",
       "positive_lag_count": 119,
       "raw_budget_shortfall_certifies_incomplete": true,
@@ -818,6 +829,7 @@
       "unique_lag_count_shortfall_certifies_incomplete": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true,
+      "zero_residue_witness_matches_no_zero_failure": true,
       "zero_residue_witness_matches_period_threshold": true
     },
     {
@@ -862,7 +874,9 @@
         "AIT-T0128",
         "AIT-T0129",
         "AIT-T0130",
-        "AIT-T0131"
+        "AIT-T0131",
+        "AIT-T0132",
+        "AIT-T0133"
       ],
       "coverage_complete": true,
       "coverage_ratio": 1.0,
@@ -914,6 +928,7 @@
       "no_zero_residue_candidate_range_sufficient_condition": true,
       "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
       "path_length": 2,
+      "period_threshold_violation_matches_no_zero_failure": true,
       "plan_id": "complete_toy_fixture_9",
       "positive_lag_count": 8,
       "raw_budget_shortfall_certifies_incomplete": true,
@@ -948,6 +963,7 @@
       "unique_lag_count_shortfall_certifies_incomplete": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true,
+      "zero_residue_witness_matches_no_zero_failure": true,
       "zero_residue_witness_matches_period_threshold": true
     },
     {
@@ -992,7 +1008,9 @@
         "AIT-T0128",
         "AIT-T0129",
         "AIT-T0130",
-        "AIT-T0131"
+        "AIT-T0131",
+        "AIT-T0132",
+        "AIT-T0133"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.2727272727272727,
@@ -1031,6 +1049,7 @@
       "no_zero_residue_candidate_range_sufficient_condition": true,
       "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
       "path_length": 2,
+      "period_threshold_violation_matches_no_zero_failure": true,
       "plan_id": "singleton_period_probe_12",
       "positive_lag_count": 11,
       "raw_budget_shortfall_certifies_incomplete": true,
@@ -1083,6 +1102,7 @@
       "unique_lag_count_shortfall_certifies_incomplete": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true,
+      "zero_residue_witness_matches_no_zero_failure": true,
       "zero_residue_witness_matches_period_threshold": true
     },
     {
@@ -1127,7 +1147,9 @@
         "AIT-T0128",
         "AIT-T0129",
         "AIT-T0130",
-        "AIT-T0131"
+        "AIT-T0131",
+        "AIT-T0132",
+        "AIT-T0133"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.010744810744810745,
@@ -1189,6 +1211,7 @@
       "no_zero_residue_candidate_range_sufficient_condition": true,
       "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
       "path_length": 4,
+      "period_threshold_violation_matches_no_zero_failure": true,
       "plan_id": "long_context_no_wrap_probe_4096",
       "positive_lag_count": 4095,
       "raw_budget_shortfall_certifies_incomplete": true,
@@ -1297,6 +1320,7 @@
       "unique_lag_count_shortfall_certifies_incomplete": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true,
+      "zero_residue_witness_matches_no_zero_failure": true,
       "zero_residue_witness_matches_period_threshold": true
     },
     {
@@ -1341,7 +1365,9 @@
         "AIT-T0128",
         "AIT-T0129",
         "AIT-T0130",
-        "AIT-T0131"
+        "AIT-T0131",
+        "AIT-T0132",
+        "AIT-T0133"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.011720180686118912,
@@ -1404,6 +1430,7 @@
       "no_zero_residue_candidate_range_sufficient_condition": true,
       "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
       "path_length": 8,
+      "period_threshold_violation_matches_no_zero_failure": true,
       "plan_id": "long_context_coprime_probe_8192",
       "positive_lag_count": 8191,
       "raw_budget_shortfall_certifies_incomplete": true,
@@ -1514,6 +1541,7 @@
       "unique_lag_count_shortfall_certifies_incomplete": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true,
+      "zero_residue_witness_matches_no_zero_failure": true,
       "zero_residue_witness_matches_period_threshold": true
     }
   ],

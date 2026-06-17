@@ -67,6 +67,8 @@ CORE_COVERAGE_THEOREM_IDS = (
     "AIT-T0129",
     "AIT-T0130",
     "AIT-T0131",
+    "AIT-T0132",
+    "AIT-T0133",
 )
 
 PLANNER_STYLE_SPECS: tuple[dict[str, Any], ...] = (
@@ -221,6 +223,12 @@ def compact_planner_certificate(spec: dict[str, Any]) -> dict[str, Any]:
         "zero_residue_witness_matches_period_threshold": (
             certificate.zero_residue_witness_matches_period_threshold
         ),
+        "zero_residue_witness_matches_no_zero_failure": (
+            certificate.zero_residue_witness_matches_no_zero_failure
+        ),
+        "period_threshold_violation_matches_no_zero_failure": (
+            certificate.period_threshold_violation_matches_no_zero_failure
+        ),
         "unique_lag_count_shortfall_certifies_incomplete": (
             certificate.unique_lag_count_shortfall_certifies_incomplete
         ),
@@ -371,6 +379,10 @@ def text_results(payload: dict[str, Any]) -> str:
             f"{row['no_zero_period_threshold_candidate_range_sufficient_condition']} "
             "family_threshold_matches_no_zero="
             f"{row['no_zero_period_threshold_matches_condition']} "
+            "zero_witness_matches_no_zero_failure="
+            f"{row['zero_residue_witness_matches_no_zero_failure']} "
+            "period_violation_matches_no_zero_failure="
+            f"{row['period_threshold_violation_matches_no_zero_failure']} "
             "unique_count_complete_iff="
             f"{row['unique_lag_count_matches_complete_under_candidate_range']} "
             "covered_eq_unique="
@@ -483,6 +495,10 @@ def text_results(payload: dict[str, Any]) -> str:
         f"{certificate['no_zero_period_threshold_candidate_range_sufficient_condition']} "
         "family_threshold_matches_no_zero="
         f"{certificate['no_zero_period_threshold_matches_condition']} "
+        "zero_witness_matches_no_zero_failure="
+        f"{certificate['zero_residue_witness_matches_no_zero_failure']} "
+        "period_violation_matches_no_zero_failure="
+        f"{certificate['period_threshold_violation_matches_no_zero_failure']} "
         "unique_count_complete_iff="
         f"{certificate['unique_lag_count_matches_complete_under_candidate_range']} "
         "covered_eq_unique="
@@ -556,6 +572,10 @@ def text_results(payload: dict[str, Any]) -> str:
         f"{complete['no_zero_period_threshold_candidate_range_sufficient_condition']} "
         "family_threshold_matches_no_zero="
         f"{complete['no_zero_period_threshold_matches_condition']} "
+        "zero_witness_matches_no_zero_failure="
+        f"{complete['zero_residue_witness_matches_no_zero_failure']} "
+        "period_violation_matches_no_zero_failure="
+        f"{complete['period_threshold_violation_matches_no_zero_failure']} "
         "unique_count_complete_iff="
         f"{complete['unique_lag_count_matches_complete_under_candidate_range']} "
         "covered_eq_unique="
@@ -663,13 +683,15 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "Family no-zero period threshold:",
             "",
-            "| Periods | Thresholds | Period threshold sufficient | Matches no-zero residue scan |",
-            "| --- | --- | --- | --- |",
+            "| Periods | Thresholds | Period threshold sufficient | Matches no-zero residue scan | Zero witness iff no-zero failure | Period violation iff no-zero failure |",
+            "| --- | --- | --- | --- | --- | --- |",
             (
                 f"| {', '.join(str(period) for period in certificate['stride_family_periods'])} | "
                 f"{', '.join(str(flag) for flag in certificate['no_zero_period_thresholds'])} | "
                 f"{certificate['no_zero_period_threshold_candidate_range_sufficient_condition']} | "
-                f"{certificate['no_zero_period_threshold_matches_condition']} |"
+                f"{certificate['no_zero_period_threshold_matches_condition']} | "
+                f"{certificate['zero_residue_witness_matches_no_zero_failure']} | "
+                f"{certificate['period_threshold_violation_matches_no_zero_failure']} |"
             ),
             "",
             "Covered lags:",

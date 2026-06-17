@@ -42,7 +42,7 @@ raw_budget_shortfall=True certifies_incomplete=True theorem=AIT-T0110
 unique_lag_shortfall=True certifies_incomplete=True gap_witness_equiv_under_candidate_range=True period_threshold_equiv=True theorems=AIT-T0111,AIT-T0120,AIT-T0121,AIT-T0122,AIT-T0129
 candidate_range=True no_wrap_separated_sufficient=False no_zero_residue_sufficient=True unique_count_complete_iff=True theorems=AIT-T0112,AIT-T0115,AIT-T0116,AIT-T0117,AIT-T0118,AIT-T0119
 singleton_no_zero_period_threshold=None period=None matches_no_zero_residue_condition=True theorems=AIT-T0126,AIT-T0127
-family_no_zero_period_thresholds=(True, True) periods=(120, 120) period_threshold_sufficient=True matches_no_zero_residue_condition=True violation_witness=(None, None, None, None) witness_matches_period_threshold=True theorems=AIT-T0128,AIT-T0131
+family_no_zero_period_thresholds=(True, True) periods=(120, 120) period_threshold_sufficient=True matches_no_zero_residue_condition=True violation_witness=(None, None, None, None) witness_matches_period_threshold=True witness_matches_no_zero_failure=True period_violation_matches_no_zero_failure=True theorems=AIT-T0128,AIT-T0131,AIT-T0132,AIT-T0133
 candidate_range_counts=covered_eq_unique=True uncovered_eq_context_minus_unique=True theorems=AIT-T0113,AIT-T0114
 lag_budget_status=exact-raw-budget unique_lag_candidates=10 lag_no_collision=True
 query_budget_status=exact-raw-budget unique_query_candidates=10 query_no_collision=True
@@ -89,6 +89,8 @@ python scripts/stride_family_certify.py \
 - `no_zero_period_threshold_matches_condition`: true when the period-threshold test agrees with the finite no-zero residue scan.
 - `no_zero_period_violation_witness_stride`, `no_zero_period_violation_witness_period`, `no_zero_period_violation_witness_step`, `no_zero_period_violation_witness_residue`: the first constructed zero-residue witness when a period threshold fails; otherwise absent.
 - `zero_residue_witness_matches_period_threshold`: true when the witness fields agree with the Lean-backed period-at-most-path-budget condition.
+- `zero_residue_witness_matches_no_zero_failure`: true when existence of a generated zero-residue witness agrees with failure of the no-zero structural check.
+- `period_threshold_violation_matches_no_zero_failure`: true when a period-at-most-path-budget violation agrees with failure of the no-zero structural check.
 - `unique_lag_count_shortfall_certifies_incomplete`: true when the certificate avoids the impossible state where the deduplicated unique lag-candidate count is below `context - 1` but coverage is still reported complete.
 - `unique_lag_count_shortfall_matches_gap_witness_under_period_threshold`: true when the period-threshold hypothesis is absent or, under `local_window < context` plus all `path_length < stride_period` checks, unique lag-candidate shortfall is equivalent to an uncovered-lag witness.
 - `unique_lag_count_matches_complete_under_candidate_range`: true when the candidate-range hypothesis is absent or, under that hypothesis, complete coverage matches `theorem_side_unique_lag_candidate_count == context - 1`.
@@ -128,6 +130,8 @@ The raw-budget iff endpoints are:
 - `AIT-T0129`: under the period-threshold check and `window < context`, unique lag-candidate shortfall is equivalent to an uncovered positive lag.
 - `AIT-T0130`: under the same period-threshold check and `window < context`, unique query-candidate shortfall is equivalent to an uncovered positive lag.
 - `AIT-T0131`: a zero-residue witness exists exactly when some admitted stride period is at most `path_length`; the report constructs the witness with `step = period`.
+- `AIT-T0132`: failure of the no-zero structural check is equivalent to existence of a generated zero-residue witness.
+- `AIT-T0133`: in a nonzero context, failure of the no-zero structural check is equivalent to some admitted stride period being at most `path_length`.
 
 The finite-list endpoints are:
 
