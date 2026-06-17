@@ -6,6 +6,9 @@ They are not formal proofs and they are not model-quality claims.
 
 from __future__ import annotations
 
+import importlib.util
+import subprocess
+import sys
 from dataclasses import dataclass
 from math import cos, lcm, sin, tau
 from typing import Optional, Sequence
@@ -561,13 +564,30 @@ def accuracy(predictions: Sequence[int], labels: Sequence[int]) -> float:
     return correct / len(labels)
 
 
+_MLX_AVAILABLE_CACHE: Optional[bool] = None
+
+
 def mlx_available() -> bool:
-    """Return whether the optional MLX backend can be imported."""
-    try:
-        import mlx.core  # type: ignore[import-not-found]  # noqa: F401
-    except Exception:
+    """Return whether the optional MLX backend can be imported safely."""
+    global _MLX_AVAILABLE_CACHE
+    if _MLX_AVAILABLE_CACHE is not None:
+        return _MLX_AVAILABLE_CACHE
+    if importlib.util.find_spec("mlx") is None:
+        _MLX_AVAILABLE_CACHE = False
         return False
-    return True
+    try:
+        completed = subprocess.run(
+            [sys.executable, "-c", "import mlx.core"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=10,
+            check=False,
+        )
+    except Exception:
+        _MLX_AVAILABLE_CACHE = False
+        return False
+    _MLX_AVAILABLE_CACHE = completed.returncode == 0
+    return _MLX_AVAILABLE_CACHE
 
 
 def _mlx_accuracy(predictions: Sequence[int], labels: Sequence[int]) -> float:

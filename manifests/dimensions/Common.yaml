@@ -3798,6 +3798,21 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_coprime_rational_certificate_uses_modular_inverse_exact_margin_theorem
     blocker: ""
+  - id: AIRA-T0227
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime
+    informal_statement: "Every reduced natural-rational turn ratio has some positive full-denominator-context gap whose exact weakest scalar nearest-integer margin is 1/denominator."
+    formal_statement: "forall {numerator denominator : Nat}, 1 < denominator -> Nat.Coprime numerator denominator -> exists witnessGap, 0 < witnessGap and witnessGap < denominator and Circle.Applications.ropeTurnRatioExactWeakestGapMargin ((numerator : Real) / (denominator : Real)) (1 / (denominator : Real)) denominator witnessGap"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_coprime_rational_certificate_uses_modular_inverse_exact_margin_theorem
+        - tests/test_rope_certifier.py::test_coprime_rational_full_denominator_context_reports_existential_exact_margin_theorem
+    blocker: ""
   - id: AIRA-T0187
     status: lean_proved
     lean_name: Circle.Applications.ropeRationalPreset4099_noZeroTurnRatioError

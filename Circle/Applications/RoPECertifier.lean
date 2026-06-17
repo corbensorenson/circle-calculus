@@ -1,4 +1,5 @@
 import Mathlib.Data.Nat.ModEq
+import Mathlib.Data.Int.GCD
 import Mathlib.Data.Int.Cast.Basic
 import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.Analysis.Real.Pi.Bounds
@@ -2483,6 +2484,58 @@ theorem ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_wi
       (context := context)
       (witnessGap := witnessGap)).2 ?_
   exact ⟨hmem, hgap_pos, le_antisymm hupper hlower, hfinite⟩
+
+/-- Every reduced natural-rational turn ratio has some modular-inverse gap
+realizing exact weakest margin `1 / denominator` over the full denominator
+context.
+
+This removes the need for a caller to supply the inverse witness manually in
+the full-period rational/discretized case: coprimality gives a positive gap
+strictly below the denominator whose numerator product is one residue away from
+an integer number of denominators, and the generic witness theorem turns that
+gap into an exact weakest-gap report. -/
+theorem ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime
+    {numerator denominator : Nat}
+    (hdenominator : 1 < denominator)
+    (hcoprime : Nat.Coprime numerator denominator) :
+    ∃ witnessGap, 0 < witnessGap ∧ witnessGap < denominator ∧
+      ropeTurnRatioExactWeakestGapMargin
+        ((numerator : ℝ) / (denominator : ℝ))
+        (1 / (denominator : ℝ)) denominator witnessGap := by
+  obtain ⟨witnessGap, hgap_lt, hmod⟩ :=
+    Nat.exists_mul_mod_eq_one_of_coprime
+      (k := denominator) (n := numerator) hcoprime hdenominator
+  have hgap_pos : 0 < witnessGap := by
+    by_contra hnot
+    have hzero : witnessGap = 0 := Nat.eq_zero_of_not_pos hnot
+    subst witnessGap
+    norm_num at hmod
+  let turns := (witnessGap * numerator) / denominator
+  have hmod_comm :
+      witnessGap * numerator % denominator = 1 := by
+    simpa [Nat.mul_comm] using hmod
+  have hwitness :
+      witnessGap * numerator = turns * denominator + 1 ∨
+        witnessGap * numerator + 1 = turns * denominator := by
+    left
+    have hdivmod :
+        witnessGap * numerator =
+          denominator * ((witnessGap * numerator) / denominator) +
+            (witnessGap * numerator) % denominator :=
+      (Nat.div_add_mod (witnessGap * numerator) denominator).symm
+    have hdivmod' :
+        witnessGap * numerator =
+          ((witnessGap * numerator) / denominator) * denominator +
+            (witnessGap * numerator) % denominator := by
+      simpa [Nat.mul_comm denominator ((witnessGap * numerator) / denominator)] using hdivmod
+    simpa [turns, hmod_comm] using hdivmod'
+  exact
+    ⟨witnessGap, hgap_pos, hgap_lt,
+      ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness
+        (numerator := numerator) (denominator := denominator)
+        (context := denominator) (witnessGap := witnessGap) (turns := turns)
+        (Nat.zero_lt_of_lt hdenominator) hcoprime (le_refl denominator)
+        hgap_pos hgap_lt hwitness⟩
 
 private theorem ropeTurnRatio_one_over_nat_floor_eq_zero
     {denominator : Nat} (hdenominator : 1 < denominator) :

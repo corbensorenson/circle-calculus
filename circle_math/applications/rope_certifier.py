@@ -202,6 +202,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0224",
     "AIRA-T0225",
     "AIRA-T0226",
+    "AIRA-T0227",
     "AIRA-T0126",
     "AIRA-T0139",
     "AIRA-T0140",
@@ -253,6 +254,7 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_le_error",
     "Circle.Applications.ropeTurnRatioError_natRatio_eq_one_over_den_of_modular_inverse_witness",
     "Circle.Applications.ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness",
+    "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_band_bounds",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
     "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
@@ -281,6 +283,14 @@ ROPE_NAT_RATIO_MODULAR_INVERSE_EXACT_MARGIN_LEAN_DECLARATIONS: tuple[str, ...] =
     "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_le_error",
     "Circle.Applications.ropeTurnRatioError_natRatio_eq_one_over_den_of_modular_inverse_witness",
     "Circle.Applications.ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness",
+)
+
+ROPE_NAT_RATIO_COPRIME_FULL_DENOMINATOR_EXACT_MARGIN_THEOREMS: tuple[str, ...] = (
+    "AIRA-T0227",
+)
+
+ROPE_NAT_RATIO_COPRIME_FULL_DENOMINATOR_EXACT_MARGIN_LEAN_DECLARATIONS: tuple[str, ...] = (
+    "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime",
 )
 
 ROPE_RATIONAL_PRESET_4099_THEOREMS: tuple[str, ...] = (
@@ -1922,6 +1932,15 @@ def certify_rational_turn_ratio_finite_margin(
             lean_declarations = (
                 lean_declarations
                 + ROPE_NAT_RATIO_MODULAR_INVERSE_EXACT_MARGIN_LEAN_DECLARATIONS
+            )
+        if context_length == denominator and denominator > 1 and gcd(numerator, denominator) == 1:
+            theorem_ids = (
+                theorem_ids
+                + ROPE_NAT_RATIO_COPRIME_FULL_DENOMINATOR_EXACT_MARGIN_THEOREMS
+            )
+            lean_declarations = (
+                lean_declarations
+                + ROPE_NAT_RATIO_COPRIME_FULL_DENOMINATOR_EXACT_MARGIN_LEAN_DECLARATIONS
             )
     else:
         theorem_ids = ("AIRA-T0055", "AIRA-T0057", "AIRA-T0182", "AIRA-T0183")
@@ -3870,7 +3889,8 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         "turn-ratio scaling, finite-context margin consequence, context-plus-margin transfer, "
         "integer/rational-turn-ratio guardrails, positive rational finite-context "
         "certificate, exact rational boundary, one-over-denominator exact "
-        "weakest-gap family, and modular-inverse rational exact-gap family, "
+        "weakest-gap family, modular-inverse rational exact-gap reports, "
+        "and full-denominator reduced-rational exact-gap existence, "
         "generated-gap enumeration, floor/ceiling nearest-integer, scalar nearest-gap margin, finite certificate "
         "iff, negative obstruction iff, scaled no-near-turn iff, certificate-object "
         "no-near-turn iff, finite-certificate bank bridge, context-range obstruction "

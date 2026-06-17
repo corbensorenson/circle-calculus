@@ -124,10 +124,39 @@ True
 1 / 4099, represented as a Python float
 1/4099
 1
-AIRA-T0056,AIRA-T0059,AIRA-T0182,AIRA-T0183,AIRA-T0214,AIRA-T0060,AIRA-T0177,AIRA-T0186,AIRA-T0061,AIRA-T0185,AIRA-T0215,AIRA-T0187,AIRA-T0196,AIRA-T0062
+AIRA-T0056,AIRA-T0059,AIRA-T0182,AIRA-T0183,AIRA-T0214,AIRA-T0060,AIRA-T0177,AIRA-T0186,AIRA-T0061,AIRA-T0185,AIRA-T0215,AIRA-T0222,AIRA-T0223,AIRA-T0187,AIRA-T0196,AIRA-T0062
 ```
 
 Lean proves that the declared turn ratio `1/4099` has finite-context nearest-integer margin `1/4099` for every positive gap below context `4096`, proves that the scalar nearest-gap margin can stand in for the floor/ceiling witness pair, proves the reusable exact-weakest-gap report contract, proves that the named gap `1` realizes the exact reported margin, proves that the finite nearest-integer certificate object is equivalent to the abstract margin predicate, proves that the certificate object is equivalent to the one-channel no-near-turn contract, then proves the corresponding named no-near-turn consequence. This is useful as the first complete certificate shape. It is not a proof that the standard `1 / (2π)` RoPE channel has the same kind of finite-context margin.
+
+For reduced rational turn ratios at the full denominator context, the certifier
+also cites the full-denominator existence theorem:
+
+```python
+from circle_math.applications import certify_rational_turn_ratio_finite_margin
+
+certificate = certify_rational_turn_ratio_finite_margin(
+    numerator=3,
+    denominator=7,
+    context_length=7,
+)
+print(certificate.exact_nearest_gap_margin)
+print(certificate.exact_nearest_gap)
+print(certificate.theorem_ids)
+```
+
+Expected meaning:
+
+```text
+1/7
+2
+AIRA-T0056,AIRA-T0057,AIRA-T0182,AIRA-T0183,AIRA-T0224,AIRA-T0225,AIRA-T0226,AIRA-T0227
+```
+
+`AIRA-T0224` through `AIRA-T0226` prove that a supplied plus-or-minus-one
+modular-inverse gap realizes the exact weakest scalar margin. `AIRA-T0227`
+adds the full-denominator existence result: for a reduced natural-rational turn
+ratio, some positive gap below the denominator realizes that exact margin.
 
 ## Named Standard RoPE Interval Seed
 

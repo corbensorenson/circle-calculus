@@ -13673,6 +13673,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness",
           "name": "Circle.Applications.ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0227",
+          "lean_name": "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime",
+          "name": "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -14932,6 +14938,12 @@
           "id": "AIRA-T0226",
           "lean_name": "Circle.Applications.ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness",
           "name": "Circle.Applications.ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0227",
+          "lean_name": "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime",
+          "name": "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime",
           "status": "proved"
         }
       ],
@@ -16852,6 +16864,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness",
           "name": "Circle.Applications.ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0227",
+          "lean_name": "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime",
+          "name": "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -18102,6 +18120,12 @@
           "id": "AIRA-T0226",
           "lean_name": "Circle.Applications.ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness",
           "name": "Circle.Applications.ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0227",
+          "lean_name": "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime",
+          "name": "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime",
           "status": "proved"
         }
       ],
@@ -19469,6 +19493,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness",
           "name": "Circle.Applications.ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0227",
+          "lean_name": "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime",
+          "name": "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -20421,6 +20451,12 @@
           "id": "AIRA-T0226",
           "lean_name": "Circle.Applications.ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness",
           "name": "Circle.Applications.ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0227",
+          "lean_name": "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime",
+          "name": "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime",
           "status": "proved"
         }
       ],
