@@ -66,6 +66,7 @@ CORE_COVERAGE_THEOREM_IDS = (
     "AIT-T0128",
     "AIT-T0129",
     "AIT-T0130",
+    "AIT-T0131",
 )
 
 PLANNER_STYLE_SPECS: tuple[dict[str, Any], ...] = (
@@ -204,6 +205,21 @@ def compact_planner_certificate(spec: dict[str, Any]) -> dict[str, Any]:
         ),
         "no_zero_period_threshold_matches_condition": (
             certificate.no_zero_period_threshold_matches_condition
+        ),
+        "no_zero_period_violation_witness_stride": (
+            certificate.no_zero_period_violation_witness_stride
+        ),
+        "no_zero_period_violation_witness_period": (
+            certificate.no_zero_period_violation_witness_period
+        ),
+        "no_zero_period_violation_witness_step": (
+            certificate.no_zero_period_violation_witness_step
+        ),
+        "no_zero_period_violation_witness_residue": (
+            certificate.no_zero_period_violation_witness_residue
+        ),
+        "zero_residue_witness_matches_period_threshold": (
+            certificate.zero_residue_witness_matches_period_threshold
         ),
         "unique_lag_count_shortfall_certifies_incomplete": (
             certificate.unique_lag_count_shortfall_certifies_incomplete

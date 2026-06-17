@@ -333,6 +333,16 @@ def coilStrideFamilyNoZeroResidues
     ∀ step, 1 ≤ step → step ≤ pathLength →
       (step * stride) % n ≠ 0
 
+/-- A finite stride family has an explicit generated zero-residue witness.
+
+This is the failure-side companion to `coilStrideFamilyNoZeroResidues`: it records
+the exact stride and positive generated step whose residue collapses to the
+useless zero lag. -/
+def coilStrideFamilyHasZeroResidue
+    (n pathLength : Nat) (strides : List Nat) : Prop :=
+  ∃ stride, stride ∈ strides ∧
+    ∃ step, 1 ≤ step ∧ step ≤ pathLength ∧ (step * stride) % n = 0
+
 /-- A one-stride generated residue collapses to zero exactly when the finite
 coil period divides the step count. -/
 theorem coilLagResidue_zero_iff_period_dvd
@@ -423,6 +433,41 @@ theorem coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period
       Nat.le_of_dvd hgenerated_pos hdiv
     have hperiod_gt := hperiod stride hmem
     omega
+
+/-- For a nonzero context, a stride family has a concrete zero-residue witness
+exactly when some admitted stride's finite coil period is at most the path
+budget.
+
+The backward direction constructs the witness used by sparse-attention reports:
+take `step = Circle.period n stride`. The forward direction proves that any
+positive zero-residue step must be at least one period, so it exposes a real
+period-threshold violation rather than a loose negation. -/
+theorem coilStrideFamilyHasZeroResidue_iff_exists_period_le_pathLength
+    {n pathLength : Nat} (hn : n ≠ 0) {strides : List Nat} :
+    coilStrideFamilyHasZeroResidue n pathLength strides ↔
+      ∃ stride, stride ∈ strides ∧ Circle.period n stride ≤ pathLength := by
+  constructor
+  · rintro ⟨stride, hmem, step, hstep_pos, hstep_le, hzero⟩
+    have hdiv :
+        Circle.period n stride ∣ step :=
+      (coilLagResidue_zero_iff_period_dvd
+        (n := n) (stride := stride) (step := step)).1 hzero
+    have hperiod_le_step : Circle.period n stride ≤ step :=
+      Nat.le_of_dvd hstep_pos hdiv
+    exact ⟨stride, hmem, le_trans hperiod_le_step hstep_le⟩
+  · rintro ⟨stride, hmem, hperiod_le⟩
+    have hgcd_pos : 0 < Nat.gcd n stride :=
+      Nat.gcd_pos_of_pos_left stride (Nat.pos_of_ne_zero hn)
+    have hgcd_le : Nat.gcd n stride ≤ n :=
+      Nat.gcd_le_left stride (Nat.pos_of_ne_zero hn)
+    have hperiod_pos : 0 < Circle.period n stride := by
+      rw [Circle.period_eq_n_div_gcd hn]
+      exact Nat.div_pos hgcd_le hgcd_pos
+    exact ⟨stride, hmem, Circle.period n stride,
+      Nat.succ_le_of_lt hperiod_pos, hperiod_le,
+      (coilLagResidue_zero_iff_period_dvd
+        (n := n) (stride := stride)
+        (step := Circle.period n stride)).2 dvd_rfl⟩
 
 /-- The query-predecessor map is injective on the generated lag candidates. -/
 def hybridFamilyPredecessorInjectiveOnLagCandidates

@@ -1096,6 +1096,11 @@ class StrideFamilyCoverageCertificate:
     no_zero_period_thresholds: tuple[bool, ...]
     no_zero_period_threshold_candidate_range_sufficient_condition: bool
     no_zero_period_threshold_matches_condition: bool
+    no_zero_period_violation_witness_stride: Optional[int]
+    no_zero_period_violation_witness_period: Optional[int]
+    no_zero_period_violation_witness_step: Optional[int]
+    no_zero_period_violation_witness_residue: Optional[int]
+    zero_residue_witness_matches_period_threshold: bool
     unique_lag_count_shortfall_certifies_incomplete: bool
     unique_lag_count_shortfall_matches_gap_witness_under_candidate_range: bool
     unique_lag_count_shortfall_matches_gap_witness_under_period_threshold: bool
@@ -1227,6 +1232,7 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0128",
         "AIT-T0129",
         "AIT-T0130",
+        "AIT-T0131",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -3154,6 +3160,51 @@ def certify_stride_family_coverage(
     no_zero_period_threshold_matches_condition = (
         no_zero_period_threshold_condition == no_zero_residue_condition
     )
+    no_zero_period_violation = next(
+        (
+            (stride, period)
+            for stride, period, threshold in zip(
+                normalized_strides,
+                stride_family_periods,
+                no_zero_period_thresholds,
+            )
+            if not threshold
+        ),
+        None,
+    )
+    no_zero_period_violation_witness_stride: Optional[int] = None
+    no_zero_period_violation_witness_period: Optional[int] = None
+    no_zero_period_violation_witness_step: Optional[int] = None
+    no_zero_period_violation_witness_residue: Optional[int] = None
+    if sequence_length > 0 and no_zero_period_violation is not None:
+        no_zero_period_violation_witness_stride = no_zero_period_violation[0]
+        no_zero_period_violation_witness_period = no_zero_period_violation[1]
+        no_zero_period_violation_witness_step = no_zero_period_violation[1]
+        no_zero_period_violation_witness_residue = (
+            no_zero_period_violation_witness_step
+            * no_zero_period_violation_witness_stride
+        ) % sequence_length
+    zero_residue_witness_exists = (
+        sequence_length > 0
+        and any(
+            (step * stride) % sequence_length == 0
+            for stride in normalized_strides
+            for step in range(1, path_length + 1)
+        )
+    )
+    zero_residue_witness_matches_period_threshold = (
+        (no_zero_period_violation is not None) == zero_residue_witness_exists
+        and (
+            no_zero_period_violation is None
+            or (
+                no_zero_period_violation_witness_period
+                == no_zero_period_violation_witness_step
+                and no_zero_period_violation_witness_step is not None
+                and 1 <= no_zero_period_violation_witness_step <= path_length
+                and no_zero_period_violation_witness_residue == 0
+            )
+        )
+    )
     singleton_stride_period: Optional[int] = None
     singleton_no_zero_period_threshold: Optional[bool] = None
     singleton_no_zero_period_threshold_matches_condition = True
@@ -3258,6 +3309,21 @@ def certify_stride_family_coverage(
         ),
         no_zero_period_threshold_matches_condition=(
             no_zero_period_threshold_matches_condition
+        ),
+        no_zero_period_violation_witness_stride=(
+            no_zero_period_violation_witness_stride
+        ),
+        no_zero_period_violation_witness_period=(
+            no_zero_period_violation_witness_period
+        ),
+        no_zero_period_violation_witness_step=(
+            no_zero_period_violation_witness_step
+        ),
+        no_zero_period_violation_witness_residue=(
+            no_zero_period_violation_witness_residue
+        ),
+        zero_residue_witness_matches_period_threshold=(
+            zero_residue_witness_matches_period_threshold
         ),
         unique_lag_count_shortfall_certifies_incomplete=(
             not (unique_lag_candidate_count < positive_lag_count and coverage_complete)

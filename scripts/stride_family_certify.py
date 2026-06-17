@@ -182,7 +182,14 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             f"{payload['no_zero_period_threshold_candidate_range_sufficient_condition']} "
             "matches_no_zero_residue_condition="
             f"{payload['no_zero_period_threshold_matches_condition']} "
-            "theorem=AIT-T0128"
+            "violation_witness="
+            f"({payload['no_zero_period_violation_witness_stride']}, "
+            f"{payload['no_zero_period_violation_witness_period']}, "
+            f"{payload['no_zero_period_violation_witness_step']}, "
+            f"{payload['no_zero_period_violation_witness_residue']}) "
+            "witness_matches_period_threshold="
+            f"{payload['zero_residue_witness_matches_period_threshold']} "
+            "theorems=AIT-T0128,AIT-T0131"
         ),
         (
             "candidate_range_counts="

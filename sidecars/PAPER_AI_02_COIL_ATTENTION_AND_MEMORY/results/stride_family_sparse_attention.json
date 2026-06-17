@@ -62,6 +62,10 @@
         true,
         true
       ],
+      "no_zero_period_violation_witness_period": null,
+      "no_zero_period_violation_witness_residue": null,
+      "no_zero_period_violation_witness_step": null,
+      "no_zero_period_violation_witness_stride": null,
       "no_zero_residue_candidate_range_sufficient_condition": true,
       "note": "Finite lag-coverage certificate only; uncovered_lags are gap certificates for the declared local-window plus stride-family plan, not model-quality evidence.",
       "path_length": 3,
@@ -186,7 +190,8 @@
         "AIT-T0127",
         "AIT-T0128",
         "AIT-T0129",
-        "AIT-T0130"
+        "AIT-T0130",
+        "AIT-T0131"
       ],
       "theorem_side_coil_residues_no_collision": true,
       "theorem_side_lag_candidates": [
@@ -372,7 +377,8 @@
       "unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective": true,
       "unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated": true,
       "unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue": true,
-      "unique_query_count_shortfall_matches_gap_witness_under_period_threshold": true
+      "unique_query_count_shortfall_matches_gap_witness_under_period_threshold": true,
+      "zero_residue_witness_matches_period_threshold": true
     },
     "family_accuracy": 1.0,
     "full_attention_accuracy": 1.0,
@@ -453,6 +459,10 @@
       true,
       true
     ],
+    "no_zero_period_violation_witness_period": null,
+    "no_zero_period_violation_witness_residue": null,
+    "no_zero_period_violation_witness_step": null,
+    "no_zero_period_violation_witness_stride": null,
     "no_zero_residue_candidate_range_sufficient_condition": true,
     "note": "Finite lag-coverage certificate only; uncovered_lags are gap certificates for the declared local-window plus stride-family plan, not model-quality evidence.",
     "path_length": 2,
@@ -579,7 +589,8 @@
       "AIT-T0127",
       "AIT-T0128",
       "AIT-T0129",
-      "AIT-T0130"
+      "AIT-T0130",
+      "AIT-T0131"
     ],
     "theorem_side_coil_residues_no_collision": true,
     "theorem_side_lag_candidates": [
@@ -626,7 +637,8 @@
     "unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective": true,
     "unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated": true,
     "unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue": true,
-    "unique_query_count_shortfall_matches_gap_witness_under_period_threshold": true
+    "unique_query_count_shortfall_matches_gap_witness_under_period_threshold": true,
+    "zero_residue_witness_matches_period_threshold": true
   },
   "planner_style_certificates": [
     {
@@ -670,7 +682,8 @@
         "AIT-T0127",
         "AIT-T0128",
         "AIT-T0129",
-        "AIT-T0130"
+        "AIT-T0130",
+        "AIT-T0131"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.08403361344537816,
@@ -716,6 +729,10 @@
         true,
         true
       ],
+      "no_zero_period_violation_witness_period": null,
+      "no_zero_period_violation_witness_residue": null,
+      "no_zero_period_violation_witness_step": null,
+      "no_zero_period_violation_witness_stride": null,
       "no_zero_residue_candidate_range_sufficient_condition": true,
       "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
       "path_length": 3,
@@ -800,7 +817,8 @@
       "unique_lag_count_matches_complete_under_candidate_range": true,
       "unique_lag_count_shortfall_certifies_incomplete": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
-      "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true
+      "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true,
+      "zero_residue_witness_matches_period_threshold": true
     },
     {
       "candidate_budget_per_query": 8,
@@ -843,7 +861,8 @@
         "AIT-T0127",
         "AIT-T0128",
         "AIT-T0129",
-        "AIT-T0130"
+        "AIT-T0130",
+        "AIT-T0131"
       ],
       "coverage_complete": true,
       "coverage_ratio": 1.0,
@@ -888,6 +907,10 @@
         true,
         true
       ],
+      "no_zero_period_violation_witness_period": null,
+      "no_zero_period_violation_witness_residue": null,
+      "no_zero_period_violation_witness_step": null,
+      "no_zero_period_violation_witness_stride": null,
       "no_zero_residue_candidate_range_sufficient_condition": true,
       "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
       "path_length": 2,
@@ -924,7 +947,8 @@
       "unique_lag_count_matches_complete_under_candidate_range": true,
       "unique_lag_count_shortfall_certifies_incomplete": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
-      "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true
+      "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true,
+      "zero_residue_witness_matches_period_threshold": true
     },
     {
       "candidate_budget_per_query": 3,
@@ -967,7 +991,8 @@
         "AIT-T0127",
         "AIT-T0128",
         "AIT-T0129",
-        "AIT-T0130"
+        "AIT-T0130",
+        "AIT-T0131"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.2727272727272727,
@@ -999,6 +1024,10 @@
       "no_zero_period_thresholds": [
         true
       ],
+      "no_zero_period_violation_witness_period": null,
+      "no_zero_period_violation_witness_residue": null,
+      "no_zero_period_violation_witness_step": null,
+      "no_zero_period_violation_witness_stride": null,
       "no_zero_residue_candidate_range_sufficient_condition": true,
       "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
       "path_length": 2,
@@ -1053,7 +1082,8 @@
       "unique_lag_count_matches_complete_under_candidate_range": true,
       "unique_lag_count_shortfall_certifies_incomplete": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
-      "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true
+      "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true,
+      "zero_residue_witness_matches_period_threshold": true
     },
     {
       "candidate_budget_per_query": 44,
@@ -1096,7 +1126,8 @@
         "AIT-T0127",
         "AIT-T0128",
         "AIT-T0129",
-        "AIT-T0130"
+        "AIT-T0130",
+        "AIT-T0131"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.010744810744810745,
@@ -1151,6 +1182,10 @@
         true,
         true
       ],
+      "no_zero_period_violation_witness_period": null,
+      "no_zero_period_violation_witness_residue": null,
+      "no_zero_period_violation_witness_step": null,
+      "no_zero_period_violation_witness_stride": null,
       "no_zero_residue_candidate_range_sufficient_condition": true,
       "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
       "path_length": 4,
@@ -1261,7 +1296,8 @@
       "unique_lag_count_matches_complete_under_candidate_range": true,
       "unique_lag_count_shortfall_certifies_incomplete": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
-      "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true
+      "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true,
+      "zero_residue_witness_matches_period_threshold": true
     },
     {
       "candidate_budget_per_query": 96,
@@ -1304,7 +1340,8 @@
         "AIT-T0127",
         "AIT-T0128",
         "AIT-T0129",
-        "AIT-T0130"
+        "AIT-T0130",
+        "AIT-T0131"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.011720180686118912,
@@ -1360,6 +1397,10 @@
         true,
         true
       ],
+      "no_zero_period_violation_witness_period": null,
+      "no_zero_period_violation_witness_residue": null,
+      "no_zero_period_violation_witness_step": null,
+      "no_zero_period_violation_witness_stride": null,
       "no_zero_residue_candidate_range_sufficient_condition": true,
       "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
       "path_length": 8,
@@ -1472,7 +1513,8 @@
       "unique_lag_count_matches_complete_under_candidate_range": true,
       "unique_lag_count_shortfall_certifies_incomplete": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
-      "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true
+      "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true,
+      "zero_residue_witness_matches_period_threshold": true
     }
   ],
   "schema_id": "circle_calculus.stride_family_sparse_attention_certificate.v0"
