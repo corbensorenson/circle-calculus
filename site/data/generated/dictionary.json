@@ -14207,6 +14207,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_over_den",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_over_den",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0229",
+          "lean_name": "Circle.Applications.ropeTurnRatioNatRatio_full_denominator_obstruction_of_one_over_den_lt_margin",
+          "name": "Circle.Applications.ropeTurnRatioNatRatio_full_denominator_obstruction_of_one_over_den_lt_margin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -15478,6 +15484,12 @@
           "id": "AIRA-T0228",
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_over_den",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_over_den",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0229",
+          "lean_name": "Circle.Applications.ropeTurnRatioNatRatio_full_denominator_obstruction_of_one_over_den_lt_margin",
+          "name": "Circle.Applications.ropeTurnRatioNatRatio_full_denominator_obstruction_of_one_over_den_lt_margin",
           "status": "proved"
         }
       ],
@@ -17536,6 +17548,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_over_den",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_over_den",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0229",
+          "lean_name": "Circle.Applications.ropeTurnRatioNatRatio_full_denominator_obstruction_of_one_over_den_lt_margin",
+          "name": "Circle.Applications.ropeTurnRatioNatRatio_full_denominator_obstruction_of_one_over_den_lt_margin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -18816,6 +18834,12 @@
           "id": "AIRA-T0228",
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_over_den",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_over_den",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0229",
+          "lean_name": "Circle.Applications.ropeTurnRatioNatRatio_full_denominator_obstruction_of_one_over_den_lt_margin",
+          "name": "Circle.Applications.ropeTurnRatioNatRatio_full_denominator_obstruction_of_one_over_den_lt_margin",
           "status": "proved"
         }
       ],
@@ -20195,6 +20219,12 @@
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_over_den",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_over_den",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0229",
+          "lean_name": "Circle.Applications.ropeTurnRatioNatRatio_full_denominator_obstruction_of_one_over_den_lt_margin",
+          "name": "Circle.Applications.ropeTurnRatioNatRatio_full_denominator_obstruction_of_one_over_den_lt_margin",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -21159,6 +21189,12 @@
           "id": "AIRA-T0228",
           "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_over_den",
           "name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_over_den",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0229",
+          "lean_name": "Circle.Applications.ropeTurnRatioNatRatio_full_denominator_obstruction_of_one_over_den_lt_margin",
+          "name": "Circle.Applications.ropeTurnRatioNatRatio_full_denominator_obstruction_of_one_over_den_lt_margin",
           "status": "proved"
         }
       ],

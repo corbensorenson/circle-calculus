@@ -204,6 +204,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0226",
     "AIRA-T0227",
     "AIRA-T0228",
+    "AIRA-T0229",
     "AIRA-T0126",
     "AIRA-T0139",
     "AIRA-T0140",
@@ -257,6 +258,7 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness",
     "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime",
     "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_over_den",
+    "Circle.Applications.ropeTurnRatioNatRatio_full_denominator_obstruction_of_one_over_den_lt_margin",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_band_bounds",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
     "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
@@ -290,11 +292,13 @@ ROPE_NAT_RATIO_MODULAR_INVERSE_EXACT_MARGIN_LEAN_DECLARATIONS: tuple[str, ...] =
 ROPE_NAT_RATIO_COPRIME_FULL_DENOMINATOR_EXACT_MARGIN_THEOREMS: tuple[str, ...] = (
     "AIRA-T0227",
     "AIRA-T0228",
+    "AIRA-T0229",
 )
 
 ROPE_NAT_RATIO_COPRIME_FULL_DENOMINATOR_EXACT_MARGIN_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime",
     "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_over_den",
+    "Circle.Applications.ropeTurnRatioNatRatio_full_denominator_obstruction_of_one_over_den_lt_margin",
 )
 
 ROPE_RATIONAL_PRESET_4099_THEOREMS: tuple[str, ...] = (
@@ -781,9 +785,15 @@ class TurnRatioFiniteMarginCertificate:
     denominator: int
     context_length: int
     turn_ratio: float
+    requested_margin: str | None
     certified_margin: float | None
     exact_nearest_gap_margin: str | None
     exact_nearest_gap: int | None
+    exact_threshold_margin: str | None
+    exact_threshold_witness_gap: int | None
+    exact_threshold_witness_turns: int | None
+    requested_margin_pass: bool | None
+    requested_margin_failure_reason: str | None
     pass_certificate: bool
     zero_margin_witness: tuple[int, int] | None
     theorem_ids: tuple[str, ...]
@@ -1865,6 +1875,7 @@ def certify_rational_turn_ratio_finite_margin(
     numerator: int,
     denominator: int,
     context_length: int,
+    requested_margin: Fraction | None = None,
     name: str | None = None,
 ) -> TurnRatioFiniteMarginCertificate:
     """Build a theorem-backed rational/discretized turn-ratio certificate.
@@ -1881,6 +1892,8 @@ def certify_rational_turn_ratio_finite_margin(
         raise ValueError("denominator must be positive")
     if context_length <= 0:
         raise ValueError("context_length must be positive")
+    if requested_margin is not None and requested_margin < 0:
+        raise ValueError("requested_margin must be nonnegative")
 
     exact_nearest_gap_margin, exact_nearest_gap = turn_ratio_exact_context_nearest_margin(
         turn_ratio=Fraction(numerator, denominator),
@@ -1897,6 +1910,44 @@ def certify_rational_turn_ratio_finite_margin(
         context_length=context_length,
     )
     pass_certificate = certified_margin is not None
+    full_denominator_exact_threshold = (
+        context_length == denominator
+        and denominator > 1
+        and gcd(numerator, denominator) == 1
+    )
+    exact_threshold_margin: Fraction | None = (
+        Fraction(1, denominator) if full_denominator_exact_threshold else None
+    )
+    exact_threshold_witness_gap: int | None = None
+    exact_threshold_witness_turns: int | None = None
+    if full_denominator_exact_threshold:
+        exact_threshold_witness_gap = exact_nearest_gap
+        if exact_threshold_witness_gap is not None:
+            threshold_witness = turn_ratio_nat_ratio_modular_inverse_margin_witness(
+                numerator=numerator,
+                denominator=denominator,
+                gap=exact_threshold_witness_gap,
+            )
+            if threshold_witness is not None:
+                exact_threshold_witness_turns = threshold_witness[0]
+    requested_margin_pass: bool | None = None
+    requested_margin_failure_reason: str | None = None
+    if requested_margin is not None:
+        if full_denominator_exact_threshold and exact_threshold_margin is not None:
+            requested_margin_pass = requested_margin <= exact_threshold_margin
+            if not requested_margin_pass:
+                requested_margin_failure_reason = (
+                    "requested_margin_exceeds_exact_full_denominator_threshold"
+                )
+        elif pass_certificate:
+            requested_margin_pass = requested_margin <= Fraction(1, denominator)
+            if not requested_margin_pass:
+                requested_margin_failure_reason = (
+                    "requested_margin_exceeds_certified_rational_margin"
+                )
+        else:
+            requested_margin_pass = False
+            requested_margin_failure_reason = "no_positive_rational_margin_certificate"
     certificate_name = (
         name
         if name is not None
@@ -1937,7 +1988,7 @@ def certify_rational_turn_ratio_finite_margin(
                 lean_declarations
                 + ROPE_NAT_RATIO_MODULAR_INVERSE_EXACT_MARGIN_LEAN_DECLARATIONS
             )
-        if context_length == denominator and denominator > 1 and gcd(numerator, denominator) == 1:
+        if full_denominator_exact_threshold:
             theorem_ids = (
                 theorem_ids
                 + ROPE_NAT_RATIO_COPRIME_FULL_DENOMINATOR_EXACT_MARGIN_THEOREMS
@@ -1961,15 +2012,12 @@ def certify_rational_turn_ratio_finite_margin(
             "nearest-integer margin 1/denominator because the inspected context "
             "does not reach the denominator return gap."
         )
-        if (
-            context_length == denominator
-            and denominator > 1
-            and gcd(numerator, denominator) == 1
-        ):
+        if full_denominator_exact_threshold:
             explanation = (
                 explanation
                 + " At the full denominator context, Lean also proves this is the "
-                "exact threshold: larger advertised margins fail."
+                "exact threshold: larger advertised margins fail and have an "
+                "explicit below-margin gap/turn obstruction witness."
             )
     else:
         explanation = (
@@ -1985,12 +2033,23 @@ def certify_rational_turn_ratio_finite_margin(
         denominator=denominator,
         context_length=context_length,
         turn_ratio=numerator / denominator,
+        requested_margin=(
+            None if requested_margin is None else format_fraction(requested_margin)
+        ),
         certified_margin=certified_margin,
         exact_nearest_gap_margin=(
             None if exact_nearest_gap_margin is None
             else format_fraction(exact_nearest_gap_margin)
         ),
         exact_nearest_gap=exact_nearest_gap,
+        exact_threshold_margin=(
+            None if exact_threshold_margin is None
+            else format_fraction(exact_threshold_margin)
+        ),
+        exact_threshold_witness_gap=exact_threshold_witness_gap,
+        exact_threshold_witness_turns=exact_threshold_witness_turns,
+        requested_margin_pass=requested_margin_pass,
+        requested_margin_failure_reason=requested_margin_failure_reason,
         pass_certificate=pass_certificate,
         zero_margin_witness=zero_margin_witness,
         theorem_ids=theorem_ids,
@@ -3904,7 +3963,8 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         "integer/rational-turn-ratio guardrails, positive rational finite-context "
         "certificate, exact rational boundary, one-over-denominator exact "
         "weakest-gap family, modular-inverse rational exact-gap reports, "
-        "and full-denominator reduced-rational exact-gap existence and exact threshold, "
+        "and full-denominator reduced-rational exact-gap existence, exact threshold, "
+        "and request obstruction, "
         "generated-gap enumeration, floor/ceiling nearest-integer, scalar nearest-gap margin, finite certificate "
         "iff, negative obstruction iff, scaled no-near-turn iff, certificate-object "
         "no-near-turn iff, finite-certificate bank bridge, context-range obstruction "

@@ -2581,6 +2581,64 @@ theorem ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_ov
     intro gap hgap_pos hgap_context turns
     exact le_trans hmargin (hthreshold gap hgap_pos hgap_context turns)
 
+/-- If a requested margin is above the exact full-denominator rational
+threshold, a concrete below-margin nearest-integer obstruction exists.
+
+This is the report-facing failure witness behind rational/discretized RoPE
+requests: for a reduced `numerator / denominator` turn ratio, any advertised
+margin larger than `1 / denominator` is refuted by some positive gap below the
+denominator and an integer turn whose error is already below the advertised
+margin. -/
+theorem ropeTurnRatioNatRatio_full_denominator_obstruction_of_one_over_den_lt_margin
+    {numerator denominator : Nat} {margin : ℝ}
+    (hdenominator : 1 < denominator)
+    (hcoprime : Nat.Coprime numerator denominator)
+    (hmargin : 1 / (denominator : ℝ) < margin) :
+    ∃ witnessGap turns, 0 < witnessGap ∧ witnessGap < denominator ∧
+      ropeTurnRatioError ((numerator : ℝ) / (denominator : ℝ)) witnessGap
+        (Int.ofNat turns) < margin := by
+  obtain ⟨witnessGap, hgap_lt, hmod⟩ :=
+    Nat.exists_mul_mod_eq_one_of_coprime
+      (k := denominator) (n := numerator) hcoprime hdenominator
+  have hgap_pos : 0 < witnessGap := by
+    by_contra hnot
+    have hzero : witnessGap = 0 := Nat.eq_zero_of_not_pos hnot
+    subst witnessGap
+    norm_num at hmod
+  let turns := (witnessGap * numerator) / denominator
+  have hmod_comm :
+      witnessGap * numerator % denominator = 1 := by
+    simpa [Nat.mul_comm] using hmod
+  have hwitness :
+      witnessGap * numerator = turns * denominator + 1 ∨
+        witnessGap * numerator + 1 = turns * denominator := by
+    left
+    have hdivmod :
+        witnessGap * numerator =
+          denominator * ((witnessGap * numerator) / denominator) +
+            (witnessGap * numerator) % denominator :=
+      (Nat.div_add_mod (witnessGap * numerator) denominator).symm
+    have hdivmod' :
+        witnessGap * numerator =
+          ((witnessGap * numerator) / denominator) * denominator +
+            (witnessGap * numerator) % denominator := by
+      simpa [Nat.mul_comm denominator ((witnessGap * numerator) / denominator)] using hdivmod
+    simpa [turns, hmod_comm] using hdivmod'
+  have herror_eq :
+      ropeTurnRatioError ((numerator : ℝ) / (denominator : ℝ)) witnessGap
+          (Int.ofNat turns) =
+        1 / (denominator : ℝ) :=
+    ropeTurnRatioError_natRatio_eq_one_over_den_of_modular_inverse_witness
+      (numerator := numerator) (denominator := denominator)
+      (gap := witnessGap) (turns := turns)
+      (Nat.zero_lt_of_lt hdenominator) hwitness
+  have hobstruction :
+      ropeTurnRatioError ((numerator : ℝ) / (denominator : ℝ)) witnessGap
+          (Int.ofNat turns) < margin := by
+    rw [herror_eq]
+    exact hmargin
+  exact ⟨witnessGap, turns, hgap_pos, hgap_lt, hobstruction⟩
+
 private theorem ropeTurnRatio_one_over_nat_floor_eq_zero
     {denominator : Nat} (hdenominator : 1 < denominator) :
     ⌊((1 : ℝ) / (denominator : ℝ))⌋ = (0 : ℤ) := by
