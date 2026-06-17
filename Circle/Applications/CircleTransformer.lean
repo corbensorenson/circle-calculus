@@ -2658,6 +2658,79 @@ theorem hybridFamilyCoveredLagList_default_120_4_3_7_13_length :
     (hybridFamilyCoveredLagList 120 4 3 [7, 13]).length = 10 := by
   native_decide
 
+/-- The public `4096` no-wrap planner row has exactly `44` theorem-side
+covered positive lags.
+
+This is not a benchmark claim: it follows from the structural no-wrap
+separation check, which preserves the raw lag-candidate budget, together with
+the candidate-range count theorem. -/
+theorem hybridFamilyCoveredLagList_long_context_no_wrap_4096_length :
+    (hybridFamilyCoveredLagList 4096 32 4 [33, 160, 800]).length = 44 := by
+  have hwindow : 32 < 4096 := by omega
+  have hseparated :
+      coilStrideFamilyNoWrapSeparated 4096 4 [33, 160, 800] := by
+    norm_num [coilStrideFamilyNoWrapSeparated]
+    omega
+  have hwindow_all : ∀ stride ∈ [33, 160, 800], 32 < stride := by
+    intro stride hmem
+    simp at hmem
+    rcases hmem with rfl | rfl | rfl <;> omega
+  have hcandidate_range :
+      ∀ lag,
+        lag ∈ hybridFamilyLagCandidateList 4096 32 4 [33, 160, 800] →
+          1 ≤ lag ∧ lag < 4096 :=
+    hybridFamilyLagCandidateList_candidate_range_of_window_lt_context_of_noWrapSeparated
+      hwindow hseparated
+  have hcovered :
+      (hybridFamilyCoveredLagList 4096 32 4 [33, 160, 800]).length =
+        hybridFamilyUniqueLagCandidateCount 4096 32 4 [33, 160, 800] :=
+    hybridFamilyCoveredLagList_length_eq_uniqueLagCandidateCount_of_candidate_range
+      hcandidate_range
+  have hraw :
+      hybridFamilyUniqueLagCandidateCount 4096 32 4 [33, 160, 800] =
+        hybridFamilyRawCandidateBudget 32 4 [33, 160, 800] :=
+    hybridFamilyUniqueLagCandidateCount_eq_raw_of_noWrapSeparated_of_window_lt_all_strides
+      hseparated hwindow_all
+  rw [hcovered, hraw]
+  norm_num [hybridFamilyRawCandidateBudget]
+
+/-- The public `4096` no-wrap planner row has exactly `4051` uncovered positive
+lags.
+
+This is the complement to the covered-count theorem: under candidate range, the
+uncovered count is `context - 1 - unique_lag_count`, and the no-wrap structural
+check makes the unique lag count equal the raw budget `44`. -/
+theorem hybridFamilyUncoveredLagList_long_context_no_wrap_4096_length :
+    (hybridFamilyUncoveredLagList 4096 32 4 [33, 160, 800]).length = 4051 := by
+  have hwindow : 32 < 4096 := by omega
+  have hseparated :
+      coilStrideFamilyNoWrapSeparated 4096 4 [33, 160, 800] := by
+    norm_num [coilStrideFamilyNoWrapSeparated]
+    omega
+  have hwindow_all : ∀ stride ∈ [33, 160, 800], 32 < stride := by
+    intro stride hmem
+    simp at hmem
+    rcases hmem with rfl | rfl | rfl <;> omega
+  have hcandidate_range :
+      ∀ lag,
+        lag ∈ hybridFamilyLagCandidateList 4096 32 4 [33, 160, 800] →
+          1 ≤ lag ∧ lag < 4096 :=
+    hybridFamilyLagCandidateList_candidate_range_of_window_lt_context_of_noWrapSeparated
+      hwindow hseparated
+  have huncovered :
+      (hybridFamilyUncoveredLagList 4096 32 4 [33, 160, 800]).length =
+        4096 - 1 -
+          hybridFamilyUniqueLagCandidateCount 4096 32 4 [33, 160, 800] :=
+    hybridFamilyUncoveredLagList_length_eq_context_sub_one_sub_uniqueLagCandidateCount_of_candidate_range
+      hcandidate_range
+  have hraw :
+      hybridFamilyUniqueLagCandidateCount 4096 32 4 [33, 160, 800] =
+        hybridFamilyRawCandidateBudget 32 4 [33, 160, 800] :=
+    hybridFamilyUniqueLagCandidateCount_eq_raw_of_noWrapSeparated_of_window_lt_all_strides
+      hseparated hwindow_all
+  rw [huncovered, hraw]
+  norm_num [hybridFamilyRawCandidateBudget]
+
 /-- A compact complete sparse-family fixture has no uncovered positive lags.
 
 For `C_9`, local window `2`, path length `2`, and strides `[3,4,7]`,

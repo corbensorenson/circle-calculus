@@ -1604,6 +1604,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert long_no_wrap["covered_uncovered_count_sum"] == 4095
     assert long_no_wrap["covered_uncovered_count_partition"] is True
     assert long_no_wrap["covered_count_certifies_complete"] is False
+    assert long_no_wrap["fixture_theorem_ids"] == ["AIT-T0139", "AIT-T0140"]
     assert long_no_wrap["uncovered_lag_interval_count"] == 12
     assert long_no_wrap["raw_budget_survives_lag_dedup"] is True
     assert long_no_wrap["raw_budget_survives_query_dedup"] is True
@@ -1748,6 +1749,8 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     ) in markdown_result.stdout
     assert "Planner-style declared plans" in markdown_result.stdout
     assert "Raw shortfall certifies incomplete" in markdown_result.stdout
+    assert "Fixture theorem ids" in markdown_result.stdout
+    assert "AIT-T0139, AIT-T0140" in markdown_result.stdout
     assert (
         "| long_context_no_wrap_probe_4096 | 4096 | 32 | 4 | "
         "33, 160, 800 | False | 0.011 | 44 | 0.011 | 4095 | 4095 | 4051 | "

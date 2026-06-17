@@ -843,8 +843,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "Planner-style declared plans:",
             "",
-            "| Plan | Context | Local window | Path length | Strides | Complete | Coverage | Candidate budget | Budget ratio | Covered+uncovered | Positive lags | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Gap intervals | Raw shortfall certifies incomplete | Candidate range | No-wrap sufficient | No-zero sufficient | Singleton period | Singleton period threshold | Singleton threshold matches no-zero | Unique count iff complete | Covered count = unique | Uncovered count formula | Unique lag shortfall certifies incomplete | Unique shortfall iff gap | Unique shortfall iff gap under period threshold | Raw budget survives dedup |",
-            "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+            "| Plan | Context | Local window | Path length | Strides | Complete | Coverage | Candidate budget | Budget ratio | Covered+uncovered | Positive lags | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Gap intervals | Raw shortfall certifies incomplete | Candidate range | No-wrap sufficient | No-zero sufficient | Singleton period | Singleton period threshold | Singleton threshold matches no-zero | Unique count iff complete | Covered count = unique | Uncovered count formula | Unique lag shortfall certifies incomplete | Unique shortfall iff gap | Unique shortfall iff gap under period threshold | Raw budget survives dedup | Fixture theorem ids |",
+            "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
             *(
                 (
                     f"| {row['plan_id']} | {row['sequence_length']} | "
@@ -879,7 +879,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
                     f"{row['unique_lag_count_shortfall_matches_gap_witness_under_candidate_range']} | "
                     f"{row['unique_lag_count_shortfall_matches_gap_witness_under_period_threshold']} | "
                     f"lag={row['raw_budget_survives_lag_dedup']}, "
-                    f"query={row['raw_budget_survives_query_dedup']} |"
+                    f"query={row['raw_budget_survives_query_dedup']} | "
+                    f"{', '.join(row['fixture_theorem_ids'])} |"
                 )
                 for row in planner
             ),

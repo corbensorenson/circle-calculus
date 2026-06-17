@@ -144,6 +144,8 @@ The raw-budget iff endpoints are:
 - `AIT-T0136`: for one stride, the number of admitted positive zero-residue steps is exactly `path_length / period`.
 - `AIT-T0137`: for a finite stride family, the total zero-residue count is the sum of the per-stride `path_length / period` counts.
 - `AIT-T0138`: in a nonzero context, total zero-residue count is zero exactly when the no-zero structural condition holds.
+- `AIT-T0139`: the public 4096-token no-wrap planner row has exactly 44 covered positive lags.
+- `AIT-T0140`: the same 4096-token planner row has exactly 4051 uncovered positive lags.
 
 The finite-list endpoints are:
 

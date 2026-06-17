@@ -1272,7 +1272,10 @@
       "first_uncovered_lag": 34,
       "first_uncovered_lag_gap_witness": true,
       "first_uncovered_lag_matches_uncovered_list_head": true,
-      "fixture_theorem_ids": [],
+      "fixture_theorem_ids": [
+        "AIT-T0139",
+        "AIT-T0140"
+      ],
       "full_attention_budget": 4096,
       "local_coil_disjoint": true,
       "local_window": 32,
