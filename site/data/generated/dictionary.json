@@ -5345,6 +5345,18 @@
           "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
           "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0126",
+          "lean_name": "Circle.Applications.coilLagResidue_zero_iff_period_dvd",
+          "name": "Circle.Applications.coilLagResidue_zero_iff_period_dvd",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0127",
+          "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
+          "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -6070,6 +6082,18 @@
           "id": "AIT-T0125",
           "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
           "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0126",
+          "lean_name": "Circle.Applications.coilLagResidue_zero_iff_period_dvd",
+          "name": "Circle.Applications.coilLagResidue_zero_iff_period_dvd",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0127",
+          "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
+          "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
           "status": "proved"
         }
       ],
@@ -7665,6 +7689,18 @@
           "id": "AIT-T0125",
           "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
           "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0126",
+          "lean_name": "Circle.Applications.coilLagResidue_zero_iff_period_dvd",
+          "name": "Circle.Applications.coilLagResidue_zero_iff_period_dvd",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0127",
+          "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
+          "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
           "status": "proved"
         }
       ],
@@ -12399,6 +12435,18 @@
           "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
           "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0126",
+          "lean_name": "Circle.Applications.coilLagResidue_zero_iff_period_dvd",
+          "name": "Circle.Applications.coilLagResidue_zero_iff_period_dvd",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0127",
+          "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
+          "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -15866,6 +15914,18 @@
           "id": "AIT-T0125",
           "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
           "name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_lt_context_sub_one_iff_exists_uncovered_lag_of_noZeroResidues",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0126",
+          "lean_name": "Circle.Applications.coilLagResidue_zero_iff_period_dvd",
+          "name": "Circle.Applications.coilLagResidue_zero_iff_period_dvd",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0127",
+          "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
+          "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
           "status": "proved"
         }
       ],

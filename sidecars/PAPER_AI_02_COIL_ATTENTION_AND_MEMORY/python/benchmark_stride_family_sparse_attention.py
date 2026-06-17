@@ -61,6 +61,8 @@ CORE_COVERAGE_THEOREM_IDS = (
     "AIT-T0123",
     "AIT-T0124",
     "AIT-T0125",
+    "AIT-T0126",
+    "AIT-T0127",
 )
 
 PLANNER_STYLE_SPECS: tuple[dict[str, Any], ...] = (
@@ -79,6 +81,17 @@ PLANNER_STYLE_SPECS: tuple[dict[str, Any], ...] = (
         "strides": (3, 4, 7),
         "path_length": 2,
         "local_window": 2,
+    },
+    {
+        "plan_id": "singleton_period_probe_12",
+        "description": (
+            "Single-stride probe where path length stops before the finite coil "
+            "period, so the no-zero residue check is certified by the period threshold."
+        ),
+        "sequence_length": 12,
+        "strides": (4,),
+        "path_length": 2,
+        "local_window": 1,
     },
     {
         "plan_id": "long_context_no_wrap_probe_4096",
@@ -173,6 +186,13 @@ def compact_planner_certificate(spec: dict[str, Any]) -> dict[str, Any]:
         ),
         "no_zero_residue_candidate_range_sufficient_condition": (
             certificate.no_zero_residue_candidate_range_sufficient_condition
+        ),
+        "singleton_stride_period": certificate.singleton_stride_period,
+        "singleton_no_zero_period_threshold": (
+            certificate.singleton_no_zero_period_threshold
+        ),
+        "singleton_no_zero_period_threshold_matches_condition": (
+            certificate.singleton_no_zero_period_threshold_matches_condition
         ),
         "unique_lag_count_shortfall_certifies_incomplete": (
             certificate.unique_lag_count_shortfall_certifies_incomplete
@@ -307,6 +327,12 @@ def text_results(payload: dict[str, Any]) -> str:
             f"{row['no_wrap_separated_candidate_range_sufficient_condition']} "
             "no_zero_sufficient="
             f"{row['no_zero_residue_candidate_range_sufficient_condition']} "
+            "singleton_period="
+            f"{row['singleton_stride_period']} "
+            "singleton_period_threshold="
+            f"{row['singleton_no_zero_period_threshold']} "
+            "singleton_threshold_matches_no_zero="
+            f"{row['singleton_no_zero_period_threshold_matches_condition']} "
             "unique_count_complete_iff="
             f"{row['unique_lag_count_matches_complete_under_candidate_range']} "
             "covered_eq_unique="
@@ -403,6 +429,12 @@ def text_results(payload: dict[str, Any]) -> str:
         f"{certificate['no_wrap_separated_candidate_range_sufficient_condition']} "
         "no_zero_sufficient="
         f"{certificate['no_zero_residue_candidate_range_sufficient_condition']} "
+        "singleton_period="
+        f"{certificate['singleton_stride_period']} "
+        "singleton_period_threshold="
+        f"{certificate['singleton_no_zero_period_threshold']} "
+        "singleton_threshold_matches_no_zero="
+        f"{certificate['singleton_no_zero_period_threshold_matches_condition']} "
         "unique_count_complete_iff="
         f"{certificate['unique_lag_count_matches_complete_under_candidate_range']} "
         "covered_eq_unique="
@@ -460,6 +492,12 @@ def text_results(payload: dict[str, Any]) -> str:
         f"{complete['no_wrap_separated_candidate_range_sufficient_condition']} "
         "no_zero_sufficient="
         f"{complete['no_zero_residue_candidate_range_sufficient_condition']} "
+        "singleton_period="
+        f"{complete['singleton_stride_period']} "
+        "singleton_period_threshold="
+        f"{complete['singleton_no_zero_period_threshold']} "
+        "singleton_threshold_matches_no_zero="
+        f"{complete['singleton_no_zero_period_threshold_matches_condition']} "
         "unique_count_complete_iff="
         f"{complete['unique_lag_count_matches_complete_under_candidate_range']} "
         "covered_eq_unique="
@@ -514,8 +552,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{result['average_full_candidate_count']:.3f} |"
             ),
             "",
-            "| Covered lag count | Uncovered lag count | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Positive lags | Partition complete | Uncovered intervals | Candidate budget | Raw budget bound | Raw shortfall certifies incomplete | Unique lag candidates | Candidate range | No-wrap sufficient | No-zero sufficient | Unique count iff complete | Covered count = unique | Uncovered count formula | Unique lag shortfall certifies incomplete | Unique shortfall iff gap | Deduplicated bound | Full-attention budget |",
-            "| ---: | ---: | ---: | --- | --- | --- | --- | --- | --- | ---: | --- | ---: | ---: | ---: | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | ---: | ---: |",
+            "| Covered lag count | Uncovered lag count | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Positive lags | Partition complete | Uncovered intervals | Candidate budget | Raw budget bound | Raw shortfall certifies incomplete | Unique lag candidates | Candidate range | No-wrap sufficient | No-zero sufficient | Singleton period | Singleton period threshold | Singleton threshold matches no-zero | Unique count iff complete | Covered count = unique | Uncovered count formula | Unique lag shortfall certifies incomplete | Unique shortfall iff gap | Deduplicated bound | Full-attention budget |",
+            "| ---: | ---: | ---: | --- | --- | --- | --- | --- | --- | ---: | --- | ---: | ---: | ---: | --- | ---: | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | ---: |",
             (
                 f"| {certificate['covered_lag_count']} | "
                 f"{certificate['uncovered_lag_count']} | "
@@ -536,6 +574,9 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{certificate['theorem_side_lag_candidates_positive_in_context']} | "
                 f"{certificate['no_wrap_separated_candidate_range_sufficient_condition']} | "
                 f"{certificate['no_zero_residue_candidate_range_sufficient_condition']} | "
+                f"{certificate['singleton_stride_period']} | "
+                f"{certificate['singleton_no_zero_period_threshold']} | "
+                f"{certificate['singleton_no_zero_period_threshold_matches_condition']} | "
                 f"{certificate['unique_lag_count_matches_complete_under_candidate_range']} | "
                 f"{certificate['covered_count_matches_unique_lag_count_under_candidate_range']} | "
                 f"{certificate['uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range']} | "
@@ -589,8 +630,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "Complete sparse-family fixture:",
             "",
-            "| Context | Local window | Path length | Strides | Coverage complete | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Raw budget | Raw shortfall certifies incomplete | Unique lag candidates | Candidate range | No-wrap sufficient | No-zero sufficient | Unique count iff complete | Covered count = unique | Uncovered count formula | Unique lag shortfall certifies incomplete | Unique shortfall iff gap | Unique query candidates | Query <= unique lag | Query = unique lag | Query shortfall iff gap | Query no-wrap iff | Query no-zero iff | Fixture theorem ids |",
-            "| ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- |",
+            "| Context | Local window | Path length | Strides | Coverage complete | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Raw budget | Raw shortfall certifies incomplete | Unique lag candidates | Candidate range | No-wrap sufficient | No-zero sufficient | Singleton period | Singleton period threshold | Singleton threshold matches no-zero | Unique count iff complete | Covered count = unique | Uncovered count formula | Unique lag shortfall certifies incomplete | Unique shortfall iff gap | Unique query candidates | Query <= unique lag | Query = unique lag | Query shortfall iff gap | Query no-wrap iff | Query no-zero iff | Fixture theorem ids |",
+            "| ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | --- | ---: | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- |",
             (
                 f"| {complete['sequence_length']} | {complete['local_window']} | "
                 f"{complete['path_length']} | "
@@ -610,6 +651,9 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{complete['theorem_side_lag_candidates_positive_in_context']} | "
                 f"{complete['no_wrap_separated_candidate_range_sufficient_condition']} | "
                 f"{complete['no_zero_residue_candidate_range_sufficient_condition']} | "
+                f"{complete['singleton_stride_period']} | "
+                f"{complete['singleton_no_zero_period_threshold']} | "
+                f"{complete['singleton_no_zero_period_threshold_matches_condition']} | "
                 f"{complete['unique_lag_count_matches_complete_under_candidate_range']} | "
                 f"{complete['covered_count_matches_unique_lag_count_under_candidate_range']} | "
                 f"{complete['uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range']} | "
@@ -632,8 +676,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "Planner-style declared plans:",
             "",
-            "| Plan | Context | Local window | Path length | Strides | Complete | Coverage | Candidate budget | Budget ratio | Covered+uncovered | Positive lags | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Gap intervals | Raw shortfall certifies incomplete | Candidate range | No-wrap sufficient | No-zero sufficient | Unique count iff complete | Covered count = unique | Uncovered count formula | Unique lag shortfall certifies incomplete | Unique shortfall iff gap | Raw budget survives dedup |",
-            "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+            "| Plan | Context | Local window | Path length | Strides | Complete | Coverage | Candidate budget | Budget ratio | Covered+uncovered | Positive lags | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Gap intervals | Raw shortfall certifies incomplete | Candidate range | No-wrap sufficient | No-zero sufficient | Singleton period | Singleton period threshold | Singleton threshold matches no-zero | Unique count iff complete | Covered count = unique | Uncovered count formula | Unique lag shortfall certifies incomplete | Unique shortfall iff gap | Raw budget survives dedup |",
+            "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- |",
             *(
                 (
                     f"| {row['plan_id']} | {row['sequence_length']} | "
@@ -658,6 +702,9 @@ def markdown_results(payload: dict[str, Any]) -> str:
                     f"{row['theorem_side_lag_candidates_positive_in_context']} | "
                     f"{row['no_wrap_separated_candidate_range_sufficient_condition']} | "
                     f"{row['no_zero_residue_candidate_range_sufficient_condition']} | "
+                    f"{row['singleton_stride_period']} | "
+                    f"{row['singleton_no_zero_period_threshold']} | "
+                    f"{row['singleton_no_zero_period_threshold_matches_condition']} | "
                     f"{row['unique_lag_count_matches_complete_under_candidate_range']} | "
                     f"{row['covered_count_matches_unique_lag_count_under_candidate_range']} | "
                     f"{row['uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range']} | "

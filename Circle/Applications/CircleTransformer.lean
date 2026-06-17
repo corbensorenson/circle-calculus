@@ -333,6 +333,58 @@ def coilStrideFamilyNoZeroResidues
     ∀ step, 1 ≤ step → step ≤ pathLength →
       (step * stride) % n ≠ 0
 
+/-- A one-stride generated residue collapses to zero exactly when the finite
+coil period divides the step count. -/
+theorem coilLagResidue_zero_iff_period_dvd
+    {n stride step : Nat} :
+    (step * stride) % n = 0 ↔ Circle.period n stride ∣ step := by
+  rw [← Nat.dvd_iff_mod_eq_zero]
+  rw [← ZMod.natCast_eq_zero_iff (step * stride) n]
+  unfold Circle.period Circle.stride
+  rw [addOrderOf_dvd_iff_nsmul_eq_zero]
+  constructor <;> intro h <;>
+    simpa [Nat.cast_mul, mul_comm] using h
+
+/-- For a singleton stride family, the no-zero-residue condition is exactly the
+period-threshold condition `pathLength < period`.
+
+This gives sparse-attention certifiers a direct check for the common one-stride
+dilated-attention case: the first generated zero residue occurs at the finite
+coil period, so every admitted positive step avoids the zero lag precisely when
+the path budget stops before that period. -/
+theorem coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period
+    {n stride pathLength : Nat} (hn : n ≠ 0) :
+    coilStrideFamilyNoZeroResidues n pathLength [stride] ↔
+      pathLength < Circle.period n stride := by
+  constructor
+  · intro hnoZero
+    by_contra hnot
+    have hperiod_le : Circle.period n stride ≤ pathLength :=
+      le_of_not_gt hnot
+    have hgcd_pos : 0 < Nat.gcd n stride :=
+      Nat.gcd_pos_of_pos_left stride (Nat.pos_of_ne_zero hn)
+    have hgcd_le : Nat.gcd n stride ≤ n :=
+      Nat.gcd_le_left stride (Nat.pos_of_ne_zero hn)
+    have hperiod_pos : 0 < Circle.period n stride := by
+      rw [Circle.period_eq_n_div_gcd hn]
+      exact Nat.div_pos hgcd_le hgcd_pos
+    have hnonzero :=
+      hnoZero stride (by simp) (Circle.period n stride)
+        (Nat.succ_le_of_lt hperiod_pos) hperiod_le
+    exact hnonzero ((coilLagResidue_zero_iff_period_dvd
+      (n := n) (stride := stride) (step := Circle.period n stride)).2 dvd_rfl)
+  · intro hperiod step hstep_mem generatedStep hgenerated_pos hgenerated_le
+    simp at hstep_mem
+    subst step
+    intro hzero
+    have hdiv :
+        Circle.period n stride ∣ generatedStep :=
+      (coilLagResidue_zero_iff_period_dvd
+        (n := n) (stride := stride) (step := generatedStep)).1 hzero
+    have hperiod_le_generated : Circle.period n stride ≤ generatedStep :=
+      Nat.le_of_dvd hgenerated_pos hdiv
+    omega
+
 /-- The query-predecessor map is injective on the generated lag candidates. -/
 def hybridFamilyPredecessorInjectiveOnLagCandidates
     (n query window pathLength : Nat) (strides : List Nat) : Prop :=

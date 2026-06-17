@@ -7202,6 +7202,38 @@ theorems:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_benchmark_has_budget_and_negative_control
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
     blocker: ""
+  - id: AIT-T0126
+    status: lean_proved
+    lean_name: Circle.Applications.coilLagResidue_zero_iff_period_dvd
+    informal_statement: "For a single stride, an admitted generated lag residue collapses to zero exactly when the finite coil period divides the step count."
+    formal_statement: "forall {n stride step : Nat}, (step * stride) % n = 0 <-> Circle.period n stride divides step"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_singleton_stride_period_threshold_matches_no_zero_condition
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
+  - id: AIT-T0127
+    status: lean_proved
+    lean_name: Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period
+    informal_statement: "For a nonzero context and a singleton stride family, the no-zero-residue structural condition holds exactly when the path length is strictly below the stride period."
+    formal_statement: "forall {n stride pathLength : Nat}, n != 0 -> (Circle.Applications.coilStrideFamilyNoZeroResidues n pathLength [stride] <-> pathLength < Circle.period n stride)"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_singleton_stride_period_threshold_matches_no_zero_condition
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

@@ -165,6 +165,14 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             "theorems=AIT-T0112,AIT-T0115,AIT-T0116,AIT-T0117,AIT-T0118,AIT-T0119"
         ),
         (
+            "singleton_no_zero_period_threshold="
+            f"{payload['singleton_no_zero_period_threshold']} "
+            f"period={payload['singleton_stride_period']} "
+            "matches_no_zero_residue_condition="
+            f"{payload['singleton_no_zero_period_threshold_matches_condition']} "
+            "theorems=AIT-T0126,AIT-T0127"
+        ),
+        (
             "candidate_range_counts="
             "covered_eq_unique="
             f"{payload['covered_count_matches_unique_lag_count_under_candidate_range']} "

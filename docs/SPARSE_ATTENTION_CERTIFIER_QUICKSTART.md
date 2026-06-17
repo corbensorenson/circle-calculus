@@ -41,6 +41,7 @@ candidate_budget_per_query=10 raw_upper_bound=10 deduplicated_bound=10 full_atte
 raw_budget_shortfall=True certifies_incomplete=True theorem=AIT-T0110
 unique_lag_shortfall=True certifies_incomplete=True theorem=AIT-T0111
 candidate_range=True no_wrap_separated_sufficient=False no_zero_residue_sufficient=True unique_count_complete_iff=True theorems=AIT-T0112,AIT-T0115,AIT-T0116,AIT-T0117,AIT-T0118,AIT-T0119
+singleton_no_zero_period_threshold=None period=None matches_no_zero_residue_condition=True theorems=AIT-T0126,AIT-T0127
 candidate_range_counts=covered_eq_unique=True uncovered_eq_context_minus_unique=True theorems=AIT-T0113,AIT-T0114
 lag_budget_status=exact-raw-budget unique_lag_candidates=10 lag_no_collision=True
 query_budget_status=exact-raw-budget unique_query_candidates=10 query_no_collision=True
@@ -78,6 +79,9 @@ python scripts/stride_family_certify.py \
 - `theorem_side_lag_candidates_positive_in_context`: true when every theorem-side lag candidate is between `1` and `context - 1`.
 - `no_wrap_separated_candidate_range_sufficient_condition`: true when `local_window < context` and the ordered stride family satisfies the no-wrap separated numeric condition, which is a Lean-proved sufficient condition for positive in-context lag candidates.
 - `no_zero_residue_candidate_range_sufficient_condition`: true when `local_window < context` and every admitted `step * stride mod context` is nonzero. This is a Lean-proved sufficient condition for positive in-context lag candidates that permits wrapping and overlap.
+- `singleton_stride_period`: for one-stride plans, the finite coil period `context / gcd(context, stride)`; otherwise absent.
+- `singleton_no_zero_period_threshold`: for one-stride plans, true exactly when `path_length < singleton_stride_period`.
+- `singleton_no_zero_period_threshold_matches_condition`: true when the singleton period-threshold calculation agrees with the finite no-zero residue scan.
 - `unique_lag_count_shortfall_certifies_incomplete`: true when the certificate avoids the impossible state where the deduplicated unique lag-candidate count is below `context - 1` but coverage is still reported complete.
 - `unique_lag_count_matches_complete_under_candidate_range`: true when the candidate-range hypothesis is absent or, under that hypothesis, complete coverage matches `theorem_side_unique_lag_candidate_count == context - 1`.
 - `covered_count_matches_unique_lag_count_under_candidate_range`: true when the candidate-range hypothesis is absent or, under that hypothesis, covered count equals the unique lag-candidate count.
@@ -109,6 +113,8 @@ The raw-budget iff endpoints are:
 - `AIT-T0123`: under candidate range and predecessor injectivity, unique query-candidate shortfall is equivalent to an uncovered positive lag.
 - `AIT-T0124`: the no-wrap separated structural version of that query-side shortfall/gap equivalence.
 - `AIT-T0125`: the no-zero-residue structural version of that query-side shortfall/gap equivalence.
+- `AIT-T0126`: for one stride, a generated residue is zero exactly when the stride period divides the step count.
+- `AIT-T0127`: for a singleton stride family in a nonzero context, the no-zero-residue condition is exactly the threshold `path_length < period`.
 
 The finite-list endpoints are:
 

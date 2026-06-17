@@ -63,6 +63,9 @@
       "raw_budget_shortfall_certifies_incomplete": true,
       "raw_candidate_budget_upper_bound": 10,
       "sequence_length": 120,
+      "singleton_no_zero_period_threshold": null,
+      "singleton_no_zero_period_threshold_matches_condition": true,
+      "singleton_stride_period": null,
       "strides": [
         7,
         13
@@ -168,7 +171,9 @@
         "AIT-T0122",
         "AIT-T0123",
         "AIT-T0124",
-        "AIT-T0125"
+        "AIT-T0125",
+        "AIT-T0126",
+        "AIT-T0127"
       ],
       "theorem_side_coil_residues_no_collision": true,
       "theorem_side_lag_candidates": [
@@ -433,6 +438,9 @@
     "raw_budget_shortfall_certifies_incomplete": true,
     "raw_candidate_budget_upper_bound": 8,
     "sequence_length": 9,
+    "singleton_no_zero_period_threshold": null,
+    "singleton_no_zero_period_threshold_matches_condition": true,
+    "singleton_stride_period": null,
     "strides": [
       3,
       4,
@@ -539,7 +547,9 @@
       "AIT-T0122",
       "AIT-T0123",
       "AIT-T0124",
-      "AIT-T0125"
+      "AIT-T0125",
+      "AIT-T0126",
+      "AIT-T0127"
     ],
     "theorem_side_coil_residues_no_collision": true,
     "theorem_side_lag_candidates": [
@@ -623,7 +633,9 @@
         "AIT-T0122",
         "AIT-T0123",
         "AIT-T0124",
-        "AIT-T0125"
+        "AIT-T0125",
+        "AIT-T0126",
+        "AIT-T0127"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.08403361344537816,
@@ -674,6 +686,9 @@
       "raw_candidate_budget_upper_bound": 10,
       "reproduce_command": "python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4",
       "sequence_length": 120,
+      "singleton_no_zero_period_threshold": null,
+      "singleton_no_zero_period_threshold_matches_condition": true,
+      "singleton_stride_period": null,
       "strides": [
         7,
         13
@@ -777,7 +792,9 @@
         "AIT-T0122",
         "AIT-T0123",
         "AIT-T0124",
-        "AIT-T0125"
+        "AIT-T0125",
+        "AIT-T0126",
+        "AIT-T0127"
       ],
       "coverage_complete": true,
       "coverage_ratio": 1.0,
@@ -826,6 +843,9 @@
       "raw_candidate_budget_upper_bound": 8,
       "reproduce_command": "python scripts/stride_family_certify.py --context 9 --strides 3,4,7 --path-length 2 --local-window 2",
       "sequence_length": 9,
+      "singleton_no_zero_period_threshold": null,
+      "singleton_no_zero_period_threshold_matches_condition": true,
+      "singleton_stride_period": null,
       "strides": [
         3,
         4,
@@ -840,6 +860,123 @@
       "uncovered_lag_interval_count": 0,
       "uncovered_lag_interval_sample": [],
       "uncovered_lag_sample": [],
+      "unique_lag_count_matches_complete_under_candidate_range": true,
+      "unique_lag_count_shortfall_certifies_incomplete": true,
+      "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true
+    },
+    {
+      "candidate_budget_per_query": 3,
+      "candidate_budget_ratio": 0.25,
+      "coil_residues_no_collision": true,
+      "core_coverage_theorem_ids": [
+        "AIT-T0080",
+        "AIT-T0081",
+        "AIT-T0082",
+        "AIT-T0083",
+        "AIT-T0090",
+        "AIT-T0092",
+        "AIT-T0093",
+        "AIT-T0094",
+        "AIT-T0095",
+        "AIT-T0096",
+        "AIT-T0097",
+        "AIT-T0098",
+        "AIT-T0099",
+        "AIT-T0100",
+        "AIT-T0101",
+        "AIT-T0103",
+        "AIT-T0110",
+        "AIT-T0111",
+        "AIT-T0112",
+        "AIT-T0113",
+        "AIT-T0114",
+        "AIT-T0115",
+        "AIT-T0116",
+        "AIT-T0117",
+        "AIT-T0118",
+        "AIT-T0119",
+        "AIT-T0120",
+        "AIT-T0121",
+        "AIT-T0122",
+        "AIT-T0123",
+        "AIT-T0124",
+        "AIT-T0125",
+        "AIT-T0126",
+        "AIT-T0127"
+      ],
+      "coverage_complete": false,
+      "coverage_ratio": 0.2727272727272727,
+      "covered_count_certifies_complete": false,
+      "covered_count_matches_unique_lag_count_under_candidate_range": true,
+      "covered_count_shortfall": true,
+      "covered_count_shortfall_matches_gap_witness": true,
+      "covered_lag_count": 3,
+      "covered_lag_sample": [
+        1,
+        4,
+        8
+      ],
+      "covered_uncovered_count_partition": true,
+      "covered_uncovered_count_sum": 11,
+      "deduplicated_candidate_budget_upper_bound": 3,
+      "description": "Single-stride probe where path length stops before the finite coil period, so the no-zero residue check is certified by the period threshold.",
+      "first_uncovered_lag": 2,
+      "first_uncovered_lag_gap_witness": true,
+      "first_uncovered_lag_matches_uncovered_list_head": true,
+      "fixture_theorem_ids": [],
+      "full_attention_budget": 12,
+      "local_coil_disjoint": true,
+      "local_window": 1,
+      "no_first_uncovered_lag_matches_coverage_complete": true,
+      "no_wrap_separated_candidate_range_sufficient_condition": true,
+      "no_zero_residue_candidate_range_sufficient_condition": true,
+      "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
+      "path_length": 2,
+      "plan_id": "singleton_period_probe_12",
+      "positive_lag_count": 11,
+      "raw_budget_shortfall_certifies_incomplete": true,
+      "raw_budget_survives_lag_dedup": true,
+      "raw_budget_survives_query_dedup": true,
+      "raw_candidate_budget_upper_bound": 3,
+      "reproduce_command": "python scripts/stride_family_certify.py --context 12 --strides 4 --path-length 2 --local-window 1",
+      "sequence_length": 12,
+      "singleton_no_zero_period_threshold": true,
+      "singleton_no_zero_period_threshold_matches_condition": true,
+      "singleton_stride_period": 3,
+      "strides": [
+        4
+      ],
+      "theorem_side_lag_candidates_positive_in_context": true,
+      "theorem_side_unique_lag_candidate_count": 3,
+      "uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range": true,
+      "uncovered_count_positive": true,
+      "uncovered_count_positive_matches_gap_witness": true,
+      "uncovered_lag_count": 8,
+      "uncovered_lag_interval_count": 3,
+      "uncovered_lag_interval_sample": [
+        [
+          2,
+          3
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          9,
+          11
+        ]
+      ],
+      "uncovered_lag_sample": [
+        2,
+        3,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11
+      ],
       "unique_lag_count_matches_complete_under_candidate_range": true,
       "unique_lag_count_shortfall_certifies_incomplete": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true
@@ -880,7 +1017,9 @@
         "AIT-T0122",
         "AIT-T0123",
         "AIT-T0124",
-        "AIT-T0125"
+        "AIT-T0125",
+        "AIT-T0126",
+        "AIT-T0127"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.010744810744810745,
@@ -939,6 +1078,9 @@
       "raw_candidate_budget_upper_bound": 44,
       "reproduce_command": "python scripts/stride_family_certify.py --context 4096 --strides 33,160,800 --path-length 4 --local-window 32",
       "sequence_length": 4096,
+      "singleton_no_zero_period_threshold": null,
+      "singleton_no_zero_period_threshold_matches_condition": true,
+      "singleton_stride_period": null,
       "strides": [
         33,
         160,
@@ -1067,7 +1209,9 @@
         "AIT-T0122",
         "AIT-T0123",
         "AIT-T0124",
-        "AIT-T0125"
+        "AIT-T0125",
+        "AIT-T0126",
+        "AIT-T0127"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.011720180686118912,
@@ -1126,6 +1270,9 @@
       "raw_candidate_budget_upper_bound": 96,
       "reproduce_command": "python scripts/stride_family_certify.py --context 8192 --strides 127,509,1021,2039 --path-length 8 --local-window 64",
       "sequence_length": 8192,
+      "singleton_no_zero_period_threshold": null,
+      "singleton_no_zero_period_threshold_matches_condition": true,
+      "singleton_stride_period": null,
       "strides": [
         127,
         509,
