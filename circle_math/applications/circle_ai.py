@@ -1092,6 +1092,10 @@ class StrideFamilyCoverageCertificate:
     singleton_stride_period: Optional[int]
     singleton_no_zero_period_threshold: Optional[bool]
     singleton_no_zero_period_threshold_matches_condition: bool
+    stride_family_periods: tuple[int, ...]
+    no_zero_period_thresholds: tuple[bool, ...]
+    no_zero_period_threshold_candidate_range_sufficient_condition: bool
+    no_zero_period_threshold_matches_condition: bool
     unique_lag_count_shortfall_certifies_incomplete: bool
     unique_lag_count_shortfall_matches_gap_witness_under_candidate_range: bool
     unique_lag_count_matches_complete_under_candidate_range: bool
@@ -1218,6 +1222,7 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0125",
         "AIT-T0126",
         "AIT-T0127",
+        "AIT-T0128",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -3110,30 +3115,49 @@ def certify_stride_family_coverage(
             path_length,
         )
     )
-    no_zero_residue_candidate_range_sufficient_condition = (
+    no_zero_residue_condition = (
         sequence_length > 0
-        and local_window < sequence_length
         and all(
             (step * stride) % sequence_length != 0
             for stride in normalized_strides
             for step in range(1, path_length + 1)
         )
     )
+    no_zero_residue_candidate_range_sufficient_condition = (
+        sequence_length > 0
+        and local_window < sequence_length
+        and no_zero_residue_condition
+    )
+    stride_family_periods = (
+        tuple(
+            sequence_length // gcd(sequence_length, stride)
+            for stride in normalized_strides
+        )
+        if sequence_length > 0
+        else ()
+    )
+    no_zero_period_thresholds = tuple(
+        path_length < period for period in stride_family_periods
+    )
+    no_zero_period_threshold_condition = (
+        sequence_length > 0 and all(no_zero_period_thresholds)
+    )
+    no_zero_period_threshold_candidate_range_sufficient_condition = (
+        sequence_length > 0
+        and local_window < sequence_length
+        and no_zero_period_threshold_condition
+    )
+    no_zero_period_threshold_matches_condition = (
+        no_zero_period_threshold_condition == no_zero_residue_condition
+    )
     singleton_stride_period: Optional[int] = None
     singleton_no_zero_period_threshold: Optional[bool] = None
     singleton_no_zero_period_threshold_matches_condition = True
     if sequence_length > 0 and len(normalized_strides) == 1:
-        singleton_stride_period = sequence_length // gcd(
-            sequence_length,
-            normalized_strides[0],
-        )
-        singleton_no_zero_period_threshold = path_length < singleton_stride_period
-        singleton_no_zero_condition = all(
-            (step * normalized_strides[0]) % sequence_length != 0
-            for step in range(1, path_length + 1)
-        )
+        singleton_stride_period = stride_family_periods[0]
+        singleton_no_zero_period_threshold = no_zero_period_thresholds[0]
         singleton_no_zero_period_threshold_matches_condition = (
-            singleton_no_zero_period_threshold == singleton_no_zero_condition
+            no_zero_period_threshold_matches_condition
         )
     uncovered_intervals = consecutive_integer_intervals(uncovered)
     first_uncovered_lag = uncovered[0] if uncovered else None
@@ -3222,6 +3246,14 @@ def certify_stride_family_coverage(
         singleton_no_zero_period_threshold=singleton_no_zero_period_threshold,
         singleton_no_zero_period_threshold_matches_condition=(
             singleton_no_zero_period_threshold_matches_condition
+        ),
+        stride_family_periods=stride_family_periods,
+        no_zero_period_thresholds=no_zero_period_thresholds,
+        no_zero_period_threshold_candidate_range_sufficient_condition=(
+            no_zero_period_threshold_candidate_range_sufficient_condition
+        ),
+        no_zero_period_threshold_matches_condition=(
+            no_zero_period_threshold_matches_condition
         ),
         unique_lag_count_shortfall_certifies_incomplete=(
             not (unique_lag_candidate_count < positive_lag_count and coverage_complete)

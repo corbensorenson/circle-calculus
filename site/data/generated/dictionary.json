@@ -5357,6 +5357,12 @@
           "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
           "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0128",
+          "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
+          "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -6094,6 +6100,12 @@
           "id": "AIT-T0127",
           "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
           "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0128",
+          "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
+          "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
           "status": "proved"
         }
       ],
@@ -7701,6 +7713,12 @@
           "id": "AIT-T0127",
           "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
           "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0128",
+          "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
+          "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
           "status": "proved"
         }
       ],
@@ -12447,6 +12465,12 @@
           "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
           "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0128",
+          "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
+          "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -15926,6 +15950,12 @@
           "id": "AIT-T0127",
           "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
           "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0128",
+          "lean_name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
+          "name": "Circle.Applications.coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period",
           "status": "proved"
         }
       ],

@@ -90,6 +90,11 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
         "matches_no_zero_residue_condition=True theorems=AIT-T0126,AIT-T0127"
     ) in result.stdout
     assert (
+        "family_no_zero_period_thresholds=(True, True) periods=(120, 120) "
+        "period_threshold_sufficient=True matches_no_zero_residue_condition=True "
+        "theorem=AIT-T0128"
+    ) in result.stdout
+    assert (
         "candidate_range_counts=covered_eq_unique=True "
         "uncovered_eq_context_minus_unique=True theorems=AIT-T0113,AIT-T0114"
     ) in result.stdout
@@ -159,6 +164,10 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     assert payload["singleton_stride_period"] is None
     assert payload["singleton_no_zero_period_threshold"] is None
     assert payload["singleton_no_zero_period_threshold_matches_condition"] is True
+    assert payload["stride_family_periods"] == [120, 120]
+    assert payload["no_zero_period_thresholds"] == [True, True]
+    assert payload["no_zero_period_threshold_candidate_range_sufficient_condition"] is True
+    assert payload["no_zero_period_threshold_matches_condition"] is True
     assert payload["unique_lag_count_matches_complete_under_candidate_range"] is True
     assert payload["covered_count_matches_unique_lag_count_under_candidate_range"] is True
     assert (
@@ -185,6 +194,7 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     assert "AIT-T0125" in payload["theorem_ids"]
     assert "AIT-T0126" in payload["theorem_ids"]
     assert "AIT-T0127" in payload["theorem_ids"]
+    assert "AIT-T0128" in payload["theorem_ids"]
     assert (
         payload[
             "unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective"
@@ -231,4 +241,9 @@ def test_stride_family_certifier_cli_singleton_period_threshold() -> None:
     assert (
         "singleton_no_zero_period_threshold=True period=3 "
         "matches_no_zero_residue_condition=True theorems=AIT-T0126,AIT-T0127"
+    ) in result.stdout
+    assert (
+        "family_no_zero_period_thresholds=(True,) periods=(3,) "
+        "period_threshold_sufficient=True matches_no_zero_residue_condition=True "
+        "theorem=AIT-T0128"
     ) in result.stdout

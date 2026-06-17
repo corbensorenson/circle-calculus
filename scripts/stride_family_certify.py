@@ -173,6 +173,16 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             "theorems=AIT-T0126,AIT-T0127"
         ),
         (
+            "family_no_zero_period_thresholds="
+            f"{tuple(payload['no_zero_period_thresholds'])} "
+            f"periods={tuple(payload['stride_family_periods'])} "
+            "period_threshold_sufficient="
+            f"{payload['no_zero_period_threshold_candidate_range_sufficient_condition']} "
+            "matches_no_zero_residue_condition="
+            f"{payload['no_zero_period_threshold_matches_condition']} "
+            "theorem=AIT-T0128"
+        ),
+        (
             "candidate_range_counts="
             "covered_eq_unique="
             f"{payload['covered_count_matches_unique_lag_count_under_candidate_range']} "

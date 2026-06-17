@@ -385,6 +385,45 @@ theorem coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period
       Nat.le_of_dvd hgenerated_pos hdiv
     omega
 
+/-- For any finite stride family in a nonzero context, the no-zero-residue
+condition is exactly the per-stride period-threshold condition.
+
+This is the planner-facing finite-family version of
+`coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period`: every
+admitted stride avoids generating the zero lag through the declared path budget
+if and only if each stride's finite coil period is strictly larger than that
+budget. -/
+theorem coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period
+    {n pathLength : Nat} (hn : n ≠ 0) {strides : List Nat} :
+    coilStrideFamilyNoZeroResidues n pathLength strides ↔
+      ∀ stride, stride ∈ strides → pathLength < Circle.period n stride := by
+  constructor
+  · intro hnoZero stride hmem
+    by_contra hnot
+    have hperiod_le : Circle.period n stride ≤ pathLength :=
+      le_of_not_gt hnot
+    have hgcd_pos : 0 < Nat.gcd n stride :=
+      Nat.gcd_pos_of_pos_left stride (Nat.pos_of_ne_zero hn)
+    have hgcd_le : Nat.gcd n stride ≤ n :=
+      Nat.gcd_le_left stride (Nat.pos_of_ne_zero hn)
+    have hperiod_pos : 0 < Circle.period n stride := by
+      rw [Circle.period_eq_n_div_gcd hn]
+      exact Nat.div_pos hgcd_le hgcd_pos
+    have hnonzero :=
+      hnoZero stride hmem (Circle.period n stride)
+        (Nat.succ_le_of_lt hperiod_pos) hperiod_le
+    exact hnonzero ((coilLagResidue_zero_iff_period_dvd
+      (n := n) (stride := stride) (step := Circle.period n stride)).2 dvd_rfl)
+  · intro hperiod stride hmem generatedStep hgenerated_pos hgenerated_le hzero
+    have hdiv :
+        Circle.period n stride ∣ generatedStep :=
+      (coilLagResidue_zero_iff_period_dvd
+        (n := n) (stride := stride) (step := generatedStep)).1 hzero
+    have hperiod_le_generated : Circle.period n stride ≤ generatedStep :=
+      Nat.le_of_dvd hgenerated_pos hdiv
+    have hperiod_gt := hperiod stride hmem
+    omega
+
 /-- The query-predecessor map is injective on the generated lag candidates. -/
 def hybridFamilyPredecessorInjectiveOnLagCandidates
     (n query window pathLength : Nat) (strides : List Nat) : Prop :=

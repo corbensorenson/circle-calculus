@@ -42,6 +42,7 @@ raw_budget_shortfall=True certifies_incomplete=True theorem=AIT-T0110
 unique_lag_shortfall=True certifies_incomplete=True theorem=AIT-T0111
 candidate_range=True no_wrap_separated_sufficient=False no_zero_residue_sufficient=True unique_count_complete_iff=True theorems=AIT-T0112,AIT-T0115,AIT-T0116,AIT-T0117,AIT-T0118,AIT-T0119
 singleton_no_zero_period_threshold=None period=None matches_no_zero_residue_condition=True theorems=AIT-T0126,AIT-T0127
+family_no_zero_period_thresholds=(True, True) periods=(120, 120) period_threshold_sufficient=True matches_no_zero_residue_condition=True theorem=AIT-T0128
 candidate_range_counts=covered_eq_unique=True uncovered_eq_context_minus_unique=True theorems=AIT-T0113,AIT-T0114
 lag_budget_status=exact-raw-budget unique_lag_candidates=10 lag_no_collision=True
 query_budget_status=exact-raw-budget unique_query_candidates=10 query_no_collision=True
@@ -82,6 +83,10 @@ python scripts/stride_family_certify.py \
 - `singleton_stride_period`: for one-stride plans, the finite coil period `context / gcd(context, stride)`; otherwise absent.
 - `singleton_no_zero_period_threshold`: for one-stride plans, true exactly when `path_length < singleton_stride_period`.
 - `singleton_no_zero_period_threshold_matches_condition`: true when the singleton period-threshold calculation agrees with the finite no-zero residue scan.
+- `stride_family_periods`: the finite coil period of each admitted stride, in declared order.
+- `no_zero_period_thresholds`: per-stride booleans checking `path_length < period`.
+- `no_zero_period_threshold_candidate_range_sufficient_condition`: true when `local_window < context` and every admitted stride passes the period-threshold no-zero check.
+- `no_zero_period_threshold_matches_condition`: true when the period-threshold test agrees with the finite no-zero residue scan.
 - `unique_lag_count_shortfall_certifies_incomplete`: true when the certificate avoids the impossible state where the deduplicated unique lag-candidate count is below `context - 1` but coverage is still reported complete.
 - `unique_lag_count_matches_complete_under_candidate_range`: true when the candidate-range hypothesis is absent or, under that hypothesis, complete coverage matches `theorem_side_unique_lag_candidate_count == context - 1`.
 - `covered_count_matches_unique_lag_count_under_candidate_range`: true when the candidate-range hypothesis is absent or, under that hypothesis, covered count equals the unique lag-candidate count.
@@ -115,6 +120,7 @@ The raw-budget iff endpoints are:
 - `AIT-T0125`: the no-zero-residue structural version of that query-side shortfall/gap equivalence.
 - `AIT-T0126`: for one stride, a generated residue is zero exactly when the stride period divides the step count.
 - `AIT-T0127`: for a singleton stride family in a nonzero context, the no-zero-residue condition is exactly the threshold `path_length < period`.
+- `AIT-T0128`: for any finite stride family in a nonzero context, the no-zero-residue condition is exactly the requirement that every admitted stride has period greater than `path_length`.
 
 The finite-list endpoints are:
 

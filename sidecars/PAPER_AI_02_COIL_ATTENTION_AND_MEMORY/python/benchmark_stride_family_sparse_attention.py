@@ -63,6 +63,7 @@ CORE_COVERAGE_THEOREM_IDS = (
     "AIT-T0125",
     "AIT-T0126",
     "AIT-T0127",
+    "AIT-T0128",
 )
 
 PLANNER_STYLE_SPECS: tuple[dict[str, Any], ...] = (
@@ -193,6 +194,14 @@ def compact_planner_certificate(spec: dict[str, Any]) -> dict[str, Any]:
         ),
         "singleton_no_zero_period_threshold_matches_condition": (
             certificate.singleton_no_zero_period_threshold_matches_condition
+        ),
+        "stride_family_periods": certificate.stride_family_periods,
+        "no_zero_period_thresholds": certificate.no_zero_period_thresholds,
+        "no_zero_period_threshold_candidate_range_sufficient_condition": (
+            certificate.no_zero_period_threshold_candidate_range_sufficient_condition
+        ),
+        "no_zero_period_threshold_matches_condition": (
+            certificate.no_zero_period_threshold_matches_condition
         ),
         "unique_lag_count_shortfall_certifies_incomplete": (
             certificate.unique_lag_count_shortfall_certifies_incomplete
@@ -333,6 +342,12 @@ def text_results(payload: dict[str, Any]) -> str:
             f"{row['singleton_no_zero_period_threshold']} "
             "singleton_threshold_matches_no_zero="
             f"{row['singleton_no_zero_period_threshold_matches_condition']} "
+            f"family_periods={row['stride_family_periods']} "
+            f"family_period_thresholds={row['no_zero_period_thresholds']} "
+            "family_period_threshold_sufficient="
+            f"{row['no_zero_period_threshold_candidate_range_sufficient_condition']} "
+            "family_threshold_matches_no_zero="
+            f"{row['no_zero_period_threshold_matches_condition']} "
             "unique_count_complete_iff="
             f"{row['unique_lag_count_matches_complete_under_candidate_range']} "
             "covered_eq_unique="
@@ -435,6 +450,12 @@ def text_results(payload: dict[str, Any]) -> str:
         f"{certificate['singleton_no_zero_period_threshold']} "
         "singleton_threshold_matches_no_zero="
         f"{certificate['singleton_no_zero_period_threshold_matches_condition']} "
+        f"family_periods={certificate['stride_family_periods']} "
+        f"family_period_thresholds={certificate['no_zero_period_thresholds']} "
+        "family_period_threshold_sufficient="
+        f"{certificate['no_zero_period_threshold_candidate_range_sufficient_condition']} "
+        "family_threshold_matches_no_zero="
+        f"{certificate['no_zero_period_threshold_matches_condition']} "
         "unique_count_complete_iff="
         f"{certificate['unique_lag_count_matches_complete_under_candidate_range']} "
         "covered_eq_unique="
@@ -498,6 +519,12 @@ def text_results(payload: dict[str, Any]) -> str:
         f"{complete['singleton_no_zero_period_threshold']} "
         "singleton_threshold_matches_no_zero="
         f"{complete['singleton_no_zero_period_threshold_matches_condition']} "
+        f"family_periods={complete['stride_family_periods']} "
+        f"family_period_thresholds={complete['no_zero_period_thresholds']} "
+        "family_period_threshold_sufficient="
+        f"{complete['no_zero_period_threshold_candidate_range_sufficient_condition']} "
+        "family_threshold_matches_no_zero="
+        f"{complete['no_zero_period_threshold_matches_condition']} "
         "unique_count_complete_iff="
         f"{complete['unique_lag_count_matches_complete_under_candidate_range']} "
         "covered_eq_unique="
@@ -599,6 +626,17 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{certificate['unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective']} | "
                 f"{certificate['unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated']} | "
                 f"{certificate['unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue']} |"
+            ),
+            "",
+            "Family no-zero period threshold:",
+            "",
+            "| Periods | Thresholds | Period threshold sufficient | Matches no-zero residue scan |",
+            "| --- | --- | --- | --- |",
+            (
+                f"| {', '.join(str(period) for period in certificate['stride_family_periods'])} | "
+                f"{', '.join(str(flag) for flag in certificate['no_zero_period_thresholds'])} | "
+                f"{certificate['no_zero_period_threshold_candidate_range_sufficient_condition']} | "
+                f"{certificate['no_zero_period_threshold_matches_condition']} |"
             ),
             "",
             "Covered lags:",
