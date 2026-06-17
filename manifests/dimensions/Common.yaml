@@ -7376,6 +7376,38 @@ theorems:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_singleton_stride_period_threshold_matches_no_zero_condition
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
     blocker: ""
+  - id: AIT-T0137
+    status: lean_proved
+    lean_name: Circle.Applications.coilStrideFamilyZeroResidueStepCount_eq_sum_pathLength_div_period
+    informal_statement: "For a finite stride family, the total number of admitted zero-residue stride-step pairs is the sum of the per-stride path-length-over-period quotients."
+    formal_statement: "forall n pathLength : Nat, forall strides : List Nat, Circle.Applications.coilStrideFamilyZeroResidueStepCount n pathLength strides = (strides.map fun stride => pathLength / Circle.period n stride).sum"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_singleton_stride_period_threshold_matches_no_zero_condition
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
+  - id: AIT-T0138
+    status: lean_proved
+    lean_name: Circle.Applications.coilStrideFamilyZeroResidueStepCount_eq_zero_iff_noZeroResidues
+    informal_statement: "In a nonzero context, the finite stride-family zero-residue alias count is zero exactly when the stride family satisfies the no-zero structural condition."
+    formal_statement: "forall {n pathLength : Nat}, n != 0 -> forall {strides : List Nat}, Circle.Applications.coilStrideFamilyZeroResidueStepCount n pathLength strides = 0 <-> Circle.Applications.coilStrideFamilyNoZeroResidues n pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_singleton_stride_period_threshold_matches_no_zero_condition
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

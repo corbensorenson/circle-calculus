@@ -354,6 +354,15 @@ def coilLagZeroResidueStepCount
   ((Finset.range pathLength).filter fun offset =>
     ((offset + 1) * stride) % n = 0).card
 
+/-- Total number of admitted positive steps across a finite stride family whose
+generated residue is zero.
+
+This counts stride/step pairs, not distinct residues. It is therefore the
+family-level alias diagnostic for period-threshold sparse-attention reports. -/
+def coilStrideFamilyZeroResidueStepCount
+    (n pathLength : Nat) (strides : List Nat) : Nat :=
+  (strides.map fun stride => coilLagZeroResidueStepCount n stride pathLength).sum
+
 /-- A one-stride generated residue collapses to zero exactly when the finite
 coil period divides the step count. -/
 theorem coilLagResidue_zero_iff_period_dvd
@@ -418,6 +427,15 @@ theorem coilLagZeroResidueStepCount_eq_pathLength_div_period
   unfold coilLagZeroResidueStepCount
   simpa [coilLagResidue_zero_iff_period_dvd, Nat.add_comm]
     using Nat.card_multiples pathLength (Circle.period n stride)
+
+/-- The family-level zero-residue alias count is the sum of the per-stride
+period quotient counts. -/
+theorem coilStrideFamilyZeroResidueStepCount_eq_sum_pathLength_div_period
+    (n pathLength : Nat) (strides : List Nat) :
+    coilStrideFamilyZeroResidueStepCount n pathLength strides =
+      (strides.map fun stride => pathLength / Circle.period n stride).sum := by
+  unfold coilStrideFamilyZeroResidueStepCount
+  simp [coilLagZeroResidueStepCount_eq_pathLength_div_period]
 
 /-- For a singleton stride family, the no-zero-residue condition is exactly the
 period-threshold condition `pathLength < period`.
@@ -497,6 +515,26 @@ theorem coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period
       Nat.le_of_dvd hgenerated_pos hdiv
     have hperiod_gt := hperiod stride hmem
     omega
+
+/-- In a nonzero context, the family-level zero-residue alias count is zero
+exactly when the stride family satisfies the no-zero structural condition.
+
+This converts the period-count diagnostic into a Boolean contract: a report can
+say that the total alias count is zero precisely when every admitted stride step
+avoids the zero lag. -/
+theorem coilStrideFamilyZeroResidueStepCount_eq_zero_iff_noZeroResidues
+    {n pathLength : Nat} (hn : n ≠ 0) {strides : List Nat} :
+    coilStrideFamilyZeroResidueStepCount n pathLength strides = 0 ↔
+      coilStrideFamilyNoZeroResidues n pathLength strides := by
+  rw [coilStrideFamilyZeroResidueStepCount_eq_sum_pathLength_div_period,
+    coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period hn]
+  induction strides with
+  | nil =>
+      simp
+  | cons stride strides ih =>
+      have hperiod_pos : 0 < Circle.period n stride :=
+        coilPeriod_pos_of_context_ne_zero (n := n) (stride := stride) hn
+      simp [ih, Nat.div_eq_zero_iff, hperiod_pos.ne']
 
 /-- For a nonzero context, a stride family has a concrete zero-residue witness
 exactly when some admitted stride's finite coil period is at most the path

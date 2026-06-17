@@ -182,6 +182,12 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             f"{tuple(payload['stride_family_zero_residue_step_counts'])} "
             "counts_match_period_formula="
             f"{payload['zero_residue_step_counts_match_period_formula']} "
+            "zero_residue_total_count="
+            f"{payload['stride_family_zero_residue_total_step_count']} "
+            "total_count_matches_sum_formula="
+            f"{payload['zero_residue_total_count_matches_sum_formula']} "
+            "total_count_zero_matches_no_zero_condition="
+            f"{payload['zero_residue_total_count_zero_matches_no_zero_condition']} "
             "period_threshold_sufficient="
             f"{payload['no_zero_period_threshold_candidate_range_sufficient_condition']} "
             "matches_no_zero_residue_condition="
@@ -201,7 +207,7 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             f"{payload['no_zero_period_violation_witness_is_first_zero']} "
             "witness_step_positive="
             f"{payload['no_zero_period_violation_witness_step_positive']} "
-            "theorems=AIT-T0128,AIT-T0131,AIT-T0132,AIT-T0133,AIT-T0134,AIT-T0135,AIT-T0136"
+            "theorems=AIT-T0128,AIT-T0131,AIT-T0132,AIT-T0133,AIT-T0134,AIT-T0135,AIT-T0136,AIT-T0137,AIT-T0138"
         ),
         (
             "candidate_range_counts="

@@ -72,6 +72,8 @@ CORE_COVERAGE_THEOREM_IDS = (
     "AIT-T0134",
     "AIT-T0135",
     "AIT-T0136",
+    "AIT-T0137",
+    "AIT-T0138",
 )
 
 PLANNER_STYLE_SPECS: tuple[dict[str, Any], ...] = (
@@ -210,6 +212,15 @@ def compact_planner_certificate(spec: dict[str, Any]) -> dict[str, Any]:
         ),
         "zero_residue_step_counts_match_period_formula": (
             certificate.zero_residue_step_counts_match_period_formula
+        ),
+        "stride_family_zero_residue_total_step_count": (
+            certificate.stride_family_zero_residue_total_step_count
+        ),
+        "zero_residue_total_count_matches_sum_formula": (
+            certificate.zero_residue_total_count_matches_sum_formula
+        ),
+        "zero_residue_total_count_zero_matches_no_zero_condition": (
+            certificate.zero_residue_total_count_zero_matches_no_zero_condition
         ),
         "no_zero_period_threshold_candidate_range_sufficient_condition": (
             certificate.no_zero_period_threshold_candidate_range_sufficient_condition
@@ -393,6 +404,12 @@ def text_results(payload: dict[str, Any]) -> str:
             f"zero_residue_counts={row['stride_family_zero_residue_step_counts']} "
             "zero_residue_count_formula="
             f"{row['zero_residue_step_counts_match_period_formula']} "
+            "zero_residue_total_count="
+            f"{row['stride_family_zero_residue_total_step_count']} "
+            "zero_residue_total_formula="
+            f"{row['zero_residue_total_count_matches_sum_formula']} "
+            "zero_residue_total_zero_iff_no_zero="
+            f"{row['zero_residue_total_count_zero_matches_no_zero_condition']} "
             "family_period_threshold_sufficient="
             f"{row['no_zero_period_threshold_candidate_range_sufficient_condition']} "
             "family_threshold_matches_no_zero="
@@ -516,6 +533,12 @@ def text_results(payload: dict[str, Any]) -> str:
         f"zero_residue_counts={certificate['stride_family_zero_residue_step_counts']} "
         "zero_residue_count_formula="
         f"{certificate['zero_residue_step_counts_match_period_formula']} "
+        "zero_residue_total_count="
+        f"{certificate['stride_family_zero_residue_total_step_count']} "
+        "zero_residue_total_formula="
+        f"{certificate['zero_residue_total_count_matches_sum_formula']} "
+        "zero_residue_total_zero_iff_no_zero="
+        f"{certificate['zero_residue_total_count_zero_matches_no_zero_condition']} "
         "family_period_threshold_sufficient="
         f"{certificate['no_zero_period_threshold_candidate_range_sufficient_condition']} "
         "family_threshold_matches_no_zero="
@@ -600,6 +623,12 @@ def text_results(payload: dict[str, Any]) -> str:
         f"zero_residue_counts={complete['stride_family_zero_residue_step_counts']} "
         "zero_residue_count_formula="
         f"{complete['zero_residue_step_counts_match_period_formula']} "
+        "zero_residue_total_count="
+        f"{complete['stride_family_zero_residue_total_step_count']} "
+        "zero_residue_total_formula="
+        f"{complete['zero_residue_total_count_matches_sum_formula']} "
+        "zero_residue_total_zero_iff_no_zero="
+        f"{complete['zero_residue_total_count_zero_matches_no_zero_condition']} "
         "family_period_threshold_sufficient="
         f"{complete['no_zero_period_threshold_candidate_range_sufficient_condition']} "
         "family_threshold_matches_no_zero="
@@ -719,13 +748,16 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "Family no-zero period threshold:",
             "",
-            "| Periods | Thresholds | Zero-residue counts | Count formula | Period threshold sufficient | Matches no-zero residue scan | Zero witness iff no-zero failure | Period violation iff no-zero failure | Witness is first zero | Witness step positive |",
-            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+            "| Periods | Thresholds | Zero-residue counts | Count formula | Total count | Total formula | Total zero iff no-zero | Period threshold sufficient | Matches no-zero residue scan | Zero witness iff no-zero failure | Period violation iff no-zero failure | Witness is first zero | Witness step positive |",
+            "| --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- |",
             (
                 f"| {', '.join(str(period) for period in certificate['stride_family_periods'])} | "
                 f"{', '.join(str(flag) for flag in certificate['no_zero_period_thresholds'])} | "
                 f"{', '.join(str(count) for count in certificate['stride_family_zero_residue_step_counts'])} | "
                 f"{certificate['zero_residue_step_counts_match_period_formula']} | "
+                f"{certificate['stride_family_zero_residue_total_step_count']} | "
+                f"{certificate['zero_residue_total_count_matches_sum_formula']} | "
+                f"{certificate['zero_residue_total_count_zero_matches_no_zero_condition']} | "
                 f"{certificate['no_zero_period_threshold_candidate_range_sufficient_condition']} | "
                 f"{certificate['no_zero_period_threshold_matches_condition']} | "
                 f"{certificate['zero_residue_witness_matches_no_zero_failure']} | "

@@ -42,7 +42,7 @@ raw_budget_shortfall=True certifies_incomplete=True theorem=AIT-T0110
 unique_lag_shortfall=True certifies_incomplete=True gap_witness_equiv_under_candidate_range=True period_threshold_equiv=True theorems=AIT-T0111,AIT-T0120,AIT-T0121,AIT-T0122,AIT-T0129
 candidate_range=True no_wrap_separated_sufficient=False no_zero_residue_sufficient=True unique_count_complete_iff=True theorems=AIT-T0112,AIT-T0115,AIT-T0116,AIT-T0117,AIT-T0118,AIT-T0119
 singleton_no_zero_period_threshold=None period=None matches_no_zero_residue_condition=True theorems=AIT-T0126,AIT-T0127
-family_no_zero_period_thresholds=(True, True) periods=(120, 120) zero_residue_counts=(0, 0) counts_match_period_formula=True period_threshold_sufficient=True matches_no_zero_residue_condition=True violation_witness=(None, None, None, None) witness_matches_period_threshold=True witness_matches_no_zero_failure=True period_violation_matches_no_zero_failure=True witness_is_first_zero=True witness_step_positive=True theorems=AIT-T0128,AIT-T0131,AIT-T0132,AIT-T0133,AIT-T0134,AIT-T0135,AIT-T0136
+family_no_zero_period_thresholds=(True, True) periods=(120, 120) zero_residue_counts=(0, 0) counts_match_period_formula=True zero_residue_total_count=0 total_count_matches_sum_formula=True total_count_zero_matches_no_zero_condition=True period_threshold_sufficient=True matches_no_zero_residue_condition=True violation_witness=(None, None, None, None) witness_matches_period_threshold=True witness_matches_no_zero_failure=True period_violation_matches_no_zero_failure=True witness_is_first_zero=True witness_step_positive=True theorems=AIT-T0128,AIT-T0131,AIT-T0132,AIT-T0133,AIT-T0134,AIT-T0135,AIT-T0136,AIT-T0137,AIT-T0138
 candidate_range_counts=covered_eq_unique=True uncovered_eq_context_minus_unique=True theorems=AIT-T0113,AIT-T0114
 lag_budget_status=exact-raw-budget unique_lag_candidates=10 lag_no_collision=True
 query_budget_status=exact-raw-budget unique_query_candidates=10 query_no_collision=True
@@ -87,6 +87,9 @@ python scripts/stride_family_certify.py \
 - `no_zero_period_thresholds`: per-stride booleans checking `path_length < period`.
 - `stride_family_zero_residue_step_counts`: per-stride counts of admitted positive steps whose generated residue is zero.
 - `zero_residue_step_counts_match_period_formula`: true when those counts match `path_length // stride_period`.
+- `stride_family_zero_residue_total_step_count`: total zero-residue stride-step pairs across the finite stride family.
+- `zero_residue_total_count_matches_sum_formula`: true when the total count matches the sum of the per-stride period quotient formulas.
+- `zero_residue_total_count_zero_matches_no_zero_condition`: true when total count zero is equivalent to the no-zero structural condition in the nonzero context.
 - `no_zero_period_threshold_candidate_range_sufficient_condition`: true when `local_window < context` and every admitted stride passes the period-threshold no-zero check.
 - `no_zero_period_threshold_matches_condition`: true when the period-threshold test agrees with the finite no-zero residue scan.
 - `no_zero_period_violation_witness_stride`, `no_zero_period_violation_witness_period`, `no_zero_period_violation_witness_step`, `no_zero_period_violation_witness_residue`: the first constructed zero-residue witness when a period threshold fails; otherwise absent.
@@ -139,6 +142,8 @@ The raw-budget iff endpoints are:
 - `AIT-T0134`: in a nonzero context, every stride has a positive finite coil period.
 - `AIT-T0135`: in a nonzero context, the finite coil period is the first positive step that generates a zero residue for that stride.
 - `AIT-T0136`: for one stride, the number of admitted positive zero-residue steps is exactly `path_length / period`.
+- `AIT-T0137`: for a finite stride family, the total zero-residue count is the sum of the per-stride `path_length / period` counts.
+- `AIT-T0138`: in a nonzero context, total zero-residue count is zero exactly when the no-zero structural condition holds.
 
 The finite-list endpoints are:
 

@@ -1096,6 +1096,9 @@ class StrideFamilyCoverageCertificate:
     no_zero_period_thresholds: tuple[bool, ...]
     stride_family_zero_residue_step_counts: tuple[int, ...]
     zero_residue_step_counts_match_period_formula: bool
+    stride_family_zero_residue_total_step_count: int
+    zero_residue_total_count_matches_sum_formula: bool
+    zero_residue_total_count_zero_matches_no_zero_condition: bool
     no_zero_period_threshold_candidate_range_sufficient_condition: bool
     no_zero_period_threshold_matches_condition: bool
     no_zero_period_violation_witness_stride: Optional[int]
@@ -1244,6 +1247,8 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0134",
         "AIT-T0135",
         "AIT-T0136",
+        "AIT-T0137",
+        "AIT-T0138",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -3183,6 +3188,19 @@ def certify_stride_family_coverage(
             )
         )
     )
+    stride_family_zero_residue_total_step_count = sum(
+        stride_family_zero_residue_step_counts
+    )
+    zero_residue_total_count_matches_sum_formula = (
+        sequence_length > 0
+        and stride_family_zero_residue_total_step_count
+        == sum(path_length // period for period in stride_family_periods)
+    )
+    zero_residue_total_count_zero_matches_no_zero_condition = (
+        sequence_length > 0
+        and (stride_family_zero_residue_total_step_count == 0)
+        == no_zero_residue_condition
+    )
     no_zero_period_threshold_condition = (
         sequence_length > 0 and all(no_zero_period_thresholds)
     )
@@ -3367,6 +3385,15 @@ def certify_stride_family_coverage(
         ),
         zero_residue_step_counts_match_period_formula=(
             zero_residue_step_counts_match_period_formula
+        ),
+        stride_family_zero_residue_total_step_count=(
+            stride_family_zero_residue_total_step_count
+        ),
+        zero_residue_total_count_matches_sum_formula=(
+            zero_residue_total_count_matches_sum_formula
+        ),
+        zero_residue_total_count_zero_matches_no_zero_condition=(
+            zero_residue_total_count_zero_matches_no_zero_condition
         ),
         no_zero_period_threshold_candidate_range_sufficient_condition=(
             no_zero_period_threshold_candidate_range_sufficient_condition
