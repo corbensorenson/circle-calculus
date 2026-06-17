@@ -7492,6 +7492,34 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
     blocker: ""
+  - id: AIT-T0145
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyLagCandidateDedupLoss_eq_zero_iff_noCollision
+    informal_statement: "For theorem-side sparse lag candidates, exact deduplication loss is zero if and only if the raw lag-candidate list has no duplicate residues."
+    formal_statement: "Circle.Applications.hybridFamilyLagCandidateDedupLoss n window pathLength strides = 0 iff Circle.Applications.hybridFamilyLagCandidatesNoCollision n window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
+  - id: AIT-T0146
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyQueryCandidateDedupLoss_eq_zero_iff_noCollision
+    informal_statement: "For query-indexed sparse predecessor candidates, exact deduplication loss is zero if and only if the raw query-candidate list has no duplicate predecessor addresses."
+    formal_statement: "Circle.Applications.hybridFamilyQueryCandidateDedupLoss n query window pathLength strides = 0 iff Circle.Applications.hybridFamilyQueryCandidatesNoCollision n query window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

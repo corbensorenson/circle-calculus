@@ -1086,6 +1086,8 @@ class StrideFamilyCoverageCertificate:
     deduplicated_candidate_budget_upper_bound: int
     theorem_side_lag_candidates: tuple[int, ...]
     theorem_side_unique_lag_candidate_count: int
+    theorem_side_lag_candidate_dedup_loss: int
+    lag_dedup_loss_zero_matches_no_collision: bool
     theorem_side_lag_candidates_positive_in_context: bool
     no_wrap_separated_candidate_range_sufficient_condition: bool
     no_zero_residue_candidate_range_sufficient_condition: bool
@@ -1121,6 +1123,8 @@ class StrideFamilyCoverageCertificate:
     theorem_side_lag_candidates_no_collision: bool
     theorem_side_query_candidates: tuple[int, ...]
     theorem_side_unique_query_candidate_count: int
+    theorem_side_query_candidate_dedup_loss: int
+    query_dedup_loss_zero_matches_no_collision: bool
     theorem_side_query_count_le_unique_lag_count: bool
     theorem_side_query_count_matches_unique_lag_count: bool
     theorem_side_predecessor_injective_on_lag_candidates: bool
@@ -1249,6 +1253,8 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0136",
         "AIT-T0137",
         "AIT-T0138",
+        "AIT-T0145",
+        "AIT-T0146",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -2746,6 +2752,25 @@ def stride_family_unique_lag_candidate_count(
     )))
 
 
+def stride_family_lag_candidate_dedup_loss(
+    sequence_length: int,
+    strides: Sequence[int],
+    path_length: int,
+    local_window: int,
+) -> int:
+    """Return raw lag-candidate budget lost to deduplication."""
+    return stride_family_raw_candidate_budget(
+        strides=strides,
+        path_length=path_length,
+        local_window=local_window,
+    ) - stride_family_unique_lag_candidate_count(
+        sequence_length,
+        strides,
+        path_length,
+        local_window,
+    )
+
+
 def stride_family_lag_candidates_no_collision(
     sequence_length: int,
     strides: Sequence[int],
@@ -2985,6 +3010,27 @@ def stride_family_unique_query_candidate_count(
     )))
 
 
+def stride_family_query_candidate_dedup_loss(
+    sequence_length: int,
+    query_index: int,
+    strides: Sequence[int],
+    path_length: int,
+    local_window: int,
+) -> int:
+    """Return raw query-candidate budget lost to deduplication."""
+    return stride_family_raw_candidate_budget(
+        strides=strides,
+        path_length=path_length,
+        local_window=local_window,
+    ) - stride_family_unique_query_candidate_count(
+        sequence_length,
+        query_index,
+        strides,
+        path_length,
+        local_window,
+    )
+
+
 def stride_family_query_candidates_no_collision(
     sequence_length: int,
     query_index: int,
@@ -3144,6 +3190,14 @@ def certify_stride_family_coverage(
     )
     unique_lag_candidate_count = len(set(theorem_side_lag_candidates))
     unique_query_candidate_count = len(set(theorem_side_query_candidates))
+    lag_candidate_dedup_loss = raw_candidate_budget - unique_lag_candidate_count
+    query_candidate_dedup_loss = raw_candidate_budget - unique_query_candidate_count
+    lag_candidates_no_collision = (
+        len(set(theorem_side_lag_candidates)) == len(theorem_side_lag_candidates)
+    )
+    query_candidates_no_collision = (
+        len(set(theorem_side_query_candidates)) == len(theorem_side_query_candidates)
+    )
     lag_candidates_positive_in_context = all(
         1 <= lag < sequence_length for lag in theorem_side_lag_candidates
     )
@@ -3380,6 +3434,10 @@ def certify_stride_family_coverage(
         ),
         theorem_side_lag_candidates=theorem_side_lag_candidates,
         theorem_side_unique_lag_candidate_count=unique_lag_candidate_count,
+        theorem_side_lag_candidate_dedup_loss=lag_candidate_dedup_loss,
+        lag_dedup_loss_zero_matches_no_collision=(
+            (lag_candidate_dedup_loss == 0) == lag_candidates_no_collision
+        ),
         theorem_side_lag_candidates_positive_in_context=lag_candidates_positive_in_context,
         no_wrap_separated_candidate_range_sufficient_condition=(
             no_wrap_separated_candidate_range_sufficient_condition
@@ -3482,11 +3540,13 @@ def certify_stride_family_coverage(
             path_length,
             local_window,
         ),
-        theorem_side_lag_candidates_no_collision=(
-            len(set(theorem_side_lag_candidates)) == len(theorem_side_lag_candidates)
-        ),
+        theorem_side_lag_candidates_no_collision=lag_candidates_no_collision,
         theorem_side_query_candidates=theorem_side_query_candidates,
         theorem_side_unique_query_candidate_count=unique_query_candidate_count,
+        theorem_side_query_candidate_dedup_loss=query_candidate_dedup_loss,
+        query_dedup_loss_zero_matches_no_collision=(
+            (query_candidate_dedup_loss == 0) == query_candidates_no_collision
+        ),
         theorem_side_query_count_le_unique_lag_count=(
             unique_query_candidate_count <= unique_lag_candidate_count
         ),
@@ -3518,9 +3578,7 @@ def certify_stride_family_coverage(
             not no_zero_period_threshold_candidate_range_sufficient_condition
             or query_shortfall_matches_gap
         ),
-        theorem_side_query_candidates_no_collision=(
-            len(set(theorem_side_query_candidates)) == len(theorem_side_query_candidates)
-        ),
+        theorem_side_query_candidates_no_collision=query_candidates_no_collision,
         full_attention_budget=sequence_length,
         coverage_complete=coverage_complete,
         coverage_ratio=1.0 if positive_lag_count == 0 else len(covered) / positive_lag_count,

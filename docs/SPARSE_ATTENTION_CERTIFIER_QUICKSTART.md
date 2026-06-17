@@ -77,6 +77,8 @@ python scripts/stride_family_certify.py \
 - `raw_candidate_budget_upper_bound`: `local_window + path_length * number_of_strides`.
 - `raw_budget_shortfall_certifies_incomplete`: true when the certificate avoids the impossible state where raw budget is below `context - 1` but coverage is still reported complete.
 - `theorem_side_unique_lag_candidate_count`: deduplicated lag count from the theorem-side list.
+- `theorem_side_lag_candidate_dedup_loss`: raw lag-candidate budget minus deduplicated lag-candidate count.
+- `lag_dedup_loss_zero_matches_no_collision`: true when zero lag dedup loss agrees with the no-duplicate lag-candidate predicate.
 - `theorem_side_lag_candidates_positive_in_context`: true when every theorem-side lag candidate is between `1` and `context - 1`.
 - `no_wrap_separated_candidate_range_sufficient_condition`: true when `local_window < context` and the ordered stride family satisfies the no-wrap separated numeric condition, which is a Lean-proved sufficient condition for positive in-context lag candidates.
 - `no_zero_residue_candidate_range_sufficient_condition`: true when `local_window < context` and every admitted `step * stride mod context` is nonzero. This is a Lean-proved sufficient condition for positive in-context lag candidates that permits wrapping and overlap.
@@ -104,6 +106,8 @@ python scripts/stride_family_certify.py \
 - `covered_count_matches_unique_lag_count_under_candidate_range`: true when the candidate-range hypothesis is absent or, under that hypothesis, covered count equals the unique lag-candidate count.
 - `uncovered_count_matches_context_minus_unique_lag_count_under_candidate_range`: true when the candidate-range hypothesis is absent or, under that hypothesis, uncovered count equals `context - 1 - theorem_side_unique_lag_candidate_count`.
 - `theorem_side_unique_query_candidate_count`: deduplicated query-indexed predecessor count.
+- `theorem_side_query_candidate_dedup_loss`: raw query-candidate budget minus deduplicated query-candidate count.
+- `query_dedup_loss_zero_matches_no_collision`: true when zero query dedup loss agrees with the no-duplicate query-candidate predicate.
 - `unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective`: true when the candidate-range and predecessor-injectivity hypotheses are absent or, under those hypotheses, query-candidate shortfall is equivalent to an uncovered-lag witness.
 - `unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated`: true when the no-wrap structural condition is absent or, under that checkable condition, query-candidate shortfall is equivalent to an uncovered-lag witness.
 - `unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue`: true when the no-zero structural condition is absent or, under that checkable condition, query-candidate shortfall is equivalent to an uncovered-lag witness.
@@ -150,6 +154,8 @@ The raw-budget iff endpoints are:
 - `AIT-T0142`: the same 8192-token planner row has exactly 8095 uncovered positive lags.
 - `AIT-T0143`: every query index in the public 4096-token no-wrap planner row has exactly 44 deduplicated predecessor candidates.
 - `AIT-T0144`: every query index in the public 8192-token coprime planner row has exactly 96 deduplicated predecessor candidates.
+- `AIT-T0145`: lag-side deduplication loss is zero if and only if the lag-candidate list has no duplicates.
+- `AIT-T0146`: query-side deduplication loss is zero if and only if the query-candidate list has no duplicates.
 
 The finite-list endpoints are:
 

@@ -5627,7 +5627,7 @@
             "passed": true
           },
           {
-            "evidence": "Lean-proved finite memory-slot, loop-budget, active-token-step, looped recurrent-state, positive raw-budget closure, middle-block route, combined route/budget one-cycle and multi-cycle common-cycle closure, sample-zero route/budget initialization, recurrence-budget positivity, unavailable-budget clamp, loop-exit, score-trace first-active iff, budgeted first-active existence iff, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, generated-live-window KV request contracts, strided-attention coverage, local/coil/hybrid sparse-attention reachability, finite stride-family sparse-attention reachability, stride-family gap and complete-coverage certificates, raw/context-clipped candidate-budget bounds, theorem-side lag-candidate membership semantics, query-indexed candidate-list/count semantics, lag-side and query-side unique-count shortfall iff gap endpoints, period-threshold lag/query shortfall iff endpoints, zero-residue period-violation witness iff, no-zero failure iff endpoints, first-alias period witness facts, zero-residue alias-count and total-count formulas, public 4096 no-wrap and 8192 coprime planner covered/uncovered and query-side exact-count facts, no-collision candidate-count equality, structural, singleton no-wrap numeric, singleton/family no-zero period-threshold, compositional multi-stride, numeric head/tail separation, ordered separated-family residue, separated-family local/lag no-collision, separated-family query/raw-budget no-collision sufficient conditions, and numeric predecessor-injectivity sufficient conditions, RoPE relative-phase invariance, two-period MultiCoil phase-pair bounds/product-cycle closure, residue/winding position reconstruction, circulant shift-equivariance/commutativity/additivity, shift-action, block-cyclic row/column residue-cell closure, and adapter-block normalization facts.",
+            "evidence": "Lean-proved finite memory-slot, loop-budget, active-token-step, looped recurrent-state, positive raw-budget closure, middle-block route, combined route/budget one-cycle and multi-cycle common-cycle closure, sample-zero route/budget initialization, recurrence-budget positivity, unavailable-budget clamp, loop-exit, score-trace first-active iff, budgeted first-active existence iff, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, generated-live-window KV request contracts, strided-attention coverage, local/coil/hybrid sparse-attention reachability, finite stride-family sparse-attention reachability, stride-family gap and complete-coverage certificates, raw/context-clipped candidate-budget bounds, theorem-side lag-candidate membership semantics, query-indexed candidate-list/count semantics, lag-side and query-side unique-count shortfall iff gap endpoints, period-threshold lag/query shortfall iff endpoints, zero-residue period-violation witness iff, no-zero failure iff endpoints, first-alias period witness facts, zero-residue alias-count and total-count formulas, public 4096 no-wrap and 8192 coprime planner covered/uncovered and query-side exact-count facts, lag/query dedup-loss zero iff no-collision endpoints, no-collision candidate-count equality, structural, singleton no-wrap numeric, singleton/family no-zero period-threshold, compositional multi-stride, numeric head/tail separation, ordered separated-family residue, separated-family local/lag no-collision, separated-family query/raw-budget no-collision sufficient conditions, and numeric predecessor-injectivity sufficient conditions, RoPE relative-phase invariance, two-period MultiCoil phase-pair bounds/product-cycle closure, residue/winding position reconstruction, circulant shift-equivariance/commutativity/additivity, shift-action, block-cyclic row/column residue-cell closure, and adapter-block normalization facts.",
             "id": "proof_scope",
             "label": "proof scope",
             "passed": true
@@ -5651,7 +5651,7 @@
             "passed": true
           },
           {
-            "evidence": "174",
+            "evidence": "176",
             "id": "proved_theorem_ids",
             "label": "proved paper-carried theorem ids",
             "passed": true
@@ -5693,7 +5693,7 @@
             "passed": true
           },
           {
-            "evidence": "standard_math_parity theorems 174/174; circle_native_value sources 11/11; Living Book pages 2/2; application_guardrail language clean",
+            "evidence": "standard_math_parity theorems 176/176; circle_native_value sources 11/11; Living Book pages 2/2; application_guardrail language clean",
             "id": "value_proposition",
             "label": "role-backed value proposition",
             "passed": true
@@ -5767,7 +5767,7 @@
         "living_book_widget_count": 15,
         "paper_count": 2,
         "source_count": 11,
-        "theorem_count": 174
+        "theorem_count": 176
       },
       "executable_refs": [
         "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py",
@@ -6104,6 +6104,8 @@
               "AIT-T0142",
               "AIT-T0143",
               "AIT-T0144",
+              "AIT-T0145",
+              "AIT-T0146",
               "AIT-T0004",
               "AIT-T0005",
               "AIT-T0006",
@@ -6167,7 +6169,7 @@
             ]
           },
           {
-            "evidence": "papers 2; theorem refs 174/174; sources 11/11; executables 2; Living Book pages 2/2",
+            "evidence": "papers 2; theorem refs 176/176; sources 11/11; executables 2; Living Book pages 2/2",
             "id": "proof_backing",
             "label": "paper, theorem, source, executable, and Living Book backing",
             "ready": true,
@@ -6193,7 +6195,7 @@
           "Standard reference: Finite cyclic buffers, schedule normalization, recurrence budgets, sparse strided attention, RoPE relative phase, MultiCoil phase-pair closure, residue/winding position bookkeeping, circular convolution, and modular adapter indexing.",
           "Circle expression: AI-facing memory slots, loop budgets, exit certificates, looped recurrent states, middle-block routes, combined route/budget schedules, strided, hybrid, and stride-family sparse-attention reachability, RoPE relative phase, MultiCoil phase-pair product-cycle closure, residue-plus-winding position records, circulant mixer laws, block-cyclic mixer cells, and adapter blocks are encoded as finite cyclic address/schedule theorems.",
           "Circle-native value: Circle Math can make experimental cyclic AI components auditable before any model-quality or speed claim is made.",
-          "Proof backing: 2 paper ids, 174/174 theorem refs, 11/11 source refs, 2 executable refs, and 2/2 Living Book page refs.",
+          "Proof backing: 2 paper ids, 176/176 theorem refs, 11/11 source refs, 2 executable refs, and 2/2 Living Book page refs.",
           "Boundary: No model-quality, speed, context-length, or reasoning improvement claim without benchmark evidence."
         ],
         "total_section_count": 6
@@ -6205,7 +6207,7 @@
       ],
       "proof_provenance": "Proof provenance is project-native Lean code for finite cyclic memory, loop-budget, looped recurrent-state, positive raw-budget closure, active-step, score-trace first-active semantics, middle-block route, combined route/budget common-cycle and sample-zero initialization, certificate, strided, hybrid, and stride-family sparse-attention reachability/gap/budget/candidate-list/period-witness and per-stride/family-total alias-count semantics, RoPE relative phase, MultiCoil product-cycle closure, residue/winding position reconstruction, circulant mixer laws, block-cyclic shared-cell laws, and adapter-index safety facts; benchmarks remain separate.",
       "proof_provenance_kind": "project_native",
-      "proof_scope": "Lean-proved finite memory-slot, loop-budget, active-token-step, looped recurrent-state, positive raw-budget closure, middle-block route, combined route/budget one-cycle and multi-cycle common-cycle closure, sample-zero route/budget initialization, recurrence-budget positivity, unavailable-budget clamp, loop-exit, score-trace first-active iff, budgeted first-active existence iff, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, generated-live-window KV request contracts, strided-attention coverage, local/coil/hybrid sparse-attention reachability, finite stride-family sparse-attention reachability, stride-family gap and complete-coverage certificates, raw/context-clipped candidate-budget bounds, theorem-side lag-candidate membership semantics, query-indexed candidate-list/count semantics, lag-side and query-side unique-count shortfall iff gap endpoints, period-threshold lag/query shortfall iff endpoints, zero-residue period-violation witness iff, no-zero failure iff endpoints, first-alias period witness facts, zero-residue alias-count and total-count formulas, public 4096 no-wrap and 8192 coprime planner covered/uncovered and query-side exact-count facts, no-collision candidate-count equality, structural, singleton no-wrap numeric, singleton/family no-zero period-threshold, compositional multi-stride, numeric head/tail separation, ordered separated-family residue, separated-family local/lag no-collision, separated-family query/raw-budget no-collision sufficient conditions, and numeric predecessor-injectivity sufficient conditions, RoPE relative-phase invariance, two-period MultiCoil phase-pair bounds/product-cycle closure, residue/winding position reconstruction, circulant shift-equivariance/commutativity/additivity, shift-action, block-cyclic row/column residue-cell closure, and adapter-block normalization facts.",
+      "proof_scope": "Lean-proved finite memory-slot, loop-budget, active-token-step, looped recurrent-state, positive raw-budget closure, middle-block route, combined route/budget one-cycle and multi-cycle common-cycle closure, sample-zero route/budget initialization, recurrence-budget positivity, unavailable-budget clamp, loop-exit, score-trace first-active iff, budgeted first-active existence iff, certificate-availability, certificate-budget-selection, certificate multi-pass invariance, generated-live-window KV request contracts, strided-attention coverage, local/coil/hybrid sparse-attention reachability, finite stride-family sparse-attention reachability, stride-family gap and complete-coverage certificates, raw/context-clipped candidate-budget bounds, theorem-side lag-candidate membership semantics, query-indexed candidate-list/count semantics, lag-side and query-side unique-count shortfall iff gap endpoints, period-threshold lag/query shortfall iff endpoints, zero-residue period-violation witness iff, no-zero failure iff endpoints, first-alias period witness facts, zero-residue alias-count and total-count formulas, public 4096 no-wrap and 8192 coprime planner covered/uncovered and query-side exact-count facts, lag/query dedup-loss zero iff no-collision endpoints, no-collision candidate-count equality, structural, singleton no-wrap numeric, singleton/family no-zero period-threshold, compositional multi-stride, numeric head/tail separation, ordered separated-family residue, separated-family local/lag no-collision, separated-family query/raw-budget no-collision sufficient conditions, and numeric predecessor-injectivity sufficient conditions, RoPE relative-phase invariance, two-period MultiCoil phase-pair bounds/product-cycle closure, residue/winding position reconstruction, circulant shift-equivariance/commutativity/additivity, shift-action, block-cyclic row/column residue-cell closure, and adapter-block normalization facts.",
       "proof_trail_contract": {
         "passed_step_count": 7,
         "ready_to_advertise": true,
@@ -6217,7 +6219,7 @@
             "ready": true
           },
           {
-            "evidence": "174/174 theorem refs",
+            "evidence": "176/176 theorem refs",
             "id": "theorem_refs",
             "label": "proved paper-carried theorem refs",
             "ready": true
@@ -6278,7 +6280,7 @@
             ]
           },
           {
-            "evidence": "174/174 theorem refs",
+            "evidence": "176/176 theorem refs",
             "id": "theorem_trail",
             "label": "proved theorem trail",
             "ready": true,
@@ -6451,6 +6453,8 @@
               "AIT-T0142",
               "AIT-T0143",
               "AIT-T0144",
+              "AIT-T0145",
+              "AIT-T0146",
               "AIT-T0004",
               "AIT-T0005",
               "AIT-T0006",
@@ -6782,6 +6786,8 @@
         "AIT-T0142",
         "AIT-T0143",
         "AIT-T0144",
+        "AIT-T0145",
+        "AIT-T0146",
         "AIT-T0004",
         "AIT-T0005",
         "AIT-T0006",
@@ -6790,7 +6796,7 @@
         "AIT-T0009"
       ],
       "theorem_ref_contract": {
-        "proved_and_paper_backed_count": 174,
+        "proved_and_paper_backed_count": 176,
         "refs": [
           {
             "canonical_status": "proved",
@@ -8643,6 +8649,28 @@
           {
             "canonical_status": "proved",
             "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIT-T0145",
+            "lean_name": "Circle.Applications.hybridFamilyLagCandidateDedupLoss_eq_zero_iff_noCollision",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
+              "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+            ],
+            "id": "AIT-T0146",
+            "lean_name": "Circle.Applications.hybridFamilyQueryCandidateDedupLoss_eq_zero_iff_noCollision",
+            "paper_backed": true,
+            "proved": true,
+            "status": "lean_proved"
+          },
+          {
+            "canonical_status": "proved",
+            "carried_by_papers": [
               "PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE"
             ],
             "id": "AIT-T0004",
@@ -8707,7 +8735,7 @@
             "status": "lean_proved"
           }
         ],
-        "total_count": 174,
+        "total_count": 176,
         "unproved_or_unbacked_ids": []
       },
       "title": "AI memory, loop, and adapter schedules",
@@ -8725,7 +8753,7 @@
             "required": true
           },
           "standard_math_parity": {
-            "evidence": "theorems 174/174",
+            "evidence": "theorems 176/176",
             "ready": true,
             "required": true
           }
@@ -10158,8 +10186,8 @@
           "unbacked_refs": []
         },
         "theorem_refs": {
-          "proved_and_paper_backed_count": 206,
-          "total_count": 206,
+          "proved_and_paper_backed_count": 208,
+          "total_count": 208,
           "unproved_or_unbacked_refs": []
         },
         "unique_evidence_counts": {
@@ -10169,7 +10197,7 @@
           "living_book_widget_count": 19,
           "paper_count": 7,
           "source_count": 20,
-          "theorem_count": 206
+          "theorem_count": 208
         },
         "unknown_capability_ids": []
       },
@@ -10230,7 +10258,7 @@
             ]
           },
           {
-            "evidence": "papers 7; theorem refs 206; source refs 20; executables 7; Living Book pages 4",
+            "evidence": "papers 7; theorem refs 208; source refs 20; executables 7; Living Book pages 4",
             "id": "proof_backing_counts",
             "label": "proof-backed evidence counts",
             "ready": true,
@@ -10278,7 +10306,7 @@
         "summary_lines": [
           "Audience: Builders who want generated artifacts, cyclic AI schedules, and compute layouts to carry checkable provenance before performance or quality claims.",
           "Capability surface: 3 route lanes across AI systems, Computation, Generation and compression interfaces.",
-          "Proof backing: 206 proved theorem refs, 7 paper ids, 20 source refs, 7 executable refs, and 4 Living Book page refs.",
+          "Proof backing: 208 proved theorem refs, 7 paper ids, 20 source refs, 7 executable refs, and 4 Living Book page refs.",
           "Circle-native value: 3 lanes state explicit Circle expression/value statements with role-backed checks.",
           "Boundary: This route does not claim universal compression, model-quality improvement, speedup, or context-length improvement without benchmark evidence."
         ],
@@ -10343,7 +10371,7 @@
             ]
           },
           {
-            "evidence": "provenance project_native; theorems 206/206; sources 20/20",
+            "evidence": "provenance project_native; theorems 208/208; sources 20/20",
             "id": "proof_provenance_surface",
             "label": "proof provenance and backing surface",
             "ready": true,
@@ -10411,8 +10439,8 @@
         "unbacked_refs": []
       },
       "theorem_refs": {
-        "proved_and_paper_backed_count": 262,
-        "total_count": 262,
+        "proved_and_paper_backed_count": 264,
+        "total_count": 264,
         "unproved_or_unbacked_refs": []
       }
     },
@@ -10429,7 +10457,7 @@
       "living_book_widget_count": 27,
       "paper_count": 18,
       "source_count": 41,
-      "theorem_count": 262
+      "theorem_count": 264
     },
     "proof_provenance_counts": {
       "mathlib_bridge": 4,
@@ -10457,7 +10485,7 @@
       "living_book_widget_count": 27,
       "paper_count": 18,
       "source_count": 41,
-      "theorem_count": 262
+      "theorem_count": 264
     },
     "unique_living_book_pages": [
       "site/chapters/S1/03_coils_orbits_closure.qmd",

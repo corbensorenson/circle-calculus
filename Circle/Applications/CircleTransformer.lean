@@ -2531,6 +2531,75 @@ theorem hybridFamilyUniqueQueryCandidateCount_eq_raw_iff_noCollision
   · intro hnodup
     rw [List.Nodup.dedup hnodup]
 
+/-- Exact lag-side deduplication loss for a local-window plus stride-family
+sparse-attention plan.
+
+This is the quantitative report field behind raw-budget survival: it counts how
+many raw lag candidates disappear when duplicate lag residues are deduplicated.
+It is not a runtime or model-quality measure. -/
+def hybridFamilyLagCandidateDedupLoss
+    (n window pathLength : Nat) (strides : List Nat) : Nat :=
+  hybridFamilyRawCandidateBudget window pathLength strides -
+    hybridFamilyUniqueLagCandidateCount n window pathLength strides
+
+/-- Lag-side deduplication loss is zero exactly when there are no duplicate raw
+lag candidates. -/
+theorem hybridFamilyLagCandidateDedupLoss_eq_zero_iff_noCollision
+    {n window pathLength : Nat} {strides : List Nat} :
+    hybridFamilyLagCandidateDedupLoss n window pathLength strides = 0 ↔
+      hybridFamilyLagCandidatesNoCollision n window pathLength strides := by
+  unfold hybridFamilyLagCandidateDedupLoss
+  constructor
+  · intro hloss
+    have hle :=
+      hybridFamilyUniqueLagCandidateCount_le_raw n window pathLength strides
+    have hraw :
+        hybridFamilyUniqueLagCandidateCount n window pathLength strides =
+          hybridFamilyRawCandidateBudget window pathLength strides := by
+      omega
+    exact (hybridFamilyUniqueLagCandidateCount_eq_raw_iff_noCollision).1 hraw
+  · intro hnoCollision
+    have hraw :
+        hybridFamilyUniqueLagCandidateCount n window pathLength strides =
+          hybridFamilyRawCandidateBudget window pathLength strides :=
+      (hybridFamilyUniqueLagCandidateCount_eq_raw_iff_noCollision).2 hnoCollision
+    rw [hraw]
+    simp
+
+/-- Exact query-side deduplication loss for a local-window plus stride-family
+sparse-attention plan at one query index.
+
+This counts how many raw predecessor candidates disappear when query-indexed
+candidate addresses are deduplicated. -/
+def hybridFamilyQueryCandidateDedupLoss
+    (n query window pathLength : Nat) (strides : List Nat) : Nat :=
+  hybridFamilyRawCandidateBudget window pathLength strides -
+    hybridFamilyUniqueQueryCandidateCount n query window pathLength strides
+
+/-- Query-side deduplication loss is zero exactly when there are no duplicate
+raw predecessor candidates at that query index. -/
+theorem hybridFamilyQueryCandidateDedupLoss_eq_zero_iff_noCollision
+    {n query window pathLength : Nat} {strides : List Nat} :
+    hybridFamilyQueryCandidateDedupLoss n query window pathLength strides = 0 ↔
+      hybridFamilyQueryCandidatesNoCollision n query window pathLength strides := by
+  unfold hybridFamilyQueryCandidateDedupLoss
+  constructor
+  · intro hloss
+    have hle :=
+      hybridFamilyUniqueQueryCandidateCount_le_raw n query window pathLength strides
+    have hraw :
+        hybridFamilyUniqueQueryCandidateCount n query window pathLength strides =
+          hybridFamilyRawCandidateBudget window pathLength strides := by
+      omega
+    exact (hybridFamilyUniqueQueryCandidateCount_eq_raw_iff_noCollision).1 hraw
+  · intro hnoCollision
+    have hraw :
+        hybridFamilyUniqueQueryCandidateCount n query window pathLength strides =
+          hybridFamilyRawCandidateBudget window pathLength strides :=
+      (hybridFamilyUniqueQueryCandidateCount_eq_raw_iff_noCollision).2 hnoCollision
+    rw [hraw]
+    simp
+
 /-- Ordered no-wrap separation plus predecessor injectivity makes the exact
 query-candidate count equal the raw sparse-attention budget. -/
 theorem hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noWrapSeparated_of_window_lt_all_strides_of_predecessor_injective
