@@ -1103,6 +1103,8 @@ class StrideFamilyCoverageCertificate:
     zero_residue_witness_matches_period_threshold: bool
     zero_residue_witness_matches_no_zero_failure: bool
     period_threshold_violation_matches_no_zero_failure: bool
+    no_zero_period_violation_witness_is_first_zero: bool
+    no_zero_period_violation_witness_step_positive: bool
     unique_lag_count_shortfall_certifies_incomplete: bool
     unique_lag_count_shortfall_matches_gap_witness_under_candidate_range: bool
     unique_lag_count_shortfall_matches_gap_witness_under_period_threshold: bool
@@ -1237,6 +1239,8 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0131",
         "AIT-T0132",
         "AIT-T0133",
+        "AIT-T0134",
+        "AIT-T0135",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -3215,6 +3219,24 @@ def certify_stride_family_coverage(
     period_threshold_violation_matches_no_zero_failure = (
         (no_zero_period_violation is not None) == (not no_zero_residue_condition)
     )
+    no_zero_period_violation_witness_step_positive = (
+        no_zero_period_violation_witness_step is None
+        or no_zero_period_violation_witness_step > 0
+    )
+    no_zero_period_violation_witness_is_first_zero = True
+    if (
+        sequence_length > 0
+        and no_zero_period_violation_witness_stride is not None
+        and no_zero_period_violation_witness_step is not None
+    ):
+        no_zero_period_violation_witness_is_first_zero = (
+            no_zero_period_violation_witness_residue == 0
+            and no_zero_period_violation_witness_step > 0
+            and all(
+                (step * no_zero_period_violation_witness_stride) % sequence_length != 0
+                for step in range(1, no_zero_period_violation_witness_step)
+            )
+        )
     singleton_stride_period: Optional[int] = None
     singleton_no_zero_period_threshold: Optional[bool] = None
     singleton_no_zero_period_threshold_matches_condition = True
@@ -3340,6 +3362,12 @@ def certify_stride_family_coverage(
         ),
         period_threshold_violation_matches_no_zero_failure=(
             period_threshold_violation_matches_no_zero_failure
+        ),
+        no_zero_period_violation_witness_is_first_zero=(
+            no_zero_period_violation_witness_is_first_zero
+        ),
+        no_zero_period_violation_witness_step_positive=(
+            no_zero_period_violation_witness_step_positive
         ),
         unique_lag_count_shortfall_certifies_incomplete=(
             not (unique_lag_candidate_count < positive_lag_count and coverage_complete)

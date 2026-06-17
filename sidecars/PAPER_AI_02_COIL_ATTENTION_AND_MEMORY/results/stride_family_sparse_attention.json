@@ -62,9 +62,11 @@
         true,
         true
       ],
+      "no_zero_period_violation_witness_is_first_zero": true,
       "no_zero_period_violation_witness_period": null,
       "no_zero_period_violation_witness_residue": null,
       "no_zero_period_violation_witness_step": null,
+      "no_zero_period_violation_witness_step_positive": true,
       "no_zero_period_violation_witness_stride": null,
       "no_zero_residue_candidate_range_sufficient_condition": true,
       "note": "Finite lag-coverage certificate only; uncovered_lags are gap certificates for the declared local-window plus stride-family plan, not model-quality evidence.",
@@ -194,7 +196,9 @@
         "AIT-T0130",
         "AIT-T0131",
         "AIT-T0132",
-        "AIT-T0133"
+        "AIT-T0133",
+        "AIT-T0134",
+        "AIT-T0135"
       ],
       "theorem_side_coil_residues_no_collision": true,
       "theorem_side_lag_candidates": [
@@ -463,9 +467,11 @@
       true,
       true
     ],
+    "no_zero_period_violation_witness_is_first_zero": true,
     "no_zero_period_violation_witness_period": null,
     "no_zero_period_violation_witness_residue": null,
     "no_zero_period_violation_witness_step": null,
+    "no_zero_period_violation_witness_step_positive": true,
     "no_zero_period_violation_witness_stride": null,
     "no_zero_residue_candidate_range_sufficient_condition": true,
     "note": "Finite lag-coverage certificate only; uncovered_lags are gap certificates for the declared local-window plus stride-family plan, not model-quality evidence.",
@@ -597,7 +603,9 @@
       "AIT-T0130",
       "AIT-T0131",
       "AIT-T0132",
-      "AIT-T0133"
+      "AIT-T0133",
+      "AIT-T0134",
+      "AIT-T0135"
     ],
     "theorem_side_coil_residues_no_collision": true,
     "theorem_side_lag_candidates": [
@@ -693,7 +701,9 @@
         "AIT-T0130",
         "AIT-T0131",
         "AIT-T0132",
-        "AIT-T0133"
+        "AIT-T0133",
+        "AIT-T0134",
+        "AIT-T0135"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.08403361344537816,
@@ -739,9 +749,11 @@
         true,
         true
       ],
+      "no_zero_period_violation_witness_is_first_zero": true,
       "no_zero_period_violation_witness_period": null,
       "no_zero_period_violation_witness_residue": null,
       "no_zero_period_violation_witness_step": null,
+      "no_zero_period_violation_witness_step_positive": true,
       "no_zero_period_violation_witness_stride": null,
       "no_zero_residue_candidate_range_sufficient_condition": true,
       "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
@@ -876,7 +888,9 @@
         "AIT-T0130",
         "AIT-T0131",
         "AIT-T0132",
-        "AIT-T0133"
+        "AIT-T0133",
+        "AIT-T0134",
+        "AIT-T0135"
       ],
       "coverage_complete": true,
       "coverage_ratio": 1.0,
@@ -921,9 +935,11 @@
         true,
         true
       ],
+      "no_zero_period_violation_witness_is_first_zero": true,
       "no_zero_period_violation_witness_period": null,
       "no_zero_period_violation_witness_residue": null,
       "no_zero_period_violation_witness_step": null,
+      "no_zero_period_violation_witness_step_positive": true,
       "no_zero_period_violation_witness_stride": null,
       "no_zero_residue_candidate_range_sufficient_condition": true,
       "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
@@ -1010,7 +1026,9 @@
         "AIT-T0130",
         "AIT-T0131",
         "AIT-T0132",
-        "AIT-T0133"
+        "AIT-T0133",
+        "AIT-T0134",
+        "AIT-T0135"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.2727272727272727,
@@ -1042,9 +1060,11 @@
       "no_zero_period_thresholds": [
         true
       ],
+      "no_zero_period_violation_witness_is_first_zero": true,
       "no_zero_period_violation_witness_period": null,
       "no_zero_period_violation_witness_residue": null,
       "no_zero_period_violation_witness_step": null,
+      "no_zero_period_violation_witness_step_positive": true,
       "no_zero_period_violation_witness_stride": null,
       "no_zero_residue_candidate_range_sufficient_condition": true,
       "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
@@ -1149,7 +1169,9 @@
         "AIT-T0130",
         "AIT-T0131",
         "AIT-T0132",
-        "AIT-T0133"
+        "AIT-T0133",
+        "AIT-T0134",
+        "AIT-T0135"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.010744810744810745,
@@ -1204,9 +1226,11 @@
         true,
         true
       ],
+      "no_zero_period_violation_witness_is_first_zero": true,
       "no_zero_period_violation_witness_period": null,
       "no_zero_period_violation_witness_residue": null,
       "no_zero_period_violation_witness_step": null,
+      "no_zero_period_violation_witness_step_positive": true,
       "no_zero_period_violation_witness_stride": null,
       "no_zero_residue_candidate_range_sufficient_condition": true,
       "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",
@@ -1367,7 +1391,9 @@
         "AIT-T0130",
         "AIT-T0131",
         "AIT-T0132",
-        "AIT-T0133"
+        "AIT-T0133",
+        "AIT-T0134",
+        "AIT-T0135"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.011720180686118912,
@@ -1423,9 +1449,11 @@
         true,
         true
       ],
+      "no_zero_period_violation_witness_is_first_zero": true,
       "no_zero_period_violation_witness_period": null,
       "no_zero_period_violation_witness_residue": null,
       "no_zero_period_violation_witness_step": null,
+      "no_zero_period_violation_witness_step_positive": true,
       "no_zero_period_violation_witness_stride": null,
       "no_zero_residue_candidate_range_sufficient_condition": true,
       "note": "Compact planner row only; rerun the reproduce_command for the full finite covered/uncovered-lag certificate. This is not an attention-quality, runtime, memory-use, or long-context performance claim.",

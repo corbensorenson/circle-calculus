@@ -69,6 +69,8 @@ CORE_COVERAGE_THEOREM_IDS = (
     "AIT-T0131",
     "AIT-T0132",
     "AIT-T0133",
+    "AIT-T0134",
+    "AIT-T0135",
 )
 
 PLANNER_STYLE_SPECS: tuple[dict[str, Any], ...] = (
@@ -229,6 +231,12 @@ def compact_planner_certificate(spec: dict[str, Any]) -> dict[str, Any]:
         "period_threshold_violation_matches_no_zero_failure": (
             certificate.period_threshold_violation_matches_no_zero_failure
         ),
+        "no_zero_period_violation_witness_is_first_zero": (
+            certificate.no_zero_period_violation_witness_is_first_zero
+        ),
+        "no_zero_period_violation_witness_step_positive": (
+            certificate.no_zero_period_violation_witness_step_positive
+        ),
         "unique_lag_count_shortfall_certifies_incomplete": (
             certificate.unique_lag_count_shortfall_certifies_incomplete
         ),
@@ -383,6 +391,10 @@ def text_results(payload: dict[str, Any]) -> str:
             f"{row['zero_residue_witness_matches_no_zero_failure']} "
             "period_violation_matches_no_zero_failure="
             f"{row['period_threshold_violation_matches_no_zero_failure']} "
+            "witness_is_first_zero="
+            f"{row['no_zero_period_violation_witness_is_first_zero']} "
+            "witness_step_positive="
+            f"{row['no_zero_period_violation_witness_step_positive']} "
             "unique_count_complete_iff="
             f"{row['unique_lag_count_matches_complete_under_candidate_range']} "
             "covered_eq_unique="
@@ -499,6 +511,10 @@ def text_results(payload: dict[str, Any]) -> str:
         f"{certificate['zero_residue_witness_matches_no_zero_failure']} "
         "period_violation_matches_no_zero_failure="
         f"{certificate['period_threshold_violation_matches_no_zero_failure']} "
+        "witness_is_first_zero="
+        f"{certificate['no_zero_period_violation_witness_is_first_zero']} "
+        "witness_step_positive="
+        f"{certificate['no_zero_period_violation_witness_step_positive']} "
         "unique_count_complete_iff="
         f"{certificate['unique_lag_count_matches_complete_under_candidate_range']} "
         "covered_eq_unique="
@@ -576,6 +592,10 @@ def text_results(payload: dict[str, Any]) -> str:
         f"{complete['zero_residue_witness_matches_no_zero_failure']} "
         "period_violation_matches_no_zero_failure="
         f"{complete['period_threshold_violation_matches_no_zero_failure']} "
+        "witness_is_first_zero="
+        f"{complete['no_zero_period_violation_witness_is_first_zero']} "
+        "witness_step_positive="
+        f"{complete['no_zero_period_violation_witness_step_positive']} "
         "unique_count_complete_iff="
         f"{complete['unique_lag_count_matches_complete_under_candidate_range']} "
         "covered_eq_unique="
@@ -683,15 +703,17 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "Family no-zero period threshold:",
             "",
-            "| Periods | Thresholds | Period threshold sufficient | Matches no-zero residue scan | Zero witness iff no-zero failure | Period violation iff no-zero failure |",
-            "| --- | --- | --- | --- | --- | --- |",
+            "| Periods | Thresholds | Period threshold sufficient | Matches no-zero residue scan | Zero witness iff no-zero failure | Period violation iff no-zero failure | Witness is first zero | Witness step positive |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- |",
             (
                 f"| {', '.join(str(period) for period in certificate['stride_family_periods'])} | "
                 f"{', '.join(str(flag) for flag in certificate['no_zero_period_thresholds'])} | "
                 f"{certificate['no_zero_period_threshold_candidate_range_sufficient_condition']} | "
                 f"{certificate['no_zero_period_threshold_matches_condition']} | "
                 f"{certificate['zero_residue_witness_matches_no_zero_failure']} | "
-                f"{certificate['period_threshold_violation_matches_no_zero_failure']} |"
+                f"{certificate['period_threshold_violation_matches_no_zero_failure']} | "
+                f"{certificate['no_zero_period_violation_witness_is_first_zero']} | "
+                f"{certificate['no_zero_period_violation_witness_step_positive']} |"
             ),
             "",
             "Covered lags:",

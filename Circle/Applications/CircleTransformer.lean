@@ -355,6 +355,44 @@ theorem coilLagResidue_zero_iff_period_dvd
   constructor <;> intro h <;>
     simpa [Nat.cast_mul, mul_comm] using h
 
+/-- In a nonzero context, a stride's finite coil period is positive. -/
+theorem coilPeriod_pos_of_context_ne_zero
+    {n stride : Nat} (hn : n ≠ 0) :
+    0 < Circle.period n stride := by
+  have hgcd_pos : 0 < Nat.gcd n stride :=
+    Nat.gcd_pos_of_pos_left stride (Nat.pos_of_ne_zero hn)
+  have hgcd_le : Nat.gcd n stride ≤ n :=
+    Nat.gcd_le_left stride (Nat.pos_of_ne_zero hn)
+  rw [Circle.period_eq_n_div_gcd hn]
+  exact Nat.div_pos hgcd_le hgcd_pos
+
+/-- In a nonzero context, the finite coil period is the first positive
+zero-residue step for a stride.
+
+This is the exact first-alias contract behind the sparse-attention period
+threshold: the period step itself collapses to the zero lag, and no smaller
+positive generated step can do so. -/
+theorem coilLagResidue_period_is_first_positive_zero
+    {n stride : Nat} (hn : n ≠ 0) :
+    1 ≤ Circle.period n stride ∧
+      (Circle.period n stride * stride) % n = 0 ∧
+        ∀ step, 1 ≤ step → (step * stride) % n = 0 →
+          Circle.period n stride ≤ step := by
+  have hperiod_pos : 0 < Circle.period n stride :=
+    coilPeriod_pos_of_context_ne_zero (n := n) (stride := stride) hn
+  constructor
+  · exact Nat.succ_le_of_lt hperiod_pos
+  constructor
+  · exact (coilLagResidue_zero_iff_period_dvd
+      (n := n) (stride := stride)
+      (step := Circle.period n stride)).2 dvd_rfl
+  · intro step hstep_pos hzero
+    have hdiv :
+        Circle.period n stride ∣ step :=
+      (coilLagResidue_zero_iff_period_dvd
+        (n := n) (stride := stride) (step := step)).1 hzero
+    exact Nat.le_of_dvd hstep_pos hdiv
+
 /-- For a singleton stride family, the no-zero-residue condition is exactly the
 period-threshold condition `pathLength < period`.
 
