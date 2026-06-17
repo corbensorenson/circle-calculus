@@ -2731,6 +2731,85 @@ theorem hybridFamilyUncoveredLagList_long_context_no_wrap_4096_length :
   rw [huncovered, hraw]
   norm_num [hybridFamilyRawCandidateBudget]
 
+/-- The public `8192` coprime planner row has exactly `96` theorem-side covered
+positive lags.
+
+Unlike the `4096` row, this row is not no-wrap separated. The proof therefore
+uses the broader no-zero residue candidate-range route and a finite
+duplicate-free candidate certificate before applying the same count theorem. -/
+theorem hybridFamilyCoveredLagList_long_context_coprime_8192_length :
+    (hybridFamilyCoveredLagList 8192 64 8 [127, 509, 1021, 2039]).length = 96 := by
+  have hwindow : 64 < 8192 := by omega
+  have hnoZero :
+      coilStrideFamilyNoZeroResidues 8192 8 [127, 509, 1021, 2039] := by
+    rw [coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period (by norm_num)]
+    intro stride hmem
+    simp at hmem
+    rcases hmem with rfl | rfl | rfl | rfl <;>
+      rw [Circle.period_eq_n_div_gcd (by norm_num : 8192 ≠ 0)] <;>
+      native_decide
+  have hnoCollision :
+      hybridFamilyLagCandidatesNoCollision 8192 64 8 [127, 509, 1021, 2039] := by
+    unfold hybridFamilyLagCandidatesNoCollision hybridFamilyLagCandidateList
+    native_decide
+  have hcandidate_range :
+      ∀ lag,
+        lag ∈ hybridFamilyLagCandidateList 8192 64 8 [127, 509, 1021, 2039] →
+          1 ≤ lag ∧ lag < 8192 :=
+    hybridFamilyLagCandidateList_candidate_range_of_window_lt_context_of_noZeroResidues
+      hwindow hnoZero
+  have hcovered :
+      (hybridFamilyCoveredLagList 8192 64 8 [127, 509, 1021, 2039]).length =
+        hybridFamilyUniqueLagCandidateCount 8192 64 8 [127, 509, 1021, 2039] :=
+    hybridFamilyCoveredLagList_length_eq_uniqueLagCandidateCount_of_candidate_range
+      hcandidate_range
+  have hraw :
+      hybridFamilyUniqueLagCandidateCount 8192 64 8 [127, 509, 1021, 2039] =
+        hybridFamilyRawCandidateBudget 64 8 [127, 509, 1021, 2039] :=
+    hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision hnoCollision
+  rw [hcovered, hraw]
+  norm_num [hybridFamilyRawCandidateBudget]
+
+/-- The public `8192` coprime planner row has exactly `8095` uncovered positive
+lags.
+
+This is the complement to the covered-count theorem under the no-zero
+candidate-range route: there are `8191` positive in-context lags, and exactly
+`96` unique theorem-side candidates survive deduplication. -/
+theorem hybridFamilyUncoveredLagList_long_context_coprime_8192_length :
+    (hybridFamilyUncoveredLagList 8192 64 8 [127, 509, 1021, 2039]).length = 8095 := by
+  have hwindow : 64 < 8192 := by omega
+  have hnoZero :
+      coilStrideFamilyNoZeroResidues 8192 8 [127, 509, 1021, 2039] := by
+    rw [coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period (by norm_num)]
+    intro stride hmem
+    simp at hmem
+    rcases hmem with rfl | rfl | rfl | rfl <;>
+      rw [Circle.period_eq_n_div_gcd (by norm_num : 8192 ≠ 0)] <;>
+      native_decide
+  have hnoCollision :
+      hybridFamilyLagCandidatesNoCollision 8192 64 8 [127, 509, 1021, 2039] := by
+    unfold hybridFamilyLagCandidatesNoCollision hybridFamilyLagCandidateList
+    native_decide
+  have hcandidate_range :
+      ∀ lag,
+        lag ∈ hybridFamilyLagCandidateList 8192 64 8 [127, 509, 1021, 2039] →
+          1 ≤ lag ∧ lag < 8192 :=
+    hybridFamilyLagCandidateList_candidate_range_of_window_lt_context_of_noZeroResidues
+      hwindow hnoZero
+  have huncovered :
+      (hybridFamilyUncoveredLagList 8192 64 8 [127, 509, 1021, 2039]).length =
+        8192 - 1 -
+          hybridFamilyUniqueLagCandidateCount 8192 64 8 [127, 509, 1021, 2039] :=
+    hybridFamilyUncoveredLagList_length_eq_context_sub_one_sub_uniqueLagCandidateCount_of_candidate_range
+      hcandidate_range
+  have hraw :
+      hybridFamilyUniqueLagCandidateCount 8192 64 8 [127, 509, 1021, 2039] =
+        hybridFamilyRawCandidateBudget 64 8 [127, 509, 1021, 2039] :=
+    hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision hnoCollision
+  rw [huncovered, hraw]
+  norm_num [hybridFamilyRawCandidateBudget]
+
 /-- A compact complete sparse-family fixture has no uncovered positive lags.
 
 For `C_9`, local window `2`, path length `2`, and strides `[3,4,7]`,

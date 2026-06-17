@@ -7436,6 +7436,34 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
     blocker: ""
+  - id: AIT-T0141
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyCoveredLagList_long_context_coprime_8192_length
+    informal_statement: "For the public 8192-token coprime planner row with local window 64, path length 8, and strides [127,509,1021,2039], the theorem-side covered positive-lag count is exactly 96."
+    formal_statement: "(Circle.Applications.hybridFamilyCoveredLagList 8192 64 8 [127, 509, 1021, 2039]).length = 96"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
+  - id: AIT-T0142
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyUncoveredLagList_long_context_coprime_8192_length
+    informal_statement: "For the public 8192-token coprime planner row with local window 64, path length 8, and strides [127,509,1021,2039], the theorem-side uncovered positive-lag count is exactly 8095."
+    formal_statement: "(Circle.Applications.hybridFamilyUncoveredLagList 8192 64 8 [127, 509, 1021, 2039]).length = 8095"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant

@@ -72,7 +72,7 @@ Planner-style declared plans:
 | complete_toy_fixture_9 | 9 | 2 | 2 | 3, 4, 7 | True | 1.000 | 8 | 0.889 | 8 | 8 | 0 | None | True | True | True | True | False | True | 0 | True | True | False | True | None | None | True | True | True | True | True | True | True | lag=True, query=True | AIT-T0086, AIT-T0087, AIT-T0088, AIT-T0089, AIT-T0105 |
 | singleton_period_probe_12 | 12 | 1 | 2 | 4 | False | 0.273 | 3 | 0.250 | 11 | 11 | 8 | 2 | True | True | True | True | True | True | 3 | True | True | True | True | 3 | True | True | True | True | True | True | True | True | lag=True, query=True |  |
 | long_context_no_wrap_probe_4096 | 4096 | 32 | 4 | 33, 160, 800 | False | 0.011 | 44 | 0.011 | 4095 | 4095 | 4051 | 34 | True | True | True | True | True | True | 12 | True | True | True | True | None | None | True | True | True | True | True | True | True | lag=True, query=True | AIT-T0139, AIT-T0140 |
-| long_context_coprime_probe_8192 | 8192 | 64 | 8 | 127, 509, 1021, 2039 | False | 0.012 | 96 | 0.012 | 8191 | 8191 | 8095 | 65 | True | True | True | True | True | True | 32 | True | True | False | True | None | None | True | True | True | True | True | True | True | lag=True, query=True |  |
+| long_context_coprime_probe_8192 | 8192 | 64 | 8 | 127, 509, 1021, 2039 | False | 0.012 | 96 | 0.012 | 8191 | 8191 | 8095 | 65 | True | True | True | True | True | True | 32 | True | True | False | True | None | None | True | True | True | True | True | True | True | lag=True, query=True | AIT-T0141, AIT-T0142 |
 
 Planner rows are compact reports over declared sparse layouts. Re-run the
 `reproduce_command` in the JSON for the full covered/uncovered-lag certificate.
