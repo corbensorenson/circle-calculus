@@ -1094,6 +1094,8 @@ class StrideFamilyCoverageCertificate:
     singleton_no_zero_period_threshold_matches_condition: bool
     stride_family_periods: tuple[int, ...]
     no_zero_period_thresholds: tuple[bool, ...]
+    stride_family_zero_residue_step_counts: tuple[int, ...]
+    zero_residue_step_counts_match_period_formula: bool
     no_zero_period_threshold_candidate_range_sufficient_condition: bool
     no_zero_period_threshold_matches_condition: bool
     no_zero_period_violation_witness_stride: Optional[int]
@@ -1241,6 +1243,7 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0133",
         "AIT-T0134",
         "AIT-T0135",
+        "AIT-T0136",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -3157,6 +3160,29 @@ def certify_stride_family_coverage(
     no_zero_period_thresholds = tuple(
         path_length < period for period in stride_family_periods
     )
+    stride_family_zero_residue_step_counts = (
+        tuple(
+            sum(
+                1
+                for step in range(1, path_length + 1)
+                if (step * stride) % sequence_length == 0
+            )
+            for stride in normalized_strides
+        )
+        if sequence_length > 0
+        else ()
+    )
+    zero_residue_step_counts_match_period_formula = (
+        sequence_length > 0
+        and len(stride_family_zero_residue_step_counts) == len(stride_family_periods)
+        and all(
+            count == path_length // period
+            for count, period in zip(
+                stride_family_zero_residue_step_counts,
+                stride_family_periods,
+            )
+        )
+    )
     no_zero_period_threshold_condition = (
         sequence_length > 0 and all(no_zero_period_thresholds)
     )
@@ -3336,6 +3362,12 @@ def certify_stride_family_coverage(
         ),
         stride_family_periods=stride_family_periods,
         no_zero_period_thresholds=no_zero_period_thresholds,
+        stride_family_zero_residue_step_counts=(
+            stride_family_zero_residue_step_counts
+        ),
+        zero_residue_step_counts_match_period_formula=(
+            zero_residue_step_counts_match_period_formula
+        ),
         no_zero_period_threshold_candidate_range_sufficient_condition=(
             no_zero_period_threshold_candidate_range_sufficient_condition
         ),

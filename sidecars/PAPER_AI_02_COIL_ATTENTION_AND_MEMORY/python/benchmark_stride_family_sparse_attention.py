@@ -71,6 +71,7 @@ CORE_COVERAGE_THEOREM_IDS = (
     "AIT-T0133",
     "AIT-T0134",
     "AIT-T0135",
+    "AIT-T0136",
 )
 
 PLANNER_STYLE_SPECS: tuple[dict[str, Any], ...] = (
@@ -204,6 +205,12 @@ def compact_planner_certificate(spec: dict[str, Any]) -> dict[str, Any]:
         ),
         "stride_family_periods": certificate.stride_family_periods,
         "no_zero_period_thresholds": certificate.no_zero_period_thresholds,
+        "stride_family_zero_residue_step_counts": (
+            certificate.stride_family_zero_residue_step_counts
+        ),
+        "zero_residue_step_counts_match_period_formula": (
+            certificate.zero_residue_step_counts_match_period_formula
+        ),
         "no_zero_period_threshold_candidate_range_sufficient_condition": (
             certificate.no_zero_period_threshold_candidate_range_sufficient_condition
         ),
@@ -383,6 +390,9 @@ def text_results(payload: dict[str, Any]) -> str:
             f"{row['singleton_no_zero_period_threshold_matches_condition']} "
             f"family_periods={row['stride_family_periods']} "
             f"family_period_thresholds={row['no_zero_period_thresholds']} "
+            f"zero_residue_counts={row['stride_family_zero_residue_step_counts']} "
+            "zero_residue_count_formula="
+            f"{row['zero_residue_step_counts_match_period_formula']} "
             "family_period_threshold_sufficient="
             f"{row['no_zero_period_threshold_candidate_range_sufficient_condition']} "
             "family_threshold_matches_no_zero="
@@ -503,6 +513,9 @@ def text_results(payload: dict[str, Any]) -> str:
         f"{certificate['singleton_no_zero_period_threshold_matches_condition']} "
         f"family_periods={certificate['stride_family_periods']} "
         f"family_period_thresholds={certificate['no_zero_period_thresholds']} "
+        f"zero_residue_counts={certificate['stride_family_zero_residue_step_counts']} "
+        "zero_residue_count_formula="
+        f"{certificate['zero_residue_step_counts_match_period_formula']} "
         "family_period_threshold_sufficient="
         f"{certificate['no_zero_period_threshold_candidate_range_sufficient_condition']} "
         "family_threshold_matches_no_zero="
@@ -584,6 +597,9 @@ def text_results(payload: dict[str, Any]) -> str:
         f"{complete['singleton_no_zero_period_threshold_matches_condition']} "
         f"family_periods={complete['stride_family_periods']} "
         f"family_period_thresholds={complete['no_zero_period_thresholds']} "
+        f"zero_residue_counts={complete['stride_family_zero_residue_step_counts']} "
+        "zero_residue_count_formula="
+        f"{complete['zero_residue_step_counts_match_period_formula']} "
         "family_period_threshold_sufficient="
         f"{complete['no_zero_period_threshold_candidate_range_sufficient_condition']} "
         "family_threshold_matches_no_zero="
@@ -703,11 +719,13 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "Family no-zero period threshold:",
             "",
-            "| Periods | Thresholds | Period threshold sufficient | Matches no-zero residue scan | Zero witness iff no-zero failure | Period violation iff no-zero failure | Witness is first zero | Witness step positive |",
-            "| --- | --- | --- | --- | --- | --- | --- | --- |",
+            "| Periods | Thresholds | Zero-residue counts | Count formula | Period threshold sufficient | Matches no-zero residue scan | Zero witness iff no-zero failure | Period violation iff no-zero failure | Witness is first zero | Witness step positive |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
             (
                 f"| {', '.join(str(period) for period in certificate['stride_family_periods'])} | "
                 f"{', '.join(str(flag) for flag in certificate['no_zero_period_thresholds'])} | "
+                f"{', '.join(str(count) for count in certificate['stride_family_zero_residue_step_counts'])} | "
+                f"{certificate['zero_residue_step_counts_match_period_formula']} | "
                 f"{certificate['no_zero_period_threshold_candidate_range_sufficient_condition']} | "
                 f"{certificate['no_zero_period_threshold_matches_condition']} | "
                 f"{certificate['zero_residue_witness_matches_no_zero_failure']} | "

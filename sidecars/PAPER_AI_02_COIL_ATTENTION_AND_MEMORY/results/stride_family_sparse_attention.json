@@ -83,6 +83,10 @@
         120,
         120
       ],
+      "stride_family_zero_residue_step_counts": [
+        0,
+        0
+      ],
       "strides": [
         7,
         13
@@ -198,7 +202,8 @@
         "AIT-T0132",
         "AIT-T0133",
         "AIT-T0134",
-        "AIT-T0135"
+        "AIT-T0135",
+        "AIT-T0136"
       ],
       "theorem_side_coil_residues_no_collision": true,
       "theorem_side_lag_candidates": [
@@ -385,6 +390,7 @@
       "unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated": true,
       "unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue": true,
       "unique_query_count_shortfall_matches_gap_witness_under_period_threshold": true,
+      "zero_residue_step_counts_match_period_formula": true,
       "zero_residue_witness_matches_no_zero_failure": true,
       "zero_residue_witness_matches_period_threshold": true
     },
@@ -488,6 +494,11 @@
       3,
       9,
       9
+    ],
+    "stride_family_zero_residue_step_counts": [
+      0,
+      0,
+      0
     ],
     "strides": [
       3,
@@ -605,7 +616,8 @@
       "AIT-T0132",
       "AIT-T0133",
       "AIT-T0134",
-      "AIT-T0135"
+      "AIT-T0135",
+      "AIT-T0136"
     ],
     "theorem_side_coil_residues_no_collision": true,
     "theorem_side_lag_candidates": [
@@ -653,6 +665,7 @@
     "unique_query_count_shortfall_matches_gap_witness_under_no_wrap_separated": true,
     "unique_query_count_shortfall_matches_gap_witness_under_no_zero_residue": true,
     "unique_query_count_shortfall_matches_gap_witness_under_period_threshold": true,
+    "zero_residue_step_counts_match_period_formula": true,
     "zero_residue_witness_matches_no_zero_failure": true,
     "zero_residue_witness_matches_period_threshold": true
   },
@@ -703,7 +716,8 @@
         "AIT-T0132",
         "AIT-T0133",
         "AIT-T0134",
-        "AIT-T0135"
+        "AIT-T0135",
+        "AIT-T0136"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.08403361344537816,
@@ -774,6 +788,10 @@
         120,
         120
       ],
+      "stride_family_zero_residue_step_counts": [
+        0,
+        0
+      ],
       "strides": [
         7,
         13
@@ -841,6 +859,7 @@
       "unique_lag_count_shortfall_certifies_incomplete": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true,
+      "zero_residue_step_counts_match_period_formula": true,
       "zero_residue_witness_matches_no_zero_failure": true,
       "zero_residue_witness_matches_period_threshold": true
     },
@@ -890,7 +909,8 @@
         "AIT-T0132",
         "AIT-T0133",
         "AIT-T0134",
-        "AIT-T0135"
+        "AIT-T0135",
+        "AIT-T0136"
       ],
       "coverage_complete": true,
       "coverage_ratio": 1.0,
@@ -961,6 +981,11 @@
         9,
         9
       ],
+      "stride_family_zero_residue_step_counts": [
+        0,
+        0,
+        0
+      ],
       "strides": [
         3,
         4,
@@ -979,6 +1004,7 @@
       "unique_lag_count_shortfall_certifies_incomplete": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true,
+      "zero_residue_step_counts_match_period_formula": true,
       "zero_residue_witness_matches_no_zero_failure": true,
       "zero_residue_witness_matches_period_threshold": true
     },
@@ -1028,7 +1054,8 @@
         "AIT-T0132",
         "AIT-T0133",
         "AIT-T0134",
-        "AIT-T0135"
+        "AIT-T0135",
+        "AIT-T0136"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.2727272727272727,
@@ -1084,6 +1111,9 @@
       "stride_family_periods": [
         3
       ],
+      "stride_family_zero_residue_step_counts": [
+        0
+      ],
       "strides": [
         4
       ],
@@ -1122,6 +1152,7 @@
       "unique_lag_count_shortfall_certifies_incomplete": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true,
+      "zero_residue_step_counts_match_period_formula": true,
       "zero_residue_witness_matches_no_zero_failure": true,
       "zero_residue_witness_matches_period_threshold": true
     },
@@ -1171,7 +1202,8 @@
         "AIT-T0132",
         "AIT-T0133",
         "AIT-T0134",
-        "AIT-T0135"
+        "AIT-T0135",
+        "AIT-T0136"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.010744810744810745,
@@ -1251,6 +1283,11 @@
         4096,
         128,
         128
+      ],
+      "stride_family_zero_residue_step_counts": [
+        0,
+        0,
+        0
       ],
       "strides": [
         33,
@@ -1344,6 +1381,7 @@
       "unique_lag_count_shortfall_certifies_incomplete": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true,
+      "zero_residue_step_counts_match_period_formula": true,
       "zero_residue_witness_matches_no_zero_failure": true,
       "zero_residue_witness_matches_period_threshold": true
     },
@@ -1393,7 +1431,8 @@
         "AIT-T0132",
         "AIT-T0133",
         "AIT-T0134",
-        "AIT-T0135"
+        "AIT-T0135",
+        "AIT-T0136"
       ],
       "coverage_complete": false,
       "coverage_ratio": 0.011720180686118912,
@@ -1475,6 +1514,12 @@
         8192,
         8192,
         8192
+      ],
+      "stride_family_zero_residue_step_counts": [
+        0,
+        0,
+        0,
+        0
       ],
       "strides": [
         127,
@@ -1569,6 +1614,7 @@
       "unique_lag_count_shortfall_certifies_incomplete": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_candidate_range": true,
       "unique_lag_count_shortfall_matches_gap_witness_under_period_threshold": true,
+      "zero_residue_step_counts_match_period_formula": true,
       "zero_residue_witness_matches_no_zero_failure": true,
       "zero_residue_witness_matches_period_threshold": true
     }

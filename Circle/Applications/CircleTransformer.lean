@@ -2,6 +2,7 @@ import Circle.Core.Period
 import Circle.Core.Rotation
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.List.Dedup
+import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Tactic.Ring
 
 /-!
@@ -343,6 +344,16 @@ def coilStrideFamilyHasZeroResidue
   ∃ stride, stride ∈ strides ∧
     ∃ step, 1 ≤ step ∧ step ≤ pathLength ∧ (step * stride) % n = 0
 
+/-- Number of admitted positive steps for one stride whose generated residue is
+zero.
+
+This is a count-level alias diagnostic for sparse-attention stride blocks: it
+counts steps `1, ..., pathLength` that collapse back to the zero lag. -/
+def coilLagZeroResidueStepCount
+    (n stride pathLength : Nat) : Nat :=
+  ((Finset.range pathLength).filter fun offset =>
+    ((offset + 1) * stride) % n = 0).card
+
 /-- A one-stride generated residue collapses to zero exactly when the finite
 coil period divides the step count. -/
 theorem coilLagResidue_zero_iff_period_dvd
@@ -392,6 +403,21 @@ theorem coilLagResidue_period_is_first_positive_zero
       (coilLagResidue_zero_iff_period_dvd
         (n := n) (stride := stride) (step := step)).1 hzero
     exact Nat.le_of_dvd hstep_pos hdiv
+
+/-- The exact count of one-stride generated zero residues is the path budget
+divided by the finite coil period.
+
+This is the count-level companion to `coilLagResidue_zero_iff_period_dvd`: every
+zero-residue step is exactly a positive multiple of the finite coil period, so
+the admitted steps `1, ..., pathLength` contain exactly `pathLength / period`
+such aliases. -/
+theorem coilLagZeroResidueStepCount_eq_pathLength_div_period
+    (n stride pathLength : Nat) :
+    coilLagZeroResidueStepCount n stride pathLength =
+      pathLength / Circle.period n stride := by
+  unfold coilLagZeroResidueStepCount
+  simpa [coilLagResidue_zero_iff_period_dvd, Nat.add_comm]
+    using Nat.card_multiples pathLength (Circle.period n stride)
 
 /-- For a singleton stride family, the no-zero-residue condition is exactly the
 period-threshold condition `pathLength < period`.

@@ -92,6 +92,8 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     ) in result.stdout
     assert (
         "family_no_zero_period_thresholds=(True, True) periods=(120, 120) "
+        "zero_residue_counts=(0, 0) "
+        "counts_match_period_formula=True "
         "period_threshold_sufficient=True matches_no_zero_residue_condition=True "
         "violation_witness=(None, None, None, None) "
         "witness_matches_period_threshold=True "
@@ -99,7 +101,7 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
         "period_violation_matches_no_zero_failure=True "
         "witness_is_first_zero=True "
         "witness_step_positive=True "
-        "theorems=AIT-T0128,AIT-T0131,AIT-T0132,AIT-T0133,AIT-T0134,AIT-T0135"
+        "theorems=AIT-T0128,AIT-T0131,AIT-T0132,AIT-T0133,AIT-T0134,AIT-T0135,AIT-T0136"
     ) in result.stdout
     assert (
         "candidate_range_counts=covered_eq_unique=True "
@@ -179,6 +181,8 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     assert payload["singleton_no_zero_period_threshold_matches_condition"] is True
     assert payload["stride_family_periods"] == [120, 120]
     assert payload["no_zero_period_thresholds"] == [True, True]
+    assert payload["stride_family_zero_residue_step_counts"] == [0, 0]
+    assert payload["zero_residue_step_counts_match_period_formula"] is True
     assert payload["no_zero_period_threshold_candidate_range_sufficient_condition"] is True
     assert payload["no_zero_period_threshold_matches_condition"] is True
     assert payload["no_zero_period_violation_witness_stride"] is None
@@ -224,6 +228,7 @@ def test_stride_family_certifier_cli_text_and_json(tmp_path: Path) -> None:
     assert "AIT-T0133" in payload["theorem_ids"]
     assert "AIT-T0134" in payload["theorem_ids"]
     assert "AIT-T0135" in payload["theorem_ids"]
+    assert "AIT-T0136" in payload["theorem_ids"]
     assert (
         payload[
             "unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective"
@@ -279,6 +284,8 @@ def test_stride_family_certifier_cli_singleton_period_threshold() -> None:
     ) in result.stdout
     assert (
         "family_no_zero_period_thresholds=(True,) periods=(3,) "
+        "zero_residue_counts=(0,) "
+        "counts_match_period_formula=True "
         "period_threshold_sufficient=True matches_no_zero_residue_condition=True "
         "violation_witness=(None, None, None, None) "
         "witness_matches_period_threshold=True "
@@ -286,7 +293,7 @@ def test_stride_family_certifier_cli_singleton_period_threshold() -> None:
         "period_violation_matches_no_zero_failure=True "
         "witness_is_first_zero=True "
         "witness_step_positive=True "
-        "theorems=AIT-T0128,AIT-T0131,AIT-T0132,AIT-T0133,AIT-T0134,AIT-T0135"
+        "theorems=AIT-T0128,AIT-T0131,AIT-T0132,AIT-T0133,AIT-T0134,AIT-T0135,AIT-T0136"
     ) in result.stdout
 
 
@@ -316,6 +323,8 @@ def test_stride_family_certifier_cli_period_threshold_violation_witness() -> Non
     ) in result.stdout
     assert (
         "family_no_zero_period_thresholds=(False,) periods=(3,) "
+        "zero_residue_counts=(1,) "
+        "counts_match_period_formula=True "
         "period_threshold_sufficient=False matches_no_zero_residue_condition=True "
         "violation_witness=(4, 3, 3, 0) "
         "witness_matches_period_threshold=True "
@@ -323,5 +332,5 @@ def test_stride_family_certifier_cli_period_threshold_violation_witness() -> Non
         "period_violation_matches_no_zero_failure=True "
         "witness_is_first_zero=True "
         "witness_step_positive=True "
-        "theorems=AIT-T0128,AIT-T0131,AIT-T0132,AIT-T0133,AIT-T0134,AIT-T0135"
+        "theorems=AIT-T0128,AIT-T0131,AIT-T0132,AIT-T0133,AIT-T0134,AIT-T0135,AIT-T0136"
     ) in result.stdout
