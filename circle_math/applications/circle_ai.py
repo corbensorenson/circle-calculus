@@ -3089,14 +3089,14 @@ def stride_family_fixture_theorem_ids(
         and path_length == 4
         and normalized_strides == (33, 160, 800)
     ):
-        return ("AIT-T0139", "AIT-T0140")
+        return ("AIT-T0139", "AIT-T0140", "AIT-T0143")
     if (
         sequence_length == 8192
         and local_window == 64
         and path_length == 8
         and normalized_strides == (127, 509, 1021, 2039)
     ):
-        return ("AIT-T0141", "AIT-T0142")
+        return ("AIT-T0141", "AIT-T0142", "AIT-T0144")
     return ()
 
 

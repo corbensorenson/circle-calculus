@@ -2731,6 +2731,32 @@ theorem hybridFamilyUncoveredLagList_long_context_no_wrap_4096_length :
   rw [huncovered, hraw]
   norm_num [hybridFamilyRawCandidateBudget]
 
+/-- The public `4096` no-wrap planner row preserves the exact raw
+query-candidate budget for every query index.
+
+This theorem backs the report's `raw_budget_survives_query_dedup` field: the
+deduplicated query-indexed predecessor candidates have count `44`, matching the
+raw local-window plus stride-family budget. -/
+theorem hybridFamilyUniqueQueryCandidateCount_long_context_no_wrap_4096_eq_raw
+    (query : Nat) :
+    hybridFamilyUniqueQueryCandidateCount 4096 query 32 4 [33, 160, 800] = 44 := by
+  have hcontext : 32 < 4096 := by omega
+  have hseparated :
+      coilStrideFamilyNoWrapSeparated 4096 4 [33, 160, 800] := by
+    norm_num [coilStrideFamilyNoWrapSeparated]
+    omega
+  have hwindow_all : ∀ stride ∈ [33, 160, 800], 32 < stride := by
+    intro stride hmem
+    simp at hmem
+    rcases hmem with rfl | rfl | rfl <;> omega
+  have hraw :
+      hybridFamilyUniqueQueryCandidateCount 4096 query 32 4 [33, 160, 800] =
+        hybridFamilyRawCandidateBudget 32 4 [33, 160, 800] :=
+    hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noWrapSeparated_of_window_lt_all_strides_of_window_lt_context
+      hseparated hwindow_all hcontext
+  rw [hraw]
+  norm_num [hybridFamilyRawCandidateBudget]
+
 /-- The public `8192` coprime planner row has exactly `96` theorem-side covered
 positive lags.
 
@@ -2808,6 +2834,35 @@ theorem hybridFamilyUncoveredLagList_long_context_coprime_8192_length :
         hybridFamilyRawCandidateBudget 64 8 [127, 509, 1021, 2039] :=
     hybridFamilyUniqueLagCandidateCount_eq_raw_of_noCollision hnoCollision
   rw [huncovered, hraw]
+  norm_num [hybridFamilyRawCandidateBudget]
+
+/-- The public `8192` coprime planner row preserves the exact raw
+query-candidate budget for every query index.
+
+The row is not no-wrap separated, so the proof uses a finite duplicate-free
+lag-candidate certificate and the general predecessor-injectivity theorem from
+`window < context` before applying the query no-collision budget endpoint. -/
+theorem hybridFamilyUniqueQueryCandidateCount_long_context_coprime_8192_eq_raw
+    (query : Nat) :
+    hybridFamilyUniqueQueryCandidateCount 8192 query 64 8 [127, 509, 1021, 2039] = 96 := by
+  have hcontext : 64 < 8192 := by omega
+  have hlagNoCollision :
+      hybridFamilyLagCandidatesNoCollision 8192 64 8 [127, 509, 1021, 2039] := by
+    unfold hybridFamilyLagCandidatesNoCollision hybridFamilyLagCandidateList
+    native_decide
+  have hinjective :
+      hybridFamilyPredecessorInjectiveOnLagCandidates
+        8192 query 64 8 [127, 509, 1021, 2039] :=
+    hybridFamilyPredecessorInjectiveOnLagCandidates_of_window_lt_context hcontext
+  have hqueryNoCollision :
+      hybridFamilyQueryCandidatesNoCollision 8192 query 64 8 [127, 509, 1021, 2039] :=
+    hybridFamilyQueryCandidatesNoCollision_of_lag_noCollision_of_predecessor_injective
+      hlagNoCollision hinjective
+  have hraw :
+      hybridFamilyUniqueQueryCandidateCount 8192 query 64 8 [127, 509, 1021, 2039] =
+        hybridFamilyRawCandidateBudget 64 8 [127, 509, 1021, 2039] :=
+    hybridFamilyUniqueQueryCandidateCount_eq_raw_of_noCollision hqueryNoCollision
+  rw [hraw]
   norm_num [hybridFamilyRawCandidateBudget]
 
 /-- A compact complete sparse-family fixture has no uncovered positive lags.

@@ -11579,7 +11579,7 @@
       "informal_statement": "RoPE relative-position property: shifting both the query and key positions by the same amount leaves the relative rotary phase unchanged, so the interaction depends only on the relative position query - key.",
       "lean_name": "Circle.Applications.rope_relative_shift_invariant",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 2864,
+      "lean_source_line": 2919,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"
@@ -11615,7 +11615,7 @@
       "informal_statement": "RoPE phase additivity: rotary position rotations compose by adding strides, the algebraic basis of RoPE's relative-position behaviour.",
       "lean_name": "Circle.Applications.rope_compose",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 2873,
+      "lean_source_line": 2928,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_03_COILRA_AND_MULTICOIL_ROPE.md#theorem-spine"
@@ -14953,7 +14953,7 @@
       "informal_statement": "For the compact C_9 sparse-attention plan with local window 2, path length 2, and strides [3,4,7], the finite uncovered-lag list is empty.",
       "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_complete_9_2_2_3_4_7_eq_nil",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 2818,
+      "lean_source_line": 2873,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -14996,7 +14996,7 @@
       "informal_statement": "The compact C_9 sparse-attention plan with local window 2, path length 2, and strides [3,4,7] covers every positive in-context lag.",
       "lean_name": "Circle.Applications.hybridFamilyCoversContext_complete_9_2_2_3_4_7",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 2824,
+      "lean_source_line": 2879,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -15039,7 +15039,7 @@
       "informal_statement": "For the compact C_9 sparse-attention plan, the exact deduplicated lag-candidate count equals the raw candidate budget.",
       "lean_name": "Circle.Applications.hybridFamilyUniqueLagCandidateCount_complete_9_2_2_3_4_7_eq_raw",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 2837,
+      "lean_source_line": 2892,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -15082,7 +15082,7 @@
       "informal_statement": "For the compact C_9 sparse-attention plan, the exact deduplicated query-candidate count equals the raw candidate budget.",
       "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_complete_9_2_2_3_4_7_eq_raw",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 2844,
+      "lean_source_line": 2899,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -15767,7 +15767,7 @@
       "informal_statement": "For the compact complete C_9 sparse-attention fixture with local window 2, path length 2, and strides [3,4,7], the uncovered-lag interval summary is empty.",
       "lean_name": "Circle.Applications.hybridFamilyUncoveredLagIntervalList_complete_9_2_2_3_4_7_eq_nil",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 2831,
+      "lean_source_line": 2886,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -17340,7 +17340,7 @@
       "informal_statement": "For the public 8192-token coprime planner row with local window 64, path length 8, and strides [127,509,1021,2039], the theorem-side covered positive-lag count is exactly 96.",
       "lean_name": "Circle.Applications.hybridFamilyCoveredLagList_long_context_coprime_8192_length",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 2740,
+      "lean_source_line": 2766,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
@@ -17382,7 +17382,91 @@
       "informal_statement": "For the public 8192-token coprime planner row with local window 64, path length 8, and strides [127,509,1021,2039], the theorem-side uncovered positive-lag count is exactly 8095.",
       "lean_name": "Circle.Applications.hybridFamilyUncoveredLagList_long_context_coprime_8192_length",
       "lean_source": "Circle/Applications/CircleTransformer.lean",
-      "lean_source_line": 2779,
+      "lean_source_line": 2805,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0028",
+        "COMMON-0029",
+        "COMMON-0047",
+        "COMMON-0075",
+        "COMMON-0079"
+      ],
+      "formal_statement": "forall query : Nat, Circle.Applications.hybridFamilyUniqueQueryCandidateCount 4096 query 32 4 [33, 160, 800] = 44",
+      "id": "AIT-T0143",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "For every query index, the public 4096-token no-wrap planner row has exactly 44 deduplicated query-indexed predecessor candidates, matching its raw sparse candidate budget.",
+      "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_long_context_no_wrap_4096_eq_raw",
+      "lean_source": "Circle/Applications/CircleTransformer.lean",
+      "lean_source_line": 2740,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [
+        {
+          "id": "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY",
+          "path": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
+          "status": "polished_draft",
+          "title": "Circle Calculus AI 2: Coil Attention and Memory"
+        }
+      ],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0028",
+        "COMMON-0029",
+        "COMMON-0047",
+        "COMMON-0075",
+        "COMMON-0079"
+      ],
+      "formal_statement": "forall query : Nat, Circle.Applications.hybridFamilyUniqueQueryCandidateCount 8192 query 64 8 [127, 509, 1021, 2039] = 96",
+      "id": "AIT-T0144",
+      "imports_allowed": [
+        "Common",
+        "S1"
+      ],
+      "informal_statement": "For every query index, the public 8192-token coprime planner row has exactly 96 deduplicated query-indexed predecessor candidates, matching its raw sparse candidate budget.",
+      "lean_name": "Circle.Applications.hybridFamilyUniqueQueryCandidateCount_long_context_coprime_8192_eq_raw",
+      "lean_source": "Circle/Applications/CircleTransformer.lean",
+      "lean_source_line": 2845,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"

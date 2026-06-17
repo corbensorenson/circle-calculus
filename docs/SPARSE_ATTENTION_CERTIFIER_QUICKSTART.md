@@ -148,6 +148,8 @@ The raw-budget iff endpoints are:
 - `AIT-T0140`: the same 4096-token planner row has exactly 4051 uncovered positive lags.
 - `AIT-T0141`: the public 8192-token coprime planner row has exactly 96 covered positive lags.
 - `AIT-T0142`: the same 8192-token planner row has exactly 8095 uncovered positive lags.
+- `AIT-T0143`: every query index in the public 4096-token no-wrap planner row has exactly 44 deduplicated predecessor candidates.
+- `AIT-T0144`: every query index in the public 8192-token coprime planner row has exactly 96 deduplicated predecessor candidates.
 
 The finite-list endpoints are:
 

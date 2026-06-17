@@ -1274,7 +1274,8 @@
       "first_uncovered_lag_matches_uncovered_list_head": true,
       "fixture_theorem_ids": [
         "AIT-T0139",
-        "AIT-T0140"
+        "AIT-T0140",
+        "AIT-T0143"
       ],
       "full_attention_budget": 4096,
       "local_coil_disjoint": true,
@@ -1511,7 +1512,8 @@
       "first_uncovered_lag_matches_uncovered_list_head": true,
       "fixture_theorem_ids": [
         "AIT-T0141",
-        "AIT-T0142"
+        "AIT-T0142",
+        "AIT-T0144"
       ],
       "full_attention_budget": 8192,
       "local_coil_disjoint": true,

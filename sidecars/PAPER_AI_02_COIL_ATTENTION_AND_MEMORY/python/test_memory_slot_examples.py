@@ -1604,7 +1604,11 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert long_no_wrap["covered_uncovered_count_sum"] == 4095
     assert long_no_wrap["covered_uncovered_count_partition"] is True
     assert long_no_wrap["covered_count_certifies_complete"] is False
-    assert long_no_wrap["fixture_theorem_ids"] == ["AIT-T0139", "AIT-T0140"]
+    assert long_no_wrap["fixture_theorem_ids"] == [
+        "AIT-T0139",
+        "AIT-T0140",
+        "AIT-T0143",
+    ]
     assert long_no_wrap["uncovered_lag_interval_count"] == 12
     assert long_no_wrap["raw_budget_survives_lag_dedup"] is True
     assert long_no_wrap["raw_budget_survives_query_dedup"] is True
@@ -1652,7 +1656,11 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert long_coprime["covered_uncovered_count_sum"] == 8191
     assert long_coprime["covered_uncovered_count_partition"] is True
     assert long_coprime["covered_count_certifies_complete"] is False
-    assert long_coprime["fixture_theorem_ids"] == ["AIT-T0141", "AIT-T0142"]
+    assert long_coprime["fixture_theorem_ids"] == [
+        "AIT-T0141",
+        "AIT-T0142",
+        "AIT-T0144",
+    ]
     assert long_coprime["covered_count_shortfall"] is True
     assert long_coprime["covered_count_shortfall_matches_gap_witness"] is True
     assert long_coprime["uncovered_lag_interval_count"] == 32
@@ -1751,13 +1759,14 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "Planner-style declared plans" in markdown_result.stdout
     assert "Raw shortfall certifies incomplete" in markdown_result.stdout
     assert "Fixture theorem ids" in markdown_result.stdout
-    assert "AIT-T0139, AIT-T0140" in markdown_result.stdout
-    assert "AIT-T0141, AIT-T0142" in markdown_result.stdout
+    assert "AIT-T0139, AIT-T0140, AIT-T0143" in markdown_result.stdout
+    assert "AIT-T0141, AIT-T0142, AIT-T0144" in markdown_result.stdout
     assert (
         "| long_context_no_wrap_probe_4096 | 4096 | 32 | 4 | "
         "33, 160, 800 | False | 0.011 | 44 | 0.011 | 4095 | 4095 | 4051 | "
         "34 | True | True | True | True | True | True | 12 | True | True | True | True | "
-        "None | None | True | True | True | True | True | True | True | lag=True, query=True |"
+        "None | None | True | True | True | True | True | True | True | lag=True, query=True | "
+        "AIT-T0139, AIT-T0140, AIT-T0143 |"
     ) in markdown_result.stdout
     assert (
         "| singleton_period_probe_12 | 12 | 1 | 2 | 4 | False | 0.273 | 3 | "
@@ -1770,7 +1779,7 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
         "127, 509, 1021, 2039 | False | 0.012 | 96 | 0.012 | 8191 | 8191 | "
         "8095 | 65 | True | True | True | True | True | True | 32 | True | True | False | True | "
         "None | None | True | True | True | True | True | True | True | lag=True, query=True | "
-        "AIT-T0141, AIT-T0142 |"
+        "AIT-T0141, AIT-T0142, AIT-T0144 |"
     ) in markdown_result.stdout
     assert "AIT-T0091" in markdown_result.stdout
     assert "AIT-T0110" in markdown_result.stdout
