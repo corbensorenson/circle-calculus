@@ -48,8 +48,9 @@ This repository does not claim to have rebuilt all of mathematics from circles. 
 8. `docs/ROPE_CERTIFIER_QUICKSTART.md`, `docs/ROPE_CERTIFIER_REVIEW_PACKET.md`, `papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md`, and `scripts/rope_certify.py` for the first standalone AI contract.
 9. The Living Book [KV-cache ring-buffer lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/kv_cache_ring_buffer.html), `docs/KV_CACHE_CERTIFIER_QUICKSTART.md`, `scripts/kv_cache_certify.py`, `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py` for the second standalone AI contract.
 10. The Living Book [sparse-attention coverage lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/sparse_attention_contract.html), `docs/SPARSE_ATTENTION_CERTIFIER_QUICKSTART.md`, `scripts/stride_family_certify.py`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py` for the third standalone AI contract.
-11. `docs/PHASE8_DEPTH_VALIDATION.md` for the current depth-and-validation push: RoPE real-phase theorem work, sparse coverage iffs, collision counting, KV-cache safety, contract hardening, change-aware validation, and proof-depth guardrails.
-12. `docs/THESEUS_HIVE_AI_TRANSFER.md` for the optional private-transfer lane; it is not the public proof standard.
+11. The Living Book [looped recurrence contracts lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/looped_recurrence_contracts.html), `docs/RECURRENCE_SCHEDULE_CERTIFIER_QUICKSTART.md`, and `scripts/recurrence_schedule_certify.py` for the fourth standalone AI contract.
+12. `docs/PHASE8_DEPTH_VALIDATION.md` for the current depth-and-validation push: RoPE real-phase theorem work, sparse coverage iffs, collision counting, KV-cache safety, contract hardening, change-aware validation, and proof-depth guardrails.
+13. `docs/THESEUS_HIVE_AI_TRANSFER.md` for the optional private-transfer lane; it is not the public proof standard.
 
 The Living Book's [What "Proved" Means Here](https://corbensorenson.github.io/circle-calculus/what_proved_means.html) page is the one-paragraph contract the whole project lives by.
 
